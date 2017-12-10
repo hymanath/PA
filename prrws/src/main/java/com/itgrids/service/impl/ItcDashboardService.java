@@ -1006,6 +1006,25 @@ public class ItcDashboardService implements IItcDashboardService {
 							if(categoryNew != null && categoryNew.equalsIgnoreCase(finalVO.getCategory())){
 								finalVO.setCategoryCount(finalVO.getCategoryCount()+1);
 							}
+							if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G1")){
+								finalVO.setName("Gone into Production");
+							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G2")){
+								finalVO.setName("Trial Production");
+							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G4")){
+								finalVO.setName("Civil Works commenced");
+							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("Y")){
+								finalVO.setName("Ready for Foundation Stone");
+							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R1")){
+								finalVO.setName("Land in possession and approvals granted");
+							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R2")){
+								finalVO.setName("Land in possession and approvals in progress");
+							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R3")){
+								finalVO.setName("Government land sought, but not allocated");
+							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R4")){
+								finalVO.setName("DPR to be submitted");
+							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("D")){
+								finalVO.setName("Dropped");
+							}
 						}
 						
 					}
@@ -2530,25 +2549,25 @@ public class ItcDashboardService implements IItcDashboardService {
 									departVO = new ItecEOfficeVO();
 									departVO.setDepartmentId(jObj.getLong("departmentid"));
 									departVO.setDepartmentName(jObj.getString("departmentname"));
-									departVO.setCreated(jObj.getLong("filecreated")+jObj.getLong("filereceived")+jObj.getLong("opening_balance"));//created
-									departVO.setTotalCount(jObj.getLong("firstpending")+jObj.getLong("secondpending")+jObj.getLong("thirdpending")+jObj.getLong("fourthpending")+jObj.getLong("fifthpending"));
-									departVO.setZeroToSeven(jObj.getLong("firstpending"));
-									departVO.setEightToFifteen(jObj.getLong("secondpending"));
-									departVO.setSixteenToThirty(jObj.getLong("thirdpending"));
-									departVO.setThirtyoneToSixty(jObj.getLong("fourthpending"));
-									departVO.setAboveSixty(jObj.getLong("fifthpending"));
-									departVO.setActionFiles(jObj.getLong("filesforwarded")+jObj.getLong("filesparked")+jObj.getLong("fileclosed"));
+									departVO.setCreated(jObj.getLong("filecreated")+jObj.getLong("file_received")+jObj.getLong("opbalancecount"));//created
+									departVO.setTotalCount(jObj.getLong("firstcount")+jObj.getLong("secondcount")+jObj.getLong("thirdcount")+jObj.getLong("fourthcount")+jObj.getLong("fifthcount"));
+									departVO.setZeroToSeven(jObj.getLong("firstcount"));
+									departVO.setEightToFifteen(jObj.getLong("secondcount"));
+									departVO.setSixteenToThirty(jObj.getLong("thirdcount"));
+									departVO.setThirtyoneToSixty(jObj.getLong("fourthcount"));
+									departVO.setAboveSixty(jObj.getLong("fifthcount"));
+									departVO.setActionFiles(jObj.getLong("files_forwarded")+jObj.getLong("files_parked")+jObj.getLong("files_closed"));
 									departMap.put(departVO.getDepartmentName(), departVO);
 								 }else{
 									// departVO.setReceiptCreated(departVO.getReceiptCreated()+jObj.getLong("receiptcreated"));
-									departVO.setCreated(departVO.getCreated()+jObj.getLong("filecreated")+jObj.getLong("filereceived")+jObj.getLong("opening_balance"));//created
-									departVO.setTotalCount(departVO.getTotalCount()+jObj.getLong("firstpending")+jObj.getLong("secondpending")+jObj.getLong("thirdpending")+jObj.getLong("fourthpending")+jObj.getLong("fifthpending"));
-									departVO.setZeroToSeven(departVO.getZeroToSeven()+jObj.getLong("firstpending"));
-									departVO.setEightToFifteen(departVO.getEightToFifteen()+jObj.getLong("secondpending"));
-									departVO.setSixteenToThirty(departVO.getSixteenToThirty()+jObj.getLong("thirdpending"));
-									departVO.setThirtyoneToSixty(departVO.getThirtyoneToSixty()+jObj.getLong("fourthpending"));
-									departVO.setAboveSixty(departVO.getAboveSixty()+jObj.getLong("fifthpending"));
-									departVO.setActionFiles(departVO.getActionFiles()+jObj.getLong("filesforwarded")+jObj.getLong("filesparked")+jObj.getLong("fileclosed"));
+									departVO.setCreated(departVO.getCreated()+jObj.getLong("filecreated")+jObj.getLong("file_received")+jObj.getLong("opbalancecount"));//created
+									departVO.setTotalCount(departVO.getTotalCount()+jObj.getLong("firstcount")+jObj.getLong("secondcount")+jObj.getLong("thirdcount")+jObj.getLong("fourthcount")+jObj.getLong("fifthcount"));
+									departVO.setZeroToSeven(departVO.getZeroToSeven()+jObj.getLong("firstcount"));
+									departVO.setEightToFifteen(departVO.getEightToFifteen()+jObj.getLong("secondcount"));
+									departVO.setSixteenToThirty(departVO.getSixteenToThirty()+jObj.getLong("thirdcount"));
+									departVO.setThirtyoneToSixty(departVO.getThirtyoneToSixty()+jObj.getLong("fourthcount"));
+									departVO.setAboveSixty(departVO.getAboveSixty()+jObj.getLong("fifthcount"));
+									departVO.setActionFiles(departVO.getActionFiles()+jObj.getLong("files_forwarded")+jObj.getLong("files_parked")+jObj.getLong("files_closed"));
 								 }
 								 if(departVO.getCreated() != null && departVO.getCreated().longValue() > 0L && departVO.getTotalCount() != null && departVO.getTotalCount().longValue() > 0L){
 										departVO.setPercentage(new BigDecimal(departVO.getTotalCount()*100.00/departVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -2578,17 +2597,17 @@ public class ItcDashboardService implements IItcDashboardService {
 									hodVO.setDepartmentId(hodObj.getLong("departmentid"));
 									hodVO.setDepartmentName(hodObj.getString("departmentname"));
 									//hodVO.setReceiptCreated(hodObj.getLong("receiptcreated"));
-									hodVO.setCreated(hodObj.getLong("filecreated")+hodObj.getLong("filereceived")+hodObj.getLong("opening_balance"));//created
-									hodVO.setTotalCount(hodObj.getLong("firstpending")+hodObj.getLong("secondpending")+hodObj.getLong("thirdpending")+hodObj.getLong("fourthpending")+hodObj.getLong("fifthpending"));
-									hodVO.setZeroToSeven(hodObj.getLong("firstpending"));
-									hodVO.setEightToFifteen(hodObj.getLong("secondpending"));
-									hodVO.setSixteenToThirty(hodObj.getLong("thirdpending"));
-									hodVO.setThirtyoneToSixty(hodObj.getLong("fourthpending"));
-									hodVO.setAboveSixty(hodObj.getLong("fifthpending"));
-									hodVO.setActionFiles(hodObj.getLong("filesforwarded")+hodObj.getLong("filesparked")+hodObj.getLong("fileclosed"));
+									hodVO.setCreated(hodObj.getLong("filecreated")+hodObj.getLong("file_received")+hodObj.getLong("opbalancecount"));//created
+									hodVO.setTotalCount(hodObj.getLong("firstcount")+hodObj.getLong("secondcount")+hodObj.getLong("thirdcount")+hodObj.getLong("fourthcount")+hodObj.getLong("fifthcount"));
+									hodVO.setZeroToSeven(hodObj.getLong("firstcount"));
+									hodVO.setEightToFifteen(hodObj.getLong("secondcount"));
+									hodVO.setSixteenToThirty(hodObj.getLong("thirdcount"));
+									hodVO.setThirtyoneToSixty(hodObj.getLong("fourthcount"));
+									hodVO.setAboveSixty(hodObj.getLong("fifthcount"));
+									hodVO.setActionFiles(hodObj.getLong("files_forwarded")+hodObj.getLong("files_parked")+hodObj.getLong("files_closed"));
 									hodVO.setEmployeeName(hodObj.getString("employeename"));
 									hodVO.setPostName(hodObj.getString("postname"));
-									hodVO.setActionFiles(hodObj.getLong("filesforwarded")+hodObj.getLong("filesparked")+hodObj.getLong("fileclosed"));
+									//hodVO.setActionFiles(hodObj.getLong("filesforwarded")+hodObj.getLong("files_parked")+hodObj.getLong("files_closed"));
 									if(hodVO.getCreated() != null && hodVO.getCreated().longValue() > 0L && hodVO.getTotalCount() != null && hodVO.getTotalCount().longValue() > 0L){
 										hodVO.setPercentage(new BigDecimal(hodVO.getTotalCount()*100.00/hodVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 									}else{
@@ -2805,17 +2824,17 @@ public class ItcDashboardService implements IItcDashboardService {
 		            	 
 		            		  designationVO.setDesignation(jObj.getString("postname"));
 		            		 // designationVO.setOwnerName(jObj.getString("ouname"));
-		            		  designationVO.setCreated(jObj.getLong("filecreated")+jObj.getLong("filereceived")+jObj.getLong("opening_balance"));//created);
-		            		  designationVO.setTotalCount(jObj.getLong("firstpending")+jObj.getLong("secondpending")+jObj.getLong("thirdpending")+jObj.getLong("fourthpending")+jObj.getLong("fifthpending"));
+		            		  designationVO.setCreated(jObj.getLong("filecreated")+jObj.getLong("file_received")+jObj.getLong("opbalancecount"));//created);
+		            		  designationVO.setTotalCount(jObj.getLong("firstcount")+jObj.getLong("secondcount")+jObj.getLong("thirdcount")+jObj.getLong("fourthcount")+jObj.getLong("fifthcount"));
 		            		  designationVO.setEmployeeName(jObj.getString("employeename"));
 		            		  designationVO.setDepartmentId(jObj.getLong("departmentid"));
 		            		  designationVO.setDepartmentName(jObj.getString("departmentname"));
-		            		  designationVO.setZeroToSeven(jObj.getLong("firstpending"));
-		            		  designationVO.setEightToFifteen(jObj.getLong("secondpending"));
-		            		  designationVO.setSixteenToThirty(jObj.getLong("thirdpending"));
-		            		  designationVO.setThirtyoneToSixty(jObj.getLong("fourthpending"));
-		            		  designationVO.setAboveSixty(jObj.getLong("fifthpending"));
-		            		  designationVO.setActionFiles(jObj.getLong("filesforwarded")+jObj.getLong("filesparked")+jObj.getLong("fileclosed"));
+		            		  designationVO.setZeroToSeven(jObj.getLong("firstcount"));
+		            		  designationVO.setEightToFifteen(jObj.getLong("secondcount"));
+		            		  designationVO.setSixteenToThirty(jObj.getLong("thirdcount"));
+		            		  designationVO.setThirtyoneToSixty(jObj.getLong("fourthcount"));
+		            		  designationVO.setAboveSixty(jObj.getLong("fifthcount"));
+		            		  designationVO.setActionFiles(jObj.getLong("files_forwarded")+jObj.getLong("files_parked")+jObj.getLong("files_closed"));
 		            		  if(designationVO.getCreated() != null && designationVO.getCreated().longValue() > 0L && designationVO.getTotalCount() != null && designationVO.getTotalCount().longValue() > 0L){
 			            		designationVO.setPercentage(new BigDecimal(designationVO.getTotalCount()*100.00/designationVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 							  }else{

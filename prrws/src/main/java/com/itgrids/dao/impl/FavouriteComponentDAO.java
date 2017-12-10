@@ -35,11 +35,12 @@ public class FavouriteComponentDAO extends GenericDaoHibernate<FavouriteComponen
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getFavouriteComponencts(IdNameVO inputVO) {
 		 StringBuilder quBuilder = new StringBuilder();
-		 quBuilder.append(" select distinct model.favouriteComponentId,model.name,model.url,model.orderNo from FavouriteComponent model where model.isDeleted='N' ");
+		 quBuilder.append(" select distinct model.favouriteComponentId,model.name,model.url,model.orderNo from FavouriteComponent model where model.isDeleted='N' and model.pageId is not null");
 		  if (inputVO.getComponentNameList() != null && inputVO.getComponentNameList().size() > 0) {
 			  quBuilder.append(" and model.name in (:componentNames)");
 		  }
-		  quBuilder.append(" order by model.orderNo ");
+		  //quBuilder.append(" order by model.orderNo ");
+		  quBuilder.append(" order by model.pageId asc");
 		  Query query = getSession().createQuery(quBuilder.toString());
 		  if (inputVO.getComponentNameList() != null && inputVO.getComponentNameList().size() > 0) {
 			   query.setParameterList("componentNames", inputVO.getComponentNameList());

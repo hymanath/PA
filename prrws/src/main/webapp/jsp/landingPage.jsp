@@ -142,7 +142,7 @@
 						<p class="">TOTAL FUNDS</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange FUNDMANAGMENTSYSTEMColor" title="click to add as favourite component."  attr_url="newfundManagementSystemDashBoard" attr_full_block_name="FUND MANAGMENT SYSTEM" attr_color_name="gray" attr_block_name="FUNDMANAGMENTSYSTEM" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange FUNDMANAGMENTSYSTEMColor" title="click to add as favourite component."  attr_url="newfundManagementSystemDashBoard" attr_full_block_name="FUND MANAGMENT SYSTEM" attr_color_name="gray" attr_block_name="FUNDMANAGMENTSYSTEM" aria-hidden="true" attr_page_id="2"></i>
 						<!--<span style="font-size: 9px;color:#8286FF">PANCHAYATI RAJ,RURAL DEVELOPMENT,RURAL WATER SUPPLY</span>-->
 						<a class="pull-right" href="newfundManagementSystemDashBoard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
@@ -154,7 +154,7 @@
 <section style="margin-bottom: 100px;display:none" landing-block="panchayat" id="panchayatirajBlock" class="showhideCls">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-4">
+			<!--<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2344.png" >
 					<h5 style="display: inline-block;">PRIS</h5>
@@ -167,7 +167,7 @@
 						<a class="pull-right" href="prisDashBoard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Info...</a>
 					</div>
 				</div>
-			</div>
+			</div>-->
 			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2345.png" >
@@ -177,7 +177,7 @@
 						<p class="">ACHIEVEMENT</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange DRAINSColor" title="click to add as favourite component." attr_url="drainDashBoard" attr_full_block_name="DRAINS" attr_color_name="gray" attr_block_name="DRAINS" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange DRAINSColor" title="click to add as favourite component." attr_url="drainDashBoard" attr_full_block_name="DRAINS" attr_color_name="gray" attr_block_name="DRAINS" aria-hidden="true"attr_page_id="3"></i>
 						<a class="pull-right" href="drainDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -191,7 +191,7 @@
 						<p class="">ACHIEVEMENT</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange ENGINEERINGDEPARTMENTColor"  title="click to add as favourite component." attr_url="" attr_full_block_name="ENGINEERING DEPARTMENT" attr_color_name="gray" attr_block_name="ENGINEERINGDEPARTMENT" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange ENGINEERINGDEPARTMENTColor"  title="click to add as favourite component." attr_url="" attr_full_block_name="ENGINEERING DEPARTMENT" attr_color_name="gray" attr_block_name="ENGINEERINGDEPARTMENT" aria-hidden="true" attr_page_id="3"></i>
 						<a class="pull-right"  style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -214,12 +214,12 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2348.png" >
 					<h5 style="display: inline-block;">LED MONITORING</h5>
-					<div class=" " style="text-align: right">
-						<h2 class="ledOverAchvmntAllCls" style="margin-top: 0px"></h2>
-						<p class="">TOTAL LIGHTS</p>
+					<div class="ledOverAchvmntAllCls" style="text-align: right">
+						<h2 class="" style="margin-top: 0px"></h2>
+						<p class="">ON/OFF<br>Lights/TOTAL LIGHTS</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange LEDMONITORINGColor" title="click to add as favourite component." attr_url="getlightsMonitoringDashboard" attr_color_name="gray" attr_full_block_name="LED MONITORING" attr_block_name="LEDMONITORING" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange LEDMONITORINGColor" title="click to add as favourite component." attr_url="getlightsMonitoringDashboard" attr_color_name="gray" attr_full_block_name="LED MONITORING" attr_block_name="LEDMONITORING" aria-hidden="true" attr_page_id="3"></i>
 						<a class="pull-right" target="_blank" href="getlightsMonitoringDashboard" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -233,7 +233,7 @@
 						<p class="">TOTAL CASES</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange SPIKEANALYSISColor" title="click to add as favourite component." attr_url="getdailySpikeReport" attr_full_block_name="SPIKE ANALYSIS" attr_color_name="gray" attr_block_name="SPIKEANALYSIS" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange SPIKEANALYSISColor" title="click to add as favourite component." attr_url="getdailySpikeReport" attr_full_block_name="SPIKE ANALYSIS" attr_color_name="gray" attr_block_name="SPIKEANALYSIS" aria-hidden="true" attr_page_id="3"></i>
 						<a class="pull-right"  href="getdailySpikeReport" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -288,7 +288,7 @@
 						<p class="">ACHIEVEMENT</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange NtrJalasiriColor" title="click to add as favourite component." attr_url="RuralDevelopmentDashboard" attr_full_block_name="Ntr Jalasiri" attr_color_name="gray" attr_block_name="Ntr Jalasiri" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange NtrJalasiriColor" title="click to add as favourite component." attr_url="RuralDevelopmentDashboard" attr_full_block_name="Ntr Jalasiri" attr_color_name="gray" attr_block_name="Ntr Jalasiri" aria-hidden="true" attr_page_id="4"></i>
 						<a class="pull-right" href="RuralDevelopmentDashboard?component=Ntr Jalasiri" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -302,7 +302,7 @@
 						<p class="">ACHIEVEMENT</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange WaterBudgetColor" title="click to add as favourite component." attr_url="WaterBudget" attr_full_block_name="WaterBudget" attr_color_name="gray" attr_block_name="WaterBudget" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange WaterBudgetColor" title="click to add as favourite component." attr_url="WaterBudget" attr_full_block_name="WaterBudget" attr_color_name="gray" attr_block_name="WaterBudget" aria-hidden="true" attr_page_id="4"></i>
 						<a class="pull-right" href="RuralDevelopmentDashboard?component=WaterBudget" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -322,7 +322,7 @@
 						<p class="">ACHIEVEMENT</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange RURALWATERSUPPLYColor" title="click to add as favourite component." attr_url="ruralWaterSupplyDashBoard" attr_full_block_name="RURAL WATER SUPPLY" attr_color_name="gray" attr_block_name="RURALWATERSUPPLY" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange RURALWATERSUPPLYColor" title="click to add as favourite component." attr_url="ruralWaterSupplyDashBoard" attr_full_block_name="RURAL WATER SUPPLY" attr_color_name="gray" attr_block_name="RURALWATERSUPPLY" aria-hidden="true" attr_page_id="5"></i>
 						<a class="pull-right" href="ruralWaterSupplyDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -336,7 +336,7 @@
 						<p class="">COMPLETED</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange SWATCHBHARATHIHHLColor" title="click to add as favourite component." attr_url="swachhBharatMissionIHHL" attr_full_block_name="SWATCH BHARATH IHHL" attr_color_name="gray" attr_block_name="SWATCHBHARATHIHHL" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange SWATCHBHARATHIHHLColor" title="click to add as favourite component." attr_url="swachhBharatMissionIHHL" attr_full_block_name="SWATCH BHARATH IHHL" attr_color_name="gray" attr_block_name="SWATCHBHARATHIHHL" aria-hidden="true" attr_page_id="5"></i>
 						<a class="pull-right" href="swachhBharatMissionIHHL"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -350,7 +350,7 @@
 						<p class="">COMPLETED</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange MGNREGSIHHLColor" title="click to add as favourite component." attr_url="swatchBharatIHHLInfo" attr_full_block_name="MGNREGS IHHL" attr_color_name="gray" attr_block_name="MGNREGSIHHL" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange MGNREGSIHHLColor" title="click to add as favourite component." attr_url="swatchBharatIHHLInfo" attr_full_block_name="MGNREGS IHHL" attr_color_name="gray" attr_block_name="MGNREGSIHHL" aria-hidden="true" attr_page_id="5"></i>
 						<a class="pull-right" href="swatchBharatIHHLInfo"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -364,7 +364,7 @@
 						<p class="">PENDING</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange SWATCHBHARATHPAYMENTSColor" title="click to add as favourite component." attr_url="swatchBharatIHHLInfo" attr_full_block_name="SWATCH BHARATH PAYMENTS" attr_color_name="gray" attr_block_name="SWATCHBHARATHPAYMENTS" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange SWATCHBHARATHPAYMENTSColor" title="click to add as favourite component." attr_url="swatchBharatIHHLInfo" attr_full_block_name="SWATCH BHARATH PAYMENTS" attr_color_name="gray" attr_block_name="SWATCHBHARATHPAYMENTS" aria-hidden="true" attr_page_id="5"></i>
 						<a class="pull-right" href="swatchBharatPaymentsInfo"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -378,7 +378,7 @@
 						<p class="">NOTIFIED & IN PROGRESS</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange JALAVANIColor" title="click to add as favourite component." attr_url="jalavaniDashBoard" attr_full_block_name="JALAVANI" attr_color_name="gray" attr_block_name="JALAVANI" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange JALAVANIColor" title="click to add as favourite component." attr_url="jalavaniDashBoard" attr_full_block_name="JALAVANI" attr_color_name="gray" attr_block_name="JALAVANI" aria-hidden="true" attr_page_id="5"></i>
 						<a class="pull-right" href="jalavaniDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -392,7 +392,7 @@
 						<p class="">TOTAL</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange ASSETSColor" title="click to add as favourite component." attr_url="assetsDashBoard" attr_full_block_name="ASSETS" attr_color_name="gray" attr_block_name="ASSETS" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange ASSETSColor" title="click to add as favourite component." attr_url="assetsDashBoard" attr_full_block_name="ASSETS" attr_color_name="gray" attr_block_name="ASSETS" aria-hidden="true"attr_page_id="5"></i>
 						<a class="pull-right" href="assetsDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -406,7 +406,7 @@
 						<p class="">TOTAL</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange KEYPERFORMANCEColor" title="click to add as favourite component." attr_url="keyPerfomanceDashBoard" attr_full_block_name="KEY PERFORMANCE" attr_color_name="gray" attr_block_name="KEY PERFORMANCE" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange KEYPERFORMANCEColor" title="click to add as favourite component." attr_url="keyPerfomanceDashBoard" attr_full_block_name="KEY PERFORMANCE" attr_color_name="gray" attr_block_name="KEY PERFORMANCE" aria-hidden="true" attr_page_id="5"></i>
 						<a class="pull-right" href="keyPerfomanceDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -420,7 +420,7 @@
 						<p class="">TOTAL</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange WATERSOURCEColor" title="click to add as favourite component." attr_url="waterSourcesDashBoard" attr_full_block_name="WATER SOURCE" attr_color_name="gray" attr_block_name="WATER SOURCE" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange WATERSOURCEColor" title="click to add as favourite component." attr_url="waterSourcesDashBoard" attr_full_block_name="WATER SOURCE" attr_color_name="gray" attr_block_name="WATER SOURCE" aria-hidden="true" attr_page_id="5"></i>
 						<a class="pull-right" href="waterSourcesDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -434,7 +434,7 @@
 						<p class="">COMPLETED</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange WORKSColor" title="click to add as favourite component." attr_url="worksDashBoard" attr_full_block_name="WORKS" attr_color_name="gray" attr_block_name="WORKS" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange WORKSColor" title="click to add as favourite component." attr_url="worksDashBoard" attr_full_block_name="WORKS" attr_color_name="gray" attr_block_name="WORKS" aria-hidden="true" attr_page_id="5"></i>
 						<a class="pull-right" href="worksDashBoard"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -448,7 +448,7 @@
 						<p class="">CHLORINATED</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange WATERTANKCHLORINATIONColor" title="click to add as favourite component." attr_url="waterTanksClorinationDashBoard" attr_full_block_name="WATER TANK CHLORINATION" attr_color_name="gray" attr_block_name="WATERTANKCHLORINATION" aria-hidden="true"></i>
+						<i class="fa fa-star starcolorChange WATERTANKCHLORINATIONColor" title="click to add as favourite component." attr_url="waterTanksClorinationDashBoard" attr_full_block_name="WATER TANK CHLORINATION" attr_color_name="gray" attr_block_name="WATERTANKCHLORINATION" aria-hidden="true" attr_page_id="5"></i>
 						<a class="pull-right"  href="waterTanksClorinationDashBoard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -483,7 +483,7 @@
 						<p class="">Committed Investment</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star PROMOTIONSColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="PROMOTIONS" attr_color_name="gray" aria-hidden="true" attr_block_name="PROMOTIONS"></i>
+						<i class="fa fa-star PROMOTIONSColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="PROMOTIONS" attr_color_name="gray" aria-hidden="true" attr_block_name="PROMOTIONS" attr_page_id="6"></i>
 						<a class="pull-right" href="itcDashboard?component=promotions" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -497,7 +497,7 @@
 						<p class="">Total Pendency</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star EOFFICEColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="E OFFICE" attr_color_name="gray" aria-hidden="true" attr_block_name="EOFFICE"></i>
+						<i class="fa fa-star EOFFICEColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="E OFFICE" attr_color_name="gray" aria-hidden="true" attr_block_name="EOFFICE"attr_page_id="6"></i>
 						<a class="pull-right" href="itcDashboard?component=eOffice" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -511,7 +511,7 @@
 						<p class="">Beyond SLA/etaal - KPI</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star MEESEVA-SLAKPIColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="MEESEVA-SLA KPI" attr_color_name="gray" aria-hidden="true" attr_block_name="MEESEVA-SLAKPI"></i>
+						<i class="fa fa-star MEESEVA-SLAKPIColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="MEESEVA-SLA KPI" attr_color_name="gray" aria-hidden="true" attr_block_name="MEESEVA-SLAKPI" attr_page_id="6"></i>
 						<a class="pull-right" href="itcDashboard?component=meesevaSlaKpi" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -525,7 +525,7 @@
 						<p class="">Startups</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star APINNOVATIONSOCIETYColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="AP INNOVATION SOCIETY" attr_color_name="gray" aria-hidden="true" attr_block_name="APINNOVATIONSOCIETY"></i>
+						<i class="fa fa-star APINNOVATIONSOCIETYColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="AP INNOVATION SOCIETY" attr_color_name="gray" aria-hidden="true" attr_block_name="APINNOVATIONSOCIETY" attr_page_id="6"></i>
 						<a class="pull-right" href="itcDashboard?component=apInnovationSociety" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -553,7 +553,7 @@
 						<p class="">Total/Approved</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star CMEODBColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="CM EODB" attr_color_name="gray" aria-hidden="true" attr_block_name="CMEODB"></i>
+						<i class="fa fa-star CMEODBColor starcolorChange" title="click to add as favourite component."  attr_url="itcDashboard" attr_full_block_name="CM EODB" attr_color_name="gray" aria-hidden="true" attr_block_name="CMEODB" attr_page_id="6"></i>
 						<a class="pull-right" href="itcDashboard?component=cMeoDB" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
@@ -567,7 +567,7 @@
 						<p class="">Total Employee/Present</p>
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star bioMetricDashBoardColor starcolorChange" title="click to add as favourite component."  attr_url="bioMetricDashBoard" attr_full_block_name="bioMetricDashBoard" attr_color_name="gray" aria-hidden="true" attr_block_name="bioMetricDashBoard"></i>
+						<i class="fa fa-star bioMetricDashBoardColor starcolorChange" title="click to add as favourite component."  attr_url="bioMetricDashBoard" attr_full_block_name="bioMetricDashBoard" attr_color_name="gray" aria-hidden="true" attr_block_name="bioMetricDashBoard" attr_page_id="6"></i>
 						<a class="pull-right" href="bioMetricDashBoard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>

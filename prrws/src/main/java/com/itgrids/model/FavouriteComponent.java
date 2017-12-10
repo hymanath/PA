@@ -20,6 +20,7 @@ public class FavouriteComponent {
 	private Date updatedTime;
 	private String isDeleted;
 	private Long orderNo;
+	private Long pageId;
 	
 	@Id
 	@Column(name = "favourite_component_id")
@@ -71,5 +72,12 @@ public class FavouriteComponent {
 	}
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
+	}
+	@Column(name = "page_id")
+	public Long getPageId() {
+		return pageId;
+	}
+	public void setPageId(Long pageId) {
+		this.pageId = pageId;
 	}
 }
