@@ -7,6 +7,9 @@ $('#dateRangePickerMGNF').on('apply.daterangepicker', function(ev, picker) {
 });
 
 getRepresentationRequestDetailsByRepresentationRequestId(781);
+$(document).on('cut copy paste', function (e) {
+	e.preventDefault();
+});
 $(document).on("click",".selfRepresenceCls",function(){
 	$("#districtCandId").html('<option value="0">Select District</option>');
 	$("#constituencyCanId").html('<option value="0">Select Constituency</option>');

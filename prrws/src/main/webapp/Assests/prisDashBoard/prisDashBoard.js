@@ -13,7 +13,9 @@ $("#selectedName").attr("attr_levelidvalue","2");
 	$(".thisMonthOverview").html("OVERALL");
 	
 	$(".chosen-select").chosen();
-	
+	$(document).on('cut copy paste', function (e) {
+		e.preventDefault();
+	});
 	function onLoadCalls()
 	{
 		buildLevelWiseDetailsBlock();

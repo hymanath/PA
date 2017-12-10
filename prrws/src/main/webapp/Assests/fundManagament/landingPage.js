@@ -31,6 +31,9 @@ if(windowWidth <500){
 	$(".landing-menu").css("display","flex");
 	$(".landing-menu li").css("width","16%");
 }
+$(document).on('cut copy paste', function (e) {
+	e.preventDefault();
+});
 getAllConvergenceTypesConsolidated();//mgnrega components
 
 var favouritesArr = []
@@ -127,7 +130,6 @@ function buildFavouriteComponentsResult(result) {
 		}
 		console.log(globalComponentNameArr);
 		str+='</div>';
-		console.log(str);
 	$("#favouriteComponentDivId").html(str);
 	$(".tooltipCls").tooltip();
 	/*adding required filed dynamically*/
@@ -245,7 +247,6 @@ function addRemoveComponentToFavourite(actionType,blockName,fullBlockName,url,bl
 function saveFavouriteComponentDtls(url,blockName,fullBlockName,pageId){
 	  $("#blockOperationStatusHeadingId").html(spinner);
 	  $("#blockModalMessageDivId").modal("show");
-	  alert(pageId)
 	var json = {
 		  url:url, 
 		  name:fullBlockName,
@@ -1562,7 +1563,6 @@ function getBioMetricDashboardOverViewDtls(){
 		
 	});	
 }
-//$("#ledMonitoring").html(ledMonitoringData('15/20','10'));
 function ledMonitoringData(onOffVal,totalLightsVal)
 {
 	var str='';

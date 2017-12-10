@@ -120,6 +120,9 @@
 	$(document).on("click",function(){
 		$(".menu-data-cls").hide();
 	});
+	$(document).on('cut copy paste', function (e) {
+		e.preventDefault();
+	});
 	$(document).on("click","[tab-switch] li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");

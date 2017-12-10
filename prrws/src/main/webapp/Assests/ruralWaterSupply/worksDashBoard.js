@@ -2394,6 +2394,9 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 			]
 		});
 	}
+	$(document).on('cut copy paste', function (e) {
+		e.preventDefault();
+	});
 	$(document).on("click",".exceedWorkTypeCls",function(e){
 		var statusType = $(this).val();
 		if(statusType == ""){

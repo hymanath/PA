@@ -23,7 +23,9 @@ function onloadIntiliazilation(){
 	$(document).on("click",function(){
 		$(".menu-data-cls").hide();
 	});
-	
+	$(document).on('cut copy paste', function (e) {
+		e.preventDefault();
+	});
 	$("#dateRangePickerAUM").daterangepicker({
 		opens: 'left',
 		startDate: globalFromDateForLevel,

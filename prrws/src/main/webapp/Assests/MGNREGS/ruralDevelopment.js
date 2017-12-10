@@ -19,6 +19,9 @@ $("#dateRangePickerMGNT").datetimepicker({
 	format: 'YYYY-MM',
 	viewMode:'months'
 });
+$(document).on('cut copy paste', function (e) {
+	e.preventDefault();
+});
 $('#dateRangePickerMGNF').on('dp.change', function(e){ 
 	glStartDate = e.date.format("YYYY-MM")+"-31";
 	for(var i in overViewArr)

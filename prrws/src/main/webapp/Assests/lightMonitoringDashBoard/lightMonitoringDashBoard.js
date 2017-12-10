@@ -12,12 +12,15 @@ setTimeout(function(){
 	callWebService();		
 }, 1000);
 $("header").on("click",".menu-cls",function(e){
-		e.stopPropagation();
-		$(".menu-data-cls").toggle();
-	});
-	$(document).on("click",function(){
-		$(".menu-data-cls").hide();
-	});
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
+$(document).on('cut copy paste', function (e) {
+	e.preventDefault();
+});
 function onLoadCalls()
 {
 	$(".chosen-select").chosen();

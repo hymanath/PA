@@ -12,7 +12,9 @@ setTimeout(function(){
 
 	
 }, 2000);
- 
+$(document).on('cut copy paste', function (e) {
+	e.preventDefault();
+});
 $("#dateRangePickerMGNF").daterangepicker({
 		singleDatePicker: true,
 		locale: {
