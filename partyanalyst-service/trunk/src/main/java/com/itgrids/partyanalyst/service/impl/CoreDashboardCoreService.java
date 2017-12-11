@@ -17,6 +17,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
@@ -35,6 +36,13 @@ import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 
 public class CoreDashboardCoreService implements ICoreDashboardCoreService {
@@ -49,66 +57,110 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	private ITrainingCampBatchDAO trainingCampBatchDAO;
 	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
+	private ITdpCadreDAO tdpCadreDAO;
 	
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
 
-	public void setCommonMethodsUtilService(CommonMethodsUtilService commonMethodsUtilService) {
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-	
-	public void setTrainingCampDetailsInfoDAO(ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO) {
+
+	public SetterAndGetterUtilService getSetterAndGetterUtilService() {
+		return setterAndGetterUtilService;
+	}
+
+	public void setSetterAndGetterUtilService(
+			SetterAndGetterUtilService setterAndGetterUtilService) {
+		this.setterAndGetterUtilService = setterAndGetterUtilService;
+	}
+
+	public ITrainingCampDetailsInfoDAO getTrainingCampDetailsInfoDAO() {
+		return trainingCampDetailsInfoDAO;
+	}
+
+	public void setTrainingCampDetailsInfoDAO(
+			ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO) {
 		this.trainingCampDetailsInfoDAO = trainingCampDetailsInfoDAO;
 	}
-	
-	public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
+
+	public ICoreDashboardGenericService getCoreDashboardGenericService() {
+		return coreDashboardGenericService;
+	}
+
+	public void setCoreDashboardGenericService(
+			ICoreDashboardGenericService coreDashboardGenericService) {
 		this.coreDashboardGenericService = coreDashboardGenericService;
 	}
-	
+
+	public ITrainingCampProgramDAO getTrainingCampProgramDAO() {
+		return trainingCampProgramDAO;
+	}
+
 	public void setTrainingCampProgramDAO(
 			ITrainingCampProgramDAO trainingCampProgramDAO) {
 		this.trainingCampProgramDAO = trainingCampProgramDAO;
 	}
-	
+
+	public ITdpCommitteeEnrollmentDAO getTdpCommitteeEnrollmentDAO() {
+		return tdpCommitteeEnrollmentDAO;
+	}
 
 	public void setTdpCommitteeEnrollmentDAO(
 			ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
 		this.tdpCommitteeEnrollmentDAO = tdpCommitteeEnrollmentDAO;
 	}
-	
-	
+
+	public IActivityMemberAccessLevelDAO getActivityMemberAccessLevelDAO() {
+		return activityMemberAccessLevelDAO;
+	}
+
 	public void setActivityMemberAccessLevelDAO(
 			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
 		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
 	}
-	
-	
+
+	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {
+		return trainingCampBatchDAO;
+	}
+
 	public void setTrainingCampBatchDAO(ITrainingCampBatchDAO trainingCampBatchDAO) {
 		this.trainingCampBatchDAO = trainingCampBatchDAO;
 	}
-	
-	
+
+	public ITrainingCampAttendanceDAO getTrainingCampAttendanceDAO() {
+		return trainingCampAttendanceDAO;
+	}
+
 	public void setTrainingCampAttendanceDAO(
 			ITrainingCampAttendanceDAO trainingCampAttendanceDAO) {
 		this.trainingCampAttendanceDAO = trainingCampAttendanceDAO;
 	}
-	
-	
-	public void setSetterAndGetterUtilService(
-			SetterAndGetterUtilService setterAndGetterUtilService) {
-		this.setterAndGetterUtilService = setterAndGetterUtilService;
+
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
 	}
-	
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+
+	public ITrainingCampCadreFeedbackDetailsDAO getTrainingCampCadreFeedbackDetailsDAO() {
+		return trainingCampCadreFeedbackDetailsDAO;
+	}
+
+	public void setTrainingCampCadreFeedbackDetailsDAO(
+			ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO) {
+		this.trainingCampCadreFeedbackDetailsDAO = trainingCampCadreFeedbackDetailsDAO;
+	}
 	/*
 	 * Swadhin 
 	 * @see com.itgrids.partyanalyst.service.ICoreDashboardCoreService#getFeedbackOnLeaders(java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.util.List, java.lang.Long, java.lang.Long)
 	 */
 	
-	public void setTrainingCampCadreFeedbackDetailsDAO(
-			ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO) {
-		this.trainingCampCadreFeedbackDetailsDAO = trainingCampCadreFeedbackDetailsDAO;
-	}
+	
 
 	@SuppressWarnings("static-access")
 	public List<TrainingCampSurveyVO> getFeedbackOnLeaders(Long userAccessLevelId, List<Long> userAccessLevelValues, List<Long> trainingProgramIds,Long traingCampEnrollmentYearId,List<Long> trainingCampLevelIds,Long groupType){
@@ -1087,6 +1139,73 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		}catch(Exception e){
 			LOG.error("Error occured at setBatchStatus() in CoreDashboardCoreService {}",e);
 		}
+	}
+	public TrainingCampVO getTrainingCampFeedBackDetails(Long activityMemberId,String commiteeLevelId ,Long stateId, String dateStr, List<Long> enrollmentYearIdList, List<Long> programIdList){
+		try{
+			TrainingCampVO FinaltrainingCampVO = new TrainingCampVO();
+			Long feedBackProgramCount=0L;
+			Long leaderFeedBackCount=0L;
+			Long feedBackQuizCount=0L;
+			Long userAccessLevelId = null;
+			List<Long> commiteeList = new ArrayList<Long>();
+				for (String s : commiteeLevelId.split(",")){
+					commiteeList.add(Long.parseLong(s));
+				}
+			String listString = "";
+				for (Long programId : programIdList)
+				{
+				    listString += programId ;
+				}
+		   List<Long> userAccessLevelValues = new ArrayList<Long>();
+		   List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
+			   if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
+			    userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+			    for(Object[] param : accessLvlIdAndValuesList){
+			     userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);
+			    }
+			   }
+	   	 ClientConfig clientConfig = new DefaultClientConfig();
+	     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+         Client client = Client.create(clientConfig);
+	         WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingCampFeedBackDetails/"+listString+"/");
+	         ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+	          if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 List<Long> programList = response.getEntity(new GenericType<List<Long>>() {});
+	 
+	 	    	
+		 	    	if(programList != null && !programList.isEmpty()){
+		 	    		
+		 	    		feedBackProgramCount=tdpCadreDAO.filteredTdpCardreIdsCount(programList,userAccessLevelId,userAccessLevelValues);
+		 	    	}
+		   
+	 	      }
+	          FinaltrainingCampVO.setFeedBackProgramCount(feedBackProgramCount);
+	          WebResource webResource2 = client.resource("http://localhost:8080/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
+		         ClientResponse response2 = webResource2.accept("application/json").type("application/json").get(ClientResponse.class);
+		          if(response.getStatus() != 200){
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response2.getStatus());
+		 	      }else{
+		 	    	 List<Long> quizList = response2.getEntity(new GenericType<List<Long>>() {});
+		 
+		 	    	
+			 	    	if(quizList != null && !quizList.isEmpty()){
+			 	    		
+			 	    		feedBackQuizCount=tdpCadreDAO.filteredTdpCardreIdsCount(quizList,userAccessLevelId,userAccessLevelValues);
+			 	    	}
+			   
+		 	      }
+		          FinaltrainingCampVO.setFeedBackQuizCount(feedBackQuizCount);
+          leaderFeedBackCount=trainingCampCadreFeedbackDetailsDAO.getLeaderFeedBackDetails(programIdList,userAccessLevelId,userAccessLevelValues,commiteeList);
+          FinaltrainingCampVO.setLeaderFeedBackCount(leaderFeedBackCount);
+          
+          return FinaltrainingCampVO;
+		}catch(Exception e){
+			LOG.error("Error occured at getTrainingCampFeedBackDetails() in CoreDashboardMainService {}",e); 
+		}
+		return null;
+		
 	}
 
 }
