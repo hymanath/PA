@@ -1168,6 +1168,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
          Client client = Client.create(clientConfig);
 	         WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingCampFeedBackDetails/"+listString+"/");
+	        // WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getTrainingCampFeedBackDetails/"+listString+"/");
 	         ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 	          if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1183,6 +1184,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	 	      }
 	          FinaltrainingCampVO.setFeedBackProgramCount(feedBackProgramCount);
 	          WebResource webResource2 = client.resource("http://localhost:8080/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
+	         // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
 		         ClientResponse response2 = webResource2.accept("application/json").type("application/json").get(ClientResponse.class);
 		          if(response.getStatus() != 200){
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response2.getStatus());
