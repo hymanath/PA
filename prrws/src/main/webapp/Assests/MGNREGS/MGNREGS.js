@@ -6059,7 +6059,7 @@ $(document).on("click","#selectedName,#selectedName1",function(e){
 	e.stopPropagation();
 	$(".multi-level-selection-menu").show();
 });
-
+var modalAfromRange,modaltoRange,modallocationType,modallocationId,modalRange = '';
 
 $(document).on("click",".cuntCls",function(){
 	$("#LabBudgtPanExBodyId").html('');
@@ -6087,6 +6087,11 @@ $(document).on("click",".cuntCls",function(){
 		 fromRange = rangeArr[0];
 		 toRange = rangeArr[1];
 	}
+	modalAfromRange = fromRange;
+	modaltoRange = toRange;
+	modallocationType = locationType;
+	modallocationId = locationId;
+	modalRange=range;
 		$("#larBudExpHeadingId").html('No of Panchayaties Vs Expenditure In Lakhs('+range+')');
 	var json = {
 		year : "2017",
@@ -6127,7 +6132,35 @@ $(document).on("click",".cuntCls",function(){
 	});
 	
 });
-
+function getNregaLabourBudgetPanchatVsExpData(locationType,locationId,fromRange,toRange,districtId,range){
+	$("#LabBudgtPanExBodyId").html('');
+	$("#LabBudgtPanExBodyId").html(spinner);
+	$("#larBudExpHeadingId").html('No of Panchayaties Vs Expenditure In Lakhs('+range+')');
+	var json = {
+		year : "2017",
+		fromDate : glStartDate,
+		toDate : glEndDate,
+		locationType: locationType,
+		locationId : locationId,
+		fromRange : fromRange,
+		toRange : toRange,
+		districtId : districtId
+		
+	}
+	$.ajax({
+		url : "getNregaLabourBudgetPanchatVsExpData",     
+		data : JSON.stringify(json),
+		type : "POST",  
+		dataTypa : 'json',   
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success : function(result){   
+			buildLabourBudgetPanExpData(result,'tableView',range);
+		}
+	});
+	}
 function buildLabourBudgetPanExpData(result,viewType,range){
 	if(viewType == 'tableView')
 	{
@@ -6159,6 +6192,9 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 							str+='<th>Mandal</th>';
 							str+='<th>Panchayat</th>';
 							str+='<th>Total Expenditure</th>';
+							str+='<th>Status</th>';
+							str+='<th>Comment</th>';
+							str+='<th>Action Plan</th>';
 						str+='</thead>';
 						str+='<tbody>';
 						for(var i in result){
@@ -6166,8 +6202,27 @@ function buildLabourBudgetPanExpData(result,viewType,range){
 								str+='<td>'+result[i].district+'</td>';
 								str+='<td>'+result[i].constituency+'</td>';
 								str+='<td>'+result[i].mandal+'</td>';
-								str+='<td>'+result[i].panchayat+'</td>';
+								if(loggedInUserId == 1){
+								str+='<td>'+result[i].panchayat+'<i class="glyphicon glyphicon-info-sign pull-right modalIconOpen"  style="cursor:pointer;" title="click here to update"  attr_unicode="'+result[i].uniqueCode+'" attr_componentId="'+result[i].componentId+'" attr_status_id="'+result[i].statusId+'" attr_fromrange="'+modalAfromRange+'" attr_torange="'+modaltoRange+'" attr_locationType="'+modallocationType+'" attr_locationVal="'+modallocationId+'" attr_range="'+modalRange+'" attr_comments ="'+result[i].comments+'" attr_actionPlan ="'+result[i].actionPlan+'" attr_panchayat="'+result[i].panchayat+'"></i></td>';
+								}else{
+									str+='<td>'+result[i].panchayat+'<h5 attr_unicode="'+result[i].uniqueCode+'" attr_componentId="'+result[i].componentId+'" attr_status_id="'+result[i].statusId+'"></h5></td>';
+								}
 								str+='<td>'+result[i].totalExpenditure+'</td>';
+								if(result[i].status != null){
+								str+='<td>'+result[i].status+'</td>';
+								}else{
+									str+='<td>-</td>';
+								}	
+								if(result[i].comments != null){
+								str+='<td>'+result[i].comments+'</td>';
+								}else{
+									str+='<td>-</td>';
+								}
+								if(result[i].actionPlan != null){
+								str+='<td>'+result[i].actionPlan+'</td>';
+								}else{
+									str+='<td>-</td>';
+								}
 							str+='</tr>';
 						}
 						str+='</tbody>';
@@ -7415,3 +7470,138 @@ $(document).on("click",".OtherMCCPopCls",function(){
 	$("#larBudExpHeadingId").html(projectDivId);
 	getWorkWiseAbstractForMCCOthers(projectDivId,levelId,locationId)
 });
+
+function saveNregaComponentComments(statusId,comment,actionType,uniqueCode,componentId,locationType,loctionId,fromRange,toRange,districtId,range){
+	if(componentId == "undefined"){
+		componentId = 0;
+	}
+	if($("#statusModalId").val() == 0){
+		$("#errorId").html("Please Select Status");
+		return;
+	}else{
+	 $("#errorId").html("");	
+	}
+	if($("#commentId").val().trim() == '' || $("#commentId").val().trim() == null){
+		$("#errorId").html("Required Comment");
+		return;
+	}else{
+	 $("#errorId").html("");	
+	}
+	if($("#actionTypeId").val().trim() == '' || $("#actionTypeId").val().trim() == null){
+		$("#errorId").html(" Required Action Plan ");
+		return;
+	}else{
+	 $("#errorId").html("");	
+	}
+		var json = {
+			locationId:componentId,
+			sourceId :statusId,
+			category :comment,
+			assetType :actionType,
+			displayType : uniqueCode
+			
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'saveNregaComponentComments',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result != null && result.displayType == "success"){
+				alert("Comment Updated Successfully.");
+				setTimeout(function(){
+				$(".closeShowPdfCls1").trigger('click');
+			 getNregaLabourBudgetPanchatVsExpData(locationType,loctionId,fromRange,toRange,districtId,range);
+				}, 300); 
+				
+				
+			}
+		});
+	}
+	
+	function getNregaComponentStatus(statusId,comments,actionPlan){
+		$("#statusModalId").empty();
+		var json = {
+			
+			
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getNregaComponentStatus',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				
+				$("#statusModalId").append('<option value="0">Select Status</option>');
+				for(var i in result){
+					$("#statusModalId").append('<option value="'+result[i].sourceId+'">'+result[i].displayType+' </option>');
+					$("#statusModalId").val(statusId);
+					if(comments != 'undefined'){
+					$("#commentId").val(comments);
+					}
+					if(actionPlan != 'undefined'){
+		            $("#actionTypeId").val(actionPlan);
+					}
+				}
+			}
+		
+			$("#statusModalId").chosen();
+			$("#statusModalId").trigger('chosen:updated');
+		});
+	}
+	
+	$(document).on("click",".modalIconOpen",function(){
+		$("#statusModalId").val('');
+		$("#commentId").val('');
+		$("#actionTypeId").val('');
+		$("#errorId").html('');
+		var unicode = $(this).attr("attr_unicode");
+		var componentId = $(this).attr("attr_componentId");
+		var statusId=$(this).attr("attr_status_id");
+		var comments=$(this).attr("attr_comments");
+		var actionPlan =$(this).attr("attr_actionPlan");
+		getNregaComponentStatus(statusId,comments,actionPlan);
+		var panchayatName=$(this).attr("attr_panchayat");
+		$("#iconModalId").modal("show");
+		$("#panchayatId").html(panchayatName+"  "+"Panchayats Vs Expenditure Comments Updating");
+		$("#updateId").attr("attr_unicode",unicode)
+		$("#updateId").attr("attr_componentId",componentId)
+		var formRange = $(this).attr("attr_fromrange");
+		var toRange = $(this).attr("attr_toRange");
+		var locationType =$(this).attr("attr_locationType");
+		var locationId = $(this).attr("attr_locationVal");
+		var range=$(this).attr("attr_range");
+		$("#updateId").attr("attr_fromrange",formRange)
+		$("#updateId").attr("attr_toRange",toRange)
+		$("#updateId").attr("attr_locationType",locationType)
+		$("#updateId").attr("attr_locationVal",locationId)
+		$("#updateId").attr("attr_range",range)
+	});
+	$(document).on("click","#updateId",function(){
+		var statusId= $("#statusModalId").val();
+		var commentId =$("#commentId").val();
+		var actionTypeId =$("#actionTypeId").val();
+		var uniqueCode = $(this).attr("attr_unicode");
+		var componentId = $(this).attr("attr_componentId");
+		var districtId = $("#selectedName").attr("attr_distid"); 
+		var locationType = $(this).attr("attr_locationType");
+		var locationId =$(this).attr("attr_locationVal");
+		var fromRange = $(this).attr("attr_fromrange");
+		var toRange = $(this).attr("attr_toRange");
+		var range =$(this).attr("attr_range");
+		saveNregaComponentComments(statusId,commentId,actionTypeId,uniqueCode,componentId,locationType,locationId,fromRange,toRange,districtId,range);
+	});
+$(document).on("click",".closeShowPdfCls1",function(){
+	setTimeout(function(){
+		$('body').addClass("modal-open");
+	}, 400);  
+  });	
