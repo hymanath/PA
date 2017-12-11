@@ -64,6 +64,14 @@ public class DiseasesVO implements Serializable {
 	private List<DiseasesVO> distCountForDengueList;
 	private List<DiseasesVO> mandalCountForDengueList;
 	private Long size;
+	private Long thisWeekCount = 0L;
+	private Long previousWeekCount = 0L;
+	private Long thisMonthCount = 0L;
+	private Long previousMonthCount = 0L;
+	private String weekPerc;
+	private String mnthPerc;
+	private String weekType;
+	private String monthType;
 	
 	public Long getId() {
 		return id;
@@ -316,6 +324,54 @@ public class DiseasesVO implements Serializable {
 	}
 	public void setMonth(String month) {
 		this.month = month;
+	}
+	public Long getThisWeekCount() {
+		return thisWeekCount;
+	}
+	public void setThisWeekCount(Long thisWeekCount) {
+		this.thisWeekCount = thisWeekCount;
+	}
+	public Long getPreviousWeekCount() {
+		return previousWeekCount;
+	}
+	public void setPreviousWeekCount(Long previousWeekCount) {
+		this.previousWeekCount = previousWeekCount;
+	}
+	public Long getThisMonthCount() {
+		return thisMonthCount;
+	}
+	public void setThisMonthCount(Long thisMonthCount) {
+		this.thisMonthCount = thisMonthCount;
+	}
+	public Long getPreviousMonthCount() {
+		return previousMonthCount;
+	}
+	public void setPreviousMonthCount(Long previousMonthCount) {
+		this.previousMonthCount = previousMonthCount;
+	}
+	public String getWeekPerc() {
+		return weekPerc;
+	}
+	public void setWeekPerc(String weekPerc) {
+		this.weekPerc = weekPerc;
+	}
+	public String getMnthPerc() {
+		return mnthPerc;
+	}
+	public void setMnthPerc(String mnthPerc) {
+		this.mnthPerc = mnthPerc;
+	}
+	public String getWeekType() {
+		return weekType;
+	}
+	public void setWeekType(String weekType) {
+		this.weekType = weekType;
+	}
+	public String getMonthType() {
+		return monthType;
+	}
+	public void setMonthType(String monthType) {
+		this.monthType = monthType;
 	}
 	
 	

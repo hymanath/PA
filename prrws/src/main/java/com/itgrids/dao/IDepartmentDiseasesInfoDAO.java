@@ -23,6 +23,7 @@ public interface IDepartmentDiseasesInfoDAO extends GenericDao<DepartmentDisease
 	public List<Object[]> getAllConstituencyByParliamentConstId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList,String type);
 	public List<Object[]> getAllLocalElectionBodyByConstituencyId(Date startDate,Date endDate,Long superLocationId,List<Long> diseasesIdList,List<Long> deptIdList);
 	public List<Object[]> getCaseCountByLocationIds(List<Long> diseasesIdList,List<Long> deptIdList,Long scopeId,Set<Long> locationIdList,String type,Long constituencyId);
-	
+	public List<Date> getLatestUpdatedDate();
+	public Long getNoOfCasesFrDisease(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList);
 	
 }

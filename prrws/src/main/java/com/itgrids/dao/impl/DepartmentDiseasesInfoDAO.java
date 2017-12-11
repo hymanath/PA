@@ -730,4 +730,47 @@ public class DepartmentDiseasesInfoDAO extends GenericDaoHibernate<DepartmentDis
 		}
 		return query.list();
 	}
+	
+	public List<Date> getLatestUpdatedDate(){
+		Query query = getSession().createQuery("select distinct date(model.reportedDate)"
+				+ " from DepartmentDiseasesInfo model"
+				+ " where model.isDeleted = 'N' order by date(model.reportedDate) desc");
+		
+		return query.list();
+	}
+	
+	public Long getNoOfCasesFrDisease(Date startDate, Date endDate,List<Long> diseasesIdList,List<Long> deptIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select "
+				//+ " departmentDiseasesInfo.diseases.diseasesId, "
+				//+ " departmentDiseasesInfo.diseases.diseaseName, ");
+				+" sum(departmentDiseasesInfo.noOfCases) "
+				+ " from DepartmentDiseasesInfo departmentDiseasesInfo "
+				+ " where departmentDiseasesInfo.isDeleted = 'N' ");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(departmentDiseasesInfo.reportedDate) between :startDate and :endDate ");
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.diseases.diseasesId in (:diseasesIdList) ");
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			sb.append(" and departmentDiseasesInfo.department.departmentId in (:deptIdList) ");
+		}
+		
+		//sb.append(" group by departmentDiseasesInfo.diseases.diseasesId ");
+		
+		//sb.append("order by sum(departmentDiseasesInfo.noOfCases) ");
+		Query query = getSession().createQuery(sb.toString());
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(diseasesIdList != null && diseasesIdList.size() > 0){
+			query.setParameterList("diseasesIdList", diseasesIdList);
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			query.setParameterList("deptIdList", deptIdList);
+		}
+		return (Long) query.uniqueResult();
+	}
 }

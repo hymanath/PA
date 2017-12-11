@@ -442,12 +442,10 @@ function getTotalSpikeCases(){
 	diseasesIdArr.push(1);  
 	diseasesIdArr.push(2);
 	var json = {
-		fromDate : "01/01/1997",
-		toDate : gblSpikeFmsITCEndDate , 
 		diseasesIdList : diseasesIdArr
     }
     $.ajax({
-      url : "getCaseCountDiseasesWise",       
+      url : "getCaseCountDiseasesFrWeekAndMonth",       
       data : JSON.stringify(json),
       type : "POST",  
       dataTypa : 'json',   

@@ -12,4 +12,5 @@ public interface IHealthMedicalAndFamilyWelfareService {
 	public List<DiseasesVO> getCaseCountDateWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,String rangeType,String type);
 	public List<DiseasesVO> getLocationDtlsRankWise(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long minVal,Long maxVal,String type);
 	public Set<LocationIdNameVO> getAllSubLocationsBySuperLocationId(String fromDateStr,String toDateStr, List<Long> diseasesIdList,List<Long> deptIdList,Long superLocationId,String type);
+	public DiseasesVO getCaseCountDiseasesFrWeekAndMonth(List<Long> diseasesIdList,List<Long> deptIdList);
 }
