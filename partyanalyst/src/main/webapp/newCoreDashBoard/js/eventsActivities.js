@@ -1779,7 +1779,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 				str+='<div class="panel-group panelBlockCollapse" id="accordionAct" role="tablist" aria-multiselectable="true" style="margin-top: 10px;">';				
 				for(var i in result)
 				{
-					if(result[i].id != "36"){
+					if(result[i].id != "36" || result[i].id != 36){
 						 if(i== 0){
 						activityIdsString = result[i].id;	
 						}else{
