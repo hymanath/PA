@@ -35,11 +35,6 @@ public class RepresentationRequestController {
 	private ILocationDetailsService locationDetailsService;
 	
 	
-	@RequestMapping(value ="/representationRequestEntry", method = RequestMethod.GET)
-    public String mgnregsDashBoardPage(ModelMap model) {
-		return "representationRequestEntry";
-    }
-	
 	@RequestMapping(value ="/saveRepresentRequestDetails",method = RequestMethod.POST)
     public @ResponseBody ResponseVO saveRepresentRequestDetails(@ModelAttribute  RepresentationRequestVO representationRequestVO) {
 				representationRequestVO.setUserId(1L);
