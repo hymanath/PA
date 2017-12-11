@@ -4577,6 +4577,7 @@
     		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO" />
     		<property name="trainingCampBatchDAO" ref="trainingCampBatchDAO" /> 
     		<property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO" /> 
-    		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" /> 
+    		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />
+    		<property name="tdpCadreDAO" ref="tdpCadreDAO" /> 
     	</bean>
 </beans>			
