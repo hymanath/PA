@@ -23,4 +23,5 @@ public interface ITrainingCampCadreFeedbackDetailsDAO extends GenericDao<Trainin
 	
 	 public List<Object[]> getTrainingCampFeedBAckDeatilesByTdpCadreId(Long tdpCadreId);
 	 public List<Object[]> getCommunicationFeedbackOnLeaders(Long userAccessLevelId,List<Long> userAccessLevelValues,List<Long> trainingProgramIds,Long traingCampEnrollmentYearId,List<Long> trainingCampLevelIds,Long groupType,Long questionType);
+	 public  Long getLeaderFeedBackDetails(List<Long> programIdList,Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> commiteeLevel);
 }
