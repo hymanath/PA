@@ -18,10 +18,17 @@ public class KaizalaDashboardVO {
 	private String pendingPerc;
 	private String key;
 	private String notSmartPhonePerc;
+	private String parlName;
 	
 	private List<KaizalaDashboardVO> subList = new ArrayList<KaizalaDashboardVO>(0);
 	
 	
+	public String getParlName() {
+		return parlName;
+	}
+	public void setParlName(String parlName) {
+		this.parlName = parlName;
+	}
 	public String getNotSmartPhonePerc() {
 		return notSmartPhonePerc;
 	}

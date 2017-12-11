@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IKaizalaQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderInfoDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaResponderTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaTextMessageDAO;
+import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.InputVO;
@@ -90,8 +91,16 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaResponderTypeDAO kaizalaResponderTypeDAO;
 	private IKaizalaInstallationTrackingDAO kaizalaInstallationTrackingDAO;
 	private ICoreDashboardGenericService coreDashboardGenericService;
+	private IParliamentAssemblyDAO parliamentAssemblyDAO;
+	
 
-
+	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
+		return parliamentAssemblyDAO;
+	}
+	public void setParliamentAssemblyDAO(
+			IParliamentAssemblyDAO parliamentAssemblyDAO) {
+		this.parliamentAssemblyDAO = parliamentAssemblyDAO;
+	}
 	public ICoreDashboardGenericService getCoreDashboardGenericService() {
 		return coreDashboardGenericService;
 	}
@@ -1224,11 +1233,12 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	public List<KaizalaDashboardVO> getLocationWiseCommitteeMemberDetails(InputVO inputvo){
 		List<KaizalaDashboardVO> returnList = new ArrayList<KaizalaDashboardVO>(0);
 		try {
-			
+			Map<Long,String> assemParMap = new LinkedHashMap<Long, String>();
+			List<Long> assemblyIds = new ArrayList<Long>(0);
 			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://mydepartments.in/KAIZALA/getLocationWiseCommitteeMemberDetails");
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/KAIZALA/getLocationWiseCommitteeMemberDetails");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.131:8080/KAIZALA/getLocationWiseCommitteeMemberDetails");
 			
 			WebResource.Builder builder = webResource.getRequestBuilder();
 			
@@ -1249,6 +1259,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		 	    			JSONObject obj = (JSONObject) finalArray.get(i);
 		 	    			vo.setId(obj.getLong("id"));
 		 	    			vo.setName(obj.getString("name"));
+		 	    			if(inputvo.getName().trim().equalsIgnoreCase("constituency"))
+		 	    				assemblyIds.add(vo.getId());
 		 	    			JSONArray subArr = obj.getJSONArray("subList");
 		 	    			if(subArr!=null && subArr.length()>0){
 				 	    		 for(int j=0;j<subArr.length();j++){
@@ -1264,12 +1276,35 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				 	    			subvo.setPendingPerc(subobj.getString("pendingPerc"));
 				 	    			subvo.setNotSmartPhonePerc(subobj.getString("notSmartPhonePerc"));
 				 	    			vo.getSubList().add(subvo);
+				 	    			
+				 	    			vo.setTotalCount(vo.getTotalCount()+subvo.getTotalCount());
+				 	    			vo.setInstalled(vo.getInstalled()+subvo.getInstalled());
+				 	    			vo.setNotHavingSmartPhone(vo.getNotHavingSmartPhone()+subvo.getNotHavingSmartPhone());
+				 	    			vo.setPending(vo.getPending()+subvo.getPending());
 				 	    		 }
 		 	    			}
+		 	    			vo.setInstalledPerc(calculatePercantage(vo.getInstalled(), vo.getTotalCount()).toString());
+		 	    			vo.setNotSmartPhonePerc(calculatePercantage(vo.getNotHavingSmartPhone(), vo.getTotalCount()).toString());
+		 	    			vo.setPendingPerc(calculatePercantage(vo.getPending(), vo.getTotalCount()).toString());
 		 	    			returnList.add(vo);
 		 	    		 }
 	 	    		}
-				}				
+				}			
+				
+				List<Object[]> list = parliamentAssemblyDAO.getParlIdsByAssemblyId(assemblyIds);
+				if(list != null && !list.isEmpty()){
+					for (Object[] obj : list) {
+						Long constId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+						String parlName = obj[1] != null ? obj[1].toString():"";
+						assemParMap.put(constId, parlName);
+					}
+				}
+				
+				if(returnList != null && !returnList.isEmpty()){
+					for (KaizalaDashboardVO kaizalaDashboardVO : returnList) {
+						kaizalaDashboardVO.setParlName(assemParMap.get(kaizalaDashboardVO.getId()));
+					}
+				}
 			}
 			
 		} catch (Exception e) {
@@ -1283,8 +1318,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			
 			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://mydepartments.in/KAIZALA/getOverAllCommitteeWiseMembersCounts");
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/KAIZALA/getOverAllCommitteeWiseMembersCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.131:8080/KAIZALA/getOverAllCommitteeWiseMembersCounts");
 			
 			WebResource.Builder builder = webResource.getRequestBuilder();
 			
@@ -1330,8 +1365,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			
 			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://mydepartments.in/KAIZALA/getLevelLocationWiseCounts");
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/KAIZALA/getLevelLocationWiseCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.131:8080/KAIZALA/getLevelLocationWiseCounts");
 			
 			WebResource.Builder builder = webResource.getRequestBuilder();
 			
@@ -1557,7 +1592,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			}
 		 	if(resultList != null && resultList.size() > 0){
 				for(List<UserTypeVO> memberList:resultList){
-					Collections.sort(memberList, installedCountDesc);
+					Collections.sort(memberList, installedCountPercDesc);
 				}
 			}
 	 }catch(Exception e) {
@@ -1565,6 +1600,16 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	}
 	return resultList; 
  }
+	
+	public static Comparator<UserTypeVO> installedCountPercDesc = new Comparator<UserTypeVO>() {
+		public int compare(UserTypeVO member2, UserTypeVO member1) {
+
+		Double perc2 = Double.valueOf(member2.getInstalledPerc());
+		Double perc1 = Double.valueOf(member1.getInstalledPerc());
+		//descending order of percantages.
+		 return perc1.compareTo(perc2);
+		}
+		}; 
 	
 	public Double calculatePercantage(Long subCount,Long totalCount){
 		Double d=0.0d;
