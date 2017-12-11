@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+// Don't add new variables
 public class UserTypeVO implements Serializable{
 	
 	private Long   id;
@@ -99,7 +99,7 @@ public class UserTypeVO implements Serializable{
 	private String pendingPerc;
 	private String notSmartPhonePerc;
 	private List<UserTypeVO> subList1 = new ArrayList<UserTypeVO>(0);
-	
+	// Don't add new variables
 	
 	public String getNotSmartPhonePerc() {
 		return notSmartPhonePerc;
