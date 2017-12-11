@@ -4259,14 +4259,14 @@
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<h5 class="module_OwnerCss">Module Owner : JAYA RAMA REDDY</h5>
 					</div>
-                    <div class="row">
+                    <div class="row m_top10">
 							<!--<div class="col-md-12 col-xs-12 col-sm-12">
 								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
 							</div>-->	
 						<!--<div class="col-md-12 col-xs-12 col-sm-12">
 							<h5 id="lastUpdatedIdAtt" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right">Last updated : - </h5>
 						</div>-->  
-                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock m_top20" expand-block-inner="attendance">
+                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock m_top10" expand-block-inner="attendance">
 							<div id="officeAttendanceTdlsId">
 							</div>
 							<div id="officeAttendanceTdlsDeptWiseId"> 
@@ -4274,7 +4274,7 @@
                             <!-- <h4 class="m_top20"><span class="headingColor text-capital">month wise total employees</span></h4>
                             <div id="attendance" style="height:150px;"></div>-->
                         </div>
-                        <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore" expand-block-right="attendance">
+                        <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="attendance">
 							<div id="deptWiseAttendanceDtlsId">
 							</div>
                         </div>
