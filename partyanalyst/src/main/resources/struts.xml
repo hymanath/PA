@@ -18582,5 +18582,20 @@
 			<param name="root">userTypeVOList</param>
 		</result>
 	</action>
+	<action name="getProgramIdsAction" class="coreDashboardAction"  method="getProgramIds">
+		<result type="json" name="success">
+			<param name="root">keyValueVOList</param>
+		</result>
+	</action>
+	<action name="getCadreCommiteeEnrollmentIdsAction" class="coreDashboardAction"  method="getCadreCommiteeEnrollmentIds">
+		<result type="json" name="success">
+			<param name="root">keyValueVOList</param>  
+		</result>
+	</action> 
+	<action name="getTrainingCampBasicDetailsCntOverviewDayWiseAction" class="coreDashboardAction"  method="getTrainingCampBasicDetailsCntOverviewDayWise">
+		<result type="json" name="success">
+			<param name="root">trainingCampProgramVO</param>  
+		</result>
+	</action>
  </package>
 </struts>
