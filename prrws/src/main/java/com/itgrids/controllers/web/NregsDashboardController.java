@@ -58,10 +58,10 @@ public class NregsDashboardController {
 		return "MGNREGS";
     }*/
 	
-	@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
+	/*@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
     public String mgnregsDashBoardPage(ModelMap model) {
 		return "MGNREGS";
-    }
+    }*/
 	
 	@PostMapping("/getNREGSProjectsOverview")
 	public @ResponseBody List<NregsProjectsVO> getNREGSProjectsOverview(@RequestBody InputVO vo){
@@ -600,5 +600,27 @@ public class NregsDashboardController {
 			LOG.error("Exception raised at getManWorkDaysOfNrega - NREGSController controller", e);
 		}
 		return levlWiseVOList;
+	}
+	//Long statusId,String comment
+	@PostMapping(value="/saveNregaComponentComments")
+	private @ResponseBody InputVO  saveQuestionOptionsDetails(@RequestBody InputVO vo){
+		try{
+			return nregsTcsService.saveNregaComponentComments(vo.getLocationId(),vo.getSourceId(),vo.getCategory(),vo.getAssetType(),vo.getDisplayType());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@PostMapping("/getNregaComponentStatus")
+	public @ResponseBody List<InputVO> getNregaComponentStatus(@RequestBody InputVO vo){
+		List<InputVO> statusList = null;
+		try {
+			statusList = nregsTcsService.getNregaComponentStatus(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaComponentStatus - NREGSController controller", e);
+		}
+		return statusList;
 	}
 }

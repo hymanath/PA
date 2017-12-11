@@ -16,6 +16,8 @@ public class UserVO {
 	private String phoneNo;
 	private Long responceCode;
 	private String url;
+	private String password;
+	private String status;
 	public Long getUserId() {
 		return userId;
 	}
@@ -57,5 +59,18 @@ public class UserVO {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	
 }

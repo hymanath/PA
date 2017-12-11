@@ -16,8 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.gson.JsonArray;
 import com.itgrids.dao.IConstituencyDAO;
+import com.itgrids.dao.INregaComponentCommentsDAO;
+import com.itgrids.dao.INregaComponentStatusDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.IPrConstituencyDAO;
 import com.itgrids.dao.IPrDistrictDAO;
@@ -33,9 +34,12 @@ import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
+import com.itgrids.model.NregaComponentComments;
+import com.itgrids.model.NregaComponentStatus;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -60,6 +64,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	private IPrDistrictDAO prDistrictDAO;
 	@Autowired
 	private IPrConstituencyDAO prConstituencyDAO;
+	@Autowired
+	private INregaComponentCommentsDAO nregaComponentCommentsDAO;
+	@Autowired
+	private DateUtilService dateUtilService;
+	@Autowired
+	private INregaComponentStatusDAO nregaComponentStatusDAO;
 	
 	private String sessionToken;
 	/*
@@ -2980,7 +2990,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	}
 	
 	public List<NregsProjectsVO> getNREGSAbstractDataByType(InputVO inputVO){
-		List<NregsProjectsVO> returnList = new ArrayList<>();
+		List<NregsProjectsVO> returnList = new ArrayList<NregsProjectsVO>();
 		try {
 			String str = null;
 			ClientResponse response = null;
@@ -3483,7 +3493,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
 	 	    	 String output = response.getEntity(String.class);
-	 	    	 
+	 	    	List<String> uniqueCodeStr=new ArrayList<String>();
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
@@ -3496,10 +3506,27 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setMandal(jObj.getString("MANDAL"));
 	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
 	 	    				vo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
+	 	    				vo.setUniqueCode(jObj.getString("UNIQUEID"));
+	 	    				uniqueCodeStr.add(vo.getUniqueCode());
 	 	    				voList.add(vo);
+	 	    				
 	 	    			}
+	 	    			
 	 	    		}
 	 	    	}
+	 	    	List<Object[]> nregaComments= nregaComponentCommentsDAO.getNregaComponentComments(uniqueCodeStr);
+ 				if(nregaComments != null && nregaComments.size()>0){
+ 					for(Object[] param : nregaComments){
+ 						NregsDataVO matchedVo= getMatchedVoForUniqueCode(voList,commonMethodsUtilService.getStringValueForObject(param[3]));
+ 						if(matchedVo != null){
+ 							matchedVo.setStatus(commonMethodsUtilService.getStringValueForObject(param[0]));
+ 							matchedVo.setComments(commonMethodsUtilService.getStringValueForObject(param[1]));
+ 							matchedVo.setActionPlan(commonMethodsUtilService.getStringValueForObject(param[2]));
+ 							matchedVo.setStatusId(commonMethodsUtilService.getLongValueForObject(param[4]));
+ 							matchedVo.setComponentId(commonMethodsUtilService.getLongValueForObject(param[5]));
+ 						}
+ 					}
+ 				}
 	 	      }
 	        
 		} catch (Exception e) {
@@ -4007,7 +4034,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 * @description : getNREGSAbstractDataByTypeFrConstituency
 	 */
 	public List<NregsProjectsVO> getNREGSAbstractDataByTypeFrConstituency(InputVO inputVO){
-		List<NregsProjectsVO> returnList = new ArrayList<>();
+		List<NregsProjectsVO> returnList = new ArrayList<NregsProjectsVO>();
 		try {
 			Long constituencyId = inputVO.getLocationId();
 			Long districtId = inputVO.getDistrictId();
@@ -5980,5 +6007,99 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at getManWorkDaysOfNrega - NREGSTCSService service", e);
 		}
 		return returnList;
+	}
+	public NregsDataVO getMatchedVoForUniqueCode(List<NregsDataVO> list,String uniqueCode){
+		try{
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (NregsDataVO nregaPaymentsVO : list) {
+					if(nregaPaymentsVO.getUniqueCode().equals(uniqueCode)){
+						return nregaPaymentsVO;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getMatchedVo - NREGSTCSService service", e);
+		}
+		return null;
+	}
+	public InputVO saveNregaComponentComments(Long componentComentId,Long statusId,String comment,String actionType,String uniqueCode){
+		InputVO vo=new InputVO();
+		try {
+			NregaComponentComments 	componentComent =null;
+			if(componentComentId != 0){
+			 	componentComent = nregaComponentCommentsDAO.get(componentComentId);
+			}
+			NregaComponentStatus componentStatus=nregaComponentStatusDAO.get(statusId);
+			NregaComponentComments coments =null;
+			if(componentComent != null){
+				componentComent.setIsDeleted("Y");
+				coments = new NregaComponentComments();
+					coments.setNregaComponentId(componentComent.getNregaComponentId());
+					if(componentStatus != null){
+					coments.setNregaComponentStatusId(componentStatus.getNregaComponentStatusId());
+					}
+					if(comment != null){
+					coments.setComment(comment);
+					}
+					if(actionType != null){
+					coments.setActionPlan(actionType);
+					}
+					if(uniqueCode != null){
+					coments.setUniqueCode(uniqueCode);
+					}
+					coments.setInsertedBy(componentComent.getInsertedBy());
+					coments.setUpdatedBy(componentComent.getUpdatedBy());
+					coments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					coments.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					coments.setIsDeleted("N");
+			 }else{
+				 coments = new NregaComponentComments();
+				if(componentStatus != null){
+				coments.setNregaComponentStatusId(componentStatus.getNregaComponentStatusId());
+				}
+				if(comment != null){
+				coments.setComment(comment);
+				}
+				if(actionType != null){
+				coments.setActionPlan(actionType);
+				}
+				if(uniqueCode != null){
+				coments.setUniqueCode(uniqueCode);
+				}
+				coments.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				coments.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				coments.setIsDeleted("N");
+			 }
+				coments =nregaComponentCommentsDAO.save(coments);
+			
+			
+			vo.setDisplayType("success");
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveNregaComponentComments in KaizalaInfoService Class ", e);
+			vo.setDisplayType("failure");
+		}
+		return vo;
+	}
+	public List<InputVO> getNregaComponentStatus(InputVO vo){
+		List<InputVO> returnList= new ArrayList<InputVO>();
+		try{
+			List<Object[]> componentStatus= nregaComponentStatusDAO.getNregaComponentStatus();
+			if(componentStatus != null && componentStatus.size()>0){
+				for(Object[] param : componentStatus){
+					InputVO inputVo = new InputVO();
+					inputVo.setSourceId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					inputVo.setDisplayType(commonMethodsUtilService.getStringValueForObject(param[1]));
+					returnList.add(inputVo);
+				}
+			}
+			
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getNregaComponentStatus in KaizalaInfoService Class ", e);
+		}
+		return returnList;
+		
 	}
 }

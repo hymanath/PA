@@ -141,7 +141,12 @@ public class NregsDataVO implements Serializable{
 	private String lastFin;
 	private String lastFinSameDay;
 	private String from2014;
-	
+	private String uniqueCode;
+	private String status;
+	private String comments;
+	private String actionPlan;
+	private Long statusId;
+	private Long componentId;
 	
 	public String getWorkName() {
 		return workName;
@@ -857,4 +862,42 @@ public class NregsDataVO implements Serializable{
 	public void setFrom2014(String from2014) {
 		this.from2014 = from2014;
 	}
+	public String getUniqueCode() {
+		return uniqueCode;
+	}
+	public void setUniqueCode(String uniqueCode) {
+		this.uniqueCode = uniqueCode;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+	public String getActionPlan() {
+		return actionPlan;
+	}
+	public void setActionPlan(String actionPlan) {
+		this.actionPlan = actionPlan;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public Long getComponentId() {
+		return componentId;
+	}
+	public void setComponentId(Long componentId) {
+		this.componentId = componentId;
+	}
+	
+	
 }

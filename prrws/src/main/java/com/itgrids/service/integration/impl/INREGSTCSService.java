@@ -73,4 +73,6 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getWorkWiseAbstractForMCCOthers(InputVO inputVO);
 	public List<NregsDataVO> getNregaOtherMCCAbstarctData(InputVO inputVO);
 	public List<NregsDataVO> getManWorkDaysOfNrega(InputVO inputVO);
+	public InputVO saveNregaComponentComments(Long componentComentId,Long statusId,String comment,String actionType,String uniqueCode);
+	public List<InputVO> getNregaComponentStatus(InputVO vo);
 }
