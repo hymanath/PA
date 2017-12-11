@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
 import com.itgrids.partyanalyst.model.TrainingCampProgram;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TrainingCampProgramDAO extends GenericDaoHibernate<TrainingCampProgram, Long> implements ITrainingCampProgramDAO{
 
@@ -92,5 +93,17 @@ public class TrainingCampProgramDAO extends GenericDaoHibernate<TrainingCampProg
 
 		return query.list();
 
+	}
+	
+	public List<Long> getProgramIdsList(){
+		StringBuilder sb =new StringBuilder();
+        sb.append("select model.trainingCampProgramId "); 
+        sb.append(" from TrainingCampProgram model  where model.isDeleted='N' "); 
+        sb.append(" and model.trainingCampProgramId in (:programIds)");
+      
+        Query query =getSession().createQuery(sb.toString());
+  	    query.setParameterList("programIds",IConstants.leaderShipSkillsProgramId);
+
+		return query.list();
 	}
 }
