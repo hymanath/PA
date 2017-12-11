@@ -2938,7 +2938,7 @@
 					</div>
 					<div class="panel-body">
 						<div class="col-md-12 col-xs-12 col-sm-12">
-							<h5 class="module_OwnerCss">Module Owner : K.Rajesh</h5>
+							<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
 						</div>
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
@@ -5329,7 +5329,7 @@
 <script src="newCoreDashBoard/js/cadreInsurance.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/pressmeet.js" type="text/javascript"></script>        
 <script src="newCoreDashBoard/js/prajaSankaplaYatra.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/trainingCampInfo.js" type="text/javascript"></script>
+<!-- <script src="newCoreDashBoard/js/trainingCampInfo.js" type="text/javascript"></script> -->
 <script src="newCoreDashBoard/js/kaizala.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>

@@ -119,9 +119,9 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 				if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
 						candidateNameArray.push(result[i][j].name);
-						installedCountArr.push(parseFloat(result[i][j].installedPerc))
-						pendingCountArr.push(parseFloat(result[i][j].pendingPerc))
-						notHavingCountArr.push(parseFloat(result[i][j].notSmartPhonePerc))
+						installedCountArr.push({"y":parseFloat(result[i][j].installedPerc),"extra":result[i][j].installed})
+						pendingCountArr.push({"y":parseFloat(result[i][j].pendingPerc),"extra":result[i][j].pending})
+						notHavingCountArr.push({"y":parseFloat(result[i][j].notSmartPhonePerc),"extra":result[i][j].notSmartPhone})
 						
 						countVar =countVar+1;
 						if (countVar === 5) {
@@ -198,18 +198,18 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 									}
 								}
 							},
-							 tooltip: {
-									formatter: function () {
-										var s = '<b>' + this.x + '</b>';
-										$.each(this.points, function () {
-											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-												(this.y)+'%';
-										});
+							tooltip: {
+								formatter: function () {
+									var s = '<b>' + this.x + '</b>';
+									$.each(this.points, function () {
+										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :'+this.point.extra+' -  ' +
+											(this.y)+'%';
+									});
 
-										return s;
-									},
-									shared: true
+									return s;
 								},
+								shared: true
+							},
 								
 								series: [{
 									name: 'Installed',
@@ -273,9 +273,9 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 						
 						candidateNameArray.push(result[i][j].name);
 						
-						installedCountArr.push(parseFloat(result[i][j].installedPerc))
-						pendingCountArr.push(parseFloat(result[i][j].pendingPerc))
-						notHavingCountArr.push(parseFloat(result[i][j].notSmartPhonePerc))
+						installedCountArr.push({"y":parseFloat(result[i][j].installedPerc),"extra":result[i][j].installed})
+						pendingCountArr.push({"y":parseFloat(result[i][j].pendingPerc),"extra":result[i][j].pending})
+						notHavingCountArr.push({"y":parseFloat(result[i][j].notSmartPhonePerc),"extra":result[i][j].notSmartPhone})
 						
 						countVar =countVar+1;
 						if (countVar === 5) {
@@ -358,17 +358,17 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
 							}, */
 							tooltip: {
-									formatter: function () {
-										var s = '<b>' + this.x + '</b>';
-										$.each(this.points, function () {
-											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-												(this.y)+'%';
-										});
+								formatter: function () {
+									var s = '<b>' + this.x + '</b>';
+									$.each(this.points, function () {
+										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :'+this.point.extra+' -  ' +
+											(this.y)+'%';
+									});
 
-										return s;
-									},
-									shared: true
+									return s;
 								},
+								shared: true
+							},
 								series: [{
 									name: 'Installed',
 									data: installedCountArr
