@@ -461,6 +461,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				str += "\"categoryName\" : \""+inputVO.getCategory()+"\",";
 			if(inputVO.getGroupName() != null)
 				str += "\"groupName\" : \""+inputVO.getGroupName()+"\",";
+			if(inputVO.getMonth() != null)
+				str += "\"month\" : \""+inputVO.getMonth()+"\",";
 			
 			if(str.length() > 1)
 				str = str.substring(0,str.length()-1);
@@ -6008,6 +6010,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return returnList;
 	}
+	
 	public NregsDataVO getMatchedVoForUniqueCode(List<NregsDataVO> list,String uniqueCode){
 		try{
 			if(commonMethodsUtilService.isListOrSetValid(list)){
@@ -6101,5 +6104,54 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return returnList;
 		
+	}
+	
+	/*
+	 * Date : 11/12/2017
+	 * Author :Nandhini
+	 * @description : getManWorkDaysOfNregaMonthWise
+	 */
+	public List<NregsDataVO> getManWorkDaysOfNregaMonthWise(InputVO inputVO){
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
+		try{
+			
+			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APMandaysServiceNew/APMandaysAbstractNew";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUE_ID").toString().trim().length() > 0 ? jObj.getString("UNIQUE_ID") : "1").toString()));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setThisMonth(jObj.getString("THIS_MONTH"));
+	 	    				vo.setFinAsOfToday(jObj.getString("FIN_AS_OF_TODAY"));
+	 	    				vo.setLastFin(jObj.getString("LAST_FIN"));
+	 	    				vo.setLastFinSameDay(jObj.getString("LAST_FIN_SAMEDAY"));
+	 	    				vo.setFrom2014(jObj.getString("FROM_2014"));
+	 	    				vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getFinAsOfToday())*100.00)/Double.valueOf(vo.getLastFinSameDay())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage())-Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				returnList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	      }
+		}catch(Exception e){
+			LOG.error("Exception raised at getManWorkDaysOfNregaMonthWise - NREGSTCSService service", e);
+		}
+		return returnList;
 	}
 }

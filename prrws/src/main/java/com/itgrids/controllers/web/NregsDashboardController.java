@@ -601,26 +601,39 @@ public class NregsDashboardController {
 		}
 		return levlWiseVOList;
 	}
-	//Long statusId,String comment
-	@PostMapping(value="/saveNregaComponentComments")
-	private @ResponseBody InputVO  saveQuestionOptionsDetails(@RequestBody InputVO vo){
-		try{
-			return nregsTcsService.saveNregaComponentComments(vo.getLocationId(),vo.getSourceId(),vo.getCategory(),vo.getAssetType(),vo.getDisplayType());
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
-	@PostMapping("/getNregaComponentStatus")
-	public @ResponseBody List<InputVO> getNregaComponentStatus(@RequestBody InputVO vo){
-		List<InputVO> statusList = null;
+	//Long statusId,String comment
+		@PostMapping(value="/saveNregaComponentComments")
+		private @ResponseBody InputVO  saveQuestionOptionsDetails(@RequestBody InputVO vo){
+			try{
+				return nregsTcsService.saveNregaComponentComments(vo.getLocationId(),vo.getSourceId(),vo.getCategory(),vo.getAssetType(),vo.getDisplayType());
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		@PostMapping("/getNregaComponentStatus")
+		public @ResponseBody List<InputVO> getNregaComponentStatus(@RequestBody InputVO vo){
+			List<InputVO> statusList = null;
+			try {
+				statusList = nregsTcsService.getNregaComponentStatus(vo);
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at getNregaComponentStatus - NREGSController controller", e);
+			}
+			return statusList;
+		}
+		
+	@PostMapping("/getManWorkDaysOfNregaMonthWise")
+	public @ResponseBody List<NregsDataVO> getManWorkDaysOfNregaMonthWise(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
 		try {
-			statusList = nregsTcsService.getNregaComponentStatus(vo);
+			levlWiseVOList = nregsTcsService.getManWorkDaysOfNregaMonthWise(vo);
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised at getNregaComponentStatus - NREGSController controller", e);
+			LOG.error("Exception raised at getManWorkDaysOfNregaMonthWise - NREGSController controller", e);
 		}
-		return statusList;
+		return levlWiseVOList;
 	}
 }

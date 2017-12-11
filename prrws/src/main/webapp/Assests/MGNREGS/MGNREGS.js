@@ -203,7 +203,10 @@ function onLoadCalls()
 				getNregaOtherMCCAbstarctData(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
 			}else if(overViewArr[i] == 'Renovation and Improvements to existing Check Dams Check Wall' || overViewArr[i] == 'Road Formation Upto WBM GR II Including CD works' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || overViewArr[i] == 'Construction Of Animal Hostel' || overViewArr[i] == 'Roads for Unconnected Habitations 2011-12' || overViewArr[i] == 'Construction of New Check Dam' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 250MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || overViewArr[i] == 'Construction of Village Haats Infrastructure fecilities' || overViewArr[i] == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || overViewArr[i] == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || overViewArr[i] == 'Construction of Buildings for women self help group federation' || overViewArr[i] == 'Work Site Facilities' || overViewArr[i] == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || overViewArr[i] == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || overViewArr[i] == 'Production of Grafts in HNTC' || overViewArr[i] == 'Improvements of RYTHU BAZAR' || overViewArr[i] == 'Roads for Unconnected Habitations 2012-13 and afterwards' || overViewArr[i] == 'HNTC Development' || overViewArr[i] == 'New Open Well for Drinking water purpose' || overViewArr[i] == 'Construction of Crematoria Burial Grounds' || overViewArr[i] == 'Repairs to Existing Check Dam' || overViewArr[i] == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || overViewArr[i] == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 500MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || overViewArr[i] == 'Raising of Cashew bag seedlings for 2014-15' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || overViewArr[i] == 'Comprehensive Restoration of minor Irrigation Tank' || overViewArr[i] == "Azolla Production Unit" || overViewArr[i] == "Construction of silopits of 3 MTs capacity" || overViewArr[i] == "Fodder trough for Cattle Cattle drinking water trough" || overViewArr[i] == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || overViewArr[i] == "Raising of Perinnial Fodder" || overViewArr[i] == "Raising of Silvipasture clubbed with subabul plantation"){
 				getNregaCovergancePROtherLevelData(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
-			}else
+			}else if(overViewArr[i] == "ManDays"){
+					getManWorkDaysOfNrega(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+			}
+			else
 			{
 				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId,'dateChange');
 			}
@@ -5055,16 +5058,14 @@ function getNREGSProjectsAbstractNew(type,locType,locId,blockName,levelId)
 function getManWorkDaysOfNrega(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId,mccType,buildType,levelId)
 {
 	$("#"+divIdd).html(spinner);
-	
+	var toDateArr = glEndDate.split('-');
 	var json = {
-		year : "2017",
-		fromDate : glStartDate,
-		toDate : glEndDate,
+		month : toDateArr[1],
 		locationType: locationTypeNew
 	}
 	
 	$.ajax({
-		url: 'getManWorkDaysOfNrega',
+		url: 'getManWorkDaysOfNregaMonthWise',   //'getManWorkDaysOfNrega',
 		data: JSON.stringify(json),
 		type: "POST",
 		dataType: 'json', 
