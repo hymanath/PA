@@ -4571,6 +4571,7 @@
     		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     		<property name="coreDashboardGenericService" ref="coreDashboardGenericService" />
     		<property name="trainingCampDetailsInfoDAO" ref="trainingCampDetailsInfoDAO" />
+    		<property name="trainingCampCadreFeedbackDetailsDAO" ref="trainingCampCadreFeedbackDetailsDAO" />
     		<property name="trainingCampProgramDAO" ref="trainingCampProgramDAO" />
     		<property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO" />
     		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO" />

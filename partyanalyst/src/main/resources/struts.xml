@@ -13610,12 +13610,12 @@
    			<param name="root">userTypeVOList</param>
    		</result>
 	</action>
-		<action name="getSelectedChildTypeMembersForTrainingProgramAction" class="coreDashboardAction" method="getSelectedChildTypeMembersForTrainingProgram">
+	<action name="getSelectedChildTypeMembersForTrainingProgramAction" class="coreDashboardAction" method="getSelectedChildTypeMembersForTrainingProgram">
 		<result type="json" name="success">
    			<param name="root">activityMembersList</param>
    		</result>
 	</action>
-		<action name="getDirectChildActivityTrainingProgramMemberDetailsAction" class="coreDashboardAction" method="getDirectChildActivityTrainingProgramMemberDetails">
+	<action name="getDirectChildActivityTrainingProgramMemberDetailsAction" class="coreDashboardAction" method="getDirectChildActivityTrainingProgramMemberDetails">
 		<result type="json" name="success">
    			<param name="root">activityMembersList</param>
    		</result>
@@ -18581,6 +18581,16 @@
 		<result type="json" name="success">
 			<param name="root">userTypeVOList</param>
 		</result>
+	</action>
+	<action name="getUserTypeWiseTotalEligibleAndAttendedCntActionForTrainingCampAction" class="coreDashboardAction" method="getUserTypeWiseTotalEligibleAndAttendedCntActionForTrainingCamp">
+		<result type="json" name="success">
+   			<param name="root">userTypeVOList</param>
+   		</result>
+	</action>
+	<action name="getFeedbackOnLeadersAction" class="coreDashboardAction" method="getFeedbackOnLeaders">
+		<result type="json" name="success">
+   			<param name="root">campSurveyVOs</param>
+   		</result>
 	</action>
 	<action name="getProgramIdsAction" class="coreDashboardAction"  method="getProgramIds">
 		<result type="json" name="success">
