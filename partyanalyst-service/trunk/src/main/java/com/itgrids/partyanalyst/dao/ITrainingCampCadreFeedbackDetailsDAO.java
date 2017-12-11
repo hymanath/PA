@@ -22,4 +22,5 @@ public interface ITrainingCampCadreFeedbackDetailsDAO extends GenericDao<Trainin
 	 public List<Long> getattendedcountClickDetails(String queryString,List<Long> programId,Long campId,Long batchId,Date fromDate,Date toDate,String callFrom,List<Long> enrollmentYrIds,String skillType,Long statusId);
 	
 	 public List<Object[]> getTrainingCampFeedBAckDeatilesByTdpCadreId(Long tdpCadreId);
+	 public List<Object[]> getCommunicationFeedbackOnLeaders(Long userAccessLevelId,List<Long> userAccessLevelValues,List<Long> trainingProgramIds,Long traingCampEnrollmentYearId,List<Long> trainingCampLevelIds,Long groupType,Long questionType);
 }
