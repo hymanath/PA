@@ -17,10 +17,17 @@ public class KaizalaDashboardVO {
 	private String installedPerc;
 	private String pendingPerc;
 	private String key;
+	private String notSmartPhonePerc;
 	
 	private List<KaizalaDashboardVO> subList = new ArrayList<KaizalaDashboardVO>(0);
 	
 	
+	public String getNotSmartPhonePerc() {
+		return notSmartPhonePerc;
+	}
+	public void setNotSmartPhonePerc(String notSmartPhonePerc) {
+		this.notSmartPhonePerc = notSmartPhonePerc;
+	}
 	public String getKey() {
 		return key;
 	}
