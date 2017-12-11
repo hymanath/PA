@@ -2650,7 +2650,337 @@
             </div>
         </div>
 		<!-- Committees End-->
+		<!--Events Start -->
+			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
+				<div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="events">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
+									events and activities <small class="text-muted"><span id="dateEventsHeadingId">  - OVERALL (TILL NOW) </span></small>
+								</h4>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="events">
+								<span class="notesIconEvents pull-right">
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
+								</span>
+								<span class="eventsIconExpand pull-right" expand-icon="events">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+							<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshEventsActivities();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
+								<span class="input-group pull-right dateRangePickerClsForEvents hide" expand-block-date="events" style="width:200px;">
+									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
+						</div>
+						<div class="notesDropDown notesArrow" >
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesEventsId"></div>
+							<hr/>
+							<div id="eventsUpId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaEvents"></textarea>
+							<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20" expand-block-inner="events">
+								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
+								<h4><span class="headingColor text-capital">events</span>
+								<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
+								<div id="mainEventsList" class="m_top20"></div>
+								<h4 style="margin-top:20px !important;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span>
+									<span class="pull-right activitiesCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
+								</h4>
+									<div id="activityEventsListNew" class="activitiesCollapseBody" style="display:none"></div>
+				
+								<!--<div style="border : 1px solid #333; padding : 5px">-->
+									<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
+									<!--<div id="activityEventsListNew" class="m_top20"></div>-->
+								<!--</div>-->
+							</div>
+							<!--Acivites Block
+							
+							
+							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20">
+							<div style="border : 1px solid #333; padding : 5px">
+								<h4><span class="headingColor text-capital">activities</span></h4>
+								<div id="activityEventsListNew" class="m_top20"></div>
+							<!--</div>
+							</div>-->
+							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock" expand-block-right="events">
+								<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
+								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
+										<ul class="activeUlCls list-inline hideCls">
+											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 </li>
+											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;poor 5</li>
+										</ul>
+								</div> 
+								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" expand-block-right="events" style="display: none;">
+								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
+							</div>
+							<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId" expand-block-more="events">
+								
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
+									<li class="text-capital activeLICls" attr_typeId="1">Detailed </li>
+									<li class="text-capital activeLICls" attr_typeId="2">Comparison</li>
+								</ul>
+							</div>
+							<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks" expand-block-more="events">
+							
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
+									<li class="text-capital settingsIconAct">
+										<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+									</li>
+								</ul>
+								<div class="actBlockDropDown notesArrow documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
+									<i class="glyphicon glyphicon-remove actSetClose pull-right"></i>
+									<div class="row">
+										<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+										  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+											<li role="presentation" class="active text-capital"><a href="#eventsSettings" aria-controls="eventsSettings" role="tab" data-toggle="tab">Events</a></li>
+											<li role="presentation" class="text-capital"><a href="#actSettings" aria-controls="actSettings" role="tab" data-toggle="tab">Activities</a></li>
+										  </ul>
+										</div>
+										<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+										  <div class="tab-content navTabsSettingsContent">
+											<div role="tabpanel" class="tab-pane active" id="eventsSettings">
+												<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS  </h4>
+												<hr style ="margin-bottom:0px;margin-top:0px;" />
+												<div class="">
+													<ul class="evntsSettingsUl">
+														<!--<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>-->
+													</ul>
+												</div>
+											</div>
+											<div role="tabpanel" class="tab-pane" id="actSettings">
+												<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS  </h4>
+												<hr style ="margin-bottom:0px;" />
+												<div class="">
+													<ul class="activitySettingsUl">
+														<!-- <li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" value="0" checked>
+																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+															</label>
+														</li> -->
+													</ul>
+												</div>
+											</div>
+										  </div>
+										  
+										</div>
+										<!--<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
+											<button type="button" class="btn btn-success">Get Details</button>
+										</div>-->
+									</div>
+									
+									
+								</div>
+							</div>
+							<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
+									<li class="text-capital detailedEvent">Detailed</li>
+									<li class="text-capital comparisonActivity">Comparison</li>
+								</ul>
+							</div> -->
+							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10" expand-block-more="events">
+								<div class="panel panel-default panelNew">
+									<div class="panel-body">
+										<div id="eventsGraphBlock"></div>
+										<div id="eventsGraphBlock1"></div>
+									</div>
+								</div>
+								<div class="panel panel-default panelNew m_top20">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<span class="headingColor text-capitalize activitiesH4"> Cohort</span>
+										</h4>
+									</div>
+									<div class="panel-body">
+										<div id="eventsDistWiseCohort"></div>
+										 <div id="eventsDistWiseCohort1"></div>
+										<div id="eventsDistWiseCohort2"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" expand-block-more="events" style="display:none" id="evntCmpBLockId">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-12 col-md-12">
+											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												 <div id="childEvnetMemberDivId"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20">
+												   <div id="directChildMemberForEventDivId"></div>
+												   <div class="row">
+														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+															<div class="row m_top20">
+															 <div id="topPoorLocationsEventDivId"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" expand-block-more="events" style="display:none" id="activtyBlckDivId">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-12 col-md-12">
+											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForActivity"></div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												 <div id="childActivityMemberDivId"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20">
+												   <div id="directChildMemberForActivityDivId"></div>
+												   <div class="row">
+														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+															<div class="row m_top20">
+															 <div id="topPoorLocationsActivityDivId"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+	
+		<!--Events End -->
 		
+			
+	</div>	
+	<div class="row">
+		<!-- Kaizala  Start --> 
+			<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="kaizala">
+				<div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="kaizala">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/logoKaizala.png" class="iconClass" style="background-color:none;"/>
+										Kaizala
+								</h4>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="kaizala">
+								<span class="kaizalaIconExpand pull-right" expand-icon="kaizala">
+									<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+								</span>
+								
+							</div>     
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
+								<div class="row">
+									<div class="col-sm-12">
+										<div id="overAllKaizalaBlockId"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="kaizala" style="display:none;" >
+								<div class="row">
+									<div class="col-sm-12">
+										<ul class="activeUlCls list-inline pull-right kaizalaLicls">
+											<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+											<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+										</ul>
+									</div>
+								 </div>
+								 <div class="row">
+									<div class="col-sm-12">
+										<div class="verticalScrollBarKaizala">
+											<div id="userTypeWiseKaizalaDiv"></div>
+										</div>
+									</div>
+								 </div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="kaizala" style="display: none;">
+								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morekaizalaBlocksIcon" title="Click here for more"></i>
+							</div>	
+							<div class="col-md-12 col-xs-12 col-sm-12 morekaizalaBlocksDetailed m_top10"  expand-block-more="kaizala" style="display:none;">
+								<div class="row">
+									<div class="col-sm-12">
+										<div id="levelWiseDetailsDivId"></div>
+									</div>
+								 </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	<!-- Kaizala  END --> 
+	
 		<!-- Booth Committees Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 boothCommitteesBlock" expand-block="boothCommittees">
         	<div class="panel panel-default panelNewCustom panel1">
@@ -2939,8 +3269,11 @@
             </div>
         </div>
 		<!-- Booth Committees End-->
+		
 			
-	</div>	
+		
+		
+	</div>
 	<div class="row">
 		<!-- Cadre Insurance Start-->
 			<div class="col-md-6 col-xs-12 col-sm-6 cadreInsuranceBlock" expand-block="cadreInsurance">
@@ -3394,402 +3727,6 @@
 				</div>
 			</div>
 			<!-- Cadre Insurance End-->
-			
-		<!--Events Start -->
-			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="events">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
-									events and activities <small class="text-muted"><span id="dateEventsHeadingId">  - OVERALL (TILL NOW) </span></small>
-								</h4>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="events">
-								<span class="notesIconEvents pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
-								</span>
-								<span class="eventsIconExpand pull-right" expand-icon="events">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-							<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshEventsActivities();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
-								<span class="input-group pull-right dateRangePickerClsForEvents hide" expand-block-date="events" style="width:200px;">
-									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-							</div>
-						</div>
-						<div class="notesDropDown notesArrow" >
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
-							</h4>
-							<div id="notesEventsId"></div>
-							<hr/>
-							<div id="eventsUpId" style="color:red;"></div>
-							<label>Create Notes</label>
-							<textarea class="form-control notesAreaEvents"></textarea>
-							<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
-						</div>
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<!--<div class="col-md-12 col-xs-12 col-sm-12">
-								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-							</div>-->
-							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20" expand-block-inner="events">
-								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
-								<h4><span class="headingColor text-capital">events</span>
-								<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
-								<div id="mainEventsList" class="m_top20"></div>
-								<h4 style="margin-top:20px !important;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span>
-									<span class="pull-right activitiesCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
-								</h4>
-									<div id="activityEventsListNew" class="activitiesCollapseBody" style="display:none"></div>
-				
-								<!--<div style="border : 1px solid #333; padding : 5px">-->
-									<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
-									<!--<div id="activityEventsListNew" class="m_top20"></div>-->
-								<!--</div>-->
-							</div>
-							<!--Acivites Block
-							
-							
-							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20">
-							<div style="border : 1px solid #333; padding : 5px">
-								<h4><span class="headingColor text-capital">activities</span></h4>
-								<div id="activityEventsListNew" class="m_top20"></div>
-							<!--</div>
-							</div>-->
-							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock" expand-block-right="events">
-								<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
-								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
-										<ul class="activeUlCls list-inline hideCls">
-											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 </li>
-											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;poor 5</li>
-										</ul>
-								</div> 
-								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" expand-block-right="events" style="display: none;">
-								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
-							</div>
-							<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId" expand-block-more="events">
-								
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
-									<li class="text-capital activeLICls" attr_typeId="1">Detailed </li>
-									<li class="text-capital activeLICls" attr_typeId="2">Comparison</li>
-								</ul>
-							</div>
-							<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks" expand-block-more="events">
-							
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
-									<li class="text-capital settingsIconAct">
-										<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-									</li>
-								</ul>
-								<div class="actBlockDropDown notesArrow documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
-									<i class="glyphicon glyphicon-remove actSetClose pull-right"></i>
-									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
-										  <ul class="nav nav-tabs navTabsSettings" role="tablist">
-											<li role="presentation" class="active text-capital"><a href="#eventsSettings" aria-controls="eventsSettings" role="tab" data-toggle="tab">Events</a></li>
-											<li role="presentation" class="text-capital"><a href="#actSettings" aria-controls="actSettings" role="tab" data-toggle="tab">Activities</a></li>
-										  </ul>
-										</div>
-										<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
-										  <div class="tab-content navTabsSettingsContent">
-											<div role="tabpanel" class="tab-pane active" id="eventsSettings">
-												<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS  </h4>
-												<hr style ="margin-bottom:0px;margin-top:0px;" />
-												<div class="">
-													<ul class="evntsSettingsUl">
-														<!--<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>-->
-													</ul>
-												</div>
-											</div>
-											<div role="tabpanel" class="tab-pane" id="actSettings">
-												<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS  </h4>
-												<hr style ="margin-bottom:0px;" />
-												<div class="">
-													<ul class="activitySettingsUl">
-														<!-- <li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li> -->
-													</ul>
-												</div>
-											</div>
-										  </div>
-										  
-										</div>
-										<!--<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
-											<button type="button" class="btn btn-success">Get Details</button>
-										</div>-->
-									</div>
-									
-									
-								</div>
-							</div>
-							<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
-									<li class="text-capital detailedEvent">Detailed</li>
-									<li class="text-capital comparisonActivity">Comparison</li>
-								</ul>
-							</div> -->
-							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10" expand-block-more="events">
-								<div class="panel panel-default panelNew">
-									<div class="panel-body">
-										<div id="eventsGraphBlock"></div>
-										<div id="eventsGraphBlock1"></div>
-									</div>
-								</div>
-								<div class="panel panel-default panelNew m_top20">
-									<div class="panel-heading">
-										<h4 class="panel-title">
-											<span class="headingColor text-capitalize activitiesH4"> Cohort</span>
-										</h4>
-									</div>
-									<div class="panel-body">
-										<div id="eventsDistWiseCohort"></div>
-										 <div id="eventsDistWiseCohort1"></div>
-										<div id="eventsDistWiseCohort2"></div>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" expand-block-more="events" style="display:none" id="evntCmpBLockId">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12">
-											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												 <div id="childEvnetMemberDivId"> </div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20">
-												   <div id="directChildMemberForEventDivId"></div>
-												   <div class="row">
-														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-															<div class="row m_top20">
-															 <div id="topPoorLocationsEventDivId"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" expand-block-more="events" style="display:none" id="activtyBlckDivId">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12">
-											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForActivity"></div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												 <div id="childActivityMemberDivId"> </div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20">
-												   <div id="directChildMemberForActivityDivId"></div>
-												   <div class="row">
-														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-															<div class="row m_top20">
-															 <div id="topPoorLocationsActivityDivId"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>	
-	
-		<!--Events End -->
-		
-	</div>
-	<div class="row">
-	<!-- Attendance Start-->
-		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock" expand-block="attendance">
-            <div class="panel panel-default panelNewCustom">
-                <div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="attendance">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
-								emp attendance - <small id="attendanceId" class="text-muted"></small>
-							</h4>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="attendance">
-							<span class="attendanceSetIcon pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
-							<span class="notesIconattendance pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForAttendance(7);"></i>
-							</span>
-							<span class="attendaceIconExpand pull-right mainExpandCls" expand-icon="attendance">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-							<span class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:110px;">
-								<input type="text" id="dateRangeIdForAttendance" style="width:90px" class="form-control" />
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>
-						</div>
-					</div>
-					<div class="notesDropDown notesArrow">
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
-							</h4>
-							<div id="notesAttendanceId"></div>
-							<hr/>
-							<div id="attendanceId" style="color:red;"></div>
-							<label>Create Notes</label>
-							<textarea class="form-control notesAreaAttendance"></textarea>
-							<button class="btn btn-default btnCustomCreateAttendance btn-sm "  onClick="savingDashboardCommentForAttendance(7);">create</button>
-						</div>
-                </div>
-                <div class="panel-body">   
-                    <div class="row">
-							<!--<div class="col-md-12 col-xs-12 col-sm-12">
-								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-							</div>-->	
-						<!--<div class="col-md-12 col-xs-12 col-sm-12">
-							<h5 id="lastUpdatedIdAtt" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right">Last updated : - </h5>
-						</div>-->  
-                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock m_top20" expand-block-inner="attendance">
-							<div id="officeAttendanceTdlsId">
-							</div>
-							<div id="officeAttendanceTdlsDeptWiseId"> 
-							</div>
-                            <!-- <h4 class="m_top20"><span class="headingColor text-capital">month wise total employees</span></h4>
-                            <div id="attendance" style="height:150px;"></div>-->
-                        </div>
-                        <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore" expand-block-right="attendance">
-							<div id="deptWiseAttendanceDtlsId">
-							</div>
-                        </div>
-						<div class="col-xs-12 col-sm-12 col-md-12">
-                        	<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon"  expand-block-right="attendance" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
-                        </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" expand-block-more="attendance">
-                        	<div class="panel panel-default panelNew">
-                            	<div class="panel-heading">
-                                	  
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-md-6 col-xs-12 col-sm-8">
-											<h4><span class="headingColor">Hyderabad Party Office</span></h4>
-											</div>
-											<div class="col-md-6 col-xs-12 col-sm-4">
-												<div class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:210px;">
-													<input type="text" id="dateRangeIdForAttendance1" style="width:180px" class="form-control" />
-													<span class="input-group-addon">
-														<i class="glyphicon glyphicon-calendar"></i>
-													</span>  
-												</div>
-											</div>
-										</div>
-									</div>
-                                </div>
-                                <div class="panel-body" id="hydDtlsId">
-                                	
-                                </div>  
-                            </div>
-                        </div>
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="hydTopId"  expand-block-more="attendance">
-							
-						</div> 
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks"  expand-block-more="attendance">
-                        	<div class="panel panel-default panelNew">
-                            	<div class="panel-heading">
-                                	  
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-md-6 col-xs-12 col-sm-8">
-											<h4><span class="headingColor">Guntur Party Office</span></h4>
-											</div>
-											<div class="col-md-6 col-xs-12 col-sm-4">
-												<div class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:210px;">
-													<input type="text" id="dateRangeIdForAttendance2" style="width:180px" class="form-control" />
-													<span class="input-group-addon">
-														<i class="glyphicon glyphicon-calendar"></i>
-													</span>  
-												</div>
-											</div>
-										</div>
-									</div>
-                                </div>
-                                <div class="panel-body" id="gunDtlsId">
-                                	
-                                </div>  
-                            </div>
-                        </div>
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="gunTopId"  expand-block-more="attendance">
-							
-						</div>
-						
-						
-                    </div>
-                </div>
-            </div>
-       </div>
-		<!-- Attendance End-->
 			
 			<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock" expand-block="cadre">  
         	<div class="panel panel-default panelNewCustom">
@@ -4275,66 +4212,135 @@
 			</div>
 		</div>
 <!-- Praja Sankalpam Yatra News  END --> 
-<!-- Kaizala  Start --> 
-		<!--<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="kaizala">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
+	<!-- Attendance Start-->
+		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock" expand-block="attendance">
+            <div class="panel panel-default panelNewCustom">
+                <div class="panel-heading">
 					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="kaizala">
+						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="attendance">
 							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/logoKaizala.png" class="iconClass" style="background-color:none;"/>
-									Kaizala
+								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
+								emp attendance - <small id="attendanceId" class="text-muted"></small>
 							</h4>
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="kaizala">
-							<span class="kaizalaIconExpand pull-right" expand-icon="kaizala">
-								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="attendance">
+							<span class="attendanceSetIcon pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
-							
-						</div>     
+							<span class="notesIconattendance pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForAttendance(7);"></i>
+							</span>
+							<span class="attendaceIconExpand pull-right mainExpandCls" expand-icon="attendance">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:110px;">
+								<input type="text" id="dateRangeIdForAttendance" style="width:90px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
 					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
-							<div class="row">
-								<div class="col-sm-12">
-									<div id="overAllKaizalaBlockId"></div>
-								</div>
+					<div class="notesDropDown notesArrow">
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesAttendanceId"></div>
+							<hr/>
+							<div id="attendanceId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaAttendance"></textarea>
+							<button class="btn btn-default btnCustomCreateAttendance btn-sm "  onClick="savingDashboardCommentForAttendance(7);">create</button>
+						</div>
+                </div>
+                <div class="panel-body">   
+                    <div class="row">
+							<!--<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+							</div>-->	
+						<!--<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 id="lastUpdatedIdAtt" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right">Last updated : - </h5>
+						</div>-->  
+                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock m_top20" expand-block-inner="attendance">
+							<div id="officeAttendanceTdlsId">
 							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="kaizala" style="display:none;" >
-							<div class="row">
-                            	<div class="col-sm-12">
-                                	<ul class="activeUlCls list-inline pull-right kaizalaLicls">
-                                    	<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
-										<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
-                                    </ul>
-                                </div>
-							 </div>
-							 <div class="row">
-								<div class="col-sm-12">
-									<div class="verticalScrollBarKaizala">
-										<div id="userTypeWiseKaizalaDiv"></div>
+							<div id="officeAttendanceTdlsDeptWiseId"> 
+							</div>
+                            <!-- <h4 class="m_top20"><span class="headingColor text-capital">month wise total employees</span></h4>
+                            <div id="attendance" style="height:150px;"></div>-->
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore" expand-block-right="attendance">
+							<div id="deptWiseAttendanceDtlsId">
+							</div>
+                        </div>
+						<div class="col-xs-12 col-sm-12 col-md-12">
+                        	<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon"  expand-block-right="attendance" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" expand-block-more="attendance">
+                        	<div class="panel panel-default panelNew">
+                            	<div class="panel-heading">
+                                	  
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-8">
+											<h4><span class="headingColor">Hyderabad Party Office</span></h4>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-4">
+												<div class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:210px;">
+													<input type="text" id="dateRangeIdForAttendance1" style="width:180px" class="form-control" />
+													<span class="input-group-addon">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</span>  
+												</div>
+											</div>
+										</div>
 									</div>
-								</div>
-							 </div>
+                                </div>
+                                <div class="panel-body" id="hydDtlsId">
+                                	
+                                </div>  
+                            </div>
+                        </div>
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="hydTopId"  expand-block-more="attendance">
+							
+						</div> 
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks"  expand-block-more="attendance">
+                        	<div class="panel panel-default panelNew">
+                            	<div class="panel-heading">
+                                	  
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-8">
+											<h4><span class="headingColor">Guntur Party Office</span></h4>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-4">
+												<div class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:210px;">
+													<input type="text" id="dateRangeIdForAttendance2" style="width:180px" class="form-control" />
+													<span class="input-group-addon">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</span>  
+												</div>
+											</div>
+										</div>
+									</div>
+                                </div>
+                                <div class="panel-body" id="gunDtlsId">
+                                	
+                                </div>  
+                            </div>
+                        </div>
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="gunTopId"  expand-block-more="attendance">
+							
 						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="kaizala" style="display: none;">
-							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morekaizalaBlocksIcon" title="Click here for more"></i>
-						</div>	
-						<div class="col-md-12 col-xs-12 col-sm-12 morekaizalaBlocksDetailed m_top10"  expand-block-more="kaizala" style="display:none;">
-							<div class="row">
-								<div class="col-sm-12">
-									<div id="levelWiseDetailsDivId"></div>
-								</div>
-							 </div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>-->
-<!-- Kaizala  END --> 
+						
+						
+                    </div>
+                </div>
+            </div>
+       </div>
+		<!-- Attendance End-->
 	</div>
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
@@ -5849,7 +5855,7 @@ var globalImages;
 		//Preemeet
 		preemeeetOnloadCalls();
 		onloadPrajaSankaplaYatraCalls();
-		//onloadKaizalaCalls1();	
+		onloadKaizalaCalls1();	
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');

@@ -4472,7 +4472,8 @@
 		 <property name="kaizalaGroupDocumentTypeDAO" ref="kaizalaGroupDocumentTypeDAO" />
 		 <property name="kaizalaResponderTypeDAO" ref="kaizalaResponderTypeDAO" />
 		 <property name="kaizalaInstallationTrackingDAO" ref="kaizalaInstallationTrackingDAO" />
-		 
+		 <property name="coreDashboardGenericService" ref="coreDashboardGenericService" />
+		 <property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO" />
     </bean> 
     <bean name="doorToDoorCampaignDashboardService" class="com.itgrids.partyanalyst.service.impl.DoorToDoorCampaignDashboardService" >
     </bean>
