@@ -18607,5 +18607,15 @@
 			<param name="root">trainingCampProgramVO</param>  
 		</result>
 	</action>
+	<action name="getUserTypeWiseTotalEligibleAndAttendedCntActionForTrainingCampAction" class="coreDashboardAction"  method="getUserTypeWiseTotalEligibleAndAttendedCntActionForTrainingCamp">
+		<result type="json" name="success">
+			<param name="root">userTypeVOList</param>
+		</result>
+	</action>
+	<action name="getTrainingCampFeedBackDetailsAction" class="coreDashboardAction"  method="getTrainingCampFeedBackDetails">
+		<result type="json" name="success">
+			<param name="root">userTypeVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
