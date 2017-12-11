@@ -1779,25 +1779,28 @@ function buildActivityEventBasicCntDtlsNew(result)
 				str+='<div class="panel-group panelBlockCollapse" id="accordionAct" role="tablist" aria-multiselectable="true" style="margin-top: 10px;">';				
 				for(var i in result)
 				{
-				  if(i== 0){
-					activityIdsString = result[i].id;	
-					}else{
-					 activityIdsString = activityIdsString+','+result[i].id;	
-					}
-					globalActivityIdsList.push(parseInt(result[i].id));
-					str+='<div class="panel panel-default">';
-						str+='<div class="panel-heading" role="tab" id="headingOneAct'+i+'">';
-							str+='<h4 class="text-capital" style="color:#4a5863;display:inline-block;">'+result[i].name+'';
-							str+='<span class="activitesExpandIcon" attr_search_type="singleActivity"  attr_level_id="0" attr_activity_name="\''+result[i].name+'\'" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center"></i></span></h4>';
-							str+='<a role="button" style="display:inline-block;float:right"	class="panelBlockCollapseIcon collapsed activitiesClass" attr_activity_name="\''+result[i].name+'\'" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneAct'+i+'" aria-expanded="true" aria-controls="collapseOneAct'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
-							str+='</a>';
-						str+='</div>';
-						str+='<div id="collapseOneAct'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneAct'+i+'">';
-							str+='<div class="panel-body">';
-								str+='<div id="activityBodyId'+i+'"></div>';
+					if(result[i].id != "36"){
+						 if(i== 0){
+						activityIdsString = result[i].id;	
+						}else{
+						 activityIdsString = activityIdsString+','+result[i].id;	
+						}
+						globalActivityIdsList.push(parseInt(result[i].id));
+						str+='<div class="panel panel-default">';
+							str+='<div class="panel-heading" role="tab" id="headingOneAct'+i+'">';
+								str+='<h4 class="text-capital" style="color:#4a5863;display:inline-block;">'+result[i].name+'';
+								str+='<span class="activitesExpandIcon" attr_search_type="singleActivity"  attr_level_id="0" attr_activity_name="\''+result[i].name+'\'" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center"></i></span></h4>';
+								str+='<a role="button" style="display:inline-block;float:right"	class="panelBlockCollapseIcon collapsed activitiesClass" attr_activity_name="\''+result[i].name+'\'" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneAct'+i+'" aria-expanded="true" aria-controls="collapseOneAct'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
+								str+='</a>';
+							str+='</div>';
+							str+='<div id="collapseOneAct'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneAct'+i+'">';
+								str+='<div class="panel-body">';
+									str+='<div id="activityBodyId'+i+'"></div>';
+								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-					str+='</div>';
+					}		
+				 
 				}
 				
 				str+='</div>';

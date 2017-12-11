@@ -3,7 +3,7 @@ var wurl = url.substr(0,(url.indexOf(".com")+4));
    if(wurl.length == 3)
 	wurl = url.substr(0,(url.indexOf(".in")+3));   
 
-var newsChannelsIdsGlbl = [1,2,3,4,5,6,7];
+var newsChannelsIdsGlbl = [1,2,3,5,6,7];
 var impactScopeIds = [1,2,3,4,5,6,7,8,9];
 var partyIdsGlob=[872,1117,163,362];
 //var currentFromDateEmn = moment().startOf("year").format("DD-MM-YYYY");

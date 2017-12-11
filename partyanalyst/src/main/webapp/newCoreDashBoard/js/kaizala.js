@@ -68,7 +68,7 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">Not Having Smart Phone</p>';
-								str+='<h4>'+result[i].notHavingSmartPhone+'</h4>';
+								str+='<h4>'+result[i].notHavingSmartPhone+' <span class="f_13 text-success"> '+result[i].notSmartPhonePerc+'%</span></h4>';
 							str+='</td>';
 						str+='</tr>';
 					str+='</tbody>';
@@ -119,9 +119,9 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 				if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
 						candidateNameArray.push(result[i][j].name);
-						installedCountArr.push(result[i][j].installed)
-						pendingCountArr.push(result[i][j].pending)
-						notHavingCountArr.push(result[i][j].notSmartPhone)
+						installedCountArr.push(parseFloat(result[i][j].installedPerc))
+						pendingCountArr.push(parseFloat(result[i][j].pendingPerc))
+						notHavingCountArr.push(parseFloat(result[i][j].notSmartPhonePerc))
 						
 						countVar =countVar+1;
 						if (countVar === 5) {
@@ -131,7 +131,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 				}
 				
 					
-				if( result[i][j].installed !=0 || result[i][j].pending !=0 || result[i][j].notSmartPhone !=0){
+				if( result[i][j].installedPerc !=0 || result[i][j].pendingPerc !=0 || result[i][j].notSmartPhonePerc !=0){
 					
 					var str='';
 					//str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -142,7 +142,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 					
 					$(function () {
 						 $("#genSecKaizala"+i).highcharts({
-							 colors: ['#0061D0','#7DDF7D','#C53A36'],
+							 colors: ['#7DDF7D','#a94442','#0061D0'],
 							chart: {
 								type: 'column'
 							},
@@ -191,7 +191,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 											if (this.y === 0) {
 												return null;
 											} else {
-												return (this.y) +'';
+												return (this.y) +'%';
 											}
 										}
 									  
@@ -203,7 +203,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 										var s = '<b>' + this.x + '</b>';
 										$.each(this.points, function () {
 											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-												(this.y)+'';
+												(this.y)+'%';
 										});
 
 										return s;
@@ -272,9 +272,10 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 						notSmartPhone = result[i][j].notSmartPhone;
 						
 						candidateNameArray.push(result[i][j].name);
-						installedCountArr.push(result[i][j].installed)
-						pendingCountArr.push(result[i][j].pending)
-						notHavingCountArr.push(result[i][j].notSmartPhone)
+						
+						installedCountArr.push(parseFloat(result[i][j].installedPerc))
+						pendingCountArr.push(parseFloat(result[i][j].pendingPerc))
+						notHavingCountArr.push(parseFloat(result[i][j].notSmartPhonePerc))
 						
 						countVar =countVar+1;
 						if (countVar === 5) {
@@ -283,7 +284,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 					}
 				}
 			  		
-				if( installed !=0 || pending !=0 || notSmartPhone !=0){
+				if( installedPerc !=0 || pendingPerc !=0 || notSmartPhonePerc !=0){
 					var str='';
 					
 					//str+='<div class="col-sm-12">';
@@ -297,7 +298,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 					$("#genSecKaizala1"+i).width(getWidth);
 					$(function () {
 						 $("#genSecKaizala1"+i).highcharts({
-							 colors: ['#0061D0','#7DDF7D','#C53A36'],
+							colors: ['#7DDF7D','#a94442','#0061D0'],
 							chart: {
 								type: 'column'
 							},
@@ -344,7 +345,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 											if (this.y === 0) {
 												return null;
 											} else {
-												return (this.y) + '';
+												return (this.y) + '%';
 											}
 										}
 									  
@@ -361,7 +362,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 										var s = '<b>' + this.x + '</b>';
 										$.each(this.points, function () {
 											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-												(this.y)+'';
+												(this.y)+'%';
 										});
 
 										return s;
@@ -412,7 +413,7 @@ function locationWiseDate()
 	for(var i in levelWiseArr)
 	{
 		collapse+='<div class="panel-group" id="accordion'+levelWiseArr[i].id+'" role="tablist" aria-multiselectable="true">';
-			collapse+='<div class="panel panel-default" >';
+			collapse+='<div class="panel panel-default m_top20">';
 				collapse+='<div class="panel-heading" role="tab" id="heading'+levelWiseArr[i].id+'" style="background-color:#f1f1f1;">';
 					if(i == 0)
 					{
@@ -468,19 +469,46 @@ function getLocationWiseCommitteeMemberDetailsAction(locationType){
 }
 function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 	var str = '';
+			str+='<div class="row">';
+			  str+='<div class="col-sm-12">';
+			str+='<h5 class="pull-left">NSP - No Smart Phone</h5>';
+			str+='</div>';
+			str+='</div>';
 			str+='<div class="table-responsive">';
 				str+='<table class="table table-bordered table-condensed tableStyleLed table_alignment table-noborder dataTable'+locationType+'" style="width:100%">';
 					str+='<thead style="background-color:#f0f0f0">';
 							str+='<tr>';
 								if(locationType == "district"){
 									str+='<th class="text-capital" rowspan="3">District</th>';
+									str+='<th class="text-capital" rowspan="3">Total</th>';
+									str+='<th class="text-capital" rowspan="3">Installed</th>';
+									str+='<th class="text-capital" rowspan="3">%</th>';
+									str+='<th class="text-capital" rowspan="3">Pending</th>';
+									str+='<th class="text-capital" rowspan="3">%</th>';
+									str+='<th class="text-capital" rowspan="3">NSP</th>';
+									str+='<th class="text-capital" rowspan="3">%</th>';
 									
 								}else if(locationType == "parliament"){
 									str+='<th class="text-capital" rowspan="3">parliament</th>';
+									str+='<th class="text-capital" rowspan="3">Total</th>';
+									str+='<th class="text-capital" rowspan="3">Installed</th>';
+									str+='<th class="text-capital" rowspan="3">%</th>';
+									str+='<th class="text-capital" rowspan="3">Pending</th>';
+									str+='<th class="text-capital" rowspan="3">%</th>';
+									str+='<th class="text-capital" rowspan="3">NSP</th>';
+									str+='<th class="text-capital" rowspan="3">%</th>';
 									
 								}
 								else if(locationType == "constituency"){
+									str+='<th class="text-capital" rowspan="3">Parliament</th>';
 									str+='<th class="text-capital" rowspan="3">Constituency</th>';
+									str+='<th class="text-capital" rowspan="3">Total</th>';
+									str+='<th class="text-capital" rowspan="3">Installed</th>';
+									str+='<th class="text-capital" rowspan="3">%</th>';
+									str+='<th class="text-capital" rowspan="3">Pending</th>';
+									str+='<th class="text-capital" rowspan="3">%</th>';
+									str+='<th class="text-capital" rowspan="3">NSP</th>';
+									str+='<th class="text-capital" rowspan="3">%</th>';
 									
 								}
 							str+='</tr>';
@@ -488,10 +516,10 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 								for(var i in result[0].subList){
 									if(locationType != "district"){
 										if(result[0].subList[i].name !="DISTRICT"){
-											str+='<th colspan="4">'+result[0].subList[i].name+'</th>';
+											str+='<th colspan="7">'+result[0].subList[i].name+'</th>';
 										}
 									}else{
-										str+='<th colspan="4">'+result[0].subList[i].name+'</th>';
+										str+='<th colspan="7">'+result[0].subList[i].name+'</th>';
 									}
 									
 								}
@@ -500,16 +528,22 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 								for(var i in result[0].subList){
 									if(locationType != "district"){
 										if(result[0].subList[i].name !="DISTRICT"){
-											str+='<th>Total</th>';
+											str+='<th style="border-left:1px solid #ccc;">Total</th>';
 											str+='<th>Installed</th>';
+											str+='<th> % </th>';
 											str+='<th>Pending</th>';
+											str+='<th> % </th>';
 											str+='<th>No Smart Phone</th>';
+											str+='<th> % </th>';
 										}
 									}else{
-										str+='<th>Total</th>';
+										str+='<th style="border-left:1px solid #ccc;">Total</th>';
 										str+='<th>Installed</th>';
+										str+='<th> % </th>';
 										str+='<th>Pending</th>';
+										str+='<th> % </th>';
 										str+='<th>No Smart Phone</th>';
+										str+='<th> % </th>';
 									}
 								}
 							str+='</tr>';
@@ -517,7 +551,18 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 					str+='<tbody>';
 						for(var i in result){
 							str+='<tr>';
+								if(locationType == "constituency")
+									str+='<td>'+result[i].parlName+'</td>';
 								str+='<td>'+result[i].name+'</td>';
+								
+								str+='<td>'+result[i].totalCount+'</td>';
+								str+='<td>'+result[i].installed+'</td>';
+								str+='<td class="f_13 text-success">'+result[i].installedPerc+'</td>';
+								str+='<td>'+result[i].pending+'</td>';
+								str+='<td class="f_13 text-success">'+result[i].pendingPerc+'</td>';
+								str+='<td>'+result[i].notHavingSmartPhone+'</td>';
+								str+='<td class="f_13 text-success">'+result[i].notSmartPhonePerc+'</td>';
+								
 								if(result[i].subList !=null && result[i].subList.length>0){
 									for(var j in result[i].subList){
 										if(locationType != "district"){
@@ -529,19 +574,25 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 												}
 												if(result[i].subList[j].installedPerc == null || result[i].subList[j].installedPerc == 0){
 													str+='<td> - </td>';
+													str+='<td> - </td>';
 												}else{
-													str+='<td>'+result[i].subList[j].installed+' <span class="f_13 text-success"> '+result[i].subList[j].installedPerc+' %</span></td>';
+													str+='<td>'+result[i].subList[j].installed+'</td>';
+													str+='<td class="f_13 text-success">'+result[i].subList[j].installedPerc+'</td>';
 												}
 												
 												if(result[i].subList[j].pendingPerc == null || result[i].subList[j].pendingPerc == 0){
 													str+='<td> - </td>';
+													str+='<td> - </td>';
 												}else{
-													str+='<td>'+result[i].subList[j].pending+' <span class="f_13 text-success"> '+result[i].subList[j].pendingPerc+' %</span></td>';
+													str+='<td>'+result[i].subList[j].pending+'</td>';
+													str+='<td class="f_13 text-success">'+result[i].subList[j].pendingPerc+'</span></td>';
 												}
 												if(result[i].subList[j].notHavingSmartPhone == null || result[i].subList[j].notHavingSmartPhone == 0){
 													str+='<td> - </td>';
+													str+='<td> - </td>';
 												}else{
 													str+='<td>'+result[i].subList[j].notHavingSmartPhone+'</td>';
+													str+='<td class="f_13 text-success">'+result[i].subList[j].notSmartPhonePerc+'</td>';
 												}
 											}
 										}else{
@@ -552,19 +603,25 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 											}
 											if(result[i].subList[j].installedPerc == null || result[i].subList[j].installedPerc == 0){
 												str+='<td> - </td>';
+												str+='<td> - </td>';
 											}else{
-												str+='<td>'+result[i].subList[j].installed+' <span class="f_13 text-success"> '+result[i].subList[j].installedPerc+' %</span></td>';
+												str+='<td>'+result[i].subList[j].installed+'</td>';
+												str+='<td class="f_13 text-success">'+result[i].subList[j].installedPerc+'</td>';
 											}
 											
 											if(result[i].subList[j].pendingPerc == null || result[i].subList[j].pendingPerc == 0){
 												str+='<td> - </td>';
+												str+='<td> - </td>';
 											}else{
-												str+='<td>'+result[i].subList[j].pending+' <span class="f_13 text-success"> '+result[i].subList[j].pendingPerc+' %</span></td>';
+												str+='<td>'+result[i].subList[j].pending+'</td>';
+												str+='<td class="f_13 text-success">'+result[i].subList[j].pendingPerc+'</span></td>';
 											}
 											if(result[i].subList[j].notHavingSmartPhone == null || result[i].subList[j].notHavingSmartPhone == 0){
 												str+='<td> - </td>';
+												str+='<td> - </td>';
 											}else{
 												str+='<td>'+result[i].subList[j].notHavingSmartPhone+'</td>';
+												str+='<td class="f_13 text-success">'+result[i].subList[j].notSmartPhonePerc+'</td>';
 											}
 										}
 											
