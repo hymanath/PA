@@ -1,5 +1,7 @@
 package com.itgrids.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,6 +31,11 @@ public class PmRepresentee {
 	
 	private PmRefCandidate pmRefCandidate;
 	private LocationAddress userAddress;
+	
+	private User insertedUser;
+	private User updatedUser;
+	private Date insertedTime;
+	private Date updatedTime;
 	
 	@Id
 	@Column(name="pm_representee_id")
@@ -122,5 +129,36 @@ public class PmRepresentee {
 	public void setPmRefCandidate(PmRefCandidate pmRefCandidate) {
 		this.pmRefCandidate = pmRefCandidate;
 	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "inserted_user_id", insertable = false, updatable = false)
+	public User getInsertedUser() {
+		return insertedUser;
+	}
+	public void setInsertedUser(User insertedUser) {
+		this.insertedUser = insertedUser;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "updated_user_id", insertable = false, updatable = false)
+	public User getUpdatedUser() {
+		return updatedUser;
+	}
+	public void setUpdatedUser(User updatedUser) {
+		this.updatedUser = updatedUser;
+	}
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	@Column(name="updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
 	
 }
