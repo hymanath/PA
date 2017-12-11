@@ -20,11 +20,13 @@ import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
+import com.itgrids.partyanalyst.dto.TrainingCampSurveyVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardCoreService;
@@ -41,6 +43,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	private SetterAndGetterUtilService setterAndGetterUtilService;
 	private ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO;
 	private ICoreDashboardGenericService coreDashboardGenericService;
+	private ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO;
 	private ITrainingCampProgramDAO trainingCampProgramDAO;
 	private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
 	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
@@ -96,7 +99,98 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			SetterAndGetterUtilService setterAndGetterUtilService) {
 		this.setterAndGetterUtilService = setterAndGetterUtilService;
 	}
+	
+	/*
+	 * Swadhin 
+	 * @see com.itgrids.partyanalyst.service.ICoreDashboardCoreService#getFeedbackOnLeaders(java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.util.List, java.lang.Long, java.lang.Long)
+	 */
+	
+	public void setTrainingCampCadreFeedbackDetailsDAO(
+			ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO) {
+		this.trainingCampCadreFeedbackDetailsDAO = trainingCampCadreFeedbackDetailsDAO;
+	}
 
+	@SuppressWarnings("static-access")
+	public List<TrainingCampSurveyVO> getFeedbackOnLeaders(Long userAccessLevelId, List<Long> userAccessLevelValues, List<Long> trainingProgramIds,Long traingCampEnrollmentYearId,List<Long> trainingCampLevelIds,Long groupType){
+		List<TrainingCampSurveyVO> finalVOList1 = new ArrayList<TrainingCampSurveyVO>();
+		List<TrainingCampSurveyVO> finalVOList2 = new ArrayList<TrainingCampSurveyVO>();
+		List<TrainingCampSurveyVO> finalVOList = new ArrayList<TrainingCampSurveyVO>();
+		TrainingCampSurveyVO campSurveyVO = null;
+	    try{
+	    	List<Object[]> list1 = trainingCampCadreFeedbackDetailsDAO.getCommunicationFeedbackOnLeaders(userAccessLevelId,userAccessLevelValues,trainingProgramIds,traingCampEnrollmentYearId,trainingCampLevelIds,groupType,1L);
+	    	List<Object[]> list2 = trainingCampCadreFeedbackDetailsDAO.getCommunicationFeedbackOnLeaders(userAccessLevelId,userAccessLevelValues,trainingProgramIds,traingCampEnrollmentYearId,trainingCampLevelIds,groupType,2L);
+	    	if(list1 != null && list1.size() > 0){
+	    		buildTemplateForLocation(list1,finalVOList1);
+	    		for(Object[] param : list1){
+	    			campSurveyVO = (TrainingCampSurveyVO) setterAndGetterUtilService.getMatchedVOfromList(finalVOList1, "id", commonMethodsUtilService.getLongValueForObject(param[0]).toString());
+	    			if(commonMethodsUtilService.getLongValueForObject(param[2]).longValue() == 1L){
+	    				campSurveyVO.setPoor(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			}else if(commonMethodsUtilService.getLongValueForObject(param[2]).longValue() == 2L){
+	    				campSurveyVO.setAverage(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			}else if(commonMethodsUtilService.getLongValueForObject(param[2]).longValue() == 3L){
+	    				campSurveyVO.setGood(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			}else if(commonMethodsUtilService.getLongValueForObject(param[2]).longValue() == 4L){
+	    				campSurveyVO.setVeryGood(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			}else if(commonMethodsUtilService.getLongValueForObject(param[2]).longValue() == 5L){
+	    				campSurveyVO.setExcellent(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			}
+	    		}
+	    	}
+	    	TrainingCampSurveyVO vo1 = new TrainingCampSurveyVO();
+	    	vo1.setName("How is leader's communication ckills?");
+	    	vo1.getProgramsList().addAll(finalVOList1);
+	    	if(list2 != null && list2.size() > 0){
+	    		buildTemplateForLocation(list2,finalVOList2);
+	    		for(Object[] param : list2){
+	    			campSurveyVO = (TrainingCampSurveyVO) setterAndGetterUtilService.getMatchedVOfromList(finalVOList2, "id", commonMethodsUtilService.getLongValueForObject(param[0]).toString());
+	    			if(commonMethodsUtilService.getLongValueForObject(param[2]).longValue() == 1L){
+	    				campSurveyVO.setPoor(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			}else if(commonMethodsUtilService.getLongValueForObject(param[2]).longValue() == 2L){
+	    				campSurveyVO.setAverage(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			}else if(commonMethodsUtilService.getLongValueForObject(param[2]).longValue() == 3L){
+	    				campSurveyVO.setGood(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			}else if(commonMethodsUtilService.getLongValueForObject(param[2]).longValue() == 4L){
+	    				campSurveyVO.setVeryGood(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			}else if(commonMethodsUtilService.getLongValueForObject(param[2]).longValue() == 5L){
+	    				campSurveyVO.setExcellent(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			}
+	    		}
+	    	}
+	    	TrainingCampSurveyVO vo2 = new TrainingCampSurveyVO();
+	    	vo2.setName("How is leader's leadership skills?");
+	    	vo2.getProgramsList().addAll(finalVOList2);
+	    	finalVOList.add(vo1);
+	    	finalVOList.add(vo2);
+	    }catch(Exception e){
+	    	LOG.error(" Error Occured in getFeedbackOnLeaders method in CoreDashboardCoreService class" ,e);
+	    }
+	    return finalVOList;
+	}
+	
+	public void buildTemplateForLocation(List<Object[]> list,List<TrainingCampSurveyVO> finalVOList){
+		try{
+			Map<Long,String> locIdAndNameMap = new HashMap<Long,String>();
+			TrainingCampSurveyVO campSurveyVO = null;
+			for(Object[] param : list){
+				locIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+			}
+			if(locIdAndNameMap != null && locIdAndNameMap.size() > 0){
+				for(Entry<Long,String> param : locIdAndNameMap.entrySet()){
+					campSurveyVO = new TrainingCampSurveyVO();
+					campSurveyVO.setId(param.getKey());
+					campSurveyVO.setName(param.getValue());
+					campSurveyVO.setPoor(0L);
+					campSurveyVO.setAverage(0L);
+					campSurveyVO.setGood(0L);
+					campSurveyVO.setVeryGood(0L);
+					campSurveyVO.setExcellent(0L);
+					finalVOList.add(campSurveyVO);
+				}
+			}
+		}catch(Exception e){
+			LOG.error(" Error Occured in buildTemplateForCenter method in CoreDashboardCoreService class" ,e);
+		}
+	}	
 	/**
 	* @author Swadhin 
 	* @Description :This Service Method is used to get top5 strong or top5 poor members attended and eligible count..structure 
