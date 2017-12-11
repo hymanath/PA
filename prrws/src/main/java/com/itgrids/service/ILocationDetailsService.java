@@ -24,5 +24,6 @@ public interface ILocationDetailsService {
 	public List<KeyValueVO>  getPetitionBriefLeadList();
 	public List<KeyValueVO>  getPetitionGrantList();
 	public List<KeyValueVO>  getPetitionStatusList();
+	public List<KeyValueVO>  getWorkTypeList();
 	
 }

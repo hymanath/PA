@@ -28,7 +28,9 @@ import com.itgrids.dao.IPetitionMemberDAO;
 import com.itgrids.dao.IPetitionStatusDAO;
 import com.itgrids.dao.IPetitionSubjectDAO;
 import com.itgrids.dao.IPetitionWorkDetailsDAO;
+import com.itgrids.dao.IPmWorkTypeDAO;
 import com.itgrids.dao.ITehsilDAO;
+import com.itgrids.dao.IWorkMainCategoryDAO;
 import com.itgrids.dao.impl.PetitionSubjectDAO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
@@ -75,6 +77,10 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private IPetitionGrantDAO petitionGrantDAO;
 	@Autowired 
 	private IPetitionStatusDAO petitionStatusDAO;
+	@Autowired 
+	private IPmWorkTypeDAO pmWorkTypeDAO;
+	@Autowired 
+	private IWorkMainCategoryDAO workMainCategoryDAO;
 	 /**
 		 * Date : 30/11/2017
 		 * Author :babu kurakula <href:kondababu.kurakula@itgrids.com>
@@ -521,6 +527,30 @@ public List<KeyValueVO>  getPetitionStatusList(){
 		}
 	}catch(Exception e){
 		LOG.error("Exception occured at getPetitionStatusList() in LocationDetailsService class ", e);
+	}
+	return resultList;
+}
+
+/*
+ * Author : krishna
+  * Date : 04/12/2017
+  * Description : { Getting Petition Status List Details }
+  */
+public List<KeyValueVO>  getWorkTypeList(){
+	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+	    try{
+		LOG.info("Entered into LocationDetailsService of getWorkTypeList ");
+		List<Object[]> workTypeObjsList = pmWorkTypeDAO.getWorkTypeList();
+		if(workTypeObjsList != null && workTypeObjsList.size() >0){
+			for(Object[] param: workTypeObjsList){
+				KeyValueVO vo = new KeyValueVO();
+				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+				resultList.add(vo);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception occured at getWorkTypeList() in LocationDetailsService class ", e);
 	}
 	return resultList;
 }
