@@ -35,8 +35,28 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long locationTypeId;
 	private List<TrainingCampVO> trainingCampVOList = new ArrayList<TrainingCampVO>(0);
 	private List<SimpleVO> simpleVoList = new ArrayList<SimpleVO>();
+	private Long feedBackProgramCount;
+	private Long leaderFeedBackCount;
+	private Long feedBackQuizCount;
 	
-	
+	public Long getFeedBackProgramCount() {
+		return feedBackProgramCount;
+	}
+	public void setFeedBackProgramCount(Long feedBackProgramCount) {
+		this.feedBackProgramCount = feedBackProgramCount;
+	}
+	public Long getLeaderFeedBackCount() {
+		return leaderFeedBackCount;
+	}
+	public void setLeaderFeedBackCount(Long leaderFeedBackCount) {
+		this.leaderFeedBackCount = leaderFeedBackCount;
+	}
+	public Long getFeedBackQuizCount() {
+		return feedBackQuizCount;
+	}
+	public void setFeedBackQuizCount(Long feedBackQuizCount) {
+		this.feedBackQuizCount = feedBackQuizCount;
+	}
 	private Long schdlStatusId;
 	private String schdlStatus;
 	private Long othersCount;
