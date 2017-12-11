@@ -215,8 +215,7 @@
 					<img src="Assests/img/Group 2348.png" >
 					<h5 style="display: inline-block;">LED MONITORING</h5>
 					<div class="ledOverAchvmntAllCls" style="text-align: right">
-						<h2 class="" style="margin-top: 0px"></h2>
-						<p class="">ON/OFF<br>Lights/TOTAL LIGHTS</p>
+						
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange LEDMONITORINGColor" title="click to add as favourite component." attr_url="getlightsMonitoringDashboard" attr_color_name="gray" attr_full_block_name="LED MONITORING" attr_block_name="LEDMONITORING" aria-hidden="true" attr_page_id="3"></i>
@@ -228,9 +227,8 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2347.png" >
 					<h5 style="display: inline-block;">SPIKE ANALYSIS</h5>
-					<div class=" " style="text-align: right">
-						<h2 class="spikeOverAchvmntAllCls" style="margin-top: 0px"></h2>
-						<p class="">TOTAL CASES</p>
+					<div class="spikeOverAchvmntAllCls">
+						
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange SPIKEANALYSISColor" title="click to add as favourite component." attr_url="getdailySpikeReport" attr_full_block_name="SPIKE ANALYSIS" attr_color_name="gray" attr_block_name="SPIKEANALYSIS" aria-hidden="true" attr_page_id="3"></i>
@@ -242,9 +240,8 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/waterTank.png">
 					<h5 style="display: inline-block;">WATER TANK CHLORINATION</h5>
-					<div class=" " style="text-align: right">
-						<h2 class="waterTankChlorinationAllCls" style="margin-top: 0px"></h2>
-						<p class="">CHLORINATED</p>
+					<div class="waterTankChlorinationAllCls" style="text-align: right">
+						
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange WATERTANKCHLORINATIONColor" title="click to add as favourite component." attr_url="waterTanksClorinationDashBoard" attr_full_block_name="WATER TANK CLORINATION" attr_color_name="gray" attr_block_name="WATERTANKCLORINATION" aria-hidden="true"></i>
@@ -443,9 +440,8 @@
 				<div class="whiteBlock">
 					<img src="Assests/img/waterTank.png">
 					<h5 style="display: inline-block;">WATER TANK CHLORINATION</h5>
-					<div class=" " style="text-align: right">
-						<h2 class="waterTankChlorinationAllCls" style="margin-top: 0px"></h2>
-						<p class="">CHLORINATED</p>
+					<div class="waterTankChlorinationAllCls" style="text-align: right">
+						
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange WATERTANKCHLORINATIONColor" title="click to add as favourite component." attr_url="waterTanksClorinationDashBoard" attr_full_block_name="WATER TANK CHLORINATION" attr_color_name="gray" attr_block_name="WATERTANKCHLORINATION" aria-hidden="true" attr_page_id="5"></i>

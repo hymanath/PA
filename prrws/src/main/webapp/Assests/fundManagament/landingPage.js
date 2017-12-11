@@ -16,7 +16,7 @@ var blockClassObject = {
 }
 
 var blockHeadingObject = {
-"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"TOTAL CASES","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery New':"ACHIEVED",'Silk worm New':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"NOTIFIED & IN PROGRESS",'ASSETS':"COMPLETED & CLOSED","WATER SOURCE":"TOTAL","WORKS":"COMPLETED","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA-SLA KPI":"Beyond SLA/etaal - KPI","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CHLORINATION":"chlorinated","coffee":"COFFEE","Raising and Maintenance of Nursery":"Raising and Maintenance of Nursery","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and CheckDams","Mini Percolation Tanks":"Mini Percolation Tanks","Continuous Contour Trenches":"Continuous Contour Trenches","Greenary works Chettu":"Greenary works Chettu","Agriculture Related Works":"Agriculture Related Works","Rural Sanitation Works":"Rural Sanitation Works","Soil Moisture Conservation works Neeru":"Soil Moisture Conservation works Neeru","Works in community lands":"Works in community lands","OTHERS":"OTHERS","Institutional Development Works":"Institutional Development Works","Road Works":"Road Works","Water Harvesting Structures Neeru":"Water Harvesting Structures Neeru","Fisheries work":"Fisheries work","AH-Live Stock Related works":"AH-Live Stock Related works",
+"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery New':"ACHIEVED",'Silk worm New':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"NOTIFIED & IN PROGRESS",'ASSETS':"COMPLETED & CLOSED","WATER SOURCE":"TOTAL","WORKS":"COMPLETED","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA-SLA KPI":"Beyond SLA/etaal - KPI","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CHLORINATION":"","coffee":"COFFEE","Raising and Maintenance of Nursery":"Raising and Maintenance of Nursery","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and CheckDams","Mini Percolation Tanks":"Mini Percolation Tanks","Continuous Contour Trenches":"Continuous Contour Trenches","Greenary works Chettu":"Greenary works Chettu","Agriculture Related Works":"Agriculture Related Works","Rural Sanitation Works":"Rural Sanitation Works","Soil Moisture Conservation works Neeru":"Soil Moisture Conservation works Neeru","Works in community lands":"Works in community lands","OTHERS":"OTHERS","Institutional Development Works":"Institutional Development Works","Road Works":"Road Works","Water Harvesting Structures Neeru":"Water Harvesting Structures Neeru","Fisheries work":"Fisheries work","AH-Live Stock Related works":"AH-Live Stock Related works",
 "Renovation and Improvements to existing Check Dams Check Wall":"ACHIEVED","Road Formation Upto WBM GR II Including CD works":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas":"ACHIEVED","Construction Of Animal Hostel":"ACHIEVED","Roads for Unconnected Habitations 2011-12":"ACHIEVED","Construction of New Check Dam":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality":"ACHIEVED","Construction of Food Grains Storage Structures of 250MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works in Tribal areas":"ACHIEVED","Construction of Village Haats Infrastructure fecilities":"ACHIEVED","Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham":"ACHIEVED","Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank":"ACHIEVED","Construction of Buildings for women self help group federation":"ACHIEVED","Work Site Facilities":"ACHIEVED","Renovation and Improvements to existing Percolation Tank  Mini Percolation tank":"ACHIEVED","GP level BNRGSK knowledge resource centre 2012-13 and afterwards":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality":"ACHIEVED","Production of Grafts in HNTC":"ACHIEVED","Improvements of RYTHU BAZAR":"ACHIEVED","Roads for Unconnected Habitations 2012-13 and afterwards":"ACHIEVED","HNTC Development":"ACHIEVED","New Open Well for Drinking water purpose":"ACHIEVED","Construction of Crematoria Burial Grounds":"ACHIEVED","Repairs to Existing Check Dam":"ACHIEVED","Formation of Road upto Gravel surface including CD works to agriculture fields":"ACHIEVED","Formation of Approach Road upto Gravel surface including CD works to Burial ground":"ACHIEVED","Construction of Food Grains Storage Structures of 500MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas":"ACHIEVED","Raising of Cashew bag seedlings for 2014-15":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas":"ACHIEVED","NTR Rural House":"NTR Rural House","Cattle Ponds":"Cattle Ponds","Desilting of Drinking Water Tanks":"Desilting of Drinking Water Tanks","Animal Husbandry Others":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank1":"ACHIEVED","Avenue Plantation":"ACHIEVED","Forest Others":"ACHIEVED","Scooping and Dibbling of seed":"ACHIEVED","IJP PROGRAM WORKS":"ACHIEVED",
 "Azolla Production Unit":"ACHIEVED","Construction of silopits of 3 MTs capacity":"ACHIEVED","Fodder trough for Cattle Cattle drinking water trough":"ACHIEVED","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"ACHIEVED","Raising of Perinnial Fodder":"ACHIEVED","Raising of Silvipasture clubbed with subabul plantation":"ACHIEVED","Raising and Maintenance of Avenue plantations":"ACHIEVED","Raising and Maintenance of Block Plantations":"ACHIEVED","Raising and Maintenance of nurseries":"ACHIEVED","Soil and Moisture Conservation Works":"ACHIEVED","CM EODB":"Total/Approved","bioMetricDashBoard":"TotalEmployeement/Present"
 }
@@ -31,9 +31,9 @@ if(windowWidth <500){
 	$(".landing-menu").css("display","flex");
 	$(".landing-menu li").css("width","16%");
 }
-$(document).on('cut copy paste', function (e) {
+/* $(document).on('cut copy paste', function (e) {
 	e.preventDefault();
-});
+}); */
 getAllConvergenceTypesConsolidated();//mgnrega components
 
 var favouritesArr = []
@@ -106,8 +106,10 @@ function buildFavouriteComponentsResult(result) {
 						if(result[i].name == 'LED MONITORING' || result[i].name == 'Led Monitoring')
 						{
 							str+='<div class="ledOverAchvmntAllCls"></div>';
+						}else if(result[i].name == 'WATER TANK CHLORINATION'){
+							str+='<div class="waterTankChlorinationAllCls text-right"></div>';
 						}else{
-							str+='<div class=" " style="text-align: right">';
+							str+='<div class="" style="text-align: right">';
 								str+='<h2 class="'+blockClassObject[compnentName]+'" style="margin-top: 0px"></h2>';
 								if(result[i].name == 'ENGINEERING DEPARTMENT')
 								{
@@ -118,6 +120,7 @@ function buildFavouriteComponentsResult(result) {
 								
 							str+='</div>';
 						}
+						
 						str+='<div class="block-footer" style="border-top: 1px solid lightgrey;padding-top: 5px">';
 							str+='<i class="fa fa-star starcolorChange '+componentNameWithoutSpace+'Color" attr_url="'+result[i].url
 							+'" attr_full_block_name="'+compnentName+'" attr_color_name="green" attr_block_name="'+componentNameWithoutSpace+'" aria-hidden="true"></i>';
@@ -454,9 +457,9 @@ function getTotalSpikeCases(){
       xhr.setRequestHeader("Content-Type", "application/json");
       },
       success : function(ajaxresp){
-		  $(".spikeOverAchvmntAllCls").html(0);
-		  if(ajaxresp != null && ajaxresp.length > 0){
-			 $(".spikeOverAchvmntAllCls").html(ajaxresp[0].count);
+		  if(ajaxresp != null){
+			 //$(".spikeOverAchvmntAllCls").html(ajaxresp[0].count);
+			 $(".spikeOverAchvmntAllCls").html(spikeData(ajaxresp));
 		  }
      }
   });
@@ -508,6 +511,21 @@ function getBasicLedOverviewDetails(){
 	}).done(function(result){
 		 $(".ledOverAchvmntAllCls").html(0);
 		if (result != null ) {
+			/* if(result[0].onLights !=null && result[0].onLights>0){
+				var onLights = result[0].onLights;
+			}else{
+				var onLights =0;
+			}
+			if(result[0].offLights !=null && result[0].offLights>0){
+				var offLights = result[0].offLights;
+			}else{
+				var offLights = 0;
+			}
+			if(result[0].totalLights !=null && result[0].totalLights>0){
+				var totalLights = result[0].totalLights;
+			}else{
+				var totalLights  = 0;
+			} */
 			var onLights = result[0].onLights;
 			var offLights = result[0].offLights;
 			var totalLights = result[0].totalLights;
@@ -1374,7 +1392,9 @@ function getSessionToken(){
 	});
 }
 function getWaterBodyCumulativeCounts(sessionToken){
-		
+		var oneMnthChlValue = 0;
+		var oneMnthCheckedValue = 0;
+		var oneMnthChrlPerc =0;
 		var json = {
 			fromDateStr	:moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY'),
 			toDateStr 	:moment().format('DD-MM-YYYY'),
@@ -1391,13 +1411,46 @@ function getWaterBodyCumulativeCounts(sessionToken){
 			}
 		}).done(function(result){
 			if(result !=null){
-				$(".waterTankChlorinationAllCls").html(result.clorinated);
-			}else{
-				$(".waterTankChlorinationAllCls").html("0");
+				oneMnthChlValue = result.clorinated;
+				oneMnthCheckedValue = result.checked;
+				if(oneMnthChlValue > 0 && oneMnthCheckedValue > 0){
+					oneMnthChrlPerc = oneMnthChlValue*100/oneMnthCheckedValue;
+				}
+			}
+			getWaterBodyCumulativeCountsDay(sessionToken,oneMnthChrlPerc);	
+		});
+		
+	}
+function getWaterBodyCumulativeCountsDay(sessionToken,oneMnthChrlPerc){
+		var oneDayChlValue = 0;
+		var oneDayCheckedValue = 0;
+		var oneDayChrlPerc =0;
+		var json = {
+			fromDateStr	:moment().format('DD-MM-YYYY'),
+			toDateStr 	:moment().format('DD-MM-YYYY'),
+			session		:sessionToken
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getWaterBodyCumulativeCounts',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null){
+				oneDayChlValue = result.clorinated;
+				oneDayCheckedValue = result.checked;
+				if(oneDayChlValue > 0 && oneDayCheckedValue > 0){
+					 oneDayChrlPerc = oneDayChlValue*100/oneDayCheckedValue;
+				}
+				 $(".waterTankChlorinationAllCls").html(waterClorinationData(oneMnthChrlPerc,oneDayChrlPerc));
 			}
 				
 		});
-	}
+	}	
 function getNREGSForestAbstact(type)
 {
 	$("."+type.replace(/\s+/g, '')+"AllCls").html(spinner);
@@ -1578,5 +1631,52 @@ function ledMonitoringData(onOffVal,totalLightsVal)
 			str+='<p class="">TOTAL LIGHTS</p>';
 		str+='</div>';
 	str+='</div>';				
+	return str;
+}
+function spikeData(ajaxresp)
+{
+	var str='';
+	str+='<div class="row" >';
+		str+='<div class="col-sm-12 text-right">';
+		if(ajaxresp.weekType == "Decrement"){
+			str+='<h5 style="margin-top: 0px"><span class="m_top5" style="font-size:13px;">PREV/THIS&nbsp;WEEK - </span> <b>'+ajaxresp.previousWeekCount+'/'+ajaxresp.thisWeekCount+'&nbsp;'+ajaxresp.weekPerc+'%</b><span><i class="fa fa-arrow-down text-success" aria-hidden="true"></i></span>';
+			str+='</h5>';
+		}else{
+			str+='<h5 style="margin-top: 0px;"><span class="m_top5" style="font-size:13px;">PREV/THIS&nbsp;WEEK - </span> <b>'+ajaxresp.previousWeekCount+'/'+ajaxresp.thisWeekCount+'&nbsp;'+ajaxresp.weekPerc+'%</b><span><i class="fa fa-arrow-up text-danger" aria-hidden="true"></i></span>';
+			str+='</h5>';
+		}
+			
+		str+='</div>';
+		str+='<div class="col-sm-12 text-right m_top10">';
+		if(ajaxresp.monthType == "Decrement"){
+			str+='<h5 class="" style="margin-top: 0px;margin-bottom: 10px;"><span class="m_top5" style="font-size:13px;">PREV/THIS&nbsp;MONTH - </span><b>'+ajaxresp.previousMonthCount+'/'+ajaxresp.thisMonthCount+'&nbsp;'+ajaxresp.mnthPerc+'%</b><span><i class="fa fa-arrow-down text-success" aria-hidden="true"></i></span>';
+			str+='</h5>';
+		}else{
+			str+='<h5 class="" style="margin-top: 0px; margin-bottom: 10px;"><span class="m_top5" style="font-size:13px;">PREV/THIS&nbsp;MONTH - </span><b>'+ajaxresp.previousMonthCount+'/'+ajaxresp.thisMonthCount+'&nbsp;'+ajaxresp.mnthPerc+'%</b><span><i class="fa fa-arrow-up text-danger" aria-hidden="true"></i></span>';
+			str+='</h5>';
+		}
+			
+		str+='</div>';
+	str+='</div>';		
+	return str;
+}
+function waterClorinationData(oneMnthChrlPerc,oneDayChrlPerc){
+	var str='';
+	str+='<div class="row" >';
+		str+='<div class="col-sm-6 text-right">';
+			str+='<h2 style="margin-top: 0px">'+oneMnthChrlPerc.toFixed(2)+'%</h2>';
+			str+='<p class="">MONTH</p>';
+		str+='</div>';
+		str+='<div class="col-sm-1 text-right">';
+			str+='<h2 style="font-size:45px;">/</h2>';
+		str+='</div>';
+		str+='<div class="col-sm-5 text-right">';
+			str+='<h2 class="" style="margin-top: 0px">'+oneDayChrlPerc.toFixed(2)+'%</h2>';
+			str+='<p class="">TODAY</p>';
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="m_top5">';
+		str+='<p class="">CHLORINATED</p>';
+	str+='</div>';
 	return str;
 }
