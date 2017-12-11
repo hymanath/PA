@@ -1,5 +1,6 @@
 package com.itgrids.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1041,4 +1042,96 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
  			return null;
  		}
  	}
+ 	
+ 	/*
+	 * Author : Nandhini k
+	 * @see com.itgrids.service.IHealthMedicalAndFamilyWelfareService#getCaseCountDiseases(java.lang.String, java.lang.String, java.util.List, java.util.List)
+	 * Date : 11/12/17
+	 */
+	public DiseasesVO getCaseCountDiseasesFrWeekAndMonth(List<Long> diseasesIdList,List<Long> deptIdList){
+		DiseasesVO finalVO = new DiseasesVO();
+		try{
+			String latestUpdatedDate = null; 
+			//LatestDate
+			List<Date> dateList = departmentDiseasesInfoDAO.getLatestUpdatedDate();
+			if(dateList != null && !dateList.isEmpty()){
+				latestUpdatedDate = dateList.get(0).toString();
+			}
+			/* This Week And Previous Week Cases */
+			String  thisWekStartDate = getRequiredDateByPassingDays(latestUpdatedDate,6);
+			String prvWeekEndDate = getRequiredDateByPassingDays(thisWekStartDate,1);
+			String prvWekStartDate = getRequiredDateByPassingDays(prvWeekEndDate,6);
+			String thisMonthStartDate = getRequiredDateByPassingDays(latestUpdatedDate,29);
+			String prvMnthEndDate = getRequiredDateByPassingDays(thisMonthStartDate,1);
+			String prvMnthStartDate = getRequiredDateByPassingDays(prvMnthEndDate,29);
+			
+			
+			Date thisWeekStartDate = commonMethodsUtilService.stringTODateConvertion(thisWekStartDate,"yyyy-MM-dd","");
+			Date thisWeekEndDate = commonMethodsUtilService.stringTODateConvertion(latestUpdatedDate,"yyyy-MM-dd","");
+			Date previousWeekStartDate = commonMethodsUtilService.stringTODateConvertion(prvWekStartDate,"yyyy-MM-dd","");
+			Date previousWeekEndDate = commonMethodsUtilService.stringTODateConvertion(prvWeekEndDate,"yyyy-MM-dd","");
+			diseasesIdList = commonMethodsUtilService.makeEmptyListByZeroValue(diseasesIdList);
+			deptIdList = commonMethodsUtilService.makeEmptyListByZeroValue(deptIdList);
+			Date thisMnthStartDate = commonMethodsUtilService.stringTODateConvertion(thisMonthStartDate,"yyyy-MM-dd","");
+			Date thisMnthEndDate = commonMethodsUtilService.stringTODateConvertion(latestUpdatedDate,"yyyy-MM-dd","");
+			Date previousMnthStartDate = commonMethodsUtilService.stringTODateConvertion(prvMnthStartDate,"yyyy-MM-dd","");
+			Date previousMnthEndDate = commonMethodsUtilService.stringTODateConvertion(prvMnthEndDate,"yyyy-MM-dd","");
+			
+			
+			Long thisWeekCases = departmentDiseasesInfoDAO.getNoOfCasesFrDisease(thisWeekStartDate,thisWeekEndDate,diseasesIdList,deptIdList);
+			Long prvWeekCases = departmentDiseasesInfoDAO.getNoOfCasesFrDisease(previousWeekStartDate,previousWeekEndDate,diseasesIdList,deptIdList);
+			Long thisMnthCases = departmentDiseasesInfoDAO.getNoOfCasesFrDisease(thisMnthStartDate,thisMnthEndDate,diseasesIdList,deptIdList);
+			Long prvMnthCases = departmentDiseasesInfoDAO.getNoOfCasesFrDisease(previousMnthStartDate,previousMnthEndDate,diseasesIdList,deptIdList);
+			
+			finalVO.setThisWeekCount(thisWeekCases);
+			finalVO.setPreviousWeekCount(prvWeekCases);
+			finalVO.setThisMonthCount(thisMnthCases);
+			finalVO.setPreviousMonthCount(prvMnthCases);
+			
+			//Week Diff Perc
+			if(finalVO.getThisWeekCount() != null && finalVO.getThisWeekCount().longValue() > 0L && finalVO.getPreviousWeekCount() != null && finalVO.getPreviousWeekCount() > 0L){
+				finalVO.setWeekPerc(new BigDecimal(finalVO.getThisWeekCount()*100.0/finalVO.getPreviousWeekCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				finalVO.setWeekPerc(new BigDecimal(Double.valueOf(finalVO.getWeekPerc()) - 100.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				if(finalVO.getWeekPerc().trim().contains("-")){
+					finalVO.setWeekType("Decrement");
+				}else{
+					finalVO.setWeekType("Increment");
+				}
+			}else{
+				finalVO.setWeekPerc("0.00");
+			}
+			
+			//Month Diff Perc
+			if(finalVO.getThisMonthCount() != null && finalVO.getThisMonthCount().longValue() > 0L && finalVO.getPreviousMonthCount() != null && finalVO.getPreviousMonthCount() > 0L){
+				finalVO.setMnthPerc(new BigDecimal(finalVO.getThisMonthCount()*100.0/finalVO.getPreviousMonthCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				finalVO.setMnthPerc(new BigDecimal(Double.valueOf(finalVO.getMnthPerc()) - 100.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				if(finalVO.getMnthPerc().trim().contains("-")){
+					finalVO.setMonthType("Decrement");
+				}else{
+					finalVO.setMonthType("Increment");
+				}
+			}else{
+				finalVO.setMnthPerc("0.00");
+			}
+		}catch(Exception e){
+			LOG.error(" Exception occured in HealthMedicalAndFamilyWelfareService ,getCaseCountDiseasesFrWeekAndMonth() ",e);
+		}
+		return finalVO;
+	}
+	
+	private static String getRequiredDateByPassingDays(String updatedDate,int noOfDays) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(sdf.parse(updatedDate));
+			cal.add(Calendar.DATE, -noOfDays);
+			Date pastDate = cal.getTime();
+			String dateStr = sdf.format(pastDate);			
+			return dateStr;
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDateBeforeNDays - LightMonitoringService service",e);
+		}
+		return null;
+	} 
 }

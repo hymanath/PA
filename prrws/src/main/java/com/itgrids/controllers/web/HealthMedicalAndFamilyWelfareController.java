@@ -56,4 +56,9 @@ public class HealthMedicalAndFamilyWelfareController {
 		Set<LocationIdNameVO> locationList = healthMedicalAndFamilyWelfareService.getAllSubLocationsBySuperLocationId(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDiseasesIdList(),inputVO.getDeptIdsList(),inputVO.getSuperLocationId(),inputVO.getType());
 		return locationList;
 	}
+	@PostMapping("/getCaseCountDiseasesFrWeekAndMonth")
+	public @ResponseBody DiseasesVO getCaseCountDiseasesFrWeekAndMonth(@RequestBody InputVO inputVO){
+		DiseasesVO returnVO = healthMedicalAndFamilyWelfareService.getCaseCountDiseasesFrWeekAndMonth(inputVO.getDiseasesIdList(),inputVO.getDeptIdsList());
+		return returnVO;
+	}
 }
