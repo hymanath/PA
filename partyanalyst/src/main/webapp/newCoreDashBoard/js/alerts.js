@@ -1054,6 +1054,8 @@
 			scopeIdsArr.push(6);
 		}else if(locationId==8){
 			scopeIdsArr.push(8);
+		} else if (locationId == 4) {
+			scopeIdsArr.push(4);
 		}
 		var districtIdArr = [];
 	//	var alertStatusArr = [];
