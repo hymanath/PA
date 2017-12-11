@@ -5320,6 +5320,7 @@
 <script src="newCoreDashBoard/js/cadreInsurance.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/pressmeet.js" type="text/javascript"></script>        
 <script src="newCoreDashBoard/js/prajaSankaplaYatra.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/trainingCampInfo.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/kaizala.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
