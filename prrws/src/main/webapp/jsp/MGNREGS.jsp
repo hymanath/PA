@@ -33,6 +33,7 @@
 </head>
 <body>
 <script type="text/javascript">
+var loggedInUserId = '${sessionScope.User.userId}';
 var searchParams = new URLSearchParams(window.location.search);
 	searchParams = searchParams.get("component");
 </script>
@@ -242,6 +243,9 @@ var searchParams = new URLSearchParams(window.location.search);
 						</div>
 					</div>
 				</div>
+				<div class="col-sm-12 text-right" id="logOutId" style="display:none;">
+		              <a href="loginPage" class="btn btn-success btn-logout">Logout</a>
+	             </div>
 			</div>
 		</div>
 	</section>
@@ -375,7 +379,45 @@ var searchParams = new URLSearchParams(window.location.search);
 			</div><!--  /.modal-content -->  
 		</div><!--  /.modal-dialog -->
 	</div>	
-	
+	<div class="modal fade" tabindex="-1" id="iconModalId" role="dialog" style="z-index:99999;">
+		<div class="modal-dialog" style="width:60%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close closeShowPdfCls1" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="panchayatId">Panchayats vs Expenditure comments updating</h4>  
+				</div>
+				<div class="modal-body">
+					<div class="row">	
+						<div class="col-sm-4">
+						<label>Select Status</label>
+							<select class="form-control chosen-select" id="statusModalId">
+								<!--<option value="0">Select Status </option>-->
+							</select>
+						</div>
+						<div class="col-sm-8">
+							<div class="row">
+								<div class="col-sm-6">
+								  <label>Comment</label>
+									<textarea class="form-control" rows="3" id="commentId"></textarea>
+								</div>
+								<div class="col-sm-6">
+								   <label>Action Plan</label>
+									<textarea class="form-control" rows="3" id="actionTypeId"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<button type="button" class="btn btn-success btn-sm" id="updateId">Submit</button>
+							<div id="errorId"  style="color:red;"></div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<!--<button type="button" class="btn btn-default" data-dismiss="modal closeShowPdfCls">Close</button>-->
+				</div>
+			</div><!--  /.modal-content -->  
+		</div><!--  /.modal-dialog -->
+	</div>	
 </main>
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
@@ -407,6 +449,9 @@ $(document).on("click","#viewSwitchBtn li",function(){
 	$("#consolidatedView").show();
 	$("#projectData,#projectOverviewBlock").hide();
 });
+if(loggedInUserId == 1){
+ $("#logOutId").show();
+}
 </script>
 </body>
 </html>
