@@ -97,9 +97,16 @@ public class UserTypeVO implements Serializable{
 	private Long notSmartPhone = 0L;
 	private String installedPerc;
 	private String pendingPerc;
+	private String notSmartPhonePerc;
 	private List<UserTypeVO> subList1 = new ArrayList<UserTypeVO>(0);
 	
 	
+	public String getNotSmartPhonePerc() {
+		return notSmartPhonePerc;
+	}
+	public void setNotSmartPhonePerc(String notSmartPhonePerc) {
+		this.notSmartPhonePerc = notSmartPhonePerc;
+	}
 	public List<UserTypeVO> getSubList1() {
 		return subList1;
 	}

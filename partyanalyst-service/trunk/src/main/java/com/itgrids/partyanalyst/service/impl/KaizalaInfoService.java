@@ -1262,6 +1262,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				 	    			subvo.setNotHavingSmartPhone(subobj.getLong("notHavingSmartPhone"));
 				 	    			subvo.setInstalledPerc(subobj.getString("installedPerc"));
 				 	    			subvo.setPendingPerc(subobj.getString("pendingPerc"));
+				 	    			subvo.setNotSmartPhonePerc(subobj.getString("notSmartPhonePerc"));
 				 	    			vo.getSubList().add(subvo);
 				 	    		 }
 		 	    			}
@@ -1310,6 +1311,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		 	    			vo.setNotHavingSmartPhone(obj.getLong("notHavingSmartPhone"));
 		 	    			vo.setInstalledPerc(obj.getString("installedPerc"));
 		 	    			vo.setPendingPerc(obj.getString("pendingPerc"));
+		 	    			vo.setNotSmartPhonePerc(obj.getString("notSmartPhonePerc"));
 		 	    			returnList.add(vo);
 		 	    		 }
 	 	    		}
@@ -1360,13 +1362,25 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				 	    			subvo.setName(subobj.getString("name"));
 				 	    			subvo.setTotalCount(subobj.getLong("totalCount"));
 				 	    			subvo.setInstalled(subobj.getLong("installed"));
-				 	    			subvo.setPending(subobj.getLong("pending"));
+				 	    			//subvo.setPending(subobj.getLong("pending"));
 				 	    			subvo.setNotHavingSmartPhone(subobj.getLong("notHavingSmartPhone"));
 				 	    			//subvo.setInstalledPerc(subobj.getString("installedPerc"));
 				 	    			//subvo.setPendingPerc(subobj.getString("pendingPerc"));
+				 	    			subvo.setPending(subvo.getTotalCount() - subvo.getInstalled() - subvo.getNotHavingSmartPhone());
+				 	    			subvo.setInstalledPerc(calculatePercantage(subvo.getInstalled(), subvo.getTotalCount()).toString());
+				 	    			subvo.setNotSmartPhonePerc(calculatePercantage(subvo.getNotHavingSmartPhone(), subvo.getTotalCount()).toString());
+				 	    			subvo.setPendingPerc(calculatePercantage(subvo.getPending(), subvo.getTotalCount()).toString());
 				 	    			vo.getSubList().add(subvo);
+				 	    			
+				 	    			vo.setTotalCount(vo.getTotalCount()+subobj.getLong("totalCount"));
+				 	    			vo.setInstalled(vo.getInstalled()+subobj.getLong("installed"));
+				 	    			vo.setNotHavingSmartPhone(vo.getNotHavingSmartPhone()+subobj.getLong("notHavingSmartPhone"));
+				 	    			vo.setPending(vo.getPending()+subvo.getPending());
 				 	    		 }
 		 	    			}
+		 	    			vo.setInstalledPerc(calculatePercantage(vo.getInstalled(), vo.getTotalCount()).toString());
+		 	    			vo.setNotSmartPhonePerc(calculatePercantage(vo.getNotHavingSmartPhone(), vo.getTotalCount()).toString());
+		 	    			vo.setPendingPerc(calculatePercantage(vo.getPending(), vo.getTotalCount()).toString());
 		 	    			returnList.add(vo);
 		 	    		 }
 	 	    		}
@@ -1496,6 +1510,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				    	  if(totalMembers != null){
 				    		  vo.setInstalledPerc(calculatePercantage(vo.getInstalled(), totalMembers).toString());
 				    		  vo.setPendingPerc(calculatePercantage(vo.getPending(), totalMembers).toString());
+				    		  vo.setNotSmartPhonePerc(calculatePercantage(vo.getNotSmartPhone(), totalMembers).toString());
 				    	  }
 				    	if(vo.getSubList1() != null && !vo.getSubList1().isEmpty()){
 				    		for (UserTypeVO subvo : vo.getSubList1()) {
@@ -1503,6 +1518,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 								if(subTotal != null){
 									subvo.setInstalledPerc(calculatePercantage(subvo.getInstalled(), subTotal).toString());
 									subvo.setPendingPerc(calculatePercantage(subvo.getPending(), subTotal).toString());
+									subvo.setNotSmartPhonePerc(calculatePercantage(subvo.getNotSmartPhone(), subTotal).toString());
 								}
 							}
 				    	}
