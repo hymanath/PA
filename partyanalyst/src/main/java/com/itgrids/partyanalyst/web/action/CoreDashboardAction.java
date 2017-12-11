@@ -58,6 +58,7 @@ import com.itgrids.partyanalyst.dto.TabLoginAuthVO;
 import com.itgrids.partyanalyst.dto.ToursBasicVO;
 import com.itgrids.partyanalyst.dto.ToursOverviewDtlsvO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
+import com.itgrids.partyanalyst.dto.TrainingCampSurveyVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
@@ -173,6 +174,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<Long> partyMeetingLevelIds = new ArrayList<Long>();
 	private List<SessionVO> sessionVOList = new ArrayList<SessionVO>();
 	private AlertOverviewVO alertOverviewVO = new AlertOverviewVO();
+	private List<TrainingCampSurveyVO> campSurveyVOs;
 	
 	/**
 	 * starting Payment Gateway required parameters
@@ -996,7 +998,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			List<KaizalaDashboardVO> kaizalaDashboardList) {
 		this.kaizalaDashboardList = kaizalaDashboardList;
 	}
+	
 
+	public List<TrainingCampSurveyVO> getCampSurveyVOs() {
+		return campSurveyVOs;
+	}
+
+	public void setCampSurveyVOs(List<TrainingCampSurveyVO> campSurveyVOs) {
+		this.campSurveyVOs = campSurveyVOs;
+	}
 	public List<KeyValueVO> getKeyValueVOList() {
 		return keyValueVOList;
 	}
@@ -5249,4 +5259,54 @@ public String getInsuraceStatusWiseComplaintsDetails()
 		return Action.SUCCESS;
 	}
 	
+	public String getFeedbackOnLeaders(){
+		 try{
+			 jObj = new JSONObject(getTask());
+			 
+			   final HttpSession session = request.getSession();
+				
+			   Long userId = null;
+				final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				if(user == null || user.getRegistrationID() == null){
+					userId = 1L;
+				}
+				else{
+					userId = user.getRegistrationID();
+				}
+				List<Long> programIdList = new ArrayList<Long>();
+				JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
+				if(programIdArr!=null &&  programIdArr.length()>0){
+					for( int i=0;i<programIdArr.length();i++){ 
+						programIdList.add(Long.valueOf(programIdArr.getString(i)));
+					}
+				}
+			    Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+				List<Long> userAccessLevelValues=new ArrayList<Long>();
+				JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+				if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+					for( int i=0;i<userAccessLevelValuesArray.length();i++){
+						userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+					}
+				}
+				Long traingCampEnrollmentYearId = jObj.getLong("traingCampEnrollmentYearId");
+								
+				List<Long> trainingCampLevelIds=new ArrayList<Long>();
+				JSONArray trainingCampLevelIdArr=jObj.getJSONArray("trainingCampLevelIds");
+				if(trainingCampLevelIdArr!=null &&  trainingCampLevelIdArr.length()>0){
+					for( int i=0;i<trainingCampLevelIdArr.length();i++){
+						trainingCampLevelIds.add(Long.valueOf(trainingCampLevelIdArr.getString(i)));
+					}
+				}
+				
+				
+				Long stateId = jObj.getLong("stateId");
+				String dateStr = jObj.getString("dateStr");
+				Long groupType = jObj.getLong("groupType");
+				campSurveyVOs = coreDashboardCoreService.getFeedbackOnLeaders(userAccessLevelId,userAccessLevelValues,programIdList,traingCampEnrollmentYearId,trainingCampLevelIds,groupType);
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getUserTypeWiseTotalEligibleAndAttendedCnt() method of CoreDashBoardAction", e); 
+		 }
+		 return Action.SUCCESS;
+	 }
 }
+//public List<TrainingCampSurveyVO> getFeedbackOnLeaders(Long userAccessLevelId, List<Long> userAccessLevelValues, List<Long> trainingProgramIds,Long traingCampEnrollmentYearId,List<Long> trainingCampLevelIds,Long groupType)
