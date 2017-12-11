@@ -112,4 +112,8 @@ public class RepresentationRequestController {
     public @ResponseBody List<KeyValueVO> petitionStatusDAO(@RequestBody Map<String,String> inputMap ) {
        return locationDetailsService.getPetitionStatusList();
     }
+	@RequestMapping(value ="/getWorkTypeList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getWorkTypeList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getWorkTypeList();
+    }
 }
