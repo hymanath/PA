@@ -4567,6 +4567,8 @@
     	<property name="panchayatDAO" ref="panchayatDAO" />
     	</bean>
     	<bean name="coreDashboardCoreService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardCoreService" >
-    	<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+    		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+    		<property name="coreDashboardGenericService" ref="coreDashboardGenericService" />
+    		<property name="trainingCampDetailsInfoDAO" ref="trainingCampDetailsInfoDAO" />
     	</bean>
 </beans>			
