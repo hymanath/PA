@@ -44,10 +44,10 @@ public class FundManagementDashboardController {
 	@Autowired 
 	private IConstituencyWiseWorkStatusService constituencyWiseWorkStatusService;
 	
-	@RequestMapping(value ="/", method = RequestMethod.GET)
+	/*@RequestMapping(value ="/", method = RequestMethod.GET)
     public String indexPage(ModelMap model) {
 		return "MGNREGS";
-    }
+    }*/
 	
 	@RequestMapping(value ="/fundManagementDashboard", method = RequestMethod.GET)
     public String fundManagementDashboardPage(ModelMap model) {
