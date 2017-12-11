@@ -4571,5 +4571,11 @@
     		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     		<property name="coreDashboardGenericService" ref="coreDashboardGenericService" />
     		<property name="trainingCampDetailsInfoDAO" ref="trainingCampDetailsInfoDAO" />
+    		<property name="trainingCampProgramDAO" ref="trainingCampProgramDAO" />
+    		<property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO" />
+    		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO" />
+    		<property name="trainingCampBatchDAO" ref="trainingCampBatchDAO" /> 
+    		<property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO" /> 
+    		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" /> 
     	</bean>
 </beans>			

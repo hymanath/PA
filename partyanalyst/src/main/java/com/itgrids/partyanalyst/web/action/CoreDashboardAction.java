@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.dto.InsuranceLagDaysVO;
 import com.itgrids.partyanalyst.dto.InsuranceSimpleVO;
 import com.itgrids.partyanalyst.dto.KaizalaDashboardVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -203,6 +204,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ToursOverviewDtlsvO tourOverviewDtlsVO;
 	private List<ToursOverviewDtlsvO> tourOverviewDtlsList;
 	private List<KaizalaDashboardVO> kaizalaDashboardList;
+	private List<KeyValueVO> keyValueVOList;
 	
 	//setters And Getters
 	public List<Long> getProgramIdsList() {
@@ -995,6 +997,13 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		this.kaizalaDashboardList = kaizalaDashboardList;
 	}
 
+	public List<KeyValueVO> getKeyValueVOList() {
+		return keyValueVOList;
+	}
+
+	public void setKeyValueVOList(List<KeyValueVO> keyValueVOList) {
+		this.keyValueVOList = keyValueVOList;
+	}
 
 	//business methods
 	public String execute(){
@@ -5188,4 +5197,56 @@ public String getInsuraceStatusWiseComplaintsDetails()
 		 }
 		 return Action.SUCCESS;
 	 }
+	public String getProgramIds(){
+		try {
+			LOG.info("Entered into getProgramIds()  of CoreDashboardAction");
+			
+			keyValueVOList = coreDashboardCoreService.getProgramIdsList();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getProgramIds() method of CoreDashboardAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCadreCommiteeEnrollmentIds(){
+		try {
+			LOG.info("Entered into getCadreCommiteeEnrollmentIds()  of CoreDashboardAction");
+			
+			keyValueVOList = coreDashboardCoreService.getCadreCommiteeEnrollmentIds();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCadreCommiteeEnrollmentIds() method of CoreDashboardAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getTrainingCampBasicDetailsCntOverviewDayWise(){
+		try {
+			LOG.info("Entered into getTrainingCampBasicDetailsCntOverviewDayWise()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long globalActivityMemberId = jObj.getLong("globalActivityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			
+			JSONArray enrollmentYearIdsArr = jObj.getJSONArray("enrollmentYearIds");  
+			List<Long> enrollmentYearIdsList = new ArrayList<Long>();
+			if(enrollmentYearIdsArr != null && enrollmentYearIdsArr.length() > 0){
+				for (int i = 0; i < enrollmentYearIdsArr.length(); i++){
+					enrollmentYearIdsList.add(Long.parseLong(enrollmentYearIdsArr.getString(i)));          
+				}  
+			}
+			
+			JSONArray programIdsArr = jObj.getJSONArray("programIds");  
+			List<Long> programIdList = new ArrayList<Long>();
+			if(programIdsArr != null && programIdsArr.length() > 0){
+				for (int i = 0; i < programIdsArr.length(); i++){
+					programIdList.add(Long.parseLong(programIdsArr.getString(i)));          
+				}  
+			}
+			trainingCampProgramVO = coreDashboardCoreService.getTrainingCampBasicDetailsCntOverviewDayWise(globalActivityMemberId,stateId,fromDate,toDate, enrollmentYearIdsList,programIdList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTrainingCampBasicDetailsCntOverviewDayWise() method of CoreDashboardAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
