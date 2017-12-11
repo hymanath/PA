@@ -48,7 +48,7 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 	
 	str+'<div class="row">';
 	for(var i in result){
-		str+='<h4 class="text-capitalize m_top10"><b>'+result[i].name+'</b></h4>';
+		str+='<h4 class="text-capitalize m_top10"><b>'+result[i].name+' COMMITTEE MEMBERS</b></h4>';
 		str+='<div class="m_top5">';
 		  str+='<div class="table-responsive">';
 				str+='<table class="table tableTraining bg_ED">';
