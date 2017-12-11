@@ -317,4 +317,37 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 	  }
 	  return query.list();
   }
+ public Long getLeaderFeedBackDetails(List<Long> programIdList,Long userAccessLevelId, List<Long> userAccessLevelValueList,List<Long> commiteeLevel) {
+	  StringBuilder sb= new StringBuilder();
+	  sb.append(" select count(distinct model.tdpCadreId)" +
+	  		    " from TdpCommitteeMember model2 " );
+		    if(userAccessLevelValueList!= null && userAccessLevelValueList.size()>0L){
+	    	 if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 2l){
+	    	      sb.append(" left join model2.tdpCadre.userAddress.state state ");
+	    	  }else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 3l){
+	    	      sb.append(" left join model2.tdpCadre.userAddress.district district ");
+	    	    }else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 4l){
+	    	      sb.append(" left join  model2.tdpCadre.userAddress.parliamentConstituency parliamentConstituency ");
+	    	    }else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 5l){
+	    	    	sb.append(" left join model2.tdpCadre.userAddress.constituency constituency ");
+	    	    }
+		      }
+		  sb.append(",TrainingCampCadreFeedbackDetails model where model.tdpCadreId = model2.tdpCadreId and " +
+		    " model.trainingCampProgramId in(:trainingCampProgramId) and " +
+		    " model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in(:tdpCommitteeLevelId) " );
+		   if(userAccessLevelId != null && userAccessLevelId.longValue()  == 2l && userAccessLevelValueList != null && userAccessLevelValueList.size() >0l ){
+		      sb.append(" and state.stateId  in (:userAccessLevelValueList) ");
+			}else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 3l && userAccessLevelValueList != null && userAccessLevelValueList.size() >0l ){
+		      sb.append(" and district.districtId  in (:userAccessLevelValueList) ");
+		    }else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 4l && userAccessLevelValueList != null && userAccessLevelValueList.size() >0l){
+		      sb.append("   and parliamentConstituency.constituencyId in (:userAccessLevelValueList)  ");
+		    }else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 5l && userAccessLevelValueList != null && userAccessLevelValueList.size() >0l){
+		    	 sb.append(" and constituency.constituencyId in (:userAccessLevelValueList)");
+		     }
+		 Query query = getSession().createQuery(sb.toString());
+	  		query.setParameterList("trainingCampProgramId", programIdList);
+	  		query.setParameterList("tdpCommitteeLevelId", commiteeLevel);
+	  		query.setParameterList("userAccessLevelValueList", userAccessLevelValueList);
+	   return (Long)query.uniqueResult();
+}
 }

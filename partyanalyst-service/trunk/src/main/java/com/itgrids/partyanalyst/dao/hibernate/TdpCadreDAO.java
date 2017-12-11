@@ -9894,4 +9894,46 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 				   .addScalar("yearId", Hibernate.LONG);
 		   return query.list();
 	   }
+	   public Long filteredTdpCardreIdsCount(List<Long> tdpCadreIds,Long userAccessLevelId,List<Long> userAccessLevelValues){
+		   StringBuilder sb = new StringBuilder();
+		   sb.append(" SELECT " +
+		   			 " count(distinct tc.tdp_cadre_id) as count" +
+		   			 " from tdp_cadre tc " );
+		  
+		   if(userAccessLevelValues!= null && userAccessLevelValues.size()>0L){
+			   
+			 sb.append(" LEFT JOIN user_address UA ON tc.address_id = UA.user_address_id ");
+			   if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 2l){
+			   	sb.append(" LEFT JOIN state sta ON UA.state_id = sta.state_id ");
+			   }else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 3l){
+			   	sb.append(" LEFT JOIN district D ON UA.district_id = D.district_id ");
+			   }else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 4l){
+			   	sb.append(" LEFT JOIN constituency CON ON UA.constituency_id = CON.constituency_id ");
+			   }else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 5l){
+			   	sb.append(" LEFT JOIN constituency CON ON UA.parliament_constituency_id = CON.constituency_id ");
+			   	}
+		   }
+		   sb.append(" where ");
+			if(tdpCadreIds != null && tdpCadreIds.size() > 0){
+				sb.append( "  tc.tdp_cadre_id in (:tdpCadreIds) ");
+			}
+			 if(userAccessLevelId != null && userAccessLevelId.longValue()  == 2l && userAccessLevelValues != null && userAccessLevelValues.size() >0l ){
+			      sb.append(" and sta.state_id  in (:userAccessLevelValueList) ");
+			    }else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 3l && userAccessLevelValues != null && userAccessLevelValues.size() >0l ){
+			      sb.append(" and district.district_id  in (:userAccessLevelValueList) ");
+			    }else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 4l && userAccessLevelValues != null && userAccessLevelValues.size() >0l){
+			      sb.append(" and constituency.constituency_id in (:userAccessLevelValueList)");
+			    }else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 5l && userAccessLevelValues != null && userAccessLevelValues.size() >0l){
+			          sb.append("   and parliamentConstituency.constituency_id in (:userAccessLevelValueList)  ");
+			    }
+			
+			Query query = getSession().createSQLQuery(sb.toString()).addScalar("count", Hibernate.LONG);
+				if(tdpCadreIds != null && tdpCadreIds.size() > 0){
+					
+					query.setParameterList("tdpCadreIds", tdpCadreIds);
+				}  
+				query.setParameterList("userAccessLevelValueList", userAccessLevelValues);
+		return (Long)query.uniqueResult();
+		   
+	   }
 }
