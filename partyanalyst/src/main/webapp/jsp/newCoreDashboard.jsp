@@ -2938,7 +2938,7 @@
 					</div>
 					<div class="panel-body">
 						<div class="col-md-12 col-xs-12 col-sm-12">
-							<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+							<h5 class="module_OwnerCss">Module Owner : K.Rajesh</h5>
 						</div>
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
@@ -4256,6 +4256,9 @@
 						</div>
                 </div>
                 <div class="panel-body">   
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<h5 class="module_OwnerCss">Module Owner : JAYA RAMA REDDY</h5>
+					</div>
                     <div class="row">
 							<!--<div class="col-md-12 col-xs-12 col-sm-12">
 								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
