@@ -2353,6 +2353,8 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		   committeeEnrollmetYrId="1";
 	   }else if(enrollmentYearIds.contains(4L)){
 		   committeeEnrollmetYrId="2";
+	   }else{
+		   committeeEnrollmetYrId=enrollmentYearIds.get(0).toString();
 	   }
 	   
 	   String batchIdStr="";
