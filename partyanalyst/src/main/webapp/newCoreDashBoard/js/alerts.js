@@ -4026,7 +4026,7 @@ function getTotalArticledetails(articleId){
 			str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="parliamentAlertDataTblId">'; 
 		}
 		str+='<thead>';
-			str+='<th></th>';
+			str+='<th>'+locationType+'</th>';
 			str+='<th>Total</th>';
 			if(result != null && result.length > 0){
 				if(result[0].subList1 != null && result[0].subList1.length > 0){
