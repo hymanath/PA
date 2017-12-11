@@ -4095,7 +4095,7 @@
 	</div>
 	<div class="row">
 	<!-- Praja Sankalpam Yatra News  Start --> 
-		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="prajaSankaplaYatra">
+		<!-- <div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="prajaSankaplaYatra">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
@@ -4210,7 +4210,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 <!-- Praja Sankalpam Yatra News  END --> 
 	<!-- Attendance Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock" expand-block="attendance">
