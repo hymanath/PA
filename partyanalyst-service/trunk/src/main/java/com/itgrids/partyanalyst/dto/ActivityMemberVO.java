@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.hibernate.mapping.Array;
-
+//Don't add new variables
 public class ActivityMemberVO implements Serializable{
 	
 	private Long userId;
@@ -26,6 +24,7 @@ public class ActivityMemberVO implements Serializable{
 	
 	private List<Long> npIds=new ArrayList<Long>(0);
 	private List<Long> impactScopeIds=new ArrayList<Long>(0);
+	//Don't add new variables
 	
 	public Long getUserId() {
 		return userId;
