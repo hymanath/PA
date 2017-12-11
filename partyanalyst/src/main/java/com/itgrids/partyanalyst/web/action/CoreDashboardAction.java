@@ -1044,7 +1044,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			if(committeeDataVOList!=null && committeeDataVOList.size()>0){
 				userDataVO.setSubList(committeeDataVOList);
 			}
-			 List<AlertOverviewVO> resultList = alertService.getAlertStatus(0l);
+			 List<AlertOverviewVO> resultList = alertService.getAlertStatus(1l);
 			 List<AlertOverviewVO> enrollementList = alertService.getTdpCadreEnrollementYearIds();
 			 if(resultList != null && resultList.size() > 0){
 				 alertOverviewVO.getSubList().addAll(resultList);	 
