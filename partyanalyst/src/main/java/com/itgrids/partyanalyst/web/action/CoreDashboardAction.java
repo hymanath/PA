@@ -5201,7 +5201,7 @@ public String getInsuraceStatusWiseComplaintsDetails()
 				}
 				Long stateId = jObj.getLong("stateId");
 				String dateStr = jObj.getString("dateStr");
-				userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(userId,userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYrIds,programIdList);
+				userTypeVOList = coreDashboardCoreService.getUserTypeWiseTotalEligibleAndAttendedCnt(userId,userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYrIds,programIdList);
 		 }catch(Exception e){
 			 LOG.error("Exception raised at getUserTypeWiseTotalEligibleAndAttendedCnt() method of CoreDashBoardAction", e); 
 		 }
