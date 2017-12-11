@@ -58,10 +58,10 @@ public class NregsDashboardController {
 		return "MGNREGS";
     }*/
 	
-	/*@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
+	@RequestMapping(value ="/MGNREGSDashboard", method = RequestMethod.GET)
     public String mgnregsDashBoardPage(ModelMap model) {
 		return "MGNREGS";
-    }*/
+    }
 	
 	@PostMapping("/getNREGSProjectsOverview")
 	public @ResponseBody List<NregsProjectsVO> getNREGSProjectsOverview(@RequestBody InputVO vo){

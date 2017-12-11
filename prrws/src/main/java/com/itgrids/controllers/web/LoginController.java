@@ -48,15 +48,15 @@ public class LoginController {
 	    }
     }
 
-	@RequestMapping(value = "/MGNREGSDashboard", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/MGNREGSDashboard", method = RequestMethod.GET)
     public String viewSaveComments(HttpServletRequest request) {
-		/*UserVO uservo = (UserVO) request.getSession().getAttribute("User");
+		UserVO uservo = (UserVO) request.getSession().getAttribute("User");
 		if (uservo==null){
 	      return "login";
-	    }else{*/
+	    }else{
 	      return "MGNREGS";
-	    //}
-    }
+	    }
+    }*/
 	
 	
 	
