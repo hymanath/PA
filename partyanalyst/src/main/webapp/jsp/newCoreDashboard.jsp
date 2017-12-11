@@ -2350,306 +2350,69 @@
 			<!--Meetings End-->
 		</div>	
 		<div class="row">
-		<!-- Committees Start-->
-		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock" expand-block="committees">
-        	<div class="panel panel-default panelNewCustom panel1">
-            	<div class="panel-heading">
-                	<div class="row">
-						<div class="col-md-7 col-sm-7 col-xs-12">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
-								committees - <small class="text-muted committeesDate">OVERALL (TILL NOW)</small>
-							</h4>
-						</div>
-						<div class="col-md-5 col-sm-5 col-xs-12">
-							<span class="basicCommitteesBlockDiv pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
-							<span class="notesIcon pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
-							</span>
-							<span class="iconExpand pull-right" expand-icon="committees">
-								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span>
-							<span class="cadreSettings pull-right refreshCadreCls" onClick="getCommitteesBasicCountReport();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
-							<span><select id="tdpCommitteeYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;"></select></span>
-							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" expand-block-date="committees">
-								<input type="text" id="dateRangeId"	 class="form-control" style="width:180px"/>
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>						
-						</div>
-					</div>
-					
-					<!-- committees tabs for tdpcommittee ids -->	
-					<div class="basicCommitteesBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;" >
+		<!-- Kaizala  Start --> 
+			<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="kaizala">
+				<div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
-							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
-								<li role="presentation" class="text-capital"><a href="#homeComm" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
-								<li role="presentation"  class="text-capital"><a href="#profileComm" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
-								<li role="presentation"  class="active text-capital"><a href="#messagesComm" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
-							  </ul>
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="kaizala">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/logoKaizala.png" class="iconClass" style="background-color:none;"/>
+										Kaizala
+								</h4>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
-							  <div class="tab-content navTabsSettingsContent">
-								<div role="tabpanel" class="tab-pane" id="homeComm">
-									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
-									<hr style ="margin-bottom:0px;" />
-									<div class="basicCommitteeDetailsDiv">
-									<ul class="settingsUl">
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-									   <c:if test="${basicCommittee.id == 1}">
-										<li>
-											<label class="checkbox-inline">
-												<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
-												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-										   </label>
-										</li>	
-									 </c:if>										
-									</c:forEach>
-									   <li>
-											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllAffliatedDistrictlevelId" checked>
-											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
-										   </label><!--checked-->
-										</li> 
-										<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-											<c:if test="${basicCommittee.id != 1}">
-											<li>
-											  <label class="checkbox-inline">
-												 <input type="checkbox"  class="districtCommitteecheckBoxClass districtCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
-												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-											   </label>
-											</li>   
-											</c:if>
-									  </c:forEach>
-										
-									</ul>
-									</div>
-								</div>
-								<div role="tabpanel" class="tab-pane" id="profileComm">
-									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
-									<hr style ="margin-bottom:0px;" />
-									<div class="basicCommitteeDetailsDiv">
-									<ul class="settingsUl">
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-									   <c:if test="${basicCommittee.id == 1}">
-										 <li>
-										   <label class="checkbox-inline">
-											 <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
-											 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-										   </label>
-										 </li>
-									   </c:if>
-									</c:forEach>
-										<li>
-											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllAffliatedMandallevelId"  checked>
-											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
-										   </label>
-										</li>  
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-											<c:if test="${basicCommittee.id != 1}">
-											 <c:choose>
-											   <c:when test="${basicCommittee.id == 10 || basicCommittee.id == 16}">
-												 <li>
-												  <label class="checkbox-inline">
-													 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked>
-													 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-												  </label>
-												 </li> 
-											   </c:when>
-												<c:otherwise>
-													<li>
-													  <label class="checkbox-inline">
-														 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
-														 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-													   </label>
-													 </li> 
-												</c:otherwise>
-										   </c:choose>
-										  </c:if>
-									</c:forEach>
-									
-									</ul>
-									</div>
-								</div>
-								<div role="tabpanel" class="tab-pane active" id="messagesComm">
-									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
-									<hr style ="margin-bottom:0px;" />
-									<div class="basicCommitteeDetailsDiv">
-									<ul class="settingsUl">
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-										   <c:if test="${basicCommittee.id == 1}">
-											 <li>
-											   <label class="checkbox-inline">
-												 <input type="checkbox"  class="villageCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
-												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-											   </label>
-											 </li>
-										   </c:if>
-									</c:forEach>
-										<!-- <li>
-											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllAffliatedVillagelevelId">
-											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
-										   </label>
-										</li>  -->
-									
-									<!--<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-											<c:if test="${basicCommittee.id != 1}">
-											<li>
-											  <label class="checkbox-inline">
-												 <input type="checkbox"  class="villageCommitteecheckBoxClass villageCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
-												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-											   </label>
-											</li>   
-											</c:if>
-									</c:forEach>-->
-									</ul>
-									</div>
-								</div>
-							  </div>
-							  <button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
-							</div>
-						
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="kaizala">
+								<span class="kaizalaIconExpand pull-right" expand-icon="kaizala">
+									<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+								</span>
+								
+							</div>     
 						</div>
-						
-						
 					</div>
-					<div class="notesDropDown notesArrow documentCloseClass">
-                    	<h4 class="text-capital">notes
-                        	<span class="pull-right">
-                            	<i class="glyphicon glyphicon-list-alt"></i>
-                            </span>
-                        </h4>
-						<div id="notesId"></div>
-                    	<!--<ul class="notesUl m_top20">
-                        	<li>
-                            	<!--<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
-                            	<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
-                                <i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
-                            </li>
-                        </ul>-->
-                        <hr/>  
-                          <div id="id1" style="color:red;"></div>						
-                        <label>Create Notes</label>
-                        <textarea class="form-control notesArea"></textarea>
-                        <button class="btn btn-default btnCustomCreate btn-sm" onClick="savingDashboardComment(1);">create</button>
-                    </div>  
-                </div>
-                <div class="panel-body">  
-				
-              		<div class="row">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-					</div>	
-					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker m_top20" style="display:none;">
-						
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock m_top20" expand-block-inner="committees">
-						<div id="basicCommitteeCountsDiv"></div>
-					</div>
-                        <div class="col-md-6 col-xs-12 col-sm-6 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock m_top10" expand-block-right="committees">
-                        	<div class="row">
-                            	<div class="col-md-12 col-xs-12 col-sm-12">
-                                	<ul class="activeUlCls list-inline pull-right">
-                                    	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
-										<li class="topFivePoorResults">Top 5 Poor</li>-->
-										<li class="liCls1 active addactive" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-										<li class="liCls1 removeactive" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
-                                    </ul>
-                                </div>
-                                <div id="userTypeWiseCommitteesForTopFiveStrongAndPoorDiv"></div>
-                               <!-- <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>-->
-						    </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12" expand-block-right="committees">
-                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcon" expand-block-right="committees" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
-                        </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;" expand-block-more="committees">
-                        	
-							<ul class="list-inline pull-right activeUlCls">
-                            	<li class="active detailedBlock">Detailed</li>
-                                <li class="comparisionBlock">Comparison</li>
-                            </ul>
-					    </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocks" expand-block-more="committees">
-                        	<div class="panel panel-default m_top10">
-                            	<div class="panel-body ">
-									<div id="levelWiseBasicCommittees"></div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocksDistrictlevel" style="display:none" expand-block-more="committees">
-                        	<div class="panel panel-default panelNew">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-md-8 col-xs-12 col-sm-12">
-                                            <span class="headingColor text-capitalize">all committees performance cohort</span>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="panel-body verticalScrollBar">
-									<div id="districtWiseCommitteesReport" ></div>
+					<div class="panel-body">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
+								<div class="row">
+									<div class="col-sm-12">
+										<div id="overAllKaizalaBlockId"></div>
+									</div>
 								</div>
-                            </div>
-							<div class="panel panel-default panelNew" id="overviewReportDiv" style="display:none;">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-md-8 col-xs-12 col-sm-12">
-                                            <span class="headingColor text-capitalize">Committee Detailed Report</span>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-									<div id="commiteeWiseDetailedReportId"></div>
-								</div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks1" style="display:none;"  expand-block-more="committees">
-                            <!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
-                            <div class="panel panel-default panelNew">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12">
-                                           <div id="childUserTypeDetailsDiv"></div>
-                                        </div>
-                                       
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                           <div id="SelectedUserTypeDetailsDiv"></div>
-                                        </div>
-                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                            <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlock">
-                                                <div id="directChildActivityMemberDiv" class="table-responsive"></div>
-                                                <div class="row m_top20">
-                                                    <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
-														<div id="topPoorPerformanceDiv"></div>
-                                                    </div>
-                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
-                                                        <div id="topPoorLocationsDiv"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                       	
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-		<!-- Committees End-->
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="kaizala" style="display:none;" >
+								<div class="row">
+									<div class="col-sm-12">
+										<ul class="activeUlCls list-inline pull-right kaizalaLicls">
+											<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+											<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+										</ul>
+									</div>
+								 </div>
+								 <div class="row">
+									<div class="col-sm-12">
+										<div class="verticalScrollBarKaizala">
+											<div id="userTypeWiseKaizalaDiv"></div>
+										</div>
+									</div>
+								 </div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="kaizala" style="display: none;">
+								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morekaizalaBlocksIcon" title="Click here for more"></i>
+							</div>	
+							<div class="col-md-12 col-xs-12 col-sm-12 morekaizalaBlocksDetailed m_top10"  expand-block-more="kaizala" style="display:none;">
+								<div class="row">
+									<div class="col-sm-12">
+										<div id="levelWiseDetailsDivId"></div>
+									</div>
+								 </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	<!-- Kaizala  END --> 
 		<!--Events Start -->
 			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
 				<div class="panel panel-default panelNewCustom">
@@ -2917,69 +2680,306 @@
 			
 	</div>	
 	<div class="row">
-		<!-- Kaizala  Start --> 
-			<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="kaizala">
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="kaizala">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/logoKaizala.png" class="iconClass" style="background-color:none;"/>
-										Kaizala
-								</h4>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="kaizala">
-								<span class="kaizalaIconExpand pull-right" expand-icon="kaizala">
-									<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+		<!-- Committees Start-->
+		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock" expand-block="committees">
+        	<div class="panel panel-default panelNewCustom panel1">
+            	<div class="panel-heading">
+                	<div class="row">
+						<div class="col-md-7 col-sm-7 col-xs-12">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
+								committees - <small class="text-muted committeesDate">OVERALL (TILL NOW)</small>
+							</h4>
+						</div>
+						<div class="col-md-5 col-sm-5 col-xs-12">
+							<span class="basicCommitteesBlockDiv pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="notesIcon pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
+							</span>
+							<span class="iconExpand pull-right" expand-icon="committees">
+								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
+							</span>
+							<span class="cadreSettings pull-right refreshCadreCls" onClick="getCommitteesBasicCountReport();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
+							<span><select id="tdpCommitteeYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;"></select></span>
+							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" expand-block-date="committees">
+								<input type="text" id="dateRangeId"	 class="form-control" style="width:180px"/>
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-								
-							</div>     
+							</span>						
 						</div>
 					</div>
-					<div class="panel-body">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-						</div>
+					
+					<!-- committees tabs for tdpcommittee ids -->	
+					<div class="basicCommitteesBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;" >
 						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
-								<div class="row">
-									<div class="col-sm-12">
-										<div id="overAllKaizalaBlockId"></div>
+							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
+							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+								<li role="presentation" class="text-capital"><a href="#homeComm" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
+								<li role="presentation"  class="text-capital"><a href="#profileComm" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
+								<li role="presentation"  class="active text-capital"><a href="#messagesComm" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
+							  </ul>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
+							  <div class="tab-content navTabsSettingsContent">
+								<div role="tabpanel" class="tab-pane" id="homeComm">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+									   <c:if test="${basicCommittee.id == 1}">
+										<li>
+											<label class="checkbox-inline">
+												<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
+												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   </label>
+										</li>	
+									 </c:if>										
+									</c:forEach>
+									   <li>
+											<label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllAffliatedDistrictlevelId" checked>
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label><!--checked-->
+										</li> 
+										<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+											<c:if test="${basicCommittee.id != 1}">
+											<li>
+											  <label class="checkbox-inline">
+												 <input type="checkbox"  class="districtCommitteecheckBoxClass districtCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											</li>   
+											</c:if>
+									  </c:forEach>
+										
+									</ul>
 									</div>
 								</div>
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="kaizala" style="display:none;" >
-								<div class="row">
-									<div class="col-sm-12">
-										<ul class="activeUlCls list-inline pull-right kaizalaLicls">
-											<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
-											<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
-										</ul>
+								<div role="tabpanel" class="tab-pane" id="profileComm">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+									   <c:if test="${basicCommittee.id == 1}">
+										 <li>
+										   <label class="checkbox-inline">
+											 <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
+											 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   </label>
+										 </li>
+									   </c:if>
+									</c:forEach>
+										<li>
+											<label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllAffliatedMandallevelId"  checked>
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label>
+										</li>  
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+											<c:if test="${basicCommittee.id != 1}">
+											 <c:choose>
+											   <c:when test="${basicCommittee.id == 10 || basicCommittee.id == 16}">
+												 <li>
+												  <label class="checkbox-inline">
+													 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked>
+													 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+												  </label>
+												 </li> 
+											   </c:when>
+												<c:otherwise>
+													<li>
+													  <label class="checkbox-inline">
+														 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked><!--checked-->
+														 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+													   </label>
+													 </li> 
+												</c:otherwise>
+										   </c:choose>
+										  </c:if>
+									</c:forEach>
+									
+									</ul>
 									</div>
-								 </div>
-								 <div class="row">
-									<div class="col-sm-12">
-										<div class="verticalScrollBarKaizala">
-											<div id="userTypeWiseKaizalaDiv"></div>
-										</div>
+								</div>
+								<div role="tabpanel" class="tab-pane active" id="messagesComm">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+										   <c:if test="${basicCommittee.id == 1}">
+											 <li>
+											   <label class="checkbox-inline">
+												 <input type="checkbox"  class="villageCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											 </li>
+										   </c:if>
+									</c:forEach>
+										<!-- <li>
+											<label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllAffliatedVillagelevelId">
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label>
+										</li>  -->
+									
+									<!--<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+											<c:if test="${basicCommittee.id != 1}">
+											<li>
+											  <label class="checkbox-inline">
+												 <input type="checkbox"  class="villageCommitteecheckBoxClass villageCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											</li>   
+											</c:if>
+									</c:forEach>-->
+									</ul>
 									</div>
-								 </div>
+								</div>
+							  </div>
+							  <button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="kaizala" style="display: none;">
-								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morekaizalaBlocksIcon" title="Click here for more"></i>
-							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-12 morekaizalaBlocksDetailed m_top10"  expand-block-more="kaizala" style="display:none;">
-								<div class="row">
-									<div class="col-sm-12">
-										<div id="levelWiseDetailsDivId"></div>
-									</div>
-								 </div>
-							</div>
+						
 						</div>
+						
+						
 					</div>
-				</div>
-			</div>
-	<!-- Kaizala  END --> 
+					<div class="notesDropDown notesArrow documentCloseClass">
+                    	<h4 class="text-capital">notes
+                        	<span class="pull-right">
+                            	<i class="glyphicon glyphicon-list-alt"></i>
+                            </span>
+                        </h4>
+						<div id="notesId"></div>
+                    	<!--<ul class="notesUl m_top20">
+                        	<li>
+                            	<!--<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
+                            	<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
+                                <i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
+                            </li>
+                        </ul>-->
+                        <hr/>  
+                          <div id="id1" style="color:red;"></div>						
+                        <label>Create Notes</label>
+                        <textarea class="form-control notesArea"></textarea>
+                        <button class="btn btn-default btnCustomCreate btn-sm" onClick="savingDashboardComment(1);">create</button>
+                    </div>  
+                </div>
+                <div class="panel-body">  
+				
+              		<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<h5 class="module_OwnerCss">Module Owner : K.Rajesh</h5>
+					</div>	
+					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker m_top20" style="display:none;">
+						
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock m_top20" expand-block-inner="committees">
+						<div id="basicCommitteeCountsDiv"></div>
+					</div>
+                        <div class="col-md-6 col-xs-12 col-sm-6 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock m_top10" expand-block-right="committees">
+                        	<div class="row">
+                            	<div class="col-md-12 col-xs-12 col-sm-12">
+                                	<ul class="activeUlCls list-inline pull-right">
+                                    	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
+										<li class="topFivePoorResults">Top 5 Poor</li>-->
+										<li class="liCls1 active addactive" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+										<li class="liCls1 removeactive" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+                                    </ul>
+                                </div>
+                                <div id="userTypeWiseCommitteesForTopFiveStrongAndPoorDiv"></div>
+                               <!-- <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>-->
+						    </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12" expand-block-right="committees">
+                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcon" expand-block-right="committees" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;" expand-block-more="committees">
+                        	
+							<ul class="list-inline pull-right activeUlCls">
+                            	<li class="active detailedBlock">Detailed</li>
+                                <li class="comparisionBlock">Comparison</li>
+                            </ul>
+					    </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocks" expand-block-more="committees">
+                        	<div class="panel panel-default m_top10">
+                            	<div class="panel-body ">
+									<div id="levelWiseBasicCommittees"></div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocksDistrictlevel" style="display:none" expand-block-more="committees">
+                        	<div class="panel panel-default panelNew">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-12 col-sm-12">
+                                            <span class="headingColor text-capitalize">all committees performance cohort</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="panel-body verticalScrollBar">
+									<div id="districtWiseCommitteesReport" ></div>
+								</div>
+                            </div>
+							<div class="panel panel-default panelNew" id="overviewReportDiv" style="display:none;">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-12 col-sm-12">
+                                            <span class="headingColor text-capitalize">Committee Detailed Report</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+									<div id="commiteeWiseDetailedReportId"></div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks1" style="display:none;"  expand-block-more="committees">
+                            <!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
+                            <div class="panel panel-default panelNew">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                           <div id="childUserTypeDetailsDiv"></div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12 col-sm-12">
+                                           <div id="SelectedUserTypeDetailsDiv"></div>
+                                        </div>
+                                        <div class="col-md-12 col-xs-12 col-sm-12">
+                                            <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlock">
+                                                <div id="directChildActivityMemberDiv" class="table-responsive"></div>
+                                                <div class="row m_top20">
+                                                    <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
+														<div id="topPoorPerformanceDiv"></div>
+                                                    </div>
+                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
+                                                        <div id="topPoorLocationsDiv"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                       	
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<!-- Committees End-->
 	
 		<!-- Booth Committees Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 boothCommitteesBlock" expand-block="boothCommittees">
