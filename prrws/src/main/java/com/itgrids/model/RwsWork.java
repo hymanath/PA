@@ -28,6 +28,7 @@ public class RwsWork {
 	private Date targetDate;
 	private Date completedDate;
 	private Date commissionedDate;
+	private Date stipulatedTargetDate;
 	
 	@Id
 	@Column(name="rws_work_id")
@@ -142,5 +143,14 @@ public class RwsWork {
 	public void setCompletedDate(Date completedDate) {
 		this.completedDate = completedDate;
 	}
+	
+	@Column(name="stipulated_target_date")
+	public Date getStipulatedTargetDate() {
+		return stipulatedTargetDate;
+	}
+	public void setStipulatedTargetDate(Date stipulatedTargetDate) {
+		this.stipulatedTargetDate = stipulatedTargetDate;
+	}
+	
 	
 }
