@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -17,4 +18,12 @@ public interface IPartyMeetingMinuteDAO extends GenericDao<PartyMeetingMinute,Lo
 	public List<Long> getMOMHavingMeetings(List<Long> partyMeetingIds);
 	public List<Object[]> getPartyMeetingMinuteRetrieveDetails(Long minuteId);
 	public List<Object[]> getMinuteDetailsForMeetingsList(List<Long> partymeetingIdsList,String accessType,List<Long> accessValues);
+	public List<Object[]> getPartyMeetingMomPointsByUserAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId,String type,Long partyMeetingId);
+	public List<Object[]> getPartyMeetingMomDtls(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId,String type);
+	public Long getMomCreatedByYourLocation(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId,String type);
+	public Long getMomAssignedToYourLocation(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId);
+	public List<Object[]> getTotalMomDetailsByLocation(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId);
+	public List<Object[]> getMomCreationLocation(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId);
+	public List<Object[]> getMomAssignedLocation(Set<Long> momIdSet,Integer monthId,Integer yearId);
+	public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId,String type,String momType);
 }

@@ -111,9 +111,14 @@ import com.itgrids.partyanalyst.dto.MessagePropertyVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
+import com.itgrids.partyanalyst.dto.MomDashbaordOverViewDtlsVO;
+import com.itgrids.partyanalyst.dto.MomDetailsVO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
+import com.itgrids.partyanalyst.dto.PartyMeetingMOMCreationDtlsvO;
+import com.itgrids.partyanalyst.dto.PartyMeetingMOMDtlsVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingMOMPointsDtlsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PashiAppNoCadreVO;
@@ -178,6 +183,7 @@ import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.INotificationService;
+import com.itgrids.partyanalyst.service.IPartyMeetingMOMService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.ISmsGatewayService;
 import com.itgrids.partyanalyst.service.ISmsService;
@@ -287,6 +293,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     
     private ICccDashboardService cccDashboardService;
     private IKaizalaInfoService kaizalaInfoService;
+    private IPartyMeetingMOMService partyMeetingMOMService;
        
     
 	public IKaizalaInfoService getKaizalaInfoService() {
@@ -780,6 +787,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		this.panchayatDAO = panchayatDAO;
 	}
 	
+	public void setPartyMeetingMOMService(
+			IPartyMeetingMOMService partyMeetingMOMService) {
+		this.partyMeetingMOMService = partyMeetingMOMService;
+	}
 
 	public String checkForUserAuthentication(String userName , String passWord)
 	{
@@ -5531,7 +5542,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	  }
 		return finalList;
 	  }
-  public List<QuestionAnswerVO> getSurveyQuestionDetails(Long tdpCadreId){
+	  public List<QuestionAnswerVO> getSurveyQuestionDetails(Long tdpCadreId){
 			 List<QuestionAnswerVO> finalList = new ArrayList<QuestionAnswerVO>(0);
 		  try {
 			  Client client = Client.create();
@@ -5539,17 +5550,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  WebResource webResource = client.resource("https://www.mytdp.com/Survey/WebService/getSurveyQuestionsDetails/"+tdpCadreId);
 			  //WebResource webResource = client.resource("http://192.168.11.173:8080/Survey/WebService/getSurveyQuestionsDetails/"+tdpCadreId);
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
-   	 	  if (response.getStatus() != 200) {
-   	 		   finalList =null;
-   	 		//throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-   	 	 }else{
+	 	  if (response.getStatus() != 200) {
+	 		   finalList =null;
+	 		//throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	 }else{
 
- 	    	 String output = response.getEntity(String.class);
- 	    	if(output != null && !output.isEmpty()){
- 	    		JSONArray finalArray = new JSONArray(output);
- 	    		if(finalArray!=null && finalArray.length()>0){
- 	    			for(int i=0;i<finalArray.length();i++){
- 	    				QuestionAnswerVO vo =  new QuestionAnswerVO();
+	    	 String output = response.getEntity(String.class);
+	    	if(output != null && !output.isEmpty()){
+	    		JSONArray finalArray = new JSONArray(output);
+	    		if(finalArray!=null && finalArray.length()>0){
+	    			for(int i=0;i<finalArray.length();i++){
+	    				QuestionAnswerVO vo =  new QuestionAnswerVO();
 	   	 					JSONObject question = (JSONObject) finalArray.get(i);
 	   	 			    if(question.has("surveyName"))
 	 					{
@@ -5584,15 +5595,90 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	 						vo.setCandidateName(question.getString("voterName"));
 	 					}
 			   	 		finalList.add(vo);
- 	    			}
- 	    		}
- 	    	}
-   	 	 
-   	 		 
-   	 	 }
+	    			}
+	    		}
+	    	}
+	 	 
+	 		 
+	 	 }
 	  }catch(Exception e){
 		  log.error("Exception raised at getSurveyQuestionDetails method in WebServiceHandlerService Class", e);
 	  }
 		return finalList;
 	  }
+	  
+	 //MOM API
+	 public PartyMeetingMOMDtlsVO getPartyMeetingMOMDetails(Long userAccessLevel,List<Long> accessValues,String monthYear){
+			try{
+				return partyMeetingMOMService.getPartyMeetingMOMDetails(userAccessLevel, accessValues,monthYear);
+			}catch (Exception e) {
+				log.error("Exception raised at getPartyMeetingMOMDetails method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public PartyMeetingMOMPointsDtlsVO getPartyMeetingMOMPointsDocumentDetails(Long userAccessLevel,List<Long> accessValues,String monthYear,Long parytMeetingId){
+			try{
+				return partyMeetingMOMService.getPartyMeetingMOMPointsDocumentDetails(userAccessLevel, accessValues,monthYear,parytMeetingId);
+			}catch (Exception e) {
+				log.error("Exception raised at getPartyMeetingMOMPointsDocumentDetails method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public String updateMOMMeetingDetails(Long meetingId, String conductedDate,String isConducted,String remarks,Long loginUserId){
+			try{
+				return partyMeetingMOMService.updateMOMMeetingDetails(meetingId, conductedDate, isConducted,remarks,loginUserId);
+			}catch (Exception e) {
+				log.error("Exception raised at updateMOMMeetingDetails method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public String deleteMOMMeetingDetails(Long id, String deletedType,Long loginUserId){
+			try{
+				return partyMeetingMOMService.deleteMOMMeetingDetails(id, deletedType, loginUserId);
+			}catch (Exception e) {
+				log.error("Exception raised at deleteMOMMeetingDetails method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public ResultStatus savePartyMeetingMOMDetails(PartyMeetingMOMCreationDtlsvO inputVO){
+			try{
+				return partyMeetingMOMService.savePartyMeetingMOMDetails(inputVO);
+			}catch (Exception e) {
+				log.error("Exception raised at savePartyMeetingMOMDetails method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public ResultStatus updateMomDetails(PartyMeetingMOMCreationDtlsvO inputVO){
+			try{
+				return partyMeetingMOMService.updateMomDetails(inputVO);
+			}catch (Exception e) {
+				log.error("Exception raised at updateMomDetails method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public MomDetailsVO getMomCompletedDetails(Long partyMeetingMinuteId){
+			try{
+				return partyMeetingMOMService.getMomCompletedDetails(partyMeetingMinuteId);
+			}catch (Exception e) {
+				log.error("Exception raised at getMomCompletedDetails method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public MomDashbaordOverViewDtlsVO getMomDashboardOverviewDtls(Long userAccessLevel,List<Long> accessValues,String monthYear){
+			try{
+				return partyMeetingMOMService.getMomDashboardOverviewDtls(userAccessLevel, accessValues,monthYear);
+			}catch (Exception e) {
+				log.error("Exception raised at getMomDashboardOverviewDtls method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public List<MomDetailsVO> getMomDetailsBySelectedType(Long userAccessLevel,List<Long> accessValues,String monthYear,String type){
+			try{
+				return partyMeetingMOMService.getMomDetailsBySelectedType(userAccessLevel, accessValues,monthYear,type);
+			}catch (Exception e) {
+				log.error("Exception raised at getMomDetailsBySelectedType method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 
 }

@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -803,5 +804,111 @@ public List<Object[]> getLocationWiseStateMeetingImages(List<Long> locationValue
     }
     return query.list();
   }
-
+public List<Object[]> getPartyMeetingMomDocumentByUserAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId,String type,Long partyMeetingId){
+	
+    StringBuilder queryStr = new StringBuilder();
+	    queryStr.append(" select " +
+	    				" model.partyMeeting.partyMeetingId ");
+	    if (type.equalsIgnoreCase("summary")) {
+	    	queryStr.append(",count(distinct model.partyMeetingDocumentId)");
+	    } else if (type.equalsIgnoreCase("details")) {
+	    	queryStr.append(",model.partyMeetingDocumentId,model.path");
+	    }
+	    queryStr.append(" from PartyMeetingDocument model " +
+	    				" where " +
+	    				" model.partyMeeting.isActive='Y' ");
+	
+	   if(monthId != null && monthId > 0){
+			  queryStr.append(" and month(model.partyMeeting.startDate)=:monthId ");	 
+	  }
+	  if(yearId != null && yearId > 0){
+	 		queryStr.append(" and year(model.partyMeeting.startDate)=:yearId ");		 
+	  }
+	  if (partyMeetingId != null && partyMeetingId > 0) {
+	 	 queryStr.append(" and model.partyMeeting.partyMeetingId=:partyMeetingId "); 
+	  }
+	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	   queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId in (:userAccessLevelValues)");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	   queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId in (:userAccessLevelValues)");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_PARLIAMENT_LEVEl_ACCESS_ID){
+        queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_ASSEMBLY_LEVEl_ACCESS_ID){
+        queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_MANDAL_LEVEl_ID){
+	    queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_MUNCIPLITY_LEVEl_ID){ //  town/division
+	   queryStr.append(" and model.partyMeeting.meetingAddress.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_VILLAGE_LEVEl_ID){ 
+	   queryStr.append(" and model.partyMeeting.meetingAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
+     }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_WARD_LEVEl_ID){ 
+	   queryStr.append(" and model.partyMeeting.meetingAddress.ward.constituencyId in (:userAccessLevelValues)"); 
+	 }  
+	 //getting meeting levelId
+	 List<Long> partyMeetinLevelIds = getPartyMeetingLevelByRegionScope(userAccessLevelId);
+	 if (partyMeetinLevelIds != null && partyMeetinLevelIds.size() > 0) {
+		 queryStr.append(" and model.partyMeeting.partyMeetingLevelId in (:partyMeetinLevelIds)");
+	 }
+	   queryStr.append(" and model.documentType = 'MINUTE'");
+	   if (type.equalsIgnoreCase("summary")) {
+	    	queryStr.append(" group by model.partyMeeting.partyMeetingId");
+	   }
+	
+	 Query query = getSession().createQuery(queryStr.toString());
+	
+	 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	 }
+	 if(monthId != null && monthId > 0){
+		 query.setParameter("monthId", monthId);
+	 }
+	 	 if(yearId != null && yearId > 0){
+	 		query.setParameter("yearId", yearId);		 
+	 }
+	  if (partyMeetingId != null && partyMeetingId > 0) {
+	 		query.setParameter("partyMeetingId", partyMeetingId); 
+	  }
+	  if (partyMeetinLevelIds != null && partyMeetinLevelIds.size() > 0) {
+	 		 query.setParameterList("partyMeetinLevelIds", partyMeetinLevelIds);
+	 }
+	  
+	  
+  return query.list(); 	
+ }
+public Integer deletePartyMeetingMOMDocument(Long docId,Long loginUserId,Date updatedDate){
+	Query query = getSession().createQuery("update PartyMeetingDocument model set model.isDeleted = 'Y',model.updatedTime=:updatedDate,model.updatedById=:updatedById where model.partyMeetingDocumentId =:docId");
+	query.setParameter("updatedDate", updatedDate);
+	query.setParameter("updatedById", loginUserId);
+	query.setParameter("docId", docId);
+	return query.executeUpdate();
+}
+public List<String> getMomDocuments(Long partyMeetingMomId){
+	 StringBuilder queryStr = new StringBuilder();
+	  queryStr.append("select model.path from PartyMeetingDocument model where model.partyMeetingMinuteId=:partyMeetingMomId");
+	  Query query = getSession().createQuery(queryStr.toString());
+	  query.setParameter("partyMeetingMomId", partyMeetingMomId);
+	  return query.list();
+}
+public List<Long> getPartyMeetingLevelByRegionScope(Long userAccessLevelId) {
+	   List<Long> partyMeetingLevelIds = new ArrayList<Long>();
+	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	    	partyMeetingLevelIds.add(1l);  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			 partyMeetingLevelIds.add(2l); 
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_PARLIAMENT_LEVEl_ACCESS_ID){
+			 partyMeetingLevelIds.add(9l);
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_ASSEMBLY_LEVEl_ACCESS_ID){
+			 partyMeetingLevelIds.add(3l); 
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_MANDAL_LEVEl_ID){
+			 partyMeetingLevelIds.add(4l);   
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_MUNCIPLITY_LEVEl_ID){ //  town/division
+			 partyMeetingLevelIds.add(5l);
+			 partyMeetingLevelIds.add(6l);
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_VILLAGE_LEVEl_ID){ 
+			 partyMeetingLevelIds.add(7l);
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_WARD_LEVEl_ID){ 
+			 partyMeetingLevelIds.add(8l);
+		 }  
+	    return partyMeetingLevelIds;
+}
 }

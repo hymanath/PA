@@ -45,9 +45,14 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 	private Date updatedTime;
 	private Long attendanceTabUserId ;
 	
+	private Long itdpAppUserId;
+	private Long partyMeetingMinuteId;
 	
+	
+	private PartyMeetingMinute partyMeetingMinute;
 	private PartyMeetingSession partyMeetingSession;
 	private UserAddress userAddres;  
+
 	public PartyMeetingDocument(){}
 
 	@Id
@@ -234,5 +239,32 @@ public class PartyMeetingDocument extends BaseModel implements Serializable{
 		this.attendanceTabUserId = attendanceTabUserId;
 	}
 	
+	@Column(name="itdp_app_user_id")
+	public Long getItdpAppUserId() {
+		return itdpAppUserId;
+	}
+
+	public void setItdpAppUserId(Long itdpAppUserId) {
+		this.itdpAppUserId = itdpAppUserId;
+	}
+	@Column(name="party_meeting_minute_id")
+	public Long getPartyMeetingMinuteId() {
+		return partyMeetingMinuteId;
+	}
+
+	public void setPartyMeetingMinuteId(Long partyMeetingMinuteId) {
+		this.partyMeetingMinuteId = partyMeetingMinuteId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="party_meeting_minute_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PartyMeetingMinute getPartyMeetingMinute() {
+		return partyMeetingMinute;
+	}
+
+	public void setPartyMeetingMinute(PartyMeetingMinute partyMeetingMinute) {
+		this.partyMeetingMinute = partyMeetingMinute;
+	}
 	
 }
