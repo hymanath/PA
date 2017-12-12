@@ -11,5 +11,5 @@ public interface IKaizalaInfoService {
 	
 	public List<KaizalaDashboardVO> getLocationWiseCommitteeMemberDetails(InputVO vo);
 	public List<KaizalaDashboardVO> getOverAllCommitteeWiseMembersCounts(InputVO inputvo);
-	public List<List<UserTypeVO>> getUserTypeWiseKaizalaCommitteeMemberDetailsCnt(Long userId,Long userTypeId,Long activityMemberId,Long stateId);
+	public List<List<UserTypeVO>> getUserTypeWiseKaizalaCommitteeMemberDetailsCnt(InputVO inputVO);
 }
