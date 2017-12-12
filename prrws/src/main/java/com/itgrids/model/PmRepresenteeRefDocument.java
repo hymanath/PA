@@ -28,6 +28,7 @@ public class PmRepresenteeRefDocument {
 	private Date updatedTime;
 	
 	private PmRepresenteeRefDetails pmRepresenteeRefDetails;
+	private Document document;
     
 	@Id
 	@Column(name="pm_representee_ref_document_id")
@@ -66,6 +67,14 @@ public class PmRepresenteeRefDocument {
 	}
 	public void setPmRepresenteeRefDetails(PmRepresenteeRefDetails pmRepresenteeRefDetails) {
 		this.pmRepresenteeRefDetails = pmRepresenteeRefDetails;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "document_id", insertable = false, updatable = false)
+	public Document getDocument() {
+		return document;
+	}
+	public void setDocument(Document document) {
+		this.document = document;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "inserted_user_id", insertable = false, updatable = false)

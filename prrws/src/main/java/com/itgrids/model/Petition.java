@@ -24,7 +24,7 @@ public class Petition {
 	private Date endorsmentDate;
 	private String workName;
 	private Long estimationCost;
-	private Long noOfWork;
+	private Long noOfWorks;
 	private String isPreviousPetition;
 	private String grievanceDescription;
 	private String isDeleted;
@@ -83,12 +83,12 @@ public class Petition {
 	public void setEstimationCost(Long estimationCost) {
 		this.estimationCost = estimationCost;
 	}
-	@Column(name="no_of_work")
-	public Long getNoOfWork() {
-		return noOfWork;
+	@Column(name="no_of_works")
+	public Long getNoOfWorks() {
+		return noOfWorks;
 	}
-	public void setNoOfWork(Long noOfWork) {
-		this.noOfWork = noOfWork;
+	public void setNoOfWorks(Long noOfWorks) {
+		this.noOfWorks = noOfWorks;
 	}
 	@Column(name="is_previous_petition")
 	public String getIsPreviousPetition() {

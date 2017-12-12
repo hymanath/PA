@@ -21,7 +21,7 @@ public class PmDepartmentDesignation {
 	private String isDeleted;
 	
 	private PmDepartment pmDepartment;
-	private PmSubWorkDetails pmSubWorkDetails;
+	//private PmSubWorkDetails pmSubWorkDetails;
 	private PmDesignation pmDesignation;
 	
 	@Id
@@ -62,14 +62,14 @@ public class PmDepartmentDesignation {
 	public void setPmDepartment(PmDepartment pmDepartment) {
 		this.pmDepartment = pmDepartment;
 	}
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pm_sub_work_details_id", insertable = false, updatable = false)
 	public PmSubWorkDetails getPmSubWorkDetails() {
 		return pmSubWorkDetails;
 	}
 	public void setPmSubWorkDetails(PmSubWorkDetails pmSubWorkDetails) {
 		this.pmSubWorkDetails = pmSubWorkDetails;
-	}
+	}*/
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pm_designation_id", insertable = false, updatable = false)
 	public PmDesignation getPmDesignation() {
