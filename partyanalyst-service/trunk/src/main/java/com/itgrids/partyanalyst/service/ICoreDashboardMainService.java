@@ -53,7 +53,7 @@ public interface ICoreDashboardMainService {
 	public List<CoreDebateVO> getCandidateWiseDebateDetailsOfCore(Long partyId,String startDateStr,String endDateStr,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId);
 	public BoothInchargesVO  getUserTypeWiseBoothCommitteesInchargeDetails(Long activityMemberId,String state,String dateString,List<Long> committeeEnrollmentYearsIdsLst);
 	public List<BoothInchargesVO> getBoothCommitteeInchargesCount(Long activityMemId,List<Long> committeeEnrlmntYrIds,String dateStr,Long stateId);
-	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Long stateId, String fromDate, String toDateStr, List<Long> enrollmentYearIds,List<Long> programIdList);
+	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Long stateId, String fromDate, String toDateStr, List<Long> enrollmentYearIds,List<Long> programIdList,List<Long> committeeLevelIds);
 	public List<Long> getTrainingCampPrograms(Long enrollmentId);
 	public List<CommitteeDataVO> getCommitteeDetailedReport(List<Long> enrollmentYearIdsList,Long committeeLevelId,String fromDate, String toDate, List<Long> basicCommitteeTypeIdsList, List<Long> committeeTypeIdsList,Long locationScopeId, List<Long> locationValuesList );
 	public List<CoreDebateVO> getDebateDesignationWiseTotalDebateDetails(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
