@@ -52,4 +52,6 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
     public List<Object[]> getTotalLocationWiseAttendeeCount(List<Long> programIdList, Long stateId, Date toDate,List<Long> enrollYrIds,Long userAccessLvlId,
  		   List<Long> userAccessLvlVals);
     public List<Object[]> getDayWiseTrainingCampDetailsCount(String programId,String startDate,String endDate,String enrollemntYrId,Long basicCommitteeId,String committeeLvlIds,Long locationScopeId,String loctionVals);
+	public  List<Object[]> getFilteredListCount(List<Long> cadreIdList,List<Long> programIdList, List<Long> commiteeList, Long userAccessLevelId, List<Long> userAccessLevelValues,Long StringType);
+
 }
