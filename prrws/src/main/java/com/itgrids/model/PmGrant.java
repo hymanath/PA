@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class PmGrant {
 	
    private Long pmGrantId;
-   private String grantName;
+   private String pmGrantName;
    private String isDeleted;
    private Long orderNo;
    
@@ -25,12 +25,12 @@ public class PmGrant {
 	public void setPmGrantId(Long pmGrantId) {
 		this.pmGrantId = pmGrantId;
 	}
-	@Column(name="grant_name")
-	public String getGrantName() {
-		return grantName;
+	@Column(name="pm_grant_name")
+	public String getPmGrantName() {
+		return pmGrantName;
 	}
-	public void setGrantName(String grantName) {
-		this.grantName = grantName;
+	public void setPmGrantName(String pmGrantName) {
+		this.pmGrantName = pmGrantName;
 	}
 	@Column(name="is_deleted")
 	public String getIsDeleted() {

@@ -56,9 +56,9 @@ public class RepresentationRequestController {
     public @ResponseBody List<KeyValueVO> getPanchayatsByTehsilId(@RequestBody Map<String,String> inputMap ) {
     	 return locationDetailsService.getPanchayatsByTehsilId(Long.valueOf(inputMap.get("tehsilId")));
     }
-	@RequestMapping(value ="/getPetitionDepartmentList",method = RequestMethod.POST)
-    public @ResponseBody List<KeyValueVO> getPetitionDepartmentDetailsList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPetitionDepartmentList(String.valueOf(inputMap.get("searchType")));
+	@RequestMapping(value ="/getPmDepartmentList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPmDepartmentDetailsList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPmDepartmentList(String.valueOf(inputMap.get("searchType")));
     }
 	@RequestMapping(value ="/getPetitionDesignationList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getPetitionDesignationList(@RequestBody Map<String,String> inputMap ) {
@@ -88,29 +88,29 @@ public class RepresentationRequestController {
     public String representationRequestEdit(ModelMap model) {
 		return "representationRequestEdit";
     }
-	@RequestMapping(value ="/getPetitionSubjectList",method = RequestMethod.POST)
-    public @ResponseBody List<KeyValueVO> getPetitionSubjectList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPetitionSubjectList();
+	@RequestMapping(value ="/getPmSubjectList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPmSubjectList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPmSubjectList();
     }
-	@RequestMapping(value ="/getPetitionSubSubjectList",method = RequestMethod.POST)
-    public @ResponseBody List<KeyValueVO> getPetitionSubSubjectList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPetitionSubSubjectList(Long.valueOf(inputMap.get("subjectId")));
+	@RequestMapping(value ="/getPmSubSubjectList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPmSubSubjectList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPmSubSubjectList(Long.valueOf(inputMap.get("subjectId")));
     }
-	@RequestMapping(value ="/getPetitionLeadDetailsList",method = RequestMethod.POST)
-    public @ResponseBody List<KeyValueVO> getPetitionLeadDetailsList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPetitionLeadDetailsList();
+	@RequestMapping(value ="/getPmLeadDetailsList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPmLeadDetailsList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPmLeadDetailsList();
     }
-	@RequestMapping(value ="/getPetitionBriefLeadList",method = RequestMethod.POST)
-    public @ResponseBody List<KeyValueVO> getPetitionBriefLeadList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPetitionBriefLeadList();
+	@RequestMapping(value ="/getPmBriefLeadList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPmBriefLeadList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPmBriefLeadList();
     }
-	@RequestMapping(value ="/getPetitionGrantList",method = RequestMethod.POST)
-    public @ResponseBody List<KeyValueVO> getPetitionGrantList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPetitionGrantList();
+	@RequestMapping(value ="/getPmGrantList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPmGrantList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPmGrantList();
     }
-	@RequestMapping(value ="/getPetitionStatusList",method = RequestMethod.POST)
-    public @ResponseBody List<KeyValueVO> petitionStatusDAO(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPetitionStatusList();
+	@RequestMapping(value ="/getPmStatusList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPmStatusList(@RequestBody Map<String,String> inputMap ) {
+       return locationDetailsService.getPmStatusList();
     }
 	@RequestMapping(value ="/getWorkTypeList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getWorkTypeList(@RequestBody Map<String,String> inputMap ) {
