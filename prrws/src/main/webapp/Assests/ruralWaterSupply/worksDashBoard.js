@@ -2287,6 +2287,11 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 				statusType = $(this).val();
 			 }
 		});
+		var yearVal="";
+		var financialVal =$("#financialYearId").val();
+		if(financialVal != 0){
+			 yearVal=financialVal;
+		}
 	 	var json = {
 				"assetType":assetType,
 				"fromDateStr":glStartDate,
@@ -2295,6 +2300,8 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 				"exceededDuration":exceededDuration,
 				"locationValue":locationValue,
 				 "status" : statusType,
+				 "year": yearVal
+				 
 				}
 		
 		$.ajax({                
