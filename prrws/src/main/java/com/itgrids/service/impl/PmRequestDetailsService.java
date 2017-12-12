@@ -192,7 +192,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					petitionSubWorkLocationDetails.setPmSubjectId(dataVO.getSubjectId());
 					petitionSubWorkLocationDetails.setPmSubSubjectId(dataVO.getSubSubjectId());
 					petitionSubWorkLocationDetails.setLocationScopeId(dataVO.getLocationScopeId());
-					petitionSubWorkLocationDetails.setLocationValue(dataVO.getLocationValue());
+					petitionSubWorkLocationDetails.setLocationScopeValue(dataVO.getLocationValue());
 					
 					LocationAddress address = saveLocationAddress(dataVO.getAddressVO());
 					if(address != null && address.getLocationAddressId() != null && address.getLocationAddressId().longValue()>0L)
@@ -229,7 +229,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						if(dataVO.getEstimateCost() != null)
 							petition.setEstimationCost(Long.valueOf(String.valueOf(dataVO.getEstimateCost())));
 						petition.setWorkName(dataVO.getWorkName());
-						petition.setNoOfWork(dataVO.getNoOfWorks());
+						petition.setNoOfWorks(dataVO.getNoOfWorks());
 						petition.setIsDeleted("N");
 						petition.setIsPreviousPetition(dataVO.getIsPreviousPetition());
 						petition.setGrievanceDescription(dataVO.getGrievanceDescription());
@@ -287,7 +287,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				commonMethodsUtilService.copyFile(file.getOriginalFilename(),staticPath);
 				byte[] fileData = file.getBytes();
 				Files.write(fileData,new File(staticPath+"//"+datePath+".jpg"));
-				document.setDocumentPath(staticPath+"//"+datePath+".jpg");
+				document.setPath(staticPath+"//"+datePath+".jpg");
 				document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				document.setInsertedUserId(userId);
 				document = documentDAO.save(document);

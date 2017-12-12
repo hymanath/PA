@@ -415,7 +415,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 				commonMethodsUtilService.copyFile(file.getOriginalFilename(),staticPath);
 				byte[] fileData = file.getBytes();
 				Files.write(fileData,new File(staticPath+"//"+datePath+".jpg"));
-				document.setDocumentPath(staticPath+"//"+datePath+".jpg");
+				document.setPath(staticPath+"//"+datePath+".jpg");
 				document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				document.setInsertedUserId(userId);
 				document = documentDAO.save(document);
