@@ -155,6 +155,7 @@ function getPublicationVsPartiesPerformance(edtionList){
 }
 
 function getPrintMediaOverAllPartyWiseCounts(){
+	
 	$("#partyWisePressMeetDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$("#scaleBasedPerformanceCohortId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$.ajax({
@@ -164,8 +165,7 @@ function getPrintMediaOverAllPartyWiseCounts(){
 			if(result !=null){
 				performanceResult = result;
      		   bulidPressMeetPartyWiseDetails(result);
-     		  buildScaleBasedPerformanceCohortPressMeet(result)
-			}else{
+     		}else{
 				$("#partyWisePressMeetDetails").html('<div class="col-sm-12"<h4>NO DATA AVAILABLE</h4></div>');
 			}
 		});
@@ -176,43 +176,95 @@ function getPrintMediaOverAllPartyWiseCounts(){
 	function bulidPressMeetPartyWiseDetails(result)
 {
 	var str='';
+	
 	if(result.pressmeetList !=null){
 		for(var i in result.pressmeetList){
-			
-			if(i==0)
-			{
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0">';
-			}else{
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20">';
-			}
-			
+			if(result.pressmeetList[i].partyId == "TDP"){
+				str+='<div class="col-sm-12 m_top10">';
 				str+='<div class="table-responsive">';
 				str+='<table class="table tableTraining bg_ED tablePressmeetMain">';
-				  str+='<tbody>';
-					str+='<tr>';
-						str+='<td style="vertical-align:middle;">';
-							str+='<img src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+' Icon" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
-						str+='</td>';
-						str+='<td>';
-							str+='<p class="text-capital">Total press Meets</p>';
-							str+='<h4><span class="partyWisePressMeetCls" style="cursor:pointer;color:#337ab7" attr_partyId = "'+result.pressmeetList[i].partyId+'" attr_type="party" ><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
-						str+='</td>';
-						str+='<td>';
-							str+='<p class="text-capital">total spokes persons</p>';
-							str+='<h4><span class="partyWisePressMeetCls" style="cursor:pointer;color:#337ab7" attr_type="candidate" attr_partyId = "'+result.pressmeetList[i].partyId+'"><a>'+result.pressmeetList[i].candidateArticleCount+'</a></span></h4>';
-						str+='</td>';
-						str+='<td>';
-						  var rating =parseInt(result.pressmeetList[i].overAllPerfomance)/5;
-							str+='<p class="text-capital">performance</p>';
-							str+='<input class="performanceRating" value="'+rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom overAllPerformanceCls " attr_partyId = "'+result.pressmeetList[i].partyId+'" style="cursor:pointer;">'+rating+'</span>';
-						str+='</td>';
-					str+='</tr>';
-				 str+='</tbody>';
+				str+='<tbody>';
+				str+='<tr>';
+				str+='<td style="vertical-align:middle;">';
+					str+='<img src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+' Icon" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+				str+='</td>';
+				str+='<td>';
+					str+='<p class="text-capital">Total press Meets</p>';
+					str+='<h4><span class="partyWisePressMeetCls" style="cursor:pointer;color:#337ab7" attr_partyId = "'+result.pressmeetList[i].partyId+'" attr_type="party" ><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
+				str+='</td>';
+				str+='<td>';
+					str+='<p class="text-capital">total spokes persons</p>';
+					str+='<h4><span class="partyWisePressMeetCls" style="cursor:pointer;color:#337ab7" attr_type="candidate" attr_partyId = "'+result.pressmeetList[i].partyId+'"><a>'+result.pressmeetList[i].candidateArticleCount+'</a></span></h4>';
+				str+='</td>';
+				str+='<td>';
+				  var rating =parseInt(result.pressmeetList[i].overAllPerfomance)/5;
+					str+='<p class="text-capital">performance</p>';
+					str+='<input class="performanceRating" value="'+rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom overAllPerformanceCls " attr_partyId = "'+result.pressmeetList[i].partyId+'" style="cursor:pointer;">'+rating+'</span>';
+				str+='</td>';
+				str+='</tr>';
+				str+='</tbody>';
 				str+='</table>';
-			str+='</div>';
-			str+='</div>';
-			
+				str+='</div>';
+				str+='</div>';
+			}else if(result.pressmeetList[i].partyName == "YSRC"){
+				str+='<div class="col-sm-12 m_top10">';
+				str+='<div class="table-responsive">';
+				str+='<table class="table tableTraining bg_ED tablePressmeetMain">';
+				str+='<tbody>';
+				str+='<tr>';
+				str+='<td style="vertical-align:middle;">';
+					str+='<img src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+' Icon" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+				str+='</td>';
+				str+='<td>';
+					str+='<p class="text-capital">Total press Meets</p>';
+					str+='<h4><span class="partyWisePressMeetCls" style="cursor:pointer;color:#337ab7" attr_partyId = "'+result.pressmeetList[i].partyId+'" attr_type="party" ><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
+				str+='</td>';
+				str+='<td>';
+					str+='<p class="text-capital">total spokes persons</p>';
+					str+='<h4><span class="partyWisePressMeetCls" style="cursor:pointer;color:#337ab7" attr_type="candidate" attr_partyId = "'+result.pressmeetList[i].partyId+'"><a>'+result.pressmeetList[i].candidateArticleCount+'</a></span></h4>';
+				str+='</td>';
+				str+='<td>';
+				  var rating =parseInt(result.pressmeetList[i].overAllPerfomance)/5;
+					str+='<p class="text-capital">performance</p>';
+					str+='<input class="performanceRating" value="'+rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom overAllPerformanceCls " attr_partyId = "'+result.pressmeetList[i].partyId+'" style="cursor:pointer;">'+rating+'</span>';
+				str+='</td>';
+				str+='</tr>';
+				str+='</tbody>';
+				str+='</table>';
+				str+='</div>';
+				str+='</div>';
+			}else{
+				str+='<div class="col-sm-12 m_top10">';
+				str+='<div class="table-responsive">';
+				str+='<table class="table tableTraining bg_ED tablePressmeetMain">';
+				str+='<tbody>';
+				str+='<tr>';
+				str+='<td style="vertical-align:middle;">';
+					str+='<img src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+' Icon" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+				str+='</td>';
+				str+='<td>';
+					str+='<p class="text-capital">Total press Meets</p>';
+					str+='<h4><span class="partyWisePressMeetCls" style="cursor:pointer;color:#337ab7" attr_partyId = "'+result.pressmeetList[i].partyId+'" attr_type="party" ><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
+				str+='</td>';
+				str+='<td>';
+					str+='<p class="text-capital">total spokes persons</p>';
+					str+='<h4><span class="partyWisePressMeetCls" style="cursor:pointer;color:#337ab7" attr_type="candidate" attr_partyId = "'+result.pressmeetList[i].partyId+'"><a>'+result.pressmeetList[i].candidateArticleCount+'</a></span></h4>';
+				str+='</td>';
+				str+='<td>';
+				  var rating =parseInt(result.pressmeetList[i].overAllPerfomance)/5;
+					str+='<p class="text-capital">performance</p>';
+					str+='<input class="performanceRating" value="'+rating+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom overAllPerformanceCls " attr_partyId = "'+result.pressmeetList[i].partyId+'" style="cursor:pointer;">'+rating+'</span>';
+				str+='</td>';
+				str+='</tr>';
+				str+='</tbody>';
+				str+='</table>';
+				str+='</div>';
+				str+='</div>';
+			}
+					
+				 
 		}
+		
 		$("#partyWisePressMeetDetails").html(str);
 		$(".performanceRating").rating({
 			showClear: false,
@@ -224,7 +276,7 @@ function getPrintMediaOverAllPartyWiseCounts(){
 	}else{
 			$("#partyWisePressMeetDetails").html('<div class="col-sm-12"<h4>NO DATA AVAILABLE</h4></div>')
 		}
-
+	buildScaleBasedPerformanceCohortPressMeet(result)
 }
 $(document).on("click","#pressmeetTopId",function(){
 	buildSpokesPersonWisePressmeet(partywiseresult,"top");
@@ -426,7 +478,9 @@ function buildScaleBasedPerformanceCohortPressMeet(result)
 			for(var i in result.pressmeetList){
 				str+='<table class="table tablepressmeet tablepressmeetMain m_top10">';
 				  str+='<tbody>';
-					str+='<tr>';
+					
+					if(result.pressmeetList[i].partyId == 872 || result.pressmeetList[i].partyId == "872"){
+						str+='<tr>';
 						str+='<td>';
 							str+='<img  src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+'" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
 						str+='</td>';
@@ -442,7 +496,64 @@ function buildScaleBasedPerformanceCohortPressMeet(result)
 							str+='<input class="performanceRating" value="'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><br/><h5 class="label label-default label-xs labelCustom"  data-readonly>'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'</h5>';
 						str+='</td>';
 						}
-					str+='</tr>';
+						str+='</tr>';
+					}else if(result.pressmeetList[i].partyId == 1117 || result.pressmeetList[i].partyId == "1117"){
+						str+='<tr>';
+						str+='<td>';
+							str+='<img  src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+'" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-capital">OverAll Press Meets</p>';
+							
+							  str+='<h4><span style="cursor:pointer;" attr_partyId="'+result.pressmeetList[i].partyId+'" class="partyWisePressMeetCls" attr_type="party" ><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
+							
+						str+='</td>';
+						for(var j in result.pressmeetList[i].characterList){
+						str+='<td>';
+							str+='<p class="text-capital" style="font-size:12px">'+result.pressmeetList[i].characterList[j].characterstics+'</p>';
+							str+='<input class="performanceRating" value="'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><br/><h5 class="label label-default label-xs labelCustom"  data-readonly>'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'</h5>';
+						str+='</td>';
+						}
+						str+='</tr>';
+					}else if(result.pressmeetList[i].partyId == 163 || result.pressmeetList[i].partyId == "163"){
+						str+='<tr>';
+						str+='<td>';
+							str+='<img  src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+'" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-capital">OverAll Press Meets</p>';
+							
+							  str+='<h4><span style="cursor:pointer;" attr_partyId="'+result.pressmeetList[i].partyId+'" class="partyWisePressMeetCls" attr_type="party" ><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
+							
+						str+='</td>';
+						for(var j in result.pressmeetList[i].characterList){
+						str+='<td>';
+							str+='<p class="text-capital" style="font-size:12px">'+result.pressmeetList[i].characterList[j].characterstics+'</p>';
+							str+='<input class="performanceRating" value="'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><br/><h5 class="label label-default label-xs labelCustom"  data-readonly>'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'</h5>';
+						str+='</td>';
+						}
+						str+='</tr>';
+					}else{
+						str+='<tr>';
+						str+='<td>';
+							str+='<img  src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+'" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+						str+='</td>';
+						str+='<td>';
+							str+='<p class="text-capital">OverAll Press Meets</p>';
+							
+							  str+='<h4><span style="cursor:pointer;" attr_partyId="'+result.pressmeetList[i].partyId+'" class="partyWisePressMeetCls" attr_type="party" ><a>'+result.pressmeetList[i].pressMeetCount+'</a></span></h4>';
+							
+						str+='</td>';
+						for(var j in result.pressmeetList[i].characterList){
+						str+='<td>';
+							str+='<p class="text-capital" style="font-size:12px">'+result.pressmeetList[i].characterList[j].characterstics+'</p>';
+							str+='<input class="performanceRating" value="'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><br/><h5 class="label label-default label-xs labelCustom"  data-readonly>'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'</h5>';
+						str+='</td>';
+						}
+						str+='</tr>';
+					}
+						
+					
 				 str+='</tbody>';
 				str+='</table>';
 			str+='<hr class="m_0"/>';
@@ -471,15 +582,15 @@ function buildCandidateOverAllPerformanceCohortPressmeet(result)
 	var str='';
 	
 	if(result.paliticalPartyList !=null){
-		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+		str+='<div class="panel-group" id="accordionInner" role="tablist" aria-multiselectable="true">';
 		for(var i in result.paliticalPartyList){
 			str+='<div class="panel panel-default collapsepressmeet">';
-				str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
+				str+='<div class="panel-heading" role="tab" id="headingInner'+i+'">';
 					if(i == 0)
 					{
-						str+='<a role="button" class="collapsepressmeetIcon" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+						str+='<a role="button" class="collapsepressmeetIcon" data-toggle="collapse" data-parent="#accordionInner" href="#collapseInner'+i+'" aria-expanded="true" aria-controls="collapseInner'+i+'">';
 					}else{
-						str+='<a role="button" class="collapsepressmeetIcon collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+						str+='<a role="button" class="collapsepressmeetIcon collapsed" data-toggle="collapse" data-parent="#accordionInner" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapseInner'+i+'">';
 					}
 					
 						str+='<h4 class="panel-title"><img  src="newCoreDashBoard/img/'+result.paliticalPartyList[i].name+'.png" alt="'+result.paliticalPartyList[i].name+'" class="PressmeetPartyIcon"/> '+result.paliticalPartyList[i].name +' spokespersons</h4>';
@@ -487,9 +598,9 @@ function buildCandidateOverAllPerformanceCohortPressmeet(result)
 				str+='</div>';
 				if(i == 0)
 				{
-					str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+					str+='<div id="collapseInner'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInner'+i+'">';
 				}else{
-					str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
+					str+='<div id="collapseInner'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInner'+i+'">';
 				}
 					str+='<div class="panel-body">';
 						str+='<div class="row">';
@@ -910,7 +1021,9 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 				str+='<th>Coverage</th>';
 				str+= '</thead>';
 				  str+='<tbody>';
-					str+='<tr>';
+					
+					if(result.pressmeetList[i].partyId == 872 || result.pressmeetList[i].partyId == "872"){
+						str+='<tr>';
 						str+='<td>';
 							str+='<img  src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+'" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
 						str+='</td>';
@@ -923,7 +1036,56 @@ $(document).on("click",".partyWisePressMeetCls",function(){//partyWisePressMeetC
 							str+='<input class="performanceRating" value="'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><br/><h5 class="label label-default label-xs labelCustom pull-right"  data-readonly>'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'</h5>';
 						str+='</td>';
 						}
-					str+='</tr>';
+						str+='</tr>';
+					}else if(result.pressmeetList[i].partyId == 1117 || result.pressmeetList[i].partyId == "1117"){
+						str+='<tr>';
+						str+='<td>';
+							str+='<img  src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+'" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+						str+='</td>';
+						str+='<td>';
+							  str+='<h4><span style="cursor:pointer;">'+result.pressmeetList[i].pressMeetCount+'</span></h4>';
+							
+						str+='</td>';
+						for(var j in result.pressmeetList[i].characterList){
+						str+='<td>';
+							str+='<input class="performanceRating" value="'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><br/><h5 class="label label-default label-xs labelCustom pull-right"  data-readonly>'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'</h5>';
+						str+='</td>';
+						}
+						str+='</tr>';
+					}else if(result.pressmeetList[i].partyId == 163 || result.pressmeetList[i].partyId == "163"){
+						str+='<tr>';
+						str+='<td>';
+							str+='<img  src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+'" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+						str+='</td>';
+						str+='<td>';
+							  str+='<h4><span style="cursor:pointer;">'+result.pressmeetList[i].pressMeetCount+'</span></h4>';
+							
+						str+='</td>';
+						for(var j in result.pressmeetList[i].characterList){
+						str+='<td>';
+							str+='<input class="performanceRating" value="'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><br/><h5 class="label label-default label-xs labelCustom pull-right"  data-readonly>'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'</h5>';
+						str+='</td>';
+						}
+						str+='</tr>';
+					}else{
+						str+='<tr>';
+						str+='<td>';
+							str+='<img  src="newCoreDashBoard/img/'+result.pressmeetList[i].partyName+'.png" alt="'+result.pressmeetList[i].partyName+'" class="PressmeetPartyIcon"/>'+result.pressmeetList[i].partyName+'';
+						str+='</td>';
+						str+='<td>';
+							  str+='<h4><span style="cursor:pointer;">'+result.pressmeetList[i].pressMeetCount+'</span></h4>';
+							
+						str+='</td>';
+						for(var j in result.pressmeetList[i].characterList){
+						str+='<td>';
+							str+='<input class="performanceRating" value="'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><br/><h5 class="label label-default label-xs labelCustom pull-right"  data-readonly>'+result.pressmeetList[i].characterList[j].rating.toFixed(2)+'</h5>';
+						str+='</td>';
+						}
+						str+='</tr>';
+					}
+						
+						
+					
 				 str+='</tbody>';
 				str+='</table>';
 			}

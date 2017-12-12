@@ -209,8 +209,18 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<KeyValueVO> keyValueVOList;
 	
 	//setters And Getters
+	
+	
 	public List<Long> getProgramIdsList() {
 		return programIdsList;
+	}
+
+	public TrainingCampVO getTrainingCampVO() {
+		return trainingCampVO;
+	}
+
+	public void setTrainingCampVO(TrainingCampVO trainingCampVO) {
+		this.trainingCampVO = trainingCampVO;
 	}
 
 	public void setProgramIdsList(List<Long> programIdsList) {
