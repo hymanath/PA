@@ -36,7 +36,7 @@ public class RepresentationRequestController {
 	private ILocationDetailsService locationDetailsService;
 	
 	
-	@RequestMapping(value ="/saveRepresentRequestDetails",method = RequestMethod.POST)
+	@RequestMapping(value ="/saveTempRepresentRequestDetails",method = RequestMethod.POST)
     public @ResponseBody ResponseVO saveRepresentRequestDetails(@ModelAttribute  PmRequestVO pmRequestVO) {
 		pmRequestVO.setUserId(1L);
 				return null;
