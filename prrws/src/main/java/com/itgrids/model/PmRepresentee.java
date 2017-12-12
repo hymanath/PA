@@ -96,7 +96,7 @@ public class PmRepresentee {
 		this.isDeleted = isDeleted;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "location_address_id", insertable = false, updatable = false)
+	@JoinColumn(name = "address_id", insertable = false, updatable = false)
 	public LocationAddress getUserAddress() {
 		return userAddress;
 	}
