@@ -5118,6 +5118,7 @@ public String getInsuraceStatusWiseComplaintsDetails()
 			String name = jObj.getString("name");
 			InputVO vo = new InputVO();
 			vo.setName(name);
+			vo.setActivityMemberId(jObj.getLong("activityMemberId"));
 			kaizalaDashboardList = kaizalaInfoService.getLocationWiseCommitteeMemberDetails(vo);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseCommitteeMemberDetails() method of CoreDashBoard", e);
@@ -5130,6 +5131,7 @@ public String getInsuraceStatusWiseComplaintsDetails()
 			jObj = new JSONObject(getTask());
 			
 			InputVO vo = new InputVO();
+			vo.setActivityMemberId(jObj.getLong("activityMemberId"));
 			kaizalaDashboardList = kaizalaInfoService.getOverAllCommitteeWiseMembersCounts(vo);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getOverAllCommitteeWiseMembersCounts() method of CoreDashBoard", e);
@@ -5146,7 +5148,12 @@ public String getInsuraceStatusWiseComplaintsDetails()
 			Long userId = 1L;
 			Long userTypeId = jObj.getLong("userTypeId");
 			
-			userTypeVOList = kaizalaInfoService.getUserTypeWiseKaizalaCommitteeMemberDetailsCnt(userId, userTypeId, activityMemberId, stateId);
+			InputVO vo = new InputVO();
+			vo.setActivityMemberId(activityMemberId);
+			vo.setStateId(stateId);
+			vo.setUserId(userId);
+			vo.setUserTypeId(userTypeId);
+			userTypeVOList = kaizalaInfoService.getUserTypeWiseKaizalaCommitteeMemberDetailsCnt(vo);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getUserTypeWiseKaizalaCommitteeMemberDetailsCnt() method of CoreDashBoard", e);
 		}
