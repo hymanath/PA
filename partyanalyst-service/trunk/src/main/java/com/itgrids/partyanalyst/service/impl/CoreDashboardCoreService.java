@@ -419,7 +419,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
      * @author  Sai Kumar <href:saikumar.mandal@itgrids.com >
      * @Date 11th December,2017
    */
-	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long globalActivityMemberId,Long stateId,String fromDateStr, String toDateStr, List<Long> enrollmentYearIds,List<Long> programIdList) {
+	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long globalActivityMemberId,Long stateId,String fromDateStr, String toDateStr, List<Long> enrollmentYearIds,List<Long> programIdList,List<Long> committeeLevelIds) {
 		TrainingCampProgramVO finalResultVO = new TrainingCampProgramVO();
 		Map<Long, TrainingCampProgramVO> trainingCampProgramDtlsMap = new HashMap<Long, TrainingCampProgramVO>();
 		Long userAccessLevelId = null;
@@ -449,16 +449,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			tdpCommitteeLvlIds.add(7l);
 			tdpCommitteeLvlIds.add(9l);
 
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-			String fromDate =null;
-			if(startDate !=null)
-			fromDate = sdf1.format(startDate);
-			DateUtilService dateUtilService = new DateUtilService();
-	        Date currentDate = dateUtilService.getCurrentDateAndTime();
-	        String toDay = sdf1.format(currentDate);			
-			String levelVals = getListToString(userAccessLevelValues);
 			String committeeLvlVals = "5,6,7,8,9";
-			String enrollmentYrIds = getListToString(enrollmentYearIds);
 			
 			
 			//List<Long> programIds = trainingCampScheduleDAO.getTrainingCampProgramIds(enrollmentYearIds.get(0));
@@ -471,12 +462,12 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		  	        batchIdsList.add(batchId);
 				}
 			}
-			List<Object[]> attendedList = getCampDetailsListByFiltering(enrollmentYearIds,programIdList,batchIdsList);
+			List<Object[]> attendedList = getCampDetailsListByFiltering(enrollmentYearIds,programIdList,batchIdsList,committeeLevelIds);
 			
 			List<Object[]> rtrnCommiteeLevelEligibleAndAttendedObjLst = trainingCampDetailsInfoDAO
 					.getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(
 							userAccessLevelId, userAccessLevelValues, startDate,
-							enrollmentYearIds, programIdList);
+							enrollmentYearIds, programIdList,committeeLevelIds);
 
 			Map<Long, Map<Long, Long>> batchMemdaysMap = new HashMap<Long, Map<Long, Long>>();
 			if (attendedList != null && attendedList.size() > 0) {
@@ -514,7 +505,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			manTwnDivVO.setTotalNotAttenedCountPer(calculatePercantage(	manTwnDivVO.getTotalNotAttenedCount(),manTwnDivVO.getTotalEligibleCount()));
 			finalResultVO.setMandalTownDivisionVO(manTwnDivVO);
 
-			List<Object[]> rtrnObjLst = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedDetails(userAccessLevelId, userAccessLevelValues, startDate,enrollmentYearIds, programIdList);
+			List<Object[]> rtrnObjLst = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedDetails(userAccessLevelId, userAccessLevelValues, startDate,enrollmentYearIds, programIdList,committeeLevelIds);
 			if (rtrnObjLst != null && rtrnObjLst.size() > 0) {
 				for (Object[] param : rtrnObjLst) {
 					TrainingCampProgramVO programVO = new TrainingCampProgramVO();
@@ -557,7 +548,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 
 		return listString;
 	}
-	public List<Object[]> getCampDetailsListByFiltering(List<Long> enrollmentYearIds,List<Long> programYearIds,List<Long> batchIdsList){
+	public List<Object[]> getCampDetailsListByFiltering(List<Long> enrollmentYearIds,List<Long> programYearIds,List<Long> batchIdsList,List<Long> committeeLevelIds){
 	    List<Object[]> campDetailsList = new ArrayList<Object[]>(0);
 	    if(batchIdsList != null && batchIdsList.size()>0){
 	               int filterCount = 50;
@@ -567,7 +558,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	               while (maxcount >0){  
 	                   if(maxcount<filterCount)
 	                       j = i+maxcount;
-	                       List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList.subList(i, j));//Procedure Call
+	                       List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList.subList(i, j),committeeLevelIds);//Procedure Call
 	                      if(commonMethodsUtilService.isListOrSetValid(tempList)){
 	                        campDetailsList.addAll(tempList);
 	                      }

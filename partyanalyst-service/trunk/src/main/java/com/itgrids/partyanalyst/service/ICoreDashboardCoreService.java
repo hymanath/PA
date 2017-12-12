@@ -14,7 +14,7 @@ public interface ICoreDashboardCoreService {
 	public List<TrainingCampSurveyVO> getFeedbackOnLeaders(Long userAccessLevelId, List<Long> userAccessLevelValues, List<Long> trainingProgramIds,Long traingCampEnrollmentYearId,List<Long> trainingCampLevelIds,Long groupType);
 	public List<KeyValueVO> getProgramIdsList();
 	public List<KeyValueVO> getCadreCommiteeEnrollmentIds();
-	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long globalActivityMemberId,Long stateId,String fromDate,String toDate,List<Long> enrollmentYearIdsList,List<Long> programIdList);
+	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long globalActivityMemberId,Long stateId,String fromDate,String toDate,List<Long> enrollmentYearIdsList,List<Long> programIdList,List<Long> tdpCommitteeLevelIds);
 	public TrainingCampVO getTrainingCampFeedBackDetails(Long activityMemberId,String commiteeLevelId ,Long stateId, String dateStr, List<Long> enrollmentYearIdList, List<Long> programIdList);
 
 }
