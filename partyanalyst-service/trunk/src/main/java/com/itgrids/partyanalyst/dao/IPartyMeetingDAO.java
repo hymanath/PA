@@ -93,7 +93,7 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public List<Object[]> getPartyMeetingsImagesCoveredByMeetings(List<Long> meetingIds);
 	public List<Object[]> meetingsBaseTotalCountForDiffLevels(PartyMeetingsInputVO inputVO,Long locationId,Set<Long> locationValuesSet,List<Long> locLevelIdList);
 
-	public List<Object[]> getCadrePartyMeetngDeatils(Date fromDate,Date toDate,List<Long> meetigLevelId,int startIndex,int maxIndex);
+	 public List<Object[]> getCadrePartyMeetngDeatils(Date fromDate,Date toDate,List<Long> meetigLevelId,int startIndex,int maxIndex);
 	 public Long getCadrePartyMeetngDeatilsCount(Date fromDate,Date toDate,List<Long> meetigLevelId);
 	 public List<Object[]> getPartyMeetingDetailsByPartyMeetingId(Long patyMeetingId);
 	 public Integer updatePartyMeetingDetails(Long meetingId);
@@ -103,5 +103,9 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	 public List<Object[]> getBelowLevelMeetingConductedCount(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate, String areaType);
 	 public Long getAccessLevelMeetingConductedCount(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate);
 	 public List<Object[]> getCommitteeMeetingsDetails(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate);
-	public List<Object[]> getLocationWiseStateMeetings(List<Long> locationValues, Long locationTypeId, Date startDate,Date endDate, Long partyMeetingMainTypeId,String type,Long partyMeetingTypeId);
+	 public List<Object[]> getLocationWiseStateMeetings(List<Long> locationValues, Long locationTypeId, Date startDate,Date endDate, Long partyMeetingMainTypeId,String type,Long partyMeetingTypeId);
+	 public List<Object[]> getPartyMeetingDetailsByUserAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId);
+	 public Integer updateMOMConductedDate(Long meetingId,Date conductedDate,Long userId,Date presentDate);
+	 public Integer updateMOMConductedStatus(Long meetingId,String isConducted,Long userId,Date presentDate);
+	 public Integer updateMOMConductedReason(Long meetingId,String remarks,Long userId,Date presentDate);
 }

@@ -51,8 +51,28 @@ public class PartyMeetingMinute extends BaseModel implements Serializable{
 	private Long momAtrSourceTypeId;
 	private MomAtrSourceType momAtrSourceType;
 	
+	private Long locationScopeId;
+	private Long locationScopeValue;
+	private Long loactionAddressId;
+	private Long createdLocationScopeId; 
+	private Long createdLocationValue;
+	private Long createdAddressId;
+	private Long assignedLocationScopeId;
+	private Long assignedLocationValue;
+	private Long assignedAddressId;
+	private Long momPriorityId;
+	private Long itdpAppUserId;
+	
+	private RegionScopes locationScope;
+	private UserAddress locationAddress;
+	private MomAppUserAccess createdLocationScope;
+	private RegionScopes assignedLocationScope;
+	private UserAddress createdAddress;
+	private UserAddress assignedAddress;
+	private MomPriority momPriority;
+	
 	public PartyMeetingMinute(){}
-
+   
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="party_meeting_minute_id", unique=true, nullable=false)
@@ -253,4 +273,173 @@ public class PartyMeetingMinute extends BaseModel implements Serializable{
 	public void setMomAtrSourceType(MomAtrSourceType momAtrSourceType) {
 		this.momAtrSourceType = momAtrSourceType;
 	}
+
+	@Column(name="location_scope_id")
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
+	}
+	@Column(name="location_scope_value")
+	public Long getLocationScopeValue() {
+		return locationScopeValue;
+	}
+
+	public void setLocationScopeValue(Long locationScopeValue) {
+		this.locationScopeValue = locationScopeValue;
+	}
+	@Column(name="loaction_address_id")
+	public Long getLoactionAddressId() {
+		return loactionAddressId;
+	}
+
+	public void setLoactionAddressId(Long loactionAddressId) {
+		this.loactionAddressId = loactionAddressId;
+	}
+	@Column(name="itdp_app_user_id")
+	public Long getItdpAppUserId() {
+		return itdpAppUserId;
+	}
+
+	public void setItdpAppUserId(Long itdpAppUserId) {
+		this.itdpAppUserId = itdpAppUserId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="location_scope_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public RegionScopes getLocationScope() {
+		return locationScope;
+	}
+
+	public void setLocationScope(RegionScopes locationScope) {
+		this.locationScope = locationScope;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="loaction_address_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getLocationAddress() {
+		return locationAddress;
+	}
+
+	public void setLocationAddress(UserAddress locationAddress) {
+		this.locationAddress = locationAddress;
+	}
+
+	@Column(name="created_location_scope_id")
+	public Long getCreatedLocationScopeId() {
+		return createdLocationScopeId;
+	}
+
+	public void setCreatedLocationScopeId(Long createdLocationScopeId) {
+		this.createdLocationScopeId = createdLocationScopeId;
+	}
+	@Column(name="created_location_value")
+	public Long getCreatedLocationValue() {
+		return createdLocationValue;
+	}
+
+	public void setCreatedLocationValue(Long createdLocationValue) {
+		this.createdLocationValue = createdLocationValue;
+	}
+	@Column(name="created_address_id")
+	public Long getCreatedAddressId() {
+		return createdAddressId;
+	}
+
+	public void setCreatedAddressId(Long createdAddressId) {
+		this.createdAddressId = createdAddressId;
+	}
+    @Column(name = "assigned_location_scope_id")
+	public Long getAssignedLocationScopeId() {
+		return assignedLocationScopeId;
+	}
+
+	public void setAssignedLocationScopeId(Long assignedLocationScopeId) {
+		this.assignedLocationScopeId = assignedLocationScopeId;
+	}
+    @Column(name = "assigned_location_value")
+	public Long getAssignedLocationValue() {
+		return assignedLocationValue;
+	}
+
+	public void setAssignedLocationValue(Long assignedLocationValue) {
+		this.assignedLocationValue = assignedLocationValue;
+	}
+    @Column(name = "assigned_address_id")
+	public Long getAssignedAddressId() {
+		return assignedAddressId;
+	}
+
+	public void setAssignedAddressId(Long assignedAddressId) {
+		this.assignedAddressId = assignedAddressId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="assigned_location_scope_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public RegionScopes getAssignedLocationScope() {
+		return assignedLocationScope;
+	}
+
+	public void setAssignedLocationScope(RegionScopes assignedLocationScope) {
+		this.assignedLocationScope = assignedLocationScope;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="created_address_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getCreatedAddress() {
+		return createdAddress;
+	}
+
+	public void setCreatedAddress(UserAddress createdAddress) {
+		this.createdAddress = createdAddress;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="assigned_address_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getAssignedAddress() {
+		return assignedAddress;
+	}
+
+	public void setAssignedAddress(UserAddress assignedAddress) {
+		this.assignedAddress = assignedAddress;
+	}
+    @Column(name = "mom_priority_id")
+	public Long getMomPriorityId() {
+		return momPriorityId;
+	}
+
+	public void setMomPriorityId(Long momPriorityId) {
+		this.momPriorityId = momPriorityId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="mom_priority_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public MomPriority getMomPriority() {
+		return momPriority;
+	}
+
+	public void setMomPriority(MomPriority momPriority) {
+		this.momPriority = momPriority;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="created_location_scope_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public MomAppUserAccess getCreatedLocationScope() {
+		return createdLocationScope;
+	}
+
+	public void setCreatedLocationScope(MomAppUserAccess createdLocationScope) {
+		this.createdLocationScope = createdLocationScope;
+	}
+	
+	
 }

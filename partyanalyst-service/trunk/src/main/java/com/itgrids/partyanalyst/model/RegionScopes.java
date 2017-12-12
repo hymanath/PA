@@ -41,6 +41,7 @@ public class RegionScopes extends BaseModel implements java.io.Serializable {
 	private Long regionScopesId;
 	private String scope;
 	private String description;
+	private Long parentScopeId;
 	
 	private Set<ModuleRegionScopes> moduleRegionScopes = new HashSet<ModuleRegionScopes>(0);
 	private Set<Survey> survey = new HashSet<Survey>(0);
@@ -100,6 +101,14 @@ public class RegionScopes extends BaseModel implements java.io.Serializable {
 
 	public void setSurvey(Set<Survey> survey) {
 		this.survey = survey;
+	}
+    @Column(name = "parent_scope_id")
+	public Long getParentScopeId() {
+		return parentScopeId;
+	}
+
+	public void setParentScopeId(Long parentScopeId) {
+		this.parentScopeId = parentScopeId;
 	}
 
 	/*@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="regionScopes")

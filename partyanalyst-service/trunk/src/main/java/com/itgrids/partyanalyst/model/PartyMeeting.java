@@ -60,6 +60,7 @@ public class PartyMeeting extends BaseModel implements Serializable{
 	
 	private String thirdPartyStatus;
 	private String attendanceEnrolmentYear;
+	private Long appUserId;
 	
 	public PartyMeeting(){}
 
@@ -352,6 +353,15 @@ public class PartyMeeting extends BaseModel implements Serializable{
 	public void setAttendanceEnrolmentYear(String attendanceEnrolmentYear) {
 		this.attendanceEnrolmentYear = attendanceEnrolmentYear;
 	}
+	@Column(name="app_user_id")
+	public Long getAppUserId() {
+		return appUserId;
+	}
+
+	public void setAppUserId(Long appUserId) {
+		this.appUserId = appUserId;
+	}
+	
 	
 	
 }

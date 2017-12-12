@@ -1348,4 +1348,13 @@ public interface IConstants {
 	
 	public static final Long TDP_COMMITTEE_ENROLLMENT_ID_16_18 = 2l;
 	public static final Long TDP_COMMITTEE_ENROLLMENT_ID_14_16 = 1l;
+	
+	public static final Long REGIONSCOPE_COUNTRY_LEVEl_ID   = 1l;
+	public static final Long REGIONSCOPE_PARLIAMENT_LEVEl_ACCESS_ID = 10l;
+	public static final Long REGIONSCOPE_ASSEMBLY_LEVEl_ACCESS_ID   = 4l;
+	public static final Long REGIONSCOPE_MANDAL_LEVEl_ID   = 5l;
+	public static final Long REGIONSCOPE_VILLAGE_LEVEl_ID   = 6l;
+	public static final Long REGIONSCOPE_MUNCIPLITY_LEVEl_ID   = 7l;
+	public static final Long REGIONSCOPE_WARD_LEVEl_ID   = 8l;
+	public static final String PARTY_MEETING_MOM_DOCUMENT="PARTY_MEETING_MOM_DOCUMENT";
 }
