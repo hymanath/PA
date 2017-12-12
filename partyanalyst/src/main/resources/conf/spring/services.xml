@@ -2480,6 +2480,7 @@
 	   <property name="cccDashboardService" ref="cccDashboardService"/>
 	   <property name="locationDashboardService" ref="locationDashboardService"/>
 	   <property name="kaizalaInfoService" ref="kaizalaInfoService"/>
+	   <property name="partyMeetingMOMService" ref="partyMeetingMOMService"/>
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -4567,6 +4568,26 @@
     	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" /> 
     	<property name="panchayatDAO" ref="panchayatDAO" />
     	</bean>
+    	
+    	<bean name="partyMeetingMOMService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingMOMService">
+	    	<property name="partyMeetingDAO" ref="partyMeetingDAO" />
+	    	<property name="partyMeetingMinuteDAO" ref="partyMeetingMinuteDAO" /> 
+	    	<property name="partyMeetingDocumentDAO" ref="partyMeetingDocumentDAO" />
+	    	<property name="partyMeetingMinuteHistoryDAO" ref="partyMeetingMinuteHistoryDAO" />
+			<property name="transactionTemplate" ref="transactionTemplate" />
+			<property name="partyMeetingMinuteTrackingDAO" ref="partyMeetingMinuteTrackingDAO" />
+	    	<property name="stateDAO" ref="stateDAO" />
+			<property name="districtDAO" ref="districtDAO" />
+			<property name="constituencyDAO" ref="constituencyDAO" />
+			<property name="tehsilDAO" ref="tehsilDAO" />
+			<property name="panchayatDAO" ref="panchayatDAO" />
+			<property name="userAddressDAO" ref="userAddressDAO" />
+			<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+			<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+			<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+			<property name="regionScopesDAO" ref="regionScopesDAO" />
+			
+		</bean>
     	<bean name="coreDashboardCoreService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardCoreService" >
     		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     		<property name="coreDashboardGenericService" ref="coreDashboardGenericService" />

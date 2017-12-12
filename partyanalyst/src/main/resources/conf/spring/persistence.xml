@@ -1349,6 +1349,10 @@
 						 <value>com.itgrids.partyanalyst.model.DebateCandidateDesignation</value>
 						 <value>com.itgrids.partyanalyst.model.DebateRepresentativeType</value>
 						 <value>com.itgrids.partyanalyst.model.KaizalaInstallationTracking</value>
+						 <!-- MOM NEW TABLE -->
+						 <value>com.itgrids.partyanalyst.model.MomAppUserAccess</value>
+						 <value>com.itgrids.partyanalyst.model.MomPriority</value>
+						 <value>com.itgrids.partyanalyst.model.TdpCommitteeLevelHierarchy</value>
 						 
 				  </list>
 			

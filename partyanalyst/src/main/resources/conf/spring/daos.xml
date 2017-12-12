@@ -4238,4 +4238,14 @@
 	 <bean id="jbCommitteeStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.JbCommitteeStatusDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	  <bean id="tdpCommitteeLevelHierarchyDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeLevelHierarchyDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="momPriorityDAO" class="com.itgrids.partyanalyst.dao.hibernate.MomPriorityDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="momAppUserAccessDAO" class="com.itgrids.partyanalyst.dao.hibernate.MomAppUserAccessDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 </beans>		
