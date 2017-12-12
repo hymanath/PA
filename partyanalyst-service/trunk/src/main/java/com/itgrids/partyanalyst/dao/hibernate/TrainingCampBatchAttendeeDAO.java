@@ -1274,4 +1274,79 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
    	
    	return query.list();
    }
+
+@Override
+public List<Object[]> getFilteredListCount(List<Long> cadreIdList,List<Long> programIdList,List<Long> commiteeList,Long userAccessLevelId, List<Long> userAccessLevelValues,Long StringType) {
+	StringBuffer sb = new StringBuffer();
+		if(StringType!= null && StringType == 1L){
+		sb.append(" select TCMP.training_camp_id as trainingCampId,TCMP.camp_name as campName,count(distinct TCBA.tdp_cadre_id) as count  " );
+		}else if(StringType!= null && StringType == 2L){
+			sb.append(" select D.district_id as trainingCampId,D.district_name as campName,count(distinct TCBA.tdp_cadre_id) as count  " );
+		}else if(StringType!= null && StringType == 3L){
+			sb.append(" select CON.constituency_id as trainingCampId,CON.name as campName,count(distinct TCBA.tdp_cadre_id) as count  " );
+		}else if(StringType!= null && StringType ==4L){
+			sb.append(" select CON.constituency_id as trainingCampId,CON.name as campName,count(distinct TCBA.tdp_cadre_id) as count  " );
+		}
+		
+		sb.append("  from tdp_committee TC  " );
+			 if(userAccessLevelValues!= null && userAccessLevelValues.size()>0L){
+				 sb.append(" LEFT JOIN user_address UA ON TC.address_id = UA.user_address_id ");
+				 if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 2l){
+					   	sb.append(" LEFT JOIN district D ON UA.district_id = D.district_id ");
+					}else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 3l){
+				   	sb.append(" LEFT JOIN district D ON UA.district_id = D.district_id ");
+				   }else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 4l){
+				   	sb.append(" LEFT JOIN constituency CON ON UA.constituency_id = CON.constituency_id ");
+				   }else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 5l){
+				   	sb.append(" LEFT JOIN constituency PCON ON UA.parliament_constituency_id = CON.constituency_id ");
+				   	}
+			   }
+			 sb.append(" ,training_camp_batch_attendee TCBA, training_camp_batch TCB,training_camp_schedule TCS,training_camp TCMP," +
+			   " tdp_committee_member TCM, tdp_committee_role TCR ");
+			 sb.append( " where ");
+			 if(userAccessLevelId != null && userAccessLevelId.longValue()  == 2l && userAccessLevelValues != null && userAccessLevelValues.size() >0l ){
+				 sb.append("  D.district_id  in (11,12,13,14,15,16,17,18,19,20,21,22,23,517) and ");
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 3l && userAccessLevelValues != null && userAccessLevelValues.size() >0l ){
+				 sb.append("  D.district_id  in (:userAccessLevelValueList) and ");
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 4l && userAccessLevelValues != null && userAccessLevelValues.size() >0l){
+				 sb.append("  CON.constituency_id in (:userAccessLevelValueList) and ");
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 5l && userAccessLevelValues != null && userAccessLevelValues.size() >0l){
+				 sb.append(" PCON.constituency_id in (:userAccessLevelValueList) and  ");
+			 }
+			
+			  sb.append(" TCBA.training_camp_batch_id = TCB.training_camp_batch_id and TCBA.tdp_cadre_id in(:cadreIdList) "+
+			  " and TCB.training_camp_schedule_id = TCS.training_camp_schedule_id " +
+			  " and TCS.training_camp_id = TCMP.training_camp_id and TCS.training_camp_program_id in(:programIdList) "+
+			  " and TCBA.is_deleted='false' and TCBA.tdp_cadre_id = TCM.tdp_cadre_id "+
+			  " and TCM.tdp_committee_role_id=TCR.tdp_committee_role_id and TCR.tdp_committee_id = TC.tdp_committee_id "+
+			  " and TC.tdp_committee_level_id in (:commiteeList) ");
+			  if(StringType != null && StringType.longValue() == 1l){
+				  sb.append(" group by TCMP.training_camp_id ");
+				}else if(StringType != null && StringType.longValue() == 2l){
+					sb.append("  group by D.district_id ");
+				}else if(StringType != null && StringType.longValue() == 4l){
+					sb.append("  group by  PCON.constituency_id ");
+				}else if(StringType != null && StringType.longValue() == 3l){
+					sb.append(" group by  CON.constituency_id ");
+				}
+	Query query = getSession().createSQLQuery(sb.toString())
+			.addScalar("trainingCampId", Hibernate.LONG)
+			.addScalar("campName", Hibernate.STRING)
+			.addScalar("count", Hibernate.LONG);
+	
+	if(programIdList != null && programIdList.size() >0){
+		query.setParameterList("programIdList", programIdList);
+	}
+	if(cadreIdList != null && cadreIdList.size() >0){
+		query.setParameterList("cadreIdList", cadreIdList);
+	}
+	if(userAccessLevelId != null && userAccessLevelId.longValue()  != 2l && userAccessLevelValues != null && userAccessLevelValues.size() >0l ){
+		query.setParameterList("userAccessLevelValueList",userAccessLevelValues);
+	}
+	
+	query.setParameterList("commiteeList",commiteeList);
+	return query.list();
+   }
 }
+
+

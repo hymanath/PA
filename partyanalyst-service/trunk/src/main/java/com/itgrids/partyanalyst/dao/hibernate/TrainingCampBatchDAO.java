@@ -658,4 +658,6 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		query.setParameter("yearId", yearId);
 		return query.list(); 
 	}
+	
+	
 }
