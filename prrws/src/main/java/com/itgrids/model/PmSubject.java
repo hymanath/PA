@@ -33,7 +33,7 @@ public class PmSubject {
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-	@Column(name="parent_pm_subject_d")
+	@Column(name="parent_pm_subject_id")
 	public Long getParentPmSubjectId() {
 		return parentPmSubjectId;
 	}

@@ -28,6 +28,12 @@ import com.itgrids.dao.IPetitionMemberDAO;
 import com.itgrids.dao.IPetitionStatusDAO;
 import com.itgrids.dao.IPetitionSubjectDAO;
 import com.itgrids.dao.IPetitionWorkDetailsDAO;
+import com.itgrids.dao.IPmBriefLeadDAO;
+import com.itgrids.dao.IPmDepartmentDAO;
+import com.itgrids.dao.IPmGrantDAO;
+import com.itgrids.dao.IPmLeadDAO;
+import com.itgrids.dao.IPmStatusDAO;
+import com.itgrids.dao.IPmSubjectDAO;
 import com.itgrids.dao.IPmWorkTypeDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dao.IWorkMainCategoryDAO;
@@ -62,21 +68,23 @@ public class LocationDetailsService implements ILocationDetailsService {
 	@Autowired
 	private IPetitionDepartmentDAO petitionDepartmentDAO;
 	@Autowired
+	private IPmDepartmentDAO pmDepartmentDAO;
+	@Autowired
 	private IPetitionMemberDAO petitionMemberDAO;
 	@Autowired
 	private IPetitionWorkDetailsDAO petitionWorkDetailsDAO;
 	@Autowired
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	@Autowired
-	private IPetitionSubjectDAO petitionSubjectDAO;
+	private IPmSubjectDAO pmSubjectDAO;
 	@Autowired
-	private IPetitionLeadDAO petitionLeadDAO;
+	private IPmLeadDAO pmLeadDAO;
 	@Autowired
-	private IPetitionBriefLeadDAO petitionBriefLeadDAO;
+	private IPmBriefLeadDAO pmBriefLeadDAO;
 	@Autowired 
-	private IPetitionGrantDAO petitionGrantDAO;
+	private IPmGrantDAO pmGrantDAO;
 	@Autowired 
-	private IPetitionStatusDAO petitionStatusDAO;
+	private IPmStatusDAO pmStatusDAO;
 	@Autowired 
 	private IPmWorkTypeDAO pmWorkTypeDAO;
 	@Autowired 
@@ -271,14 +279,14 @@ public class LocationDetailsService implements ILocationDetailsService {
      * Date : 01/12/2017
      * Description : { Getting Department List }
      */
-    public List<KeyValueVO> getPetitionDepartmentList(String searchType){
+    public List<KeyValueVO> getPmDepartmentList(String searchType){
     	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
     	try{
-    		LOG.info("Entered into LocationDetailsService of getPetitionDepartmentDetailsList ");
+    		LOG.info("Entered into LocationDetailsService of getPmDepartmentList ");
     		List<Object[]> petitionDetailsObjsList = null; 
     		if(searchType != null){
     			if(searchType.trim().equalsIgnoreCase("all"))
-    				petitionDetailsObjsList = petitionDepartmentDAO.getAllPetitionDepartmentsList();
+    				petitionDetailsObjsList = pmDepartmentDAO.getAllPmDepartmentsList();
     			else if(searchType.trim().equalsIgnoreCase("petitionGivenDepts"))
     				petitionDetailsObjsList = petitionDepartmentDAO.getGivenPetitionDepartmentsList();
     		}
@@ -292,7 +300,7 @@ public class LocationDetailsService implements ILocationDetailsService {
     			}
     		}
     	}catch(Exception e){
-    		LOG.error("Exception occured at getPetitionDepartmentList() in LocationDetailsService class ", e);
+    		LOG.error("Exception occured at getPmDepartmentList() in LocationDetailsService class ", e);
     	}
     	return resultList;
     	
@@ -369,11 +377,11 @@ public class LocationDetailsService implements ILocationDetailsService {
     	return resultList;
     }
     
-public List<KeyValueVO>  getPetitionSubjectList(){
+public List<KeyValueVO>  getPmSubjectList(){
     	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
     	    try{
-    		LOG.info("Entered into LocationDetailsService of getPetitionSubjectList ");
-    		List<Object[]> petitionDetailsObjsList = petitionSubjectDAO.getPetitionSubjectList();
+    		LOG.info("Entered into LocationDetailsService of getPmSubjectList ");
+    		List<Object[]> petitionDetailsObjsList = pmSubjectDAO.getPmSubjectList();
     		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
     			for(Object[] param: petitionDetailsObjsList){
     				KeyValueVO vo = new KeyValueVO();
@@ -389,16 +397,16 @@ public List<KeyValueVO>  getPetitionSubjectList(){
  				}
  			});
     	}catch(Exception e){
-    		LOG.error("Exception occured at getPetitionSubjectList() in LocationDetailsService class ", e);
+    		LOG.error("Exception occured at getPmSubjectList() in LocationDetailsService class ", e);
     	}
     	return resultList;
     }
 
-public List<KeyValueVO>  getPetitionSubSubjectList(Long subjectId){
+public List<KeyValueVO>  getPmSubSubjectList(Long subjectId){
 	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
 	    try{
 		LOG.info("Entered into LocationDetailsService of getPetitionSubSubjectList ");
-		List<Object[]> petitionDetailsObjsList = petitionSubjectDAO.getPetitionSubSubjectList(subjectId);
+		List<Object[]> petitionDetailsObjsList = pmSubjectDAO.getPmSubSubjectList(subjectId);
 		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();
@@ -414,7 +422,7 @@ public List<KeyValueVO>  getPetitionSubSubjectList(Long subjectId){
 				}
 			});
 	}catch(Exception e){
-		LOG.error("Exception occured at getPetitionSubSubjectList() in LocationDetailsService class ", e);
+		LOG.error("Exception occured at getPmSubSubjectList() in LocationDetailsService class ", e);
 	}
 	return resultList;
 }
@@ -424,11 +432,11 @@ public List<KeyValueVO>  getPetitionSubSubjectList(Long subjectId){
   * Date : 04/12/2017
   * Description : { Getting Petition Lead Details List }
   */
-public List<KeyValueVO>  getPetitionLeadDetailsList(){
+public List<KeyValueVO>  getPmLeadDetailsList(){
 	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
 	    try{
-		LOG.info("Entered into LocationDetailsService of getPetitionLeadDetailsList ");
-		List<Object[]> petitionDetailsObjsList = petitionLeadDAO.getPetitionLeadDetailsList();
+		LOG.info("Entered into LocationDetailsService of getPmLeadDetailsList ");
+		List<Object[]> petitionDetailsObjsList = pmLeadDAO.getPmLeadDetailsList();
 		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();
@@ -444,7 +452,7 @@ public List<KeyValueVO>  getPetitionLeadDetailsList(){
 				}
 			});
 	}catch(Exception e){
-		LOG.error("Exception occured at getPetitionLeadDetailsList() in LocationDetailsService class ", e);
+		LOG.error("Exception occured at getPmLeadDetailsList() in LocationDetailsService class ", e);
 	}
 	return resultList;
 }
@@ -453,11 +461,11 @@ public List<KeyValueVO>  getPetitionLeadDetailsList(){
   * Date : 04/12/2017
   * Description : { Getting Petition Brief Lead Details List }
   */
-public List<KeyValueVO>  getPetitionBriefLeadList(){
+public List<KeyValueVO>  getPmBriefLeadList(){
 	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
 	    try{
-		LOG.info("Entered into LocationDetailsService of getPetitionBriefLeadList ");
-		List<Object[]> petitionDetailsObjsList = petitionBriefLeadDAO.gePetitionBriefLeadDetailsList();
+		LOG.info("Entered into LocationDetailsService of getPmBriefLeadList ");
+		List<Object[]> petitionDetailsObjsList = pmBriefLeadDAO.gePmBriefLeadDetailsList();
 		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();
@@ -473,7 +481,7 @@ public List<KeyValueVO>  getPetitionBriefLeadList(){
 				}
 			});
 	}catch(Exception e){
-		LOG.error("Exception occured at getPetitionBriefLeadList() in LocationDetailsService class ", e);
+		LOG.error("Exception occured at getPmBriefLeadList() in LocationDetailsService class ", e);
 	}
 	return resultList;
 }
@@ -483,11 +491,11 @@ public List<KeyValueVO>  getPetitionBriefLeadList(){
   * Date : 04/12/2017
   * Description : { Getting Petition Grant List Details }
   */
-public List<KeyValueVO>  getPetitionGrantList(){
+public List<KeyValueVO>  getPmGrantList(){
 	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
 	    try{
-		LOG.info("Entered into LocationDetailsService of getPetitionGrantList ");
-		List<Object[]> petitionDetailsObjsList = petitionGrantDAO.getPetitionGrantList();
+		LOG.info("Entered into LocationDetailsService of getPmGrantList ");
+		List<Object[]> petitionDetailsObjsList = pmGrantDAO.getPmGrantList();
 		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();
@@ -503,7 +511,7 @@ public List<KeyValueVO>  getPetitionGrantList(){
 				}
 			});
 	}catch(Exception e){
-		LOG.error("Exception occured at getPetitionGrantList() in LocationDetailsService class ", e);
+		LOG.error("Exception occured at getPmGrantList() in LocationDetailsService class ", e);
 	}
 	return resultList;
 }
@@ -512,11 +520,11 @@ public List<KeyValueVO>  getPetitionGrantList(){
   * Date : 04/12/2017
   * Description : { Getting Petition Status List Details }
   */
-public List<KeyValueVO>  getPetitionStatusList(){
+public List<KeyValueVO>  getPmStatusList(){
 	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
 	    try{
-		LOG.info("Entered into LocationDetailsService of getPetitionStatusList ");
-		List<Object[]> petitionDetailsObjsList = petitionStatusDAO.getPetitionStatusList();
+		LOG.info("Entered into LocationDetailsService of getPmStatusList ");
+		List<Object[]> petitionDetailsObjsList = pmStatusDAO.getPmStatusList();
 		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();
@@ -526,7 +534,7 @@ public List<KeyValueVO>  getPetitionStatusList(){
 			}
 		}
 	}catch(Exception e){
-		LOG.error("Exception occured at getPetitionStatusList() in LocationDetailsService class ", e);
+		LOG.error("Exception occured at getPmStatusList() in LocationDetailsService class ", e);
 	}
 	return resultList;
 }

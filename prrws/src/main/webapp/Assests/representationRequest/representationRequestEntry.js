@@ -695,14 +695,14 @@ function buildTemplateWorkDetails(typeVal){
 					
 					str+='<div class="col-sm-3">';
 						str+='<label>Subject</label>';
-						str+='<select  name=""  class="form-control chosen-select m_top10  id="subjectId'+typeVal+''+globalWorkTypeCount+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+typeVal+''+globalWorkTypeCount+'")>';
+						str+='<select  name=""  class="form-control chosen-select m_top10 subjecOnchngeCls"  id="subjectId'+typeVal+''+globalWorkTypeCount+'" onChange=getPmSubSubjectList(this.value,"subSubjectId'+typeVal+''+globalWorkTypeCount+'")>';
 							str+='<option value="0">Select Subject</option>';
 						str+='</select>';
 					str+='</div>';
 					
 					str+='<div class="col-sm-3">';
 						str+='<label>Sub Subject</label>';
-						str+='<select  name=""  class="form-control chosen-select m_top10  id="subSubjectId'+typeVal+''+globalWorkTypeCount+'">';
+						str+='<select  name=""  class="form-control chosen-select m_top10"  id="subSubjectId'+typeVal+''+globalWorkTypeCount+'">';
 							str+='<option value="0">Select Sub Subject</option>';
 						str+='</select>';
 					str+='</div>';
@@ -717,7 +717,7 @@ function buildTemplateWorkDetails(typeVal){
 									str+='<div class="col-sm-3">';
 										str+='<label>Select Type</label>';
 										str+='<select  name=""  class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+globalWorkTypeCount+'" )>';
-											str+='<option value="0">Select Work Type</option>';
+											//str+='<option value="0">Select Work Type</option>';
 										str+='</select>';
 									str+='</div>';
 									str+='<div class="col-sm-3">';
@@ -788,6 +788,9 @@ function buildTemplateWorkDetails(typeVal){
 	str+='</div>';	
 	
 	$("#workDetailsDivId"+typeVal).html(str);
+		getWorkTypeList(typeVal,globalWorkTypeCount);
+		getPmSubjectList(typeVal,globalWorkTypeCount);
+		getPmSubjectList("subjectId",typeVal,'1');
 	$(".chosen-select").chosen();
 	globalWorkTypeCount =globalWorkTypeCount+1;
 		
@@ -963,7 +966,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>Select Type</label>';
 										clonedTemplate+='<select  name=""  class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+counterId+'" )>';
-											clonedTemplate+='<option value="0">Select Work Type</option>';
+											//clonedTemplate+='<option value="0">Select Work Type</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
@@ -1050,8 +1053,8 @@ function clonedInnerTemplate(type,counterId,typeVal){
 				clonedInnerTemplate+='<div class="row m_top10">';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>Select Type</label>';
-							clonedInnerTemplate+='<select  name=""  class="form-control chosen-select m_top10" id="workTypeInnerId'+typeVal+''+counterId+'" )>';
-								clonedInnerTemplate+='<option value="0">Select Work Type</option>';
+							clonedInnerTemplate+='<select  name=""  class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+counterId+'" )>';
+								//clonedInnerTemplate+='<option value="0">Select Work Type</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
@@ -1103,4 +1106,170 @@ function clonedInnerTemplate(type,counterId,typeVal){
 		clonedInnerTemplate+='</div>';
 		clonedInnerTemplate+='<div class="appendInnerBlocks'+typeVal+''+counterId+'"></div>';
 		return clonedInnerTemplate;
+}
+function getWorkTypeList(typeVal,count){
+		  var json = {
+		   
+	  };
+	$.ajax({              
+		type:'POST',    
+		url: 'getWorkTypeList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#workTypeId"+typeVal+count).append('<option value="0">Select Work Type</option>');
+			for(var i in result){
+				$("#workTypeId"+typeVal+count).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#workTypeId"+typeVal+count).trigger('chosen:updated');
+	});	
+}
+
+function getPmSubjectList(divId,typeVal,counterId){
+	var json = {};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmSubjectList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			
+			 $("#"+divId+""+typeVal+""+counterId+"").html('<option value="0">All</option>');
+			for(var i in result){
+				$("#"+divId+""+typeVal+""+counterId+"").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#"+divId+""+typeVal+""+counterId+"").trigger('chosen:updated');
+	});	
+}
+
+function getPmSubSubjectList(subjectId,divId){
+	if(subjectId != null){
+		subIdVal = subjectId;
+	}
+$("#"+divId).html('');
+	var json = {
+		subjectId : subIdVal
+	};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmSubSubjectList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#"+divId).append('<option value="0">All</option>');
+			for(var i in result){
+				$("#"+divId).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#"+divId).trigger('chosen:updated');
+	});	
+}
+function getPmLeadDetailsList(typeVal){
+	var json = {
+		
+	};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmLeadDetailsList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#petitionLead").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#petitionLead").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#petitionLead").trigger('chosen:updated');
+	});	
+}
+function getPmBriefLeadList(typeVal){
+			var json = {
+				
+			};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmBriefLeadList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :  function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#petitionBriefLeadId").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#petitionBriefLeadId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#petitionBriefLeadId").trigger('chosen:updated');
+	});	
+}
+function getPmGrantList(){
+	var json = {
+		
+	};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmGrantList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#petitionGrantId").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#petitionGrantId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#petitionGrantId").trigger('chosen:updated');
+	});	
+}
+function getPmStatusList(){
+	var json = {
+		
+	};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmStatusList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#petitionStatusId").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#petitionStatusId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#petitionStatusId").trigger('chosen:updated');
+	});	
 }
