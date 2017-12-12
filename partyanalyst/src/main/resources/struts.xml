@@ -18622,5 +18622,10 @@
 			<param name="root">trainingCampProgramVO</param>
 		</result>
 	</action>
+	<action name="getTrainingCampFeedBackProgramWiseDetailsAction" class="coreDashboardAction"  method="getTrainingCampFeedBackProgramWiseDetails">
+		<result type="json" name="success">
+			<param name="root">trainingCampVO</param>
+		</result>
+	</action>
  </package>
 </struts>

@@ -5427,6 +5427,56 @@ public String getInsuraceStatusWiseComplaintsDetails()
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getTrainingCampFeedBackProgramWiseDetails(){
+		 
+		 try{
+			 
+			 jObj = new JSONObject(getTask());
+			 
+			   final HttpSession session = request.getSession();
+				
+			   Long userId = null;
+				final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				if(user == null || user.getRegistrationID() == null){
+					userId = 1L;
+				}
+				else{
+					userId = user.getRegistrationID();
+				}
+				List<Long> programIdList = new ArrayList<Long>();
+				JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
+				if(programIdArr!=null &&  programIdArr.length()>0){
+					for( int i=0;i<programIdArr.length();i++){ 
+						programIdList.add(Long.valueOf(programIdArr.getString(i)));
+					}
+				}
+				Long activityMemberId = jObj.getLong("activityMemberId");
+				
+			    /*Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+				List<Long> userAccessLevelValues=new ArrayList<Long>();
+				JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+				if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+					for( int i=0;i<userAccessLevelValuesArray.length();i++){
+						userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+					}
+				}*/
+				
+				List<Long> enrollmentYrIds=new ArrayList<Long>();
+				JSONArray enrollmentYrIdsArray=jObj.getJSONArray("enrollmentYrIds");
+				if(enrollmentYrIdsArray!=null &&  enrollmentYrIdsArray.length()>0){
+					for( int i=0;i<enrollmentYrIdsArray.length();i++){
+						enrollmentYrIds.add(Long.valueOf(enrollmentYrIdsArray.getString(i)));
+					}
+				}
+				Long stateId = jObj.getLong("stateId");
+				String dateStr = jObj.getString("dateStr");
+				String committeeLevel=jObj.getString("committeLevel");
+				Long StringType= jObj.getLong("stringType");
+				trainingCampVO = coreDashboardCoreService.getTrainingCampFeedBackDetailsProgramWise(activityMemberId, committeeLevel , stateId,  dateStr,  enrollmentYrIds,  programIdList,StringType);
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getTrainingCampFeedBackDetails() method of CoreDashBoardAction", e); 
+		 }
+		 return Action.SUCCESS;
+	 }
 }
 //public List<TrainingCampSurveyVO> getFeedbackOnLeaders(Long userAccessLevelId, List<Long> userAccessLevelValues, List<Long> trainingProgramIds,Long traingCampEnrollmentYearId,List<Long> trainingCampLevelIds,Long groupType)
