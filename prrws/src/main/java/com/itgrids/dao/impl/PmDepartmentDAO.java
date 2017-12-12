@@ -22,13 +22,11 @@ public class PmDepartmentDAO extends GenericDaoHibernate<PmDepartment, Long> imp
 		
 	}
 		public List<Object[]> getAllPmDepartmentsList(){
-				
 				StringBuilder sb = new StringBuilder();
-					sb.append("select model.pmDepartmentId,model.department from PmDepartment model where model.isDeleted ='N' order by model.departmentName asc ");
-					Query qry = getSession().createQuery(sb.toString());
-					return qry.list();
-				 
-			}
+				sb.append("select model.pmDepartmentId,model.department from PmDepartment model where model.isDeleted ='N' order by model.department asc ");
+				Query qry = getSession().createQuery(sb.toString());
+				return qry.list();
+		}
 		
 		public List<Object[]> getGivenPmDepartmentsList(){
 			StringBuilder sb = new StringBuilder();

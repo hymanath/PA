@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> REPRESENTATION REQUEST EDIT FORM </title>
+<title> REPRESENTATION REQUEST ENTRY FORM </title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <!-- for file uploader -->
@@ -19,6 +19,11 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<style>
+.error_colorCls{
+   color: red;
+}
+</style>
 </head>
 <body>
 <header>
@@ -194,8 +199,61 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12">
-			<div id="memberDetailsDivId">
-			
+				<div class="panel-group">
+					<div class="panel panel-default panel-lightGreen">
+						<div class="panel-heading">
+							<h4 class="panel-title f_22" style="font-weight:normal !important;">REPRESENTATION REQUEST</h4>
+						</div>
+						<form action="saveRepresentRequestDetails" id="adminProfileForm" name="adminProfileFormName" enctype="multipart/form-data" method="post">
+						<input type="hidden"  name=""  value="100" class="form-control m_top10 height45" id="reffererCandidate0">
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-12">
+									<h3 class="panel-title f_22">REPRESENTEE DETAILS</h3>
+									<div class="row m_top20">
+										<div class="col-sm-2">
+											<h4>REPRESENTATION DATE </h4>
+											<div class="input-group inline-block m_top10">
+												<span class="input-group-addon">
+													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+												</span>
+												<input type="text" name="pmRequestVO.representationdate" class="form-control" id="dateRangePickerMGNF"/>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<h4>REPRESENTATION BY </h4>
+												<div class="row m_top10">
+													<div class="col-sm-3">
+														<div class="borederCss">
+															<input type="radio" name="pmRequestVO.representationType" value="SELF" id="self" attr_name="selfMemberType" class="selfRepresenceCls" attr_type="self" checked>
+															<label><h5>SELF</span></h5>
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="borederCss">
+															<input type="radio" name="pmRequestVO.representationType"  value="REPRESENT"  id="Representee"  class="selfRepresenceCls" attr_type="represent" attr_name="representMemberType"  >
+															<label><h5 class="text-capital">Representee</h5></label>
+														</div>
+													</div>
+												</div>
+										</div>
+									</div>
+									<div class="row m_top20">
+										<div class="col-sm-12">
+											<div id="selfDetailsDivId"></div>
+										</div>
+									</div>
+									<div class="row m_top20">
+										<div class="col-sm-12">
+											<div id="representDetailsDivId"></div>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -260,7 +318,6 @@
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script>                
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
 <!-- for file uploader -->
-<script src="Assests/representationRequest/representationRequestEdit.js" type="text/javascript"></script>
-
+<script src="Assests/representationRequest/representationRequestEntry.js" type="text/javascript"></script>
 </body>
 </html>

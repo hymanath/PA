@@ -18,6 +18,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.ResponseVO;
 import com.itgrids.service.ILocationDetailsService;
@@ -36,9 +37,10 @@ public class RepresentationRequestController {
 	
 	
 	@RequestMapping(value ="/saveRepresentRequestDetails",method = RequestMethod.POST)
-    public @ResponseBody ResponseVO saveRepresentRequestDetails(@ModelAttribute  RepresentationRequestVO representationRequestVO) {
-				representationRequestVO.setUserId(1L);
-    	 return representationRequestService.saveRepresentRequestDetails(representationRequestVO);
+    public @ResponseBody ResponseVO saveRepresentRequestDetails(@ModelAttribute  PmRequestVO pmRequestVO) {
+		pmRequestVO.setUserId(1L);
+				return null;
+    	//return representationRequestService.saveRepresentRequestDetails(representationRequestVO);
     }
 	@RequestMapping(value ="/getAllDistrictsInState",method = RequestMethod.POST)
     public @ResponseBody List<LocationFundDetailsVO> getAllDistrictsInState(@RequestBody Map<String,String> inputMap ) {
