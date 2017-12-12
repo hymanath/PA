@@ -81,10 +81,15 @@ import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
+import com.itgrids.partyanalyst.dto.MomDashbaordOverViewDtlsVO;
+import com.itgrids.partyanalyst.dto.MomDetailsVO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingMOMCreationDtlsvO;
+import com.itgrids.partyanalyst.dto.PartyMeetingMOMDtlsVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingMOMPointsDtlsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PashiAppNoCadreVO;
@@ -3376,6 +3381,149 @@ public class WebServiceHandler {
 			LOG.error(e);
 			return "Error Occured";
 		}
+	}
+	//Mom api
+	@POST
+	@Path("/getPartyMeetingMOMDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public PartyMeetingMOMDtlsVO getPartyMeetingMOMDetails(JSONObject jObj){
+		try {
+			JSONArray accessValuesArr = jObj.getJSONArray("accessValues");  
+			List<Long> locationIdList = new ArrayList<Long>();
+			if(accessValuesArr != null && accessValuesArr.length() > 0){
+				for (int i = 0; i < accessValuesArr.length(); i++){
+					locationIdList.add(Long.parseLong(accessValuesArr.getString(i)));          
+				}  
+			}
+			String monthYear = jObj.has("monthYear") ? jObj.getString("monthYear") : null;
+			return webServiceHandlerService.getPartyMeetingMOMDetails(jObj.getLong("userAccessLevelId"),locationIdList,monthYear);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getPartyMeetingMOMDetails() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/getPartyMeetingMOMPointsDocumentDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public PartyMeetingMOMPointsDtlsVO getPartyMeetingMOMPointsDocumentDetails(JSONObject jObj){
+		try {
+			JSONArray accessValuesArr = jObj.getJSONArray("accessValues");  
+			List<Long> locationIdList = new ArrayList<Long>();
+			if(accessValuesArr != null && accessValuesArr.length() > 0){
+				for (int i = 0; i < accessValuesArr.length(); i++){
+					locationIdList.add(Long.parseLong(accessValuesArr.getString(i)));          
+				}  
+			}
+			String monthYear = jObj.has("monthYear") ? jObj.getString("monthYear") : null;
+			Long meetingId = jObj.has("meetingId") ? jObj.getLong("meetingId") : null;
+			return webServiceHandlerService.getPartyMeetingMOMPointsDocumentDetails(jObj.getLong("userAccessLevelId"),locationIdList,monthYear,meetingId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getPartyMeetingMOMPointsDocumentDetails() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/updateMOMMeetingDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String updateMOMMeetingDetails(JSONObject jObj){
+		try {
+			return webServiceHandlerService.updateMOMMeetingDetails(jObj.getLong("meetingId"),jObj.getString("conductedDate"),jObj.getString("isConducted"),jObj.getString("remarks"),jObj.getLong("loginUserId"));
+		} catch (Exception e) {
+			LOG.error("Exception Occured in updateMOMMeetingDetails() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/deleteMOMMeetingDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String deleteMOMMeetingDetails(JSONObject jObj){
+		try {
+			return webServiceHandlerService.deleteMOMMeetingDetails(jObj.getLong("id"),jObj.getString("deletedType"),jObj.getLong("loginUserId"));
+		} catch (Exception e) {
+			LOG.error("Exception Occured in deleteMOMMeetingDetails() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/savePartyMeetingMOMDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus savePartyMeetingMOMDetails(PartyMeetingMOMCreationDtlsvO inputVO){
+		try {
+			return webServiceHandlerService.savePartyMeetingMOMDetails(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in savePartyMeetingMOMDetails() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/updateMomDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus updateMomDetails(PartyMeetingMOMCreationDtlsvO inputVO){
+		try {
+			return webServiceHandlerService.updateMomDetails(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in updateMomDetails() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/getMomCompletedDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public MomDetailsVO getMomCompletedDetails(JSONObject jObj){
+		try {
+			return webServiceHandlerService.getMomCompletedDetails(jObj.getLong("partyMeetingMinuteId"));
+		} catch (Exception e) {
+			LOG.error("Exception Occured in updateMOMMeetingDetails() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/getMomDashboardOverviewDtls")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public MomDashbaordOverViewDtlsVO getMomDashboardOverviewDtls(JSONObject jObj){
+		try {
+			JSONArray accessValuesArr = jObj.getJSONArray("accessValues");  
+			List<Long> locationIdList = new ArrayList<Long>();
+			if(accessValuesArr != null && accessValuesArr.length() > 0){
+				for (int i = 0; i < accessValuesArr.length(); i++){
+					locationIdList.add(Long.parseLong(accessValuesArr.getString(i)));          
+				}  
+			}
+			String monthYear = jObj.has("monthYear") ? jObj.getString("monthYear") : null;
+			return webServiceHandlerService.getMomDashboardOverviewDtls(jObj.getLong("userAccessLevelId"),locationIdList,monthYear);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getMomDashboardOverviewDtls() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/getMomDetailsBySelectedType")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<MomDetailsVO> getMomDetailsBySelectedType(JSONObject jObj){
+		try {
+			JSONArray accessValuesArr = jObj.getJSONArray("accessValues");  
+			List<Long> locationIdList = new ArrayList<Long>();
+			if(accessValuesArr != null && accessValuesArr.length() > 0){
+				for (int i = 0; i < accessValuesArr.length(); i++){
+					locationIdList.add(Long.parseLong(accessValuesArr.getString(i)));          
+				}  
+			}
+			String monthYear = jObj.has("monthYear") ? jObj.getString("monthYear") : null;
+			String type = jObj.has("type") ? jObj.getString("type") : null;
+			return webServiceHandlerService.getMomDetailsBySelectedType(jObj.getLong("userAccessLevelId"),locationIdList,monthYear,type);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getMomDetailsBySelectedType() Method, Exception is ",e);
+		}
+		return null;
 	}
 	
 }
