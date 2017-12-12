@@ -4962,16 +4962,10 @@ public String getInsuraceStatusWiseComplaintsDetails()
 				}
 			}
 			List<Long> programIdList =getTrainingCampPrograms(enrollmentYearIdList.get(0));
-			/*List<Long> programIdList=new ArrayList<Long>();
-			JSONArray programIdArr=jObj.getJSONArray("programIds");
-			if(programIdArr!=null &&  programIdArr.length()>0){
-				for( int i=0;i<programIdArr.length();i++){
-					programIdList.add(Long.valueOf(programIdArr.getString(i))); 
-				}
-			}*/
 			
 			
-			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(userAccessLevelId, userAccessLevelValueList, stateId, fromDateStr, toDateStr, enrollmentYearIdList, programIdList);
+			
+			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(userAccessLevelId, userAccessLevelValueList, stateId, fromDateStr, toDateStr, enrollmentYearIdList, programIdList,null);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getComplaintRaisedDetails ",e);
@@ -5367,6 +5361,55 @@ public String getInsuraceStatusWiseComplaintsDetails()
 		 }
 		 return Action.SUCCESS;
 	 }
+	public String getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWiseForFeedbackBlock()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			
+			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			List<Long> userAccessLevelValueList=new ArrayList<Long>();
+			JSONArray userAccessLevelValueArr=jObj.getJSONArray("userAccessLevelValues");
+			if(userAccessLevelValueArr!=null &&  userAccessLevelValueArr.length()>0){
+				for( int i=0;i<userAccessLevelValueArr.length();i++){
+					userAccessLevelValueList.add(Long.valueOf(userAccessLevelValueArr.getString(i))); 
+				}
+			}
+			Long stateId = jObj.getLong("stateId");
+			String fromDateStr = jObj.getString("fromDate");	
+			String toDateStr = jObj.getString("toDate");
+			
+			List<Long> enrollmentYearIdList=new ArrayList<Long>();
+			JSONArray enrollmentYearIdArr=jObj.getJSONArray("enrollmentYearIds");
+			if(enrollmentYearIdArr!=null &&  enrollmentYearIdArr.length()>0){
+				for( int i=0;i<enrollmentYearIdArr.length();i++){
+					enrollmentYearIdList.add(Long.valueOf(enrollmentYearIdArr.getString(i))); 
+				}
+			}
+			List<Long> programIdList = new ArrayList<Long>();
+			JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
+			if(programIdArr!=null &&  programIdArr.length()>0){
+				for( int i=0;i<programIdArr.length();i++){ 
+					programIdList.add(Long.valueOf(programIdArr.getString(i)));
+				}
+			}
+			String committeeLevel=jObj.getString("committeLevel");
+			List<Long> levelList = new ArrayList<Long>();
+			String[] levelStr =  committeeLevel.split(",");
+			for(String param:levelStr){
+				levelList.add(Long.parseLong(param));
+			}
+			
+			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(userAccessLevelId, userAccessLevelValueList, stateId, fromDateStr, toDateStr, enrollmentYearIdList, programIdList,levelList);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getComplaintRaisedDetails ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }
 //public List<TrainingCampSurveyVO> getFeedbackOnLeaders(Long userAccessLevelId, List<Long> userAccessLevelValues, List<Long> trainingProgramIds,Long traingCampEnrollmentYearId,List<Long> trainingCampLevelIds,Long groupType)
