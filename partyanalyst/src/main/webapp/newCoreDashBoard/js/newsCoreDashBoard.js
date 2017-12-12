@@ -5559,6 +5559,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			alert("Please Select Impact Scope");
 			return;
 		}else{
+			$(".newsBlockDropDown").hide();
 			commonNewsBasicCalls();
 			/* getNewsBasicCounts();
 			if($(".newsIconExpand i").attr("class").split(" ")[1]=="glyphicon-resize-small"){
