@@ -716,8 +716,10 @@ public class LightMonitoringService  implements ILightMonitoring{
 							  for(LightMonitoringVO vo:dateVO.getSubList()) {
 								  LightMonitoringVO matchVO = getMatchVO(list.get(0).getSubList(), vo.getLightVendorId());
 								   if (matchVO != null ) {
-									   vo.setPendingLightcount(matchVO.getTotalLights()-vo.getTotalLights());
-									   dateVO.setPendingLightcount(dateVO.getPendingLightcount()+vo.getPendingLightcount());
+									   if (vo.getTotalLights() > 0) {
+										   vo.setPendingLightcount(matchVO.getTotalLights()-vo.getTotalLights());
+										   dateVO.setPendingLightcount(dateVO.getPendingLightcount()+vo.getPendingLightcount());//new added light
+									   }
 								   }
 							  }
 						  }
