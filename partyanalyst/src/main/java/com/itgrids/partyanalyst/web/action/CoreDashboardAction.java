@@ -5252,7 +5252,16 @@ public String getInsuraceStatusWiseComplaintsDetails()
 					programIdList.add(Long.parseLong(programIdsArr.getString(i)));          
 				}  
 			}
-			trainingCampProgramVO = coreDashboardCoreService.getTrainingCampBasicDetailsCntOverviewDayWise(globalActivityMemberId,stateId,fromDate,toDate, enrollmentYearIdsList,programIdList);
+			
+			JSONArray committeeLevelIdArr = jObj.getJSONArray("committeeLevelIds");  
+			List<Long> committeeLevelIdList = new ArrayList<Long>();
+			if(committeeLevelIdArr != null && committeeLevelIdArr.length() > 0){
+				for (int i = 0; i < committeeLevelIdArr.length(); i++){
+					committeeLevelIdList.add(Long.parseLong(committeeLevelIdArr.getString(i)));          
+				}  
+			}
+			
+			trainingCampProgramVO = coreDashboardCoreService.getTrainingCampBasicDetailsCntOverviewDayWise(globalActivityMemberId,stateId,fromDate,toDate, enrollmentYearIdsList,programIdList,committeeLevelIdList);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getTrainingCampBasicDetailsCntOverviewDayWise() method of CoreDashboardAction", e);
 		}
