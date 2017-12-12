@@ -384,10 +384,15 @@ $(document).on("change","#designationsId",function(){
 			$("#candidateDetailsDivId").html('');
 			getParliamentIdsByConstituencyList();
 			$("#districtCandDivId").hide();
+			$("#constituencyCandDivId").show();
+		}else if(value == 1 || value == 2 || value == 7){
+			getAllDistrictsInState("popup","");
+			$("#constituencyCandDivId").hide();
 		}else{
 			var typeVal = $(this).attr("attr_type");
 			$(".selectionSearchDetailsCls").attr("attr_type",typeVal);
 			getAllDistrictsInState("popup","");
+			$("#constituencyCandDivId").show();
 			if(typeVal == "self"){
 				$("#candidateDetailsDivId").html('');
 				

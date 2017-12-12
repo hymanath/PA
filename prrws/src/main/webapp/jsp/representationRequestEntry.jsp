@@ -279,7 +279,7 @@
 						<option value="0">Select District</option>
 					</select>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-3" id="constituencyCandDivId">
 					<select class="form-control chosen-select" id="constituencyCanId">
 						<option value="0">Select Constituency</option>
 					</select>
