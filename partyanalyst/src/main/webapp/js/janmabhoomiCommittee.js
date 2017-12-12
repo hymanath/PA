@@ -505,7 +505,7 @@ mobileNo,memberShipId,committeeId,statusType,stateId,districtId,constituencyId,m
 				str+='<label>State</label>';
 				str+='<span id="statesDivIdImg"><img src="images/search.gif" style="display:none;"/></span>';
 				str+='<select id="statesDivId" class="chosen-select">';
-					str+='<option value="0">All</option>';
+					//str+='<option value="0">All</option>';
 					str+='<option value="1" selected>Andhra Pradesh</option>';
 					//str+='<option value="36">Telangana</option>';
 				str+='</select>';
@@ -658,7 +658,7 @@ function getDistrictsForStates(stateId,id){
 			$("#constituencyId").empty();
 			$("#mandalList").empty();
 			$("#panchaytList").empty();			
-			$("#districtId").append('<option value="0">Select District</option>');		
+			//$("#districtId").append('<option value="0">Select District</option>');		
 			$("#constituencyId").append('<option value="0">All</option>');		
 			$("#mandalList").append('<option value="0">All</option>');		
 			$("#panchaytList").append('<option value="0">All</option>');
@@ -712,7 +712,7 @@ function getDistrictsForStates(stateId,id){
 			$("#constituencyId").empty();
 			$("#mandalList").empty();
 			$("#panchaytList").empty();					
-			$("#constituencyId").append('<option value="0">Select Constituency</option>');		
+			//$("#constituencyId").append('<option value="0">Select Constituency</option>');		
 			$("#mandalList").append('<option value="0">All</option>');		
 			$("#panchaytList").append('<option value="0">All</option>');			
 			$("#constituencyId").trigger("chosen:updated");
