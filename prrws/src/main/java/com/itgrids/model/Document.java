@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class Document {
 
 	private Long documentId;
-	private String documentPath;
+	private String path;
 	private Long insertedUserId;
 	private Date insertedTime;
 	
@@ -34,19 +34,17 @@ public class Document {
 	public void setDocumentId(Long documentId) {
 		this.documentId = documentId;
 	}
-	@Column(name="document_path")
-	public String getDocumentPath() {
-		return documentPath;
+	@Column(name="path")
+	public String getPath() {
+		return path;
 	}
-
-	public void setDocumentPath(String documentPath) {
-		this.documentPath = documentPath;
+	public void setPath(String path) {
+		this.path = path;
 	}
 	@Column(name="inserted_user_id")
 	public Long getInsertedUserId() {
 		return insertedUserId;
 	}
-
 	public void setInsertedUserId(Long insertedUserId) {
 		this.insertedUserId = insertedUserId;
 	}

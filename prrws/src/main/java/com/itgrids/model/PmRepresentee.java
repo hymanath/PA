@@ -60,7 +60,7 @@ public class PmRepresentee {
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
-	@Column(name="email")
+	@Column(name="email_id")
 	public String getEmail() {
 		return email;
 	}

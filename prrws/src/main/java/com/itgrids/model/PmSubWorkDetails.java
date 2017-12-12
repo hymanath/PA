@@ -24,7 +24,7 @@ public class PmSubWorkDetails {
 	private Long pmSubjectId;
 	private Long pmSubSubjectId;
 	private Long locationScopeId;
-	private Long locationValue;
+	private Long locationScopeValue;
 	private String grievanceDescrption;
 	private Long addressId;
 	private String isDeleted;
@@ -99,11 +99,11 @@ public class PmSubWorkDetails {
 		this.locationScopeId = locationScopeId;
 	}
 	@Column(name="location_scope_value")
-	public Long getLocationValue() {
-		return locationValue;
+	public Long getLocationScopeValue() {
+		return locationScopeValue;
 	}
-	public void setLocationValue(Long locationValue) {
-		this.locationValue = locationValue;
+	public void setLocationScopeValue(Long locationScopeValue) {
+		this.locationScopeValue = locationScopeValue;
 	}
 	@Column(name="grievance_description")
 	public String getGrievanceDescrption() {
