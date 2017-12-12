@@ -189,6 +189,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	    		}
 	    	}
 	    	TrainingCampSurveyVO vo1 = new TrainingCampSurveyVO();
+	    	vo1.setId(1L);
 	    	vo1.setName("How is leader's communication ckills?");
 	    	vo1.getProgramsList().addAll(finalVOList1);
 	    	if(list2 != null && list2.size() > 0){
@@ -209,6 +210,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	    		}
 	    	}
 	    	TrainingCampSurveyVO vo2 = new TrainingCampSurveyVO();
+	    	vo2.setId(2L);
 	    	vo2.setName("How is leader's leadership skills?");
 	    	vo2.getProgramsList().addAll(finalVOList2);
 	    	finalVOList.add(vo1);
@@ -1158,8 +1160,8 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	   	 ClientConfig clientConfig = new DefaultClientConfig();
 	     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
          Client client = Client.create(clientConfig);
-	         WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingCampFeedBackDetails/"+listString+"/");
-	        // WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getTrainingCampFeedBackDetails/"+listString+"/");
+	        // WebResource webResource = client.resource("http://192.168.11.154:8080/Survey/WebService/getTrainingCampFeedBackDetails/"+listString+"/");
+	         WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getTrainingCampFeedBackDetails/"+listString+"/");
 	         ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 	          if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1174,8 +1176,8 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		   
 	 	      }
 	          FinaltrainingCampVO.setFeedBackProgramCount(feedBackProgramCount);
-	          WebResource webResource2 = client.resource("http://localhost:8080/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
-	         // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
+	         // WebResource webResource2 = client.resource("http://192.168.11.154:8080/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
+	         WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
 		         ClientResponse response2 = webResource2.accept("application/json").type("application/json").get(ClientResponse.class);
 		          if(response.getStatus() != 200){
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response2.getStatus());
