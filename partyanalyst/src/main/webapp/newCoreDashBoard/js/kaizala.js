@@ -30,7 +30,9 @@ $(document).on("click",".expandBlockKaizala",function(){
 
 function getOverAllCommitteeWiseMembersCounts(){  
   $("#overAllKaizalaBlockId").html(spinner);
-	var jObj={}	
+	var jObj={
+		activityMemberId	:globalActivityMemberId
+	}	
 	$.ajax({
 	 type: "POST",
 	 url: "getOverAllCommitteeWiseMembersCountsAction.action",
@@ -284,7 +286,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 					}
 				}
 			  		
-				if( installedPerc !=0 || pendingPerc !=0 || notSmartPhonePerc !=0){
+				if( installed !=0 || pending !=0 || notSmartPhone !=0){
 					var str='';
 					
 					//str+='<div class="col-sm-12">';
@@ -453,6 +455,7 @@ function locationWiseDate()
 function getLocationWiseCommitteeMemberDetailsAction(locationType){  
 	$("#kaizala"+locationType).html(spinner);
 	var jObj={
+		activityMemberId	:globalActivityMemberId,
 		name:locationType
 	}	
 	$.ajax({

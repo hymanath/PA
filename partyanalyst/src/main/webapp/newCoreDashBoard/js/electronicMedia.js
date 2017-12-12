@@ -60,87 +60,6 @@ $(document).ready(function(){
 		}
 });
 
-/* 
-$(document).on("click",".emnIconExpand",function(){
-	$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	$(".electronicMediaBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-	$(".emnHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
-	$(".emnHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
-	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-	
-	if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		//before expand
-		$(".dateRangePickerClsForEmn").removeClass("hide");
-		$(".moreBlockEMN,.moreEmnBlocksIcon").show();
-		getEMMDetailedPartyMediaProgramsOnPartyProgramsWise("top","program");
-		setTimeout(function(){
-			$('html,body').animate({
-				scrollTop: $(".electronicMediaBlock").offset().top},
-			'slow');
-		},500);
-	}else{
-		//after expand	
-		$(".dateRangePickerClsForEmn").addClass("hide");
-		$(".moreBlockEMN,.selectEmnCate,.newEmnHideCls").hide();
-	}
-	
-	if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
-		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".dateRangePickerCls").toggleClass("hide");
-		$(".moreBlocksIcon").removeClass("unExpandBlock");
-	}else if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
-		$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
-		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
-		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".dateRangePickerClsForMeetings").toggleClass("hide");
-		$(".moreMeetingsBlocks1").hide();
-		$(".moreMeetingsBlocksDetailed").hide();
-		$(".moreMeetingsBlocksComparision").hide();
-	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
-		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".dateRangePickerClsForNews").toggleClass("hide");
-	}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents,.comparisonBlockActivities ").hide();
-		$(".panelBlockCollapseIcon").addClass("collapsed");
-		$(".activitesExpandIcon").parent().parent().parent().parent().find(".collapse").removeClass("in").addClass("collapsed");
-		$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
-		$(".eventsListExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
-		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".dateRangePickerClsForEvents").toggleClass("hide");
-	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
-		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
-		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	}else if( $(".attendaceIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".attendaceIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".attendanceBlockMore,.moreAttBlocks,.moreAttBlocksIcon").hide();
-		$(".dateRangePickerClsForAttendance").toggleClass('hide');
-		$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	}else if( $(".NewTourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".NewTourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".NewTourExpandCls,.NewToursHiddenBlock,.moreNewToursBlocksDetailed").hide();
-			$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	}else if( $(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".alertsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".districtAltCtnCls ,.alertLocationDiv,.dateRangePickerClsForAlert,.alertComparisonblock").hide();
-			$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	}else if( $(".tourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-				$(".tourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".tourExpandCls ,.toursHiddenBlock,.moreToursBlocks1,.moreToursBlocksDetailed ,.comparisonBlockTours ,.toursDateRangePickerCls").hide();
-				$(".toursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	}
-}); */
 $(document).on("click",".moreEmnBlocksIcon",function(){
 	
 	//$(".newEmnHideCls").hide();
@@ -500,7 +419,7 @@ function getpartyWiseChannelCounts(result){
 		str+='<h4 class="panel-title m_top10">NO DATA AVAILABLE</h4>';
 	}
 	$("#electronicMediaChannelCountId").html(str);
-	$("#electronicMediaChannelCountId").mCustomScrollbar({setHeight:'345spx'});
+	//$("#electronicMediaChannelCountId").mCustomScrollbar({setHeight:'345spx'});
 }
 function getEMMDetailedPartyDistrictWiseProgramsOverview(channelArr,type)
 {
