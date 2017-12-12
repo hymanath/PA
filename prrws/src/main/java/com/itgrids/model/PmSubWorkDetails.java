@@ -24,7 +24,7 @@ public class PmSubWorkDetails {
 	private Long pmSubjectId;
 	private Long pmSubSubjectId;
 	private Long locationScopeId;
-	private Long locationScopeValue;
+	private Long locationValue;
 	private String grievanceDescrption;
 	private Long addressId;
 	private String isDeleted;
@@ -33,7 +33,9 @@ public class PmSubWorkDetails {
 	private Long pmGrantId;
 	private Long pmStatusId;
 	private String coveringLetterPath;
+	private Long pmWorkTypeId;
 	
+	private PmWorkType pmWorkType;
     private User insertedUser;
 	private User updatedUser;
 	private Date insertedTime;
@@ -99,11 +101,11 @@ public class PmSubWorkDetails {
 		this.locationScopeId = locationScopeId;
 	}
 	@Column(name="location_scope_value")
-	public Long getLocationScopeValue() {
-		return locationScopeValue;
+	public Long getLocationValue() {
+		return locationValue;
 	}
-	public void setLocationScopeValue(Long locationScopeValue) {
-		this.locationScopeValue = locationScopeValue;
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
 	}
 	@Column(name="grievance_description")
 	public String getGrievanceDescrption() {
@@ -247,5 +249,23 @@ public class PmSubWorkDetails {
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	
+	@Column(name="pm_work_type_id")
+	public Long getPmWorkTypeId() {
+		return pmWorkTypeId;
+	}
+	public void setPmWorkTypeId(Long pmWorkTypeId) {
+		this.pmWorkTypeId = pmWorkTypeId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_work_type_id", insertable = false, updatable = false)
+	public PmWorkType getPmWorkType() {
+		return pmWorkType;
+	}
+	public void setPmWorkType(PmWorkType pmWorkType) {
+		this.pmWorkType = pmWorkType;
+	}
+	
 	
 }

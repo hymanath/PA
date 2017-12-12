@@ -4,8 +4,11 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.io.Files;
@@ -41,6 +44,8 @@ import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
 
+@Service
+@Transactional
 public class PmRequestDetailsService implements IPmRequestDetailsService{
 
 	private static final Logger LOG = Logger.getLogger(PmRequestDetailsService.class);
@@ -110,51 +115,85 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	public Long  savePetitionReferralDetails(Long pmRepresenteeId,Long petitionId,PmRequestVO pmRequestVO){
 		Long noOfRefCount=0L;
 		try {
-			if(pmRepresenteeId != null && pmRepresenteeId.longValue()>0L && commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList())){
-				for (PmRequestVO refVO : pmRequestVO.getReferList()) {
-					List<PmRepresenteeDesignation> pmRepresenteeList = pmRepresenteeDesignationDAO.getPmRepresenteeDesignationByRepresenteeId(pmRepresenteeId);
-					if(commonMethodsUtilService.isListOrSetValid(pmRepresenteeList)){
-						for (PmRepresenteeDesignation pmRepresenteeDesignation : pmRepresenteeList) {
-							List<PmRefCandidateDesignation> pmRefCandidateList = pmRefCandidateDesignationDAO.getPmRepresenteeDesignationByPmRefCandidateId(refVO.getRefCandidateId());
-							if(commonMethodsUtilService.isListOrSetValid(pmRefCandidateList)){
-								for (PmRefCandidateDesignation pmRefDesignation : pmRefCandidateList) {
-									PmRepresenteeRefDetails petitionRefferer = new PmRepresenteeRefDetails(); 
-									petitionRefferer.setPetitionId(petitionId);
-									petitionRefferer.setPmRefCandidateId(refVO.getRefCandidateId());
-									petitionRefferer.setPmRefCandidateDesignationId(pmRefDesignation.getPmDesginationId());
-									petitionRefferer.setPmRepresenteeId(pmRepresenteeId);
-									petitionRefferer.setPmRepresenteeDesignationId(pmRepresenteeDesignation.getPmDesignationId());
-									petitionRefferer.setIsDeleted("N");
-									petitionRefferer = pmRepresenteeRefDetailsDAO.save(petitionRefferer);
-									
-									if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
-											 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
-										for (MultipartFile file : refVO.getFileList()) {
-												Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
-												savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
-										}
-									}
-									
+			if(pmRepresenteeId != null && pmRepresenteeId.longValue()>0L){
+				
+				if(pmRequestVO.getRepresentationType() != null &&	 pmRequestVO.getRepresentationType().equalsIgnoreCase("SELF")){
+					List<PmRefCandidateDesignation> pmRefCandidateList = pmRefCandidateDesignationDAO.getPmRepresenteeDesignationByPmRefCandidateId(pmRequestVO.getRefCandidateId());
+					if(commonMethodsUtilService.isListOrSetValid(pmRefCandidateList)){
+						for (PmRefCandidateDesignation pmRefDesignation : pmRefCandidateList) {
+							PmRepresenteeRefDetails petitionRefferer = new PmRepresenteeRefDetails(); 
+							petitionRefferer.setPetitionId(petitionId);
+							petitionRefferer.setPmRefCandidateId(pmRequestVO.getRefCandidateId());
+							petitionRefferer.setPmRefCandidateDesignationId(pmRefDesignation.getPmDesginationId());// ref and representee designation same. himself referrer
+							petitionRefferer.setPmRepresenteeId(pmRepresenteeId);
+							petitionRefferer.setPmRepresenteeDesignationId(pmRefDesignation.getPmDesginationId());
+							petitionRefferer.setIsDeleted("N");
+							petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							petitionRefferer = pmRepresenteeRefDetailsDAO.save(petitionRefferer);
+							
+							if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
+									 commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList()) && commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList().get(0).getFileList())){
+								for (MultipartFile file : pmRequestVO.getReferList().get(0).getFileList()) {
+										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
+										savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 								}
-							}else{// no refferer
-								PmRepresenteeRefDetails petitionRefferer = new PmRepresenteeRefDetails(); 
-								petitionRefferer.setPetitionId(petitionId);
-								petitionRefferer.setPmRepresenteeId(pmRepresenteeId);
-								petitionRefferer.setPmRepresenteeDesignationId(pmRepresenteeDesignation.getPmDesignationId());
-								petitionRefferer.setIsDeleted("N");
-								petitionRefferer = pmRepresenteeRefDetailsDAO.save(petitionRefferer);
-								
-								if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
-										 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
-									for (MultipartFile file : refVO.getFileList()) {
-											Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
-											savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+							}
+						}
+					}
+				}else if (commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList()) && pmRequestVO.getRepresentationType() != null &&	 pmRequestVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE") ){
+					for (PmRequestVO refVO : pmRequestVO.getReferList()) {
+						List<PmRepresenteeDesignation> pmRepresenteeList = pmRepresenteeDesignationDAO.getPmRepresenteeDesignationByRepresenteeId(pmRepresenteeId);
+						if(commonMethodsUtilService.isListOrSetValid(pmRepresenteeList)){
+							for (PmRepresenteeDesignation pmRepresenteeDesignation : pmRepresenteeList) {
+								if(refVO.getRefCandidateId() != null){
+									List<PmRefCandidateDesignation> pmRefCandidateList = pmRefCandidateDesignationDAO.getPmRepresenteeDesignationByPmRefCandidateId(refVO.getRefCandidateId());
+									if(commonMethodsUtilService.isListOrSetValid(pmRefCandidateList)){
+										for (PmRefCandidateDesignation pmRefDesignation : pmRefCandidateList) {
+											PmRepresenteeRefDetails petitionRefferer = new PmRepresenteeRefDetails(); 
+											petitionRefferer.setPetitionId(petitionId);
+											petitionRefferer.setPmRefCandidateId(refVO.getRefCandidateId());
+											petitionRefferer.setPmRefCandidateDesignationId(pmRefDesignation.getPmDesginationId());
+											petitionRefferer.setPmRepresenteeId(pmRepresenteeId);
+											petitionRefferer.setPmRepresenteeDesignationId(pmRepresenteeDesignation.getPmDesignationId());
+											petitionRefferer.setIsDeleted("N");
+											petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+											petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+											petitionRefferer = pmRepresenteeRefDetailsDAO.save(petitionRefferer);
+											
+											if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
+													 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
+												for (MultipartFile file : refVO.getFileList()) {
+														Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
+														savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+												}
+											}
+											
+										}
+									}else{// no refferer
+										PmRepresenteeRefDetails petitionRefferer = new PmRepresenteeRefDetails(); 
+										petitionRefferer.setPetitionId(petitionId);
+										petitionRefferer.setPmRepresenteeId(pmRepresenteeId);
+										petitionRefferer.setPmRepresenteeDesignationId(pmRepresenteeDesignation.getPmDesignationId());
+										petitionRefferer.setIsDeleted("N");
+										petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										petitionRefferer = pmRepresenteeRefDetailsDAO.save(petitionRefferer);
+										
+										if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
+												 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
+											for (MultipartFile file : refVO.getFileList()) {
+													Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
+													savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+											}
+										}
 									}
 								}
 							}
 						}
 					}
 				}
+				
 			}
 		} catch (Exception e) {
 			LOG.error("Exception Occured in PmRequestDetailsService @ savePetitionReferralDetails() "+e.getMessage());
@@ -170,6 +209,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				petitionReffererDocument.setDocumentId(documentId);
 				petitionReffererDocument.setPmRepresenteeRefDetailsId(pmRepresenteeRefDetailsId);
 				petitionReffererDocument.setIsDeleted("N");
+				petitionReffererDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				petitionReffererDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				petitionReffererDocument = pmRepresenteeRefDocumentDAO.save(petitionReffererDocument);
 			}
 		} catch (Exception e) {
@@ -179,34 +220,49 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		return petitionReffererDocument;
 	}
 	
-	public Long savePetitionSubWorkDetails(Long petitonId,List<PetitionsWorksVO> subWorksList){
+	public Long savePetitionSubWorkDetails(Long petitonId,PetitionsWorksVO mainDataVO,List<PetitionsWorksVO> subWorksList){
 		Long noOfWorksCount = 0L;
 		try {
 			if(commonMethodsUtilService.isListOrSetValid(subWorksList)){
 				for (PetitionsWorksVO dataVO : subWorksList) {
-					PmSubWorkDetails petitionSubWorkLocationDetails = new PmSubWorkDetails();
-					petitionSubWorkLocationDetails.setPetitionId(petitonId);
-					petitionSubWorkLocationDetails.setGrievanceDescrption(dataVO.getGrievanceDescription());
-					petitionSubWorkLocationDetails.setCostEstimation(Long.valueOf(String.valueOf(dataVO.getEstimateCost())));
-					petitionSubWorkLocationDetails.setPmDepartmentId(dataVO.getDeptId());
-					petitionSubWorkLocationDetails.setPmSubjectId(dataVO.getSubjectId());
-					petitionSubWorkLocationDetails.setPmSubSubjectId(dataVO.getSubSubjectId());
-					petitionSubWorkLocationDetails.setLocationScopeId(dataVO.getLocationScopeId());
-					petitionSubWorkLocationDetails.setLocationScopeValue(dataVO.getLocationValue());
-					
-					LocationAddress address = saveLocationAddress(dataVO.getAddressVO());
-					if(address != null && address.getLocationAddressId() != null && address.getLocationAddressId().longValue()>0L)
-						petitionSubWorkLocationDetails.setAddressId(address.getLocationAddressId());
-					
-					petitionSubWorkLocationDetails.setPmLeadId(dataVO.getLeadId());
-					petitionSubWorkLocationDetails.setPmBriefLeadId(dataVO.getBriefLeadId());
-					petitionSubWorkLocationDetails.setPmGrantId(dataVO.getGrantId());
-					petitionSubWorkLocationDetails.setPmStatusId(1L);// endorsement pending
-					petitionSubWorkLocationDetails.setCoveringLetterPath(null);
-					petitionSubWorkLocationDetails.setIsDeleted("N");
-					
-					petitionSubWorkLocationDetails = pmSubWorkDetailsDAO.save(petitionSubWorkLocationDetails);
-					noOfWorksCount=noOfWorksCount+1;
+					if(dataVO.getWorkTypeId() != null && dataVO.getWorkTypeId().longValue()>0L){
+						PmSubWorkDetails petitionSubWorkLocationDetails = new PmSubWorkDetails();
+						petitionSubWorkLocationDetails.setPetitionId(petitonId);
+						petitionSubWorkLocationDetails.setGrievanceDescrption(dataVO.getGrievanceDescription());
+						petitionSubWorkLocationDetails.setCostEstimation(Long.valueOf(String.valueOf(dataVO.getEstimateCost())));
+						petitionSubWorkLocationDetails.setPmDepartmentId(mainDataVO.getDeptId());
+						petitionSubWorkLocationDetails.setPmSubjectId(mainDataVO.getSubjectId());
+						petitionSubWorkLocationDetails.setPmSubSubjectId(mainDataVO.getSubSubjectId());
+						petitionSubWorkLocationDetails.setLocationScopeId(dataVO.getLocationScopeId());
+						
+						if(dataVO.getLocationScopeId() != null && dataVO.getLocationScopeId().longValue()>0L){
+							if(dataVO.getLocationScopeId().longValue()==3L)
+								petitionSubWorkLocationDetails.setLocationValue(dataVO.getAddressVO().getDistrictId());
+							else if(dataVO.getLocationScopeId().longValue()==4L)
+								petitionSubWorkLocationDetails.setLocationValue(dataVO.getAddressVO().getAssemblyId());
+							else if(dataVO.getLocationScopeId().longValue()==5L){
+								petitionSubWorkLocationDetails.setLocationValue(Long.valueOf(dataVO.getAddressVO().getTehsilId().toString().substring(1)));
+							}
+						}
+						
+						
+						LocationAddress address = saveLocationAddress(dataVO.getAddressVO());
+						if(address != null && address.getLocationAddressId() != null && address.getLocationAddressId().longValue()>0L)
+							petitionSubWorkLocationDetails.setAddressId(address.getLocationAddressId());
+						
+						petitionSubWorkLocationDetails.setPmWorkTypeId(dataVO.getWorkTypeId());
+						petitionSubWorkLocationDetails.setPmLeadId(dataVO.getLeadId());
+						petitionSubWorkLocationDetails.setPmBriefLeadId(dataVO.getBriefLeadId());
+						petitionSubWorkLocationDetails.setPmGrantId(dataVO.getGrantId());
+						petitionSubWorkLocationDetails.setPmStatusId(1L);// endorsement pending
+						petitionSubWorkLocationDetails.setCoveringLetterPath(null);
+						petitionSubWorkLocationDetails.setIsDeleted("N");
+						petitionSubWorkLocationDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						petitionSubWorkLocationDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						
+						petitionSubWorkLocationDetails = pmSubWorkDetailsDAO.save(petitionSubWorkLocationDetails);
+						noOfWorksCount=noOfWorksCount+1;
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -217,39 +273,51 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	public Petition savePetitionWorkDetails(Long pmRepresenteeId,PmRequestVO pmRequestVO){
 		Petition petition = null;
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 		try {
 			if(pmRequestVO != null){
 				if(commonMethodsUtilService.isListOrSetValid(pmRequestVO.getWorksList())){
+					int i=0;
+					Long submittedWorksCount=0L;
+					Long noOfWorks=0L;
 					for (PetitionsWorksVO dataVO : pmRequestVO.getWorksList()) {
-						petition = new Petition();
-						petition.setEndorsmentDate(null);
-						petition.setEndorsmentNo(null);
-						petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate()));
-						if(dataVO.getEstimateCost() != null)
-							petition.setEstimationCost(Long.valueOf(String.valueOf(dataVO.getEstimateCost())));
-						petition.setWorkName(dataVO.getWorkName());
-						petition.setNoOfWorks(dataVO.getNoOfWorks());
-						petition.setIsDeleted("N");
-						petition.setIsPreviousPetition(dataVO.getIsPreviousPetition());
-						petition.setGrievanceDescription(dataVO.getGrievanceDescription());
-						petition.setPmStatusId(1L);//pending endorsment
-						petition = pititionDAO.save(petition);
-						
-						if(petition.getPetitionId() != null && petition.getPetitionId().longValue()>0L){
-							Long submittedWorksCount = savePetitionSubWorkDetails(petition.getPetitionId(),dataVO.getSubWorksList());
-							if(submittedWorksCount.longValue() != dataVO.getNoOfWorks()){
-								throw new Exception(" The submitted No of works not saved . Please check once.");
+						//if(dataVO.getDeptId() != null && dataVO.getDeptId().longValue()>0L && dataVO.getSubjectId() != null && dataVO.getSubjectId().longValue()>0L){
+							if(i==0){
+								i=i+1;
+								petition = new Petition();
+								petition.setEndorsmentDate(null);
+								petition.setEndorsmentNo(null);
+								petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate()));
+								if(dataVO.getEstimateCost() != null)
+									petition.setEstimationCost(Long.valueOf(String.valueOf(dataVO.getEstimateCost())));
+								petition.setWorkName(dataVO.getWorkName());
+								petition.setNoOfWorks(dataVO.getNoOfWorks());
+								petition.setIsDeleted("N");
+								petition.setIsPreviousPetition(dataVO.getIsPreviousPetition());
+								petition.setGrievanceDescription(dataVO.getGrievanceDescription());
+								petition.setPmStatusId(1L);//pending endorsment
+								petition.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								petition.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								petition = pititionDAO.save(petition);
+								noOfWorks = dataVO.getNoOfWorks();
 							}
 							
-							if(dataVO.getFileList() != null && dataVO.getFileList().size()>0){
-								for (MultipartFile file : dataVO.getFileList()) {
-									Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
-									savePetitionWorkDocument(petition.getPetitionId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+							if(petition != null && petition.getPetitionId() != null && petition.getPetitionId().longValue()>0L && commonMethodsUtilService.isListOrSetValid(dataVO.getSubWorksList())){
+								Long tempsubmittedWorksCount = savePetitionSubWorkDetails(petition.getPetitionId(),dataVO.getSubWorksList().get(0),dataVO.getSubWorksList());
+								submittedWorksCount = submittedWorksCount+tempsubmittedWorksCount;
+								
+								if(dataVO.getFileList() != null && dataVO.getFileList().size()>0){
+									for (MultipartFile file : dataVO.getFileList()) {
+										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
+										savePetitionWorkDocument(petition.getPetitionId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+									}
 								}
 							}
-						}
+						//}
 					}
+					/*if(submittedWorksCount.longValue() != noOfWorks){
+						throw new Exception(" The submitted No of works not matched with no of works . Please check once.");
+					}*/
 				}
 			}
 		} catch (Exception e) {
@@ -259,11 +327,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		return petition;
 	}
 	
-	public PmPetitionDocument savePetitionWorkDocument(Long petitionWorkDetailsId,Long documentId,Long userId){
+	public PmPetitionDocument savePetitionWorkDocument(Long petitionId,Long documentId,Long userId){
 		PmPetitionDocument petitionWorkDocument = null;
 		try {
 			if(documentId != null && documentId.longValue()>0L){
 				petitionWorkDocument = new PmPetitionDocument();
+				petitionWorkDocument.setPetitionId(petitionId);
 				petitionWorkDocument.setDocumentId(documentId);
 				petitionWorkDocument.setIsDeleted("N");
 				petitionWorkDocument = pmPetitionDocumentDAO.save(petitionWorkDocument);
@@ -279,15 +348,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		Document document = null;
 		try {
 			if(file != null){
-				String tempPath = commonMethodsUtilService.createInnerFolders(destinationPath);
+				//String tempPath = commonMethodsUtilService.createInnerFolders(destinationPath);
 				String staticPath = commonMethodsUtilService.createInnerFolders(destinationPath+"Petition_Documents");
 				String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
-				
+				staticPath = staticPath.substring(1);// remove first charactor
+				staticPath = staticPath.replace("//", "/");
 				document = new Document();
 				commonMethodsUtilService.copyFile(file.getOriginalFilename(),staticPath);
 				byte[] fileData = file.getBytes();
-				Files.write(fileData,new File(staticPath+"//"+datePath+".jpg"));
-				document.setPath(staticPath+"//"+datePath+".jpg");
+				String fileExtensionStr = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."), file.getOriginalFilename().length());
+				Files.write(fileData,new File(staticPath+"/"+datePath+fileExtensionStr));
+				document.setPath(staticPath+"/"+datePath+fileExtensionStr);
 				document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				document.setInsertedUserId(userId);
 				document = documentDAO.save(document);
@@ -348,7 +419,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							
 							LocationAddress address = saveLocationAddress(pmRequestVO.getAddressVO());
 							pmRepresentee.setAddressId(address.getLocationAddressId());
-							
+							pmRepresentee.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							pmRepresentee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							pmRepresentee = pmRepresenteeDAO.save(pmRepresentee);
 						}else{
 							pmRepresentee.setName(setDataToAttribute(pmRequestVO.getName(),pmRepresentee.getName()));
@@ -362,10 +434,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								pmRepresentee.setTdpCadreId(pmRequestVO.getTdpCadreId());
 							
 							pmRepresentee.setIsDeleted("N");
+							pmRepresentee.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							pmRepresentee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							pmRepresentee = pmRepresenteeDAO.save(pmRepresentee);
 						}
 						
-						if(pmRepresentee != null && pmRepresentee.getPmRepresenteeId() != null && pmRepresentee.getPmRepresenteeId().longValue()>0L){
+						if(pmRequestVO.getRepresenteeDesignationId() != null && pmRequestVO.getRepresenteeDesignationId().longValue()>0L && 
+								pmRepresentee != null && pmRepresentee.getPmRepresenteeId() != null && pmRepresentee.getPmRepresenteeId().longValue()>0L){
 							PmRepresenteeDesignation pmRepresenteeDesignation = new PmRepresenteeDesignation();
 							pmRepresenteeDesignation.setPmRepresenteeId(pmRepresentee.getPmRepresenteeId());
 							pmRepresenteeDesignation.setPmRepresenteeDesignationId(pmRequestVO.getRepresenteeDesignationId());
@@ -374,6 +449,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								pmRepresenteeDesignation.setStartDate(format.parse(pmRequestVO.getStartDate()));
 								pmRepresenteeDesignation.setEndDate(format.parse(pmRequestVO.getEndDate()));
 							}
+							pmRepresenteeDesignation.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							pmRepresenteeDesignation.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							pmRepresenteeDesignationDAO.save(pmRepresenteeDesignation);
 						}
 					}
@@ -389,7 +466,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								pmRepresentee.setEmail(pmRefCandidate.getEmail());
 								pmRepresentee.setTdpCadreId(pmRefCandidate.getTdpCadreId());
 								pmRepresentee.setIsDeleted("N");
+								pmRepresentee.setPmRefCandidateId(pmRequestVO.getRefCandidateId());
 								pmRepresentee.setAddressId(pmRefCandidate.getAddressId());
+								pmRepresentee.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								pmRepresentee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								pmRepresentee = pmRepresenteeDAO.save(pmRepresentee);
 							}
 						}

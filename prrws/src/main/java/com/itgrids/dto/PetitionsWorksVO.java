@@ -17,7 +17,7 @@ public class PetitionsWorksVO {
 	private Long leadId;
 	private Long briefLeadId;
 	private Long grantId;
-	private Double estimateCost;
+	private Long estimateCost;
 	private String eOfficeId;
 	private String remarks;
 	private String isPreviousPetition;
@@ -120,10 +120,10 @@ public class PetitionsWorksVO {
 	public void setSubSubjectId(Long subSubjectId) {
 		this.subSubjectId = subSubjectId;
 	}
-	public Double getEstimateCost() {
+	public Long getEstimateCost() {
 		return estimateCost;
 	}
-	public void setEstimateCost(Double estimateCost) {
+	public void setEstimateCost(Long estimateCost) {
 		this.estimateCost = estimateCost;
 	}
 	public String geteOfficeId() {
@@ -157,6 +157,5 @@ public class PetitionsWorksVO {
 	public void setWorkTypeId(Long workTypeId) {
 		this.workTypeId = workTypeId;
 	}
-	
 	
 }

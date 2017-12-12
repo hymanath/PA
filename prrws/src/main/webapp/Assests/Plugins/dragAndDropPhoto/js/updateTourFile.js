@@ -1,6 +1,6 @@
 /*swadhin*/
 function initializeFileUploadMainBlock(typeVal,candidateId) {
-	alert(candidateId)
+	//alert(candidateId)
 	var itemStr = '';
 	var itemAppendStr = '';
 	itemStr+='<li class="jFiler-item">';

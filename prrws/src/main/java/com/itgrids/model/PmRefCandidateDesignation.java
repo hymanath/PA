@@ -46,7 +46,7 @@ public class PmRefCandidateDesignation {
 	public void setPmRefCandidateId(Long pmRefCandidateId) {
 		this.pmRefCandidateId = pmRefCandidateId;
 	}
-	@Column(name="pm_desgination_id")
+	@Column(name="pm_designation_id")
 	public Long getPmDesginationId() {
 		return pmDesginationId;
 	}
@@ -83,7 +83,7 @@ public class PmRefCandidateDesignation {
 		this.pmRefCandidate = pmRefCandidate;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "pm_desgination_id", insertable = false, updatable = false)
+	@JoinColumn(name = "pm_designation_id", insertable = false, updatable = false)
 	public PmDesignation getPmDesgination() {
 		return pmDesgination;
 	}
