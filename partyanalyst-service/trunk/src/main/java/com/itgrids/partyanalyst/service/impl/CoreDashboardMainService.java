@@ -3772,7 +3772,7 @@ public List<TrainingCampProgramVO> getTrainingCampProgramsBasicCountDetails(Long
 		     }else{
 		    	 accessLevelValue = userAccessLevelId;	 
 		     }
-		     List<Object[]> rtrnObjLst = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedDetails(accessLevelValue, userAccessLevelValues, toDate,enrollmentYearIds,null); 
+		     List<Object[]> rtrnObjLst = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedDetails(accessLevelValue, userAccessLevelValues, toDate,enrollmentYearIds,null,null); 
 			 if(rtrnObjLst != null && rtrnObjLst.size() > 0){
 				 for (Object[] param : rtrnObjLst) {
 					TrainingCampProgramVO programVO = new TrainingCampProgramVO();
@@ -7761,7 +7761,7 @@ public List<Object[]> getCampDetailsListByFiltering(List<Long> enrollmentYearIds
                while (maxcount >0){  
                    if(maxcount<filterCount)
                        j = i+maxcount;
-                       List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList.subList(i, j));//Procedure Call
+                       List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList.subList(i, j),null);//Procedure Call
                       if(commonMethodsUtilService.isListOrSetValid(tempList)){
                         campDetailsList.addAll(tempList);
                       }
@@ -7829,7 +7829,7 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 		List<Object[]> rtrnCommiteeLevelEligibleAndAttendedObjLst = trainingCampDetailsInfoDAO
 				.getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(
 						accessLevelValue, userAccessLevelValues, toDate,
-						enrollmentYearIds, programIdList);
+						enrollmentYearIds, programIdList,null);
 
 		Map<Long, Map<Long, Long>> batchMemdaysMap = new HashMap<Long, Map<Long, Long>>();
 		if (attendedList != null && attendedList.size() > 0) {
@@ -7867,7 +7867,7 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long 
 		manTwnDivVO.setTotalNotAttenedCountPer(calculatePercantage(	manTwnDivVO.getTotalNotAttenedCount(),manTwnDivVO.getTotalEligibleCount()));
 		finalResultVO.setMandalTownDivisionVO(manTwnDivVO);
 
-		List<Object[]> rtrnObjLst = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedDetails(accessLevelValue, userAccessLevelValues, toDate,enrollmentYearIds, programIdList);
+		List<Object[]> rtrnObjLst = trainingCampDetailsInfoDAO.getTrainingCampProgramEligibleAndAttendedDetails(accessLevelValue, userAccessLevelValues, toDate,enrollmentYearIds, programIdList,null);
 		if (rtrnObjLst != null && rtrnObjLst.size() > 0) {
 			for (Object[] param : rtrnObjLst) {
 				TrainingCampProgramVO programVO = new TrainingCampProgramVO();

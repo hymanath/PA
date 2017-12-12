@@ -14,7 +14,7 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
 	public TrainingCampDetailsInfoDAO() {
 		super(TrainingCampDetailsInfo.class);
 	}
-      public List<Object[]> getTrainingCampProgramEligibleAndAttendedDetails(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList){
+      public List<Object[]> getTrainingCampProgramEligibleAndAttendedDetails(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList,List<Long> committeeLevelIds){
     	  StringBuilder queryStr = new StringBuilder();
     	  queryStr.append(" select model.trainingCampProgram.trainingCampProgramId," +//0
     	  				 "  model.trainingCampProgram.programName," +//1
@@ -32,8 +32,8 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(locationValues != null && locationValues.size() > 0){
     		  queryStr.append(" and model.locationValue in (:locationValues)");
     	  }
-    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-    		 // queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+    	  if(committeeLevelIds != null && committeeLevelIds.size()>0){
+    		  queryStr.append(" and model.tdpCommitteeLevelId in (:committeeLevelIds)");
     	  }
     	  queryStr.append(" group by model.trainingCampProgram.trainingCampProgramId ");
     	 Query query = getSession().createQuery(queryStr.toString());
@@ -43,15 +43,15 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(locationValues != null && locationValues.size() > 0){
     		  query.setParameterList("locationValues", locationValues);  
     	  }
-    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-    		 // query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+    	  if(committeeLevelIds != null && committeeLevelIds.size()>0){
+    		  query.setParameterList("committeeLevelIds", committeeLevelIds);
     	  }
     	  if(programIdList != null && programIdList.size()>0){
     		 query.setParameterList("programIdList", programIdList);
     	  }
     	 return query.list();
     }
-      public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList){
+      public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList,List<Long> tdpCommitteeLevelIds){
     	  StringBuilder queryStr = new StringBuilder();
     	  queryStr.append(" select model.tdpCommitteeLevelId," +//0
     	  				  " sum(model.eligible)," +//1
@@ -68,8 +68,8 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(locationValues != null && locationValues.size() > 0){
     		  queryStr.append(" and model.locationValue in (:locationValues)");
     	  }
-    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-    		//  queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds)");
+    	  if(tdpCommitteeLevelIds != null && tdpCommitteeLevelIds.size()>0){
+    		  queryStr.append(" and model.tdpCommitteeLevelId in (:tdpCommitteeLevelIds)");
     	  }
     	  queryStr.append(" group by model.tdpCommitteeLevelId ");
     	 Query query = getSession().createQuery(queryStr.toString());
@@ -79,8 +79,8 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     	  if(locationValues != null && locationValues.size() > 0){
     		  query.setParameterList("locationValues", locationValues);  
     	  }
-    	  if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
-    		  //query.setParameterList("enrollmentYearIds", enrollmentYearIds);  
+    	  if(tdpCommitteeLevelIds != null && tdpCommitteeLevelIds.size()>0){
+    		  query.setParameterList("tdpCommitteeLevelIds", tdpCommitteeLevelIds);
     	  }
     	  if(programIdList != null && programIdList.size()>0){
      		 query.setParameterList("programIdList", programIdList);

@@ -11325,7 +11325,7 @@ public List<SimpleVO> getDayWiseCountsForRunningBatches_Test(List<Object[]> runn
 				List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
 				batchIdsList.add(batchId);
 				 
-				List<Object[]> detailsList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYrIds,programmIds,batchIdsList);//Procedure Call
+				List<Object[]> detailsList = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYrIds,programmIds,batchIdsList,null);//Procedure Call
 				
 				List<Map<Long,Map<Long,Set<String>>>> attendanceDetailsMapList = getTdpCardreIdsPresentByDays(detailsList,batchIdsList);
 				Map<Long,Map<Long,Set<String>>> inviteeMap = new HashMap<Long, Map<Long,Set<String>>>(0);
@@ -13456,7 +13456,7 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 		                   while (maxcount >0){  
 		                       if(maxcount<filterCount)
 		                           j = i+maxcount;
-		                       List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList.subList(i, j));//Procedure Call
+		                       List<Object[]>  tempList  = trainingCampAttendanceDAO.getDayWiseTrainingCampDetailsCount(enrollmentYearIds,programYearIds,batchIdsList.subList(i, j),null);//Procedure Call
 		                       //TrainingProcedureTestData trainingProcedureTestData=new TrainingProcedureTestData();
 		           			   //List<Object[]>  tempList = trainingProcedureTestData.getTestProcedureCallData();
 		                          if(commonMethodsUtilService.isListOrSetValid(tempList)){

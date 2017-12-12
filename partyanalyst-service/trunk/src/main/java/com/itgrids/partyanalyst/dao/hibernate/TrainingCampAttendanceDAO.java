@@ -2340,7 +2340,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		   return (List<Object[]>)query.list();
 	   }
 	
-	 public List<Object[]> getDayWiseTrainingCampDetailsCount(List<Long> enrollmentYearIds,List<Long> programIdsList,List<Long> batchIdsList)
+	 public List<Object[]> getDayWiseTrainingCampDetailsCount(List<Long> enrollmentYearIds,List<Long> programIdsList,List<Long> batchIdsList,List<Long> committeeLevelIds)
 	 { 
 		//Query query = getSession().createSQLQuery("call get_training_camp_attendance_details('8','2010-07-23','2050-08-02','2','1','5,7,9,6,8','2','1')");
 		
@@ -2364,13 +2364,28 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				   batchIdStr = ""+batchId;
 			   else
 				   batchIdStr = batchIdStr+","+batchId;
-		}
+		   }
 	   }
+	   
+	   String committeeLevelIdStr="";
+	   if(committeeLevelIds != null && committeeLevelIds.size()>0){
+		   for (Long levelId : committeeLevelIds) {
+			   if(committeeLevelIdStr.trim().length()==0)
+				   committeeLevelIdStr = ""+levelId;
+			   else
+				   committeeLevelIdStr = committeeLevelIdStr+","+levelId;
+		   }
+	   }else{
+		   committeeLevelIdStr="5,6,7,8,9";
+	   }
+	   
 	   if(batchIdStr.isEmpty())
 		   batchIdStr = null;
 	   
+	   if(committeeLevelIdStr.isEmpty())
+		   committeeLevelIdStr = null;
 	   //Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1')")
-	   Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1',:batchIdStr)")
+	   Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,:committeeLevelIdStr,'2','1',:batchIdStr)")
 			.addScalar("tdp_cadre_id", Hibernate.LONG)
 			.addScalar("date(A.attended_time)", Hibernate.STRING)
 			.addScalar("training_camp_batch_id", Hibernate.LONG)
@@ -2396,7 +2411,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			.addScalar("panchayat_name", Hibernate.STRING)
 			.addScalar("ward_id", Hibernate.LONG)
 			.addScalar("ward_name", Hibernate.STRING);
-			query.setParameter("programId", programIdsList.get(0)).setParameter("enrollemntYrId", committeeEnrollmetYrId).setParameter("basicCommitteeId", 1L)
+			query.setParameter("programId", programIdsList.get(0)).setParameter("enrollemntYrId", committeeEnrollmetYrId).setParameter("basicCommitteeId", 1L).setParameter("committeeLevelIdStr", committeeLevelIdStr)
 			.setParameter("batchIdStr", batchIdStr); 	
 			return query.list();
 	}
