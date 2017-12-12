@@ -4600,6 +4600,7 @@
     		<property name="trainingCampBatchDAO" ref="trainingCampBatchDAO" /> 
     		<property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO" /> 
     		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />
-    		<property name="tdpCadreDAO" ref="tdpCadreDAO" /> 
+    		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
+			<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/>
     	</bean>
 </beans>			
