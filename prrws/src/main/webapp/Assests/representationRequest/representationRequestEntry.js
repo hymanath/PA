@@ -1448,3 +1448,24 @@ function getWorkTypeList(divId,typeVal,count){
    $("#"+divId+typeVal+count).trigger('chosen:updated');
  }); 
 }
+function getParliamentIdsByConstituencyList(){
+	var json = {};
+	$.ajax({              
+		type:'POST',    
+		url: 'getParliamentIdsByConstituencyList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#constituencyCanId").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#constituencyCanId").trigger('chosen:updated');
+	});	
+}
