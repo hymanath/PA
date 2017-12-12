@@ -551,4 +551,15 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return null;
 	}
+	
+	@PostMapping("/getWorksDataInsertionService2")
+	public @ResponseBody boolean getWorksDataInsertionService2() {
+	  try {
+			 return rWSNICService2.getWorkDetails2();
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
+			return false;
+	  }
+	 
+	}
 }
