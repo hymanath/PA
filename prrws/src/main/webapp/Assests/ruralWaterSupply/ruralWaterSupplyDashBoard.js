@@ -800,7 +800,8 @@
 						workOngoingArr.push({"y":result[i].workOngoingCount,"extra":result[i].percentageOne.toFixed(1)});
 						workNotGroundedArr.push({"y":result[i].workNotGroundedCount,"extra":result[i].percentageFour.toFixed(1)});
 						workCompletedArr.push({"y":result[i].workCompletedCount,"extra":result[i].percentageThree.toFixed(1)});
-						workComissionedArr.push({"y":result[i].workComissionedCount,"extra":result[i].percentageTwo.toFixed(1)});						
+						workComissionedArr.push({"y":result[i].workComissionedCount,"extra":result[i].percentageTwo.toFixed(1)});	
+						
 					}
 					
 				  }
@@ -4467,6 +4468,7 @@
 	function getHabitationDetailsByStatusByLocationType(status,locationType,locationValue,districtVal,startIndex,totalCount){
 		
 		$("#modalHablitationTable").html(spinner);
+		$(".paginationId").css('display','none');
 		var statusArr = [];
 		statusArr.push(status);
 			var yearVal="";
@@ -4514,6 +4516,8 @@
 		}).done(function(result){
 			if(result !=null && result.length>0){
 				buildHabitationDetailsByStatusByLocationType1(result,'habitation_Click',status,locationType,locationValue,districtVal,startIndex,totalCount);
+				$(".paginationId").css('display','block')
+				
 			}else{
 				$(".paginationId").html("");
 				$("#modalHablitationTable").html('No Data Available');
@@ -4597,6 +4601,7 @@
 	} 
 	//habilationOneTAbbuild
 	function buildHabitationDetailsByStatusByLocationType1(result,type,status,locationType,locationValue,districtVal,startIndex,totalCount){
+		
 		var tableView='';
 		tableView+='<table class="table table-bordered" id="dataTableHablitationTable">';
 			tableView+='<thead>';
@@ -4622,10 +4627,11 @@
 			tableView+='</tbody>';
 		tableView+='</table>';
 		$("#modalHablitationTable").html(tableView);
+		//$(".paginationId").html("");
 		$("#dataTableHablitationTable").dataTable({
 			"paging":   false,
 			"info":     false,
-			"searching": false,
+			"searching": true,
 			"autoWidth": true,
 			"order": [ 0, 'desc' ],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
@@ -4655,6 +4661,7 @@
 			]
 		});
 		if(startIndex == 0 && totalCount > 0){
+				
 				$(".paginationId").pagination({
 					items: totalCount,
 					itemsOnPage: 10,
