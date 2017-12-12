@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -20,6 +20,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaActionsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswerInfoDAO;
@@ -41,11 +42,9 @@ import com.itgrids.partyanalyst.dao.IKaizalaResponderTypeDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaTextMessageDAO;
 import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
-import com.itgrids.partyanalyst.dto.CoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.dto.KaizalaDashboardVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
-import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.KaizalaActions;
 import com.itgrids.partyanalyst.model.KaizalaAnswerInfo;
@@ -92,8 +91,16 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	private IKaizalaInstallationTrackingDAO kaizalaInstallationTrackingDAO;
 	private ICoreDashboardGenericService coreDashboardGenericService;
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
+	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	
 
+	public IActivityMemberAccessLevelDAO getActivityMemberAccessLevelDAO() {
+		return activityMemberAccessLevelDAO;
+	}
+	public void setActivityMemberAccessLevelDAO(
+			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
+		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
+	}
 	public IParliamentAssemblyDAO getParliamentAssemblyDAO() {
 		return parliamentAssemblyDAO;
 	}
@@ -1233,9 +1240,29 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	public List<KaizalaDashboardVO> getLocationWiseCommitteeMemberDetails(InputVO inputvo){
 		List<KaizalaDashboardVO> returnList = new ArrayList<KaizalaDashboardVO>(0);
 		try {
+			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
+			
 			Map<Long,String> assemParMap = new LinkedHashMap<Long, String>();
 			List<Long> assemblyIds = new ArrayList<Long>(0);
-			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
+			Long userAccessLevelId=0l;
+			Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+			Set<Long> levelValues = new java.util.HashSet<Long>();
+			
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(inputvo.getActivityMemberId());
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+			   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+			   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				Set<Long> locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+				 if(locationValuesSet == null){
+					 locationValuesSet = new java.util.HashSet<Long>();
+					 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+				 }
+				 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+				 levelValues.add(param[1] != null ? (Long)param[1]:0l);
+			}
+			   inputvo.setLevelId(userAccessLevelId);
+			   inputvo.setLevelValues(new ArrayList<Long>(levelValues));
+		   }
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/KAIZALA/getLocationWiseCommitteeMemberDetails");
 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.131:8080/KAIZALA/getLocationWiseCommitteeMemberDetails");
@@ -1315,8 +1342,27 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	public List<KaizalaDashboardVO> getOverAllCommitteeWiseMembersCounts(InputVO inputvo){
 		List<KaizalaDashboardVO> returnList = new ArrayList<KaizalaDashboardVO>(0);
 		try {
-			
 			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
+			
+			Long userAccessLevelId=0l;
+			Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+			Set<Long> levelValues = new java.util.HashSet<Long>();
+			
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(inputvo.getActivityMemberId());
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+			   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+			   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				Set<Long> locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+				 if(locationValuesSet == null){
+					 locationValuesSet = new java.util.HashSet<Long>();
+					 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+				 }
+				 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+				 levelValues.add(param[1] != null ? (Long)param[1]:0l);
+			}
+			   inputvo.setLevelId(userAccessLevelId);
+			   inputvo.setLevelValues(new ArrayList<Long>(levelValues));
+		   }
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/KAIZALA/getOverAllCommitteeWiseMembersCounts");
 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.131:8080/KAIZALA/getOverAllCommitteeWiseMembersCounts");
@@ -1362,8 +1408,27 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 	public List<KaizalaDashboardVO> getLevelLocationWiseCounts(InputVO inputvo){
 		List<KaizalaDashboardVO> returnList = new ArrayList<KaizalaDashboardVO>(0);
 		try {
-			
 			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
+			
+			Long userAccessLevelId=0l;
+			Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+			Set<Long> levelValues = new java.util.HashSet<Long>();
+			
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(inputvo.getActivityMemberId());
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+			   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+			   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				Set<Long> locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+				 if(locationValuesSet == null){
+					 locationValuesSet = new java.util.HashSet<Long>();
+					 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+				 }
+				 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+				 levelValues.add(param[1] != null ? (Long)param[1]:0l);
+			}
+			   inputvo.setLevelId(userAccessLevelId);
+			   inputvo.setLevelValues(new ArrayList<Long>(levelValues));
+		   }
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/KAIZALA/getLevelLocationWiseCounts");
 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.131:8080/KAIZALA/getLevelLocationWiseCounts");
@@ -1428,7 +1493,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		return returnList;
 	}
 	
-	public List<List<UserTypeVO>> getUserTypeWiseKaizalaCommitteeMemberDetailsCnt(Long userId,Long userTypeId,Long activityMemberId,Long stateId){
+	public List<List<UserTypeVO>> getUserTypeWiseKaizalaCommitteeMemberDetailsCnt(InputVO inputVO){
 		
 	    List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
 	    
@@ -1444,9 +1509,9 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				 fromDate = sdf.parse(fromDateStr);
 			 }*/
 		     ActivityMemberVO activityMemberVO = new ActivityMemberVO();
-		     activityMemberVO.setUserId(userId);
-		     activityMemberVO.setActivityMemberId(activityMemberId);
-		     activityMemberVO.setUserTypeId(userTypeId);
+		     activityMemberVO.setUserId(inputVO.getUserId());
+		     activityMemberVO.setActivityMemberId(inputVO.getActivityMemberId());
+		     activityMemberVO.setUserTypeId(inputVO.getUserTypeId());
 		     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocationsNew(activityMemberVO);//calling generic method.
 		     userTypeMapDtls = activityMemberVO.getUserTypesMap();
 		     locationLevelMap = activityMemberVO.getLocationLevelIdsMap();
@@ -1482,7 +1547,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		    	}
 		    }*/
 		    
-		     List<KaizalaDashboardVO> kaizalaList = getLevelLocationWiseCounts(new InputVO());
+		     List<KaizalaDashboardVO> kaizalaList = getLevelLocationWiseCounts(inputVO);
 		    
 		    if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
 		    	

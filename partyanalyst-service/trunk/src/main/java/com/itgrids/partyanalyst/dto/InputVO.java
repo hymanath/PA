@@ -27,8 +27,36 @@ public class InputVO {
 	private Long activityMemberId;
 	private Long userId;
 	private String name;
+	private Long levelId;
+	private List<Long> levelValues = new ArrayList<Long>(0);
+	private Long userTypeId = 0L;
+	private Long stateId = 0L;
 	
 	
+	public Long getUserTypeId() {
+		return userTypeId;
+	}
+	public void setUserTypeId(Long userTypeId) {
+		this.userTypeId = userTypeId;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+	public List<Long> getLevelValues() {
+		return levelValues;
+	}
+	public void setLevelValues(List<Long> levelValues) {
+		this.levelValues = levelValues;
+	}
 	public String getName() {
 		return name;
 	}
