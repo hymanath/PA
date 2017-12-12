@@ -9,4 +9,6 @@ public interface IRwsWorksSchedulerService {
 
 	
 	public List<IdNameVO> getWorksDataInsertion(InputVO inputVO);
+	
+	public boolean getWorkDetails2();
 }
