@@ -12,5 +12,5 @@ public interface IPmDesignationDAO extends GenericDao<PmDesignation, Long> {
 	public List<Object[]> getAllReferredCandidateDesignationList();;
 	public List<Object[]> getGivenPetitionCandidateDesignationList();
 	public List<Object[]> getGivenpetitionReprDesignationsList();
-
+	
 }
