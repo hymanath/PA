@@ -8171,6 +8171,7 @@ public CoreDebateVO getMatchedCandidateId(List<CoreDebateVO> returnList,Long cha
  * Swadhin K Lenka
  * @see com.itgrids.partyanalyst.service.ICoreDashboardMainService#getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(java.lang.Long, java.util.List, java.lang.Long, java.lang.String, java.util.List, java.util.List)
  */
+@SuppressWarnings("serial")
 public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise(Long userAccessLevelId, List<Long> userAccessLevelValues,Long stateId, String fromDateStr, String toDateStr, List<Long> enrollmentYearIds,List<Long> programIdList,List<Long> committeeLevelIds) {
 	try{
 		TrainingCampProgramVO finalResultVO = new TrainingCampProgramVO();
@@ -8198,12 +8199,20 @@ public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewTrainingCampC
 		
 		List<Object[]>  tempList = null;
 		List<Object[]>  tempList2 = null;
+		List<Object[]>  tempList3 = null;
+		List<Object[]>  tempList4 = null;
 		if(accessLevelValue.longValue() == IConstants.STATE_LEVEl_ACCESS_ID){
-			List<Long> distList1 = new ArrayList<Long>(){{add(11L);add(12L);add(13L);add(14L);add(15L);add(16L);add(17L);}};
+			List<Long> distList1 = new ArrayList<Long>(){{add(11L);add(12L);add(13L);}};
 			tempList  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList1,enrollmentYearIds,programIdList,committeeLevelIds);//Procedure Call
-			List<Long> distList2 = new ArrayList<Long>(){{add(18L);add(19L);add(20L);add(21L);add(22L);add(23L);add(517L);}};
+			List<Long> distList2 = new ArrayList<Long>(){{add(14L);add(15L);add(16L);}};
 			tempList2  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList2,enrollmentYearIds,programIdList,committeeLevelIds);//Procedure Call
+			List<Long> distList3 = new ArrayList<Long>(){{add(17L);add(18L);add(19L);add(517L);}};
+			tempList3  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList3,enrollmentYearIds,programIdList,committeeLevelIds);//Procedure Call
+			List<Long> distList4 = new ArrayList<Long>(){{add(20L);add(21L);add(22L);add(23L);}};
+			tempList4  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList4,enrollmentYearIds,programIdList,committeeLevelIds);//Procedure Call
 			tempList.addAll(tempList2);
+			tempList.addAll(tempList3);
+			tempList.addAll(tempList4);
 		}else{
 			tempList  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(accessLevelValue,userAccessLevelValues,enrollmentYearIds,programIdList,committeeLevelIds);//Procedure Call
 		}
