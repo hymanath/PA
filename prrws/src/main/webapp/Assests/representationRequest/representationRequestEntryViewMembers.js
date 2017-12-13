@@ -1,7 +1,7 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 
 var startDate = moment().subtract(7,"year").format("DD-MM-YYYY");
-var endDate = moment().add(20,"year").format("DD-MM-YYYY");
+var endDate = moment().add(38,"year").format("DD-MM-YYYY");
 
 $("#dateRangePicker").daterangepicker({
 	opens:'left',
@@ -17,7 +17,7 @@ $("#dateRangePicker").daterangepicker({
 	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 	   'This Month': [moment().startOf('month'), moment().endOf('month')],
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-	   'All'	: [moment().subtract(7, 'year').startOf('year'), moment().add(20, 'year').endOf('year')]
+	   'All'	: [moment().subtract(7, 'year').startOf('year'), moment().add(38, 'year').endOf('year')]
 	}
 
 });
@@ -147,6 +147,12 @@ $(document).on("change","#locationSelId",function(){
 	   $("#mobileErrDivId").html('');
 	   $("#emailErrDivId").html('');
 	   $("#endorsmentNoErrDivId").html('');
+	     
+	    $("#nameId").html('');
+	    $("#mobileId").html('');
+	    $("#emailId").html('');
+	  $("#endorsmentNoId").html('');
+   
 	var searchType=$(this).val();
 	getDistrictBySearchType(searchType,'districtCandId');//
 	if(searchType == 'referrelDesignation' || searchType =='representeeDesignation'){
@@ -396,17 +402,45 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 	 }
  }
  
- 
 getRepresentativeSearchDetails1();
 function getRepresentativeSearchDetails1(){
- 
+  
+   var filterType=$("#locationSelId").val();
+    var filterValue="";
+   if(filterType == 'referrelDesignation' || filterType == 'representeeDesignation'){
+	   filterValue=$("#designationsId").val();//
+   }else if(filterType == 'department'){
+	    filterValue=$("#departmentId").val();
+   }else if(filterType == 'name'){
+	    filterValue=$("#nameId").val();
+   }else if(filterType == 'mobile'){
+	    filterValue=$("#mobileId").val();
+   }else if(filterType == 'email'){
+	    filterValue=$("#emailId").val();
+   }else if(filterType == 'endorsmentNO'){
+	    filterValue=$("#endorsmentNoId").val();
+   }
+  
+	 var districtId=$("#districtCandId").val();
+	 var constituencyId=$("#constituencyCanId").val();
+	 var mandalId=$("#mandalCanId").val();
+	 var searchLevelValue=districtId;
+	 var searchLevelId=3;
+if(constituencyId > 0){
+	searchLevelId=4;
+	searchLevelValue=constituencyId
+}
+if(mandalId > 0){
+	searchLevelId=5;
+	searchLevelValue=mandalId
+}
   var json = {
-    filterType :"work",//mobileno/department/name/email
-    filterValue:"",
-    searchLevelId:3,
-    searchLevelValue:17,
-    fromDate:"01-01-2010",
-    toDate:"01-01-2055",
+    filterType :filterType,//mobileno/department/name/email
+    filterValue:filterValue,
+    searchLevelId:searchLevelId,
+    searchLevelValue:searchLevelValue,
+    fromDate:startDate,
+    toDate:endDate,
     fromRange:1,
     toRange:9,
     minVal:0,
@@ -432,3 +466,4 @@ function getRepresentativeSearchDetails1(){
     }
   }); 
 }
+
