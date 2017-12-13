@@ -17,8 +17,15 @@ public class RepresenteeViewVO {
 	private String estimationCost;
 	private String statusType="";
 	private List<String> desigList = new ArrayList<String>();
+	private String raisedDate;
 	
 	
+	public String getRaisedDate() {
+		return raisedDate;
+	}
+	public void setRaisedDate(String raisedDate) {
+		this.raisedDate = raisedDate;
+	}
 	public List<String> getDesigList() {
 		return desigList;
 	}

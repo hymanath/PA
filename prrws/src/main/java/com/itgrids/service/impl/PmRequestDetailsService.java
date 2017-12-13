@@ -610,15 +610,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}
 					vo.setPetitionId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					vo.setEndorsementNO(commonMethodsUtilService.getLongValueForObject(param[1]));
-					vo.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[2]));
+					vo.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
 					vo.setEstimationCost(commonMethodsUtilService.getStringValueForObject(param[3]));
 					vo.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
 					vo.setReferrerName(commonMethodsUtilService.getStringValueForObject(param[5]));
 					vo.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[6]));
 					Long petionPendingDays = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[8]),commonMethodsUtilService.getStringValueForObject(param[9]));
-					Long statusId = commonMethodsUtilService.getLongValueForObject(commonMethodsUtilService.getLongValueForObject(param[10]));
+					Long statusId = commonMethodsUtilService.getLongValueForObject(param[10]);
+					vo.setWorkName(commonMethodsUtilService.getStringValueForObject(param[11]));
 					//RepresenteeViewVO vo =mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-					
+					vo.setRaisedDate(commonMethodsUtilService.getStringValueForObject(param[8]).substring(0, 10));
 					if(statusId.longValue() != 0l && !statusIds.contains(statusId) && petionPendingDays.longValue()>=minPending.longValue()
 							&& petionPendingDays.longValue() <= maxPending.longValue() && vo != null){
 						vo.setStatusType("pending");

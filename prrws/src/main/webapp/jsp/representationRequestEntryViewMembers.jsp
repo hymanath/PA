@@ -197,7 +197,7 @@
 					<div class="panel-group">
 						<div class="panel panel-default panel-lightGreen">
 							<div class="panel-heading">
-								<h4 class="panel-title f_22" style="font-weight:normal !important;">SEARCH REPRESENTEE DETAILS <a class="btn btn-success btn-xs  btn-xs pull-right" target="_blank" href="representationRequestEntry"> ADD NEW PETITION </a></h4>
+								<h4 class="panel-title f_22" style="font-weight:normal !important;">REPRESENTATION REQUEST <a class="btn btn-success btn-xs  btn-xs pull-right" target="_blank" href="representationRequestEntry"> ADD NEW PETITION </a></h4>
 							</div>
 								<div class="panel-body">								
 									<div class="row m_top20">
@@ -219,9 +219,9 @@
 											</label>
 										</div>  -->
 										<div class="col-sm-3" id="locationDivlId">	
-										<label> SEARCH TYPE</label>
+										<label> Search By</label>
 											<select class="form-control chosen-select" id="locationSelId" >
-												<option value="all">Select Location</option>
+												<option value="all">Select Search Type</option>
 												<option value="work"> WORK lOCATION WISE</option>
 												<option value="representee"> REPRESENTEE lOCATION WISE</option>
 												<option value="referral"> REFERREL lOCATION WISE</option>
@@ -248,57 +248,57 @@
 									<div class="m_top20" id="normalSearchDivId"  >
 										<div class="row m_top20">
 											<div class="col-sm-3" id="designationDiv" style="display:none;">
-												<label> DESIGNATION </label>
+												<label> Designation </label>
 												<select class="form-control chosen-select" id="designationsId">
 													<option value="0">Select Designation</option>
 												</select>
 												<div class="error_colorCls" id="designationErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="departMentsDiv" style="display:none;">
-											<label> DEPARTMENT</label>
+											<label> Department</label>
 												<select class="form-control chosen-select" id="departmentId">
 													<option value="0">Select Department</option>
 												</select>
 												<div class="error_colorCls" id="departMentsErrDiv"></div>
 											</div>	
 											<div class="col-sm-3" id="nameDivid" style="display:none;">
-											<label> NAME</label>
+											<label> Name</label>
 												<input type="text" class="form-control" style="text-align:center;height:40px" id="nameId" placeholder="Please enter Name">
 												<div class="error_colorCls" id="nameErrDivId"></div>
 											</div>	
 											<div class="col-sm-3" id="mobileDivid" style="display:none;">
-											<label>MOBILE NUMBER</label>
+											<label>Mobile Number</label>
 												<input type="text" class="form-control" style="text-align:center;height:40px" id="mobileId" placeholder="Please enter mobile number">
 												<div class="error_colorCls" id="mobileErrDivId"></div>
 											</div>	
 											<div class="col-sm-3" id="emailDivid" style="display:none;">
-											<label> EMAIL ID</label>
+											<label> Email ID</label>
 												<input type="text" class="form-control" style="text-align:center;height:40px" id="emailId" placeholder="Please enter email">
 												<div class="error_colorCls" id="emailErrDivId"></div>
 											</div>	
 											<div class="col-sm-3" id="endorsmentNoDivid" style="display:none;">
-											<label> ENDORSMENT NUMBER</label>
+											<label> Endorsment Number</label>
 												<input type="text" class="form-control" style="text-align:center;height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
 												<div class="error_colorCls" id="endorsmentNoErrDivId"></div>
 											</div>	
 										</div>	
 										<div class="row m_top20">
 											<div class="col-sm-3" id="districtCandDiv">
-												<label>DISTRICT</label>
+												<label>District</label>
 												<select class="form-control chosen-select" id="districtCandId">
 													<option value="0">Select District</option>
 												</select>
 												<div class="error_colorCls" id="districtCandErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="constituencyCanDiv">
-											<label>CONSTITUENCY</label>
+											<label>Constituency</label>
 												<select class="form-control chosen-select" id="constituencyCanId">
 													<option value="0">Select Constituency</option>
 												</select>
 												<div class="error_colorCls" id="constituencyCanErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="mandalCanDiv">
-											<label>MANDAL</label>
+											<label>Mandal</label>
 												<select class="form-control chosen-select" id="mandalCanId">
 													<option value="0">Select Mandal</option>
 												</select>

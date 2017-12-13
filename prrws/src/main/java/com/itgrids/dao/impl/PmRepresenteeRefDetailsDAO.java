@@ -28,7 +28,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" select model.petition.petitionId,model.petition.endorsmentNo,model.petition.endorsmentDate," +
 				" model.petition.estimationCost,model.pmRepresentee.name,model.pmRefCandidate.name," +
 				"model.petition.noOfWorks,model2.pmDesignation.designation," +
-				" model.petition.insertedTime,model1.updatedTime,model1.pmStatus.pmStatusId from PmRepresenteeRefDetails as model,PmSubWorkDetails as model1" +
+				" model.petition.insertedTime,model1.updatedTime,model1.pmStatus.pmStatusId" +
+				",model.petition.workName from PmRepresenteeRefDetails as model,PmSubWorkDetails as model1" +
 				",PmRefCandidateDesignation model2 ");
 		
 		if(filterType != null && (filterType.equalsIgnoreCase("work") || filterType.equalsIgnoreCase("department") )){
