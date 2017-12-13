@@ -46,4 +46,42 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		return query.list();
 	}
 	
+	public List<Object[]> getAllDistrictsBySearchType(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.userAddress.district.districtId,model.userAddress.district.districtName ");
+		sb.append( " from PmRepresentee model where model.isDeleted='N' ");
+		sb.append( "order by model.userAddress.district.districtName asc ");
+		Query query =getSession().createQuery(sb.toString());
+		return query.list();
+	}
+	
+	public List<Object[]> getAlConstituenciesBySearchType(Long districtId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.userAddress.constituency.constituencyId,model.userAddress.constituency.name ");
+		sb.append( " from PmRepresentee model where model.isDeleted='N' ");
+		if(districtId != null && districtId.longValue() >0 ){
+			sb.append("and model.userAddress.districtId=:districtId");
+		}
+		sb.append(" order by model.userAddress.constituency.name asc ");
+		Query query =getSession().createQuery(sb.toString());
+		if(districtId != null && districtId.longValue() >0 ){
+			query.setParameter("districtId", districtId);
+		}
+		return query.list();
+	}
+	public List<Object[]> getAllMandalsBySearchType(Long constituencyId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName ");
+		sb.append( " from PmRepresentee model where model.isDeleted='N' ");
+		if(constituencyId != null && constituencyId.longValue() >0 ){
+			sb.append("and model.userAddress.constituencyId=:constituencyId ");
+		}
+		sb.append( "order by model.userAddress.tehsil.tehsilName asc ");
+		Query query =getSession().createQuery(sb.toString());
+		if(constituencyId != null && constituencyId.longValue() >0 ){
+			query.setParameter("constituencyId", constituencyId);
+		}
+		return query.list();
+	}
 }
+
