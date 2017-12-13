@@ -3,7 +3,9 @@ package com.itgrids.service.impl;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -25,15 +27,16 @@ import com.itgrids.dao.IPmRepresenteeRefDetailsDAO;
 import com.itgrids.dao.IPmRepresenteeRefDocumentDAO;
 import com.itgrids.dao.IPmSubWorkDetailsDAO;
 import com.itgrids.dto.AddressVO;
+import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.PetitionsWorksVO;
 import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
+import com.itgrids.dto.RepresenteeViewVO;
 import com.itgrids.dto.ResponseVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
 import com.itgrids.model.Petition;
-import com.itgrids.model.PetitionReffererDocument;
 import com.itgrids.model.PmPetitionDocument;
 import com.itgrids.model.PmRefCandidate;
 import com.itgrids.model.PmRefCandidateDesignation;
@@ -575,5 +578,82 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	    }
 	     return returnList;
 	  }
+	public List<RepresenteeViewVO> getRepresentativeSearchWiseDetails(InputVO inputVO){
+		List<RepresenteeViewVO> finalList = new ArrayList<RepresenteeViewVO>();
+		try{
+			
+			Map<Long,RepresenteeViewVO> mapData = new HashMap<Long,RepresenteeViewVO>();
+			List<Object[]> searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO);
+			List<Long> statusIds = new ArrayList<Long>();
+			statusIds.add(6l);
+			statusIds.add(7l);
+			statusIds.add(8l);
+			Long minPending = Long.valueOf(inputVO.getStartValue().toString());
+			Long maxPending = Long.valueOf(inputVO.getEndValue().toString());
+			if(searchData != null && searchData.size()>0){
+				for (Object[] param : searchData) {
+					//RepresenteeViewVO vo = new RepresenteeViewVO();
+					RepresenteeViewVO vo = mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(vo == null){
+						vo = new RepresenteeViewVO();
+						vo.setDesigName(commonMethodsUtilService.getStringValueForObject(param[7]));
+						vo.getDesigList().add(commonMethodsUtilService.getStringValueForObject(param[7]));
+						//vo.set
+						if(commonMethodsUtilService.getLongValueForObject(param[0]) >0l)
+							mapData.put(commonMethodsUtilService.getLongValueForObject(param[0]), vo);
+					}else{
+						if(vo.getDesigList() != null && vo.getDesigList().size() >0 && !vo.getDesigList().contains(commonMethodsUtilService.getStringValueForObject(param[7]))){
+							String designations = vo.getDesigName().concat(", "+commonMethodsUtilService.getStringValueForObject(param[7]));
+							vo.setDesigName(designations);
+							vo.getDesigList().add(commonMethodsUtilService.getStringValueForObject(param[7]));
+						}
+					}
+					vo.setPetitionId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setEndorsementNO(commonMethodsUtilService.getLongValueForObject(param[1]));
+					vo.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[2]));
+					vo.setEstimationCost(commonMethodsUtilService.getStringValueForObject(param[3]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+					vo.setReferrerName(commonMethodsUtilService.getStringValueForObject(param[5]));
+					vo.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[6]));
+					Long petionPendingDays = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[8]),commonMethodsUtilService.getStringValueForObject(param[9]));
+					Long statusId = commonMethodsUtilService.getLongValueForObject(commonMethodsUtilService.getLongValueForObject(param[10]));
+					//RepresenteeViewVO vo =mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					
+					if(statusId.longValue() != 0l && !statusIds.contains(statusId) && petionPendingDays.longValue()>=minPending.longValue()
+							&& petionPendingDays.longValue() <= maxPending.longValue() && vo != null){
+						vo.setStatusType("pending");
+					}
+				}
+			}
+			
+			
+			
+			/*if(searchData != null && searchData.size()>0){
+				for (Object[] param : searchData) {
+					Long petionPendingDays = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[8]),commonMethodsUtilService.getStringValueForObject(param[9]));
+					Long statusId = commonMethodsUtilService.getLongValueForObject(commonMethodsUtilService.getLongValueForObject(param[10]));
+					RepresenteeViewVO vo =mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					
+					if(statusId.longValue() != 0l && !statusIds.contains(statusId) && petionPendingDays.longValue()>=minPending.longValue()
+							&& petionPendingDays.longValue() <= maxPending.longValue() && vo != null){
+						vo.setStatusType("pending");
+					}
+				}
+			}*/
+			
+			for (Map.Entry<Long, RepresenteeViewVO> entry : mapData.entrySet()) {
+				if(minPending != null && minPending.longValue() >0l && maxPending != null && maxPending.longValue() >0l && entry.getValue().getStatusType().equalsIgnoreCase("pending")){
+					finalList.add(entry.getValue());
+				}else if(minPending == null || minPending.longValue() ==0l || maxPending == null || maxPending.longValue() ==0l){
+					finalList.add(entry.getValue());
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in PmRequestDetailsService @ getRepresentativeSearchWiseDetails() "+e.getMessage());
+		}
+		return finalList;
+	}
 	
 }

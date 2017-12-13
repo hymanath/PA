@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
@@ -70,14 +69,7 @@ public class RepresentationRequestController {
     public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ) {
     	 return representationRequestService.getPetitionReferredMemberDetails(dataVo);
     }
-	@RequestMapping(value ="/getRepresentativeSearchWiseDetails",method = RequestMethod.POST)
-    public @ResponseBody List<RepresentationRequestVO> getRepresentativeSearchWiseDetails(@RequestBody InputVO dataVo) {
-    	 return representationRequestService.getRepresentativeSearchWiseDetails(dataVo);
-    }
-	@RequestMapping(value ="/representationRequestEntryViewMembers", method = RequestMethod.GET)
-    public String representationRequestEntryMembers(ModelMap model) {
-		return "representationRequestEntryViewMembers";
-    }
+	
 	@RequestMapping(value ="/getRepresentationRequestDetailsByRepresentationRequestId",method = RequestMethod.POST)
     public @ResponseBody RepresentationRequestVO getRepresentationRequestDetailsByRepresentationRequestId(@RequestBody Map<String,String> inputMap ) {
     	 return representationRequestService.getRepresentationRequestDetailsByRepresentationRequestId(Long.valueOf(inputMap.get("representationMemberId")));
