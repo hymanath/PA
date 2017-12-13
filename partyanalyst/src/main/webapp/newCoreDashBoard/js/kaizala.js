@@ -90,7 +90,7 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 											str+='<h4>'+result.cadreInstalledCount+' <span class="f_13 text-success"> '+result.cadreInstallPerc+'%</span></h4>';
 										str+='</td>';
 										str+='<td>';
-											str+='<p class="text-muted text-capitalize">Not Having Smart Phone</p>';
+											str+='<p class="text-muted text-capitalize">No Smart Phone</p>';
 											str+='<h4>'+result.cadreNoSmartPhoneCount+' <span class="f_13 text-success"> '+result.cadreNoSmartPerc+'%</span></h4>';
 										str+='</td>';
 									str+='</tr>';
@@ -111,7 +111,7 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 											str+='<h4>'+result.publicInstalledCount+' <span class="f_13 text-success"> '+result.publicInstallPerc+'%</span></h4>';
 										str+='</td>';
 										str+='<td>';
-											str+='<p class="text-muted text-capitalize">Not Having Smart Phone</p>';
+											str+='<p class="text-muted text-capitalize">No Smart Phone</p>';
 											str+='<h4>'+result.publicNoSmartPhoneCount+' <span class="f_13 text-success"> '+result.publicNoSmartPerc+'%</span></h4>';
 										str+='</td>';
 									str+='</tr>';
