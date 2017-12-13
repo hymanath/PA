@@ -1286,6 +1286,10 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		 	    			JSONObject obj = (JSONObject) finalArray.get(i);
 		 	    			vo.setId(obj.getLong("id"));
 		 	    			vo.setName(obj.getString("name"));
+		 	    			vo.setCadreInstalledCount(obj.getLong("cadreInstalledCount"));
+		 	    			vo.setPublicInstalledCount(obj.getLong("publicInstalledCount"));
+		 	    			vo.setCadreNoSmartPhoneCount(obj.getLong("cadreNoSmartPhoneCount"));
+		 	    			vo.setPublicNoSmartPhoneCount(obj.getLong("publicNoSmartPhoneCount"));
 		 	    			if(inputvo.getName().trim().equalsIgnoreCase("constituency"))
 		 	    				assemblyIds.add(vo.getId());
 		 	    			JSONArray subArr = obj.getJSONArray("subList");
@@ -1313,6 +1317,18 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		 	    			vo.setInstalledPerc(calculatePercantage(vo.getInstalled(), vo.getTotalCount()).toString());
 		 	    			vo.setNotSmartPhonePerc(calculatePercantage(vo.getNotHavingSmartPhone(), vo.getTotalCount()).toString());
 		 	    			vo.setPendingPerc(calculatePercantage(vo.getPending(), vo.getTotalCount()).toString());
+		 	    			
+		 	    			vo.setCommitteeInstalled(vo.getInstalled());
+		 	    			vo.setCommitteeNoSmartPhone(vo.getNotHavingSmartPhone());
+		 	    			vo.setOverAllInstalledCount(vo.getCommitteeInstalled()+vo.getCadreInstalledCount()+vo.getPublicInstalledCount());
+		 	    			vo.setOverAllNoSmartPhoneCount(vo.getCommitteeNoSmartPhone()+vo.getCadreNoSmartPhoneCount()+vo.getPublicNoSmartPhoneCount());
+		 	    			vo.setCommitteeInstalPerc(calculatePercantage(vo.getCommitteeInstalled(), vo.getOverAllInstalledCount()).toString());
+		 	    			vo.setCommitteeNoSmartPerc(calculatePercantage(vo.getCommitteeNoSmartPhone(), vo.getOverAllNoSmartPhoneCount()).toString());
+		 	    			vo.setCadreInstallPerc(calculatePercantage(vo.getCadreInstalledCount(), vo.getOverAllInstalledCount()).toString());
+		 	    			vo.setCadreNoSmartPerc(calculatePercantage(vo.getCadreNoSmartPhoneCount(), vo.getOverAllNoSmartPhoneCount()).toString());
+		 	    			vo.setPublicInstallPerc(calculatePercantage(vo.getPublicInstalledCount(), vo.getOverAllInstalledCount()).toString());
+		 	    			vo.setPublicNoSmartPerc(calculatePercantage(vo.getPublicNoSmartPhoneCount(), vo.getOverAllNoSmartPhoneCount()).toString());
+		 	    			
 		 	    			returnList.add(vo);
 		 	    		 }
 	 	    		}
@@ -1339,8 +1355,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		}
 		return returnList;
 	}
-	public List<KaizalaDashboardVO> getOverAllCommitteeWiseMembersCounts(InputVO inputvo){
-		List<KaizalaDashboardVO> returnList = new ArrayList<KaizalaDashboardVO>(0);
+	public KaizalaDashboardVO getOverAllCommitteeWiseMembersCounts(InputVO inputvo){
+		KaizalaDashboardVO returnvo = new KaizalaDashboardVO();
 		try {
 			LOG.error(" Entered into getLocationWiseCommitteeMemberDetails method in KaizalaInfoService Class ");
 			
@@ -1376,8 +1392,43 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 			
 			if(response.getStatus() != 200){
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-			}else{				
-				String output = response.getEntity(String.class);				
+			}else{			
+				String output = response.getEntity(String.class);	
+				if(output != null && !output.isEmpty()){
+					JSONObject obj = new JSONObject(output);
+					returnvo.setCadreInstalledCount(obj.getLong("cadreInstalledCount"));
+					returnvo.setCadreNoSmartPhoneCount(obj.getLong("cadreNoSmartPhoneCount"));
+					returnvo.setPublicInstalledCount(obj.getLong("publicInstalledCount"));
+					returnvo.setPublicNoSmartPhoneCount(obj.getLong("publicNoSmartPhoneCount"));
+					returnvo.setCommitteeInstalled(obj.getLong("committeeInstalled"));
+					returnvo.setCommitteeNoSmartPhone(obj.getLong("committeeNoSmartPhone"));
+					returnvo.setOverAllInstalledCount(obj.getLong("overAllInstalledCount"));
+					returnvo.setOverAllNoSmartPhoneCount(obj.getLong("overAllNoSmartPhoneCount"));
+					returnvo.setCommitteeInstalPerc(obj.getString("committeeInstalPerc"));
+					returnvo.setCommitteeNoSmartPerc(obj.getString("committeeNoSmartPerc"));
+					returnvo.setCadreInstallPerc(obj.getString("cadreInstallPerc"));
+					returnvo.setCadreNoSmartPerc(obj.getString("cadreNoSmartPerc"));
+					returnvo.setPublicInstallPerc(obj.getString("publicInstallPerc"));
+					returnvo.setPublicNoSmartPerc(obj.getString("publicNoSmartPerc"));
+					JSONArray committeeArr = obj.getJSONArray("subList");
+					if(committeeArr != null && committeeArr.length() > 0){
+						for (int i = 0; i < committeeArr.length(); i++) {
+							JSONObject subObj = (JSONObject) committeeArr.get(i);
+							KaizalaDashboardVO subvo = new KaizalaDashboardVO();
+							subvo.setId(subObj.getLong("id"));
+							subvo.setName(subObj.getString("name"));
+							subvo.setTotalCount(subObj.getLong("totalCount"));
+							subvo.setInstalled(subObj.getLong("installed"));
+							subvo.setPending(subObj.getLong("pending"));
+							subvo.setNotHavingSmartPhone(subObj.getLong("notHavingSmartPhone"));
+							subvo.setInstalledPerc(subObj.getString("installedPerc"));
+							subvo.setPendingPerc(subObj.getString("pendingPerc"));
+							subvo.setNotSmartPhonePerc(subObj.getString("notSmartPhonePerc"));
+							returnvo.getSubList().add(subvo);
+						}
+					}
+				}
+				/*String output = response.getEntity(String.class);				
 				if(output !=null && !output.trim().isEmpty()){
 					JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
@@ -1396,13 +1447,13 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		 	    			returnList.add(vo);
 		 	    		 }
 	 	    		}
-				}				
+				}		*/		
 			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getOverAllCommitteeWiseMembersCounts in KaizalaInfoService Class ", e);
 		}
-		return returnList;
+		return returnvo;
 	}
 	
 	public List<KaizalaDashboardVO> getLevelLocationWiseCounts(InputVO inputvo){
@@ -1453,6 +1504,10 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 		 	    			vo.setId(obj.getLong("id"));
 		 	    			vo.setName(obj.getString("name"));
 		 	    			vo.setKey(obj.getString("key"));
+		 	    			vo.setCadreInstalledCount(obj.getLong("cadreInstalledCount"));
+		 	    			vo.setPublicInstalledCount(obj.getLong("publicInstalledCount"));
+		 	    			vo.setCadreNoSmartPhoneCount(obj.getLong("cadreNoSmartPhoneCount"));
+		 	    			vo.setPublicNoSmartPhoneCount(obj.getLong("publicNoSmartPhoneCount"));
 		 	    			JSONArray subArr = obj.getJSONArray("subList");
 		 	    			if(subArr!=null && subArr.length()>0){
 				 	    		 for(int j=0;j<subArr.length();j++){

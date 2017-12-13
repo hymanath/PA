@@ -10,6 +10,6 @@ public interface IKaizalaInfoService {
 	public void saveEventResponses(final String output);
 	
 	public List<KaizalaDashboardVO> getLocationWiseCommitteeMemberDetails(InputVO vo);
-	public List<KaizalaDashboardVO> getOverAllCommitteeWiseMembersCounts(InputVO inputvo);
+	public KaizalaDashboardVO getOverAllCommitteeWiseMembersCounts(InputVO inputvo);
 	public List<List<UserTypeVO>> getUserTypeWiseKaizalaCommitteeMemberDetailsCnt(InputVO inputVO);
 }
