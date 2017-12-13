@@ -22,7 +22,12 @@ import com.itgrids.dao.IPmDepartmentDAO;
 import com.itgrids.dao.IPmDesignationDAO;
 import com.itgrids.dao.IPmGrantDAO;
 import com.itgrids.dao.IPmLeadDAO;
+import com.itgrids.dao.IPmRefCandidateDAO;
+import com.itgrids.dao.IPmRefCandidateDesignationDAO;
+import com.itgrids.dao.IPmRepresenteeDAO;
+import com.itgrids.dao.IPmRepresenteeDesignationDAO;
 import com.itgrids.dao.IPmStatusDAO;
+import com.itgrids.dao.IPmSubWorkDetailsDAO;
 import com.itgrids.dao.IPmSubjectDAO;
 import com.itgrids.dao.IPmWorkTypeDAO;
 import com.itgrids.dao.ITehsilDAO;
@@ -56,8 +61,8 @@ public class LocationDetailsService implements ILocationDetailsService {
 	//private IPetitionDesignationDAO petitionDesignationDAO;
 	//@Autowired
 	//private IPetitionDepartmentDAO petitionDepartmentDAO;
-	@Autowired
-	private IPmDesignationDAO pmDesignationDAO;
+	//@Autowired
+	//private IPmDesignationDAO pmDesignationDAO;
 	
 	@Autowired
 	private IPmDepartmentDAO pmDepartmentDAO;
@@ -81,6 +86,19 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private IPmWorkTypeDAO pmWorkTypeDAO;
 	@Autowired 
 	private IWorkMainCategoryDAO workMainCategoryDAO;
+	@Autowired
+	private IPmDesignationDAO pmDesignationDAO;
+	@Autowired
+	private IPmSubWorkDetailsDAO pmSubWorkDetailsDAO;
+	@Autowired
+	private IPmRepresenteeDAO pmRepresenteeDAO;
+	@Autowired
+	private IPmRefCandidateDAO pmRefCandidateDAO;
+	@Autowired
+	private IPmRefCandidateDesignationDAO pmRefCandidateDesignationDAO;
+	@Autowired
+	private IPmRepresenteeDesignationDAO pmRepresenteeDesignationDAO;
+	
 	 /**
 		 * Date : 30/11/2017
 		 * Author :babu kurakula <href:kondababu.kurakula@itgrids.com>
@@ -554,4 +572,151 @@ public List<KeyValueVO>  getWorkTypeList(){
 	}
 	return resultList;
 }
+
+public List<KeyValueVO> getPmDesignations(){
+	List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+	try{
+		List<Object[]> desiObjs=pmDesignationDAO.getAllReferredCandidateDesignationList();
+		if(desiObjs != null && desiObjs.size() > 0){
+			for( Object [] param:  desiObjs){
+				KeyValueVO vo = new KeyValueVO();
+				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+				finalList.add(vo);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception occured at getPmDesignations() in LocationDetailsService class ", e);
+
+	}
+	return finalList;
+}
+
+	public List<KeyValueVO> getDistrictBySearchType(String serchType){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try{
+			List<Object[]> districtObjs=null;
+			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("department"))){
+				districtObjs=pmSubWorkDetailsDAO.getAllDistricts();
+			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referral")){
+				districtObjs=pmRefCandidateDAO.getAllDistrictsByReferral();
+			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referrelDesignation")){
+				districtObjs=pmRefCandidateDesignationDAO.getAllDistrictsByReferalAndDesignation();
+			}else if(serchType !=null && (serchType.trim().equalsIgnoreCase("representee") || serchType.trim().equalsIgnoreCase("name") || serchType.trim().equalsIgnoreCase("mobile") || serchType.trim().equalsIgnoreCase("email") || serchType.trim().equalsIgnoreCase("endorsmentNO"))){
+				districtObjs=pmRepresenteeDAO.getAllDistrictsBySearchType();
+			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("representeeDesignation")){
+				districtObjs=pmRepresenteeDesignationDAO.getAllDistrictsByRepresenteeDesignationWise();
+			}
+			if(districtObjs != null && districtObjs.size() >0 ){
+				for(Object[] param : districtObjs ){
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception occured at getDistrictBySearchType() in LocationDetailsService class ", e);
+		}
+		return finalList;
+	}
+	public List<KeyValueVO> getConstituenciesBySearchTypeAndDistrictId(String serchType,Long districtId){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try{
+			List<Object[]> conObjs=null;
+			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("department"))){
+				conObjs=pmSubWorkDetailsDAO.getAllConstituenciesByDistricId(districtId);
+			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referral")){
+				conObjs=pmRefCandidateDAO.getAllConstituenciesByReferralAndDistrict(districtId);
+			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referrelDesignation")){
+				conObjs=pmRefCandidateDesignationDAO.getAlConstituenciesByReferalAndDesignationBydistrict(districtId);
+			}else if(serchType !=null && (serchType.trim().equalsIgnoreCase("representee") || serchType.trim().equalsIgnoreCase("name") || serchType.trim().equalsIgnoreCase("mobile") || serchType.trim().equalsIgnoreCase("email") || serchType.trim().equalsIgnoreCase("endorsmentNO"))){
+				conObjs=pmRepresenteeDAO.getAlConstituenciesBySearchType(districtId);
+			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("representeeDesignation")){
+				conObjs=pmRepresenteeDesignationDAO.getAllConstituenciesByRepresenteeDesignationWise(districtId);
+			}
+			if(conObjs != null && conObjs.size() >0 ){
+				for(Object[] param : conObjs ){
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception occured at getConstituenciesBySearchTypeAndDistrictId() in LocationDetailsService class ", e);
+		}
+		return finalList;
+	}
+	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,Long conId){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try{
+			List<Object[]> conObjs=null;
+			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("department"))){
+				conObjs=pmSubWorkDetailsDAO.getAllMandalsByDistricId(conId);
+			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referral")){
+				conObjs=pmRefCandidateDAO.getAllMandalsByReferralAndDistrict(conId);
+			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referrelDesignation")){
+				conObjs=pmRefCandidateDesignationDAO.getAllMandalsByReferalAndDesignationBydistrict(conId);
+			}else if(serchType !=null && (serchType.trim().equalsIgnoreCase("representee") || serchType.trim().equalsIgnoreCase("name") || serchType.trim().equalsIgnoreCase("mobile") || serchType.trim().equalsIgnoreCase("email") || serchType.trim().equalsIgnoreCase("endorsmentNO"))){
+				conObjs=pmRepresenteeDAO.getAllMandalsBySearchType(conId);
+			}if(serchType !=null && serchType.trim().equalsIgnoreCase("representeeDesignation")){
+				conObjs=pmRepresenteeDesignationDAO.getAllMandalsByRepresenteeDesignationAndconstincy(conId);
+			}
+			if(conObjs != null && conObjs.size() >0 ){
+				for(Object[] param : conObjs ){
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception occured at getConstituenciesBySearchTypeAndDistrictId() in LocationDetailsService class ", e);
+		}
+		return finalList;
+	}
+	public List<KeyValueVO> getDesignationsBySearchType(String searchType){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try{
+			List<Object[]> desiObjs=null;
+			if(searchType !=null && searchType.trim().equalsIgnoreCase("referrelDesignation")){
+				desiObjs=pmRefCandidateDesignationDAO.getDesignationsByReferlDesigtion();
+			}else if(searchType !=null && searchType.trim().equalsIgnoreCase("representeeDesignation")){
+				desiObjs=pmRepresenteeDesignationDAO.getDesignationsByRepresenteeDesigtion();
+			}
+			if(desiObjs != null && desiObjs.size() > 0){
+				for(Object[] param : desiObjs ){
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception occured at getDesignationsBySearchType() in LocationDetailsService class ", e);
+
+		}
+		return finalList;
+	}
+	public List<KeyValueVO> getDepartmentsBySearchType(String searchType){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try{
+			List<Object[]> deptObjs=null;
+			if(searchType !=null && searchType.trim().equalsIgnoreCase("department")){
+				deptObjs=pmSubWorkDetailsDAO.getDepartmentsByWorks();
+			}
+			if(deptObjs != null && deptObjs.size() > 0){
+				for(Object[] param : deptObjs ){
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception occured at getDepartmentsBySearchType() in LocationDetailsService class ", e);
+		}
+		return finalList;
+	}
 }
