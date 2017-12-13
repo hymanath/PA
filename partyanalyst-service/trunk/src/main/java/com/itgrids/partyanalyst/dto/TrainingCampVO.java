@@ -38,6 +38,7 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long feedBackProgramCount;
 	private Long leaderFeedBackCount;
 	private Long feedBackQuizCount;
+	private Double attendedPercentage;
 	
 	
 	private Long schdlStatusId;
@@ -106,7 +107,13 @@ public class TrainingCampVO implements java.io.Serializable{
 	private String committeeLvlName;
 	private Long roleId;
 	private String role;
-		
+	
+	public Double getAttendedPercentage() {
+		return attendedPercentage;
+	}
+	public void setAttendedPercentage(Double attendedPercentage) {
+		this.attendedPercentage = attendedPercentage;
+	}
 	public Long getFeedBackProgramCount() {
 		return feedBackProgramCount;
 	}
