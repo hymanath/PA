@@ -207,12 +207,21 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<ToursOverviewDtlsvO> tourOverviewDtlsList;
 	private List<KaizalaDashboardVO> kaizalaDashboardList;
 	private List<KeyValueVO> keyValueVOList;
+	private KaizalaDashboardVO kaizalaDashboardVO;
 	
 	//setters And Getters
 	
 	
 	public List<Long> getProgramIdsList() {
 		return programIdsList;
+	}
+
+	public KaizalaDashboardVO getKaizalaDashboardVO() {
+		return kaizalaDashboardVO;
+	}
+
+	public void setKaizalaDashboardVO(KaizalaDashboardVO kaizalaDashboardVO) {
+		this.kaizalaDashboardVO = kaizalaDashboardVO;
 	}
 
 	public TrainingCampVO getTrainingCampVO() {
@@ -5142,7 +5151,7 @@ public String getInsuraceStatusWiseComplaintsDetails()
 			
 			InputVO vo = new InputVO();
 			vo.setActivityMemberId(jObj.getLong("activityMemberId"));
-			kaizalaDashboardList = kaizalaInfoService.getOverAllCommitteeWiseMembersCounts(vo);
+			kaizalaDashboardVO = kaizalaInfoService.getOverAllCommitteeWiseMembersCounts(vo);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getOverAllCommitteeWiseMembersCounts() method of CoreDashBoard", e);
 		}
