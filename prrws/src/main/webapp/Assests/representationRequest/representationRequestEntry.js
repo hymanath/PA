@@ -19,10 +19,6 @@ $("#dateRangePickerMGNF").daterangepicker({
 });
 $('#dateRangePickerMGNF').on('apply.daterangepicker', function(ev, picker) {
 });	
-$(document).on("click",".removeWorkCls",function(){
-	var divIdStr = $(this).attr('attr_id');
-	$('#'+divIdStr+'').remove();
-});
 $(document).on("click",".selfRepresenceCls",function(){
 	if($(this).is(":checked")){
 		var typeVal =  $(this).attr("attr_type")
@@ -343,7 +339,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 					str+='<div class="col-sm-12">';
 						str+='<div class="pull-right">';
 							str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD SELF MEMBER</button>';
-							
+							//str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 cloned_Element" style="cursor:pointer;background-color:green;" onclick="saveRepresentRequestDetails()"> SAVE DETAILS</span></div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -352,6 +348,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 					str+='<div class="col-sm-12">';
 						str+='<div class="pull-right">';
 							str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD REFERRAL</button>';
+							//str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 cloned_Element" style="cursor:pointer;background-color:green;" onclick="saveRepresentRequestDetails()"> SAVE DETAILS</span></div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -387,7 +384,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 			str+='<div class="col-sm-12">';
 				str+='<div class="pull-right">';
 					//str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD REFERRAL</button>';
-					str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 " style="cursor:pointer;background-color:green;" onclick="saveRepresentRequestDetails()"> SAVE DETAILS</span></div>';
+					str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 cloned_Element" style="cursor:pointer;background-color:green;" onclick="saveRepresentRequestDetails()"> SAVE DETAILS</span></div>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -806,13 +803,13 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 
 function buildTemplateWorkDetails(typeVal){
 	var str='';
-	str+='<div class="col-sm-12" id="mainWorkDivId'+globalWorkTypeCount+'0">';
+	str+='<div class="col-sm-12">';
 		str+='<div style="border:3px solid #dddddd;padding:10px;">';
 			str+='<div  cloned_block_'+typeVal+'='+globalWorkTypeCount+'>';
 				str+='<h3 class="panel-title f_22"></h3>';
 				
-				str+='<div class="row m_top10" >';
-				//str+='<div class="pull-right removeWorkCls" attr_id="mainWorkDivId'+globalWorkTypeCount+'0" attr_type="self" attr_candidateid="1" style="cursor:pointer;margin-top: -30px"><i class="glyphicon glyphicon-remove"></i></div>';				
+				str+='<div class="row m_top10">';
+				
 					str+='<div class="col-sm-3">';
 							str+='<label>DEPARTMENT</label>';
 							str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].deptId"  class="form-control chosen-select m_top10"  id="WorkTypeWiseDepartmentId'+typeVal+''+globalWorkTypeCount+'">';
@@ -835,8 +832,7 @@ function buildTemplateWorkDetails(typeVal){
 								
 				str+='</div>';
 				
-				str+='<div class="row m_top10" id="workDivId'+globalWorkTypeCount+'0">';
-				//str+='<div class="pull-right removeWorkCls" attr_id="workDivId'+globalWorkTypeCount+'0" attr_type="self" attr_candidateid="1" style="margin-right: 15px;cursor:pointer"><i class="glyphicon glyphicon-remove"></i></div>';
+				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-12">';
 						str+='<div class="bg_color_view">';
 							str+='<h3 class="panel-title f_16 font_weight">WORK 1</h3>';
@@ -898,7 +894,7 @@ function buildTemplateWorkDetails(typeVal){
 					str+='<div class="appendInnerBlocks'+typeVal+''+globalWorkTypeCount+'"></div>';
 					str+='<div class="col-sm-12">';
 						str+='<div class="pull-right">';
-							str+='<span class="addLocationCss m_top10 pull-right cloned_Inner_Element" style="cursor:pointer;" attr_type="'+typeVal+'" attr_counterval="'+globalWorkTypeCount+'" main_work_count="0" inner_work_count="1">ADD WORK </span>';
+							str+='<span class="addLocationCss m_top10 pull-right cloned_Inner_Element" style="cursor:pointer;" attr_type="'+typeVal+'" attr_counterval="'+globalWorkTypeCount+'">ADD WORK</span>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -911,7 +907,7 @@ function buildTemplateWorkDetails(typeVal){
 	str+='</div>';
 	
 	str+='<div class="row">';
-		str+='<div class="col-sm-12"><span class="addLocationCss m_top10 pull-right cloned_Element" block-clone-counter-'+typeVal+'="'+globalWorkTypeCount+'" style="cursor:pointer;" block-clone-'+typeVal+'="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">ADD WORK TYPE </span></div>';
+		str+='<div class="col-sm-12"><span class="addLocationCss m_top10 pull-right cloned_Element" block-clone-counter-'+typeVal+'="'+globalWorkTypeCount+'" style="cursor:pointer;" block-clone-'+typeVal+'="'+globalWorkTypeCount+'" attr_type="'+typeVal+'">ADD WORK TYPE</span></div>';
 	str+='</div>';	
 	
 	$("#workDetailsDivId"+typeVal).html(str);
@@ -1061,67 +1057,63 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 	
 	var clonedTemplate='';
 	// here for evary new work  adding based on diff dept /subject/sub subject wise the subworksList should be start from ZERO ,but globalWorkTypeCount is same
-	var tempcounterId = counterId;
-	counterId = 0;
-
-	clonedTemplate+='<div class="col-sm-12" cloned_block_'+typeVal+'='+counterId+' id="mainWorkDivId'+globalWorkTypeCount+''+counterId+'">';
+	clonedTemplate+='<div class="col-sm-12" cloned_block_'+typeVal+'='+counterId+'>';
 		clonedTemplate+='<div style="border:3px solid #dddddd;padding:10px;">';
 			clonedTemplate+='<div  cloned_block_'+typeVal+'='+counterId+'>';
 				//clonedTemplate+='<h3 class="panel-title f_22">WORK TYPE '+counterId+'</h3>';
 				
-				clonedTemplate+='<div class="row m_top10" >';
-				clonedTemplate+='<div class="pull-right removeWorkCls" attr_id="mainWorkDivId'+globalWorkTypeCount+''+counterId+'" attr_type="self" attr_candidateid="1" style="cursor:pointer;margin-top: -30px"><i class="glyphicon glyphicon-remove"></i></div>';
+				clonedTemplate+='<div class="row m_top10">';
+				
 					clonedTemplate+='<div class="col-sm-3">';
 							clonedTemplate+='<label>DEPARTMENT</label>';
-							clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].deptId"  class="form-control chosen-select m_top10"  id="WorkTypeWiseDepartmentId'+typeVal+''+counterId+'">';
+							clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].deptId"  class="form-control chosen-select m_top10"  id="WorkTypeWiseDepartmentId'+typeVal+''+counterId+'">';
 							clonedTemplate+='</select>';
 						clonedTemplate+='</div>';
 					
 					clonedTemplate+='<div class="col-sm-3">';
 						clonedTemplate+='<label>SUBJECT</label>';
-						clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].subjectId"  class="form-control chosen-select m_top10"  id="subjectId'+typeVal+''+counterId+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+typeVal+''+counterId+'")>';
+						clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].subjectId"  class="form-control chosen-select m_top10"  id="subjectId'+typeVal+''+counterId+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+typeVal+''+counterId+'")>';
 							clonedTemplate+='<option value="0">Select Subject</option>';
 						clonedTemplate+='</select>';
 					clonedTemplate+='</div>';
 					
 					clonedTemplate+='<div class="col-sm-3">';
 						clonedTemplate+='<label>SUB-SUBJECT</label>';
-						clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].subSubjectId"  class="form-control chosen-select m_top10 " id="subSubjectId'+typeVal+''+counterId+'">';
+						clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].subSubjectId"  class="form-control chosen-select m_top10 " id="subSubjectId'+typeVal+''+counterId+'">';
 							clonedTemplate+='<option value="0">Select Sub Subject</option>';
 						clonedTemplate+='</select>';
 					clonedTemplate+='</div>';
 								
 				clonedTemplate+='</div>';
 				
-				clonedTemplate+='<div class="row m_top10" id="workDivId'+globalWorkTypeCount+''+counterId+'" >';
-				//clonedTemplate+='<div class="pull-right removeWorkCls" attr_id="workDivId'+globalWorkTypeCount+''+counterId+'" attr_type="self" attr_candidateid="1" style="margin-top: -50px;cursor:pointer"><i class="glyphicon glyphicon-remove"></i></div>';
+				clonedTemplate+='<div class="row m_top10">';
 					clonedTemplate+='<div class="col-sm-12">';
 						clonedTemplate+='<div class="bg_color_view">';
 							clonedTemplate+='<h3 class="panel-title f_16 font_weight">WORK TYPE 1</h3>';
 							clonedTemplate+='<div class="row m_top10">';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>WORK TYPE</label>';
-										clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].workTypeId"  class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+counterId+'" >';
+										clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].workTypeId"  class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+counterId+'" >';
 											clonedTemplate+='<option value="0">Select Work Type</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>WORK IN COST (in Lakh)</label>';
-										clonedTemplate+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].estimateCost" class="form-control m_top5 height45" id="appendWorkCost'+typeVal+''+counterId+'" placeholder="Enter Work Cost">';
+										clonedTemplate+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].estimateCost" class="form-control m_top5 height45" id="appendWorkCost'+typeVal+''+counterId+'" placeholder="Enter Work Cost">';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>WORK DETAILS</label>';
-										clonedTemplate+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].grievanceDescription" class="form-control m_top5 height45" id="appendWorkDetailsId'+typeVal+''+counterId+'" placeholder="Enter">';
+										clonedTemplate+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].grievanceDescription" class="form-control m_top5 height45" id="appendWorkDetailsId'+typeVal+''+counterId+'" placeholder="Enter">';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>eOFFICE-ID</label>';
-										clonedTemplate+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].eOfficeId" class="form-control m_top5 height45" id="appendEofficeId'+typeVal+''+counterId+'" placeholder="Enter">';
+										clonedTemplate+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].eOfficeId" class="form-control m_top5 height45" id="appendEofficeId'+typeVal+''+counterId+'" placeholder="Enter">';
 									clonedTemplate+='</div>';
 							clonedTemplate+='</div>';
 							clonedTemplate+='<div class="row m_top10">';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>LOCATION LEVEL</label>';
-										clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="main">';
+										clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="main">';
 											clonedTemplate+='<option value="0">Select Level</option>';
 											clonedTemplate+='<option value="3">District</option>';
 											clonedTemplate+='<option value="4">Constituency</option>';
@@ -1131,21 +1123,21 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 									
 									clonedTemplate+='<div class="col-sm-2 districtCls'+typeVal+''+counterId+'" style="display:none">';
 										clonedTemplate+='<label>DISTRICT</label>';
-										clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="main">';
+										clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="main">';
 											clonedTemplate+='<option value="0">Select District</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									
 									clonedTemplate+='<div class="col-sm-2 constituencyCls'+typeVal+''+counterId+'" style="display:none">';
 										clonedTemplate+='<label>CONSTITUENCY</label>';
-										clonedTemplate+='<select   name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="main">';
+										clonedTemplate+='<select   name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="main">';
 											clonedTemplate+='<option value="0">Select Constituency</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									
 									clonedTemplate+='<div class="col-sm-2 mandalCls'+typeVal+''+counterId+'" style="display:none">';
 										clonedTemplate+='<label>MANDAL/MUNCI.</label>';
-										clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList['+counterId+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="main">';
+										clonedTemplate+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="main">';
 											clonedTemplate+='<option value="0">Select Mandal</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
@@ -1156,62 +1148,58 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 					clonedTemplate+='<div class="appendInnerBlocks'+typeVal+''+counterId+''+counterappendId+'"></div>';
 					clonedTemplate+='<div class="col-sm-12">';
 						clonedTemplate+='<div class="pull-right">';
-							clonedTemplate+='<span class="addLocationCss m_top10 pull-right cloned_Inner_Element" style="cursor:pointer;" attr_type="'+typeVal+'" attr_counterval="'+counterId+''+counterappendId+'" main_work_count="'+globalWorkTypeCount+'" inner_work_count="1" >ADD WORK  </span>';
+							clonedTemplate+='<span class="addLocationCss m_top10 pull-right cloned_Inner_Element" style="cursor:pointer;" attr_type="'+typeVal+'" attr_counterval="'+counterId+''+counterappendId+'">ADD WORK</span>';
 						clonedTemplate+='</div>';
-					clonedTemplate+='</div>';					
-				clonedTemplate+='</div>';					
+					clonedTemplate+='</div>';
+					
+				clonedTemplate+='</div>';
+					
 		clonedTemplate+='</div>';
 	clonedTemplate+='</div>';
-	counterId = tempcounterId;
 	return clonedTemplate;
 	
 }
 $(document).on("click",".cloned_Inner_Element",function(){
 	var typeVal = $(this).attr("attr_type");
-	var counterId = $(this).attr("attr_counterval");	
+	var counterId = $(this).attr("attr_counterval");
 	var counterinnerId =  parseInt(counterId) + 1;
 	$(this).attr("attr_counterval",counterinnerId);
 	
-	var mainWorkCount = $(this).attr("main_work_count");
-	var innerWorkCount = $(this).attr("inner_work_count");
-	//$(this).attr("main_work_count",parseInt(mainWorkCount)+1);
-	$(this).attr("inner_work_count",parseInt(innerWorkCount)+1);
 	
-	$(".appendInnerBlocks"+typeVal+counterId+"").append(clonedInnerTemplate('clone',counterinnerId,typeVal,mainWorkCount,innerWorkCount));
+	$(".appendInnerBlocks"+typeVal+counterId+"").append(clonedInnerTemplate('clone',counterinnerId,typeVal));
 	$(".chosen-select").chosen({width:'100%'});
 	getWorkTypeList('workTypeInnerId',typeVal,counterinnerId);
 });
-function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount){
+function clonedInnerTemplate(type,counterId,typeVal){
 	var clonedInnerTemplate='';
-	clonedInnerTemplate+='<div class="m_top10" >';
-		clonedInnerTemplate+='<div class="col-sm-12 m_top10" >';
-			clonedInnerTemplate+='<div class="bg_color_view" id="workDivId'+globalWorkTypeCount+''+counterId+'">';
+	clonedInnerTemplate+='<div class="m_top10">';
+		clonedInnerTemplate+='<div class="col-sm-12 m_top10">';
+			clonedInnerTemplate+='<div class="bg_color_view">';
 				clonedInnerTemplate+='<h3 class="panel-title f_16 font_weight">WORK TYPE 1</h3>';
-				clonedInnerTemplate+='<div class="row m_top10" >';
-				clonedInnerTemplate+='<div class="pull-right removeWorkCls" attr_id="workDivId'+globalWorkTypeCount+''+counterId+'" attr_type="self" attr_candidateid="1" style="margin-top: -50px;cursor:pointer"><i class="glyphicon glyphicon-remove"></i></div>';
+				clonedInnerTemplate+='<div class="row m_top10">';
 						clonedInnerTemplate+='<div class="col-sm-3">';
-							clonedInnerTemplate+='<label>WORK TYPE  </label>';
-							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].workTypeId"  class="form-control chosen-select m_top10" id="workTypeInnerId'+typeVal+''+counterId+'" >';
+							clonedInnerTemplate+='<label>WORK TYPE</label>';
+							clonedInnerTemplate+='<select  name="worksList[0].subWorksList['+counterId+'].workTypeId"  class="form-control chosen-select m_top10" id="workTypeInnerId'+typeVal+''+counterId+'" >';
 								clonedInnerTemplate+='<option value="0">Select Work Type</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>WORK IN COST (in Lakh)</label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45" id="appendWorkCostInner'+typeVal+''+counterId+'" placeholder="Enter Work Cost">';
+							clonedInnerTemplate+='<input type="text"  name="worksList[0].subWorksList['+counterId+'].estimateCost" class="form-control m_top5 height45" id="appendWorkCostInner'+typeVal+''+counterId+'" placeholder="Enter Work Cost">';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>WORK DETAILS</label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].grievanceDescription" class="form-control m_top5 height45" id="appendWorkDetailsInnerId'+typeVal+''+counterId+'" placeholder="Enter">';
+							clonedInnerTemplate+='<input type="text"  name="worksList[0].subWorksList['+counterId+'].grievanceDescription" class="form-control m_top5 height45" id="appendWorkDetailsInnerId'+typeVal+''+counterId+'" placeholder="Enter">';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>eOFFICE-ID</label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].eOfficeId" class="form-control m_top5 height45" id="appendEofficeInnerId'+typeVal+''+counterId+'" placeholder="Enter">';
+							clonedInnerTemplate+='<input type="text"  name="worksList[0].subWorksList['+counterId+'].eOfficeId" class="form-control m_top5 height45" id="appendEofficeInnerId'+typeVal+''+counterId+'" placeholder="Enter">';
 						clonedInnerTemplate+='</div>';
 				clonedInnerTemplate+='</div>';
 				clonedInnerTemplate+='<div class="row m_top10">';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>LOCATION LEVEL</label>';
-							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelInnerId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
+							clonedInnerTemplate+='<select  name="worksList[0].subWorksList['+counterId+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelInnerId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
 								clonedInnerTemplate+='<option value="0">Select Level</option>';
 								clonedInnerTemplate+='<option value="3">District</option>';
 								clonedInnerTemplate+='<option value="4">Constituency</option>';
@@ -1221,21 +1209,21 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 						
 						clonedInnerTemplate+='<div class="col-sm-2 districtInnerCls'+typeVal+''+counterId+'" style="display:none">';
 							clonedInnerTemplate+='<label>DISTRICT</label>';
-							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtInnerId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
+							clonedInnerTemplate+='<select  name="worksList[0].subWorksList['+counterId+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtInnerId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
 								clonedInnerTemplate+='<option value="0">Select District</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						
 						clonedInnerTemplate+='<div class="col-sm-2 constituencyInnerCls'+typeVal+''+counterId+'" style="display:none">';
 							clonedInnerTemplate+='<label>CONSTITUENCY</label>';
-							clonedInnerTemplate+='<select   name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyInnerId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
+							clonedInnerTemplate+='<select   name="worksList[0].subWorksList['+counterId+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyInnerId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
 								clonedInnerTemplate+='<option value="0">Select Constituency</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						
 						clonedInnerTemplate+='<div class="col-sm-2 mandalInnerCls'+typeVal+''+counterId+'" style="display:none">';
 							clonedInnerTemplate+='<label>MANDAL/MUNCI.</label>';
-							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalInnerId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
+							clonedInnerTemplate+='<select  name="worksList[0].subWorksList['+counterId+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalInnerId'+typeVal+''+counterId+'" attr_counterval="'+counterId+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
 								clonedInnerTemplate+='<option value="0">Select Mandal</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
