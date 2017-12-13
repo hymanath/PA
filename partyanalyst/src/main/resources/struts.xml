@@ -18627,5 +18627,10 @@
 			<param name="root">trainingCampVO</param>
 		</result>
 	</action>
+	<action name="getTrainingQuizDetailsAction" class="coreDashboardAction"  method="getTrainingQuizDetails">
+		<result type="json" name="success">
+			<param name="root">campSurveyVOs</param>
+		</result>
+	</action>
  </package>
 </struts>
