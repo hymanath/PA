@@ -816,7 +816,7 @@ public List<Object[]> getPartyMeetingMomDocumentByUserAccessLevel(Long userAcces
 	    }
 	    queryStr.append(" from PartyMeetingDocument model " +
 	    				" where " +
-	    				" model.partyMeeting.isActive='Y' ");
+	    				" model.partyMeeting.isActive='Y' and model.isDeleted='N'  ");
 	
 	   if(monthId != null && monthId > 0){
 			  queryStr.append(" and month(model.partyMeeting.startDate)=:monthId ");	 
