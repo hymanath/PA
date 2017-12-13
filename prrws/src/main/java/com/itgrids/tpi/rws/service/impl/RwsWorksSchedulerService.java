@@ -188,7 +188,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 	}
 	
 	public boolean getWorkDetails2() {
-		 try {
+		 try {/*
 				DateFormat sff = new SimpleDateFormat("yyyy-MM-dd");
 			    WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAllWorkAdminDetails");	        
 				String authStringEnc = commonMethodsUtilService.getAuthenticationString("itgrids","Itgrids@123");	        
@@ -218,7 +218,60 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 		 	    	 }
 		 	  }  
 				return true;
-		 } catch (Exception e) {
+		 */
+			 	DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				DateFormat sff = new SimpleDateFormat("yyyy-MM-dd");
+			 	Calendar calendar = Calendar.getInstance();
+			    WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAllWorkAdminDetails");	        
+				String authStringEnc = commonMethodsUtilService.getAuthenticationString("itgrids","Itgrids@123");	        
+				ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class);
+				
+				if(response.getStatus() != 200){
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	    }else{
+		 	    	 String output = response.getEntity(String.class);
+		 	    	 if(output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		RwsWork works = null;
+		 	    		List<String> workData= rwsWorkDAO.getWorkdetailsById();
+		 	    		
+		 	    		for(int i=0;i<finalArray.length();i++){
+		 	    			works = new RwsWork();
+		 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    			
+		 	    			if(jObj.getString("typeOfAssestName").equalsIgnoreCase("PWS") || jObj.getString("typeOfAssestName").equalsIgnoreCase("CPWS")){
+		 	    				
+		 	    				if(!workData.contains(jObj.getString("workId"))) {
+				 	    			
+		 	    					works.setWorkId(jObj.getString("workId"));
+				 	    			String name =jObj.getString("workName").replace("\u0096", "");
+				 	    			works.setWorkName(name);
+				 	    			works.setWorkStatus("Not Grounded");
+				 	    			works.setProgramCode(jObj.getString("programCode"));
+				 	    			works.setProgramName(jObj.getString("programName"));
+				 	    			works.setAdminNo(jObj.getString("adminNo"));
+				 	    			works.setSanctionedAmount(jObj.getDouble("sanctionAmount"));
+				 	    			
+				 	    			works.setAssetType(jObj.getString("typeOfAssestName"));
+				 	    			works.setAdminDate(sff.parse(jObj.getString("adminDate")));
+				 	    			works.setGroundedDate(null);
+				 	    			
+				 	    			//String target = 
+				 	    			calendar.setTimeInMillis(commonMethodsUtilService.getLongValueForObject(jObj.getLong("targetDateComp")));
+				 	    			works.setTargetDate(calendar.getTime());
+				 	    			
+				 	    			works.setCompletedDate(null);
+				 	    			works.setCommissionedDate(null);
+				 	    			
+				 	    			works = rwsWorkDAO.save(works);
+		 	    				}
+		 	    			}
+		 	    		}
+		 	    	 }
+		 	  }  
+				return true;
+		 
+		} catch (Exception e) {
 			 LOG.error("Exception Occured in getWorkDetails() method, Exception - ",e);
 			 return false;
 		 }

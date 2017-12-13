@@ -4623,7 +4623,6 @@ public class RWSNICService implements IRWSNICService{
 					workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					workDetailsVO.setWorkStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
 					workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
-					workDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[6]));
 					workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[8]));
 					workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
 					workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[10]));
@@ -4631,6 +4630,12 @@ public class RWSNICService implements IRWSNICService{
 					workDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[12]));
 					workDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[13]));
 					workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[16]));
+					
+					if(commonMethodsUtilService.getStringValueForObject(param[19]) != null && !commonMethodsUtilService.getStringValueForObject(param[19]).isEmpty()){
+						workDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[19]));
+					}else{
+						workDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[6]));
+					}
 					
 					// calculating noOfDays between two difference date
 					if(inputVO.getStatus() !=null && inputVO.getStatus().trim().equalsIgnoreCase("ongoing")){
@@ -4706,7 +4711,7 @@ public class RWSNICService implements IRWSNICService{
 					workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
 					workDetailsVO.setAdminDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[4]))));
 					workDetailsVO.setGroundedDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[5]))));
-					workDetailsVO.setTargetDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[6]))));
+					//workDetailsVO.setTargetDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[6]))));
 					workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[8]));
 					workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
 					workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[10]));
@@ -4717,6 +4722,11 @@ public class RWSNICService implements IRWSNICService{
 					workDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[15]));
 					workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[16]));
 					
+					if(commonMethodsUtilService.getStringValueForObject(param[19]) != null && !commonMethodsUtilService.getStringValueForObject(param[19]).isEmpty() ){
+						workDetailsVO.setTargetDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[19]))));
+					}else{
+						workDetailsVO.setTargetDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[6]))));
+					}
 					
 					if (commonMethodsUtilService.getStringValueForObject(param[2]).trim().equalsIgnoreCase("Grounded")) {
 						workDetailsVO.setCompletionDate(sdf1.format(sdf1.parse(currentDate)));
