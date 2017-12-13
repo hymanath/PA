@@ -24,7 +24,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.locationAddress.district.districtId");
 		sb.append(",model.locationAddress.district.districtName ");
-		sb.append(" from PmSubWorkDetails model order by model.locationAddress.district.districtName asc ");
+		sb.append(" from PmSubWorkDetails model where model.isDeleted = 'N' order by model.locationAddress.district.districtName asc ");
 		Query query =getSession().createQuery(sb.toString());
 		return query.list();
 	}

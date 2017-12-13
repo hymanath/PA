@@ -24,7 +24,7 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 	public List<Object[]> getAllDistrictsByReferral(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.address.district.districtId ");
-		sb.append( ",model.address.district.districtName from PmRefCandidate model ");
+		sb.append( ",model.address.district.districtName from PmRefCandidate model where model.isDeleted='N' ");
 		sb.append(" order by model.address.district.districtName asc");
 		Query query =getSession().createQuery(sb.toString());
 		return query.list();
