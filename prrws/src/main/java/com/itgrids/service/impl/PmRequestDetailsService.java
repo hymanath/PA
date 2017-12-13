@@ -2,6 +2,7 @@ package com.itgrids.service.impl;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -24,8 +25,10 @@ import com.itgrids.dao.IPmRepresenteeRefDetailsDAO;
 import com.itgrids.dao.IPmRepresenteeRefDocumentDAO;
 import com.itgrids.dao.IPmSubWorkDetailsDAO;
 import com.itgrids.dto.AddressVO;
+import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.PetitionsWorksVO;
 import com.itgrids.dto.PmRequestVO;
+import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.ResponseVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
@@ -135,7 +138,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
 									 commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList()) && commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList().get(0).getFileList())){
 								for (MultipartFile file : pmRequestVO.getReferList().get(0).getFileList()) {
-										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
+										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_PETITIONS_FOLDER_URL,pmRequestVO.getUserId());
 										savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 								}
 							}
@@ -164,7 +167,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 											if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
 													 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
 												for (MultipartFile file : refVO.getFileList()) {
-														Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
+														Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_PETITIONS_FOLDER_URL,pmRequestVO.getUserId());
 														savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 												}
 											}
@@ -183,7 +186,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 										if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
 												 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
 											for (MultipartFile file : refVO.getFileList()) {
-													Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
+													Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_PETITIONS_FOLDER_URL,pmRequestVO.getUserId());
 													savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 											}
 										}
@@ -308,7 +311,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								
 								if(dataVO.getFileList() != null && dataVO.getFileList().size()>0){
 									for (MultipartFile file : dataVO.getFileList()) {
-										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,pmRequestVO.getUserId());
+										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_PETITIONS_FOLDER_URL,pmRequestVO.getUserId());
 										savePetitionWorkDocument(petition.getPetitionId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 									}
 								}
@@ -517,5 +520,60 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 		return locationAddress;
 	}
+	
+	/**
+	 * Date : 30/11/2017
+	 * Author :babu kurakula <href:kondababu.kurakula@itgrids.com>
+	 * @description : to get candidate detailse based on  desi Id and locationValue
+	 * @param : designationId,locationLevelId,locationValue
+	 * @return  List<LocationFundDetailsVO> 
+	 */
+	public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo){
+	    List<RepresentationRequestVO> returnList = new ArrayList<RepresentationRequestVO>();
+	    try {
+	    	//  0 petitonrefCndidateId ,1 name,2 designation ,3 stateId,4 stateName
+	    	// 5 districtId 6 district name 7 constincuyId,8 constincyName, 9 tehsilId,10 teshilName
+	    	// 11 panchayId,12 panchaytname,13 mobilNo,14 emailId,14 desigantionId
+	    	List<Object[]> referalObjs = pmRefCandidateDesignationDAO.getCandidatseDetailsByDesignationAndLocation(dataVo.getDeptId(),dataVo.getLocationLevelId(),dataVo.getLocationValue());
+	    	if(referalObjs != null && referalObjs.size() > 0){
+	    		for( Object[] param : referalObjs ){
+	    			RepresentationRequestVO mainV0 = new RepresentationRequestVO();
+	    			mainV0.setReferrerCandidateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+	    			PetitionMemberVO petitionMemberVO = new PetitionMemberVO();
+	    			petitionMemberVO.setId(commonMethodsUtilService.getLongValueForObject(param[15]));//desigantionId
+	    			petitionMemberVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+	    			petitionMemberVO.setMemberType(commonMethodsUtilService.getStringValueForObject(param[2]));//designation
+	    			petitionMemberVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[13]));
+	    			petitionMemberVO.setEmailId(commonMethodsUtilService.getStringValueForObject(param[14]));
+	    			mainV0.setPetitionMemberVO(petitionMemberVO);
+	    			AddressVO addressVO= new AddressVO();
+	    			addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    			addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[4]));
+	    			addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[5]));
+	    			addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[6]));
+	    			addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[7]));
+	    			addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[8]));
+	    			addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[9]));
+	    			addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[10]));
+	    			addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[11]));
+	    			addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[12]));
+	    			
+	    			addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[16]));
+	    			addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[17]));
+	    			
+	    			if(dataVo.getLocationLevelId().longValue() ==10L){
+	    				addressVO.setAssemblyId(addressVO.getParliamentId());
+		    			addressVO.setAssemblyName(addressVO.getParliamentName());
+	    			}
+	    			
+	    			mainV0.setCandidateAddressVO(addressVO);
+	    			returnList.add(mainV0);
+	    		}
+	    	}
+	    } catch (Exception e) {
+	      LOG.error("Exception Occured in savePetitionMember "+e.getMessage());
+	    }
+	     return returnList;
+	  }
 	
 }

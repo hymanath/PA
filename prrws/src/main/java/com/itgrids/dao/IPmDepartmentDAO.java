@@ -8,4 +8,5 @@ import com.itgrids.model.PmDepartment;
 
 public interface IPmDepartmentDAO extends GenericDao<PmDepartment, Long> {
 	public List<Object[]> getAllPmDepartmentsList();
+	public List<Object[]> getGivenPmDepartmentsList();
 }

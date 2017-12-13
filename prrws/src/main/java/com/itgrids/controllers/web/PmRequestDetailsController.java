@@ -1,16 +1,20 @@
 package com.itgrids.controllers.web;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.PmRequestVO;
+import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.ResponseVO;
 import com.itgrids.service.IPmRequestDetailsService;
 import com.itgrids.service.impl.PmRequestDetailsService;
@@ -35,5 +39,8 @@ public class PmRequestDetailsController {
 			pmRequestVO.setUserId(1L);
 			return pmRequestDetailsService.saveRepresentRequestDetails(pmRequestVO);
 	    }
-	   
+	   	@RequestMapping(value ="/getPetitionReferredMemberDetails",method = RequestMethod.POST)
+	    public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ) {
+	    	 return pmRequestDetailsService.getPetitionReferredMemberDetails(dataVo);
+	    }
 }
