@@ -30,6 +30,7 @@ import com.itgrids.dao.IPetitionSubjectDAO;
 import com.itgrids.dao.IPetitionWorkDetailsDAO;
 import com.itgrids.dao.IPmBriefLeadDAO;
 import com.itgrids.dao.IPmDepartmentDAO;
+import com.itgrids.dao.IPmDesignationDAO;
 import com.itgrids.dao.IPmGrantDAO;
 import com.itgrids.dao.IPmLeadDAO;
 import com.itgrids.dao.IPmStatusDAO;
@@ -63,16 +64,19 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	@Autowired
 	private IPanchayatDAO panchayatDAO;
+	//@Autowired
+	//private IPetitionDesignationDAO petitionDesignationDAO;
+	//@Autowired
+	//private IPetitionDepartmentDAO petitionDepartmentDAO;
 	@Autowired
-	private IPetitionDesignationDAO petitionDesignationDAO;
-	@Autowired
-	private IPetitionDepartmentDAO petitionDepartmentDAO;
+	private IPmDesignationDAO pmDesignationDAO;
+	
 	@Autowired
 	private IPmDepartmentDAO pmDepartmentDAO;
-	@Autowired
-	private IPetitionMemberDAO petitionMemberDAO;
-	@Autowired
-	private IPetitionWorkDetailsDAO petitionWorkDetailsDAO;
+	//@Autowired
+	//private IPetitionMemberDAO petitionMemberDAO;
+	//@Autowired
+	//private IPetitionWorkDetailsDAO petitionWorkDetailsDAO;
 	@Autowired
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	@Autowired
@@ -105,12 +109,12 @@ public class LocationDetailsService implements ILocationDetailsService {
 					 if(searchType.equalsIgnoreCase("all")){
 						 objList = districtDAO.getDistrictIdName(stateId);
 					 } else if(searchType.trim().equalsIgnoreCase("petitionsData")){
-						 objList = districtDAO.getPetitionsDistrictsList(stateId,null,null);
+						 ;//objList = districtDAO.getPetitionsDistrictsList(stateId,null,null);
 					 } else if(searchType.trim().equalsIgnoreCase("designation")){
-						 objList = districtDAO.getPetitionsDistrictsList(stateId,searchType,searchId);
+						 ;//objList = districtDAO.getPetitionsDistrictsList(stateId,searchType,searchId);
 						 //List<Object[]> refLocationsList = districtDAO.getPetitionsDistrictsList(stateId,"refferer",searchId);
 					 }else{
-						 objList = districtDAO.getPetitionsDistrictsList(stateId,searchType,searchId);
+						 objList = districtDAO.getReffererCandidatesDistrictsList(stateId,searchType,searchId);
 					 }
 				 }
 				 
@@ -153,7 +157,7 @@ public class LocationDetailsService implements ILocationDetailsService {
 				 if(searchType.equalsIgnoreCase("all")){
 					 objects = constituencyDAO.getConstituencyNamesByDistrictId(districtId);
 				 }else if(searchType.trim().equalsIgnoreCase("petitionsData")){
-					 objects = constituencyDAO.getPetitionsConstituencyList(districtId,null,null);
+					 ;//objects = constituencyDAO.getPetitionsConstituencyList(districtId,null,null);
 				 }else{
 					 objects = constituencyDAO.getPetitionsConstituencyList(districtId,searchType,searchId);
 				 }
@@ -288,7 +292,7 @@ public class LocationDetailsService implements ILocationDetailsService {
     			if(searchType.trim().equalsIgnoreCase("all"))
     				petitionDetailsObjsList = pmDepartmentDAO.getAllPmDepartmentsList();
     			else if(searchType.trim().equalsIgnoreCase("petitionGivenDepts"))
-    				petitionDetailsObjsList = petitionDepartmentDAO.getGivenPetitionDepartmentsList();
+    				petitionDetailsObjsList = pmDepartmentDAO.getGivenPmDepartmentsList();
     		}
     		
     		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
@@ -317,12 +321,12 @@ public class LocationDetailsService implements ILocationDetailsService {
     		List<Object[]> petitionDetailsObjsList = null;
     		if(searchType != null){
     			if(searchType.trim().equalsIgnoreCase("all"))
-    				petitionDetailsObjsList = petitionDesignationDAO.getAllpetitionDesignationList();
+    				petitionDetailsObjsList = pmDesignationDAO.getAllpetitionDesignationList();
     			else if(searchType.trim().equalsIgnoreCase("refCandidateDesignations"))
-    				petitionDetailsObjsList = petitionDesignationDAO.getAllReferredCandidateDesignationList();
+    				petitionDetailsObjsList = pmDesignationDAO.getAllReferredCandidateDesignationList();
     			else if(searchType.trim().equalsIgnoreCase("petitionGivenRefCandidateDesignations")){
-    				petitionDetailsObjsList = petitionDesignationDAO.getGivenPetitionCandidateDesignationList();
-    				List<Object[]> petitionReprDesignationsList = petitionDesignationDAO.getGivenpetitionReprDesignationsList();
+    				petitionDetailsObjsList = pmDesignationDAO.getGivenPetitionCandidateDesignationList();
+    				List<Object[]> petitionReprDesignationsList = pmDesignationDAO.getGivenpetitionReprDesignationsList();
     				if(!commonMethodsUtilService.isListOrSetValid(petitionDetailsObjsList))
     					petitionDetailsObjsList =new ArrayList<Object[]>();
     				if(commonMethodsUtilService.isListOrSetValid(petitionReprDesignationsList))

@@ -211,7 +211,7 @@
 									<h3 class="panel-title f_22">REPRESENTEE DETAILS</h3>
 									<div class="row m_top20">
 										<div class="col-sm-2">
-											<h4>Representation Date</h4>
+											<h5>REPRESENTATION DATE </h5>
 											<div class="input-group inline-block m_top10">
 												<span class="input-group-addon">
 													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
@@ -220,7 +220,7 @@
 											</div>
 										</div>
 										<div class="col-sm-3">
-											<h4>Representation By</h4>
+											<h5>REPRESENTATION BY </h5>
 												<div class="row m_top10">
 													<div class="col-sm-3">
 														<div class="borederCss">
@@ -263,7 +263,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" style="font-weight: bold">Candidate Search</h4> 
+				<h4 class="modal-title" style="font-weight: bold">CANDIDATE SEARCH : </h4> 
 			 </div>
 		  <div class="modal-body">
 			<div class="row">
@@ -284,11 +284,11 @@
 					</select>
 				</div>
 				<div class="col-sm-3">
-					<button type="button" class="btn btn-xs btn-success selectionSearchDetailsCls" style="border-radius: 0px; font-weight: bold;">Search</button>
+					<button type="button" class="btn btn-success selectionSearchDetailsCls" style="border-radius: 0px; font-weight: bold;">Search</button>
 				</div>
 			</div>
 			<div class="row">
-				<div id="candidateDetailsDivId"></div>
+				<div id="candidateDetailsDivId" style="padding: 10px;"></div>
 			</div>
 		  </div>
 		  <div class="modal-footer">

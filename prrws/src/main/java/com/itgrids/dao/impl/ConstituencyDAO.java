@@ -505,39 +505,25 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	
 	public List<Object[]> getPetitionsConstituencyList(Long districtId,String searchType,Long searchId){
 		StringBuilder sb = new StringBuilder();
-		if(searchType != null && searchType.equalsIgnoreCase("refCandidate") ){
-			   sb.append(" select distinct model.locationAddress.constituency.constituencyId,model.locationAddress.constituency.name from " +
-				 		" PetitionReffererCandidate model where model.isDeleted='N'  ");
-				if(districtId !=null && districtId.longValue()>0){
-					sb.append("  and model.locationAddress.district.districtId=:districtId ");
-				}
-		   }
-		else if(searchType != null && !searchType.equalsIgnoreCase("refLocation") ){
-				 sb.append(" select distinct model.locationAddress.constituency.constituencyId,model.locationAddress.constituency.name from " +
-				 		" PetitionSubWorkLocationDetails model where model.isDeleted='N'  ");
-				if(districtId !=null && districtId.longValue()>0){
-					sb.append("  and model.locationAddress.district.districtId=:districtId ");
-				}
-				if(searchType != null){
-			    	if(searchType.equalsIgnoreCase("designation"))
-			    		 sb.append(" and model.petitionWorkDetails.petitionMember.petitionDesignationId=:searchId ");
-			    	else if(searchType.equalsIgnoreCase("dept"))
-			    		 sb.append(" and model.petitionWorkDetails.petitionDepartmentId=:searchId ");
-			    }				
-		   }else  if(searchType != null && searchType.equalsIgnoreCase("refLocation") ){
-			   sb.append(" select distinct model.petitionReffererCandidate.locationAddress.constituency.constituencyId,model.petitionReffererCandidate.locationAddress.constituency.name from " +
-				 		" PetitionRefferer model where model.isDeleted='N'  ");
-				if(districtId !=null && districtId.longValue()>0){
-					sb.append("  and model.petitionReffererCandidate.locationAddress.district.districtId=:districtId ");
-				}
-		   }
-		   
-		Query query = getSession().createQuery(sb.toString());
-		if(districtId !=null && districtId.longValue()>0){
+		if(searchId != null && (searchId.longValue() ==4L || searchId.longValue() ==11L ))
+			sb.append(" select distinct model.pmRefCandidate.address.parliament.constituencyId,model.pmRefCandidate.address.parliament.name " );
+		else
+			sb.append(" select distinct model.pmRefCandidate.address.constituency.constituencyId,model.pmRefCandidate.address.constituency.name " );
+		
+			sb.append("  from PmRefCandidateDesignation model where model.isDeleted='N' ");
+			if(districtId !=null && districtId.longValue()>0){
+				sb.append(" and  model.pmRefCandidate.address.district.districtId=:districtId ");
+			}
+			if(searchId != null && searchId.longValue()>0L)
+	    	 sb.append(" and  model.pmDesignation.pmDesignationId=:searchId");
+			
+	    Query query = getSession().createQuery(sb.toString());
+	    if(districtId !=null && districtId.longValue()>0){
 		    query.setParameter("districtId", districtId);
 		}
-		 if(searchType != null && (searchType.equalsIgnoreCase("designation") || searchType.equalsIgnoreCase("dept") ) )
-		    	query.setParameter("searchId",searchId);
+	    if(searchId != null && searchId.longValue()>0L)
+	    	 query.setParameter("searchId",searchId);
+	    
 		return query.list(); 
 	}
 	

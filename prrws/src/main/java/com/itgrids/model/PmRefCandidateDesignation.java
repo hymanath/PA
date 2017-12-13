@@ -26,7 +26,7 @@ public class PmRefCandidateDesignation {
 	private Date endDate;
 	private String isDeleted;
 	private PmRefCandidate pmRefCandidate;
-	private PmDesignation pmDesgination;
+	private PmDesignation pmDesignation;
 	
 	
 	
@@ -82,18 +82,21 @@ public class PmRefCandidateDesignation {
 	public void setPmRefCandidate(PmRefCandidate pmRefCandidate) {
 		this.pmRefCandidate = pmRefCandidate;
 	}
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pm_designation_id", insertable = false, updatable = false)
-	public PmDesignation getPmDesgination() {
-		return pmDesgination;
+	public PmDesignation getPmDesignation() {
+		return pmDesignation;
 	}
-	public void setPmDesgination(PmDesignation pmDesgination) {
-		this.pmDesgination = pmDesgination;
+	public void setPmDesignation(PmDesignation pmDesignation) {
+		this.pmDesignation = pmDesignation;
 	}
+	
 	@Column(name="is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;
 	}
+	
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}

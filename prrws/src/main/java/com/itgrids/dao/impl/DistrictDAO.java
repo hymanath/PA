@@ -422,28 +422,16 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		 return query.list();
 	}
 	
-	public List<Object[]> getPetitionsDistrictsList(Long stateId,String searchType,Long searchId){ 
+	public List<Object[]> getReffererCandidatesDistrictsList(Long stateId,String searchType,Long searchId){ 
 	    StringBuilder sb = new StringBuilder();
-	    if(searchType != null && !searchType.equalsIgnoreCase("refLocation") ){
-		    sb.append(" select distinct model.locationAddress.district.districtId,model.locationAddress.district.districtName from PetitionSubWorkLocationDetails model "+
-		               " where model.locationAddress.state.stateId=:stateId  ");
-		    if(searchType != null){
-		    	if(searchType.equalsIgnoreCase("designation"))
-		    		 sb.append(" and model.petitionWorkDetails.petitionMember.petitionDesignationId=:searchId ");
-		    	else if(searchType.equalsIgnoreCase("dept"))
-		    		 sb.append(" and model.petitionWorkDetails.petitionDepartmentId=:searchId ");
-		    }
-	    }else if(searchType != null && searchType.equalsIgnoreCase("refLocation") ){
-	    	sb.append(" select distinct model.petitionReffererCandidate.locationAddress.district.districtId,model.petitionReffererCandidate.locationAddress.district.districtName from PetitionRefferer model "+
-		               " where model.petitionReffererCandidate.locationAddress.state.stateId=:stateId  ");
-	    }else if(searchType != null && searchType.equalsIgnoreCase("refCandidate") ){
-	    	sb.append(" select distinct model.locationAddress.district.districtId,model.locationAddress.district.districtName from PetitionReffererCandidate model "+
-		               " where model.locationAddress.state.stateId=:stateId  ");
-	    }
+	    sb.append(" select distinct model.pmRefCandidate.address.district.districtId,model.pmRefCandidate.address.district.districtName from PmRefCandidateDesignation model "+
+	               "  where model.isDeleted='N' and model.pmRefCandidate.address.state.stateId=:stateId  ");
+	    if(searchId != null && searchId.longValue()>0L)
+	    	 sb.append(" and  model.pmDesignation.pmDesignationId=:searchId");
 	    Query query = getSession().createQuery(sb.toString());
 	    query.setParameter("stateId",stateId);
-	    if(searchType != null && (searchType.equalsIgnoreCase("designation") || searchType.equalsIgnoreCase("dept")) )
-	    	query.setParameter("searchId",searchId);
+	    if(searchId != null && searchId.longValue()>0L)
+	    	 query.setParameter("searchId",searchId);
 	    return query.list();
 	}
 	
