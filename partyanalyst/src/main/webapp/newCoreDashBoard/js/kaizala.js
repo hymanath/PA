@@ -65,7 +65,7 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">Pending</p>';
-								str+='<h4>'+result.pending+' <span class="f_13 text-success"> '+result.pendingPerc+'%</span></h4>';
+								str+='<h4>'+result.pending+' <!--<span class="f_13 text-success"> '+result.pendingPerc+'%</span>--></h4>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">Not Having Smart Phone</p>';
@@ -559,37 +559,33 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 							str+='<tr>';
 								if(locationType == "district"){
 									str+='<th class="text-capital" rowspan="3">District</th>';
-									str+='<th class="text-capital" rowspan="3">Total</th>';
-									str+='<th class="text-capital" rowspan="3">Installed</th>';
-									str+='<th class="text-capital" rowspan="3">%</th>';
-									str+='<th class="text-capital" rowspan="3">Pending</th>';
-									str+='<th class="text-capital" rowspan="3">%</th>';
-									str+='<th class="text-capital" rowspan="3">NSP</th>';
-									str+='<th class="text-capital" rowspan="3">%</th>';
-									
 								}else if(locationType == "parliament"){
 									str+='<th class="text-capital" rowspan="3">parliament</th>';
-									str+='<th class="text-capital" rowspan="3">Total</th>';
-									str+='<th class="text-capital" rowspan="3">Installed</th>';
-									str+='<th class="text-capital" rowspan="3">%</th>';
-									str+='<th class="text-capital" rowspan="3">Pending</th>';
-									str+='<th class="text-capital" rowspan="3">%</th>';
-									str+='<th class="text-capital" rowspan="3">NSP</th>';
-									str+='<th class="text-capital" rowspan="3">%</th>';
-									
 								}
 								else if(locationType == "constituency"){
 									str+='<th class="text-capital" rowspan="3">Parliament</th>';
 									str+='<th class="text-capital" rowspan="3">Constituency</th>';
-									str+='<th class="text-capital" rowspan="3">Total</th>';
-									str+='<th class="text-capital" rowspan="3">Installed</th>';
-									str+='<th class="text-capital" rowspan="3">%</th>';
-									str+='<th class="text-capital" rowspan="3">Pending</th>';
-									str+='<th class="text-capital" rowspan="3">%</th>';
-									str+='<th class="text-capital" rowspan="3">NSP</th>';
-									str+='<th class="text-capital" rowspan="3">%</th>';
-									
 								}
+								/*str+='<th class="text-capital" rowspan="3">Total</th>';
+								str+='<th class="text-capital" rowspan="3">Installed</th>';
+								str+='<th class="text-capital" rowspan="3">%</th>';
+								str+='<th class="text-capital" rowspan="3">Pending</th>';
+								str+='<th class="text-capital" rowspan="3">%</th>';
+								str+='<th class="text-capital" rowspan="3">NSP</th>';
+								str+='<th class="text-capital" rowspan="3">%</th>';*/
+								str+='<th class="text-capital" rowspan="3">OverAll Committee Installed</th>';
+								str+='<th class="text-capital" rowspan="3">%</th>';
+								str+='<th class="text-capital" rowspan="3">Cadre Installed</th>';
+								str+='<th class="text-capital" rowspan="3">%</th>';
+								str+='<th class="text-capital" rowspan="3">Public Installed</th>';
+								str+='<th class="text-capital" rowspan="3">%</th>';
+								
+								str+='<th class="text-capital" rowspan="3">OverAll Committe NSP</th>';
+								str+='<th class="text-capital" rowspan="3">%</th>';
+								str+='<th class="text-capital" rowspan="3">Cadre NSP</th>';
+								str+='<th class="text-capital" rowspan="3">%</th>';
+								str+='<th class="text-capital" rowspan="3">Public NSP</th>';
+								str+='<th class="text-capital" rowspan="3">%</th>';
 							str+='</tr>';
 							str+='<tr>';
 								for(var i in result[0].subList){
@@ -634,13 +630,26 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 									str+='<td>'+result[i].parlName+'</td>';
 								str+='<td>'+result[i].name+'</td>';
 								
-								str+='<td>'+result[i].totalCount+'</td>';
+								/*str+='<td>'+result[i].totalCount+'</td>';
 								str+='<td>'+result[i].installed+'</td>';
 								str+='<td class="f_13 text-success">'+result[i].installedPerc+'</td>';
 								str+='<td>'+result[i].pending+'</td>';
 								str+='<td class="f_13 text-success">'+result[i].pendingPerc+'</td>';
 								str+='<td>'+result[i].notHavingSmartPhone+'</td>';
-								str+='<td class="f_13 text-success">'+result[i].notSmartPhonePerc+'</td>';
+								str+='<td class="f_13 text-success">'+result[i].notSmartPhonePerc+'</td>';*/
+								str+='<td>'+result[i].committeeInstalled+'</td>';
+								str+='<td class="f_13 text-success">'+result[i].committeeInstalPerc+'</td>';
+								str+='<td>'+result[i].cadreInstalledCount+'</td>';
+								str+='<td class="f_13 text-success">'+result[i].cadreInstallPerc+'</td>';
+								str+='<td>'+result[i].publicInstalledCount+'</td>';
+								str+='<td class="f_13 text-success">'+result[i].publicInstallPerc+'</td>';
+								
+								str+='<td>'+result[i].committeeNoSmartPhone+'</td>';
+								str+='<td class="f_13 text-success">'+result[i].committeeNoSmartPerc+'</td>';
+								str+='<td>'+result[i].cadreNoSmartPhoneCount+'</td>';
+								str+='<td class="f_13 text-success">'+result[i].cadreNoSmartPerc+'</td>';
+								str+='<td>'+result[i].publicNoSmartPhoneCount+'</td>';
+								str+='<td class="f_13 text-success">'+result[i].publicNoSmartPerc+'</td>';
 								
 								if(result[i].subList !=null && result[i].subList.length>0){
 									for(var j in result[i].subList){
