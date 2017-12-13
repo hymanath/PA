@@ -2385,7 +2385,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	   if(committeeLevelIdStr.isEmpty())
 		   committeeLevelIdStr = null;
 	   //Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1')")
-	   Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,:committeeLevelIdStr,'2','1',:batchIdStr)")
+	   Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch_camp(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,:committeeLevelIdStr,'2','1',:batchIdStr)")
 			.addScalar("tdp_cadre_id", Hibernate.LONG)
 			.addScalar("date(A.attended_time)", Hibernate.STRING)
 			.addScalar("training_camp_batch_id", Hibernate.LONG)
@@ -2486,9 +2486,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		   }else{
 			   committeeEnrollmetYrId = enrollmentYearIds.get(0).toString();
 		   }
-		 //get_training_camp_attendance_batch
+		 //get_training_camp_attendance_batch_camp
 		 //Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1')")
-		 Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch(:programIds,'2012-01-01','2030-12-30',:enrollemntYrId,:basicCommitteeId,:committeeLevelId,:accessLevelValue,:userAccessLevelValues,null)")
+		 Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch_camp(:programIds,'2012-01-01','2030-12-30',:enrollemntYrId,:basicCommitteeId,:committeeLevelId,:accessLevelValue,:userAccessLevelValues,null)")
 			.addScalar("tdp_cadre_id", Hibernate.LONG)
 			.addScalar("date(A.attended_time)", Hibernate.STRING)
 			.addScalar("training_camp_batch_id", Hibernate.LONG)
@@ -2561,7 +2561,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			 }*/
 		 }
 	   //Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1')")
-	   Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch(:programId,'2012-07-23','2030-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8',:userAccessLevelId,:levelValueList,:batchIdStr)")
+	   Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_batch_camp(:programId,'2012-07-23','2030-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8',:userAccessLevelId,:levelValueList,:batchIdStr)")
 			.addScalar("tdp_cadre_id", Hibernate.LONG)
 			.addScalar("date(A.attended_time)", Hibernate.STRING)
 			.addScalar("training_camp_batch_id", Hibernate.LONG)
