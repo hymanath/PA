@@ -1410,6 +1410,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 					returnvo.setCadreNoSmartPerc(obj.getString("cadreNoSmartPerc"));
 					returnvo.setPublicInstallPerc(obj.getString("publicInstallPerc"));
 					returnvo.setPublicNoSmartPerc(obj.getString("publicNoSmartPerc"));
+					returnvo.setTotalCount(obj.getLong("totalCount"));
+					returnvo.setPending(obj.getLong("pending"));
 					JSONArray committeeArr = obj.getJSONArray("subList");
 					if(committeeArr != null && committeeArr.length() > 0){
 						for (int i = 0; i < committeeArr.length(); i++) {
