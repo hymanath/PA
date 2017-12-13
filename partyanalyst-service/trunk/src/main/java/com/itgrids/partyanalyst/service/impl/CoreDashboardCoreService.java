@@ -15,6 +15,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -26,6 +28,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.CoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.TrainingCampSurveyVO;
@@ -1171,7 +1174,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	   	 ClientConfig clientConfig = new DefaultClientConfig();
 	     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
          Client client = Client.create(clientConfig);
-          WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getTrainingCampFeedBackDetails/"+listString+"/");
+         WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getTrainingCampFeedBackDetails/"+listString+"/");
 	        // WebResource webResource = client.resource("https://mytdp.com/Survey/WebService/getTrainingCampFeedBackDetails/"+listString+"/");
 	         ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 	          if(response.getStatus() != 200){
@@ -1321,6 +1324,80 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		}
 		   
 	return null;
+	}
+	public List<TrainingCampSurveyVO> getTrainingQuizDetails(List<Long> programIdList,Long userAccessLevelId,List<Long> userAccessLevelValues,List<Long> enrollmentYrIds,List<Long> committeeLevelIdArr){
+		List<TrainingCampSurveyVO> list = new ArrayList<TrainingCampSurveyVO>();
+		try{
+			
+			String ProgramlistString = programIdList.get(0).toString();
+			for (int i=1;i<programIdList.size();i++)
+			{
+				ProgramlistString = ProgramlistString+","+programIdList.get(i).toString();
+			}
+			
+			String userAccessLevelValuesstring = userAccessLevelValues.get(0).toString();
+			for (int i=1;i<userAccessLevelValues.size();i++)
+			{
+				userAccessLevelValuesstring = userAccessLevelValuesstring+","+userAccessLevelValues.get(i).toString();
+			}
+			
+			String committeeLevelIdArrstring = committeeLevelIdArr.get(0).toString();
+			for (int i=1;i<committeeLevelIdArr.size();i++)
+			{
+				committeeLevelIdArrstring = committeeLevelIdArrstring+","+committeeLevelIdArr.get(i).toString();
+			}
+			 ClientConfig clientConfig = new DefaultClientConfig();
+		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+		     WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingFeedBackDetailsOnProgram/"+listString+"/");
+			 ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+			 if(response.getStatus() != 200){
+				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			  }else{
+				  String output = response.getEntity(String.class);
+				  if(output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		if(finalArray!=null && finalArray.length()>0){
+			 	    		
+			 	    		 for(int i=0;i<finalArray.length();i++){
+			 	    			TrainingCampSurveyVO vo = new TrainingCampSurveyVO();
+			 	    			JSONObject tmp = (JSONObject) finalArray.get(i);
+			 	    			
+			 	    			vo.setSurveyQuestionId(tmp.getLong("surveyQuestionId"));
+			 	    			vo.setQuestion(tmp.getString("question"));
+			 	    			vo.setTotalMemberAnswered(tmp.getLong("totalMemberAnswered"));
+			 	    			vo.setTotalCorrectAnswer(tmp.getLong("totalCorrectAnswer"));
+			 	    			vo.setCorrectAnswerPercent(tmp.getDouble("correctAnswerPercent"));
+			 	    			String s1 = tmp.getString("centerList");
+			 	    			JSONArray inArr = new JSONArray(s1);
+			 	    			
+			 	    			if(inArr != null && inArr.length() > 0){
+			 	    				for (int j = 0; j < inArr.length(); j++) {
+			 	    					JSONObject tmp1 = (JSONObject) inArr.get(j);
+			 	    					
+			 	    					TrainingCampSurveyVO invo = new TrainingCampSurveyVO();
+			 	    					invo.setCampId(tmp1.getLong("campId"));
+			 	    					invo.setName(tmp1.getString("name"));
+			 	    					invo.setTotalMemberAnswered(tmp.getLong("totalMemberAnswered"));
+			 	    					invo.setTotalCorrectAnswer(tmp.getLong("totalCorrectAnswer"));
+			 	    					invo.setCorrectAnswerPercent(tmp.getDouble("correctAnswerPercent"));
+			 	    					vo.getCenterList().add(invo);
+									}
+			 	    			}
+			 	    			
+			 	    			list.add(vo);
+			 	    		 }
+		 	    		}
+		 	    		
+		 	    	}
+			  }
+			 return list;
+		}catch(Exception e){
+			LOG.error("Error occured at getTrainingQuizDetails() in CoreDashboardMainService {}",e); 
+		}
+		return null;
+		
 	}
 
 }

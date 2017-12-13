@@ -5,20 +5,33 @@ import java.util.List;
 
 public class TrainingCampSurveyVO implements java.io.Serializable{
 
-	private Long userId;
-	private Long id;
-	private String name;
-	private String startDateStr;
-	private String endDateStr;
-	
 	private Long poor;
 	private Long average;
 	private Long good;
 	private Long veryGood;
 	private Long excellent;
-	
+	private Long userId;
+	private Long id;
+	private String name;
+	private String startDateStr;
+	private String endDateStr;
 	private List<Long> surveyIdsList = new ArrayList<Long>(0);
 	List<TrainingCampSurveyVO> programsList = new ArrayList<TrainingCampSurveyVO>();
+	List<TrainingCampSurveyVO> optionList = new ArrayList<TrainingCampSurveyVO>();
+	private Long surveyQuestionId;
+	private String question;
+	private Long campId;
+	private String campName;
+	private Long trainingCampId;
+	private String options;
+	private Long optionId;
+	private Long surveyAnswerInfoId;
+	private Long tdpCadreId;
+	private Long totalMemberAnswered;
+	private Long totalCorrectAnswer;
+	private Double correctAnswerPercent;
+	List<TrainingCampSurveyVO> centerList = new ArrayList<TrainingCampSurveyVO>();
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -61,6 +74,90 @@ public class TrainingCampSurveyVO implements java.io.Serializable{
 	public void setProgramsList(List<TrainingCampSurveyVO> programsList) {
 		this.programsList = programsList;
 	}
+	public Long getSurveyQuestionId() {
+		return surveyQuestionId;
+	}
+	public void setSurveyQuestionId(Long surveyQuestionId) {
+		this.surveyQuestionId = surveyQuestionId;
+	}
+	public String getQuestion() {
+		return question;
+	}
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+	public Long getTrainingCampId() {
+		return trainingCampId;
+	}
+	public void setTrainingCampId(Long trainingCampId) {
+		this.trainingCampId = trainingCampId;
+	}
+	public String getOptions() {
+		return options;
+	}
+	public void setOptions(String options) {
+		this.options = options;
+	}
+	public Long getOptionId() {
+		return optionId;
+	}
+	public void setOptionId(Long optionId) {
+		this.optionId = optionId;
+	}
+	public Long getSurveyAnswerInfoId() {
+		return surveyAnswerInfoId;
+	}
+	public void setSurveyAnswerInfoId(Long surveyAnswerInfoId) {
+		this.surveyAnswerInfoId = surveyAnswerInfoId;
+	}
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	public List<TrainingCampSurveyVO> getOptionList() {
+		return optionList;
+	}
+	public void setOptionList(List<TrainingCampSurveyVO> optionList) {
+		this.optionList = optionList;
+	}
+	public Long getTotalMemberAnswered() {
+		return totalMemberAnswered;
+	}
+	public void setTotalMemberAnswered(Long totalMemberAnswered) {
+		this.totalMemberAnswered = totalMemberAnswered;
+	}
+	public Long getTotalCorrectAnswer() {
+		return totalCorrectAnswer;
+	}
+	public void setTotalCorrectAnswer(Long totalCorrectAnswer) {
+		this.totalCorrectAnswer = totalCorrectAnswer;
+	}
+	public Double getCorrectAnswerPercent() {
+		return correctAnswerPercent;
+	}
+	public void setCorrectAnswerPercent(Double correctAnswerPercent) {
+		this.correctAnswerPercent = correctAnswerPercent;
+	}
+	public List<TrainingCampSurveyVO> getCenterList() {
+		return centerList;
+	}
+	public void setCenterList(List<TrainingCampSurveyVO> centerList) {
+		this.centerList = centerList;
+	}
+	public Long getCampId() {
+		return campId;
+	}
+	public void setCampId(Long campId) {
+		this.campId = campId;
+	}
+	public String getCampName() {
+		return campName;
+	}
+	public void setCampName(String campName) {
+		this.campName = campName;
+	}
 	public Long getPoor() {
 		return poor;
 	}
@@ -91,5 +188,6 @@ public class TrainingCampSurveyVO implements java.io.Serializable{
 	public void setExcellent(Long excellent) {
 		this.excellent = excellent;
 	}
+	
 	
 }
