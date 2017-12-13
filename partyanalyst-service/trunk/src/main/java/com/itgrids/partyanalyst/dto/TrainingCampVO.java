@@ -39,24 +39,7 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long leaderFeedBackCount;
 	private Long feedBackQuizCount;
 	
-	public Long getFeedBackProgramCount() {
-		return feedBackProgramCount;
-	}
-	public void setFeedBackProgramCount(Long feedBackProgramCount) {
-		this.feedBackProgramCount = feedBackProgramCount;
-	}
-	public Long getLeaderFeedBackCount() {
-		return leaderFeedBackCount;
-	}
-	public void setLeaderFeedBackCount(Long leaderFeedBackCount) {
-		this.leaderFeedBackCount = leaderFeedBackCount;
-	}
-	public Long getFeedBackQuizCount() {
-		return feedBackQuizCount;
-	}
-	public void setFeedBackQuizCount(Long feedBackQuizCount) {
-		this.feedBackQuizCount = feedBackQuizCount;
-	}
+	
 	private Long schdlStatusId;
 	private String schdlStatus;
 	private Long othersCount;
@@ -73,8 +56,6 @@ public class TrainingCampVO implements java.io.Serializable{
 	private List<TrainingCampVO> scheduleDetails;
 	private List<TrainingCampVO> committeLvlDetails;
 	private List<TrainingCampVO> roles;
-	
-	
 	private String batchName;
 	private Long campId;
 	private Long programId;
@@ -126,7 +107,24 @@ public class TrainingCampVO implements java.io.Serializable{
 	private Long roleId;
 	private String role;
 		
-	
+	public Long getFeedBackProgramCount() {
+		return feedBackProgramCount;
+	}
+	public void setFeedBackProgramCount(Long feedBackProgramCount) {
+		this.feedBackProgramCount = feedBackProgramCount;
+	}
+	public Long getLeaderFeedBackCount() {
+		return leaderFeedBackCount;
+	}
+	public void setLeaderFeedBackCount(Long leaderFeedBackCount) {
+		this.leaderFeedBackCount = leaderFeedBackCount;
+	}
+	public Long getFeedBackQuizCount() {
+		return feedBackQuizCount;
+	}
+	public void setFeedBackQuizCount(Long feedBackQuizCount) {
+		this.feedBackQuizCount = feedBackQuizCount;
+	}
 	public Long getDistrictCount() {
 		return districtCount;
 	}
