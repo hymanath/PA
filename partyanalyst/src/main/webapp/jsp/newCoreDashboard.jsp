@@ -4345,7 +4345,7 @@
             </div>
        </div>
 		<!-- Attendance End-->
-		<!-----Training Camp Info Start--->
+		<!-----Training Camp Info Start
 			<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="trainingCampInfo">
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
@@ -4371,7 +4371,7 @@
 					<div class="panel-body">
 						<!--<div class="col-md-12 col-xs-12 col-sm-12">
 							<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-						</div>-->
+						</div>--
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="trainingCampInfo">
 								<div class="row">
@@ -4443,7 +4443,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>--->
 		<!-----Training Camp Info End--->
 		
 	</div>
