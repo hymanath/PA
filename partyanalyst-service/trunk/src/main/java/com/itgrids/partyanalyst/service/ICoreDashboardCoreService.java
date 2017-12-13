@@ -17,5 +17,5 @@ public interface ICoreDashboardCoreService {
 	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverviewDayWise(Long globalActivityMemberId,Long stateId,String fromDate,String toDate,List<Long> enrollmentYearIdsList,List<Long> programIdList,List<Long> tdpCommitteeLevelIds);
 	public TrainingCampVO getTrainingCampFeedBackDetails(Long activityMemberId,String commiteeLevelId ,Long stateId, String dateStr, List<Long> enrollmentYearIdList, List<Long> programIdList);
 	public TrainingCampVO getTrainingCampFeedBackDetailsProgramWise(Long activityMemberId,String commiteeLevelId ,Long stateId, String dateStr, List<Long> enrollmentYearIdList, List<Long> programIdList,Long StringType );
-
+	public List<TrainingCampSurveyVO> getTrainingQuizDetails(List<Long> programIdList,Long userAccessLevelId,List<Long> userAccessLevelValues,List<Long> enrollmentYrIds,List<Long> committeeLevelIdArr);
 }
