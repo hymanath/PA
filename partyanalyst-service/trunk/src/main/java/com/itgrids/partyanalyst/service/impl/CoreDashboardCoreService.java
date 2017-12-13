@@ -1250,12 +1250,12 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 				 //Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1')")
 			  if(userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID){
 					List<Long> distList1 = new ArrayList<Long>(){{add(11L);add(12L);add(13L);add(14L);add(15L);add(16L);add(17L);}};
-					tempList  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList1,enrollmentYearIdList,programIdList,null);//Procedure Call
+					tempList  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList1,enrollmentYearIdList,programIdList,commiteeList);//Procedure Call
 					List<Long> distList2 = new ArrayList<Long>(){{add(18L);add(19L);add(20L);add(21L);add(22L);add(23L);add(517L);}};
-					tempList2  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList2,enrollmentYearIdList,programIdList,null);//Procedure Call
+					tempList2  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList2,enrollmentYearIdList,programIdList,commiteeList);//Procedure Call
 					tempList.addAll(tempList2);
 				}else{
-					tempList  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(userAccessLevelId,userAccessLevelValues,enrollmentYearIdList,programIdList,null);//Procedure Call
+					tempList  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(userAccessLevelId,userAccessLevelValues,enrollmentYearIdList,programIdList,commiteeList);//Procedure Call
 				}
 			 Map<Long,Set<Long>> mainCadreIdsmap = new HashMap<Long, Set<Long>>();
 			 Set<Long> cadreIds = null;
@@ -1263,7 +1263,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 				    if(commonMethodsUtilService.getStringValueForObject(param[7]).trim().equalsIgnoreCase("INVITEE")){
 					 if(StringType == 1L && commonMethodsUtilService.getLongValueForObject(param[25])!= null){
 						cadreIds = mainCadreIdsmap.get(commonMethodsUtilService.getLongValueForObject(param[25]));
-					}if(StringType == 2L){
+					}else if(StringType == 2L){
 						cadreIds = mainCadreIdsmap.get(commonMethodsUtilService.getLongValueForObject(param[11]));
 					}else if(StringType == 3L){
 						cadreIds = mainCadreIdsmap.get(commonMethodsUtilService.getLongValueForObject(param[13]));
