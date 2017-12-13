@@ -38,7 +38,7 @@ function getOverAllCommitteeWiseMembersCounts(){
 	 url: "getOverAllCommitteeWiseMembersCountsAction.action",
 	 data: {task :JSON.stringify(jObj)}
 	}).done(function(result){
-		if(result !=null && result.length>0){
+		if(result !=null){
 			buildOverAllCommitteeWiseMembersCounts(result);
 		}else{
 			$("#overAllKaizalaBlockId").html("No Data Available");
@@ -49,8 +49,7 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 	var str='';
 	
 	str+'<div class="row">';
-	for(var i in result){
-		str+='<h4 class="text-capitalize m_top10"><b>'+result[i].name+' COMMITTEE MEMBERS</b></h4>';
+	str+='<h4 class="text-capitalize m_top10"><b>OVERALL COMMITTEE MEMBERS</b></h4>';
 		str+='<div class="m_top5">';
 		  str+='<div class="table-responsive">';
 				str+='<table class="table tableTraining bg_ED">';
@@ -58,19 +57,96 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">total</p>';
-								str+='<h4>'+result[i].totalCount+'</h4>';
+								str+='<h4>'+result.totalCount+'</h4>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">Installed</p>';
-								str+='<h4>'+result[i].installed+' <span class="f_13 text-success"> '+result[i].installedPerc+'%</span></h4>';
+								str+='<h4>'+result.committeeInstalled+' <span class="f_13 text-success"> '+result.committeeInstalPerc+'%</span></h4>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">Pending</p>';
-								str+='<h4>'+result[i].pending+' <span class="f_13 text-success"> '+result[i].pendingPerc+'%</span></h4>';
+								str+='<h4>'+result.pending+' <span class="f_13 text-success"> '+result.pendingPerc+'%</span></h4>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">Not Having Smart Phone</p>';
-								str+='<h4>'+result[i].notHavingSmartPhone+' <span class="f_13 text-success"> '+result[i].notSmartPhonePerc+'%</span></h4>';
+								str+='<h4>'+result.committeeNoSmartPhone+' <span class="f_13 text-success"> '+result.committeeNoSmartPerc+'%</span></h4>';
+							str+='</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';  
+		str+='</div>';
+		
+		str+='<div class="row">';
+			str+='<div class="col-sm-6">';
+				str+='<h4 class="text-capitalize m_top10"><b>CADRE</b></h4>';
+					str+='<div class="m_top5">';
+					  str+='<div class="table-responsive">';
+							str+='<table class="table tableTraining bg_ED">';
+								str+='<tbody>';
+									str+='<tr>';
+										str+='<td>';
+											str+='<p class="text-muted text-capitalize">Installed</p>';
+											str+='<h4>'+result.cadreInstalledCount+' <span class="f_13 text-success"> '+result.cadreInstallPerc+'%</span></h4>';
+										str+='</td>';
+										str+='<td>';
+											str+='<p class="text-muted text-capitalize">Not Having Smart Phone</p>';
+											str+='<h4>'+result.cadreNoSmartPhoneCount+' <span class="f_13 text-success"> '+result.cadreNoSmartPerc+'%</span></h4>';
+										str+='</td>';
+									str+='</tr>';
+								str+='</tbody>';
+							str+='</table>';
+						str+='</div>';  
+					str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-6">';
+				str+='<h4 class="text-capitalize m_top10"><b>PUBLIC</b></h4>';
+					str+='<div class="m_top5">';
+					  str+='<div class="table-responsive">';
+							str+='<table class="table tableTraining bg_ED">';
+								str+='<tbody>';
+									str+='<tr>';
+										str+='<td>';
+											str+='<p class="text-muted text-capitalize">Installed</p>';
+											str+='<h4>'+result.publicInstalledCount+' <span class="f_13 text-success"> '+result.publicInstallPerc+'%</span></h4>';
+										str+='</td>';
+										str+='<td>';
+											str+='<p class="text-muted text-capitalize">Not Having Smart Phone</p>';
+											str+='<h4>'+result.publicNoSmartPhoneCount+' <span class="f_13 text-success"> '+result.publicNoSmartPerc+'%</span></h4>';
+										str+='</td>';
+									str+='</tr>';
+								str+='</tbody>';
+							str+='</table>';
+						str+='</div>';  
+					str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		
+		
+		
+	for(var i in result.subList){
+		str+='<h4 class="text-capitalize m_top10"><b>'+result.subList[i].name+' COMMITTEE MEMBERS</b></h4>';
+		str+='<div class="m_top5">';
+		  str+='<div class="table-responsive">';
+				str+='<table class="table tableTraining bg_ED">';
+					str+='<tbody>';
+						str+='<tr>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">total</p>';
+								str+='<h4>'+result.subList[i].totalCount+'</h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Installed</p>';
+								str+='<h4>'+result.subList[i].installed+' <span class="f_13 text-success"> '+result.subList[i].installedPerc+'%</span></h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Pending</p>';
+								str+='<h4>'+result.subList[i].pending+' <span class="f_13 text-success"> '+result.subList[i].pendingPerc+'%</span></h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Not Having Smart Phone</p>';
+								str+='<h4>'+result.subList[i].notHavingSmartPhone+' <span class="f_13 text-success"> '+result.subList[i].notSmartPhonePerc+'%</span></h4>';
 							str+='</td>';
 						str+='</tr>';
 					str+='</tbody>';
