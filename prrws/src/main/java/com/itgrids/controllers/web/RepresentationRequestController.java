@@ -61,10 +61,7 @@ public class RepresentationRequestController {
     public @ResponseBody List<KeyValueVO> getPmDepartmentDetailsList(@RequestBody Map<String,String> inputMap ) {
        return locationDetailsService.getPmDepartmentList(String.valueOf(inputMap.get("searchType")));
     }
-	@RequestMapping(value ="/getPetitionDesignationList",method = RequestMethod.POST)
-    public @ResponseBody List<KeyValueVO> getPetitionDesignationList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPetitionDesignationList(String.valueOf(inputMap.get("searchType")));
-    }
+	
 	@RequestMapping(value ="/getTempPetitionReferredMemberDetails",method = RequestMethod.POST)
     public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ) {
     	 return representationRequestService.getPetitionReferredMemberDetails(dataVo);
