@@ -1332,7 +1332,7 @@
 					},
 					labels: {
 						overflow: 'justify'
-					},
+					}, 
 					stackLabels: {
 						enabled: true,
 						style: {
@@ -6447,7 +6447,72 @@ function activityMemberClsForAlertBlock(selectedUserType,childActivityMemberId,s
 	  var selectedMemberName = result[0].name;
 	  var selectedUserType = result[0].userType;
 	  var str = '';
-	  str+='<ul class="list-inline alertslickPanelSlider">';
+	  
+	  if(childUserType != null && childUserType.trim()=="MLA/CI" || childUserType.trim()=="MLA" || childUserType.trim()=="CONSTITUENCY INCHARGE"){
+		str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed tableHoverLevels" id="alertChildActivityMemberDataTbleId">';
+		 str+='<thead>';
+		     str+='<th>Rank</th>';
+			 str+='<th>Name</th>';
+			 str+='<th>Designation</th>';
+			 str+='<th>Location</th>';
+			 str+='<th>Total Alerts</th>';
+			 str+='<th>Involved</th>';
+			 str+='<th>Assigned</th>';
+			 str+='<th>Pending</th>';
+			 str+='<th>Completed</th>';
+		 str+='</thead>';
+		 str+='<tbody>';
+		 var rank=1;
+		  for(var i in result){
+			  if(result[i].totalCount > 0){
+			     isDataAvailale = true;
+		       } 
+			str+='<tr style="cursor:pointer;" id="panelColor'+result[i].activityMemberId+'" onclick="activityMemberClsForAlertBlock(\''+result[i].userType+'\',\'userTypeWiseChildDtlsTabForAlertId\',\''+result[i].name+'\',\''+result[i].activityMemberId+'\',\''+result[i].userTypeId+'\');" class=""  style="width:380px !important;">';
+			 str+='<td><span class="counts">'+rank+'</span></td>';
+			     str+='<td>'+result[i].name+'</td>';
+				 str+='<td>'+result[i].userType+'</td>';
+				 str+='<td>'+result[i].locationName+'</td>';
+				 str+='<td>'+result[i].totalCount+'</td>';
+				 str+='<td>'+result[i].negativeCount+'</td>';
+				 str+='<td>'+result[i].positiveCount+'</td>';
+				 var pendingPer=0;
+				 var completedper=0;
+				 if(result[i].subList != null && result[i].subList.length > 0){
+					  for(var j in result[i].subList){
+						  if(result[i].subList[j].id==1 || result[i].subList[j].id==4 ){
+							if(result[i].subList[j].id==1){//Pending
+								pendingPer = result[i].subList[j].positivePercentage;
+							}
+							if(result[i].subList[j].id==4){//Completed
+								completedper = result[i].subList[j].positivePercentage;
+							}
+						  }
+					  }
+				 }
+			   if(pendingPer > 0){
+					str+='<td>'+pendingPer+'%</td>';	  
+			   }else{
+				   str+='<td> - </td>';	  
+			   }
+			  if(completedper > 0){
+					str+='<td>'+completedper+'%</td>';	  
+			   }else{
+				   str+='<td> - </td>';	  
+			   }
+			 str+='</tr>';
+			 str+='</tr>';
+             rank=rank+1;			 
+			}
+		str+='</tbody>';
+		str+='</table>';
+     $("#alertChildActivityMemberDivId").html(str);
+	 $("#alertChildActivityMemberDataTbleId").dataTable({
+		"iDisplayLength": 5,
+		"aLengthMenu": [[5, 20, 100, -1], [5, 20, 100, "All"]]
+		}); 
+		 getCandidateAccessLocationAlertDtlsStatusWise(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
+	 } else {
+		 str+='<ul class="list-inline alertslickPanelSlider">';
 	  var rank=1; 
 	   for(var i in result){
 	    if(result[i].totalCount > 0){
@@ -6562,6 +6627,7 @@ function activityMemberClsForAlertBlock(selectedUserType,childActivityMemberId,s
 				// instead of a settings object
 			  ]
 		});  
+	 }
 		if(!isDataAvailale){
 		  $("#alertChildActivityMemberDivId").hide();	
 		} 
@@ -6912,7 +6978,18 @@ function activityMemberClsForAlertBlock(selectedUserType,childActivityMemberId,s
 							minorGridLineWidth: 0,
 							title: {
 								text: ''
-							}
+							},
+							
+						stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						},
+						formatter: function() {
+                        return  (this.total);
+                         },
+						}
 						},
 						tooltip: {
 					     valueSuffix: ' ',
