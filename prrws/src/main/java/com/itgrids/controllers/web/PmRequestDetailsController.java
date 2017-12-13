@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
+import com.itgrids.dto.RepresenteeViewVO;
 import com.itgrids.dto.ResponseVO;
 import com.itgrids.service.IPmRequestDetailsService;
-import com.itgrids.service.impl.PmRequestDetailsService;
 
 @EnableAutoConfiguration
 @Controller
@@ -27,13 +28,13 @@ public class PmRequestDetailsController {
 	   private static final Logger LOG = Logger.getLogger(PmRequestDetailsController.class);
 	   
 	   @Autowired
-	   private IPmRequestDetailsService pmRequestDetailsService;
+		private IPmRequestDetailsService pmRequestDetailsService; 
 	   
 	   @RequestMapping(value ="/representationRequestEntry", method = RequestMethod.GET)
 	    public String mgnregsDashBoardPage(ModelMap model) {
 			return "representationRequestEntry";
 	    }
-	   
+
 	   	@RequestMapping(value ="/saveRepresentRequestDetails",method = RequestMethod.POST)
 	    public @ResponseBody ResponseVO saveRepresentRequestDetails(@ModelAttribute  PmRequestVO pmRequestVO) {
 			pmRequestVO.setUserId(1L);
@@ -42,5 +43,13 @@ public class PmRequestDetailsController {
 	   	@RequestMapping(value ="/getPetitionReferredMemberDetails",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ) {
 	    	 return pmRequestDetailsService.getPetitionReferredMemberDetails(dataVo);
+	    }
+	   @RequestMapping(value ="/representationRequestEntryViewMembers", method = RequestMethod.GET)
+	    public String representationRequestEntryMembers(ModelMap model) {
+			return "representationRequestEntryViewMembers";
+	    }
+	   @RequestMapping(value ="/getRepresentativeSearchWiseDetails",method = RequestMethod.POST)
+	    public @ResponseBody List<RepresenteeViewVO> getRepresentativeSearchWiseDetails(@RequestBody InputVO dataVo) {
+	    	 return pmRequestDetailsService.getRepresentativeSearchWiseDetails(dataVo);
 	    }
 }

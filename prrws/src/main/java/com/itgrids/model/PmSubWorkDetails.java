@@ -48,6 +48,7 @@ public class PmSubWorkDetails {
 	private PmBriefLead pmBriefLead;
 	private PmGrant pmGrant;
 	private PmStatus pmStatus;
+	private LocationAddress locationAddress;
 	
 	@Id
 	@Column(name="pm_sub_work_details_id")
@@ -267,5 +268,12 @@ public class PmSubWorkDetails {
 		this.pmWorkType = pmWorkType;
 	}
 	
-	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id", insertable = false, updatable = false)
+	public LocationAddress getLocationAddress() {
+		return locationAddress;
+	}
+	public void setLocationAddress(LocationAddress locationAddress) {
+		this.locationAddress = locationAddress;
+	}
 }

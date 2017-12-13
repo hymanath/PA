@@ -71,7 +71,7 @@ $(document).on("click","#advanceSearchId",function(){
 		}else if(searchType=="department"){
 			searchVal = $('#departmentId').val();
 		}
-		getRepresentativeSearchDetails(searchVal,locationScopeId,lcoationId);
+		//getRepresentativeSearchDetails(searchVal,locationScopeId,lcoationId);
 	}
 });
 
@@ -477,4 +477,51 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal){
 		}
 		$("#mandalrepresent").trigger('chosen:updated');
 	});	
+}
+//getRepresentativeSearchDetails1();
+function getRepresentativeSearchDetails1(){
+	/* $("#errorId").html("");
+	var radioValue = $("input[name='optradio']:checked"). val();
+	$("#representationRequestEntryTable").html(spinner);
+	
+	$(".searchCls").each(function(){
+		if($(this).is(":checked")){
+			searchType = $(this).val();
+		}
+	});
+	if(searchType == "advanceBtnId"){
+		var searchVal = $("#advancedSearchVal").val(); 
+	}
+	 */
+	var json = {
+		filterType :"referral",//mobileno/department/name/email
+		filterValue:"",
+		searchLevelId:3,
+		searchLevelValue:11,
+		fromDate:"01-01-2010",
+		toDate:"01-01-2055",
+		fromRange:1,
+		toRange:9,
+		minVal:0,
+		//maxVal:4,
+		startValue:1,
+		endValue:2
+    }
+	
+  $.ajax({                
+    type:'POST',    
+    url: 'getRepresentativeSearchWiseDetails',
+    dataType: 'json',
+    data : JSON.stringify(json),
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){
+		if(result != null && result.length>0){
+			representationRequestEntryTable(result);
+		}else{
+			$("#representationRequestEntryTable").html("NO DATA AVAILABLE");
+		}
+  }); 
 }
