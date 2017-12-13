@@ -586,14 +586,14 @@
 		tabBlock+='</div>';
 		$("#"+blockId).html(tabBlock);
 		$(".overViewCls").hide();
-		for(var i in blocksArr)
-		{
-			if(blocksArr[i].id == "schemeId"){
+		// for(var i in blocksArr)
+		// {
+			// if(blocksArr[i].id == "schemeId"){
 				//getSchemeWiseWorkDetails('table',blockName,blocksArr,"","","","completeOverview");
-				getExceedWorkDetailsLocationWise('table',blockName,blocksArr,"","","","exceededOverview","")
-				$("#stateBlockIdschemeId").html(spinner);
-			}
-		}
+				// getExceedWorkDetailsLocationWise('table',blockName,blocksArr,"","","","exceededOverview","")
+				// $("#stateBlockIdschemeId").html(spinner);
+			// }
+		// }
 		if(blockId == 'constituencyBlockId'){
 			selectBox('distVal'+blockId+'');
 			selectBox('constVal'+blockId+'');
@@ -2404,6 +2404,8 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 	$(document).on('cut copy paste', function (e) {
 		e.preventDefault();
 	});
+	
+	//radio button 
 	$(document).on("click",".exceedWorkTypeCls",function(e){
 		var statusType = $(this).val();
 		if(statusType == ""){
@@ -2412,6 +2414,10 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 			$(".headingExceedId").html("OnGoing Exceeded Works")
 		}	
 		getExceedWorkDetailsLocationWise("",'state',"","","","","",statusType);
+		getExceedWorkDetailsLocationWise("table",'state',"","","","","",statusType);
+		getExceedWorkDetailsLocationWise("table",'district',"","","","","",statusType);
+		getExceedWorkDetailsLocationWise("table",'constituency',"","","","","",statusType);
+		getExceedWorkDetailsLocationWise("table",'mandal',"","","","","",statusType);
 	});
 	$(document).on("click",".checkboxTypeCls",function(e){
 		var blocksArr = ['state','district','constituency','mandal']
