@@ -5373,7 +5373,7 @@ public String getInsuraceStatusWiseComplaintsDetails()
 				
 				List<Long> enrollmentYrIds=new ArrayList<Long>();
 				JSONArray enrollmentYrIdsArray=jObj.getJSONArray("enrollmentYrIds");
-				if(enrollmentYrIdsArray!=null &&  enrollmentYrIdsArray.length()>0){
+				if(enrollmentYrIdsArray!=null &&  enrollmentYrIdsArray.length()>0 && !enrollmentYrIdsArray.getString(0).equalsIgnoreCase("null")){
 					for( int i=0;i<enrollmentYrIdsArray.length();i++){
 						enrollmentYrIds.add(Long.valueOf(enrollmentYrIdsArray.getString(i)));
 					}
