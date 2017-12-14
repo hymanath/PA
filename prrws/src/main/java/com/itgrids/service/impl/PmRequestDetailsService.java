@@ -31,6 +31,7 @@ import com.itgrids.dao.IPmRepresenteeRefDocumentDAO;
 import com.itgrids.dao.IPmSubWorkDetailsDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.PetitionsWorksVO;
 import com.itgrids.dto.PmRequestEditVO;
@@ -714,11 +715,37 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		 return pmRequestVO;
 	 }
 	 
-	 public PmRequestEditVO setPmRepresenteeDataToResultView(Long petitionId){
+	 @SuppressWarnings("static-access")
+	public PmRequestEditVO setPmRepresenteeDataToResultView(Long petitionId){
 		 PmRequestEditVO returnVO = null;
 		 try {
+			
+			List<Object[]> uploadedPetitionFilesList = pmPetitionDocumentDAO.getPmPetitionDocumentByPetition(petitionId);
+			Map<Long,KeyValueVO> petitionFilesListMap = new HashMap<Long,KeyValueVO>(0);
+			if(commonMethodsUtilService.isListOrSetValid(uploadedPetitionFilesList)){
+				for (Object[] param : uploadedPetitionFilesList) {
+					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
+					String path = commonMethodsUtilService.getStringValueForObject(param[1]);
+					petitionFilesListMap.put(id, new KeyValueVO(id,path));
+				}
+			}
+			
+			List<Object[]> uploadedWorksFilesList = pmRepresenteeRefDocumentDAO.getPmRepresenteeRefDocumentByPetition(petitionId);
+			Map<Long,List<KeyValueVO>> refFilesListMap = new HashMap<Long,List<KeyValueVO>>(0);
+			if(commonMethodsUtilService.isListOrSetValid(uploadedWorksFilesList)){
+				for (Object[] param : uploadedWorksFilesList) {
+					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
+					String path = commonMethodsUtilService.getStringValueForObject(param[1]);
+					List<KeyValueVO> fileList = new ArrayList<KeyValueVO>();
+					if(refFilesListMap.get(id) != null){
+						fileList = refFilesListMap.get(id);
+					}
+					fileList.add(new KeyValueVO(id,path));
+					refFilesListMap.put(id,fileList);
+				}
+			}
+			
 			List<Object[]> pmRepresenteePetitionsDetils = pmRepresenteeRefDetailsDAO.getPmRepresenteRefDetails(petitionId);
-			Map<Long,List<PmRequestEditVO>> representeeMap = new HashMap<Long,List<PmRequestEditVO>>(0);
 			if(commonMethodsUtilService.isListOrSetValid(pmRepresenteePetitionsDetils)){
 					returnVO = new PmRequestEditVO();
 					int i=0;
@@ -742,6 +769,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						 returnVO.setGrievanceDescription(commonMethodsUtilService.getStringValueForObject(param[25]));
 						 
 						 returnVO.setRepresentationType(commonMethodsUtilService.getStringValueForObject(param[49]));
+						 
+						 if(commonMethodsUtilService.isMapValid(petitionFilesListMap)){
+							 returnVO.getFileList().addAll(petitionFilesListMap.values());
+						 }
 						 
 						 PmRequestVO  representeeVO = new PmRequestVO();
 						 representeeVO.setRepresenteeId(commonMethodsUtilService.getLongValueForObject(param[30]));					
@@ -787,6 +818,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 else
 						 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[46]));
 					 refVO.setAddressVO(refAddressVO);
+					 
+					 if(commonMethodsUtilService.isMapValid(refFilesListMap)){
+						 for (Long  pmReprRefCandiId: refFilesListMap.keySet()) {
+							 refVO.getFileNamesList().addAll(refFilesListMap.get(pmReprRefCandiId));
+						}
+					 }
+					 
 					 returnVO.getReferDetailsList().add(refVO);
 				}
 				

@@ -43,6 +43,12 @@ public class PmRequestVO {
 	private String endorsmentNo;
 	private String endorsmentDate;
 	
+	public List<KeyValueVO> getFileNamesList() {
+		return fileNamesList;
+	}
+	public void setFileNamesList(List<KeyValueVO> fileNamesList) {
+		this.fileNamesList = fileNamesList;
+	}
 	public String getEndorsmentDate() {
 		return endorsmentDate;
 	}
