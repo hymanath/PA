@@ -240,12 +240,12 @@
 									</div>
 									<div class="row m_top20">
 										<div class="col-sm-12">
-											<div id="selfDetailsDivId"></div>
+											<div id="SELFDetailsDivId"></div>
 										</div>
 									</div>
 									<div class="row m_top20">
 										<div class="col-sm-12">
-											<div id="representDetailsDivId"></div>
+											<div id="REPRESENTDetailsDivId"></div>
 										</div>
 									</div>
 									
@@ -279,7 +279,7 @@
 						<option value="0">Select District</option>
 					</select>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-3" id="constituencyCandDivId">
 					<select class="form-control chosen-select" id="constituencyCanId">
 						<option value="0">Select Constituency</option>
 					</select>
@@ -315,9 +315,9 @@
 <script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <!-- for file uploader  -->              
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/jquery.filer.min.js"></script>
-<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script>                
-<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
+<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/editUploadFile.js?v=1.0.5"></script>                
+<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/editUploadFile2.js?v=1.0.5"></script>                
 <!-- for file uploader -->
-<script src="Assests/representationRequest/representationRequestEntry.js" type="text/javascript"></script>
+<script src="Assests/representationRequest/representationRequestEdit.js" type="text/javascript"></script>
 </body>
 </html>
