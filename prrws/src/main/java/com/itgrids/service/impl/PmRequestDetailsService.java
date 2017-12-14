@@ -20,6 +20,7 @@ import com.itgrids.dao.IDocumentDAO;
 import com.itgrids.dao.ILocationAddressDAO;
 import com.itgrids.dao.IPetitionDAO;
 import com.itgrids.dao.IPetitionStatusDAO;
+import com.itgrids.dao.IPmOfficerUserDAO;
 import com.itgrids.dao.IPmPetitionDocumentDAO;
 import com.itgrids.dao.IPmRefCandidateDAO;
 import com.itgrids.dao.IPmRefCandidateDesignationDAO;
@@ -36,6 +37,7 @@ import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.RepresenteeViewVO;
 import com.itgrids.dto.ResponseVO;
+import com.itgrids.dto.UserVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
 import com.itgrids.model.Petition;
@@ -100,6 +102,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	@Autowired
 	private IPetitionStatusDAO petitionStatusDAO;
+	@Autowired
+	private IPmOfficerUserDAO pmOfficerUserDAO;
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO){
 		ResponseVO responseVO = new ResponseVO();
 		try {
@@ -868,4 +872,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 		 return addressVO;
 	 }
+		public UserVO getPmOffceUserDetails(Long userId, UserVO userVO){
+			try{
+				//UserVO userVO = null;
+				// 0-deptId, 1-deptName,2-designtionIdm,3-designtionName,4-officerId,5-name,6-mobileNo
+				Object[] userObj= pmOfficerUserDAO.getPmOffceUserDetails(userId);
+				if(userObj != null && userObj.length > 0){
+					userVO.setDeptName(commonMethodsUtilService.getStringValueForObject(userObj[1]));
+					userVO.setDesignation(commonMethodsUtilService.getStringValueForObject(userObj[3]));
+					userVO.setUserName(commonMethodsUtilService.getStringValueForObject(userObj[5]));
+					userVO.setPhoneNo(commonMethodsUtilService.getStringValueForObject(userObj[6]));
+				}
+				
+			}catch(Exception e){
+				LOG.error("Exception Occured in setAddressDetailsToResultView ");
+			}
+			return userVO;
+		}
 }
