@@ -19,7 +19,7 @@ public class PmSubWorkDetails {
 
 	private Long pmSubWorkDetailsId;
 	private Long petitionId;
-	private Long costEstimation;
+	private Double costEstimation;
 	private Long pmDepartmentId;
 	private Long pmSubjectId;
 	private Long pmSubSubjectId;
@@ -40,10 +40,12 @@ public class PmSubWorkDetails {
 	private User updatedUser;
 	private Date insertedTime;
 	private Date updatedTime;
-	
+	private String eOfficeId;
+	private String uiBuildSeriesNo;
 	private Petition petition;
 	private PmDepartment pmDepartment;
 	private PmSubject pmSubject;
+	private PmSubject pmSubSubject;
 	private PmLead pmLead;
 	private PmBriefLead pmBriefLead;
 	private PmGrant pmGrant;
@@ -67,10 +69,10 @@ public class PmSubWorkDetails {
 		this.petitionId = petitionId;
 	}
 	@Column(name="cost_estimation")
-	public Long getCostEstimation() {
+	public Double getCostEstimation() {
 		return costEstimation;
 	}
-	public void setCostEstimation(Long costEstimation) {
+	public void setCostEstimation(Double costEstimation) {
 		this.costEstimation = costEstimation;
 	}
 	@Column(name="pm_department_id")
@@ -266,6 +268,31 @@ public class PmSubWorkDetails {
 	}
 	public void setPmWorkType(PmWorkType pmWorkType) {
 		this.pmWorkType = pmWorkType;
+	}
+	
+	@Column(name="e_office_id")
+	public String geteOfficeId() {
+		return eOfficeId;
+	}
+	public void seteOfficeId(String eOfficeId) {
+		this.eOfficeId = eOfficeId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_sub_subject_id", insertable = false, updatable = false)
+	public PmSubject getPmSubSubject() {
+		return pmSubSubject;
+	}
+	public void setPmSubSubject(PmSubject pmSubSubject) {
+		this.pmSubSubject = pmSubSubject;
+	}
+	
+	@Column(name="ui_build_series_no")
+	public String getUiBuildSeriesNo() {
+		return uiBuildSeriesNo;
+	}
+	public void setUiBuildSeriesNo(String uiBuildSeriesNo) {
+		this.uiBuildSeriesNo = uiBuildSeriesNo;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
