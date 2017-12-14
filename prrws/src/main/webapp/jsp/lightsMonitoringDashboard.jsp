@@ -16,7 +16,14 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
-	
+	.block_padding_15{
+		padding: 10px;
+	}
+	@media(min-width: 992px) and (max-width: 1200px){
+		.img_height{
+			height:35px !important;
+		}
+	}
 </style>
 </head>
 <body>
@@ -230,6 +237,7 @@
 		<div class="row m_top10">
 			<div id="projectData"></div>
 		</div>
+		
 	</section>
 </div>
 </main>

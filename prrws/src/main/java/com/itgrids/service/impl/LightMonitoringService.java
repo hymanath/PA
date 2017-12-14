@@ -1,15 +1,18 @@
 package com.itgrids.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itgrids.dao.ILightInstallationTargetDAO;
 import com.itgrids.dao.ILightMonitoringDAO;
 import com.itgrids.dao.ILightWattageDAO;
 import com.itgrids.dao.ILightsVendorDAO;
@@ -59,6 +63,9 @@ public class LightMonitoringService  implements ILightMonitoring{
 	
 	@Autowired 
 	private ILightsVendorDAO lightsVendorDAO;
+	
+	@Autowired
+	private ILightInstallationTargetDAO lightInstallationTargetDAO;
 		   
 	public ResultVO saveRealtimeStatusByVillages() {
 		ResultVO stausVO = new ResultVO();
@@ -702,6 +709,11 @@ public class LightMonitoringService  implements ILightMonitoring{
 			
 			List<Object[]> lightMonitorindDtlsObjList = lightMonitoringDAO.getDateWiseLightMonitoringDtls(getRequiredDateByPassingDays(62),today,locationType,locationValues);
 			List<LightsVendor> vendorList = lightsVendorDAO.getAll();
+			
+			 //getting total lights
+			 List<Object[]> objList = lightInstallationTargetDAO.getLedTargetVendorWise(today);
+			 Map<String,LightMonitoringVO> targetMap = getLedTargetDateWise(objList);
+			
 			Map<String,LightMonitoringVO>  dateWiseLightsDtlsMap = prepareDateWiseLightMonitoringDtls(lightMonitorindDtlsObjList,vendorList);
 			String[] templateArr = {"Today Total","Last 1 Day","Last 2 Day","Last 3 Day","Last 7 Day","Last 14 Day","Last 30 Day","Last 60 Day"};
 			  
@@ -711,17 +723,46 @@ public class LightMonitoringService  implements ILightMonitoring{
 				  if (dateVO != null )  {
 					  	dateVO.setTimePeriod(string);
 					  if (!string.equalsIgnoreCase("Today Total")) {
-						 // dateVO.setPendingLightcount( list.get(0).getTotalLights()-dateVO.getTotalLights());
 						  if (dateVO.getSubList() != null && dateVO.getSubList().size() > 0) {
 							  for(LightMonitoringVO vo:dateVO.getSubList()) {
 								  LightMonitoringVO matchVO = getMatchVO(list.get(0).getSubList(), vo.getLightVendorId());
 								   if (matchVO != null ) {
 									   if (vo.getTotalLights() > 0) {
-										   vo.setPendingLightcount(matchVO.getTotalLights()-vo.getTotalLights());
-										   dateVO.setPendingLightcount(dateVO.getPendingLightcount()+vo.getPendingLightcount());//new added light
+										  //new added light achievement
+										   vo.setNewAddedLightcount(matchVO.getTotalLights()-vo.getTotalLights());
+										   dateVO.setNewAddedLightcount(dateVO.getNewAddedLightcount()+vo.getNewAddedLightcount());
+									   }
+									   if (vo.getTotalPanels() > 0) {
+										 //new added panel achievement
+										   vo.setNewAddedPanelCount(matchVO.getTotalPanels()-vo.getTotalPanels());
+										   dateVO.setNewAddedPanelCount(dateVO.getNewAddedPanelCount()+vo.getNewAddedPanelCount());
 									   }
 								   }
-							  }
+								   
+									    String todayDateStr = sdf.format(today);
+									    int noOfDay = getDayPassingTimePeriod(string);
+									    int targetSize = targetMap.size();
+									    if (targetSize >= noOfDay) {
+									    	 List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(getRequiredDateByPassingDays(--noOfDay), sdf.parse(todayDateStr));
+											    if (dayList != null) {
+											    	for (String stringDate : dayList) {
+											    		  LightMonitoringVO targetVO = targetMap.get(stringDate);
+											    		  if (targetVO != null ) {
+											    			  LightMonitoringVO targetMatchvO = getMatchVO(targetVO.getSubList(), vo.getLightVendorId());   
+															   if (targetMatchvO != null ) {
+																   //setting light target
+																   vo.setLightTarget(vo.getLightTarget() + targetMatchvO.getLightTarget());
+																   dateVO.setLightTarget(dateVO.getLightTarget() + targetMatchvO.getLightTarget());
+																   //setting panel target
+																   vo.setPanelTarget(vo.getPanelTarget() + targetMatchvO.getPanelTarget());
+																   dateVO.setPanelTarget(dateVO.getPanelTarget() + targetMatchvO.getPanelTarget());
+															   }  
+											    		  }
+											    	}
+											    }
+									    }
+								   }
+							  
 						  }
 					  }
 					  list.add(dateVO);	  
@@ -735,7 +776,11 @@ public class LightMonitoringService  implements ILightMonitoring{
 					 LightMonitoringVO newDateVO = list.get(--j);
 					 Long totalLight =  oldDateVO.getTotalLights()- newDateVO.getTotalLights();
 					 if (totalLight == 0l) {
-						 newDateVO.setPendingLightcount(0l);
+						 newDateVO.setNewAddedLightcount(0l);
+					 }
+					 Long totalPanel =  oldDateVO.getTotalPanels()- newDateVO.getTotalPanels();
+					 if (totalPanel == 0l) {
+						 newDateVO.setNewAddedPanelCount(0l);
 					 }
 					  if (newDateVO.getSubList() != null && newDateVO.getSubList().size() > 0) {
 						  for(LightMonitoringVO vo:newDateVO.getSubList()) {
@@ -744,7 +789,13 @@ public class LightMonitoringService  implements ILightMonitoring{
 								   Long totalLghts = matchVO.getTotalLights()-vo.getTotalLights();
 								   if (totalLight == 0l) {
 									    if (totalLghts == 0l) {
-									    	vo.setPendingLightcount(0l);
+									    	vo.setNewAddedLightcount(0l);
+									    } 
+								   }
+								   Long ttlPanel = matchVO.getTotalPanels()-vo.getTotalPanels();
+								   if (totalPanel == 0l) {
+									    if (ttlPanel == 0l) {
+									    	vo.setNewAddedPanelCount(0l);
 									    } 
 								   }
 							   }
@@ -753,11 +804,211 @@ public class LightMonitoringService  implements ILightMonitoring{
 				 }
 			 }
 			
+			// calculating overall target and achievement vendor wise
+			  if (targetMap != null && targetMap.size() > 0) {
+				  LightMonitoringVO overallDtlsVO = new LightMonitoringVO();
+				    overallDtlsVO.setSubList(getVendorTemplate(vendorList));//setting template
+				    setOverAllTargt(overallDtlsVO,targetMap);//setting over all target
+				    
+				     List<String> dateList = new ArrayList<String>(targetMap.keySet());
+					 List<Object[]> lightsDtlsObjList = lightMonitoringDAO.getDateWiseLightMonitoringDtls(getOneDayBackDate(dateList.get(dateList.size()-1)),getOneDayBackDate(dateList.get(dateList.size()-1)),locationType,locationValues);
+					 Map<String,LightMonitoringVO>  achivementMap = prepareDateWiseLightMonitoringDtls(lightsDtlsObjList,vendorList);
+					 List<LightMonitoringVO> backDataVOList = null;
+					 if (achivementMap != null ) {
+						 backDataVOList = new ArrayList<>(achivementMap.values());
+					 }
+				
+					 String dateStr = sdf.format(getRequiredDateByPassingDays(getDayPassingTimePeriod("Today Total")));
+					 LightMonitoringVO todayDataVO = dateWiseLightsDtlsMap.get(dateStr);
+					 if (todayDataVO != null ) {
+						 for (LightMonitoringVO vo : todayDataVO.getSubList()) {
+								LightMonitoringVO vendorMatchVO = getMatchVO(backDataVOList.get(0).getSubList(),vo.getLightVendorId());
+								LightMonitoringVO resultMatchVO = getMatchVO(overallDtlsVO.getSubList(),vo.getLightVendorId());
+								if (resultMatchVO != null) {
+									if (vo.getTotalLights() > 0) {
+										resultMatchVO.setNewAddedLightcount(vo.getTotalLights()-vendorMatchVO.getTotalLights());
+									}
+									if (vo.getTotalPanels() > 0 ) {
+										resultMatchVO.setNewAddedPanelCount(vo.getTotalPanels()-vendorMatchVO.getTotalPanels());
+									}
+								}
+						}
+					 }
+					 // calculating overall percentage
+					 calculateOverllPercentage(overallDtlsVO);
+					 SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MMM-yyyy");
+					 if (list.size() > 0) {
+						 overallDtlsVO.setName(sdf1.format(sdf.parse(dateList.get(dateList.size()-1)))+" to "+sdf1.format(sdf.parse(dateList.get(0))));
+						 list.get(0).setOverDtlsVO(overallDtlsVO);
+					 }
+			  }
+			 
+			 
 	  }catch (Exception e) {
    	   LOG.error("Exception raised at getTimePeriodWiseLightsDetails - LightMonitoringService service", e);
       }
 		return list;
       } 
+	 public void calculateOverllPercentage(LightMonitoringVO overallDtlsVO) {
+		  try {
+			  if (overallDtlsVO.getSubList() != null ) {
+					 for (LightMonitoringVO vendorVO : overallDtlsVO.getSubList()) {
+						 vendorVO.setLightPercentage(calculatePercantage(vendorVO.getNewAddedLightcount(), vendorVO.getLightTarget()));
+						 vendorVO.setPanelPercentage(calculatePercantage(vendorVO.getNewAddedPanelCount(), vendorVO.getPanelTarget()));
+						 //overall 
+						 overallDtlsVO.setNewAddedLightcount(overallDtlsVO.getNewAddedLightcount()+vendorVO.getNewAddedLightcount());
+						 overallDtlsVO.setNewAddedPanelCount(overallDtlsVO.getNewAddedPanelCount()+vendorVO.getNewAddedPanelCount());
+						 overallDtlsVO.setLightTarget(overallDtlsVO.getLightTarget()+vendorVO.getLightTarget());
+						 overallDtlsVO.setPanelTarget(overallDtlsVO.getPanelTarget()+vendorVO.getPanelTarget());
+					}
+					 overallDtlsVO.setLightPercentage(calculatePercantage(overallDtlsVO.getNewAddedLightcount(), overallDtlsVO.getLightTarget()));
+					 overallDtlsVO.setPanelPercentage(calculatePercantage(overallDtlsVO.getNewAddedPanelCount(), overallDtlsVO.getPanelTarget()));
+				 }
+		  } catch (Exception e) {
+			  LOG.error("Exception raised at calculateOverllPercentage - LightMonitoringService service", e);
+		  }
+	 }
+
+	public void setOverAllTargt(LightMonitoringVO overallDtlsVO,Map<String, LightMonitoringVO> targetMap) {
+		try {
+			if (targetMap != null) {
+				for (Entry<String, LightMonitoringVO> entry : targetMap.entrySet()) {
+					if (entry.getValue() != null && entry.getValue().getSubList().size() > 0) {
+						for (LightMonitoringVO vo : entry.getValue().getSubList()) {
+							LightMonitoringVO vendorVO = getMatchVO(overallDtlsVO.getSubList(),vo.getLightVendorId());
+							if (vendorVO != null) {
+								vendorVO.setLightTarget(vendorVO.getLightTarget() + vo.getLightTarget());
+								vendorVO.setPanelTarget(vendorVO.getPanelTarget() + vo.getPanelTarget());
+							}
+						}
+
+					}
+
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at setOverAllTargt - LightMonitoringService service",e);
+		}
+	}
+	//not used presently
+	public LightMonitoringVO getOverAllAchievementDetails(Map<String, LightMonitoringVO> targetMap,Map<String, LightMonitoringVO> achivementMap,List<LightsVendor> vendorList) {
+		LightMonitoringVO overAllDtlsVO = new LightMonitoringVO();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			if (targetMap != null && targetMap.size() > 0) {
+				overAllDtlsVO.setSubList(getVendorTemplate(vendorList));//setting template
+				//setting achievement count date wise
+				for (Entry<String, LightMonitoringVO> entry : targetMap.entrySet()) {
+					LightMonitoringVO achivementVO = achivementMap.get(entry.getKey());
+					if (entry.getValue().getSubList() != null) {
+						for (LightMonitoringVO vendorVO : entry.getValue().getSubList()) {
+							if (achivementVO != null) {
+								LightMonitoringVO vendorMatchVO = getMatchVO(achivementVO.getSubList(),vendorVO.getLightVendorId());
+								if (vendorVO != null) {
+									vendorVO.setTotalLights(vendorMatchVO.getTotalLights());
+									vendorVO.setTotalPanels(vendorMatchVO.getTotalPanels());
+								}
+							}
+						}
+					}
+
+				}
+				//setting new added light by subtracting count date wise
+				List<LightMonitoringVO> tempList = new ArrayList<>(targetMap.values());
+				if (tempList.size() > 0) {
+					 for(int i = 0; i< tempList.size()-1; i++) {
+						 int j = i;
+						 LightMonitoringVO newDateVO = tempList.get(i);
+						 LightMonitoringVO oldDateVO = tempList.get(++j);
+						 if (j == tempList.size()-1) { //if last object,.
+							 
+							 /*if it is last target date then we are taking one day back 
+							 from your target date achievement data and subtracting from that 
+							 to take how many new light and panel has added on that day.*/
+							if (getOneDayBackDate(oldDateVO.getName()) != null ) {
+								String dateStr = sdf.format(getOneDayBackDate(oldDateVO.getName()));
+								LightMonitoringVO oneDayBackDateFromTarget = achivementMap.get(dateStr);
+								setRequiredDate(overAllDtlsVO, oldDateVO, oneDayBackDateFromTarget); //setting overall values	 
+							}
+						 } else {
+							 setRequiredDate(overAllDtlsVO, newDateVO, oldDateVO); //setting overall values	 
+						 }
+						
+					 }
+					 
+					 //calculating percentage
+					 calculateOverllPercentage(overAllDtlsVO);
+				 }
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOverAllAchievementDetails - LightMonitoringService service",e);
+		}
+		return overAllDtlsVO;
+	}
+	private void setRequiredDate(LightMonitoringVO overAllDtlsVO, LightMonitoringVO newDateVO,LightMonitoringVO oldDateVO) {
+		 try {
+			 if (newDateVO.getSubList() != null && newDateVO.getSubList().size() > 0) {
+				  for(LightMonitoringVO vo:newDateVO.getSubList()) {
+					  LightMonitoringVO matchVO = getMatchVO(oldDateVO.getSubList(), vo.getLightVendorId());
+					   if (matchVO != null ) {
+						   LightMonitoringVO  vendorMatchVO = getMatchVO(overAllDtlsVO.getSubList(), vo.getLightVendorId());//this match VO is from overall VO making final result
+						   if (vendorMatchVO != null ) {
+							   if (vo.getTotalLights() > 0) {
+								   System.out.println("New Date "+newDateVO.getName()+" count "+vo.getTotalLights());
+								   System.out.println("OLD Date "+oldDateVO.getName()+" count "+matchVO.getTotalLights());
+								   Long totalLghts = vo.getTotalLights()-matchVO.getTotalLights();
+								   System.out.println("New added light "+totalLghts);
+								   if (StringUtils.isNumeric(totalLghts.toString())) {
+									   vendorMatchVO.setNewAddedLightcount(vendorMatchVO.getNewAddedLightcount()+totalLghts);
+								   }
+								 
+							   } 
+							   if (vo.getTotalPanels() > 0) {
+								   Long ttlPanel = vo.getTotalPanels()-matchVO.getTotalPanels();
+								   if (StringUtils.isNumeric(ttlPanel.toString())) { 
+									   vendorMatchVO.setNewAddedPanelCount(vendorMatchVO.getNewAddedPanelCount()+ttlPanel); 
+								   }
+							   }
+							   vendorMatchVO.setLightTarget(vendorMatchVO.getLightTarget() + vo.getLightTarget());
+							   vendorMatchVO.setPanelTarget(vendorMatchVO.getPanelTarget() + vo.getPanelTarget());
+						   }
+					   }
+				  }
+			  }
+		 } catch (Exception e) {
+			 LOG.error("Exception raised at setRequiredDate - LightMonitoringService service",e);
+		 }
+	}
+
+	public Map<String, LightMonitoringVO> getLedTargetDateWise(List<Object[]> objList) {
+		HashMap<String, LightMonitoringVO> targetMap = new LinkedHashMap<String,LightMonitoringVO>();
+		try {
+			if (objList != null && objList.size() > 0) {
+				List<LightsVendor> vendorList = lightsVendorDAO.getAll();
+				for (Object[] param : objList) {
+					LightMonitoringVO targetVO = targetMap.get(commonMethodsUtilService.getStringValueForObject(param[0]));
+					if (targetVO == null) {
+						targetVO = new LightMonitoringVO();
+						targetVO.setName(commonMethodsUtilService.getStringValueForObject(param[0]));
+						targetVO.setSubList(getVendorTemplate(vendorList));
+						targetMap.put(targetVO.getName(), targetVO);
+					}
+					Long lightVendorId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					LightMonitoringVO vendorVO = getMatchVO(targetVO.getSubList(), lightVendorId);
+					if (vendorVO != null) {
+						vendorVO.setLightTarget(commonMethodsUtilService.getLongValueForObject(param[2]));
+						vendorVO.setPanelTarget(commonMethodsUtilService.getLongValueForObject(param[3]));
+					}
+
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLedTargetDateWise - LightMonitoringService service",e);
+		}
+		return targetMap;
+	}
 		
 	 
 	private Map<String, LightMonitoringVO> prepareDateWiseLightMonitoringDtls(List<Object[]> objList,List<LightsVendor> lightsVendor) {
@@ -859,6 +1110,21 @@ public class LightMonitoringService  implements ILightMonitoring{
 		 }
 		 return null;
 	}
+	private Date getOneDayBackDate(String dateStr) {
+		 try {
+			   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Calendar now = Calendar.getInstance();
+				now.setTime(sdf.parse(dateStr));
+				now.add(Calendar.DATE, -1);
+				Date pastDate = now.getTime();
+				String dateString = sdf.format(pastDate);
+				return sdf.parse(dateString);
+			 
+		 } catch (Exception e) {
+			 LOG.error("Exception raised at getOneDayBackDate - BioMetricService service",e);
+		 }
+		 return null;
+	}
 	private static Date getRequiredDateByPassingDays(int noOfDays) {
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -873,6 +1139,16 @@ public class LightMonitoringService  implements ILightMonitoring{
 			}
 			return null;
 	} 
-		}
+	 private Double calculatePercantage(Long subCount,Long totalCount){
+		    Double d=0.0d;
+		    if(subCount.longValue()>0l && totalCount.longValue()==0l)
+		    LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+
+		    if(totalCount.longValue() > 0l){
+		       d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();   
+		    }
+		    return d;
+	 }
+ }
 	
 	        	

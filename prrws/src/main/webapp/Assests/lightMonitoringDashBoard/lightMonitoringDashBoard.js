@@ -6,6 +6,7 @@ var globallevelId = 0;
 var globalLocationName='';
 $("#selectedName").attr("attr_id","0");
 $("#selectedName").attr("attr_levelidvalue","2");
+var vendorArr=['','EESL','NREDCAP'];
 
 //onLoadCalls();
 setTimeout(function(){
@@ -2048,114 +2049,186 @@ function getTimePeriodWiseLightsDetaisl(){
 function bulidStateWiseClickData(result){
 	
 	var str= '';
-	str+='<h4 style="margin-top:10px;margin-bottom:10px" class="text-capital"><b>OverAll DETAILS</b></h4>';
-	str+='<table class="table table-bordered table_custom" id="stateOverallProgress">';
-		str+='<thead>';
-			str+='<tr class="text-center">';
-			for(var i in result){
-				str+='<th colspan="2" class="text-capital">'+result[i].timePeriod+'</th>';
-			}
-			str+='</tr>';
-			str+='<tr>';
-			for(var i in result){
-				str+='<th class="text-center">TOTAL PANELS</th>';
-				str+='<th class="text-center">TOTAL LIGHTS</th>';
-			}	
-			str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-			str+='<tr class="text-center">';
-			for(var i in result){
-				str+='<td>'+result[i].totalPanels+'</td>';
-				str+='<td>'+result[i].totalLights+'</td>';
-			}
-				
-			str+='</tr>';
-		str+='</tbody>';
-	str+='</table>';
+	
+	str+='<div class="col-sm-3">';
+		str+='<div class="white-block block_padding_15" style="background-color:#F3F3F3">';
+			str+='<h4><b>TODAY OVERVIEW</b></h4>';
+			str+='<div class="row m_top5">';
+				str+='<div class="col-sm-6">';
+					str+='<img src="Assests/icons/CCMS_Box_icon.png" style="height:35px">';
+					str+='<h5><b>Panels</b></h5>';
+					str+='<h5><b>'+result[0].totalPanels+'</b></h5>';	
+				str+='</div>';
+				str+='<div class="col-sm-6" style="border-left:1px solid grey">';
+					str+='<img src="Assests/icons/Total_Led_lights_iocn.png" style="height:35px">';
+					str+='<h5><b>Lights<h5><b>';
+					str+='<h5><b>'+result[0].totalLights+'</b></h5>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="col-sm-9">';
+		str+='<div class="white-block block_padding_15" style="background-color:#F3F3F3">';
+			str+='<h4><b>PAST DAYS OVERVIEW</b></h4>';
+			
+			str+='<div class="table-responsive">';
+				str+='<table class="table table-bordered text-center">';
+					str+='<tr>';
+						for(var i in result){
+							if(result[i].timePeriod != 'Today Total'){
+								str+='<th colspan="2" class="text-capital">'+result[i].timePeriod+'</th>';	
+							}
+							
+						}
+					str+='</tr>';
+					str+='<tr class="text-center">';
+						for(var i in result){
+							if(result[i].timePeriod != 'Today Total'){
+								str+='<td><img src="Assests/icons/CCMS_Box_icon.png" style="height:30px">'+result[i].totalPanels+'</td>';
+								str+='<td><img src="Assests/icons/Total_Led_lights_iocn.png" style="height:30px">'+result[i].totalLights+'</td>';
+							}
+						}
+					str+='</tr>';
+				str+='</table>';
+			str+='</div>';
+			
+		str+='</div>';
+	str+='</div>';
+	
 	$("#surveyStartedLocationDtlsDivId").html(str);
 }
-/* function buildStateWiseVendorTable(result){
-	var str='';
-		str+='<h4 style="margin-top:10px;margin-bottom:10px"><b>VENDOR DETAILS</b></h4>';
-		str+='<div class="table-responsive">';
-		
-		str+='<table class="table table-bordered table_custom">';
-		str+='<thead>';
-		str+='<tr class="text-center">';
-			for(var i in result){
-				str+='<th colspan="4" class="text-capital">'+result[i].timePeriod+'</th>';
-			}
-			str+='</tr>';
-			str+='<tr>';
-			for(var i in result){
-				str+='<th class="text-center" colspan="2"><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;margin-right:5px"> EESL</th>';
-				str+='<th class="text-center" colspan="2"><img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;margin-right:5px"> NREDCAP</th>';
-			}
-			str+='</tr>';	
-			str+='<tr>';
-			for(var i in result){
-				str+='<th class="text-center">TOTAL PANELS</th>';
-				str+='<th class="text-center">TOTAL LIGHTS</th>';
-			}	
-			for(var i in result){
-				str+='<th class="text-center">TOTAL PANELS</th>';
-				str+='<th class="text-center">TOTAL LIGHTS</th>';
-			}
-			str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-			str+='<tr class="text-center">';
-				for(var i in result){
-					for(var j in result[i].subList){
-							str+='<td>'+result[i].subList[j].totalPanels+'</td>';
-							str+='<td>'+result[i].subList[j].totalLights+'</td>';
-					}
-				}
-			str+='</tr>';	
-		str+='</tbody>';
-	str+='</table>';
-	str+='</div>';
-	$("#statewiseVendorDetails").html(str);
-		
-} */
+
 function buildnewAddedLightsDetails(result){
 	var str='';
-		str+='<h4 style="margin-top:10px;margin-bottom:10px" class="text-capital"><b>New Added Lights DETAILS</b></h4>';
-		str+='<div class="table-responsive">';
+		str+='<div class="clearfix"></div>';
+		str+='<h4 style="margin-top:10px;margin-bottom:10px;padding-left:10px" class="text-capital"><b>NEWLY ADDED LIGHTS DETAILS</b></h4>';
+		str+='<p style="padding-left:10px">Targets From '+result[0].overDtlsVO.name+'</p>';
+			for(var i in vendorArr){
+					str+='<div class="col-sm-4 m_top10">';
+						str+='<div class="block_padding_15" style="background-color:#F3F3F3">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-6">';
+									str+='<div class="media">';
+										str+='<div class="media-left">';
+											if(vendorArr[i] == 'EESL'){
+												str+='<img src="Assests/icons/Essl.jpg" style="height:100px" class="img_height">';
+											}
+											if(vendorArr[i] == 'NREDCAP'){
+												str+='<img src="Assests/icons/Nredp.jpg" style="height:100px" class="img_height">';
+											}
+											
+//											str+='<img src="Assests/icons/Target_icon.png" style="height:45px">';
+										str+='</div>';
+										str+='<div class="media-body">';
+											str+='<img src="Assests/icons/Target_icon.png" style="height:45px">';
+											str+='<h5><b>Total Target</b></h5>';
+											if(vendorArr[i] == ''){
+													str+='<h4><b>'+result[0].overDtlsVO.lightTarget+'</b></h4>';
+												}
+												for(var j in result[0].overDtlsVO.subList){
+													if(vendorArr[i] == 'EESL'){
+														if(result[0].overDtlsVO.subList[j].lightVendorName == 'EESL'){
+															str+='<h4><b>'+result[0].overDtlsVO.subList[j].lightTarget+'</b></h4>';
+														}
+													}
+													if(vendorArr[i] == 'NREDCAP'){
+														if(result[0].overDtlsVO.subList[j].lightVendorName == 'NREDCAP'){
+															str+='<h4><b>'+result[0].overDtlsVO.subList[j].lightTarget+'</b></h4>';
+														}
+													}
+												}
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+								
+								str+='<div class="col-sm-6" style="border-left: 1px solid lightgrey">';
+									
+									str+='<div class="media">';
+										str+='<div class="media-left">';
+//											str+='<img src="Assests/icons/Achived_icon.png" style="height:45px">';
+										str+='</div>';
+										str+='<div class="media-body">';
+											str+='<div class="" style="margin:0 auto">';
+												str+='<img src="Assests/icons/Achived_icon.png" style="height:45px">';
+											str+='</div>';
+											str+='<h5><b>Total Achivement</b></h5>';
+											if(vendorArr[i] == ''){
+												str+='<h4 style="display:inline-block;padding:10px"><b>'+result[0].overDtlsVO.newAddedLightcount+'</b></h4>';
+												str+='<span style="color:#02B1Ac">'+result[0].overDtlsVO.lightPercentage+'%</span>';
+											}
+											for(var j in result[0].overDtlsVO.subList){
+												if(vendorArr[i] == 'EESL'){
+													if(result[0].overDtlsVO.subList[j].lightVendorName == 'EESL'){
+														str+='<h4 style="display:inline-block;padding:10px"><b>'+result[0].overDtlsVO.subList[j].newAddedLightcount+'</b></h4>';
+														str+='<span style="color:#02B1Ac">'+result[0].overDtlsVO.subList[j].lightPercentage+'%</span>';
+													}
+												}
+												if(vendorArr[i] == 'NREDCAP'){
+													if(result[0].overDtlsVO.subList[j].lightVendorName == 'NREDCAP'){
+														str+='<h4 style="display:inline-block;padding:10px"><b>'+result[0].overDtlsVO.subList[j].newAddedLightcount+'</b></h4>';
+														str+='<span style="color:#02B1Ac">'+result[0].overDtlsVO.subList[j].lightPercentage+'%</span>';
+													}
+												}
+											}
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+								
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					}
+		str+='<div class="clearfix"></div>';	
+		str+='<div class="col-sm-12 table-responsive m_top10">';
 		
 		str+='<table class="table table-bordered table_custom">';
 		str+='<thead>';
+			
+		str+='</thead>';
+		str+='<tbody>';
 			str+='<tr class="text-center">';
 				str+='<th></th>';
 				for(var i in result){
-				    if (result[i].timePeriod != "Today Total") {
-						str+='<th class="text-capital">'+result[i].timePeriod+'</th>';	
-					}
+					if (result[i].timePeriod != "Today Total") {
+						str+='<th>';
+							str+='<h5><b>'+result[i].timePeriod+'</b></h5>';
+						str+='</th>';
+					}	
 				}
 			str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
 			str+='<tr class="text-center">';
 				str+='<td class="text-capital">Total</td>';
 				
 				for(var i in result){
-					  if (result[i].timePeriod != "Today Total") {
-						str+='<td>'+result[i].pendingLightcount+'</td>';	
+					 if (result[i].timePeriod != "Today Total") {
+					  str+='<td>';
+					   if (result[i].lightTarget > 0) {
+						   str+='<span title="target" style="color:green;cursor:pointer;">'+result[i].lightTarget+'</span>';
+					   } else {
+						   str+='<span title="target" style="color:red;">NO TARGET</span>';
+					   }
+					  str+='/<span title="achievement" style="cursor:pointer;">'+result[i].newAddedLightcount+'</span>';
+					  str+'</td>';	
 					 }
 				}
 				str+='</tr>';
 				str+='<tr class="text-center">';
 				str+='<td class="text-center"><img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;margin-right:5px"> EESL</td>';
 					for(var i in result){
-					  if (result[i].timePeriod != "Today Total") {
+					 if (result[i].timePeriod != "Today Total") {
 						  for(var j in result[i].subList) {
-							if (result[i].subList[j].lightVendorId == 1) {
-								str+='<td class="text-capital">'+result[i].subList[j].pendingLightcount+'</td>';	
+								if (result[i].subList[j].lightVendorId == 1) {
+								 str+='<td class="text-capital">';
+									if (result[i].subList[j].lightTarget > 0) {
+									str+='<span title="target" style="color:green;cursor:pointer;">'+result[i].subList[j].lightTarget+'</span>';	
+									} else {
+									 str+='<span title="target" style="color:red;">NO TARGET</span>';	
+									}
+									 str+='/<span style="cursor:pointer;" title="achievement">'+result[i].subList[j].newAddedLightcount+'</span>';
+								 str+'</td>';	
+								}
+							   
 							}
-						   
-						}
-						
 					 }
 				}
 				str+='</tr>';
@@ -2166,12 +2239,18 @@ function buildnewAddedLightsDetails(result){
 						if (result[i].subList != null ) {
 							for(var j in result[i].subList) {
 								if (result[i].subList[j].lightVendorId == 2) {
-									str+='<td class="text-capital">'+result[i].subList[j].pendingLightcount+'</td>';	
+									str+='<td class="text-capital">';
+							       if (result[i].subList[j].lightTarget > 0) {
+										str+='<span title="target" style="color:green;cursor:pointer;">'+result[i].subList[j].lightTarget+'</span>';
+									} else {
+										str+='<span title="target" style="color:red;">NO TARGET</span>';
+									}
+									str+='/<span style="cursor:pointer;" title="achievement">'+result[i].subList[j].newAddedLightcount+'</span></td>';	
 								}
 							   
 					        }
 						}
-					 }
+					  }
 				}
 				str+='</tr>';	
 		str+='</tbody>';
