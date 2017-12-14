@@ -182,6 +182,11 @@ $(document).on('click','.blockWiseDetails',function(){
 	var blockName = $(this).attr("attr_block_name");
 	departmentBlockWiseDetails(blockName);	
 });
+
+$(document).on('click','#droppedShowHideId',function(){
+	$(".droppedClass").toggle();
+});
+
 function departmentBlockWiseDetails(divId)
 {
 	var levelWiseBlockArr='';
@@ -815,10 +820,10 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 	}).done(function(result){
 		if(result != null && result.length > 0)
 		{
-			if(typeOfBlock == 'Total')
-			{
-				getITSectorLeadCategoryWiseDetails(type)
-			}
+			//if(typeOfBlock == 'Total')
+			//{
+				getITSectorLeadCategoryWiseDetails(type,typeOfBlock);
+			//}
 			return buildData(result,type);
 		}else{
 			if(type == "GREEN")
@@ -858,25 +863,28 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 					str+='</div>';
 				}else if(type == "DROPPED")
 				{	
-					str+='<div class="white_block_ITC" style="padding:5px 10px;background-color:#91CCC7;color:#fff">';
+					str+='<div class="white_block_ITC" style="padding:5px 10px;background-color:#91CCC7;color:#fff;cursor:pointer;" id="droppedShowHideId">';
 						str+='<p class="text-center">';
 							str+='<span>Dropped</span>';
 						str+='</p>';
 					str+='</div>';
 				}
-					str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
+					//str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
 						if(type == "GREEN")
 						{
+							str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
 							str+='<p>';
 								str+='<span style="padding:5px 10px;background-color:#058E46;color:#fff">Overall</span>';
 							str+='</p>';
 						}else if(type == "RED")
 						{
+							str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
 							str+='<p>';
 								str+='<span style="padding:5px 10px;background-color:#F75C5D;color:#fff">Overall</span>';
 							str+='</p>';
 						}else if(type == "DROPPED")
 						{
+							str+='<div class="white_block_ITC m_top20 droppedClass" style="background-color:#F1F1F1;display:none;">';
 							str+='<p>';
 								str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">Overall</span>';
 							str+='</p>';
@@ -913,10 +921,11 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 	}
 	
 }
-function getITSectorLeadCategoryWiseDetails(type){
+function getITSectorLeadCategoryWiseDetails(type,sector){
 	var json = {
 		leadName:"0",
-		category:type
+		category:type,
+		sector:sector
 	}
 	$.ajax({                
 		type:'POST',    
@@ -939,21 +948,24 @@ function getITSectorLeadCategoryWiseDetails(type){
 		var selectedBlockType = $("#promotionsBlockSwitch li.active").attr("attr_type");
 		for(var i in result)
 		{
-			str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
+			//str+='<div class="white_block_ITC m_top20 droppedClass" style="background-color:#F1F1F1">';
 				if(type == "GREEN")
 				{
+					str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
 					str+='<p>';
-						str+='<span style="padding:5px 10px;background-color:#058E46;color:#fff">'+result[i].category+' <span style="font-size:12px;">( '+result[i].name+' )</span> </span>';
+						str+='<span style="padding:5px 10px;background-color:#058E46;color:#fff">'+result[i].category+' <span style="font-size:12px;"> - '+result[i].name+'</span> </span>';
 					str+='</p>';
 				}else if(type == "RED")
 				{
+					str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
 					str+='<p>';
-						str+='<span style="padding:5px 10px;background-color:#F75C5D;color:#fff">'+result[i].category+' <span style="font-size:12px;">( '+result[i].name+' )</span> </span>';
+						str+='<span style="padding:5px 10px;background-color:#F75C5D;color:#fff">'+result[i].category+' <span style="font-size:12px;"> - '+result[i].name+'</span> </span>';
 					str+='</p>';
 				}else if(type == "DROPPED")
 				{
+					str+='<div class="white_block_ITC m_top20 droppedClass" style="background-color:#F1F1F1;display:none;">';
 					str+='<p>';
-						str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">'+result[i].category+' <span style="font-size:12px;">( '+result[i].name+' )</span> </span>';
+						str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">'+result[i].category+' <span style="font-size:12px;"> - '+result[i].name+'</span> </span>';
 					str+='</p>';
 				}
 				str+='<div class="row m_top20">';

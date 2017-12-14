@@ -931,15 +931,22 @@ public class ItcDashboardService implements IItcDashboardService {
 			MOUTrackerIT[] list = new TrackerITServiceSoapProxy().GET_LEAD_CATEGORY_WISE(inputVO.getLeadName(),inputVO.getCategory());
 			if(list != null && list.length > 0){
 				for (int i = 0; i < list.length; i++) {
+					/*String sectorNew = list[i].getITSECTOR();
+					if(sectorNew != null && sectorNew.equalsIgnoreCase("FINTECH HUB"))
+						sectorNew = "FINTECH";*/
+					
 					String categoryNew = list[i].getCATEGORY().trim();
 					if(categoryNew != null && categoryNew.equalsIgnoreCase("R3A"))
 						categoryNew = "R3";
 					else if(categoryNew != null && categoryNew.equalsIgnoreCase("R3B"))
 						categoryNew = "R3";
-					if(categoryNew != null && categoryNew.equalsIgnoreCase("R3C"))
+					else if(categoryNew != null && categoryNew.equalsIgnoreCase("R3C"))
+						categoryNew = "R3";
+					else if(categoryNew != null && categoryNew.equalsIgnoreCase("0"))
 						categoryNew = "R3";
 					
-					if(inputVO.getReportType() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total") && inputVO.getReportType().trim().equalsIgnoreCase(categoryNew)){
+					if(inputVO.getReportType() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total") && inputVO.getReportType().trim().equalsIgnoreCase(categoryNew)
+							&& inputVO.getCategory() != null && list[i].getITSECTOR().trim().equalsIgnoreCase(inputVO.getCategory())){
 						ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
 						vo.setSector(list[i].getSECTOR());
 						vo.setDistrict(list[i].getDISTRICT());
@@ -979,62 +986,141 @@ public class ItcDashboardService implements IItcDashboardService {
 		List<ItecPromotionDetailsVO> returnList = new ArrayList<ItecPromotionDetailsVO>();
 		try {
 			MOUTrackerIT[] list = new TrackerITServiceSoapProxy().GET_LEAD_CATEGORY_WISE(inputVO.getLeadName(),inputVO.getCategory());
-			if(list != null && list.length > 0){
-				for (int i = 0; i < list.length; i++) {
-					ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
-					if(list[i].getLINEOFACTIVITY() != null && list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total")){
-						vo.setInvestment(list[i].getINVESTMENT());
-						vo.setEmployment(list[i].getEMPLOYMENT());
-						vo.setCategory(list[i].getCATEGORY());
-						returnList.add(vo);
+			if(inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase("Total")){
+				if(list != null && list.length > 0){
+					for (int i = 0; i < list.length; i++) {
+						ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
+						if(list[i].getLINEOFACTIVITY() != null && list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total")){
+							vo.setInvestment(list[i].getINVESTMENT());
+							vo.setEmployment(list[i].getEMPLOYMENT());
+							vo.setCategory(list[i].getCATEGORY());
+							returnList.add(vo);
+						}
 					}
 				}
-			}
-			
-			if(returnList != null && !returnList.isEmpty()){
-				for (ItecPromotionDetailsVO finalVO : returnList) {
+				
+				if(returnList != null && !returnList.isEmpty()){
+					for (ItecPromotionDetailsVO finalVO : returnList) {
+						for(int i = 0; i < list.length; i++){
+							if(list[i].getLINEOFACTIVITY() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total")){
+								String categoryNew = list[i].getCATEGORY().trim();
+								if(categoryNew != null && categoryNew.equalsIgnoreCase("R3A"))
+									categoryNew = "R3";
+								else if(categoryNew != null && categoryNew.equalsIgnoreCase("R3B"))
+									categoryNew = "R3";
+								if(categoryNew != null && categoryNew.equalsIgnoreCase("R3C"))
+									categoryNew = "R3";
+									
+								if(categoryNew != null && categoryNew.equalsIgnoreCase(finalVO.getCategory())){
+									finalVO.setCategoryCount(finalVO.getCategoryCount()+1);
+								}
+								if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G1")){
+									finalVO.setName("Gone into Production");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G2")){
+									finalVO.setName("Trial Production");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G4")){
+									finalVO.setName("Civil Works commenced");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("Y")){
+									finalVO.setName("Ready for Foundation Stone");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R1")){
+									finalVO.setName("Land in possession and approvals granted");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R2")){
+									finalVO.setName("Land in possession and approvals in progress");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R3")){
+									finalVO.setName("Government land sought, but not allocated");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R4")){
+									finalVO.setName("DPR to be submitted");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("D")){
+									finalVO.setName("Dropped");
+								}
+							}
+							
+						}
+					}
+				}
+			}else{
+				if(list != null && list.length > 0){
 					for(int i = 0; i < list.length; i++){
-						if(list[i].getLINEOFACTIVITY() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total")){
+						/*String sectorNew = list[i].getITSECTOR();
+						if(sectorNew != null && sectorNew.equalsIgnoreCase("FINTECH HUB"))
+							sectorNew = "FINTECH";*/
+						
+						if(list[i].getLINEOFACTIVITY() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total") 
+								&& inputVO.getSector() != null && list[i].getITSECTOR().trim().equalsIgnoreCase(inputVO.getSector())){
 							String categoryNew = list[i].getCATEGORY().trim();
 							if(categoryNew != null && categoryNew.equalsIgnoreCase("R3A"))
 								categoryNew = "R3";
 							else if(categoryNew != null && categoryNew.equalsIgnoreCase("R3B"))
 								categoryNew = "R3";
-							if(categoryNew != null && categoryNew.equalsIgnoreCase("R3C"))
+							else if(categoryNew != null && categoryNew.equalsIgnoreCase("R3C"))
 								categoryNew = "R3";
-								
-							if(categoryNew != null && categoryNew.equalsIgnoreCase(finalVO.getCategory())){
+							else if(categoryNew != null && categoryNew.equalsIgnoreCase("0"))
+								categoryNew = "R3";
+							ItecPromotionDetailsVO finalVO = getMatchedVOByString(returnList, categoryNew);
+							if(finalVO == null){
+								finalVO = new ItecPromotionDetailsVO();
 								finalVO.setCategoryCount(finalVO.getCategoryCount()+1);
-							}
-							if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G1")){
-								finalVO.setName("Gone into Production");
-							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G2")){
-								finalVO.setName("Trial Production");
-							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G4")){
-								finalVO.setName("Civil Works commenced");
-							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("Y")){
-								finalVO.setName("Ready for Foundation Stone");
-							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R1")){
-								finalVO.setName("Land in possession and approvals granted");
-							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R2")){
-								finalVO.setName("Land in possession and approvals in progress");
-							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R3")){
-								finalVO.setName("Government land sought, but not allocated");
-							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R4")){
-								finalVO.setName("DPR to be submitted");
-							}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("D")){
-								finalVO.setName("Dropped");
+								finalVO.setInvestment(list[i].getINVESTMENT().replaceAll(",", ""));
+								finalVO.setEmployment(list[i].getEMPLOYMENT().replaceAll(",", ""));
+								finalVO.setCategory(categoryNew);
+								
+								if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G1")){
+									finalVO.setName("Gone into Production");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G2")){
+									finalVO.setName("Trial Production");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("G4")){
+									finalVO.setName("Civil Works commenced");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("Y")){
+									finalVO.setName("Ready for Foundation Stone");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R1")){
+									finalVO.setName("Land in possession and approvals granted");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R2")){
+									finalVO.setName("Land in possession and approvals in progress");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R3")){
+									finalVO.setName("Government land sought, but not allocated");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("R4")){
+									finalVO.setName("DPR to be submitted");
+								}else if(finalVO.getCategory() != null && finalVO.getCategory().trim().equalsIgnoreCase("D")){
+									finalVO.setName("Dropped");
+								}
+								
+								returnList.add(finalVO);
+							}else{
+								finalVO.setCategoryCount(finalVO.getCategoryCount()+1);
+								finalVO.setInvestment(String.valueOf(Double.valueOf(finalVO.getInvestment())+Double.valueOf(list[i].getINVESTMENT().replaceAll(",", ""))));
+								finalVO.setEmployment(String.valueOf(Double.valueOf(finalVO.getEmployment())+Double.valueOf(list[i].getEMPLOYMENT().replaceAll(",", ""))));
 							}
 						}
-						
 					}
 				}
 			}
 			
+			if(returnList != null && !returnList.isEmpty()){
+				for (ItecPromotionDetailsVO vo : returnList) {
+					vo.setInvestment(new BigDecimal(vo.getInvestment()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					vo.setEmployment(new BigDecimal(vo.getEmployment()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getITSectorLeadCategoryWiseDetails - ItcDashboardService service",e);
 		}
 		return returnList;
+	}
+	
+	private ItecPromotionDetailsVO getMatchedVOByString(List<ItecPromotionDetailsVO> list,String category){
+		try{
+			if(list != null && !list.isEmpty()){
+				for (ItecPromotionDetailsVO vo : list) {
+					if(vo.getCategory() != null && vo.getCategory().trim().equalsIgnoreCase(category.trim())){
+						return vo;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getMatchedItecEOfficeVO - ItcDashboardService service", e);
+		}
+		return null;
 	}
 	
 	/*public List<ItecEOfficeVO> getEofficeDesignationWiseDetails(){
