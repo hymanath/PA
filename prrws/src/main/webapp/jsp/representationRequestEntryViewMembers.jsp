@@ -19,6 +19,11 @@
  <link rel="stylesheet" type="text/css" href="Assests/SimplePagination/simplePagination.css"/>
 </head>
 <body>
+<style>
+.error_colorCls{
+   color: red;
+}
+</style>
 
 <header>
 	<nav>

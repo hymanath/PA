@@ -3,6 +3,7 @@ package com.itgrids.service.impl;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -581,9 +582,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	public List<RepresenteeViewVO> getRepresentativeSearchWiseDetails(InputVO inputVO){
 		List<RepresenteeViewVO> finalList = new ArrayList<RepresenteeViewVO>();
 		try{
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			Date startDate = null;
+			Date endDate = null;
 			
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null && !inputVO.getFromDate().isEmpty() && !inputVO.getToDate().isEmpty()){
+				startDate = format.parse(inputVO.getFromDate());
+				endDate = format.parse(inputVO.getToDate());
+			}
 			Map<Long,RepresenteeViewVO> mapData = new HashMap<Long,RepresenteeViewVO>();
-			List<Object[]> searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO);
+			List<Object[]> searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
 			List<Long> statusIds = new ArrayList<Long>();
 			statusIds.add(6l);
 			statusIds.add(7l);
@@ -610,7 +618,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}
 					vo.setPetitionId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					vo.setEndorsementNO(commonMethodsUtilService.getLongValueForObject(param[1]));
-					vo.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+					if(param[2] != null){
+						vo.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+					}
 					vo.setEstimationCost(commonMethodsUtilService.getStringValueForObject(param[3]));
 					vo.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
 					vo.setReferrerName(commonMethodsUtilService.getStringValueForObject(param[5]));
@@ -619,7 +629,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					Long statusId = commonMethodsUtilService.getLongValueForObject(param[10]);
 					vo.setWorkName(commonMethodsUtilService.getStringValueForObject(param[11]));
 					//RepresenteeViewVO vo =mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-					vo.setRaisedDate(commonMethodsUtilService.getStringValueForObject(param[8]).substring(0, 10));
+					if(param[8] != null){
+						vo.setRaisedDate(commonMethodsUtilService.getStringValueForObject(param[8]).substring(0, 10));
+					}
 					if(statusId.longValue() != 0l && !statusIds.contains(statusId) && petionPendingDays.longValue()>=minPending.longValue()
 							&& petionPendingDays.longValue() <= maxPending.longValue() && vo != null){
 						vo.setStatusType("pending");

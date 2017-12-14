@@ -1,5 +1,6 @@
 package com.itgrids.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -19,7 +20,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		super(PmRepresenteeRefDetails.class);
 	}
 
-	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO){
+	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO,Date toDate,Date fromDate){
 		StringBuilder sb = new StringBuilder();
 		String  filterValue = inputVO.getFilterValue();
 		Long searchLevelId = inputVO.getSearchLevelId();
@@ -100,7 +101,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(filterType != null && !filterType.equalsIgnoreCase("name") && !filterType.equalsIgnoreCase("email") && filterValue != null && !filterValue.isEmpty()
 				&& filterType.equalsIgnoreCase("mobile") && filterType.equalsIgnoreCase("endorsmentNO") ){
 			query.setParameter("filterValue", filterValue);
-		}else if(filterValue != null && !filterValue.isEmpty()){
+		}else if(filterValue != null && !filterValue.isEmpty() && !filterType.equalsIgnoreCase("name") && !filterType.equalsIgnoreCase("email")){
 			query.setParameter("filterValue", Long.valueOf(filterValue));
 		}
 		if(inputVO.getFromRange() != null && inputVO.getToRange() != null){
