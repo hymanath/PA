@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.EncVO;
+import com.itgrids.dto.EncWorksVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.service.IPrENCService;
 
@@ -40,6 +41,29 @@ public class PrENCController {
 		List<EncVO> returnList = null;
 		try {
 			returnList = prENCService.getLocationWiseRoadsInformation(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNtrJalaSiriAbstract - PrENCController", e);
+		}
+		return returnList;
+	}
+	@PostMapping("/getStateWiseRoadsInformation")
+	public @ResponseBody EncVO  getStateWiseRoadsInformation(@RequestBody InputVO inputVO){
+		EncVO returnList = null;
+		try {
+			returnList = prENCService.getStateWiseRoadsInformation(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNtrJalaSiriAbstract - PrENCController", e);
+		}
+		return returnList;
+	}
+	
+	@PostMapping("/getLocationWiseWorksInformation")
+	public @ResponseBody List<EncWorksVO>  getLocationWiseWorksInformation(@RequestBody InputVO inputVO){
+		List<EncWorksVO> returnList = null;
+		try {
+			returnList = prENCService.getLocationWiseWorksInformation(inputVO);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNtrJalaSiriAbstract - PrENCController", e);
