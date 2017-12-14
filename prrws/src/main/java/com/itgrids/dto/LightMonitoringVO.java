@@ -42,19 +42,17 @@ public class LightMonitoringVO implements Serializable{
 	
 	private LightMonitoringVO nredcapVO;
 	private LightMonitoringVO eeslVO;
+	private LightMonitoringVO overDtlsVO;
 	private Long lightVendorId;
 	private String lightVendorName;
 	private List<LightMonitoringVO> subList;
-	private Long todayCount;
-	private Long todayLights = 0L;
-    private Long todayPanels = 0L;
-    private Long todayPoles = 0L ;
-    private  Long todayWorking = 0L;
-    private Long todayOn = 0L;
-    private Long todayOff = 0L;
-    private  Long todaynotWork= 0L;
-    private Long pendingLightcount = 0l;
+    private Long newAddedLightcount = 0l;
+    private Long newAddedPanelCount = 0l;
     private String timePeriod;
+    private Long lightTarget = 0l;
+    private Long panelTarget = 0l;
+    private Double lightPercentage = 0.0d;
+    private Double panelPercentage = 0.0d;
     
     public LightMonitoringVO() {
 		
@@ -63,55 +61,7 @@ public class LightMonitoringVO implements Serializable{
 		this.lightVendorId = lightVendorId;
 		this.lightVendorName = lightVendorName;
 	}
-	public Long getTodayLights() {
-		return todayLights;
-	}
-	public void setTodayLights(Long todayLights) {
-		this.todayLights = todayLights;
-	}
-	public Long getTodayPanels() {
-		return todayPanels;
-	}
-	public void setTodayPanels(Long todayPanels) {
-		this.todayPanels = todayPanels;
-	}
-	public Long getTodayPoles() {
-		return todayPoles;
-	}
-	public void setTodayPoles(Long todayPoles) {
-		this.todayPoles = todayPoles;
-	}
-	public Long getTodayWorking() {
-		return todayWorking;
-	}
-	public void setTodayWorking(Long todayWorking) {
-		this.todayWorking = todayWorking;
-	}
-	public Long getTodayOn() {
-		return todayOn;
-	}
-	public void setTodayOn(Long todayOn) {
-		this.todayOn = todayOn;
-	}
-	public Long getTodayOff() {
-		return todayOff;
-	}
-	public void setTodayOff(Long todayOff) {
-		this.todayOff = todayOff;
-	}
-	public Long getTodaynotWork() {
-		return todaynotWork;
-	}
-	public void setTodaynotWork(Long todaynotWork) {
-		this.todaynotWork = todaynotWork;
-	}
 	
-    public Long getTodayCount() {
-		return todayCount;
-	}
-	public void setTodayCount(Long todayCount) {
-		this.todayCount = todayCount;
-	}
 	private List<LightWattageVO> WattageList = new ArrayList<LightWattageVO>(0);
 
 	public List<LightWattageVO> getWattageList() {
@@ -346,11 +296,11 @@ public class LightMonitoringVO implements Serializable{
 	public void setSubList(List<LightMonitoringVO> subList) {
 		this.subList = subList;
 	}
-	public Long getPendingLightcount() {
-		return pendingLightcount;
+	public Long getNewAddedLightcount() {
+		return newAddedLightcount;
 	}
-	public void setPendingLightcount(Long pendingLightcount) {
-		this.pendingLightcount = pendingLightcount;
+	public void setNewAddedLightcount(Long newAddedLightcount) {
+		this.newAddedLightcount = newAddedLightcount;
 	}
 	public String getTimePeriod() {
 		return timePeriod;
@@ -358,7 +308,42 @@ public class LightMonitoringVO implements Serializable{
 	public void setTimePeriod(String timePeriod) {
 		this.timePeriod = timePeriod;
 	}
-	
+	public Long getLightTarget() {
+		return lightTarget;
+	}
+	public void setLightTarget(Long lightTarget) {
+		this.lightTarget = lightTarget;
+	}
+	public Long getPanelTarget() {
+		return panelTarget;
+	}
+	public void setPanelTarget(Long panelTarget) {
+		this.panelTarget = panelTarget;
+	}
+	public Long getNewAddedPanelCount() {
+		return newAddedPanelCount;
+	}
+	public void setNewAddedPanelCount(Long newAddedPanelCount) {
+		this.newAddedPanelCount = newAddedPanelCount;
+	}
+	public Double getLightPercentage() {
+		return lightPercentage;
+	}
+	public void setLightPercentage(Double lightPercentage) {
+		this.lightPercentage = lightPercentage;
+	}
+	public Double getPanelPercentage() {
+		return panelPercentage;
+	}
+	public void setPanelPercentage(Double panelPercentage) {
+		this.panelPercentage = panelPercentage;
+	}
+	public LightMonitoringVO getOverDtlsVO() {
+		return overDtlsVO;
+	}
+	public void setOverDtlsVO(LightMonitoringVO overDtlsVO) {
+		this.overDtlsVO = overDtlsVO;
+	}
 	
 	
 }
