@@ -2052,7 +2052,7 @@ function bulidStateWiseClickData(result){
 	
 	str+='<div class="col-sm-3">';
 		str+='<div class="white-block block_padding_15" style="background-color:#F3F3F3">';
-			str+='<h4><b>TODAY OVERVIEW</b></h4>';
+			str+='<h4 style="margin-left:80px;"><b>OVERALL</b></h4>';
 			str+='<div class="row m_top5">';
 				str+='<div class="col-sm-6">';
 					str+='<img src="Assests/icons/CCMS_Box_icon.png" style="height:35px">';
@@ -2069,14 +2069,18 @@ function bulidStateWiseClickData(result){
 	str+='</div>';
 	str+='<div class="col-sm-9">';
 		str+='<div class="white-block block_padding_15" style="background-color:#F3F3F3">';
-			str+='<h4><b>PAST DAYS OVERVIEW</b></h4>';
+			str+='<h4><b style="margin-left:350px;">PAST DAYS OVERVIEW</b></h4>';     
 			
 			str+='<div class="table-responsive">';
 				str+='<table class="table table-bordered text-center">';
 					str+='<tr>';
 						for(var i in result){
 							if(result[i].timePeriod != 'Today Total'){
-								str+='<th colspan="2" class="text-capital">'+result[i].timePeriod+'</th>';	
+								if(result[i].timePeriod == 'Last 1 Day'){
+									str+='<th colspan="2" class="text-capital" style="text-align:center;">'+result[i].timePeriod+'</th>';
+								}else{
+									str+='<th colspan="2" class="text-capital" style="text-align:center;">'+result[i].timePeriod+'S</th>';
+								}
 							}
 							
 						}
@@ -2151,7 +2155,7 @@ function buildnewAddedLightsDetails(result){
 											str+='<div class="" style="margin:0 auto">';
 												str+='<img src="Assests/icons/Achived_icon.png" style="height:45px">';
 											str+='</div>';
-											str+='<h5><b>Total Achivement</b></h5>';
+											str+='<h5><b>Total Achievement</b></h5>';
 											if(vendorArr[i] == ''){
 												str+='<h4 style="display:inline-block;padding:10px"><b>'+result[0].overDtlsVO.newAddedLightcount+'</b></h4>';
 												str+='<span style="color:#02B1Ac">'+result[0].overDtlsVO.lightPercentage+'%</span>';
@@ -2190,9 +2194,11 @@ function buildnewAddedLightsDetails(result){
 				str+='<th></th>';
 				for(var i in result){
 					if (result[i].timePeriod != "Today Total") {
-						str+='<th>';
-							str+='<h5><b>'+result[i].timePeriod+'</b></h5>';
-						str+='</th>';
+						if(result[i].timePeriod == "Last 1 Day"){
+							str+='<th style="text-align:center;"><h5><b>'+result[i].timePeriod+'</b></h5></th>';
+						}else{
+							str+='<th style="text-align:center;"><h5><b>'+result[i].timePeriod+'s</b></h5></th>';
+						}
 					}	
 				}
 			str+='</tr>';
@@ -2205,7 +2211,7 @@ function buildnewAddedLightsDetails(result){
 					   if (result[i].lightTarget > 0) {
 						   str+='<span title="target" style="color:green;cursor:pointer;">'+result[i].lightTarget+'</span>';
 					   } else {
-						   str+='<span title="target" style="color:red;">NO TARGET</span>';
+						   str+='<span title="target" style="font-size:50%;">NO TARGET</span>';
 					   }
 					  str+='/<span title="achievement" style="cursor:pointer;">'+result[i].newAddedLightcount+'</span>';
 					  str+'</td>';	
@@ -2222,7 +2228,7 @@ function buildnewAddedLightsDetails(result){
 									if (result[i].subList[j].lightTarget > 0) {
 									str+='<span title="target" style="color:green;cursor:pointer;">'+result[i].subList[j].lightTarget+'</span>';	
 									} else {
-									 str+='<span title="target" style="color:red;">NO TARGET</span>';	
+									 str+='<span title="target" style="font-size:50%;">NO TARGET</span>';	
 									}
 									 str+='/<span style="cursor:pointer;" title="achievement">'+result[i].subList[j].newAddedLightcount+'</span>';
 								 str+'</td>';	
@@ -2243,7 +2249,7 @@ function buildnewAddedLightsDetails(result){
 							       if (result[i].subList[j].lightTarget > 0) {
 										str+='<span title="target" style="color:green;cursor:pointer;">'+result[i].subList[j].lightTarget+'</span>';
 									} else {
-										str+='<span title="target" style="color:red;">NO TARGET</span>';
+										str+='<span title="target" style="font-size:50%;">NO TARGET</span>';
 									}
 									str+='/<span style="cursor:pointer;" title="achievement">'+result[i].subList[j].newAddedLightcount+'</span></td>';	
 								}
