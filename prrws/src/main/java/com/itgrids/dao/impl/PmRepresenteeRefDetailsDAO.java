@@ -20,6 +20,47 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		super(PmRepresenteeRefDetails.class);
 	}
 
+	public List<Object[]> getPmRepresenteRefDetails(Long petitionId){
+		StringBuilder str = new StringBuilder();
+		str.append(" select pmRepresentee.name,pmRepresentee.mobileNo, pmRepresentee.email,pmRepresentee.voterCardNo , " +//0,1,2,3
+				" state.stateId, district.districtId,constituency.constituencyId,tehsil.tehsilId,localBody.localElectionBodyId, " +//4,5,6,7,8
+				" pmRefCandidate.pmRefCandidateId,pmRefCandidate.name,pmRefCandidate.mobileNo,pmRefCandidate.email,pmRefCandidate.partyId,pmRefCandidate.partyName, " +
+				" pmRefCandidate.imagePath, " +//9,10,11,12,13,14,15
+				" refState.stateId, refDistrict.districtId,refConstituency.constituencyId,refTehsil.tehsilId,refLocalBody.localElectionBodyId, " +//16,17,18,19,20
+				" petition.petitionId, petition.endorsmentNo,petition.representationDate,petition.endorsmentDate,petition.workName,petition.estimationCost," +//21,22,23,24,25,26
+				" petition.noOfWorks,pmStatus.pmStatusId,pmStatus.status,pmRepresentee.pmRepresenteeId , pmRepresentee.pmRefCandidateId,model.pmRepresenteeRefDetailsId, " +//27,28,29,30,31,32
+				" pmDesignation.pmDesignationId, pmDesignation.designation,refPmDesignation.pmDesignationId, refPmDesignation.designation " +//33,34,35,36
+				" " +
+				" from PmRepresenteeRefDetails model " +
+				" left join model.pmRepresentee pmRepresentee " +
+				" left join pmRepresentee.userAddress userAddress " +
+				" left join userAddress.state state " +
+				" left join userAddress.district district " +
+				" left join userAddress.constituency constituency" +
+				" left join userAddress.tehsil tehsil  " +
+				" left join userAddress.localElectionBody localBody " +
+				" " +
+				" left join model.pmRefCandidate pmRefCandidate "+
+				" left join pmRefCandidate.address refUserAddress " +
+				" left join refUserAddress.state refState " +
+				" left join refUserAddress.district refDistrict " +
+				" left join refUserAddress.constituency refConstituency" +
+				" left join refUserAddress.tehsil refTehsil  " +
+				" left join refUserAddress.localElectionBody refLocalBody " +
+				" " +
+				" left join model.petition petition " +
+				" left join petition.pmStatus pmStatus " +
+				" " +
+				" left join model.pmRepresenteeDesignation pmRepresenteeDesignation " +
+				" left join pmRepresenteeDesignation.pmDesignation pmDesignation" +
+				" " +
+				" left join model.pmRefCandidateDesignation pmRefCandidateDesignation " +
+				" left join pmRefCandidateDesignation.pmDesignation refPmDesignation " );
+		str.append(" where model.petitionId =:petitionId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("petitionId", petitionId);	
+		return query.list();
+	}
 	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO,Date fromDate,Date toDate){
 		StringBuilder sb = new StringBuilder();
 		String  filterValue = inputVO.getFilterValue();
