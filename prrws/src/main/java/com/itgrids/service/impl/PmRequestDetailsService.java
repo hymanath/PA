@@ -19,6 +19,7 @@ import com.google.common.io.Files;
 import com.itgrids.dao.IDocumentDAO;
 import com.itgrids.dao.ILocationAddressDAO;
 import com.itgrids.dao.IPetitionDAO;
+import com.itgrids.dao.IPetitionStatusDAO;
 import com.itgrids.dao.IPmPetitionDocumentDAO;
 import com.itgrids.dao.IPmRefCandidateDAO;
 import com.itgrids.dao.IPmRefCandidateDesignationDAO;
@@ -38,6 +39,7 @@ import com.itgrids.dto.ResponseVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
 import com.itgrids.model.Petition;
+import com.itgrids.model.PetitionStatus;
 import com.itgrids.model.PmPetitionDocument;
 import com.itgrids.model.PmRefCandidate;
 import com.itgrids.model.PmRefCandidateDesignation;
@@ -96,6 +98,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	@Autowired
 	private IPmRepresenteeRefDocumentDAO pmRepresenteeRefDocumentDAO;
 	
+	@Autowired
+	private IPetitionStatusDAO petitionStatusDAO;
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO){
 		ResponseVO responseVO = new ResponseVO();
 		try {
@@ -598,8 +602,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			statusIds.add(6l);
 			statusIds.add(7l);
 			statusIds.add(8l);
-			Long minPending = Long.valueOf(inputVO.getStartValue().toString());
-			Long maxPending = Long.valueOf(inputVO.getEndValue().toString());
+			
+			Long minPending = commonMethodsUtilService.getLongValueForObject(inputVO.getStartValue());
+			Long maxPending = commonMethodsUtilService.getLongValueForObject(inputVO.getEndValue());
+			
 			if(searchData != null && searchData.size()>0){
 				for (Object[] param : searchData) {
 					//RepresenteeViewVO vo = new RepresenteeViewVO();
@@ -657,9 +663,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}*/
 			
 			for (Map.Entry<Long, RepresenteeViewVO> entry : mapData.entrySet()) {
-				if(minPending != null && minPending.longValue() >0l && maxPending != null && maxPending.longValue() >0l && entry.getValue().getStatusType().equalsIgnoreCase("pending")){
+				if(minPending.longValue() >0l &&  maxPending.longValue() >0l && entry.getValue().getStatusType().equalsIgnoreCase("pending")){
 					finalList.add(entry.getValue());
-				}else if(minPending == null || minPending.longValue() ==0l || maxPending == null || maxPending.longValue() ==0l){
+				}else if(minPending.longValue() ==0l || maxPending.longValue() ==0l){
 					finalList.add(entry.getValue());
 				}
 			}
@@ -670,7 +676,26 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 		return finalList;
 	}
-	
+	public List<RepresenteeViewVO> getStatusList(){
+		List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
+		try {
+			List<PetitionStatus> list = petitionStatusDAO.getAll();
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (PetitionStatus petitionStatus : list) {
+					if(petitionStatus.getIsDeleted().equalsIgnoreCase("N")){
+						RepresenteeViewVO vo = new RepresenteeViewVO();
+						vo.setId(commonMethodsUtilService.getLongValueForObject(petitionStatus.getPetitionStatusId()));
+						vo.setName(commonMethodsUtilService.getStringValueForObject(petitionStatus.getDescription()));
+						returnList.add(vo);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in PmRequestDetailsService @ getStatusList() "+e.getMessage());
+		}
+		return returnList;
+	}
 	
 	 public PmRequestVO getPMRequestDetailsByPetitionId(Long petitionId){
 		 PmRequestVO pmRequestVO = null;

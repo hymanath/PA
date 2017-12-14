@@ -408,9 +408,10 @@ function getDepartmentsBySearchType(searchType,selBoxId){
   //var isErr= searchValidations();
   //if(isErr)
  // return;
+//$("#representeeDetailsModelDivId").modal("show");
    getRepresentativeSearchDetails1();
  });
-//getRepresentativeSearchDetails1();
+
 function getRepresentativeSearchDetails1(){
 	$("#designationErrDiv").html("");
 	$("#departMentsErrDiv").html("");
@@ -442,9 +443,7 @@ function getRepresentativeSearchDetails1(){
    }else if(filterType == 'endorsmentNO'){
 	    filterValue=$("#endorsmentNoId").val();
    }
-  //if(filterType =="work")
-	 
-	 var districtId=$("#districtCandId").val();
+	var districtId=$("#districtCandId").val();
 	 var constituencyId=$("#constituencyCanId").val();
 	 var mandalId=$("#mandalCanId").val();
 	 var searchLevelValue=districtId;
@@ -457,7 +456,11 @@ if(mandalId > 0){
 	searchLevelId=5;
 	searchLevelValue=mandalId
 }
-  var json = {
+var stausIds ;
+if($("#statusId").val() != 0){
+	 stausIds = $("#statusId").val();
+}
+var json = {
     filterType :filterType,//mobileno/department/name/email
     filterValue:filterValue,
     searchLevelId:searchLevelId,
@@ -468,8 +471,9 @@ if(mandalId > 0){
    // toRange:0,
    // minVal:0,
     //maxVal:4,
-    startValue:0,
-    endValue:0
+    //startValue:0,
+    //endValue:0,
+	statusIds:stausIds
     }
   
   $.ajax({                
@@ -487,6 +491,28 @@ if(mandalId > 0){
     }else{
       $("#representationRequestEntryTable").html("NO DATA AVAILABLE");
     }
+  }); 
+}
+getStatusList();
+function getStatusList(){
+	
+  $.ajax({                
+    type:'POST',    
+    url: 'getStatusList',
+    dataType: 'json',
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){
+    $("#statusId").empty();
+		if(result !=null && result.length >0){
+			$("#statusId").html("<option value='0'>All</option>");
+			for(var i in result){
+				$("#statusId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+			}
+		}
+		$("#statusId").trigger('chosen:updated');
   }); 
 }
 

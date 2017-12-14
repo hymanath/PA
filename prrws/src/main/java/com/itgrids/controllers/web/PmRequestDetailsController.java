@@ -85,4 +85,8 @@ public class PmRequestDetailsController {
 	    public @ResponseBody List<KeyValueVO> getDepartmentsBySearchType(@RequestBody Map<String,String> inputMap ) {
 	       return locationDetailsService.getDepartmentsBySearchType(inputMap.get("searchType"));
 	    }
+	    @RequestMapping(value ="/getStatusList",method = RequestMethod.POST)
+	    public @ResponseBody List<RepresenteeViewVO> getStatusList() {
+	       return pmRequestDetailsService.getStatusList();
+	    }
 }

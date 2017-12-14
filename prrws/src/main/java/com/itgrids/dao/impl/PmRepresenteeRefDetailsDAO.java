@@ -82,9 +82,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" left join model.pmRepresenteeDesignation.pmRepresentee.userAddress locationAddress " );
 		}else if(filterType != null && filterType.equalsIgnoreCase("referral")){
 			sb.append(" left join model.pmRefCandidate.address locationAddress " );
-		}else if(filterType != null && filterType.equalsIgnoreCase("representee")){
+		}/*else if(filterType != null && filterType.equalsIgnoreCase("representee")){
 			sb.append(" left join model.pmRepresentee.userAddress locationAddress " );
-		}else{
+		}*/else{
 			sb.append(" left join model.pmRepresentee.userAddress locationAddress " );
 		}
 			
@@ -138,6 +138,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(fromDate != null && toDate != null){
 			sb.append(" and date(model.petition.insertedTime) between :fromDate and :toDate " );
 		}
+		if(inputVO.getStatusIds() != null && inputVO.getStatusIds().size()>0){
+			sb.append(" and model1.pmStatus.pmStatusId in (:statusIds) ");
+		}
 		Query query = getSession().createQuery(sb.toString());
 		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValue != null && searchLevelValue.longValue()>0l){
 			query.setParameter("searchLevelValue", searchLevelValue);
@@ -159,6 +162,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(fromDate != null && toDate != null){
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
+		}
+		if(inputVO.getStatusIds() != null && inputVO.getStatusIds().size()>0){
+			query.setParameterList("statusIds", inputVO.getStatusIds());
 		}
 		return query.list();
 	}
