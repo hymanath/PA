@@ -30,10 +30,10 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" petition.petitionId, petition.endorsmentNo,petition.representationDate,petition.endorsmentDate,petition.workName,petition.estimationCost," +//21,22,23,24,25,26
 				" petition.noOfWorks,pmStatus.pmStatusId,pmStatus.status,pmRepresentee.pmRepresenteeId , pmRepresentee.pmRefCandidateId,model.pmRepresenteeRefDetailsId, " +//27,28,29,30,31,32
 				" pmDesignation.pmDesignationId, pmDesignation.designation,refPmDesignation.pmDesignationId, refPmDesignation.designation, " +//33,34,35,36
-				"'','','','','','','','','','','',''"+
-				""+
-				//" state.stateName, district.districtName,constituency.name,tehsil.tehsilName,localBody.name,localBody.electionType.electionType," +//37,38,39,40,41,42
-				//" refState.stateName, refDistrict.districtName,refConstituency.name,refTehsil.tehsilName,refLocalBody.name,refLocalBody.electionType.electionType " +//43,44,45,46,47,48
+				//"'','','','','','','','','','','',''"+
+				//""+
+				" state.stateName, district.districtName,constituency.name,tehsil.tehsilName,localBody.name,electionType.electionType," +//37,38,39,40,41,42
+				" refState.stateName, refDistrict.districtName,refConstituency.name,refTehsil.tehsilName,refLocalBody.name,refElectionType.electionType " +//43,44,45,46,47,48
 				" from PmRepresenteeRefDetails model " +
 				" left join model.pmRepresentee pmRepresentee " +
 				" left join pmRepresentee.userAddress userAddress " +
@@ -42,6 +42,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" left join userAddress.constituency constituency" +
 				" left join userAddress.tehsil tehsil  " +
 				" left join userAddress.localElectionBody localBody " +
+				" left join localBody.electionType electionType" +
 				" " +
 				" left join model.pmRefCandidate pmRefCandidate "+
 				" left join pmRefCandidate.address refUserAddress " +
@@ -50,6 +51,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" left join refUserAddress.constituency refConstituency" +
 				" left join refUserAddress.tehsil refTehsil  " +
 				" left join refUserAddress.localElectionBody refLocalBody " +
+				" left join refLocalBody.electionType refElectionType" +
 				" " +
 				" left join model.petition petition " +
 				" left join petition.pmStatus pmStatus " +
