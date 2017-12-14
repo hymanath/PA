@@ -12,10 +12,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "pm_designatoin_hierarchy")
-public class PmDesignationHeirarchy {
+@Table(name = "pm_dept_designation_hierarchy")
+public class PmDepartmentDesignationHierarchy {
 	
-	private Long pmDesignationHeirarchyId;
+	private Long pmDepartmentDesignationHeirarchyId;
 	private Long pmDepartmentDesignationId;
 	private Long subPmDepartmentDesignationId;
 	private String isActive;
@@ -23,15 +23,14 @@ public class PmDesignationHeirarchy {
 	
 	private PmDepartmentDesignation pmDepartmentDesignation;
 	
-	
 	@Id
-	@Column(name="pm_designatoin_hierarchy_id")
+	@Column(name="pm_dept_designation_hierarchy_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	public Long getPmDesignationHeirarchyId() {
-		return pmDesignationHeirarchyId;
+	public Long getPmDepartmentDesignationHeirarchyId() {
+		return pmDepartmentDesignationHeirarchyId;
 	}
-	public void setPmDesignationHeirarchyId(Long pmDesignationHeirarchyId) {
-		this.pmDesignationHeirarchyId = pmDesignationHeirarchyId;
+	public void setPmDepartmentDesignationHeirarchyId(Long pmDepartmentDesignationHeirarchyId) {
+		this.pmDepartmentDesignationHeirarchyId = pmDepartmentDesignationHeirarchyId;
 	}
 	@Column(name="pm_dept_designation_id")
 	public Long getPmDepartmentDesignationId() {
