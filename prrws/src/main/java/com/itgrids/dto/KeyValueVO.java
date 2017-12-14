@@ -5,6 +5,12 @@ public class KeyValueVO {
 	private String value;
 	private String electionType;
 	
+	public KeyValueVO(){}
+	public KeyValueVO(Long key,String value){
+		this.key = key;
+		this.value = value;
+	}
+	
 	public Long getKey() {
 		return key;
 	}

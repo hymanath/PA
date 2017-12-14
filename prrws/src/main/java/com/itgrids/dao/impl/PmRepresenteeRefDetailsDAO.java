@@ -30,8 +30,6 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" petition.petitionId, petition.endorsmentNo,petition.representationDate,petition.endorsmentDate,petition.workName,petition.estimationCost," +//21,22,23,24,25,26
 				" petition.noOfWorks,pmStatus.pmStatusId,pmStatus.status,pmRepresentee.pmRepresenteeId , pmRepresentee.pmRefCandidateId,model.pmRepresenteeRefDetailsId, " +//27,28,29,30,31,32
 				" pmDesignation.pmDesignationId, pmDesignation.designation,refPmDesignation.pmDesignationId, refPmDesignation.designation, " +//33,34,35,36
-				//"'','','','','','','','','','','',''"+
-				//""+
 				" state.stateName, district.districtName,constituency.name,tehsil.tehsilName,localBody.name,electionType.electionType," +//37,38,39,40,41,42
 				" refState.stateName, refDistrict.districtName,refConstituency.name,refTehsil.tehsilName,refLocalBody.name,refElectionType.electionType " +//43,44,45,46,47,48
 				" ,model.petition.representeeType " +//49
