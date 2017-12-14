@@ -1283,7 +1283,7 @@ public List<Object[]> getFilteredListCount(List<Long> cadreIdList,List<Long> pro
 		}else if(StringType!= null && StringType == 2L){
 			sb.append(" select D.district_id as trainingCampId,D.district_name as campName,count(distinct TCBA.tdp_cadre_id) as count  " );
 		}else if(StringType!= null && StringType == 3L){
-			sb.append(" select CON.constituency_id as trainingCampId,CON.name as campName,count(distinct TCBA.tdp_cadre_id) as count  " );
+			sb.append(" select PCON.constituency_id as trainingCampId,PCON.name as campName,count(distinct TCBA.tdp_cadre_id) as count  " );
 		}else if(StringType!= null && StringType ==4L){
 			sb.append(" select CON.constituency_id as trainingCampId,CON.name as campName,count(distinct TCBA.tdp_cadre_id) as count  " );
 		}
