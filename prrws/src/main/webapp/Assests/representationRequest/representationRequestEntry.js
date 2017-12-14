@@ -331,7 +331,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='</select>';
 				str+='<div id="mandal'+typeVal+'Err"></div>';
 			str+='</div>';str+='<div class="col-sm-3">';	
-				str+='<label>DESIGNATION.</label>';
+				str+='<label>REPRESENTEE DESIGNATION.</label>';
 				str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="designation'+typeVal+'">';
 					str+='<option value="0">Select Designation</option>';
 				str+='</select>';
