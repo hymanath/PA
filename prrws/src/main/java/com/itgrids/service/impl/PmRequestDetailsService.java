@@ -238,7 +238,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				for (PetitionsWorksVO dataVO : subWorksList) {
 					if(dataVO.getWorkTypeId() != null && dataVO.getWorkTypeId().longValue()>0L){
 						PmSubWorkDetails petitionSubWorkLocationDetails = new PmSubWorkDetails();
-						petitionSubWorkLocationDetails.setPetitionId(petitonId);
+						petitionSubWorkLocationDetails.setPetitionId(petitonId);						
 						petitionSubWorkLocationDetails.setGrievanceDescrption(dataVO.getGrievanceDescription());
 						petitionSubWorkLocationDetails.setCostEstimation(Double.valueOf(dataVO.getEstimateCost()));
 						petitionSubWorkLocationDetails.setPmDepartmentId(mainDataVO.getDeptId());
@@ -286,7 +286,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	public Petition savePetitionWorkDetails(Long pmRepresenteeId,PmRequestVO pmRequestVO){
 		Petition petition = null;
-		SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		try {
 			if(pmRequestVO != null){
 				if(commonMethodsUtilService.isListOrSetValid(pmRequestVO.getWorksList())){
@@ -766,7 +766,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 petitionVO.setEndorsmentNo(commonMethodsUtilService.getStringValueForObject(param[22]));
 					 pmRequestVO.setRepresentationdate(commonMethodsUtilService.getStringValueForObject(param[23]));
 					 petitionVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[24]));
-					 
+					 petitionVO.setWorkName(commonMethodsUtilService.getStringValueForObject(param[25]));
+					 petitionVO.setGrievanceDescription(commonMethodsUtilService.getStringValueForObject(param[25]));
 					 pmRequestVO.getWorksList().add(petitionVO);
 					 
 					 List<PmRequestVO> list =new ArrayList<PmRequestVO>(0);
