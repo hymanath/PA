@@ -20,7 +20,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		super(PmRepresenteeRefDetails.class);
 	}
 
-	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO,Date toDate,Date fromDate){
+	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO,Date fromDate,Date toDate){
 		StringBuilder sb = new StringBuilder();
 		String  filterValue = inputVO.getFilterValue();
 		Long searchLevelId = inputVO.getSearchLevelId();
@@ -94,6 +94,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(inputVO.getMinVal() != null && inputVO.getMaxVal() != null){
 			sb.append(" and model.petition.estimationCost between :minEstimationCost and :maxEstimationCost " );
 		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model.petition.insertedTime) between :fromDate and :toDate " );
+		}
 		Query query = getSession().createQuery(sb.toString());
 		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValue != null && searchLevelValue.longValue()>0l){
 			query.setParameter("searchLevelValue", searchLevelValue);
@@ -111,6 +114,10 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(inputVO.getMinVal() != null && inputVO.getMaxVal() != null){
 			query.setParameter("minEstimationCost", inputVO.getMinVal());
 			query.setParameter("maxEstimationCost", inputVO.getMaxVal());
+		}
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
 		}
 		return query.list();
 	}
