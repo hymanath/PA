@@ -2195,9 +2195,9 @@ function buildnewAddedLightsDetails(result){
 				for(var i in result){
 					if (result[i].timePeriod != "Today Total") {
 						if(result[i].timePeriod == "Last 1 Day"){
-							str+='<th style="text-align:center;"><h5><b>'+result[i].timePeriod+'</b></h5></th>';
+							str+='<th class="text-capital" style="text-align:center;"><h5><b>'+result[i].timePeriod+'</b></h5></th>';
 						}else{
-							str+='<th style="text-align:center;"><h5><b>'+result[i].timePeriod+'s</b></h5></th>';
+							str+='<th class="text-capital" style="text-align:center;"><h5><b>'+result[i].timePeriod+'s</b></h5></th>';
 						}
 					}	
 				}
