@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
+import com.itgrids.dto.PmRequestEditVO;
 import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.RepresenteeViewVO;
@@ -46,7 +47,7 @@ public class PmRequestDetailsController {
 			return pmRequestDetailsService.saveRepresentRequestDetails(pmRequestVO);
 	    }
 		@RequestMapping(value ="/setPmRepresenteeDataToResultView",method = RequestMethod.POST)
-		 public @ResponseBody PmRequestVO setPmRepresenteeDataToResultView(@RequestBody Map<String,String> inputMap ) {
+		 public @ResponseBody PmRequestEditVO setPmRepresenteeDataToResultView(@RequestBody Map<String,String> inputMap ) {
 	    	 return pmRequestDetailsService.setPmRepresenteeDataToResultView(Long.valueOf(inputMap.get("petitionId")));
 	    }
 	   	@RequestMapping(value ="/getPetitionReferredMemberDetails",method = RequestMethod.POST)

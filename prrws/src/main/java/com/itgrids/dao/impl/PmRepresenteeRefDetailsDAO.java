@@ -34,6 +34,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				//""+
 				" state.stateName, district.districtName,constituency.name,tehsil.tehsilName,localBody.name,electionType.electionType," +//37,38,39,40,41,42
 				" refState.stateName, refDistrict.districtName,refConstituency.name,refTehsil.tehsilName,refLocalBody.name,refElectionType.electionType " +//43,44,45,46,47,48
+				" ,model.petition.representeeType " +//49
 				" from PmRepresenteeRefDetails model " +
 				" left join model.pmRepresentee pmRepresentee " +
 				" left join pmRepresentee.userAddress userAddress " +
@@ -61,7 +62,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" " +
 				" left join model.pmRefCandidateDesignation pmRefCandidateDesignation " +
 				" left join pmRefCandidateDesignation.pmDesignation refPmDesignation " );
-		str.append(" where model.petitionId =:petitionId ");
+		str.append(" where model.petitionId =:petitionId and model.petition.isDeleted='N' ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("petitionId", petitionId);	
 		return query.list();
