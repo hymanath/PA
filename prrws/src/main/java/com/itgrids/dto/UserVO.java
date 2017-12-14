@@ -18,6 +18,10 @@ public class UserVO {
 	private String url;
 	private String password;
 	private String status;
+	
+	private String deptName;
+	private String designation;
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -70,6 +74,18 @@ public class UserVO {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
 	
 	
