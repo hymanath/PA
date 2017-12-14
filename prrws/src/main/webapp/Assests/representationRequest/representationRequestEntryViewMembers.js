@@ -255,6 +255,7 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
 			$("#"+selBoxId).html("<option value='0'>All</option>");
 			for(var i in result){
@@ -280,6 +281,7 @@ function getDesignationsBySearchType(searchType,selBoxId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
 			$("#"+selBoxId).html("<option value='0'>Select Designation</option>");
 			for(var i in result){
@@ -304,6 +306,7 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
 			$("#"+selBoxId).html("<option value='0'>Select Department</option>");
 			for(var i in result){
@@ -401,16 +404,35 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 		 return true;
 	 }
  }
- 
-getRepresentativeSearchDetails1();
+ $(document).on("click","#advanceSearchId",function(){
+  //var isErr= searchValidations();
+  //if(isErr)
+ // return;
+   getRepresentativeSearchDetails1();
+ });
+//getRepresentativeSearchDetails1();
 function getRepresentativeSearchDetails1(){
-  
+	$("#designationErrDiv").html("");
+	$("#departMentsErrDiv").html("");
+  $("#representationRequestEntryTable").html(spinner);
    var filterType=$("#locationSelId").val();
     var filterValue="";
    if(filterType == 'referrelDesignation' || filterType == 'representeeDesignation'){
 	   filterValue=$("#designationsId").val();//
+	    if($("#designationDiv").is(':visible')){
+		  if(filterValue == null || filterValue ==0){
+			 $("#designationErrDiv").html('<h5>Please select designation </h5>');
+			 isError=true;
+			}
+	}
    }else if(filterType == 'department'){
 	    filterValue=$("#departmentId").val();
+		if($("#departMentsDiv").is(':visible')){
+		  if(filterValue == null || filterValue ==0){
+			 $("#departMentsErrDiv").html('<h5>Please select department </h5>');
+			 isError=true;
+			}
+	}
    }else if(filterType == 'name'){
 	    filterValue=$("#nameId").val();
    }else if(filterType == 'mobile'){
@@ -420,7 +442,8 @@ function getRepresentativeSearchDetails1(){
    }else if(filterType == 'endorsmentNO'){
 	    filterValue=$("#endorsmentNoId").val();
    }
-  
+  //if(filterType =="work")
+	 
 	 var districtId=$("#districtCandId").val();
 	 var constituencyId=$("#constituencyCanId").val();
 	 var mandalId=$("#mandalCanId").val();
@@ -441,12 +464,12 @@ if(mandalId > 0){
     searchLevelValue:searchLevelValue,
     fromDate:startDate,
     toDate:endDate,
-    fromRange:1,
-    toRange:9,
-    minVal:0,
+   // fromRange:0,
+   // toRange:0,
+   // minVal:0,
     //maxVal:4,
-    startValue:1,
-    endValue:2
+    startValue:0,
+    endValue:0
     }
   
   $.ajax({                
