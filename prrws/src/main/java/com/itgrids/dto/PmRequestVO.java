@@ -29,6 +29,7 @@ public class PmRequestVO {
 	private List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>(0);
 	private List<PmRequestVO> referList= new ArrayList<PmRequestVO>(0);
 	private List<MultipartFile> fileList = new ArrayList<MultipartFile>(0);
+	private List<KeyValueVO> fileNamesList = new ArrayList<KeyValueVO>();
 	
 	private Long refCandidateId;
 	private String startDate;

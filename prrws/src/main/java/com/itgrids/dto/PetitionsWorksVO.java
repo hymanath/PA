@@ -44,7 +44,14 @@ public class PetitionsWorksVO {
 	private AddressVO addressVO;
 	private Long locationScopeId;
 	private Long locationValue;
+	private Long uiSeriesNo;
 	
+	public Long getUiSeriesNo() {
+		return uiSeriesNo;
+	}
+	public void setUiSeriesNo(Long uiSeriesNo) {
+		this.uiSeriesNo = uiSeriesNo;
+	}
 	public String getDeptName() {
 		return deptName;
 	}
