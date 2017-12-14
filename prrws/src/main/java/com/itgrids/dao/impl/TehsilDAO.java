@@ -384,4 +384,10 @@ public class TehsilDAO extends GenericDaoHibernate<Tehsil,Long> implements ITehs
 		}
 		return query.list();
 	}
+
+	@Override
+	public List<Object[]> getEncMandals() {
+		Query query = getSession().createQuery("select model.encTehsilId,model.tehsilName from Tehsil model where model.encTehsilId is not null" );
+		return query.list();
+	}
 }
