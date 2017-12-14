@@ -224,7 +224,7 @@
 												<div class="row m_top10">
 													<div class="col-sm-3">
 														<div class="borederCss">
-															<input type="radio" name="representationType" value="SELF" id="self" attr_name="selfMemberType" class="selfRepresenceCls" attr_type="self" checked>
+															<input type="radio" name="representationType" value="SELF" id="self" attr_name="selfMemberType" class="selfRepresenceCls defaultCheckCls" attr_type="self" checked>
 															<label><h5>SELF</span></h5>
 														</div>
 													</div>
@@ -318,5 +318,7 @@
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
 <!-- for file uploader -->
 <script src="Assests/representationRequest/representationRequestEntry.js" type="text/javascript"></script>
+<script>
+</script>
 </body>
 </html>
