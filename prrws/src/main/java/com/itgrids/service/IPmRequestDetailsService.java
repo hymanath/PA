@@ -13,4 +13,5 @@ public interface IPmRequestDetailsService {
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO);
 	public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo);
 	public PmRequestVO setPmRepresenteeDataToResultView(Long petitionId);
+	public List<RepresenteeViewVO> getStatusList();
 }
