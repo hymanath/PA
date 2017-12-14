@@ -7,6 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class PetitionsWorksVO {
 
+	private Long petitionId;
+	private String endorsmentNo;
+	private String endorsmentDate;
 	private Long workId;
 	private String workName;
 	private Long noOfWorks;
@@ -17,7 +20,7 @@ public class PetitionsWorksVO {
 	private Long leadId;
 	private Long briefLeadId;
 	private Long grantId;
-	private Long estimateCost;
+	private String estimateCost;
 	private String eOfficeId;
 	private String remarks;
 	private String isPreviousPetition;
@@ -120,10 +123,10 @@ public class PetitionsWorksVO {
 	public void setSubSubjectId(Long subSubjectId) {
 		this.subSubjectId = subSubjectId;
 	}
-	public Long getEstimateCost() {
+	public String getEstimateCost() {
 		return estimateCost;
 	}
-	public void setEstimateCost(Long estimateCost) {
+	public void setEstimateCost(String estimateCost) {
 		this.estimateCost = estimateCost;
 	}
 	public String geteOfficeId() {
@@ -157,5 +160,22 @@ public class PetitionsWorksVO {
 	public void setWorkTypeId(Long workTypeId) {
 		this.workTypeId = workTypeId;
 	}
-	
+	public Long getPetitionId() {
+		return petitionId;
+	}
+	public void setPetitionId(Long petitionId) {
+		this.petitionId = petitionId;
+	}
+	public String getEndorsmentNo() {
+		return endorsmentNo;
+	}
+	public void setEndorsmentNo(String endorsmentNo) {
+		this.endorsmentNo = endorsmentNo;
+	}
+	public String getEndorsmentDate() {
+		return endorsmentDate;
+	}
+	public void setEndorsmentDate(String endorsmentDate) {
+		this.endorsmentDate = endorsmentDate;
+	}
 }

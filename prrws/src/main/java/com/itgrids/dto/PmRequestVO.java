@@ -12,7 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public class PmRequestVO {
 	
-	private Long representationId;
+	private Long id;
+	private Long representeeId;
 	private String name;
 	private String mobileNO;
 	private String email;
@@ -34,6 +35,25 @@ public class PmRequestVO {
 	private String endDate;
 	private Long userId;
 	
+	private Long partyId;
+	private String partyName;
+	private String candidatePath;
+	private String designation;
+	private String endorsmentNo;
+	private String endorsmentDate;
+	
+	public String getEndorsmentDate() {
+		return endorsmentDate;
+	}
+	public void setEndorsmentDate(String endorsmentDate) {
+		this.endorsmentDate = endorsmentDate;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
 	public Long getUserId() {
 		return userId;
 	}
@@ -46,11 +66,12 @@ public class PmRequestVO {
 	public void setWorksList(List<PetitionsWorksVO> worksList) {
 		this.worksList = worksList;
 	}
-	public Long getRepresentationId() {
-		return representationId;
+	
+	public Long getRepresenteeId() {
+		return representeeId;
 	}
-	public void setRepresentationId(Long representationId) {
-		this.representationId = representationId;
+	public void setRepresenteeId(Long representeeId) {
+		this.representeeId = representeeId;
 	}
 	public String getName() {
 		return name;
@@ -154,5 +175,35 @@ public class PmRequestVO {
 	}
 	public void setRefCandidateId(Long refCandidateId) {
 		this.refCandidateId = refCandidateId;
+	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	public String getPartyName() {
+		return partyName;
+	}
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+	public String getCandidatePath() {
+		return candidatePath;
+	}
+	public void setCandidatePath(String candidatePath) {
+		this.candidatePath = candidatePath;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getEndorsmentNo() {
+		return endorsmentNo;
+	}
+	public void setEndorsmentNo(String endorsmentNo) {
+		this.endorsmentNo = endorsmentNo;
 	}
 }
