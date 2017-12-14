@@ -526,5 +526,12 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	    
 		return query.list(); 
 	}
+	@Override
+	public List<Object[]> getEncconstituencies() {
+		
+		Query query = getSession().createQuery("select model.constituency.encConstituencyId,model.constituency.name,model.tehsil.encTehsilId, model.tehsil.tehsilName " +
+				"from TehsilConstituency model");
+		return query.list();
+	}
 	
 }
