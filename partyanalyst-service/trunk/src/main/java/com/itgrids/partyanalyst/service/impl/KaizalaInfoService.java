@@ -1413,6 +1413,8 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 					returnvo.setTotalCount(obj.getLong("totalCount"));
 					returnvo.setPending(obj.getLong("pending"));
 					returnvo.setPendingPerc(obj.getString("pendingPerc"));
+					returnvo.setInstalledPerc(calculatePercantage(returnvo.getCommitteeInstalled(), returnvo.getTotalCount()).toString());
+					returnvo.setNotSmartPhonePerc(calculatePercantage(returnvo.getCommitteeNoSmartPhone(), returnvo.getTotalCount()).toString());
 					JSONArray committeeArr = obj.getJSONArray("subList");
 					if(committeeArr != null && committeeArr.length() > 0){
 						for (int i = 0; i < committeeArr.length(); i++) {
