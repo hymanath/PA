@@ -45,6 +45,10 @@ public class PmRequestDetailsController {
 			pmRequestVO.setUserId(1L);
 			return pmRequestDetailsService.saveRepresentRequestDetails(pmRequestVO);
 	    }
+		@RequestMapping(value ="/setPmRepresenteeDataToResultView",method = RequestMethod.POST)
+		 public @ResponseBody PmRequestVO setPmRepresenteeDataToResultView(@RequestBody Map<String,String> inputMap ) {
+	    	 return pmRequestDetailsService.setPmRepresenteeDataToResultView(Long.valueOf(inputMap.get("petitionId")));
+	    }
 	   	@RequestMapping(value ="/getPetitionReferredMemberDetails",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ) {
 	    	 return pmRequestDetailsService.getPetitionReferredMemberDetails(dataVo);
