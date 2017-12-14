@@ -30,7 +30,8 @@ public class Constituency{
 	private PrConstituency prConstituency;
 	private Long rwsConstituencyId;
 	private RwsConstituency rwsConstituency;
-
+	private Long encConstituencyId;
+	
 	@Id
 	@Column(name="constituency_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -134,5 +135,13 @@ public class Constituency{
 	public void setRwsConstituency(RwsConstituency rwsConstituency) {
 		this.rwsConstituency = rwsConstituency;
 	}
+	@Column(name ="enc_constituency_id")
+	public Long getEncConstituencyId() {
+		return encConstituencyId;
+	}
+	public void setEncConstituencyId(Long encConstituencyId) {
+		this.encConstituencyId = encConstituencyId;
+	}
 		
+	
 }

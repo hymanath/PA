@@ -26,6 +26,7 @@ public class District{
 	private State state;
 	private PrDistrict prDistrict;
 	private RwsDistrict rwsDistrict;
+	private Long encDistrictId;
 	
 	
 
@@ -108,6 +109,15 @@ public class District{
 
 	public void setRwsDistrict(RwsDistrict rwsDistrict) {
 		this.rwsDistrict = rwsDistrict;
+	}
+
+	@Column(name="enc_district_id")
+	public Long getEncDistrictId() {
+		return encDistrictId;
+	}
+
+	public void setEncDistrictId(Long encDistrictId) {
+		this.encDistrictId = encDistrictId;
 	}
 	
 	
