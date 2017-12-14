@@ -3,6 +3,7 @@ package com.itgrids.service;
 import java.util.List;
 
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.ResponseVO;
 
@@ -12,4 +13,5 @@ public interface IRepresentationRequestService {
 	public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo );
 	public List<RepresentationRequestVO> getRepresentativeSearchWiseDetails(InputVO inputVO);
 	public RepresentationRequestVO getRepresentationRequestDetailsByRepresentationRequestId(Long representationMemberId);
+	public ResponseVO saveRepresentHistoryDetails(PmRequestVO dataVO,Long userId);
 }

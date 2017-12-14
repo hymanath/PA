@@ -20,14 +20,18 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.common.io.Files;
 import com.itgrids.dao.IDocumentDAO;
 import com.itgrids.dao.ILocationAddressDAO;
+import com.itgrids.dao.IPetitionHistoryDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PetitionMemberVO;
+import com.itgrids.dto.PetitionsWorksVO;
+import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.ResponseVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
+import com.itgrids.model.PetitionHistory;
 import com.itgrids.model.PetitionMember;
 import com.itgrids.model.PetitionRefferer;
 import com.itgrids.model.PetitionReffererCandidate;
@@ -53,6 +57,8 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 	
 	@Autowired
 	private IDocumentDAO documentDAO;
+	@Autowired
+	private IPetitionHistoryDAO petitionHistoryDAO;
 	
 	//@Autowired
 	//private IPetitionMemberDAO petitionMemberDAO;
@@ -721,4 +727,45 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		    	}
 		    	return resultList;
 		    }
+		 
+		 /**
+			 * Date : 14/12/2017
+			 * Author :krishna <ramakrishna.madapati@itgrids.com>
+			 * @description : to save the petition history wise details
+			 * @param : PmRequestVO
+			 * @return  ResponseVO 
+			 */
+		 
+		 public ResponseVO saveRepresentHistoryDetails(PmRequestVO dataVO,Long userId){
+			 ResponseVO responseVO = new ResponseVO();
+			 LOG.info("Entered into RepresentationRequestService of  saveRepresentRequestDetails()");
+			 PetitionHistory petitionHistory = null ;
+			 try{
+				 if(dataVO.getWorksList() != null){
+					 petitionHistory = new PetitionHistory();
+						if(commonMethodsUtilService.isListOrSetValid(dataVO.getWorksList())) {
+							for (PetitionsWorksVO petitionsWorksVO : dataVO.getWorksList())  {
+					         petitionHistory.setPetitionId(petitionsWorksVO.getPetitionId());
+					         petitionHistory.setPmSubWorkDetailsId(petitionsWorksVO.getPmSubWorkDetailsId());
+					         petitionHistory.setPmDocumentId(petitionsWorksVO.getPmDocumentId());
+					         petitionHistory.setPmRepresenteeRefDetailsId(petitionsWorksVO.getPmRepresenteeRefDetailsId());
+					         petitionHistory.setPmRepresenteeRefDocumentId(petitionsWorksVO.getPmRepresenteeRefDocumentId());
+					         petitionHistory.setInsertedUserId(userId);
+					         petitionHistory.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					         petitionHistory = petitionHistoryDAO.save(petitionHistory);
+						}
+					 }
+			 }
+				 responseVO.setResponseCode("0");
+				 responseVO.setMessage(IConstants.SUCCESS);
+			 }catch(Exception e){
+				  responseVO.setResponseCode("1");
+				  responseVO.setMessage(IConstants.FAILURE);
+				 LOG.error("Exception raised into RepresentationRequestService of saveRepresentRequestDetails() ");
+			 }
+			 return responseVO;
+		 }
+
 }
+
+

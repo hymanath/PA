@@ -18,7 +18,7 @@ public interface ILocationDetailsService {
 	public List<KeyValueVO> getPmDepartmentList(String searchType);
 	public List<KeyValueVO> getPetitionDesignationList(String searchType);
 	public List<KeyValueVO>  getParliamentIdsByConstituencyList();//down modify
-	public List<KeyValueVO>  getPmSubjectList();
+	public List<KeyValueVO>  getPmSubjectList(Long deptId);
 	public List<KeyValueVO>  getPmSubSubjectList(Long subjectId);
 	public List<KeyValueVO>  getPmLeadDetailsList();
 	public List<KeyValueVO>  getPmBriefLeadList();
