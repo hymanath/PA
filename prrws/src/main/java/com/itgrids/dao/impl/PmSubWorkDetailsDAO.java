@@ -20,6 +20,34 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		super(PmSubWorkDetails.class);
 	}
 	
+	public List<Object[]> getPetitionSubWorksDetails(Long petitionId){
+		StringBuilder str = new StringBuilder();
+		str.append(" select  model.petitionId, model.costEstimation, model.grievanceDescrption, model.eOfficeId , pmSubject.pmSubjectId, pmSubSubject.pmSubjectId , " +//0,1,2,3,4,5
+				" pmLead.pmLeadId,pmBriefLead.pmBriefLeadId,pmGrant.pmGrantId,pmStatus.pmStatusId,pmDepartment.pmDepartmentId,pmWorkType.pmWorkTypeId, " +//6,7,8,9,10,11
+				" state.stateId,district.districtId,constituency.constituencyId,tehsil.tehsilId,localBody.localElectionBodyId,model.pmSubWorkDetailsId," +//12,13,14,15,16,17
+				" model.uiBuildSeriesNo,model.locationScopeId,model.locationValue " +//18,19,20
+				" from PmSubWorkDetails model " +
+				" left join model.locationAddress address" +
+				" left join address.state state " +
+				" left join address.district district" +
+				" left join address.constituency constituency" +
+				" left join address.tehsil tehsil" +
+				" left join address.localElectionBody localBody " +
+				" left join model.pmSubject pmSubject " +
+				" left join model.pmSubSubject pmSubSubject" +
+				" left join model.pmLead pmLead " +
+				" left join model.pmBriefLead pmBriefLead" +
+				" left join model.pmGrant pmGrant " +
+				" left join model.pmStatus pmStatus " +
+				" left join model.pmDepartment pmDepartment " +
+				" left join model.pmWorkType pmWorkType " +
+				" where model.petitionId =:petitionId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("petitionId", petitionId);
+		return query.list();
+	}
+	
+	
 	public List<Object[]> getAllDistricts(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.locationAddress.district.districtId");
