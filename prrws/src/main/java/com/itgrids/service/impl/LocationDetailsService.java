@@ -19,6 +19,7 @@ import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.IPmBriefLeadDAO;
 import com.itgrids.dao.IPmDepartmentDAO;
+import com.itgrids.dao.IPmDeptSubjectDetailsDAO;
 import com.itgrids.dao.IPmDesignationDAO;
 import com.itgrids.dao.IPmGrantDAO;
 import com.itgrids.dao.IPmLeadDAO;
@@ -57,6 +58,8 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	@Autowired
 	private IPanchayatDAO panchayatDAO;
+	@Autowired
+	private IPmDeptSubjectDetailsDAO pmDeptSubjectDetailsDAO;
 	//@Autowired
 	//private IPetitionDesignationDAO petitionDesignationDAO;
 	//@Autowired
@@ -387,11 +390,11 @@ public class LocationDetailsService implements ILocationDetailsService {
     	return resultList;
     }
     
-public List<KeyValueVO>  getPmSubjectList(){
+public List<KeyValueVO>  getPmSubjectList(Long deptId){
     	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
     	    try{
     		LOG.info("Entered into LocationDetailsService of getPmSubjectList ");
-    		List<Object[]> petitionDetailsObjsList = pmSubjectDAO.getPmSubjectList();
+    		List<Object[]> petitionDetailsObjsList = pmDeptSubjectDetailsDAO.getPmSubjectList(deptId);
     		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
     			for(Object[] param: petitionDetailsObjsList){
     				KeyValueVO vo = new KeyValueVO();

@@ -81,7 +81,7 @@ public class RepresentationRequestController {
     }
 	@RequestMapping(value ="/getPmSubjectList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getPmSubjectList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPmSubjectList();
+       return locationDetailsService.getPmSubjectList(Long.valueOf(inputMap.get("deptId")));
     }
 	@RequestMapping(value ="/getPmSubSubjectList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getPmSubSubjectList(@RequestBody Map<String,String> inputMap ) {
@@ -106,5 +106,11 @@ public class RepresentationRequestController {
 	@RequestMapping(value ="/getWorkTypeList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getWorkTypeList(@RequestBody Map<String,String> inputMap ) {
        return locationDetailsService.getWorkTypeList();
+    }
+	@RequestMapping(value ="/saveRepresentHistoryDetails",method = RequestMethod.POST)
+	public @ResponseBody ResponseVO saveRepresentHistoryDetails(@ModelAttribute  PmRequestVO pmRequestVO) {
+		pmRequestVO.setUserId(1L);
+		//return null;
+    	return representationRequestService.saveRepresentHistoryDetails(pmRequestVO,pmRequestVO.getUserId());
     }
 }

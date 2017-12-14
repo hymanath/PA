@@ -10,6 +10,10 @@ public class PetitionsWorksVO {
 	private Long petitionId;
 	private String endorsmentNo;
 	private String endorsmentDate;
+	private Long pmSubWorkDetailsId;
+	private Long pmDocumentId;
+	private Long pmRepresenteeRefDetailsId;
+	private Long  pmRepresenteeRefDocumentId;
 	private Long workId;
 	private String workName;
 	private Long noOfWorks;
@@ -210,6 +214,31 @@ public class PetitionsWorksVO {
 	public void setWorkTypeId(Long workTypeId) {
 		this.workTypeId = workTypeId;
 	}
+	public Long getPmSubWorkDetailsId() {
+		return pmSubWorkDetailsId;
+	}
+	public void setPmSubWorkDetailsId(Long pmSubWorkDetailsId) {
+		this.pmSubWorkDetailsId = pmSubWorkDetailsId;
+	}
+	public Long getPmDocumentId() {
+		return pmDocumentId;
+	}
+	public void setPmDocumentId(Long pmDocumentId) {
+		this.pmDocumentId = pmDocumentId;
+	}
+	public Long getPmRepresenteeRefDetailsId() {
+		return pmRepresenteeRefDetailsId;
+	}
+	public void setPmRepresenteeRefDetailsId(Long pmRepresenteeRefDetailsId) {
+		this.pmRepresenteeRefDetailsId = pmRepresenteeRefDetailsId;
+	}
+	public Long getPmRepresenteeRefDocumentId() {
+		return pmRepresenteeRefDocumentId;
+	}
+	public void setPmRepresenteeRefDocumentId(Long pmRepresenteeRefDocumentId) {
+		this.pmRepresenteeRefDocumentId = pmRepresenteeRefDocumentId;
+	}
+	
 	public Long getPetitionId() {
 		return petitionId;
 	}
