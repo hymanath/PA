@@ -15,11 +15,17 @@ public class PetitionsWorksVO {
 	private Long noOfWorks;
 	private String grievanceDescription;
 	private Long deptId;
+	private String deptName; 
 	private Long subjectId;
+	private String subject;
 	private Long subSubjectId;
+	private String subSubject;
 	private Long leadId;
+	private String leadName;
 	private Long briefLeadId;
+	private String briefLeadName;
 	private Long grantId;
+	private String grantName;
 	private String estimateCost;
 	private String eOfficeId;
 	private String remarks;
@@ -28,11 +34,55 @@ public class PetitionsWorksVO {
 	private List<PetitionsWorksVO> subWorksList = new ArrayList<PetitionsWorksVO>();
 	private List<MultipartFile> fileList = new ArrayList<MultipartFile>();
 	private Long workTypeId;
-	
+	private String workType;
+	private String status;
+	private Long statusId;
 	private AddressVO addressVO;
 	private Long locationScopeId;
 	private Long locationValue;
 	
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public String getSubSubject() {
+		return subSubject;
+	}
+	public void setSubSubject(String subSubject) {
+		this.subSubject = subSubject;
+	}
+	public String getLeadName() {
+		return leadName;
+	}
+	public void setLeadName(String leadName) {
+		this.leadName = leadName;
+	}
+	public String getBriefLeadName() {
+		return briefLeadName;
+	}
+	public void setBriefLeadName(String briefLeadName) {
+		this.briefLeadName = briefLeadName;
+	}
+	public String getGrantName() {
+		return grantName;
+	}
+	public void setGrantName(String grantName) {
+		this.grantName = grantName;
+	}
+	public String getWorkType() {
+		return workType;
+	}
+	public void setWorkType(String workType) {
+		this.workType = workType;
+	}
 	public AddressVO getAddressVO() {
 		return addressVO;
 	}
@@ -177,5 +227,17 @@ public class PetitionsWorksVO {
 	}
 	public void setEndorsmentDate(String endorsmentDate) {
 		this.endorsmentDate = endorsmentDate;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
 	}
 }

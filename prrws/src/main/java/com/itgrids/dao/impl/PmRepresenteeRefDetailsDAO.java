@@ -29,8 +29,11 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" refState.stateId, refDistrict.districtId,refConstituency.constituencyId,refTehsil.tehsilId,refLocalBody.localElectionBodyId, " +//16,17,18,19,20
 				" petition.petitionId, petition.endorsmentNo,petition.representationDate,petition.endorsmentDate,petition.workName,petition.estimationCost," +//21,22,23,24,25,26
 				" petition.noOfWorks,pmStatus.pmStatusId,pmStatus.status,pmRepresentee.pmRepresenteeId , pmRepresentee.pmRefCandidateId,model.pmRepresenteeRefDetailsId, " +//27,28,29,30,31,32
-				" pmDesignation.pmDesignationId, pmDesignation.designation,refPmDesignation.pmDesignationId, refPmDesignation.designation " +//33,34,35,36
-				" " +
+				" pmDesignation.pmDesignationId, pmDesignation.designation,refPmDesignation.pmDesignationId, refPmDesignation.designation, " +//33,34,35,36
+				"'','','','','','','','','','','',''"+
+				""+
+				//" state.stateName, district.districtName,constituency.name,tehsil.tehsilName,localBody.name,localBody.electionType.electionType," +//37,38,39,40,41,42
+				//" refState.stateName, refDistrict.districtName,refConstituency.name,refTehsil.tehsilName,refLocalBody.name,refLocalBody.electionType.electionType " +//43,44,45,46,47,48
 				" from PmRepresenteeRefDetails model " +
 				" left join model.pmRepresentee pmRepresentee " +
 				" left join pmRepresentee.userAddress userAddress " +

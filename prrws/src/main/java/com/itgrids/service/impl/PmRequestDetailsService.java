@@ -727,6 +727,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 pmRequestVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[34]));
 					 
 					 AddressVO addressVO = setAddressDetailsToResultView(param[4],param[5],param[6],param[7],param[8]);
+					 addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[37]));
+					 addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[38]));
+					 addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[39]));
+					 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
+						 addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[41])+" "+commonMethodsUtilService.getStringValueForObject(param[42]));
+					 else
+						 addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[40]));
 					 pmRequestVO.setAddressVO(addressVO);
 					 
 					 PmRequestVO refVO = new PmRequestVO();
@@ -742,6 +749,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 refVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[36]));
 					 
 					 AddressVO refAddressVO = setAddressDetailsToResultView(param[16],param[17],param[18],param[19],param[20]);
+					 refAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[43]));
+					 refAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[44]));
+					 refAddressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[45]));
+					 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
+						 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[47])+" "+commonMethodsUtilService.getStringValueForObject(param[48]));
+					 else
+						 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[46]));
 					 refVO.setAddressVO(refAddressVO);
 					 pmRequestVO.getReferList().add(refVO);
 					 
@@ -786,7 +800,23 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setGrantId(commonMethodsUtilService.getLongValueForObject(param[8]));
 						//vo.setRemarks(commonMethodsUtilService.getStringValueForObject(param[36]));
 						
+						vo.setWorkType(commonMethodsUtilService.getStringValueForObject(param[32]));
+						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(param[31]));
+						vo.setSubject(commonMethodsUtilService.getStringValueForObject(param[33]));
+						vo.setSubSubject(commonMethodsUtilService.getStringValueForObject(param[34]));
+						vo.setLeadName(commonMethodsUtilService.getStringValueForObject(param[27]));
+						vo.setBriefLeadName(commonMethodsUtilService.getStringValueForObject(param[28]));
+						vo.setGrantName(commonMethodsUtilService.getStringValueForObject(param[29]));
+						vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[30]));
+						
 						 AddressVO refAddressVO = setAddressDetailsToResultView(param[12],param[13],param[14],param[15],param[16]);
+						 refAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[21]));
+						 refAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[22]));
+						 refAddressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[23]));
+						 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
+							 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[25])+" "+commonMethodsUtilService.getStringValueForObject(param[26]));
+						 else
+							 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[24]));
 						 vo.setAddressVO(refAddressVO);
 						 
 						 List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>();
