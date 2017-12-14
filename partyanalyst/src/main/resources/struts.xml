@@ -18624,7 +18624,7 @@
 	</action>
 	<action name="getTrainingCampFeedBackProgramWiseDetailsAction" class="coreDashboardAction"  method="getTrainingCampFeedBackProgramWiseDetails">
 		<result type="json" name="success">
-			<param name="root">trainingCampVO</param>
+			<param name="root">campSurveyVOs</param>
 		</result>
 	</action>
 	<action name="getTrainingQuizDetailsAction" class="coreDashboardAction"  method="getTrainingQuizDetails">
