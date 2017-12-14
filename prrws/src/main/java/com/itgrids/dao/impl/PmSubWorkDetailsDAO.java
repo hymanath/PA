@@ -26,10 +26,10 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				" pmLead.pmLeadId,pmBriefLead.pmBriefLeadId,pmGrant.pmGrantId,pmStatus.pmStatusId,pmDepartment.pmDepartmentId,pmWorkType.pmWorkTypeId, " +//6,7,8,9,10,11
 				" state.stateId,district.districtId,constituency.constituencyId,tehsil.tehsilId,localBody.localElectionBodyId,model.pmSubWorkDetailsId," +//12,13,14,15,16,17
 				" model.uiBuildSeriesNo,model.locationScopeId,model.locationValue, " +//18,19,20
-				"'','','','','','',"+
-				//" state.stateName,district.districtName,constituency.name,tehsil.tehsilName,localBody.name,localBody.electionType.electionType," +//21,22,23,24,25,26
-				"'','','','','','','',''"+
-				//" pmLead.leadName,pmBriefLead.briefLead,pmGrant.pmGrantName,pmStatus.status,pmDepartment.department,pmWorkType.workType, pmSubject.subject,pmSubSubject.subject " +//27,28,29,30,31,32,33,34
+				//"'','','','','','',"+
+				" state.stateName,district.districtName,constituency.name,tehsil.tehsilName,localBody.name,electionType.electionType," +//21,22,23,24,25,26
+				//"'','','','','','','',''"+
+				" pmLead.leadName,pmBriefLead.briefLead,pmGrant.pmGrantName,pmStatus.status,pmDepartment.department,pmWorkType.workType, pmSubject.subject,pmSubSubject.subject " +//27,28,29,30,31,32,33,34
 				" from PmSubWorkDetails model " +
 				" left join model.locationAddress address" +
 				" left join address.state state " +
@@ -37,6 +37,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				" left join address.constituency constituency" +
 				" left join address.tehsil tehsil" +
 				" left join address.localElectionBody localBody " +
+				" left join localBody.electionType electionType" +
 				" left join model.pmSubject pmSubject " +
 				" left join model.pmSubSubject pmSubSubject" +
 				" left join model.pmLead pmLead " +
@@ -45,7 +46,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				" left join model.pmStatus pmStatus " +
 				" left join model.pmDepartment pmDepartment " +
 				" left join model.pmWorkType pmWorkType " +
-				" where model.petitionId =:petitionId");
+				" where model.petitionId =:petitionId and model.petition.isDeleted='N' ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("petitionId", petitionId);
 		return query.list();
