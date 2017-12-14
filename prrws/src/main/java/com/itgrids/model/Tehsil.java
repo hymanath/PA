@@ -31,6 +31,7 @@ public class Tehsil {
 	
 	private District district;
 	private PrTehsil prTehsil;
+	private Long encTehsilId;
 	
 	@Id
 	@Column(name="tehsil_id")
@@ -88,6 +89,14 @@ public class Tehsil {
 	}
 	public void setPrTehsil(PrTehsil prTehsil) {
 		this.prTehsil = prTehsil;
+	}
+	
+	@Column(name="enc_tehsil_id")
+	public Long getEncTehsilId() {
+		return encTehsilId;
+	}
+	public void setEncTehsilId(Long encTehsilId) {
+		this.encTehsilId = encTehsilId;
 	}
 	
 	
