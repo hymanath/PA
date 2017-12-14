@@ -290,23 +290,23 @@ function buildSelfAndRepresenteeDetails(typeVal){
 			str+='<div class="col-sm-3">';
 				str+='<label>VOTER ID</label>';
 				str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
-				str+='<div id="voterId'+typeVal+'Err"></div>';
+				
 			str+='</div>';
 			
 			str+='<div class="col-sm-3">';
 				str+='<label>NAME</label>';//$("#name"+typeVal+"Err").html("<h5>Please Enter Name</h5>");
 				str+='<input type="text"  name="name"  value="" class="form-control m_top10 height45" id="name'+typeVal+'" placeholder="Enter Name">';
-				str+='<div id="name'+typeVal+'Err"></div>';
+				
 			str+='</div>';
 			str+='<div class="col-sm-3">';
 				str+='<label>MOBILE NO</label>';
 				str+='<input type="text" name="mobileNO" maxlength="10" value=""  class="form-control m_top10 height45" id="mobileNumber'+typeVal+'" placeholder="Enter Mobile Number">';
-				str+='<div id="mobileNumber'+typeVal+'Err"></div>';
+				
 			str+='</div>';
 			str+='<div class="col-sm-3">';
 				str+='<label>EMAIL-ID</label>';
 				str+='<input type="text" name="email"   value="" class="form-control m_top10 height45" id="emailId'+typeVal+'" placeholder="Enter E-mail ID">';
-				str+='<div id="emailId'+typeVal+'Err"></div>';
+				
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="row m_top20">';
@@ -315,28 +315,29 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='<select   name="addressVO.districtId" class="form-control chosen-select m_top10" id="district'+typeVal+'">';
 					str+='<option value="0">Select District</option>';
 				str+='</select>';
-				str+='<div id="district'+typeVal+'Err"></div>';
+				
 			str+='</div>';
 			str+='<div class="col-sm-3">';	
 				str+='<label>CONSTITUENCY</label>';
 				str+='<select  name="addressVO.assemblyId"   class="form-control chosen-select m_top10" id="constituency'+typeVal+'">';
 					str+='<option value="0">Select Constituency</option>';
 				str+='</select>';
-				str+='<div id="constituency'+typeVal+'Err"></div>';
+				
 			str+='</div>';
 			str+='<div class="col-sm-3">';	
 				str+='<label>MANDAL/MUNCI.</label>';
 				str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="mandal'+typeVal+'">';
 					str+='<option value="0">Select Mandal</option>';
 				str+='</select>';
-				str+='<div id="mandal'+typeVal+'Err"></div>';
-			str+='</div>';str+='<div class="col-sm-3">';	
-				str+='<label>REPRESENTEE DESIGNATION.</label>';
-				str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="designation'+typeVal+'">';
-					str+='<option value="0">Select Designation</option>';
-				str+='</select>';
-				str+='<div id="designationId'+typeVal+'Err"></div>';
+				
 			str+='</div>';
+			str+='<div class="col-sm-3">';	
+			str+='<label>REPRESENTEE DESIGNATION.</label>';
+			str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="designation'+typeVal+'">';
+				str+='<option value="0">Select Designation</option>';
+			str+='</select>';
+			
+		str+='</div>';
 		str+='</div>';
 	}
 	
@@ -368,15 +369,15 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		
 		str+='<div class="row m_top10">';
 				str+='<div class="col-sm-8">';
-					str+='<label>COMPLETE WORK DISCRIPTION</label>';
+					str+='<label>COMPLETE WORK DISCRIPTION <span class="starColor">*</span><span id="completeWorkNameId'+typeVal+'"></span></label>';
 					str+='<input type="text"  name="worksList[0].workName"  value="" class="form-control m_top5 height45" id="name'+typeVal+'" placeholder="Enter Name">';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
-					str+='<label>NO OF WORKS</label>';
+					str+='<label>NO OF WORKS <span class="starColor">*</span><span id="noOfWorksId'+typeVal+'"></span></label>';
 						str+='<input   name="worksList[0].noOfWorks"   type="text" class="form-control m_top5 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work" onkeyUp="enableWorks(this.value,\'workDetailsDivId'+typeVal+'\',\''+typeVal+'\');">';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
-					str+='<label>WORKS IN COST (in Lakh)</label>';
+					str+='<label>WORKS IN COST (in Lakh) <span class="starColor">*</span><span id="workCostId'+typeVal+'"></span></label>';
 					str+='<input type="text"  name="worksList[0].estimateCost" class="form-control m_top5 height45" id="workCost'+typeVal+'" placeholder="Enter Work Cost">';
 				str+='</div>';
 		str+='</div>';
@@ -394,7 +395,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	str+='<div class="row m_top10">';
 			str+='<div class="col-sm-12">';
 					//str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD REFERRAL</button>';
-					str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20" style="cursor:pointer;background-color:green;" onclick="saveRepresentRequestDetails()">SAVE DETAILS</span><span id="savingDetailsSpinner"></span><span class="col-sm-offset-4" id="statusMsgAppntReqt"></span></div>';
+					str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 saveRepresentRequestDetails" style="cursor:pointer;background-color:green;" attr_type="'+typeVal+'">SAVE DETAILS</span><span id="savingDetailsSpinner"></span><span class="col-sm-offset-4" id="statusMsgAppntReqt"></span></div>';
 			str+='</div>';
 		str+='</div>';
 		
@@ -518,23 +519,28 @@ $(document).on("click",".candidateAddedView",function(){
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $(this).attr("attr_candidateId");
 	var representeeType='SELF';
-	if(typeVal=='representee')
+	if(typeVal=='representee'){
 		representeeType='REPRESENTEE';
-
+	}
+		
 	alreadyCandidateId.push(parseInt(candidateId));
-	$(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-3").addClass("col-sm-2");
-	$("#fileUpload"+typeVal+candidateId).show();
+	
 	$("#candidateDetails"+typeVal+"DivId").append($("#candidatesAppendDiv"+candidateId).html());
-	if(representeeType =='SELF')
-		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="refCandidateId" value="'+candidateId+'" />');	
-	else if(representeeType =='REPRESENTEE')
-		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="referList['+refCandCount+'].refCandidateId" value="'+candidateId+'" />');	
+	
+	$("#candidateDetails"+typeVal+"DivId").find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-3").addClass("col-sm-2");
+	$("#candidateDetails"+typeVal+"DivId").find("#fileUpload"+typeVal+candidateId).show();
 	
 	$("#fileUpload"+typeVal+candidateId).append('<div class="col-sm-4" style="margin-top:-20px;"><label>REFERAL LETTER</label><input type="file"   attr_name="referList['+refCandCount+']" name="" attr_image_tyep="refImage"  id="mainBlockFileUpload'+candidateId+''+typeVal+'" multiple="multiple" class=""/></div>');
-	
-	
+	if(representeeType =='SELF'){
+		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="refCandidateId" value="'+candidateId+'" />');	
+	}
+	else if(representeeType =='REPRESENTEE'){
+		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="referList['+refCandCount+'].refCandidateId" value="'+candidateId+'" />');	
+	}
 	refCandCount=refCandCount+1;
 	$(this).parent().find(".representation-selected").addClass("display_block");
+	$("#candidatesAppendDiv"+candidateId).find("#candidate"+typeVal+candidateId).removeClass("candidateAddedView");
+	
 	$("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").removeClass("candidateAddedView");
 	$("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").css("cursor","auto");
 	$(".showRemoveIcon").attr("attr_candidateId",candidateId)
@@ -542,16 +548,27 @@ $(document).on("click",".candidateAddedView",function(){
 	initializeFileUploadMainBlock(typeVal,candidateId);
 });
 
-$(document).on("click",".representation-remove",function(){
+$(document).on("click",".ccccc",function(){
+	
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $(this).attr("attr_candidateId");
-	$(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
-	$("#fileUpload"+typeVal+candidateId).hide();
+	
+	$("#candidateDetails"+typeVal+"DivId").find("#candidate"+typeVal+candidateId).remove();
 	$("#candidatesAppendDiv"+candidateId).find(".representation-selected").removeClass("display_block");
+	$("#candidatesAppendDiv"+candidateId).find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
+	
+	/* alert($("#candidatesAppendDiv"+candidateId).find(".representation-selected").html())
+	$("#candidatesAppendDiv"+candidateId).find(".representation-selected").removeClass("display_block");
+	
+	$("#candidatesAppendDiv"+candidateId).find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
+	$("#candidatesAppendDiv"+candidateId).find("#fileUpload"+typeVal+candidateId).hide(); */
+	
+	
+	
 	setTimeout(function(){ 
-		$("#candidate"+typeVal+candidateId).find(".bgColorCandidatesView").addClass("candidateAddedView")
-		$("#candidateDetails"+typeVal+"DivId").find("#candidate"+typeVal+candidateId).remove();
-	}, 1500);
+		$("#candidatesAppendDiv"+candidateId).find(".bgColorCandidatesView").addClass("candidateAddedView")
+	}, 2000);
+	
 	var itemtoRemove = parseInt(candidateId);
 	alreadyCandidateId.splice($.inArray(itemtoRemove, alreadyCandidateId),1);
 	return;
@@ -603,7 +620,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 								str+='<div class="row">';
 										str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
 										
-										str+='<div class="representation-selected display_block" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+										str+='<div class="representation-selected display_block" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
 										
 										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
@@ -673,7 +690,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 								str+='<div class="row">';
 									str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
 									
-										str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+										str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
 										
 										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
@@ -739,7 +756,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 					
 					str+='<div class="row">';
 					str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
-					str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+					str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
 					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 							str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
 							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
@@ -819,21 +836,21 @@ function buildTemplateWorkDetails(typeVal){
 				str+='<div class="row m_top10" >';
 				//str+='<div class="pull-right removeWorkCls" attr_id="mainWorkDivId'+globalWorkTypeCount+'0" attr_type="self" attr_candidateid="1" style="cursor:pointer;margin-top: -30px"><i class="glyphicon glyphicon-remove"></i></div>';				
 					str+='<div class="col-sm-3">';
-							str+='<label>DEPARTMENT</label>';
-							str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].deptId"  class="form-control chosen-select m_top10"  id="WorkTypeWiseDepartmentId'+typeVal+''+globalWorkTypeCount+'0" onChange=getPetitionSubjectList(this.value,"subjectId'+typeVal+''+globalWorkTypeCount+'","0")>';
+							str+='<label>DEPARTMENT <span class="starColor">*</span><span class="WorkTypeWiseDepartmentId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+							str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].deptId"  class="form-control chosen-select m_top10 validateCls"  id="WorkTypeWiseDepartmentId'+typeVal+''+globalWorkTypeCount+'0" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0" attr_select_type="selectbox">';
 							str+='</select>';
 						str+='</div>';
 					
 					str+='<div class="col-sm-3">';
-						str+='<label>SUBJECT</label>';
-						str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].subjectId"  class="form-control chosen-select m_top10"  id="subjectId'+typeVal+''+globalWorkTypeCount+'0" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+typeVal+''+globalWorkTypeCount+'","0")>';
+						str+='<label>SUBJECT <span class="starColor">*</span><span class="subjectId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+						str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].subjectId"  class="form-control chosen-select m_top10 validateCls"  id="subjectId'+typeVal+''+globalWorkTypeCount+'0" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+typeVal+''+globalWorkTypeCount+'","0") attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0" attr_select_type="selectbox">';
 							str+='<option value="0">Select Subject</option>';
 						str+='</select>';
 					str+='</div>';
 					
 					str+='<div class="col-sm-3">';
-						str+='<label>SUB-SUBJECT</label>';
-						str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].subSubjectId"  class="form-control chosen-select m_top10"  id="subSubjectId'+typeVal+''+globalWorkTypeCount+'0">';
+						str+='<label>SUB-SUBJECT <span class="starColor">*</span><span class="subSubjectId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+						str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].subSubjectId"  class="form-control chosen-select m_top10 validateCls"  id="subSubjectId'+typeVal+''+globalWorkTypeCount+'0" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0" attr_select_type="selectbox">';
 							str+='<option value="0">Select Sub Subject</option>';
 						str+='</select>';
 					str+='</div>';
@@ -847,28 +864,28 @@ function buildTemplateWorkDetails(typeVal){
 							str+='<h3 class="panel-title f_16 font_weight">WORK 1</h3>';
 							str+='<div class="row m_top10">';
 									str+='<div class="col-sm-3">';
-										str+='<label> WORK TYPE </label>';
-										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].workTypeId"  class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+globalWorkTypeCount+'0" >';
+										str+='<label> WORK TYPE <span class="starColor">*</span><span class="workTypeId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].workTypeId"  class="form-control chosen-select m_top10 validateCls" id="workTypeId'+typeVal+''+globalWorkTypeCount+'0" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
 											str+='<option value="0">Select Work Type</option>';
 										str+='</select>';
 									str+='</div>';
 									str+='<div class="col-sm-3">';
-										str+='<label>WORK IN COST (in Lakh)</label>';
-										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].estimateCost" class="form-control m_top5 height45" id="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter Work Cost">';
+										str+='<label>WORK IN COST (in Lakh) <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].estimateCost" class="form-control m_top5 height45 validateCls" id="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter Work Cost" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
 									str+='</div>';
 									str+='<div class="col-sm-3">';
-										str+='<label>WORK DETAILS</label>';
-										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].grievanceDescription" class="form-control m_top5 height45" id="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter">';
+										str+='<label>WORK DETAILS <span class="starColor">*</span><span class="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].grievanceDescription" class="form-control m_top5 height45 validateCls" id="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
 									str+='</div>';
 									str+='<div class="col-sm-3">';
-										str+='<label>eOFFICE-ID</label>';
-										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].eOfficeId" class="form-control m_top5 height45" id="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter">';
+										str+='<label>eOFFICE-ID <span class="starColor">*</span><span class="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].eOfficeId" class="form-control m_top5 height45 validateCls" id="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
 									str+='</div>';
 							str+='</div>';
 							str+='<div class="row m_top10">';
 									str+='<div class="col-sm-3">';
-										str+='<label>LOCATION LEVEL</label>';
-										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main">';
+										str+='<label>LOCATION LEVEL <span class="starColor">*</span><span class="locationLevelId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+' validateCls" id="locationLevelId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
 											str+='<option value="0">Select Level</option>';
 											str+='<option value="3">District</option>';
 											str+='<option value="4">Constituency</option>';
@@ -877,22 +894,22 @@ function buildTemplateWorkDetails(typeVal){
 									str+='</div>';
 									
 									str+='<div class="col-sm-2 districtCls'+typeVal+''+globalWorkTypeCount+'0" style="display:none">';
-										str+='<label>DISTRICT</label>';
-										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main">';
+										str+='<label>DISTRICT <span class="starColor">*</span><span class="districtId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls" id="districtId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
 											str+='<option value="0">Select District</option>';
 										str+='</select>';
 									str+='</div>';
 									
 									str+='<div class="col-sm-2 constituencyCls'+typeVal+''+globalWorkTypeCount+'0" style="display:none">';
-										str+='<label>CONSTITUENCY</label>';
-										str+='<select   name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main">';
+										str+='<label>CONSTITUENCY <span class="starColor">*</span><span class="constituencyId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<select   name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls" id="constituencyId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
 											str+='<option value="0">Select Constituency</option>';
 										str+='</select>';
 									str+='</div>';
 									
 									str+='<div class="col-sm-2 mandalCls'+typeVal+''+globalWorkTypeCount+'0" style="display:none">';
-										str+='<label>MANDAL/MUNCI.</label>';
-										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main">';
+										str+='<label>MANDAL/MUNCI. <span class="starColor">*</span><span class="mandalId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls" id="mandalId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
 											str+='<option value="0">Select Mandal</option>';
 										str+='</select>';
 									str+='</div>';
@@ -923,7 +940,7 @@ function buildTemplateWorkDetails(typeVal){
 	$(".chosen-select").chosen();
 	
 	getSubjectPetitionsDepartmentList(typeVal,globalWorkTypeCount,0);
-	//getPetitionSubjectList('subjectId',typeVal,globalWorkTypeCount,0);
+	getPetitionSubjectList('subjectId',typeVal,globalWorkTypeCount,0);
 	getWorkTypeList('workTypeId',typeVal,globalWorkTypeCount,0);
 	globalWorkTypeCount =globalWorkTypeCount+1;
 		
@@ -1056,7 +1073,7 @@ $(document).on("click",".cloned_Element",function(){
 		$("[block-clone-"+typeVal+"="+blockId+"]").attr("block-clone-counter-"+typeVal+"",counterId);
 		globalWorkTypeCount = parseInt(globalWorkTypeCount)+1;
 		getSubjectPetitionsDepartmentList(typeVal,counterappendId,blockId);
-		//getPetitionSubjectList('subjectId',typeVal,counterappendId,blockId);
+		getPetitionSubjectList('subjectId',typeVal,counterappendId,blockId);
 		getWorkTypeList('workTypeId',typeVal,counterappendId,blockId);
 		
 	//}
@@ -1078,21 +1095,21 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 				clonedTemplate+='<div class="row m_top10" >';
 				
 					clonedTemplate+='<div class="col-sm-3">';
-							clonedTemplate+='<label>DEPARTMENT</label>';
-							clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].deptId"  class="form-control chosen-select m_top10"  id="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'" onChange=getPetitionSubjectList(this.value,"subjectId'+typeVal+''+counterappendId+'","'+blockId+'")>';
+							clonedTemplate+='<label>DEPARTMENT <span class="starColor">*</span><span class="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+							clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].deptId"  class="form-control chosen-select m_top10 validateCls"  id="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 							clonedTemplate+='</select>';
 						clonedTemplate+='</div>';
 					
 					clonedTemplate+='<div class="col-sm-3">';
-						clonedTemplate+='<label>SUBJECT</label>';
-						clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].subjectId"  class="form-control chosen-select m_top10"  id="subjectId'+typeVal+''+counterappendId+''+blockId+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+typeVal+''+counterappendId+'","'+blockId+'")>';
+						clonedTemplate+='<label>SUBJECT <span class="starColor">*</span><span class="subjectId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+						clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].subjectId"  class="form-control chosen-select m_top10 validateCls"  id="subjectId'+typeVal+''+counterappendId+''+blockId+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+typeVal+''+counterappendId+'","'+blockId+'") attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 							clonedTemplate+='<option value="0">Select Subject</option>';
 						clonedTemplate+='</select>';
 					clonedTemplate+='</div>';
 					
 					clonedTemplate+='<div class="col-sm-3">';
-						clonedTemplate+='<label>SUB-SUBJECT</label>';
-						clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].subSubjectId"  class="form-control chosen-select m_top10 " id="subSubjectId'+typeVal+''+counterappendId+''+blockId+'">';
+						clonedTemplate+='<label>SUB-SUBJECT <span class="starColor">*</span><span class="subSubjectId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+						clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].subSubjectId"  class="form-control chosen-select m_top10 validateCls" id="subSubjectId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 							clonedTemplate+='<option value="0">Select Sub Subject</option>';
 						clonedTemplate+='</select>';
 					clonedTemplate+='</div>';
@@ -1106,28 +1123,28 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 							clonedTemplate+='<h3 class="panel-title f_16 font_weight">WORK TYPE 1</h3>';
 							clonedTemplate+='<div class="row m_top10">';
 									clonedTemplate+='<div class="col-sm-3">';
-										clonedTemplate+='<label>WORK TYPE</label>';
-										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].workTypeId"  class="form-control chosen-select m_top10" id="workTypeId'+typeVal+''+counterappendId+''+blockId+'" >';
+										clonedTemplate+='<label>WORK TYPE <span class="starColor">*</span><span class="workTypeId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].workTypeId"  class="form-control chosen-select m_top10 validateCls" id="workTypeId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 											clonedTemplate+='<option value="0">Select Work Type</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
-										clonedTemplate+='<label>WORK IN COST (in Lakh)</label>';
-										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].estimateCost" class="form-control m_top5 height45" id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost">';
+										clonedTemplate+='<label>WORK IN COST (in Lakh) <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].estimateCost" class="form-control m_top5 height45 validateCls" id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
-										clonedTemplate+='<label>WORK DETAILS</label>';
-										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].grievanceDescription" class="form-control m_top5 height45" id="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter">';
+										clonedTemplate+='<label>WORK DETAILS <span class="starColor">*</span><span class="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].grievanceDescription" class="form-control m_top5 height45 validateCls" id="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
-										clonedTemplate+='<label>eOFFICE-ID</label>';
-										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].eOfficeId" class="form-control m_top5 height45" id="appendEofficeId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter">';
+										clonedTemplate+='<label>eOFFICE-ID <span class="starColor">*</span><span class="appendEofficeId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].eOfficeId" class="form-control m_top5 height45 validateCls" id="appendEofficeId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 									clonedTemplate+='</div>';
 							clonedTemplate+='</div>';
 							clonedTemplate+='<div class="row m_top10">';
 									clonedTemplate+='<div class="col-sm-3">';
-										clonedTemplate+='<label>LOCATION LEVEL</label>';
-										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main">';
+										clonedTemplate+='<label>LOCATION LEVEL <span class="starColor">*</span><span class="locationLevelId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+' validateCls" id="locationLevelId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 											clonedTemplate+='<option value="0">Select Level</option>';
 											clonedTemplate+='<option value="3">District</option>';
 											clonedTemplate+='<option value="4">Constituency</option>';
@@ -1136,22 +1153,22 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 									clonedTemplate+='</div>';
 									
 									clonedTemplate+='<div class="col-sm-2 districtCls'+typeVal+''+counterappendId+''+blockId+'" style="display:none">';
-										clonedTemplate+='<label>DISTRICT</label>';
-										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main">';
+										clonedTemplate+='<label>DISTRICT <span class="starColor">*</span><span class="districtId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls" id="districtId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 											clonedTemplate+='<option value="0">Select District</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									
 									clonedTemplate+='<div class="col-sm-2 constituencyCls'+typeVal+''+counterappendId+''+blockId+'" style="display:none">';
-										clonedTemplate+='<label>CONSTITUENCY</label>';
-										clonedTemplate+='<select   name="worksList['+counterappendId+'].subWorksList['+blockId+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main">';
+										clonedTemplate+='<label>CONSTITUENCY <span class="starColor">*</span><span class="constituencyId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<select   name="worksList['+counterappendId+'].subWorksList['+blockId+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls" id="constituencyId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 											clonedTemplate+='<option value="0">Select Constituency</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									
 									clonedTemplate+='<div class="col-sm-2 mandalCls'+typeVal+''+counterappendId+''+blockId+'" style="display:none">';
-										clonedTemplate+='<label>MANDAL/MUNCI.</label>';
-										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main">';
+										clonedTemplate+='<label>MANDAL/MUNCI. <span class="starColor">*</span><span class="mandalId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls" id="mandalId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 											clonedTemplate+='<option value="0">Select Mandal</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
@@ -1195,28 +1212,28 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 				clonedInnerTemplate+='<h3 class="panel-title f_16 font_weight">WORK TYPE 1</h3>';
 				clonedInnerTemplate+='<div class="row m_top10" >';
 						clonedInnerTemplate+='<div class="col-sm-3">';
-							clonedInnerTemplate+='<label>WORK TYPE  </label>';
-							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].workTypeId"  class="form-control chosen-select m_top10" id="workTypeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" >';
+							clonedInnerTemplate+='<label>WORK TYPE  <span class="starColor">*</span><span class="workTypeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].workTypeId"  class="form-control chosen-select m_top10 validateCls" id="workTypeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
 								clonedInnerTemplate+='<option value="0">Select Work Type</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
-							clonedInnerTemplate+='<label>WORK IN COST (in Lakh)</label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45" id="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter Work Cost">';
+							clonedInnerTemplate+='<label>WORK IN COST (in Lakh) <span class="starColor">*</span><span class="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45 validateCls" id="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter Work Cost" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
-							clonedInnerTemplate+='<label>WORK DETAILS</label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].grievanceDescription" class="form-control m_top5 height45" id="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter">';
+							clonedInnerTemplate+='<label>WORK DETAILS <span class="starColor">*</span><span class="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].grievanceDescription" class="form-control m_top5 height45 validateCls" id="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
-							clonedInnerTemplate+='<label>eOFFICE-ID</label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].eOfficeId" class="form-control m_top5 height45" id="appendEofficeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter">';
+							clonedInnerTemplate+='<label>eOFFICE-ID <span class="starColor">*</span><span class="appendEofficeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].eOfficeId" class="form-control m_top5 height45 validateCls" id="appendEofficeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
 						clonedInnerTemplate+='</div>';
 				clonedInnerTemplate+='</div>';
 				clonedInnerTemplate+='<div class="row m_top10">';
 						clonedInnerTemplate+='<div class="col-sm-3">';
-							clonedInnerTemplate+='<label>LOCATION LEVEL</label>';
-							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+'" id="locationLevelInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_counterval="'+mainWorkCount+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
+							clonedInnerTemplate+='<label>LOCATION LEVEL <span class="starColor">*</span><span class="locationLevelInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+' validateCls" id="locationLevelInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_counterval="'+mainWorkCount+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
 								clonedInnerTemplate+='<option value="0">Select Level</option>';
 								clonedInnerTemplate+='<option value="3">District</option>';
 								clonedInnerTemplate+='<option value="4">Constituency</option>';
@@ -1225,22 +1242,22 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 						clonedInnerTemplate+='</div>';
 						
 						clonedInnerTemplate+='<div class="col-sm-2 districtInnerCls'+typeVal+''+mainWorkCount+''+innerWorkCount+'" style="display:none">';
-							clonedInnerTemplate+='<label>DISTRICT</label>';
-							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange" id="districtInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_counterval="'+mainWorkCount+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
+							clonedInnerTemplate+='<label>DISTRICT <span class="starColor">*</span><span class="districtInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls" id="districtInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_counterval="'+mainWorkCount+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
 								clonedInnerTemplate+='<option value="0">Select District</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						
 						clonedInnerTemplate+='<div class="col-sm-2 constituencyInnerCls'+typeVal+''+mainWorkCount+''+innerWorkCount+'" style="display:none">';
-							clonedInnerTemplate+='<label>CONSTITUENCY</label>';
-							clonedInnerTemplate+='<select   name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange" id="constituencyInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_counterval="'+mainWorkCount+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
+							clonedInnerTemplate+='<label>CONSTITUENCY <span class="starColor">*</span><span class="constituencyInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<select   name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls" id="constituencyInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_counterval="'+mainWorkCount+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
 								clonedInnerTemplate+='<option value="0">Select Constituency</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						
 						clonedInnerTemplate+='<div class="col-sm-2 mandalInnerCls'+typeVal+''+mainWorkCount+''+innerWorkCount+'" style="display:none">';
-							clonedInnerTemplate+='<label>MANDAL/MUNCI.</label>';
-							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange" id="mandalInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_counterval="'+mainWorkCount+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner">';
+							clonedInnerTemplate+='<label>MANDAL/MUNCI. <span class="starColor">*</span><span class="mandalInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls" id="mandalInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_counterval="'+mainWorkCount+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
 								clonedInnerTemplate+='<option value="0">Select Mandal</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
@@ -1381,12 +1398,9 @@ function getSubjectPetitionsDepartmentList(typeVal,count,innerCount){
 
 
 
-function getPetitionSubjectList(deptId,divId,innerCount){
-	// $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('');
-	$("#"+divId+innerCount).html('');
-	var json = {
-		deptId : deptId
-	};
+function getPetitionSubjectList(divId,typeVal,counterId,innerCount){
+	 $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('');
+	var json = {};
 	$.ajax({              
 		type:'POST',    
 		url: 'getPmSubjectList',
@@ -1398,14 +1412,12 @@ function getPetitionSubjectList(deptId,divId,innerCount){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#"+divId+innerCount).append('<option value="0">Select Subject</option>');
-			// $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('<option value="0">Select Subject</option>');
+			 $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('<option value="0">Select Subject</option>');
 			for(var i in result){
-				 $("#"+divId+innerCount).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
-				//$("#"+divId+""+typeVal+""+counterId+innerCount+"").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#"+divId+""+typeVal+""+counterId+innerCount+"").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		 $("#"+divId+innerCount).trigger('chosen:updated');
+		$("#"+divId+""+typeVal+""+counterId+innerCount+"").trigger('chosen:updated');
 	});	
 }
 
@@ -1463,8 +1475,294 @@ function getWorkTypeList(divId,typeVal,count,innerCount){
  }); 
 }
 
-
-function saveRepresentRequestDetails(){
+$(document).on("click",".saveRepresentRequestDetails",function(){
+	var typeVal = $(this).attr("attr_type");
+	
+	var completeWorkName='';
+	var noofWorks='';
+	var workCost='';
+	var WorkTypeWiseDepartmentId='';
+	var subjectId='';
+	var subSubjectId='';
+	
+	var workTypeId='';
+	var appendWorkCost='';
+	var appendWorkDetailsId='';
+	var appendEofficeId='';
+	var locationLevelId='';
+	var districtId='';
+	var constituencyId='';
+	var mandalId='';
+	
+	var workTypeInnerId='';
+	var appendWorkCostInner='';
+	var appendWorkDetailsInnerId='';
+	var appendEofficeInnerId='';
+	var locationLevelInnerId='';
+	var districtInnerId='';
+	var constituencyInnerId='';
+	var mandalInnerId='';
+	
+	var flag = true;
+	
+	completeWorkName = $("#name"+typeVal).val();
+	noofWorks = $("#noofWork"+typeVal).val();
+	workCost = $("#workCost"+typeVal).val();
+	
+	
+	
+	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName.trim() == '' || completeWorkName == null){
+		$("#completeWorkNameId"+typeVal).html("<h5 style='color:red;'>Please Enter Work Name</h5>");
+		return;
+	}else{
+		$("#completeWorkNameId"+typeVal).html("");
+	}
+	if(noofWorks == undefined || noofWorks == "undefined" || noofWorks === undefined || noofWorks.trim() == '' || noofWorks == null){
+		$("#noOfWorksId"+typeVal).html("<h5 style='color:red;'>Please Enter No Of Works</h5>");
+		return;
+	}else{
+		$("#noOfWorksId"+typeVal).html("");
+	}
+	if(workCost == undefined || workCost == "undefined" || workCost === undefined || workCost.trim() == '' || workCost == null){
+		$("#workCostId"+typeVal).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
+		return;
+	}else{
+		$("#workCostId"+typeVal).html("");
+	}
+	
+	$(".validateCls").each(function(){
+		var selectType = $(this).attr("attr_select_type")
+		var mainCount = $(this).attr("attr_main_count")
+		var innerCount = $(this).attr("attr_inner_count")
+		var appendInnerType = $(this).attr("attr_type_change")
+		
+	
+	
+		
+		//if(selectType == "selectbox"){
+			WorkTypeWiseDepartmentId = $("#WorkTypeWiseDepartmentId"+typeVal+mainCount+innerCount).val();
+			subjectId = $("#subjectId"+typeVal+mainCount+innerCount).val();
+			subSubjectId = $("#subSubjectId"+typeVal+mainCount+innerCount).val();
+			
+			workTypeId = $("#workTypeId"+typeVal+mainCount+innerCount).val();
+			appendWorkCost = $("#appendWorkCost"+typeVal+mainCount+innerCount).val();
+			appendWorkDetailsId = $("#appendWorkDetailsId"+typeVal+mainCount+innerCount).val();
+			appendEofficeId = $("#appendEofficeId"+typeVal+mainCount+innerCount).val();
+			locationLevelId = $("#locationLevelId"+typeVal+mainCount+innerCount).val();
+			districtId = $("#districtId"+typeVal+mainCount+innerCount).val();
+			constituencyId = $("#constituencyId"+typeVal+mainCount+innerCount).val();
+			mandalId = $("#mandalId"+typeVal+mainCount+innerCount).val();
+			
+			
+			workTypeInnerId = $("#workTypeInnerId"+typeVal+mainCount+innerCount).val();
+			appendWorkCostInner = $("#appendWorkCostInner"+typeVal+mainCount+innerCount).val();
+			appendWorkDetailsInnerId = $("#appendWorkDetailsInnerId"+typeVal+mainCount+innerCount).val();
+			appendEofficeInnerId = $("#appendEofficeInnerId"+typeVal+mainCount+innerCount).val();
+			locationLevelInnerId = $("#locationLevelInnerId"+typeVal+mainCount+innerCount).val();
+			districtInnerId = $("#districtInnerId"+typeVal+mainCount+innerCount).val();
+			constituencyInnerId = $("#constituencyInnerId"+typeVal+mainCount+innerCount).val();
+			mandalInnerId = $("#mandalInnerId"+typeVal+mainCount+innerCount).val();
+			
+				if(WorkTypeWiseDepartmentId == 0 || WorkTypeWiseDepartmentId == null || WorkTypeWiseDepartmentId == ''){
+					$(".WorkTypeWiseDepartmentId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Department</h5>");
+					flag = false;
+				}else{
+					$(".WorkTypeWiseDepartmentId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(subjectId == 0 || subjectId == null || subjectId == ''){
+					$(".subjectId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Subject</h5>");
+					flag = false;
+				}else{
+					$(".subjectId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(subSubjectId == 0 || subSubjectId == null || subSubjectId == ''){
+					$(".subSubjectId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Sub Subject</h5>");
+					flag = false;
+				}else{
+					$(".subSubjectId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+			if(appendInnerType == "main"){
+				
+				if(workTypeId == 0 || workTypeId == null || workTypeId == ''){
+					$(".workTypeId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Work Type</h5>");
+					flag = false;
+				}else{
+					$(".workTypeId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(appendWorkCost == 0 || appendWorkCost == null || appendWorkCost == ''){
+					$(".appendWorkCost"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
+					flag = false;
+				}else{
+					$(".appendWorkCost"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(appendWorkDetailsId == 0 || appendWorkDetailsId == null || appendWorkDetailsId == ''){
+					$(".appendWorkDetailsId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Details</h5>");
+					flag = false;
+				}else{
+					$(".appendWorkDetailsId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(appendEofficeId == 0 || appendEofficeId == null || appendEofficeId == ''){
+					$(".appendEofficeId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter eOFFICE-ID</h5>");
+					flag = false;
+				}else{
+					$(".appendEofficeId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(locationLevelId == 0 || locationLevelId == null || locationLevelId == ''){
+					$(".locationLevelId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Location Type</h5>");
+					flag = false;
+				}else{
+					$(".locationLevelId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(locationLevelId == 3){
+					if(districtId == 0 || districtId == null || districtId == ''){
+						$(".districtId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select District</h5>");
+						flag = false;
+					}else{
+						$(".districtId"+typeVal+mainCount+innerCount).html("");
+					}
+				}else if(locationLevelId == 4){
+					if(districtId == 0 || districtId == null || districtId == ''){
+						$(".districtId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select District</h5>");
+						flag = false;
+					}else{
+						$(".districtId"+typeVal+mainCount+innerCount).html("");
+					}
+					
+					if(constituencyId == 0 || constituencyId == null || constituencyId == ''){
+						$(".constituencyId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Constituency</h5>");
+						flag = false;
+					}else{
+						$(".constituencyId"+typeVal+mainCount+innerCount).html("");
+					}
+				}else if(locationLevelId == 5){
+					if(districtId == 0 || districtId == null || districtId == ''){
+						$(".districtId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select District</h5>");
+						flag = false;
+					}else{
+						$(".districtId"+typeVal+mainCount+innerCount).html("");
+					}
+					
+					if(constituencyId == 0 || constituencyId == null || constituencyId == ''){
+						$(".constituencyId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Constituency</h5>");
+						flag = false;
+					}else{
+						$(".constituencyId"+typeVal+mainCount+innerCount).html("");
+					}
+					
+					if(mandalId == 0 || mandalId == null || mandalId == ''){
+						$(".mandalId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Mandal</h5>");
+						flag = false;
+					}else{
+						$(".mandalId"+typeVal+mainCount+innerCount).html("");
+					}
+				}
+			}
+			
+			if(appendInnerType == "Inner"){
+				
+				if(workTypeInnerId == 0 || workTypeInnerId == null || workTypeInnerId == ''){
+					$(".workTypeInnerId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Work Type</h5>");
+					flag = false;
+				}else{
+					$(".workTypeId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(appendWorkCostInner == 0 || appendWorkCostInner == null || appendWorkCostInner == ''){
+					$(".appendWorkCostInner"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
+					flag = false;
+				}else{
+					$(".appendWorkCostInner"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(appendWorkDetailsInnerId == 0 || appendWorkDetailsInnerId == null || appendWorkDetailsInnerId == ''){
+					$(".appendWorkDetailsInnerId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Details</h5>");
+					flag = false;
+				}else{
+					$(".appendWorkDetailsInnerId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(appendEofficeInnerId == 0 || appendEofficeInnerId == null || appendEofficeInnerId == ''){
+					$(".appendEofficeInnerId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter eOFFICE-ID</h5>");
+					flag = false;
+				}else{
+					$(".appendEofficeInnerId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(locationLevelInnerId == 0 || locationLevelInnerId == null || locationLevelInnerId == ''){
+					$(".locationLevelInnerId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Location Type</h5>");
+					flag = false;
+				}else{
+					$(".locationLevelInnerId"+typeVal+mainCount+innerCount).html("");
+				}
+				
+				if(locationLevelInnerId == 3){
+					if(districtInnerId == 0 || districtInnerId == null || districtInnerId == ''){
+						$(".districtInnerId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select District</h5>");
+						flag = false;
+					}else{
+						$(".districtInnerId"+typeVal+mainCount+innerCount).html("");
+					}
+				}else if(locationLevelInnerId == 4){
+					if(districtInnerId == 0 || districtInnerId == null || districtInnerId == ''){
+						$(".districtInnerId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select District</h5>");
+						flag = false;
+					}else{
+						$(".districtInnerId"+typeVal+mainCount+innerCount).html("");
+					}
+					
+					if(constituencyInnerId == 0 || constituencyInnerId == null || constituencyInnerId == ''){
+						$(".constituencyInnerId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Constituency</h5>");
+						flag = false;
+					}else{
+						$(".constituencyInnerId"+typeVal+mainCount+innerCount).html("");
+					}
+				}else if(locationLevelInnerId == 5){
+					if(districtInnerId == 0 || districtInnerId == null || districtInnerId == ''){
+						$(".districtInnerId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select District</h5>");
+						flag = false;
+					}else{
+						$(".districtInnerId"+typeVal+mainCount+innerCount).html("");
+					}
+					
+					if(constituencyInnerId == 0 || constituencyInnerId == null || constituencyInnerId == ''){
+						$(".constituencyInnerId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Constituency</h5>");
+						flag = false;
+					}else{
+						$(".constituencyInnerId"+typeVal+mainCount+innerCount).html("");
+					}
+					
+					if(mandalInnerId == 0 || mandalInnerId == null || mandalInnerId == ''){
+						$(".mandalInnerId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Mandal</h5>");
+						flag = false;
+					}else{
+						$(".mandalInnerId"+typeVal+mainCount+innerCount).html("");
+					}
+				}
+			}
+			
+			
+			
+			
+			
+			
+			
+		//}
+		
+	});
+	if(flag == false){
+		return;
+	}
+	
+	
+	
 	$("#savingDetailsSpinner").html(spinner)
 	 var formData = new FormData();
 	$('#adminProfileForm input').each(
@@ -1564,8 +1862,8 @@ function saveRepresentRequestDetails(){
 				alert("error");				
 			}
      });	 
-}
 
+});
 
 function getParliamentIdsByConstituencyList(){
 	var json = {};
@@ -1588,6 +1886,35 @@ function getParliamentIdsByConstituencyList(){
 		$("#constituencyCanId").trigger('chosen:updated');
 	});	
 }
+
+function validation(typeVal){
+	var completeWorkName='';
+	var noofWorks='';
+	var workCost='';
+	var phonePattern= /^\d{0-9}$/;
+	
+	completeWorkName = $("#name"+typeVal).val();
+	noofWorks = $("#noofWork"+typeVal).val();
+	workCost = $("#workCost"+typeVal).val();
+	alert(completeWorkName)
+	alert(noofWorks)
+	alert(workCost)
+	
+	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName === undefined){
+		$("#completeWorkNameId"+typeVal).html("<h5>Please Enter Work Name</h5>");
+		return;
+	}
+	if(noofWorks == undefined || noofWorks == "undefined" || noofWorks === undefined){
+		$("#noofWork"+typeVal).html("<h5>Please Enter Work Name</h5>");
+		return;
+	}
+	if(workCost == undefined || workCost == "undefined" || workCost === undefined){
+		$("#workCost"+typeVal).html("<h5>Please Enter Work Name</h5>");
+		return;
+	}
+	
+}
+
 function getPetitionDesignationList(){
 	$("#designationrepresent").html('');
 	  var json = {
@@ -1611,5 +1938,5 @@ function getPetitionDesignationList(){
 		}
 		$("#designationrepresent").trigger('chosen:updated');
 	});	
-}
 
+}
