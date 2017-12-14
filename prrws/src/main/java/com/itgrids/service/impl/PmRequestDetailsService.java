@@ -859,7 +859,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setBriefLeadName(commonMethodsUtilService.getStringValueForObject(param[28]));
 						vo.setGrantName(commonMethodsUtilService.getStringValueForObject(param[29]));
 						vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[30]));
-						
+						vo.setStatusId(commonMethodsUtilService.getLongValueForObject(param[9]));
 						 AddressVO refAddressVO = setAddressDetailsToResultView(param[12],param[13],param[14],param[15],param[16]);
 						 refAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[21]));
 						 refAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[22]));
