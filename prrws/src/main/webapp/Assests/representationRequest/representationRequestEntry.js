@@ -39,6 +39,7 @@ $(document).on("click",".selfRepresenceCls",function(){
 			globalWorkTypeCount=0;
 			buildSelfAndRepresenteeDetails(typeVal)
 			getAllDistrictsListInState();
+			getPetitionDesignationList();
 		}
 	}
 });
@@ -329,6 +330,12 @@ function buildSelfAndRepresenteeDetails(typeVal){
 					str+='<option value="0">Select Mandal</option>';
 				str+='</select>';
 				str+='<div id="mandal'+typeVal+'Err"></div>';
+			str+='</div>';str+='<div class="col-sm-3">';	
+				str+='<label>DESIGNATION.</label>';
+				str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="designation'+typeVal+'">';
+					str+='<option value="0">Select Designation</option>';
+				str+='</select>';
+				str+='<div id="designationId'+typeVal+'Err"></div>';
 			str+='</div>';
 		str+='</div>';
 	}
@@ -1581,3 +1588,28 @@ function getParliamentIdsByConstituencyList(){
 		$("#constituencyCanId").trigger('chosen:updated');
 	});	
 }
+function getPetitionDesignationList(){
+	$("#designationrepresent").html('');
+	  var json = {
+		   searchType:"all"// all/refCandidateDesignations/petitionGivenRefCandidateDesignations
+	  };
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionDesignationList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+				$("#designationrepresent").append('<option value="0">Select Designation</option>');
+			for(var i in result){
+				$("#designationrepresent").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#designationrepresent").trigger('chosen:updated');
+	});	
+}
+
