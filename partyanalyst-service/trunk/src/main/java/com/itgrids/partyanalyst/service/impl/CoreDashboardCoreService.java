@@ -28,7 +28,6 @@ import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
-import com.itgrids.partyanalyst.dto.CoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.TrainingCampSurveyVO;
@@ -1190,8 +1189,8 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		   
 	 	      }
 	          FinaltrainingCampVO.setFeedBackProgramCount(feedBackProgramCount);
-	         // WebResource webResource2 = client.resource("http://192.168.11.154:8080/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
-	         WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
+	          // WebResource webResource2 = client.resource("http://192.168.11.154:8080/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
+	          WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizFeedBackDetails/"+listString+"/");
 		         ClientResponse response2 = webResource2.accept("application/json").type("application/json").get(ClientResponse.class);
 		          if(response2.getStatus() != 200){
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response2.getStatus());
@@ -1216,109 +1215,74 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		return null;
 		
 	}
-	public TrainingCampVO getTrainingCampFeedBackDetailsProgramWise(Long activityMemberId,String commiteeLevelId ,Long stateId, String dateStr, List<Long> enrollmentYearIdList, List<Long> programIdList,Long StringType ){
-		List<Long> userAccessLevelValues = new ArrayList<Long>();
-		Long userAccessLevelId = null;
-		 TrainingCampVO finalVo = new TrainingCampVO();
+	public  List<TrainingCampSurveyVO> getTrainingCampFeedBackDetailsProgramWise(List<Long> programIdList,Long userAccessLevelId,List<Long> userAccessLevelValues,List<Long> enrollmentYrIds,List<Long> committeeLevelIdList ){
+		List<TrainingCampSurveyVO> programlist = new ArrayList<TrainingCampSurveyVO>();
 		try{
-			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
-				   if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
-				    userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
-					    for(Object[] param : accessLvlIdAndValuesList){
-					     userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);
-					    }
-				   }
-				   List<Long> commiteeList = new ArrayList<Long>();
-					for (String s : commiteeLevelId.split(",")){
-						commiteeList.add(Long.parseLong(s));
-					}
-				   String listString = "";
-					for (Long programId : programIdList)
-					{
-					    listString += programId ;
-					}
+			
+			String ProgramlistString = programIdList.get(0).toString();
+			for (int i=1;i<programIdList.size();i++)
+			{
+				ProgramlistString = ProgramlistString+","+programIdList.get(i).toString();
+			}
+			
+			String userAccessLevelValuesstring = userAccessLevelValues.get(0).toString();
+			for (int i=1;i<userAccessLevelValues.size();i++)
+			{
+				userAccessLevelValuesstring = userAccessLevelValuesstring+","+userAccessLevelValues.get(i).toString();
+			}
+			
+			String committeeLevelIdArrstring = committeeLevelIdList.get(0).toString();
+			for (int i=1;i<committeeLevelIdList.size();i++)
+			{
+				committeeLevelIdArrstring = committeeLevelIdArrstring+","+committeeLevelIdList.get(i).toString();
+			}
 			 ClientConfig clientConfig = new DefaultClientConfig();
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
-		     WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingFeedBackDetailsOnProgram/"+listString+"/");
-		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingFeedBackDetailsOnProgram/"+listString+"/");
+		     WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingFeedbackDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_PROGRAM_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingFeedbackDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
 			 ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
-			  if(response.getStatus() != 200){
+			 if(response.getStatus() != 200){
 				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			  }else{
-				  List<Long> cadreIdList = response.getEntity(new GenericType<List<Long>>() {});
-			  
-			  List<Object[]>  tempList = null;
-			  List<Object[]>  tempList2 = null;
-			  List<Object[]>  tempList3 = null;
-			  List<Object[]>  tempList4 = null;
-				 //Query query = getSession().createSQLQuery("CALL get_training_camp_attendance_details(:programId,'2010-07-23','2050-08-02',:enrollemntYrId,:basicCommitteeId,'5,7,9,6,8','2','1')")
-			  if(userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID){
-				  List<Long> distList1 = new ArrayList<Long>(){{add(11L);add(12L);add(13L);}};
-				   tempList  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList1,enrollmentYearIdList,programIdList,commiteeList);//Procedure Call
-				   List<Long> distList2 = new ArrayList<Long>(){{add(14L);add(15L);add(16L);}};
-				   tempList2  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList2,enrollmentYearIdList,programIdList,commiteeList);//Procedure Call
-				   List<Long> distList3 = new ArrayList<Long>(){{add(17L);add(18L);add(19L);add(517L);}};
-				   tempList3  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList3,enrollmentYearIdList,programIdList,commiteeList);//Procedure Call
-				   List<Long> distList4 = new ArrayList<Long>(){{add(20L);add(21L);add(22L);add(23L);}};
-				   tempList4  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList4,enrollmentYearIdList,programIdList,commiteeList);//Procedure Call
-				   tempList.addAll(tempList2);
-				   tempList.addAll(tempList3);
-				   tempList.addAll(tempList4);
-				}else{
-					tempList  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(userAccessLevelId,userAccessLevelValues,enrollmentYearIdList,programIdList,commiteeList);//Procedure Call
-				}
-			 Map<Long,Set<Long>> mainCadreIdsmap = new HashMap<Long, Set<Long>>();
-			 Set<Long> cadreIds = null;
-			 for(Object[] param :tempList){
-				    if(commonMethodsUtilService.getStringValueForObject(param[7]).trim().equalsIgnoreCase("INVITEE")){
-						 if(StringType == 1L && commonMethodsUtilService.getLongValueForObject(param[25])!= null){
-							cadreIds = mainCadreIdsmap.get(commonMethodsUtilService.getLongValueForObject(param[25]));
-						}else if(StringType == 2L){
-							cadreIds = mainCadreIdsmap.get(commonMethodsUtilService.getLongValueForObject(param[11]));
-						}else if(StringType == 3L){
-							cadreIds = mainCadreIdsmap.get(commonMethodsUtilService.getLongValueForObject(param[13]));
-						}else if(StringType == 4L){
-							cadreIds = mainCadreIdsmap.get(commonMethodsUtilService.getLongValueForObject(param[15]));
-						}
-						if(cadreIds == null){
-							cadreIds = new HashSet<Long>();
-							if(StringType ==1L && commonMethodsUtilService.getLongValueForObject(param[25])!= null){
-								 mainCadreIdsmap.put(commonMethodsUtilService.getLongValueForObject(param[25]),cadreIds);
-							}else if(StringType ==2L){
-								 mainCadreIdsmap.put(commonMethodsUtilService.getLongValueForObject(param[11]),cadreIds);
-							}else if(StringType ==3L){
-								 mainCadreIdsmap.put(commonMethodsUtilService.getLongValueForObject(param[13]),cadreIds);
-							}else if(StringType ==4L){
-								 mainCadreIdsmap.put(commonMethodsUtilService.getLongValueForObject(param[15]),cadreIds);
-							}
-					     }
-					   cadreIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-				    }
-			    }
-				 Map<Long,Long> mainMapCount = new HashMap<Long, Long>();
-				 for(Entry<Long,Set<Long>> maincadreId :mainCadreIdsmap.entrySet()){
-					 mainMapCount.put(maincadreId.getKey(), Long.parseLong(String.valueOf(maincadreId.getValue().size())));
-				 }
-				 Long countOfcadreIds=0L;
-				List<Object[]> finalList= trainingCampBatchAttendeeDAO.getFilteredListCount(cadreIdList,programIdList,commiteeList,userAccessLevelId,userAccessLevelValues,StringType);
-				 for(Object[] param : finalList){
-					 TrainingCampVO feedbackCountVo = new TrainingCampVO();
-					 feedbackCountVo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					 feedbackCountVo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					 countOfcadreIds= mainMapCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-					 if(countOfcadreIds == null){
-						 feedbackCountVo.setFeedBackProgramCount(0L);
-						 feedbackCountVo.setProgramId(0L);
-					 }else{
-						 feedbackCountVo.setFeedBackProgramCount(countOfcadreIds);
-						 feedbackCountVo.setAttendedPercentage((((commonMethodsUtilService.getDoubleValueForObject(param[2]))*100)/Double.valueOf((countOfcadreIds.toString()))));
-					 }
-					 finalVo.getTrainingCampVOList().add(feedbackCountVo);
-					 }
-			}
-		 return finalVo;
-			  
+				  String output = response.getEntity(String.class);
+				  if(output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		if(finalArray!=null && finalArray.length()>0){
+			 	    		
+			 	    		 for(int i=0;i<finalArray.length();i++){
+			 	    			TrainingCampSurveyVO vo = new TrainingCampSurveyVO();
+			 	    			JSONObject tmp = (JSONObject) finalArray.get(i);
+			 	    			
+			 	    			vo.setSurveyQuestionId(tmp.getLong("surveyQuestionId"));
+			 	    			vo.setQuestion(tmp.getString("question"));
+			 	    			vo.setTotalMemberAnswered(tmp.getLong("totalMemberAnswered"));
+			 	    			//vo.setTotalCorrectAnswer(tmp.getLong("totalCorrectAnswer"));
+			 	    			//vo.setCorrectAnswerPercent(tmp.getDouble("correctAnswerPercent"));
+			 	    			String s1 = tmp.getString("optionList");
+			 	    			JSONArray inArr = new JSONArray(s1);
+			 	    			
+			 	    			if(inArr != null && inArr.length() > 0){
+			 	    				for (int j = 0; j < inArr.length(); j++) {
+			 	    					JSONObject tmp1 = (JSONObject) inArr.get(j);
+			 	    					
+			 	    					TrainingCampSurveyVO invo = new TrainingCampSurveyVO();
+			 	    					invo.setCampId(tmp1.getLong("optionId"));
+			 	    					invo.setName(tmp1.getString("options"));
+			 	    					invo.setTotalMemberAnswered(tmp1.getLong("totalMemberAnswered"));
+			 	    					invo.setCorrectAnswerPercent(tmp1.getDouble("correctAnswerPercent"));
+			 	    					vo.getCenterList().add(invo);
+									}
+			 	    			}
+			 	    			
+			 	    			programlist.add(vo);
+			 	    		 }
+		 	    		}
+		 	    		
+		 	    	}
+			  }
+			 return programlist;
+			
 		}catch(Exception e){
 			LOG.error("Error occured at getTrainingCampFeedBackDetailsProgramWise() in CoreDashboardMainService {}",e); 
 		}
@@ -1350,7 +1314,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 		     WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
-		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingFeedBackDetailsOnProgram/"+listString+"/");
+		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
 			 ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 			 if(response.getStatus() != 200){
 				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
