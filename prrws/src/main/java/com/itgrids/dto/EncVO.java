@@ -7,7 +7,7 @@ public class EncVO {
 	
 	private Long locationId;
 	private String locationName;
-	private Long paramValue =0l;
+	private Double paramValue =0.0;
 	private String paramName;
 	private String locationType;
 	private String status;
@@ -32,11 +32,11 @@ public class EncVO {
 		this.locationName = locationName;
 	}
 
-	public Long getParamValue() {
+	public Double getParamValue() {
 		return paramValue;
 	}
 
-	public void setParamValue(Long paramValue) {
+	public void setParamValue(Double paramValue) {
 		this.paramValue = paramValue;
 	}
 
