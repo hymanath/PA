@@ -23,12 +23,13 @@ public class Petition {
 	private Date representationDate;
 	private Date endorsmentDate;
 	private String workName;
-	private Long estimationCost;
+	private Double estimationCost;
 	private Long noOfWorks;
 	private String isPreviousPetition;
 	private String grievanceDescription;
 	private String isDeleted;
 	private Long pmStatusId;
+	private String representeeType;
 	
     private User insertedUser;
 	private User updatedUser;
@@ -77,10 +78,10 @@ public class Petition {
 		this.workName = workName;
 	}
 	@Column(name="estimation_cost")
-	public Long getEstimationCost() {
+	public Double getEstimationCost() {
 		return estimationCost;
 	}
-	public void setEstimationCost(Long estimationCost) {
+	public void setEstimationCost(Double estimationCost) {
 		this.estimationCost = estimationCost;
 	}
 	@Column(name="no_of_works")
@@ -156,6 +157,14 @@ public class Petition {
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	
+	@Column(name="representee_type")
+	public String getRepresenteeType() {
+		return representeeType;
+	}
+	public void setRepresenteeType(String representeeType) {
+		this.representeeType = representeeType;
 	}
 	
 
