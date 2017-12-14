@@ -20,6 +20,8 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.ResultVO;
 import com.itgrids.dto.UserVO;
 import com.itgrids.model.FavouriteComponent;
+import com.itgrids.model.User;
+import com.itgrids.service.IPmRequestDetailsService;
 import com.itgrids.service.IUserService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -47,16 +49,25 @@ public class UserServiceImpl implements IUserService {
 	private IHamletDAO hamletDAO;
 	@Autowired
 	private IFavouriteComponentDAO favouriteComponentDAO;
-	
+	@Autowired
+	private IPmRequestDetailsService pmRequestDetailsService;
+
 	@Override
 	public UserVO userAuthentication(String userName, String password) {
 		UserVO userVO = new UserVO();
 		//User user = userDAO.loginAuthentication(userName, password);
-		String url = userDAO.getUrlForMatchedCredentials(userName, password);
-		if (url != null) {
-			userVO.setUrl(url);
-			userVO.setResponceCode(1l);
-		}else {
+		Object[] userObj = userDAO.getUrlForMatchedCredentials(userName, password);
+		if(userObj != null && userObj.length > 0){
+			String url=commonMethodsUtilService.getStringValueForObject(userObj[0]);
+			Long userId=commonMethodsUtilService.getLongValueForObject(userObj[1]);
+			if (url != null && url.trim().length() > 0) {
+				userVO.setUrl(url);
+				pmRequestDetailsService.getPmOffceUserDetails(userId,userVO);
+				userVO.setResponceCode(1l);
+			}else {
+				userVO.setResponceCode(0l);
+			}
+		}else{
 			userVO.setResponceCode(0l);
 		}
 		return userVO;
