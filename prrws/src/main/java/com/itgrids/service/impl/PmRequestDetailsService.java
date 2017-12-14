@@ -377,7 +377,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				byte[] fileData = file.getBytes();
 				String fileExtensionStr = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."), file.getOriginalFilename().length());
 				Files.write(fileData,new File(staticPath+"/"+datePath+fileExtensionStr));
-				document.setPath(staticPath+"/"+datePath+fileExtensionStr);
+				document.setPath("Petition_Documents/"+datePath+fileExtensionStr);
 				document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				document.setInsertedUserId(userId);
 				document = documentDAO.save(document);
@@ -757,43 +757,44 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						 returnVO.setEstimateCost(commonMethodsUtilService.getStringValueForObject(param[35]));
 						 returnVO.setEndorsmentNo(commonMethodsUtilService.getStringValueForObject(param[22]));
 						 if(commonMethodsUtilService.getStringValueForObject(param[24]).length()>10)
-							 returnVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[24]).substring(0, 11));
+							 returnVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[24]).substring(0, 10));
 						 else
 							 returnVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[24]));
 						 if(commonMethodsUtilService.getStringValueForObject(param[23]).length()>10)
-							 returnVO.setRepresentationdate(commonMethodsUtilService.getStringValueForObject(param[23]).substring(0, 11));
+							 returnVO.setRepresentationdate(commonMethodsUtilService.getStringValueForObject(param[23]).substring(0, 10));
 						 else 
 							 returnVO.setRepresentationdate(commonMethodsUtilService.getStringValueForObject(param[23]));
 						 
 						 returnVO.setWorkName(commonMethodsUtilService.getStringValueForObject(param[25]));
 						 returnVO.setGrievanceDescription(commonMethodsUtilService.getStringValueForObject(param[25]));
-						 
 						 returnVO.setRepresentationType(commonMethodsUtilService.getStringValueForObject(param[49]));
 						 
 						 if(commonMethodsUtilService.isMapValid(petitionFilesListMap)){
 							 returnVO.getFileList().addAll(petitionFilesListMap.values());
 						 }
 						 
-						 PmRequestVO  representeeVO = new PmRequestVO();
-						 representeeVO.setRepresenteeId(commonMethodsUtilService.getLongValueForObject(param[30]));					
-						 representeeVO.setName(commonMethodsUtilService.getStringValueForObject(param[0]));
-						 representeeVO.setMobileNO(commonMethodsUtilService.getStringValueForObject(param[1]));
-						 representeeVO.setEmail(commonMethodsUtilService.getStringValueForObject(param[2]));
-						 representeeVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(param[3]));
-						 representeeVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[33]));
-						 representeeVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[34]));
-						 representeeVO.setRefCandidateId(commonMethodsUtilService.getLongValueForObject(param[31]));
-						 
-						 AddressVO addressVO = setAddressDetailsToResultView(param[4],param[5],param[6],param[7],param[8]);
-						 addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[37]));
-						 addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[38]));
-						 addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[39]));
-						 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
-							 addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[41])+" "+commonMethodsUtilService.getStringValueForObject(param[42]));
-						 else
-							 addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[40]));
-						 representeeVO.setAddressVO(addressVO);
-						 returnVO.getRepresenteeDetailsList().add(representeeVO);
+						 if(returnVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE")){
+							 PmRequestVO  representeeVO = new PmRequestVO();
+							 representeeVO.setRepresenteeId(commonMethodsUtilService.getLongValueForObject(param[30]));					
+							 representeeVO.setName(commonMethodsUtilService.getStringValueForObject(param[0]));
+							 representeeVO.setMobileNO(commonMethodsUtilService.getStringValueForObject(param[1]));
+							 representeeVO.setEmail(commonMethodsUtilService.getStringValueForObject(param[2]));
+							 representeeVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(param[3]));
+							 representeeVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[33]));
+							 representeeVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[34]));
+							 representeeVO.setRefCandidateId(commonMethodsUtilService.getLongValueForObject(param[31]));
+							 
+							 AddressVO addressVO = setAddressDetailsToResultView(param[4],param[5],param[6],param[7],param[8]);
+							 addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[37]));
+							 addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[38]));
+							 addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[39]));
+							 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
+								 addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[41])+" "+commonMethodsUtilService.getStringValueForObject(param[42]));
+							 else
+								 addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[40]));
+							 representeeVO.setAddressVO(addressVO);
+							 returnVO.getRepresenteeDetailsList().add(representeeVO);
+						 }
 						 i=i+1;
 					}
 					
