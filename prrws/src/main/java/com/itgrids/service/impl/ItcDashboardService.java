@@ -1008,7 +1008,9 @@ public class ItcDashboardService implements IItcDashboardService {
 									categoryNew = "R3";
 								else if(categoryNew != null && categoryNew.equalsIgnoreCase("R3B"))
 									categoryNew = "R3";
-								if(categoryNew != null && categoryNew.equalsIgnoreCase("R3C"))
+								else if(categoryNew != null && categoryNew.equalsIgnoreCase("R3C"))
+									categoryNew = "R3";
+								else if(categoryNew != null && categoryNew.equalsIgnoreCase("0"))
 									categoryNew = "R3";
 									
 								if(categoryNew != null && categoryNew.equalsIgnoreCase(finalVO.getCategory())){
