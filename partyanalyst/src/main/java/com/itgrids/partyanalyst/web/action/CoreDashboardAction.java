@@ -5459,7 +5459,16 @@ public String getInsuraceStatusWiseComplaintsDetails()
 						programIdList.add(Long.valueOf(programIdArr.getString(i)));
 					}
 				}
-				Long activityMemberId = jObj.getLong("activityMemberId");
+				
+			    Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+				List<Long> userAccessLevelValues=new ArrayList<Long>();
+				JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+				if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+					for( int i=0;i<userAccessLevelValuesArray.length();i++){
+						userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+					}
+				}
+				
 				List<Long> enrollmentYrIds=new ArrayList<Long>();
 				JSONArray enrollmentYrIdsArray=jObj.getJSONArray("enrollmentYrIds");
 				if(enrollmentYrIdsArray!=null &&  enrollmentYrIdsArray.length()>0){
@@ -5467,13 +5476,18 @@ public String getInsuraceStatusWiseComplaintsDetails()
 						enrollmentYrIds.add(Long.valueOf(enrollmentYrIdsArray.getString(i)));
 					}
 				}
+				JSONArray committeeLevelIdArr = jObj.getJSONArray("committeeLevelIds");  
+				List<Long> committeeLevelIdList = new ArrayList<Long>();
+				if(committeeLevelIdArr != null && committeeLevelIdArr.length() > 0){
+					for (int i = 0; i < committeeLevelIdArr.length(); i++){
+						committeeLevelIdList.add(Long.parseLong(committeeLevelIdArr.getString(i)));          
+					}  
+				}
 				Long stateId = jObj.getLong("stateId");
-				String dateStr = jObj.getString("dateStr");
-				String committeeLevel=jObj.getString("committeLevel");
-				Long StringType= jObj.getLong("stringType");
-				trainingCampVO = coreDashboardCoreService.getTrainingCampFeedBackDetailsProgramWise(activityMemberId, committeeLevel , stateId,  dateStr,  enrollmentYrIds,  programIdList,StringType);
+				String dateStr = jObj.getString("dateStr");   
+				campSurveyVOs = coreDashboardCoreService.getTrainingCampFeedBackDetailsProgramWise(programIdList,userAccessLevelId,userAccessLevelValues,enrollmentYrIds,committeeLevelIdList);
 		 }catch(Exception e){
-			 LOG.error("Exception raised at getTrainingCampFeedBackDetails() method of CoreDashBoardAction", e); 
+			 LOG.error("Exception raised at getTrainingCampFeedBackProgramWiseDetails() method of CoreDashBoardAction", e); 
 		 }
 		 return Action.SUCCESS;
 	 }
