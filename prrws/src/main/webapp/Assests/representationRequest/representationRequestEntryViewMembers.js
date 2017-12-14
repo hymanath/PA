@@ -408,7 +408,7 @@ function getDepartmentsBySearchType(searchType,selBoxId){
   //var isErr= searchValidations();
   //if(isErr)
  // return;
-//$("#representeeDetailsModelDivId").modal("show");
+$("#representeeDetailsModelDivId").modal("show");
    getRepresentativeSearchDetails1();
  });
 
@@ -515,4 +515,219 @@ function getStatusList(){
 		$("#statusId").trigger('chosen:updated');
   }); 
 }
+//getPetitionDetails(1);
+function getPetitionDetails(petitionId){
+   var json = {
+       petitionId:petitionId
+    };
+  $.ajax({              
+    type:'POST',    
+    url: 'setPmRepresenteeDataToResultView',
+    dataType: 'json',
+    data : JSON.stringify(json),
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){
+    console.log(result);
+	setPmRepresenteeDataToResultView(result)
+  });
+}
 
+function setPmRepresenteeDataToResultView(result){
+	var str="";
+	//str+='';
+	if(result != null){
+		$("#representeeDetailsModelDivId").modal("show");
+		$("#representeeViewId").html(spinner)
+	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<div class="col-sm-6">';
+					str+='<h4>REPRESENTEE DETAILS</h4>';
+					str+='<div class="block_padding_10">';
+						
+						str+='<div class="media">';
+							str+='<div class="media-left" style="text-align:center">';
+								str+='<i class="fa fa-user-circle fa-5x" aria-hidden="true" style="#EBEBEB"></i>';
+								str+='<div class="bg_light-Color" style="padding:10px;margin-top:5px;">';
+									str+='<p>Representation Date</p>';
+									str+='<p><b>'+result.representationdate+'</b></p>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<div class="bg_light-Color" style="padding:10px">';
+									str+='<p><b>Name</b></p>';
+									str+='<h4><b>'+result.name+'</b></h4>';
+									str+='<span><b>TDP Cadre</b></span>';
+									str+='<div class="row">';
+										str+='<div class="col-sm-12 col-md-6">';
+											str+='<h5><b>Address Details:</b></h5>';
+											//str+='<p>Village : Sangadigunta</p>';
+											str+='<p>Mandal: '+result.addressVO.tehsilName+'</p>';
+											str+='<p>Constituency : '+result.addressVO.assemblyName+'</p>';
+											str+='<p>District : '+result.addressVO.districtName+'</p>';
+										str+='</div>';
+										str+='<div class="col-sm-12 col-md-6">';
+											str+='<h5><b>Contact Details:</b></h5>';
+											str+='<p>Email id : '+result.email+'</p>';
+											str+='<p>Contact No : '+result.mobileNO+'</p>';
+											str+='<p>Voter Id : '+result.voterCardNo+'</p>';
+										str+='</div>';
+									str+='</div>';
+									
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					
+				str+='</div>';
+				str+='<div class="col-sm-6">';
+					str+='<h4>REFERRED BY</h4>';
+					str+='<div class="block_padding_10">';
+						for(var i in result.referList){
+						str+='<div class="media">';
+							str+='<div class="media-left" style="text-align:center">';
+								str+='<i class="fa fa-user-circle fa-5x" aria-hidden="true" style="#EBEBEB"></i>';
+								
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<div class="bg_light-Color" style="padding:10px">';
+									str+='<p><b>Name</b></p>';
+									str+='<h4><b>'+result.referList[i].name+'</b></h4>';
+									str+='<span><b>('+result.referList[i].designation+'), '+result.referList[i].addressVO.assemblyName+' Constituency, '+result.referList[i].addressVO.districtName+' District.</b></span>';
+									str+='<div class="row">';
+										str+='<div class="col-sm-12 col-md-6">';
+											str+='<h5><b>Party:</b></h5>';
+											str+='<p>'+result.referList[i].partyName+' '+result.referList[i].addressVO.districtName+'</p>';
+										str+='</div>';
+										str+='<div class="col-sm-12 col-md-6">';
+											str+='<h5><b>Contact Details:</b></h5>';
+											str+='<p>Email id : '+result.referList[i].email+'</p>';
+											str+='<p>Contact No : '+result.referList[i].mobileNO+'</p>';
+										str+='</div>';
+										str+='<div style=""><p class="viewDivId pull-right"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW REFERRAL LETTER</p></div>';
+									str+='</div>';
+									
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						}
+					str+='</div>';
+					
+				str+='</div>';
+				/* str+='<div class="col-sm-12 m_top20">';
+					str+='<h5><b>CANDIDATE PREVIOUS WORKS</b></h5>';
+					str+='<table class="table table-bordered">';
+						str+='<thead>';
+							str+='<th>NAME OF WORK</th>';
+							str+='<th>LOCATION</th>';
+							str+='<th>WORKS</th>';
+							str+='<th>EST COST</th>';
+						str+='</thead>';
+						str+='<tbody>';
+							str+='<tr>';
+								str+='<td>Special repairs to CPWS Scheme to Raiwada & other habitations</td>';
+								str+='<td>Srikakulam</td>';
+								str+='<td>12</td>';
+								str+='<td>210.00</td>';
+							str+='</tr>';
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
+				str+='<div class="clearfix"></div>'; */
+				for(var j in result.worksList){
+				str+='<div class="col-sm-10 m_top20">';
+					str+='<h5><b>WORK TYPE DETAILS</b></h5>';
+					str+='<table class="table table-bordered" cellpadding="100" style="border:1px solid grey">';
+						str+='<tbody>';
+							str+='<tr>';
+								str+='<td>Name of the Work</td>';
+								str+='<td style="background-color:#D1AB66">No of Works</td>';
+								str+='<td style="background-color:#D1AB66">Work Cost (Est. Cost in Lakh)</td>';
+							str+='</tr>';
+							str+='<tr>';
+								str+='<td>'+result.worksList[j].workName+'</td>';
+								str+='<td style="background-color:#D1AB66">'+result.worksList[j].noOfWorks+'</td>';
+								str+='<td style="background-color:#D1AB66">'+result.worksList[j].estimateCost+'</td>';
+							str+='</tr>';
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
+				str+='<div class="col-sm-2 m_top20">';
+					str+='<h5><b>PROJECT DOCUMENTS</b></h5>';
+					str+='<div style=""><p class="viewDivId pull-right"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW DOCUMENT</p></div>';
+				str+='</div>';
+				
+				str+='<div class="clearfix"></div>';
+				str+='<div class="col-sm-12 m_top20" style="border-bottom:5px solid #EBEBEB;border-top:5px solid #EBEBEB;">';
+					str+='<table class="table">';
+						str+='<td>NO OF WORKS - '+result.worksList[j].noOfWorks+'</td>';
+						/* str+='<td style="padding:15px"><i class="fa fa-check-circle-o" aria-hidden="true" style="padding-right:10px;color:#01A64E;font-size:15px"></i>Endorse</td>';
+						str+='<td style="padding:15px"><i class="fa fa-times-circle-o" aria-hidden="true" style="padding-right:10px;color:#EC2027;font-size:15px"></i>Rejected</td>';
+						str+='<td><button class="btn">Select All</button></td>';
+						str+='<td><button class="btn btn-success">Final Approval</button></td>';
+						str+='<td><button class="btn btn-danger">Not Possible</button></td>';
+						str+='<td><button class="btn btn-danger">Reject</button></td>'; */
+					str+='</table>';
+				str+='</div>';
+				str+='<div class="col-sm-12 m_top20">';
+				for(var k in result.worksList[j].subWorksList){
+					var workCount = k+1;
+					str+='<div class="row">';
+						str+='<div class="col-sm-6">';
+							str+='<h5><b>WORK No '+workCount+'</b></h5>';
+							str+='<div class="bg_light-Color block_padding_10 m_top10">';
+								str+='<table class="table table-bordered">';
+									str+='<tr>';
+										str+='<td>Work Type</br><b>'+result.worksList[j].subWorksList[k].workType+'</b>(status:'+result.worksList[j].subWorksList[k].status+')</td>';
+										str+='<td colspan="2">';
+											str+='<p>LOCATION</p>';
+											str+='<span style="display:inline-block;padding:10px">District</br><b>'+result.worksList[j].subWorksList[k].addressVO.districtName+'</b></span>';
+											str+='<span style="display:inline-block;padding:10px">Constituency</br><b>'+result.worksList[j].subWorksList[k].addressVO.assemblyName+'</b></span>';
+											str+='<span style="display:inline-block;padding:10px">mandal</br><b>'+result.worksList[j].subWorksList[k].addressVO.tehsilName+'</b></span>';
+										str+='</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>Subject <b>'+result.worksList[j].subWorksList[k].subject+')</b></td>';
+										str+='<td>Sub-Subject <b>'+result.worksList[j].subWorksList[k].subSubject+')</b></td>';
+										str+='<td>Department <b>'+result.worksList[j].subWorksList[k].deptName+'</b></td>';
+										
+									str+='</tr>';
+								str+='</table>';
+							str+='</div>';
+						str+='</div>';
+						
+						str+='<div class="col-sm-6">';
+							str+='<h5><b>WORK DISCRIPTION</b> ';
+							//str+='<button class="btn pull-right">Select</button>
+							str+='</h5>';
+							str+='<div class=" block_padding_10 m_top10">';
+								str+='<p style="font-size:12px">'+result.worksList[j].subWorksList[k].workName+'</p>';
+							str+='</div>';
+						str+='</div>';
+						
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="bg_light-Color block_padding_10 m_top10">';
+						str+='<table class="table">';
+							str+='<tbody>';
+								str+='<td><b>Lead Details :</b> <span>'+result.worksList[j].subWorksList[k].leadName+'</span></td>';
+								str+='<td><b>Brief Lead:</b><span>'+result.worksList[j].subWorksList[k].briefLeadName+'</span></td>';
+								str+='<td><b>Grant Under :</b><span>'+result.worksList[j].subWorksList[k].grantName+'</span></td>';
+								str+='<td><b>Est Budget :</b><span>'+result.worksList[j].subWorksList[k].estimateCost+'</span></td>';
+								str+='<td><b>eOffice ID :</b><span>'+result.worksList[j].subWorksList[k].eOfficeId+'</span></td>';
+							str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+				str+='</div>';
+	}
+				str+='<div class="col-sm-12 m_top20" style="border-bottom:5px solid #EBEBEB"></div>';
+				str+='<div class="col-sm-12 m_top20">';
+					str+='<button class="btn btn-success pull-right">SUBMIT</button>';
+				str+='</div>';
+			str+='</div>';
+	}
+	$("#representeeViewId").html(str);
+}
+}
