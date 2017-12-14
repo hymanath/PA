@@ -813,7 +813,7 @@ function buildTemplateWorkDetails(typeVal){
 				//str+='<div class="pull-right removeWorkCls" attr_id="mainWorkDivId'+globalWorkTypeCount+'0" attr_type="self" attr_candidateid="1" style="cursor:pointer;margin-top: -30px"><i class="glyphicon glyphicon-remove"></i></div>';				
 					str+='<div class="col-sm-3">';
 							str+='<label>DEPARTMENT</label>';
-							str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].deptId"  class="form-control chosen-select m_top10"  id="WorkTypeWiseDepartmentId'+typeVal+''+globalWorkTypeCount+'0">';
+							str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].deptId"  class="form-control chosen-select m_top10"  id="WorkTypeWiseDepartmentId'+typeVal+''+globalWorkTypeCount+'0" onChange=getPetitionSubjectList(this.value,"subjectId'+typeVal+''+globalWorkTypeCount+'","0")>';
 							str+='</select>';
 						str+='</div>';
 					
@@ -916,7 +916,7 @@ function buildTemplateWorkDetails(typeVal){
 	$(".chosen-select").chosen();
 	
 	getSubjectPetitionsDepartmentList(typeVal,globalWorkTypeCount,0);
-	getPetitionSubjectList('subjectId',typeVal,globalWorkTypeCount,0);
+	//getPetitionSubjectList('subjectId',typeVal,globalWorkTypeCount,0);
 	getWorkTypeList('workTypeId',typeVal,globalWorkTypeCount,0);
 	globalWorkTypeCount =globalWorkTypeCount+1;
 		
@@ -1049,7 +1049,7 @@ $(document).on("click",".cloned_Element",function(){
 		$("[block-clone-"+typeVal+"="+blockId+"]").attr("block-clone-counter-"+typeVal+"",counterId);
 		globalWorkTypeCount = parseInt(globalWorkTypeCount)+1;
 		getSubjectPetitionsDepartmentList(typeVal,counterappendId,blockId);
-		getPetitionSubjectList('subjectId',typeVal,counterappendId,blockId);
+		//getPetitionSubjectList('subjectId',typeVal,counterappendId,blockId);
 		getWorkTypeList('workTypeId',typeVal,counterappendId,blockId);
 		
 	//}
@@ -1072,7 +1072,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 				
 					clonedTemplate+='<div class="col-sm-3">';
 							clonedTemplate+='<label>DEPARTMENT</label>';
-							clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].deptId"  class="form-control chosen-select m_top10"  id="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'">';
+							clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].deptId"  class="form-control chosen-select m_top10"  id="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'" onChange=getPetitionSubjectList(this.value,"subjectId'+typeVal+''+counterappendId+'","'+blockId+'")>';
 							clonedTemplate+='</select>';
 						clonedTemplate+='</div>';
 					
@@ -1374,9 +1374,12 @@ function getSubjectPetitionsDepartmentList(typeVal,count,innerCount){
 
 
 
-function getPetitionSubjectList(divId,typeVal,counterId,innerCount){
-	 $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('');
-	var json = {};
+function getPetitionSubjectList(deptId,divId,innerCount){
+	// $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('');
+	$("#"+divId+innerCount).html('');
+	var json = {
+		deptId : deptId
+	};
 	$.ajax({              
 		type:'POST',    
 		url: 'getPmSubjectList',
@@ -1388,12 +1391,14 @@ function getPetitionSubjectList(divId,typeVal,counterId,innerCount){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			 $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('<option value="0">Select Subject</option>');
+			 $("#"+divId+innerCount).append('<option value="0">Select Subject</option>');
+			// $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('<option value="0">Select Subject</option>');
 			for(var i in result){
-				$("#"+divId+""+typeVal+""+counterId+innerCount+"").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				 $("#"+divId+innerCount).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				//$("#"+divId+""+typeVal+""+counterId+innerCount+"").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#"+divId+""+typeVal+""+counterId+innerCount+"").trigger('chosen:updated');
+		 $("#"+divId+innerCount).trigger('chosen:updated');
 	});	
 }
 
