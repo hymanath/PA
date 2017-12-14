@@ -281,9 +281,9 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							table+='<td>'+farmers+'</td>';
 							table+='<td>'+rfidTracking+'</td>';
 							table+='<td>'+swmCollection.toFixed(2)+'</td>';
-							table+='<td>'+nadap+'</td>';
+							table+='<td>'+nadap.toFixed(2)+'</td>';
 							table+='<td>'+vermi.toFixed(2)+'</td>';
-							table+='<td>'+vermiStock+'</td>';
+							table+='<td>'+vermiStock.toFixed(2)+'</td>';
 						table+='</tr>';
 				}else{
 					for(var i in result)
@@ -300,9 +300,9 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							table+='<td attr_dist_farmer="'+result[i].farmers+'">'+result[i].farmers+'</td>';
 							table+='<td attr_dist_rfidTracking="'+result[i].rfidTracking+'">'+result[i].rfidTracking+'</td>';
 							table+='<td attr_dist_swmCollection="'+result[i].swmCollection+'">'+result[i].swmCollection.toFixed(2)+'</td>';
-							table+='<td attr_dist_nadap="'+result[i].nadap+'">'+result[i].nadap+'</td>';
-							table+='<td attr_dist_vermi="'+result[i].vermi+'">'+result[i].vermi+'</td>';
-							table+='<td attr_dist_vermiStock="'+result[i].vermiStock+'">'+result[i].vermiStock+'</td>';					
+							table+='<td attr_dist_nadap="'+result[i].nadap+'">'+result[i].nadap.toFixed(2)+'</td>';
+							table+='<td attr_dist_vermi="'+result[i].vermi+'">'+result[i].vermi.toFixed(2)+'</td>';
+							table+='<td attr_dist_vermiStock="'+result[i].vermiStock+'">'+result[i].vermiStock.toFixed(2)+'</td>';					
 						table+='</tr>';
 					}
 				}					
@@ -453,9 +453,9 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#solidWasteId").html(result.houseCollecion.toFixed(2));
 			$("#farmerCattleDung").html(result.farmerCollection.toFixed(2));
 			$("#totSwmId").html(result.swmCollection.toFixed(2));
-			$("#stageOneId").html(result.nadap);
+			$("#stageOneId").html(result.nadap.toFixed(2));
 			$("#stageTwoId").html(result.vermi.toFixed(2));
-			$("#stageThreeId").html(result.vermiStock);
+			$("#stageThreeId").html(result.vermiStock.toFixed(2));
 			$("#onekgCount").html(result.onekg);
 			$("#fivekgCount").html(result.fivekg);
 			$("#tenkgcount").html(result.tenkg);
