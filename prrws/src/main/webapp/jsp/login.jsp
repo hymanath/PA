@@ -91,8 +91,8 @@ function userLogin(){
 	}
 	$("#spinnerImg").show();
 	 var json = {
-	  userName:userName,
-	  password:password
+	  username:userName,
+	  passwordHashText:password
 	} 
 	/* var json = {
 		userName:"itgrids",
@@ -100,7 +100,7 @@ function userLogin(){
 	} */
 	$.ajax({                
 	  type:'POST',    
-	  url: 'userValidation1',  
+	  url: 'userLogin',  
 	  dataType: 'json',
 	data : JSON.stringify(json),
 	beforeSend :   function(xhr){
@@ -114,7 +114,7 @@ function userLogin(){
 			$("#spinnerImg").hide();
 		  }else if(result.responceCode == 1){
 			$("#successMessage").html("<span style='color:green'>Login Successfull,Page is Refreshing,Please Wait...<span>");
-			$(location).attr('href', 'MGNREGSDashboard');
+			$(location).attr('href', result.url);
 			$("#spinnerImg").hide();
 		  }
 		}
