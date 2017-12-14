@@ -49,6 +49,35 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 	var str='';
 	
 	str+'<div class="row">';
+	str+='<h4 class="text-capitalize m_top10"><b>TOTAL INSTALLATIONS</b></h4>';
+		str+='<div class="m_top5">';
+		  str+='<div class="table-responsive">';
+				str+='<table class="table tableTraining bg_ED">';
+					str+='<tbody>';
+						str+='<tr>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">total</p>';
+								str+='<h4>'+result.overAllInstalledCount+'</h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Committee</p>';
+								str+='<h4>'+result.committeeInstalled+' <span class="f_13 text-success"> '+result.committeeInstalPerc+'%</span></h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Cadre</p>';
+								str+='<h4>'+result.cadreInstalledCount+' <span class="f_13 text-success"> '+result.cadreInstallPerc+'%</span></h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Public</p>';
+								str+='<h4>'+result.publicInstalledCount+' <span class="f_13 text-success"> '+result.publicInstallPerc+'%</span></h4>';
+							str+='</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';  
+		str+='</div>';
+	
+	str+'<div class="row">';
 	str+='<h4 class="text-capitalize m_top10"><b>OVERALL COMMITTEE MEMBERS</b></h4>';
 		str+='<div class="m_top5">';
 		  str+='<div class="table-responsive">';
@@ -61,15 +90,15 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">Installed</p>';
-								str+='<h4>'+result.committeeInstalled+' <span class="f_13 text-success"> '+result.committeeInstalPerc+'%</span></h4>';
+								str+='<h4>'+result.committeeInstalled+' <span class="f_13 text-success"> '+result.installedPerc+'%</span></h4>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">Pending</p>';
-								str+='<h4>'+result.pending+' <!--<span class="f_13 text-success"> '+result.pendingPerc+'%</span>--></h4>';
+								str+='<h4>'+result.pending+' <span class="f_13 text-success"> '+result.pendingPerc+'%</span></h4>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-muted text-capitalize">Not Having Smart Phone</p>';
-								str+='<h4>'+result.committeeNoSmartPhone+' <span class="f_13 text-success"> '+result.committeeNoSmartPerc+'%</span></h4>';
+								str+='<h4>'+result.committeeNoSmartPhone+' <span class="f_13 text-success"> '+result.notSmartPhonePerc+'%</span></h4>';
 							str+='</td>';
 						str+='</tr>';
 					str+='</tbody>';
@@ -87,11 +116,11 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 									str+='<tr>';
 										str+='<td>';
 											str+='<p class="text-muted text-capitalize">Installed</p>';
-											str+='<h4>'+result.cadreInstalledCount+' <span class="f_13 text-success"> '+result.cadreInstallPerc+'%</span></h4>';
+											str+='<h4>'+result.cadreInstalledCount+'<!-- <span class="f_13 text-success"> '+result.cadreInstallPerc+'%</span>--></h4>';
 										str+='</td>';
 										str+='<td>';
 											str+='<p class="text-muted text-capitalize">No Smart Phone</p>';
-											str+='<h4>'+result.cadreNoSmartPhoneCount+' <span class="f_13 text-success"> '+result.cadreNoSmartPerc+'%</span></h4>';
+											str+='<h4>'+result.cadreNoSmartPhoneCount+' <!--<span class="f_13 text-success"> '+result.cadreNoSmartPerc+'%</span>--></h4>';
 										str+='</td>';
 									str+='</tr>';
 								str+='</tbody>';
@@ -108,11 +137,11 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 									str+='<tr>';
 										str+='<td>';
 											str+='<p class="text-muted text-capitalize">Installed</p>';
-											str+='<h4>'+result.publicInstalledCount+' <span class="f_13 text-success"> '+result.publicInstallPerc+'%</span></h4>';
+											str+='<h4>'+result.publicInstalledCount+'<!-- <span class="f_13 text-success"> '+result.publicInstallPerc+'%</span>--></h4>';
 										str+='</td>';
 										str+='<td>';
 											str+='<p class="text-muted text-capitalize">No Smart Phone</p>';
-											str+='<h4>'+result.publicNoSmartPhoneCount+' <span class="f_13 text-success"> '+result.publicNoSmartPerc+'%</span></h4>';
+											str+='<h4>'+result.publicNoSmartPhoneCount+'<!-- <span class="f_13 text-success"> '+result.publicNoSmartPerc+'%</span>--></h4>';
 										str+='</td>';
 									str+='</tr>';
 								str+='</tbody>';
@@ -126,7 +155,7 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 		
 		
 	for(var i in result.subList){
-		str+='<h4 class="text-capitalize m_top10"><b>'+result.subList[i].name+' COMMITTEE MEMBERS</b></h4>';
+		str+='<h4 class="text-capitalize m_top20"><b>'+result.subList[i].name+' COMMITTEE MEMBERS</b></h4>';
 		str+='<div class="m_top5">';
 		  str+='<div class="table-responsive">';
 				str+='<table class="table tableTraining bg_ED">';
