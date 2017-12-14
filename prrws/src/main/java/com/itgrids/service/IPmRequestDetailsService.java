@@ -7,6 +7,7 @@ import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.RepresenteeViewVO;
 import com.itgrids.dto.ResponseVO;
+import com.itgrids.dto.UserVO;
 
 public interface IPmRequestDetailsService {
 	public List<RepresenteeViewVO> getRepresentativeSearchWiseDetails(InputVO inputVO);
@@ -14,4 +15,5 @@ public interface IPmRequestDetailsService {
 	public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo);
 	public PmRequestVO setPmRepresenteeDataToResultView(Long petitionId);
 	public List<RepresenteeViewVO> getStatusList();
+	public UserVO getPmOffceUserDetails(Long userId, UserVO userVO);
 }
