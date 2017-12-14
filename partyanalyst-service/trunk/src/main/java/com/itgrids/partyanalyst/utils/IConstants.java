@@ -1357,4 +1357,6 @@ public interface IConstants {
 	public static final Long REGIONSCOPE_MUNCIPLITY_LEVEl_ID   = 7l;
 	public static final Long REGIONSCOPE_WARD_LEVEl_ID   = 8l;
 	public static final String PARTY_MEETING_MOM_DOCUMENT="mom_documents";
+	public static final String TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS="342";
+	
 }
