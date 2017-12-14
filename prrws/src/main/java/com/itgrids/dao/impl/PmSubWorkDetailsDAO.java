@@ -25,7 +25,10 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		str.append(" select  model.petitionId, model.costEstimation, model.grievanceDescrption, model.eOfficeId , pmSubject.pmSubjectId, pmSubSubject.pmSubjectId , " +//0,1,2,3,4,5
 				" pmLead.pmLeadId,pmBriefLead.pmBriefLeadId,pmGrant.pmGrantId,pmStatus.pmStatusId,pmDepartment.pmDepartmentId,pmWorkType.pmWorkTypeId, " +//6,7,8,9,10,11
 				" state.stateId,district.districtId,constituency.constituencyId,tehsil.tehsilId,localBody.localElectionBodyId,model.pmSubWorkDetailsId," +//12,13,14,15,16,17
-				" model.uiBuildSeriesNo,model.locationScopeId,model.locationValue " +//18,19,20
+				" model.uiBuildSeriesNo,model.locationScopeId,model.locationValue, " +//18,19,20
+				" state.stateName,district.districtName,constituency.name,tehsil.tehsilName,localBody.name,localBody.electionType.electionType," +//21,22,23,24,25,26
+				"'','','','','','','',''"+
+				//" pmLead.leadName,pmBriefLead.briefLead,pmGrant.pmGrantName,pmStatus.status,pmDepartment.department,pmWorkType.workType, pmSubject.subject,pmSubSubject.subject " +//27,28,29,30,31,32,33,34
 				" from PmSubWorkDetails model " +
 				" left join model.locationAddress address" +
 				" left join address.state state " +
