@@ -62,6 +62,7 @@ public class UserServiceImpl implements IUserService {
 			Long userId=commonMethodsUtilService.getLongValueForObject(userObj[1]);
 			if (url != null && url.trim().length() > 0) {
 				userVO.setUrl(url);
+				userVO.setUserId(userId);
 				pmRequestDetailsService.getPmOffceUserDetails(userId,userVO);
 				userVO.setResponceCode(1l);
 			}else {
