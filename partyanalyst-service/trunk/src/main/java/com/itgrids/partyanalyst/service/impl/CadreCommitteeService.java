@@ -2041,7 +2041,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		if(membersCnt == null || membersCnt == 0)
 		{
 			TdpCommittee tdpCommittee = tdpCommitteeDAO.get(tdpCommitteId);
+			tdpCommittee.setIsCommitteeConfirmed("N");
 			tdpCommittee.setStartedDate(null);
+			tdpCommittee.setCompletedDate(null);
+			tdpCommitteeDAO.save(tdpCommittee);
+		}else{
+			TdpCommittee tdpCommittee = tdpCommitteeDAO.get(tdpCommitteId);
+			tdpCommittee.setIsCommitteeConfirmed("N");
+			tdpCommittee.setCompletedDate(null);
 			tdpCommitteeDAO.save(tdpCommittee);
 		}
 	}
