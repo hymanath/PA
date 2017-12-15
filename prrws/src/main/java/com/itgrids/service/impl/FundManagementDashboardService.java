@@ -57,6 +57,8 @@ import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.NregsFmsWorksVO;
 import com.itgrids.dto.PageComponentVO;
 import com.itgrids.dto.RangeVO;
+import com.itgrids.dto.ResultVO;
+import com.itgrids.model.FavouriteComponent;
 import com.itgrids.model.GovtScheme;
 import com.itgrids.model.GrantType;
 import com.itgrids.model.PageComponent;
@@ -115,7 +117,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	@Autowired
 	private IPrTehsilDAO prTehsilDAO;
 	@Autowired
-	private IPageComponentDAO PageComponentDAO;
+	private IPageComponentDAO pageComponentDAO;
 	
 	@Override
 	/*
@@ -4201,7 +4203,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     public List<PageComponentVO> getPageWiseComponentDetails(){
     	List<PageComponentVO> returnList = new ArrayList<PageComponentVO>(0);
     	try {
-			List<Object[]> list = PageComponentDAO.getPageWiseComponents();
+			List<Object[]> list = pageComponentDAO.getPageWiseComponents();
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					Long pageId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -4210,6 +4212,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 						vo = new PageComponentVO();
 						vo.setId(pageId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
+						vo.setShortName(obj[5] != null ? obj[5].toString():"");
 							PageComponentVO subvo = new PageComponentVO();
 							subvo.setId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 							subvo.setName(obj[3] != null ? obj[3].toString():"");
@@ -4245,4 +4248,34 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
    	 }
    	 return null;
    }
+    
+    /**
+	 * @Author : Sravanth
+	 * @Date : 15-12-2017
+	 * @param IdNameVO inputVO
+	 * @return String  
+	 */
+	public ResultVO savePageWiseComponents(IdNameVO inputVO) {
+		ResultVO statusVO = new ResultVO();
+		try {
+			if (inputVO.getComponentIds() != null && !inputVO.getComponentIds().isEmpty()) {
+				Long pageId = inputVO.getId();
+				Long orderNo = Long.valueOf(pageId.toString()+"01");
+				for (Long id : inputVO.getComponentIds()) {
+					PageComponent model = pageComponentDAO.get(id);
+					model.setOrderNo(orderNo);
+					pageComponentDAO.save(model);
+					orderNo++;
+				}
+				statusVO.setMessage("success");
+				statusVO.setStatusCode(0);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured in saveFavouriteComponentOrderDtls from UserServiceImpl ",e);
+			statusVO.setMessage("fail");
+			statusVO.setStatusCode(1);
+		}
+		return statusVO;
+	}
+	
 }

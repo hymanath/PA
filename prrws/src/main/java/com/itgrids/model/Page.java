@@ -14,6 +14,7 @@ public class Page {
 	private Long pageId;
 	private String pageName;
 	private String isDeleted;
+	private String shortName;
 	
 	@Id
 	@Column(name = "page_id")
@@ -39,5 +40,13 @@ public class Page {
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	@Column(name = "short_name")
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 }

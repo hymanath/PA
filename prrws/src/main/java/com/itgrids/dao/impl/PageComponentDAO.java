@@ -17,7 +17,7 @@ public class PageComponentDAO extends GenericDaoHibernate<PageComponent, Long> i
 	}
 
 	public List<Object[]> getPageWiseComponents(){
-		Query query = getSession().createQuery("select distinct model.page.pageId,model.page.pageName,model.pageComponentId,model.component,model.orderNo"
+		Query query = getSession().createQuery("select distinct model.page.pageId,model.page.pageName,model.pageComponentId,model.component,model.orderNo,model.page.shortName"
 				+ " from PageComponent model"
 				+ " where model.isDeleted = 'N' and model.page.isDeleted = 'N' and model.page.pageId > 1"
 				+ " group by model.pageId,model.orderNo");

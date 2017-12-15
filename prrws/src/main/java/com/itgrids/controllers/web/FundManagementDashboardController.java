@@ -368,4 +368,10 @@ public class FundManagementDashboardController {
 			List<PageComponentVO> returnList = fundManagementDashboardService.getPageWiseComponentDetails();
 			return returnList;
 		}
+		
+		@PostMapping(value ="/savePageWiseComponents")
+	    public @ResponseBody ResultVO savePageWiseComponents(@RequestBody IdNameVO inputVO) {
+			ResultVO status = fundManagementDashboardService.savePageWiseComponents(inputVO);
+			return status;
+	    }
 }
