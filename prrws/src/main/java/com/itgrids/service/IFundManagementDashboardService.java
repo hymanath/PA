@@ -9,6 +9,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.NregsFmsWorksVO;
+import com.itgrids.dto.PageComponentVO;
 
 public interface IFundManagementDashboardService {
 	public List<LocationVO> getLocationLevelInfo();
@@ -45,4 +46,6 @@ public interface IFundManagementDashboardService {
 	
 	public  List<NregsFmsWorksVO> getMgnregsFMSWorksDetails(InputVO inputVO);
 	public  List<NregsFmsWorksVO> getMgnregsFMSWorksDetailsByCategory(InputVO inputVO);
+	
+	public List<PageComponentVO> getPageWiseComponentDetails();
 }

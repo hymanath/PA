@@ -2,11 +2,15 @@ package com.itgrids.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +25,7 @@ public class FavouriteComponent {
 	private String isDeleted;
 	private Long orderNo;
 	private Long pageId;
+	private Page page;
 	
 	@Id
 	@Column(name = "favourite_component_id")
@@ -79,5 +84,13 @@ public class FavouriteComponent {
 	}
 	public void setPageId(Long pageId) {
 		this.pageId = pageId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "page_id", insertable = false, updatable = false)
+	public Page getPage() {
+		return page;
+	}
+	public void setPage(Page page) {
+		this.page = page;
 	}
 }

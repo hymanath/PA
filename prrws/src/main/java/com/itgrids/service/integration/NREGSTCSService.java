@@ -5901,22 +5901,24 @@ public class NREGSTCSService implements INREGSTCSService{
 			if(finalArray!=null && finalArray.length()>0){
 	    		for(int i=0;i<finalArray.length();i++){
     				JSONObject jObj = (JSONObject) finalArray.get(i);
-    				WaterTanksClorinationVO vo = new WaterTanksClorinationVO();
-    				vo.setVisitDate(jObj.getString("visit_date"));
-    				vo.setDistrictId(jObj.getLong("dist_id"));
-    				vo.setDistrictName(jObj.getString("dist_name"));
-    				vo.setAreaId(jObj.getLong("area_id"));
-    				vo.setAreaName(jObj.getString("area_name"));
-    				vo.setServicePointId(jObj.getLong("sp_id"));
- 					vo.setServicePointName(jObj.getString("sp_name"));
- 					vo.setVanId(jObj.getLong("van_id"));
- 					vo.setVanNo(jObj.getString("van_no"));
- 					vo.setNoOfSPs(1L);
- 					vo.setChecked(jObj.getLong("wb_checked"));
- 					vo.setClorinated(jObj.getLong("wb_chlorinated"));
- 					vo.setNotClorinated(jObj.getLong("wb_nil_chlorine"));
- 					vo.setVisitDate(jObj.getString("visit_date"));
- 					retrunList.add(vo);
+    				if(jObj != null && !jObj.getString("dist_id").equalsIgnoreCase("null") && jObj.getLong("dist_id") > 0L){
+	    				WaterTanksClorinationVO vo = new WaterTanksClorinationVO();
+	    				vo.setVisitDate(jObj.getString("visit_date"));
+	    				vo.setDistrictId(jObj.getLong("dist_id"));
+	    				vo.setDistrictName(jObj.getString("dist_name"));
+	    				vo.setAreaId(jObj.getLong("area_id"));
+	    				vo.setAreaName(jObj.getString("area_name"));
+	    				vo.setServicePointId(jObj.getLong("sp_id"));
+	 					vo.setServicePointName(jObj.getString("sp_name"));
+	 					vo.setVanId(jObj.getLong("van_id"));
+	 					vo.setVanNo(jObj.getString("van_no"));
+	 					vo.setNoOfSPs(1L);
+	 					vo.setChecked(jObj.getLong("wb_checked"));
+	 					vo.setClorinated(jObj.getLong("wb_chlorinated"));
+	 					vo.setNotClorinated(jObj.getLong("wb_nil_chlorine"));
+	 					vo.setVisitDate(jObj.getString("visit_date"));
+	 					retrunList.add(vo);
+    					}
     				}
 	    		}
 		}catch (Exception e) {
@@ -5952,15 +5954,17 @@ public class NREGSTCSService implements INREGSTCSService{
 			if(finalArray!=null && finalArray.length()>0){
 	    		for(int i=0;i<finalArray.length();i++){
     				JSONObject jObj = (JSONObject) finalArray.get(i);
-    				WaterTanksClorinationVO vo = new WaterTanksClorinationVO();
-    				vo.setDistrictId(jObj.getLong("dist_id"));
-    				vo.setDistrictName(jObj.getString("dist_name"));
-    				vo.setNoOfSPs(jObj.getLong("sp_count"));
- 					vo.setChecked(jObj.getLong("wb_checked"));
- 					vo.setClorinated(jObj.getLong("wb_chlorinated"));
- 					vo.setNotClorinated(jObj.getLong("wb_nil_chlorine"));
- 					vo.setVisitDate(jObj.getString("visit_date"));
- 					retrunList.add(vo);
+    				if(jObj != null && !jObj.getString("dist_id").equalsIgnoreCase("null") && jObj.getLong("dist_id") > 0L){
+    					WaterTanksClorinationVO vo = new WaterTanksClorinationVO();
+        				vo.setDistrictId(jObj.getLong("dist_id"));
+        				vo.setDistrictName(jObj.getString("dist_name"));
+        				vo.setNoOfSPs(jObj.getLong("sp_count"));
+     					vo.setChecked(jObj.getLong("wb_checked"));
+     					vo.setClorinated(jObj.getLong("wb_chlorinated"));
+     					vo.setNotClorinated(jObj.getLong("wb_nil_chlorine"));
+     					vo.setVisitDate(jObj.getString("visit_date"));
+     					retrunList.add(vo);
+    				}
     			}
 	    	}
 		}catch (Exception e) {
