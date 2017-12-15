@@ -264,3 +264,114 @@ function buildKeyPerformanceIndicatorsInfo(result){
 	});
 	
 }
+buildroadsBlock();
+function buildroadsBlock(){
+	var str='';
+	str+='<div class="col-sm-8">';
+		str+='<div class="enc_block">';
+			str+='<div class="row">';
+				str+='<div class="col-sm-6" style="border-right:2px dashed lightgrey">';
+					str+='<div class="col-sm-4">';
+							str+='<img src="Assests/icons/Road_Network_icon.png">';
+						str+='</div>';
+						str+='<div class="col-sm-8">';
+							str+='<h5><b>ROAD NETWORK</b></h5>';
+							str+='<h4><b>78282 <span class="font_12">km<span></b></h4>';
+						str+='</div>';
+					str+='<div class="col-sm-12 border_cls pad_10_10">';
+						str+='<div class="col-sm-3"><b>BT + CC</br>23010</b></div>';
+							str+='<div class="col-sm-2"><b>WBM</br>23010</b></div>';
+							str+='<div class="col-sm-2"><b>GRAVEL</br>23010</b></div>';
+							str+='<div class="col-sm-2"><b>EARTHEN</br>23010</b></div>';
+							str+='<div class="col-sm-3"><b>UNEARTHEN</br>23010</b></div>';
+						str+='</div>';
+					str+='<div class="col-sm-12 m_top10 roadnetwork_block">';
+						str+='<h5><b>CONVERT TO (BT + CC)</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
+						str+='<h5><b>TARGET KM</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
+						str+='<h5><b>ACHIEVED KM</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
+					str+='</div>';
+				str+='</div>';
+				
+				str+='<div class="col-sm-6">';
+					str+='<div class="roadsConnectedBlock" style="background-color:#F8F8F8;padding:10px;border-radius:5px">';
+					
+						str+='<div class="row">';
+							str+='<div class="col-sm-4">';
+								str+='<h6><b>TOTAL HABITATION COUNT</b></h6>';
+								str+='<h5 class="m_top10"><b>23010</b><span style="margin-left:10px;color:green">86.9%</span></h5>';
+							str+='</div>';
+							str+='<div class="col-sm-4">';
+								str+='<h6><b>HABITATION CONNECTED</b></h6>';
+								str+='<h5 class="m_top10"><b>23010</b><span class="" style="margin-left:10px;color:green">75%</span></h5>';
+							str+='</div>';
+							str+='<div class="col-sm-4">';
+								str+='<h6><b>HABITATION NOT-CONNECTED</b></h6>';
+								str+='<h5 class="m_top10"><b>23010</b><span class="" style="margin-left:10px;color:green">25%</span></h5>';
+							str+='</div>';
+							str+='<div class="col-sm-12 m_top20">';
+								str+='<div class="media" style="border-top:1px solid lightgrey;padding-top:10px">';
+									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Priority_Habitation_icon.png">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5><b>PRIORITY - HABITATION CONNECTIVITY</b></h5>';
+										str+='<h5><b>5000</b><span>86.9%</span></h5>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="row m_top20">';
+							str+='<div class="col-sm-5">';
+								str+='<span><b>CONVERT TO (BT + CC) TARGET KM</b></span>';
+								str+='<h5><b>23010</b><span class="" style="margin-left:10px;color:green">25%</span></h5>';
+							str+='</div>';
+							str+='<div class="col-sm-3">';
+								str+='<span><b>ACHIEVED KM</b></span>';
+								str+='<h5><b>23010</b><span class="" style="margin-left:10px;color:green">75%</span></h5>';
+							str+='</div>';
+							str+='<div class="col-sm-4">';
+								str+='<span><b>₹ FUND REQUIRED</b></span>';
+								str+='<h5><b>23010</b></h5>';
+							str+='</div>';
+						str+='</div>';
+						
+					str+='</div>';
+				str+='</div>';
+				
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	
+	str+='<div class="col-sm-4">';
+		str+='<div class="enc_block">';
+			str+='<div class="row">';
+				str+='<div class="col-sm-4">';
+					str+='<img src="Assests/icons/Internal_roads_icon.png">';
+				str+='</div>';
+				str+='<div class="col-sm-8">';
+					str+='<h5><b>INTERNAL ROADS</b></h5>';
+					str+='<h4><b>56735 <span class="font_12">km<span></b></h4>';
+				str+='</div>';
+				str+='<div class="col-sm-12">';
+						str+='<div class="border_cls pad_10_10">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-3"><b>BT + CC</br>23010</b></div>';
+								str+='<div class="col-sm-3"><b>WBM</br>23010</b></div>';
+								str+='<div class="col-sm-3"><b>GRAVEL</br>23010</b></div>';
+								str+='<div class="col-sm-3"><b>EARTHEN</br>23010</b></div>';
+							str+='</div>';
+						str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-12 m_top10 roadnetwork_block">';
+					str+='<h5><b>CONVERT TO (BT + CC)</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
+					str+='<h5><b>TARGET KM</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
+					str+='<h5><b>ACHIEVED KM</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
+				str+='</div>';
+			
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	$("#roadsBlockId").html(str);
+}
