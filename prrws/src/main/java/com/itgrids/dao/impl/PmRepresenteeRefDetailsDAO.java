@@ -32,7 +32,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" pmDesignation.pmDesignationId, pmDesignation.designation,refPmDesignation.pmDesignationId, refPmDesignation.designation, " +//33,34,35,36
 				" state.stateName, district.districtName,constituency.name,tehsil.tehsilName,localBody.name,electionType.electionType," +//37,38,39,40,41,42
 				" refState.stateName, refDistrict.districtName,refConstituency.name,refTehsil.tehsilName,refLocalBody.name,refElectionType.electionType,pmRefCandidate.tdpCadreId " +//43,44,45,46,47,48,49
-				" ,model.petition.representeeType " +//49
+				" ,model.petition.representeeType" +//50
+				",pmRepresentee.tdpCadreId " +//51
 				" from PmRepresenteeRefDetails model " +
 				" left join model.pmRepresentee pmRepresentee " +
 				" left join pmRepresentee.userAddress userAddress " +
@@ -150,7 +151,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			query.setParameter("searchLevelValue", searchLevelValue);
 		}
 		if(filterType != null && !filterType.equalsIgnoreCase("name") && !filterType.equalsIgnoreCase("email") && filterValue != null && !filterValue.isEmpty()
-				&& filterType.equalsIgnoreCase("mobile") && filterType.equalsIgnoreCase("endorsmentNO") ){
+				&& (filterType.equalsIgnoreCase("mobile") || filterType.equalsIgnoreCase("endorsmentNO") )){
 			query.setParameter("filterValue", filterValue);
 		}else if(filterValue != null && !filterValue.isEmpty() && !filterType.equalsIgnoreCase("name") && !filterType.equalsIgnoreCase("email")){
 			query.setParameter("filterValue", Long.valueOf(filterValue));

@@ -14,7 +14,7 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
-<link href="Assests/Plugins/sliderbar/bootstrap-slider.css" rel="stylesheet" type="text/css"/>
+<!--<link href="Assests/Plugins/sliderbar/bootstrap-slider.css" rel="stylesheet" type="text/css"/>-->
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
 
@@ -34,6 +34,9 @@
 		padding: 10px;
 		
 	}
+	.error_colorCls{
+   color: red;
+}
 	
  </style>
 </head>
@@ -247,6 +250,7 @@
 											</div>
 										</div>
 										<div class="col-sm-12 m_top20" style="border:1px solid lightgrey;padding-top:10px;padding-bottom:10px">
+										<div class="error_colorCls" id="errMsgId"></div>
 											<div class="col-sm-3" id="locationDivlId">	
 												<label> Search By</label>
 												<select class="form-control chosen-select" id="locationSelId" >
@@ -260,7 +264,7 @@
 													<option value="name"> NAME</option>
 													<option value="mobile"> MOBILE NUMBER</option>
 													<option value="email"> EMAIL ID</option>
-													<option value="endorsmentNO"> endorsment NUMBER</option>
+													<option value="endorsmentNO"> ENDORSMENT NUMBER</option>
 																
 												</select>
 												<div class="error_colorCls" id="locationErrDivlId"></div>
@@ -319,20 +323,26 @@
 													<option value="0">Select Mandal</option>
 												</select>
 												<div class="error_colorCls" id="mandalCanErrDiv"></div>
-											</div>	
+											</div>
+											<div class="col-sm-3" id="statusDiv">
+											<label>Status</label>
+												<select class="form-control chosen-select" id="statusId" multiple>
+													<option value="0">Select Status</option>
+												</select>
+											</div>											
 										</div>
 										
 										</div>
 									</div>
-									<div class="m_top20" id="normalSearchDivId"  >
+									<!--<div class="m_top20" id="normalSearchDivId"  >
 										<div class="row m_top20">
 												
 										</div>	
 										<div class="row m_top20">
 											
 										</div>
-							    	</div>
-									<div class="row m_top20" id="advancedSearchDivId" style="display:none;">
+							    	</div>-->
+									<!--<div class="row m_top20" id="advancedSearchDivId" style="display:none;">
 										<div class="col-sm-6">	
 											<div style="border:1px solid #ddd;padding:10px;box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);">
 												<h4 class="font_weight f_18">ADVANCED SEARCH WISE : </h4>
@@ -388,7 +398,7 @@
 												
 											</div>
 										</div>
-									</div>
+									</div>-->
 									<div class="row m_top10">
 										<div class="col-sm-12">						
 											<button type ="button" class="btn btn-lg btn-success" id="advanceSearchId" style="cursor: pointer; font-weight: bold; border-radius: 0px;">SEARCH</button>
@@ -445,7 +455,7 @@
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
-<script src="Assests/Plugins/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
+<!--<script src="Assests/Plugins/sliderbar/bootstrap-slider.js" type="text/javascript"></script>-->
 <script src="Assests/SimplePagination/simplePagination3.js" type="text/javascript"></script>
 
 <!--<script src="Assests/ruralWaterSupply/custom.js" type="text/javascript"></script>-->
@@ -458,7 +468,11 @@
 
 <script src="Assests/representationRequest/representationRequestEntryViewMembers.js" type="text/javascript"></script>
 <script type="text/javascript">
-	var worksSlider;
+
+var windowUrl = window.location.href;
+var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationRequestEntryViewMembers")));
+//wurl = wurl.replace("/PRRWS-1.0","");
+	/* var worksSlider;
 	var slider = new Slider('#noofWorksSlider', {
 		formatter: function(value) {
 			worksSlider=value;
@@ -483,7 +497,7 @@
 			$("#pendingDaysValue").text(value);
 			return 'Current value: ' + value;
 		}
-	});
+	}); */
 </script>
 </body>
 </html>

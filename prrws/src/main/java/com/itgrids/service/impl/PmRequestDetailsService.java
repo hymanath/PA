@@ -308,7 +308,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate()));
 								petition.setRepresenteeType(pmRequestVO.getRepresentationType());
 								if(dataVO.getEstimateCost() != null)
-									petition.setEstimationCost(Double.valueOf(dataVO.getEstimateCost()));
+									petition.setEstimationCost(dataVO.getEstimateCost());
 								petition.setWorkName(dataVO.getWorkName());
 								petition.setNoOfWorks(dataVO.getNoOfWorks());
 								petition.setIsDeleted("N");
@@ -769,7 +769,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						 
 						 returnVO.setWorkName(commonMethodsUtilService.getStringValueForObject(param[25]));
 						 returnVO.setGrievanceDescription(commonMethodsUtilService.getStringValueForObject(param[25]));
-						 returnVO.setRepresentationType(commonMethodsUtilService.getStringValueForObject(param[49]));
+						 returnVO.setRepresentationType(commonMethodsUtilService.getStringValueForObject(param[50]));
 						 
 						 if(commonMethodsUtilService.isMapValid(petitionFilesListMap)){
 							 returnVO.getFileList().addAll(petitionFilesListMap.values());
@@ -785,7 +785,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 representeeVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[33]));
 							 representeeVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[34]));
 							 representeeVO.setRefCandidateId(commonMethodsUtilService.getLongValueForObject(param[31]));
-							 
+							 representeeVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[51]));
 							 AddressVO addressVO = setAddressDetailsToResultView(param[4],param[5],param[6],param[7],param[8]);
 							 addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[37]));
 							 addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[38]));

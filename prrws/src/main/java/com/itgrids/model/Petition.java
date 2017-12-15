@@ -23,7 +23,7 @@ public class Petition {
 	private Date representationDate;
 	private Date endorsmentDate;
 	private String workName;
-	private Double estimationCost;
+	private String estimationCost;
 	private Long noOfWorks;
 	private String isPreviousPetition;
 	private String grievanceDescription;
@@ -78,10 +78,10 @@ public class Petition {
 		this.workName = workName;
 	}
 	@Column(name="estimation_cost")
-	public Double getEstimationCost() {
+	public String getEstimationCost() {
 		return estimationCost;
 	}
-	public void setEstimationCost(Double estimationCost) {
+	public void setEstimationCost(String estimationCost) {
 		this.estimationCost = estimationCost;
 	}
 	@Column(name="no_of_works")

@@ -37,9 +37,9 @@ $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 });
 $(".chosen-select").chosen();
 
-$(document).on('cut copy paste', function (e) {
+/* $(document).on('cut copy paste', function (e) {
 	e.preventDefault();
-});
+}); */
 
 $(document).on("click",".advancedSrchCls",function(){
 	$("#advancedSearchVal").val('');
@@ -59,6 +59,7 @@ function representationRequestEntryTable(result){
 				str+='<th>Referrer&nbsp;Designation</th>';				
 				str+='<th style="min-width:200px !important;">Work Name</th>';
 				str+='<th>No&nbsp;of&nbsp;Works</th>';
+				str+='<th>Estimation Cost</th>';
 				str+='<th>Action</th>';
 			str+='</tr>';
 		str+='</thead>';
@@ -99,7 +100,12 @@ function representationRequestEntryTable(result){
 					str+='<td>'+result[i].noOfWorks+'</td>';
 				else
 					str+='<td> - </td>';
-				str+='<td class="text-center"><a class="btn btn-xs viewEditCss"> View</a><a href="/representationRequestEntry" target="_blank" class="btn btn-xs viewEditCss m_top10"> Edit </a></td>';
+				if (result[i].estimationCost != "" && typeof(result[i].estimationCost) != "undefined")
+					str+='<td>'+result[i].estimationCost+'</td>';
+				else
+					str+='<td>-</td>';
+				
+				str+='<td class="text-center"><a class="btn btn-xs viewEditCss viewBtnCls" attr_petiotion_id="'+result[i].petitionId+'"> View</a><a href="'+wurl+'/representationRequestEntry" target="_blank" class="btn btn-xs viewEditCss m_top10"> Edit </a></td>';
 			str+='</tr>';
 			}
 		str+='</tbody>';
@@ -408,30 +414,35 @@ function getDepartmentsBySearchType(searchType,selBoxId){
   //var isErr= searchValidations();
   //if(isErr)
  // return;
-$("#representeeDetailsModelDivId").modal("show");
+
    getRepresentativeSearchDetails1();
  });
 
+$(document).on("click",".viewBtnCls",function(){
+	var petionId = $(this).attr("attr_petiotion_id");
+	$("#representeeDetailsModelDivId").modal("show");
+   getPetitionDetails(petionId);
+ });
 function getRepresentativeSearchDetails1(){
-	$("#designationErrDiv").html("");
-	$("#departMentsErrDiv").html("");
-  $("#representationRequestEntryTable").html(spinner);
+	$("#errMsgId").html("");
+	$("#errMsgId").html("");
+ 
    var filterType=$("#locationSelId").val();
     var filterValue="";
    if(filterType == 'referrelDesignation' || filterType == 'representeeDesignation'){
 	   filterValue=$("#designationsId").val();//
 	    if($("#designationDiv").is(':visible')){
 		  if(filterValue == null || filterValue ==0){
-			 $("#designationErrDiv").html('<h5>Please select designation </h5>');
-			 isError=true;
+			 $("#errMsgId").html('<h5>Please select designation </h5>');
+			 return;
 			}
 	}
    }else if(filterType == 'department'){
 	    filterValue=$("#departmentId").val();
 		if($("#departMentsDiv").is(':visible')){
 		  if(filterValue == null || filterValue ==0){
-			 $("#departMentsErrDiv").html('<h5>Please select department </h5>');
-			 isError=true;
+			 $("#errMsgId").html('<h5>Please select department </h5>');
+			 return;
 			}
 	}
    }else if(filterType == 'name'){
@@ -460,6 +471,7 @@ var stausIds ;
 if($("#statusId").val() != 0){
 	 stausIds = $("#statusId").val();
 }
+ $("#representationRequestEntryTable").html(spinner);
 var json = {
     filterType :filterType,//mobileno/department/name/email
     filterValue:filterValue,
@@ -507,7 +519,7 @@ function getStatusList(){
   }).done(function(result){
     $("#statusId").empty();
 		if(result !=null && result.length >0){
-			$("#statusId").html("<option value='0'>All</option>");
+			//$("#statusId").html("<option value='0'>All</option>");
 			for(var i in result){
 				$("#statusId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
 			}
@@ -515,7 +527,7 @@ function getStatusList(){
 		$("#statusId").trigger('chosen:updated');
   }); 
 }
-//getPetitionDetails(1);
+//getPetitionDetails(1778);
 function getPetitionDetails(petitionId){
    var json = {
        petitionId:petitionId
@@ -531,16 +543,28 @@ function getPetitionDetails(petitionId){
     }
   }).done(function(result){
     console.log(result);
-	setPmRepresenteeDataToResultView(result)
+	if(result != null){
+		$("#representeeViewId").html("");
+		setPmRepresenteeDataToResultView(result);
+	}else{
+		$("#representeeViewId").html("NO DATA AVAILABLE");
+	}
   });
 }
 
 function setPmRepresenteeDataToResultView(result){
 	var str="";
 	//str+='';
+	$("#representeeViewId").html(spinner);
 	if(result != null){
-		$("#representeeDetailsModelDivId").modal("show");
-		$("#representeeViewId").html(spinner)
+		
+		
+		var representeeList = [];
+		if(result.representationType =="SELF"){
+			 representeeList = result.referDetailsList;
+		}else{
+			representeeList = result.representeeDetailsList;
+		}
 	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div class="col-sm-6">';
 					str+='<h4>REPRESENTEE DETAILS</h4>';
@@ -557,21 +581,23 @@ function setPmRepresenteeDataToResultView(result){
 							str+='<div class="media-body">';
 								str+='<div class="bg_light-Color" style="padding:10px">';
 									str+='<p><b>Name</b></p>';
-									str+='<h4><b>'+result.name+'</b></h4>';
+									str+='<h4><b>'+representeeList[0].name+'</b></h4>';
+									if(representeeList[0].tdpCadreId != null)
 									str+='<span><b>TDP Cadre</b></span>';
 									str+='<div class="row">';
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>Address Details:</b></h5>';
 											//str+='<p>Village : Sangadigunta</p>';
-											str+='<p>Mandal: '+result.addressVO.tehsilName+'</p>';
-											str+='<p>Constituency : '+result.addressVO.assemblyName+'</p>';
-											str+='<p>District : '+result.addressVO.districtName+'</p>';
+											str+='<p>Mandal: '+representeeList[0].addressVO.tehsilName+'</p>';
+											str+='<p>Constituency : '+representeeList[0].addressVO.assemblyName+'</p>';
+											str+='<p>District : '+representeeList[0].addressVO.districtName+'</p>';
 										str+='</div>';
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>Contact Details:</b></h5>';
-											str+='<p>Email id : '+result.email+'</p>';
-											str+='<p>Contact No : '+result.mobileNO+'</p>';
-											str+='<p>Voter Id : '+result.voterCardNo+'</p>';
+											str+='<p>Email id : '+representeeList[0].email+'</p>';
+											str+='<p>Contact No : '+representeeList[0].mobileNO+'</p>';
+											if(representeeList[0].voterCardNo != undefined)
+											str+='<p>Voter Id : '+representeeList[0].voterCardNo+'</p>';
 										str+='</div>';
 									str+='</div>';
 									
@@ -584,26 +610,30 @@ function setPmRepresenteeDataToResultView(result){
 				str+='<div class="col-sm-6">';
 					str+='<h4>REFERRED BY</h4>';
 					str+='<div class="block_padding_10">';
-						for(var i in result.referList){
+						for(var i in result.referDetailsList){
 						str+='<div class="media">';
-							str+='<div class="media-left" style="text-align:center">';
-								str+='<i class="fa fa-user-circle fa-5x" aria-hidden="true" style="#EBEBEB"></i>';
+							//str+='<div class="media-left" style="text-align:center">';
+								//str+='<img class="media-object thumbnail" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;" src="http://mytdp.com/'+result.referDetailsList.candidatePath+'"></img>';
 								
-							str+='</div>';
+							//str+='</div>';
+							str+='<div class="media-left" >';
+												str+='<img style="width: 60px ! important; height: 60px ! important; margin-top: 6px;" src="'+result.referDetailsList[i].candidatePath+'" class="imageCss"></img>';
+												str+='<span style="position: relative; top: -62px; left: 39px;"><img src="Assests/images/TDP.PNG" style="width: 20px;" class="smallerImg"></img></span>';
+										str+='</div>';
 							str+='<div class="media-body">';
 								str+='<div class="bg_light-Color" style="padding:10px">';
 									str+='<p><b>Name</b></p>';
-									str+='<h4><b>'+result.referList[i].name+'</b></h4>';
-									str+='<span><b>('+result.referList[i].designation+'), '+result.referList[i].addressVO.assemblyName+' Constituency, '+result.referList[i].addressVO.districtName+' District.</b></span>';
+									str+='<h4><b>'+result.referDetailsList[i].name+'</b></h4>';
+									str+='<span><b>('+result.referDetailsList[i].designation+'), '+result.referDetailsList[i].addressVO.assemblyName+' Constituency, '+result.referDetailsList[i].addressVO.districtName+' District.</b></span>';
 									str+='<div class="row">';
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>Party:</b></h5>';
-											str+='<p>'+result.referList[i].partyName+' '+result.referList[i].addressVO.districtName+'</p>';
+											str+='<p>'+result.referDetailsList[i].partyName+' '+result.referDetailsList[i].addressVO.districtName+'</p>';
 										str+='</div>';
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>Contact Details:</b></h5>';
-											str+='<p>Email id : '+result.referList[i].email+'</p>';
-											str+='<p>Contact No : '+result.referList[i].mobileNO+'</p>';
+											str+='<p>Email id : '+result.referDetailsList[i].email+'</p>';
+											str+='<p>Contact No : '+result.referDetailsList[i].mobileNO+'</p>';
 										str+='</div>';
 										str+='<div style=""><p class="viewDivId pull-right"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW REFERRAL LETTER</p></div>';
 									str+='</div>';
@@ -635,7 +665,7 @@ function setPmRepresenteeDataToResultView(result){
 					str+='</table>';
 				str+='</div>';
 				str+='<div class="clearfix"></div>'; */
-				for(var j in result.worksList){
+				//for(var j in result.worksList){
 				str+='<div class="col-sm-10 m_top20">';
 					str+='<h5><b>WORK TYPE DETAILS</b></h5>';
 					str+='<table class="table table-bordered" cellpadding="100" style="border:1px solid grey">';
@@ -646,9 +676,9 @@ function setPmRepresenteeDataToResultView(result){
 								str+='<td style="background-color:#D1AB66">Work Cost (Est. Cost in Lakh)</td>';
 							str+='</tr>';
 							str+='<tr>';
-								str+='<td>'+result.worksList[j].workName+'</td>';
-								str+='<td style="background-color:#D1AB66">'+result.worksList[j].noOfWorks+'</td>';
-								str+='<td style="background-color:#D1AB66">'+result.worksList[j].estimateCost+'</td>';
+								str+='<td>'+result.workName+'</td>';
+								str+='<td style="background-color:#D1AB66">'+result.noOfWorks+'</td>';
+								str+='<td style="background-color:#D1AB66">'+result.estimateCost+'</td>';
 							str+='</tr>';
 						str+='</tbody>';
 					str+='</table>';
@@ -661,7 +691,7 @@ function setPmRepresenteeDataToResultView(result){
 				str+='<div class="clearfix"></div>';
 				str+='<div class="col-sm-12 m_top20" style="border-bottom:5px solid #EBEBEB;border-top:5px solid #EBEBEB;">';
 					str+='<table class="table">';
-						str+='<td>NO OF WORKS - '+result.worksList[j].noOfWorks+'</td>';
+						str+='<td>NO OF WORKS - '+result.noOfWorks+'</td>';
 						/* str+='<td style="padding:15px"><i class="fa fa-check-circle-o" aria-hidden="true" style="padding-right:10px;color:#01A64E;font-size:15px"></i>Endorse</td>';
 						str+='<td style="padding:15px"><i class="fa fa-times-circle-o" aria-hidden="true" style="padding-right:10px;color:#EC2027;font-size:15px"></i>Rejected</td>';
 						str+='<td><button class="btn">Select All</button></td>';
@@ -671,7 +701,8 @@ function setPmRepresenteeDataToResultView(result){
 					str+='</table>';
 				str+='</div>';
 				str+='<div class="col-sm-12 m_top20">';
-				for(var k in result.worksList[j].subWorksList){
+				for(var j in result.subWorksList){
+				for(var k in result.subWorksList[j].subWorksList){
 					var workCount = k+1;
 					str+='<div class="row">';
 						str+='<div class="col-sm-6">';
@@ -679,18 +710,18 @@ function setPmRepresenteeDataToResultView(result){
 							str+='<div class="bg_light-Color block_padding_10 m_top10">';
 								str+='<table class="table table-bordered">';
 									str+='<tr>';
-										str+='<td>Work Type</br><b>'+result.worksList[j].subWorksList[k].workType+'</b>(status:'+result.worksList[j].subWorksList[k].status+')</td>';
+										str+='<td>Work Type</br><b>'+result.subWorksList[j].subWorksList[k].workType+'</b>(status:'+result.subWorksList[j].subWorksList[k].status+')</td>';
 										str+='<td colspan="2">';
 											str+='<p>LOCATION</p>';
-											str+='<span style="display:inline-block;padding:10px">District</br><b>'+result.worksList[j].subWorksList[k].addressVO.districtName+'</b></span>';
-											str+='<span style="display:inline-block;padding:10px">Constituency</br><b>'+result.worksList[j].subWorksList[k].addressVO.assemblyName+'</b></span>';
-											str+='<span style="display:inline-block;padding:10px">mandal</br><b>'+result.worksList[j].subWorksList[k].addressVO.tehsilName+'</b></span>';
+											str+='<span style="display:inline-block;padding:10px">District</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.districtName+'</b></span>';
+											str+='<span style="display:inline-block;padding:10px">Constituency</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.assemblyName+'</b></span>';
+											str+='<span style="display:inline-block;padding:10px">mandal</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.tehsilName+'</b></span>';
 										str+='</td>';
 									str+='</tr>';
 									str+='<tr>';
-										str+='<td>Subject <b>'+result.worksList[j].subWorksList[k].subject+')</b></td>';
-										str+='<td>Sub-Subject <b>'+result.worksList[j].subWorksList[k].subSubject+')</b></td>';
-										str+='<td>Department <b>'+result.worksList[j].subWorksList[k].deptName+'</b></td>';
+										str+='<td>Subject <b>'+result.subWorksList[j].subWorksList[k].subject+')</b></td>';
+										str+='<td>Sub-Subject <b>'+result.subWorksList[j].subWorksList[k].subSubject+')</b></td>';
+										str+='<td>Department <b>'+result.subWorksList[j].subWorksList[k].deptName+'</b></td>';
 										
 									str+='</tr>';
 								str+='</table>';
@@ -702,7 +733,7 @@ function setPmRepresenteeDataToResultView(result){
 							//str+='<button class="btn pull-right">Select</button>
 							str+='</h5>';
 							str+='<div class=" block_padding_10 m_top10">';
-								str+='<p style="font-size:12px">'+result.worksList[j].subWorksList[k].workName+'</p>';
+								str+='<p style="font-size:12px">'+result.subWorksList[j].subWorksList[k].workName+'</p>';
 							str+='</div>';
 						str+='</div>';
 						
@@ -712,22 +743,28 @@ function setPmRepresenteeDataToResultView(result){
 					str+='<div class="bg_light-Color block_padding_10 m_top10">';
 						str+='<table class="table">';
 							str+='<tbody>';
-								str+='<td><b>Lead Details :</b> <span>'+result.worksList[j].subWorksList[k].leadName+'</span></td>';
-								str+='<td><b>Brief Lead:</b><span>'+result.worksList[j].subWorksList[k].briefLeadName+'</span></td>';
-								str+='<td><b>Grant Under :</b><span>'+result.worksList[j].subWorksList[k].grantName+'</span></td>';
-								str+='<td><b>Est Budget :</b><span>'+result.worksList[j].subWorksList[k].estimateCost+'</span></td>';
-								str+='<td><b>eOffice ID :</b><span>'+result.worksList[j].subWorksList[k].eOfficeId+'</span></td>';
+								str+='<td><b>Lead Details :</b> <span>'+result.subWorksList[j].subWorksList[k].leadName+'</span></td>';
+								str+='<td><b>Brief Lead:</b><span>'+result.subWorksList[j].subWorksList[k].briefLeadName+'</span></td>';
+								str+='<td><b>Grant Under :</b><span>'+result.subWorksList[j].subWorksList[k].grantName+'</span></td>';
+								str+='<td><b>Est Budget :</b><span>'+result.subWorksList[j].subWorksList[k].estimateCost+'</span></td>';
+								str+='<td><b>eOffice ID :</b><span>'+result.subWorksList[j].subWorksList[k].eOfficeId+'</span></td>';
 							str+='</tbody>';
 						str+='</table>';
 					str+='</div>';
 				str+='</div>';
-	}
-				str+='<div class="col-sm-12 m_top20" style="border-bottom:5px solid #EBEBEB"></div>';
+				}
+			}
+		
+		/* str+='<div class="col-sm-12 m_top20" style="border-bottom:5px solid #EBEBEB"></div>';
 				str+='<div class="col-sm-12 m_top20">';
 					str+='<button class="btn btn-success pull-right">SUBMIT</button>';
 				str+='</div>';
-			str+='</div>';
-	}
+			str+='</div>'; */
+	
 	$("#representeeViewId").html(str);
 }
+ function setDefaultImage(img){
+			  img.src = "http://www.mytdp.com/images/User.png";
+			  
+		}
 }
