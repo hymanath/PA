@@ -1788,3 +1788,70 @@ function mandaysData(ajaxresp)
 	str+='</div>';		
 	return str;
 }
+$(document).on('click','.validateLoginCls',function(){
+	 $("#validateModalId").modal("show");
+	 $("#loginNmeIds").val('');
+	 $("#loginPassIds").val('');
+ });
+function userLoginPopUpDetails(){
+	 $("#statusUserId").html("");
+	 $('#statusMessagePwdId').html("");
+	 $("#statusMessageId").html("");
+	 
+	var userName = $("#loginNmeIds").val();
+	var password = $("#loginPassIds").val();
+	
+	var errorStr = '';
+	var errorPwdStr='';
+	if(userName == 0 || userName == null || userName == '' || userName.trim().length == 0){
+		errorStr += "<p style='color:red'>Username is required</p>";
+	}
+	if(password == 0 || password == null || password == '' || password.trim().length == 0){
+		errorPwdStr += "<p style='color:red'>Password is required</p>";
+	}
+	if(errorStr.length >0)
+	{
+		    $('#statusUserId').html(errorStr);
+			
+		return ;
+	}else{
+		$("#statusUserId").html("");
+	}
+	if(errorPwdStr.length >0)
+	{   
+        $('#statusMessagePwdId').html(errorPwdStr);
+	   
+		return ;
+	}else{
+		$('#statusMessagePwdId').html('');
+	}
+	var json = {
+		username: $("#loginNmeIds").val(),
+		passwordHashText:$("#loginPassIds").val()
+		};
+	$("#spinnerImg").show();
+   $.ajax({
+    url: 'userLogin',
+    data: JSON.stringify(json),
+    type: "POST",
+    dataType: 'json', 
+    beforeSend: function(xhr) {
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    },
+     success: function(ajaxresp) {
+		  if(ajaxresp.responceCode == 0){
+			 $("#statusMessageId").html("<span style='color:red;margin-left:110px;'> UserName or Password Invalid</span>"); 
+			 $("#spinnerImg").hide();
+		  }else{
+			  $("#statusMessageId").html("<span style='color:green'>Login Successfull</span>");
+			  var redirectWindow=window.open(ajaxresp.url,'_self');
+			  $("#spinnerImg").hide();
+		  }
+     },
+   error: function(request,error) { 
+   
+    }
+      });
+	
+}
