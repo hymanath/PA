@@ -1,5 +1,6 @@
 package com.itgrids.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -101,5 +102,24 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				+ "order by model.pmDepartment.orderNo asc ");
 		Query query =getSession().createQuery(sb.toString());
 		return query.list();
+	}
+
+	public List<Long> getPmSubWorkDetailsIds(Long petitionId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.pmSubWorkDetailsId from PmSubWorkDetails model where model.isDeleted='N' and model.petitionId =:petitionId ");
+		Query query =getSession().createQuery(sb.toString());
+		query.setParameter("petitionId", petitionId);
+		return query.list();
+	}
+	
+	public Integer updatePmsubWorkDetails(List<Long> subWorkDetailsIds,Date updateTime,Long userId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("update PmSubWorkDetails model set model.isDeleted='Y', model.updatedTime =:updateTime,model.updatedUserId =:userId "
+				+ " where model.pmSubWorkDetailsId  in (:subWorkDetailsIds) ");
+		Query query =getSession().createQuery(sb.toString());
+		query.setParameterList("subWorkDetailsIds", subWorkDetailsIds);
+		query.setParameter("updateTime", updateTime);
+		query.setParameter("userId", userId);
+		return query.executeUpdate();
 	}
 }
