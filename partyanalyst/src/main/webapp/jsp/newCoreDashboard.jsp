@@ -177,7 +177,7 @@
 		</div>
 	</div>
 	<!-- Error Msg For Committee End --->
-
+	
 <div class="container m_top20">
 	<div class="row">
 		<!-- Alerts Start -->
@@ -4097,7 +4097,7 @@
 	</div>
 	<div class="row">
 	<!-- Praja Sankalpam Yatra News  Start --> 
-		<!-- <div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="prajaSankaplaYatra">
+		 <div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="prajaSankaplaYatra">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
@@ -4212,7 +4212,7 @@
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div> 
 <!-- Praja Sankalpam Yatra News  END --> 
 	<!-- Attendance Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock" expand-block="attendance">
@@ -5412,6 +5412,36 @@
 		</div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!-- Model For Start PrajaSankalpaYatra -->
+<div class="modal" tabindex="-1" role="dialog" id="prajaSankalpaYatraModalId">
+		  <div class="modal-dialog modal-lg" style="width:90%;">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<!--<h4 class="modal-title" id="tourDetailsHeadingId"></h4>--> 
+				<div class="row">
+					<div class="col-md-9 col-xs-12 col-sm-9">
+						<h4 class="modal-title text-capital" id="tourLeadrDtlsHeadingId">Location Wise Articles</h4>
+					</div>
+					
+				</div>
+			  </div>
+			  <div class="modal-body">
+						<div class="clearModalTables" id="prajaSankalpaYatraStateTableId"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraDistrictTableId"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraPanchayatTableId"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraMandalTableId"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraConstituencyTableId"></div>
+						
+			  </div>
+			  <div class="modal-footer">     
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+</div>
+<!-- Model For End PrajaSankalpaYatra -->
+
 
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
