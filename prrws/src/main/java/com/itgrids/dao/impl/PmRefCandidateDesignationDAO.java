@@ -37,7 +37,7 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		sb.append(",tehsil.tehsilId,tehsil.tehsilName ");//9,10
 		sb.append(",panchayat.panchayatId,panchayat.panchayatName ");//11,12
 		sb.append(",model.pmRefCandidate.mobileNo,model.pmRefCandidate.email,model.pmDesignation.pmDesignationId ");//13,14,15
-		sb.append(",parliament.constituencyId,parliament.name ,model.pmRefCandidate.imagePath,pmRefCandidate.partyName ");//16,17,18,19
+		sb.append(",parliament.constituencyId,parliament.name ,model.pmRefCandidate.imagePath,model.pmRefCandidate.partyName ");//16,17,18,19
 		sb.append("from PmRefCandidateDesignation model ");
 		sb.append("left join model.pmRefCandidate.address locationAddress ");
 		sb.append("left join locationAddress.state state ");
