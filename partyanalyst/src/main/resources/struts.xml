@@ -18632,5 +18632,8 @@
 			<param name="root">campSurveyVOs</param>
 		</result>
 	</action>
+	 <action name="coreDashBoardGrivanceAction" class="coreDashBoardGrivanceAction" method="execute">
+	   		 <result name="success"></result>			
+	    </action>
  </package>
 </struts>
