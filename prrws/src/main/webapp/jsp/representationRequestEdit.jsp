@@ -17,6 +17,7 @@
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="Assests/Plugins/pdfexpand/source/jquery.fancybox.css" media="screen" />
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
@@ -245,7 +246,7 @@
 									</div>
 									<div class="row m_top20">
 										<div class="col-sm-12">
-											<div id="REPRESENTDetailsDivId"></div>
+											<div id="REPRESENTEEDetailsDivId"></div>
 										</div>
 									</div>
 									
@@ -318,6 +319,7 @@
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/editUploadFile.js?v=1.0.5"></script>                
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/editUploadFile2.js?v=1.0.5"></script>                
 <!-- for file uploader -->
+<script type="text/javascript" src="Assests/Plugins/pdfexpand/source/jquery.fancybox.js"></script>
 <script src="Assests/representationRequest/representationRequestEdit.js" type="text/javascript"></script>
 </body>
 </html>
