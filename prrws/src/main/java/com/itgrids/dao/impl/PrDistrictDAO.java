@@ -17,8 +17,9 @@ public class PrDistrictDAO extends GenericDaoHibernate<PrDistrict, Long> impleme
 	
 	public List<Object[]> getAllDistrictsFrState(){
 	    StringBuilder sb = new StringBuilder();
-	    sb.append(" select distinct model.districtCode,"+ " model.districtName "
-	    		+ " from PrDistrict model");
+	    sb.append(" select distinct model.districtCode,"
+	    		+ " model.districtName "
+	    		+ " from PrDistrict model order by model.districtName asc");
 	    
 	    Query query = getSession().createQuery(sb.toString());
 	   

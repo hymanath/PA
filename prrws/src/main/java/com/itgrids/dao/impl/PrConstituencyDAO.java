@@ -21,8 +21,8 @@ public class PrConstituencyDAO extends GenericDaoHibernate<PrConstituency, Long>
 	    		+ " model.constituencyName,"
 	    		+ " model.prDistrict.districtCode"
 	    		+ " from PrConstituency model");
-	    if(districtId != null)
-	    	sb.append(" where model.prDistrict.districtCode = :districtId");
+	    if(districtId != null) 
+	    	sb.append(" where model.prDistrict.districtCode = :districtId order by model.constituencyName asc");
 	    
 	    Query query = getSession().createQuery(sb.toString());
 	    if(districtId != null)
