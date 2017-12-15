@@ -4,6 +4,7 @@ var searchCandidateIds=[];
 var diffArr=[];
 var commonArr=[];
 var globalWorkTypeCount=0;
+var globalInnerWorksCount=1;// minimum work =1
 setTimeout(function(){ 
 	$(".chosen-select").chosen();
 	//$('#self').trigger('click');
@@ -39,7 +40,7 @@ $(document).on("click",".selfRepresenceCls",function(){
 			globalWorkTypeCount=0;
 			buildSelfAndRepresenteeDetails(typeVal)
 			getAllDistrictsListInState();
-			getPetitionDesignationList();
+			getPetitionDesignationLst(typeVal);
 		}
 	}
 });
@@ -870,16 +871,17 @@ function buildTemplateWorkDetails(typeVal){
 										str+='</select>';
 									str+='</div>';
 									str+='<div class="col-sm-3">';
-										str+='<label>WORK IN COST (in Lakh) <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
-										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].estimateCost" class="form-control m_top5 height45 validateCls" id="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter Work Cost" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
+										str+='<label>WORK IN COST  (in Lakh) <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].estimateCost" class="form-control m_top5 height45 validateCls amountCls" onkeyUp="validateAmount(this.value,this.id)" id="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter Work Cost" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0"/>';
+										str+='<span class="ErrCls" id="ErrappendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span>';
 									str+='</div>';
 									str+='<div class="col-sm-3">';
 										str+='<label>WORK DETAILS <span class="starColor">*</span><span class="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
-										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].grievanceDescription" class="form-control m_top5 height45 validateCls" id="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
+										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].grievanceDescription" class="form-control m_top5 height45 validateCls" id="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0"/>';
 									str+='</div>';
 									str+='<div class="col-sm-3">';
 										str+='<label>eOFFICE-ID <span class="starColor">*</span><span class="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
-										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].eOfficeId" class="form-control m_top5 height45 validateCls" id="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
+										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].eOfficeId" class="form-control m_top5 height45 validateCls" id="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0"/>';
 									str+='</div>';
 							str+='</div>';
 							str+='<div class="row m_top10">';
@@ -1060,6 +1062,12 @@ function  enableWorks(value,divId,typeVal){
 	}
 }
 $(document).on("click",".cloned_Element",function(){
+	var estimationWorksCount = $('#noofWorkself').val();
+	if(parseInt(estimationWorksCount)==parseInt(globalInnerWorksCount)){
+		alert("Max no of works data entered. Please check once.");
+		return;
+	}
+	globalInnerWorksCount = parseInt(globalInnerWorksCount)+parseInt(1);
 	var typeVal = $(this).attr("attr_type");
 	var workCount = $("#noofWork"+typeVal).val();
 	var counterappendId = $(this).attr("block-clone-counter-"+typeVal+"");
@@ -1130,15 +1138,16 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>WORK IN COST (in Lakh) <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
-										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].estimateCost" class="form-control m_top5 height45 validateCls" id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
+										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls" onkeyUp="validateAmount(this.value,this.id);"  id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"/>';
+										clonedTemplate+='<span  class="ErrCls" id="ErrappendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>WORK DETAILS <span class="starColor">*</span><span class="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
-										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].grievanceDescription" class="form-control m_top5 height45 validateCls" id="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
+										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].grievanceDescription" class="form-control m_top5 height45 validateCls" id="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"/>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>eOFFICE-ID <span class="starColor">*</span><span class="appendEofficeId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
-										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].eOfficeId" class="form-control m_top5 height45 validateCls" id="appendEofficeId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
+										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].eOfficeId" class="form-control m_top5 height45 validateCls" id="appendEofficeId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"/>';
 									clonedTemplate+='</div>';
 							clonedTemplate+='</div>';
 							clonedTemplate+='<div class="row m_top10">';
@@ -1190,11 +1199,19 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 	return clonedTemplate;
 	
 }
+
 $(document).on("click",".cloned_Inner_Element",function(){
+	
 	var typeVal = $(this).attr("attr_type");
 	var counterId = $(this).attr("attr_counterval");	
 	var mainWorkCount = $(this).attr("main_work_count");
 	var innerWorkCount = $(this).attr("inner_work_count");
+	var estimationWorksCount = $('#noofWorkself').val();
+	if(parseInt(estimationWorksCount)==parseInt(globalInnerWorksCount)){
+		alert("Max no of works data entered. Please check once.");
+		return;
+	}
+	globalInnerWorksCount = parseInt(globalInnerWorksCount)+parseInt(1);
 	$(this).attr("inner_work_count",parseInt(innerWorkCount)+1);
 	var conterInnerVal = parseInt(innerWorkCount)+1
 	
@@ -1218,16 +1235,17 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
-							clonedInnerTemplate+='<label>WORK IN COST (in Lakh) <span class="starColor">*</span><span class="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45 validateCls" id="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter Work Cost" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
+							clonedInnerTemplate+='<label>WORK IN COST  (in Lakh) <span class="starColor">*</span><span class="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls" onkeyUp="validateAmount(this.value,this.id)"  id="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter Work Cost" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"/>';
+							clonedInnerTemplate+='<span  class="ErrCls"  id="ErrappendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>WORK DETAILS <span class="starColor">*</span><span class="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].grievanceDescription" class="form-control m_top5 height45 validateCls" id="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
+							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].grievanceDescription" class="form-control m_top5 height45 validateCls" id="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"/>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>eOFFICE-ID <span class="starColor">*</span><span class="appendEofficeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].eOfficeId" class="form-control m_top5 height45 validateCls" id="appendEofficeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
+							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].eOfficeId" class="form-control m_top5 height45 validateCls" id="appendEofficeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"/>';
 						clonedInnerTemplate+='</div>';
 				clonedInnerTemplate+='</div>';
 				clonedInnerTemplate+='<div class="row m_top10">';
@@ -1401,7 +1419,7 @@ function getSubjectPetitionsDepartmentList(typeVal,count,innerCount){
 function getPetitionSubjectList(divId,typeVal,counterId,innerCount){
 	 $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('');
 	var json = {
-		deptId:1
+		
 	};
 	$.ajax({              
 		type:'POST',    
@@ -1917,7 +1935,7 @@ function validation(typeVal){
 	
 }
 
-function getPetitionDesignationList(){
+function getPetitionDesignationLst(typeVal){
 	$("#designationrepresent").html('');
 	  var json = {
 		   searchType:"all"// all/refCandidateDesignations/petitionGivenRefCandidateDesignations
@@ -1941,4 +1959,27 @@ function getPetitionDesignationList(){
 		$("#designationrepresent").trigger('chosen:updated');
 	});	
 
+}
+
+
+
+function validateAmount(value,fieldId){
+	$('.ErrCls').html('');
+	var enteredAmount =parseFloat(0.0);
+	var estimationAmount= parseFloat($('#workCostself').val());
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseFloat(value) <=0){
+				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				return;
+			}else{
+				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
+			}
+		}
+	});
+	if(enteredAmount>estimationAmount){
+		$('#Err'+fieldId+'').html("Already total estimation cost reached. Please check once.");
+		$('#'+fieldId+'').val('');
+	}
 }
