@@ -83,6 +83,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.MomDashbaordOverViewDtlsVO;
 import com.itgrids.partyanalyst.dto.MomDetailsVO;
+import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingDataVO;
@@ -3525,5 +3526,17 @@ public class WebServiceHandler {
 		}
 		return null;
 	}
-	
+	@POST
+    @Path("/getRegistrationPersonDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public NewCadreRegistrationVO getRegistrationPersonDetails(JSONObject jObj){
+		
+		try{ 
+			return webServiceHandlerService1.getRegistrationPersonDetails(jObj.getLong("voterId"),jObj.getLong("familyVoterId"),jObj.getLong("tdpCadreId"),jObj.getString("status"));
+		}catch(Exception e){
+			LOG.error("Exception Occured in getRegistrationPersonDetails() Method in WebServiceHandler, Exception is ",e);
+			return null;
+		}
+	}
 }
