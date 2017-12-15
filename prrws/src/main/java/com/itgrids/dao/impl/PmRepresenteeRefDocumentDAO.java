@@ -1,5 +1,6 @@
 package com.itgrids.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -27,5 +28,21 @@ public class PmRepresenteeRefDocumentDAO extends GenericDaoHibernate<PmRepresent
 		query.setParameter("petitionId", petitionId);
 		return query.list();
 	}
-	
+	public List<Long> getPmRepresenteeRefDocumentIds(List<Long> representeeRefDetailsIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.pmRepresenteeRefDocumentId from PmRepresenteeRefDocument model where "
+				+ " model.isDeleted ='N' and model.pmRepresenteeRefDetailsId in (:representeeRefDetailsIds) ");
+		Query query =getSession().createQuery(sb.toString());
+		query.setParameter("representeeRefDetailsIds", representeeRefDetailsIds);
+		return query.list();
+	}
+	public Integer updatePmPmRepresenteeRefDocumens(List<Long> representeeRefDocIds,Date updatedTime,Long userId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" update PmRepresenteeRefDocument model set model.isDeleted ='Y',model.updatedTime =:updatedTime, model.updatedUserId =:userId ");
+		Query query =getSession().createQuery(sb.toString());
+		query.setParameter("representeeRefDocIds", representeeRefDocIds);
+		query.setParameter("updatedTime", updatedTime);
+		query.setParameter("userId", userId);
+		return query.executeUpdate();
+	}
 }

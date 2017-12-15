@@ -173,5 +173,21 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		}
 		return query.list();
 	}
-
+	public List<Long> getPmRepresenteRefDetailsIds(Long petitionId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.pmRepresenteeRefDetailsId from PmRepresenteeRefDetails model where model.isDeleted ='N' and model.petitionId =:petitionId ");
+		Query query=getSession().createQuery(sb.toString());
+		query.setParameter("petitionId", petitionId);
+		return query.list();
+	}
+	public Integer updatePmRepresenteRefDetails(List<Long> representeRefDetailsIds,Date updatedTime,Long userId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" update PmRepresenteeRefDetails model set model.isDeleted ='Y', model.updatedTime=:updatedTime,model.updatedUserId= :userId "
+				+ "where model.pmRepresenteeRefDetailsId in (:representeRefDetailsIds) ");
+		Query query=getSession().createQuery(sb.toString());
+		query.setParameterList("representeRefDetailsIds", representeRefDetailsIds);
+		query.setParameter("updatedTime", updatedTime);
+		query.setParameter("userId", userId);
+		return query.executeUpdate();
+	}
 }
