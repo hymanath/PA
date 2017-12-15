@@ -30,14 +30,14 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 	
 	public List<Object[]> getCandidatseDetailsByDesignationAndLocation(Long designationId,Long locationLevelId,Long locationValue){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.pmRefCandidateId,model.pmRefCandidate.name,model.pmDesignation.designation ");//
-		sb.append(",state.stateId,state.stateName ");
-		sb.append(",district.districtId,district.districtName ");
-		sb.append(",constituency.constituencyId,constituency.name ");
-		sb.append(",tehsil.tehsilId,tehsil.tehsilName ");
-		sb.append(",panchayat.panchayatId,panchayat.panchayatName ");
-		sb.append(",model.pmRefCandidate.mobileNo,model.pmRefCandidate.email,model.pmDesignation.pmDesignationId ");
-		sb.append(",parliament.constituencyId,parliament.name ");
+		sb.append("select model.pmRefCandidateId,model.pmRefCandidate.name,model.pmDesignation.designation ");//0,1,2
+		sb.append(",state.stateId,state.stateName ");//3,4
+		sb.append(",district.districtId,district.districtName ");//5,6
+		sb.append(",constituency.constituencyId,constituency.name ");//7,8
+		sb.append(",tehsil.tehsilId,tehsil.tehsilName ");//9,10
+		sb.append(",panchayat.panchayatId,panchayat.panchayatName ");//11,12
+		sb.append(",model.pmRefCandidate.mobileNo,model.pmRefCandidate.email,model.pmDesignation.pmDesignationId ");//13,14,15
+		sb.append(",parliament.constituencyId,parliament.name ,model.pmRefCandidate.imagePath,pmRefCandidate.partyName ");//16,17,18,19
 		sb.append("from PmRefCandidateDesignation model ");
 		sb.append("left join model.pmRefCandidate.address locationAddress ");
 		sb.append("left join locationAddress.state state ");
