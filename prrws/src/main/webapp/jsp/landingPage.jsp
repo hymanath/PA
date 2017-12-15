@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -8,7 +8,8 @@
 <link href="Assests/MaterialKit/css/material-kit.css" rel="stylesheet"/>
 <link href="Assests/MaterialKit/css/landingPage.css" rel="stylesheet"/>-->
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="Assests/css/custom.less" rel="stylesheet" type="text/less">
+<link href="Assests/css/style.css" rel="stylesheet" type="text/less">
+<link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
@@ -48,10 +49,13 @@
 			<div class="col-sm-1 col-xs-3">
 				<img src="Assests/img/aplogo.png" class="logoCls" alt="logo">
 			</div>
-			<div class="col-sm-11 col-xs-9">
+			<div class="col-sm-9 col-xs-6">
 				<h5 style="margin-bottom: 0px;margin-top: 10px;color: #EC2027"><b>MINISTER <span style="font-size: 10px;">DASHBOARD</span></b></h5>
 				<p style="font-size: 10px;color : #22A67E"><b>Information Technology, Panchayathi Raj & <br/>
 				Rural Development</b></p>
+			</div>
+			<div class="col-sm-2 col-xs-3">
+			<a class="btn btn-primary btn-large btn-block btnSearch m_top20 validateLoginCls" style="display:inline-block; width:95px;" style="cursor:pointer;" >Login</a>
 			</div>
 		</div>
 	</div>
@@ -635,7 +639,36 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <input type="hidden" id="hiddenFieldId">
-
+<div class="modal fade" id="validateModalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+	<button class="close" type="button" data-dismiss="modal" style="border-left-width: 0px; width: 52px; padding-top: 3px;">×</button>
+		<h1 class = "text-center m_top10 " ><font size ="4">LOGIN DETAILS</font></h1>
+        </button>
+     <div class="modal-body">
+		 <div class="row m_top20">
+			  <div class="col-md-6 col-md-offset-2 ">
+				  <input type="text" class="form-control " value="" placeholder="UserName" id="loginNmeIds" >
+					<span id="statusUserId" ></span>		
+			  </div>
+		  </div>
+		  <div class="row m_top20">
+			  <div class="col-md-6 col-md-offset-2 margin-top: 10px;">
+				<input type="password" class="form-control " value="" placeholder=" Passord" id="loginPassIds" >
+				<span id="statusMessagePwdId"></span>	
+			 </div>
+		 </div>
+		  <div class="row m_top20">
+			   <div class="col-md-6 col-md-offset-2 " >
+						<a class="btn btn-primary btn-large btn-block btnSearch m_top20" style="display:inline-block;width: 179px;" style="cursor:pointer; margin-left: -4px; padding-left: 9px; width: 267px;" onClick="userLoginPopUpDetails();" >SIGN IN</a>
+						<img src="Assests/images/spinner.gif" style="width:40px;height:40px;margin-left:10px;margin-top:10px;display:none; " id="spinnerImg"/>
+				</div>
+		</div>
+    </div>
+      <p id="statusMessageId"></p>
+</div>	
+</div>  
+</div>  	
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <!--<script src="Assests/MaterialKit/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/MaterialKit/js/bootstrap.min.js" type="text/javascript"></script>
