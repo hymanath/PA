@@ -288,12 +288,15 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		str+='</div>';
 		
 		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-3">';
+			str+='<div class="col-sm-2">';
 				str+='<label>VOTER ID</label>';
 				str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
 				
 			str+='</div>';
-			
+			str+='<div class="col-sm-1">';
+				str+='<label></label>';
+				str+='<input type="button" class="btn btn-success btn-md m_top20" id="getVoterDetailsId" value="Get Details" ></input>';
+			str+='</div>';
 			str+='<div class="col-sm-3">';
 				str+='<label>NAME</label>';//$("#name"+typeVal+"Err").html("<h5>Please Enter Name</h5>");
 				str+='<input type="text"  name="name"  value="" class="form-control m_top10 height45" id="name'+typeVal+'" placeholder="Enter Name">';
@@ -1287,7 +1290,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 		return clonedInnerTemplate;
 }
 
-function getAllDistrictsListInState(){	
+function getAllDistrictsListInState(districtId){	
 	$("#districtrepresent").html('');
 	var json = {
 		  stateId:"1",
@@ -1306,8 +1309,13 @@ function getAllDistrictsListInState(){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			 $("#districtrepresent").append('<option value="0">Select District</option>');
-				for(var i in result){				
-					$("#districtrepresent").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				for(var i in result){
+					if(districtId == result[i].id){
+						$("#districtrepresent").append('<option value="'+result[i].id+'" selected>'+result[i].name+' </option>');
+					}else{
+						$("#districtrepresent").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+
+					}
 				}
 			}
 			$("#districtrepresent").trigger('chosen:updated');
@@ -1316,12 +1324,12 @@ function getAllDistrictsListInState(){
 
 $(document).on("change","#districtrepresent",function(){
 	var levelVal = $(this).val();
-	getConstituencyNamesBiDistrictId(levelVal); 
+	getConstituencyNamesBiDistrictId(levelVal,""); 
 	
 });
 
 
-function getConstituencyNamesBiDistrictId(levelVal){
+function getConstituencyNamesBiDistrictId(levelVal,constincyId){
 	  $("#constituencyrepresent").html('');
 	  $("#constituencyrepresent").append('<option value="0">Select Constituency</option>');	
 	  $("#constituencyrepresent").trigger('chosen:updated');
@@ -1343,7 +1351,12 @@ function getConstituencyNamesBiDistrictId(levelVal){
 	}).done(function(result){
 		if(result !=null && result.length>0){	
 			for(var i in result){
-				$("#constituencyrepresent").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+				if(constincyId == result[i].locationId){
+					$("#constituencyrepresent").append('<option value="'+result[i].locationId+'" selected>'+result[i].locationName+' </option>');
+				}else{
+					$("#constituencyrepresent").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+
+				}
 			}
 		}
 		$("#constituencyrepresent").trigger('chosen:updated');		
@@ -1352,10 +1365,11 @@ function getConstituencyNamesBiDistrictId(levelVal){
 
 $(document).on("change","#constituencyrepresent",function(){
 	var levelVal = $(this).val();
-	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal); 
+	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,""); 
 	
 });
-function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal){
+function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,mandalId){
+	alert(mandalId);
 	  $("#mandalrepresent").html('');	
 	  $("#mandalrepresent").append('<option value="0">Select Mandal</option>');	
 	  $("#mandalrepresent").trigger('chosen:updated');	
@@ -1379,9 +1393,17 @@ function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal){
 					var tehsilId = result[i].key;
 					var levelId = tehsilId;//tehsilId.toString().substr(1, 4);
 					if(result[i].electionType != null){
-						$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
+						if(mandalId == levelId){
+							$("#mandalrepresent").append('<option value="'+levelId+'" selected>'+result[i].value+' '+result[i].electionType+'</option>');
+						}else{
+							$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
+						}
 					}else{
-						$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'</option>');
+						if(mandalId == levelId){
+							$("#mandalrepresent").append('<option value="'+levelId+'" selected>'+result[i].value+'</option>');
+						}else{
+							$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'</option>');
+						}
 					}
 			}
 		}
@@ -1982,4 +2004,64 @@ function validateAmount(value,fieldId){
 		$('#Err'+fieldId+'').html("Already total estimation cost reached. Please check once.");
 		$('#'+fieldId+'').val('');
 	}
+}
+
+$(document).on("click","#getVoterDetailsId",function(){
+	var typeVal='';
+	if($("#Representee").is(":checked")){
+		typeVal=$("#Representee").attr("attr_type");
+	}else if($("#self").is(":checked")){
+		typeVal=$("#self").attr("attr_type");
+	}
+	var voterId=$("#voterId"+typeVal).val();
+	getRegistrationPersonDetails(voterId,typeVal);
+});
+
+
+function getRegistrationPersonDetails(voterId,typeVal){
+			  
+			  var json = {
+						voterId:voterId,
+						familyVoterId:"0",
+						tdpCadreId:"0",
+						status:""
+
+						};
+	$.ajax({              
+		type:'POST',    
+		url: 'getRegistrationPersonDetails',
+		dataType: 'json',  
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null ){
+			if(result.lastName != null && result.lastName !='null'){
+				$("#name"+typeVal).val(result.lastName);
+			}
+			if(result.mobileNumber != null && result.mobileNumber !='null'){
+				$("#mobileNumber"+typeVal).val(result.mobileNumber);
+			}
+			if(result.email != null && result.email !='null'){
+				$("#emailId"+typeVal).val(result.email);
+			}
+			if(result.districtId != null){
+				getAllDistrictsListInState(result.districtId);
+			}
+			if(result.constituencyId != null){
+				getConstituencyNamesBiDistrictId(result.districtId,result.constituencyId);
+			}
+			var maandalId2='';
+			if(result.mandalId != null){
+				maandalId2=result.mandalId.toString().substring(1,result.mandalId.length);
+				getTehsilsAndLocalElectionBodiForConstituencyId(result.constituencyId,"2"+maandalId2);
+			}else if(result.localElectionBodyId != null){
+					maandalId2=result.localElectionBodyId.toString().substring(1,result.localElectionBodyId.length);
+				getTehsilsAndLocalElectionBodiForConstituencyId(result.constituencyId,"1"+maandalId2);
+			}
+		}
+	});	
+
 }
