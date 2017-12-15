@@ -1814,6 +1814,9 @@
 	</bean>
 	<bean id="janmaBhoomiCommitteeAction" class="com.itgrids.partyanalyst.web.action.JanmaBhoomiCommitteeAction" singleton="false">
 			<property name="janmabhoomiCommitteeService" ref="janmabhoomiCommitteeService"/>
-	</bean>			
+	</bean>	        
+	<bean id="coreDashBoardGrivanceAction" class="com.itgrids.partyanalyst.web.action.CoreDashBoardGrivanceAction" singleton="false">
+	<property name="coreDashboardCoreService" ref="coreDashboardCoreService"></property>
+	</bean>		
 </beans>	
 	
