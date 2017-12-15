@@ -40,4 +40,22 @@ public class PrTehsilDAO extends GenericDaoHibernate<PrTehsil, Long> implements 
 	    return query.list();
 	}
 	
+	public List<Object[]> getTehsilFrConstituency(String constituencyId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.tehsil.prTehsil.uniqueCode,"
+				+ "model.tehsil.prTehsil.tehsilName"
+				+ " from TehsilConstituency model");
+				//+ " where PT.prDistrictId = PC.prDistrictId");
+		if(constituencyId  != null && !constituencyId.isEmpty()){
+			sb.append(" where model.constituency.prConstituency.constituencyCode = :constituencyId order by model.tehsil.prTehsil.tehsilName asc");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(constituencyId  != null && !constituencyId.isEmpty()){
+			query.setParameter("constituencyId", constituencyId);
+		}
+		
+		return query.list();
+	}
+	
 }

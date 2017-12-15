@@ -11,4 +11,5 @@ public interface IPrTehsilDAO extends GenericDao<PrTehsil, Long> {
 	public List<Object[]> getPrPanchayatTehsilName();
 	public List<Object[]> getPrTehsilConsituencyName();
 	public List<Object[]> getTehsilConstituencyId();
+	public List<Object[]> getTehsilFrConstituency(String constituencyId);
 }

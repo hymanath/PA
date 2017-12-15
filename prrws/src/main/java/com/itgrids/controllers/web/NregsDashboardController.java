@@ -636,4 +636,77 @@ public class NregsDashboardController {
 		}
 		return levlWiseVOList;
 	}
+	
+	@PostMapping("/getManWorksExpenditureDetails")
+	public @ResponseBody List<NregsDataVO> getManWorksExpenditureDetails(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getManWorksExpenditureDetails(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getManWorksExpenditureDetails - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getManWorksExpenditureAbstarct")
+	public @ResponseBody List<NregsDataVO> getManWorksExpenditureAbstarct(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getManWorksExpenditureAbstarct(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getManWorksExpenditureAbstarct - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getAllDistricts")
+	public @ResponseBody List<IdNameVO> getAllDistricts(){
+		List<IdNameVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getAllDistricts();
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllDistricts - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getAllConstituiencesFrDistrict")
+	public @ResponseBody List<IdNameVO> getAllConstituiencesFrDistrict(@RequestBody InputVO vo){
+		List<IdNameVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getAllConstituiencesFrDistrict(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllConstituiencesFrDistrict - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getTehsilesFrConstituency")
+	public @ResponseBody List<IdNameVO> getTehsilesFrConstituency(@RequestBody InputVO vo){
+		List<IdNameVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getTehsilesFrConstituency(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTehsilesFrConstituency - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping("/getPanchayatsFrTehsil")
+	public @ResponseBody List<IdNameVO> getPanchayatsFrTehsil(@RequestBody InputVO vo){
+		List<IdNameVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getPanchayatsFrTehsil(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPanchayatsFrTehsil - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
 }
