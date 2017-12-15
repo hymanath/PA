@@ -333,7 +333,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 			str+='</div>';
 			str+='<div class="col-sm-3">';	
 			str+='<label>REPRESENTEE DESIGNATION.</label>';
-			str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="designation'+typeVal+'">';
+			str+='<select   name="representeeDesignationId"  class="form-control chosen-select m_top10" id="designation'+typeVal+'">';
 				str+='<option value="0">Select Designation</option>';
 			str+='</select>';
 			
@@ -940,7 +940,7 @@ function buildTemplateWorkDetails(typeVal){
 	$(".chosen-select").chosen();
 	
 	getSubjectPetitionsDepartmentList(typeVal,globalWorkTypeCount,0);
-	getPetitionSubjectList('subjectId',typeVal,globalWorkTypeCount,0);
+	//getPetitionSubjectList('subjectId',typeVal,globalWorkTypeCount,0);
 	getWorkTypeList('workTypeId',typeVal,globalWorkTypeCount,0);
 	globalWorkTypeCount =globalWorkTypeCount+1;
 		
@@ -1073,7 +1073,7 @@ $(document).on("click",".cloned_Element",function(){
 		$("[block-clone-"+typeVal+"="+blockId+"]").attr("block-clone-counter-"+typeVal+"",counterId);
 		globalWorkTypeCount = parseInt(globalWorkTypeCount)+1;
 		getSubjectPetitionsDepartmentList(typeVal,counterappendId,blockId);
-		getPetitionSubjectList('subjectId',typeVal,counterappendId,blockId);
+		//getPetitionSubjectList('subjectId',typeVal,counterappendId,blockId);
 		getWorkTypeList('workTypeId',typeVal,counterappendId,blockId);
 		
 	//}
@@ -1359,7 +1359,7 @@ function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal){
 		if(result !=null && result.length>0){			 		
 			for(var i in result){
 					var tehsilId = result[i].key;
-					var levelId = tehsilId.toString().substr(1, 4);
+					var levelId = tehsilId;//tehsilId.toString().substr(1, 4);
 					if(result[i].electionType != null){
 						$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
 					}else{
@@ -1400,7 +1400,9 @@ function getSubjectPetitionsDepartmentList(typeVal,count,innerCount){
 
 function getPetitionSubjectList(divId,typeVal,counterId,innerCount){
 	 $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('');
-	var json = {};
+	var json = {
+		deptId:1
+	};
 	$.ajax({              
 		type:'POST',    
 		url: 'getPmSubjectList',
