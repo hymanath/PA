@@ -41,6 +41,7 @@ import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.RepresenteeViewVO;
 import com.itgrids.dto.ResponseVO;
+import com.itgrids.dto.ResultStatus;
 import com.itgrids.dto.UserVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
@@ -1017,5 +1018,24 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				LOG.error("Exception Occured in getRegistrationPersonDetails ");
 			}
 			return cadrInfoVo;
+		}
+		public ResultStatus updatePetitionSubWorksAndDocumentDetails(Long petitionId){
+			ResultStatus resultStatus = new ResultStatus();
+			try{
+				List<Long> pmRepresenteeRefDetailsIds =	pmRepresenteeRefDetailsDAO.getPmRepresenteRefDetailsIds(petitionId);
+				Date currentTime=dateUtilService.getCurrentDateAndTime();
+				Integer representeeRefDetcount = pmRepresenteeRefDetailsDAO.updatePmRepresenteRefDetails(pmRepresenteeRefDetailsIds,currentTime,1L);
+				List<Long> representeeRefDocumentIds = pmRepresenteeRefDocumentDAO.getPmRepresenteeRefDocumentIds(pmRepresenteeRefDetailsIds);
+				Integer representeeRefDocumentCount = pmRepresenteeRefDocumentDAO.updatePmPmRepresenteeRefDocumens(representeeRefDocumentIds, currentTime, 1L);
+				List<Long> subWorkIds = pmSubWorkDetailsDAO.getPmSubWorkDetailsIds(petitionId);
+				  Integer subWorksCount = pmSubWorkDetailsDAO.updatePmsubWorkDetails(subWorkIds, currentTime, 1L);
+				  List<Long> petitionDocumentIds =  pmPetitionDocumentDAO.getPmPetitionDocumentIds(petitionId);
+				    pmPetitionDocumentDAO.updatePmpetitionDocuments(petitionDocumentIds);
+				    resultStatus.setResultCode(1);
+			}catch(Exception e){
+				resultStatus.setResultCode(0);
+				LOG.error("Exception Occured in updatePetitionSubWorksAndDocumentDetails in PmRequestDetailsService",e);
+			}
+			return resultStatus;
 		}
 }
