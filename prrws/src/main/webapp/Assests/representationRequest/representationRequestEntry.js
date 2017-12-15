@@ -288,15 +288,12 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		str+='</div>';
 		
 		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-2">';
+			str+='<div class="col-sm-3">';
 				str+='<label>VOTER ID</label>';
 				str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
 				
 			str+='</div>';
-			str+='<div class="col-sm-1">';
-				str+='<label></label>';
-				str+='<input type="button" class="btn btn-success btn-md m_top20" id="getVoterDetailsId" value="Get Details" ></input>';
-			str+='</div>';
+			
 			str+='<div class="col-sm-3">';
 				str+='<label>NAME</label>';//$("#name"+typeVal+"Err").html("<h5>Please Enter Name</h5>");
 				str+='<input type="text"  name="name"  value="" class="form-control m_top10 height45" id="name'+typeVal+'" placeholder="Enter Name">';
@@ -373,16 +370,19 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		
 		str+='<div class="row m_top10">';
 				str+='<div class="col-sm-8">';
-					str+='<label>COMPLETE WORK DISCRIPTION <span class="starColor">*</span><span id="completeWorkNameId'+typeVal+'"></span></label>';
+					str+='<label>COMPLETE WORK DISCRIPTION <span class="starColor">*</span></label>';
 					str+='<input type="text"  name="worksList[0].workName"  value="" class="form-control m_top5 height45" id="name'+typeVal+'" placeholder="Enter Name">';
+					str+='<span id="completeWorkNameId'+typeVal+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
-					str+='<label>NO OF WORKS <span class="starColor">*</span><span id="noOfWorksId'+typeVal+'"></span></label>';
+					str+='<label>NO OF WORKS <span class="starColor">*</span></label>';
 						str+='<input   name="worksList[0].noOfWorks"   type="text" class="form-control m_top5 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work" onkeyUp="enableWorks(this.value,\'workDetailsDivId'+typeVal+'\',\''+typeVal+'\');">';
+						str+='<span id="noOfWorksId'+typeVal+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
-					str+='<label>WORKS IN COST (in Lakh) <span class="starColor">*</span><span id="workCostId'+typeVal+'"></span></label>';
+					str+='<label>WORKS IN COST (in Lakh) <span class="starColor">*</span></label>';
 					str+='<input type="text"  name="worksList[0].estimateCost" class="form-control m_top5 height45" id="workCost'+typeVal+'" placeholder="Enter Work Cost">';
+					str+='<span id="workCostId'+typeVal+'"></span>';
 				str+='</div>';
 		str+='</div>';
 		str+='<div class="row m_top10">';
@@ -621,15 +621,22 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 							str+='<div id="candidatesAppendDiv'+result[i].referrerCandidateId+'" style="position:relative;">';
 							str+='<div class="bgColorCandidatesView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidate'+typeVal+''+result[i].referrerCandidateId+'">';
 							
-								str+='<div class="row">';
+								str+='<div class="row">'; 
 										str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
 										
 										str+='<div class="representation-selected display_block" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
-										
-										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+										if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="'+result[i].petitionMemberVO.imagePath+'" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}else{
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
 												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
 										str+='</div>';
+										}
+										
 										
 										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 											str+='<div class="nameAddressCss">';
@@ -664,13 +671,20 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 									str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 											str+='<div class="nameAddressCss">';
 												str+='<h5 class="font_weight">Address:</h5>';
-										/*		str+='<h5 class="m_top5">H No :</h5>';
-												str+='<h5 class="m_top10">14-48-20/58, Kothapet</h5>';
-												str+='<h5 class="text_bold m_top10">Sangadigunta, Kothapeta,</h5>';
-												str+='<h5 class="m_top5">Guntur,</h5>';
-												str+='<h5 class="m_top5">Andhra Pradesh 522001.</h5>';
-												*/
-												str+='<h5 class="m_top5">Not Available</h5>';
+												if(result[i].candidateNativeAddressVO != null){
+													//str+='<h5 class="m_top5">H No :</h5>';
+													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
+														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat/Ward</h5>';
+													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
+														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+'  Mandal/Munci.</h5>';
+													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+													if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+												}else{
+													str+='<h5 class="m_top5">Not Available</h5>';
+												}
+												
 											str+='</div>';
 									str+='</div>';
 									str+='<div id="fileUpload'+typeVal+''+result[i].referrerCandidateId+'" style="display:none"></div>';
@@ -696,10 +710,24 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 									
 										str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
 										
+										if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="'+result[i].petitionMemberVO.imagePath+'" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}else{
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}
+										
+										/*
 										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
 												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
 										str+='</div>';
+										*/
 										
 										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 											str+='<div class="nameAddressCss">';
@@ -733,14 +761,21 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 									
 									str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 											str+='<div class="nameAddressCss">';
-												str+='<h5 class="font_weight">Address:</h5>';
-										/*		str+='<h5 class="m_top5">H No :</h5>';
-												str+='<h5 class="m_top10">14-48-20/58, Kothapet</h5>';
-												str+='<h5 class="text_bold m_top10">Sangadigunta, Kothapeta,</h5>';
-												str+='<h5 class="m_top5">Guntur,</h5>';
-												str+='<h5 class="m_top5">Andhra Pradesh 522001.</h5>';
-												*/
-												str+='<h5 class="m_top5">Not Available</h5>';
+												str+='<h5 class="font_weight"> Address:</h5>';
+												if(result[i].candidateNativeAddressVO != null){
+													//str+='<h5 class="m_top5">H No :</h5>';
+													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
+														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat/Ward</h5>';
+													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
+														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+' Mandal/Munci. </h5>';
+													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+													if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+												}else{
+													str+='<h5 class="m_top5">Not Available</h5>';
+												}
+												
 											str+='</div>';
 									str+='</div>';
 									str+='<div id="fileUpload'+typeVal+''+result[i].referrerCandidateId+'" style="display:none;"></div>';
@@ -761,10 +796,24 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 					str+='<div class="row">';
 					str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
 					str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+					
+					if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
+						str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+							str+='<img src="'+result[i].petitionMemberVO.imagePath+'" class="imageCss"></img>';
+							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+					str+='</div>';
+					}else{
+						str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+							str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+					str+='</div>';
+					}
+					/*
 					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 							str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
 							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
 					str+='</div>';
+					*/
 					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 						str+='<div class="nameAddressCss">';
 							str+='<h5 class="font_weight">Name:</h5>';
@@ -797,14 +846,21 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 					
 					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 						str+='<div class="nameAddressCss">';
-							str+='<h5 class="font_weight">Address:</h5>';
-					/*		str+='<h5 class="m_top5">H No :</h5>';
-							str+='<h5 class="m_top10">14-48-20/58, Kothapet</h5>';
-							str+='<h5 class="text_bold m_top10">Sangadigunta, Kothapeta,</h5>';
-							str+='<h5 class="m_top5">Guntur,</h5>';
-							str+='<h5 class="m_top5">Andhra Pradesh 522001.</h5>';
-							*/
-							str+='<h5 class="m_top5">Not Available</h5>';
+							str+='<h5 class="font_weight">Address:</h5>';	
+							if(result[i].candidateNativeAddressVO != null){
+								//str+='<h5 class="m_top5">H No :</h5>';
+								if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
+									str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat/Ward</h5>';
+								if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
+									str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+'  Mandal/Munci.</h5>';
+								if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
+									str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+								if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
+									str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+							}else{
+								str+='<h5 class="m_top5">Not Available</h5>';
+							}
+							
 						str+='</div>';
 					str+='</div>';
 						str+='<div id="fileUpload'+typeVal+''+result[i].referrerCandidateId+'" style="display:none;"></div>';
@@ -945,7 +1001,7 @@ function buildTemplateWorkDetails(typeVal){
 	$(".chosen-select").chosen();
 	
 	getSubjectPetitionsDepartmentList(typeVal,globalWorkTypeCount,0);
-	//getPetitionSubjectList('subjectId',typeVal,globalWorkTypeCount,0);
+	getPetitionSubjectList('subjectId',typeVal,globalWorkTypeCount,0);
 	getWorkTypeList('workTypeId',typeVal,globalWorkTypeCount,0);
 	globalWorkTypeCount =globalWorkTypeCount+1;
 		
@@ -1084,7 +1140,7 @@ $(document).on("click",".cloned_Element",function(){
 		$("[block-clone-"+typeVal+"="+blockId+"]").attr("block-clone-counter-"+typeVal+"",counterId);
 		globalWorkTypeCount = parseInt(globalWorkTypeCount)+1;
 		getSubjectPetitionsDepartmentList(typeVal,counterappendId,blockId);
-		//getPetitionSubjectList('subjectId',typeVal,counterappendId,blockId);
+		getPetitionSubjectList('subjectId',typeVal,counterappendId,blockId);
 		getWorkTypeList('workTypeId',typeVal,counterappendId,blockId);
 		
 	//}
@@ -1290,7 +1346,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 		return clonedInnerTemplate;
 }
 
-function getAllDistrictsListInState(districtId){	
+function getAllDistrictsListInState(){	
 	$("#districtrepresent").html('');
 	var json = {
 		  stateId:"1",
@@ -1309,13 +1365,8 @@ function getAllDistrictsListInState(districtId){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			 $("#districtrepresent").append('<option value="0">Select District</option>');
-				for(var i in result){
-					if(districtId == result[i].id){
-						$("#districtrepresent").append('<option value="'+result[i].id+'" selected>'+result[i].name+' </option>');
-					}else{
-						$("#districtrepresent").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
-
-					}
+				for(var i in result){				
+					$("#districtrepresent").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
 			}
 			$("#districtrepresent").trigger('chosen:updated');
@@ -1324,12 +1375,12 @@ function getAllDistrictsListInState(districtId){
 
 $(document).on("change","#districtrepresent",function(){
 	var levelVal = $(this).val();
-	getConstituencyNamesBiDistrictId(levelVal,""); 
+	getConstituencyNamesBiDistrictId(levelVal); 
 	
 });
 
 
-function getConstituencyNamesBiDistrictId(levelVal,constincyId){
+function getConstituencyNamesBiDistrictId(levelVal){
 	  $("#constituencyrepresent").html('');
 	  $("#constituencyrepresent").append('<option value="0">Select Constituency</option>');	
 	  $("#constituencyrepresent").trigger('chosen:updated');
@@ -1351,12 +1402,7 @@ function getConstituencyNamesBiDistrictId(levelVal,constincyId){
 	}).done(function(result){
 		if(result !=null && result.length>0){	
 			for(var i in result){
-				if(constincyId == result[i].locationId){
-					$("#constituencyrepresent").append('<option value="'+result[i].locationId+'" selected>'+result[i].locationName+' </option>');
-				}else{
-					$("#constituencyrepresent").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
-
-				}
+				$("#constituencyrepresent").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
 			}
 		}
 		$("#constituencyrepresent").trigger('chosen:updated');		
@@ -1365,11 +1411,10 @@ function getConstituencyNamesBiDistrictId(levelVal,constincyId){
 
 $(document).on("change","#constituencyrepresent",function(){
 	var levelVal = $(this).val();
-	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,""); 
+	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal); 
 	
 });
-function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,mandalId){
-	alert(mandalId);
+function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal){
 	  $("#mandalrepresent").html('');	
 	  $("#mandalrepresent").append('<option value="0">Select Mandal</option>');	
 	  $("#mandalrepresent").trigger('chosen:updated');	
@@ -1393,17 +1438,9 @@ function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,mandalId){
 					var tehsilId = result[i].key;
 					var levelId = tehsilId;//tehsilId.toString().substr(1, 4);
 					if(result[i].electionType != null){
-						if(mandalId == levelId){
-							$("#mandalrepresent").append('<option value="'+levelId+'" selected>'+result[i].value+' '+result[i].electionType+'</option>');
-						}else{
-							$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
-						}
+						$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
 					}else{
-						if(mandalId == levelId){
-							$("#mandalrepresent").append('<option value="'+levelId+'" selected>'+result[i].value+'</option>');
-						}else{
-							$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'</option>');
-						}
+						$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'</option>');
 					}
 			}
 		}
@@ -1439,9 +1476,10 @@ function getSubjectPetitionsDepartmentList(typeVal,count,innerCount){
 
 
 function getPetitionSubjectList(divId,typeVal,counterId,innerCount){
+	
 	 $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('');
 	var json = {
-		
+		deptId:1
 	};
 	$.ajax({              
 		type:'POST',    
@@ -1790,15 +1828,11 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				}
 			}
 			
-			
-			
-			
-			
-			
-			
 		//}
 		
 	});
+	
+	
 	if(flag == false){
 		return;
 	}
@@ -1933,25 +1967,25 @@ function validation(typeVal){
 	var completeWorkName='';
 	var noofWorks='';
 	var workCost='';
-	var phonePattern= "";
+	var phonePattern= /^\d{0-9}$/;
 	
 	completeWorkName = $("#name"+typeVal).val();
 	noofWorks = $("#noofWork"+typeVal).val();
 	workCost = $("#workCost"+typeVal).val();
-	alert(completeWorkName)
-	alert(noofWorks)
-	alert(workCost)
+	//alert(completeWorkName)
+	//alert(noofWorks)
+	//alert(workCost)
 	
 	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName === undefined){
-		$("#completeWorkNameId"+typeVal).html("<h5>Please Enter Work Name</h5>");
+		$("#completeWorkNameId"+typeVal).html("<h5>Please enter work name</h5>");
 		return;
 	}
 	if(noofWorks == undefined || noofWorks == "undefined" || noofWorks === undefined){
-		$("#noofWork"+typeVal).html("<h5>Please Enter Work Name</h5>");
+		$("#noofWork"+typeVal).html("<h5>Please enter work name</h5>");
 		return;
 	}
 	if(workCost == undefined || workCost == "undefined" || workCost === undefined){
-		$("#workCost"+typeVal).html("<h5>Please Enter Work Name</h5>");
+		$("#workCost"+typeVal).html("<h5>Please enter work name</h5>");
 		return;
 	}
 	
@@ -2001,10 +2035,11 @@ function validateAmount(value,fieldId){
 		}
 	});
 	if(enteredAmount>estimationAmount){
-		$('#Err'+fieldId+'').html("Already total estimation cost reached. Please check once.");
+		$('#Err'+fieldId+'').html("Total estimation cost reached. Please check once.");
 		$('#'+fieldId+'').val('');
 	}
 }
+
 
 $(document).on("click","#getVoterDetailsId",function(){
 	var typeVal='';
