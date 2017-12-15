@@ -808,7 +808,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 refVO.setEmail(commonMethodsUtilService.getStringValueForObject(param[12]));
 					 refVO.setPartyId(commonMethodsUtilService.getLongValueForObject(param[13]));
 					 refVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[14]));
-					 refVO.setCandidatePath(commonMethodsUtilService.getStringValueForObject(param[15]));
+					 //"https://www.mytdp.com/images/cadre_images/"+commonMethodsUtilService.getStringValueForObject(param[18])
+					 refVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[49]));
+					 if(refVO.getTdpCadreId() != null && refVO.getTdpCadreId().longValue()>0L)
+						 refVO.setCandidatePath("https://www.mytdp.com/images/cadre_images/"+commonMethodsUtilService.getStringValueForObject(param[15]));
+					 else
+						 refVO.setCandidatePath(commonMethodsUtilService.getStringValueForObject(param[15]));
+					 
 					 refVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[35]));
 					 refVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[36]));
 					 
