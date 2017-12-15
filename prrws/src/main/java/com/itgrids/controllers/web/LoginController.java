@@ -83,7 +83,10 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/userLogin", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody UserVO userAuthentication(@RequestBody User user) {
-		return iUserService.userAuthentication(user.getUsername(), user.getPasswordHashText());
+	public @ResponseBody UserVO userAuthentication(@RequestBody User user,HttpServletRequest request) {
+		UserVO userVO = userServiceImpl.userAuthentication(user.getUsername(), user.getPasswordHashText());
+		HttpSession session=request.getSession();
+		 session.setAttribute("USER" , userVO); 
+		return userVO;
 	}
 }
