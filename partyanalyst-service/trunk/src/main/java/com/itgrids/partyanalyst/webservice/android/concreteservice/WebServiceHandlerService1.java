@@ -46,6 +46,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.LoginStatusVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
+import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
@@ -63,6 +64,7 @@ import com.itgrids.partyanalyst.model.TdpCadreImageSinkData;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -174,6 +176,9 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	private ICadreDetailsService cadreDetailsService;
 	@Autowired 
 	CommonMethodsUtilService commonMethodsUtilService;
+	@Autowired 
+	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
+	
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
 	}
@@ -1430,6 +1435,15 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
    			
    			return "failure";
     	}
+    }
+    public NewCadreRegistrationVO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status){
+    	NewCadreRegistrationVO cadreRegVo=null;
+    	try{
+    		 cadreRegVo = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(voterId,familyVoterId,tdpCadreId,status);
+    	}catch(Exception e){
+    		LOG.error("Exception raised in getRegistrationPersonDetails  method in WebServiceHandlerService1",e);
+    	}
+    	return cadreRegVo;
     }
 }
 
