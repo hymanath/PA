@@ -64,7 +64,7 @@ public class PmRequestDetailsController {
 	    }
 	   @RequestMapping(value ="/getPetitionDesignationList",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getPetitionDesignationList(@RequestBody Map<String,String> inputMap ) {
-	       return locationDetailsService.getPmDesignations();
+	       return locationDetailsService.getPmDesignations(inputMap.get("searchType"));
 	    }
 	    @RequestMapping(value ="/getDistrictBySearchType",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getDistrictBySearchType(@RequestBody Map<String,String> inputMap ) {

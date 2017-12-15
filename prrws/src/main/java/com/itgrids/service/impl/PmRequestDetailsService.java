@@ -561,6 +561,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	    			petitionMemberVO.setMemberType(commonMethodsUtilService.getStringValueForObject(param[2]));//designation
 	    			petitionMemberVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[13]));
 	    			petitionMemberVO.setEmailId(commonMethodsUtilService.getStringValueForObject(param[14]));
+	    			petitionMemberVO.setImagePath("https://www.mytdp.com/images/cadre_images/"+commonMethodsUtilService.getStringValueForObject(param[18]));
+	    			petitionMemberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[19]));
 	    			mainV0.setPetitionMemberVO(petitionMemberVO);
 	    			AddressVO addressVO= new AddressVO();
 	    			addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[3]));
@@ -725,7 +727,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			if(commonMethodsUtilService.isListOrSetValid(uploadedPetitionFilesList)){
 				for (Object[] param : uploadedPetitionFilesList) {
 					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
-					String path = commonMethodsUtilService.getStringValueForObject(param[1]);
+					String path = "https://www.mytdp.com/images/"+commonMethodsUtilService.getStringValueForObject(param[1]);
 					petitionFilesListMap.put(id, new KeyValueVO(id,path));
 				}
 			}
@@ -735,7 +737,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			if(commonMethodsUtilService.isListOrSetValid(uploadedWorksFilesList)){
 				for (Object[] param : uploadedWorksFilesList) {
 					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
-					String path = commonMethodsUtilService.getStringValueForObject(param[1]);
+					String path = "https://www.mytdp.com/images/"+commonMethodsUtilService.getStringValueForObject(param[1]);
 					List<KeyValueVO> fileList = new ArrayList<KeyValueVO>();
 					if(refFilesListMap.get(id) != null){
 						fileList = refFilesListMap.get(id);

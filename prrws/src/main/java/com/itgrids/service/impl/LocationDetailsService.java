@@ -576,10 +576,15 @@ public List<KeyValueVO>  getWorkTypeList(){
 	return resultList;
 }
 
-public List<KeyValueVO> getPmDesignations(){
+public List<KeyValueVO> getPmDesignations(String searchType){
 	List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 	try{
-		List<Object[]> desiObjs=pmDesignationDAO.getAllReferredCandidateDesignationList();
+		List<Object[]> desiObjs= null;
+		if(searchType != null && !searchType.trim().equalsIgnoreCase("all"))
+			desiObjs=pmDesignationDAO.getAllReferredCandidateDesignationList();
+		else 
+			desiObjs=pmDesignationDAO.getAllpetitionDesignationList();
+		
 		if(desiObjs != null && desiObjs.size() > 0){
 			for( Object [] param:  desiObjs){
 				KeyValueVO vo = new KeyValueVO();

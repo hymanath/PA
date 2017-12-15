@@ -64,7 +64,6 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private Long petitionGrantId;
 	private Long petitionStatusId;
 	private String remarks;
-	
 	public String getReprType() {
 		return reprType;
 	}

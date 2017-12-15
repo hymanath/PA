@@ -18,7 +18,25 @@ public class PetitionMemberVO {
 	private List<MultipartFile> filesList ;
 	private List<Long> referrerCandidateIdsList;
 	private AddressVO addressVO;
-	private IdNameVO idNameVO;
+	private IdNameVO idNameVO; 
+	private String imagePath;
+	private String partyName;
+	
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
 	
 	public IdNameVO getIdNameVO() {
 		return idNameVO;
