@@ -8,4 +8,6 @@ import com.itgrids.model.PmPetitionDocument;
 
 public interface IPmPetitionDocumentDAO  extends GenericDao<PmPetitionDocument, Long> {
 	public List<Object[]> getPmPetitionDocumentByPetition(Long petitionId);
+	public List<Long> getPmPetitionDocumentIds(Long petitionId);
+	public Integer updatePmpetitionDocuments(List<Long> petitiionDocIds);
 }
