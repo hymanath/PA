@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.CadreImageVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
+import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
@@ -65,4 +66,6 @@ public interface IWebServiceHandlerService1 {
 	 
 	 public Object saveSurveyFieldUsersForAffliatedCadre(List<CadreRegistrationVO> inputResponseList);
 	 public Object getMemberDetailsByMembershipId(String membershipId);
+	 
+	 public NewCadreRegistrationVO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status);
 }
