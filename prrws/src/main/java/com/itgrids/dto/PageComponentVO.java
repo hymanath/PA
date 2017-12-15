@@ -8,6 +8,7 @@ public class PageComponentVO {
 	private Long id;
 	private String name;
 	private Long order;
+	private String shortName;
 	private List<PageComponentVO> subList = new ArrayList<PageComponentVO>(0);
 	
 	
@@ -34,5 +35,11 @@ public class PageComponentVO {
 	}
 	public void setSubList(List<PageComponentVO> subList) {
 		this.subList = subList;
+	}
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 }
