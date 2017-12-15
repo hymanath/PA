@@ -7,9 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EDIT DATA ENTRY FORM</title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
-
-<link href="Assests/Plugins/sliderbar/bootstrap-slider.css" rel="stylesheet" type="text/css"/>
-
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
@@ -17,6 +14,7 @@
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<link href="Assests/Plugins/sliderbar/bootstrap-slider.css" rel="stylesheet" type="text/css"/>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
 
@@ -36,7 +34,6 @@
 		padding: 10px;
 		
 	}
-	
 	
  </style>
 </head>
@@ -364,33 +361,30 @@
 									<div class="row m_top10">
 										<div class="col-sm-4">
 											<div class="noofWorksSlider" style="border:1px solid lightgrey;padding:10px;">
-												<h5>No.Of Works</h5>
-												<p>
-													<input id="noofWorksSlider" data-slider-id='noofWorksSlider' type="text" data-slider-min="0" data-slider-max="150" data-slider-step="5" data-slider-value="0"/>
-												</p>
-												<p style="width:310px">
-													<b>0</b><b class="pull-right">150</b>
+												<h5><b>No.Of Works</b></h5>
+												<p class="m_top10">
+													<b class="font_12 cntLeft">0</b><input class="col-sm-12" id="noofWorksSlider" data-slider-id='noofWorksSlider' type="text" data-slider-min="0" data-slider-max="150" data-slider-step="0.5" data-slider-value="0"/><b class="pull-right font_12 cntright">150</b>
 												</p>
 												
 											</div>
 										</div>
 										<div class="col-sm-4">
-											<div class="" style="border:1px solid lightgrey;padding:10px">
-												<h5>Estimated Amount</h5>
-												 <input id="estimatedAmountSlider" type="text" class="span2" value="" data-slider-min="1" data-slider-max="150" data-slider-step="5" data-slider-value="[35,130]"/> 
-												 <p style="width:310px">
-													<b>1 Cr</b><b class="pull-right">150 Cr</b>
+											<div class="noofWorksSlider" style="border:1px solid lightgrey;padding:10px">
+												<h5><b>Estimated Amount</b></h5>
+												<p class="m_top10">
+												 <b class="font_12 cntLeft">1 Cr</b><input id="estimatedAmountSlider" type="text" class="span2" value="" data-slider-min="1" data-slider-max="150" data-slider-step="0.5" data-slider-value="[35,130]"/> <b class="pull-right font_12 cntright">150 Cr</b>
 												</p>
+												 
 												
 											</div>
 										</div>
 										<div class="col-sm-4">
-											<div class="" style="border:1px solid lightgrey;padding:10px">
-												<h5>Pending Days</h5>
-												<input id="pendingDaysSlider" data-slider-id='pendingDaysSlider' type="text" data-slider-min="0" data-slider-max="150" data-slider-step="1" data-slider-value="0"/>
-												<p style="width:310px">
-													<b>0</b><b class="pull-right">150</b>
+											<div class="noofWorksSlider" style="border:1px solid lightgrey;padding:10px">
+												<h5><b>Pending Days</b></h5>
+												<p class="m_top10">
+													<b class="font_12 cntLeft">0</b><input id="pendingDaysSlider" data-slider-id='pendingDaysSlider' type="text" data-slider-min="0" data-slider-max="150" data-slider-step="0.5" data-slider-value="0"/><b class="pull-right font_12 cntright">150</b>
 												</p>
+												
 												
 											</div>
 										</div>
@@ -464,16 +458,29 @@
 
 <script src="Assests/representationRequest/representationRequestEntryViewMembers.js" type="text/javascript"></script>
 <script type="text/javascript">
+	var worksSlider;
 	var slider = new Slider('#noofWorksSlider', {
 		formatter: function(value) {
+			worksSlider=value;
+			$("#noOfWoksValue").text(value);
 			return 'Current value: ' + value;
 		}
 	});
 	//estimatedAmountSlider
-	var slider = new Slider('#estimatedAmountSlider', {});
+	var esimatedSliderCount;
+	var slider = new Slider('#estimatedAmountSlider', {
+		formatter: function(value) {
+			esimatedSliderCount=value;
+			$("#estimatedValue").text(value);
+			return 'Current value: ' + value;
+		}
+	});
 	//pendingDaysSlider
+	var pendingSliderCount;
 	var slider = new Slider('#pendingDaysSlider', {
 		formatter: function(value) {
+			pendingSliderCount=value;
+			$("#pendingDaysValue").text(value);
 			return 'Current value: ' + value;
 		}
 	});
