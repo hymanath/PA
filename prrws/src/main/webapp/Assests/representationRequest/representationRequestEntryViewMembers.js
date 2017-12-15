@@ -99,7 +99,7 @@ function representationRequestEntryTable(result){
 					str+='<td>'+result[i].noOfWorks+'</td>';
 				else
 					str+='<td> - </td>';
-				str+='<td><a href="/representationRequestEntry" target="_blank" class="btn btn-xs viewEditCss"> View/Edit </a></td>';
+				str+='<td class="text-center"><a class="btn btn-xs viewEditCss"> View</a><a href="/representationRequestEntry" target="_blank" class="btn btn-xs viewEditCss m_top10"> Edit </a></td>';
 			str+='</tr>';
 			}
 		str+='</tbody>';
