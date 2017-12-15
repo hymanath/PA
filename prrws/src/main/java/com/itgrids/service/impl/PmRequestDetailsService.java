@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +31,7 @@ import com.itgrids.dao.IPmRepresenteeRefDetailsDAO;
 import com.itgrids.dao.IPmRepresenteeRefDocumentDAO;
 import com.itgrids.dao.IPmSubWorkDetailsDAO;
 import com.itgrids.dto.AddressVO;
+import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.PetitionMemberVO;
@@ -56,6 +58,8 @@ import com.itgrids.service.IPmRequestDetailsService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 @Service
 @Transactional
@@ -944,5 +948,54 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				LOG.error("Exception Occured in setAddressDetailsToResultView ");
 			}
 			return userVO;
+		}
+		public CadreRegistrationVO getRegistrationPersonDetails(Map<String,String> inputMap){
+			CadreRegistrationVO cadrInfoVo=null;
+			try{
+				//String inputStr=convertingStaticInputVOToString(voterId,familyVoterId,tdpCadreId,status); https://mytdp.com/login.action
+				  //WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8080/PartyAnalyst/WebService/getRegistrationPersonDetails");
+				WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/WebService/getRegistrationPersonDetails");
+					String authStringEnc = commonMethodsUtilService.getAuthenticationString("itgrids","Itgrids@123");	        
+					ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class,inputMap);
+					 if(response.getStatus() != 200){
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      }else{
+			 	    	 String output = response.getEntity(String.class);
+			 	    	if(output != null && !output.isEmpty()){
+			 	    		JSONObject jobj = new JSONObject(output);
+			 	    		cadrInfoVo = new CadreRegistrationVO();
+			 	    		cadrInfoVo.setLastName(jobj.getString("lastName"));
+			 	    		cadrInfoVo.setName(jobj.getString("name"));
+			 	    		cadrInfoVo.setId(jobj.getString("id").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("id"):0L);
+			 	    		cadrInfoVo.setConstituencyId(jobj.getString("constituencyId"));
+			 	    		cadrInfoVo.setStateId(jobj.getString("stateId").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("stateId"):0L);
+			 	    		cadrInfoVo.setDistrictId(jobj.getString("districtId").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("districtId"):0L);
+			 	    		cadrInfoVo.setGender(jobj.getString("gender"));
+			 	    		cadrInfoVo.setEmail(jobj.getString("email"));
+			 	    		cadrInfoVo.setPincode(jobj.getString("pincode").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("pincode"):0L);
+			 	    		cadrInfoVo.setHouseNo(jobj.getString("houseNo"));
+			 	    		cadrInfoVo.setAge(jobj.getString("age").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("age"):0L);
+			 	    		cadrInfoVo.setMandalId(jobj.getString("mandalId").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("mandalId"):0L);
+			 	    		cadrInfoVo.setMobileNumber(jobj.getString("mobileNumber"));
+			 	    		cadrInfoVo.setLocalElectionBodyId(jobj.getString("localElectionBodyId").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("localElectionBodyId"):0L);
+			 	    		cadrInfoVo.setCasteId(jobj.getString("casteId").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("casteId"):0L);
+			 	    		cadrInfoVo.setUserAddressId(jobj.getString("userAddressId").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("userAddressId"):0L);
+			 	    		cadrInfoVo.setMembershipNo(jobj.getString("membershipNo"));
+			 	    		cadrInfoVo.setVoterCardNo(jobj.getString("voterCardNo"));
+			 	    		cadrInfoVo.setDobStr(jobj.getString("dobStr"));
+			 	    		cadrInfoVo.setTdpCadreId(jobj.getString("tdpCadreId").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("tdpCadreId"):0L);
+			 	    		cadrInfoVo.setOccupationId(jobj.getString("occupationId").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("occupationId"):0L);
+			 	    		cadrInfoVo.setImagePath(jobj.getString("imagePath"));
+			 	    		cadrInfoVo.setVillageId(jobj.getString("villageId").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("villageId"):0L);
+			 	    		cadrInfoVo.setEducationId(jobj.getString("educationId").matches("-?\\d+(\\.\\d+)?") ? jobj.getLong("educationId"):0L);
+			 	    		cadrInfoVo.setMemberTypeId(jobj.getString("memberTypeId"));
+			 	    		cadrInfoVo.setVoterCardNumber(jobj.getString("voterCardNumber"));
+			 	    		cadrInfoVo.setImageBase64String(jobj.getString("imageBase64String"));
+			 	    	}
+			 	      }
+			}catch(Exception e){
+				LOG.error("Exception Occured in getRegistrationPersonDetails ");
+			}
+			return cadrInfoVo;
 		}
 }
