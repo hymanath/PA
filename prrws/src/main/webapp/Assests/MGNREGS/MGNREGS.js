@@ -1,4 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+//var smallSpinner = '<img src="Assests/images/spinner.gif"/>';
+var smallSpinner = '<img src="Assests/images/spinner.gif" style="width:25px;height:25px;"/>';
 var glStartDate = '2017-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
 var glEndDate = moment().format("YYYY-MM")+'-30';
 var glStartDateForWebservice = moment().format("DD/MM/YYYY");
@@ -6,9 +8,10 @@ var glEndDateForWebservice = moment().format("DD/MM/YYYY");
 var globalDivName;
 var globalMCCMainDivName;
 var $windowWidth = $(window).width();
-
+//getAllDistricts();
 function onLoadCalls()
 {
+
 	$("#selectedName").tooltip();
 	$("#getWebserviceDetailsId").tooltip();
 	$(document).keydown(function(event){
@@ -118,7 +121,7 @@ function onLoadCalls()
 			$("[overview-state='"+projectDivId+"'],[overview-district='"+projectDivId+"']").addClass("active");
 			$(".overviewAllCls").hide(); 
 			projectData(projectDivId,levelId,locationId);
-			if(globalDivName != 'coffee'&& globalDivName != 'Renovation and Improvements to existing Check Dams Check Wall'&& globalDivName != 'Road Formation Upto WBM GR II Including CD works'&& globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas'&& globalDivName !=  'Construction Of Animal Hostel'&& globalDivName != 'Roads for Unconnected Habitations 2011-12' && globalDivName != 'Construction of New Check Dam' && globalDivName !=  'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' && globalDivName !=  'Construction of Food Grains Storage Structures of 250MT' && globalDivName !=  'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' && globalDivName !=  'Construction of Village Haats Infrastructure fecilities' && globalDivName !=  'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' && globalDivName != 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' && globalDivName != 'Construction of Buildings for women self help group federation' && globalDivName != 'Work Site Facilities' && globalDivName != 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' && globalDivName != 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' && globalDivName != 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' && globalDivName != 'Production of Grafts in HNTC' && globalDivName != 'Improvements of RYTHU BAZAR' && globalDivName != 'Roads for Unconnected Habitations 2012-13 and afterwards' && globalDivName != 'HNTC Development' && globalDivName != 'New Open Well for Drinking water purpose' && globalDivName != 'Construction of Crematoria Burial Grounds' && globalDivName != 'Repairs to Existing Check Dam' && globalDivName != 'Formation of Road upto Gravel surface including CD works to agriculture fields' && globalDivName != 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' && globalDivName != 'Construction of Food Grains Storage Structures of 500MT' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' && globalDivName != 'Raising of Cashew bag seedlings for 2014-15' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'  && globalDivName != 'Cattle Ponds' && globalDivName != 'Desilting of Drinking Water Tanks' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank1' && globalDivName != 'Animal Husbandry Others' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank' && globalDivName != "Azolla Production Unit" && globalDivName != "Construction of silopits of 3 MTs capacity" && globalDivName != "Fodder trough for Cattle Cattle drinking water trough" && globalDivName != "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" && globalDivName != "Raising of Perinnial Fodder" && globalDivName != "Raising of Silvipasture clubbed with subabul plantation" && globalDivName != "Construction of Checkdam across peeraiah vanka Check Dam 1" && globalDivName != "ManDays" && globalDivName != 'Greenary works Chettu' && globalDivName != 'Agriculture Related Works' && globalDivName != 'Rural Sanitation Works' && globalDivName != 'Soil Moisture Conservation works Neeru' && globalDivName != 'Works in community lands' && globalDivName != 'IJP PROGRAM WORKS' && globalDivName != 'Institutional Development Works' && globalDivName != 'Road Works' && globalDivName != 'Water Harvesting Structures Neeru' && globalDivName != 'AH-Live Stock Related works' )
+			if(globalDivName != 'coffee'&& globalDivName != 'Renovation and Improvements to existing Check Dams Check Wall'&& globalDivName != 'Road Formation Upto WBM GR II Including CD works'&& globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas'&& globalDivName !=  'Construction Of Animal Hostel'&& globalDivName != 'Roads for Unconnected Habitations 2011-12' && globalDivName != 'Construction of New Check Dam' && globalDivName !=  'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' && globalDivName !=  'Construction of Food Grains Storage Structures of 250MT' && globalDivName !=  'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' && globalDivName !=  'Construction of Village Haats Infrastructure fecilities' && globalDivName !=  'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' && globalDivName != 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' && globalDivName != 'Construction of Buildings for women self help group federation' && globalDivName != 'Work Site Facilities' && globalDivName != 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' && globalDivName != 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' && globalDivName != 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' && globalDivName != 'Production of Grafts in HNTC' && globalDivName != 'Improvements of RYTHU BAZAR' && globalDivName != 'Roads for Unconnected Habitations 2012-13 and afterwards' && globalDivName != 'HNTC Development' && globalDivName != 'New Open Well for Drinking water purpose' && globalDivName != 'Construction of Crematoria Burial Grounds' && globalDivName != 'Repairs to Existing Check Dam' && globalDivName != 'Formation of Road upto Gravel surface including CD works to agriculture fields' && globalDivName != 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' && globalDivName != 'Construction of Food Grains Storage Structures of 500MT' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' && globalDivName != 'Raising of Cashew bag seedlings for 2014-15' && globalDivName != 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas'  && globalDivName != 'Cattle Ponds' && globalDivName != 'Desilting of Drinking Water Tanks' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank1' && globalDivName != 'Animal Husbandry Others' && globalDivName != 'Comprehensive Restoration of minor Irrigation Tank' && globalDivName != "Azolla Production Unit" && globalDivName != "Construction of silopits of 3 MTs capacity" && globalDivName != "Fodder trough for Cattle Cattle drinking water trough" && globalDivName != "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" && globalDivName != "Raising of Perinnial Fodder" && globalDivName != "Raising of Silvipasture clubbed with subabul plantation" && globalDivName != "Construction of Checkdam across peeraiah vanka Check Dam 1" && globalDivName != "ManDays" && globalDivName != 'Greenary works Chettu' && globalDivName != 'Agriculture Related Works' && globalDivName != 'Rural Sanitation Works' && globalDivName != 'Soil Moisture Conservation works Neeru' && globalDivName != 'Works in community lands' && globalDivName != 'IJP PROGRAM WORKS' && globalDivName != 'Institutional Development Works' && globalDivName != 'Road Works' && globalDivName != 'Water Harvesting Structures Neeru' && globalDivName != 'AH-Live Stock Related works' && globalDivName != 'MonthWise Expenditure')
 			{
 				overviewData(projectDivId,levelId,locationId);
 			}
@@ -205,6 +208,8 @@ function onLoadCalls()
 				getNregaCovergancePROtherLevelData(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
 			}else if(overViewArr[i] == "ManDays"){
 					getManWorkDaysOfNrega(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+			}else if(overViewArr[i] == "MonthWise Expenditure"){
+					getManWorksExpenditureAbstarct(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'',2);
 			}
 			else
 			{
@@ -336,6 +341,11 @@ function onLoadCalls()
 			{
 				return;
 			}
+		}else if(globalDivName == 'MonthWise Expenditure'){
+			if(levelType == 'district' || levelType == 'constituency' || levelType == 'mandal' || levelType == 'panchayat')
+			{
+				return;
+			}
 		}else{
 			if(levelType == 'district' || levelType == 'constituency')
 			{
@@ -460,6 +470,11 @@ function onLoadCalls()
 						theadArr = [levelType,'This Month','Financial Year as of Today','Increment/Decrement (%)','Last Financial Year Same Day','Last Financial Year','From 2014'];
 				}
 				
+				if(globalDivName == 'MonthWise Expenditure')
+				{
+						theadArr = ['Month','Person Days 2015-16','Wage Exp 2015-16','Material Exp 2015-16','Total 2015-16','Person Days 2016-17','Wage Exp 2016-17','Material Exp 2016-17','Total 2016-17','Person Days 2017-18','Wage Exp 2017-18','Material Exp 2017-18','Total 2017-18','Increment/Decrement (%)'];
+				}
+				
 				if(globalDivName == 'GP Buildings1' || globalDivName == 'Mandal buildings1')
 				{
 					if(levelType == "constituency")
@@ -502,6 +517,8 @@ function onLoadCalls()
 					getNregaLevelsWiseDataFrNewCalls(tableId,levelType,menuLocationType,menuLocationId,divId,'-1');
 				else if(divId == "ManDays")
 					getManWorkDaysOfNrega(tableId,levelType,theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
+				else if(divId == "MonthWise Expenditure")
+					getManWorksExpenditureDetails(tableId,levelType,'',menuLocationType,menuLocationId,divId,districtId,divId,'',levelId);
 				else if(divId == "Horticulture")//
 					getNregaLevelsWiseDataFrHorticulture(tableId,levelType,menuLocationType,menuLocationId,divId);
 				else if(divId == "Avenue")//
@@ -933,6 +950,45 @@ function projectData(divId,levelId,locationId)
 										collapse+='<input name="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="All" type="radio" attr_radioBtn="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'"/> All';
 									collapse+='</label>';
 								}
+								if(divId == 'MonthWise Expenditure')
+									{
+										collapse+='<div class="row">';
+										collapse+='<div class="col-sm-12">';
+										if(dataArr[i] == 'district' || dataArr[i] == 'constituency' || dataArr[i] == 'mandal' || dataArr[i] == 'panchayat'){
+											collapse+='<div class="col-sm-3">';
+											collapse+='<label><b>District</b></label>';
+											collapse+='<select class= "form-control districtExpCls" attr_locationType='+dataArr[i]+' id="expDistrictId'+dataArr[i]+'" attr_blockName="'+divId+'" attr_divIId="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
+											collapse+='<option  value="0">Select District</option>';
+											collapse+='</select>';
+											collapse+='</div>';
+										}
+										if(dataArr[i] == 'constituency' || dataArr[i] == 'mandal' || dataArr[i] == 'panchayat'){
+											collapse+='<div class="col-sm-3">';
+											collapse+='<label><b>Constituency</b></label>';
+											collapse+='<select class= "form-control constituencyExpCls" attr_locationType='+dataArr[i]+' id="expConstituencyId'+dataArr[i]+'" attr_blockName="'+divId+'" attr_divIId="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
+											collapse+='<option  value="0">Select Constituency</option>';
+											collapse+='</select><span id="constLoading'+dataArr[i]+'"></span>';
+											collapse+='</div>';
+										} 
+										if(dataArr[i] == 'mandal' || dataArr[i] == 'panchayat'){
+											collapse+='<div class="col-sm-3">';
+											collapse+='<label><b>Mandal</b></label>';
+											collapse+='<select class= "form-control mandalExpCls" attr_locationType='+dataArr[i]+'  id="expMandalId'+dataArr[i]+'" attr_blockName="'+divId+'" attr_divIId="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
+											collapse+='<option  value="0">Select mandal</option>';
+											collapse+='</select><span id="mandalLoading'+dataArr[i]+'"></span>';
+											collapse+='</div>';
+										}
+										if(dataArr[i] == 'panchayat'){
+											collapse+='<div class="col-sm-3">';
+											collapse+='<label><b>Panchayat</b></label>';
+											collapse+='<select class= "form-control panchayatExpCls" attr_locationType='+dataArr[i]+' id="expPanchayatId'+dataArr[i]+'" attr_blockName="'+divId+'" attr_divIId="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
+											collapse+='<option  value="0">Select panchayat</option>';
+											collapse+='</select><span id="panchayatLoading'+dataArr[i]+'"></span>';
+											collapse+='</div>';
+										}
+										collapse+='</div>';
+										collapse+='</div>';
+									}
 								if(divId == 'Timely Payment')
 								{
 									collapse+='<label class="radio-inline">';
@@ -949,6 +1005,7 @@ function projectData(divId,levelId,locationId)
 									collapse+='</label>';
 								}
 								
+								
 									collapse+='<div id="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'"></div>';
 								collapse+='</div>';
 							collapse+='</div>';
@@ -959,6 +1016,13 @@ function projectData(divId,levelId,locationId)
 		collapse+='</div>';
 	collapse+='</section>';
 	$("#projectData").html(collapse);
+	for(var i in dataArr){
+		getAllDistricts(dataArr[i]);
+		$("#expConstituencyId"+dataArr[i]).chosen();		
+		$("#expMandalId"+dataArr[i]).chosen();		
+		$("#expPanchayatId"+dataArr[i]).chosen();		
+	}
+
 	//From Menu
 	var menuLocationId = '';
 	var menuLocationType = '';
@@ -978,6 +1042,9 @@ function projectData(divId,levelId,locationId)
 	
 	if(globalMCCMainDivName == 'Greenary works Chettu' || globalMCCMainDivName == 'Agriculture Related Works' || globalMCCMainDivName == 'Rural Sanitation Works' || globalMCCMainDivName == 'Soil Moisture Conservation works Neeru' || globalMCCMainDivName == 'Works in community lands' || globalMCCMainDivName == 'IJP PROGRAM WORKS' || globalMCCMainDivName == 'Institutional Development Works' || globalMCCMainDivName == 'Road Works' || globalMCCMainDivName == 'Water Harvesting Structures Neeru' || globalMCCMainDivName == 'AH-Live Stock Related works')
 		dataArr = ['state','district','constituency','mandal','panchayat'];
+	else if(globalDivName == 'MonthWise Expenditure'){
+		dataArr = ['state'];
+	}
 	else
 		dataArr = ['state','district','constituency'];
 	for(var i in dataArr)
@@ -1080,6 +1147,19 @@ function projectData(divId,levelId,locationId)
 					theadArr = [dataArr[i],'This Month','Financial Year as of Today','Increment/Decrement (%)','Last Financial Year Same Day','Last Financial Year','From 2014'];
 			}
 			
+			if(divId == 'MonthWise Expenditure')
+				{
+					/* if(dataArr[i] == "constituency")
+						theadArr = ["district",dataArr[i],'Person Days 2015-16','Wage Exp 2015-16','Material Exp 2015-16','Total 2015-16','Person Days 2016-17','Wage Exp 2016-17','Material Exp 2016-17','Total 2016-17','Person Days 2017-18','Wage Exp 2017-18','Material Exp 2017-18','Total 2017-18','Increment/Decrement (%)'];
+					else if(dataArr[i] == "mandal")
+						theadArr = ["district","constituency",dataArr[i],'Person Days 2015-16','Wage Exp 2015-16','Material Exp 2015-16','Total 2015-16','Person Days 2016-17','Wage Exp 2016-17','Material Exp 2016-17','Total 2016-17','Person Days 2017-18','Wage Exp 2017-18','Material Exp 2017-18','Total 2017-18','Increment/Decrement (%)'];
+					else if(dataArr[i] == "panchayat")
+						theadArr = ["district","constituency","mandal",dataArr[i],'Person Days 2015-16','Wage Exp 2015-16','Material Exp 2015-16','Total 2015-16','Person Days 2016-17','Wage Exp 2016-17','Material Exp 2016-17','Total 2016-17','Person Days 2017-18','Wage Exp 2017-18','Material Exp 2017-18','Total 2017-18','Increment/Decrement (%)'];
+					else */
+						theadArr = ['Month','Person Days 2015-16','Wage Exp 2015-16','Material Exp 2015-16','Total 2015-16','Person Days 2016-17','Wage Exp 2016-17','Material Exp 2016-17','Total 2016-17','Person Days 2017-18','Wage Exp 2017-18','Material Exp 2017-18','Total 2017-18','Increment/Decrement (%)'];
+				}
+				
+			
 			if(divId == 'GP Buildings1' || divId == 'Mandal buildings1')
 			{
 				if(dataArr[i] == "constituency")
@@ -1121,6 +1201,8 @@ function projectData(divId,levelId,locationId)
 			getNregaLevelsWiseDataFrAgriculture(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
 		else if(divId == "ManDays")
 			getManWorkDaysOfNrega(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,divId,'overview',levelId);
+		else if(divId == "MonthWise Expenditure")
+			getManWorksExpenditureDetails(tableId,dataArr[i],'',menuLocationType,menuLocationId,divId,districtId,divId,'',levelId);
 		else if(divId == "Average Wage" || divId == "Average Days of Employment" || divId == "HH Completed 100 Days" || divId == "Nurseries")
 			getNregaLevelsWiseDataFrNewCalls(tableId,dataArr[i],menuLocationType,menuLocationId,divId);
 		else if(divId == "Timely Payment")
@@ -1272,10 +1354,12 @@ function overviewData(divId,levelId,locationId)
 function tableView(blockId,theadArr,result,locationType,blockName)
 {
 	var tableView='';
-	
-	tableView+='<div class="table-responsive">';
+	tableView+='<div class="table-responsive m_top10">';
 		tableView+='<table class="table table-bordered dataTable'+blockId+'">';
 			tableView+='<thead class="text-capitalize">';
+			if(blockName == "MonthWise Expenditure"){
+					tableView+=buildtheadManDaysExpenditure();
+			}else{
 				if(theadArr == 'Payments')
 				{
 					tableView+='<tr>';
@@ -1333,8 +1417,11 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 					for(var i in theadArr)
 					{
 						tableView+='<th class="text-capitalize">'+theadArr[i]+'</th>';
+					
 					}					
 				}
+			}
+			
 				
 			tableView+='</thead>';
 			tableView+='<tbody>';
@@ -1343,7 +1430,39 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 		tableView+='</table>';
 	tableView+='</div>';
 	$("#"+blockId).html(tableView);	
-	
+	if(blockName == "MonthWise Expenditure"){
+		if(locationType == 'state'){
+			$(".dataTable"+blockId).dataTable({
+				"iDisplayLength": 20,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+				"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+				buttons: [
+					{
+						extend:    'csvHtml5',
+						text:      '<i class="fa fa-file-text-o"></i>',
+						titleAttr: 'CSV',
+						title:	   blockId,
+						filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					},
+					{
+						extend:    'pdfHtml5',
+						text:      '<i class="fa fa-file-pdf-o"></i>',
+						titleAttr: 'PDF',
+						title:	   blockId,
+						filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+						orientation: "landscape",
+						pageSize:'A3',
+						customize: function (doc) {
+							doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+						}
+					}
+				]
+			});
+		}
+	}
 	if(locationType == 'constituency' || locationType == 'mandal' || locationType == 'panchayat')
 	{
 		$(".dataTable"+blockId).dataTable({
@@ -1424,7 +1543,7 @@ function buildNREGSProjectsOverview(result,blockName)
 								str+='<div class="row">';	
 									for(var i in result)
 									{
-										if(result[i] == "Labour Budget" || result[i] == "Average Wage" || result[i] == "Average Days of Employment" || result[i] == "HH Completed 100 Days" || result[i] == "Timely Payment" || result[i] == "Payments" || result[i] == "FAperformance" || result[i] == "Agriculture Activities" || result[i] == "ManDays")
+										if(result[i] == "Labour Budget" || result[i] == "Average Wage" || result[i] == "Average Days of Employment" || result[i] == "HH Completed 100 Days" || result[i] == "Timely Payment" || result[i] == "Payments" || result[i] == "FAperformance" || result[i] == "Agriculture Activities" || result[i] == "ManDays" || result[i] == "MonthWise Expenditure")
 										{
 											str+='<div class="col-sm-2 m_top10">';
 												str+='<div class="panel-block-white text-center" overview-block="'+result[i]+'">';
@@ -4814,6 +4933,9 @@ for(var i in overViewArr)
 	else if(overViewArr[i] == 'ManDays')
 	{
 		getManWorkDaysOfNrega(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+	}else if(overViewArr[i] == 'MonthWise Expenditure')
+	{
+		getManWorksExpenditureAbstarct(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'',2);
 	}
 	else if(overViewArr[i] == 'Greenary works Chettu' || overViewArr[i] == 'Agriculture Related Works' || overViewArr[i] == 'Rural Sanitation Works' || overViewArr[i] == 'Soil Moisture Conservation works Neeru' || overViewArr[i] == 'Works in community lands' || overViewArr[i] == 'IJP PROGRAM WORKS' || overViewArr[i] == 'Institutional Development Works' || overViewArr[i] == 'Road Works' || overViewArr[i] == 'Water Harvesting Structures Neeru' || overViewArr[i] == 'AH-Live Stock Related works'){
 		getNregaOtherMCCAbstarctData(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
@@ -5367,7 +5489,46 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			str+='</div>';
 		str+='</div>';
 	}
-	if(result != null && result.length > 0 && type != 'Payments')
+	if(type == 'MonthWise Expenditure' && result != null)
+	{
+		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding:26px 15px">';
+			if(type.length > 12)
+			{
+				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+			}else{
+				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
+			}
+			str+='<small class="text-center">Total Expenditure</small>';
+			if(result[0].total1718 != null && result[0].total1718 != 0)
+			{
+				str+='<h1 class="text-center" style="font-size:25px"><i class="fa fa-inr"></i> '+result[0].total1718+'</h1>';
+			}else{
+				str+='<h1 class="text-center">0</h1>';
+			}
+			str+='<div class="row">';
+				str+='<div class="col-sm-6 text-center pad_right0">';
+					str+='<label>Wage</label>';
+					if(result[0].wageExp1718 != null && result[0].wageExp1718 != 0)
+					{
+						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result[0].wageExp1718+'</h4>';
+					}else{
+						str+='<h4>0</h4>';
+					}
+					
+				str+='</div>';
+				str+='<div class="col-sm-6 text-center pad_left0">';
+					str+='<label>Material</label>';
+					if(result[0].matExp1718 != null && result[0].matExp1718 != 0)
+					{
+						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result[0].matExp1718+'</h4>';
+					}else{
+						str+='<h4>0</h4>';
+					}
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	}
+	if(result != null && result.length > 0 && type != 'Payments' && type != 'MonthWise Expenditure')
 	{
 		for(var i in result)
 		{
@@ -5397,7 +5558,10 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					{
 						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 					}
-				}else{
+				}/* else if(type == 'ManDays Expenditure')
+				{
+					str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+				} */else{
 					/*if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'IJP PROGRAM WORKS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Cattle Ponds' || type == 'Desilting of Drinking Water Tanks' || type == 'coffee' || type == 'Comprehensive Restoration of minor Irrigation Tank1' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == 'NTR 90 Days' || type == 'NTR Rural House' || type == 'Production of Bricks'){
 						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
 					}else{*/
@@ -5487,7 +5651,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					if(type == 'coffee')
 						str+='<small class="text-center">Planting (%)</small>';
 					else if(type == 'ManDays')
-						str+='<small class="text-center">Increment/Decrement(%)</small>';
+						str+='<small class="text-center">Increment/Decrement (%)</small>';
 					else
 						str+='<small class="text-center">Achieved</small>';
 					
@@ -5560,7 +5724,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						}
 						else if(type == 'ManDays'){
 							str+='<label>Last Fin Same Day</label>';
-						}
+						}/* else if(type == 'ManDays Expenditure'){
+							str+='<label>Last Fin This Month</label>';
+						} */
 						else{
 							str+='<label>Target</label>';
 						}
@@ -5585,7 +5751,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}
 							else if(type == 'ManDays'){
 								str+='<h4>'+result[0].lastFinSameDay+'</h4>';
-							}else{
+							}/* else if(type == 'ManDays Expenditure'){
+								str+='<h4>'+result[0].total1617+'</h4>';
+							} */else{
 								str+='<h4>0</h4>';
 							}
 							
@@ -5600,7 +5768,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}else if(type == 'ManDays')
 							{
 								str+='<label>Fin As Of Today</label>';
-							}else{
+							}/* else if(type == 'ManDays Expenditure'){
+								str+='<label>Fin As Of This Month</label>';
+							} */else{
 								str+='<label>Completed</label>';
 							}
 							
@@ -5621,7 +5791,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}
 							else if(type == 'ManDays'){
 								str+='<h4>'+result[0].finAsOfToday+'</h4>';
-							}else{
+							}/* else if(type == 'ManDays Expenditure'){
+								str+='<h4>'+result[0].total1718+'</h4>';
+							} */else{
 								str+='<h4>0</h4>';
 							}
 						str+='</div>';
@@ -7605,4 +7777,323 @@ $(document).on("click",".closeShowPdfCls1",function(){
 	setTimeout(function(){
 		$('body').addClass("modal-open");
 	}, 400);  
-  });	
+});
+
+function getManWorksExpenditureAbstarct(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId,mccType,buildType,levelId)
+{
+	$("#"+divIdd).html(spinner);
+	var month;
+	var toDateArr = glEndDate.split('-');
+	if(toDateArr[1] == 01){
+		month = "January"
+	}else if(toDateArr[1] == 02){
+		month = "February"
+	}else if(toDateArr[1] == 03){
+		month = "March"
+	}else if(toDateArr[1] == 04){
+		month = "April"
+	}else if(toDateArr[1] == 05){
+		month = "May"
+	}else if(toDateArr[1] == 06){
+		month = "June"
+	}else if(toDateArr[1] == 07){
+		month = "July"
+	}else if(toDateArr[1] == 08){
+		month = "August"
+	}else if(toDateArr[1] == 09){
+		month = "September"
+	}else if(toDateArr[1] == 10){
+		month = "October"
+	}else if(toDateArr[1] == 11){
+		month = "November"
+	}else if(toDateArr[1] == 12){
+		month = "December"
+	}
+	var json = {
+		locationType: menuLocationType,
+		locationId : menuLocationId,
+		monthType : month
+		
+	}
+	
+	$.ajax({
+		url: 'getManWorksExpenditureAbstarct',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			buildNREGSAbstractDataByTypeNew(divIdd,ajaxresp,'',menuLocationId,menuLocationType,levelId);
+		}
+	});
+}
+
+function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId,mccType,buildType,levelId)
+{
+	$("#"+divIdd).html(spinner);
+	var json = {
+		locationType: menuLocationType,
+		locationIdStr : menuLocationId,
+		type : "MonthWise Expenditure"
+		
+	}
+	
+	$.ajax({
+		url: 'getManWorksExpenditureDetails',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp) {
+			var str = '';
+				if(ajaxresp != null && ajaxresp.length > 0){
+					for(var i in ajaxresp){
+						str+='<tr>';
+							str+='<td>'+ajaxresp[i].thisMonth+'</td>';
+							str+='<td>'+ajaxresp[i].perDays1516+'</td>';
+							str+='<td>'+ajaxresp[i].wageExp1516+'</td>';
+							str+='<td>'+ajaxresp[i].matExp1516+'</td>';
+							str+='<td>'+ajaxresp[i].total1516+'</td>';
+							str+='<td>'+ajaxresp[i].perDays1617+'</td>';
+							str+='<td>'+ajaxresp[i].wageExp1617+'</td>';
+							str+='<td>'+ajaxresp[i].matExp1617+'</td>';
+							str+='<td>'+ajaxresp[i].total1617+'</td>';
+							str+='<td>'+ajaxresp[i].perDays1718+'</td>';
+							str+='<td>'+ajaxresp[i].wageExp1718+'</td>';
+							str+='<td>'+ajaxresp[i].matExp1718+'</td>';
+							str+='<td>'+ajaxresp[i].total1718+'</td>';
+							
+							
+							/* if(ajaxresp[i].percentage < 0){
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else if(ajaxresp[i].percentage >= 0){
+								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+							} */
+						str+='</tr>';
+					}
+				}
+				tableView(divIdd,theadArr,str,locationTypeNew,blockName);
+			//}
+		}
+	});
+}
+
+function getAllDistricts(locationType)
+{
+	
+	$("#expDistrictId"+locationType).html('');
+	var json = {
+	}
+	
+	$.ajax({
+		url: 'getAllDistricts',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(result) {
+			$("#expDistrictId"+locationType).html("<option value='0'>Select District</option>");
+			if(result != null && result.length > 0){
+				for(var i in result){
+					$("#expDistrictId"+locationType).append('<option value="'+result[i].locationIdStr+'">'+result[i].locationName+' </option>');
+				}
+			}
+		$("#expDistrictId"+locationType).chosen();
+		$("#expDistrictId"+locationType).trigger('chosen:updated');
+		}
+	});
+}	
+
+$(document).on('change','.districtExpCls', function(){
+	var blockType = $(this).attr("attr_locationType");
+	var blockName = $(this).attr("attr_blockName");
+	var divIdd = $(this).attr("attr_divIId");
+	
+	//var theadArr = ['Month','Person Days 2015-16','Wage Exp 2015-16','Material Exp 2015-16','Total 2015-16','Person Days 2016-17','Wage Exp 2016-17','Material Exp 2016-17','Total 2016-17','Person Days 2017-18','Wage Exp 2017-18','Material Exp 2017-18','Total 2017-18','Increment/Decrement (%)'];
+	if(blockType == "district"){
+		var value = $(this).val();
+		getManWorksExpenditureDetails(divIdd,'district','','district',value,blockName,'','','','');
+	}else if(blockType == "constituency"){
+		var value = $(this).val();
+		getAllConstituiencesFrDistrict(blockType,value)
+	}else if(blockType == "mandal"){
+		var value = $(this).val();
+		getAllConstituiencesFrDistrict(blockType,value)
+	}else if(blockType == "panchayat"){
+		var value = $(this).val();
+		getAllConstituiencesFrDistrict(blockType,value)
+	}
+});
+$(document).on('change','.constituencyExpCls', function(){
+	var blockType = $(this).attr("attr_locationType");
+	var blockName = $(this).attr("attr_blockName");
+	var divIdd = $(this).attr("attr_divIId");
+	
+	//var theadArr = ['Month','Person Days 2015-16','Wage Exp 2015-16','Material Exp 2015-16','Total 2015-16','Person Days 2016-17','Wage Exp 2016-17','Material Exp 2016-17','Total 2016-17','Person Days 2017-18','Wage Exp 2017-18','Material Exp 2017-18','Total 2017-18','Increment/Decrement (%)'];
+	if(blockType == "constituency"){
+		var value = $(this).val();
+		getManWorksExpenditureDetails(divIdd,'constituency','','constituency',value,blockName,'','','','');
+	}else if(blockType == "mandal"){
+		var value = $(this).val();
+		getTehsilesFrConstituency(blockType,value)
+	}else if(blockType == "panchayat"){
+		var value = $(this).val();
+		getTehsilesFrConstituency(blockType,value)
+	}
+});
+$(document).on('change','.mandalExpCls', function(){
+	var blockType = $(this).attr("attr_locationType");
+	var blockName = $(this).attr("attr_blockName");
+	var divIdd = $(this).attr("attr_divIId");
+	
+	//var theadArr = ['Month','Person Days 2015-16','Wage Exp 2015-16','Material Exp 2015-16','Total 2015-16','Person Days 2016-17','Wage Exp 2016-17','Material Exp 2016-17','Total 2016-17','Person Days 2017-18','Wage Exp 2017-18','Material Exp 2017-18','Total 2017-18','Increment/Decrement (%)'];
+	if(blockType == "mandal"){
+		var value = $(this).val();
+		getManWorksExpenditureDetails(divIdd,'mandal','','mandal',value,blockName,'','','','');
+	}else if(blockType == "panchayat"){
+		var value = $(this).val();
+		getPanchayatsFrTehsil(blockType,value)
+	}
+});
+
+$(document).on('change','.panchayatExpCls', function(){
+	var blockType = $(this).attr("attr_locationType");
+	var blockName = $(this).attr("attr_blockName");
+	var divIdd = $(this).attr("attr_divIId");
+	
+	//var theadArr = ['Month','Person Days 2015-16','Wage Exp 2015-16','Material Exp 2015-16','Total 2015-16','Person Days 2016-17','Wage Exp 2016-17','Material Exp 2016-17','Total 2016-17','Person Days 2017-18','Wage Exp 2017-18','Material Exp 2017-18','Total 2017-18','Increment/Decrement (%)'];
+	if(blockType == "panchayat"){
+		var value = $(this).val();
+		getManWorksExpenditureDetails(divIdd,'panchayat','','panchayat',value,blockName,'','','','');
+	}
+});
+function getAllConstituiencesFrDistrict(blockType,value)
+{
+	$("#expConstituencyId"+blockType).html('');
+	$("#constLoading"+blockType).html(smallSpinner);
+	
+	var json = {
+		locationIdStr:value
+	}
+	
+	$.ajax({
+		url: 'getAllConstituiencesFrDistrict',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(result) {
+			$("#constLoading"+blockType).html('');
+			$("#expConstituencyId"+blockType).html("<option value='0'>Select Constituency</option>");
+			if(result != null && result.length > 0){
+				for(var i in result){
+					$("#expConstituencyId"+blockType).append('<option value="'+result[i].locationIdStr+'">'+result[i].locationName+' </option>');
+				}
+			}
+		$("#expConstituencyId"+blockType).chosen();
+		$("#expConstituencyId"+blockType).trigger('chosen:updated');
+		}
+	});
+}
+function getTehsilesFrConstituency(blockType,value)
+{
+	$("#expMandalId"+blockType).html('');
+	$("#mandalLoading"+blockType).html(smallSpinner);
+	var json = {
+		locationIdStr:value
+	}
+	
+	$.ajax({
+		url: 'getTehsilesFrConstituency',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(result) {
+			$("#mandalLoading"+blockType).html('');
+			$("#expMandalId"+blockType).html("<option value='0'>Select Mandal</option>");
+			if(result != null && result.length > 0){
+				for(var i in result){
+					$("#expMandalId"+blockType).append('<option value="'+result[i].locationIdStr+'">'+result[i].locationName+' </option>');
+				}
+			}
+		$("#expMandalId"+blockType).chosen();
+		$("#expMandalId"+blockType).trigger('chosen:updated');
+		}
+	});
+}
+function getPanchayatsFrTehsil(blockType,value)
+{
+	$("#expPanchayatId"+blockType).html('');
+	$("#panchayatLoading"+blockType).html(smallSpinner);
+	var json = {
+		locationIdStr:value
+	}
+	
+	$.ajax({
+		url: 'getPanchayatsFrTehsil',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(result) {
+			$("#panchayatLoading"+blockType).html('');
+			$("#expPanchayatId"+blockType).html("<option value='0'>Select panchayat</option>");
+			if(result != null && result.length > 0){
+				for(var i in result){
+					$("#expPanchayatId"+blockType).append('<option value="'+result[i].locationIdStr+'">'+result[i].locationName+' </option>');
+				}
+			}
+		$("#expPanchayatId"+blockType).chosen();
+		$("#expPanchayatId"+blockType).trigger('chosen:updated');
+		}
+	});
+}
+function buildtheadManDaysExpenditure(){
+	var str='';
+		str+='<tr>';
+			str+='<th rowspan="2" style="background-color:#034575;color:#fff">Month</th>';
+			str+='<th colspan="4" class="text-center" style="background-color:#26243c;color:#fff">2015-16</th>';
+			str+='<th colspan="4" class="text-center" style="background-color:#ea9009;color:#fff">2016-17</th>';
+			str+='<th colspan="4" class="text-center" style="background-color:#191b0E;color:#fff">2017-18</th>';
+			//str+='<th rowspan="2">Increment/Decrement (%)</th>';
+		str+='</tr>';
+		str+='<tr>';
+			str+='<th style="background-color:#26243c;color:#fff">Person Days</th>';
+			str+='<th style="background-color:#26243c;color:#fff">Wage</th>';
+			str+='<th style="background-color:#26243c;color:#fff">Material</th>';
+			str+='<th style="background-color:#26243c;color:#fff">Total</th>';
+			
+			str+='<th style="background-color:#ea9009;color:#fff">Person Days</th>';
+			str+='<th style="background-color:#ea9009;color:#fff">Wage</th>';
+			str+='<th style="background-color:#ea9009;color:#fff">Material</th>';
+			str+='<th style="background-color:#ea9009;color:#fff">Total</th>';
+			
+			str+='<th style="background-color:#191b0E;color:#fff">Person Days</th>';
+			str+='<th style="background-color:#191b0E;color:#fff">Wage</th>';
+			str+='<th style="background-color:#191b0E;color:#fff">Material</th>';
+			str+='<th style="background-color:#191b0E;color:#fff">Total</th>';
+			
+		str+='</tr>';
+	return str;
+}

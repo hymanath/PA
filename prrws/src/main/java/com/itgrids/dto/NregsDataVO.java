@@ -147,6 +147,18 @@ public class NregsDataVO implements Serializable{
 	private String actionPlan;
 	private Long statusId;
 	private Long componentId;
+	private Long perDays1516 = 0L;
+	private Long wageExp1516 = 0L;
+	private Long matExp1516 = 0L;
+	private Long total1516 = 0L;
+	private Long perDays1617 = 0L;
+	private Long wageExp1617 = 0L;
+	private Long matExp1617 = 0L;
+	private Long total1617 = 0L;
+	private Long perDays1718 = 0L;
+	private Long wageExp1718 = 0L;
+	private Long matExp1718 = 0L;
+	private Long total1718 = 0L;
 	
 	public String getWorkName() {
 		return workName;
@@ -897,6 +909,78 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setComponentId(Long componentId) {
 		this.componentId = componentId;
+	}
+	public Long getPerDays1516() {
+		return perDays1516;
+	}
+	public void setPerDays1516(Long perDays1516) {
+		this.perDays1516 = perDays1516;
+	}
+	public Long getWageExp1516() {
+		return wageExp1516;
+	}
+	public void setWageExp1516(Long wageExp1516) {
+		this.wageExp1516 = wageExp1516;
+	}
+	public Long getMatExp1516() {
+		return matExp1516;
+	}
+	public void setMatExp1516(Long matExp1516) {
+		this.matExp1516 = matExp1516;
+	}
+	public Long getTotal1516() {
+		return total1516;
+	}
+	public void setTotal1516(Long total1516) {
+		this.total1516 = total1516;
+	}
+	public Long getPerDays1617() {
+		return perDays1617;
+	}
+	public void setPerDays1617(Long perDays1617) {
+		this.perDays1617 = perDays1617;
+	}
+	public Long getWageExp1617() {
+		return wageExp1617;
+	}
+	public void setWageExp1617(Long wageExp1617) {
+		this.wageExp1617 = wageExp1617;
+	}
+	public Long getMatExp1617() {
+		return matExp1617;
+	}
+	public void setMatExp1617(Long matExp1617) {
+		this.matExp1617 = matExp1617;
+	}
+	public Long getTotal1617() {
+		return total1617;
+	}
+	public void setTotal1617(Long total1617) {
+		this.total1617 = total1617;
+	}
+	public Long getPerDays1718() {
+		return perDays1718;
+	}
+	public void setPerDays1718(Long perDays1718) {
+		this.perDays1718 = perDays1718;
+	}
+	public Long getWageExp1718() {
+		return wageExp1718;
+	}
+	public void setWageExp1718(Long wageExp1718) {
+		this.wageExp1718 = wageExp1718;
+	}
+	public Long getMatExp1718() {
+		return matExp1718;
+	}
+	public void setMatExp1718(Long matExp1718) {
+		this.matExp1718 = matExp1718;
+	}
+	public Long getTotal1718() {
+		return total1718;
+	}
+	public void setTotal1718(Long total1718) {
+		this.total1718 = total1718;
 	}
 	
 	

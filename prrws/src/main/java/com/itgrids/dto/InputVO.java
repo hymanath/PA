@@ -107,6 +107,7 @@ public class InputVO implements Serializable {
 	private List<Long> lightVendorIdList;
 	private String exceededDuration;
 	private String month;
+	private String monthType;
 	
 	public String getPath() {
 		return path;
@@ -682,6 +683,12 @@ public class InputVO implements Serializable {
 	}
 	public void setMonth(String month) {
 		this.month = month;
+	}
+	public String getMonthType() {
+		return monthType;
+	}
+	public void setMonthType(String monthType) {
+		this.monthType = monthType;
 	}
 	
 	

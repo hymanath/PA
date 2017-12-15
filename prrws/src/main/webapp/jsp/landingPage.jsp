@@ -148,6 +148,21 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/Group 2352.png" >
+					<h4 style="display: inline-block;">AC WORKS</h4>
+					<div class=" " style="text-align: right">
+						<h2 class="" style="margin-top: 0px">161</h2>
+						<p class="">RURAL CONSTITUENCIES</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange ACWORKSColor" title="click to add as favourite component."  attr_url="constituencyWiseWorkStatus" attr_full_block_name="AC WORKS" attr_color_name="gray" attr_block_name="AC WORKS" aria-hidden="true" attr_page_id="2"></i>
+						<!--<span style="font-size: 9px;color:#8286FF">PANCHAYATI RAJ,RURAL DEVELOPMENT,RURAL WATER SUPPLY</span>-->
+						<a class="pull-right" href="constituencyWiseWorkStatus" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
@@ -304,6 +319,33 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/Group 2352.png" >
+					<h5 style="display: inline-block;">ManDays</h5>
+					<div class="ManDaysAllCls " style="text-align: right">
+						
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange ManDaysColor" title="click to add as favourite component." attr_url="ManDays" attr_full_block_name="ManDays" attr_color_name="gray" attr_block_name="ManDays" aria-hidden="true" attr_page_id="4"></i>
+						<a class="pull-right" href="MGNREGSDashboard?component=ManDays" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
+			<!--<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/Group 2352.png" >
+					<h5 style="display: inline-block;">MonthWise Expenditure</h5>
+					<div class=" " style="text-align: right">
+						<h2 class="monthWiseExpAllCls" style="margin-top: 0px">0%</h2>
+						<p class="">Total Expenditure</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange MonthWiseExpenditureColor" title="click to add as favourite component." attr_url="MonthWise Expenditure" attr_full_block_name="MonthWise Expenditure" attr_color_name="gray" attr_block_name="MonthWise Expenditure" aria-hidden="true" attr_page_id="3"></i>
+						<a class="pull-right"  href="MGNREGSDashboard?component=MonthWise Expenditure" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>-->
 		</div>
 	</div>
 </section>
