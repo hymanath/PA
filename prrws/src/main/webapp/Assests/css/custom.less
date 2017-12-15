@@ -2943,3 +2943,37 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 	color:red;
 	font-size: 20px;
 }
+.slider-handle.min-slider-handle.round,.slider-handle.max-slider-handle.round {
+    background-color: #00A64E;
+    background-image: none !important;
+    margin-top: -6px;
+}
+.slider-selection {
+    background-color: #00A64E !important;
+    background-image: none !important;
+}
+.slider.slider-horizontal .slider-track{
+	margin-left:10px;
+	
+}
+.m_left{
+		margin-left: 10px;
+	}
+#noofWorksSlider{
+	text-align: center;
+	
+}
+@smartphones: ~"only screen and (max-width: 479px)";
+@tablets: ~"only screen and (min-width: 992px) and (max-width: 1199px)";
+@desctop: ~"only screen and (min-width: 1200px) and (max-width:1250px)";
+.slider.slider-horizontal{
+	@media @tablets {
+		width: 200px !important;
+	}
+	@media @desctop{
+		width: 270px !important;
+	}
+}
+.font_12{
+	font-size: 12px;
+}
