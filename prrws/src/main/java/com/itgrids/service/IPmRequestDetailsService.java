@@ -1,7 +1,9 @@
 package com.itgrids.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PmRequestEditVO;
 import com.itgrids.dto.PmRequestVO;
@@ -17,4 +19,6 @@ public interface IPmRequestDetailsService {
 	public PmRequestEditVO setPmRepresenteeDataToResultView(Long petitionId);
 	public List<RepresenteeViewVO> getStatusList();
 	public UserVO getPmOffceUserDetails(Long userId, UserVO userVO);
+	
+	public CadreRegistrationVO getRegistrationPersonDetails(Map<String,String> inputMap);
 }
