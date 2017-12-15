@@ -1933,7 +1933,7 @@ function validation(typeVal){
 	var completeWorkName='';
 	var noofWorks='';
 	var workCost='';
-	var phonePattern= /^\d{0-9}$/;
+	var phonePattern= "";
 	
 	completeWorkName = $("#name"+typeVal).val();
 	noofWorks = $("#noofWork"+typeVal).val();
@@ -2063,5 +2063,5 @@ function getRegistrationPersonDetails(voterId,typeVal){
 			}
 		}
 	});	
-
+ 
 }
