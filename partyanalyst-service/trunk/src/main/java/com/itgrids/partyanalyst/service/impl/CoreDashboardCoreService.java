@@ -203,7 +203,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	    	}
 	    	TrainingCampSurveyVO vo1 = new TrainingCampSurveyVO();
 	    	vo1.setId(1L);
-	    	vo1.setName("How is leader's communication ckills?");
+	    	vo1.setName("How is leader's communication skills?");
 	    	vo1.getProgramsList().addAll(finalVOList1);
 	    	if(list2 != null && list2.size() > 0){
 	    		buildTemplateForLocation(list2,finalVOList2);
