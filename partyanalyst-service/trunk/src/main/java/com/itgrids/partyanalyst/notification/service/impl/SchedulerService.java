@@ -1132,7 +1132,8 @@ public class SchedulerService implements ISchedulerService{
 			resultStatus1 = sendEmailWithPdfAttachment("office", emailVo,officeId); 
 			
 			
-			for(Long userEmailId : emailIdList){    
+			for(Long userEmailId : emailIdList){
+				try{
 				emailVo.setEmailId(userEmailId);
 				deptList = emailIdAndDeptIdListMap.get(userEmailId);  
 				List<Object[]> officeWiseTotalEmployeeList = employeeWorkLocationDAO.getOfficeWiseTotalEmployeeListFilter(deptList);
@@ -1162,7 +1163,10 @@ public class SchedulerService implements ISchedulerService{
 													officeWiseTotalNonAttendedEmployeeDetailsList,   
 													officeWiseTotalAttendedEmployeeDetailsList );
 				ResultStatus resultStatus = sendEmailWithPdfAttachment(area, emailVo,null);      
-				System.out.println("Hi");       
+				}catch(Exception e)
+				{
+					LOG.error(e);
+				}
 			}
 			
 		}catch(Exception e){
