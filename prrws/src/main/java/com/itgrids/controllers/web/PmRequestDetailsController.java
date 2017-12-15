@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.PmRequestEditVO;
@@ -89,5 +90,9 @@ public class PmRequestDetailsController {
 	    @RequestMapping(value ="/getStatusList",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresenteeViewVO> getStatusList() {
 	       return pmRequestDetailsService.getStatusList();
+	    }
+	    @RequestMapping(value ="/getRegistrationPersonDetails",method = RequestMethod.POST)
+	    public @ResponseBody CadreRegistrationVO getRegistrationPersonDetails(@RequestBody Map<String,String> inputMap ) {
+	       return pmRequestDetailsService.getRegistrationPersonDetails(inputMap);
 	    }
 }
