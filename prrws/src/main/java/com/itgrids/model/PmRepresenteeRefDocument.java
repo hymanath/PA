@@ -21,6 +21,8 @@ public class PmRepresenteeRefDocument {
 	private Long pmRepresenteeRefDetailsId;
 	private Long documentId;
 	private String isDeleted;
+	private Long updatedUserId;
+	private Long insertedUserId;
 	
     private User insertedUser;
 	private User updatedUser;
@@ -105,6 +107,20 @@ public class PmRepresenteeRefDocument {
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	@Column(name="updated_user_id")
+	public Long getUpdatedUserId() {
+		return updatedUserId;
+	}
+	public void setUpdatedUserId(Long updatedUserId) {
+		this.updatedUserId = updatedUserId;
+	}
+	@Column(name="inserted_user_id")
+	public Long getInsertedUserId() {
+		return insertedUserId;
+	}
+	public void setInsertedUserId(Long insertedUserId) {
+		this.insertedUserId = insertedUserId;
 	}
 	
 }

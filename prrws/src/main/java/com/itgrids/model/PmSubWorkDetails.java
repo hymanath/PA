@@ -34,7 +34,7 @@ public class PmSubWorkDetails {
 	private Long pmStatusId;
 	private String coveringLetterPath;
 	private Long pmWorkTypeId;
-	
+    	 
 	private PmWorkType pmWorkType;
     private User insertedUser;
 	private User updatedUser;
@@ -51,6 +51,8 @@ public class PmSubWorkDetails {
 	private PmGrant pmGrant;
 	private PmStatus pmStatus;
 	private LocationAddress locationAddress;
+	private Long insertedUserId;
+	private Long updatedUserId;
 	
 	@Id
 	@Column(name="pm_sub_work_details_id")
@@ -303,4 +305,19 @@ public class PmSubWorkDetails {
 	public void setLocationAddress(LocationAddress locationAddress) {
 		this.locationAddress = locationAddress;
 	}
+	@Column(name="inserted_user_id")
+	public Long getInsertedUserId() {
+		return insertedUserId;
+	}
+	public void setInsertedUserId(Long insertedUserId) {
+		this.insertedUserId = insertedUserId;
+	}
+	@Column(name="updated_user_id")
+	public Long getUpdatedUserId() {
+		return updatedUserId;
+	}
+	public void setUpdatedUserId(Long updatedUserId) {
+		this.updatedUserId = updatedUserId;
+	}
+	
 }
