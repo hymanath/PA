@@ -20,7 +20,7 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
-.error_colorCls{
+.error_colorCls,.ErrCls{
    color: red;
 }
 </style>
@@ -35,7 +35,7 @@
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
-					<p>Swatch Bharat Mission IHHL</p>
+					<p> PETITIONS MANAGEMENT SYSTEM </p>
 				</div>
 				
 				<div class="col-sm-3 col-xs-12 pull-right">
