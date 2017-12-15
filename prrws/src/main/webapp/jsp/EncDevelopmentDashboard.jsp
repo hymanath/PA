@@ -196,27 +196,104 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-12">
-					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
-						<h4>ROADS -  STATE LEVEL OVERVIEW</h4>
-					</div>
-					<div class="white-block" style="padding:10px;">	
-						<div class="row">
-							<div class="col-sm-4">
-								<h5 style="padding:5px"><span class="chartTitleAlign">TOTAL ROAD LENGTH</span></h5>
-								<div class="chart2" id="roadsChartinfo" style="height:250px;"></div>
+					<div class="white_block">
+						<h4>ANDHRA PRADESH STATE OVERVIEW</h4>
+						<div class="m_top10" style="border:1px solid lightgrey;margin-bottom:20px;padding:10px">
+							<div class="row">
+								<div class="col-sm-4 m_top10">
+									<div class="row">
+										<div class="chart2" id="roadsChartinfo" style="height:250px;"></div>
+									</div>
+									
+								</div>
+								<div class="col-sm-8 m_top10">
+									<div class="row">
+										<div class="col-sm-4 m_top10">
+											<div class="enc_block">
+												<div class="media">
+													<div class="media-left">
+														<img src="Assests/icons/BT_CC_icon.png" alt="BTCC"/>
+													</div>
+													<div class="media-body">
+														<p>BT +CC</p>
+														<h4><b>45359</b></h4>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-4 m_top10">
+											<div class="enc_block">
+												<div class="media">
+													<div class="media-left">
+														<img src="Assests/icons/wbm_icom.png" alt="BTCC"/>
+													</div>
+													<div class="media-body">
+														<p>WBM</p>
+														<h4><b>45359</b></h4>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-4 m_top10">
+											
+										</div>
+										<div class="clearfix"></div>
+										<div class="col-sm-4 m_top10">
+											<div class="enc_block">
+												<div class="media">
+													<div class="media-left">
+														<img src="Assests/icons/Gravel_icon.png" alt="BTCC"/>
+													</div>
+													<div class="media-body">
+														<p>Gravel</p>
+														<h4><b>45359</b></h4>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-4 m_top10">
+											<div class="enc_block">
+												<div class="media">
+													<div class="media-left">
+														<img src="Assests/icons/Earthen_Roads.png" alt="BTCC"/>
+													</div>
+													<div class="media-body">
+														<p>Earthen Roads</p>
+														<h4><b>45359</b></h4>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-4 m_top10">
+											<div class="enc_block">
+												<div class="media">
+													<div class="media-left">
+														<img src="" alt="BTCC"/>
+													</div>
+													<div class="media-body">
+														<p>Unearthen Roads</p>
+														<h4><b>45359</b></h4>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="col-sm-6">
+						</div>
+						
+					   <div class="m_top10" style=" ">
+							<div class="row">
+								<div id="roadsBlockId"></div>
+							</div>
+					   </div>
+						<div class="row m_top20">
+							<div class="col-sm-12">
+								<div id="levelWiseEncId"></div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</section>
-	<section>
-		<div class="container-fluid m_top20">
-			<div class="row">
-				<div id="levelWiseEncId"></div>
 			</div>
 		</div>
 	</section>
