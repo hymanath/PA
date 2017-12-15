@@ -38,24 +38,48 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		sb.append(",panchayat.panchayatId,panchayat.panchayatName ");//11,12
 		sb.append(",model.pmRefCandidate.mobileNo,model.pmRefCandidate.email,model.pmDesignation.pmDesignationId ");//13,14,15
 		sb.append(",parliament.constituencyId,parliament.name ,model.pmRefCandidate.imagePath,model.pmRefCandidate.partyName ");//16,17,18,19
-		sb.append("from PmRefCandidateDesignation model ");
-		sb.append("left join model.pmRefCandidate.address locationAddress ");
+		
+		sb.append(",natState.stateId,natState.stateName ");//20,21
+		sb.append(",natDistrict.districtId,natDistrict.districtName ");//22,23
+		sb.append(",natConstituency.constituencyId,natConstituency.name ");//24,25
+		sb.append(",natTehsil.tehsilId,natTehsil.tehsilName ");//26,27
+		sb.append(",natPanchayat.panchayatId,natPanchayat.panchayatName ");//28,29
+		sb.append(",natParliament.constituencyId,natParliament.name ");//30,31
+		sb.append(",localbody.localElectionBodyId, localbody.name ,''");//32,33,34
+		sb.append(",natLocalbody.localElectionBodyId, natLocalbody.name ,'' ");//35,36,37
+		
+		sb.append(" from PmRefCandidateDesignation model ");
+		sb.append(" left join model.pmRefCandidate pmRefCandidate ");
+		sb.append("left join pmRefCandidate.address locationAddress ");
 		sb.append("left join locationAddress.state state ");
 		sb.append("left join locationAddress.district district ");
 		sb.append("left join locationAddress.constituency constituency ");
 		sb.append("left join locationAddress.parliament parliament ");
 		sb.append("left join locationAddress.tehsil tehsil ");
-		sb.append("left join locationAddress.panchayat panchayat ");
-		sb.append("where model.isDeleted ='N' ");
+		sb.append("left join locationAddress.panchayat panchayat " );
+		sb.append("left join locationAddress.localElectionBody localbody" );
+		//sb.append("left join localbody.electionType electionType " );
+		
+		sb.append(" left join pmRefCandidate.nativAddress nativAddress ");
+		sb.append(" left join nativAddress.state natState ");
+		sb.append(" left join nativAddress.district natDistrict ");
+		sb.append(" left join nativAddress.constituency natConstituency ");
+		sb.append(" left join nativAddress.parliament natParliament ");
+		sb.append(" left join nativAddress.tehsil natTehsil ");
+		sb.append(" left join nativAddress.panchayat natPanchayat ");
+		sb.append(" left join nativAddress.localElectionBody natLocalbody " );
+		//sb.append(" left join natLocalbody.electionType natElectionType " );
+		
+		sb.append(" where model.isDeleted ='N' ");
 		if(designationId != null && designationId.longValue() > 0L){
-			sb.append("and model.pmDesignation.pmDesignationId =:designationId ");
+			sb.append(" and model.pmDesignation.pmDesignationId =:designationId ");
 		}
 		if(locationLevelId != null && locationLevelId.longValue() == 3L && locationValue != null && locationValue.longValue() > 0){
-			sb.append("and model.pmRefCandidate.address.districtId = :locationValue ");
+			sb.append(" and model.pmRefCandidate.address.districtId = :locationValue ");
 		}else if(locationLevelId != null && locationLevelId.longValue() == 4L && locationValue != null && locationValue.longValue() > 0){
-			sb.append("and model.pmRefCandidate.address.constituencyId = :locationValue ");
+			sb.append(" and model.pmRefCandidate.address.constituencyId = :locationValue ");
 		}else if(locationLevelId != null && locationLevelId.longValue() == 10L && locationValue != null && locationValue.longValue() > 0){
-			sb.append("and model.pmRefCandidate.address.parliamentId = :locationValue ");
+			sb.append(" and model.pmRefCandidate.address.parliamentId = :locationValue ");
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if(designationId != null && designationId.longValue() > 0L){

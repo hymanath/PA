@@ -45,6 +45,7 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private PetitionMemberVO petitionMemberVO;
 	private PetitionMemberVO petitionRefCandidateVO;
 	private AddressVO candidateAddressVO;
+	private AddressVO candidateNativeAddressVO;
 	private String refCode;
 	private String designation;
 	private Long designationId;
@@ -480,5 +481,12 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
-	
+
+	public AddressVO getCandidateNativeAddressVO() {
+		return candidateNativeAddressVO;
+	}
+
+	public void setCandidateNativeAddressVO(AddressVO candidateNativeAddressVO) {
+		this.candidateNativeAddressVO = candidateNativeAddressVO;
+	}
 }

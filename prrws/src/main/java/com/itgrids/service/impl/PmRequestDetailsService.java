@@ -568,6 +568,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	    			petitionMemberVO.setImagePath("https://www.mytdp.com/images/cadre_images/"+commonMethodsUtilService.getStringValueForObject(param[18]));
 	    			petitionMemberVO.setPartyName(commonMethodsUtilService.getStringValueForObject(param[19]));
 	    			mainV0.setPetitionMemberVO(petitionMemberVO);
+	    			
 	    			AddressVO addressVO= new AddressVO();
 	    			addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[3]));
 	    			addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[4]));
@@ -577,6 +578,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	    			addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[8]));
 	    			addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[9]));
 	    			addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[10]));
+	    			addressVO.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(param[32]));
+	    			addressVO.setLocalElectionBodyName(commonMethodsUtilService.getStringValueForObject(param[33])+" "+commonMethodsUtilService.getStringValueForObject(param[34]));
 	    			addressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[11]));
 	    			addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[12]));
 	    			
@@ -587,8 +590,25 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	    				addressVO.setAssemblyId(addressVO.getParliamentId());
 		    			addressVO.setAssemblyName(addressVO.getParliamentName());
 	    			}
-	    			
 	    			mainV0.setCandidateAddressVO(addressVO);
+	    			
+	    			AddressVO nativeAddressVO= new AddressVO();
+	    			nativeAddressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[20]));
+	    			nativeAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[21]));
+	    			nativeAddressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[22]));
+	    			nativeAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[23]));
+	    			nativeAddressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[24]));
+	    			nativeAddressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[25]));
+	    			nativeAddressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[26]));
+	    			nativeAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[27]));
+	    			nativeAddressVO.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(param[35]));
+	    			nativeAddressVO.setLocalElectionBodyName(commonMethodsUtilService.getStringValueForObject(param[36])+" "+commonMethodsUtilService.getStringValueForObject(param[37]));
+	    			nativeAddressVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[28]));
+	    			nativeAddressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[29]));
+	    			nativeAddressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[30]));
+	    			nativeAddressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[31]));
+	    			
+	    			mainV0.setCandidateNativeAddressVO(nativeAddressVO);
 	    			returnList.add(mainV0);
 	    		}
 	    	}

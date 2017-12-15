@@ -28,10 +28,11 @@ public class PmRefCandidate {
 	private String  isDeleted;
 	private Long candidateId;
 	private Long partyId;
-	
+	private Long nativeAddressId;
 	
 	
 	private LocationAddress address;
+	private LocationAddress nativAddress;
 	
 	@Id
 	@Column(name="pm_ref_candidate_id")
@@ -128,6 +129,23 @@ public class PmRefCandidate {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Column(name="native_address_id")
+	public Long getNativeAddressId() {
+		return nativeAddressId;
+	}
+	public void setNativeAddressId(Long nativeAddressId) {
+		this.nativeAddressId = nativeAddressId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "native_address_id", insertable = false, updatable = false)
+	public LocationAddress getNativAddress() {
+		return nativAddress;
+	}
+	public void setNativAddress(LocationAddress nativAddress) {
+		this.nativAddress = nativAddress;
 	}	
 	
 	
