@@ -79,6 +79,7 @@ public class MailService implements IMailService{
         Properties props = new Properties();
  
         props.put("mail.smtp.host", IConstants.HOST);
+        props.put("mail.smtp.localhost","mytdp.com");
         props.put("mail.smtp.port", IConstants.PORT);
         props.put("mail.smtp.user", quickRequestVO.getFromEmailId());
         props.put("mail.smtp.socketFactory.port", IConstants.PORT);
@@ -467,6 +468,7 @@ public class MailService implements IMailService{
 		        props = new Properties();
 		 
 		        props.put("mail.smtp.host", IConstants.HOST);
+		        props.put("mail.smtp.localhost","mytdp.com");
 		        props.put("mail.smtp.port", IConstants.PORT);
 		        props.put("mail.smtp.user", IConstants.LOCALFROMEMAILID);
 		        props.put("mail.smtp.socketFactory.port", IConstants.PORT);
@@ -514,6 +516,7 @@ public class MailService implements IMailService{
 		        props = new Properties();
 		 
 		        props.put("mail.smtp.host", IConstants.HOST);
+		        props.put("mail.smtp.localhost","mytdp.com");
 		        props.put("mail.smtp.port", IConstants.PORT);
 		        props.put("mail.smtp.user", IConstants.EMAIL_USERNAME);
 		        props.put("mail.smtp.socketFactory.port", IConstants.PORT);
@@ -535,11 +538,11 @@ public class MailService implements IMailService{
 				}
 		            
 			}
-			else if(host.equalsIgnoreCase(IConstants.SERVER))
+			/*else if(host.equalsIgnoreCase(IConstants.SERVER))
 			{
 				props = System.getProperties();
 				session = Session.getDefaultInstance(props);
-			}
+			}*/
 			else
 				log.warn("Please specify the host to send the Emails");
 			
