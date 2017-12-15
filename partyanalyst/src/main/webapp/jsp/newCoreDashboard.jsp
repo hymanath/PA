@@ -146,7 +146,8 @@
 		<li expand-icon="training" right-nav="true">training</li>
 		<li expand-icon="cadreInsurance" right-nav="true">Insurance</li>
 		<li expand-icon="kaizala" right-nav="true">kaizala</li>
-		<li expand-icon="trainingCampInfo" right-nav="true">TrainingCampInfo</li>
+		<!--<li expand-icon="trainingCampInfo" right-nav="true">TrainingCampInfo</li>-->
+		<li expand-icon="grivance" right-nav="true">grivance</li>
 	</ul>
 	<button class="rightNavigationMenuRes visible-xs">
 		<span class="icon-bar"></span>
@@ -4345,6 +4346,36 @@
             </div>
        </div>
 		<!-- Attendance End-->
+		<!-- grivance start-->
+		<!-- <div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
+			   <div class="panel panel-default panelNewCustom ">
+				   <div class="panel-heading">
+					 <div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="grivance">
+						   <h4 class="panel-title text-capital" style="width:440px;">    
+							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
+							  Grievance Efficiency 
+						   </h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="grivance">
+						   <span class="pressmeetIconExpand pull-right" expand-icon="grivance">
+						   <i class="glyphicon glyphicon-fullscreen"></i>
+						   </span>
+						</div>
+					 </div>
+				  </div>
+				   <div class="panel-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<h4 class="headingColor">Efficiency
+							<span class="pull-right glyphicon glyphicon-calendar"></span>
+							</h4>
+					    </div>
+					</div>
+				   </div>
+			  </div>
+	    </div>	 --> 
+		<!-- grivance End-->
 		<!-----Training Camp Info Start
 			<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="trainingCampInfo">
 				<div class="panel panel-default panelNewCustom">
