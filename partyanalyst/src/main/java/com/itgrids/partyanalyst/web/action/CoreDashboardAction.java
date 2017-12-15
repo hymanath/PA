@@ -5361,15 +5361,7 @@ public String getInsuraceStatusWiseComplaintsDetails()
 					}
 				}
 				Long activityMemberId = jObj.getLong("activityMemberId");
-				
-			    /*Long userAccessLevelId = jObj.getLong("userAccessLevelId");
-				List<Long> userAccessLevelValues=new ArrayList<Long>();
-				JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
-				if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
-					for( int i=0;i<userAccessLevelValuesArray.length();i++){
-						userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
-					}
-				}*/
+			
 				
 				List<Long> enrollmentYrIds=new ArrayList<Long>();
 				JSONArray enrollmentYrIdsArray=jObj.getJSONArray("enrollmentYrIds");
@@ -5548,4 +5540,3 @@ public String getTrainingQuizDetails(){
 	 return Action.SUCCESS;
  }
 }
-//public List<TrainingCampSurveyVO> getFeedbackOnLeaders(Long userAccessLevelId, List<Long> userAccessLevelValues, List<Long> trainingProgramIds,Long traingCampEnrollmentYearId,List<Long> trainingCampLevelIds,Long groupType)
