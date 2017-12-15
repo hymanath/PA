@@ -22,6 +22,8 @@ import com.itgrids.dao.INregaComponentStatusDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.IPrConstituencyDAO;
 import com.itgrids.dao.IPrDistrictDAO;
+import com.itgrids.dao.IPrPanchayatDAO;
+import com.itgrids.dao.IPrTehsilDAO;
 import com.itgrids.dao.IWebserviceCallDetailsDAO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
@@ -72,6 +74,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	private INregaComponentStatusDAO nregaComponentStatusDAO;
 	
 	private String sessionToken;
+	@Autowired
+	private IPrTehsilDAO prTehsilDAO;
+	@Autowired
+	private IPrPanchayatDAO prPanchayatDAO;
 	/*
 	 * Date : 16/06/2017
 	 * Author :Sravanth
@@ -6142,8 +6148,13 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setLastFin(jObj.getString("LAST_FIN"));
 	 	    				vo.setLastFinSameDay(jObj.getString("LAST_FIN_SAMEDAY"));
 	 	    				vo.setFrom2014(jObj.getString("FROM_2014"));
-	 	    				vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getFinAsOfToday())*100.00)/Double.valueOf(vo.getLastFinSameDay())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage())-Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getFinAsOfToday()) * 100.00)/ Double.valueOf(vo.getLastFinSameDay())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
+								vo.setParameter("Decrement");
+							} else {
+								vo.setParameter("Increment");
+							}
 	 	    				returnList.add(vo);
 	 	    			}
 	 	    		}
@@ -6153,5 +6164,215 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at getManWorkDaysOfNregaMonthWise - NREGSTCSService service", e);
 		}
 		return returnList;
+	}
+	
+	/*
+	 * Date : 13/12/2017 
+	 * Author :Nandhini
+	 * @description : getManWorksExpenditureDetails
+	 */
+	public List<NregsDataVO> getManWorksExpenditureDetails(InputVO inputVO) {
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
+		try {
+
+			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APYearWiseService/APYearWiseData";
+
+			String str = convertingInputVOToString(inputVO);
+
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+
+				if (output != null && !output.isEmpty()) {
+					JSONArray finalArray = new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							NregsDataVO vo = new NregsDataVO();
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+							vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUE_ID").toString().trim().length() > 0 ? jObj.getString("UNIQUE_ID") : "1").toString()));
+							vo.setDistrict(jObj.getString("DISTRICT"));
+							vo.setConstituency(jObj.getString("CONSTITUENCY"));
+							vo.setMandal(jObj.getString("MANDAL"));
+							vo.setPanchayat(jObj.getString("PANCHAYAT"));
+							vo.setThisMonth(jObj.getString("MONTH"));
+							vo.setPerDays1516(jObj.getLong("PER_DAYS_1516"));
+							vo.setWageExp1516(jObj.getLong("WAGE_EXP_1516"));
+							vo.setMatExp1516(jObj.getLong("MAT_EXP_1516"));
+							vo.setTotal1516(jObj.getLong("TOT_1516"));
+							vo.setPerDays1617(jObj.getLong("PER_DAYS_1617"));
+							vo.setWageExp1617(jObj.getLong("WAGE_EXP_1617"));
+							vo.setMatExp1617(jObj.getLong("MAT_EXP_1617"));
+							vo.setTotal1617(jObj.getLong("TOT_1617"));
+							vo.setPerDays1718(jObj.getLong("PER_DAYS_1718"));
+							vo.setWageExp1718(jObj.getLong("WAGE_EXP_1718"));
+							vo.setMatExp1718(jObj.getLong("MAT_EXP_1718"));
+							vo.setTotal1718(jObj.getLong("TOT_1718"));
+							vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00) / Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							returnList.add(vo);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getManWorksExpenditureDetails - NREGSTCSService service", e);
+		}
+		return returnList;
+	}
+
+	/*
+	 * Date : 13/12/2017 
+	 * Author :Nandhini
+	 * @description : getManWorksExpenditureAbstarct
+	 */
+	public List<NregsDataVO> getManWorksExpenditureAbstarct(InputVO inputVO) {
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
+		try {
+
+			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APYearWiseService/APYearWiseData";
+
+			String str = convertingInputVOToString(inputVO);
+
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+
+				if (output != null && !output.isEmpty()) {
+					JSONArray finalArray = new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							NregsDataVO vo = new NregsDataVO();
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+							if (inputVO.getMonthType() != null
+									&& inputVO.getMonthType().trim().equalsIgnoreCase(jObj.getString("MONTH"))) {
+								vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUE_ID").toString().trim().length() > 0 ? jObj.getString("UNIQUE_ID") : "1").toString()));
+								// vo.setMatExp1617(jObj.getLong("MAT_EXP_1617"));
+								vo.setTotal1617(jObj.getLong("TOT_1617"));
+								// vo.setPerDays1718(jObj.getLong("PER_DAYS_1718"));
+								vo.setWageExp1718(jObj.getLong("WAGE_EXP_1718"));
+								vo.setMatExp1718(jObj.getLong("MAT_EXP_1718"));
+								vo.setTotal1718(jObj.getLong("TOT_1718"));
+								vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00)/ Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
+									vo.setParameter("Decrement");
+									String[] Arr = vo.getPercentage().split("-");
+									vo.setPercentage(Arr[1]);
+								} else {
+									vo.setParameter("Increment");
+									vo.setPercentage(vo.getPercentage());
+								}
+								returnList.add(vo);
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getManWorksExpenditureDetails - NREGSTCSService service", e);
+		}
+		return returnList;
+	}
+
+	/*
+	 * Date : 13/12/2017
+	 *  Author :Nandhini
+	 * @description : getAllDistricts
+	 */
+	public List<IdNameVO> getAllDistricts() {
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> districtList = prDistrictDAO.getAllDistrictsFrState();
+			if (commonMethodsUtilService.isListOrSetValid(districtList)) {
+				for (Object[] param : districtList) {
+					IdNameVO locationVO = new IdNameVO();
+					locationVO.setLocationIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(locationVO);
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllDistricts - NREGSTCSService service", e);
+		}
+		return finalList;
+	}
+
+	/*
+	 * Date : 13/12/2017 
+	 * Author :Nandhini
+	 * @description : getConstituiences For District
+	 */
+	public List<IdNameVO> getAllConstituiencesFrDistrict(InputVO inputVO) {
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> constitueicesList = prConstituencyDAO.getAllConstutiensFrDistrict(inputVO.getLocationIdStr());
+			if (commonMethodsUtilService.isListOrSetValid(constitueicesList)) {
+				for (Object[] param : constitueicesList) {
+					IdNameVO locationVO = new IdNameVO();
+					locationVO.setLocationIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(locationVO);
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllConstituiencesFrDistrict - NREGSTCSService service", e);
+		}
+		return finalList;
+	}
+
+	/*
+	 * Date : 13/12/2017
+	 *  Author :Nandhini
+	 * @description : getTehsiles For Constituency
+	 */
+	public List<IdNameVO> getTehsilesFrConstituency(InputVO inputVO) {
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> tehsilList = prTehsilDAO.getTehsilFrConstituency(inputVO.getLocationIdStr());
+			if (commonMethodsUtilService.isListOrSetValid(tehsilList)) {
+				for (Object[] param : tehsilList) {
+					IdNameVO locationVO = new IdNameVO();
+					locationVO.setLocationIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(locationVO);
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTehsilesFrConstituency - NREGSTCSService service", e);
+		}
+		return finalList;
+	}
+
+	/*
+	 * Date : 13/12/2017 
+	 * Author :Nandhini
+	 * @description : getPanchayts For Tehsil
+	 */
+	public List<IdNameVO> getPanchayatsFrTehsil(InputVO inputVO) {
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> panchayatList = prPanchayatDAO.getpanchayatsFrTehsil(inputVO.getLocationIdStr());
+			if (commonMethodsUtilService.isListOrSetValid(panchayatList)) {
+				for (Object[] param : panchayatList) {
+					IdNameVO locationVO = new IdNameVO();
+					locationVO.setLocationIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(locationVO);
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPanchayatsFrTehsil - NREGSTCSService service", e);
+		}
+		return finalList;
 	}
 }

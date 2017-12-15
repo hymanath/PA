@@ -76,4 +76,10 @@ public interface INREGSTCSService {
 	public InputVO saveNregaComponentComments(Long componentComentId,Long statusId,String comment,String actionType,String uniqueCode);
 	public List<InputVO> getNregaComponentStatus(InputVO vo);
 	public List<NregsDataVO> getManWorkDaysOfNregaMonthWise(InputVO inputVO);
+	public List<NregsDataVO> getManWorksExpenditureDetails(InputVO inputVO);
+	public List<NregsDataVO> getManWorksExpenditureAbstarct(InputVO inputVO);
+	public List<IdNameVO> getAllDistricts();
+	public List<IdNameVO> getAllConstituiencesFrDistrict(InputVO inputVO);
+	public List<IdNameVO> getTehsilesFrConstituency(InputVO inputVO);
+	public List<IdNameVO> getPanchayatsFrTehsil(InputVO inputVO);
 }
