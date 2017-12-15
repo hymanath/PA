@@ -25,6 +25,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.NregsFmsWorksVO;
+import com.itgrids.dto.PageComponentVO;
 import com.itgrids.dto.ResultVO;
 import com.itgrids.service.IConstituencyWiseWorkStatusService;
 import com.itgrids.service.IFundManagementDashboardService;
@@ -360,5 +361,11 @@ public class FundManagementDashboardController {
 		public @ResponseBody List<LocationVO> getDepartmentDetails(){
 			List<LocationVO> loctionsList = constituencyWiseWorkStatusService.getDepartmentNames();
 			return loctionsList;
+		}
+		
+		@PostMapping("/getPageWiseComponentDetails")
+		public @ResponseBody List<PageComponentVO> getPageWiseComponentDetails(){
+			List<PageComponentVO> returnList = fundManagementDashboardService.getPageWiseComponentDetails();
+			return returnList;
 		}
 }

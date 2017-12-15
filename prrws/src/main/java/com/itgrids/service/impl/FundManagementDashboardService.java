@@ -38,12 +38,14 @@ import com.itgrids.dao.IFundSanctionMatrixDetailsDAO;
 import com.itgrids.dao.IFundSanctionMatrixRangeDAO;
 import com.itgrids.dao.IGovtSchemeDAO;
 import com.itgrids.dao.IGrantTypeDAO;
+import com.itgrids.dao.IPageComponentDAO;
 import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.IPrTehsilDAO;
 import com.itgrids.dao.ISubProgramDAO;
 import com.itgrids.dao.ITehsilConstituencyDAO;
 import com.itgrids.dao.ITehsilDAO;
+import com.itgrids.dao.impl.PageComponentDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.FundMatrixVO;
 import com.itgrids.dto.FundSchemeVO;
@@ -53,9 +55,11 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.NregsFmsWorksVO;
+import com.itgrids.dto.PageComponentVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.model.GovtScheme;
 import com.itgrids.model.GrantType;
+import com.itgrids.model.PageComponent;
 import com.itgrids.service.IFundManagementDashboardService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -110,6 +114,9 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	private WebServiceUtilService webServiceUtilService;
 	@Autowired
 	private IPrTehsilDAO prTehsilDAO;
+	@Autowired
+	private IPageComponentDAO PageComponentDAO;
+	
 	@Override
 	/*
 	 * Date : 05/06/2017
@@ -4190,4 +4197,52 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
    	 return returnList;
    }
    /* End */ 
+    
+    public List<PageComponentVO> getPageWiseComponentDetails(){
+    	List<PageComponentVO> returnList = new ArrayList<PageComponentVO>(0);
+    	try {
+			List<Object[]> list = PageComponentDAO.getPageWiseComponents();
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long pageId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					PageComponentVO vo = getMatchedVO(returnList, pageId);
+					if(vo == null){
+						vo = new PageComponentVO();
+						vo.setId(pageId);
+						vo.setName(obj[1] != null ? obj[1].toString():"");
+							PageComponentVO subvo = new PageComponentVO();
+							subvo.setId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+							subvo.setName(obj[3] != null ? obj[3].toString():"");
+							subvo.setOrder(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							vo.getSubList().add(subvo);
+						returnList.add(vo);
+					}else{
+						PageComponentVO subvo = new PageComponentVO();
+						subvo.setId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						subvo.setName(obj[3] != null ? obj[3].toString():"");
+						subvo.setOrder(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+						vo.getSubList().add(subvo);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured at getPageWiseComponentDetails() in FundManagementDashboardService class ", e);
+		}
+    	return returnList;
+    }
+    
+    private PageComponentVO getMatchedVO(List<PageComponentVO> list,Long id) {
+   	 try {
+   		 if (list == null || list.size() == 0 )
+   			 return null;
+   		 for(PageComponentVO vo:list) {
+   			 if (vo.getId() == id) {
+   				 return vo;
+   			 }
+   		 }
+   	 } catch (Exception e) {
+   		 LOG.error(" Exception raised at getMatchedVO () in FundManagementDashboardService class  ",e); 
+   	 }
+   	 return null;
+   }
 }
