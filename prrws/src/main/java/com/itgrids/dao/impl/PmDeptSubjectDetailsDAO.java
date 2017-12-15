@@ -27,14 +27,16 @@ public class PmDeptSubjectDetailsDAO extends GenericDaoHibernate<PmDeptSubjectDe
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.pmSubjectId,model.pmSubject.subject "+
 				  " from PmDeptSubjectDetails model " +
-				  " where model.pmDepartmentId = :deptId and model.isDeleted = 'N' and model.pmSubject.isDeleted = 'N'  order by model.pmDepartmentId asc ");
+				  " where model.isDeleted = 'N' and model.pmSubject.isDeleted = 'N' ");
+		if(deptId != null && deptId.longValue()>0L){
+			sb.append(" and model.pmDepartmentId = :deptId   ");
+		}
+		sb.append("  order by model.pmSubject.subject asc   ");
 		Query qry = getSession().createQuery(sb.toString());
 		if(deptId != null && deptId.longValue() >0l){
 			qry.setParameter("deptId", deptId);
 		}
 		return qry.list();
 	}
-
-	
 
 }
