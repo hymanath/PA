@@ -29,6 +29,8 @@ public class Petition {
 	private String grievanceDescription;
 	private String isDeleted;
 	private Long pmStatusId;
+	private Long insertedUserId;
+	private Long updatedUserId;	
 	private String representeeType;
 	
     private User insertedUser;
@@ -165,6 +167,21 @@ public class Petition {
 	}
 	public void setRepresenteeType(String representeeType) {
 		this.representeeType = representeeType;
+	}
+	
+	@Column(name="inserted_user_id")
+	public Long getInsertedUserId() {
+		return insertedUserId;
+	}
+	public void setInsertedUserId(Long insertedUserId) {
+		this.insertedUserId = insertedUserId;
+	}
+	@Column(name="updated_user_id")
+	public Long getUpdatedUserId() {
+		return updatedUserId;
+	}
+	public void setUpdatedUserId(Long updatedUserId) {
+		this.updatedUserId = updatedUserId;
 	}
 	
 

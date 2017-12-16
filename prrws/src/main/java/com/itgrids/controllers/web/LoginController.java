@@ -37,6 +37,10 @@ public class LoginController {
         return "login";
     }
 	
+	@RequestMapping("/petitionsLoginPage")
+    public String petitionsLoginPage() {
+        return "petitionsLoginPage";
+    }
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
     public String viewDashboard(HttpServletRequest request) {
