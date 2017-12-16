@@ -5212,7 +5212,8 @@
 	}
 	
 	$(document).on("click",".overViewDtlsSwatchBharatCls",function(){
-		window.open('swatchBharatIHHLInfo','_blank');
+		//window.open('swatchBharatIHHLInfo','_blank');
+		window.open('mgnregsIHHLInfo','_blank');
 		/* $("#sbModalDivId").modal('show');
 		var str='';
 		str+='<div id="overViewBlockId"></div>';
