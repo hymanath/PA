@@ -41,8 +41,8 @@ public class LoginController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
     public String viewDashboard(HttpServletRequest request) {
 		UserVO uservo = (UserVO) request.getSession().getAttribute("User");
-		if (uservo==null){
-	      return "login";
+		if (uservo==null){// default dashboard for users, direct url access 
+	      return "MGNREGS";
 	    }else{
 	      return "MGNREGS";
 	    }
