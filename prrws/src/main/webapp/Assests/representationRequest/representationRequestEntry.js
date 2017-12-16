@@ -25,6 +25,7 @@ $(document).on("click",".removeWorkCls",function(){
 	$('#'+divIdStr+'').remove();
 });
 $(document).on("click",".selfRepresenceCls",function(){
+	refCandCount=0;
 	if($(this).is(":checked")){
 		globalInnerWorksCount=1;// minimum work =1
 		var typeVal =  $(this).attr("attr_type")
@@ -40,7 +41,7 @@ $(document).on("click",".selfRepresenceCls",function(){
 			globalWorkTypeCount='';
 			globalWorkTypeCount=0;
 			buildSelfAndRepresenteeDetails(typeVal)
-			getAllDistrictsListInState();
+			getAllDistrictsListInState("");
 			getPetitionDesignationLst(typeVal);
 		}
 	}
@@ -289,13 +290,13 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		str+='</div>';
 		
 		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-3">';
+			/*str+='<div class="col-sm-3">';
 				str+='<label>VOTER ID</label>';
 				str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
 				
 			str+='</div>';
+			*/
 			
-			/*
 			str+='<div class="col-sm-2">';
 				str+='<label>VOTER ID</label>';
 				str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
@@ -305,7 +306,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='<label></label>';
 				str+='<input type="button" class="btn btn-success btn-md m_top20" id="getVoterDetailsId" value="Get Details" ></input>';
 			str+='</div>';
-			*/
+			
 			str+='<div class="col-sm-3">';
 				str+='<label>NAME</label>';//$("#name"+typeVal+"Err").html("<h5>Please Enter Name</h5>");
 				str+='<input type="text"  name="name"  value="" class="form-control m_top10 height45" id="name'+typeVal+'" placeholder="Enter Name">';
@@ -579,7 +580,7 @@ $(document).on("click",".ccccc",function(){
 	$("#candidateDetails"+typeVal+"DivId").find("#candidate"+typeVal+candidateId).remove();
 	$("#candidatesAppendDiv"+candidateId).find(".representation-selected").removeClass("display_block");
 	$("#candidatesAppendDiv"+candidateId).find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
-	
+	refCandCount=parseInt(refCandCount)-parseInt(1);
 	/* alert($("#candidatesAppendDiv"+candidateId).find(".representation-selected").html())
 	$("#candidatesAppendDiv"+candidateId).find(".representation-selected").removeClass("display_block");
 	
@@ -601,7 +602,7 @@ $(document).on("click",".showRemoveIcon",function(){
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").attr("attr_candidateId");
 	
-	if(type="self"){
+	if(typeVal=="self"){
 		$('.searchCandidateCls').show();
 		$("#candidateDetails"+typeVal+"DivId").html('');	
 	}
@@ -1374,7 +1375,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 		return clonedInnerTemplate;
 }
 
-function getAllDistrictsListInState(){	
+function getAllDistrictsListInState(districtId){	
 	$("#districtrepresent").html('');
 	var json = {
 		  stateId:"1",
@@ -1393,8 +1394,12 @@ function getAllDistrictsListInState(){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			 $("#districtrepresent").append('<option value="0">Select District</option>');
-				for(var i in result){				
-					$("#districtrepresent").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				for(var i in result){
+					if(districtId == result[i].id){
+						$("#districtrepresent").append('<option value="'+result[i].id+'" selected>'+result[i].name+' </option>');
+					}else{
+						$("#districtrepresent").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
 				}
 			}
 			$("#districtrepresent").trigger('chosen:updated');
@@ -1403,12 +1408,10 @@ function getAllDistrictsListInState(){
 
 $(document).on("change","#districtrepresent",function(){
 	var levelVal = $(this).val();
-	getConstituencyNamesBiDistrictId(levelVal); 
+	getConstituencyNamesBiDistrictId(levelVal,""); 
 	
 });
-
-
-function getConstituencyNamesBiDistrictId(levelVal){
+function getConstituencyNamesBiDistrictId(levelVal,constincyId){
 	  $("#constituencyrepresent").html('');
 	  $("#constituencyrepresent").append('<option value="0">Select Constituency</option>');	
 	  $("#constituencyrepresent").trigger('chosen:updated');
@@ -1430,7 +1433,11 @@ function getConstituencyNamesBiDistrictId(levelVal){
 	}).done(function(result){
 		if(result !=null && result.length>0){	
 			for(var i in result){
-				$("#constituencyrepresent").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+				if(constincyId == result[i].locationId){
+					$("#constituencyrepresent").append('<option value="'+result[i].locationId+'" selected>'+result[i].locationName+' </option>');
+				}else{
+					$("#constituencyrepresent").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+				}
 			}
 		}
 		$("#constituencyrepresent").trigger('chosen:updated');		
@@ -1439,10 +1446,10 @@ function getConstituencyNamesBiDistrictId(levelVal){
 
 $(document).on("change","#constituencyrepresent",function(){
 	var levelVal = $(this).val();
-	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal); 
+	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,""); 
 	
 });
-function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal){
+function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,mandalId){
 	  $("#mandalrepresent").html('');	
 	  $("#mandalrepresent").append('<option value="0">Select Mandal</option>');	
 	  $("#mandalrepresent").trigger('chosen:updated');	
@@ -1466,9 +1473,17 @@ function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal){
 					var tehsilId = result[i].key;
 					var levelId = tehsilId;//tehsilId.toString().substr(1, 4);
 					if(result[i].electionType != null){
-						$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
+						if(mandalId == levelId){
+							$("#mandalrepresent").append('<option value="'+levelId+'" selected>'+result[i].value+' '+result[i].electionType+'</option>');
+						}else{
+							$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
+						}
 					}else{
-						$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'</option>');
+						if(mandalId == levelId){
+							$("#mandalrepresent").append('<option value="'+levelId+'" selected>'+result[i].value+'</option>');
+						}else{
+							$("#mandalrepresent").append('<option value="'+levelId+'">'+result[i].value+'</option>');
+						}
 					}
 			}
 		}
