@@ -1,6 +1,7 @@
 //Training Program
 var globalStateId=1; //default Ap 
 var customStartDate1 = moment().format('DD/MM/YYYY');
+var globalProgarmId=[];
 //$(".trainingDate").html(" UPTO DATE ( "+customStartDate1+" )");
  $('#dateRangeIdForTrainingCamp').on('apply.daterangepicker', function(ev, picker) {
 	customStartDate = picker.startDate.format('DD/MM/YYYY');
@@ -1106,11 +1107,37 @@ $(document).on("click",".moreTrainingBlocksIcon",function(){
 	}
 	$(".trainingDetailed").trigger("click");
 });
-$(document).on("click",".trainingDetailed",function(){
+
+$(document).on("click",".trainingMoreDetailedCls li",function(){
+	$(this).addClass("active")
+	$(this).closest("ul").removeClass("active");
+	var type = $(this).attr("attr_type");
+	if(type == "detailed"){
+		$(".trainingDetailedBlock").show();
+		$(".trainingComparisonBlock").hide();
+		$(".trainingFeedBackBlock").hide();
+		getTrainingProgramBasicCnt();
+	}else if(type == "comparision"){
+		$(".moreTrainingBlocks").show()
+		$(".trainingDetailedBlock").hide();
+		$(".trainingComparisonBlock").show();
+		$(".trainingFeedBackBlock").hide();
+		getAllItsSubUserTypeIdsByParentUserTypeIdForTrainingProgram();
+	}else if(type == "feedback"){
+		$(".moreTrainingBlocks").show()
+		$(".trainingDetailedBlock").hide();
+		$(".trainingComparisonBlock").hide();
+		$(".trainingFeedBackBlock").show();
+		getProgramIdsAction();
+		
+	}
+});	
+/* $(document).on("click",".trainingDetailed",function(){
 	$(this).addClass("active")
 	$(".trainingComparison").removeClass("active");
 	$(".trainingDetailedBlock").show();
 	$(".trainingComparisonBlock").hide();
+	$(".trainingFeedBackBlock").hide();
 	//buildTrainingProgramRslt(globalTrainingProgramsRslt);
 	getTrainingProgramBasicCnt();
 });
@@ -1119,9 +1146,21 @@ $(document).on("click",".trainingComparison",function(){
 	$(".trainingDetailed").removeClass("active");
 	$(".trainingDetailedBlock").hide();
 	$(".trainingComparisonBlock").show();
+	$(".trainingFeedBackBlock").hide();
 	$("#detailedId").closest(".trainingDetailedBlock").show();
 	getAllItsSubUserTypeIdsByParentUserTypeIdForTrainingProgram();
 });
+$(document).on("click",".trainingfeedBack",function(){
+	$(this).addClass("active")
+	$(".trainingDetailed").removeClass("active");
+	$(".trainingComparison").removeClass("active");
+	$(".trainingDetailedBlock").hide();
+	$(".trainingComparisonBlock").hide();
+	$(".trainingFeedBackBlock").show();
+	$("#detailedId").closest(".trainingDetailedBlock").show();
+	buildMoreFeedBackBlocks()
+	
+}); */
 
 $(document).on("click",".unExpandTrainingBlock",function(){
 		$(this).removeClass("unExpandTrainingBlock");
@@ -3369,3 +3408,372 @@ function buildTrainingCampBatchCenterWiseDetails(result){
 	  str+='</div>';	
   $("#specialProgramLeaderId").html(str); 
  }  
+function buildMoreFeedBackBlocks(){
+	var str='';
+	str+='<div class="border_Training_Camp">';
+		str+='<ul class="nav nav-tabs trainingCampLi" role="tablist">';
+			str+='<li role="presentation" ><a href="#feedBackOnProgram" aria-controls="feedBackOnProgram" role="tab" data-toggle="tab">Feedback on Program</a></li>';
+			str+='<li role="presentation" class="active"><a href="#feedBackOnLeader" aria-controls="feedBackOnLeader" role="tab" data-toggle="tab">Feedback on Leader</a></li>';
+			str+='<li role="presentation"><a href="#quizFeedBack" aria-controls="quizFeedBack" role="tab" data-toggle="tab">Quiz Feed Back</a></li>';
+		  str+='</ul>';
+		  
+		str+='<div class="tab-content">';
+			str+='<div role="tabpanel" class="tab-pane" id="feedBackOnProgram">';
+				str+='<div class="row" style="margin-top: 30px;">'
+					str+='<div class="col-sm-12">';
+						str+='<div id="feedBackOnProgramDetailsDivId"></div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div role="tabpanel" class="tab-pane active" id="feedBackOnLeader">';
+				str+='<div class="row">';
+					str+='<div class="m_top10">';
+						str+='<div class="col-sm-4">';
+							str+='<select class="form-control chosen-select" id="questionLevelId">';
+								str+='<option value="1" selected>Center Wise Report</option>';
+								str+='<option value="2">Distict Wise Report</option>';
+								str+='<option value="3">Parliament Wise Report</option>';
+								str+='<option value="4">Constituency Wise Report</option>';
+							str+='</select>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="row">'
+					str+='<div class="col-sm-12">';
+						str+='<div id="feedBackSurveyDetailsDivId"></div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div role="tabpanel" class="tab-pane" id="quizFeedBack">';
+				str+='<div class="row m_top20">'
+					str+='<div class="col-sm-12">';
+						str+='<div id="quizFeedBackDetailsDivId"></div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		 str+=' </div>';
+	str+='</div>';
+	
+	$("#trainingCampInfoDetailsDivId").html(str);
+	$("#questionLevelId").chosen();
+	$("#questionLevelId").trigger("chosen:updated");
+	getFeedbackOnLeaders();
+	getTrainingCampFeedBackProgramWiseDetailsAction();
+	getTrainingQuizDetailsAction()
+}
+$(document).on("change","#questionLevelId",function(){
+	getFeedbackOnLeaders();
+	getTrainingCampFeedBackProgramWiseDetailsAction();
+	getTrainingQuizDetailsAction()
+});
+function getProgramIdsAction(){
+   var jsObj ={}
+	 $.ajax({        
+	  type : 'POST',
+	  url : 'getProgramIdsAction.action',
+	  dataType : 'json',
+	  data : {task:JSON.stringify(jsObj)}
+	 }).done(function(result){
+		if(result !=null && result.length>0){
+			for(var i in result){
+				globalProgarmId.push(result[i].id)
+			}
+			
+		}
+		buildMoreFeedBackBlocks();
+		
+	 });
+}
+
+function getFeedbackOnLeaders(){
+	
+	
+  var trainingCampLevelIds=[];
+  var traingCampEnrollmentYearId = $("#tdpTriningYearId").val();
+  var groupType = $("#questionLevelId").val();
+  var levelName = $("#questionLevelId option:selected").text();
+  var trainingCampLevel = $("#trainingCampLevelId").val();
+  alert(traingCampEnrollmentYearId)
+	if(trainingCampLevel == "all"){
+		trainingCampLevelIds=[];
+		trainingCampLevelIds=[5,6,7,8,9]
+	}else if(trainingCampLevel == "mandal"){
+		trainingCampLevelIds=[];
+		trainingCampLevelIds=[5,7,9]
+	}else if(trainingCampLevel == "village"){
+		trainingCampLevelIds=[];
+		trainingCampLevelIds=[6,8]
+	}
+  
+  $("#feedBackSurveyDetailsDivId").html(spinner);
+	 var jsObj ={
+		  userAccessLevelId:globalUserAccessLevelId,
+		  userAccessLevelValuesArray:globalUserAccessLevelValues,
+		  programIdArr:globalProgarmId,
+		  traingCampEnrollmentYearId:traingCampEnrollmentYearId,
+		  trainingCampLevelIds:trainingCampLevelIds,
+		  groupType:groupType,                                                               
+		  stateId:1,      
+		  dateStr:''
+	 }
+	  
+	 $.ajax({        
+	  type : 'POST',
+	  url : 'getFeedbackOnLeadersAction.action',
+	  dataType : 'json',
+	  data : {task:JSON.stringify(jsObj)}
+	 }).done(function(result){
+		if(result !=null && result.length>0){
+			buildFeedbackOnLeaders(result,levelName);
+		}else{
+			$("#feedBackSurveyDetailsDivId").html("No Data Available");
+		}
+	 });
+}
+function buildFeedbackOnLeaders(result,levelName){
+	var collapse='';
+	
+	for(var i in result)
+	{
+		collapse+='<div class="panel-group" id="accordion'+result[i].id+'" role="tablist" aria-multiselectable="true">';
+			collapse+='<div class="panel panel-default m_top10">';
+				collapse+='<div class="panel-heading" role="tab" id="heading'+result[i].id+'" style="background-color:#f1f1f1;">';
+					if(i == 0)
+					{
+						collapse+='<a role="button" class="collapseDebatesIcon '+result[i].id+'"  data-toggle="collapse" data-parent="#accordion'+result[i].id+'" href="#collapse'+result[i].id+'" aria-expanded="true" level_name="'+result[i].name+'" aria-controls="collapse'+result[i].id+'">';
+					}else{
+						collapse+='<a role="button" class="collapseDebatesIcon collapsed '+result[i].id+'"  data-toggle="collapse" data-parent="#accordion'+result[i].id+'" href="#collapse'+result[i].id+'" level_name="'+result[i].name+'" aria-expanded="true" aria-controls="collapse'+result[i].id+'">';
+					}
+					collapse+='<h4 class="panel-title text-capital"><span class="qCss">Q</span> '+result[i].name+'</h4>';
+						
+					collapse+='</a>';
+				collapse+='</div>';
+				if(i == 0)
+				{
+					collapse+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
+				}else{
+					collapse+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
+				}
+				
+					collapse+='<div class="panel-body">';
+						collapse+='<div class="row">';
+						collapse+='<div class="col-sm-12">';
+							collapse+='<div class="table-responsive">';
+								collapse+='<table class="table" id="dataTableFeedBackSurvey'+result[i].id+'">';
+									collapse+='<thead>';
+										collapse+='<tr>';
+											collapse+='<th>'+levelName+'</th>';
+											collapse+='<th>Total Trained</th>';
+											collapse+='<th>Excellent</th>';
+											collapse+='<th>Very Good</th>';
+											collapse+='<th>Good</th>';
+											collapse+='<th>Ok</th>';
+											collapse+='<th>Poor</th>';
+										collapse+='</tr>';
+									collapse+='</thead>';
+									collapse+='<tbody>';
+										for(var j in result[i].programsList){
+											var totalCount=result[i].programsList[j].excellent+result[i].programsList[j].veryGood+result[i].programsList[j].good+result[i].programsList[j].average+result[i].programsList[j].poor
+											collapse+='<tr>';
+												collapse+='<td>'+result[i].programsList[j].name+'</td>';
+												collapse+='<td>'+totalCount+'</td>';
+												collapse+='<td>'+result[i].programsList[j].excellent+'</td>';
+												collapse+='<td>'+result[i].programsList[j].veryGood+'</td>';
+												collapse+='<td>'+result[i].programsList[j].good+'</td>';
+												collapse+='<td>'+result[i].programsList[j].average+'</td>';
+												collapse+='<td>'+result[i].programsList[j].poor+'</td>';
+											collapse+='</tr>';
+										}
+									collapse+='</tbody>';
+								collapse+='</table>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+					collapse+='</div>';
+				collapse+='</div>';
+			collapse+='</div>';
+		collapse+='</div>';
+		collapse+='</div>';
+	}
+	$("#feedBackSurveyDetailsDivId").html(collapse);
+	for(var i in result){
+		$("#dataTableFeedBackSurvey"+result[i].id).dataTable({
+			"iDisplayLength": 13,
+			"aaSorting": [],
+			"aLengthMenu": [[13, 15, 20, -1], [13, 15, 20, "All"]]
+			
+		});
+	}
+	
+	
+}
+
+function getTrainingCampFeedBackProgramWiseDetailsAction(){ 
+$("#feedBackOnProgramDetailsDivId").html(spinner);
+		var trainingCampLevelIds=[];
+		var enrollmentYrIds=[];
+		var traingCampEnrollmentYearId = $("#tdpTriningYearId").val();
+		var groupType = $("#questionLevelId").val();
+		var levelName = $("#questionLevelId option:selected").text();
+		var trainingCampLevel = $("#trainingCampLevelId").val();
+	  enrollmentYrIds.push(traingCampEnrollmentYearId)
+		if(trainingCampLevel == "all"){
+			trainingCampLevelIds=[];
+			trainingCampLevelIds=[5,6,7,8,9]
+		}else if(trainingCampLevel == "mandal"){
+			trainingCampLevelIds=[];
+			trainingCampLevelIds=[5,7,9]
+		}else if(trainingCampLevel == "village"){
+			trainingCampLevelIds=[];
+			trainingCampLevelIds=[6,8]
+		}
+		  
+	 var jsObj ={
+	  userAccessLevelId :globalUserAccessLevelId,
+	  userAccessLevelValuesArray:globalUserAccessLevelValues,
+	  programIdArr:globalProgarmId,
+	  enrollmentYrIds:enrollmentYrIds,
+	  committeeLevelIds:trainingCampLevelIds, 
+	  stateId:1, 
+	  dateStr:'' 
+	 }
+	 
+	 $.ajax({ 
+	  type : 'POST',
+	  url : 'getTrainingCampFeedBackProgramWiseDetailsAction.action',
+	  dataType : 'json',
+	  data : {task:JSON.stringify(jsObj)}
+	 }).done(function(result){
+		  if(result !=null && result.length>0){
+				buildTrainingCampFeedBackProgramWiseDetails(result);
+			}
+	 });
+}
+
+function getTrainingQuizDetailsAction(){ 
+$("#quizFeedBackDetailsDivId").html(spinner);
+		var trainingCampLevelIds=[];
+		var enrollmentYrIds=[];
+		var traingCampEnrollmentYearId = $("#tdpTriningYearId").val();
+		var groupType = $("#questionLevelId").val();
+		var levelName = $("#questionLevelId option:selected").text();
+		var trainingCampLevel = $("#trainingCampLevelId").val();
+	    enrollmentYrIds.push(traingCampEnrollmentYearId)
+		if(trainingCampLevel == "all"){
+			trainingCampLevelIds=[];
+			trainingCampLevelIds=[5,6,7,8,9]
+		}else if(trainingCampLevel == "mandal"){
+			trainingCampLevelIds=[];
+			trainingCampLevelIds=[5,7,9]
+		}else if(trainingCampLevel == "village"){
+			trainingCampLevelIds=[];
+			trainingCampLevelIds=[6,8]
+		}
+		  
+	 var jsObj ={
+	  userAccessLevelId :globalUserAccessLevelId,
+	  userAccessLevelValuesArray:globalUserAccessLevelValues,
+	  programIdArr:globalProgarmId,
+	  enrollmentYrIds:enrollmentYrIds,
+	  committeeLevelIds:trainingCampLevelIds, 
+	  stateId:1, 
+	  dateStr:'' 
+	 }
+	 
+	 $.ajax({ 
+	  type : 'POST',
+	  url : 'getTrainingQuizDetailsAction.action',
+	  dataType : 'json',
+	  data : {task:JSON.stringify(jsObj)}
+	 }).done(function(result){
+		if(result !=null && result.length>0){
+			buildTrainingQuizDetailsAction(result);
+		}
+	 });
+}
+function buildTrainingQuizDetailsAction(result){
+	var str='';
+	
+	str+='<div class="table-responsive">';
+		str+='<table class="table table-bordered" id="dataTablequizFeedBackProgram" style="width:100%">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th rowspan="2">Question</th>';
+					str+='<th rowspan="2">Total-Answered</th>';
+					str+='<th rowspan="2">Total-Correct</th>';
+					str+='<th rowspan="2">%</th>';
+					for(var i in result[0].centerList){
+						str+='<th colspan="2">'+result[0].centerList[i].name+'</th>';
+					}
+				str+='</tr>';
+				str+='<tr>';
+					for(var i in result[0].centerList){
+						str+='<th>Answered</th>';
+						str+='<th>%</th>';
+					}
+				str+='</tr>';
+				
+			str+='</thead>';
+			for(var i in result){
+				var correctAnswerPercent = (result[i].correctAnswerPercent).toFixed(2)
+				str+='<tr>';
+					str+='<td>'+result[i].question+'</td>';
+					str+='<td>'+result[i].totalMemberAnswered+'</td>';
+					str+='<td>'+result[i].totalCorrectAnswer+'</td>';
+					str+='<td>'+correctAnswerPercent+'</td>';
+					for(var j in result[i].centerList){
+						var correctAnswerPercent1 = (result[i].centerList[j].correctAnswerPercent).toFixed(2)
+						str+='<td>'+result[i].centerList[j].totalCorrectAnswer+'</td>';
+						str+='<td>'+correctAnswerPercent1+'</td>';
+					}
+				str+='</tr>';
+			}
+		str+='</table>';
+	str+='</div>';
+	
+	$("#quizFeedBackDetailsDivId").html(str);
+	$("#dataTablequizFeedBackProgram").dataTable({
+			"iDisplayLength": 13,
+			"aaSorting": [],
+			"aLengthMenu": [[13, 15, 20, -1], [13, 15, 20, "All"]]
+			
+		});
+}
+function buildTrainingCampFeedBackProgramWiseDetails(result){
+	var str='';
+	
+	str+='<div class="table-responsive">';
+		str+='<table class="table table-bordered" id="dataTablefeedBackOnProgram" style="width:100%">';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td colspan="3" class="text-center" style="background-color:#ddd;">'+result[i].question+'</td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<th>Option</th>';
+						str+='<th>Count</th>';
+						str+='<th>Percentage</th>';
+					str+='</tr>';
+				for(var j in result[i].centerList){
+					var correctAnswerPercent1 = (result[i].centerList[j].correctAnswerPercent).toFixed(2)
+					
+					str+='<tr>';
+						str+='<th>'+result[i].centerList[j].name+'</th>';
+						str+='<th>'+result[i].centerList[j].totalMemberAnswered+'</th>';
+						str+='<th>'+correctAnswerPercent1+'</th>';
+					str+='</tr>';
+				}
+				
+			}
+			str+='</tbody>';
+		str+='</table>';
+	str+='</div>';
+	
+	$("#feedBackOnProgramDetailsDivId").html(str);
+	/* $("#dataTablefeedBackOnProgram").dataTable({
+			"iDisplayLength": 13,
+			"aaSorting": [],
+			"aLengthMenu": [[13, 15, 20, -1], [13, 15, 20, "All"]]
+			
+		}); */
+}
