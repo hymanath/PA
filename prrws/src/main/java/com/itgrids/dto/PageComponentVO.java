@@ -9,6 +9,7 @@ public class PageComponentVO {
 	private String name;
 	private Long order;
 	private String shortName;
+	private String url;
 	private List<PageComponentVO> subList = new ArrayList<PageComponentVO>(0);
 	
 	
@@ -41,5 +42,11 @@ public class PageComponentVO {
 	}
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

@@ -48,6 +48,6 @@ public interface IFundManagementDashboardService {
 	public  List<NregsFmsWorksVO> getMgnregsFMSWorksDetails(InputVO inputVO);
 	public  List<NregsFmsWorksVO> getMgnregsFMSWorksDetailsByCategory(InputVO inputVO);
 	
-	public List<PageComponentVO> getPageWiseComponentDetails();
+	public List<PageComponentVO> getPageWiseComponentDetails(InputVO inputVO);
 	public ResultVO savePageWiseComponents(IdNameVO inputVO);
 }

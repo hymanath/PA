@@ -364,8 +364,8 @@ public class FundManagementDashboardController {
 		}
 		
 		@PostMapping("/getPageWiseComponentDetails")
-		public @ResponseBody List<PageComponentVO> getPageWiseComponentDetails(){
-			List<PageComponentVO> returnList = fundManagementDashboardService.getPageWiseComponentDetails();
+		public @ResponseBody List<PageComponentVO> getPageWiseComponentDetails(@RequestBody InputVO inputVO){
+			List<PageComponentVO> returnList = fundManagementDashboardService.getPageWiseComponentDetails(inputVO);
 			return returnList;
 		}
 		
