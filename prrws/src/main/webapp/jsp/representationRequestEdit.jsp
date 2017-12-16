@@ -17,7 +17,7 @@
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
-<link rel="stylesheet" type="text/css" href="Assests/Plugins/pdfexpand/source/jquery.fancybox.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.css" media="screen" />
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
@@ -224,13 +224,13 @@
 										<div class="col-sm-3">
 											<h4>REPRESENTATION BY </h4>
 												<div class="row m_top10">
-													<div class="col-sm-3">
+													<div class="col-sm-3 selfHideShow">
 														<div class="borederCss">
 															<input type="radio" name="pmRequestVO.representationType" value="SELF" id="self" attr_name="selfMemberType" class="selfRepresenceCls" attr_type="self" checked>
 															<label><h5>SELF</span></h5>
 														</div>
 													</div>
-													<div class="col-sm-6">
+													<div class="col-sm-6 RepresenteeHideShow">
 														<div class="borederCss">
 															<input type="radio" name="pmRequestVO.representationType"  value="REPRESENT"  id="Representee"  class="selfRepresenceCls" attr_type="represent" attr_name="representMemberType"  >
 															<label><h5 class="text-capital">Representee</h5></label>
@@ -238,6 +238,8 @@
 													</div>
 												</div>
 										</div>
+									</div>
+									<div class="row m_top20 loadingCls">
 									</div>
 									<div class="row m_top20">
 										<div class="col-sm-12">
@@ -319,7 +321,7 @@
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/editUploadFile.js?v=1.0.5"></script>                
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/editUploadFile2.js?v=1.0.5"></script>                
 <!-- for file uploader -->
-<script type="text/javascript" src="Assests/Plugins/pdfexpand/source/jquery.fancybox.js"></script>
+<script type="text/javascript" src="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.js"></script>
 <script src="Assests/representationRequest/representationRequestEdit.js" type="text/javascript"></script>
 </body>
 </html>

@@ -1,10 +1,12 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var globalRepresentType='';
 var globalWorkTypeCount=0;
 var globalDepartmentsList='';
 var globalSubjectList='';
 var globalSubSubjectsList='';
 var globalWorkTypeList='';
 var globaldistrictList='';
+var globalDesignationList='';
 var alreadyCandidateId=[];
 var searchCandidateIds=[];
 var diffArr=[];
@@ -12,7 +14,53 @@ var commonArr=[];
 getSubjectPetitionsDepartmentList();
 getWorkTypeList();
 getAllDistrictsInState("","","","onload");
+getPetitionDesignationLst();
 //District Build
+/* $(document).on("click",".selfRepresenceCls",function(){
+	if($(this).is(":checked")){
+		var typeVal =  $(this).attr("attr_type")
+		if(typeVal == "self"){
+			if(globalRepresentType == "SELF"){
+				globalDepartmentsList='';
+				globalSubjectList='';
+				globalSubSubjectsList='';
+				globalWorkTypeList='';
+				globaldistrictList='';
+				getSubjectPetitionsDepartmentList();
+				getWorkTypeList();
+				getAllDistrictsInState("","","","onload");
+			}else{
+				$("#REPRESENTEEDetailsDivId").html('');
+				alreadyCandidateId=[]
+				globalWorkTypeCount='';
+				globalWorkTypeCount=0;
+				buildSelfAndRepresenteeDetails(typeVal)
+			}
+			
+		}else if(typeVal == "represent"){
+			if(globalRepresentType == "REPRESENTEE"){
+				globalDepartmentsList='';
+				globalSubjectList='';
+				globalSubSubjectsList='';
+				globalWorkTypeList='';
+				globaldistrictList='';
+				getSubjectPetitionsDepartmentList();
+				getWorkTypeList();
+				getAllDistrictsInState("","","","onload");
+			}else{
+				$("#SELFDetailsDivId").html('');
+				alreadyCandidateId=[]
+				globalWorkTypeCount='';
+				globalWorkTypeCount=0;
+				buildSelfAndRepresenteeDetails(typeVal)
+				getAllDistrictsListInState();
+			}
+			
+			
+		}
+	}
+}); */
+
 function getAllDistrictsInState(typeVal,counterId,typeChange,type){
 	//alert(typeChange)
 	var searchType="all";
@@ -223,6 +271,7 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,type
 	});	
 }
 function getSubjectPetitionsDepartmentList(){
+	$(".loadingCls").html(spinner);
 	   var json = { 
 		  searchType:"all" // all/petitionGivenDepts
 	  };     
@@ -309,6 +358,7 @@ function getPetitionSubSubjectList(subjectId,divId,innerCount,type){
 			$("#"+divId+innerCount).trigger('chosen:updated');
 		}
 		if(type=="onload"){
+			
 			getPetitionDetails();
 		}
 		
@@ -1063,6 +1113,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 	
 }
 function getPetitionDetails(){
+	//$("#"+result.representationType+"DetailsDivId").html(str);
    var json = {
        petitionId:"1778"
     };
@@ -1076,7 +1127,9 @@ function getPetitionDetails(){
       xhr.setRequestHeader("Content-Type", "application/json");
     }
   }).done(function(result){
+	  $(".loadingCls").html('');
     if(result !=null){
+		globalRepresentType = result.representationType;
 		buildPetitionDetails(result);
 		
 	}
@@ -1088,72 +1141,91 @@ function buildPetitionDetails(result){
 	
 	if(result.representationType == "SELF"){
 		$("#self").prop("checked",true);
+		$(".RepresenteeHideShow").hide();
+		$(".selfHideShow").show();
 	}else{
 		$("#Representee").prop("checked",true);
+		$(".selfHideShow").hide();
+		$(".RepresenteeHideShow").show();
 	}
 	if(result.representationType == "REPRESENTEE"){
-		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-12">';
-				str+='<h3 class="font_weight text-capital f_22">Representee Details:</h3>';
+		for(var i in result.representeeDetailsList){
+			str+='<div class="row m_top20">';
+				str+='<div class="col-sm-12">';
+					str+='<h3 class="font_weight text-capital f_22">Representee Details:</h3>';
+				str+='</div>';
 			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-2">';
-				str+='<label>VOTER ID</label>';
-				str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+result.representationType+'" placeholder="Enter Voter ID">';
-				
-			str+='</div>';
-			str+='<div class="col-sm-1">';
-				str+='<label></label>';
-				str+='<input type="button" class="btn btn-success btn-md m_top20" id="getVoterDetailsId" value="Get Details" ></input>';
-			str+='</div>';
-			str+='<div class="col-sm-3">';
-				str+='<label>NAME</label>';
-				str+='<input type="text"  name="name"  value="" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
-				
-			str+='</div>';
-			str+='<div class="col-sm-3">';
-				str+='<label>MOBILE NO</label>';
-				str+='<input type="text" name="mobileNO" maxlength="10" value=""  class="form-control m_top10 height45" id="mobileNumber'+result.representationType+'" placeholder="Enter Mobile Number">';
-				
-			str+='</div>';
-			str+='<div class="col-sm-3">';
-				str+='<label>EMAIL-ID</label>';
-				str+='<input type="text" name="email"   value="" class="form-control m_top10 height45" id="emailId'+result.representationType+'" placeholder="Enter E-mail ID">';
-				
-			str+='</div>';
-		str+='</div>';
-		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-3">';	
-				str+='<label>DISTRICT</label>';
-				str+='<select   name="addressVO.districtId" class="form-control chosen-select m_top10" id="district'+result.representationType+'">';
-					str+='<option value="0">Select District</option>';
-				str+='</select>';
-				
-			str+='</div>';
-			str+='<div class="col-sm-3">';	
-				str+='<label>CONSTITUENCY</label>';
-				str+='<select  name="addressVO.assemblyId"   class="form-control chosen-select m_top10" id="constituency'+result.representationType+'">';
-					str+='<option value="0">Select Constituency</option>';
-				str+='</select>';
-				
-			str+='</div>';
-			str+='<div class="col-sm-3">';	
-				str+='<label>MANDAL/MUNCI.</label>';
-				str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="mandal'+result.representationType+'">';
-					str+='<option value="0">Select Mandal</option>';
-				str+='</select>';
-				
-			str+='</div>';
-			str+='<div class="col-sm-3">';	
-			str+='<label>REPRESENTEE DESIGNATION.</label>';
-			str+='<select   name="representeeDesignationId"  class="form-control chosen-select m_top10" id="designation'+result.representationType+'">';
-				str+='<option value="0">Select Designation</option>';
-			str+='</select>';
 			
-		str+='</div>';
-		str+='</div>';
+			str+='<div class="row m_top20">';
+				str+='<div class="col-sm-2">';
+					str+='<label>VOTER ID</label>';
+					str+='<input type="text"  name="voterCardNo"  value="'+result.representeeDetailsList[i].voterCardNo+'"  class="form-control m_top10 height45" id="voterId'+result.representationType+'" placeholder="Enter Voter ID">';
+					
+				str+='</div>';
+				str+='<div class="col-sm-1">';
+					str+='<label></label>';
+					str+='<input type="button" class="btn btn-success btn-md m_top20" id="getVoterDetailsId" value="Get Details" ></input>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<label>NAME</label>';
+					str+='<input type="text"  name="name"  value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
+					
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<label>MOBILE NO</label>';
+					str+='<input type="text" name="mobileNO" maxlength="10" value="'+result.representeeDetailsList[i].mobileNO+'"  class="form-control m_top10 height45" id="mobileNumber'+result.representationType+'" placeholder="Enter Mobile Number">';
+					
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<label>EMAIL-ID</label>';
+					str+='<input type="text" name="email"   value="'+result.representeeDetailsList[i].email+'" class="form-control m_top10 height45" id="emailId'+result.representationType+'" placeholder="Enter E-mail ID">';
+					
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="row m_top20">';
+				str+='<div class="col-sm-3">';	
+					str+='<label>DISTRICT</label>';
+					str+='<select   name="addressVO.districtId" class="form-control chosen-select m_top10" id="district'+result.representationType+'">';
+						for(var dis in globaldistrictList){
+							if(globaldistrictList[dis].id == result.representeeDetailsList[i].addressVO.districtId){
+								str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
+							}else{
+								str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
+							}
+						}
+					str+='</select>';
+					
+				str+='</div>';
+				str+='<div class="col-sm-3">';	
+					str+='<label>CONSTITUENCY</label>';
+					str+='<select  name="addressVO.assemblyId"   class="form-control chosen-select m_top10" id="constituency'+result.representationType+'">';
+						str+='<option value="'+result.representeeDetailsList[i].addressVO.assemblyId+'">'+result.representeeDetailsList[i].addressVO.assemblyName+'</option>';
+					str+='</select>';
+					
+				str+='</div>';
+				str+='<div class="col-sm-3">';	
+					str+='<label>MANDAL/MUNCI.</label>';
+					str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="mandal'+result.representationType+'">';
+						str+='<option value="'+result.representeeDetailsList[i].addressVO.tehsilId+'">'+result.representeeDetailsList[i].addressVO.tehsilName+'</option>';
+					str+='</select>';
+					
+				str+='</div>';
+				str+='<div class="col-sm-3">';	
+				str+='<label>REPRESENTEE DESIGNATION.</label>';
+				str+='<select   name="representeeDesignationId"  class="form-control chosen-select m_top10" id="designation'+result.representationType+'">';
+					for(var dig in globalDesignationList){
+						if(globalDesignationList[dig].id == result.representeeDetailsList[i].addressVO.districtId){
+							str+='<option value="'+globalDesignationList[dig].key+'" selected>'+globalDesignationList[dig].value+'</option>';
+						}else{
+							str+='<option value="'+globalDesignationList[dig].key+'">'+globalDesignationList[dig].value+'</option>';
+						}
+					}
+				str+='</select>';
+				
+			str+='</div>';
+			str+='</div>';
+		}
+		
 	}
 	
 	str+='<div class="row">';
@@ -1611,6 +1683,12 @@ function buildPetitionDetails(result){
 		str+='<div class="row">';
 			str+='<div class="col-sm-12"><span class="addLocationCss m_top10 pull-right cloned_Element" block-clone-counter-'+result.representationType+'="'+addWorkTypeCountMain+'" style="cursor:pointer;" block-clone-'+result.representationType+'="'+globalWorkTypeCount+'" attr_type="'+result.representationType+'">ADD WORK TYPE </span></div>';
 		str+='</div>';
+	str+='<div class="row m_top10">';
+		str+='<div class="col-sm-12">';
+				//str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD REFERRAL</button>';
+				str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 saveRepresentRequestDetails" style="cursor:pointer;background-color:green;" attr_type="'+result.representationType+'">UPDATE DETAILS</span><span id="savingDetailsSpinner"></span><span class="col-sm-offset-4" id="statusMsgAppntReqt"></span></div>';
+		str+='</div>';
+	str+='</div>';
 		
 			$("#"+result.representationType+"DetailsDivId").html(str);
 			
@@ -1623,4 +1701,210 @@ function buildPetitionDetails(result){
 }
 function openDoc(docmnt){
 	 window.open(docmnt);
+}
+function getPetitionDesignationLst(){
+	
+	  var json = {
+		   searchType:"all"// all/refCandidateDesignations/petitionGivenRefCandidateDesignations
+	  };
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionDesignationList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			globalDesignationList=result;
+		}
+		
+	});	
+
+}
+
+$(document).on("click",".saveRepresentRequestDetails",function(){
+	
+	
+	
+	
+	$("#savingDetailsSpinner").html(spinner)
+	 var formData = new FormData();
+	$('#adminProfileForm input').each(
+		  function(){			  
+			var input = $(this);
+			var text =input.attr('type');
+			var id = input.attr('id');
+			//debugger;
+			if (typeof id !== typeof undefined && id !== false) {
+				if(text=='text' || text=='hidden'){
+					var name = $('#'+id+'').attr('name');
+					//alert($('#'+id+'').val());
+					formData.append(name, $('#'+id+'').val());
+				}else if(text=='radio'){
+					if($('#'+id+'').is(':checked')){
+						var name = $('#'+id+'').attr('name');
+						formData.append(name, $('#'+id+'').val());
+					}
+				}else if(text=='file'){
+					var name = $('#'+id+'').attr('attr_name');//attr_image_tyep="refImage"  
+					//var imageType = $('#'+id+'').attr('attr_image_tyep');
+					if(this.files !=null && this.files.length>0){
+							for(var i = 0; i < this.files.length; i++){
+							//	alert(name+".fileList["+i+"]");
+								formData.append(name+".fileList["+i+"]", this.files[i]);
+								
+							//alert(i)
+							//console.log(this.files[i]);
+							/*if(imageType == 'refImage'){
+								formData.append(name+".fileList["+i+"]", this.files[i]);
+								//formData.append("filesList["+i+"]", this.files[i]);
+							}else if(imageType == 'projImage'){
+								//formData.append("workFilesList["+i+"]", this.files[i]);
+								formData.append(name+".fileList["+i+"]", this.files[i]);
+							}
+							*/
+						}
+					}
+				}
+			}			
+		}
+	);
+	$('#adminProfileForm textarea').each(
+		  function(){			  
+			var input = $(this);
+				var id = input.attr('id');
+				if (typeof id !== typeof undefined && id !== false) {
+				var name = $('#'+id+'').attr('name');
+				formData.append(name, $('#'+id+'').val());
+			}
+		}
+	);
+	
+	$('#adminProfileForm select').each(
+		  function(){			  
+				var input = $(this);
+				var id = input.attr('id');
+				if (typeof id !== typeof undefined && id !== false) {
+					var name = $('#'+id+'').attr('name');
+					formData.append(name, $('#'+id+'').val());
+			}
+		}
+	);
+	
+	  $.ajax({
+			url: $("#adminProfileForm").attr("action"),
+			data: formData,
+			type: "POST",               
+			processData: false,
+			contentType: false,
+			success: function(result) {
+				$("#savingDetailsSpinner").html('')
+				if(result!=null){
+				  if(result.responseCode == "0"){
+					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Updated Successfully</h3></center>").fadeOut(4000);
+					  
+						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); 
+						window.location.reload(); 
+						$(".defaultCheckCls").prop("checked",true)},6000);
+						 
+				  }else{
+					  $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Updated Failed..Try Later</h3></center>").fadeOut(4000);
+					  setTimeout(function () {
+						 
+						}, 500);
+						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
+				  }
+				}else{
+					setTimeout(function () {
+						 $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Updated Failed..Try Later</h3></center>").fadeOut(4000);
+						}, 500);
+						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
+				 }
+				 
+				
+			},
+			error: function(request,error) { 
+				$("#savingDetailsSpinner").html('')
+				alert("error");				
+			}
+     });	 
+
+});
+
+$(document).on("change","#districtREPRESENTEE",function(){
+	var levelVal = $(this).val();
+	getConstituencyNamesBiDistrictId(levelVal); 
+	
+});
+
+
+function getConstituencyNamesBiDistrictId(levelVal){
+	  $("#constituencyREPRESENTEE").html('');
+	  $("#constituencyREPRESENTEE").append('<option value="0">Select Constituency</option>');	
+	  $("#constituencyREPRESENTEE").trigger('chosen:updated');
+	   var searchType= "all";		
+	  var json = {
+		  districtId:levelVal,
+		  searchType:"all",
+		  searchId:0
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getConstituencyNamesByDistrictId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){	
+			for(var i in result){
+				$("#constituencyREPRESENTEE").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+			}
+		}
+		$("#constituencyREPRESENTEE").trigger('chosen:updated');		
+	});	
+}
+
+$(document).on("change","#constituencyREPRESENTEE",function(){
+	var levelVal = $(this).val();
+	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal); 
+	
+});
+function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal){
+	  $("#mandalREPRESENTEE").html('');	
+	  $("#mandalREPRESENTEE").append('<option value="0">Select Mandal</option>');	
+	  $("#mandalREPRESENTEE").trigger('chosen:updated');	
+	  var json = {
+		  constituencyId:levelVal,
+		  searchType:"all",
+		  searchId:0
+		}        
+	$.ajax({                
+		type:'POST',    
+		url: 'getTehsilsAndLocalElectionBodyForConstituencyId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){			 		
+			for(var i in result){
+					var tehsilId = result[i].key;
+					var levelId = tehsilId;//tehsilId.toString().substr(1, 4);
+					if(result[i].electionType != null){
+						$("#mandalREPRESENTEE").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
+					}else{
+						$("mandalREPRESENTEE").append('<option value="'+levelId+'">'+result[i].value+'</option>');
+					}
+			}
+		}
+		$("#mandalREPRESENTEE").trigger('chosen:updated');
+	});	
 }
