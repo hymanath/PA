@@ -167,7 +167,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 						}
 					}
-				}else if (commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList()) && pmRequestVO.getRepresentationType() != null &&	 pmRequestVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE") ){
+				}else if (commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList()) && pmRequestVO.getRepresentationType() != null &&	 pmRequestVO.getRepresentationType().equalsIgnoreCase("REPRESENT") ){
 					Long orderNo =0L;
 					List<Long> existingRefIds = new ArrayList<Long>(0);
 					for (PmRequestVO refVO : pmRequestVO.getReferList()) {
@@ -179,7 +179,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									if(commonMethodsUtilService.isListOrSetValid(pmRefCandidateList)){
 										for (PmRefCandidateDesignation pmRefDesignation : pmRefCandidateList) {
 											
-											if(existingRefIds.contains(refVO.getRefCandidateId())){
+											if(!existingRefIds.contains(refVO.getRefCandidateId())){
 												existingRefIds.add(refVO.getRefCandidateId());
 												orderNo=orderNo+1L;
 											}
@@ -824,7 +824,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 returnVO.getFileList().addAll(petitionFilesListMap.values());
 						 }
 						 
-						 if(returnVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE")){
+						 if(returnVO.getRepresentationType().equalsIgnoreCase("REPRESENT")){
 							 PmRequestVO  representeeVO = new PmRequestVO();
 							 representeeVO.setRepresenteeId(commonMethodsUtilService.getLongValueForObject(param[30]));					
 							 representeeVO.setName(commonMethodsUtilService.getStringValueForObject(param[0]));

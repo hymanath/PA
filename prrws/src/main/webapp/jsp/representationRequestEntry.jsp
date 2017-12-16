@@ -35,12 +35,12 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
+					<!--<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>-->
 					<p> PETITIONS MANAGEMENT SYSTEM </p>
 				</div>
 				
 				<div class="col-sm-3 col-xs-12 pull-right">
-					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
+					<!--<i class="glyphicon glyphicon-th menu-cls pull-right"></i>-->
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
 							<div class="row">
@@ -200,7 +200,7 @@
 <div class="container-fluid">
 		<div class="row m_top10 ">
 			<div class="col-md-12 col-sm-12 ">
-			<img src="Assests/images/Banner-A.png" class="logo" style=" background-color: #0071BC; width: 1550px;height: 200px"/>
+			<img src="Assests/images/Banner-A.png" class="logo" style=" background-color: #0071BC; width: 1315px;height: 200px"/>
 			</div>
 		</div>		
 	</div>

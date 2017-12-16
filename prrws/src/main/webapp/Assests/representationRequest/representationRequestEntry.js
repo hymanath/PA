@@ -383,7 +383,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		str+='<div class="row m_top10">';
 				str+='<div class="col-sm-8">';
 					str+='<label>COMPLETE WORK DISCRIPTION <span class="starColor">*</span></label>';
-					str+='<input type="text"  name="worksList[0].workName"  value="" class="form-control m_top5 height45" id="name'+typeVal+'" placeholder="Enter Name">';
+					str+='<input type="text"  name="worksList[0].workName"  value="" class="form-control m_top5 height45" id="workName'+typeVal+'" placeholder="Enter Name">';
 					str+='<span id="completeWorkNameId'+typeVal+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
@@ -411,7 +411,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	str+='<div class="row m_top10">';
 			str+='<div class="col-sm-12">';
 					//str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD REFERRAL</button>';
-					str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 saveRepresentRequestDetails" style="cursor:pointer;background-color:green;" attr_type="'+typeVal+'">SAVE DETAILS</span><span id="savingDetailsSpinner"></span><span class="col-sm-offset-4" id="statusMsgAppntReqt"></span></div>';
+					str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 saveRepresentRequestDetails" style="cursor:pointer;background-color:green;" attr_type="'+typeVal+'" id="saveButtonId" >SAVE DETAILS</span><span id="savingDetailsSpinner"></span><span class="col-sm-offset-4" id="statusMsgAppntReqt"></span></div>';
 			str+='</div>';
 		str+='</div>';
 		
@@ -535,8 +535,13 @@ $(document).on("click",".candidateAddedView",function(){
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $(this).attr("attr_candidateId");
 	var representeeType='SELF';
-	if(typeVal=='representee'){
+	if(typeVal=='represent'){
 		representeeType='REPRESENTEE';
+	}else{
+		if(refCandCount == 1){
+			alert('Only one Member allowed for SELF Representee Petition.');
+			return;
+		}
 	}
 		
 	alreadyCandidateId.push(parseInt(candidateId));
@@ -549,9 +554,11 @@ $(document).on("click",".candidateAddedView",function(){
 	$("#fileUpload"+typeVal+candidateId).append('<div class="col-sm-4" style="margin-top:-20px;"><label>REFERAL LETTER</label><input type="file"   attr_name="referList['+refCandCount+']" name="" attr_image_tyep="refImage"  id="mainBlockFileUpload'+candidateId+''+typeVal+'" multiple="multiple" class=""/></div>');
 	if(representeeType =='SELF'){
 		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="refCandidateId" value="'+candidateId+'" />');	
+		$('.searchCandidateCls').hide();
 	}
 	else if(representeeType =='REPRESENTEE'){
-		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="referList['+refCandCount+'].refCandidateId" value="'+candidateId+'" />');	
+		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="referList['+refCandCount+'].refCandidateId" value="'+candidateId+'" />');
+		 
 	}
 	refCandCount=refCandCount+1;
 	$(this).parent().find(".representation-selected").addClass("display_block");
@@ -590,8 +597,14 @@ $(document).on("click",".ccccc",function(){
 	return;
 });
 $(document).on("click",".showRemoveIcon",function(){
+	
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").attr("attr_candidateId");
+	
+	if(type="self"){
+		$('.searchCandidateCls').show();
+		$("#candidateDetails"+typeVal+"DivId").html('');	
+	}
 	
 	$(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
 	//$("#candidateDetails"+typeVal+"DivId").find(".showRemoveIcon").hide();
@@ -1599,7 +1612,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	var mandalInnerId='';
 	
 	var flag = true;
-	
+	$('#saveButtonId').hide();
 	completeWorkName = $("#name"+typeVal).val();
 	noofWorks = $("#noofWork"+typeVal).val();
 	workCost = $("#workCost"+typeVal).val();
@@ -1608,18 +1621,21 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	
 	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName.trim() == '' || completeWorkName == null){
 		$("#completeWorkNameId"+typeVal).html("<h5 style='color:red;'>Please Enter Work Name</h5>");
+		$('#saveButtonId').show();
 		return;
 	}else{
 		$("#completeWorkNameId"+typeVal).html("");
 	}
 	if(noofWorks == undefined || noofWorks == "undefined" || noofWorks === undefined || noofWorks.trim() == '' || noofWorks == null){
 		$("#noOfWorksId"+typeVal).html("<h5 style='color:red;'>Please Enter No Of Works</h5>");
+		$('#saveButtonId').show();
 		return;
 	}else{
 		$("#noOfWorksId"+typeVal).html("");
 	}
 	if(workCost == undefined || workCost == "undefined" || workCost === undefined || workCost.trim() == '' || workCost == null){
 		$("#workCostId"+typeVal).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
+		$('#saveButtonId').show();
 		return;
 	}else{
 		$("#workCostId"+typeVal).html("");
@@ -1668,7 +1684,6 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		
 		if(workTypeId == 0 || workTypeId == null || workTypeId == ''){
 				$(".workTypeId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Work Type</h5>");
-				alert("aaa");
 				flag = false;
 			}else{
 				$(".workTypeId"+typeVal+mainCount+innerCount).html("");
@@ -1677,7 +1692,6 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			if(appendWorkCost == 0 || appendWorkCost == null || appendWorkCost == ''){
 				$(".appendWorkCost"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
 				flag = false;
-				alert("bbb");
 			}else{
 				$(".appendWorkCost"+typeVal+mainCount+innerCount).html("");
 			}
@@ -1685,7 +1699,6 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			if(appendWorkDetailsId == 0 || appendWorkDetailsId == null || appendWorkDetailsId == ''){
 				$(".appendWorkDetailsId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Details</h5>");
 				flag = false;
-				alert("ccc");
 			}else{
 				$(".appendWorkDetailsId"+typeVal+mainCount+innerCount).html("");
 			}
@@ -1693,7 +1706,6 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			if(appendEofficeId == 0 || appendEofficeId == null || appendEofficeId == ''){
 				$(".appendEofficeId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter eOFFICE-ID</h5>");
 				flag = false;
-				alert("ddd");
 			}else{
 				$(".appendEofficeId"+typeVal+mainCount+innerCount).html("");
 			}
@@ -1819,6 +1831,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			}
 	});	
 	if(flag == false){
+		$('#saveButtonId').show();
 		return;
 	}
 	
@@ -1835,7 +1848,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			if (typeof id !== typeof undefined && id !== false) {
 				if(text=='text' || text=='hidden'){
 					var name = $('#'+id+'').attr('name');
-					//alert($('#'+id+'').val());
+					alert($('#'+id+'').val());
 					formData.append(name, $('#'+id+'').val());
 				}else if(text=='radio'){
 					if($('#'+id+'').is(':checked')){
@@ -1866,6 +1879,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			}			
 		}
 	);
+	
 	$('#adminProfileForm textarea').each(
 		  function(){			  
 			var input = $(this);
@@ -1888,6 +1902,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		}
 	);
 	
+	//console.log(formData);
+	//return;
 	  $.ajax({
 			url: $("#adminProfileForm").attr("action"),
 			data: formData,
@@ -1905,15 +1921,17 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 						$(".defaultCheckCls").prop("checked",true)},6000);
 						 
 				  }else{
-					  $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
+					  $('#saveButtonId').show();
+					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
 					  setTimeout(function () {
 						 
 						}, 500);
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				  }
 				}else{
+					  $('#saveButtonId').show();
 					setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
+						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
 						}, 500);
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				 }
@@ -1922,7 +1940,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			},
 			error: function(request,error) { 
 				$("#savingDetailsSpinner").html('')
-				alert("error");				
+				alert("error");	
+				$('#saveButtonId').show();				
 			}
      });	 
 
@@ -2090,9 +2109,9 @@ function getRegistrationPersonDetails(voterId,typeVal){
 	});	
  
 }
+
 function checkIsNumber(id,value){
 	 if(isNaN(value)){
-	    
 		$('#'+id+'').val('');
 	 }else {
 		 ;
