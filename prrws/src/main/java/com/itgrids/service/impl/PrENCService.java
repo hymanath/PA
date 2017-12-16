@@ -174,13 +174,14 @@ public class PrENCService implements IPrENCService {
 					mainVO.setLocationType("S");
 					for (int i = 0; i < array.length(); i++) {
 						JSONObject json = array.getJSONObject(i);
-						if(inputVO.getLocationType().trim().equalsIgnoreCase(json.getString("UNIT_TYPE")) && !json.getString("PARA").contains("HAB")){
+						if(inputVO.getLocationType().trim().equalsIgnoreCase(json.getString("UNIT_TYPE"))){
 							EncVO Vo =getMatchedVo(mainVO.getSubList(),json.getString("PARA"));
 							if(Vo == null){
 								Vo = new EncVO();
 								Vo.setParamName(json.getString("PARA"));
 								Vo.setParamValue(json.getDouble("PARA_VALUE"));
 								mainVO.getSubList().add(Vo);
+								mainVO.setTotalRoadsLength(Vo.getParamValue()+mainVO.getTotalRoadsLength());
 							}else{
 								Vo.setParamValue(Vo.getParamValue()+json.getDouble("PARA_VALUE"));
 							}

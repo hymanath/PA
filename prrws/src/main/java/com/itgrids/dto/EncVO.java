@@ -12,7 +12,7 @@ public class EncVO {
 	private String locationType;
 	private String status;
 	private String errorMessage;
-	private Long totalRoadsLength=0l;
+	private Double totalRoadsLength=0.0;
 	
 	private List<EncVO> subList = new ArrayList<EncVO>();
 
@@ -80,11 +80,11 @@ public class EncVO {
 		this.errorMessage = errorMessage;
 	}
 
-	public Long getTotalRoadsLength() {
+	public Double getTotalRoadsLength() {
 		return totalRoadsLength;
 	}
 
-	public void setTotalRoadsLength(Long totalRoadsLength) {
+	public void setTotalRoadsLength(Double totalRoadsLength) {
 		this.totalRoadsLength = totalRoadsLength;
 	}
 	
