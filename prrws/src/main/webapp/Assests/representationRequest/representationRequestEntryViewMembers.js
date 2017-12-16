@@ -45,6 +45,13 @@ $(document).on("click",".advancedSrchCls",function(){
 	$("#advancedSearchVal").val('');
 });
 
+$(document).on("change",".clearDataCls",function(){
+	$("#representationRequestEntryTable").html('');
+});
+function clearData(){
+	$("#representationRequestEntryTable").html('');
+}
+
 function representationRequestEntryTable(result){
 	var str='';
 	str+='<div class="table-responsive">';
@@ -105,7 +112,8 @@ function representationRequestEntryTable(result){
 				else
 					str+='<td>-</td>';
 				
-				str+='<td class="text-center"><a class="btn btn-xs viewEditCss viewBtnCls" attr_petiotion_id="'+result[i].petitionId+'"> View</a><a href="'+wurl+'/representationRequestEntry" target="_blank" class="btn btn-xs viewEditCss m_top10"> Edit </a></td>';
+				str+='<td class="text-center"><a class="btn btn-xs viewEditCss viewBtnCls" attr_petiotion_id="'+result[i].petitionId+'"> View</a></td>';
+				//<a href="'+wurl+'/representationRequestEntry" target="_blank" class="btn btn-xs viewEditCss m_top10"> Edit </a>
 			str+='</tr>';
 			}
 		str+='</tbody>';
@@ -127,6 +135,7 @@ function representationRequestEntryTable(result){
 }
 
 $(document).on("change","#locationSelId",function(){
+	$('.clearCls').val('');
 	$("#departMentsDiv").hide();
 	$("#designationDiv").hide()//inputSearchDivid
 	$("#nameDivid").hide();
@@ -212,7 +221,7 @@ function getDistrictBySearchType(searchType,selBoxId){
 		}
 	}).done(function(result){
 		if(result !=null && result.length >0){
-			$("#"+selBoxId).html("<option value='0'>Select District</option>");
+			$("#"+selBoxId).html("<option value='0'>All</option>");
 			for(var i in result){
 				$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
 			}
@@ -708,7 +717,8 @@ function setPmRepresenteeDataToResultView(result){
 					
 				for(var k in result.subWorksList[j].subWorksList){
 					workCount = workCount+1;
-					str+='<div class="col-sm-6">';
+					
+						str+='<div class="col-sm-6">';
 							str+='<h5><b>WORK No '+workCount+'</b></h5>';
 							str+='<div class="bg_light-Color block_padding_10 m_top10">';
 								str+='<table class="table table-bordered">';
@@ -754,7 +764,9 @@ function setPmRepresenteeDataToResultView(result){
 							str+='</tbody>';
 						str+='</table>';
 					str+='</div>';
+				
 				}
+				
 			}
 			str+='</div>';
 		str+='</div>';
