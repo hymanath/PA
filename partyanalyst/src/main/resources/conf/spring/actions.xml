@@ -1816,7 +1816,7 @@
 			<property name="janmabhoomiCommitteeService" ref="janmabhoomiCommitteeService"/>
 	</bean>	        
 	<bean id="coreDashBoardGrivanceAction" class="com.itgrids.partyanalyst.web.action.CoreDashBoardGrivanceAction" singleton="false">
-	<property name="coreDashboardCoreService" ref="coreDashboardCoreService"></property>
+		<property name="coreDashboardCoreService" ref="coreDashboardCoreService"></property>
 	</bean>		
 </beans>	
 	
