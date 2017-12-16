@@ -209,8 +209,16 @@
 			</div>
 		</div>
 	</nav>
-	
 </header>
+<section>
+<div class="container-fluid">
+		<div class="row m_top10 ">
+			<div class="col-md-12 col-sm-12 ">
+			<img src="Assests/images/Banner-A.png" class="logo" style=" background-color: #0071BC; width: 1550px;height: 200px"/>
+			</div>
+		</div>		
+	</div>
+</section>
 <main>
 	<section>
 		<div class="container-fluid">

@@ -6,6 +6,7 @@
 <title> REPRESENTATION REQUEST ENTRY FORM </title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <!-- for file uploader -->
 <link href="Assests/Plugins/dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="Assests/Plugins/dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />  
@@ -195,6 +196,15 @@
 		</div>
 	</nav>
 </header>
+<section>
+<div class="container-fluid">
+		<div class="row m_top10 ">
+			<div class="col-md-12 col-sm-12 ">
+			<img src="Assests/images/Banner-A.png" class="logo" style=" background-color: #0071BC; width: 1550px;height: 200px"/>
+			</div>
+		</div>		
+	</div>
+</section>
 <main>
 	<div class="container-fluid">
 		<div class="row">
