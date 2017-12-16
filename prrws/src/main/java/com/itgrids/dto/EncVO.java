@@ -13,6 +13,7 @@ public class EncVO {
 	private String status;
 	private String errorMessage;
 	private Double totalRoadsLength=0.0;
+	private Long totalHabs=0l;
 	
 	private List<EncVO> subList = new ArrayList<EncVO>();
 
@@ -86,6 +87,14 @@ public class EncVO {
 
 	public void setTotalRoadsLength(Double totalRoadsLength) {
 		this.totalRoadsLength = totalRoadsLength;
+	}
+
+	public Long getTotalHabs() {
+		return totalHabs;
+	}
+
+	public void setTotalHabs(Long totalHabs) {
+		this.totalHabs = totalHabs;
 	}
 	
 	
