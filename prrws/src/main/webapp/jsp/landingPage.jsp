@@ -55,7 +55,7 @@
 				Rural Development</b></p>
 			</div>
 			<div class="col-sm-2 col-xs-3">
-			<a class="btn btn-primary btn-large btn-block btnSearch m_top20 validateLoginCls" style="display:inline-block; width:95px;" style="cursor:pointer;" >Login</a>
+			<!--<a class="btn btn-primary btn-large btn-block btnSearch m_top20 validateLoginCls" style="display:inline-block; width:95px;" style="cursor:pointer;" >Login</a>-->
 			</div>
 		</div>
 	</div>
