@@ -250,6 +250,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				petitionReffererDocument.setIsDeleted("N");
 				petitionReffererDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				petitionReffererDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				petitionReffererDocument.setInsertedUserId(userId);
+				petitionReffererDocument.setUpdatedUserId(userId);
 				petitionReffererDocument = pmRepresenteeRefDocumentDAO.save(petitionReffererDocument);
 			}
 		} catch (Exception e) {
@@ -883,7 +885,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}
 					 }
 					 
-					 returnVO.getReferDetailsList().add(refVO);
+					 if(!commonMethodsUtilService.isListOrSetValid(returnVO.getReferDetailsList())){
+						 returnVO.getReferDetailsList().add(refVO);
+					 }else{
+						 for (PmRequestVO childReffVO : returnVO.getReferDetailsList()) {
+							if(childReffVO.getRefCandidateId() != null && refVO.getRefCandidateId() != null && childReffVO.getRefCandidateId().longValue() == refVO.getRefCandidateId().longValue()){
+								childReffVO.setDesignation(childReffVO.getDesignation()+", "+refVO.getDesignation());
+								if(commonMethodsUtilService.isMapValid(refFilesListMap)){
+									childReffVO.getFileNamesList().addAll(refFilesListMap.get(refVO.getRefCandidateId()));
+								 }
+							}
+						}
+					 }
 				}
 				
 				List<Object[]> subWorksList = pmSubWorkDetailsDAO.getPetitionSubWorksDetails(petitionId);
