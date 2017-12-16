@@ -726,10 +726,11 @@
 							<div class="col-xs-12 col-sm-12 col-md-12">
 									<i data-placement="top" data-toggle="tooltip"  expand-block-right="training" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more" style="cursor:pointer;"></i>  
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks trainingDetailedBlock hdCls"  expand-block-more="training">
-									<ul class="list-inline pull-right activeUlCls">
-										<li id="detailedId" class="trainingDetailed">Detailed</li>
-										<li class="trainingComparison">Comparison</li>
+							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks hdCls"  expand-block-more="training">
+									<ul class="list-inline pull-right activeUlCls trainingMoreDetailedCls">
+										<li id="" class="trainingDetailed" attr_type="detailed">Detailed</li>
+										<li class="" attr_type="comparision">Comparison</li>
+										<li class="" attr_type="feedback">FeedBack</li>
 										<!--<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>-->
 									</ul>
 							</div> 
@@ -814,6 +815,22 @@
 												</div>
 											</div>
 										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingFeedBackBlock" expand-block-more="training" style="display:none;">
+								<div class="row">
+									<div class="col-sm-4">
+										<select class="form-control chosen-select" id="trainingCampLevelId">
+											<option value="all">Over-All Levels</option>
+											<option value="mandal">Mandal / Town / Ddivision Level</option>
+											<option value="village">Village / Ward Level</option>
+										</select>
+									</div>
+								</div>
+								<div class="row m_top10">
+									<div class="col-sm-12">
+										<div id="trainingCampInfoDetailsDivId"></div>
 									</div>
 								</div>
 							</div>
@@ -4384,107 +4401,6 @@
 			  </div>
 	    </div>	 --> 
 		<!-- grivance End-->
-		<!-----Training Camp Info Start
-			<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="trainingCampInfo">
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-7 col-sm-9 col-xs-12" >
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
-									TRAINING CAMP INFO
-								</h4>
-							</div>
-							<div class="col-md-5 col-sm-3 col-xs-12">
-								<span class="trainingCampInfoIconExpand pull-right" expand-icon="trainingCampInfo" style="margin-top: 10px; margin-left: 10px;">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-								<span class="pull-right">
-									<select id="tdpTriningCampInfoYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -4px;margin-right:5px;">
-									</select>
-								</span>
-							</div>
-						</div>
-						
-					</div>
-					<div class="panel-body">
-						<!--<div class="col-md-12 col-xs-12 col-sm-12">
-							<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-						</div>--
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="trainingCampInfo">
-								<div class="row">
-									<div class="col-sm-12">
-										<h4 class="text-capital bg_49 pad_custom">LEADERSHIP SKILLS</h4>
-										<div class="m_top10">
-											<div class="row">
-												<div class="col-sm-12">
-													<div class="col-sm-6 m_top10">
-														<h4 class="font_weight" id="mainLevelDivId">Over-All Levels</h4>
-													</div>
-												
-													<div class="col-sm-6">
-														<select class="form-control chosen-select" id="trainingCampLevelId">
-															<option value="all">Over-All Levels</option>
-															<option value="mandal">Mandal / Town / Ddivision Level</option>
-															<option value="village">Village / Ward Level</option>
-														</select>
-													</div>
-												</div>
-											</div>
-											<div class="row m_top10">
-												<div class="col-sm-12">
-													<div id="overAllTrainingCampInfoDivId"></div>
-												</div>
-											</div>
-										</div>
-										
-									</div>
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-12">
-										<div id="overAllTrainingCampInfoFeedbackDivId"></div>
-									</div>
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-12">
-										<div id="programsTrainingCampInfoDtlsCntTableId"></div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="trainingCampInfo" style="display:none;" >
-								<div class="row">
-									<div class="col-sm-12">
-										<ul class="activeUlCls list-inline pull-right trainingCampInfocls">
-											<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
-											<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
-										</ul>
-									</div>
-								 </div>
-								 <div class="row">
-									<div class="col-sm-12">
-										<div class="verticalScrollBarTrainingCampInfo">
-											<div id="userTypeWiseTrainingCampInfoDiv"></div>
-										</div>
-									</div>
-								 </div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="trainingCampInfo" style="display: none;">
-								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingCampInfoBlocksIcon" title="Click here for more"></i>
-							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingCampInfoBlocksDetailed m_top10"  expand-block-more="trainingCampInfo" style="display:none;">
-								<div class="row">
-									<div class="col-sm-12">
-										<div id="trainingCampInfoDetailsDivId"></div>
-									</div>
-								 </div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>--->
-		<!-----Training Camp Info End--->
-		
 	</div>
 	<div class="row">
 		<!-- EM Coverage Time start -->
@@ -5552,7 +5468,7 @@
 <script src="newCoreDashBoard/js/grivance.js " type="text/javascript"></script>       
 <script src="newCoreDashBoard/js/prajaSankaplaYatra.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/eMCoverageTime.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/trainingCampInfo.js" type="text/javascript"></script>
+<!--<script src="newCoreDashBoard/js/trainingCampInfo.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/kaizala.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
