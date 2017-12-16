@@ -3,6 +3,8 @@ package com.itgrids.controllers.web;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -22,6 +24,7 @@ import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.RepresenteeViewVO;
 import com.itgrids.dto.ResponseVO;
+import com.itgrids.dto.UserVO;
 import com.itgrids.service.ILocationDetailsService;
 import com.itgrids.service.IPmRequestDetailsService;
 
@@ -38,7 +41,11 @@ public class PmRequestDetailsController {
 		private IPmRequestDetailsService pmRequestDetailsService; 
 	   
 	   @RequestMapping(value ="/representationRequestEntry", method = RequestMethod.GET)
-	    public String mgnregsDashBoardPage(ModelMap model) {
+	    public String mgnregsDashBoardPage(ModelMap model,HttpServletRequest request) {
+		    UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
+			if (uservo==null){
+		      return "petitionsLoginPage";
+		    }
 			return "representationRequestEntry";
 	    }
  
@@ -56,7 +63,11 @@ public class PmRequestDetailsController {
 	    	 return pmRequestDetailsService.getPetitionReferredMemberDetails(dataVo);
 	    }
 	   @RequestMapping(value ="/representationRequestEntryViewMembers", method = RequestMethod.GET)
-	    public String representationRequestEntryMembers(ModelMap model) {
+	    public String representationRequestEntryMembers(ModelMap model,HttpServletRequest request) {
+		    UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
+			if (uservo==null){
+		      return "petitionsLoginPage";
+		    }
 			return "representationRequestEntryViewMembers";
 	    }
 	   @RequestMapping(value ="/getRepresentativeSearchWiseDetails",method = RequestMethod.POST)

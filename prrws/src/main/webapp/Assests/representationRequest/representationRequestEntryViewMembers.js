@@ -702,11 +702,13 @@ function setPmRepresenteeDataToResultView(result){
 					str+='</table>';
 				str+='</div>';
 				str+='<div class="col-sm-12 m_top20">';
+				var workCount = 0;
+				str+='<div class="row">';
 				for(var j in result.subWorksList){
+					
 				for(var k in result.subWorksList[j].subWorksList){
-					var workCount = k+1;
-					str+='<div class="row">';
-						str+='<div class="col-sm-6">';
+					workCount = workCount+1;
+					str+='<div class="col-sm-6">';
 							str+='<h5><b>WORK No '+workCount+'</b></h5>';
 							str+='<div class="bg_light-Color block_padding_10 m_top10">';
 								str+='<table class="table table-bordered">';
@@ -714,9 +716,9 @@ function setPmRepresenteeDataToResultView(result){
 										str+='<td>Work Type</br><b>'+result.subWorksList[j].subWorksList[k].workType+'</b>(status:'+result.subWorksList[j].subWorksList[k].status+')</td>';
 										str+='<td colspan="2">';
 											str+='<p>LOCATION</p>';
-											str+='<span style="display:inline-block;padding:10px">District</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.districtName+'</b></span>';
-											str+='<span style="display:inline-block;padding:10px">Constituency</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.assemblyName+'</b></span>';
-											str+='<span style="display:inline-block;padding:10px">mandal</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.tehsilName+'</b></span>';
+											str+='<span style="display:inline-block;padding:3px">District</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.districtName+'</b></span>';
+											str+='<span style="display:inline-block;padding:3px">Constituency</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.assemblyName+'</b></span>';
+											str+='<span style="display:inline-block;padding:3px">Mandal</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.tehsilName+'</b></span>';
 										str+='</td>';
 									str+='</tr>';
 									str+='<tr>';
@@ -733,7 +735,7 @@ function setPmRepresenteeDataToResultView(result){
 							str+='<h5><b>WORK DISCRIPTION</b> ';
 							//str+='<button class="btn pull-right">Select</button>
 							str+='</h5>';
-							str+='<div class=" block_padding_10 m_top10">';
+							str+='<div class=" block_padding_3 m_top10">';
 								str+='<p style="font-size:12px">'+result.subWorksList[j].subWorksList[k].workName+'</p>';
 							str+='</div>';
 						str+='</div>';
@@ -741,7 +743,7 @@ function setPmRepresenteeDataToResultView(result){
 					str+='</div>';
 				str+='</div>';
 				str+='<div class="col-sm-12">';
-					str+='<div class="bg_light-Color block_padding_10 m_top10">';
+					str+='<div class="bg_light-Color block_padding_3 m_top10">';
 						str+='<table class="table">';
 							str+='<tbody>';
 								str+='<td><b>Lead Details :</b> <span>'+result.subWorksList[j].subWorksList[k].leadName+'</span></td>';
@@ -752,10 +754,10 @@ function setPmRepresenteeDataToResultView(result){
 							str+='</tbody>';
 						str+='</table>';
 					str+='</div>';
-				str+='</div>';
 				}
 			}
-		
+			str+='</div>';
+		str+='</div>';
 		/* str+='<div class="col-sm-12 m_top20" style="border-bottom:5px solid #EBEBEB"></div>';
 				str+='<div class="col-sm-12 m_top20">';
 					str+='<button class="btn btn-success pull-right">SUBMIT</button>';
