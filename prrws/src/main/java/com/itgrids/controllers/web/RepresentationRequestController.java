@@ -3,6 +3,8 @@ package com.itgrids.controllers.web;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -20,6 +22,7 @@ import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.ResponseVO;
+import com.itgrids.dto.UserVO;
 import com.itgrids.service.ILocationDetailsService;
 import com.itgrids.service.IRepresentationRequestService;
 
@@ -76,7 +79,11 @@ public class RepresentationRequestController {
        return locationDetailsService.getParliamentIdsByConstituencyList();
     }
 	@RequestMapping(value ="/representationRequestEdit", method = RequestMethod.GET)
-    public String representationRequestEdit(ModelMap model) {
+    public String representationRequestEdit(ModelMap model,HttpServletRequest request) {
+	    UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
+		if (uservo==null){
+	      return "petitionsLoginPage";
+	    }
 		return "representationRequestEdit";
     }
 	@RequestMapping(value ="/getPmSubjectList",method = RequestMethod.POST)

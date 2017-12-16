@@ -888,14 +888,19 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 if(!commonMethodsUtilService.isListOrSetValid(returnVO.getReferDetailsList())){
 						 returnVO.getReferDetailsList().add(refVO);
 					 }else{
+						 boolean isAvailable=false;
 						 for (PmRequestVO childReffVO : returnVO.getReferDetailsList()) {
 							if(childReffVO.getRefCandidateId() != null && refVO.getRefCandidateId() != null && childReffVO.getRefCandidateId().longValue() == refVO.getRefCandidateId().longValue()){
 								childReffVO.setDesignation(childReffVO.getDesignation()+", "+refVO.getDesignation());
 								if(commonMethodsUtilService.isMapValid(refFilesListMap)){
 									childReffVO.getFileNamesList().addAll(refFilesListMap.get(refVO.getRefCandidateId()));
 								 }
+								isAvailable=true;
 							}
 						}
+						 if(!isAvailable){
+							 returnVO.getReferDetailsList().add(refVO);
+						 }
 					 }
 				}
 				
