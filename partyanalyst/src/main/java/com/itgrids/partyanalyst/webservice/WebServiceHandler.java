@@ -3533,7 +3533,7 @@ public class WebServiceHandler {
 	public NewCadreRegistrationVO getRegistrationPersonDetails(JSONObject jObj){
 		
 		try{ 
-			return webServiceHandlerService1.getRegistrationPersonDetails(jObj.getLong("voterId"),jObj.getLong("familyVoterId"),jObj.getLong("tdpCadreId"),jObj.getString("status"));
+			return webServiceHandlerService1.getRegistrationPersonDetails(jObj.getString("voterId"),jObj.getLong("familyVoterId"),jObj.getLong("tdpCadreId"),jObj.getString("status"));
 		}catch(Exception e){
 			LOG.error("Exception Occured in getRegistrationPersonDetails() Method in WebServiceHandler, Exception is ",e);
 			return null;
