@@ -3,13 +3,16 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -28,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.TrainingCampSurveyVO;
@@ -1314,7 +1318,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 		     WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
-		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+		     //WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
 			 ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 			 if(response.getStatus() != 200){
 				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1362,6 +1366,70 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		}
 		return null;
 		
+	}
+	/*
+	 * Swadhin
+	 * @see com.itgrids.partyanalyst.service.ICoreDashboardCoreService#getCategoryAndIssuetypeStatusCount(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Long, java.lang.String)
+	 */
+	public List<ComplaintStatusCountVO> getCategoryAndIssuetypeStatusCount(String inputType,String fromDate,String toDate,String stateIds,Long enrollmentYrId,String task){
+		try{
+			List<ComplaintStatusCountVO> innerList = null;
+			List<ComplaintStatusCountVO> middleList = null;
+			List<ComplaintStatusCountVO> outerList = new ArrayList<ComplaintStatusCountVO>();
+			ClientConfig clientConfig = new DefaultClientConfig();
+			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+			Client client = Client.create(clientConfig);
+			WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getCategoryAndIssuetypeStatusCount/"+inputType+"/"+fromDate+"/"+toDate+"/"+stateIds+"/"+enrollmentYrId+"/"+task+"/");
+			//WebResource webResource2 = client.resource("http://mytdp.com/Grievance/WebService/getCategoryAndIssuetypeStatusCount/"+inputType+"/"+fromDate+"/"+toDate+"/"+stateIds+"/"+enrollmentYrId+"/"+task+"/");
+			ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+			if(response.getStatus() != 200){
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			}else{
+				String output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					JSONArray finalArray = new JSONArray(output);
+					if(finalArray!=null && finalArray.length()>0){
+						for(int i=0;i<finalArray.length();i++){
+							ComplaintStatusCountVO vo = new ComplaintStatusCountVO();
+							JSONObject tmp = (JSONObject) finalArray.get(i);
+							vo.setStatus(tmp.getString("status"));
+		 	    			String s1 = tmp.getString("subList");
+		 	    			JSONArray outArr = new JSONArray(s1);
+		 	    			if(outArr != null && outArr.length() > 0){
+		 	    				middleList = new ArrayList<ComplaintStatusCountVO>();
+		 	    				for (int j = 0; j < outArr.length(); j++){
+		 	    					JSONObject tmp1 = (JSONObject) outArr.get(j);
+		 	    					ComplaintStatusCountVO outVO = new ComplaintStatusCountVO();
+		 	    					outVO.setStatus(tmp1.getString("status"));
+		 	    					String s2 = tmp1.getString("subList");
+		 	    					JSONArray inArr = new JSONArray(s2);
+		 	    					if(inArr != null && inArr.length() > 0){
+		 	    						innerList = new ArrayList<ComplaintStatusCountVO>();
+		 	    						for(int k = 0; k < inArr.length(); k++){
+		 	    							JSONObject tmp2 = (JSONObject) inArr.get(k);
+		 	    							ComplaintStatusCountVO inVO = new ComplaintStatusCountVO();
+		 	    							inVO.setCount(tmp2.getLong("count"));
+		 	    							inVO.setStatus(tmp2.getString("status"));
+		 	    							inVO.setColor(tmp2.getString("color"));
+		 	    							inVO.setStatusOrder(tmp2.getLong("statusOrder"));
+		 	    							innerList.add(inVO);
+		 	    						}
+		 	    					}
+		 	    					outVO.setSubList(innerList);
+		 	    					middleList.add(outVO);
+		 	    				}
+		 	    			}
+		 	    			vo.setSubList(middleList);
+		 	    			outerList.add(vo);
+						}
+					}	
+				}
+			}
+			return outerList;
+		}catch(Exception e){
+			LOG.error("Error occured at getCategoryAndIssuetypeStatusCount() in CoreDashboardMainService {}",e); 
+		}
+		return null;
 	}
 
 }
