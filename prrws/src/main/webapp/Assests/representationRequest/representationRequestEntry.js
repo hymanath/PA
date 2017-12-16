@@ -2090,9 +2090,9 @@ function getRegistrationPersonDetails(voterId,typeVal){
 	});	
  
 }
-
 function checkIsNumber(id,value){
 	 if(isNaN(value)){
+	    
 		$('#'+id+'').val('');
 	 }else {
 		 ;
