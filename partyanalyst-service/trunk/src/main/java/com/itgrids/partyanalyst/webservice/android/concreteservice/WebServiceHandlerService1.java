@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
@@ -178,6 +179,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	CommonMethodsUtilService commonMethodsUtilService;
 	@Autowired 
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
+	@Autowired 
+	private IVoterDAO voterDAO;
 	
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
@@ -1436,10 +1439,11 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
    			return "failure";
     	}
     }
-    public NewCadreRegistrationVO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status){
+    public NewCadreRegistrationVO getRegistrationPersonDetails(String votercardNo,Long familyVoterId,Long tdpCadreId,String status){
     	NewCadreRegistrationVO cadreRegVo=null;
     	try{
-    		 cadreRegVo = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(voterId,familyVoterId,tdpCadreId,status);
+    		List<Long> voterIds = voterDAO.getVoterIdByVoterIDCardNumber(votercardNo);
+    		 cadreRegVo = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(voterIds.get(0),familyVoterId,tdpCadreId,status);
     	}catch(Exception e){
     		LOG.error("Exception raised in getRegistrationPersonDetails  method in WebServiceHandlerService1",e);
     	}
