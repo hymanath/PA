@@ -135,6 +135,7 @@
 		<li expand-icon="news" right-nav="true">News - Print Media</li>
 		<li expand-icon="electronic" right-nav="true">News - electronic media</li>
 		<li expand-icon="prajaSankaplaYatra" right-nav="true">Praja Sankapla Yatra</li>
+		<li expand-icon="EMCoverageTime" right-nav="true">EM Coverage Time</li>
 		<li expand-icon="pressmeet" right-nav="true">Press Meet</li>
 		<li expand-icon="tours" right-nav="true">Tours</li>
 		<li expand-icon="meetings" right-nav="true">meetings</li>
@@ -4486,7 +4487,54 @@
 		
 	</div>
 	<div class="row">
-		
+		<!-- EM Coverage Time start -->
+		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="EMCoverageTime">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="EMCoverageTime">
+							<h4 class="panel-title text-capital" style="font-size:14px;">
+								<div>
+									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+									<span id="EMCoverageTimeDivId">Electronic Media Coverage Time - </span> 
+									<small id="EMCoverageTimeHeadDate" class="text-muted"></small>
+								</div>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="EMCoverageTime">
+							<span class="EMCoverageTimeIconExpand pull-right" expand-icon="EMCoverageTime">
+								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="EMCoverageTime" style="width:200px;">
+									<input type="text" id="dateRangeEMCoverageTimeId" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+							</span>
+						</div>     
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="EMCoverageTime">
+							<div class="row m_top10">
+								<div class="col-sm-12">
+									<div id="EMCoverageTimeSummaryDivId"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="EMCoverageTime" style="display:none;" >
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="EMCoverageTimeDayWiseDivId">456</div>
+								 </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- EM Coverage Time End -->
 	</div>
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
@@ -5503,6 +5551,7 @@
 <script src="newCoreDashBoard/js/pressmeet.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/grivance.js " type="text/javascript"></script>       
 <script src="newCoreDashBoard/js/prajaSankaplaYatra.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/eMCoverageTime.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/trainingCampInfo.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/kaizala.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
@@ -6031,6 +6080,7 @@ var globalImages;
 		getUserTypeWiseBoothCommitteesInchargeDetails();
 		//Preemeet
 		preemeeetOnloadCalls();
+		onLoadEmCoverageTimeCalls();
 		onloadPrajaSankaplaYatraCalls();
 		onloadKaizalaCalls1();	
 		onloadTrainingCampCalls();
