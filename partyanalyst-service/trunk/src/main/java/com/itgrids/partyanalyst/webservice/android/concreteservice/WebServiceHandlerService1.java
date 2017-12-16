@@ -1443,7 +1443,9 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     	NewCadreRegistrationVO cadreRegVo=null;
     	try{
     		List<Long> voterIds = voterDAO.getVoterIdByVoterIDCardNumber(votercardNo);
-    		 cadreRegVo = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(voterIds.get(0),familyVoterId,tdpCadreId,status);
+    		if(voterIds != null && voterIds.size() > 0){
+    			cadreRegVo = coreDashboardCadreRegistrationService.getRegistrationPersonDetails(voterIds.get(0),familyVoterId,tdpCadreId,status);
+    		}
     	}catch(Exception e){
     		LOG.error("Exception raised in getRegistrationPersonDetails  method in WebServiceHandlerService1",e);
     	}
