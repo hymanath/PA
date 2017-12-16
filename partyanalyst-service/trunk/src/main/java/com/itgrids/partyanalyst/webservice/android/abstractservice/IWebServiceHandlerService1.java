@@ -67,5 +67,5 @@ public interface IWebServiceHandlerService1 {
 	 public Object saveSurveyFieldUsersForAffliatedCadre(List<CadreRegistrationVO> inputResponseList);
 	 public Object getMemberDetailsByMembershipId(String membershipId);
 	 
-	 public NewCadreRegistrationVO getRegistrationPersonDetails(Long voterId,Long familyVoterId,Long tdpCadreId,String status);
+	 public NewCadreRegistrationVO getRegistrationPersonDetails(String voterCardNo,Long familyVoterId,Long tdpCadreId,String status);
 }
