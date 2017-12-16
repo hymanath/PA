@@ -26,13 +26,14 @@ $(document).on("click",".removeWorkCls",function(){
 });
 $(document).on("click",".selfRepresenceCls",function(){
 	if($(this).is(":checked")){
+		globalInnerWorksCount=1;// minimum work =1
 		var typeVal =  $(this).attr("attr_type")
 		if(typeVal == "self"){
 			$("#representDetailsDivId").html('');
 			alreadyCandidateId=[]
 			globalWorkTypeCount='';
-			globalWorkTypeCount=0;
-			buildSelfAndRepresenteeDetails(typeVal)
+			globalWorkTypeCount=0;			
+			buildSelfAndRepresenteeDetails(typeVal);
 		}else if(typeVal == "represent"){
 			$("#selfDetailsDivId").html('');
 			alreadyCandidateId=[]
@@ -312,7 +313,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 			str+='</div>';
 			str+='<div class="col-sm-3">';
 				str+='<label>MOBILE NO</label>';
-				str+='<input type="text" name="mobileNO" maxlength="10" value=""  class="form-control m_top10 height45" id="mobileNumber'+typeVal+'" placeholder="Enter Mobile Number">';
+				str+='<input type="text" name="mobileNO" maxlength="10" value=""  class="form-control m_top10 height45 isNumberCls" onkeyUp="checkIsNumber(this.id,this.value)" id="mobileNumber'+typeVal+'" placeholder="Enter Mobile Number">';
 				
 			str+='</div>';
 			str+='<div class="col-sm-3">';
@@ -387,12 +388,12 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='</div>';
 				str+='<div class="col-sm-2">';
 					str+='<label>NO OF WORKS <span class="starColor">*</span></label>';
-						str+='<input   name="worksList[0].noOfWorks"   type="text" class="form-control m_top5 height45" id="noofWork'+typeVal+'" placeholder="Enter No Of Work" onkeyUp="enableWorks(this.value,\'workDetailsDivId'+typeVal+'\',\''+typeVal+'\');">';
+						str+='<input   name="worksList[0].noOfWorks"   type="text" class="form-control m_top5 height45 isNumberCls" id="noofWork'+typeVal+'" placeholder="Enter No Of Work"  onkeyUp="enableWorks(this.value,\'workDetailsDivId'+typeVal+'\',\''+typeVal+'\');checkIsNumber(this.id,this.value);">';
 						str+='<span id="noOfWorksId'+typeVal+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
 					str+='<label>WORKS IN COST (in Lakh) <span class="starColor">*</span></label>';
-					str+='<input type="text"  name="worksList[0].estimateCost" class="form-control m_top5 height45" id="workCost'+typeVal+'" placeholder="Enter Work Cost">';
+					str+='<input type="text"  name="worksList[0].estimateCost" class="form-control m_top5 height45 isNumberCls" id="workCost'+typeVal+'" placeholder="Enter Work Cost" onkeyUp="checkIsNumber(this.id,this.value)">';
 					str+='<span id="workCostId'+typeVal+'"></span>';
 				str+='</div>';
 		str+='</div>';
@@ -908,7 +909,7 @@ function buildTemplateWorkDetails(typeVal){
 				//str+='<div class="pull-right removeWorkCls" attr_id="mainWorkDivId'+globalWorkTypeCount+'0" attr_type="self" attr_candidateid="1" style="cursor:pointer;margin-top: -30px"><i class="glyphicon glyphicon-remove"></i></div>';				
 					str+='<div class="col-sm-3">';
 							str+='<label>DEPARTMENT <span class="starColor">*</span><span class="WorkTypeWiseDepartmentId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
-							str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].deptId"  class="form-control chosen-select m_top10 validateCls"  id="WorkTypeWiseDepartmentId'+typeVal+''+globalWorkTypeCount+'0" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0" attr_select_type="selectbox">';
+							str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].deptId"  class="form-control chosen-select m_top10 validateCls"  id="WorkTypeWiseDepartmentId'+typeVal+''+globalWorkTypeCount+'0" onchange="getPetitionSubjectList(this.value,\'subjectId\',\''+typeVal+'\','+globalWorkTypeCount+',0)" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0" attr_select_type="selectbox" >';
 							str+='</select>';
 						str+='</div>';
 					
@@ -942,7 +943,7 @@ function buildTemplateWorkDetails(typeVal){
 									str+='</div>';
 									str+='<div class="col-sm-3">';
 										str+='<label>WORK IN COST  (in Lakh) <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
-										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].estimateCost" class="form-control m_top5 height45 validateCls amountCls" onkeyUp="validateAmount(this.value,this.id)" id="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter Work Cost" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0"/>';
+										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].estimateCost" class="form-control m_top5 height45 validateCls amountCls isNumberCls" onkeyUp="validateAmount(this.value,this.id,\''+typeVal+'\');checkIsNumber(this.id,this.value)" id="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter Work Cost" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0"/>';
 										str+='<span class="ErrCls" id="ErrappendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span>';
 									str+='</div>';
 									str+='<div class="col-sm-3">';
@@ -1012,7 +1013,7 @@ function buildTemplateWorkDetails(typeVal){
 	$(".chosen-select").chosen();
 	
 	getSubjectPetitionsDepartmentList(typeVal,globalWorkTypeCount,0);
-	getPetitionSubjectList('subjectId',typeVal,globalWorkTypeCount,0);
+	//getPetitionSubjectList('subjectId',typeVal,globalWorkTypeCount,0);
 	getWorkTypeList('workTypeId',typeVal,globalWorkTypeCount,0);
 	globalWorkTypeCount =globalWorkTypeCount+1;
 		
@@ -1132,13 +1133,15 @@ function  enableWorks(value,divId,typeVal){
 	}
 }
 $(document).on("click",".cloned_Element",function(){
-	var estimationWorksCount = $('#noofWorkself').val();
-	if(parseInt(estimationWorksCount)==parseInt(globalInnerWorksCount)){
+	var typeVal = $(this).attr("attr_type");
+	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
+		
+	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
 		alert("Max no of works data entered. Please check once.");
 		return;
 	}
 	globalInnerWorksCount = parseInt(globalInnerWorksCount)+parseInt(1);
-	var typeVal = $(this).attr("attr_type");
+	
 	var workCount = $("#noofWork"+typeVal).val();
 	var counterappendId = $(this).attr("block-clone-counter-"+typeVal+"");
 	var counterId = $(this).attr("block-clone-counter-"+typeVal+"");
@@ -1151,7 +1154,7 @@ $(document).on("click",".cloned_Element",function(){
 		$("[block-clone-"+typeVal+"="+blockId+"]").attr("block-clone-counter-"+typeVal+"",counterId);
 		globalWorkTypeCount = parseInt(globalWorkTypeCount)+1;
 		getSubjectPetitionsDepartmentList(typeVal,counterappendId,blockId);
-		getPetitionSubjectList('subjectId',typeVal,counterappendId,blockId);
+		//getPetitionSubjectList('subjectId',typeVal,counterappendId,blockId);
 		getWorkTypeList('workTypeId',typeVal,counterappendId,blockId);
 		
 	//}
@@ -1174,7 +1177,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 				
 					clonedTemplate+='<div class="col-sm-3">';
 							clonedTemplate+='<label>DEPARTMENT <span class="starColor">*</span><span class="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
-							clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].deptId"  class="form-control chosen-select m_top10 validateCls"  id="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
+							clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].deptId"  class="form-control chosen-select m_top10 validateCls"  id="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'" onchange="getPetitionSubjectList(this.value,\'subjectId\',\''+typeVal+'\',\''+counterappendId+'\',\''+blockId+'\')" >';
 							clonedTemplate+='</select>';
 						clonedTemplate+='</div>';
 					
@@ -1208,7 +1211,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>WORK IN COST (in Lakh) <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
-										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls" onkeyUp="validateAmount(this.value,this.id);"  id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"/>';
+										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls isNumberCls" onkeyUp="validateAmount(this.value,this.id,\''+typeVal+'\');checkIsNumber(this.id,this.value)"  id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"/>';
 										clonedTemplate+='<span  class="ErrCls" id="ErrappendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
@@ -1276,8 +1279,9 @@ $(document).on("click",".cloned_Inner_Element",function(){
 	var counterId = $(this).attr("attr_counterval");	
 	var mainWorkCount = $(this).attr("main_work_count");
 	var innerWorkCount = $(this).attr("inner_work_count");
-	var estimationWorksCount = $('#noofWorkself').val();
-	if(parseInt(estimationWorksCount)==parseInt(globalInnerWorksCount)){
+	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
+	
+	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
 		alert("Max no of works data entered. Please check once.");
 		return;
 	}
@@ -1306,7 +1310,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>WORK IN COST  (in Lakh) <span class="starColor">*</span><span class="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45 validateInnerCls amountCls" onkeyUp="validateAmount(this.value,this.id)"  id="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter Work Cost" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"/>';
+							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45 validateInnerCls amountCls isNumberCls" onkeyUp="validateAmount(this.value,this.id,\''+typeVal+'\');checkIsNumber(this.id,this.value)"  id="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter Work Cost" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"/>';
 							clonedInnerTemplate+='<span  class="ErrCls"  id="ErrappendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
@@ -1486,11 +1490,11 @@ function getSubjectPetitionsDepartmentList(typeVal,count,innerCount){
 
 
 
-function getPetitionSubjectList(divId,typeVal,counterId,innerCount){
+function getPetitionSubjectList(deptId,divId,typeVal,counterId,innerCount){
 	
 	 $("#"+divId+""+typeVal+""+counterId+innerCount+"").html('');
 	var json = {
-		deptId:1
+		deptId:deptId
 	};
 	$.ajax({              
 		type:'POST',    
@@ -2002,10 +2006,11 @@ function getPetitionDesignationLst(typeVal){
 
 
 
-function validateAmount(value,fieldId){
+function validateAmount(value,fieldId,typeVal){
+	
 	$('.ErrCls').html('');
 	var enteredAmount =parseFloat(0.0);
-	var estimationAmount= parseFloat($('#workCostself').val());
+	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
 	$(".amountCls").each(function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
@@ -2017,6 +2022,7 @@ function validateAmount(value,fieldId){
 			}
 		}
 	});
+	
 	if(enteredAmount>estimationAmount){
 		$('#Err'+fieldId+'').html("Total estimation cost reached. Please check once.");
 		$('#'+fieldId+'').val('');
@@ -2083,4 +2089,12 @@ function getRegistrationPersonDetails(voterId,typeVal){
 		}
 	});	
  
+}
+
+function checkIsNumber(id,value){
+	 if(isNaN(value)){
+		$('#'+id+'').val('');
+	 }else {
+		 ;
+	 }
 }
