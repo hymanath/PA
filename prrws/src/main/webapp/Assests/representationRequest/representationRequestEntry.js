@@ -294,6 +294,17 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				
 			str+='</div>';
 			
+			/*
+			str+='<div class="col-sm-2">';
+				str+='<label>VOTER ID</label>';
+				str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
+				
+			str+='</div>';
+			str+='<div class="col-sm-1">';
+				str+='<label></label>';
+				str+='<input type="button" class="btn btn-success btn-md m_top20" id="getVoterDetailsId" value="Get Details" ></input>';
+			str+='</div>';
+			*/
 			str+='<div class="col-sm-3">';
 				str+='<label>NAME</label>';//$("#name"+typeVal+"Err").html("<h5>Please Enter Name</h5>");
 				str+='<input type="text"  name="name"  value="" class="form-control m_top10 height45" id="name'+typeVal+'" placeholder="Enter Name">';
@@ -674,7 +685,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 												if(result[i].candidateNativeAddressVO != null){
 													//str+='<h5 class="m_top5">H No :</h5>';
 													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
-														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat/Ward</h5>';
+														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat </h5>';
 													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
 														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+'  Mandal/Munci.</h5>';
 													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
@@ -765,7 +776,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 												if(result[i].candidateNativeAddressVO != null){
 													//str+='<h5 class="m_top5">H No :</h5>';
 													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
-														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat/Ward</h5>';
+														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
 													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
 														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+' Mandal/Munci. </h5>';
 													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
@@ -850,7 +861,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 							if(result[i].candidateNativeAddressVO != null){
 								//str+='<h5 class="m_top5">H No :</h5>';
 								if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
-									str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat/Ward</h5>';
+									str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
 								if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
 									str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+'  Mandal/Munci.</h5>';
 								if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
@@ -2027,13 +2038,14 @@ $(document).on("click","#getVoterDetailsId",function(){
 
 function getRegistrationPersonDetails(voterId,typeVal){
 			  
-			  var json = {
-						voterId:voterId,
-						familyVoterId:"0",
-						tdpCadreId:"0",
-						status:""
+  var json = {
+			voterId:voterId,
+			familyVoterId:"0",
+			tdpCadreId:"0",
+			status:""
 
-						};
+			};
+  
 	$.ajax({              
 		type:'POST',    
 		url: 'getRegistrationPersonDetails',
