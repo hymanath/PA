@@ -21,6 +21,8 @@ public class PageComponent {
 	private Long orderNo;
 	private String isDeleted;
 	private Page page;
+	private String url;
+	
 	
 	@Id
 	@Column(name = "page_component_id")
@@ -71,5 +73,13 @@ public class PageComponent {
 	}
 	public void setPage(Page page) {
 		this.page = page;
+	}
+	
+	@Column(name = "url")
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

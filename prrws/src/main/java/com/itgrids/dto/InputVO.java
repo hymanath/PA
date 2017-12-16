@@ -108,7 +108,15 @@ public class InputVO implements Serializable {
 	private String exceededDuration;
 	private String month;
 	private String monthType;
+	private Long pageId;
 	
+	
+	public Long getPageId() {
+		return pageId;
+	}
+	public void setPageId(Long pageId) {
+		this.pageId = pageId;
+	}
 	public String getPath() {
 		return path;
 	}

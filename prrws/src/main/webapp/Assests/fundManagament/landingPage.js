@@ -163,6 +163,27 @@ function buildFavouriteComponentsResult(result) {
 	}
 	onloadCallToGetAllBlockAchievent();
 }
+getPageWiseComponents(3);
+function getPageWiseComponents(pageId){
+	var json = {pageId:pageId} 
+	$.ajax({                
+		type:'POST',    
+		url: 'getPageWiseComponentDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		 
+	});		
+}
+
+function buildPageWiseComponents(result){
+	
+}
+
 $(document).on("click","#saveList",function(){
 	spinner = '<div class="spinner" style="height:20px;width:20px;display:inline-block"><div class="dot1"></div><div class="dot2"></div></div>';
 	$("#errorDivId").html(spinner)
@@ -617,6 +638,16 @@ function getHabitationCoverageByStatusByState()
 						}
 					}
 					var amountinCrocr = totalAmount/10000000;
+					for(var i in result){
+						if (result[i].id == 0) {
+							if(result[i].subList != null && result[i].subList.length > 0){
+								for(var j in result[i].subList){
+									if(result[i].subList[j].id == 2)
+										amountinCrocr = parseFloat(amountinCrocr)+parseFloat(result[i].subList[j].totl);
+								}
+							}
+						}
+					}
 					if (amountinCrocr != null && amountinCrocr > 0) {
 						$(".fundMngmntSstmOverAchvmntAllCls").html(amountinCrocr.toFixed(3)+"&nbspCR");
 					}

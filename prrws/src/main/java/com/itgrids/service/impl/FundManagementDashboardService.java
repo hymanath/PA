@@ -4200,10 +4200,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
    }
    /* End */ 
     
-    public List<PageComponentVO> getPageWiseComponentDetails(){
+    public List<PageComponentVO> getPageWiseComponentDetails(InputVO inputVO){
     	List<PageComponentVO> returnList = new ArrayList<PageComponentVO>(0);
     	try {
-			List<Object[]> list = pageComponentDAO.getPageWiseComponents();
+			List<Object[]> list = pageComponentDAO.getPageWiseComponents(inputVO.getPageId());
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					Long pageId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -4217,6 +4217,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 							subvo.setId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 							subvo.setName(obj[3] != null ? obj[3].toString():"");
 							subvo.setOrder(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+							subvo.setUrl(obj[6] != null ? obj[6].toString():"");
 							vo.getSubList().add(subvo);
 						returnList.add(vo);
 					}else{
@@ -4224,6 +4225,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 						subvo.setId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 						subvo.setName(obj[3] != null ? obj[3].toString():"");
 						subvo.setOrder(Long.valueOf(obj[4] != null ? obj[4].toString():"0"));
+						subvo.setUrl(obj[6] != null ? obj[6].toString():"");
 						vo.getSubList().add(subvo);
 					}
 				}

@@ -8,5 +8,5 @@ import com.itgrids.model.PageComponent;
 
 public interface IPageComponentDAO extends GenericDao<PageComponent, Long>{
 
-	public List<Object[]> getPageWiseComponents();
+	public List<Object[]> getPageWiseComponents(Long pageId);
 }
