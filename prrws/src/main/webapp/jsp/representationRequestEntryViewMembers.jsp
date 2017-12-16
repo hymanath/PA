@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EDIT DATA ENTRY FORM</title>
+<title> VIEW PETITIONS DETAILS </title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
@@ -50,11 +50,11 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>
-					<p>Rural Water Supply - AP</p>
+					<!--<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>-->
+					<p> PETITIONS MANAGEMENT SYSTEM </p>
 				</div>
 				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
-					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
+					<!--<i class="glyphicon glyphicon-th menu-cls pull-right"></i>-->
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
 							<div class="row">
@@ -261,80 +261,80 @@
 										<div class="error_colorCls" id="errMsgId"></div>
 											<div class="col-sm-3" id="locationDivlId">	
 												<label> Search By</label>
-												<select class="form-control chosen-select" id="locationSelId" >
-													<option value="all">Select Search Type</option>
-													<option value="work"> WORK lOCATION WISE</option>
-													<option value="representee"> REPRESENTEE lOCATION WISE</option>
-													<option value="referral"> REFERREL lOCATION WISE</option>
-													<option value="referrelDesignation"> REFERREL DESIGNATION WISE</option>
-													<option value="representeeDesignation"> REPRESENTEE DESIGNATION WISE</option>
-													<option value="department"> DEPARTMENT WISE</option>
-													<option value="name"> NAME</option>
-													<option value="mobile"> MOBILE NUMBER</option>
-													<option value="email"> EMAIL ID</option>
-													<option value="endorsmentNO"> ENDORSMENT NUMBER</option>
+												<select class="form-control chosen-select clearDataCls" id="locationSelId" >
+													<option value="all">All</option>
+													<option value="work"> Work Location wise</option>
+													<option value="representee"> Representee Location wise </option>
+													<option value="referral"> Referral Location wise</option>
+													<option value="referrelDesignation"> Referral Designation wise </option>
+													<option value="representeeDesignation"> Representee Designation wise </option>
+													<option value="department">Department wise </option>
+													<option value="name"> Name</option>
+													<option value="mobile"> Mobile No</option>
+													<option value="email"> Email</option>
+													<option value="endorsmentNO"> Endorsment No </option>
 																
 												</select>
 												<div class="error_colorCls" id="locationErrDivlId"></div>
 											</div>
 											<div class="col-sm-3" id="designationDiv" style="display:none;">
 												<label> Designation </label>
-												<select class="form-control chosen-select" id="designationsId">
+												<select class="form-control chosen-select v" id="designationsId">
 													<option value="0">Select Designation</option>
 												</select>
 												<div class="error_colorCls" id="designationErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="departMentsDiv" style="display:none;">
 											<label> Department</label>
-												<select class="form-control chosen-select" id="departmentId">
+												<select class="form-control chosen-select clearDataCls" id="departmentId">
 													<option value="0">Select Department</option>
 												</select>
 												<div class="error_colorCls" id="departMentsErrDiv"></div>
 											</div>	
 											<div class="col-sm-3" id="nameDivid" style="display:none;">
 											<label> Name</label>
-												<input type="text" class="form-control" style="text-align:center;height:40px" id="nameId" placeholder="Please enter Name">
+												<input type="text" class="form-control clearCls" style="text-align:center;height:40px" onkeyUp="clearData()" id="nameId" placeholder="Please enter Name">
 												<div class="error_colorCls" id="nameErrDivId"></div>
 											</div>	
 											<div class="col-sm-3" id="mobileDivid" style="display:none;">
 											<label>Mobile Number</label>
-												<input type="text" class="form-control" style="text-align:center;height:40px" id="mobileId" placeholder="Please enter mobile number">
+												<input type="text" class="form-control  clearCls " style="text-align:center;height:40px"  onkeyUp="clearData()" id="mobileId" placeholder="Please enter mobile number">
 												<div class="error_colorCls" id="mobileErrDivId"></div>
 											</div>	
-											<div class="col-sm-3" id="emailDivid" style="display:none;">
-											<label> Email ID</label>
-												<input type="text" class="form-control" style="text-align:center;height:40px" id="emailId" placeholder="Please enter email">
+											<div class="col-sm-3" id="emailDivid"  onkeyUp="clearData()" style="display:none;">
+											<label> Email</label>
+												<input type="text" class="form-control  clearCls" style="text-align:center;height:40px" id="emailId" placeholder="Please enter email">
 												<div class="error_colorCls" id="emailErrDivId"></div>
 											</div>	
 											<div class="col-sm-3" id="endorsmentNoDivid" style="display:none;">
 											<label> Endorsment Number</label>
-												<input type="text" class="form-control" style="text-align:center;height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
+												<input type="text"  onkeyUp="clearData()" class="form-control  clearCls" style="text-align:center;height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
 												<div class="error_colorCls" id="endorsmentNoErrDivId"></div>
 											</div>
 											<div class="col-sm-3" id="districtCandDiv">
 												<label>District</label>
-												<select class="form-control chosen-select" id="districtCandId">
+												<select class="form-control chosen-select clearDataCls" id="districtCandId">
 													<option value="0">Select District</option>
 												</select>
 												<div class="error_colorCls" id="districtCandErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="constituencyCanDiv">
 											<label>Constituency</label>
-												<select class="form-control chosen-select" id="constituencyCanId">
+												<select class="form-control chosen-select clearDataCls" id="constituencyCanId">
 													<option value="0">Select Constituency</option>
 												</select>
 												<div class="error_colorCls" id="constituencyCanErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="mandalCanDiv">
 											<label>Mandal</label>
-												<select class="form-control chosen-select" id="mandalCanId">
+												<select class="form-control chosen-select clearDataCls" id="mandalCanId">
 													<option value="0">Select Mandal</option>
 												</select>
 												<div class="error_colorCls" id="mandalCanErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="statusDiv">
 											<label>Status</label>
-												<select class="form-control chosen-select" id="statusId" multiple>
+												<select class="form-control chosen-select clearDataCls" id="statusId" multiple>
 													<option value="0">Select Status</option>
 												</select>
 											</div>											
