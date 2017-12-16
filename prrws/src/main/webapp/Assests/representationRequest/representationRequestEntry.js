@@ -1848,7 +1848,6 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			if (typeof id !== typeof undefined && id !== false) {
 				if(text=='text' || text=='hidden'){
 					var name = $('#'+id+'').attr('name');
-					alert($('#'+id+'').val());
 					formData.append(name, $('#'+id+'').val());
 				}else if(text=='radio'){
 					if($('#'+id+'').is(':checked')){
