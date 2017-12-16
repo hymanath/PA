@@ -64,6 +64,11 @@ function levelWiseSBData(divId)
 function getKeyPerformanceIndicatorsInfo(locationType,type){//ara1
 	if(type=='graph'){
 		$("#roadsChartinfo").html(spinner);
+		$("#btccBlockId").html(spinner);
+		$("#wbmBlockId").html(spinner);
+		$("#grveBlockId").html(spinner);
+		$("#earthenblockId").html(spinner);
+		$("#roadsBlockId").html(spinner);
 	}else{
 		$("#levelWiseEnc"+locationType).html(spinner);
 	}
@@ -102,8 +107,14 @@ function getKeyPerformanceIndicatorsInfo(locationType,type){//ara1
 				build(ajaxresp,locationType);
 				if(type=="graph"){
 					buildKeyPerformanceIndicatorsInfo(ajaxresp);
+					buildroadsBlock(ajaxresp);
 				}
 			}else{
+				$("#btccBlockId").html("No Data Available");
+				$("#wbmBlockId").html("No Data Available");
+				$("#grveBlockId").html("No Data Available");
+				$("#earthenblockId").html("No Data Available");
+				
 				$("#levelWiseEnc"+locationType).html("No Data Avaliable");
 			}
 			
@@ -115,19 +126,31 @@ function getKeyPerformanceIndicatorsInfo(locationType,type){//ara1
 function build(ajaxresp,locationType){
 	
 	var tableView='';
+	var paramname='';
+	var totalhabsCon=0;
+	var totalhabsunCon=0;
+	var totalhabs=0;
 	tableView+='<div class="table-responsive">';
 	tableView+='<table class="table table-bordered" id="dataTable1'+locationType+'">';
 	tableView+='<thead class="text-capital">';
 	tableView+='<tr>';
 	if(locationType =="state"){
 		tableView+='<th rowspan="2">'+locationType+'</th>';
+		tableView+='<th rowspan="2">Total</th>';
 		for(var j in ajaxresp.subList){
-		tableView+='<th>'+ajaxresp.subList[j].paramName+'</th>';
+			tableView+='<th>'+ajaxresp.subList[j].paramName+'</th>';
+			if(ajaxresp.subList[j].paramName == 'HABUNCON'){
+				tableView+='<th>TOTAL HABS</th>';
+			}
 		}
 	}else{
 		tableView+='<th rowspan="2">'+locationType+'</th>';
+		tableView+='<th rowspan="2">TOTAL</th>';
 		for(var j in ajaxresp[0].subList){
-		tableView+='<th>'+ajaxresp[0].subList[j].paramName+'</th>';
+			tableView+='<th>'+ajaxresp[0].subList[j].paramName+'</th>';
+			if(ajaxresp[0].subList[j].paramName == 'HABUNCON'){
+				tableView+='<th>TOTAL HABS</th>';
+			}
 		}
 	}
 	tableView+='</tr>';
@@ -136,9 +159,19 @@ function build(ajaxresp,locationType){
 	if(locationType =="state"){
 		tableView+='<tr>';
 		tableView+='<td>AndraPradesh</td>';
+		tableView+='<td>'+ajaxresp.totalRoadsLength+'</td>';
 		if(ajaxresp.subList !=null){
 			for(var j in ajaxresp.subList){
 				tableView+='<td>'+ajaxresp.subList[j].paramValue+'</td>';
+				if(ajaxresp.subList[j].paramName == 'HABCON'){
+					totalhabsCon=ajaxresp.subList[j].paramValue;
+				}
+				if(ajaxresp.subList[j].paramName == 'HABUNCON'){
+					totalhabsunCon=ajaxresp.subList[j].paramValue;
+					totalhabs=totalhabsCon+totalhabsunCon;
+					tableView+='<td>'+totalhabs+'</td>';
+				}
+				
 			}
 			}else{
 				tableView+='<td> - </td>';
@@ -148,9 +181,19 @@ function build(ajaxresp,locationType){
 		for(var i in ajaxresp){
 			tableView+='<tr>';
 				tableView+='<td>'+ajaxresp[i].locationName+'</td>';
+				tableView+='<td>'+ajaxresp[i].totalRoadsLength+'</td>';
 			if(ajaxresp[i].subList !=null){
 				for(var j in ajaxresp[i].subList){
 					tableView+='<td>'+ajaxresp[i].subList[j].paramValue+'</td>';
+					if(ajaxresp[i].subList[j].paramName == 'HABCON'){
+						totalhabsCon=ajaxresp[i].subList[j].paramValue;
+					}
+					if(ajaxresp[i].subList[j].paramName == 'HABUNCON'){
+						totalhabsunCon=ajaxresp[i].subList[j].paramValue;
+						totalhabs=totalhabsCon+totalhabsunCon;
+						tableView+='<td>'+totalhabs+'</td>';
+					}
+					
 				}
 			}else{
 				tableView+='<td> - </td>';
@@ -161,11 +204,20 @@ function build(ajaxresp,locationType){
 	tableView+='</tbody>';
 	
 	$("#levelWiseEnc"+locationType).html(tableView);
+	if(locationType != "state"){
+		$("#dataTable1"+locationType).dataTable({
+						
+		});
+	}
 
 }
-
+var btccCnt=0;
+var earthenCnt=0;
+var gravelCnt=0;
+var wbmCnt=0;
 function buildKeyPerformanceIndicatorsInfo(result){
 	var mainArr=[];
+	var str='';
 	if(result !=null){
 		for(var i in result.subList){
 			var casteName ='';
@@ -174,20 +226,26 @@ function buildKeyPerformanceIndicatorsInfo(result){
 			if(result.subList[i].paramName=="BTCC"){
 				casteName ="BT+CC";
 				count =result.subList[i].paramValue;
+				btccCnt=count;
+				$("#btccBlockId").html(count);
 				colorsId = globalCasteColorObj[result.subList[i].paramName.trim()];
 			}else if(result.subList[i].paramName=="EARTHEN"){
 				casteName = result.subList[i].paramName;
 				count =result.subList[i].paramValue;
+				$("#earthenblockId").html(count);
 				colorsId = globalCasteColorObj[result.subList[i].paramName.trim()];
 			}else if(result.subList[i].paramName=="GRAVEL"){
 				casteName = result.subList[i].paramName;
 				count =result.subList[i].paramValue;
+				$("#grveBlockId").html(count);
 				colorsId = globalCasteColorObj[result.subList[i].paramName.trim()];
 			}else if(result.subList[i].paramName=="WBM"){
 				casteName = result.subList[i].paramName;
 				count =result.subList[i].paramValue;
+				$("#wbmBlockId").html(count);
 				colorsId = globalCasteColorObj[result.subList[i].paramName.trim()];
 			}
+			
 			var obj = {
 				name: casteName,
 				y:count,
@@ -209,7 +267,11 @@ function buildKeyPerformanceIndicatorsInfo(result){
 			}
 		},
 		title: {
-			text: ''
+			  text: 'TOTAL ROAD LENGTH',
+			  align: 'left',
+			   style: {
+				fontWeight: 'bold'
+			  }
 		},
 		tooltip: {
 			useHTML: true,
@@ -221,8 +283,8 @@ function buildKeyPerformanceIndicatorsInfo(result){
 		},
 		plotOptions: {
 			pie: {
-				innerSize: 160,
-				depth: 100,
+				innerSize: 140,
+				depth: 80,
 				dataLabels:{
 					useHTML: true,
 					enabled: false,
@@ -266,10 +328,16 @@ function buildKeyPerformanceIndicatorsInfo(result){
 	});
 	
 }
-buildroadsBlock();
-function buildroadsBlock(){
+
+//buildroadsBlock();
+function buildroadsBlock(ajaxresp){
+	
+	var habCon=0;
+	var habUnCon=0;
+	var totalhab=0;
+	var covertedCnt=0;
 	var str='';
-	str+='<div class="col-sm-8">';
+	str+='<div class="col-sm-12">';
 		str+='<div class="enc_block">';
 			str+='<div class="row">';
 				str+='<div class="col-sm-6" style="border-right:2px dashed lightgrey">';
@@ -278,64 +346,51 @@ function buildroadsBlock(){
 						str+='</div>';
 						str+='<div class="col-sm-8">';
 							str+='<h5><b>ROAD NETWORK</b></h5>';
-							str+='<h4><b>78282 <span class="font_12">km<span></b></h4>';
+							str+='<h4><b>'+ajaxresp.totalRoadsLength+'</b></h4>';
 						str+='</div>';
 					str+='<div class="col-sm-12 border_cls pad_10_10">';
-						str+='<div class="col-sm-3"><b>BT + CC</br>23010</b></div>';
-							str+='<div class="col-sm-2"><b>WBM</br>23010</b></div>';
-							str+='<div class="col-sm-2"><b>GRAVEL</br>23010</b></div>';
-							str+='<div class="col-sm-2"><b>EARTHEN</br>23010</b></div>';
-							str+='<div class="col-sm-3"><b>UNEARTHEN</br>23010</b></div>';
-						str+='</div>';
+						for(var i in ajaxresp.subList){
+							covertedCnt=covertedCnt+ajaxresp.subList[i].paramValue;
+							if(ajaxresp.subList[i].paramName != 'HABCON' && ajaxresp.subList[i].paramName != 'HABUNCON'){
+								str+='<div class="col-sm-3">';
+									str+='<b>'+ajaxresp.subList[i].paramName+'</b></br>';
+									str+='<b>'+ajaxresp.subList[i].paramValue+'</b>';
+								str+='</div>';
+							}
+							
+						}
+					str+='</div>';
 					str+='<div class="col-sm-12 m_top10 roadnetwork_block">';
-						str+='<h5><b>CONVERT TO (BT + CC)</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
-						str+='<h5><b>TARGET KM</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
-						str+='<h5><b>ACHIEVED KM</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
+						str+='<h5><b>CONVERTED </b><b class="pull-right">'+covertedCnt+'</b></h5>';
 					str+='</div>';
 				str+='</div>';
 				
 				str+='<div class="col-sm-6">';
 					str+='<div class="roadsConnectedBlock" style="background-color:#F8F8F8;padding:10px;border-radius:5px">';
-					
+						for(var i in ajaxresp.subList){
+							if(ajaxresp.subList[i].paramName == 'HABCON'){
+								habCon = ajaxresp.subList[i].paramValue;
+							}
+							if(ajaxresp.subList[i].paramName == 'HABUNCON'){
+								habUnCon = ajaxresp.subList[i].paramValue;
+								totalhab=habCon+habUnCon;
+							}
+						}
 						str+='<div class="row">';
 							str+='<div class="col-sm-4">';
 								str+='<h6><b>TOTAL HABITATION COUNT</b></h6>';
-								str+='<h5 class="m_top10"><b>23010</b><span style="margin-left:10px;color:green">86.9%</span></h5>';
+								str+='<h5 class="m_top10"><b>'+totalhab+'</b><span style="margin-left:10px;color:green"></span></h5>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
 								str+='<h6><b>HABITATION CONNECTED</b></h6>';
-								str+='<h5 class="m_top10"><b>23010</b><span class="" style="margin-left:10px;color:green">75%</span></h5>';
+								str+='<h5 class="m_top10"><b>'+habCon+'</b><span class="" style="margin-left:10px;color:green"></span></h5>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
 								str+='<h6><b>HABITATION NOT-CONNECTED</b></h6>';
-								str+='<h5 class="m_top10"><b>23010</b><span class="" style="margin-left:10px;color:green">25%</span></h5>';
+								str+='<h5 class="m_top10"><b>'+habUnCon+'</b><span class="" style="margin-left:10px;color:green"></span></h5>';
 							str+='</div>';
-							str+='<div class="col-sm-12 m_top20">';
-								str+='<div class="media" style="border-top:1px solid lightgrey;padding-top:10px">';
-									str+='<div class="media-left">';
-										str+='<img src="Assests/icons/Priority_Habitation_icon.png">';
-									str+='</div>';
-									str+='<div class="media-body">';
-										str+='<h5><b>PRIORITY - HABITATION CONNECTIVITY</b></h5>';
-										str+='<h5><b>5000</b><span>86.9%</span></h5>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-						str+='<div class="row m_top20">';
-							str+='<div class="col-sm-5">';
-								str+='<span><b>CONVERT TO (BT + CC) TARGET KM</b></span>';
-								str+='<h5><b>23010</b><span class="" style="margin-left:10px;color:green">25%</span></h5>';
-							str+='</div>';
-							str+='<div class="col-sm-3">';
-								str+='<span><b>ACHIEVED KM</b></span>';
-								str+='<h5><b>23010</b><span class="" style="margin-left:10px;color:green">75%</span></h5>';
-							str+='</div>';
-							str+='<div class="col-sm-4">';
-								str+='<span><b>₹ FUND REQUIRED</b></span>';
-								str+='<h5><b>23010</b></h5>';
-							str+='</div>';
-						str+='</div>';
+							
+						
 						
 					str+='</div>';
 				str+='</div>';
@@ -343,37 +398,5 @@ function buildroadsBlock(){
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
-	
-	
-	str+='<div class="col-sm-4">';
-		str+='<div class="enc_block">';
-			str+='<div class="row">';
-				str+='<div class="col-sm-4">';
-					str+='<img src="Assests/icons/Internal_roads_icon.png">';
-				str+='</div>';
-				str+='<div class="col-sm-8">';
-					str+='<h5><b>INTERNAL ROADS</b></h5>';
-					str+='<h4><b>56735 <span class="font_12">km<span></b></h4>';
-				str+='</div>';
-				str+='<div class="col-sm-12">';
-						str+='<div class="border_cls pad_10_10">';
-							str+='<div class="row">';
-								str+='<div class="col-sm-3"><b>BT + CC</br>23010</b></div>';
-								str+='<div class="col-sm-3"><b>WBM</br>23010</b></div>';
-								str+='<div class="col-sm-3"><b>GRAVEL</br>23010</b></div>';
-								str+='<div class="col-sm-3"><b>EARTHEN</br>23010</b></div>';
-							str+='</div>';
-						str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-12 m_top10 roadnetwork_block">';
-					str+='<h5><b>CONVERT TO (BT + CC)</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
-					str+='<h5><b>TARGET KM</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
-					str+='<h5><b>ACHIEVED KM</b><b class="pull-right">5520<span class="pull-right" style="margin-left:10px;font-size:12px;color:green">52%</span></b></h5>';
-				str+='</div>';
-			
-			str+='</div>';
-		str+='</div>';
-	str+='</div>';
-	
 	$("#roadsBlockId").html(str);
 }
