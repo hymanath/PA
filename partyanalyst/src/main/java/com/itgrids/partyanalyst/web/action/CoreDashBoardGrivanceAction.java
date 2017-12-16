@@ -1,13 +1,16 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.service.impl.CoreDashboardCoreService;
+import com.itgrids.partyanalyst.service.ICoreDashboardCoreService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -19,13 +22,30 @@ public class CoreDashBoardGrivanceAction extends ActionSupport implements Servle
 	private JSONObject 	jObj;
 	private String 	task;
 	
-	private CoreDashboardCoreService coreDashboardCoreService;
+	private ICoreDashboardCoreService coreDashboardCoreService;
+	private List<ComplaintStatusCountVO> complaintStatusCountVOs;
 	
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
 	}
+	
+	public void setComplaintStatusCountVOs(
+			List<ComplaintStatusCountVO> complaintStatusCountVOs) {
+		this.complaintStatusCountVOs = complaintStatusCountVOs;
+	}
+	
+	
+	public List<ComplaintStatusCountVO> getComplaintStatusCountVOs() {
+		return complaintStatusCountVOs;
+	}
+
+	public void setCoreDashboardCoreService(
+			ICoreDashboardCoreService coreDashboardCoreService) {
+		this.coreDashboardCoreService = coreDashboardCoreService;
+	}
+
 	public String execute(){
 		try {
 			
@@ -51,6 +71,22 @@ public class CoreDashBoardGrivanceAction extends ActionSupport implements Servle
 	}
 	public void setTask(String task) {
 		this.task = task;
+	}
+	public String getCategoryAndIssuetypeStatusCount(){
+		try {
+			LOG.info("Entered into getCategoryAndIssuetypeStatusCount()  of CoreDashBoardGrivanceAction");
+			jObj = new JSONObject(getTask());
+			String inputType = jObj.getString("inputType");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			String stateIds = jObj.getString("stateIds");
+			Long enrollmentYrId = jObj.getLong("enrollmentYrId");
+			String task = jObj.getString("task");
+			complaintStatusCountVOs = coreDashboardCoreService.getCategoryAndIssuetypeStatusCount(inputType,fromDate,toDate,stateIds,enrollmentYrId,task);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCategoryAndIssuetypeStatusCount() method of CoreDashBoardGrivanceAction", e);
+		}
+		return Action.SUCCESS;
 	}
 	
 }
