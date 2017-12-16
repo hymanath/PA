@@ -12,7 +12,7 @@ var searchCandidateIds=[];
 var diffArr=[];
 var commonArr=[];
 getSubjectPetitionsDepartmentList();
-getWorkTypeList();
+getWorkTypeList("","","","","onload");
 getAllDistrictsInState("","","","onload");
 getPetitionDesignationLst();
 //District Build
@@ -364,7 +364,11 @@ function getPetitionSubSubjectList(subjectId,divId,innerCount,type){
 		
 	});	
 }
-function getWorkTypeList(){
+function getWorkTypeList(divId,typeVal,count,innerCount,type){
+	
+	$("#"+divId+typeVal+count+innerCount).html('<option value="0">Select Work Type</option>');
+	 $("#"+divId+typeVal+count+innerCount).trigger('chosen:updated');
+	 
 	 var json = {};
 	 
      $.ajax({              
@@ -378,8 +382,15 @@ function getWorkTypeList(){
 	  }
 	 }).done(function(result){
 		 if(result !=null && result.length>0){
-			globalWorkTypeList =result; 
+			 if(type=="onload"){
+				globalWorkTypeList =result; 
+			}
+			
+			for(var i in result){
+			 $("#"+divId+typeVal+count+innerCount).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+		   }
 		 }
+		  $("#"+divId+typeVal+count+innerCount).trigger('chosen:updated');
 	 }); 
 }
 $(document).on("change","#districtCandId",function(){
@@ -667,7 +678,7 @@ $(document).on("click",".cloned_Inner_Element",function(){
 	
 	$(".appendInnerBlocks"+typeVal+counterId+innerWorkCount).append(clonedInnerTemplate('clone',counterId,typeVal,mainWorkCount,innerWorkCount,conterInnerVal));
 	$(".chosen-select").chosen({width:'100%'});
-	//getWorkTypeList('workTypeInnerId',typeVal,mainWorkCount,innerWorkCount);
+	getWorkTypeList('workTypeInnerId',typeVal,counterId,innerWorkCount,"change");
 });
 
 function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
@@ -1908,3 +1919,7 @@ function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal){
 		$("#mandalREPRESENTEE").trigger('chosen:updated');
 	});	
 }
+$(document).on("click",".removeWorkCls",function(){
+	var divIdStr = $(this).attr('attr_id');
+	$('#'+divIdStr+'').remove();
+});
