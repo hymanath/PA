@@ -14,7 +14,7 @@
 			<img src="Assests/images/Banner-A.png" class="logo" style=" background-color: #0071BC; width: 1550px;height: 200px"/>
 			</div>
 		</div>		
-	</div>
+</div>
 </section>
 <body>
 <main>
@@ -30,12 +30,12 @@
 							<div class="login-block-inner">
 								<!--<h2>Login</h2>-->
 								<label class="login-field-icon fui-user" for="login-name" style="margin-top:30px">USERNAME
-									<input type="text" class="form-control" value="" placeholder="" id="login-name">
-									<span id="statusMessage"></span>	
+									<input type="text" class="form-control" value="" placeholder="User Name" id="login-name"/>
+									<span id="statusErrUserId"></span>	
 								</label>
 								<label class="login-field-icon fui-lock m_top20" for="login-pass">PASSWORD
-									<input type="password" class="form-control" value="" placeholder="" id="login-pass" onkeypress="searchKeyPress(event);">
-									<span id="statusMessagePwd"></span>	
+									<input type="password" class="form-control" value="" placeholder="Password" id="login-pass" >
+									<span id="statusErrPwdId"></span>	
 								</label>
 								<div class="row" style="margin-left: 0px;">
 								<a class="btn btn-primary btn-large btn-block btnSearch m_top20" style="display:inline-block" onClick="userLogin();" id="signinId" style="cursor:pointer;">SIGN IN</a>
@@ -43,11 +43,6 @@
 								</div>
 							</div>	
 							<p id="successMessage"></p>	
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-11">
-							<h5 style="text-decoration:underline;color:#279ffc" class="pull-right"><a href="MGNREGSDashboard" target="_blank">Go To DashBoard</a></h5>
 						</div>
 					</div>
 				</div>
@@ -71,31 +66,37 @@
 </footer>
 <script type = "text/javascript" src = "Assests/js/jquery-1.11.3.js"></script>
 <script src="Assests/js/login.js" type="text/javascript"></script>
-<script>
+<script type="text/javascript">
 
 function userLogin(){
-	$("#statusMessage").html("");
-	$("#statusMessagePwd").html("");
-	$("#successMessage").html("");
+	$("#statusErrUserId").html(' ');
+	$("#statusErrPwdId").html(' ');
+	$("#successMessage").html(' ');
+		
 	var userName = $("#login-name").val();
 	var password = $("#login-pass").val();
+
 	var errorStr = '';
 	var errorPwdStr='';
-	if(userName == 0){
+	if(userName == 0 || userName == '' || userName == null || userName.trim().length == 0){
 		errorStr += "<p style='color:red'>Username is required</p>";
 	}
-	if(password == 0){
+	if(password == 0 || password == ''  || password == null  || password.trim().length == 0 ){
 		errorPwdStr += "<p style='color:red'>Password is required</p>";
 	}
 	if(errorStr.length >0)
 	{
-		$('#statusMessage').html(errorStr);
+		$('#statusErrUserId').html(errorStr);
 		return ;
+	}else{
+		$('#statusErrUserId').html('');
 	}
 	if(errorPwdStr.length >0)
 	{
-		$('#statusMessagePwd').html(errorPwdStr);
+		$('#statusErrPwdId').html(errorPwdStr);
 		return ;
+	}else{
+		$('#statusErrPwdId').html('');
 	}
 	$("#spinnerImg").show();
 	 var json = {
