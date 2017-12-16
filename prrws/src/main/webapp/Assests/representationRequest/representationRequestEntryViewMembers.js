@@ -420,6 +420,7 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 
 $(document).on("click",".viewBtnCls",function(){
 	var petionId = $(this).attr("attr_petiotion_id");
+	$("#representeeViewId").html("");
 	$("#representeeDetailsModelDivId").modal("show");
    getPetitionDetails(petionId);
  });
@@ -529,6 +530,7 @@ function getStatusList(){
 }
 //getPetitionDetails(1778);
 function getPetitionDetails(petitionId){
+	$("#representeeViewId").html(spinner);
    var json = {
        petitionId:petitionId
     };
@@ -544,7 +546,6 @@ function getPetitionDetails(petitionId){
   }).done(function(result){
     console.log(result);
 	if(result != null){
-		$("#representeeViewId").html("");
 		setPmRepresenteeDataToResultView(result);
 	}else{
 		$("#representeeViewId").html("NO DATA AVAILABLE");
@@ -555,7 +556,7 @@ function getPetitionDetails(petitionId){
 function setPmRepresenteeDataToResultView(result){
 	var str="";
 	//str+='';
-	$("#representeeViewId").html(spinner);
+	//$("#representeeViewId").html(spinner);
 	if(result != null){
 		
 		
