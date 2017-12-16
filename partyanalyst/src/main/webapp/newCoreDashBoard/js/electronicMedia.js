@@ -307,7 +307,12 @@ function getpartyWiseChannelCounts(result){
 			str+='<tr>';
 				str+='<td>';
 					str+='<h5 class="text-capitalize">Total</h5>';
-					str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[0].organizationId+' attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="N" attr_searchType="category" style="cursor:pointer">'+result[0].categoryCount+'</a></h4>';
+					if(result[0].categoryCount != null && result[0].categoryCount >0){
+						str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[0].organizationId+' attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="N" attr_searchType="category" style="cursor:pointer">'+result[0].categoryCount+'</a></h4>';
+					}else{
+						str+='<h4><a attr_orgId='+result[0].organizationId+' attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="N" attr_searchType="category">'+result[0].categoryCount+'</a></h4>';
+					}
+					
 					str+='<h5	 class="text-capitalize m_top20">total time</h5>';
 					str+='<h4>'+result[0].description != ""?result[0].description:"00:00"+'</h4>';
 				str+='</td>';
@@ -317,9 +322,19 @@ function getpartyWiseChannelCounts(result){
 						str+='<h5 class="text-capitalize">'+result[0].tvNewsDetailsVOList[j].organization+'</h5>';
 						
 						if(result[0].tvNewsDetailsVOList[j].title=="category"){
-							str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[0].organizationId+' attr_categoryId='+result[0].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="N" attr_searchType="category" style="cursor:pointer">'+result[0].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							if(result[0].tvNewsDetailsVOList[j].categoryCount != null && result[0].tvNewsDetailsVOList[j].categoryCount >0){
+								str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[0].organizationId+' attr_categoryId='+result[0].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="N" attr_searchType="category" style="cursor:pointer">'+result[0].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							}else{
+								str+='<h4><a attr_orgId='+result[0].organizationId+' attr_categoryId='+result[0].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="N" attr_searchType="category">'+result[0].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							}
+							
 						}else if(result[0].tvNewsDetailsVOList[j].title=="benefit"){
-							str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[0].organizationId+' attr_categoryId=" " attr_benefitId="'+result[0].tvNewsDetailsVOList[j].organizationId+'" attr_orgtype="N" attr_searchType="benefit" style="cursor:pointer">'+result[0].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							if(result[0].tvNewsDetailsVOList[j].categoryCount != null && result[0].tvNewsDetailsVOList[j].categoryCount >0){
+								str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[0].organizationId+' attr_categoryId=" " attr_benefitId="'+result[0].tvNewsDetailsVOList[j].organizationId+'" attr_orgtype="N" attr_searchType="benefit" style="cursor:pointer">'+result[0].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							}else{
+								str+='<h4><a attr_orgId='+result[0].organizationId+' attr_categoryId=" " attr_benefitId="'+result[0].tvNewsDetailsVOList[j].organizationId+'" attr_orgtype="N" attr_searchType="benefit">'+result[0].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							}
+							
 						}
 						
 						
@@ -351,7 +366,11 @@ function getpartyWiseChannelCounts(result){
 				str+='<tr>';
 					str+='<td>';
 						str+='<h5 class="text-capitalize">Total</h5>';
-						str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[i].organizationId+' attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="N" attr_searchType="category" style="cursor:pointer">'+result[i].categoryCount+'</a></h4>';
+						if(result[i].categoryCount != null && result[i].categoryCount >0){
+							str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[i].organizationId+' attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="N" attr_searchType="category" style="cursor:pointer">'+result[i].categoryCount+'</a></h4>';
+						}else{
+							str+='<h4><a attr_orgId='+result[i].organizationId+' attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="N" attr_searchType="category">'+result[i].categoryCount+'</a></h4>';
+						}
 						str+='<h5 class="text-capitalize m_top20">total time</h5>';
 						str+='<h4>'+result[i].description != ""?result[i].description:"00:00"+'</h4>';
 					str+='</td>';
@@ -361,9 +380,18 @@ function getpartyWiseChannelCounts(result){
 							str+='<h5 class="text-capitalize">'+result[i].tvNewsDetailsVOList[j].organization+'</h5>';
 							
 							if(result[i].tvNewsDetailsVOList[j].title=="category"){
-								str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[i].organizationId+' attr_categoryId='+result[i].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="N" attr_searchType="category" style="cursor:pointer">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+								if(result[i].tvNewsDetailsVOList[j].categoryCount != null && result[i].tvNewsDetailsVOList[j].categoryCount >0){
+									str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[i].organizationId+' attr_categoryId='+result[i].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="N" attr_searchType="category" style="cursor:pointer">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+								}else{
+									str+='<h4><a attr_orgId='+result[i].organizationId+' attr_categoryId='+result[i].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="N" attr_searchType="category">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+								}
+								
 							}else if(result[i].tvNewsDetailsVOList[j].title=="benefit"){
-								str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[i].organizationId+' attr_categoryId=" " attr_benefitId='+result[i].tvNewsDetailsVOList[j].organizationId+' attr_orgtype="N" attr_searchType="benefit" style="cursor:pointer">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+								if(result[i].tvNewsDetailsVOList[j].categoryCount != null && result[i].tvNewsDetailsVOList[j].categoryCount >0){
+									str+='<h4><a class="basicBulletinsCls" attr_orgId='+result[i].organizationId+' attr_categoryId=" " attr_benefitId='+result[i].tvNewsDetailsVOList[j].organizationId+' attr_orgtype="N" attr_searchType="benefit" style="cursor:pointer">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+								}else{
+									str+='<h4><a attr_orgId='+result[i].organizationId+' attr_categoryId=" " attr_benefitId='+result[i].tvNewsDetailsVOList[j].organizationId+' attr_orgtype="N" attr_searchType="benefit">'+result[i].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+								}
 							}
 							str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
 							str+='<h4>'+result[i].tvNewsDetailsVOList[j].description != ""?result[i].tvNewsDetailsVOList[j].description:"00:00"+'</h4>';
@@ -390,7 +418,12 @@ function getpartyWiseChannelCounts(result){
 			str+='<tr>';
 				str+='<td>';
 					str+='<h5 class="text-capitalize">Total</h5>';
-					str+='<h4><a class="basicBulletinsCls" attr_orgId=" " attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="Y" attr_searchType="category" style="cursor:pointer">'+result[EmnG].categoryCount+'</a></h4>';
+					if(result[EmnG].categoryCount != null && result[EmnG].categoryCount >0){
+						str+='<h4><a class="basicBulletinsCls" attr_orgId=" " attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="Y" attr_searchType="category" style="cursor:pointer">'+result[EmnG].categoryCount+'</a></h4>';
+					}else{
+						str+='<h4><a attr_orgId=" " attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="Y" attr_searchType="category">'+result[EmnG].categoryCount+'</a></h4>';
+					}
+					
 					str+='<h5 class="text-capitalize m_top20">total time</h5>';
 					str+='<h4>'+result[EmnG].description != ""?result[EmnG].description:"00:00"+'</h4>';
 				str+='</td>';
@@ -399,9 +432,18 @@ function getpartyWiseChannelCounts(result){
 					str+='<td>';
 						str+='<h5 class="text-capitalize">'+result[EmnG].tvNewsDetailsVOList[j].organization+'</h5>';
 						if(result[EmnG].tvNewsDetailsVOList[j].title =="category"){
-							str+='<h4><a class="basicBulletinsCls" attr_orgId=" " attr_categoryId='+result[EmnG].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="Y" attr_searchType="category" style="cursor:pointer">'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							if(result[EmnG].tvNewsDetailsVOList[j].categoryCount != null && result[EmnG].tvNewsDetailsVOList[j].categoryCount >0){
+								str+='<h4><a class="basicBulletinsCls" attr_orgId=" " attr_categoryId='+result[EmnG].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="Y" attr_searchType="category" style="cursor:pointer">'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							}else{
+								str+='<h4><a attr_orgId="" attr_categoryId='+result[EmnG].tvNewsDetailsVOList[j].organizationId+' attr_benefitId=" " attr_orgtype="Y" attr_searchType="category">'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							}
+							
 						}else if(result[EmnG].tvNewsDetailsVOList[j].title =="benefit"){
-							str+='<h4><a class="basicBulletinsCls" attr_orgId=" " attr_categoryId=" " attr_benefitId='+result[EmnG].tvNewsDetailsVOList[j].organizationId+' attr_orgtype="Y" attr_searchType="benefit" style="cursor:pointer">'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							if(result[EmnG].tvNewsDetailsVOList[j].categoryCount != null && result[EmnG].tvNewsDetailsVOList[j].categoryCount>0){
+								str+='<h4><a class="basicBulletinsCls" attr_orgId=" " attr_categoryId=" " attr_benefitId='+result[EmnG].tvNewsDetailsVOList[j].organizationId+' attr_orgtype="Y" attr_searchType="benefit" style="cursor:pointer">'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							}else{
+								str+='<h4><a attr_orgId=" " attr_categoryId=" " attr_benefitId='+result[EmnG].tvNewsDetailsVOList[j].organizationId+' attr_orgtype="Y" attr_searchType="benefit" >'+result[EmnG].tvNewsDetailsVOList[j].categoryCount+'</a></h4>';
+							}
 						}
 						
 						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
@@ -911,7 +953,7 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 					str+='<ul class="partyVsChannelSlickApplyEmn" style="padding:0px;">';
 					for(var j in result[i].tvNewsDetailsVOList)
 					{
-						str+='<li><h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].organization+'</h4><div id="partyVsChannelGraph'+i+''+j+'"  style="height:200px;width:220px"></div></li>';
+						str+='<li class="col-sm-4"><h4 class="panel-title">'+result[i].tvNewsDetailsVOList[j].organization+'</h4><div id="partyVsChannelGraph'+i+''+j+'"  style="height:200px;width:220px"></div></li>';
 					}
 					str+='</ul>';
 				str+='</div>';
@@ -933,8 +975,8 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 			{
 				if(locationLevelIdGlb == 2){
 					
-				positivePercArrayEmn.push({"y":result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].positivePerc,"extra":"3-"+result[i].tvNewsDetailsVOList[j].organizationId+"-"+result[i].organizationId+"-1"});
-				negativePercArrayEmn.push({"y":result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].negativePerc,"extra":"3-"+result[i].tvNewsDetailsVOList[j].organizationId+"-"+result[i].organizationId+"-2"});
+					positivePercArrayEmn.push({"y":result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].positivePerc,"extra":"3-"+result[i].tvNewsDetailsVOList[j].organizationId+"-"+result[i].organizationId+"-1"});
+					negativePercArrayEmn.push({"y":result[i].tvNewsDetailsVOList[j].tvNewsDetailsVOList[k].negativePerc,"extra":"3-"+result[i].tvNewsDetailsVOList[j].organizationId+"-"+result[i].organizationId+"-2"});
 				
 				}else{
 					
@@ -1013,8 +1055,12 @@ function buildEMMDetailedPartiesVsChannelsPartiesDistrictWise(result)
 								if (this.y === 0) {
 									return null;
 								} else {
-									return (this.y)+'%';
+									return Highcharts.numberFormat(this.y,2) + '%';
 								}
+							},
+							style: {
+								fontSize: '9px',
+								fontFamily: 'Verdana, sans-serif'
 							}
 						  
 						}
@@ -2403,7 +2449,7 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 	for(var i in result)
 	{
 		rankVar =rankVar+1;
-		str+='<li class="NewsSlickPanelSliderLiEmnCls" attr_newsChannel='+result[i].tvNewsDetailsVOList[0].organizationId+'  attr_channelName='+result[i].tvNewsDetailsVOList[0].organization+'  style="cursor:pointer;">';
+		str+='<li class="NewsSlickPanelSliderLiEmnCls" attr_newsChannel="'+result[i].tvNewsDetailsVOList[0].organizationId+'"  attr_channelName="'+result[i].tvNewsDetailsVOList[0].organization+'"  style="cursor:pointer;">';
 			str+='<div class="panel panel-default panelSlick">';
 				str+='<div class="panel-heading" style="padding:8px;background-color: #ededed !important;">';
 					str+='<h4 class="panel-title"><img src="newCoreDashBoard/img/'+result[i].tvNewsDetailsVOList[0].organization+'.png" class="debatesPartyIcon"/>'+result[i].tvNewsDetailsVOList[0].organization+'';
@@ -3332,13 +3378,14 @@ function getEMMCompGovtProblemsDetailedOverview(channelIdArr)
 function buildEMMCompGovtProblemsDetailedOverview(result,channelIdArr)
 {
 	var str='';
+		str+='<div class="panel-body">';
 		str+='<div class="row">';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<h3 class="m_top20">DISTRICT WISE</h3>';
 				str+='<div id="comaprisonDistrictWiseArticleEmnGovt" class="m_top20" style="height:150px;"></div>';
 			str+='</div>';
 		str+='</div>';
-		
+		str+='</div>';
 		var distWiseArticlesRelated = [];
 		for(var i in result.tvNewsDetailsVOList1){
 			if(locationLevelIdGlb == 2){
@@ -3441,7 +3488,8 @@ function buildEMMCompGovtProblemsDetailedOverview(result,channelIdArr)
 			 
 			});
 		});
-		
+		str+='</div>';
+str+='</div>';	
 }
 function getEMMCompGovtBulletinProblemsDetailedOverview(val){
 	 var t = val.split("-");
