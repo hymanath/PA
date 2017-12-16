@@ -216,7 +216,7 @@
 													</div>
 													<div class="media-body">
 														<p>BT +CC</p>
-														<h4><b>45359</b></h4>
+														<h4><b id="btccBlockId"></b></h4>
 													</div>
 												</div>
 											</div>
@@ -228,16 +228,13 @@
 														<img src="Assests/icons/wbm_icom.png" alt="BTCC"/>
 													</div>
 													<div class="media-body">
-														<p>WBM</p>
-														<h4><b>45359</b></h4>
+														<p>WBM <span style="font-size:12px">(Water bond macadem)<span></p>
+														<h4><b id="wbmBlockId"></b></h4>
 													</div>
 												</div>
 											</div>
 										</div>
-										<div class="col-sm-4 m_top10">
-											
-										</div>
-										<div class="clearfix"></div>
+										
 										<div class="col-sm-4 m_top10">
 											<div class="enc_block">
 												<div class="media">
@@ -246,7 +243,7 @@
 													</div>
 													<div class="media-body">
 														<p>Gravel</p>
-														<h4><b>45359</b></h4>
+														<h4><b id="grveBlockId"></b></h4>
 													</div>
 												</div>
 											</div>
@@ -259,24 +256,12 @@
 													</div>
 													<div class="media-body">
 														<p>Earthen Roads</p>
-														<h4><b>45359</b></h4>
+														<h4><b id="earthenblockId"></b></h4>
 													</div>
 												</div>
 											</div>
 										</div>
-										<div class="col-sm-4 m_top10">
-											<div class="enc_block">
-												<div class="media">
-													<div class="media-left">
-														<img src="" alt="BTCC"/>
-													</div>
-													<div class="media-body">
-														<p>Unearthen Roads</p>
-														<h4><b>45359</b></h4>
-													</div>
-												</div>
-											</div>
-										</div>
+										
 									</div>
 								</div>
 							</div>
