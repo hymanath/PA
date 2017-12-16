@@ -172,7 +172,7 @@ function buildKeyPerformanceIndicatorsInfo(result){
 			var count=0;
 			var colorsId ='';
 			if(result.subList[i].paramName=="BTCC"){
-				casteName =result.subList[i].paramName;
+				casteName ="BT+CC";
 				count =result.subList[i].paramValue;
 				colorsId = globalCasteColorObj[result.subList[i].paramName.trim()];
 			}else if(result.subList[i].paramName=="EARTHEN"){
@@ -193,7 +193,9 @@ function buildKeyPerformanceIndicatorsInfo(result){
 				y:count,
 				color:colorsId
 			}
-			mainArr.push(obj);
+			if(result.subList[i].paramName !="HABCON" && result.subList[i].paramName !="HABUNCON"){
+						mainArr.push(obj);
+			}
 		}
 	}
 	
