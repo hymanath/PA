@@ -72,26 +72,34 @@ public class PrENCService implements IPrENCService {
 								
 								if (mainVo == null) {
 									mainVo = new EncVO();
-									EncVO subVo = new EncVO();
+									List<EncVO> subList= getSkelton(array,mainVo.getSubList());
 									mainVo.setLocationType(json.getString("UNIT_TYPE"));
 									mainVo.setLocationId(json.getLong("UNIT_ID"));
 									mainVo.setLocationName(json.getString("UNIT_NAME"));
-									subVo.setParamName(json.getString("PARA"));
-									subVo.setParamValue(json.getDouble("PARA_VALUE"));
-									mainVo.getSubList().add(subVo);
+									for (EncVO subVo : subList) {
+										if(subVo.getParamName().equalsIgnoreCase(json.getString("PARA"))){
+											subVo.setParamValue(json.getDouble("PARA_VALUE"));
+										}
+									}
+									mainVo.setSubList(subList);
+									if(!json.getString("PARA").contains("HAB")){
+										mainVo.setTotalRoadsLength(mainVo.getTotalRoadsLength()+json.getDouble("PARA_VALUE"));
+									}else{
+										mainVo.setTotalHabs(mainVo.getTotalHabs()+json.getLong("PARA_VALUE"));
+									}
 									innermap.put(json.getLong("UNIT_ID"), mainVo);
 
 								}else{
 									for (EncVO encVO : mainVo.getSubList()) {
 										if(encVO.getParamName().trim().equalsIgnoreCase(json.getString("PARA"))){
-											encVO.setParamName(encVO.getParamValue()+json.getString("PARA"));
+											encVO.setParamValue(encVO.getParamValue()+json.getDouble("PARA_VALUE"));
+											if(!json.getString("PARA").contains("HAB")){
+												mainVo.setTotalRoadsLength(mainVo.getTotalRoadsLength()+json.getDouble("PARA_VALUE"));
+											}else{
+												mainVo.setTotalHabs(mainVo.getTotalHabs()+json.getLong("PARA_VALUE"));
+											}
 										}
 									}
-									
-									EncVO encVO = new EncVO();
-									encVO.setParamName(json.getString("PARA"));
-									encVO.setParamValue(json.getDouble("PARA_VALUE"));
-									mainVo.getSubList().add(encVO);
 								}
 								locationTypeMap.put(json.getString("UNIT_TYPE"), innermap);
 							}else{
@@ -99,26 +107,34 @@ public class PrENCService implements IPrENCService {
 								
 								if (mainVo == null) {
 									mainVo = new EncVO();
-									EncVO subVo = new EncVO();
+									List<EncVO> subList= getSkelton(array,mainVo.getSubList());
 									mainVo.setLocationType(json.getString("UNIT_TYPE"));
 									mainVo.setLocationId(json.getLong("UNIT_ID"));
 									mainVo.setLocationName(json.getString("UNIT_NAME"));
-									subVo.setParamName(json.getString("PARA"));
-									subVo.setParamValue(json.getDouble("PARA_VALUE"));
-									mainVo.getSubList().add(subVo);
+									for (EncVO subVo : subList) {
+										if(subVo.getParamName().equalsIgnoreCase(json.getString("PARA"))){
+											subVo.setParamValue(json.getDouble("PARA_VALUE"));
+										}
+									}
+									mainVo.setSubList(subList);
+									if(!json.getString("PARA").contains("HAB")){
+										mainVo.setTotalRoadsLength(mainVo.getTotalRoadsLength()+json.getDouble("PARA_VALUE"));
+									}else{
+										mainVo.setTotalHabs(mainVo.getTotalHabs()+json.getLong("PARA_VALUE"));
+									}
 									innermap.put(json.getLong("UNIT_ID"), mainVo);
 
 								}else{
 									for (EncVO encVO : mainVo.getSubList()) {
 										if(encVO.getParamName().trim().equalsIgnoreCase(json.getString("PARA"))){
-											encVO.setParamName(encVO.getParamValue()+json.getString("PARA"));
+											encVO.setParamValue(encVO.getParamValue()+json.getDouble("PARA_VALUE"));
+											if(!json.getString("PARA").contains("HAB")){
+												mainVo.setTotalRoadsLength(mainVo.getTotalRoadsLength()+json.getDouble("PARA_VALUE"));
+											}else{
+												mainVo.setTotalHabs(mainVo.getTotalHabs()+json.getLong("PARA_VALUE"));
+											}
 										}
 									}
-									
-									EncVO encVO = new EncVO();
-									encVO.setParamName(json.getString("PARA"));
-									encVO.setParamValue(json.getDouble("PARA_VALUE"));
-									mainVo.getSubList().add(encVO);
 								}
 								locationTypeMap.put(json.getString("UNIT_TYPE"), innermap);
 							}
@@ -150,6 +166,20 @@ public class PrENCService implements IPrENCService {
 		return resultList;
 	}
 	
+	private List<EncVO> getSkelton(JSONArray array, List<EncVO> subList) {
+			subList = new ArrayList<EncVO>();
+		try{
+			for (int i = 0; i < 6; i++) {
+				JSONObject json = array.getJSONObject(i);
+					EncVO encVO= new EncVO();
+					encVO.setParamName(json.getString("PARA"));
+					subList.add(encVO);
+			}
+		}catch(Exception e){
+			
+		}
+		return subList;
+	}
 
 	@Override
 	public EncVO getStateWiseRoadsInformation(InputVO inputVO) {
@@ -181,9 +211,18 @@ public class PrENCService implements IPrENCService {
 								Vo.setParamName(json.getString("PARA"));
 								Vo.setParamValue(json.getDouble("PARA_VALUE"));
 								mainVO.getSubList().add(Vo);
-								mainVO.setTotalRoadsLength(Vo.getParamValue()+mainVO.getTotalRoadsLength());
+								if(!json.getString("PARA").contains("HAB")){
+									mainVO.setTotalRoadsLength(mainVO.getTotalRoadsLength()+json.getDouble("PARA_VALUE"));
+								}else{
+									mainVO.setTotalHabs(mainVO.getTotalHabs()+json.getLong("PARA_VALUE"));
+								}
 							}else{
 								Vo.setParamValue(Vo.getParamValue()+json.getDouble("PARA_VALUE"));
+								if(!json.getString("PARA").contains("HAB")){
+									mainVO.setTotalRoadsLength(mainVO.getTotalRoadsLength()+json.getDouble("PARA_VALUE"));
+								}else{
+									mainVO.setTotalHabs(mainVO.getTotalHabs()+json.getLong("PARA_VALUE"));
+								}
 							}
 							
 						}
