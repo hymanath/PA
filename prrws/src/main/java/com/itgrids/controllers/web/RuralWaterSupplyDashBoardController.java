@@ -53,8 +53,8 @@ public class RuralWaterSupplyDashBoardController {
 		}
 		return "ruralWaterSupplyDashBoard";
 	}
-	
-	@GetMapping("/swatchBharatIHHLInfo")
+
+	@GetMapping("/mgnregsIHHLInfo")
 	public String swatchBharatIHHLInfo(ModelMap model){
 		return "swatchBharatIHHL";
 	}

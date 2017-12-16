@@ -267,7 +267,7 @@ function levelWiseSBData(divId)
 								}else{
 									collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
 								}
-								if(levelWiseSBArr[i] == "state" || levelWiseSBArr[i] == "district" || levelWiseSBArr[i] == "constituency")
+								if(levelWiseSBArr[i] == "state" || levelWiseSBArr[i] == "district" || levelWiseSBArr[i] == "constituencies")
 									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview - (SBM- '+divId+') - All Amounts in Lakhs.</h4>';
 								else
 									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview - (SBM- '+divId+') - All Amounts in Rupees.</h4>';

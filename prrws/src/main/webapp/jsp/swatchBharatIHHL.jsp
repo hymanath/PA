@@ -733,7 +733,7 @@ function buildIHHLlocationLvlWiseData(ajaxresp,locationType){
 								str+='<td class="text-capital">'+ajaxresp[i].district+'</td>';
 								str+='<td class="text-capital">'+ajaxresp[i].constituency+'</td>';
 								str+='<td class="text-capital">'+ajaxresp[i].mandal+'</td>';
-								str+='<td class="text-capital">'+ajaxresp[i].panchayat+'</td>';
+								str+='<td class="text-capital">'+ajaxresp[i].panchayt+'</td>';
 							}
 							str+='<td class="text-capital">'+ajaxresp[i].target+'</td>';										
 							str+='<td class="text-capital">'+ajaxresp[i].grounded+'</td>';										

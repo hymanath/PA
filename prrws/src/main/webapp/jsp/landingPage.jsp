@@ -394,7 +394,7 @@
 					</div>
 					<div class="block-footer">
 						<i class="fa fa-star starcolorChange MGNREGSIHHLColor" title="click to add as favourite component." attr_url="swatchBharatIHHLInfo" attr_full_block_name="MGNREGS IHHL" attr_color_name="gray" attr_block_name="MGNREGSIHHL" aria-hidden="true" attr_page_id="5"></i>
-						<a class="pull-right" href="swatchBharatIHHLInfo"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+						<a class="pull-right" href="mgnregsIHHLInfo"  target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
