@@ -1623,8 +1623,15 @@
 										<div class="col-md-12 col-xs-12 col-sm-12">
 											<div id="govtRankWiseDetailsOfChannel"></div>
 											<div id="govtRankWiseDetailsOfChannelSub" class="m_top20"></div>
-											<div id="emmCompGovtDistDetailedOverview"></div>
-											<div id="districtWiseEMNRelatedToProblemGovt"></div>
+											  <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+												  <div class="panel panel-default panelNew">
+													<div class="panel-heading">
+														<h4 class="panel-title"><span class="headingColor">Problems Detailed Overview</span></h4>
+													</div>
+														<div id="emmCompGovtDistDetailedOverview"></div>
+														<div id="districtWiseEMNRelatedToProblemGovt"></div>
+													</div>
+												</div>
 										</div>
 									</div>
 								</div>
