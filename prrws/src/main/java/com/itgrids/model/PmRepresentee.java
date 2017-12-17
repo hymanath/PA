@@ -28,7 +28,8 @@ public class PmRepresentee {
 	private String adharCardNo;
 	private String isDeleted;
 	private Long pmRefCandidateId;
-	
+	private Long insertedUserId;
+	private Long updatedUserId;
 	private PmRefCandidate pmRefCandidate;
 	private LocationAddress userAddress;
 	
@@ -158,6 +159,22 @@ public class PmRepresentee {
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	
+	@Column(name="inserted_user_id")
+	public Long getInsertedUserId() {
+		return insertedUserId;
+	}
+	public void setInsertedUserId(Long insertedUserId) {
+		this.insertedUserId = insertedUserId;
+	}
+	
+	@Column(name="updated_user_id")
+	public Long getUpdatedUserId() {
+		return updatedUserId;
+	}
+	public void setUpdatedUserId(Long updatedUserId) {
+		this.updatedUserId = updatedUserId;
 	}
 	
 	
