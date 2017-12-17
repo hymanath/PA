@@ -283,76 +283,77 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	$("#"+typeVal+"DetailsDivId").html(spinner);
 	var str='';
 	if(typeVal == "represent"){
-		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-12">';
-				str+='<h3 class="font_weight text-capital f_22">Representee Details:</h3>';
-			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="row m_top20">';
-			/*str+='<div class="col-sm-3">';
-				str+='<label>VOTER ID</label>';
-				str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
-				
-			str+='</div>';
-			*/
-			
-			str+='<div class="col-sm-2">';
-				str+='<label>VOTER ID</label>';
-				str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
-				
-			str+='</div>';
-			str+='<div class="col-sm-1">';
-				str+='<label></label>';
-				str+='<input type="button" class="btn btn-success btn-md m_top20" id="getVoterDetailsId" value="Get Details" ></input>';
+				str+='<div class="row m_top20">';
+				str+='<div class="col-sm-12">';
+					str+='<h3 class="font_weight text-capital f_22">Representee Details:</h3>';
+				str+='</div>';
 			str+='</div>';
 			
-			str+='<div class="col-sm-3">';
-				str+='<label>NAME</label>';//$("#name"+typeVal+"Err").html("<h5>Please Enter Name</h5>");
-				str+='<input type="text"  name="name"  value="" class="form-control m_top10 height45" id="name'+typeVal+'" placeholder="Enter Name">';
+			str+='<div class="row m_top20">';
+				/*str+='<div class="col-sm-3">';
+					str+='<label>VOTER ID</label>';
+					str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
+					
+				str+='</div>';
+				*/
 				
-			str+='</div>';
-			str+='<div class="col-sm-3">';
-				str+='<label>MOBILE NO</label>';
-				str+='<input type="text" name="mobileNO" maxlength="10" value=""  class="form-control m_top10 height45 isNumberCls" onkeyUp="checkIsNumber(this.id,this.value)" id="mobileNumber'+typeVal+'" placeholder="Enter Mobile Number">';
+				str+='<div class="col-sm-2">';
+					str+='<label>VOTER ID</label>';
+					str+='<input type="text"  name="voterCardNo"  value=""  class="form-control m_top10 height45" id="voterId'+typeVal+'" placeholder="Enter Voter ID">';
+					
+				str+='</div>';
+				str+='<div class="col-sm-1">';
+					str+='<label></label>';
+					str+='<input type="button" class="btn btn-success btn-md m_top20" id="getVoterDetailsId" value="Get Details" ></input>';
+				str+='</div>';
 				
+				str+='<div class="col-sm-3">';
+					str+='<label>NAME<span class="starColor">*</span></label>';//$("#name"+typeVal+"Err").html("<h5>Please Enter Name</h5>");
+					str+='<input type="text"  name="name"  value="" class="form-control m_top10 height45" id="name'+typeVal+'" placeholder="Enter Name">';
+					str+='<span class="ErrCls" id="nameErr'+typeVal+'"></span>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<label>MOBILE NO<span class="starColor">*</span></label>';
+					str+='<input type="text" name="mobileNO" maxlength="10" value=""  class="form-control m_top10 height45 isNumberCls" onkeyUp="checkIsNumber(this.id,this.value)" id="mobileNumber'+typeVal+'" placeholder="Enter Mobile Number">';
+					str+='<span class="ErrCls" id="mobileNumberErr'+typeVal+'" ></span>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<label>EMAIL-ID</label>';
+					str+='<input type="text" name="email"   value="" class="form-control m_top10 height45" id="emailId'+typeVal+'" placeholder="Enter E-mail ID">';
+						str+='<span class="ErrCls" id="emailIdErr'+typeVal+'"></span>';
+				str+='</div>';
 			str+='</div>';
-			str+='<div class="col-sm-3">';
-				str+='<label>EMAIL-ID</label>';
-				str+='<input type="text" name="email"   value="" class="form-control m_top10 height45" id="emailId'+typeVal+'" placeholder="Enter E-mail ID">';
-				
-			str+='</div>';
-		str+='</div>';
-		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-3">';	
-				str+='<label>DISTRICT</label>';
-				str+='<select   name="addressVO.districtId" class="form-control chosen-select m_top10" id="district'+typeVal+'">';
-					str+='<option value="0">Select District</option>';
+			str+='<div class="row m_top20">';
+				str+='<div class="col-sm-3">';	
+					str+='<label>DISTRICT<span class="starColor">*</span></label>';
+					str+='<select   name="addressVO.districtId" class="form-control chosen-select m_top10" id="district'+typeVal+'">';
+						str+='<option value="0">Select District</option>';
+					str+='</select>';
+					str+='<span class="ErrCls" id="districtErr'+typeVal+'"></span>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';	
+					str+='<label>CONSTITUENCY<span class="starColor">*</span></label>';
+					str+='<select  name="addressVO.assemblyId"   class="form-control chosen-select m_top10" id="constituency'+typeVal+'">';
+						str+='<option value="0">Select Constituency</option>';
+					str+='</select>';
+					str+='<span class="ErrCls"  id="constituencyErr'+typeVal+'"></span>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';	
+					str+='<label>MANDAL/MUNCI.<span class="starColor">*</span></label>';
+					str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="mandal'+typeVal+'">';
+						str+='<option value="0">Select Mandal</option>';
+					str+='</select>';
+					str+='<span class="ErrCls" id="mandalErr'+typeVal+'"></span>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';	
+				str+='<label>REPRESENTEE DESIGNATION.<span class="starColor">*</span></label>';
+				str+='<select   name="representeeDesignationId"  class="form-control chosen-select m_top10" id="designation'+typeVal+'">';
+					str+='<option value="0">Select Designation</option>';
 				str+='</select>';
-				
+				str+='<span class="ErrCls"  id="designationErr'+typeVal+'"></span>';
+				str+='<input type="hidden" id="repTdpCadreId'+typeVal+'" value="" name="tdpCadreId"/>';
 			str+='</div>';
-			str+='<div class="col-sm-3">';	
-				str+='<label>CONSTITUENCY</label>';
-				str+='<select  name="addressVO.assemblyId"   class="form-control chosen-select m_top10" id="constituency'+typeVal+'">';
-					str+='<option value="0">Select Constituency</option>';
-				str+='</select>';
-				
 			str+='</div>';
-			str+='<div class="col-sm-3">';	
-				str+='<label>MANDAL/MUNCI.</label>';
-				str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="mandal'+typeVal+'">';
-					str+='<option value="0">Select Mandal</option>';
-				str+='</select>';
-				
-			str+='</div>';
-			str+='<div class="col-sm-3">';	
-			str+='<label>REPRESENTEE DESIGNATION.</label>';
-			str+='<select   name="representeeDesignationId"  class="form-control chosen-select m_top10" id="designation'+typeVal+'">';
-				str+='<option value="0">Select Designation</option>';
-			str+='</select>';
-			
-		str+='</div>';
-		str+='</div>';
 	}
 	
 		str+='<div class="row">';
@@ -412,7 +413,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	str+='<div class="row m_top10">';
 			str+='<div class="col-sm-12">';
 					//str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD REFERRAL</button>';
-					str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 saveRepresentRequestDetails" style="cursor:pointer;background-color:green;" attr_type="'+typeVal+'" id="saveButtonId" >SAVE DETAILS</span><span id="savingDetailsSpinner"></span><span class="col-sm-offset-4" id="statusMsgAppntReqt"></span></div>';
+					str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 saveRepresentRequestDetails" style="cursor:pointer;background-color:green;" attr_type="'+typeVal+'" id="saveButtonId" >SAVE DETAILS</span><span id="savingDetailsSpinner"></span><span class="col-sm-offset-4" id="statusMsgAppntReqt"></span><span class="ErrCls" id="refCandidatesErr"></span></div>';
 			str+='</div>';
 		str+='</div>';
 		
@@ -554,11 +555,11 @@ $(document).on("click",".candidateAddedView",function(){
 	
 	$("#fileUpload"+typeVal+candidateId).append('<div class="col-sm-4" style="margin-top:-20px;"><label>REFERAL LETTER</label><input type="file"   attr_name="referList['+refCandCount+']" name="" attr_image_tyep="refImage"  id="mainBlockFileUpload'+candidateId+''+typeVal+'" multiple="multiple" class=""/></div>');
 	if(representeeType =='SELF'){
-		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="refCandidateId" value="'+candidateId+'" />');	
+		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" class="refCandidatesCls" id="petitionRef'+refCandCount+'" name="refCandidateId" value="'+candidateId+'" />');	
 		$('.searchCandidateCls').hide();
 	}
 	else if(representeeType =='REPRESENTEE'){
-		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="referList['+refCandCount+'].refCandidateId" value="'+candidateId+'" />');
+		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden"  class="refCandidatesCls" id="petitionRef'+refCandCount+'" name="referList['+refCandCount+'].refCandidateId" value="'+candidateId+'" />');
 		 
 	}
 	refCandCount=refCandCount+1;
@@ -573,6 +574,10 @@ $(document).on("click",".candidateAddedView",function(){
 });
 
 $(document).on("click",".ccccc",function(){
+	
+	if(!confirm('Are you sure want to remove this member ?'))
+		return;
+	
 	
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $(this).attr("attr_candidateId");
@@ -599,6 +604,9 @@ $(document).on("click",".ccccc",function(){
 });
 $(document).on("click",".showRemoveIcon",function(){
 	
+	if(!confirm('Are you sure want to remove this member ?'))
+		return;
+	
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").attr("attr_candidateId");
 	
@@ -606,6 +614,15 @@ $(document).on("click",".showRemoveIcon",function(){
 		$('.searchCandidateCls').show();
 		$("#candidateDetails"+typeVal+"DivId").html('');	
 	}
+	refCandCount=parseInt(refCandCount)-1; 
+	$('.refCandidatesCls').each(function(){
+		var value = $(this).val();
+		if(parseInt(value)==parseInt(candidateId)){
+			$(this).val(0);
+			$(this).attr('id','');
+			$(this).remove();
+		}
+	});
 	
 	$(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
 	//$("#candidateDetails"+typeVal+"DivId").find(".showRemoveIcon").hide();
@@ -1150,7 +1167,24 @@ $(document).on("click",".cloned_Element",function(){
 	var typeVal = $(this).attr("attr_type");
 	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
 		
-	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
+	var enteredAmount =parseFloat(0.0);
+	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseFloat(value) <=0){
+				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				return;
+			}else{
+				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
+			}
+		}
+	});
+	
+	if(enteredAmount>=estimationAmount){
+		alert("Total estimation cost reached. Please check once.");
+		return;
+	}else if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){ 
 		alert("Max no of works data entered. Please check once.");
 		return;
 	}
@@ -1295,7 +1329,24 @@ $(document).on("click",".cloned_Inner_Element",function(){
 	var innerWorkCount = $(this).attr("inner_work_count");
 	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
 	
-	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
+	var enteredAmount =parseFloat(0.0);
+	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseFloat(value) <=0){
+				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				return;
+			}else{
+				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
+			}
+		}
+	});
+	
+	if(enteredAmount>=estimationAmount){
+		alert("Total estimation cost reached. Please check once.");
+		return;
+	}else if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
 		alert("Max no of works data entered. Please check once.");
 		return;
 	}
@@ -1598,6 +1649,7 @@ function getWorkTypeList(divId,typeVal,count,innerCount){
  }); 
 }
 
+
 $(document).on("click",".saveRepresentRequestDetails",function(){
 	var typeVal = $(this).attr("attr_type");
 	
@@ -1632,26 +1684,109 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	noofWorks = $("#noofWork"+typeVal).val();
 	workCost = $("#workCost"+typeVal).val();
 	
+	if(typeVal =='represent'){
+		var repName=$('#name'+typeVal+'').val();
+		var repMobileNo=$('#mobileNumber'+typeVal+'').val();
+		var repEmail=$('#emailId'+typeVal+'').val();
+		var repDistrictId=$('#district'+typeVal+'').val();
+		var repCostituencyId=$('#constituency'+typeVal+'').val();
+		var repTehsilId=$('#mandal'+typeVal+'').val();
+		var repdesignation= $('#designation'+typeVal+'').val();
+		
+		if(repName == undefined || repName == "undefined" || repName.trim() == '' || repName == null){
+			$('#nameErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  name</h5>");
+			$('#saveButtonId').show();
+		}else{
+			$('#nameErr'+typeVal+'').html("");
+		}
+		if(repMobileNo == undefined || repMobileNo == "undefined" || repMobileNo.trim() == '' || repMobileNo == null){
+			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  mobile no.</h5>");
+			$('#saveButtonId').show();
+		}else if(repMobileNo.trim().lenght !=10){
+			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid mobile no.</h5>");
+			$('#saveButtonId').show();
+		}else{
+			$('#mobileNumberErr'+typeVal+'').html("");
+		}
+		if(repEmail != undefined && repEmail != "undefined" && repEmail.trim() != '' && repEmail != null){
+			var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			if (!filter.test(repEmail.trim())) {
+				$('#emailIdErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid email address.</h5>");
+				$('#saveButtonId').show();
+			}
+		}else{
+			$('#emailIdErr'+typeVal+'').html("");
+		}
+		
+		if(repDistrictId == 0 || repDistrictId == null || repDistrictId == ''){
+			$("#districtErr"+typeVal+'').html("<h5 style='color:red;'>Please select  district.</h5>");
+			$('#saveButtonId').show();
+			flag = false;
+		}else{
+			$("#districtErr"+typeVal+'').html("");
+		}
+		if(repCostituencyId == 0 || repCostituencyId == null || repCostituencyId == ''){
+			$("#constituencyErr"+typeVal+'').html("<h5 style='color:red;'>Please select  constituency.</h5>");
+			$('#saveButtonId').show();
+			flag = false;
+		}else{
+			$("#constituencyErr"+typeVal+'').html("");
+		}
+		if(repTehsilId == 0 || repTehsilId == null || repTehsilId == ''){
+			$("#mandalErr"+typeVal+'').html("<h5 style='color:red;'>Please select  mandal/munci.</h5>");
+			$('#saveButtonId').show();
+			flag = false;
+		}else{
+			$("#mandalErr"+typeVal+'').html("");
+		}
+		if(repdesignation == 0 || repdesignation == null || repdesignation == ''){
+			$("#designationErr"+typeVal+'').html("<h5 style='color:red;'>Please select  designation.</h5>");
+			$('#saveButtonId').show();
+			flag = false;
+		}else{
+			$("#designationErr"+typeVal+'').html("");
+		}		
+	}
 	
+	var totalRefCount=0;
+	$('#refCandidatesErr').html('');
+	$('.refCandidatesCls').each(function(){
+		var value = $(this).val();
+		
+		if(value != undefined && value != "undefined" && value.trim() != '' && value != null && parseInt(value)>0)
+			totalRefCount = parseInt(totalRefCount)+1;
+	});
+	
+	if(totalRefCount == undefined || totalRefCount == "undefined" || totalRefCount == null || parseInt(totalRefCount) == 0 ){
+		flag = false;
+		if(typeVal =='represent')
+			$('#refCandidatesErr').html('Please add atleast one referral details.');
+		else 
+			$('#refCandidatesErr').html('Please add Self member details.');
+		
+	}
 	
 	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName.trim() == '' || completeWorkName == null){
-		$("#completeWorkNameId"+typeVal).html("<h5 style='color:red;'>Please Enter Work Name</h5>");
+		$("#completeWorkNameId"+typeVal).html("<h5 style='color:red;'>Please enter work name</h5>");
 		$('#saveButtonId').show();
-		return;
+		flag = false;
+		//return;
 	}else{
 		$("#completeWorkNameId"+typeVal).html("");
 	}
 	if(noofWorks == undefined || noofWorks == "undefined" || noofWorks === undefined || noofWorks.trim() == '' || noofWorks == null){
-		$("#noOfWorksId"+typeVal).html("<h5 style='color:red;'>Please Enter No Of Works</h5>");
+		$("#noOfWorksId"+typeVal).html("<h5 style='color:red;'>Please enter no of works</h5>");
 		$('#saveButtonId').show();
-		return;
+		flag = false;
+		//return;
 	}else{
 		$("#noOfWorksId"+typeVal).html("");
 	}
 	if(workCost == undefined || workCost == "undefined" || workCost === undefined || workCost.trim() == '' || workCost == null){
-		$("#workCostId"+typeVal).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
+		$("#workCostId"+typeVal).html("<h5 style='color:red;'>Please enter work cost</h5>");
 		$('#saveButtonId').show();
-		return;
+		flag = false;
+		//return;
 	}else{
 		$("#workCostId"+typeVal).html("");
 	}
@@ -2077,6 +2212,18 @@ $(document).on("click","#getVoterDetailsId",function(){
 
 function getRegistrationPersonDetails(voterId,typeVal){
 			  
+	$("#name"+typeVal).val('');
+	$("#mobileNumber"+typeVal).val('');
+	$("#emailId"+typeVal).val('');
+	$("#repTdpCadreId"+typeVal).val('');
+	$('#districtrepresent').val(0);
+	$('#constituencyrepresent').val(0);
+	$('#mandalrepresent').val(0);
+	
+	 $("#districtrepresent").trigger('chosen:updated');
+	 $("#constituencyrepresent").trigger('chosen:updated');
+	 $("#mandalrepresent").trigger('chosen:updated');
+	 
   var json = {
 			voterId:voterId,
 			familyVoterId:"0",
@@ -2093,7 +2240,10 @@ function getRegistrationPersonDetails(voterId,typeVal){
 		beforeSend :   function(xhr){
 			xhr.setRequestHeader("Accept", "application/json");
 			xhr.setRequestHeader("Content-Type", "application/json");
-		}
+		},
+		error: function (xhr, status, err) {
+            //alert("Local error callback.");
+        },
 	}).done(function(result){
 		if(result != null ){
 			if(result.lastName != null && result.lastName !='null'){
@@ -2104,6 +2254,9 @@ function getRegistrationPersonDetails(voterId,typeVal){
 			}
 			if(result.email != null && result.email !='null'){
 				$("#emailId"+typeVal).val(result.email);
+			}
+			if(result.tdpCadreId != null && result.tdpCadreId !='null' && parseInt(result.tdpCadreId)>0){
+				$("#repTdpCadreId"+typeVal).val(result.tdpCadreId);
 			}
 			if(result.districtId != null){
 				getAllDistrictsListInState(result.districtId);
@@ -2119,7 +2272,11 @@ function getRegistrationPersonDetails(voterId,typeVal){
 					maandalId2=result.localElectionBodyId.toString().substring(1,result.localElectionBodyId.length);
 				getTehsilsAndLocalElectionBodiForConstituencyId(result.constituencyId,"1"+maandalId2);
 			}
+		}else{
+			alert("No data available with this Voter Card No.Please check once.");
 		}
+	}).error(function(){
+		alert("No data available with this Voter Card No.Please check once.");
 	});	
  
 }
