@@ -471,6 +471,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmRepresentee.setAddressId(address.getLocationAddressId());
 							pmRepresentee.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							pmRepresentee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							pmRepresentee.setInsertedUserId(pmRequestVO.getUserId());
+							pmRepresentee.setUpdatedUserId(pmRequestVO.getUserId());
 							pmRepresentee = pmRepresenteeDAO.save(pmRepresentee);
 						}else{
 							pmRepresentee.setName(setDataToAttribute(pmRequestVO.getName(),pmRepresentee.getName()));
@@ -486,9 +488,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmRepresentee.setIsDeleted("N");
 							pmRepresentee.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							pmRepresentee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							pmRepresentee.setInsertedUserId(pmRequestVO.getUserId());
+							pmRepresentee.setUpdatedUserId(pmRequestVO.getUserId());
 							pmRepresentee = pmRepresenteeDAO.save(pmRepresentee);
 						}
 						
+						if(pmRequestVO.getRepresenteeDesignationId() == null ||  pmRequestVO.getRepresenteeDesignationId().longValue()==0L){
+							pmRequestVO.setRepresenteeDesignationId(75L);// default Other Designation
+						}
 						if(pmRequestVO.getRepresenteeDesignationId() != null && pmRequestVO.getRepresenteeDesignationId().longValue()>0L && 
 								pmRepresentee != null && pmRepresentee.getPmRepresenteeId() != null && pmRepresentee.getPmRepresenteeId().longValue()>0L){
 							PmRepresenteeDesignation pmRepresenteeDesignation = new PmRepresenteeDesignation();
@@ -520,6 +527,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								pmRepresentee.setAddressId(pmRefCandidate.getAddressId());
 								pmRepresentee.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 								pmRepresentee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								pmRepresentee.setInsertedUserId(pmRequestVO.getUserId());
+								pmRepresentee.setUpdatedUserId(pmRequestVO.getUserId());
 								pmRepresentee = pmRepresenteeDAO.save(pmRepresentee);
 							}
 						}
