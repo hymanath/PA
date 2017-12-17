@@ -1680,7 +1680,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	
 	var flag = true;
 	$('#saveButtonId').hide();
-	completeWorkName = $("#name"+typeVal).val();
+	completeWorkName = $("#workName"+typeVal).val();
 	noofWorks = $("#noofWork"+typeVal).val();
 	workCost = $("#workCost"+typeVal).val();
 	
@@ -2089,7 +2089,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			},
 			error: function(request,error) { 
 				$("#savingDetailsSpinner").html('')
-				alert("error");	
+				alert(" Please check total uploaded files size should not increase more than 10 MB.Then try again.");	
 				$('#saveButtonId').show();				
 			}
      });	 
