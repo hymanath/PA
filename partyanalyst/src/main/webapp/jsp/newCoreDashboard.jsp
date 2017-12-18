@@ -6029,13 +6029,11 @@ var globalImages;
 		onLoadEmCoverageTimeCalls();
 		onloadPrajaSankaplaYatraCalls();
 		onloadKaizalaCalls1();	
-		onloadTrainingCampCalls();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');
 		//console.log(URLArr[parseInt(URLArr.length) - 1].replace('.action',''));
 	 var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
-		
 	  if(finalURL =="dailyMonthlyPartyActivities")
 	  {
 		//ALL BLOCKS
