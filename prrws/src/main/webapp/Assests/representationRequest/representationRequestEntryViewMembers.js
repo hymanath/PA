@@ -3,6 +3,14 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 var startDate = moment().subtract(7,"year").format("DD-MM-YYYY");
 var endDate = moment().add(38,"year").format("DD-MM-YYYY");
 
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
+
 $("#dateRangePicker").daterangepicker({
 	opens:'left',
 	startDate: startDate,
