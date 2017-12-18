@@ -843,6 +843,7 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertFeedbackStatusDetails");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.195:8086/PartyAnalyst/WebService/getAlertFeedbackStatusDetails");
 	        
         	ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 
@@ -1324,7 +1325,7 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getLocationWiseAlertStatusCounts");
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getLocationWiseAlertStatusCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.195:8086/PartyAnalyst/WebService/getLocationWiseAlertStatusCounts");
 		     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 		     
 	        if(response.getStatus() != 200){
@@ -1413,7 +1414,7 @@ public class RWSNICService implements IRWSNICService{
 		List<StatusVO> voList = new ArrayList<StatusVO>(0);
 		try {
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getHamletWiseIvrStatusCounts");
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.143:8080/PartyAnalyst/WebService/getHamletWiseIvrStatusCounts");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.195:8086/PartyAnalyst/WebService/getHamletWiseIvrStatusCounts");
 	        
 	        /*String jsonInString = new ObjectMapper().writeValueAsString(vo);
 	        System.out.println(jsonInString);*/
@@ -2050,7 +2051,7 @@ public class RWSNICService implements IRWSNICService{
 	public List<KeyValueVO> getConstituenciesForDistrict(IdNameVO idNameVO){
 		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
 		try {
-			List<Object[]> constituencies = constituencyDAO.getConstituencies(idNameVO.getId());
+			List<Object[]> constituencies = constituencyDAO.getConstituencies(idNameVO.getId(),"urban");
 			
 			if(constituencies != null && constituencies.size() > 0){
 				for (Object[] objects : constituencies) {
