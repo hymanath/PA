@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.transaction.Transactional;
 
@@ -121,6 +122,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		ResponseVO responseVO = new ResponseVO();
 		try {
 			
+			if(pmRequestVO.getExistingPetitionId() != null && pmRequestVO.getExistingPetitionId().longValue()>0L){
+				updatePetitionSubWorksAndDocumentDetails(pmRequestVO.getExistingPetitionId(),pmRequestVO.getUserId());
+			}
 			/** Start Petition Representee Details saving */
 				PmRepresentee pmRepresentee = saveRepresenteeDetails(pmRequestVO);
 			/** End Petition Member Details saving */
@@ -138,6 +142,36 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			LOG.error("Exception Occured in PmRequestDetailsService "+e.getMessage());
 		}
 		return responseVO;
+	}
+	
+	@SuppressWarnings("static-access")
+	public ResultStatus updatePetitionSubWorksAndDocumentDetails(Long petitionId,Long userId){
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			Date currentTime=dateUtilService.getCurrentDateAndTime();
+			
+			List<Long> petitionDocumentIds =  pmPetitionDocumentDAO.getPmPetitionDocumentIds(petitionId);
+			if(commonMethodsUtilService.isListOrSetValid(petitionDocumentIds))
+			    pmPetitionDocumentDAO.updatePmpetitionDocuments(petitionDocumentIds,userId);
+			
+			List<Long> subWorkIds = pmSubWorkDetailsDAO.getPmSubWorkDetailsIds(petitionId);
+			if(commonMethodsUtilService.isListOrSetValid(subWorkIds))
+				pmSubWorkDetailsDAO.updatePmsubWorkDetails(subWorkIds, currentTime, userId);
+			
+			List<Long> pmRepresenteeRefDetailsIds =	pmRepresenteeRefDetailsDAO.getPmRepresenteRefDetailsIds(petitionId);
+			if(commonMethodsUtilService.isListOrSetValid(pmRepresenteeRefDetailsIds))
+				pmRepresenteeRefDetailsDAO.updatePmRepresenteRefDetails(pmRepresenteeRefDetailsIds,currentTime,userId);
+			
+			List<Long> representeeRefDocumentIds = pmRepresenteeRefDocumentDAO.getPmRepresenteeRefDocumentIds(pmRepresenteeRefDetailsIds);
+			if(commonMethodsUtilService.isListOrSetValid(representeeRefDocumentIds))
+				pmRepresenteeRefDocumentDAO.updatePmPmRepresenteeRefDocumens(representeeRefDocumentIds, currentTime, userId);
+			
+			resultStatus.setResultCode(1);
+		}catch(Exception e){
+			resultStatus.setResultCode(0);
+			LOG.error("Exception Occured in updatePetitionSubWorksAndDocumentDetails in PmRequestDetailsService",e);
+		}
+		return resultStatus;
 	}
 	
 	@SuppressWarnings("static-access")
@@ -417,8 +451,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				
 				String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
 				String fileExtensionStr = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."), file.getOriginalFilename().length());
-				
-				String fileName = datePath+fileExtensionStr;
+				String fileName = datePath+"_"+Math.abs(new Random().nextInt())+fileExtensionStr;
 				String fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+"/"+fileName;
 				
 				byte[] fileData = file.getBytes();
@@ -902,6 +935,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 refVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[35]));
 					 refVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[36]));
 					 
+					 AddressVO natAddressVO = setAddressDetailsToResultView(param[58],param[59],param[60],param[61],param[62]);
+					 natAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[52]));
+					 natAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[53]));
+					 natAddressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[54]));
+					 if(commonMethodsUtilService.getLongValueForObject(param[56]) >0L)// muncipality
+						 natAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[56])+" "+commonMethodsUtilService.getStringValueForObject(param[57]));
+					 else
+						 natAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[55]));
+					 refVO.setCandidateAddressVO(natAddressVO);
+					 
 					 AddressVO refAddressVO = setAddressDetailsToResultView(param[16],param[17],param[18],param[19],param[20]);
 					 refAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[43]));
 					 refAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[44]));
@@ -1130,23 +1173,5 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return cadrInfoVo;
 		}
-		public ResultStatus updatePetitionSubWorksAndDocumentDetails(Long petitionId){
-			ResultStatus resultStatus = new ResultStatus();
-			try{
-				List<Long> pmRepresenteeRefDetailsIds =	pmRepresenteeRefDetailsDAO.getPmRepresenteRefDetailsIds(petitionId);
-				Date currentTime=dateUtilService.getCurrentDateAndTime();
-				pmRepresenteeRefDetailsDAO.updatePmRepresenteRefDetails(pmRepresenteeRefDetailsIds,currentTime,1L);
-				List<Long> representeeRefDocumentIds = pmRepresenteeRefDocumentDAO.getPmRepresenteeRefDocumentIds(pmRepresenteeRefDetailsIds);
-				pmRepresenteeRefDocumentDAO.updatePmPmRepresenteeRefDocumens(representeeRefDocumentIds, currentTime, 1L);
-				List<Long> subWorkIds = pmSubWorkDetailsDAO.getPmSubWorkDetailsIds(petitionId);
-				pmSubWorkDetailsDAO.updatePmsubWorkDetails(subWorkIds, currentTime, 1L);
-				  List<Long> petitionDocumentIds =  pmPetitionDocumentDAO.getPmPetitionDocumentIds(petitionId);
-				    pmPetitionDocumentDAO.updatePmpetitionDocuments(petitionDocumentIds);
-				    resultStatus.setResultCode(1);
-			}catch(Exception e){
-				resultStatus.setResultCode(0);
-				LOG.error("Exception Occured in updatePetitionSubWorksAndDocumentDetails in PmRequestDetailsService",e);
-			}
-			return resultStatus;
-		}
+		
 }

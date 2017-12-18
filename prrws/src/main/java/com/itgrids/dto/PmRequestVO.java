@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public class PmRequestVO {
 	
+	private Long existingPetitionId;
 	private Long id;
 	private Long representeeId;
 	private String name;
@@ -26,6 +27,7 @@ public class PmRequestVO {
 	private String representationdate;
 	private Long representeeDesignationId;
 	private AddressVO addressVO;
+	private AddressVO candidateAddressVO;
 	private List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>(0);
 	private List<PmRequestVO> referList= new ArrayList<PmRequestVO>(0);
 	private List<MultipartFile> fileList = new ArrayList<MultipartFile>(0);
@@ -219,5 +221,16 @@ public class PmRequestVO {
 	public void setRepImagePath(String repImagePath) {
 		this.repImagePath = repImagePath;
 	}
-	
+	public AddressVO getCandidateAddressVO() {
+		return candidateAddressVO;
+	}
+	public void setCandidateAddressVO(AddressVO candidateAddressVO) {
+		this.candidateAddressVO = candidateAddressVO;
+	}
+	public Long getExistingPetitionId() {
+		return existingPetitionId;
+	}
+	public void setExistingPetitionId(Long existingPetitionId) {
+		this.existingPetitionId = existingPetitionId;
+	}
 }
