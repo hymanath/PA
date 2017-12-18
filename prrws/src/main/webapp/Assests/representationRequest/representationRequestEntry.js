@@ -1702,7 +1702,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		if(repMobileNo == undefined || repMobileNo == "undefined" || repMobileNo.trim() == '' || repMobileNo == null){
 			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  mobile no.</h5>");
 			$('#saveButtonId').show();
-		}else if(repMobileNo.trim().lenght !=10){
+		}else if(parseInt(repMobileNo.trim().lenght) <10 || parseInt(repMobileNo.trim().lenght) >10 ){
 			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid mobile no.</h5>");
 			$('#saveButtonId').show();
 		}else{
