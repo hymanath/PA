@@ -759,7 +759,7 @@ function setPmRepresenteeDataToResultView(result){
 									str+='</tr>';
 									str+='<tr>';
 										str+='<td>Subject <b>'+result.subWorksList[j].subWorksList[k].subject+')</b></td>';
-										str+='<td>Sub-Subject <b>'+result.subWorksList[j].subWorksList[k].subSubject+')</b></td>';
+										str+='<td>Sub-Subject <b>'+result.subWorksList[j].subWorksList[k].subSubject+'</b></td>';
 										str+='<td>Department <b>'+result.subWorksList[j].subWorksList[k].deptName+'</b></td>';
 										
 									str+='</tr>';
