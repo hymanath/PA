@@ -129,50 +129,52 @@ function build(ajaxresp,locationType){
 	var paramname='';
 	var totalhabsCon=0;
 	var totalhabsunCon=0;
-	var totalhabs=0;
+	var totalhabsLocCon=0;
+	var totalhabsLocunCon=0;
+	
+	var totalhabs=ajaxresp.totalHabs;
 	tableView+='<div class="table-responsive">';
-	tableView+='<table class="table table-bordered" id="dataTable1'+locationType+'">';
+	tableView+='<table class="table encTable" id="dataTable1'+locationType+'" style="width:100%">';
 	tableView+='<thead class="text-capital">';
 	tableView+='<tr>';
-	if(locationType =="state"){
-		tableView+='<th rowspan="2">'+locationType+'</th>';
-		tableView+='<th rowspan="2">Total</th>';
-		for(var j in ajaxresp.subList){
-			tableView+='<th>'+ajaxresp.subList[j].paramName+'</th>';
-			if(ajaxresp.subList[j].paramName == 'HABUNCON'){
-				tableView+='<th>TOTAL HABS</th>';
-			}
-		}
-	}else{
-		tableView+='<th rowspan="2">'+locationType+'</th>';
-		tableView+='<th rowspan="2">TOTAL</th>';
-		for(var j in ajaxresp[0].subList){
-			tableView+='<th>'+ajaxresp[0].subList[j].paramName+'</th>';
-			if(ajaxresp[0].subList[j].paramName == 'HABUNCON'){
-				tableView+='<th>TOTAL HABS</th>';
-			}
-		}
-	}
+		tableView+='<th rowspan="2" style="background-color:#fff">'+locationType+'</th>';
+		tableView+='<th colspan="5" style="text-align:center;background-color:#EDFEFF">ROAD NETWORK</th>';
+		tableView+='<th colspan="3" style="text-align:center;background-color:#FFF5d9">HABITATION CONNECTIVITY</th>';
+	tableView+='</tr>';
+	tableView+='<tr>';
+	//if(locationType =="state"){
+		tableView+='<th style="background-color:#EDFEFF">TOTAL ROADS</th>';
+		tableView+='<th style="background-color:#EDFEFF">BTCC</th>';
+		tableView+='<th style="background-color:#EDFEFF">EARTHEN</th>';
+		tableView+='<th style="background-color:#EDFEFF">GRVEL</th>';
+		tableView+='<th style="background-color:#EDFEFF">WBM</th>';
+		tableView+='<th style="background-color:#FFF5d9">HABCON</th>';
+		tableView+='<th style="background-color:#FFF5d9">HABUNCON</th>';
+		tableView+='<th style="background-color:#FFF5d9">TOTAL HABS</th>';
+		
+	//}
 	tableView+='</tr>';
 	tableView+='</thead>';
 	tableView+='<tbody>';
 	if(locationType =="state"){
 		tableView+='<tr>';
 		tableView+='<td>AndraPradesh</td>';
-		tableView+='<td>'+ajaxresp.totalRoadsLength+'</td>';
+		tableView+='<td style="background-color:#EDFEFF">'+ajaxresp.totalRoadsLength+'</td>';
 		if(ajaxresp.subList !=null){
 			for(var j in ajaxresp.subList){
-				tableView+='<td>'+ajaxresp.subList[j].paramValue+'</td>';
-				if(ajaxresp.subList[j].paramName == 'HABCON'){
+				tableView+='<td style="background-color:#EDFEFF">'+ajaxresp.subList[j].paramValue+'</td>';
+				if(ajaxresp.subList[j].paramName == 'GRAVEL'){
+					tableView+='<td style="background-color:#EDFEFF">'+ajaxresp.subList[5].paramValue+'</td>';
 					totalhabsCon=ajaxresp.subList[j].paramValue;
 				}
 				if(ajaxresp.subList[j].paramName == 'HABUNCON'){
 					totalhabsunCon=ajaxresp.subList[j].paramValue;
-					totalhabs=totalhabsCon+totalhabsunCon;
-					tableView+='<td>'+totalhabs+'</td>';
+					//totalhabs=totalhabsCon+totalhabsunCon;
+					tableView+='<td style="background-color:#FFF5d9">'+totalhabs+'</td>';
+					break;
 				}
-				
 			}
+
 			}else{
 				tableView+='<td> - </td>';
 			}
@@ -181,17 +183,22 @@ function build(ajaxresp,locationType){
 		for(var i in ajaxresp){
 			tableView+='<tr>';
 				tableView+='<td>'+ajaxresp[i].locationName+'</td>';
-				tableView+='<td>'+ajaxresp[i].totalRoadsLength+'</td>';
+				tableView+='<td style="background-color:#EDFEFF">'+ajaxresp[i].totalRoadsLength+'</td>';
 			if(ajaxresp[i].subList !=null){
+				var totalhabsLoc=ajaxresp[i].totalHabs;
 				for(var j in ajaxresp[i].subList){
-					tableView+='<td>'+ajaxresp[i].subList[j].paramValue+'</td>';
-					if(ajaxresp[i].subList[j].paramName == 'HABCON'){
-						totalhabsCon=ajaxresp[i].subList[j].paramValue;
+					
+					tableView+='<td style="background-color:#EDFEFF">'+ajaxresp[i].subList[j].paramValue+'</td>';
+					if(ajaxresp[i].subList[j].paramName == 'GRAVEL'){
+						tableView+='<td style="background-color:#EDFEFF">'+ajaxresp[i].subList[5].paramValue+'</td>';
+						totalhabsLocCon=ajaxresp[i].subList[j].paramValue;
 					}
 					if(ajaxresp[i].subList[j].paramName == 'HABUNCON'){
-						totalhabsunCon=ajaxresp[i].subList[j].paramValue;
-						totalhabs=totalhabsCon+totalhabsunCon;
-						tableView+='<td>'+totalhabs+'</td>';
+						
+						totalhabsLocunCon=ajaxresp[i].subList[j].paramValue;
+						//totalhabsLoc=totalhabsLocCon+totalhabsLocunCon;
+						tableView+='<td style="background-color:#FFF5d9">'+totalhabsLoc+'</td>';
+						break;
 					}
 					
 				}
@@ -268,9 +275,9 @@ function buildKeyPerformanceIndicatorsInfo(result){
 		},
 		title: {
 			  text: 'TOTAL ROAD LENGTH',
-			  align: 'left',
+			  //align: 'left',
 			   style: {
-				fontWeight: 'bold'
+				fontWeight: 'bold',
 			  }
 		},
 		tooltip: {
@@ -317,7 +324,7 @@ function buildKeyPerformanceIndicatorsInfo(result){
 			useHTML: true,
 			
 			labelFormatter: function() {
-				return '<div><span>'+this.name + '-'+Highcharts.numberFormat(this.percentage,1)+'%</span></div>';
+				return '<div><span>'+this.name +'</span></div>';
 			}
 		},
 		series: [{
@@ -345,8 +352,8 @@ function buildroadsBlock(ajaxresp){
 							str+='<img src="Assests/icons/Road_Network_icon.png">';
 						str+='</div>';
 						str+='<div class="col-sm-8">';
-							str+='<h5><b>ROAD NETWORK</b></h5>';
-							str+='<h4><b>'+ajaxresp.totalRoadsLength+'</b></h4>';
+							str+='<h4><b>ROAD NETWORK</b></h4>';
+							str+='<h3><b>'+ajaxresp.totalRoadsLength+'</b></h3>';
 						str+='</div>';
 					str+='<div class="col-sm-12 border_cls pad_10_10">';
 						for(var i in ajaxresp.subList){
@@ -354,14 +361,14 @@ function buildroadsBlock(ajaxresp){
 							if(ajaxresp.subList[i].paramName != 'HABCON' && ajaxresp.subList[i].paramName != 'HABUNCON'){
 								str+='<div class="col-sm-3">';
 									str+='<b>'+ajaxresp.subList[i].paramName+'</b></br>';
-									str+='<b>'+ajaxresp.subList[i].paramValue+'</b>';
+									str+='<p>'+ajaxresp.subList[i].paramValue+'</p>';
 								str+='</div>';
 							}
 							
 						}
 					str+='</div>';
 					str+='<div class="col-sm-12 m_top10 roadnetwork_block">';
-						str+='<h5><b>CONVERTED </b><b class="pull-right">'+covertedCnt+'</b></h5>';
+						str+='<h5><b>CONVERTED </b><b class="pull-right">'+ajaxresp.totalRoadsLength+'</b></h5>';
 					str+='</div>';
 				str+='</div>';
 				

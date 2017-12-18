@@ -216,7 +216,7 @@
 													</div>
 													<div class="media-body">
 														<p>BT +CC</p>
-														<h4><b id="btccBlockId"></b></h4>
+														<h3 class="m_top10"><b id="btccBlockId"></b></h3>
 													</div>
 												</div>
 											</div>
@@ -229,7 +229,7 @@
 													</div>
 													<div class="media-body">
 														<p>WBM <span style="font-size:12px">(Water bond macadem)<span></p>
-														<h4><b id="wbmBlockId"></b></h4>
+														<h3 class="m_top10"><b id="wbmBlockId"></b></h3>
 													</div>
 												</div>
 											</div>
@@ -243,7 +243,7 @@
 													</div>
 													<div class="media-body">
 														<p>Gravel</p>
-														<h4><b id="grveBlockId"></b></h4>
+														<h3 class="m_top10"><b id="grveBlockId"></b></h3>
 													</div>
 												</div>
 											</div>
@@ -256,7 +256,7 @@
 													</div>
 													<div class="media-body">
 														<p>Earthen Roads</p>
-														<h4><b id="earthenblockId"></b></h4>
+														<h3 class="m_top10"><b id="earthenblockId"></b></h3>
 													</div>
 												</div>
 											</div>
