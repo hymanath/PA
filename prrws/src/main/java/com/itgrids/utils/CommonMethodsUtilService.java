@@ -625,10 +625,14 @@ public class CommonMethodsUtilService {
 					String folderStr = yearStr+"/"+monthStr+"/"+dayStr+"/";
 				 
 					File saveDir = new File(addFolderStr+"/"+folderStr);
-					boolean status = saveDir.mkdirs();
-					
+					boolean status = false;
+					if (!saveDir.exists()) {
+						status = saveDir.mkdirs();
+					}else{
+						return addFolderStr+"/"+folderStr;
+					}
 					if(status)
-						return saveDir.getAbsolutePath();
+						return addFolderStr+"/"+folderStr;
 					else 
 						return "FAILED";
 				

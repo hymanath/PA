@@ -163,7 +163,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									 commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList()) && commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList().get(0).getFileList())){
 								for (MultipartFile file : pmRequestVO.getReferList().get(0).getFileList()) {
 										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
-										savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+										if(petitionWorkDocument != null)
+											savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 								}
 							}
 						}
@@ -203,7 +204,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 													 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
 												for (MultipartFile file : refVO.getFileList()) {
 														Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
-														savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+														if(petitionWorkDocument != null)
+															savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 												}
 											}
 										}
@@ -224,7 +226,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 												 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
 											for (MultipartFile file : refVO.getFileList()) {
 													Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
-													savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+													if(petitionWorkDocument != null )
+														savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 											}
 										}
 									}
@@ -358,15 +361,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								if(dataVO.getFileList() != null && dataVO.getFileList().size()>0){
 									for (MultipartFile file : dataVO.getFileList()) {
 										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
-										savePetitionWorkDocument(petition.getPetitionId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+										if(petitionWorkDocument != null)
+											savePetitionWorkDocument(petition.getPetitionId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 									}
 								}
 							}
 						//}
 					}
-					if(submittedWorksCount.longValue() != noOfWorks){
+					/*if(submittedWorksCount.longValue() != noOfWorks){
 						throw new Exception(" The submitted No of works not matched with no of works . Please check once.");
-					}
+					}*/
 				}
 			}
 		} catch (Exception e) {
@@ -402,6 +406,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		try {
 			if(file != null){
 				String staticPath = commonMethodsUtilService.createInnerFolders(destinationPath);
+				if(staticPath != null && staticPath.equalsIgnoreCase("FAILED"))
+					throw new Exception("File path not available . Please check once file path.");
+				
 				String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
 				String fileExtensionStr = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."), file.getOriginalFilename().length());
 				
@@ -410,7 +417,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				
 				byte[] fileData = file.getBytes();
 				
-				Files.write(fileData,new File(staticPath+"/"+fileName));
+				Files.write(fileData,new File(staticPath+fileName));
 				
 				document = new Document();
 				document.setPath(fileUrl);
@@ -508,7 +515,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								pmRepresentee != null && pmRepresentee.getPmRepresenteeId() != null && pmRepresentee.getPmRepresenteeId().longValue()>0L){
 							PmRepresenteeDesignation pmRepresenteeDesignation = new PmRepresenteeDesignation();
 							pmRepresenteeDesignation.setPmRepresenteeId(pmRepresentee.getPmRepresenteeId());
-							pmRepresenteeDesignation.setPmRepresenteeDesignationId(pmRequestVO.getRepresenteeDesignationId());
+							pmRepresenteeDesignation.setPmDesignationId(pmRequestVO.getRepresenteeDesignationId());
 							pmRepresenteeDesignation.setIsActive("Y");
 							if(pmRequestVO.getStartDate() != null && pmRequestVO.getEndDate() != null){
 								pmRepresenteeDesignation.setStartDate(format.parse(pmRequestVO.getStartDate()));

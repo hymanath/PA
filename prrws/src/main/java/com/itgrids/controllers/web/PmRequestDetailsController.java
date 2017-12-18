@@ -50,9 +50,14 @@ public class PmRequestDetailsController {
 	    }
  
 	   	@RequestMapping(value ="/saveRepresentRequestDetails",method = RequestMethod.POST)
-	    public @ResponseBody ResponseVO saveRepresentRequestDetails(@ModelAttribute  PmRequestVO pmRequestVO) {
-			pmRequestVO.setUserId(1L);
-			return pmRequestDetailsService.saveRepresentRequestDetails(pmRequestVO);
+	    public @ResponseBody ResponseVO saveRepresentRequestDetails(@ModelAttribute  PmRequestVO pmRequestVO,HttpServletRequest request) {
+	   		UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
+	   		if(uservo == null)
+	   			return null;
+	   		else{
+	   			pmRequestVO.setUserId(uservo.getUserId());
+				return pmRequestDetailsService.saveRepresentRequestDetails(pmRequestVO);
+	   		}
 	    }
 		@RequestMapping(value ="/setPmRepresenteeDataToResultView",method = RequestMethod.POST)
 		 public @ResponseBody PmRequestEditVO setPmRepresenteeDataToResultView(@RequestBody Map<String,String> inputMap ) {
