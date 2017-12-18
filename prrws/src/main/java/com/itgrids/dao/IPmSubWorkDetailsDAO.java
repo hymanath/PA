@@ -15,5 +15,5 @@ public interface IPmSubWorkDetailsDAO extends GenericDao<PmSubWorkDetails, Long>
 	public List<Object[]> getDepartmentsByWorks();
 	
 	public List<Long> getPmSubWorkDetailsIds(Long petitionId);
-	public Integer updatePmsubWorkDetails(List<Long> subWorkDetailsIds,Date updateTime,Long userId);
+	public int updatePmsubWorkDetails(List<Long> subWorkDetailsIds,Date updateTime,Long userId);
 }

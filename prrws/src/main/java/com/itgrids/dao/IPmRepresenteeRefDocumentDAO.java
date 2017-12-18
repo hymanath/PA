@@ -10,5 +10,5 @@ import com.itgrids.model.PmRepresenteeRefDocument;
 public interface IPmRepresenteeRefDocumentDAO extends GenericDao<PmRepresenteeRefDocument, Long> {
 	public List<Object[]> getPmRepresenteeRefDocumentByPetition(Long petitionId);
 	public List<Long> getPmRepresenteeRefDocumentIds(List<Long> representeeRefDetailsIds);
-	public Integer updatePmPmRepresenteeRefDocumens(List<Long> representeeRefDocIds,Date updatedTime,Long userId);
+	public int updatePmPmRepresenteeRefDocumens(List<Long> representeeRefDocIds,Date updatedTime,Long userId);
 }
