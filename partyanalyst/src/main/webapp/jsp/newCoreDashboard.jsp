@@ -5432,6 +5432,7 @@
 						<div class="clearModalTables" id="prajaSankalpaYatraPanchayatTableId"></div>
 						<div class="clearModalTables" id="prajaSankalpaYatraMandalTableId"></div>
 						<div class="clearModalTables" id="prajaSankalpaYatraConstituencyTableId"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraCorpTableId"></div>
 						
 			  </div>
 			  <div class="modal-footer">     
