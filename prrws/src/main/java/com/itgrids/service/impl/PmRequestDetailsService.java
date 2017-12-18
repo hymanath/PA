@@ -168,7 +168,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 						}
 					}
-				}else if (commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList()) && pmRequestVO.getRepresentationType() != null &&	 pmRequestVO.getRepresentationType().equalsIgnoreCase("REPRESENT") ){
+				}else if (commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList()) && pmRequestVO.getRepresentationType() != null &&	 pmRequestVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE") ){
 					Long orderNo =0L;
 					List<Long> existingRefIds = new ArrayList<Long>(0);
 					for (PmRequestVO refVO : pmRequestVO.getReferList()) {
@@ -459,7 +459,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		PmRepresentee pmRepresentee = null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			try {
-				if(pmRequestVO.getRepresentationType() != null && pmRequestVO.getRepresentationType().equalsIgnoreCase("REPRESENT")){
+				if(pmRequestVO.getRepresentationType() != null && pmRequestVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE")){
 					if(pmRequestVO != null){
 						
 						pmRepresentee = checkIsExistPmRepresentee(pmRequestVO.getVoterCardNo(),pmRequestVO.getAdharCardNo(),null);
@@ -794,7 +794,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			if(commonMethodsUtilService.isListOrSetValid(uploadedPetitionFilesList)){
 				for (Object[] param : uploadedPetitionFilesList) {
 					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
-					String path = "https://www.mytdp.com/images/"+commonMethodsUtilService.getStringValueForObject(param[1]);
+					String path = "http://www.mydepartments.in/PRRWS/"+commonMethodsUtilService.getStringValueForObject(param[1]);
 					petitionFilesListMap.put(id, new KeyValueVO(id,path));
 				}
 			}
@@ -804,7 +804,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			if(commonMethodsUtilService.isListOrSetValid(uploadedWorksFilesList)){
 				for (Object[] param : uploadedWorksFilesList) {
 					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
-					String path = "https://www.mytdp.com/images/"+commonMethodsUtilService.getStringValueForObject(param[1]);
+					String path = "http://www.mydepartments.in/PRRWS/"+commonMethodsUtilService.getStringValueForObject(param[1]);
 					List<KeyValueVO> fileList = new ArrayList<KeyValueVO>();
 					if(refFilesListMap.get(id) != null){
 						fileList = refFilesListMap.get(id);
@@ -842,7 +842,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 returnVO.getFileList().addAll(petitionFilesListMap.values());
 						 }
 						 
-						 if(returnVO.getRepresentationType().equalsIgnoreCase("REPRESENT")){
+						 if(returnVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE")){
 							 PmRequestVO  representeeVO = new PmRequestVO();
 							 representeeVO.setRepresenteeId(commonMethodsUtilService.getLongValueForObject(param[30]));					
 							 representeeVO.setName(commonMethodsUtilService.getStringValueForObject(param[0]));
