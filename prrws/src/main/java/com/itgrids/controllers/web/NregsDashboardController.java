@@ -2,6 +2,8 @@ package com.itgrids.controllers.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -22,6 +24,7 @@ import com.itgrids.dto.NregaPaymentsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
+import com.itgrids.dto.UserVO;
 import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
 import com.itgrids.service.IUserService;
@@ -705,6 +708,70 @@ public class NregsDashboardController {
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPanchayatsFrTehsil - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@RequestMapping(value ="/panchayatExpenditureDashboard", method = RequestMethod.GET)
+    public String mgnregsPanchayatWiseExpenditure(ModelMap model,HttpServletRequest request) {
+		UserVO uservo = (UserVO) request.getSession().getAttribute("User");
+		if(uservo != null){
+			return "panchayatWiseExpenditure";
+		}else{
+			return "petitionsLoginPage";
+		}
+		
+    }
+	
+	@PostMapping("/getPanchayatsExpenditure")
+	public @ResponseBody List<IdNameVO> getPanchayatsExpenditure(@RequestBody InputVO vo,HttpServletRequest request){
+		List<IdNameVO> locationVOList = null;
+		try {
+			UserVO uservo = (UserVO) request.getSession().getAttribute("User");
+			if(uservo != null){
+				locationVOList = nregsTcsService.getPanchayatsExpenditure(vo,uservo.getPrDistrictId(),uservo.getAccessLvelId());
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPanchayatsExpenditure - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
+	
+	@PostMapping("/getPanchatVsExpData")
+	public @ResponseBody List<NregsDataVO> getPanchatVsExpData(@RequestBody InputVO vo,HttpServletRequest request){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			UserVO uservo = (UserVO) request.getSession().getAttribute("User");
+			if(uservo != null){
+				levlWiseVOList = nregsTcsService.getPanchatVsExpData(vo,uservo.getPrDistrictId(),uservo.getAccessLvelId());
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPanchatVsExpData - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
+	
+	@PostMapping(value="/savePanchayatComponentComments")
+	private @ResponseBody InputVO  savePanchayatComponentComments(@RequestBody InputVO vo,HttpServletRequest request){
+		try{
+			UserVO userVO = (UserVO) request.getSession().getAttribute("USER");
+			if(userVO != null){
+				return nregsTcsService.savePanchayatComponentComments(vo.getLocationId(),vo.getSourceId(),vo.getCategory(),vo.getAssetType(),vo.getDisplayType(),userVO.getUserId());
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@PostMapping("/getFieldManDaysWorkDetails")
+	public @ResponseBody List<NregsDataVO> getFieldManDaysWorkDetails(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getFieldManDaysWorkDetails(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getFieldManDaysWorkDetails - NREGSController controller", e);
 		}
 		return levlWiseVOList;
 	}

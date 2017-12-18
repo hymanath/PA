@@ -3042,3 +3042,33 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 	background-image: url(../images/footer_lodyas.png);
 	 padding: 20px 15px;
 }
+.table_right_css{
+
+	thead{
+		tr{
+			
+			th:first-child{
+				border-left:1px solid #ccc !important;
+			}
+			th:last-child{
+				border-right:1px solid #ccc !important;
+			}
+		}tr:last-child{
+			border-bottom:1px solid #ccc !important;
+		}
+	}
+	
+	tbody{
+		tr{
+			td:first-child{
+				border-left:1px solid #ccc !important;
+			}
+			td:last-child{
+				border-right:1px solid #ccc !important;
+			}
+		}
+		tr:last-child{
+			border-bottom:1px solid #ccc !important;
+		}
+	}
+}

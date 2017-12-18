@@ -21,6 +21,9 @@ public class UserVO {
 	
 	private String deptName;
 	private String designation;
+	private Long accessLvelId;
+	private Long accessLevelValue;
+	private String prDistrictId;
 	
 	public Long getUserId() {
 		return userId;
@@ -86,6 +89,24 @@ public class UserVO {
 	}
 	public void setDesignation(String designation) {
 		this.designation = designation;
+	}
+	public Long getAccessLvelId() {
+		return accessLvelId;
+	}
+	public void setAccessLvelId(Long accessLvelId) {
+		this.accessLvelId = accessLvelId;
+	}
+	public Long getAccessLevelValue() {
+		return accessLevelValue;
+	}
+	public void setAccessLevelValue(Long accessLevelValue) {
+		this.accessLevelValue = accessLevelValue;
+	}
+	public String getPrDistrictId() {
+		return prDistrictId;
+	}
+	public void setPrDistrictId(String prDistrictId) {
+		this.prDistrictId = prDistrictId;
 	}
 	
 	

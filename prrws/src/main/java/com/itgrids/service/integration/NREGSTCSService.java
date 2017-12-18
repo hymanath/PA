@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.INregaComponentCommentsDAO;
+import com.itgrids.dao.INregaComponentCommentsHistoryDAO;
 import com.itgrids.dao.INregaComponentStatusDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.IPrConstituencyDAO;
@@ -37,6 +38,7 @@ import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
 import com.itgrids.model.NregaComponentComments;
+import com.itgrids.model.NregaComponentCommentsHistory;
 import com.itgrids.model.NregaComponentStatus;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
@@ -78,6 +80,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	private IPrTehsilDAO prTehsilDAO;
 	@Autowired
 	private IPrPanchayatDAO prPanchayatDAO;
+	@Autowired
+	private INregaComponentCommentsHistoryDAO nregaComponentCommentsHistoryDAO;
 	/*
 	 * Date : 16/06/2017
 	 * Author :Sravanth
@@ -427,17 +431,20 @@ public class NREGSTCSService implements INREGSTCSService{
 	public String convertingInputVOToString(InputVO inputVO){
 		String str = "";
 		try {
-			if(inputVO.getLocationId() != null){
-				if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
-					if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
-						inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
-				}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
-					if(inputVO.getDistrictId().longValue() > 0l && inputVO.getDistrictId().longValue() <= 9l){
-						if(inputVO.getLocationId().longValue() > 0l)
+			if(inputVO.getDivType() != null && !inputVO.getDivType().trim().equalsIgnoreCase("MonthWise Expenditure")){
+				if(inputVO.getLocationId() != null){
+					if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+						if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
 							inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+					}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+						if(inputVO.getDistrictId().longValue() > 0l && inputVO.getDistrictId().longValue() <= 9l){
+							if(inputVO.getLocationId().longValue() > 0l)
+								inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+						}
 					}
 				}
 			}
+			
 				
 			str = "{";
 			
@@ -469,6 +476,8 @@ public class NREGSTCSService implements INREGSTCSService{
 				str += "\"groupName\" : \""+inputVO.getGroupName()+"\",";
 			if(inputVO.getMonth() != null)
 				str += "\"month\" : \""+inputVO.getMonth()+"\",";
+			if(inputVO.getpType() != null)
+				str += "\"pType\" : \""+inputVO.getpType()+"\",";
 			
 			if(str.length() > 1)
 				str = str.substring(0,str.length()-1);
@@ -6202,20 +6211,20 @@ public class NREGSTCSService implements INREGSTCSService{
 							vo.setMandal(jObj.getString("MANDAL"));
 							vo.setPanchayat(jObj.getString("PANCHAYAT"));
 							vo.setThisMonth(jObj.getString("MONTH"));
-							vo.setPerDays1516(jObj.getLong("PER_DAYS_1516"));
-							vo.setWageExp1516(jObj.getLong("WAGE_EXP_1516"));
-							vo.setMatExp1516(jObj.getLong("MAT_EXP_1516"));
-							vo.setTotal1516(jObj.getLong("TOT_1516"));
-							vo.setPerDays1617(jObj.getLong("PER_DAYS_1617"));
-							vo.setWageExp1617(jObj.getLong("WAGE_EXP_1617"));
-							vo.setMatExp1617(jObj.getLong("MAT_EXP_1617"));
-							vo.setTotal1617(jObj.getLong("TOT_1617"));
-							vo.setPerDays1718(jObj.getLong("PER_DAYS_1718"));
-							vo.setWageExp1718(jObj.getLong("WAGE_EXP_1718"));
-							vo.setMatExp1718(jObj.getLong("MAT_EXP_1718"));
-							vo.setTotal1718(jObj.getLong("TOT_1718"));
-							vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00) / Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-							vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							vo.setPerDays1516(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("PER_DAYS_1516")));
+							vo.setWageExp1516(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("WAGE_EXP_1516")));
+							vo.setMatExp1516(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("MAT_EXP_1516")));
+							vo.setTotal1516(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1516")));
+							vo.setPerDays1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("PER_DAYS_1617")));
+							vo.setWageExp1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("WAGE_EXP_1617")));
+							vo.setMatExp1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("MAT_EXP_1617")));
+							vo.setTotal1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1617")));
+							vo.setPerDays1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("PER_DAYS_1718")));
+							vo.setWageExp1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("WAGE_EXP_1718")));
+							vo.setMatExp1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("MAT_EXP_1718")));
+							vo.setTotal1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1718")));
+							/*vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00) / Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());*/
 							returnList.add(vo);
 						}
 					}
@@ -6257,11 +6266,10 @@ public class NREGSTCSService implements INREGSTCSService{
 									&& inputVO.getMonthType().trim().equalsIgnoreCase(jObj.getString("MONTH"))) {
 								vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUE_ID").toString().trim().length() > 0 ? jObj.getString("UNIQUE_ID") : "1").toString()));
 								// vo.setMatExp1617(jObj.getLong("MAT_EXP_1617"));
-								vo.setTotal1617(jObj.getLong("TOT_1617"));
-								// vo.setPerDays1718(jObj.getLong("PER_DAYS_1718"));
-								vo.setWageExp1718(jObj.getLong("WAGE_EXP_1718"));
-								vo.setMatExp1718(jObj.getLong("MAT_EXP_1718"));
-								vo.setTotal1718(jObj.getLong("TOT_1718"));
+								vo.setTotal1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1617")));
+								vo.setWageExp1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("WAGE_EXP_1718")));
+								vo.setMatExp1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("MAT_EXP_1718")));
+								vo.setTotal1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1718")));
 								vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00)/ Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 								vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 								if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
@@ -6378,5 +6386,302 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at getPanchayatsFrTehsil - NREGSTCSService service", e);
 		}
 		return finalList;
+	}
+	
+	/*
+	 * Date : 15/122017
+	 * Author :Nandhini
+	 * @description : getPanchayatsExpenditure
+	 */
+	public List<IdNameVO> getPanchayatsExpenditure(InputVO inputVO,String locationId,Long levelId){
+		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
+		try {
+			
+			if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 1L){
+				inputVO.setLocationType("state");
+			}else if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 2L){
+				inputVO.setLocationType("district");
+			}else if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 3L){
+				inputVO.setLocationType("constituency");
+			}
+			if(locationId != null){
+				inputVO.setLocationIdStr(locationId);
+			}
+			
+			String str = convertingInputVOToString(inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 Long totalCount = 0l;
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				IdNameVO vo = new IdNameVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setName(jObj.getString("RANGE"));
+	 	    				vo.setCount(jObj.getLong("GPSCOUNT"));
+	 	    				totalCount = totalCount+vo.getCount();
+	 	    				
+	 	    				voList.add(vo);
+	 	    			}
+	 	    		}
+	 	    		
+	 	    		if(voList != null && !voList.isEmpty()){
+	 	    			for (IdNameVO vo : voList) {
+	 	    				if(vo.getCount() != null && vo.getCount() > 0)
+	 	    					vo.setTotl(new BigDecimal(vo.getCount()*100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				else
+	 	    					vo.setTotl("0.00");
+						}
+	 	    		}
+	 	    	}
+	 	    }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPanchayatsExpenditure - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	/*
+	 * Date : 15/12/2017
+	 * Author :Nandhini
+	 * @description : getPanchatVsExpData
+	 */
+	public List<NregsDataVO> getPanchatVsExpData(InputVO inputVO,String locationId,Long levelId){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			List<String> uniqueCodeStr=new ArrayList<String>();
+			if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 1L){
+				inputVO.setLocationType("state");
+			}else if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 2L){
+				inputVO.setLocationType("district");
+			}else if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 3L){
+				inputVO.setLocationType("constituency");
+			}
+			if(locationId != null){
+				inputVO.setLocationIdStr(locationId);
+			}
+			
+				String[] rangeArr = {"0-0","0-1","1-5","5-10","10-20"};
+				if(rangeArr != null){
+					for (String string : rangeArr) {
+						String[] rangeValues = string.split("-");
+						inputVO.setFromRange(Long.valueOf(rangeValues[0]));
+						inputVO.setToRange(Long.valueOf(rangeValues[1]));
+						
+						String str = convertingInputVOToString(inputVO); 
+						ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataPanchayatNew", str);
+				        
+				        if(response.getStatus() != 200){
+				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+				 	      }else{
+				 	    	 String output = response.getEntity(String.class);
+				 	    	if(output != null && !output.isEmpty()){
+				 	    		JSONArray finalArray = new JSONArray(output);
+				 	    		if(finalArray!=null && finalArray.length()>0){
+				 	    			for(int i=0;i<finalArray.length();i++){
+				 	    				NregsDataVO vo = new NregsDataVO();
+				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+				 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+				 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+				 	    				vo.setConstituency(jObj.getString("ASSEMBLY"));
+				 	    				vo.setMandal(jObj.getString("MANDAL"));
+				 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+				 	    				vo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
+				 	    				vo.setUniqueCode(jObj.getString("UNIQUEID"));
+				 	    				if(Long.valueOf(rangeValues[1]) != null && Long.valueOf(rangeValues[1]).longValue() == 0L){
+				 	    					vo.setRange("0");
+				 	    				}else if(Long.valueOf(rangeValues[1]) != null && Long.valueOf(rangeValues[1]).longValue() == 1L){
+				 	    					vo.setRange("Below 1");
+				 	    				}else if(Long.valueOf(rangeValues[1]) != null && Long.valueOf(rangeValues[1]).longValue() == 5L){
+				 	    					vo.setRange("1-5");
+				 	    				}else if(Long.valueOf(rangeValues[1]) != null && Long.valueOf(rangeValues[1]).longValue() == 10L){
+				 	    					vo.setRange("5-10");
+				 	    				}else if(Long.valueOf(rangeValues[1]) != null && Long.valueOf(rangeValues[1]).longValue() == 20L){
+				 	    					vo.setRange("10-20");
+				 	    				}
+				 	    				uniqueCodeStr.add(vo.getUniqueCode());
+				 	    				voList.add(vo);
+				 	    				
+				 	    			}
+				 	    		}
+				 	    	}
+				 	      }
+						}
+					}
+	        
+	        List<Object[]> nregaComments= nregaComponentCommentsDAO.getNregaComponentComments(uniqueCodeStr);
+				if(nregaComments != null && nregaComments.size()>0){
+					for(Object[] param : nregaComments){
+						NregsDataVO matchedVo= getMatchedVoForUniqueCode(voList,commonMethodsUtilService.getStringValueForObject(param[3]));
+						if(matchedVo != null){
+							matchedVo.setStatus(commonMethodsUtilService.getStringValueForObject(param[0]));
+							matchedVo.setComments(commonMethodsUtilService.getStringValueForObject(param[1]));
+							matchedVo.setActionPlan(commonMethodsUtilService.getStringValueForObject(param[2]));
+							matchedVo.setStatusId(commonMethodsUtilService.getLongValueForObject(param[4]));
+							matchedVo.setComponentId(commonMethodsUtilService.getLongValueForObject(param[5]));
+						}
+					}
+				}
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPanchatVsExpData - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
+	public String convertRupeesIntoLakhesFrDoubleValue(String value){
+		String returnVal = null;
+		try {
+			if(value != null){
+				returnVal = new BigDecimal(Double.valueOf(value)/100000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				returnVal = returnVal;
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertRupeesIntoLakhesFrDoubleValue - NREGSTCSService service", e);
+		}
+		return returnVal;
+	}
+	/*
+	 * Date : 16/12/2017
+	 * Author :Nandhini
+	 * @description : savePanchayatComponentComments
+	 */
+	public InputVO savePanchayatComponentComments(Long componentComentId,Long statusId,String comment,String actionType,String uniqueCode,Long userId){
+		InputVO vo=new InputVO();
+		try {
+			NregaComponentComments 	componentComent =null;
+			if(componentComentId != 0){
+			 	componentComent = nregaComponentCommentsDAO.get(componentComentId);
+			}
+			NregaComponentStatus componentStatus=nregaComponentStatusDAO.get(statusId);
+			//If Record Is There We Mve that Into History
+			if(componentComent != null){
+				NregaComponentCommentsHistory model = new NregaComponentCommentsHistory();
+				if(componentComent.getNregaComponentId() != null){
+					model.setNregaComponentId(componentComent.getNregaComponentId());
+				}else{
+					model.setNregaComponentId(1L);
+				}
+					
+					model.setNregaComponentStatusId(componentComent.getNregaComponentStatusId());
+					model.setComment(componentComent.getComment());
+					model.setActionPlan(componentComent.getActionPlan());
+				    model.setUniqueCode(componentComent.getUniqueCode());
+					model.setInsertedBy(componentComent.getInsertedBy());
+					model.setUpdatedBy(componentComent.getUpdatedBy());
+					model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					model.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					model.setIsDeleted(componentComent.getIsDeleted());
+					model.setNregaComponentCommentsId(componentComentId);
+					nregaComponentCommentsHistoryDAO.save(model);
+					
+					//Update In Main Table
+					if(componentStatus != null){
+						componentComent.setNregaComponentStatusId(componentStatus.getNregaComponentStatusId());
+					}
+					if(comment != null){
+						componentComent.setComment(comment);
+					}
+					if(actionType != null){
+						componentComent.setActionPlan(actionType);
+					}
+					if(uniqueCode != null){
+						componentComent.setUniqueCode(uniqueCode);
+					}
+					componentComent.setNregaComponentId(1L);
+					componentComent.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					componentComent.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					componentComent.setUpdatedBy(userId);
+					componentComent.setInsertedBy(userId);
+					componentComent.setIsDeleted("N");
+			 }else{
+				 componentComent = new NregaComponentComments();
+				 if(componentStatus != null){
+						componentComent.setNregaComponentStatusId(componentStatus.getNregaComponentStatusId());
+					}
+					if(comment != null){
+						componentComent.setComment(comment);
+					}
+					if(actionType != null){
+						componentComent.setActionPlan(actionType);
+					}
+					if(uniqueCode != null){
+						componentComent.setUniqueCode(uniqueCode);
+					}
+					componentComent.setNregaComponentId(1L);
+					componentComent.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					componentComent.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					componentComent.setUpdatedBy(userId);
+					componentComent.setInsertedBy(userId);
+					componentComent.setIsDeleted("N");
+			 	}
+				componentComent = nregaComponentCommentsDAO.save(componentComent);
+			
+			vo.setDisplayType("success");
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at savePanchayatComponentComments() -  NREGSTCSService Class ", e);
+			vo.setDisplayType("failure");
+		}
+		return vo;
+	}
+	
+	/*
+	 * Date : 18/12/2017 
+	 * Author :Nandhini
+	 * @description : getFieldManDaysWorkDetails
+	 */
+	public List<NregsDataVO> getFieldManDaysWorkDetails(InputVO inputVO) {
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
+		try {
+
+			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APMandaysAnalysisService/APMandaysAnalysis";
+
+			String str = convertingInputVOToString(inputVO);
+
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+
+				if (output != null && !output.isEmpty()) {
+					JSONArray finalArray = new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							NregsDataVO vo = new NregsDataVO();
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+							vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUE_ID").toString().trim().length() > 0 ? jObj.getString("UNIQUE_ID") : "1").toString()));
+							vo.setDistrict(jObj.getString("DISTRICT"));
+							vo.setConstituency(jObj.getString("CONSTITUENCY"));
+							vo.setMandal(jObj.getString("MANDAL"));
+							vo.setPanchayat(jObj.getString("PANCHAYAT"));
+							vo.setToday(jObj.getString("TODAY"));
+							vo.setYesterday(jObj.getString("YESTERDAY"));
+							vo.setThisWeek(jObj.getString("FOR_THIS_WEEK"));
+							vo.setLastWeek(jObj.getString("FOR_LAST_WEEK"));
+							vo.setThisMonth(jObj.getString("THIS_MONTH"));
+							vo.setLastMonth(jObj.getString("LAST_MONTH"));
+							vo.setLast3Months(jObj.getString("LAST_3_MONTHS"));
+							vo.setLast6Months(jObj.getString("LAST_6_MONTHS"));
+							vo.setThisFinYear(jObj.getString("THIS_FIN_YEAR"));
+							returnList.add(vo);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getFieldManDaysWorkDetails - NREGSTCSService service", e);
+		}
+		return returnList;
 	}
 }

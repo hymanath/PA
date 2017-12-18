@@ -147,18 +147,27 @@ public class NregsDataVO implements Serializable{
 	private String actionPlan;
 	private Long statusId;
 	private Long componentId;
-	private Long perDays1516 = 0L;
-	private Long wageExp1516 = 0L;
-	private Long matExp1516 = 0L;
-	private Long total1516 = 0L;
-	private Long perDays1617 = 0L;
-	private Long wageExp1617 = 0L;
-	private Long matExp1617 = 0L;
-	private Long total1617 = 0L;
-	private Long perDays1718 = 0L;
-	private Long wageExp1718 = 0L;
-	private Long matExp1718 = 0L;
-	private Long total1718 = 0L;
+	private String perDays1516 ;
+	private String wageExp1516 ;
+	private String matExp1516 ;
+	private String total1516 ;
+	private String perDays1617 ;
+	private String wageExp1617 ;
+	private String matExp1617 ;
+	private String total1617 ;
+	private String perDays1718;
+	private String wageExp1718;
+	private String matExp1718 ;
+	private String total1718;
+	private String range;
+	private String today;
+	private String yesterday;
+	private String thisWeek;
+	private String lastWeek;
+	private String lastMonth;
+	private String last3Months;
+	private String last6Months;
+	private String thisFinYear; 
 	
 	public String getWorkName() {
 		return workName;
@@ -910,77 +919,131 @@ public class NregsDataVO implements Serializable{
 	public void setComponentId(Long componentId) {
 		this.componentId = componentId;
 	}
-	public Long getPerDays1516() {
+	public String getPerDays1516() {
 		return perDays1516;
 	}
-	public void setPerDays1516(Long perDays1516) {
+	public void setPerDays1516(String perDays1516) {
 		this.perDays1516 = perDays1516;
 	}
-	public Long getWageExp1516() {
+	public String getWageExp1516() {
 		return wageExp1516;
 	}
-	public void setWageExp1516(Long wageExp1516) {
+	public void setWageExp1516(String wageExp1516) {
 		this.wageExp1516 = wageExp1516;
 	}
-	public Long getMatExp1516() {
+	public String getMatExp1516() {
 		return matExp1516;
 	}
-	public void setMatExp1516(Long matExp1516) {
+	public void setMatExp1516(String matExp1516) {
 		this.matExp1516 = matExp1516;
 	}
-	public Long getTotal1516() {
+	public String getTotal1516() {
 		return total1516;
 	}
-	public void setTotal1516(Long total1516) {
+	public void setTotal1516(String total1516) {
 		this.total1516 = total1516;
 	}
-	public Long getPerDays1617() {
+	public String getPerDays1617() {
 		return perDays1617;
 	}
-	public void setPerDays1617(Long perDays1617) {
+	public void setPerDays1617(String perDays1617) {
 		this.perDays1617 = perDays1617;
 	}
-	public Long getWageExp1617() {
+	public String getWageExp1617() {
 		return wageExp1617;
 	}
-	public void setWageExp1617(Long wageExp1617) {
+	public void setWageExp1617(String wageExp1617) {
 		this.wageExp1617 = wageExp1617;
 	}
-	public Long getMatExp1617() {
+	public String getMatExp1617() {
 		return matExp1617;
 	}
-	public void setMatExp1617(Long matExp1617) {
+	public void setMatExp1617(String matExp1617) {
 		this.matExp1617 = matExp1617;
 	}
-	public Long getTotal1617() {
+	public String getTotal1617() {
 		return total1617;
 	}
-	public void setTotal1617(Long total1617) {
+	public void setTotal1617(String total1617) {
 		this.total1617 = total1617;
 	}
-	public Long getPerDays1718() {
+	public String getPerDays1718() {
 		return perDays1718;
 	}
-	public void setPerDays1718(Long perDays1718) {
+	public void setPerDays1718(String perDays1718) {
 		this.perDays1718 = perDays1718;
 	}
-	public Long getWageExp1718() {
+	public String getWageExp1718() {
 		return wageExp1718;
 	}
-	public void setWageExp1718(Long wageExp1718) {
+	public void setWageExp1718(String wageExp1718) {
 		this.wageExp1718 = wageExp1718;
 	}
-	public Long getMatExp1718() {
+	public String getMatExp1718() {
 		return matExp1718;
 	}
-	public void setMatExp1718(Long matExp1718) {
+	public void setMatExp1718(String matExp1718) {
 		this.matExp1718 = matExp1718;
 	}
-	public Long getTotal1718() {
+	public String getTotal1718() {
 		return total1718;
 	}
-	public void setTotal1718(Long total1718) {
+	public void setTotal1718(String total1718) {
 		this.total1718 = total1718;
+	}
+	public String getRange() {
+		return range;
+	}
+	public void setRange(String range) {
+		this.range = range;
+	}
+	public String getToday() {
+		return today;
+	}
+	public void setToday(String today) {
+		this.today = today;
+	}
+	public String getYesterday() {
+		return yesterday;
+	}
+	public void setYesterday(String yesterday) {
+		this.yesterday = yesterday;
+	}
+	public String getThisWeek() {
+		return thisWeek;
+	}
+	public void setThisWeek(String thisWeek) {
+		this.thisWeek = thisWeek;
+	}
+	public String getLastWeek() {
+		return lastWeek;
+	}
+	public void setLastWeek(String lastWeek) {
+		this.lastWeek = lastWeek;
+	}
+	public String getLastMonth() {
+		return lastMonth;
+	}
+	public void setLastMonth(String lastMonth) {
+		this.lastMonth = lastMonth;
+	}
+	public String getLast3Months() {
+		return last3Months;
+	}
+	public void setLast3Months(String last3Months) {
+		this.last3Months = last3Months;
+	}
+	public String getLast6Months() {
+		return last6Months;
+	}
+	public void setLast6Months(String last6Months) {
+		this.last6Months = last6Months;
+	}
+	public String getThisFinYear() {
+		return thisFinYear;
+	}
+	public void setThisFinYear(String thisFinYear) {
+		this.thisFinYear = thisFinYear;
 	}
 	
 	

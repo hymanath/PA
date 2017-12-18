@@ -109,7 +109,7 @@ public class InputVO implements Serializable {
 	private String month;
 	private String monthType;
 	private Long pageId;
-	
+	private String pType;
 	
 	public Long getPageId() {
 		return pageId;
@@ -698,6 +698,10 @@ public class InputVO implements Serializable {
 	public void setMonthType(String monthType) {
 		this.monthType = monthType;
 	}
-	
-	
+	public String getpType() {
+		return pType;
+	}
+	public void setpType(String pType) {
+		this.pType = pType;
+	}
 }

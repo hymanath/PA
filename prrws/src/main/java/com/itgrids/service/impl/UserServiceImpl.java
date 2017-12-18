@@ -2,10 +2,14 @@ package com.itgrids.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
@@ -14,6 +18,7 @@ import com.itgrids.dao.IHamletDAO;
 import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.ITehsilDAO;
+import com.itgrids.dao.IUserAccessLevelValueDAO;
 import com.itgrids.dao.IUserDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.IdNameVO;
@@ -51,25 +56,56 @@ public class UserServiceImpl implements IUserService {
 	private IFavouriteComponentDAO favouriteComponentDAO;
 	@Autowired
 	private IPmRequestDetailsService pmRequestDetailsService;
+	@Autowired
+	private IUserAccessLevelValueDAO userAccessLevelValueDAO;
 
 	@Override
-	public UserVO userAuthentication(String userName, String password) {
+	public UserVO userAuthentication(String userName, String password,HttpServletRequest request) {
 		UserVO userVO = new UserVO();
+		HttpSession httpSession = request.getSession();
+		Long userId = null;
 		//User user = userDAO.loginAuthentication(userName, password);
 		Object[] userObj = userDAO.getUrlForMatchedCredentials(userName, password);
 		if(userObj != null && userObj.length > 0){
 			String url=commonMethodsUtilService.getStringValueForObject(userObj[0]);
-			Long userId=commonMethodsUtilService.getLongValueForObject(userObj[1]);
+			userId =commonMethodsUtilService.getLongValueForObject(userObj[1]);
 			if (url != null && url.trim().length() > 0) {
 				userVO.setUrl(url);
 				userVO.setUserId(userId);
 				pmRequestDetailsService.getPmOffceUserDetails(userId,userVO);
 				userVO.setResponceCode(1l);
+				userVO.setStatus("Valid user");
 			}else {
 				userVO.setResponceCode(0l);
+				userVO.setStatus("InValid user");
 			}
 		}else{
 			userVO.setResponceCode(0l);
+			userVO.setStatus("InValid user");
+		}
+		//Setting User  Access Details
+		if(userId != null && userId.longValue() > 0L){
+			List<Object[]> accessList = userAccessLevelValueDAO.getUserAccessDetails(userId);
+			if(accessList != null && !accessList.isEmpty()){
+				for (Object[] param : accessList) {
+					userVO.setAccessLvelId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					userVO.setAccessLevelValue(commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+				
+			}
+		}
+		if(userVO.getAccessLvelId() != null && userVO.getAccessLvelId().longValue() == 2L){
+			List<Object[]> districtList = districtDAO.getMgnregsDistrictMappingCode(userVO.getAccessLevelValue());
+			if(districtList != null && !districtList.isEmpty()){
+				for (Object[] param : districtList) {
+					userVO.setPrDistrictId(commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+		}else{
+			userVO.setPrDistrictId("-1");
+		}
+		if(userVO != null && userVO.getStatus().equalsIgnoreCase("Valid user")){
+			httpSession.setAttribute("User", userVO);
 		}
 		return userVO;
 	}
