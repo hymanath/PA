@@ -636,7 +636,7 @@ function getHabitationCoverageByStatusByState()
 						}
 					}
 					if (amountinCrocr != null && amountinCrocr > 0) {
-						$(".FUNDMANAGMENTSYSTEMAllCls").html(amountinCrocr.toFixed(3)+"&nbspCR");
+						$(".FUNDMANAGMENTSYSTEMAllCls").html(amountinCrocr.toFixed(3)+"&nbspCr");
 					}
 			   }
 			}
