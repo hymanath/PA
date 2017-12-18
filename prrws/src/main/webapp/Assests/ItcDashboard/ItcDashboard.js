@@ -286,7 +286,7 @@ function departmentBlockWiseDetails(divId)
 												collapse+='</ul>';
 											collapse+='</div>';
 											collapse+='<div class="col-sm-2" id="">';
-												collapse+='<i class="glyphicon glyphicon-download pull-right" id="addIcon" aria-hidden="true" style="cursor:pointer;font-size:35px;"></i>';
+												collapse+='<i class="glyphicon glyphicon-download pull-right" id="addIcon" aria-hidden="true" style="cursor:pointer;font-size:35px;display:none;"></i>';
 												collapse+='<div class="col-sm-12" id="promotionsStageDroppedBlockId" style="display:none;"></div>';
 												collapse+='<div class="col-sm-12" id="promotionsStageDroppedBlockId1" style="display:none;"></div>';
 											collapse+='</div>';
