@@ -3,21 +3,19 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -32,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampProgramDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
+import com.itgrids.partyanalyst.dto.GrievanceReportVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.TrainingCampSurveyVO;
@@ -49,6 +48,7 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.container.MappableContainerException;
 import com.sun.jersey.api.json.JSONConfiguration;
 
 
@@ -1261,8 +1261,6 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			 	    			vo.setSurveyQuestionId(tmp.getLong("surveyQuestionId"));
 			 	    			vo.setQuestion(tmp.getString("question"));
 			 	    			vo.setTotalMemberAnswered(tmp.getLong("totalMemberAnswered"));
-			 	    			//vo.setTotalCorrectAnswer(tmp.getLong("totalCorrectAnswer"));
-			 	    			//vo.setCorrectAnswerPercent(tmp.getDouble("correctAnswerPercent"));
 			 	    			String s1 = tmp.getString("optionList");
 			 	    			JSONArray inArr = new JSONArray(s1);
 			 	    			
@@ -1432,6 +1430,147 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		return null;
 	}
 
+	@Override
+	public List<GrievanceReportVO> getEffiencyDetailsForgrivanceByDates(List<Integer> daysList,String grievanceReqType, Long enrollmentyearId) {
+		List<GrievanceReportVO> finalDaysList = new ArrayList<GrievanceReportVO>();
+		try{
+			 
+				
+				String daysListstring = daysList.get(0).toString();
+				for (int i=1;i<daysList.size();i++)
+				{
+					daysListstring = daysListstring+","+daysList.get(i).toString();
+				}
+			 ClientConfig clientConfig = new DefaultClientConfig();
+		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+		     WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceDetailsForEfficiency/"+daysListstring+"/"+grievanceReqType+"/"+enrollmentyearId.toString());
+		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getGrivanceDetailsForEfficiency/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+			 ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class);
+			 if(response.getStatus() != 200){
+				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			  }else{
+ 	    	  String output = response.getEntity(String.class);
+			  if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    		 for(int i=0;i<finalArray.length();i++){
+		 	    			GrievanceReportVO vo = new GrievanceReportVO();
+		 	    			JSONObject tmp = (JSONObject) finalArray.get(i);
+		 	    			
+		 	    			vo.setName(tmp.getString("effcncyType"));
+		 	    			vo.setEfficencyPercentage(tmp.getDouble("effcncyPrcnt"));
+		 	  
+		 	    			finalDaysList.add(vo);
+		 	    		 }
+	 	    		}
+	 	    		
+	 	    	} 
+ 	      }
+ 		return finalDaysList;
+     }catch(Exception e){
+	    LOG.error("Error occured at getEffiencyDetailsForgrivanceByDates() in CoreDashboardcoreService {}",e); 
+	 }
+ 	 return null;
+  }
+	public List<GrievanceReportVO> getgrivanceDetailsByIssueType(Long enrollmentyearId,String searchType,String searchval) {
+		List<GrievanceReportVO> finalDaysList = new ArrayList<GrievanceReportVO>();
+		try{
+			ComplaintStatusCountVO complaintStatusCountVO = new ComplaintStatusCountVO();
+			complaintStatusCountVO.setCount(enrollmentyearId);
+			complaintStatusCountVO.setStatus(searchType);
+			complaintStatusCountVO.setStatusVal(searchval);
+			 ClientConfig clientConfig = new DefaultClientConfig();
+		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+		     WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceDetailsForIssueTypeWiseGraph");
+		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getGrivanceDetailsForEfficiency/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+		     String jsonInString = new ObjectMapper().writeValueAsString(complaintStatusCountVO);
+	         System.out.println(jsonInString);
+	         
+	         ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class,complaintStatusCountVO);
+			 if(response.getStatus() != 200){
+				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			  }else{
+ 	    	  String output = response.getEntity(String.class);
+			  if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    		 for(int i=0;i<finalArray.length();i++){
+		 	    			GrievanceReportVO vo = new GrievanceReportVO();
+		 	    			JSONObject tmp = (JSONObject) finalArray.get(i);
+		 	    			
+		 	    			vo.setName(tmp.getString("color"));
+		 	    			vo.setGrivanceCount(tmp.getLong("count"));
+		 	    			vo.setIssueType(tmp.getString("status"));
+		 	    			finalDaysList.add(vo);
+		 	    		 }
+	 	    		}
+	 	    		
+	 	    	} 
+ 	      }
+ 		return finalDaysList;
+     }catch(Exception e){
+    	 
+	   LOG.error("Error occured at getgrivanceDetailsByIssueType() in CoreDashboardcoreService {}",e); 
+	 }
+ 	 return null;
+  }
+	public List<GrievanceReportVO> getgrivanceDetailsBySearch(Long enrollmentyearId,String searchType,String searchValue) {
+		List<GrievanceReportVO> finalDaysList = new ArrayList<GrievanceReportVO>();
+		try{
+			ComplaintStatusCountVO complaintStatusCountVO = new ComplaintStatusCountVO();
+			complaintStatusCountVO.setCount(enrollmentyearId);
+			complaintStatusCountVO.setStatus(searchType);
+			complaintStatusCountVO.setStatusVal(searchValue);
+			 ClientConfig clientConfig = new DefaultClientConfig();
+		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+		     WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceSearch");
+		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getGrivanceDetailsForEfficiency/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+		     String jsonInString = new ObjectMapper().writeValueAsString(complaintStatusCountVO);
+	         System.out.println(jsonInString);
+	         
+	         ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, complaintStatusCountVO);
+			 if(response.getStatus() != 200){
+				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			  }else{
+ 	    	  String output = response.getEntity(String.class);
+			  if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    		 for(int i=0;i<finalArray.length();i++){
+		 	    			GrievanceReportVO vo = new GrievanceReportVO();
+		 	    			JSONObject tmp = (JSONObject) finalArray.get(i);
+		 	    			
+		 	    			vo.setId(tmp.getLong("complaintId"));
+		 	    			vo.setName(tmp.getString("name"));
+		 	    			vo.setNumber(tmp.getString("mobile"));
+		 	    			vo.setIssueType(tmp.getString("status"));
+		 	    			vo.setDistrictName(tmp.getString("location"));
+		 	    			vo.setConsitutencyName(tmp.getString("constituency"));
+		 	    			vo.setMandalName(tmp.getString("mandal"));
+		 	    			vo.setVillageName(tmp.getString("villageName"));
+		 	    			vo.setSubject(tmp.getString("subject"));
+		 	    			vo.setDescription(tmp.getString("description"));
+		 	    			vo.setIssueType(tmp.getString("typeOfIssue"));
+		 	    			//vo.setReferenceName(tmp.getString(key));
+		 	    			vo.setStatus(tmp.getString("status"));
+		 	    			vo.setDate(tmp.getString("raisedDate"));
+		 	    			vo.setUpdatedDate(tmp.getString("updatedDate"));
+		 	    			finalDaysList.add(vo);
+		 	    		 }
+	 	    		}
+	 	    		
+	 	    	} 
+ 	      }
+ 		return finalDaysList;
+     }catch(Exception e){
+	    LOG.error("Error occured at getgrivanceDetailsByIssueType() in CoreDashboardcoreService {}",e); 
+	 }
+ 	 return null;
+  }
+	        
 }
 
 	
