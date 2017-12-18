@@ -7260,7 +7260,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	           sbg.append(" UA.state_id ");
 	           
 	           if(locationValues !=null && locationValues.size()>0){
-	        	   sbe.append(" and S.state_id in (:locationValues) ");
+	        	   //sbe.append(" and S.state_id in (:locationValues) ");
+	        	   sbe.append(" and UA.district_id between 11 and 23 ");
 	           }
 	         	 
 	           
@@ -7313,7 +7314,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	       
 	       if(searchlevelId !=null && searchlevelId.longValue()>0l && searchLevelValues !=null && searchLevelValues.size()>0){
 		         if(searchlevelId ==2l){
-		           sbe.append("  and UA.state_id in (:searchLevelValues)  ");
+		           //sbe.append("  and UA.state_id in (:searchLevelValues)  ");
+		        	 sbe.append(" and UA.district_id between 11 and 23 ");
 		         }else if(searchlevelId ==3l){
 		           sbe.append(" and UA.district_id in (:searchLevelValues) ");		           
 		         }else if(searchlevelId ==4l){
@@ -7346,12 +7348,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	         query.setParameter("fromDate", fromDate);
 	         query.setParameter("toDate", toDate);
 	       }
-	      
+		  if(locationTypeId !=null && locationTypeId.longValue() != 2l){
 	      if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValues !=null && locationValues.size()>0){
 	        query.setParameterList("locationValues", locationValues);
 	      }
+		  }
+	      if(searchlevelId !=null && searchlevelId.longValue() != 2l){
 	      if(searchlevelId !=null && searchlevelId.longValue()>0l && searchLevelValues !=null && searchLevelValues.size()>0){
 	    	  query.setParameterList("searchLevelValues", searchLevelValues);
+	      }
 	      }
 	      
 	      return query.list();
