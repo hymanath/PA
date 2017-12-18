@@ -610,41 +610,27 @@ public class CommonMethodsUtilService {
 		  
 		  public  String createInnerFolders(String addFolderStr){
 			 	try {
-			  		 LOG.debug(" in createInnerFolders ");
+			  		LOG.debug(" in createInnerFolders ");
 			  		
 			  		Calendar calendar = Calendar.getInstance();
 					calendar.setTime(new Date());
-					 int year = calendar.get(Calendar.YEAR);
-					 int month = calendar.get(Calendar.MONTH);
-					 int day = calendar.get(Calendar.DAY_OF_MONTH);
+					int year = calendar.get(Calendar.YEAR);
+					int month = calendar.get(Calendar.MONTH);
+					int day = calendar.get(Calendar.DAY_OF_MONTH);
 					
-					 String dirStr = createFolder(addFolderStr);
-					 if(!dirStr.equalsIgnoreCase("SUCCESS")){
-						 return "FAILED";
-					 }
-					 
-					 String yr = String.valueOf(year); // YEAR YYYY
-					 String yrDir = addFolderStr+"/"+yr;
-					 
-					 String yrFldrSts = createFolder(yrDir);
-					 if(!yrFldrSts.equalsIgnoreCase("SUCCESS")){
-						 return "FAILED";
-					 }
-					 
-					 StringBuilder str = new StringBuilder();
-					 int temp = month+1;
-					 str.append(temp).append("-").append(day);
-					 
-					 
-					 String mnth = str.toString();
-					 String mnthDir = addFolderStr+"/"+yr+"/"+mnth;
-					 String mnthDirSts = createFolder(mnthDir);
-					 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
-						 return "FAILED";
-					 }
-					 
-					 return "/"+mnthDir;
-					 
+					String yearStr = String.valueOf(year); 
+					String monthStr = String.valueOf(month+1); 
+					String dayStr = String.valueOf(day);
+				 
+					String folderStr = yearStr+"/"+monthStr+"/"+dayStr+"/";
+				 
+					File saveDir = new File(addFolderStr+"/"+folderStr);
+					boolean status = saveDir.mkdirs();
+					
+					if(status)
+						return saveDir.getAbsolutePath();
+					else 
+						return "FAILED";
 				
 				} catch (Exception e) {
 					LOG.error(addFolderStr+" Failed to Create");
@@ -1147,7 +1133,7 @@ public class CommonMethodsUtilService {
 		public String generateImagePathWithDateTime(){
 			try {
 				Calendar cal = Calendar.getInstance();
-				return cal.get(Calendar.YEAR)+"_"+cal.get(Calendar.MONTH)+"_"+cal.get(Calendar.DAY_OF_MONTH)+"_"+cal.get(Calendar.HOUR)+"_"+cal.get(Calendar.MINUTE)+"_"+cal.get(Calendar.SECOND);
+				return cal.get(Calendar.YEAR)+"_"+(cal.get(Calendar.MONTH)+1)+"_"+cal.get(Calendar.DAY_OF_MONTH)+"_"+cal.get(Calendar.HOUR)+"_"+cal.get(Calendar.MINUTE)+"_"+cal.get(Calendar.SECOND);
 			} catch (Exception e) {
 				LOG.error("Exception raised at generateImagePathWithDateTime - CommonMethodsUtilService service", e);
 			}
