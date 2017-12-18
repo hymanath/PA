@@ -17,6 +17,7 @@ public class EncWorksVO {
 	private Long mandalCode;
 	private String mandalName;
 	private List<EncWorksVO> subList = new ArrayList<EncWorksVO>();
+	private Long groundedCount;
 	
 	
 	public Long getLocationId() {
@@ -91,6 +92,19 @@ public class EncWorksVO {
 	}
 	public void setSubList(List<EncWorksVO> subList) {
 		this.subList = subList;
+	}
+	public Long setGroundedCount() {
+
+		return groundedCount;
+	}
+	public Long getGroundedCount() {
+		return groundedCount;
+	}
+	public void setGroundedCount(Long groundedCount) {
+		this.groundedCount = groundedCount;
+	}
+	public String getLocationName() {
+		return locationName;
 	}
 	
 	
