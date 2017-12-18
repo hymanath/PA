@@ -134,6 +134,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		return responseVO;
 	}
 	
+	@SuppressWarnings("static-access")
 	public Long  savePetitionReferralDetails(Long pmRepresenteeId,Long petitionId,PmRequestVO pmRequestVO){
 		Long noOfRefCount=0L;
 		try {
@@ -261,6 +262,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		return petitionReffererDocument;
 	}
 	
+	@SuppressWarnings("static-access")
 	public Long savePetitionSubWorkDetails(Long petitonId,PetitionsWorksVO mainDataVO,List<PetitionsWorksVO> subWorksList,int uiBuildSeriesNo,Long userId){
 		Long noOfWorksCount = 0L;
 		try {
@@ -315,6 +317,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		return noOfWorksCount;
 	}
 	
+	@SuppressWarnings("static-access")
 	public Petition savePetitionWorkDetails(Long pmRepresenteeId,PmRequestVO pmRequestVO){
 		Petition petition = null;
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -361,9 +364,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 						//}
 					}
-					/*if(submittedWorksCount.longValue() != noOfWorks){
+					if(submittedWorksCount.longValue() != noOfWorks){
 						throw new Exception(" The submitted No of works not matched with no of works . Please check once.");
-					}*/
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -420,6 +423,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		return document;
 	}
 	
+	@SuppressWarnings("static-access")
 	public PmRepresentee checkIsExistPmRepresentee(String voterCardNo,String adharCardNo,Long refCandidateId){
 		PmRepresentee pmRepresentee = null;
 		try {
@@ -744,6 +748,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 		return finalList;
 	}
+	@SuppressWarnings("static-access")
 	public List<RepresenteeViewVO> getStatusList(){
 		List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
 		try {
@@ -1075,11 +1080,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			try{
 				List<Long> pmRepresenteeRefDetailsIds =	pmRepresenteeRefDetailsDAO.getPmRepresenteRefDetailsIds(petitionId);
 				Date currentTime=dateUtilService.getCurrentDateAndTime();
-				Integer representeeRefDetcount = pmRepresenteeRefDetailsDAO.updatePmRepresenteRefDetails(pmRepresenteeRefDetailsIds,currentTime,1L);
+				pmRepresenteeRefDetailsDAO.updatePmRepresenteRefDetails(pmRepresenteeRefDetailsIds,currentTime,1L);
 				List<Long> representeeRefDocumentIds = pmRepresenteeRefDocumentDAO.getPmRepresenteeRefDocumentIds(pmRepresenteeRefDetailsIds);
-				Integer representeeRefDocumentCount = pmRepresenteeRefDocumentDAO.updatePmPmRepresenteeRefDocumens(representeeRefDocumentIds, currentTime, 1L);
+				pmRepresenteeRefDocumentDAO.updatePmPmRepresenteeRefDocumens(representeeRefDocumentIds, currentTime, 1L);
 				List<Long> subWorkIds = pmSubWorkDetailsDAO.getPmSubWorkDetailsIds(petitionId);
-				  Integer subWorksCount = pmSubWorkDetailsDAO.updatePmsubWorkDetails(subWorkIds, currentTime, 1L);
+				pmSubWorkDetailsDAO.updatePmsubWorkDetails(subWorkIds, currentTime, 1L);
 				  List<Long> petitionDocumentIds =  pmPetitionDocumentDAO.getPmPetitionDocumentIds(petitionId);
 				    pmPetitionDocumentDAO.updatePmpetitionDocuments(petitionDocumentIds);
 				    resultStatus.setResultCode(1);
