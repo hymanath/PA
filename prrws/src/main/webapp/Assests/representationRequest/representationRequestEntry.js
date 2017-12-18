@@ -288,6 +288,60 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,type
 		
 	});	
 }
+function getPanchayats(levelVal,counterId,typeVal,typeChange){
+	
+	$("#panchayatId").html('');
+	   var searchType= "all";
+		var searchId=0;
+		if(typeChange == "Inner"){
+			 $("#panchayatInnerId"+typeVal+counterId).html('');
+		}else{
+			if(typeVal== "popup"){
+				searchType = "refCandidate";
+				searchId = $('#designationsId').val();
+			}else if(counterId !="" && parseInt(counterId)>=0){
+				 $("#panchayatId"+typeVal+counterId).html('');
+			}
+		}
+	  var json = {
+		  tehsilId:levelVal,
+		  searchType:"all",
+		  searchId:0
+		}        
+	$.ajax({                
+		type:'POST',    
+		url: 'getPanchayatsByTehsilId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 if(typeChange == "Inner"){
+				  $("#panchayatInnerId"+typeVal+counterId).append('<option value="0">Select Panchayat</option>');
+			 }else{
+				 $("#panchayatId"+typeVal+counterId).append('<option value="0">Select Panchayat</option>');
+			 }
+			 $("#panchayatId").html('<option value="0">All</option>');
+			for(var i in result){	
+				if(typeChange == "Inner"){
+					$("#panchayatInnerId"+typeVal+counterId).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				}else{
+					$("#panchayatId"+typeVal+counterId).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+					$("#panchayatId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				}
+			}
+		}
+		if(typeChange == "Inner"){
+			$("#panchayatInnerId"+typeVal+counterId).trigger('chosen:updated');
+		}else{
+			$("#panchayatId"+typeVal+counterId).trigger('chosen:updated');
+			$("#panchayatId").trigger('chosen:updated');
+		}
+	});	
+}
 
 function buildSelfAndRepresenteeDetails(typeVal){
 	$("#"+typeVal+"DetailsDivId").html(spinner);
@@ -354,6 +408,13 @@ function buildSelfAndRepresenteeDetails(typeVal){
 						str+='<option value="0">Select Mandal</option>';
 					str+='</select>';
 					str+='<span class="ErrCls" id="mandalErr'+typeVal+'"></span>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';	
+					str+='<label>PANCHAYAT<span class="starColor">*</span></label>';
+					str+='<select   name="addressVO.panchayatId"  class="form-control chosen-select m_top10" id="panchayat'+typeVal+'">';
+						str+='<option value="0">Select Panchayat</option>';
+					str+='</select>';
+					str+='<span class="ErrCls" id="panchayatErr'+typeVal+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';	
 				str+='<label>REPRESENTEE DESIGNATION.<span class="starColor">*</span></label>';
@@ -1004,6 +1065,7 @@ function buildTemplateWorkDetails(typeVal){
 											str+='<option value="3">District</option>';
 											str+='<option value="4">Constituency</option>';
 											str+='<option value="5">Mandal</option>';
+											str+='<option value="6">panchayat</option>';
 										str+='</select>';
 									str+='</div>';
 									
@@ -1025,6 +1087,12 @@ function buildTemplateWorkDetails(typeVal){
 										str+='<label>MANDAL/MUNCI. <span class="starColor">*</span><span class="mandalId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
 										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls" id="mandalId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
 											str+='<option value="0">Select Mandal</option>';
+										str+='</select>';
+									str+='</div>';
+									str+='<div class="col-sm-2 panchayatCls'+typeVal+''+globalWorkTypeCount+'0" style="display:none">';
+										str+='<label>PANCHAYAT <span class="starColor">*</span><span class="Panchayat'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.panchayatId"  class="form-control chosen-select m_top10 panchayatLevelChange validateCls" id="panchayatId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
+											str+='<option value="0">Select panchayat</option>';
 										str+='</select>';
 									str+='</div>';
 							str+='</div>';
@@ -1134,8 +1202,35 @@ $(document).on("change",".locationLevelChange",function(){
 			$(".panchayatInnerCls"+typeVal+counterId).hide();
 		}
 		
-	}else{
+	}else if(levelVal == 6){
 			if(changeType == "main"){
+			$("#districtId"+typeVal+counterId).html('');
+			$("#districtId"+typeVal+counterId).trigger("chosen:updated");
+			getAllDistrictsInState(typeVal,counterId,changeType);
+			$("#constituencyId"+typeVal+counterId).html('');
+			$("#constituencyId"+typeVal+counterId).trigger("chosen:updated");
+			$("#mandalId"+typeVal+counterId).html('');
+			$("#mandalId"+typeVal+counterId).trigger("chosen:updated");
+			$(".districtCls"+typeVal+counterId).show();
+			$(".constituencyCls"+typeVal+counterId).show();
+			$(".mandalCls"+typeVal+counterId).show();
+			$(".panchayatCls"+typeVal+counterId).show();
+			}else{
+			$("#districtInnerId"+typeVal+counterId).html('');
+			$("#districtInnerId"+typeVal+counterId).trigger("chosen:updated");
+			getAllDistrictsInState(typeVal,counterId,changeType);
+			$("#constituencyInnerId"+typeVal+counterId).html('');
+			$("#constituencyInnerId"+typeVal+counterId).trigger("chosen:updated");
+			$("#mandalInnerId"+typeVal+counterId).html('');
+			$("#mandalInnerId"+typeVal+counterId).trigger("chosen:updated");
+			$(".districtInnerCls"+typeVal+counterId).show();
+			$(".constituencyInnerCls"+typeVal+counterId).show();
+			$(".mandalInnerCls"+typeVal+counterId).show();
+			$(".panchayatInnerCls"+typeVal+counterId).show();
+			}
+		
+	}else{
+		if(changeType == "main"){
 				$(".districtCls"+typeVal+counterId).hide();
 				$(".constituencyCls"+typeVal+counterId).hide();
 				$(".mandalCls"+typeVal+counterId).hide();
@@ -1146,7 +1241,6 @@ $(document).on("change",".locationLevelChange",function(){
 				$(".mandalInnerCls"+typeVal+counterId).hide();
 				$(".panchayatInnerCls"+typeVal+counterId).hide();
 			}
-		
 	}
 });
 $(document).on("change",".districtLevelChange",function(){
@@ -1154,7 +1248,6 @@ $(document).on("change",".districtLevelChange",function(){
 	var counterId = $(this).attr("attr_counterval");
 	var typeVal = $(this).attr("attr_type");
 	var typeChange = $(this).attr("attr_type_change");
-	 
 	getConstituencyNamesByDistrictId(levelVal,counterId,typeVal,typeChange);
 	
 });
@@ -1164,6 +1257,15 @@ $(document).on("change",".constituencyLevelChange",function(){
 	var typeVal = $(this).attr("attr_type");
 	var typeChange = $(this).attr("attr_type_change");
 	getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,typeVal,typeChange);
+	
+});
+$(document).on("change",".mandalLevelChange",function(){
+	var levelVal = $(this).val();
+	levelVal=levelVal.toString().substr(1,levelVal.lenght);
+	var counterId = $(this).attr("attr_counterval");
+	var typeVal = $(this).attr("attr_type");
+	var typeChange = $(this).attr("attr_type_change");
+	getPanchayats(levelVal,counterId,typeVal,typeChange);
 	
 });
 function  enableWorks(value,divId,typeVal){
@@ -1289,6 +1391,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 											clonedTemplate+='<option value="3">District</option>';
 											clonedTemplate+='<option value="4">Constituency</option>';
 											clonedTemplate+='<option value="5">Mandal</option>';
+											clonedTemplate+='<option value="6">Panchayat</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									
@@ -1310,6 +1413,12 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 										clonedTemplate+='<label>MANDAL/MUNCI. <span class="starColor">*</span><span class="mandalId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
 										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls" id="mandalId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 											clonedTemplate+='<option value="0">Select Mandal</option>';
+										clonedTemplate+='</select>';
+									clonedTemplate+='</div>';
+										clonedTemplate+='<div class="col-sm-2 panchayatCls'+typeVal+''+counterappendId+''+blockId+'" style="display:none">';
+										clonedTemplate+='<label>PANCHAYAT <span class="starColor">*</span><span class="panchayatId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls" id="panchayatId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
+											clonedTemplate+='<option value="0">Select Panchayat</option>';
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 							clonedTemplate+='</div>';
@@ -1405,6 +1514,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 								clonedInnerTemplate+='<option value="3">District</option>';
 								clonedInnerTemplate+='<option value="4">Constituency</option>';
 								clonedInnerTemplate+='<option value="5">Mandal</option>';
+								clonedInnerTemplate+='<option value="6">Panchayat</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						
@@ -1426,6 +1536,12 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 							clonedInnerTemplate+='<label>MANDAL/MUNCI. <span class="starColor">*</span><span class="mandalInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
 							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateInnerCls" id="mandalInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_counterval="'+mainWorkCount+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
 								clonedInnerTemplate+='<option value="0">Select Mandal</option>';
+							clonedInnerTemplate+='</select>';
+						clonedInnerTemplate+='</div>';
+							clonedInnerTemplate+='<div class="col-sm-2 panchayatInnerCls'+typeVal+''+mainWorkCount+''+innerWorkCount+'" style="display:none">';
+							clonedInnerTemplate+='<label>PANCHAYAT <span class="starColor">*</span><span class="panchayatInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<select  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].addressVO.panchayatId"  class="form-control chosen-select m_top10 panchayatLevelChange validateInnerCls" id="panchayatInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" attr_counterval="'+mainWorkCount+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'">';
+								clonedInnerTemplate+='<option value="0">Select Panchayat</option>';
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 				clonedInnerTemplate+='</div>';
@@ -1549,6 +1665,44 @@ function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,mandalId){
 			}
 		}
 		$("#mandalrepresent").trigger('chosen:updated');
+	});	
+}
+$(document).on("change","#mandalrepresent",function(){
+	var levelVal = $(this).val();
+	levelVal=levelVal.toString().substring(1,levelVal.length);
+	getPanchayatsByTehsilId(levelVal,""); 
+	
+});
+
+function getPanchayatsByTehsilId(levelVal,panchayatId){
+	  $("#panchayatrepresent").html('');	
+	  $("#panchayatrepresent").append('<option value="0">Select Panchayat</option>');	
+	  $("#panchayatrepresent").trigger('chosen:updated');	
+	  var json = {
+		  tehsilId:levelVal,
+		  searchType:"all",
+		  searchId:0
+		}        
+	$.ajax({                
+		type:'POST',    
+		url: 'getPanchayatsByTehsilId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){			 		
+			for(var i in result){
+				if(panchayatId == result[i].key){
+					$("#panchayatrepresent").append('<option value="'+result[i].key+'" selected>'+result[i].value+' </option>');
+				}else{
+					$("#panchayatrepresent").append('<option value="'+result[i].key+'" >'+result[i].value+' </option>');
+				}
+			}
+		}
+		$("#panchayatrepresent").trigger('chosen:updated');
 	});	
 }
 
@@ -2255,10 +2409,11 @@ function getRegistrationPersonDetails(voterId,typeVal){
 	$('#districtrepresent').val(0);
 	$('#constituencyrepresent').val(0);
 	$('#mandalrepresent').val(0);
-	
+	$('#panchayatrepresent').val(0);
 	 $("#districtrepresent").trigger('chosen:updated');
 	 $("#constituencyrepresent").trigger('chosen:updated');
 	 $("#mandalrepresent").trigger('chosen:updated');
+	  $("#panchayatrepresent").trigger('chosen:updated');
 	 
   var json = {
 			voterId:voterId,
@@ -2307,6 +2462,10 @@ function getRegistrationPersonDetails(voterId,typeVal){
 			}else if(result.localElectionBodyId != null){
 					maandalId2=result.localElectionBodyId.toString().substring(1,result.localElectionBodyId.length);
 				getTehsilsAndLocalElectionBodiForConstituencyId(result.constituencyId,"1"+maandalId2);
+			}
+			var villageId="2"+result.villageId.toString().substring(1,result.villageId.length);
+			if(result.villageId != null	){
+				getPanchayatsByTehsilId(maandalId2,villageId); 
 			}
 		}else{
 			alert("No data available with this Voter Card No.Please check once.");
