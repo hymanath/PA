@@ -126,3 +126,14 @@ footer
 	left: 0;
 	padding: 2rem;
 }
+.bg_backGround {
+	font-family: 'Montserrat', sans-serif;
+	background-image: url(../images/footer_lodyas.png);
+	 padding: 20px 15px;
+}
+.paddingLogin{
+	padding:20px;
+}
+.m_top5{
+	margin-top:5px;
+}

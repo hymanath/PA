@@ -31,161 +31,35 @@
 	<nav>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-1 col-xs-3 pad_left0">
-					<img src="Assests/images/aplogo.png" class="logo"/>
-				</div>
-				<div class="col-sm-4 m_top10 col-xs-9">
-					<!--<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>-->
-					<p> PETITIONS MANAGEMENT SYSTEM </p>
-				</div>
-				
-				<div class="col-sm-3 col-xs-12 pull-right">
-					<!--<i class="glyphicon glyphicon-th menu-cls pull-right"></i>-->
-					<div class="menu-data-cls">
-						<div class="arrow_box_top">
-							<div class="row">
-								<!--<div class="col-sm-12">
-									<div class="menu-block" style="background-color:#FFBA00">
-										<a href="newfundManagementDashboard">
-											<h3>FMS</h3>
-											<p>Fund Management System</p>
-										</a>
-									</div>
-								</div>  -->
-								<div class="col-sm-12">
-									<div class="menu-heading-block">
-										<h4 class="text-capital">Rural Water Supply</h4>
+				<div class="bg_backGroundMain">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="text-center col-sm-11">
+								<img src="Assests/images/Group 2.png" class="" alt="logo">
+							</div>
+							<div class="col-sm-1 m_top20">
+								<i class="glyphicon glyphicon-th menu-cls pull-right" style="top:8px;"></i>
+							
+								<div class="menu-data-cls">
+									<div class="arrow_box_top">
 										<div class="row">
-											<div class="col-sm-12 m_top10">
-												<div class="menu-block" style="background-color:#56A3C5">
-													<a href="ruralWaterSupplyDashBoard">
-														<h3>RWS</h3>
-														<p>Rural Water Supply</p>
-													</a>
+											<div style="padding:10px;">
+												<div class="col-sm-6">
+													<h4><a target="_blank" href="representationRequestEntry">ADD PETITION</a></h4>
+												</div>
+												<div class="col-sm-6">
+													<h4 class=""><a target="_blank" href="representationRequestEntry">VIEW PETITION</a></h4>
 												</div>
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-sm-6 m_top10">
-												<div class="menu-block" style="background-color:#1e92b2">
-													<a href="swachhBharatMissionIHHL">
-														<h3>IHHL</h3>
-														<p>Swatch Bharat Mission</p>
-													</a>
-												</div>
+											<div style="padding:10px;">
+											<div class="col-sm-12">
+												<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
+												
 											</div>
-											<div class="col-sm-6 m_top10">
-												<div class="menu-block" style="background-color:#1c94ef">
-													<a href="waterTanksClorinationDashBoard">
-														<h3>WTC</h3>
-														<p>Water Tank chlorination</p>
-													</a>
-												</div>
 											</div>
 										</div>
-									</div>
-								</div>
-								<div class="col-sm-12 m_top10">
-									<div class="menu-heading-block">
-										<h4>PANCHAYATI RAJ</h4>
-										<div class="row">
-											<div class="col-sm-6 m_top10">
-												<div class="menu-block" style="background-color:#0F685C">
-													<a href="prisDashBoard">
-														<h3>PRIS</h3>
-													</a>
-												</div>
-											</div>
-											<div class="col-sm-6 m_top10">
-												<div class="menu-block" style="background-color:#31B8B7">
-													<a href="drainDashBoard">
-														<h3>DRAINS</h3>
-													</a>
-												</div>
-											</div>
-											<!-- <div class="col-sm-6 m_top10">
-												<div class="menu-block" style="background-color:#2C546C">
-													<a href="#">
-														<h3>ENC</h3>
-														<p>Engineering Dept</p>
-													</a>
-												</div>
-											</div>-->
-											<div class="col-sm-6 m_top10">
-												<div class="menu-block" style="background-color:#512507">
-													<a href="getdailySpikeReport">
-														<h3>SA</h3>
-														<p>Spike Analysis</p>
-													</a>
-												</div>
-											</div>
-											<div class="col-sm-6 m_top10">
-												<div class="menu-block" style="background-color:#888420">
-													<a href="getlightsMonitoringDashboard">
-														<h3>LED</h3>
-														<p>Light Monitoring</p>
-													</a>
-												</div>
-											</div>
-											<!-- <div class="col-sm-6 m_top10">
-												<div class="menu-block" style="background-color:#ff5e1c">
-													<a href="prExpenditureDashboard">
-														<h3>PR EXP</h3>
-														<p>Panchayat Raj <br/>Expenditure</p>
-													</a>
-												</div>
-											</div>
-											<div class="col-sm-12 m_top10">
-												<div class="menu-block" style="background-color:#1c94ef">
-													<a href="waterTanksClorinationDashBoard">
-														<h3>WTC</h3>
-														<p>Water Tank Clorination</p>
-													</a>
-												</div>
-											</div>-->
-										</div>
-										<div class="row">
-  											<div class="col-sm-12 m_top10">
-												<div class="menu-block" style="background-color:#ff5e1c">
-													<a href="solidWasteManagementDashboard">
-														<h3>SWM</h3>
-                           								 <p>Solid Waste Management</p>
-													</a>
-												</div>
-											</div>
- 										</div>
-									</div>
-								</div>
-								<div class="col-sm-12 m_top10">
-									<div class="menu-heading-block">
-										<h4>RURAL DEVELOPMENT</h4>
-										<div class="row">
-											<div class="col-sm-12 m_top10">
-												<div class="menu-block" style="background-color:#88186B">
-													<a href="MGNREGSDashboard">
-														<h3>MGNREGS</h3>
-														<p>Mahatma Gandhi Rural employement guarantee scheme</p>
-													</a>
-												</div>
-											</div>
-											<div class="col-sm-12 m_top10">
-												<div class="menu-block" style="background-color:#ff1c5e">
-													<a href="RuralDevelopmentDashboard">
-														<h3>RD</h3>
-														<p>Rural Development Dashboard</p>
-													</a>
-												</div>
-											</div>
-											
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-12 m_top10">
-									<div class="menu-block" style="background-color:#de4524 ">
-										<a href="itcDashboard">
-											<h3>IT E & C</h3>
-											<p>Dashboard</p>
-										</a>
 									</div>
 								</div>
 							</div>
@@ -196,15 +70,7 @@
 		</div>
 	</nav>
 </header>
-<section>
-<div class="container-fluid">
-		<div class="row m_top10 ">
-			<div class="col-md-12 col-sm-12 ">
-			<img src="Assests/images/Banner-A.png" class="logo" style=" background-color: #0071BC; width: 1315px;height: 200px"/>
-			</div>
-		</div>		
-	</div>
-</section>
+
 <main>
 	<div class="container-fluid">
 		<div class="row">
