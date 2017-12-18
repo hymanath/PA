@@ -61,6 +61,7 @@ public interface IConstants {
     public static final String EMAIL_USERNAME = "info@itgrids.com";
     public static final String EMAIL_PASSWORD = "itgrids$678";
     public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/PRRWS/";
+   // public static final String STATIC_CONTENT_FOLDER_URL = "D:/static_content/PRRWS/";
     public static final String PETITIONS_FOLDER = "Petition_Documents";
     public static final String SUCCESS = "Success";
     public static final String FAILURE = "Failure";
