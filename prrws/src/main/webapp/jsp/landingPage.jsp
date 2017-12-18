@@ -326,30 +326,44 @@
 			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2352.png" >
-					<h5 style="display: inline-block;">ManDays</h5>
+					<h5 style="display: inline-block;">Man Days Comparision</h5>
 					<div class="ManDaysAllCls " style="text-align: right">
 						
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange ManDaysColor" title="click to add as favourite component." attr_url="ManDays" attr_full_block_name="ManDays" attr_color_name="gray" attr_block_name="ManDays" aria-hidden="true" attr_page_id="4"></i>
-						<a class="pull-right" href="MGNREGSDashboard?component=ManDays" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+						<i class="fa fa-star starcolorChange ManDaysComparisionColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Man Days Comparision" attr_full_block_name="Man Days Comparision" attr_color_name="gray" attr_block_name="Man Days Comparision" aria-hidden="true" attr_page_id="4"></i>
+						<a class="pull-right" href="MGNREGSDashboard?component=Man Days Comparision" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
 			</div>
-			<!--<div class="col-sm-4">
+			<div class="col-sm-4">
 				<div class="whiteBlock">
 					<img src="Assests/img/Group 2352.png" >
-					<h5 style="display: inline-block;">MonthWise Expenditure</h5>
-					<div class=" " style="text-align: right">
-						<h2 class="monthWiseExpAllCls" style="margin-top: 0px">0%</h2>
-						<p class="">Total Expenditure</p>
+					<h5 style="display: inline-block;">Man Days and Expenditure</h5>
+					<div class="monthWiseExpAllCls" style="text-align: right">
+						<!--<h2 class="monthWiseExpAllCls" style="margin-top: 0px">0%</h2>
+						//<p class="">Total Expenditure</p>-->
 					</div>
 					<div class="block-footer">
-						<i class="fa fa-star starcolorChange MonthWiseExpenditureColor" title="click to add as favourite component." attr_url="MonthWise Expenditure" attr_full_block_name="MonthWise Expenditure" attr_color_name="gray" attr_block_name="MonthWise Expenditure" aria-hidden="true" attr_page_id="3"></i>
-						<a class="pull-right"  href="MGNREGSDashboard?component=MonthWise Expenditure" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+						<i class="fa fa-star starcolorChange ManDaysandExpenditureColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Man Days and Expenditure" attr_full_block_name="Man Days and Expenditure" attr_color_name="gray" attr_block_name="Man Days and Expenditure" aria-hidden="true" attr_page_id="3"></i>
+						<a class="pull-right"  href="MGNREGSDashboard?component=Man Days and Expenditure" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
 					</div>
 				</div>
-			</div>-->
+			</div>
+			<div class="col-sm-4">
+				<div class="whiteBlock">
+					<img src="Assests/img/Group 2352.png" >
+					<h5 style="display: inline-block;">Field Man Days</h5>
+					<div class="" style="text-align: right">
+						<h2 class="fieldManDaysAllCls" style="margin-top: 0px">0%</h2>
+						<p class="">Today</p>
+					</div>
+					<div class="block-footer">
+						<i class="fa fa-star starcolorChange FieldManDaysColor" title="click to add as favourite component." attr_url="MGNREGSDashboard?component=Field Man Days" attr_full_block_name="Field Man Days" attr_color_name="gray" attr_block_name="Field Man Days" aria-hidden="true" attr_page_id="3"></i>
+						<a class="pull-right"  href="MGNREGSDashboard?component=Field Man Days" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
