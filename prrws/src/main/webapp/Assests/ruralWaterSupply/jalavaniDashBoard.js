@@ -4485,7 +4485,8 @@
 			tableView+='</tbody>';
 		tableView+='</table>';
 		$("#modalAlertTable").html(tableView);
-		$("#dataTableAlertTable").dataTable({
+		//srujana
+		/* $("#dataTableAlertTable").dataTable({
 			"paging":   false,
 			"info":     false,
 			"searching": false,
@@ -4517,7 +4518,34 @@
 				}
 			]
 		});
-			if(startIndex == 0 && totalCount > 0){
+		 */
+		$("#dataTableAlertTable").dataTable({
+						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+							"<'row'<'col-sm-12'tr>>" +
+							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
+		});
+			/* if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
 					items: totalCount,
 					itemsOnPage: 10,
@@ -4529,8 +4557,8 @@
 					}
 					
 				});
-			}
-		$(".prev,.next").css("width","70px !important");	
+			} */
+		//$(".prev,.next").css("width","70px !important");	
 	} 
 	//habilationOneTAbbuild
 	function buildHabitationDetailsByStatusByLocationType1(result,type,status,locationType,locationValue,districtVal,startIndex,totalCount){
@@ -4856,7 +4884,7 @@
 		tableView+='</table>';
 		$("#modalIvrStatusTable").html(tableView);
 		
-		$("#dataTableivr").dataTable({
+		$/* ("#dataTableivr").dataTable({
 			"paging":   false,
 			"info":     false,
 			"searching": false,
@@ -4867,6 +4895,34 @@
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
+		}); */
+		
+		
+		$("#dataTableivr").dataTable({
+						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+							"<'row'<'col-sm-12'tr>>" +
+							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
 				{
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o"></i>',
