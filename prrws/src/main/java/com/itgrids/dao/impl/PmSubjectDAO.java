@@ -37,8 +37,8 @@ public class PmSubjectDAO extends GenericDaoHibernate<PmSubject, Long> implement
 				  " from PmSubject model " );
 		sb.append( " where ");
 		if(subjectId != null && subjectId.longValue() >0l)
-			sb.append(" model.parentPmSubjectId= :subjectId ");
-			sb.append(" and model.isDeleted = 'N' ");
+			sb.append(" model.parentPmSubjectId= :subjectId and ");
+			sb.append("  model.isDeleted = 'N' ");
 		Query qry =getSession().createQuery(sb.toString());
 		if(subjectId != null && subjectId.longValue() >0l){
 			qry.setParameter("subjectId", subjectId);
