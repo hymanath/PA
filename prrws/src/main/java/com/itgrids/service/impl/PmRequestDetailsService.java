@@ -471,6 +471,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmRepresentee.setVoterCardNo(pmRequestVO.getVoterCardNo());
 							pmRepresentee.setAdharCardNo(pmRequestVO.getAdharCardNo());
 							pmRepresentee.setTdpCadreId(pmRequestVO.getTdpCadreId());
+							pmRepresentee.setImagePath(pmRequestVO.getRepImagePath());
 							pmRepresentee.setIsDeleted("N");
 							
 							LocationAddress address = saveLocationAddress(pmRequestVO.getAddressVO());
@@ -490,7 +491,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								pmRepresentee.setTdpCadreId(Long.valueOf(setDataToAttribute(pmRequestVO.getTdpCadreId().toString(),pmRepresentee.getTdpCadreId().toString())));
 							else
 								pmRepresentee.setTdpCadreId(pmRequestVO.getTdpCadreId());
-							
+							pmRepresentee.setImagePath(setDataToAttribute(pmRequestVO.getRepImagePath(),pmRepresentee.getImagePath()));
+
 							pmRepresentee.setIsDeleted("N");
 							pmRepresentee.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							pmRepresentee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -535,6 +537,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								pmRepresentee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								pmRepresentee.setInsertedUserId(pmRequestVO.getUserId());
 								pmRepresentee.setUpdatedUserId(pmRequestVO.getUserId());
+								pmRepresentee.setImagePath(pmRequestVO.getRepImagePath());
 								pmRepresentee = pmRepresenteeDAO.save(pmRepresentee);
 							}
 						}
