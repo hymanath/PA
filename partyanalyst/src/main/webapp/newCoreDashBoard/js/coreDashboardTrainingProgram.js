@@ -44,18 +44,20 @@ var getDocumentWidth = $(document).width();
 	 
 	 
 	 var programIdArr = [];//[6,7]
-	var enrollmentYrIds = [];
+	 var enrollmentYrIds = [];
 	 enrollmentYrIds.push($("#tdpTriningYearId").val());
-	 
+	 var year = '';
 	 if(enrollmentYrIds != null && enrollmentYrIds.length>0){
 		 for(var i in enrollmentYrIds){
 			 if(parseInt(enrollmentYrIds[i]) == 4){
 				 programIdArr=[];
 				 programIdArr=[8];
+				 year = '16-18';
 			 }
 			 else  if(parseInt(enrollmentYrIds[i]) == 3){
 				 programIdArr=[];
 				 programIdArr=[1,6,7];
+				 year = '14-16';      
 			 }
 		 }
 	 }
@@ -80,16 +82,16 @@ var getDocumentWidth = $(document).width();
 		}).done(function(result){
 		  $("#programsDtlsCntTableId").html(' ');
 		 if(result != null){
-			 buildTrainingProgramBasicDetails(result);
+			 buildTrainingProgramBasicDetails(result,year);
 			 buildSpecialProgramLeaderIdWiseDetails(result);
 			 }else{
 				$("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
 			 }
 		});
 	}
-  function buildTrainingProgramBasicDetails(result){
+  function buildTrainingProgramBasicDetails(result,year){
 	  var str='';
-	  str+='<h4 class="text-capital"><span class="headingColor">Leadership Skills - 2016 - 18</span></h4>';
+	  str+='<h4 class="text-capital"><span class="headingColor">Leadership Skills - '+year+'</span></h4>';
 		str+='<div class="panel-group leaderSkill m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
 		
 	  var stringArrType =['Over-All Levels','village / ward Level','mandal / town / division Level'];
@@ -3463,8 +3465,6 @@ function buildMoreFeedBackBlocks(){
 }
 $(document).on("change","#questionLevelId",function(){
 	getFeedbackOnLeaders();
-	getTrainingCampFeedBackProgramWiseDetailsAction();
-	getTrainingQuizDetailsAction()
 });
 function getProgramIdsAction(){
    var jsObj ={}
