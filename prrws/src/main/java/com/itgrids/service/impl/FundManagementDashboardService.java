@@ -1589,7 +1589,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  	public List<LocationFundDetailsVO> getAllConstituenciesByDistrictId(Long districtId){
 	  List<LocationFundDetailsVO> constincyList= null;
 	  try{
-	    List<Object[]> constiesObjs =constituencyDAO.getConstituencies( districtId);
+	    List<Object[]> constiesObjs =constituencyDAO.getConstituencies(districtId,null);
 	    if(constiesObjs != null && constiesObjs.size() > 0l){
 	      constincyList= new ArrayList<LocationFundDetailsVO>();
 	      LocationFundDetailsVO locationFundDetailsVO=null;
@@ -2554,7 +2554,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				locationList = districtDAO.getDistrictIdName(locationId);
 			}else if(levelId != null && levelId == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
 				if(inputVO.getType() != null && inputVO.getType().equalsIgnoreCase("constituency"))
-				 locationList= constituencyDAO.getConstituencies(locationId);
+				 locationList= constituencyDAO.getConstituencies(locationId,null);
 				else
 				 locationList =parliamentAssemblyDAO.getParliamentIdAndName(locationId);
 			}else if(levelId != null && levelId == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
