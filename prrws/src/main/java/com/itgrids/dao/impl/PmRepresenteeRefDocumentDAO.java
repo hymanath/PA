@@ -30,15 +30,16 @@ public class PmRepresenteeRefDocumentDAO extends GenericDaoHibernate<PmRepresent
 	}
 	public List<Long> getPmRepresenteeRefDocumentIds(List<Long> representeeRefDetailsIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.pmRepresenteeRefDocumentId from PmRepresenteeRefDocument model where "
+		sb.append("select distinct model.pmRepresenteeRefDocumentId from PmRepresenteeRefDocument model where "
 				+ " model.isDeleted ='N' and model.pmRepresenteeRefDetailsId in (:representeeRefDetailsIds) ");
 		Query query =getSession().createQuery(sb.toString());
 		query.setParameter("representeeRefDetailsIds", representeeRefDetailsIds);
 		return query.list();
 	}
-	public Integer updatePmPmRepresenteeRefDocumens(List<Long> representeeRefDocIds,Date updatedTime,Long userId){
+	public int updatePmPmRepresenteeRefDocumens(List<Long> representeeRefDocIds,Date updatedTime,Long userId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" update PmRepresenteeRefDocument model set model.isDeleted ='Y',model.updatedTime =:updatedTime, model.updatedUserId =:userId ");
+		sb.append(" update PmRepresenteeRefDocument model set model.isDeleted ='Y',model.updatedTime =:updatedTime, model.updatedUserId =:userId  " +
+				" where model.pmRepresenteeRefDocumentId in (:representeeRefDocIds) ");
 		Query query =getSession().createQuery(sb.toString());
 		query.setParameter("representeeRefDocIds", representeeRefDocIds);
 		query.setParameter("updatedTime", updatedTime);

@@ -35,6 +35,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" refState.stateName, refDistrict.districtName,refConstituency.name,refTehsil.tehsilName,refLocalBody.name,refElectionType.electionType,pmRefCandidate.tdpCadreId " +//43,44,45,46,47,48,49
 				" ,model.petition.representeeType" +//50
 				",pmRepresentee.tdpCadreId " +//51
+				" natState.stateName, natDistrict.districtName,natConstituency.name,natTehsil.tehsilName,natLocalBody.name,natElectionType.electionType" +//52,53,54,55,56,57
+				" natState.stateId, natDistrict.districtId,natConstituency.constituencyId,natTehsil.tehsilId,natLocalBody.localElectionBodyId, " +//58,59,60,61,62
 				" from PmRepresenteeRefDetails model " +
 				" left join model.pmRepresentee pmRepresentee " +
 				" left join pmRepresentee.userAddress userAddress " +
@@ -54,7 +56,15 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" left join refUserAddress.localElectionBody refLocalBody " +
 				" left join refLocalBody.electionType refElectionType" +
 				" " +
-				" left join model.petition petition " +
+				" left join pmRefCandidate.nativAddress nativAddress " +
+				" left join nativAddress.state natState " +
+				" left join nativAddress.district natDistrict " +
+				" left join nativAddress.constituency natConstituency" +
+				" left join nativAddress.tehsil natTehsil  " +
+				" left join nativAddress.localElectionBody natLocalBody " +
+				" left join refLocalBody.electionType natElectionType" +
+				"" +
+				" left join model.petition petition " + 
 				" left join petition.pmStatus pmStatus " +
 				" " +
 				" left join model.pmRepresenteeDesignation pmRepresenteeDesignation " +
@@ -183,12 +193,12 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 	}
 	public List<Long> getPmRepresenteRefDetailsIds(Long petitionId){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.pmRepresenteeRefDetailsId from PmRepresenteeRefDetails model where model.isDeleted ='N' and model.petitionId =:petitionId ");
+		sb.append("select distinct model.pmRepresenteeRefDetailsId from PmRepresenteeRefDetails model where model.isDeleted ='N' and model.petitionId =:petitionId ");
 		Query query=getSession().createQuery(sb.toString());
 		query.setParameter("petitionId", petitionId);
 		return query.list();
 	}
-	public Integer updatePmRepresenteRefDetails(List<Long> representeRefDetailsIds,Date updatedTime,Long userId){
+	public int updatePmRepresenteRefDetails(List<Long> representeRefDetailsIds,Date updatedTime,Long userId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" update PmRepresenteeRefDetails model set model.isDeleted ='Y', model.updatedTime=:updatedTime,model.updatedUserId= :userId "
 				+ "where model.pmRepresenteeRefDetailsId in (:representeRefDetailsIds) ");

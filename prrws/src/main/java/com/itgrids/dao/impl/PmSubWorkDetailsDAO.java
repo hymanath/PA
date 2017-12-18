@@ -106,13 +106,13 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 
 	public List<Long> getPmSubWorkDetailsIds(Long petitionId){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.pmSubWorkDetailsId from PmSubWorkDetails model where model.isDeleted='N' and model.petitionId =:petitionId ");
+		sb.append("select distinct  model.pmSubWorkDetailsId from PmSubWorkDetails model where model.isDeleted='N' and model.petitionId =:petitionId ");
 		Query query =getSession().createQuery(sb.toString());
 		query.setParameter("petitionId", petitionId);
 		return query.list();
 	}
 	
-	public Integer updatePmsubWorkDetails(List<Long> subWorkDetailsIds,Date updateTime,Long userId){
+	public int updatePmsubWorkDetails(List<Long> subWorkDetailsIds,Date updateTime,Long userId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("update PmSubWorkDetails model set model.isDeleted='Y', model.updatedTime =:updateTime,model.updatedUserId =:userId "
 				+ " where model.pmSubWorkDetailsId  in (:subWorkDetailsIds) ");
