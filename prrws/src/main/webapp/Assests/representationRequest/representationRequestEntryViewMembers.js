@@ -804,11 +804,10 @@ function setPmRepresenteeDataToResultView(result){
 	
 	$("#representeeViewId").html(str);
 }
- function setDefaultImage(img){
-			  img.src = "http://www.mytdp.com/images/User.png";
-			  
-		}
 }
+	function setDefaultImage(img){
+			  img.src = "http://www.mytdp.com/images/User.png";
+	}
 $(document).on("click",".docsViewCls",function(){
 	$("#docsModalDivId").modal("show");
 	var docsList = [];
