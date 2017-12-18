@@ -162,7 +162,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
 									 commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList()) && commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList().get(0).getFileList())){
 								for (MultipartFile file : pmRequestVO.getReferList().get(0).getFileList()) {
-										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_PETITIONS_FOLDER_URL,pmRequestVO.getUserId());
+										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
 										savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 								}
 							}
@@ -202,7 +202,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 											if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
 													 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
 												for (MultipartFile file : refVO.getFileList()) {
-														Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_PETITIONS_FOLDER_URL,pmRequestVO.getUserId());
+														Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
 														savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 												}
 											}
@@ -223,7 +223,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 										if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
 												 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
 											for (MultipartFile file : refVO.getFileList()) {
-													Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_PETITIONS_FOLDER_URL,pmRequestVO.getUserId());
+													Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
 													savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 											}
 										}
@@ -357,7 +357,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								
 								if(dataVO.getFileList() != null && dataVO.getFileList().size()>0){
 									for (MultipartFile file : dataVO.getFileList()) {
-										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_PETITIONS_FOLDER_URL,pmRequestVO.getUserId());
+										Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
 										savePetitionWorkDocument(petition.getPetitionId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
 									}
 								}
@@ -401,17 +401,19 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		Document document = null;
 		try {
 			if(file != null){
-				//String tempPath = commonMethodsUtilService.createInnerFolders(destinationPath);
-				String staticPath = commonMethodsUtilService.createInnerFolders(destinationPath+"Petition_Documents");
+				String staticPath = commonMethodsUtilService.createInnerFolders(destinationPath);
 				String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
-				staticPath = staticPath.substring(1);// remove first charactor
-				staticPath = staticPath.replace("//", "/");
-				document = new Document();
-				commonMethodsUtilService.copyFile(file.getOriginalFilename(),staticPath);
-				byte[] fileData = file.getBytes();
 				String fileExtensionStr = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."), file.getOriginalFilename().length());
-				Files.write(fileData,new File(staticPath+"/"+datePath+fileExtensionStr));
-				document.setPath("Petition_Documents/"+datePath+fileExtensionStr);
+				
+				String fileName = datePath+fileExtensionStr;
+				String fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+fileName;
+				
+				byte[] fileData = file.getBytes();
+				
+				Files.write(fileData,new File(staticPath+"/"+fileName));
+				
+				document = new Document();
+				document.setPath(fileUrl);
 				document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				document.setInsertedUserId(userId);
 				document = documentDAO.save(document);
