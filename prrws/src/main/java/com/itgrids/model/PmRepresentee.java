@@ -38,6 +38,8 @@ public class PmRepresentee {
 	private Date insertedTime;
 	private Date updatedTime;
 	
+	private String imagePath;
+	
 	@Id
 	@Column(name="pm_representee_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -175,6 +177,13 @@ public class PmRepresentee {
 	}
 	public void setUpdatedUserId(Long updatedUserId) {
 		this.updatedUserId = updatedUserId;
+	}
+	@Column(name="image_path")
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 	
