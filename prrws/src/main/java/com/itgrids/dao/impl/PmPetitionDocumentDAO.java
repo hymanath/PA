@@ -35,11 +35,12 @@ public class PmPetitionDocumentDAO extends GenericDaoHibernate<PmPetitionDocumen
 		query.setParameter("petitionId", petitionId);
 		return query.list();
 	}
-	public Integer updatePmpetitionDocuments(List<Long> petitiionDocIds){
+	public int updatePmpetitionDocuments(List<Long> petitiionDocIds,Long userId ){
 		StringBuilder str = new StringBuilder();
-		str.append(" upadate PmPetitionDocument model set model.isDeleted ='Y' where model.pmPetitionDocumentId in (:petitiionDocIds) " );
+		str.append(" upadate PmPetitionDocument model set model.isDeleted ='Y', model.updatedUserId =:updatedUserId where model.pmPetitionDocumentId in (:petitiionDocIds) " );
 		Query query =getSession().createQuery(str.toString());
-		query.setParameter("petitiionDocIds", petitiionDocIds);
+		query.setParameterList("petitiionDocIds", petitiionDocIds);
+		query.setParameter("updatedUserId", userId);
 		return query.executeUpdate();
 	}
 }
