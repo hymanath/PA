@@ -150,7 +150,7 @@ function getpartyWiseChannelCountsPraja(result){
 						str+='<h5 class="text-capitalize">News Bulletin</h5>';
 						
 						if(totalCount !=null && totalCount>0){
-							str+='<h4><a>'+totalCount+'</a></h4>';
+							str+='<h4 class="EMnCls" attr_benefitId="0" attr_party="'+result.idNameVoList[i].id+'" attr_category_id="'+globalcategoryId+'" attr_edition="2" style="cursor:pointer;"><a>'+totalCount+'</a></h4>';
 						}else{
 							str+='<h4>0</h4>';
 						}
@@ -167,7 +167,7 @@ function getpartyWiseChannelCountsPraja(result){
 						str+='<h5 class="text-capitalize">positive</h5>';
 						
 						if(result.idNameVoList[i].posCount !=null && result.idNameVoList[i].posCount>0){
-							str+='<h4><a>'+result.idNameVoList[i].posCount+'</a></h4>';
+							str+='<h4 class="EMnCls" attr_benefitId="1" attr_party="'+result.idNameVoList[i].id+'" attr_category_id="'+globalcategoryId+'" attr_edition="2" style="cursor:pointer;"><a>'+result.idNameVoList[i].posCount+'</a></h4>';
 						}else{
 							str+='<h4>0</h4>';
 						}
@@ -183,7 +183,7 @@ function getpartyWiseChannelCountsPraja(result){
 					str+='<td>';
 						str+='<h5 class="text-capitalize">negative</h5>';
 						if(result.idNameVoList[i].negCount !=null && result.idNameVoList[i].negCount>0){
-							str+='<h4><a>'+result.idNameVoList[i].negCount+'</a></h4>';
+							str+='<h4 class="EMnCls" attr_benefitId="2" attr_party="'+result.idNameVoList[i].id+'" attr_category_id="'+globalcategoryId+'" attr_edition="2" style="cursor:pointer;"><a>'+result.idNameVoList[i].negCount+'</a></h4>';
 						}else{
 							str+='<h4>0</h4>';
 						}
@@ -219,7 +219,7 @@ function getpartyWiseChannelCountsPraja(result){
 								str+='<h5 class="text-capitalize">News Bulletin</h5>';
 								
 								if(newsBulletinCount !=null && newsBulletinCount>0){
-									str+='<h4><a>'+newsBulletinCount+'</a></h4>';
+									str+='<h4 class="EMnCls" attr_benefitId="0" attr_party="'+result.idNameVoList1[i].id+'" attr_category_id="'+globalcategoryId+'" attr_edition="2" style="cursor:pointer;"><a>'+newsBulletinCount+'</a></h4>';
 								}else{
 									str+='<h4>0</h4>';
 								}
@@ -234,7 +234,7 @@ function getpartyWiseChannelCountsPraja(result){
 								str+='<h5 class="text-capitalize">positive</h5>';
 								
 								if(result.idNameVoList1[i].posCount !=null && result.idNameVoList1[i].posCount>0){
-									str+='<h4><a>'+result.idNameVoList1[i].posCount+'</a></h4>';
+									str+='<h4 class="EMnCls" attr_benefitId="1" attr_party="'+result.idNameVoList1[i].id+'" attr_category_id="'+globalcategoryId+'" attr_edition="2" style="cursor:pointer;"><a>'+result.idNameVoList1[i].posCount+'</a></h4>';
 								}else{
 									str+='<h4>0</h4>';
 								}
@@ -249,7 +249,7 @@ function getpartyWiseChannelCountsPraja(result){
 								str+='<h5 class="text-capitalize">negative</h5>';
 								
 								if(result.idNameVoList1[i].negCount !=null && result.idNameVoList1[i].negCount>0){
-									str+='<h4><a>'+result.idNameVoList1[i].negCount+'</a></h4>';
+									str+='<h4 class="EMnCls" attr_benefitId="2" attr_party="'+result.idNameVoList1[i].id+'" attr_category_id="'+globalcategoryId+'" attr_edition="2" style="cursor:pointer;"><a>'+result.idNameVoList1[i].negCount+'</a></h4>';
 								}else{
 									str+='<h4>0</h4>';
 								}
@@ -284,7 +284,7 @@ function mainNewsBlockPraja(result){
 							str+='<td>';
 								str+='<p class="text-capital responsiveFont">Main&nbsp;Edition</p>';
 								if(result.coreDashBoardVOList[i].count !=null && result.coreDashBoardVOList[i].count>0){
-									str+='<p><a class="partyMainEditionCls" attr_editiontype="1" attr_benefitid ="0" attr_partyids="872" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList[i].count+'</a></p>';
+									str+='<p><a class="partyMainEditionCls" attr_editiontype="1" attr_benefitid ="0" attr_partyids="'+result.coreDashBoardVOList[i].organizationId+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList[i].count+'</a></p>';
 								}else{
 									str+='<p> - </p>';
 								}
@@ -293,7 +293,7 @@ function mainNewsBlockPraja(result){
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
 								if(result.coreDashBoardVOList[i].positivePerc !=null && result.coreDashBoardVOList[i].positivePerc>0){
-									str+='<span><a class="partyMainEditionCls" attr_editiontype="1" attr_benefitid ="1" attr_partyids="872" attr_categoryId="'+globalcategoryId+' " style="cursor:pointer;">'+result.coreDashBoardVOList[i].positiveCountMain+'</a></span>';
+									str+='<span><a class="partyMainEditionCls" attr_editiontype="1" attr_benefitid ="1" attr_partyids="'+result.coreDashBoardVOList[i].organizationId+'" attr_categoryId="'+globalcategoryId+' " style="cursor:pointer;">'+result.coreDashBoardVOList[i].positiveCountMain+'</a></span>';
 									str+='<small id="" class="text-success"> '+result.coreDashBoardVOList[i].positivePerc+' %</small>';
 								}else{
 									str+='<span> - </span>';
@@ -303,7 +303,7 @@ function mainNewsBlockPraja(result){
 							str+='<td>';
 								str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
 								if(result.coreDashBoardVOList[i].negativePerc !=null && result.coreDashBoardVOList[i].negativePerc>0){
-									str+='<span><a class="partyMainEditionCls" attr_editiontype="1" attr_benefitid ="2" attr_partyids="872" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList[i].negativCountMain+'</a></span>';
+									str+='<span><a class="partyMainEditionCls" attr_editiontype="1" attr_benefitid ="2" attr_partyids="'+result.coreDashBoardVOList[i].organizationId+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList[i].negativCountMain+'</a></span>';
 									str+='<small id="" class="text-danger"> '+result.coreDashBoardVOList[i].negativePerc+' %</small>';
 								}else{
 									str+='<span> - </span>';
@@ -329,16 +329,16 @@ function mainNewsBlockPraja(result){
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital">Dist&nbsp;edition</p>';
-								str+='<p><a class="partyMainEditionCls" attr_editiontype="2" attr_benefitid ="0" attr_benefitid ="0" attr_partyids="872" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList[i].totalCount+'</a></p>';
+								str+='<p><a class="partyMainEditionCls" attr_editiontype="2" attr_benefitid ="0" attr_benefitid ="0" attr_partyids="'+result.coreDashBoardVOList[i].organizationId+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList[i].totalCount+'</a></p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Positive</p>';
-								str+='<span><a class="partyMainEditionCls" attr_editiontype="2" attr_benefitid ="1" attr_partyids="872" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList[i].positiveCountDist+'</a></span>';
+								str+='<span><a class="partyMainEditionCls" attr_editiontype="2" attr_benefitid ="1" attr_partyids="'+result.coreDashBoardVOList[i].organizationId+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList[i].positiveCountDist+'</a></span>';
 								str+='<small class="text-success" id=""> '+result.coreDashBoardVOList[i].positiveDistPerc+' %</small>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Negative</p>';
-								str+='<span><a class="partyMainEditionCls" attr_editiontype="2" attr_benefitid ="2" attr_partyids="872" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList[i].negativCountDist+'</a></span>';
+								str+='<span><a class="partyMainEditionCls" attr_editiontype="2" attr_benefitid ="2" attr_partyids="'+result.coreDashBoardVOList[i].organizationId+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList[i].negativCountDist+'</a></span>';
 								str+='<small class="text-danger" id=""> '+result.coreDashBoardVOList[i].negativeDistPerc+' %</small>';
 							str+='</td>';
 						str+='</tr>';
@@ -543,14 +543,14 @@ function buildPublicationWisePartiesAnalysis(result){
 							str+='<td>'+result[i].organization+'</td>';
 							for(var j in result[i].coreDashBoardVOList){
 								if(result[i].coreDashBoardVOList[j].positivePerc !=null && result[i].coreDashBoardVOList[j].positivePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>';
+									str+='<td><a class="publicationWiseCntCls" attr_benefitid="1" attr_paper_type="'+result[i].organizationId+'" attr_party="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_categoryid="'+globalcategoryId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].positiveCountMain+'</a></td>';
 									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' </small></td>';
 								}else{
 									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								if(result[i].coreDashBoardVOList[j].negativePerc !=null && result[i].coreDashBoardVOList[j].negativePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>'; 
+									str+='<td><a class="publicationWiseCntCls" attr_benefitid="2" attr_paper_type="'+result[i].organizationId+'" attr_party="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_categoryid="'+globalcategoryId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].negativCountMain+'</a></td>'; 
 									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' </small></td>';
 								}else{
 									str+='<td> - </td>';
@@ -600,14 +600,14 @@ function buildChannelWisePartiesAnalysisInfo(result){
 							str+='<td>'+result[i].organization+'</td>';
 							for(var j in result[i].coreDashBoardVOList){
 								if(result[i].coreDashBoardVOList[j].positivePerc !=null && result[i].coreDashBoardVOList[j].positivePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>'; 
+									str+='<td><a class="channelWiseCntsForEMNcls" attr_benefit_id="1" attr_categoryId="'+globalcategoryId+'" attr_party="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelid="'+result[i].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].positiveCountMain+'</a></td>'; 
 									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' </small></td>';
 								}else{
 									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								if(result[i].coreDashBoardVOList[j].negativePerc !=null && result[i].coreDashBoardVOList[j].negativePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>';
+									str+='<td><a class="channelWiseCntsForEMNcls" attr_benefit_id="2" attr_categoryId="'+globalcategoryId+'" attr_party="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelid="'+result[i].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].negativCountMain+'</a></td>';
 									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' </small></td>';
 								}else{
 									str+='<td> - </td>';
@@ -657,14 +657,14 @@ function buildDistrictWisePartyOverView(result){
 							str+='<td>'+result[i].organization+'</td>';
 							for(var j in result[i].coreDashBoardVOList){
 								if(result[i].coreDashBoardVOList[j].positivePerc !=null && result[i].coreDashBoardVOList[j].positivePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>'; 
+									str+='<td><a class="districtWisePartyForPmCls" attr_benefit_id="1" attr_categoryId="'+globalcategoryId+'" attr_party="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_districtId="'+result[i].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].positiveCountMain+'</a></td>'; 
 									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' </small></td>';
 								}else{
 									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								if(result[i].coreDashBoardVOList[j].negativePerc !=null && result[i].coreDashBoardVOList[j].negativePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>'; 
+									str+='<td><a class="districtWisePartyForPmCls" attr_benefit_id="2" attr_categoryId="'+globalcategoryId+'" attr_party="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_districtId="'+result[i].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].negativCountMain+'</a></td>'; 
 									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' </small></td>';
 								}else{
 									str+='<td> - </td>';
@@ -714,14 +714,14 @@ function buildDistrictWisePartyViewForElectrronicMediaInfo(result){
 							str+='<td>'+result[i].organization+'</td>';
 							for(var j in result[i].coreDashBoardVOList){
 								if(result[i].coreDashBoardVOList[j].positivePerc !=null && result[i].coreDashBoardVOList[j].positivePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>'; 
+									str+='<td><a class="districtWisePartyForEMNCls" attr_benefit_id="1" attr_categoryId="'+globalcategoryId+'" attr_party="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_districtId="'+result[i].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].positiveCountMain+'</a></td>'; 
 									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].positivePerc+' </small></td>';
 								}else{
 									str+='<td> - </td>';
 									str+='<td> - </td>';
 								}
 								if(result[i].coreDashBoardVOList[j].negativePerc !=null && result[i].coreDashBoardVOList[j].negativePerc>0){
-									str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>'; 
+									str+='<td><a class="districtWisePartyForEMNCls" attr_benefit_id="2" attr_categoryId="'+globalcategoryId+'" attr_party="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_districtId="'+result[i].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].negativCountMain+'</a></td>'; 
 									str+='<td><small style="color:green;">'+result[i].coreDashBoardVOList[j].negativePerc+' </small></td>';
 								}else{
 									str+='<td> - </td>';
@@ -804,7 +804,6 @@ if(editionType=="Main")
 }
 else if(editionType=="District")
 {
-	alert(editionType);
 	urlString="getDistrictWisePartyOverViewForArticles";
 }
 
@@ -919,7 +918,112 @@ function buildingTable(jsonObject)
 	str+="</div>";
 			$('#prajaSankalpaYatraConstituencyTableId').html(str);
 		}
-			
+		if(jsonObject[0].corpGmcVoList !=null && jsonObject[0].corpGmcVoList.length>0){
+		str="<div class='panel panel-default'>";
+			str+="<div class='panel-heading'>";
+				str+="<h3 class='panel-title'>Corporation Level</h3>";
+			str+="</div>";
+			str+="<div class='panel-body'>";
+	
+			str+="<table class='table table-bordered'>";
+			for(var i in jsonObject[0].corpGmcVoList)
+			{
+				str+="<tr>";
+					str+="<td>"+jsonObject[0].corpGmcVoList[i].locationName+"</td>";
+					str+="<td>"+jsonObject[0].corpGmcVoList[i].count+"</td>";
+				str+="</tr>";
+			}			
+			str+="</table>";
+			str+="</div>";
+	str+="</div>";
+			$('#prajaSankalpaYatraCorpTableId').html(str);
+		}	
 			
 	
+}
+$(document).on("click",".publicationWiseCntCls",function(){
+	var benefitId=$(this).attr('attr_benefitid');
+	var paperId=$(this).attr('attr_paper_type');
+	var partyId=$(this).attr('attr_party');
+	var categoryid=$(this).attr('attr_categoryid');
+	getPublicationWisePartiesAnalysisForArticles(benefitId,paperId,partyId,categoryid);
+	$('.clearModalTables').html("");
+	$('#prajaSankalpaYatraModalId').modal('show');
+});
+$(document).on("click",".districtWisePartyForPmCls",function(){
+	var benefitId=$(this).attr('attr_benefit_id');
+	var districtId=$(this).attr('attr_districtId');
+	var partyId=$(this).attr('attr_party');
+	var categoryid=$(this).attr('attr_categoryId');
+	getDistrictWisePartyOverViewForArticles(benefitId,districtId,partyId,categoryid);
+	$('.clearModalTables').html("");
+	$('#prajaSankalpaYatraModalId').modal('show');
+});
+$(document).on("click",".channelWiseCntsForEMNcls",function(){
+	var benefitId=$(this).attr('attr_benefit_id');
+	var channelId=$(this).attr('attr_channelid');
+	var partyId=$(this).attr('attr_party');
+	var categoryid=$(this).attr('attr_categoryId');
+	getChannelWisePartiesAnalysisForArticles(benefitId,channelId,partyId,categoryid);
+	$('.clearModalTables').html("");
+	$('#prajaSankalpaYatraModalId').modal('show');
+});
+$(document).on("click",".districtWisePartyForEMNCls",function(){
+	var benefitId=$(this).attr('attr_benefit_id');
+	var districtId=$(this).attr('attr_districtId');
+	var partyId=$(this).attr('attr_party');
+	var categoryid=$(this).attr('attr_categoryId');
+	getDistrictWisePartyViewForElectrronicMediaInfoForArticles(benefitId,districtId,partyId,categoryid);
+	$('.clearModalTables').html("");
+	$('#prajaSankalpaYatraModalId').modal('show');
+});
+
+function getPublicationWisePartiesAnalysisForArticles(benefitId,paperId,partyId,categoryId){
+	$.ajax({	
+		//url: wurl+"/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+paperId
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+paperId
+	}).then(function(result){
+		buildingTable(result);
+	});
+}
+function getDistrictWisePartyOverViewForArticles(benefitId,districtId,partyId,categoryId){
+	$.ajax({	
+		//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
+	}).then(function(result){
+		buildingTable(result);
+	});
+}
+function getChannelWisePartiesAnalysisForArticles(benefitId,channelId,partyId,categoryId){
+	$.ajax({	
+		//url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+channelId
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+channelId
+	}).then(function(result){
+		buildingTable(result);
+	});
+}
+function getDistrictWisePartyViewForElectrronicMediaInfoForArticles(benefitId,districtId,partyId,categoryId){
+	$.ajax({	
+		//url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfoForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfoForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
+	}).then(function(result){
+		buildingTable(result);
+	});
+}
+$(document).on("click",".EMnCls",function(){
+	var benefitId=$(this).attr('attr_benefitId');
+	var editionId=$(this).attr('attr_edition');
+	var partyId=$(this).attr('attr_party');
+	var categoryid=$(this).attr('attr_category_id');
+	getChannelWisePartiesAnalysisInfoForArticles(benefitId,editionId,partyId,categoryid);
+	$('.clearModalTables').html("");
+	$('#prajaSankalpaYatraModalId').modal('show');
+});
+function getChannelWisePartiesAnalysisInfoForArticles(benefitId,editionId,partyId,categoryId){
+	$.ajax({	
+		//url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfoForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+editionId
+		url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfoForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+editionId
+	}).then(function(result){
+		buildingTable(result);
+	});
 }
