@@ -29,32 +29,32 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 		Query query =getSession().createQuery(sb.toString());
 		return query.list();
 	}
-	public List<Object[]> getAllConstituenciesByReferralAndDistrict(Long districtId){
+	public List<Object[]> getAllConstituenciesByReferralAndDistrict(List<Long> districtIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.address.constituency.constituencyId ");
 		sb.append( ",model.address.constituency.name from PmRefCandidate model where model.isDeleted ='N' ");
-		if(districtId != null && districtId.longValue() > 0){
-			sb.append("and model.address.districtId = :districtId");
+		if(districtIds != null && districtIds.size() > 0){
+			sb.append("and model.address.districtId in (:districtIds) ");
 		}
 		sb.append(" order by model.address.constituency.name asc");
 		Query query =getSession().createQuery(sb.toString());
-		if(districtId != null && districtId.longValue() > 0){
-			query.setParameter("districtId", districtId);
+		if(districtIds != null && districtIds.size() > 0){
+			query.setParameterList("districtIds", districtIds);
 		}
 		return query.list();
 	}//
 	
-	public List<Object[]> getAllMandalsByReferralAndDistrict(Long constituencyId){
+	public List<Object[]> getAllMandalsByReferralAndDistrict(List<Long> constituencyIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.address.tehsil.tehsilId ");
 		sb.append( ",model.address.tehsil.tehsilName from PmRefCandidate model where model.isDeleted ='N' ");
-		if(constituencyId != null && constituencyId.longValue() > 0){
-			sb.append("and model.address.constituencyId = :constituencyId");
+		if(constituencyIds != null && constituencyIds.size() > 0){
+			sb.append("and model.address.constituencyId in (:constituencyIds) ");
 		}
 		sb.append(" order by model.address.tehsil.tehsilName asc");
 		Query query =getSession().createQuery(sb.toString());
-		if(constituencyId != null && constituencyId.longValue() > 0){
-			query.setParameter("constituencyId", constituencyId);
+		if(constituencyIds != null && constituencyIds.size() > 0){
+			query.setParameterList("constituencyIds", constituencyIds);
 		}
 		return query.list();
 	}

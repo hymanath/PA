@@ -2,12 +2,9 @@ package com.itgrids.service;
 
 import java.util.List;
 
-import com.itgrids.dto.IdNameVO;
-import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
-import com.itgrids.dto.RepresentationRequestVO;
 
 public interface ILocationDetailsService {
 	
@@ -28,8 +25,8 @@ public interface ILocationDetailsService {
 	
 	public List<KeyValueVO> getPmDesignations(String searchType);
 	public List<KeyValueVO> getDistrictBySearchType(String serchType);
-	public List<KeyValueVO> getConstituenciesBySearchTypeAndDistrictId(String serchType,Long districtId);
-	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,Long conId);
+	public List<KeyValueVO> getConstituenciesBySearchTypeAndDistrictId(String serchType,List<Long> districtIds);
+	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,List<Long> conIds);
 	public List<KeyValueVO> getDesignationsBySearchType(String searchType);
 	public List<KeyValueVO> getDepartmentsBySearchType(String searchType);
 	

@@ -143,6 +143,7 @@ function representationRequestEntryTable(result){
 }
 
 $(document).on("change","#locationSelId",function(){
+	$("#errMsgId").html("");
 	$('.clearCls').val('');
 	$("#departMentsDiv").hide();
 	$("#designationDiv").hide()//inputSearchDivid
@@ -229,7 +230,7 @@ function getDistrictBySearchType(searchType,selBoxId){
 		}
 	}).done(function(result){
 		if(result !=null && result.length >0){
-			$("#"+selBoxId).html("<option value='0'>All</option>");
+			//$("#"+selBoxId).html("<option value='0'>All</option>");
 			for(var i in result){
 				$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
 			}
@@ -240,8 +241,8 @@ function getDistrictBySearchType(searchType,selBoxId){
 function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId){
 	$("#"+selBoxId).html("");
  var json = {
-		 searchType :searchType,
-		 locationId: distictId
+		 filterType :searchType,
+		 searchLvlVals: distictId
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -254,7 +255,7 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
 		}
 	}).done(function(result){
 		if(result !=null && result.length >0){
-			$("#"+selBoxId).html("<option value='0'>All</option>");
+			//$("#"+selBoxId).html("<option value='0'>All</option>");
 			for(var i in result){
 				$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
 			}
@@ -265,8 +266,8 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
 function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId){
 	$("#"+selBoxId).html("<option value='0'>Select Mandal</option>");
  var json = {
-		 searchType :searchType,
-		 locationId: consituencyId
+		 filterType :searchType,
+		 searchLvlVals: consituencyId
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -280,7 +281,7 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 	}).done(function(result){
 		$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
-			$("#"+selBoxId).html("<option value='0'>All</option>");
+			//$("#"+selBoxId).html("<option value='0'>All</option>");
 			for(var i in result){
 				$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
 			}
@@ -306,7 +307,7 @@ function getDesignationsBySearchType(searchType,selBoxId){
 	}).done(function(result){
 		$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
-			$("#"+selBoxId).html("<option value='0'>Select Designation</option>");
+			//$("#"+selBoxId).html("<option value='0'>Select Designation</option>");
 			for(var i in result){
 				$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
 			}
@@ -331,7 +332,7 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 	}).done(function(result){
 		$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
-			$("#"+selBoxId).html("<option value='0'>Select Department</option>");
+			//$("#"+selBoxId).html("<option value='0'>Select Department</option>");
 			for(var i in result){
 				$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
 			}
@@ -443,12 +444,14 @@ $(document).on("click",".viewBtnCls",function(){
  });
 function getRepresentativeSearchDetails1(){
 	$("#errMsgId").html("");
-	$("#errMsgId").html("");
  
    var filterType=$("#locationSelId").val();
     var filterValue="";
    if(filterType == 'referrelDesignation' || filterType == 'representeeDesignation'){
-	   filterValue=$("#designationsId").val();//
+	  var desig=$("#designationsId").val();//
+	   for(var i in desig){
+			filterValue = filterValue+desig[i]+",";
+		}
 	    if($("#designationDiv").is(':visible')){
 		  if(filterValue == null || filterValue ==0){
 			 $("#errMsgId").html('<h5>Please select designation </h5>');
@@ -456,7 +459,10 @@ function getRepresentativeSearchDetails1(){
 			}
 	}
    }else if(filterType == 'department'){
-	    filterValue=$("#departmentId").val();
+	    var depts =$("#departmentId").val();
+		for(var i in depts){
+			filterValue = filterValue+depts[i]+",";
+		}
 		if($("#departMentsDiv").is(':visible')){
 		  if(filterValue == null || filterValue ==0){
 			 $("#errMsgId").html('<h5>Please select department </h5>');
@@ -475,8 +481,13 @@ function getRepresentativeSearchDetails1(){
 	var districtId=$("#districtCandId").val();
 	 var constituencyId=$("#constituencyCanId").val();
 	 var mandalId=$("#mandalCanId").val();
-	 var searchLevelValue=districtId;
-	 var searchLevelId=3;
+	 var searchLevelValue = [];
+	 var searchLevelId;
+	 if(districtId > 0){
+		  searchLevelValue=districtId;
+	  searchLevelId=3;
+	 }
+	 
 if(constituencyId > 0){
 	searchLevelId=4;
 	searchLevelValue=constituencyId
@@ -494,7 +505,7 @@ var json = {
     filterType :filterType,//mobileno/department/name/email
     filterValue:filterValue,
     searchLevelId:searchLevelId,
-    searchLevelValue:searchLevelValue,
+    searchLvlVals:searchLevelValue,
     fromDate:startDate,
     toDate:endDate,
    // fromRange:0,
@@ -569,7 +580,8 @@ function getPetitionDetails(petitionId){
 	}
   });
 }
-
+var referralDocs = [];
+var workDocs = [];
 function setPmRepresenteeDataToResultView(result){
 	var str="";
 	//str+='';
@@ -653,7 +665,9 @@ function setPmRepresenteeDataToResultView(result){
 											str+='<p>Email id : '+result.referDetailsList[i].email+'</p>';
 											str+='<p>Contact No : '+result.referDetailsList[i].mobileNO+'</p>';
 										str+='</div>';
-										str+='<div style=""><p class="viewDivId pull-right"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW REFERRAL LETTER</p></div>';
+										referralDocs = [];
+										referralDocs =result.referDetailsList[i].fileNamesList;
+										str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="referral" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW REFERRAL LETTER</p></div>';
 									str+='</div>';
 									
 								str+='</div>';
@@ -703,7 +717,9 @@ function setPmRepresenteeDataToResultView(result){
 				str+='</div>';
 				str+='<div class="col-sm-2 m_top20">';
 					str+='<h5><b>PROJECT DOCUMENTS</b></h5>';
-					str+='<div style=""><p class="viewDivId pull-right"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW DOCUMENT</p></div>';
+					workDocs = [];
+					workDocs = result.fileList;
+					str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="workDocs" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW DOCUMENT</p></div>';
 				str+='</div>';
 				
 				str+='<div class="clearfix"></div>';
@@ -735,7 +751,9 @@ function setPmRepresenteeDataToResultView(result){
 										str+='<td colspan="2">';
 											str+='<p>LOCATION</p>';
 											str+='<span style="display:inline-block;padding:3px">District</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.districtName+'</b></span>';
+											if(result.subWorksList[j].subWorksList[k].addressVO.assemblyName != "")
 											str+='<span style="display:inline-block;padding:3px">Constituency</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.assemblyName+'</b></span>';
+											if(result.subWorksList[j].subWorksList[k].addressVO.tehsilName != "")
 											str+='<span style="display:inline-block;padding:3px">Mandal</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.tehsilName+'</b></span>';
 										str+='</td>';
 									str+='</tr>';
@@ -750,7 +768,7 @@ function setPmRepresenteeDataToResultView(result){
 						str+='</div>';
 						
 						str+='<div class="col-sm-6">';
-							str+='<h5><b>WORK DISCRIPTION</b> ';
+							str+='<h5><b>WORK DESCRIPTION</b> ';
 							//str+='<button class="btn pull-right">Select</button>
 							str+='</h5>';
 							str+='<div class=" block_padding_3 m_top10">';
@@ -790,4 +808,55 @@ function setPmRepresenteeDataToResultView(result){
 			  img.src = "http://www.mytdp.com/images/User.png";
 			  
 		}
+}
+$(document).on("click",".docsViewCls",function(){
+	$("#docsModalDivId").modal("show");
+	var docsList = [];
+	var str="";
+	if($(this).attr("attr_docs") == "referral"){
+		docsList  = referralDocs;
+	}else if($(this).attr("attr_docs") == "workDocs"){
+		docsList = workDocs;
+	}
+	if(docsList != null && docsList.length >0){
+		//str+='<div class="row">';
+									for(var j in docsList){
+										var scanCopySpl = docsList[j].value.split("."); 
+										var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
+											str+='<div class="col-sm-2">';
+												
+												str+='<div class="viewImageCss">';
+												if(scanCopyExt =="pdf"){
+													str+='<a class="fancyboxView" href="#inline'+j+'">';
+													str+='<div class="mouse-over">Expand</div>';
+														str+='<object data="'+docsList[j].value+'" type="application/pdf" width="100%" height="100px;"></object>';
+													str+='</a>';
+													str+='<div id="inline'+j+'" style="width:100%;display: none;">';
+														str+='<object data="'+docsList[j].value+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
+													str+='</div>';
+													
+												}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
+													str+='<a class="fancyboxView" href="#inline'+j+'">';
+														str+='<img src="'+docsList[j].value+'"  width="100%" height="100px;"></img>';
+													str+='</a>';
+													str+='<div id="inline'+j+'" style="width:100%;display: none;">';
+														str+='<img src="'+docsList[j].value+'"    style="cursor:pointer;height:1000px;width:1000px"></object>';
+													str+='</div>';
+												}else{
+													str+='<b>Click <a href="javascript:{};" onclick="openDoc(\''+docsList[j].value+'\')">Here</a> To View Document</b>';
+												}
+									
+										str+='</div>';
+									str+='</div>';
+							
+								}
+							//str+='</div>';
+	}
+
+	$("#docsViewModalId").html(str);
+		$(".fancyboxView").fancybox();
+});
+
+function openDoc(docmnt){
+	 window.open(docmnt);
 }
