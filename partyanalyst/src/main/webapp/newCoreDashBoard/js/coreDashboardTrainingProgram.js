@@ -3493,7 +3493,6 @@ function getFeedbackOnLeaders(){
   var groupType = $("#questionLevelId").val();
   var levelName = $("#questionLevelId option:selected").text();
   var trainingCampLevel = $("#trainingCampLevelId").val();
-  alert(traingCampEnrollmentYearId)
 	if(trainingCampLevel == "all"){
 		trainingCampLevelIds=[];
 		trainingCampLevelIds=[5,6,7,8,9]
@@ -3503,6 +3502,11 @@ function getFeedbackOnLeaders(){
 	}else if(trainingCampLevel == "village"){
 		trainingCampLevelIds=[];
 		trainingCampLevelIds=[6,8]
+	}
+	if(traingCampEnrollmentYearId == 4){
+		traingCampEnrollmentYearId=2;
+	}else if(traingCampEnrollmentYearId == 3){
+		traingCampEnrollmentYearId=1;       
 	}
   
   $("#feedBackSurveyDetailsDivId").html(spinner);
@@ -3699,16 +3703,17 @@ function buildTrainingQuizDetailsAction(result){
 			str+='<thead>';
 				str+='<tr>';
 					str+='<th rowspan="2">Question</th>';
-					str+='<th rowspan="2">Total-Answered</th>';
-					str+='<th rowspan="2">Total-Correct</th>';
+					str+='<th rowspan="2">Answered</th>';
+					str+='<th rowspan="2">Correct</th>';         
 					str+='<th rowspan="2">%</th>';
 					for(var i in result[0].centerList){
-						str+='<th colspan="2">'+result[0].centerList[i].name+'</th>';
+						str+='<th colspan="3">'+result[0].centerList[i].name+'</th>';
 					}
 				str+='</tr>';
 				str+='<tr>';
 					for(var i in result[0].centerList){
 						str+='<th>Answered</th>';
+						str+='<th>Correct</th>';
 						str+='<th>%</th>';
 					}
 				str+='</tr>';
@@ -3719,10 +3724,11 @@ function buildTrainingQuizDetailsAction(result){
 				str+='<tr>';
 					str+='<td>'+result[i].question+'</td>';
 					str+='<td>'+result[i].totalMemberAnswered+'</td>';
-					str+='<td>'+result[i].totalCorrectAnswer+'</td>';
+					str+='<td>'+result[i].totalCorrectAnswer+'</td>';   
 					str+='<td>'+correctAnswerPercent+'</td>';
 					for(var j in result[i].centerList){
 						var correctAnswerPercent1 = (result[i].centerList[j].correctAnswerPercent).toFixed(2)
+						str+='<td>'+result[i].centerList[j].totalMemberAnswered+'</td>';
 						str+='<td>'+result[i].centerList[j].totalCorrectAnswer+'</td>';
 						str+='<td>'+correctAnswerPercent1+'</td>';
 					}
@@ -3733,9 +3739,9 @@ function buildTrainingQuizDetailsAction(result){
 	
 	$("#quizFeedBackDetailsDivId").html(str);
 	$("#dataTablequizFeedBackProgram").dataTable({
-			"iDisplayLength": 13,
+			"iDisplayLength": 5,
 			"aaSorting": [],
-			"aLengthMenu": [[13, 15, 20, -1], [13, 15, 20, "All"]]
+			"aLengthMenu": [[5, 10, 20, -1], [5, 10, 20, "All"]]        
 			
 		});
 }
