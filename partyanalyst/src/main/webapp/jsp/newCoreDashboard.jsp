@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Core DashBoard</title>
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">      
 <link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
@@ -4372,7 +4372,7 @@
        </div>
 		<!-- Attendance End-->
 		<!-- grivance start-->
-		<!-- <div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
+		 <!--<div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
 			   <div class="panel panel-default panelNewCustom ">
 				   <div class="panel-heading">
 					 <div class="row">
@@ -4383,7 +4383,7 @@
 						   </h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="grivance">
-						   <span class="pressmeetIconExpand pull-right" expand-icon="grivance">
+						   <span class="grivanceIconExpand pull-right" expand-icon="grivance">
 						   <i class="glyphicon glyphicon-fullscreen"></i>
 						   </span>
 						</div>
@@ -4397,9 +4397,38 @@
 							</h4>
 					    </div>
 					</div>
+					<div class="row">
+					<div class="col-sm-12 m_top20">
+					<div id="efficiencyId"></div>
+					</div>
+					</div>
+					<div class="row ">
+					<div class="col-sm-12 m_top10"></div>
+					<div id="donutchart"></div>
+					</div>
+					<div class="row">
+					<h4 style="padding-left: 20px;"> Search By Compliants </h4>
+					<div class="col-sm-12">
+					<div class="col-sm-6">
+					<select class="select" id="searchComplaintId">
+					<option value="Complaint ID">Complaint ID</option>
+					<option value="Mobile Number">Mobile Number</option>
+					<option value="Membership">Membership ID</option>
+					<option value="Name">Name</option>
+				    <option value="Voter ID">Voter ID</option>
+				    <option value="Admission No">Application No</option>
+					</select>
+					</div>
+					<div class=" col-sm-3">
+					   <input id="searchValue" class="form-control search-text" type="text">
+					</div>
+					<div class=" col-sm-3">
+					  <button type="button" class="btn btn-danger" id="clickbutton">SEARCH</button>
 				   </div>
+				   </div>
+				</div>
 			  </div>
-	    </div>	 --> 
+	    </div>-->
 		<!-- grivance End-->
 	</div>
 	<div class="row">
