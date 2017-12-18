@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ComplaintStatusCountVO {
+
 	private Long count = 0l;
 	private String status;
 	private String issueType;
 	private String typeOfIssue;
+	private String color;
 	private List<ComplaintStatusCountVO> subList = new ArrayList<ComplaintStatusCountVO>();
 	private Long statusOrder;
-	private String color ;
+
 	private Long total = 0l;
 	private Long approvedCount = 0l;
 	private Long pendingCount = 0l;
@@ -63,12 +65,7 @@ public class ComplaintStatusCountVO {
 		this.statusList = statusList;
 	}
 	
-	public Long getStatusOrder() {
-		return statusOrder;
-	}
-	public void setStatusOrder(Long statusOrder) {
-		this.statusOrder = statusOrder;
-	}
+	
 	public Long getDonationPartyFund() {
 		return donationPartyFund;
 	}
@@ -105,23 +102,45 @@ public class ComplaintStatusCountVO {
 	public void setCategoryList(List<ComplaintStatusCountVO> categoryList) {
 		this.categoryList = categoryList;
 	}
-	public String getColor() {
-		return color;
-	}
-	public void setColor(String color) {
-		this.color = color;
-	}
+	
 	public Long getCount() {
 		return count;
 	}
+
 	public void setCount(Long count) {
 		this.count = count;
 	}
+
 	public String getStatus() {
 		return status;
 	}
+
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public List<ComplaintStatusCountVO> getSubList() {
+		return subList;
+	}
+
+	public void setSubList(List<ComplaintStatusCountVO> subList) {
+		this.subList = subList;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public Long getStatusOrder() {
+		return statusOrder;
+	}
+
+	public void setStatusOrder(Long statusOrder) {
+		this.statusOrder = statusOrder;
 	}
 	public String getIssueType() {
 		return issueType;
@@ -134,12 +153,6 @@ public class ComplaintStatusCountVO {
 	}
 	public void setTypeOfIssue(String typeOfIssue) {
 		this.typeOfIssue = typeOfIssue;
-	}
-	public List<ComplaintStatusCountVO> getSubList() {
-		return subList;
-	}
-	public void setSubList(List<ComplaintStatusCountVO> subList) {
-		this.subList = subList;
 	}
 	public Long getTotal() {
 		return total;
@@ -183,4 +196,6 @@ public class ComplaintStatusCountVO {
 	public void setApprCMReliefMembsCount(Long apprCMReliefMembsCount) {
 		this.apprCMReliefMembsCount = apprCMReliefMembsCount;
 	}
+	
+	
 }
