@@ -11,9 +11,10 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.GrievanceReportVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
+import com.itgrids.partyanalyst.dto.GrievanceReportVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.notification.service.impl.SchedulerService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCoreService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,7 +30,11 @@ public class CoreDashBoardGrivanceAction extends ActionSupport implements Servle
 	private ICoreDashboardCoreService coreDashboardCoreService;
 	private List<GrievanceReportVO> grievanceReportVO;
 	private List<ComplaintStatusCountVO> complaintStatusCountVOs;
-	
+	private SchedulerService schedulerService;
+
+	public void setSchedulerService(SchedulerService schedulerService) {
+		this.schedulerService = schedulerService;
+	}
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -155,6 +160,17 @@ public class CoreDashBoardGrivanceAction extends ActionSupport implements Servle
 			
 		}catch(Exception e){
 			LOG.error("Exception getgrivanceDetailsBySearch() in CoreDashBoardGrivance Action class", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String runTheJobForEveryDayToSendEmpAttendanceDeptWise(){
+		try{
+			LOG.error("Entered into runTheJobForEveryDayToSendEmpAttendanceDeptWise()  of CoreDashBoardGrivance Action");
+			schedulerService.runTheJobForEveryDayToSendEmpAttendanceDeptWise();
+		}catch(Exception e){
+			LOG.error("Exception runTheJobForEveryDayToSendEmpAttendanceDeptWise() in CoreDashBoardGrivance Action class", e);
 		}
 		return Action.SUCCESS;
 		
