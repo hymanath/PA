@@ -106,7 +106,7 @@
 													</div>
 													<div class="col-sm-6">
 														<div class="borederCss">
-															<input type="radio" name="representationType"  value="REPRESENT"  id="Representee"  class="selfRepresenceCls" attr_type="represent" attr_name="representMemberType"  >
+															<input type="radio" name="representationType"  value="REPRESENTEE"  id="Representee"  class="selfRepresenceCls" attr_type="represent" attr_name="representMemberType"  >
 															<label><h5 class="text-capital">Representee</h5></label>
 														</div>
 													</div>
