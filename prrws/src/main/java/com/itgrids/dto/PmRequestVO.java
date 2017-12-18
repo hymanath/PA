@@ -42,7 +42,7 @@ public class PmRequestVO {
 	private String designation;
 	private String endorsmentNo;
 	private String endorsmentDate;
-	
+	private String repImagePath; 
 	public List<KeyValueVO> getFileNamesList() {
 		return fileNamesList;
 	}
@@ -213,4 +213,11 @@ public class PmRequestVO {
 	public void setEndorsmentNo(String endorsmentNo) {
 		this.endorsmentNo = endorsmentNo;
 	}
+	public String getRepImagePath() {
+		return repImagePath;
+	}
+	public void setRepImagePath(String repImagePath) {
+		this.repImagePath = repImagePath;
+	}
+	
 }
