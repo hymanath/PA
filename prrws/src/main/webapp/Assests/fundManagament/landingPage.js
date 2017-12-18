@@ -4,25 +4,29 @@ var imagesObj = {
 "PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png","SWATCH BHARATH IHHL":"Group 2362.png","MGNREGS IHHL":"Group 2362.png",'Labour Budget':"Group 2344.png",'Farm Ponds':"Group 2344.png",'IHHL':"Group 2344.png",'Vermi Compost':"Group 2344.png",'GH':"Group 2344.png",'Check Dams':"Group 2344.png",'Rock Fill Dams':"Group 2344.png",'Solid Waste Management':"Group 2344.png",'Burial Ground':"Group 2344.png",'Play fields':"Group 2344.png",'Agriculture Activities':"Group 2344.png",'Average Wage':"Group 2344.png",'Average Days of Employment':"Group 2344.png",'HH Completed 100 Days':"Group 2344.png",'Timely Payment':"Group 2344.png",'CC Roads1':"Group 2344.png",'Anganwadi':"Group 2344.png",'GP Buildings1':"Group 2344.png",'Mandal buildings1':"Group 2344.png",'NTR 90 Days':"Group 2344.png",'Production of Bricks':"Group 2344.png",'Mulbery New':"Group 2344.png",'Silk worm New':"Group 2344.png",'Horticulture':"Group 2344.png",'Avenue':"Group 2344.png",'Fish Ponds':"Group 2344.png",'Fish Drying Platforms':"Group 2344.png",'Payments':"Group 2344.png",'FAperformance':"Group 2344.png",'OPGK-Perinnials':"Group 2344.png",'OPGK-Annuals':"Group 2344.png",'UGDrainage':"Group 2344.png",'Ntr Jalasiri':"Group 2349.png",'WaterBudget':"Group 2350.png","SWATCH BHARATH PAYMENTS":"Group 2352.png","JALAVANI":"Jalavani.png","JALAVANI":"Jalavani.png",'ASSETS':"assets","WATER SOURCE":"water source.png","WORKS":"works.png","PROMOTIONS":"promotions.png","E OFFICE":"eOffice.png","MEESEVA-SLA KPI":"meeSevaSla.png","AP INNOVATION SOCIETY":"APInnovationSoc.png","MEESEVA & KPI":"MeeSevaKPI.png","WATER TANK CHLORINATION":"waterTank.png","coffee":"Group 2907.png","Raising and Maintenance of Nursery":"RaisingandMaintenanceofNursery.png","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and Check Dams.png","Mini Percolation Tanks":"Mini Percolation Tanks.png","Continuous Contour Trenches":"Continuous Contour Trenches.png","Greenary works Chettu":"Greenary works Chettu.png","Agriculture Related Works":"Agriculture Related Works.png","Rural Sanitation Works":"Rural Sanitation Works.png","Soil Moisture Conservation works Neeru":"Soil Moisture Conservation works Neeru.png","Works in community lands":"Works in community lands.png","OTHERS":"OTHERS.png","Institutional Development Works":"Institutional Development Works.png","Road Works":"Road Works.png","Water Harvesting Structures Neeru":"Water Harvesting Structures Neeru.png","Fisheries work":"Fisheries work.png","AH-Live Stock Related works":"AH-Live Stock Related works.png",
 "Renovation and Improvements to existing Check Dams Check Wall":"Group 2352.png","Road Formation Upto WBM GR II Including CD works":"Group 2352.png","Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas":"Group 2352.png","Construction Of Animal Hostel":"Group 2352.png","Roads for Unconnected Habitations 2011-12":"Group 2352.png","Construction of New Check Dam":"Group 2352.png","Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality":"Group 2352.png","Construction of Food Grains Storage Structures of 250MT":"Group 2352.png","Formation of Road upto WBM Gr II surface including CD works in Tribal areas":"Group 2352.png","Construction of Village Haats Infrastructure fecilities":"Group 2352.png","Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham":"Group 2352.png","Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT":"Group 2352.png","Comprehensive Restoration of minor Irrigation Tank":"Group 2352.png","Construction of Buildings for women self help group federation":"Group 2352.png","Work Site Facilities":"Group 2352.png","Renovation and Improvements to existing Percolation Tank  Mini Percolation tank":"Group 2352.png","GP level BNRGSK knowledge resource centre 2012-13 and afterwards":"Group 2352.png","Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality":"Group 2352.png","Production of Grafts in HNTC":"Group 2352.png","Improvements of RYTHU BAZAR":"Group 2352.png","Roads for Unconnected Habitations 2012-13 and afterwards":"Group 2352.png","HNTC Development":"Group 2352.png","New Open Well for Drinking water purpose":"Group 2352.png","Construction of Crematoria Burial Grounds":"Group 2352.png","Repairs to Existing Check Dam":"Group 2352.png","Formation of Road upto Gravel surface including CD works to agriculture fields":"Group 2352.png","Formation of Approach Road upto Gravel surface including CD works to Burial ground":"Group 2352.png","Construction of Food Grains Storage Structures of 500MT":"Group 2352.png","Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas":"Group 2352.png","Raising of Cashew bag seedlings for 2014-15":"Group 2352.png","Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas":"Group 2352.png","NTR Rural House":"Group 2352.png","Cattle Ponds":"Group 2352.png","Desilting of Drinking Water Tanks":"Group 2352.png","Animal Husbandry Others":"Group 2352.png","Comprehensive Restoration of minor Irrigation Tank1":"Group 2352.png",
 "Avenue Plantation":"Group 2352.png","Forest Others":"Group 2352.png","Scooping and Dibbling of seed":"Group 2352.png","IJP PROGRAM WORKS":"Group 2352.png",
-"Azolla Production Unit":"Group 2352.png","Construction of silopits of 3 MTs capacity":"Group 2352.png","Fodder trough for Cattle Cattle drinking water trough":"Group 2352.png","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"Group 2352.png","Raising of Perinnial Fodder":"Group 2352.png","Raising of Silvipasture clubbed with subabul plantation":"Group 2352.png","Raising and Maintenance of Avenue plantations":"Group 2352.png","Raising and Maintenance of Block Plantations":"Group 2352.png","Raising and Maintenance of nurseries":"Group 2352.png","Soil and Moisture Conservation Works":"Group 2352.png","CM EODB":"MeeSevaKPI.png","bioMetricDashBoard":"BioMetricL.png","Man Days Comparision":"Group 2352.png","AC WORKS":"Group 2352.png","Man Days and Expenditure":"Group 2352.png","Field Man Days":"Group 2352.png"
+"Azolla Production Unit":"Group 2352.png","Construction of silopits of 3 MTs capacity":"Group 2352.png","Fodder trough for Cattle Cattle drinking water trough":"Group 2352.png","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"Group 2352.png","Raising of Perinnial Fodder":"Group 2352.png","Raising of Silvipasture clubbed with subabul plantation":"Group 2352.png","Raising and Maintenance of Avenue plantations":"Group 2352.png","Raising and Maintenance of Block Plantations":"Group 2352.png","Raising and Maintenance of nurseries":"Group 2352.png","Soil and Moisture Conservation Works":"Group 2352.png","CM EODB":"MeeSevaKPI.png","BIOMETRIC DASHBOARD":"BioMetricL.png","Man Days Comparision":"Group 2352.png","AC WORKS":"Group 2352.png","Expenditure":"Group 2352.png","Field Man Days":"Group 2352.png"
 
 }
 
 var blockClassObject = {
-"PRIS":"prisOverAchvmntAllCls","DRAINS":"drainsOverAchvmntAllCls","LED MONITORING":"ledOverAchvmntAllCls","UGD":"","RDP":"","FUND MANAGMENT SYSTEM":"fundMngmntSstmOverAchvmntAllCls","ENGINEERING DEPARTMENT":"encOverAchvmntAllCls","PANACHAYATI RAJ EXPENDITURE":"preOverAchvmntAllCls","SPIKE ANALYSIS":"spikeOverAchvmntAllCls","MGNREGS":"mgnregsOverAchvmntAllCls","RURAL WATER SUPPLY":"rwsOverAchvmntAllCls","ITEC":"itecOverAchvmntAllCls","SWATCH BHARATH IHHL":"swatchBharathIHHL","MGNREGS IHHL":"MGNREGSIHHL","SWATCH BHARATH PAYMENTS":"swatchBharathPayments",'Labour Budget':'LabourBudgetAllCls','Farm Ponds':'FarmPondsAllCls','IHHL':'IHHLAllCls','Vermi Compost':'VermiCompostAllCls','GH':'GHAllCls','Check Dams':'CheckDamsAllCls','Rock Fill Dams':'RockFillDamsAllCls','Solid Waste Management':'SolidWasteManagementAllCls','Burial Ground':'BurialGroundAllCls','Play fields':'PlayfieldsAllCls','Agriculture Activities':'AgricultureActivitiesAllCls','Average Wage':'AverageWageAllCls','Average Days of Employment':'AverageDaysofEmploymentAllCls','HH Completed 100 Days':'HHCompleted100DaysAllCls','Timely Payment':'TimelyPaymentAllCls','CC Roads1':'CCRoads1AllCls','Anganwadi':'AnganwadiAllCls','GP Buildings1':'GPBuildings1AllCls','Mandal buildings1':'Mandalbuildings1AllCls','NTR 90 Days':'NTR90DaysAllCls','Production of Bricks':'ProductionofBricksAllCls','Mulbery New':'MulberyNewAllCls','Silk worm New':'SilkwormNewAllCls','Horticulture':'HorticultureAllCls','Avenue':'AvenueAllCls','Fish Ponds':'FishPondsAllCls','Fish Drying Platforms':'FishDryingPlatformsAllCls','Payments':'PaymentsAllCls','FAperformance':'FAperformanceAllCls','OPGK-Perinnials':'OPGK-PerinnialsAllCls','OPGK-Annuals':'OPGK-AnnualsAllCls','UGDrainage':'UGDrainageAllCls','Ntr Jalasiri':"NtrJalasiriAllCls",'WaterBudget':"WaterBudgetAllCls",'JALAVANI':"JalavaniAllCls",'ASSETS':"assetsAllCls","WATER SOURCE":"waterSourceAllCls","WORKS":"worksAllCls","PROMOTIONS":"itecPromotionsAllCls","E OFFICE":"itecEOfficeAllCls","MEESEVA-SLA KPI":"itecMeeSevaSlaKpiAllCls","AP INNOVATION SOCIETY":"itecApInnovationAllCls","WATER TANK CHLORINATION":"waterTankChlorinationAllCls","coffee":"coffeeAllCls","Raising and Maintenance of Nursery":"RaisingandMaintenanceofNurseryAllCls","Desilting of Perculation Tanks and Check Dams":"DesiltingofPerculationTanksandCheckDamsAllCls","Mini Percolation Tanks":"MiniPercolationTanksAllCls","Continuous Contour Trenches":"ContinuousContourTrenchesAllCls","Greenary works Chettu":"GreenaryworksChettuAllCls","Agriculture Related Works":"AgricultureRelatedWorksAllCls","Rural Sanitation Works":"RuralSanitationWorksAllCls","Soil Moisture Conservation works Neeru":"SoilMoistureConservationworksNeeruAllCls","Works in community lands":"WorksincommunitylandsAllCls","OTHERS":"OTHERSAllCls","Institutional Development Works":"InstitutionalDevelopmentWorksAllCls","Road Works":"RoadWorksAllCls","Water Harvesting Structures Neeru":"WaterHarvestingStructuresNeeruAllCls","Fisheries work":"FisheriesworkAllCls","AH-Live Stock Related works":"AH-LiveStockRelatedworksAllCls",
+"PRIS":"prisOverAchvmntAllCls","DRAINS":"DRAINSAllCls","LED MONITORING":"LEDMONITORINGAllCls","UGD":"","RDP":"","FUND MANAGMENT SYSTEM":"FUNDMANAGMENTSYSTEMAllCls","ENGINEERING DEPARTMENT":"encOverAchvmntAllCls","PANACHAYATI RAJ EXPENDITURE":"preOverAchvmntAllCls","SPIKE ANALYSIS":"SPIKEANALYSISAllCls","MGNREGS":"MGNREGSAllCls","RURAL WATER SUPPLY":"RURALWATERSUPPLYAllCls","ITEC":"itecOverAchvmntAllCls","SWATCH BHARATH IHHL":"SWATCHBHARATHIHHLAllCls","MGNREGS IHHL":"MGNREGSIHHLAllCls","SWATCH BHARATH PAYMENTS":"SWATCHBHARATHPAYMENTSAllCls",'Labour Budget':'LabourBudgetAllCls','Farm Ponds':'FarmPondsAllCls','IHHL':'IHHLAllCls','Vermi Compost':'VermiCompostAllCls','GH':'GHAllCls','Check Dams':'CheckDamsAllCls','Rock Fill Dams':'RockFillDamsAllCls','Solid Waste Management':'SolidWasteManagementAllCls','Burial Ground':'BurialGroundAllCls','Play fields':'PlayfieldsAllCls','Agriculture Activities':'AgricultureActivitiesAllCls','Average Wage':'AverageWageAllCls','Average Days of Employment':'AverageDaysofEmploymentAllCls','HH Completed 100 Days':'HHCompleted100DaysAllCls','Timely Payment':'TimelyPaymentAllCls','CC Roads1':'CCRoads1AllCls','Anganwadi':'AnganwadiAllCls','GP Buildings1':'GPBuildings1AllCls','Mandal buildings1':'Mandalbuildings1AllCls','NTR 90 Days':'NTR90DaysAllCls','Production of Bricks':'ProductionofBricksAllCls','Mulbery New':'MulberyNewAllCls','Silk worm New':'SilkwormNewAllCls','Horticulture':'HorticultureAllCls','Avenue':'AvenueAllCls','Fish Ponds':'FishPondsAllCls','Fish Drying Platforms':'FishDryingPlatformsAllCls','Payments':'PaymentsAllCls','FAperformance':'FAperformanceAllCls','OPGK-Perinnials':'OPGK-PerinnialsAllCls','OPGK-Annuals':'OPGK-AnnualsAllCls','UGDrainage':'UGDrainageAllCls','Ntr Jalasiri':"NtrJalasiriAllCls",'WaterBudget':"WaterBudgetAllCls",'JALAVANI':"JALAVANIAllCls",'ASSETS':"ASSETSAllCls","WATER SOURCE":"WATERSOURCEAllCls","WORKS":"WORKSAllCls","PROMOTIONS":"PROMOTIONSAllCls","E OFFICE":"EOFFICEAllCls","MEESEVA-SLA KPI":"MEESEVA-SLAKPIAllCls","AP INNOVATION SOCIETY":"APINNOVATIONSOCIETYAllCls","WATER TANK CHLORINATION":"WATERTANKCHLORINATIONAllCls","coffee":"coffeeAllCls","Raising and Maintenance of Nursery":"RaisingandMaintenanceofNurseryAllCls","Desilting of Perculation Tanks and Check Dams":"DesiltingofPerculationTanksandCheckDamsAllCls","Mini Percolation Tanks":"MiniPercolationTanksAllCls","Continuous Contour Trenches":"ContinuousContourTrenchesAllCls","Greenary works Chettu":"GreenaryworksChettuAllCls","Agriculture Related Works":"AgricultureRelatedWorksAllCls","Rural Sanitation Works":"RuralSanitationWorksAllCls","Soil Moisture Conservation works Neeru":"SoilMoistureConservationworksNeeruAllCls","Works in community lands":"WorksincommunitylandsAllCls","OTHERS":"OTHERSAllCls","Institutional Development Works":"InstitutionalDevelopmentWorksAllCls","Road Works":"RoadWorksAllCls","Water Harvesting Structures Neeru":"WaterHarvestingStructuresNeeruAllCls","Fisheries work":"FisheriesworkAllCls","AH-Live Stock Related works":"AH-LiveStockRelatedworksAllCls",
 "Renovation and Improvements to existing Check Dams Check Wall":"RenovationandImprovementstoexistingCheckDamsCheckWallAllCls","Road Formation Upto WBM GR II Including CD works":"RoadFormationUptoWBMGRIIIncludingCDworksAllCls","Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas":"FormationofRoaduptoWBMGrIIsurfaceincludingCDworksConnectingSChabitationorLocalityinPlainareasAllCls","Construction Of Animal Hostel":"ConstructionOfAnimalHostelAllCls","Roads for Unconnected Habitations 2011-12":"RoadsforUnconnectedHabitations2011-12AllCls","Construction of New Check Dam":"ConstructionofNewCheckDamAllCls","Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality":"FormationofinternalroaduptoWBMGrIIsurfaceincludingCDworksandDrainsinSCHabitationorLocalityAllCls","Construction of Food Grains Storage Structures of 250MT":"ConstructionofFoodGrainsStorageStructuresof250MTAllCls","Formation of Road upto WBM Gr II surface including CD works in Tribal areas":"FormationofRoaduptoWBMGrIIsurfaceincludingCDworksinTribalareasAllCls","Construction of Village Haats Infrastructure fecilities":"ConstructionofVillageHaatsInfrastructurefecilitiesAllCls","Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham":"ProvidingBTroadforSriAnanthaPadmanabhaSwamyTempleHilltopRoadatPadmabnabhamAllCls","Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT":"ConstructionofPostHarvestfacilitiesDryingPlatformincludingPuccastoragefacilitiesof100MTAllCls","Comprehensive Restoration of minor Irrigation Tank":"ComprehensiveRestorationofminorIrrigationTankAllCls","Construction of Buildings for women self help group federation":"ConstructionofBuildingsforwomenselfhelpgroupfederationAllCls","Work Site Facilities":"WorkSiteFacilitiesAllCls","Renovation and Improvements to existing Percolation Tank  Mini Percolation tank":"RenovationandImprovementstoexistingPercolationTankMiniPercolationtankAllCls","GP level BNRGSK knowledge resource centre 2012-13 and afterwards":"GPlevelBNRGSKknowledgeresourcecentre2012-13andafterwardsAllCls","Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality":"FormationofinternalroaduptoWBMGrIIsurfaceincludingCDworksandDrainsinotherHabitationorLocalityAllCls","Production of Grafts in HNTC":"ProductionofGraftsinHNTCAllCls","Improvements of RYTHU BAZAR":"ImprovementsofRYTHUBAZARAllCls","Roads for Unconnected Habitations 2012-13 and afterwards":"RoadsforUnconnectedHabitations2012-13andafterwardsAllCls","HNTC Development":"HNTCDevelopmentAllCls","New Open Well for Drinking water purpose":"NewOpenWellforDrinkingwaterpurposeAllCls","Construction of Crematoria Burial Grounds":"ConstructionofCrematoriaBurialGroundsAllCls","Repairs to Existing Check Dam":"RepairstoExistingCheckDamAllCls","Formation of Road upto Gravel surface including CD works to agriculture fields":"FormationofRoaduptoGravelsurfaceincludingCDworkstoagriculturefieldsAllCls","Formation of Approach Road upto Gravel surface including CD works to Burial ground":"FormationofApproachRoaduptoGravelsurfaceincludingCDworkstoBurialgroundAllCls","Construction of Food Grains Storage Structures of 500MT":"ConstructionofFoodGrainsStorageStructuresof500MTAllCls","Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas":"FormationofRoaduptoWBMGrIIsurfaceincludingCDworksConnectingotherhabitationorLocalityinPlainareasAllCls","Raising of Cashew bag seedlings for 2014-15":"RaisingofCashewbagseedlingsfor2014-15AllCls","Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas":"FormationofRoaduptoWBMGrIIsurfaceincludingCDworksConnectingSThabitationorLocalityinPlainareasAllCls","NTR Rural House":"NTRRuralHouseAllCls","Cattle Ponds":"CattlePondsAllCls","Desilting of Drinking Water Tanks":"DesiltingofDrinkingWaterTanksAllCls","Animal Husbandry Others":"AnimalHusbandryOthersAllCls","Comprehensive Restoration of minor Irrigation Tank1":"ComprehensiveRestorationofminorIrrigationTank1AllCls","Avenue Plantation":"AvenuePlantationAllCls","Forest Others":"ForestOthersAllcls","Scooping and Dibbling of seed":"ScoopingandDibblingofseedAllCls","IJP PROGRAM WORKS":"IJPPROGRAMWORKSAllCls",
-"Azolla Production Unit":"AzollaProductionUnitAllCls","Construction of silopits of 3 MTs capacity":"Constructionofsilopitsof3MTscapacityAllCls","Fodder trough for Cattle Cattle drinking water trough":"FoddertroughforCattleCattledrinkingwatertroughAllCls","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"RaisingofFodderMaizeFodderJowarNutrifeedSugargrazeAllCls","Raising of Perinnial Fodder":"RaisingofPerinnialFodderAllCls","Raising of Silvipasture clubbed with subabul plantation":"RaisingofSilvipastureclubbedwithsubabulplantationAllCls","Raising and Maintenance of Avenue plantations":"RaisingandMaintenanceofAvenueplantationsAllCls","Raising and Maintenance of Block Plantations":"RaisingandMaintenanceofBlockPlantationsAllCls","Raising and Maintenance of nurseries":"RaisingandMaintenanceofnurseriesAllCls","Soil and Moisture Conservation Works":"SoilandMoistureConservationWorksAllCls","CM EODB":"cmeodbAllCls","bioMetricDashBoard":"bioMetricDashBoardAllCls","Man Days Comparision":"ManDaysAllCls","AC WORKS":"ACWORKSAllCls","Man Days and Expenditure":"monthWiseExpAllCls","Field Man Days":"fieldManDaysAllCls"
+"Azolla Production Unit":"AzollaProductionUnitAllCls","Construction of silopits of 3 MTs capacity":"Constructionofsilopitsof3MTscapacityAllCls","Fodder trough for Cattle Cattle drinking water trough":"FoddertroughforCattleCattledrinkingwatertroughAllCls","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"RaisingofFodderMaizeFodderJowarNutrifeedSugargrazeAllCls","Raising of Perinnial Fodder":"RaisingofPerinnialFodderAllCls","Raising of Silvipasture clubbed with subabul plantation":"RaisingofSilvipastureclubbedwithsubabulplantationAllCls","Raising and Maintenance of Avenue plantations":"RaisingandMaintenanceofAvenueplantationsAllCls","Raising and Maintenance of Block Plantations":"RaisingandMaintenanceofBlockPlantationsAllCls","Raising and Maintenance of nurseries":"RaisingandMaintenanceofnurseriesAllCls","Soil and Moisture Conservation Works":"SoilandMoistureConservationWorksAllCls","CM EODB":"CMEODBAllCls","BIOMETRIC DASHBOARD":"BIOMETRICDASHBOARDAllCls","Man Days Comparision":"ManDaysComparisionAllCls","AC WORKS":"ACWORKSAllCls","Expenditure":"ExpenditureAllCls","Field Man Days":"FieldManDaysAllCls"
 
 }
 
 var blockHeadingObject = {
 "PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery New':"ACHIEVED",'Silk worm New':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"NOTIFIED & IN PROGRESS",'ASSETS':"COMPLETED & CLOSED","WATER SOURCE":"TOTAL","WORKS":"COMPLETED","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA-SLA KPI":"Beyond SLA/etaal - KPI","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CHLORINATION":"","coffee":"COFFEE","Raising and Maintenance of Nursery":"Raising and Maintenance of Nursery","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and CheckDams","Mini Percolation Tanks":"Mini Percolation Tanks","Continuous Contour Trenches":"Continuous Contour Trenches","Greenary works Chettu":"Greenary works Chettu","Agriculture Related Works":"Agriculture Related Works","Rural Sanitation Works":"Rural Sanitation Works","Soil Moisture Conservation works Neeru":"Soil Moisture Conservation works Neeru","Works in community lands":"Works in community lands","OTHERS":"OTHERS","Institutional Development Works":"Institutional Development Works","Road Works":"Road Works","Water Harvesting Structures Neeru":"Water Harvesting Structures Neeru","Fisheries work":"Fisheries work","AH-Live Stock Related works":"AH-Live Stock Related works",
 "Renovation and Improvements to existing Check Dams Check Wall":"ACHIEVED","Road Formation Upto WBM GR II Including CD works":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas":"ACHIEVED","Construction Of Animal Hostel":"ACHIEVED","Roads for Unconnected Habitations 2011-12":"ACHIEVED","Construction of New Check Dam":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality":"ACHIEVED","Construction of Food Grains Storage Structures of 250MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works in Tribal areas":"ACHIEVED","Construction of Village Haats Infrastructure fecilities":"ACHIEVED","Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham":"ACHIEVED","Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank":"ACHIEVED","Construction of Buildings for women self help group federation":"ACHIEVED","Work Site Facilities":"ACHIEVED","Renovation and Improvements to existing Percolation Tank  Mini Percolation tank":"ACHIEVED","GP level BNRGSK knowledge resource centre 2012-13 and afterwards":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality":"ACHIEVED","Production of Grafts in HNTC":"ACHIEVED","Improvements of RYTHU BAZAR":"ACHIEVED","Roads for Unconnected Habitations 2012-13 and afterwards":"ACHIEVED","HNTC Development":"ACHIEVED","New Open Well for Drinking water purpose":"ACHIEVED","Construction of Crematoria Burial Grounds":"ACHIEVED","Repairs to Existing Check Dam":"ACHIEVED","Formation of Road upto Gravel surface including CD works to agriculture fields":"ACHIEVED","Formation of Approach Road upto Gravel surface including CD works to Burial ground":"ACHIEVED","Construction of Food Grains Storage Structures of 500MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas":"ACHIEVED","Raising of Cashew bag seedlings for 2014-15":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas":"ACHIEVED","NTR Rural House":"NTR Rural House","Cattle Ponds":"Cattle Ponds","Desilting of Drinking Water Tanks":"Desilting of Drinking Water Tanks","Animal Husbandry Others":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank1":"ACHIEVED","Avenue Plantation":"ACHIEVED","Forest Others":"ACHIEVED","Scooping and Dibbling of seed":"ACHIEVED","IJP PROGRAM WORKS":"ACHIEVED",
-"Azolla Production Unit":"ACHIEVED","Construction of silopits of 3 MTs capacity":"ACHIEVED","Fodder trough for Cattle Cattle drinking water trough":"ACHIEVED","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"ACHIEVED","Raising of Perinnial Fodder":"ACHIEVED","Raising of Silvipasture clubbed with subabul plantation":"ACHIEVED","Raising and Maintenance of Avenue plantations":"ACHIEVED","Raising and Maintenance of Block Plantations":"ACHIEVED","Raising and Maintenance of nurseries":"ACHIEVED","Soil and Moisture Conservation Works":"ACHIEVED","CM EODB":"Total/Approved","bioMetricDashBoard":"TotalEmployee/Present","Man Days Comparision":"","AC WORKS":"RURAL CONSTITUENCIES","Man Days and Expenditure":"","Field Man Days":"Today"
+"Azolla Production Unit":"ACHIEVED","Construction of silopits of 3 MTs capacity":"ACHIEVED","Fodder trough for Cattle Cattle drinking water trough":"ACHIEVED","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"ACHIEVED","Raising of Perinnial Fodder":"ACHIEVED","Raising of Silvipasture clubbed with subabul plantation":"ACHIEVED","Raising and Maintenance of Avenue plantations":"ACHIEVED","Raising and Maintenance of Block Plantations":"ACHIEVED","Raising and Maintenance of nurseries":"ACHIEVED","Soil and Moisture Conservation Works":"ACHIEVED","CM EODB":"Total/Approved","BIOMETRIC DASHBOARD":"TotalEmployee/Present","Man Days Comparision":"","AC WORKS":"RURAL CONSTITUENCIES","Expenditure":"","Field Man Days":"Today"
 }
 var overViewArrConsolidated = [];
 var overViewIdsArr = [];
 var windowWidth =$(window).width();
+var componentpageArr=[2,3,4,5,6];
+for(var i in componentpageArr){
+	getPageWiseComponents(componentpageArr[i]);
+}
 $("#editList,#saveList").tooltip();
 if(windowWidth <500){
 	$(".landing-menu").css("display","");
@@ -105,9 +109,9 @@ function buildFavouriteComponentsResult(result) {
 						}
 						if(result[i].name == 'LED MONITORING' || result[i].name == 'Led Monitoring')
 						{
-							str+='<div class="ledOverAchvmntAllCls"></div>';
+							str+='<div class="LEDMONITORINGAllCls"></div>';
 						}else if(result[i].name == 'WATER TANK CHLORINATION'){
-							str+='<div class="waterTankChlorinationAllCls text-right"></div>';
+							str+='<div class="WATERTANKCHLORINATIONAllCls text-right"></div>';
 						}else if(result[i].name == 'AC WORKS'){
 							str+='<div class=" " style="text-align: right">';
 							str+='<h2 class="" style="margin-top: 0px">161</h2>';
@@ -163,26 +167,7 @@ function buildFavouriteComponentsResult(result) {
 	}
 	onloadCallToGetAllBlockAchievent();
 }
-getPageWiseComponents(3);
-function getPageWiseComponents(pageId){
-	var json = {pageId:pageId} 
-	$.ajax({                
-		type:'POST',    
-		url: 'getPageWiseComponentDetails',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		 
-	});		
-}
 
-function buildPageWiseComponents(result){
-	
-}
 
 $(document).on("click","#saveList",function(){
 	spinner = '<div class="spinner" style="height:20px;width:20px;display:inline-block"><div class="dot1"></div><div class="dot2"></div></div>';
@@ -227,6 +212,7 @@ $(document).on("click","[landing-link]",function(){
 	$(this).addClass("active");
 	$("#showMainBlock").css("display","none")
 	var blockName = $(this).attr("landing-link");
+	var blockId = $(this).attr("attr_blockId");
 	$("[landing-block]").hide();
 	$("[landing-block="+blockName+"]").show();
 	/* if (blockName == "favourite") {
@@ -442,7 +428,7 @@ function getPrisOverAllAchievd(){
 	}
 	
   function getDrainsInfoStateWise(){
-	$(".drainsOverAchvmntAllCls").html(spinner);
+	$(".DRAINSAllCls").html(spinner);
 	var json = {
 			fromDate : "01-01-2002",
 			toDate : gblEndDate,
@@ -459,10 +445,10 @@ function getPrisOverAllAchievd(){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$(".drainsOverAchvmntAllCls").html("0%");
+			$(".DRAINSAllCls").html("0%");
 			if(result != null){
 				if(result.percentage != null && result.percentage > 0){
-					$(".drainsOverAchvmntAllCls").html(result.percentage+"%");
+					$(".DRAINSAllCls").html(result.percentage+"%");
 				}
 			}
 		});
@@ -470,7 +456,7 @@ function getPrisOverAllAchievd(){
 
 var gblSpikeFmsITCEndDate = moment().format('DD/MM/YYYY');
 function getTotalSpikeCases(){
-	 $(".spikeOverAchvmntAllCls").html(spinner); 
+	 $(".SPIKEANALYSISAllCls").html(spinner); 
 	var diseasesIdArr=[];
 	diseasesIdArr.push(1);  
 	diseasesIdArr.push(2);
@@ -488,8 +474,8 @@ function getTotalSpikeCases(){
       },
       success : function(ajaxresp){
 		  if(ajaxresp != null){
-			 //$(".spikeOverAchvmntAllCls").html(ajaxresp[0].count);
-			 $(".spikeOverAchvmntAllCls").html(spikeData(ajaxresp));
+			 //$(".SPIKEANALYSISAllCls").html(ajaxresp[0].count);
+			 $(".SPIKEANALYSISAllCls").html(spikeData(ajaxresp));
 		  }
      }
   });
@@ -520,7 +506,7 @@ function getTotalPrExpenditure(){
 }
 
 function getBasicLedOverviewDetails(){
-	 $(".ledOverAchvmntAllCls").html(spinner);	
+	 $(".LEDMONITORINGAllCls").html(spinner);	
 	var locationType="";
 	var locationValue=0;
 	var json = {
@@ -539,7 +525,7 @@ function getBasicLedOverviewDetails(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		 $(".ledOverAchvmntAllCls").html(0);
+		 $(".LEDMONITORINGAllCls").html(0);
 		if (result != null ) {
 			/* if(result[0].onLights !=null && result[0].onLights>0){
 				var onLights = result[0].onLights;
@@ -560,15 +546,15 @@ function getBasicLedOverviewDetails(){
 			var offLights = result[0].offLights;
 			var totalLights = result[0].totalLights;
 			//$("#ledMonitoring").html(ledMonitoringData('15/20','10'))
-			$(".ledOverAchvmntAllCls").html(ledMonitoringData(''+onLights+'/'+offLights+'',''+totalLights+'',''));
-		 // $(".ledOverAchvmntAllCls").html(result[0].onLights+"/"+result[0].offLights+"/"+result[0].totalLights);
+			$(".LEDMONITORINGAllCls").html(ledMonitoringData(''+onLights+'/'+offLights+'',''+totalLights+'',''));
+		 // $(".LEDMONITORINGAllCls").html(result[0].onLights+"/"+result[0].offLights+"/"+result[0].totalLights);
 		}
 	});		
 }
 
 function getHabitationCoverageByStatusByState()
 {
-	 $(".rwsOverAchvmntAllCls").html(spinner);
+	 $(".RURALWATERSUPPLYAllCls").html(spinner);
 	 var fullyCoveredHabitationPer=0;
 			var json = {
 				fromDateStr:"01-01-1977",
@@ -590,7 +576,7 @@ function getHabitationCoverageByStatusByState()
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(response){
-					$(".rwsOverAchvmntAllCls").html("0"+"%");
+					$(".RURALWATERSUPPLYAllCls").html("0"+"%");
 					if(response !=null && response.length>0){
 						for(var i in response){
 						  for(var j in response[i].statusList){
@@ -600,13 +586,13 @@ function getHabitationCoverageByStatusByState()
 						 }
 						}
 				     }
-					 $(".rwsOverAchvmntAllCls").html(fullyCoveredHabitationPer+"%");
+					 $(".RURALWATERSUPPLYAllCls").html(fullyCoveredHabitationPer+"%");
 				}
 			});
 }
 
   function getALlProgramesAmountDetails(){
-	  $(".fundMngmntSstmOverAchvmntAllCls").html(spinner);
+	  $(".FUNDMANAGMENTSYSTEMAllCls").html(spinner);
 		var json = {
 			financialYrIdList:[0],
 			deptIdsList : [0],
@@ -627,7 +613,7 @@ function getHabitationCoverageByStatusByState()
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success : function(result){  
-			$(".fundMngmntSstmOverAchvmntAllCls").html(0);
+			$(".FUNDMANAGMENTSYSTEMAllCls").html(0);
 				if(result !=null && result.length>0){
 					var  totalAmount = 0;
 					for(var i in result){
@@ -650,7 +636,7 @@ function getHabitationCoverageByStatusByState()
 						}
 					}
 					if (amountinCrocr != null && amountinCrocr > 0) {
-						$(".fundMngmntSstmOverAchvmntAllCls").html(amountinCrocr.toFixed(3)+"&nbspCR");
+						$(".FUNDMANAGMENTSYSTEMAllCls").html(amountinCrocr.toFixed(3)+"&nbspCR");
 					}
 			   }
 			}
@@ -658,7 +644,7 @@ function getHabitationCoverageByStatusByState()
 	}
 	var totalTransaction = "";
  function getMeesevaSLAOverviewDtls(){
-	 $(".itecMeeSevaSlaKpiAllCls").html(spinner);
+	 $(".MEESEVA-SLAKPIAllCls").html(spinner);
 	 //var totalTransaction = 0;
 	 var json = {
 	    
@@ -673,11 +659,11 @@ function getHabitationCoverageByStatusByState()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		//$(".itecMeeSevaSlaKpiAllCls").html(0);
+		//$(".MEESEVA-SLAKPIAllCls").html(0);
 		if (result != null) {
 			totalTransaction = parseInt(result.catgryABeyondSLACount)+parseInt(result.catgryBBeyondSLACount);
 			getMeesevaKPIOverViewDetails();
-			//$(".itecMeeSevaSlaKpiAllCls").html(totalTransaction.toFixed(2)+" Cr / 3499");
+			//$(".MEESEVA-SLAKPIAllCls").html(totalTransaction.toFixed(2)+" Cr / 3499");
 		}
 	});		
 }
@@ -700,7 +686,7 @@ function getMeesevaKPIOverViewDetails(){
 		if(result !=null){
 			if(result.totalMeesevaCentres !=null && result.totalMeesevaCentres>0){
 				totalTransaction = totalTransaction + " / "+ result.totalMeesevaCentres;
-				$(".itecMeeSevaSlaKpiAllCls").html(totalTransaction);
+				$(".MEESEVA-SLAKPIAllCls").html(totalTransaction);
 			}
 		}
 	});	
@@ -709,7 +695,7 @@ function getMeesevaKPIOverViewDetails(){
 var nregsDate = moment().format('YYYY-MM-DD');
 function getNregsLabourBudgetOverAllAchievent()
 {
-	$(".mgnregsOverAchvmntAllCls").html(spinner);
+	$(".MGNREGSAllCls").html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : "2016-04-31",
@@ -730,7 +716,7 @@ function getNregsLabourBudgetOverAllAchievent()
 		  xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			$(".mgnregsOverAchvmntAllCls").html("0"+"%");
+			$(".MGNREGSAllCls").html("0"+"%");
 			var labourBudgetPer=0;
 			if(ajaxresp != null && ajaxresp.length > 0){
 				for(var i in ajaxresp){
@@ -739,12 +725,12 @@ function getNregsLabourBudgetOverAllAchievent()
 					}
 				}
 			}
-			$(".mgnregsOverAchvmntAllCls").html(labourBudgetPer+"%");
+			$(".MGNREGSAllCls").html(labourBudgetPer+"%");
 		}
 	});
 }
 function getIHHLOverviewData(){
-	$(".swatchBharathIHHL").html(spinner);
+	$(".SWATCHBHARATHIHHLAllCls").html(spinner);
 	var json = {
 			fromDate:"",
 			toDate:"",
@@ -763,7 +749,7 @@ function getIHHLOverviewData(){
 		}
 	}).done(function(result){
 		var totalCount = (result.completed *100) / result.target;
-		$(".swatchBharathIHHL").html(totalCount.toFixed(2)+'%');
+		$(".SWATCHBHARATHIHHLAllCls").html(totalCount.toFixed(2)+'%');
 	});
 }
 function getMGNREGSIHHLOverviewData(){
@@ -797,7 +783,7 @@ function getMGNREGSIHHLOverviewData(){
 	});
 }
 function getSBPaymentsAbstract(){
-	$(".swatchBharathPayments").html(spinner);
+	$(".SWATCHBHARATHPAYMENTSAllCls").html(spinner);
 	var json = {
 		//fromDate:"201704",
 		//toDate:"201708",
@@ -816,7 +802,7 @@ function getSBPaymentsAbstract(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$(".swatchBharathPayments").html(result.pendingAmount);
+		$(".SWATCHBHARATHPAYMENTSAllCls").html(result.pendingAmount);
 	});
 }
 function getAllConvergenceTypesConsolidated()
@@ -1188,7 +1174,7 @@ function getNtrJalaSiriAbstract(type,locType,locId)
 }
 function getLocationWiseAlertStatusCounts()
 {
-	$(".JalavaniAllCls").html(spinner);
+	$(".JALAVANIAllCls").html(spinner);
 	var json = {
 		deptId:49,
 		fromDate:"01-01-1977",
@@ -1221,13 +1207,13 @@ function getLocationWiseAlertStatusCounts()
 					}
 				}
 			}
-			$(".JalavaniAllCls").html(notifiedAct);
+			$(".JALAVANIAllCls").html(notifiedAct);
 		}
 	});
 }
 function getAssetInfoBetweenDates()
 {
-	$(".assetsAllCls").html(spinner);
+	$(".ASSETSAllCls").html(spinner);
 	var json = {
 		fromDateStr:'01-01-1977',
 		toDateStr:moment().format("DD-MM-YYYY"),
@@ -1254,13 +1240,13 @@ function getAssetInfoBetweenDates()
 					totalCount = totalCount + result[i].basicList[j].count;
 				}
 			}
-			$(".assetsAllCls").html(totalCount);
+			$(".ASSETSAllCls").html(totalCount);
 		}
 	});
 }
 function getKeyPerformanceIndicatorsInfo()
 {
-	$(".keyPerforamanceAllCls").html(spinner);
+	$(".KEYPERFORMANCEAllCls").html(spinner);
 	var json={
 		fromDateStr:"01-01-1977",
 		toDateStr:moment().format("DD-MM-YYYY"),
@@ -1280,13 +1266,13 @@ function getKeyPerformanceIndicatorsInfo()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp){
-			$(".keyPerforamanceAllCls").html(ajaxresp[0].pcPercentage.toFixed(2));
+			$(".KEYPERFORMANCEAllCls").html(ajaxresp[0].pcPercentage.toFixed(2));
 		}
 	});
 }
 function getWaterSourceDeatils2()
 {
-	$(".waterSourceAllCls").html(spinner);
+	$(".WATERSOURCEAllCls").html(spinner);
 	var json = {
 		year:"2017",
 		locationType:'state',
@@ -1306,12 +1292,12 @@ function getWaterSourceDeatils2()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(ajaxresp){
-		$(".waterSourceAllCls").html(ajaxresp[0].totalSurfaceWaterSourceCount);
+		$(".WATERSOURCEAllCls").html(ajaxresp[0].totalSurfaceWaterSourceCount);
 	});
 }
 function getSchemeWiseWorkDetails()
 {
-	$(".worksAllCls").html(spinner);
+	$(".WORKSAllCls").html(spinner);
 	var json = {
 		  fromDateStr:'01-01-1977',
 		  toDateStr:moment().format("DD-MM-YYYY"),
@@ -1332,13 +1318,13 @@ function getSchemeWiseWorkDetails()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp){
-			$(".worksAllCls").html(ajaxresp[0].basicList[0].workCompletedCount);
+			$(".WORKSAllCls").html(ajaxresp[0].basicList[0].workCompletedCount);
 		}
 	});
 	
 }
 function getEOfcDepartWiseOverviewDetails(){
-	$(".itecEOfficeAllCls").html(spinner);
+	$(".EOFFICEAllCls").html(spinner);
 	var json = {
 		fromDate:"2017-11-01",	
 		toDate:"2017-12-31"			
@@ -1356,16 +1342,16 @@ function getEOfcDepartWiseOverviewDetails(){
 		if(result !=null && result.length>0){
 			for(var i in result){
 				if(result[i].departmentName != null && result[i].departmentName == "ITE & C")
-					$(".itecEOfficeAllCls").html(result[i].totalCount+'/<small style="font-size:14px;top:0px;">'+result[i].created+'</small>');
+					$(".EOFFICEAllCls").html(result[i].totalCount+'/<small style="font-size:14px;top:0px;">'+result[i].created+'</small>');
 			}
 		}else{
-			$(".itecEOfficeAllCls").html("0/<small style='color:#fff;font-size:14px;top:0px;'>0</small>");
+			$(".EOFFICEAllCls").html("0/<small style='color:#fff;font-size:14px;top:0px;'>0</small>");
 		}
 		
 	});		
 }
 function getAPInnovationSocietyOverview(){
-	$(".itecApInnovationAllCls").html(spinner);
+	$(".APINNOVATIONSOCIETYAllCls").html(spinner);
 	var json = {
 		fromDate:"",
 		toDate:"",
@@ -1381,11 +1367,11 @@ function getAPInnovationSocietyOverview(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$(".itecApInnovationAllCls").html(result.startups);
+		$(".APINNOVATIONSOCIETYAllCls").html(result.startups);
 	});	
 }
 function getITSectorWiseOverviewDetails(){
-	$(".itecPromotionsAllCls").html(spinner);
+	$(".PROMOTIONSAllCls").html(spinner);
 	var json = {
 		category:'ALL'
 	}
@@ -1403,13 +1389,13 @@ function getITSectorWiseOverviewDetails(){
 		{
 			if(result[i].sector == "Total")
 			{
-				$(".itecPromotionsAllCls").html(result[i].investment+" Cr");
+				$(".PROMOTIONSAllCls").html(result[i].investment+" Cr");
 			}
 		}
 	});	
 }
 function getSessionToken(){
-	$(".waterTankChlorinationAllCls").html(spinner);	
+	$(".WATERTANKCHLORINATIONAllCls").html(spinner);	
 	var json = {
 		leadName:"village_chlorination@psmri.com",
 		category:"vc_2991_12",
@@ -1486,7 +1472,7 @@ function getWaterBodyCumulativeCountsDay(sessionToken,oneMnthChrlPerc){
 				if(oneDayChlValue > 0 && oneDayCheckedValue > 0){
 					 oneDayChrlPerc = oneDayChlValue*100/oneDayCheckedValue;
 				}
-				 $(".waterTankChlorinationAllCls").html(waterClorinationData(oneMnthChrlPerc,oneDayChrlPerc));
+				 $(".WATERTANKCHLORINATIONAllCls").html(waterClorinationData(oneMnthChrlPerc,oneDayChrlPerc));
 			}
 				
 		});
@@ -1609,7 +1595,7 @@ function getNregaCovergancePROtherLevelData(type)
 	}); 
 }
 function getCMEDOBOverview(){
-	$(".cmeodbAllCls").html(spinner)
+	$(".CMEODBAllCls").html(spinner)
 	var json = {
 		 sector:"B",
 		 fromDate:moment().subtract(20, 'years').startOf('year').format("YYYY-MM-DD"),
@@ -1626,14 +1612,14 @@ function getCMEDOBOverview(){
 		}
 	}).done(function(result){
 		if(result !=null){
-			$(".cmeodbAllCls").html(result.overviewDtls.total+ "/" +result.overviewDtls.aprooved)
+			$(".CMEODBAllCls").html(result.overviewDtls.total+ "/" +result.overviewDtls.aprooved)
 		}else{
-			$(".cmeodbAllCls").html("0 /0")
+			$(".CMEODBAllCls").html("0 /0")
 		}
 	});		
 }
 function getBioMetricDashboardOverViewDtls(){
-	$(".bioMetricDashBoardAllCls").html(spinner);
+	$(".BIOMETRICDASHBOARDAllCls").html(spinner);
 	var json = {
 		deptCode:"27001701024"
 	 }
@@ -1648,9 +1634,9 @@ function getBioMetricDashboardOverViewDtls(){
 		}
 	}).done(function(result){
 		if(result !=null){
-			$(".bioMetricDashBoardAllCls").html(result.totalCount+"/"+result.presentCount);
+			$(".BIOMETRICDASHBOARDAllCls").html(result.totalCount+"/"+result.presentCount);
 		} else {
-			$(".bioMetricDashBoardAllCls").html("0/0");
+			$(".BIOMETRICDASHBOARDAllCls").html("0/0");
 		}
 		
 	});	
@@ -1723,7 +1709,7 @@ function waterClorinationData(oneMnthChrlPerc,oneDayChrlPerc){
 
 function getManWorkDaysOfNrega()
 {
-	$(".ManDaysAllCls").html(spinner);
+	$(".ManDaysComparisionAllCls").html(spinner);
 	var startDate = moment().format("DD/MM/YYYY");
 	var toDateArr = startDate.split('/');
 	var json = {
@@ -1741,16 +1727,16 @@ function getManWorkDaysOfNrega()
 			xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(ajaxresp) {
-			$(".ManDaysAllCls").html("0%");
+			$(".ManDaysComparisionAllCls").html("0%");
 			if( ajaxresp != null){
-				 $(".ManDaysAllCls").html(mandaysData(ajaxresp));
+				 $(".ManDaysComparisionAllCls").html(mandaysData(ajaxresp));
 			}	
 		}
 	});
 }
 
 function getManWorksExpenditureAbstarct(){
-	 $(".monthWiseExpAllCls").html(spinner); 
+	 $(".ExpenditureAllCls").html(spinner); 
 	 var month;
 	var lastMonthDate = moment().subtract(29,'days').format('YYYY-MM')
 	var toDateArr = lastMonthDate.split("-");
@@ -1797,8 +1783,8 @@ function getManWorksExpenditureAbstarct(){
 		},
 		success: function(ajaxresp) {
 		  if(ajaxresp != null){
-			 //$(".spikeOverAchvmntAllCls").html(ajaxresp[0].count);
-			 $(".monthWiseExpAllCls").html(mandaysExpData(ajaxresp));
+			 //$(".ExpenditureAllCls").html(ajaxresp[0].count);
+			 $(".ExpenditureAllCls").html(mandaysExpData(ajaxresp));
 		  }
      }
   });
@@ -1914,8 +1900,210 @@ function mandaysExpData(ajaxresp)
 	return str;
 }
 
+
+function getPageWiseComponents(pageId){
+	var json = {pageId:pageId} 
+	$.ajax({                
+		type:'POST',    
+		url: 'getPageWiseComponentDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		 if(result !=null){
+			 buildPageWiseComponents(result,pageId);
+		 }
+	});		
+}
+
+function buildPageWiseComponents(result,pageId){
+	var str='';
+	for(var i in result){
+		str+='<section style="margin-bottom: 100px;display:none;" landing-block="'+result[i].shortName+'"  class="showhideCls">';
+			str+='<div class="container">';
+			
+				str+='<div class="row text-right m_top10">';
+					str+='<i class="fa fa-edit editBlockListCls" title="edit priorities" id="editBlockList'+result[i].shortName+'" style="cursor:pointer;font-size:18px;" attr_name="'+result[i].shortName+'"></i>';
+					str+='<i class="fa fa-save saveBlockListCls" title="save priorities" id="saveBlockList'+result[i].shortName+'" style="display:none;cursor:pointer;font-size:18px;" attr_name="'+result[i].shortName+'"></i>';
+					str+='<span id="errorBlockDivId'+result[i].shortName+'"></span>';
+				str+='</div>';
+				str+='<div class="row">';
+				str+='<div id="sortableListBlocks'+result[i].shortName+'">';
+			for(var j in result[i].subList){
+					str+='<div class="col-sm-4 draggable-element'+result[i].shortName+'" attr_blockId="'+result[i].id+'" attr_block_listIds="'+result[i].subList[j].id+'">';
+							str+='<div class="whiteBlock">';
+								str+='<img src="Assests/img/'+imagesObj[result[i].subList[j].name]+'" >';
+								str+='<h4 style="display: inline-block;">'+result[i].subList[j].name+'</h4>';
+								
+								if(result[i].subList[j].name == "AC WORKS"){
+									str+='<div class=" " style="text-align: right">';
+									str+='<h2 class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="margin-top: 0px"><span>161</span></h2>';
+								}else if(result[i].subList[j].name == "LED MONITORING"){
+									str+='<div class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="text-align: right">';
+									str+='<h2 class="" style="margin-top: 0px"><span></span></h2>';
+								}else if(result[i].subList[j].name == "WATER TANK CHLORINATION"){
+									str+='<div class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="text-align: right">';
+									str+='<h2 class="" style="margin-top: 0px"><span></span></h2>';
+								}else if(result[i].subList[j].name == "Man Days Comparision"){
+									str+='<div class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="text-align: right">';
+									str+='<h2 class="" style="margin-top: 0px"><span></span></h2>';
+								}else{
+									str+='<div class=" " style="text-align: right">';
+									str+='<h2 class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="margin-top: 0px"><span></span></h2>';
+								}
+								
+									
+									str+='<p class="">'+blockHeadingObject[result[i].subList[j].name]+'</p>';
+								str+='</div>';
+								str+='<div class="block-footer">';
+									str+='<i class="fa fa-star starcolorChange '+result[i].subList[j].name.replace(/\s+/g, '')+'Color" title="click to add as favourite component."  attr_url="'+result[i].subList[j].url+'" attr_full_block_name="'+result[i].subList[j].name+'" attr_color_name="gray" attr_block_name="'+result[i].subList[j].name.replace(/\s+/g, '')+'" aria-hidden="true" attr_page_id="'+pageId+'"></i>';
+									str+='<a class="pull-right" href="'+result[i].subList[j].url+'" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+		}
+				str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</section>';
+	}
+	$("#blockWiseComponentDivId"+pageId).html(str);
+}
+$(document).on("click",".editBlockListCls",function(){
+	var blockName = $(this).attr("attr_name")
+	$("#saveBlockList"+blockName).show();
+	$("#editBlockList"+blockName).hide();
+	if(blockName == "fms"){
+		Sortable.create(sortableListBlocksfms);
+	}else if(blockName == "panchayat"){
+		Sortable.create(sortableListBlockspanchayat);
+	}else if(blockName == "rd"){
+		Sortable.create(sortableListBlocksrd);
+	}else if(blockName == "rws"){
+		Sortable.create(sortableListBlocksrws);
+	}else if(blockName == "itec"){
+		Sortable.create(sortableListBlocksitec);
+	} 
+	
+	
+});
+$(document).on("click",".saveBlockListCls",function(){
+	var blockName = $(this).attr("attr_name")
+	spinner = '<div class="spinner" style="height:20px;width:20px;display:inline-block"><div class="dot1"></div><div class="dot2"></div></div>';
+	
+	
+	var orderList = [];
+	var blockId='';
+	
+	if(blockName == "fms"){
+		$("#errorBlockDivId"+blockName).html(spinner);
+		 orderList = [];
+		 blockId='';
+		$(".draggable-elementfms").each(function(){
+			orderList.push($(this).attr("attr_block_listIds"));
+			blockId = $(this).attr("attr_blockId")
+		});
+	}else if(blockName == "panchayat"){
+		$("#errorBlockDivId"+blockName).html(spinner);
+		orderList = [];
+		 blockId='';
+		$(".draggable-elementpanchayat").each(function(){
+			orderList.push($(this).attr("attr_block_listIds"));
+			blockId = $(this).attr("attr_blockId")
+		});
+	}else if(blockName == "rd"){
+		$("#errorBlockDivId"+blockName).html(spinner);
+		orderList = [];
+		 blockId='';
+		$(".draggable-elementrd").each(function(){
+			orderList.push($(this).attr("attr_block_listIds"));
+			blockId = $(this).attr("attr_blockId")
+		});
+	}else if(blockName == "rws"){
+		$("#errorBlockDivId"+blockName).html(spinner);
+		orderList = [];
+		 blockId='';
+		$(".draggable-elementrws").each(function(){
+			orderList.push($(this).attr("attr_block_listIds"));
+			blockId = $(this).attr("attr_blockId")
+		});
+	}else if(blockName == "itec"){
+		$("#errorBlockDivId"+blockName).html(spinner);
+		orderList = [];
+		 blockId='';
+		$(".draggable-elementitec").each(function(){
+			orderList.push($(this).attr("attr_block_listIds"));
+			blockId = $(this).attr("attr_blockId")
+		});
+	} 
+	
+	var json = {
+		id			 :blockId,
+		componentIds : orderList
+	}
+	$.ajax({ 
+		type:'POST',    
+		url: 'savePageWiseComponents',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if (result.statusCode==0 && result.message=="success"){
+			
+			if(blockName == "fms"){
+				$("#errorBlockDivIdfms").html("Your Priorities Saved Successfully")
+				$("#saveBlockListfms").hide();
+				$("#editBlockListfms").show();
+				Sortable.create(sortableListBlocksfms);
+				setTimeout(function(){
+					$("#errorBlockDivIdfms").html(" ")
+				},2000)
+			}else if(blockName == "panchayat"){
+				$("#errorBlockDivIdpanchayat").html("Your Priorities Saved Successfully")
+				$("#saveBlockListpanchayat").hide();
+				$("#editBlockListpanchayat").show();
+				Sortable.create(sortableListBlockspanchayat);
+				setTimeout(function(){
+					$("#errorBlockDivIdpanchayat").html(" ")
+				},2000)
+			}else if(blockName == "rd"){
+				$("#errorBlockDivIdrd").html("Your Priorities Saved Successfully")
+				$("#saveBlockListrd").hide();
+				$("#editBlockListrd").show();
+				Sortable.create(sortableListBlocksrd);
+				setTimeout(function(){
+					$("#errorBlockDivIdrd").html(" ")
+				},2000)
+			}else if(blockName == "rws"){
+				$("#errorBlockDivIdrws").html("Your Priorities Saved Successfully")
+				$("#saveBlockListrws").hide();
+				$("#editBlockListrws").show();
+				Sortable.create(sortableListBlocksrws);
+				setTimeout(function(){
+					$("#errorBlockDivIdrws").html(" ")
+				},2000)
+			}else if(blockName == "itec"){
+				$("#errorBlockDivIditec").html("Your Priorities Saved Successfully")
+				$("#saveBlockListitec").hide();
+				$("#editBlockListitec").show();
+				Sortable.create(sortableListBlocksitec);
+				setTimeout(function(){
+					$("#errorBlockDivIditec").html(" ")
+				},2000)
+			} 
+			
+		}
+	});	
+});
+
 function getFieldManDaysWorkDetails(){
-	 $(".fieldManDaysAllCls").html(spinner); 
+	 $(".FieldManDaysAllCls").html(spinner); 
 	var json = {
 		locationType: "state"
 	}
@@ -1931,8 +2119,8 @@ function getFieldManDaysWorkDetails(){
 		},
 		success: function(ajaxresp) {
 		  if(ajaxresp != null){
-			 //$(".spikeOverAchvmntAllCls").html(ajaxresp[0].count);
-			 $(".fieldManDaysAllCls").html(ajaxresp[0].today);
+			 //$(".FieldManDaysAllCls").html(ajaxresp[0].count);
+			 $(".FieldManDaysAllCls").html(ajaxresp[0].today);
 		  }
      }
   });
