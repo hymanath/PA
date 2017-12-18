@@ -21,19 +21,23 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 	}
 
 	public List<Long> getExistingPetitionRepresenteeDetailsById(String voterCardNo,String adharCardNo){
-		StringBuilder str = new StringBuilder();
-		str.append(" select distinct model.pmRepresenteeId from PmRepresentee model where model.isDeleted ='N' ");
-		if(voterCardNo != null && voterCardNo.trim().length()>0){
-			str.append(" and ( model.voterCardNo = '"+voterCardNo+"' ");
-			if(adharCardNo != null && adharCardNo.trim().length()>0)
-				str.append(" OR model.adharCardNo = '"+adharCardNo+"'");
-			str.append(" )");
-		}
-		else if(adharCardNo != null && adharCardNo.trim().length()>0)
-			str.append(" and  model.adharCardNo = '"+adharCardNo+"' ");
 		
-		Query query = getSession().createQuery(str.toString());
-		return query.list();
+		if(voterCardNo != null && !voterCardNo.toString().trim().isEmpty()){
+			StringBuilder str = new StringBuilder();
+			str.append(" select distinct model.pmRepresenteeId from PmRepresentee model where model.isDeleted ='N' ");
+			if(voterCardNo != null && voterCardNo.trim().length()>0){
+				str.append(" and ( model.voterCardNo = '"+voterCardNo+"' ");
+				if(adharCardNo != null && adharCardNo.trim().length()>0)
+					str.append(" OR model.adharCardNo = '"+adharCardNo+"'");
+			str.append(" )");
+			}
+			else if(adharCardNo != null && adharCardNo.trim().length()>0)
+				str.append(" and  model.adharCardNo = '"+adharCardNo+"' ");
+			
+			Query query = getSession().createQuery(str.toString());
+			return query.list();
+		}
+		return null;
 	}
 
 	public List<Long> getExistingPetitionRepresenteeDetailsByRefId(Long refCandidateId){
