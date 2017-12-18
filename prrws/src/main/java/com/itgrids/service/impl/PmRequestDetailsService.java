@@ -820,8 +820,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					
 					if(i == 0){
 						 returnVO.setPetitionId(petitionId);
-						 returnVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[35]));
-						 returnVO.setEstimateCost(commonMethodsUtilService.getStringValueForObject(param[35]));
+						 returnVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[27]));
+						 returnVO.setEstimateCost(commonMethodsUtilService.getStringValueForObject(param[26]));
 						 returnVO.setEndorsmentNo(commonMethodsUtilService.getStringValueForObject(param[22]));
 						 if(commonMethodsUtilService.getStringValueForObject(param[24]).length()>10)
 							 returnVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[24]).substring(0, 10));
@@ -907,7 +907,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							if(childReffVO.getRefCandidateId() != null && refVO.getRefCandidateId() != null && childReffVO.getRefCandidateId().longValue() == refVO.getRefCandidateId().longValue()){
 								childReffVO.setDesignation(childReffVO.getDesignation()+", "+refVO.getDesignation());
 								if(commonMethodsUtilService.isMapValid(refFilesListMap)){
-									childReffVO.getFileNamesList().addAll(refFilesListMap.get(refVO.getRefCandidateId()));
+									childReffVO.getFileNamesList().addAll(refFilesListMap.get(refVO.getId()));
 								 }
 								isAvailable=true;
 							}
