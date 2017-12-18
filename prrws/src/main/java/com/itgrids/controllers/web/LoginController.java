@@ -42,6 +42,12 @@ public class LoginController {
         return "petitionsLoginPage";
     }
 	
+	@GetMapping("/petitionsLogout")
+    public String petitionsLogout(HttpServletRequest request) {
+		request.getSession().invalidate();
+        return "petitionsLoginPage";
+    }
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
     public String viewDashboard(HttpServletRequest request) {
 		UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
