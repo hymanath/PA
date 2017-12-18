@@ -45,7 +45,7 @@ $(document).on("click",".selfRepresenceCls",function(){
 			globalWorkTypeCount='';
 			globalWorkTypeCount=0;			
 			buildSelfAndRepresenteeDetails(typeVal);
-		}else if(typeVal == "represent"){
+		}else if(typeVal == "represent" || typeVal == "representee"){
 			$("#selfDetailsDivId").html('');
 			alreadyCandidateId=[]
 			globalWorkTypeCount='';
@@ -346,7 +346,7 @@ function getPanchayats(levelVal,counterId,typeVal,typeChange){
 function buildSelfAndRepresenteeDetails(typeVal){
 	$("#"+typeVal+"DetailsDivId").html(spinner);
 	var str='';
-	if(typeVal == "represent"){
+	if(typeVal == "represent" || typeVal == "representee"){
 				str+='<div class="row m_top20">';
 				str+='<div class="col-sm-12">';
 					str+='<h3 class="font_weight text-capital f_22">Representee Details:</h3>';
@@ -423,6 +423,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='</select>';
 				str+='<span class="ErrCls"  id="designationErr'+typeVal+'"></span>';
 				str+='<input type="hidden" id="repTdpCadreId'+typeVal+'" value="" name="tdpCadreId"/>';
+				str+='<input type="hidden" id="repImagePathId'+typeVal+'" value="" name="repImagePath"/>';
 			str+='</div>';
 			str+='</div>';
 	}
@@ -608,7 +609,7 @@ $(document).on("click",".candidateAddedView",function(){
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $(this).attr("attr_candidateId");
 	var representeeType='SELF';
-	if(typeVal=='represent'){
+	if(typeVal=='represent' || typeVal=='representee'){
 		representeeType='REPRESENTEE';
 	}else{
 		if(refCandCount == 1){
@@ -1848,7 +1849,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	noofWorks = $("#noofWork"+typeVal).val();
 	workCost = $("#workCost"+typeVal).val();
 	
-	if(typeVal =='represent'){
+	if(typeVal =='represent' || typeVal =='representee'){
 		var repName=$('#name'+typeVal+'').val();
 		var repMobileNo=$('#mobileNumber'+typeVal+'').val();
 		var repEmail=$('#emailId'+typeVal+'').val();
@@ -1923,7 +1924,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	
 	if(totalRefCount == undefined || totalRefCount == "undefined" || totalRefCount == null || parseInt(totalRefCount) == 0 ){
 		flag = false;
-		if(typeVal =='represent')
+		if(typeVal =='represent' || typeVal =='representee')
 			$('#refCandidatesErr').html('Please add atleast one referral details.');
 		else 
 			$('#refCandidatesErr').html('Please add Self member details.');
@@ -2279,7 +2280,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			},
 			error: function(request,error) { 
 				$("#savingDetailsSpinner").html('')
-				alert(" Please check total uploaded files size should not increase more than 10 MB.Then try again.");	
+				alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
 				$('#saveButtonId').show();				
 			}
      });	 
@@ -2410,6 +2411,7 @@ function getRegistrationPersonDetails(voterId,typeVal){
 	$('#constituencyrepresent').val(0);
 	$('#mandalrepresent').val(0);
 	$('#panchayatrepresent').val(0);
+	$("#repImagePathId"+typeVal).val('');
 	 $("#districtrepresent").trigger('chosen:updated');
 	 $("#constituencyrepresent").trigger('chosen:updated');
 	 $("#mandalrepresent").trigger('chosen:updated');
@@ -2449,6 +2451,11 @@ function getRegistrationPersonDetails(voterId,typeVal){
 			if(result.tdpCadreId != null && result.tdpCadreId !='null' && parseInt(result.tdpCadreId)>0){
 				$("#repTdpCadreId"+typeVal).val(result.tdpCadreId);
 			}
+			if(result.imageBase64String != null && result.imageBase64String.length > 0 && result.imageBase64String !='null'){
+				$("#repImagePathId"+typeVal).val("http://www.mytdp.com/images/cadre_images/"+result.imageBase64String);
+			  }else  if(result.imagePath != null && result.imagePath.length > 0 && result.imagePath !='null'){
+				$("#repImagePathId"+typeVal).val(result.imagePath);
+			  }
 			if(result.districtId != null){
 				getAllDistrictsListInState(result.districtId);
 			}
