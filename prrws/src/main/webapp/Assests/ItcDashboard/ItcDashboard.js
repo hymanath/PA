@@ -35,6 +35,9 @@ $(document).on("click","#promotionsBlockSwitch li",function(){
 	getITSectorCategoryWiseDetails("RED",typeOfBlock);
 	getITSectorCategoryWiseDetails("GREEN",typeOfBlock);
 	getITSectorCategoryWiseDetails("DROPPED",typeOfBlock);
+	getITSectorLeadCategoryWiseDetails("RED",typeOfBlock);
+	getITSectorLeadCategoryWiseDetails("GREEN",typeOfBlock);
+	getITSectorLeadCategoryWiseDetails("DROPPED",typeOfBlock);
 });
 onloadCalls();
 function onloadCalls(){
@@ -274,7 +277,7 @@ function departmentBlockWiseDetails(divId)
 												collapse+='<h4>INFORMATION TECHNOLOGY OVERVIEW</h4>';
 												collapse+='<hr/>';
 											collapse+='</div>';
-											collapse+='<div class="col-sm-5">';
+											collapse+='<div class="col-sm-3">';
 												collapse+='<ul class="list-inline switch-btn" id="promotionsBlockSwitch">';
 													collapse+='<li class="active" attr_type="Total">ALL</li>';
 													collapse+='<li attr_type="Electronics">Electronics</li>';
@@ -282,13 +285,23 @@ function departmentBlockWiseDetails(divId)
 													collapse+='<li attr_type="IT">IT</li>';
 												collapse+='</ul>';
 											collapse+='</div>';
+											collapse+='<div class="col-sm-2" id="">';
+												collapse+='<i class="glyphicon glyphicon-download pull-right" id="addIcon" aria-hidden="true" style="cursor:pointer;font-size:35px;"></i>';
+												collapse+='<div class="col-sm-12" id="promotionsStageDroppedBlockId" style="display:none;"></div>';
+												collapse+='<div class="col-sm-12" id="promotionsStageDroppedBlockId1" style="display:none;"></div>';
+											collapse+='</div>';
 										collapse+='</div>';
 									
 									collapse+='</div>';
 									collapse+='<div class="col-sm-3" id="promotionsTotalBlockId"></div>';
-									collapse+='<div class="col-sm-3" id="promotionsStageGreenBlockId"></div>';
-									collapse+='<div class="col-sm-3" id="promotionsStageRedBlockId"></div>';
-									collapse+='<div class="col-sm-3" id="promotionsStageDroppedBlockId"></div>';
+									collapse+='<div class="col-sm-4" id="">';
+										collapse+='<div class="col-sm-12" id="promotionsStageGreenBlockId"></div>';
+										collapse+='<div class="col-sm-12" id="promotionsStageGreenBlockId1"></div>';
+									collapse+='</div>';
+									collapse+='<div class="col-sm-4" id="">';
+										collapse+='<div class="col-sm-12" id="promotionsStageRedBlockId"></div>';
+										collapse+='<div class="col-sm-12" id="promotionsStageRedBlockId1"></div>';
+									collapse+='</div>';
 									collapse+='<div class="col-sm-12">';
 										collapse+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
 										var	levelWiseBlockArrPromotions =[{name:'IT',id:'1'},{name:'Electronics',id:'2'},{name:'Fintech',id:'3'}];
@@ -481,6 +494,9 @@ function departmentBlockWiseDetails(divId)
 		getITSectorCategoryWiseDetails("RED",'Total');
 		getITSectorCategoryWiseDetails("GREEN",'Total');
 		getITSectorCategoryWiseDetails("DROPPED",'Total');
+		getITSectorLeadCategoryWiseDetails("RED",'Total');
+		getITSectorLeadCategoryWiseDetails("GREEN",'Total');
+		getITSectorLeadCategoryWiseDetails("DROPPED",'Total');
 		getITDistrictWiseDetails("IT","ALL",'body');
 		getITDistrictWiseDetails("Electronics","ALL",'body');
 		getITDistrictWiseDetails("Fintech","ALL",'body');
@@ -804,6 +820,7 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 	}else if(type == "DROPPED")
 	{
 		$("#promotionsStageDroppedBlockId").html(spinner);
+		$("#droppedDataFormModal").html(spinner);
 	}
 	var json = {
 		category:type
@@ -822,7 +839,7 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 		{
 			//if(typeOfBlock == 'Total')
 			//{
-				getITSectorLeadCategoryWiseDetails(type,typeOfBlock);
+				//getITSectorLeadCategoryWiseDetails(type,typeOfBlock);
 			//}
 			return buildData(result,type);
 		}else{
@@ -835,6 +852,7 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 			}else if(type == "DROPPED")
 			{
 				$("#promotionsStageDroppedBlockId").html("");
+				$("#addIcon").hide();
 			}
 		}
 	});		
@@ -863,10 +881,8 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 					str+='</div>';
 				}else if(type == "DROPPED")
 				{	
-					str+='<div class="white_block_ITC" style="padding:5px 10px;background-color:#91CCC7;color:#fff;cursor:pointer;" id="droppedShowHideId">';
-						str+='<p class="text-center">';
-							str+='<span>Dropped</span>';
-						str+='</p>';
+					str+='<div class="white_block_ITC" style="padding:5px 10px;background-color:#91CCC7;color:#fff;cursor:pointer;display:none;" id="droppedShowHideId">';
+						str+='<i class="fa fa-plus" id="addIcon" aria-hidden="true"></i>';
 					str+='</div>';
 				}
 					//str+='<div class="white_block_ITC m_top20" style="background-color:#F1F1F1">';
@@ -884,10 +900,10 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 							str+='</p>';
 						}else if(type == "DROPPED")
 						{
-							str+='<div class="white_block_ITC m_top20 droppedClass" style="background-color:#F1F1F1;display:none;">';
-							str+='<p>';
-								str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">Overall</span>';
-							str+='</p>';
+							str+='<div class="white_block_ITC m_top20 droppedClass" style="background-color:#F1F1F1;">';
+								str+='<p>';
+									str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">Overall</span>';
+								str+='</p>';
 						}
 						str+='<div class="row m_top20">';
 							str+='<div class="col-sm-4">';
@@ -916,12 +932,25 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 			}else if(type == "DROPPED")
 			{
 				$("#promotionsStageDroppedBlockId").html(str);
+				$('#droppedDataFormModal').html(str);
+				$("#addIcon").show();
 			}
 		}
 	}
 	
 }
 function getITSectorLeadCategoryWiseDetails(type,sector){
+	if(type == "GREEN")
+	{
+		$("#promotionsStageGreenBlockId1").html(spinner);
+	}else if(type == "RED")
+	{
+		$("#promotionsStageRedBlockId1").html(spinner);
+	}else if(type == "DROPPED")
+	{
+		$("#promotionsStageDroppedBlockId1").html(spinner);
+		$("#droppedDataFormModal1").html(spinner);
+	}
 	var json = {
 		leadName:"0",
 		category:type,
@@ -940,6 +969,18 @@ function getITSectorLeadCategoryWiseDetails(type,sector){
 		if(result != null && result.length > 0)
 		{
 			return buildData(result,type);
+		}else{
+			if(type == "GREEN")
+			{
+				$("#promotionsStageGreenBlockId1").html("");
+			}else if(type == "RED")
+			{
+				$("#promotionsStageRedBlockId1").html("");
+			}else if(type == "DROPPED")
+			{
+				$("#promotionsStageDroppedBlockId1").html("");
+				$("#addIcon").hide();
+			}
 		}
 	});
 	function buildData(result,type)
@@ -963,10 +1004,13 @@ function getITSectorLeadCategoryWiseDetails(type,sector){
 					str+='</p>';
 				}else if(type == "DROPPED")
 				{
-					str+='<div class="white_block_ITC m_top20 droppedClass" style="background-color:#F1F1F1;display:none;">';
+					str+='<div class="white_block_ITC m_top20 droppedClass" style="background-color:#F1F1F1;">';
 					str+='<p>';
 						str+='<span style="padding:5px 10px;background-color:#91CCC7;color:#fff">'+result[i].category+' <span style="font-size:12px;"> - '+result[i].name+'</span> </span>';
 					str+='</p>';
+			
+
+					
 				}
 				str+='<div class="row m_top20">';
 					str+='<div class="col-sm-4">';
@@ -986,13 +1030,15 @@ function getITSectorLeadCategoryWiseDetails(type,sector){
 		}
 		if(type == "GREEN")
 		{
-			$("#promotionsStageGreenBlockId").append(str);
+			$("#promotionsStageGreenBlockId1").html(str);
 		}else if(type == "RED")
 		{
-			$("#promotionsStageRedBlockId").append(str);
+			$("#promotionsStageRedBlockId1").html(str);
 		}else if(type == "DROPPED")
 		{
-			$("#promotionsStageDroppedBlockId").append(str);
+			$("#promotionsStageDroppedBlockId1").html(str);
+			$('#droppedDataFormModal1').html(str);
+			$("#addIcon").show();
 		}
 	}
 }
@@ -4262,4 +4308,8 @@ $(document).on("click",".mobilePanelBlock",function(){
 		'slow');
 		$(".borderColorCSSBlack").addClass("border_black")
 	}
+});
+$(document).on("click","#addIcon",function(){
+	$('#droppedBlockModalId').modal('show');
+
 });
