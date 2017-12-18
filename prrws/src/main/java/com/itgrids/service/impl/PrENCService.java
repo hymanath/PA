@@ -20,6 +20,7 @@ import com.itgrids.dto.EncWorksVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.service.IPrENCService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
+import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -40,6 +41,9 @@ public class PrENCService implements IPrENCService {
 
 	@Autowired
 	private IConstituencyDAO constituencyDAO;
+	
+	@Autowired
+	private CommonMethodsUtilService commonMethodsUtilService;
 	
 	
 	@Override
@@ -255,19 +259,29 @@ public class PrENCService implements IPrENCService {
 
 	@Override
 	public List<EncWorksVO> getLocationWiseWorksInformation(InputVO inputVO) {
+		List<EncWorksVO> finalList= new ArrayList<EncWorksVO>();
+				
 		try{
 			Map<Long,EncWorksVO> locationMap= new HashMap<Long, EncWorksVO>();
 			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/wbsMinisterRoadMinMaxMv",null);
 			
+			List<Object[]> locationData = null;
 			if(inputVO.getLocationType().equalsIgnoreCase("d")){
-				List<Object[]> districtdata= districtDAO.getEncDistricts();
-			
+				locationData= districtDAO.getEncDistricts();
 			}else if(inputVO.getLocationType().equalsIgnoreCase("m")){
-				List<Object[]> mandalData= tehsilDAO.getEncMandals();
-				//EncWorksVO workVo = locationMap.get(json.getLong("DIST_CODE"));
+				locationData= tehsilDAO.getEncMandals();
 			}else if(inputVO.getLocationType().equalsIgnoreCase("A")){
-				List<Object[]> constituencyData= constituencyDAO.getEncconstituencies();
-				//EncWorksVO workVo = locationMap.get(json.getLong("DIST_CODE"));
+				locationData= constituencyDAO.getEncconstituencies();
+			}
+			for (Object[] objects : locationData) {
+				EncWorksVO locationVO = locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					if(locationVO == null){
+						locationVO = new EncWorksVO();
+						locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), locationVO);
+					}
+				
 			}
 			
 			if (response.getStatus() != 200) {
@@ -280,22 +294,51 @@ public class PrENCService implements IPrENCService {
 					JSONArray array = Obj.getJSONArray("result");
 					for (int i = 0; i < array.length(); i++) {
 						JSONObject json = array.getJSONObject(i);
-						if(inputVO.getLocationType().equalsIgnoreCase("d")){
+						if(inputVO.getLocationType().equalsIgnoreCase("d") || inputVO.getLocationType().equalsIgnoreCase("m")){
 							EncWorksVO workVo = locationMap.get(json.getLong("DIST_CODE"));
-							if(workVo == null){
-								workVo = new EncWorksVO();
-								workVo.setLocationId(json.getLong("DIST_CODE"));
-								workVo.setLocationName(json.getString(""));
-							}else{
-								
+							if(workVo != null){
+								workVo.setAdminSanctionCount(json.getLong("TOT_WORKS"));
+								workVo.setTechnicallySanctionedCount(json.getLong("TOT_WORKS_TECHSANC"));
+								workVo.setCompletedCount(json.getLong("TOTWORKSCOMPLETED"));
+								workVo.setNotGrounded(json.getLong("TOT_WORKS_NOTGROUNDED"));
+								workVo.setUnderProcessCount(json.getLong("TOT_WORKS_ONGOING"));
+								workVo.setGroundedCount(json.getLong("GROUNDED"));
 							}
-						}else if(inputVO.getLocationType().equalsIgnoreCase("m")){
-							locationMap.get(json.getLong("MAND_CODE"));
+						}else if(inputVO.getLocationType().equalsIgnoreCase("C")){
+							for (Object[] objects : locationData) {						
+								EncWorksVO workVo = locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+								if(workVo != null){
+									List<Long> getMandalIds= constituencyDAO.getTehsilIds(commonMethodsUtilService.getLongValueForObject(objects[0]));
+									if(getMandalIds.contains(json.getLong("MAND_CODE"))){
+										workVo.setAdminSanctionCount(json.getLong("TOT_WORKS"));
+										workVo.setTechnicallySanctionedCount(json.getLong("TOT_WORKS_TECHSANC"));
+										workVo.setCompletedCount(json.getLong("TOTWORKSCOMPLETED"));
+										workVo.setNotGrounded(json.getLong("TOT_WORKS_NOTGROUNDED"));
+										workVo.setUnderProcessCount(json.getLong("TOT_WORKS_ONGOING"));
+										workVo.setGroundedCount(json.getLong("GROUNDED"));
+									}
+								}
+								
+							}	
+							
+						}else if(inputVO.getLocationType().equalsIgnoreCase("s")){
+							EncWorksVO workVo=  new EncWorksVO();
+							workVo.setAdminSanctionCount(json.getLong("TOT_WORKS"));
+							workVo.setTechnicallySanctionedCount(json.getLong("TOT_WORKS_TECHSANC"));
+							workVo.setCompletedCount(json.getLong("TOTWORKSCOMPLETED"));
+							workVo.setNotGrounded(json.getLong("TOT_WORKS_NOTGROUNDED"));
+							workVo.setUnderProcessCount(json.getLong("TOT_WORKS_ONGOING"));
+							workVo.setGroundedCount(json.getLong("GROUNDED"));
+							finalList.add(workVo);
 						}
 						
 					}
 				}
 				
+			}
+			if(!inputVO.getLocationType().equalsIgnoreCase("s")){
+				
+				finalList.addAll(locationMap.values());
 			}
 		}catch(Exception e){
 			LOG.error("Exception raised at PrEncService - getLocationWiseWorksInformation  ", e);
