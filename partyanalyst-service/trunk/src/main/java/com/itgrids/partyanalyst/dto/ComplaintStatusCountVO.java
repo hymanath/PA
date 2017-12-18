@@ -25,11 +25,31 @@ public class ComplaintStatusCountVO {
 	private Long donationCMReliefMembsCount= 0l;
 	private List<ComplaintStatusCountVO> categoryList = new ArrayList<ComplaintStatusCountVO>();
 	private List<ComplaintStatusCountVO> statusList = new ArrayList<ComplaintStatusCountVO>();
-	
+	private String statusVal;
+	private Long maxIndex=0l;
+	private Long startIndex=0l;
 	private Long id;
 	
 	
 	
+	public String getStatusVal() {
+		return statusVal;
+	}
+	public void setStatusVal(String statusVal) {
+		this.statusVal = statusVal;
+	}
+	public Long getMaxIndex() {
+		return maxIndex;
+	}
+	public void setMaxIndex(Long maxIndex) {
+		this.maxIndex = maxIndex;
+	}
+	public Long getStartIndex() {
+		return startIndex;
+	}
+	public void setStartIndex(Long startIndex) {
+		this.startIndex = startIndex;
+	}
 	public Long getId() {
 		return id;
 	}

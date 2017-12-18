@@ -27,7 +27,22 @@ public class GrivenceStatusVO implements Cloneable {
 	private String perc;
 	private List<GrivenceStatusVO> subList1;
 	private List<GrivenceStatusVO> subList2;
+	private List<Long> statusList = new ArrayList<Long>(0);
+	private List<Long> daysList = new ArrayList<Long>(0);
 	
+	
+	public List<Long> getStatusList() {
+		return statusList;
+	}
+	public void setStatusList(List<Long> statusList) {
+		this.statusList = statusList;
+	}
+	public List<Long> getDaysList() {
+		return daysList;
+	}
+	public void setDaysList(List<Long> daysList) {
+		this.daysList = daysList;
+	}
 	public String getGrivenceType() {
 		return grivenceType;
 	}
