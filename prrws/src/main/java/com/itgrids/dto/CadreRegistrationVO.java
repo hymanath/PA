@@ -47,6 +47,8 @@ public class CadreRegistrationVO {
 	private Long villageId;
 	private Long pincode;
 	private PaymentGatewayVO paymentGatewayVO = new PaymentGatewayVO();
+	private Long statusCode;
+	
 	public Long getId() {
 		return id;
 	}
@@ -286,6 +288,12 @@ public class CadreRegistrationVO {
 	}
 	public void setPaymentGatewayVO(PaymentGatewayVO paymentGatewayVO) {
 		this.paymentGatewayVO = paymentGatewayVO;
+	}
+	public Long getStatusCode() {
+		return statusCode;
+	}
+	public void setStatusCode(Long statusCode) {
+		this.statusCode = statusCode;
 	}
 	
 	
