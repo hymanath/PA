@@ -31,6 +31,8 @@ $('#dateRangePickerMGNF').on('apply.daterangepicker', function(ev, picker) {
 $(document).on("click",".removeWorkCls",function(){
 	var divIdStr = $(this).attr('attr_id');
 	$('#'+divIdStr+'').remove();
+	$(this).remove();
+	globalInnerWorksCount = parseInt(globalInnerWorksCount)-1;
 });
 $(document).on("click",".selfRepresenceCls",function(){
 	refCandCount=0;
@@ -402,7 +404,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 						str+='<span id="noOfWorksId'+typeVal+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
-					str+='<label>WORKS IN COST (in Lakh) <span class="starColor">*</span></label>';
+					str+='<label>WORKS IN COST  <span class="starColor">*</span></label>';
 					str+='<input type="text"  name="worksList[0].estimateCost" class="form-control m_top5 height45 isNumberCls" id="workCost'+typeVal+'" placeholder="Enter Work Cost" onkeyUp="checkIsNumber(this.id,this.value)">';
 					str+='<span id="workCostId'+typeVal+'"></span>';
 				str+='</div>';
@@ -981,7 +983,7 @@ function buildTemplateWorkDetails(typeVal){
 										str+='</select>';
 									str+='</div>';
 									str+='<div class="col-sm-3">';
-										str+='<label>WORK IN COST  (in Lakh) <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<label>WORK IN COST   <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
 										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].estimateCost" class="form-control m_top5 height45 validateCls amountCls isNumberCls" onkeyUp="validateAmount(this.value,this.id,\''+typeVal+'\');checkIsNumber(this.id,this.value)" id="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter Work Cost" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0"/>';
 										str+='<span class="ErrCls" id="ErrappendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span>';
 									str+='</div>';
@@ -1266,7 +1268,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
-										clonedTemplate+='<label>WORK IN COST (in Lakh) <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<label>WORK IN COST  <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
 										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls isNumberCls" onkeyUp="validateAmount(this.value,this.id,\''+typeVal+'\');checkIsNumber(this.id,this.value)"  id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"/>';
 										clonedTemplate+='<span  class="ErrCls" id="ErrappendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span>';
 									clonedTemplate+='</div>';
@@ -1382,7 +1384,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
-							clonedInnerTemplate+='<label>WORK IN COST  (in Lakh) <span class="starColor">*</span><span class="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<label>WORK IN COST   <span class="starColor">*</span><span class="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
 							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45 validateInnerCls amountCls isNumberCls" onkeyUp="validateAmount(this.value,this.id,\''+typeVal+'\');checkIsNumber(this.id,this.value)"  id="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter Work Cost" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"/>';
 							clonedInnerTemplate+='<span  class="ErrCls"  id="ErrappendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span>';
 						clonedInnerTemplate+='</div>';
@@ -1797,6 +1799,32 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		//return;
 	}else{
 		$("#workCostId"+typeVal).html("");
+	}
+	
+	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
+	if((parseInt(estimationWorksCount)>parseInt(globalInnerWorksCount)) || (parseInt(estimationWorksCount)<parseInt(globalInnerWorksCount))){ 
+		alert("Max no of works data not matched. Please check once.");
+		flag = false;
+	}
+	
+	var enteredAmount =parseFloat(0.0);
+	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseFloat(value) <=0){
+				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				flag = false;
+				//return;
+			}else{
+				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
+			}
+		}
+	});
+	
+	if((enteredAmount<estimationAmount) || (enteredAmount>estimationAmount)){
+		alert("Work wise total estimation cost not matched. Please check once.");
+		flag = false;
 	}
 	
 	$(".validateCls").each(function(){
