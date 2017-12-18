@@ -406,7 +406,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				String fileExtensionStr = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."), file.getOriginalFilename().length());
 				
 				String fileName = datePath+fileExtensionStr;
-				String fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+fileName;
+				String fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+"/"+fileName;
 				
 				byte[] fileData = file.getBytes();
 				
