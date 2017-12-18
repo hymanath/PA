@@ -37,6 +37,8 @@ public class PetitionsWorksVO {
 	private String previousPetitionNo;
 	private List<PetitionsWorksVO> subWorksList = new ArrayList<PetitionsWorksVO>();
 	private List<MultipartFile> fileList = new ArrayList<MultipartFile>();
+	private List<KeyValueVO> subjectsList = new ArrayList<KeyValueVO>(0);
+	private List<KeyValueVO> subSubjectsList = new ArrayList<KeyValueVO>(0);
 	private Long workTypeId;
 	private String workType;
 	private String status;
@@ -275,5 +277,17 @@ public class PetitionsWorksVO {
 	}
 	public void setStatusId(Long statusId) {
 		this.statusId = statusId;
+	}
+	public List<KeyValueVO> getSubjectsList() {
+		return subjectsList;
+	}
+	public void setSubjectsList(List<KeyValueVO> subjectsList) {
+		this.subjectsList = subjectsList;
+	}
+	public List<KeyValueVO> getSubSubjectsList() {
+		return subSubjectsList;
+	}
+	public void setSubSubjectsList(List<KeyValueVO> subSubjectsList) {
+		this.subSubjectsList = subSubjectsList;
 	}
 }

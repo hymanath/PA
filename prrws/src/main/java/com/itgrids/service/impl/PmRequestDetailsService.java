@@ -34,6 +34,7 @@ import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
+import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.PetitionsWorksVO;
 import com.itgrids.dto.PmRequestEditVO;
@@ -55,6 +56,7 @@ import com.itgrids.model.PmRepresenteeDesignation;
 import com.itgrids.model.PmRepresenteeRefDetails;
 import com.itgrids.model.PmRepresenteeRefDocument;
 import com.itgrids.model.PmSubWorkDetails;
+import com.itgrids.service.ILocationDetailsService;
 import com.itgrids.service.IPmRequestDetailsService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -111,6 +113,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	private IPetitionStatusDAO petitionStatusDAO;
 	@Autowired
 	private IPmOfficerUserDAO pmOfficerUserDAO;
+	
+	@Autowired
+	private ILocationDetailsService locationDetailsService;
+	
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO){
 		ResponseVO responseVO = new ResponseVO();
 		try {
@@ -864,6 +870,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 representeeVO.setRefCandidateId(commonMethodsUtilService.getLongValueForObject(param[31]));
 							 representeeVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[51]));
 							 AddressVO addressVO = setAddressDetailsToResultView(param[4],param[5],param[6],param[7],param[8]);
+							 
 							 addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[37]));
 							 addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[38]));
 							 addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[39]));
@@ -961,6 +968,20 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setGrantName(commonMethodsUtilService.getStringValueForObject(param[29]));
 						vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[30]));
 						vo.setStatusId(commonMethodsUtilService.getLongValueForObject(param[9]));
+						
+						if(vo.getDeptId() != null && vo.getDeptId().longValue()>0L){
+							List<KeyValueVO> subjectsList = locationDetailsService.getPmSubjectList(vo.getDeptId());
+							if(commonMethodsUtilService.isListOrSetValid(subjectsList)){
+								vo.getSubjectsList().addAll(subjectsList);
+							}
+						}
+						if(vo.getSubjectId() != null && vo.getSubjectId().longValue()>0L){
+							List<KeyValueVO> subSubjectsList = locationDetailsService.getPmSubSubjectList(vo.getSubjectId());
+							if(commonMethodsUtilService.isListOrSetValid(subSubjectsList)){
+								vo.getSubSubjectsList().addAll(subSubjectsList);
+							}
+						}
+							
 						 AddressVO refAddressVO = setAddressDetailsToResultView(param[12],param[13],param[14],param[15],param[16]);
 						 refAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[21]));
 						 refAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[22]));
@@ -1010,10 +1031,32 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param4));
 			 addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param5));
 			 addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param6));
-			 if(commonMethodsUtilService.getLongValueForObject(param8) >0L)// muncipality
+			 boolean isMandal = false;
+			 if(commonMethodsUtilService.getLongValueForObject(param8) >0L){// muncipality{
 				 addressVO.setTehsilId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(param8)));
-			 else
+		 	}else{
 				 addressVO.setTehsilId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(param7)));
+				 isMandal = true;
+		 	}
+			 
+			 List<LocationVO> constituencyList = locationDetailsService.getConstituencyNamesByDistrictId(addressVO.getDistrictId(),"all",null);
+			 if(commonMethodsUtilService.isListOrSetValid(constituencyList)){
+				 for (LocationVO vo : constituencyList) {
+					 addressVO.getConstituencyList().add(new KeyValueVO(vo.getLocationId(), vo.getLocationName()));
+				}
+			 }
+			 
+			 List<KeyValueVO> mandalsList = locationDetailsService.getTehsilsAndLocalElectionBodyForConstituencyId(addressVO.getAssemblyId(),"all",null);
+			 if(commonMethodsUtilService.isListOrSetValid(mandalsList)){
+					 addressVO.getMandalsList().addAll(mandalsList);
+			 }
+			 
+			 if(isMandal){
+				 List<KeyValueVO> panchaytsList = locationDetailsService.getPanchayatsByTehsilId(commonMethodsUtilService.getLongValueForObject(param7));
+				 if(commonMethodsUtilService.isListOrSetValid(constituencyList)){
+					 addressVO.getPanchaytsList().addAll(panchaytsList);
+				 } 
+			 }
 			 
 		} catch (Exception e) {
 			LOG.error("Exception Occured in setAddressDetailsToResultView "+e.getMessage());

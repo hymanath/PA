@@ -1,5 +1,8 @@
 package com.itgrids.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddressVO implements java.io.Serializable{
 
 	private Long id;
@@ -48,6 +51,10 @@ public class AddressVO implements java.io.Serializable{
 	
 	private Long divisionId;
 	private String divisionName;
+	
+	List<KeyValueVO> constituencyList = new ArrayList<KeyValueVO>(0);
+	List<KeyValueVO> mandalsList = new ArrayList<KeyValueVO>(0);
+	List<KeyValueVO> panchaytsList = new ArrayList<KeyValueVO>(0);
 	
 	public Long getId() {
 		return id;
@@ -247,5 +254,22 @@ public class AddressVO implements java.io.Serializable{
 	public void setDivisionName(String divisionName) {
 		this.divisionName = divisionName;
 	}
-	
+	public List<KeyValueVO> getConstituencyList() {
+		return constituencyList;
+	}
+	public void setConstituencyList(List<KeyValueVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+	public List<KeyValueVO> getMandalsList() {
+		return mandalsList;
+	}
+	public void setMandalsList(List<KeyValueVO> mandalsList) {
+		this.mandalsList = mandalsList;
+	}
+	public List<KeyValueVO> getPanchaytsList() {
+		return panchaytsList;
+	}
+	public void setPanchaytsList(List<KeyValueVO> panchaytsList) {
+		this.panchaytsList = panchaytsList;
+	}
 }
