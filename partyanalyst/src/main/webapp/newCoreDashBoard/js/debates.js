@@ -452,18 +452,14 @@ function BuildCandidateOverAllPerformanceCohort(result,participantLocIdArry)
 													str+='<td>';
 															str+='<h5 ><a class="overAllCandidateCls" attr_party_id ='+result[i].coreDebateVOList[0].coreDebateVOList[0].id+' attr_candidate_id='+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateId+'  style="cursor:pointer;">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</a></h5>';
 													str+='</td>';
-													
+													 str+='<td>';
+															str+='<span class="">'+result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc+'</span>';
+													str+='</td>'; 
 													if(result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc !=null){
 													if(result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc.toString().split(".")[1] ==null  || result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc.toString().split(".")[1] == undefined || result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc.toString().split(".")[1].length<0){								
 															result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc = result[i].coreDebateVOList[j].coreDebateVOList[0].scalePerc.toString().concat(".0");								
 														}
 													}
-													
-													
-													str+='<td>';
-															str+='<span class="">'+result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc+'</span>';
-													str+='</td>';
-													
 													for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
 													
 													//Digit Adding
