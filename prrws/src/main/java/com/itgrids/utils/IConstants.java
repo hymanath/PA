@@ -60,9 +60,8 @@ public interface IConstants {
     public static final String DEFAULT_MAIL_SERVER = "server";
     public static final String EMAIL_USERNAME = "info@itgrids.com";
     public static final String EMAIL_PASSWORD = "itgrids$678";
-    //public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content\\document\\";
-    public static final String STATIC_CONTENT_FOLDER_URL = "D:\\static_content\\document\\";
-    public static final String STATIC_CONTENT_PETITIONS_FOLDER_URL = "/app/static_content\\images\\";
+    public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/PRRWS/";
+    public static final String PETITIONS_FOLDER = "Petition_Documents";
     public static final String SUCCESS = "Success";
     public static final String FAILURE = "Failure";
     public static final String LOCALHOST = "localhost";
