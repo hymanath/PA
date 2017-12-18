@@ -1221,7 +1221,6 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	}
 	public  List<TrainingCampSurveyVO> getTrainingCampFeedBackDetailsProgramWise(List<Long> programIdList,Long userAccessLevelId,List<Long> userAccessLevelValues,List<Long> enrollmentYrIds,List<Long> committeeLevelIdList ){
 		List<TrainingCampSurveyVO> programlist = new ArrayList<TrainingCampSurveyVO>();
-		
 		try{
 			
 			String ProgramlistString = programIdList.get(0).toString();
