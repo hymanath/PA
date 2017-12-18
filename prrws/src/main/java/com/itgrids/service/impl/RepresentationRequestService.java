@@ -108,7 +108,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 				PetitionRefferer petitionRefferer = savePetitionReferralDetails(petitionMember.getPetitionMemberId(),dataVO.getPetitionMemberVO().getReferrerCandidateIdsList(),dataVO.getUserId());
 				if(dataVO.getFilesList() != null && dataVO.getFilesList().size()>0){
 					for (MultipartFile file : dataVO.getFilesList()) {
-						Document petitionRefDocument = saveDocument(file,IConstants.STATIC_CONTENT_PETITIONS_FOLDER_URL,dataVO.getUserId());
+						Document petitionRefDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,dataVO.getUserId());
 						PetitionReffererDocument petitionReffererDocument = savePetitionReffererDocument(petitionRefferer.getPetitionReffererId(),petitionRefDocument.getDocumentId(),dataVO.getUserId());
 					}
 				}
@@ -120,7 +120,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 					PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = savePetitionSubWorkDetails(petitionWorkDetails.getPetitionWorkDetailsId(),dataVO);
 					if(dataVO.getWorkFilesList() != null && dataVO.getWorkFilesList().size()>0){
 						for (MultipartFile file : dataVO.getWorkFilesList()) {
-							Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_PETITIONS_FOLDER_URL,dataVO.getUserId());
+							Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,dataVO.getUserId());
 							savePetitionWorkDocument(petitionWorkDetails.getPetitionWorkDetailsId(),petitionWorkDocument.getDocumentId(),dataVO.getUserId());
 						}
 					}
