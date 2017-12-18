@@ -1817,6 +1817,7 @@
 	</bean>	        
 	<bean id="coreDashBoardGrivanceAction" class="com.itgrids.partyanalyst.web.action.CoreDashBoardGrivanceAction" singleton="false">
 		<property name="coreDashboardCoreService" ref="coreDashboardCoreService"></property>
+		<property name="schedulerService" ref="schedulerService" />
 	</bean>		
 </beans>	
 	

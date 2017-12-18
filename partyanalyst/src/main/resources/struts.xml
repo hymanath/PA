@@ -18655,5 +18655,11 @@
 			<param name="root">grievanceReportVO</param>
 		</result>
 	 </action>
+	 
+	 <action name="runTheJobForEveryDayToSendEmpAttendanceDeptWise" class="coreDashBoardGrivanceAction"  method="runTheJobForEveryDayToSendEmpAttendanceDeptWise">
+		<result type="json" name="success">
+			<param name="root">grievanceReportVO</param>
+		</result>
+	 </action>
  </package>
 </struts>
