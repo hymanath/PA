@@ -10532,7 +10532,8 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		
 	 		 if(searchLevelId !=null && searchLevelId.longValue()>0l && searchLevelValues !=null && searchLevelValues.size()>0){
 		         if(searchLevelId ==2l){
-		           sbE.append("  and  model.userAddress.state.stateId in (:searchLevelValues)  ");
+		           //sbE.append("  and  model.userAddress.state.stateId in (:searchLevelValues)  ");
+		        	 sbE.append("  and  model.userAddress.district.districtId  between 11 and 23 ");
 		         }else if(searchLevelId ==3l){
 		           sbE.append(" and model.userAddress.district.districtId in (:searchLevelValues) ");		           
 		         }else if(searchLevelId ==4l){
@@ -10571,9 +10572,11 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		  if(locationTypeId !=null && locationTypeId.longValue()>0l && locationValues !=null && locationValues.size()>0){
 	 		        query.setParameterList("locationValues", locationValues);
 	 		   }
+	 		  if(searchLevelId !=null && searchLevelId.longValue() != 2l){
 		      if(searchLevelId !=null && searchLevelId.longValue()>0l && searchLevelValues !=null && searchLevelValues.size()>0){
 		    	  query.setParameterList("searchLevelValues", searchLevelValues);
 		      }
+	 		  }
 	 		
 	 		query.setParameter("deptId", deptId);
 	 		query.setParameter("pendingStatusId", 1l);
