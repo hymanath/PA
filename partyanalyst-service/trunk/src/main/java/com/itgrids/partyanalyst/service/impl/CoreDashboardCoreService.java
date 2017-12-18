@@ -1243,9 +1243,9 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			 ClientConfig clientConfig = new DefaultClientConfig();
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
-		     WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingFeedbackDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_PROGRAM_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
-		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingFeedbackDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
-			 ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+		     //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingFeedbackDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_PROGRAM_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+		     WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingFeedbackDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+			 ClientResponse response = webResource2.accept("application/json").type("application/json").get(ClientResponse.class);
 			 if(response.getStatus() != 200){
 				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			  }else{
@@ -1317,9 +1317,9 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			 ClientConfig clientConfig = new DefaultClientConfig();
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
-		     WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
-		     //WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
-			 ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+		     //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+		     WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+			 ClientResponse response = webResource2.accept("application/json").type("application/json").get(ClientResponse.class);
 			 if(response.getStatus() != 200){
 				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			  }else{
@@ -1379,9 +1379,9 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			ClientConfig clientConfig = new DefaultClientConfig();
 			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 			Client client = Client.create(clientConfig);
-			WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getCategoryAndIssuetypeStatusCount/"+inputType+"/"+fromDate+"/"+toDate+"/"+stateIds+"/"+enrollmentYrId+"/"+task+"/");
-			//WebResource webResource2 = client.resource("http://mytdp.com/Grievance/WebService/getCategoryAndIssuetypeStatusCount/"+inputType+"/"+fromDate+"/"+toDate+"/"+stateIds+"/"+enrollmentYrId+"/"+task+"/");
-			ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+			//WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getCategoryAndIssuetypeStatusCount/"+inputType+"/"+fromDate+"/"+toDate+"/"+stateIds+"/"+enrollmentYrId+"/"+task+"/");
+			WebResource webResource2 = client.resource("http://mytdp.com/Grievance/WebService/getCategoryAndIssuetypeStatusCount/"+inputType+"/"+fromDate+"/"+toDate+"/"+stateIds+"/"+enrollmentYrId+"/"+task+"/");
+			ClientResponse response = webResource2.accept("application/json").type("application/json").get(ClientResponse.class);
 			if(response.getStatus() != 200){
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			}else{
