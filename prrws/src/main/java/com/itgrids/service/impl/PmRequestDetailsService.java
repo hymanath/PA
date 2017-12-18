@@ -672,10 +672,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			Map<Long,RepresenteeViewVO> mapData = new HashMap<Long,RepresenteeViewVO>();
 			List<Object[]> searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
-			List<Long> statusIds = new ArrayList<Long>();
+			/*List<Long> statusIds = new ArrayList<Long>();
 			statusIds.add(6l);
 			statusIds.add(7l);
-			statusIds.add(8l);
+			statusIds.add(8l);*/
 			
 			Long minPending = commonMethodsUtilService.getLongValueForObject(inputVO.getStartValue());
 			Long maxPending = commonMethodsUtilService.getLongValueForObject(inputVO.getEndValue());
@@ -714,10 +714,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					if(param[8] != null){
 						vo.setRaisedDate(commonMethodsUtilService.getStringValueForObject(param[8]).substring(0, 10));
 					}
-					if(statusId.longValue() != 0l && !statusIds.contains(statusId) && petionPendingDays.longValue()>=minPending.longValue()
+					/*if(statusId.longValue() != 0l && !statusIds.contains(statusId) && petionPendingDays.longValue()>=minPending.longValue()
 							&& petionPendingDays.longValue() <= maxPending.longValue() && vo != null){
 						vo.setStatusType("pending");
-					}
+					}*/
 				}
 			}
 			

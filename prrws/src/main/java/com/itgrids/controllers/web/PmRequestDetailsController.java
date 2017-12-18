@@ -83,12 +83,12 @@ public class PmRequestDetailsController {
 	       return locationDetailsService.getDistrictBySearchType(inputMap.get("searchType"));
 	    }
 	    @RequestMapping(value ="/getConstituenciesBySearchTypeAndDistrict",method = RequestMethod.POST)
-	    public @ResponseBody List<KeyValueVO> getConstituenciesBySearchTypeAndDistrict(@RequestBody Map<String,String> inputMap ) {
-	       return locationDetailsService.getConstituenciesBySearchTypeAndDistrictId(inputMap.get("searchType"),Long.valueOf(inputMap.get("locationId")));
+	    public @ResponseBody List<KeyValueVO> getConstituenciesBySearchTypeAndDistrict(@RequestBody InputVO inputVO ) {
+	       return locationDetailsService.getConstituenciesBySearchTypeAndDistrictId(inputVO.getFilterType(),inputVO.getSearchLvlVals());
 	    }
 	    @RequestMapping(value ="/getMandalsBySearchTypeAndConstituency",method = RequestMethod.POST)
-	    public @ResponseBody List<KeyValueVO> getMandalsBySearchTypeAndConstituency(@RequestBody Map<String,String> inputMap ) {
-	       return locationDetailsService.getMandalsBySearchTypeAndConstituencyId(inputMap.get("searchType"),Long.valueOf(inputMap.get("locationId")));
+	    public @ResponseBody List<KeyValueVO> getMandalsBySearchTypeAndConstituency(@RequestBody InputVO inputVO ) {
+	    	return locationDetailsService.getMandalsBySearchTypeAndConstituencyId(inputVO.getFilterType(),inputVO.getSearchLvlVals());
 	    }
 	    @RequestMapping(value ="/getDesignationsBySearchType",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getDesignationsBySearchType(@RequestBody Map<String,String> inputMap ) {

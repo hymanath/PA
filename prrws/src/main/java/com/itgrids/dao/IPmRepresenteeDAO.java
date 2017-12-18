@@ -11,8 +11,8 @@ public interface IPmRepresenteeDAO extends GenericDao<PmRepresentee, Long> {
 	public List<Long> getExistingPetitionRepresenteeDetailsByRefId(Long refCandidateId);
 	
 	public List<Object[]> getAllDistrictsBySearchType();
-	public List<Object[]> getAlConstituenciesBySearchType(Long districtId);
-	public List<Object[]> getAllMandalsBySearchType(Long constituencyId);
+	public List<Object[]> getAlConstituenciesBySearchType(List<Long> districtIds);
+	public List<Object[]> getAllMandalsBySearchType(List<Long> constituencyIds);
 	
 	
 }

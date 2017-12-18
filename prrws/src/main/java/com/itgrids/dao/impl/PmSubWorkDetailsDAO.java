@@ -64,33 +64,33 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		return query.list();
 	}
 	
-	public List<Object[]> getAllConstituenciesByDistricId(Long districtId){
+	public List<Object[]> getAllConstituenciesByDistricId(List<Long> districtIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.locationAddress.constituency.constituencyId");
 		sb.append(",model.locationAddress.constituency.name ");
 		sb.append(" from PmSubWorkDetails model where model.isDeleted ='N' ");
-		if(districtId != null && districtId.longValue() >0L ){ 
-			sb.append("and model.locationAddress.districtId =:districtId ");
+		if(districtIds != null && districtIds.size() >0 ){ 
+			sb.append("and model.locationAddress.districtId in (:districtIds) ");
 		}
 		sb.append( "order by model.locationAddress.constituency.name asc ");
 		Query query =getSession().createQuery(sb.toString());
-		if(districtId != null && districtId.longValue() >0L ){ 
-			query.setParameter("districtId", districtId);
+		if(districtIds != null && districtIds.size() >0 ){ 
+			query.setParameterList("districtIds", districtIds);
 		}
 		return query.list();
 	}
-	public List<Object[]> getAllMandalsByDistricId(Long constincyIdId){
+	public List<Object[]> getAllMandalsByDistricId(List<Long> constincyIdIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.locationAddress.tehsil.tehsilId");
 		sb.append(",model.locationAddress.tehsil.tehsilName ");
 		sb.append(" from PmSubWorkDetails model where model.isDeleted ='N' ");
-		if(constincyIdId != null && constincyIdId.longValue() >0L ){ 
-			sb.append("and model.locationAddress.constituencyId =:constincyIdId ");
+		if(constincyIdIds != null && constincyIdIds.size() >0L ){ 
+			sb.append("and model.locationAddress.constituencyId in (:constincyIdIds) ");
 		}
 		sb.append( "order by model.locationAddress.tehsil.tehsilName asc ");
 		Query query =getSession().createQuery(sb.toString());
-		if(constincyIdId != null && constincyIdId.longValue() >0L ){ 
-			query.setParameter("constincyIdId", constincyIdId);
+		if(constincyIdIds != null && constincyIdIds.size() >0L ){ 
+			query.setParameterList("constincyIdIds", constincyIdIds);
 		}
 		return query.list();
 	}

@@ -101,34 +101,34 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		Query query =getSession().createQuery(sb.toString());
 		return query.list();
 	}
-	public List<Object[]> getAlConstituenciesByReferalAndDesignationBydistrict(Long districtId){
+	public List<Object[]> getAlConstituenciesByReferalAndDesignationBydistrict(List<Long> districtIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRefCandidate.address.constituency.constituencyId ");
 		sb.append( ",model.pmRefCandidate.address.constituency.name from PmRefCandidateDesignation model "
 				+ "where model.isDeleted='N' ");
-		if(districtId != null && districtId.longValue() > 0L){
-			sb.append("and model.pmRefCandidate.address.districtId =:districtId ");
+		if(districtIds != null && districtIds.size() > 0){
+			sb.append("and model.pmRefCandidate.address.districtId  in (:districtIds) ");
 		}
 		sb.append(" order by model.pmRefCandidate.address.constituency.name asc ");
 		Query query =getSession().createQuery(sb.toString());
-		if(districtId != null && districtId.longValue() > 0L){
-			query.setParameter("districtId", districtId);
+		if(districtIds != null && districtIds.size() > 0){
+			query.setParameterList("districtIds", districtIds);
 		}
 		return query.list();
 	}
 	
-	public List<Object[]> getAllMandalsByReferalAndDesignationBydistrict(Long constituencyId){
+	public List<Object[]> getAllMandalsByReferalAndDesignationBydistrict(List<Long> constituencyIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRefCandidate.address.tehsil.tehsilId ");
 		sb.append( ",model.pmRefCandidate.address.tehsil.tehsilName from PmRefCandidateDesignation model "
 				+ "where model.isDeleted='N' ");
-		if(constituencyId != null && constituencyId.longValue() > 0L){
-			sb.append("and model.pmRefCandidate.address.constituencyId =:constituencyId ");
+		if(constituencyIds != null && constituencyIds.size() > 0L){
+			sb.append("and model.pmRefCandidate.address.constituencyId in (:constituencyIds) ");
 		}
 		sb.append(" order by model.pmRefCandidate.address.tehsil.tehsilName asc");
 		Query query =getSession().createQuery(sb.toString());
-		if(constituencyId != null && constituencyId.longValue() > 0L){
-			query.setParameter("constituencyId", constituencyId);
+		if(constituencyIds != null && constituencyIds.size() > 0L){
+			query.setParameterList("constituencyIds", constituencyIds);
 		}
 		return query.list();
 	}

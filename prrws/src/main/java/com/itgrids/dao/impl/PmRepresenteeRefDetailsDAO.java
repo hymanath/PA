@@ -1,5 +1,6 @@
 package com.itgrids.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -128,11 +129,11 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		}else if(filterType != null && filterType.equalsIgnoreCase("endorsmentNO") && filterValue != null && !filterValue.isEmpty()){
 			sb.append(" and model.petition.endorsmentNo =:filterValue ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("department") && filterValue != null && !filterValue.isEmpty()){
-			sb.append(" and model1.pmDepartment.pmDepartmentId =:filterValue ");
+			sb.append(" and model1.pmDepartment.pmDepartmentId in (:filterValue) ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("referrelDesignation") && filterValue != null && !filterValue.isEmpty()){
-			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId =:filterValue ");
+			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:filterValue) ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("representeeDesignation") && filterValue != null && !filterValue.isEmpty()){
-			sb.append(" and model.pmRepresenteeDesignation.pmDesignation.pmDesignationId =:filterValue ");
+			sb.append(" and model.pmRepresenteeDesignation.pmDesignation.pmDesignationId in (:filterValue) ");
 		}
 		if(inputVO.getFromRange() != null && inputVO.getToRange() != null){
 			sb.append(" and model.petition.noOfWorks between :fromNoOfWorks and :toNoOfWorks " );
@@ -154,7 +155,14 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				&& (filterType.equalsIgnoreCase("mobile") || filterType.equalsIgnoreCase("endorsmentNO") )){
 			query.setParameter("filterValue", filterValue);
 		}else if(filterValue != null && !filterValue.isEmpty() && !filterType.equalsIgnoreCase("name") && !filterType.equalsIgnoreCase("email")){
-			query.setParameter("filterValue", Long.valueOf(filterValue));
+			String[] strArr = filterValue.split(",");
+			List<Long> filterVals = new ArrayList<Long>();
+			if(strArr != null && strArr.length >0){
+				for(String str :strArr){
+					filterVals.add(Long.valueOf(str));
+				}
+			}
+			query.setParameterList("filterValue", filterVals);
 		}
 		if(inputVO.getFromRange() != null && inputVO.getToRange() != null){
 			query.setParameter("fromNoOfWorks", inputVO.getFromRange());

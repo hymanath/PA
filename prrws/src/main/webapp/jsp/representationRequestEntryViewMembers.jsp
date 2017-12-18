@@ -13,6 +13,7 @@
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.css" media="screen" />
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <!--<link href="Assests/Plugins/sliderbar/bootstrap-slider.css" rel="stylesheet" type="text/css"/>-->
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
@@ -63,7 +64,7 @@
 													<h4><a target="_blank" href="representationRequestEntry">ADD PETITION</a></h4>
 												</div>
 												<div class="col-sm-6">
-													<h4 class=""><a href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
+													<h4 class=""><a target="_blank" href="representationRequestEntry">VIEW PETITION</a></h4>
 												</div>
 											</div>
 										</div>
@@ -145,15 +146,15 @@
 											</div>
 											<div class="col-sm-3" id="designationDiv" style="display:none;">
 												<label> Designation </label>
-												<select class="form-control chosen-select v" id="designationsId">
-													<option value="0">Select Designation</option>
+												<select class="form-control chosen-select v" id="designationsId" multiple>
+													<!--<option value="0">Select Designation</option>-->
 												</select>
 												<div class="error_colorCls" id="designationErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="departMentsDiv" style="display:none;">
 											<label> Department</label>
-												<select class="form-control chosen-select clearDataCls" id="departmentId">
-													<option value="0">Select Department</option>
+												<select class="form-control chosen-select clearDataCls" id="departmentId" multiple>
+													<!--<option value="0">Select Department</option>-->
 												</select>
 												<div class="error_colorCls" id="departMentsErrDiv"></div>
 											</div>	
@@ -179,22 +180,22 @@
 											</div>
 											<div class="col-sm-3" id="districtCandDiv">
 												<label>District</label>
-												<select class="form-control chosen-select clearDataCls" id="districtCandId">
-													<option value="0">Select District</option>
+												<select class="form-control chosen-select clearDataCls" id="districtCandId" multiple>
+													<!--<option value="0">All</option>-->
 												</select>
 												<div class="error_colorCls" id="districtCandErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="constituencyCanDiv">
 											<label>Constituency</label>
-												<select class="form-control chosen-select clearDataCls" id="constituencyCanId">
-													<option value="0">Select Constituency</option>
+												<select class="form-control chosen-select clearDataCls" id="constituencyCanId" multiple>
+													<!--<option value="0">All</option>-->
 												</select>
 												<div class="error_colorCls" id="constituencyCanErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="mandalCanDiv">
 											<label>Mandal</label>
-												<select class="form-control chosen-select clearDataCls" id="mandalCanId">
-													<option value="0">Select Mandal</option>
+												<select class="form-control chosen-select clearDataCls" id="mandalCanId" multiple>
+													<!--<option value="0">All</option>-->
 												</select>
 												<div class="error_colorCls" id="mandalCanErrDiv"></div>
 											</div>
@@ -298,7 +299,7 @@
   <div class="modal-dialog" role="document" style="width:90%;margin:auto">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<div class="col-sm-11">
 			<h4 class="modal-title text-capital" id="representeeDetailsHeadingId" style="text-align:center;font-weight: bold"></h4> 
 		</div>
@@ -311,13 +312,35 @@
 		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default modalCloseCls" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default modalCloseCls closeSecondModal" data-dismiss="modal">Close</button>
       </div>
    
   </div>
 </div>
 </div>
-
+<div class="modal fade" id="docsModalDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:90%;margin:auto">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<div class="col-sm-11">
+			<h4 class="modal-title text-capital" id="" style="text-align:center;font-weight: bold"></h4> 
+		</div>
+		
+	    
+		 </div>
+      <div class="modal-body">
+        <div class="row" id="docsViewModalId">
+			
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default modalCloseCls closeSecondModal" data-dismiss="modal">Close</button>
+      </div>
+   
+  </div>
+</div>
+</div>
 
 
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -339,10 +362,15 @@
 <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js" type="text/javascript"></script>
-
+<!-- for file uploader -->
+<script type="text/javascript" src="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.js"></script>
 <script src="Assests/representationRequest/representationRequestEntryViewMembers.js" type="text/javascript"></script>
 <script type="text/javascript">
-
+$(document).on("click",".closeSecondModal",function(){
+    setTimeout(function(){
+      $("body").addClass("modal-open")
+    },1000);
+  });
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationRequestEntryViewMembers")));
 //wurl = wurl.replace("/PRRWS-1.0","");
