@@ -3739,6 +3739,7 @@
 	}
 	
 	function getTehsilsForConstituency(id,divId){
+		$("#"+divId).html("");
 		var json = {
 			id:id
 		}
