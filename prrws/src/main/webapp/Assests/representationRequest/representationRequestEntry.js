@@ -16,7 +16,7 @@ var globalInnerWorksCount=1;// minimum work =1
 setTimeout(function(){ 
 	$(".chosen-select").chosen();
 	//$('#self').trigger('click');
-	buildSelfAndRepresenteeDetails("self");
+	//buildSelfAndRepresenteeDetails("self");
 }, 2000);
 
 $("#dateRangePickerMGNF").daterangepicker({

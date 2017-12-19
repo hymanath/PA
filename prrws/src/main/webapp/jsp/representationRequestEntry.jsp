@@ -100,7 +100,7 @@
 												<div class="row m_top10">
 													<div class="col-sm-3">
 														<div class="borederCss">
-															<input type="radio" name="representationType" value="SELF" id="self" attr_name="selfMemberType" class="selfRepresenceCls defaultCheckCls" attr_type="self" checked>
+															<input type="radio" name="representationType" value="SELF" id="self" attr_name="selfMemberType" class="selfRepresenceCls defaultCheckCls" attr_type="self" >
 															<label><h5>SELF</span></h5>
 														</div>
 													</div>
