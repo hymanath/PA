@@ -81,7 +81,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		StringBuilder sb = new StringBuilder();
 		String  filterValue = inputVO.getFilterValue();
 		Long searchLevelId = inputVO.getSearchLevelId();
-		Long searchLevelValue = inputVO.getSearchLevelValue();
+		List<Long> searchLevelValues = inputVO.getSearchLvlVals();
 		String filterType = inputVO.getFilterType();
 		sb.append(" select model.petition.petitionId,model.petition.endorsmentNo,model.petition.endorsmentDate," +
 				" model.petition.estimationCost,model.pmRepresentee.name,model.pmRefCandidate.name," +
@@ -115,15 +115,15 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" where  model.pmRepresentee.isDeleted = 'N' and model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
 				" and  model.pmRefCandidateDesignation.isDeleted = 'N' and model.pmRefCandidate.isDeleted = 'N' and model.pmRepresentee.isDeleted = 'N'  ");
 		sb.append(" and model2.pmRefCandidateId=model.pmRefCandidateId   "); 
-		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValue != null && searchLevelValue.longValue()>0l){
+		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValues != null && searchLevelValues.size()>0){
 			if(searchLevelId.longValue() ==2L){
-				sb.append(" and  state.stateId=:searchLevelValue ");
+				sb.append(" and  state.stateId in (:searchLevelValues) ");
 			}else if(searchLevelId.longValue() ==3L){
-				sb.append(" and  district.districtId=:searchLevelValue ");
+				sb.append(" and  district.districtId in (:searchLevelValues) ");
 			}else if(searchLevelId.longValue() ==4L){
-				sb.append(" and  constituency.constituencyId=:searchLevelValue ");
+				sb.append(" and  constituency.constituencyId in (:searchLevelValues) ");
 			}else if(searchLevelId.longValue() ==5L){
-				sb.append(" and  tehsil.tehsilId=:searchLevelValue ");
+				sb.append(" and  tehsil.tehsilId in (:searchLevelValues) ");
 			}/*else if(searchLevelId.longValue() ==7L){
 				sb.append(" and  localElectionBody.localElectionBodyId=:searchLevelValue ");
 			}else if(searchLevelId.longValue() ==6L){
@@ -158,8 +158,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and model1.pmStatus.pmStatusId in (:statusIds) ");
 		}
 		Query query = getSession().createQuery(sb.toString());
-		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValue != null && searchLevelValue.longValue()>0l){
-			query.setParameter("searchLevelValue", searchLevelValue);
+		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValues != null && searchLevelValues.size()>0){
+			query.setParameterList("searchLevelValues", searchLevelValues);
 		}
 		if(filterType != null && !filterType.equalsIgnoreCase("name") && !filterType.equalsIgnoreCase("email") && filterValue != null && !filterValue.isEmpty()
 				&& (filterType.equalsIgnoreCase("mobile") || filterType.equalsIgnoreCase("endorsmentNO") )){
