@@ -134,7 +134,7 @@ function build(ajaxresp,locationType){
 	
 	var totalhabs=ajaxresp.totalHabs;
 	tableView+='<div class="table-responsive">';
-	tableView+='<table class="table encTable" id="dataTable1'+locationType+'" style="width:100%">';
+	tableView+='<table class="table encTable" id="dataTable1'+locationType+'" style="width:100%;border:1px solid lightgrey">';
 	tableView+='<thead class="text-capital">';
 	tableView+='<tr>';
 		tableView+='<th rowspan="2" style="background-color:#fff">'+locationType+'</th>';
@@ -223,6 +223,7 @@ var earthenCnt=0;
 var gravelCnt=0;
 var wbmCnt=0;
 function buildKeyPerformanceIndicatorsInfo(result){
+	var totalRoadLength=result.totalRoadsLength;
 	var mainArr=[];
 	var str='';
 	if(result !=null){
@@ -274,7 +275,7 @@ function buildKeyPerformanceIndicatorsInfo(result){
 			}
 		},
 		title: {
-			  text: 'TOTAL ROAD LENGTH',
+			  text: 'TOTAL ROAD LENGTH -'+totalRoadLength,
 			  //align: 'left',
 			   style: {
 				fontWeight: 'bold',
@@ -320,6 +321,8 @@ function buildKeyPerformanceIndicatorsInfo(result){
 				lineHeight: '20px',
 				color: '#000000',
 				//fontWeight: 'bold'
+				
+				
 			},
 			useHTML: true,
 			
@@ -353,7 +356,7 @@ function buildroadsBlock(ajaxresp){
 						str+='</div>';
 						str+='<div class="col-sm-8">';
 							str+='<h4><b>ROAD NETWORK</b></h4>';
-							str+='<h3><b>'+ajaxresp.totalRoadsLength+'</b></h3>';
+							str+='<h3 class="m_top10"><b>'+ajaxresp.totalRoadsLength+'</b></h3>';
 						str+='</div>';
 					str+='<div class="col-sm-12 border_cls pad_10_10">';
 						for(var i in ajaxresp.subList){
@@ -361,14 +364,14 @@ function buildroadsBlock(ajaxresp){
 							if(ajaxresp.subList[i].paramName != 'HABCON' && ajaxresp.subList[i].paramName != 'HABUNCON'){
 								str+='<div class="col-sm-3">';
 									str+='<b>'+ajaxresp.subList[i].paramName+'</b></br>';
-									str+='<p>'+ajaxresp.subList[i].paramValue+'</p>';
+									str+='<p style="font-size:18px">'+ajaxresp.subList[i].paramValue+'</p>';
 								str+='</div>';
 							}
 							
 						}
 					str+='</div>';
 					str+='<div class="col-sm-12 m_top10 roadnetwork_block">';
-						str+='<h5><b>CONVERTED </b><b class="pull-right">'+ajaxresp.totalRoadsLength+'</b></h5>';
+						str+='<h3><b style="font-size:17px">CONVERTED </b><b class="pull-right">'+ajaxresp.totalRoadsLength+'</b></h3>';
 					str+='</div>';
 				str+='</div>';
 				
@@ -385,16 +388,16 @@ function buildroadsBlock(ajaxresp){
 						}
 						str+='<div class="row">';
 							str+='<div class="col-sm-4">';
-								str+='<h6><b>TOTAL HABITATION COUNT</b></h6>';
-								str+='<h5 class="m_top10"><b>'+totalhab+'</b><span style="margin-left:10px;color:green"></span></h5>';
+								str+='<h5><b>TOTAL HABITATION COUNT</b></h5>';
+								str+='<h3 class="m_top10"><b>'+totalhab+'</b><span style="margin-left:10px;color:green"></span></h3>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
-								str+='<h6><b>HABITATION CONNECTED</b></h6>';
-								str+='<h5 class="m_top10"><b>'+habCon+'</b><span class="" style="margin-left:10px;color:green"></span></h5>';
+								str+='<h5><b>HABITATION CONNECTED</b></h5>';
+								str+='<h3 class="m_top10"><b>'+habCon+'</b><span class="" style="margin-left:10px;color:green"></span></h3>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
-								str+='<h6><b>HABITATION NOT-CONNECTED</b></h6>';
-								str+='<h5 class="m_top10"><b>'+habUnCon+'</b><span class="" style="margin-left:10px;color:green"></span></h5>';
+								str+='<h5><b>HABITATION NOT-CONNECTED</b></h5>';
+								str+='<h3 class="m_top10"><b>'+habUnCon+'</b><span class="" style="margin-left:10px;color:green"></span></h3>';
 							str+='</div>';
 							
 						
