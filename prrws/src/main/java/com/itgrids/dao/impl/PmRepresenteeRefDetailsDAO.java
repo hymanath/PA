@@ -34,9 +34,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" state.stateName, district.districtName,constituency.name,tehsil.tehsilName,localBody.name,electionType.electionType," +//37,38,39,40,41,42
 				" refState.stateName, refDistrict.districtName,refConstituency.name,refTehsil.tehsilName,refLocalBody.name,refElectionType.electionType,pmRefCandidate.tdpCadreId " +//43,44,45,46,47,48,49
 				" ,model.petition.representeeType" +//50
-				",pmRepresentee.tdpCadreId " +//51
-				" natState.stateName, natDistrict.districtName,natConstituency.name,natTehsil.tehsilName,natLocalBody.name,natElectionType.electionType" +//52,53,54,55,56,57
-				" natState.stateId, natDistrict.districtId,natConstituency.constituencyId,natTehsil.tehsilId,natLocalBody.localElectionBodyId, " +//58,59,60,61,62
+				",pmRepresentee.tdpCadreId, " +//51
+				" natState.stateName, natDistrict.districtName,natConstituency.name,natTehsil.tehsilName,natLocalBody.name,natElectionType.electionType," +//52,53,54,55,56,57
+				" natState.stateId, natDistrict.districtId,natConstituency.constituencyId,natTehsil.tehsilId,natLocalBody.localElectionBodyId " +//58,59,60,61,62
 				" from PmRepresenteeRefDetails model " +
 				" left join model.pmRepresentee pmRepresentee " +
 				" left join pmRepresentee.userAddress userAddress " +
@@ -62,7 +62,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" left join nativAddress.constituency natConstituency" +
 				" left join nativAddress.tehsil natTehsil  " +
 				" left join nativAddress.localElectionBody natLocalBody " +
-				" left join refLocalBody.electionType natElectionType" +
+				" left join natLocalBody.electionType natElectionType" +
 				"" +
 				" left join model.petition petition " + 
 				" left join petition.pmStatus pmStatus " +
