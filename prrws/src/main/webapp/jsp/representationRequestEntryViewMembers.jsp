@@ -64,7 +64,7 @@
 													<h4><a target="_blank" href="representationRequestEntry">ADD PETITION</a></h4>
 												</div>
 												<div class="col-sm-6">
-													<h4 class=""><a target="_blank" href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
+													<h4 class=""><a target="_blank" href="representationRequestEntry">VIEW PETITION</a></h4>
 												</div>
 											</div>
 										</div>
@@ -144,6 +144,7 @@
 												</select>
 												<div class="error_colorCls" id="locationErrDivlId"></div>
 											</div>
+										<span id="parametersList" style="display:none;">
 											<div class="col-sm-3" id="designationDiv" style="display:none;">
 												<label> Designation </label>
 												<select class="form-control chosen-select v" id="designationsId" multiple>
@@ -204,7 +205,8 @@
 												<select class="form-control chosen-select clearDataCls" id="statusId" multiple>
 													<option value="0">Select Status</option>
 												</select>
-											</div>											
+											</div>	
+											</span>
 										</div>
 										
 										</div>
