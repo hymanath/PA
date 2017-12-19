@@ -394,7 +394,21 @@ function buildUserLoginLevelDetails(result){
 													 var childChildChildMember = childChildChildUserType[o].subList;
 													 for(var p in childChildChildMember){
 														  
-																str+='<p>'+childChildChildMember[p].name+'</p>';
+																str+='<ul class="list-inline">';
+																	str+=' <li class="" style="cursor:pointer;">';
+																		str+='<label>';
+																		str+='<input type="radio" name="optionsRadios" id="optionsRadios'+i+''+j+''+k+''+l+''+m+''+n+''+o+''+p+'" value="">';
+																		var locationName = getMemberName(childChildChildMember[p].locationName,childChildChildMember[p].shortName);
+																		str+='<span class="userStructureClass" attr_userTypeId='+childChildChildMember[p].userTypeId+' attr_activityMemberId ='+childChildChildMember[p].activityMemberId+' attr_userAccessLevelId='+childChildChildMember[p].locationLevelId+' attr_userAccessLevelValuesString='+childChildChildMember[p].locationValuesSet+' attr_selectedmembername="'+childChildChildMember[p].name+'"   attr_selectedusertype="'+childChildChildMember[p].userType+'" attr_id ="directChildActivityMemberDiv" ><span class="hideDropDownView">'+locationName+' - <i>'+childChildChildMember[p].name+'</i></span>';
+																		
+																		/* str+='<span class="profileImageView">';
+																		str+='<img src="https://mytdp.com/images/cadre_images/'+childChildChildMember[p].image+'" />';
+																		str+='</span>'; */
+																		str+='</span>';
+																		str+='</label>';
+																		//str+='<div class="check"></div>';
+																	str+='</li>';
+																str+='</ul>';
 																
 													 }
 												}
