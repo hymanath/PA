@@ -908,7 +908,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 
 							 addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[37]));
 							 addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[38]));
-							 addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[39]));
+							 addressVO.setAssemblyName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[39])));
 							 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
 								 addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[41])+" "+commonMethodsUtilService.getStringValueForObject(param[42]));
 							 else
@@ -940,7 +940,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 AddressVO natAddressVO = setAddressDetailsToResultView(param[58],param[59],param[60],param[61],param[62]);
 					 natAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[52]));
 					 natAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[53]));
-					 natAddressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[54]));
+					 natAddressVO.setAssemblyName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[54])));
 					 if(commonMethodsUtilService.getLongValueForObject(param[62]) >0L)// muncipality
 						 natAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[56])+" "+commonMethodsUtilService.getStringValueForObject(param[57]));
 					 else
@@ -950,7 +950,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 AddressVO refAddressVO = setAddressDetailsToResultView(param[16],param[17],param[18],param[19],param[20]);
 					 refAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[43]));
 					 refAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[44]));
-					 refAddressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[45]));
+					 refAddressVO.setAssemblyName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[45])));
 					 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
 						 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[47])+" "+commonMethodsUtilService.getStringValueForObject(param[48]));
 					 else
@@ -1030,7 +1030,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						 AddressVO refAddressVO = setAddressDetailsToResultView(param[12],param[13],param[14],param[15],param[16]);
 						 refAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[21]));
 						 refAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[22]));
-						 refAddressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[23]));
+						 refAddressVO.setAssemblyName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[23])));
 						 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
 							 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[25])+" "+commonMethodsUtilService.getStringValueForObject(param[26]));
 						 else
