@@ -20,6 +20,7 @@ public class Characteristics extends BaseModel implements java.io.Serializable{
 	private Long characteristicsId;
 	private String name;
 	private String isDeleted;
+	private Long maxScale;
 
 	//default constructor.
 	
@@ -52,6 +53,14 @@ public class Characteristics extends BaseModel implements java.io.Serializable{
 
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+
+	@Column(name = "max_scale")
+	public Long getMaxScale() {
+		return maxScale;
+	}
+	public void setMaxScale(Long maxScale) {
+		this.maxScale = maxScale;
 	}
 
 	

@@ -1360,4 +1360,6 @@ public interface IConstants {
 	public static final String TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS="342";
 	public static final String TRAINING_CAMP_SURVEY_PROGRAM_FEEDBACK_IDS="341";
 	
+	public static final int DEBATE_AVG_VALUE=5; 
+	
 }
