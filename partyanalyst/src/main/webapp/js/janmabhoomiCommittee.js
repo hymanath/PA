@@ -1070,10 +1070,10 @@ function searchByMemberIdOrVoterId(levelId,levelValue,voterMembershipVal,searchT
 			}
 			
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
-			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';memberId
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="'+statusType+'"/>';
 			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.committeeId" value="'+committeeId+'"/>';
-			//if(memberId != null && memberId>0)
-			//str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
+			if(memberId != null && memberId>0)
+			str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
 			str+='<div class="col-sm-2">';
 				str+='<select class="form-control chosen-select" id="casteCategoryId" name="janmabhoomiCommitteeMemberVO.categoryId">';
 					str+='<option value="0">Select Category</option>';
@@ -1523,8 +1523,8 @@ function savingApplication(committeeId,statusType){
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.imageUrl" value="'+imageUrl+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.designationId" value="'+roleId+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.voterId" value="'+voterId+'"/>';
-				//if(memberId != null && memberId>0)
-				//str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
+				if(memberId != null && memberId>0)
+				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.id" value="'+memberId+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.tdpCadreId" value="'+tdpCadreId+'"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.enrollmentYrId" value="1"/>';
 				str+='<input type="hidden" name="janmabhoomiCommitteeMemberVO.status" value="approval"/>';
