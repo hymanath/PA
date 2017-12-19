@@ -588,9 +588,11 @@ var referralDocs = [];
 var workDocs = [];
 function setPmRepresenteeDataToResultView(result){
 	var str="";
+	referralDocs = [];
+	workDocs = [];
 	//str+='';
 	//$("#representeeViewId").html(spinner);
-	if(result != null){
+	if(result != null && (result.referDetailsList.length >0 || result.representeeDetailsList.length >0)){
 		
 		
 		var representeeList = [];
@@ -669,10 +671,11 @@ function setPmRepresenteeDataToResultView(result){
 											str+='<p>Email id : '+result.referDetailsList[i].email+'</p>';
 											str+='<p>Contact No : '+result.referDetailsList[i].mobileNO+'</p>';
 										str+='</div>';
-										referralDocs = [];
-										referralDocs =result.referDetailsList[i].fileNamesList;
-										str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="referral" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW REFERRAL LETTER</p></div>';
-									str+='</div>';
+										if(result.referDetailsList[i].fileNamesList.length >0){
+										referralDocs.push(result.referDetailsList[i]);
+											str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="referral" attr_candidate_id="'+result.referDetailsList[i].id+'" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW REFERRAL LETTER</p></div>';
+										}
+										str+='</div>';
 									
 								str+='</div>';
 							str+='</div>';
@@ -807,6 +810,8 @@ function setPmRepresenteeDataToResultView(result){
 			str+='</div>'; */
 	
 	$("#representeeViewId").html(str);
+}else{
+	$("#representeeViewId").html("No Data Available");
 }
 }
 	function setDefaultImage(img){
