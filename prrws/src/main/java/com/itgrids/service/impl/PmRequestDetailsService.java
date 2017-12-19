@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -211,7 +212,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}
 					}
 				}else if (commonMethodsUtilService.isListOrSetValid(pmRequestVO.getReferList()) && pmRequestVO.getRepresentationType() != null &&	 pmRequestVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE") ){
-					Long orderNo =0L;
+					Long orderNo =1L;
 					List<Long> existingRefIds = new ArrayList<Long>(0);
 					for (PmRequestVO refVO : pmRequestVO.getReferList()) {
 						List<PmRepresenteeDesignation> pmRepresenteeList = pmRepresenteeDesignationDAO.getPmRepresenteeDesignationByRepresenteeId(pmRepresenteeId);
@@ -221,11 +222,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									List<PmRefCandidateDesignation> pmRefCandidateList = pmRefCandidateDesignationDAO.getPmRepresenteeDesignationByPmRefCandidateId(refVO.getRefCandidateId());
 									if(commonMethodsUtilService.isListOrSetValid(pmRefCandidateList)){
 										for (PmRefCandidateDesignation pmRefDesignation : pmRefCandidateList) {
-											
-											if(!existingRefIds.contains(refVO.getRefCandidateId())){
-												existingRefIds.add(refVO.getRefCandidateId());
-												orderNo=orderNo+1L;
-											}
 											
 											PmRepresenteeRefDetails petitionRefferer = new PmRepresenteeRefDetails(); 
 											petitionRefferer.setPetitionId(petitionId);
@@ -241,12 +237,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 											petitionRefferer.setOrderNo(orderNo);
 											petitionRefferer = pmRepresenteeRefDetailsDAO.save(petitionRefferer);
 											
-											if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
-													 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
-												for (MultipartFile file : refVO.getFileList()) {
-														Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
-														if(petitionWorkDocument != null)
-															savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+											if(!existingRefIds.contains(refVO.getRefCandidateId())){
+												existingRefIds.add(refVO.getRefCandidateId());
+												orderNo=orderNo+1L;
+												
+												if(petitionRefferer.getPmRepresenteeRefDetailsId() != null && petitionRefferer.getPmRepresenteeRefDetailsId().longValue()>0L && 
+														 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
+													for (MultipartFile file : refVO.getFileList()) {
+															Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
+															if(petitionWorkDocument != null)
+																savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),petitionWorkDocument.getDocumentId(),pmRequestVO.getUserId());
+													}
 												}
 											}
 										}
@@ -982,7 +983,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 				
 				List<Object[]> subWorksList = pmSubWorkDetailsDAO.getPetitionSubWorksDetails(petitionId);
-				Map<Long,List<PetitionsWorksVO>> petitionSubWorksMap = new HashMap<Long,List<PetitionsWorksVO>>(0);
+				Map<Long,List<PetitionsWorksVO>> petitionSubWorksMap = new LinkedHashMap<Long,List<PetitionsWorksVO>>(0);
 				if(commonMethodsUtilService.isListOrSetValid(subWorksList)){
 					for (Object[] param : subWorksList) {
 						
@@ -1014,13 +1015,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setStatusId(commonMethodsUtilService.getLongValueForObject(param[9]));
 						
 						if(vo.getDeptId() != null && vo.getDeptId().longValue()>0L){
-							List<KeyValueVO> subjectsList = locationDetailsService.getPmSubjectList(vo.getDeptId());
+							List<KeyValueVO> subjectsList = null;//locationDetailsService.getPmSubjectList(vo.getDeptId());
 							if(commonMethodsUtilService.isListOrSetValid(subjectsList)){
 								vo.getSubjectsList().addAll(subjectsList);
 							}
 						}
 						if(vo.getSubjectId() != null && vo.getSubjectId().longValue()>0L){
-							List<KeyValueVO> subSubjectsList = locationDetailsService.getPmSubSubjectList(vo.getSubjectId());
+							List<KeyValueVO> subSubjectsList = null;//locationDetailsService.getPmSubSubjectList(vo.getSubjectId());
 							if(commonMethodsUtilService.isListOrSetValid(subSubjectsList)){
 								vo.getSubSubjectsList().addAll(subSubjectsList);
 							}
@@ -1083,20 +1084,20 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				 isMandal = true;
 		 	}
 			 
-			 List<LocationVO> constituencyList = locationDetailsService.getConstituencyNamesByDistrictId(addressVO.getDistrictId(),"all",null);
+			 List<LocationVO> constituencyList = null;//locationDetailsService.getConstituencyNamesByDistrictId(addressVO.getDistrictId(),"all",null);
 			 if(commonMethodsUtilService.isListOrSetValid(constituencyList)){
 				 for (LocationVO vo : constituencyList) {
 					 addressVO.getConstituencyList().add(new KeyValueVO(vo.getLocationId(), vo.getLocationName()));
 				}
 			 }
 			 
-			 List<KeyValueVO> mandalsList = locationDetailsService.getTehsilsAndLocalElectionBodyForConstituencyId(addressVO.getAssemblyId(),"all",null);
+			 List<KeyValueVO> mandalsList = null;//locationDetailsService.getTehsilsAndLocalElectionBodyForConstituencyId(addressVO.getAssemblyId(),"all",null);
 			 if(commonMethodsUtilService.isListOrSetValid(mandalsList)){
 					 addressVO.getMandalsList().addAll(mandalsList);
 			 }
 			 
 			 if(isMandal){
-				 List<KeyValueVO> panchaytsList = locationDetailsService.getPanchayatsByTehsilId(commonMethodsUtilService.getLongValueForObject(param7));
+				 List<KeyValueVO> panchaytsList = null;//locationDetailsService.getPanchayatsByTehsilId(commonMethodsUtilService.getLongValueForObject(param7));
 				 if(commonMethodsUtilService.isListOrSetValid(constituencyList)){
 					 addressVO.getPanchaytsList().addAll(panchaytsList);
 				 } 
