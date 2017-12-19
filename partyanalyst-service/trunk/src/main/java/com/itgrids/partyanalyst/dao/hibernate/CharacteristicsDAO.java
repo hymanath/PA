@@ -36,5 +36,23 @@ public class CharacteristicsDAO extends GenericDaoHibernate<Characteristics, Lon
 		 
 		return query.list();
 	 }
+	
+	public Long getSumOfCharacters(Long charactersticsId){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select sum(model.maxScale) from Characteristics model " +
+				" where model.isDeleted ='N' ");
+		
+		if(charactersticsId !=null && charactersticsId.longValue()>0){
+			str.append(" and model.characteristicsId =:charactersticsId ");
+		}
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(charactersticsId !=null && charactersticsId.longValue()>0){
+			query.setParameter("charactersticsId", charactersticsId);
+		}
+		return (Long)query.uniqueResult();
+	}
 
 }

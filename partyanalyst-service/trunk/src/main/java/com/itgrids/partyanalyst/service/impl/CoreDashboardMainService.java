@@ -9122,5 +9122,19 @@ public Map<Long,CoreDebateVO> setDesignationLessValuesToMap(List<Object[]> ObjLi
 	}
 	return countMap;
 }
+
+	public Double getAvgDetailsOfDebate(Double charactersSum,Long charactersticId){
+		Double avg = 0.00;
+		try {
+			Long sum = characteristicsDAO.getSumOfCharacters(charactersticId);
+			if(charactersSum !=null && charactersSum>0){
+				avg = Double.parseDouble(new BigDecimal((charactersSum/sum)*(IConstants.DEBATE_AVG_VALUE)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			}			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAvgDetailsOfDebate() method of CoreDashboardMainService",e);
+		}
+		return avg;
+	}  
+
 }  
 
