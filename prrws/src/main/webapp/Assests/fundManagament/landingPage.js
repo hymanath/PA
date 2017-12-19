@@ -2060,7 +2060,7 @@ $(document).on("click",".saveBlockListCls",function(){
 				$("#errorBlockDivIdfms").html("Your Priorities Saved Successfully")
 				$("#saveBlockListfms").hide();
 				$("#editBlockListfms").show();
-				Sortable.create(sortableListBlocksfms);
+				Sortable.create(sortableListBlocksfms).destroy();
 				setTimeout(function(){
 					$("#errorBlockDivIdfms").html(" ")
 				},2000)
@@ -2068,7 +2068,7 @@ $(document).on("click",".saveBlockListCls",function(){
 				$("#errorBlockDivIdpanchayat").html("Your Priorities Saved Successfully")
 				$("#saveBlockListpanchayat").hide();
 				$("#editBlockListpanchayat").show();
-				Sortable.create(sortableListBlockspanchayat);
+				Sortable.create(sortableListBlockspanchayat).destroy();
 				setTimeout(function(){
 					$("#errorBlockDivIdpanchayat").html(" ")
 				},2000)
@@ -2076,7 +2076,7 @@ $(document).on("click",".saveBlockListCls",function(){
 				$("#errorBlockDivIdrd").html("Your Priorities Saved Successfully")
 				$("#saveBlockListrd").hide();
 				$("#editBlockListrd").show();
-				Sortable.create(sortableListBlocksrd);
+				Sortable.create(sortableListBlocksrd).destroy();
 				setTimeout(function(){
 					$("#errorBlockDivIdrd").html(" ")
 				},2000)
@@ -2084,7 +2084,7 @@ $(document).on("click",".saveBlockListCls",function(){
 				$("#errorBlockDivIdrws").html("Your Priorities Saved Successfully")
 				$("#saveBlockListrws").hide();
 				$("#editBlockListrws").show();
-				Sortable.create(sortableListBlocksrws);
+				Sortable.create(sortableListBlocksrws).destroy();
 				setTimeout(function(){
 					$("#errorBlockDivIdrws").html(" ")
 				},2000)
@@ -2092,7 +2092,7 @@ $(document).on("click",".saveBlockListCls",function(){
 				$("#errorBlockDivIditec").html("Your Priorities Saved Successfully")
 				$("#saveBlockListitec").hide();
 				$("#editBlockListitec").show();
-				Sortable.create(sortableListBlocksitec);
+				Sortable.create(sortableListBlocksitec).destroy();
 				setTimeout(function(){
 					$("#errorBlockDivIditec").html(" ")
 				},2000)
