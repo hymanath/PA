@@ -3905,6 +3905,7 @@
 		$("#modalIvrStatusTable").html('');
 		$("#modalKpiTable").html('');
 		$("#modalSchemsTable").html('');
+		$(".paginationId").html('');
 		var status = $(this).attr("attr_status_name");
 		var locationType=$(this).attr("attr_location_type");
 		var locationValue=$(this).attr("attr_location_value");
@@ -3924,6 +3925,7 @@
 		$("#modalIvrStatusTable").html('');
 		$("#modalKpiTable").html('');
 		$("#modalSchemsTable").html('');
+		$(".paginationId").html('');
 		var status = $(this).attr("attr_status_id");
 		var locationType=$(this).attr("attr_location_type");
 		var locationValue=$(this).attr("attr_location_value");
@@ -4896,9 +4898,9 @@
 		$("#modalIvrStatusTable").html(tableView);
 		
 		$("#dataTableivr").dataTable({
-			"paging":   false,
-			"info":     false,
-			"searching": false,
+			"paging":   true,
+			"info":     true,
+			"searching": true,
 			"autoWidth": true,
 			"order": [ 0, 'desc' ],
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
@@ -4955,6 +4957,7 @@
 				}
 			]
 		});*/
+		
 	}
 	
 	// kpi build
