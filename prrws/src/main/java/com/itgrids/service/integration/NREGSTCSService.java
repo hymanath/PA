@@ -3006,6 +3006,25 @@ public class NREGSTCSService implements INREGSTCSService{
 		return voList;
 	}
 	
+	public List<NregsProjectsVO> getLocationWiseEmptyVacenciesDetails(InputVO inputVO){
+		List<NregsProjectsVO> voList = new ArrayList<NregsProjectsVO>(0);
+		try {
+			Map<Long,NregsProjectsVO> locationMap = new LinkedHashMap<Long,NregsProjectsVO>();
+			if(inputVO.getLocation() != null && inputVO.getLocation().trim().equalsIgnoreCase("state")){
+				inputVO.setLocationId(1L);
+			}else if(inputVO.getLocation() != null && inputVO.getLocation().trim().equalsIgnoreCase("district")){
+				inputVO.setLocationId(1L);
+			}else if(inputVO.getLocation() != null && inputVO.getLocation().trim().equalsIgnoreCase("constituency")){
+				inputVO.setLocationId(1L);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNREGSProjectsAbstractNew - NREGSTCSService service", e);
+		}
+		
+		return voList;
+	}
+	
 	public List<NregsProjectsVO> getNREGSAbstractDataByType(InputVO inputVO){
 		List<NregsProjectsVO> returnList = new ArrayList<NregsProjectsVO>();
 		try {
