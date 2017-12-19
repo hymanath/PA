@@ -48,7 +48,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				" left join model.pmStatus pmStatus " +
 				" left join model.pmDepartment pmDepartment " +
 				" left join model.pmWorkType pmWorkType " +
-				" where model.petitionId =:petitionId and model.petition.isDeleted='N' ");
+				" where model.petitionId =:petitionId and model.petition.isDeleted='N' ORDER BY model.pmSubWorkDetailsId ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("petitionId", petitionId);
 		return query.list();
