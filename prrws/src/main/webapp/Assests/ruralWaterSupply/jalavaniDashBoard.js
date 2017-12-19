@@ -4492,7 +4492,7 @@
 		tableView+='</table>';
 		$("#modalAlertTable").html(tableView);
 		//srujana
-		/* $("#dataTableAlertTable").dataTable({
+		$("#dataTableAlertTable").dataTable({
 			"paging":   false,
 			"info":     false,
 			"searching": false,
@@ -4524,8 +4524,8 @@
 				}
 			]
 		});
-		 */
-		$("#dataTableAlertTable").dataTable({
+		 
+		/* $("#dataTableAlertTable").dataTable({
 							"paging":   false,
 							"info":     false,
 							"searching": false,
@@ -4555,7 +4555,7 @@
 					}
 				}
 			]
-		});
+		}); */
 			 if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
 					items: totalCount,
@@ -4895,7 +4895,7 @@
 		tableView+='</table>';
 		$("#modalIvrStatusTable").html(tableView);
 		
-		$/* ("#dataTableivr").dataTable({
+		$("#dataTableivr").dataTable({
 			"paging":   false,
 			"info":     false,
 			"searching": false,
@@ -4926,10 +4926,10 @@
 					}
 				}
 			]
-		}); */
+		});
 		
 		
-		$("#dataTableivr").dataTable({
+		/*$("#dataTableivr").dataTable({
 						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 							"<'row'<'col-sm-12'tr>>" +
 							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -4954,7 +4954,7 @@
 					}
 				}
 			]
-		});
+		});*/
 	}
 	
 	// kpi build
