@@ -43,6 +43,15 @@
 		<div class="row m_top10">
 			<div class="col-sm-12">
 				<div class="white_block">
+					<label><input type="radio" name="radio" value="TOT" checked class="radioBtnCls"/>&nbsp;Total&nbsp;</label> 
+					<label><input type="radio" name="radio" value="WAGE" class="radioBtnCls"/>&nbsp;Wage&nbsp;</label> 
+					<label><input type="radio" name="radio" value="MAT" class="radioBtnCls"/>&nbsp;Material&nbsp;</label> 
+				</div>
+			</div>
+		</div>
+		<div class="row m_top10">
+			<div class="col-sm-12">
+				<div class="white_block">
 					<div id="panchtExptDivId"></div>
 				</div>
 			</div>
@@ -122,9 +131,9 @@
 <script> 
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var smallSpinner = '<img src="Assests/images/spinner.gif" style="width:25px;height:25px;"/>';
-getPanchayatsExpenditure();
-getPanchatVsExpData();
-function getPanchayatsExpenditure()
+getPanchayatsExpenditure("TOT");
+getPanchatVsExpData("TOT");
+function getPanchayatsExpenditure(radioType)
 {
 	$("#panchtExptDivId").html(spinner)
 	var fromDate = "2017-04-01";
@@ -133,7 +142,7 @@ function getPanchayatsExpenditure()
 		year : "2017",
 		fromDate : fromDate,
         toDate : toDate,
-        pType : "TOT"
+        pType : radioType
 	}
   $.ajax({
     url: 'getPanchayatsExpenditure',
@@ -187,7 +196,7 @@ function buildPanchayatsExpenditure(result){
 	$("#panchtExptDivId").html(str);
 }
 
-function getPanchatVsExpData()
+function getPanchatVsExpData(radioType)
 {
 	$("#panchtsDetailsDivId").html(spinner)
 	var fromDate = "2017-04-01";
@@ -195,7 +204,8 @@ function getPanchatVsExpData()
 	var json = {
 		year : "2017",
 		fromDate : fromDate,
-        toDate : toDate
+        toDate : toDate,
+		pType : radioType
        
 	}
   $.ajax({
@@ -424,6 +434,11 @@ function savePanchayatComponentComments(statusId,comment,actionType,uniqueCode,c
 			}
 	});
 }
+$(document).on("click",".radioBtnCls",function(){
+	var radioType = $(this).val();
+	getPanchayatsExpenditure(radioType);
+	getPanchatVsExpData(radioType);
+});
 </script> 
 </body>
 </html>

@@ -288,4 +288,22 @@ public class ItcController {
 		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPIMobileSevicesYearWiseDetails(inputVO);
 		   return resultList;
 	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPINewOnlineServiceOverviewCount", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  MeesevaKPIDtlsVO  getMeesevaKPINewOnlineServiceOverviewCount(@RequestBody InputVO inputVO) {
+		   MeesevaKPIDtlsVO  resultVO = itcDashboardService.getMeesevaKPINewOnlineServiceOverviewCount(inputVO);
+		   return resultVO;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPINewOnlineServiceYearWiseDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPINewOnlineServiceYearWiseDetails(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPINewOnlineServiceYearWiseDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPINewOnlineDeptWiseCuntDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPINewOnlineDeptWiseCuntDetails(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPINewOnlineDeptWiseCuntDetails(inputVO);
+		   return resultList;
+	   }
 }

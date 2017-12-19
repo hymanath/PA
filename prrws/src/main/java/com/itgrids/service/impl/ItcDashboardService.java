@@ -3640,4 +3640,330 @@ public class ItcDashboardService implements IItcDashboardService {
 		 }
 		 return returnList;
 	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get KPI New OnLine Services Details.}
+	 * @return MeesevaKPIDtlsVO
+	 * @Date 19-12-2017
+	 */
+	public MeesevaKPIDtlsVO getMeesevaKPINewOnlineServiceOverviewCount(InputVO inputVO) {
+		MeesevaKPIDtlsVO finalVO = new MeesevaKPIDtlsVO();
+		try{
+			
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONArray dataArr = null;
+			String output = null;
+			
+			//2014
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_NEWDEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		  finalVO.setOnLineServices2014(finalVO.getOnLineServices2014()+jObj.getLong("NOFOSERVICES"));
+			    		}	
+			    	}
+		    	}
+			
+			//2015
+			inputVO.setYear("2015");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_NEWDEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		  finalVO.setOnLineServices2015(finalVO.getOnLineServices2015()+jObj.getLong("NOFOSERVICES"));
+			    		}	
+			    	}
+		    	}
+			
+			//2016
+			inputVO.setYear("2016");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_NEWDEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		  finalVO.setOnLineServices2016(finalVO.getOnLineServices2016()+jObj.getLong("NOFOSERVICES"));
+			    		}	
+			    	}
+		    	}
+			
+			//2017
+			inputVO.setYear("2017");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_NEWDEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		  finalVO.setOnLineServices2017(finalVO.getOnLineServices2017()+jObj.getLong("NOFOSERVICES"));
+			    		}	
+			    	}
+		    	}
+			finalVO.setOnLineServicesCount(finalVO.getOnLineServices2014()+finalVO.getOnLineServices2015()+finalVO.getOnLineServices2016()+finalVO.getOnLineServices2017());
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaKPINewOnlineServiceOverviewCount() in  ItcDashboardService class",e);
+		 }
+		 return finalVO;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva KPI New OnLine Service Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 19-12-2017
+	 */
+	public List<MeesevaKPIDtlsVO> getMeesevaKPINewOnlineServiceYearWiseDetails(InputVO inputVO) {
+		List<MeesevaKPIDtlsVO> returnList = new ArrayList<MeesevaKPIDtlsVO>(0);
+		try{
+			
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONArray dataArr = null;
+			String output = null;
+			Map<Long,MeesevaKPIDtlsVO> deptMap = new HashMap<Long,MeesevaKPIDtlsVO>();
+			
+			//2014
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_NEWDEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+			    		 vo.setId(jObj.getLong("department_id"));
+			    		 vo.setName(jObj.getString("DEPARTMENTNAME"));
+			    		 vo.setOnLineServices2014(jObj.getLong("NOFOSERVICES"));
+			    		 deptMap.put(vo.getId(), vo);
+			    		}	
+			    	}
+		    	}
+			
+			//2015
+			inputVO.setYear("2015");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_NEWDEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getLong("department_id"));
+			    		if(deptVO != null){
+			    			deptVO.setOnLineServices2015(jObj.getLong("NOFOSERVICES"));
+			    		}else{
+			    			deptVO = new MeesevaKPIDtlsVO();
+			    			deptVO.setId(jObj.getLong("department_id"));
+			    			deptVO.setName(jObj.getString("DEPARTMENTNAME"));
+			    			deptVO.setOnLineServices2015(jObj.getLong("NOFOSERVICES"));
+				    		deptMap.put(deptVO.getId(), deptVO);
+			    		}
+			    	}	
+			    }
+		    }
+			
+			//2016
+			inputVO.setYear("2016");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_NEWDEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getLong("department_id"));
+			    		if(deptVO != null){
+			    			deptVO.setOnLineServices2016(jObj.getLong("NOFOSERVICES"));
+			    		}else{
+			    			deptVO = new MeesevaKPIDtlsVO();
+			    			deptVO.setId(jObj.getLong("department_id"));
+			    			deptVO.setName(jObj.getString("DEPARTMENTNAME"));
+			    			deptVO.setOnLineServices2016(jObj.getLong("NOFOSERVICES"));
+				    		deptMap.put(deptVO.getId(), deptVO);
+			    		}
+			    	}	
+			    }
+		    }
+			
+			//2017
+			inputVO.setYear("2017");
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_NEWDEPARTMENTWISEABSTRACT?YEAR="+inputVO.getYear()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 objArr = list1.getJSONObject("NewDataSet");
+		    	 dataArr = objArr.getJSONArray("Table1");
+				
+				if(dataArr != null && dataArr.length() > 0){
+			    	 for( int i = 0; i < dataArr.length() ; i++ ){
+			    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+			    		MeesevaKPIDtlsVO deptVO = deptMap.get(jObj.getLong("department_id"));
+			    		if(deptVO != null){
+			    			deptVO.setOnLineServices2017(jObj.getLong("NOFOSERVICES"));
+			    			}else{
+				    			deptVO = new MeesevaKPIDtlsVO();
+				    			deptVO.setId(jObj.getLong("department_id"));
+				    			deptVO.setName(jObj.getString("DEPARTMENTNAME"));
+				    			deptVO.setOnLineServices2017(jObj.getLong("NOFOSERVICES"));
+					    		deptMap.put(deptVO.getId(), deptVO);
+				    		}
+			    		}	
+			    	}
+		    	}
+			
+			if(deptMap != null){
+				returnList = new ArrayList<MeesevaKPIDtlsVO>(deptMap.values());
+			}
+			
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaKPIOnlineServiceYearWiseDetails() in  ItcDashboardService class",e);
+		 }
+		 return returnList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is used to get Meeseva KPI New OnLine Dept Wise Details.}
+	 * @return List<MeesevaKPIDtlsVO>
+	 * @Date 19-12-2017
+	 */
+	public List<MeesevaKPIDtlsVO> getMeesevaKPINewOnlineDeptWiseCuntDetails(InputVO inputVO) {
+		List<MeesevaKPIDtlsVO> returnList = new ArrayList<MeesevaKPIDtlsVO>(0);
+		try{
+			
+			String URL = null;
+			ClientResponse response = null;
+			org.json.JSONObject list = null;
+			Object contentObj = null;
+			org.json.JSONObject list1 = null;
+			org.json.JSONObject objArr = null;
+			org.json.JSONArray dataArr = null;
+			String output = null;
+			
+			URL = "http://apdept.meeseva.gov.in/meesevawebservice/meesevawebservice.asmx/ONLINE_NEWDEPARTMENTWISEDETAILS?YEAR="+inputVO.getYear()+"&DEPTID="+inputVO.getDeptId().toString()+"&USERID=MEESEVA&PASSWORD=MEESEVA";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	 output = response.getEntity(String.class);
+				 list = XML.toJSONObject(output);
+				 contentObj = list.getJSONObject("string").get("content");
+				 list1 = XML.toJSONObject(contentObj.toString());
+				
+				 //objArr = list1.getJSONObject("NewDataSet");
+				 Object object = list1.getJSONObject("NewDataSet").get("Table1");
+				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
+				    {
+					 objArr = list1.getJSONObject("NewDataSet");
+					 dataArr = objArr.getJSONArray("Table1");
+					 if(dataArr != null && dataArr.length() > 0){
+				    	 for( int i = 0; i < dataArr.length() ; i++ ){
+				    		org.json.JSONObject jObj = (org.json.JSONObject) dataArr.get(i);
+				    		MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+				    		 vo.setName(jObj.getString("DEPARTMENTNAME"));
+				    		 vo.setServiceName(jObj.getString("SERVICENAME"));
+				    		 returnList.add(vo);
+				    		}	
+				    	}
+				    }else{//Passing Current year data will be Object
+				    	 org.json.JSONObject jObj =  (org.json.JSONObject) list1.getJSONObject("NewDataSet").get("Table1");
+				    	 MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+				    	 vo.setName(jObj.getString("DEPARTMENTNAME"));
+						vo.setServiceName(jObj.getString("SERVICENAME"));
+						 returnList.add(vo);
+				    }
+		    }
+		 }catch (Exception e) {
+			 LOG.error("Exception occured at getMeesevaKPINewOnlineDeptWiseCuntDetails() in  ItcDashboardService class",e);
+		 }
+		 return returnList;
+	}
 }
