@@ -63,13 +63,13 @@
 								<div class="paddingLogin">
 									<div class="col-sm-12">
 										<label class="login-field-icon fui-user" for="login-name">USERNAME
-											<input type="text" class="form-control m_top5" value="" placeholder="User Name" id="login-name"/>
+											<input type="text" class="form-control m_top5" value="" placeholder="User Name" id="loginName"/>
 											<span id="statusErrUserId"></span>	
 										</label>
 									</div>
 									<div class="col-sm-12">
 										<label class="login-field-icon fui-lock" for="login-pass">PASSWORD
-											<input type="password" class="form-control m_top5" value="" placeholder="Password" id="login-pass" >
+											<input type="password" class="form-control m_top5" value="" placeholder="Password" id="loginPass" >
 											<span id="statusErrPwdId"></span>	
 										</label>
 									</div>
@@ -131,8 +131,8 @@ function userLogin(){
 	$("#statusErrPwdId").html(' ');
 	$("#successMessage").html(' ');
 		
-	var userName = $("#login-name").val();
-	var password = $("#login-pass").val();
+	var userName = $("#loginName").val();
+	var password = $("#loginPass").val();
 
 	var errorStr = '';
 	var errorPwdStr='';
