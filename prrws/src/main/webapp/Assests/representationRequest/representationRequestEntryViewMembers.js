@@ -171,14 +171,18 @@ $(document).on("change","#locationSelId",function(){
 	   $("#mobileErrDivId").html('');
 	   $("#emailErrDivId").html('');
 	   $("#endorsmentNoErrDivId").html('');
-	     
+	     $('#parametersList').show();
 	    $("#nameId").html('');
 	    $("#mobileId").html('');
 	    $("#emailId").html('');
 	  $("#endorsmentNoId").html('');
    
 	var searchType=$(this).val();
-	getDistrictBySearchType(searchType,'districtCandId');//
+	getDistrictBySearchType(searchType,'districtCandId');
+	if(searchType == 'all'){
+		$('#parametersList').hide();
+		return;
+	}
 	if(searchType == 'referrelDesignation' || searchType =='representeeDesignation'){
 		$("#designationDiv").show();
 		getDesignationsBySearchType(searchType,"designationsId");
@@ -583,8 +587,6 @@ function getPetitionDetails(petitionId){
 var referralDocs = [];
 var workDocs = [];
 function setPmRepresenteeDataToResultView(result){
-	referralDocs = [];
-	workDocs = [];
 	var str="";
 	//str+='';
 	//$("#representeeViewId").html(spinner);
@@ -592,9 +594,9 @@ function setPmRepresenteeDataToResultView(result){
 		
 		
 		var representeeList = [];
-		if(result.representationType =="SELF" && result.referDetailsList.length >0){
-			representeeList = result.referDetailsList;
-		}else if(result.representeeDetailsList.length >0){
+		if(result.representationType =="SELF"){
+			 representeeList = result.referDetailsList;
+		}else{
 			representeeList = result.representeeDetailsList;
 		}
 	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -620,19 +622,14 @@ function setPmRepresenteeDataToResultView(result){
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>Address Details:</b></h5>';
 											//str+='<p>Village : Sangadigunta</p>';
-											if(representeeList[0].addressVO.tehsilName != "")
-												str+='<p>Mandal: '+representeeList[0].addressVO.tehsilName+'</p>';
-											if(representeeList[0].addressVO.assemblyName != "")
-												str+='<p>Constituency : '+representeeList[0].addressVO.assemblyName+'</p>';
-											if(representeeList[0].addressVO.districtName != "")
-												str+='<p>District : '+representeeList[0].addressVO.districtName+'</p>';
+											str+='<p>Mandal: '+representeeList[0].addressVO.tehsilName+'</p>';
+											str+='<p>Constituency : '+representeeList[0].addressVO.assemblyName+'</p>';
+											str+='<p>District : '+representeeList[0].addressVO.districtName+'</p>';
 										str+='</div>';
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>Contact Details:</b></h5>';
-											if(representeeList[0].email != "")
-												str+='<p>Email id : '+representeeList[0].email+'</p>';
-											if(representeeList[0].mobileNO != "")
-												str+='<p>Contact No : '+representeeList[0].mobileNO+'</p>';
+											str+='<p>Email id : '+representeeList[0].email+'</p>';
+											str+='<p>Contact No : '+representeeList[0].mobileNO+'</p>';
 											if(representeeList[0].voterCardNo != undefined)
 											str+='<p>Voter Id : '+representeeList[0].voterCardNo+'</p>';
 										str+='</div>';
@@ -669,15 +666,12 @@ function setPmRepresenteeDataToResultView(result){
 										str+='</div>';
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>Contact Details:</b></h5>';
-											if(result.referDetailsList[i].email != "")
-												str+='<p>Email id : '+result.referDetailsList[i].email+'</p>';
-											if(result.referDetailsList[i].mobileNO != "")
-												str+='<p>Contact No : '+result.referDetailsList[i].mobileNO+'</p>';
+											str+='<p>Email id : '+result.referDetailsList[i].email+'</p>';
+											str+='<p>Contact No : '+result.referDetailsList[i].mobileNO+'</p>';
 										str+='</div>';
-										if(result.referDetailsList[i].fileNamesList.length >0){
-										referralDocs.push(result.referDetailsList[i]);
-											str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="referral" attr_candidate_id="'+result.referDetailsList[i].id+'" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW REFERRAL LETTER</p></div>';
-										}
+										referralDocs = [];
+										referralDocs =result.referDetailsList[i].fileNamesList;
+										str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="referral" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW REFERRAL LETTER</p></div>';
 									str+='</div>';
 									
 								str+='</div>';
@@ -725,13 +719,13 @@ function setPmRepresenteeDataToResultView(result){
 						str+='</tbody>';
 					str+='</table>';
 				str+='</div>';
-				if(result.fileList.length >0){
 				str+='<div class="col-sm-2 m_top20">';
 					str+='<h5><b>PROJECT DOCUMENTS</b></h5>';
+					workDocs = [];
 					workDocs = result.fileList;
-						str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="workDocs" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW DOCUMENT</p></div>';
+					str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="workDocs" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW DOCUMENT</p></div>';
 				str+='</div>';
-				}
+				
 				str+='<div class="clearfix"></div>';
 				str+='<div class="col-sm-12 m_top20" style="border-bottom:5px solid #EBEBEB;border-top:5px solid #EBEBEB;">';
 					str+='<table class="table">';
@@ -762,13 +756,13 @@ function setPmRepresenteeDataToResultView(result){
 											str+='<p>LOCATION</p>';
 											str+='<span style="display:inline-block;padding:3px">District</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.districtName+'</b></span>';
 											if(result.subWorksList[j].subWorksList[k].addressVO.assemblyName != "")
-											str+='<span style="display:inline-block;padding:3px" class="text-capitalized">Constituency</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.assemblyName+'</b></span>';
+											str+='<span style="display:inline-block;padding:3px">Constituency</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.assemblyName+'</b></span>';
 											if(result.subWorksList[j].subWorksList[k].addressVO.tehsilName != "")
 											str+='<span style="display:inline-block;padding:3px">Mandal</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.tehsilName+'</b></span>';
 										str+='</td>';
 									str+='</tr>';
 									str+='<tr>';
-										str+='<td>Subject <b>'+result.subWorksList[j].subWorksList[k].subject+'</b></td>';
+										str+='<td>Subject <b>'+result.subWorksList[j].subWorksList[k].subject+')</b></td>';
 										str+='<td>Sub-Subject <b>'+result.subWorksList[j].subWorksList[k].subSubject+'</b></td>';
 										str+='<td>Department <b>'+result.subWorksList[j].subWorksList[k].deptName+'</b></td>';
 										
@@ -823,11 +817,7 @@ $(document).on("click",".docsViewCls",function(){
 	var docsList = [];
 	var str="";
 	if($(this).attr("attr_docs") == "referral"){
-		 for(var i = 0; i<referralDocs.length; i++){
-			if(referralDocs[i].id == $(this).attr("attr_candidate_id")){
-				docsList  = referralDocs[i].fileNamesList;
-			 }
-		 }
+		docsList  = referralDocs;
 	}else if($(this).attr("attr_docs") == "workDocs"){
 		docsList = workDocs;
 	}

@@ -134,6 +134,34 @@
 		</div>
 	</div>
 </main>
+<div class="modal fade" id="petitionBasicModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document" style="width:40%;margin-top:10%">
+		<div class="modal-content">
+			<div class="modal-header">
+				
+				<h4 class="modal-title" style="font-weight: bold">PETITION ENTRY</h4> 
+			 </div>
+		  <div class="modal-body">
+			<div class="row">
+				<div class="col-sm-4">
+					<!--<label>NO OF WORKS <span class="starColor">*</span></label>-->
+					<input   name=""   onkeyUp="checkIsNumber('noofWorks',this.value)" type="text" class="form-control m_top5 height45 isNumberCls" id="noofWorks" placeholder="Enter No Of Work">
+					<br><span class="ErrCls" id="noofWorksErr"></span>
+				</div>
+				<div class="col-sm-4">
+					<!--<label>WORKS IN COST<span class="starColor">*</span></label>-->
+					<input   name=""     onkeyUp="checkIsNumber('workCosts',this.value)"   type="text" class="form-control m_top5 height45 isNumberCls" id="workCosts" placeholder="Enter Work Cost">
+					<br><span class="ErrCls" id="workCostsErr"></span>
+				</div>
+				<div class="col-sm-4">
+					<button type="button" class="btn btn-success" id="basicBtnId" style="border-radius: 5px; font-weight: bold;margin-top:10px;">GO</button>
+				</div>
+			</div>
+		  </div>
+		  
+	  </div>
+	</div>
+</div>
 <div class="modal fade" id="candidateSearchModelDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document" style="width:90%;margin:auto">
 		<div class="modal-content">

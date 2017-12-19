@@ -456,6 +456,8 @@ function buildSelfAndRepresenteeDetails(typeVal){
 					str+='</select>';
 					str+='<span class="ErrCls" id="panchayatErr'+typeVal+'"></span>';
 				str+='</div>';
+			str+='</div>';
+			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-3">';	
 				str+='<label>REPRESENTEE DESIGNATION.<span class="starColor">*</span></label>';
 				str+='<select   name="representeeDesignationId"  class="form-control chosen-select m_top10" id="designation'+typeVal+'">';
@@ -573,8 +575,8 @@ $(document).on("change","#designationsId",function(){
 //Search Modal
 $(document).on("click",".searchCandidateCls",function(){
 
-	 $("#districtCandId").html('<option value="0">select district</option>');
-	 $("#constituencyCanId").html('<option value="0">select constituency</option>');
+	 $("#districtCandId").html('<option value="0">Select District</option>');
+	 $("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 	 $("#districtCandId").trigger("chosen:updated");
 	 $("#constituencyCanId").trigger("chosen:updated");
 
@@ -1139,7 +1141,7 @@ function buildTemplateWorkDetails(typeVal){
 										str+='</select>';
 									str+='</div>';
 									str+='<div class="col-sm-2 panchayatCls'+typeVal+''+globalWorkTypeCount+'0" style="display:none">';
-										str+='<label>PANCHAYAT <span class="starColor">*</span><span class="Panchayat'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<label>PANCHAYAT <span class="starColor">*</span><span class="panchayatId'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
 										str+='<select  name="worksList['+globalWorkTypeCount+'].subWorksList[0].addressVO.panchayatId"  class="form-control chosen-select m_top10 panchayatLevelChange validateCls" id="panchayatId'+typeVal+''+globalWorkTypeCount+'0" attr_counterval="'+globalWorkTypeCount+'0" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0">';
 											str+='<option value="0">Select Panchayat</option>';
 										str+='</select>';
@@ -1310,7 +1312,7 @@ $(document).on("change",".constituencyLevelChange",function(){
 });
 $(document).on("change",".mandalLevelChange",function(){
 	var levelVal = $(this).val();
-	levelVal=levelVal.toString().substr(1,levelVal.lenght);
+	levelVal=levelVal.toString().substr(1,levelVal.length);
 	var counterId = $(this).attr("attr_counterval");
 	var typeVal = $(this).attr("attr_type");
 	var typeChange = $(this).attr("attr_type_change");
@@ -1881,6 +1883,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	var districtId='';
 	var constituencyId='';
 	var mandalId='';
+	var panchayatId='';
 	
 	var workTypeInnerId='';
 	var appendWorkCostInner='';
@@ -1890,20 +1893,23 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	var districtInnerId='';
 	var constituencyInnerId='';
 	var mandalInnerId='';
+	var panchayatInnerId='';
 	
 	var flag = true;
 	$('#saveButtonId').hide();
+	$('.ErrCls').html('');
 	completeWorkName = $("#workName"+typeVal).val();
 	noofWorks = $("#noofWork"+typeVal).val();
 	workCost = $("#workCost"+typeVal).val();
 	
 	if(typeVal =='represent' || typeVal =='representee'){
 		var repName=$('#name'+typeVal+'').val();
-		var repMobileNo=$('#mobileNumber'+typeVal+'').val();
+		var repMobileNo=$('#mobileNumberrepresent').val();
 		var repEmail=$('#emailId'+typeVal+'').val();
 		var repDistrictId=$('#district'+typeVal+'').val();
 		var repCostituencyId=$('#constituency'+typeVal+'').val();
 		var repTehsilId=$('#mandal'+typeVal+'').val();
+		var repPanchayatId=$('#panchayat'+typeVal+'').val();
 		var repdesignation= $('#designation'+typeVal+'').val();
 		
 		if(repName == undefined || repName == "undefined" || repName.trim() == '' || repName == null){
@@ -1912,21 +1918,22 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		}else{
 			$('#nameErr'+typeVal+'').html("");
 		}
+
 		if(repMobileNo == undefined || repMobileNo == "undefined" || repMobileNo.trim() == '' || repMobileNo == null){
 			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  mobile no.</h5>");
 			$('#saveButtonId').show();
-		}else if(parseInt(repMobileNo.trim().lenght) <10 || parseInt(repMobileNo.trim().lenght) >10 ){
+		}else if(parseInt(repMobileNo.trim().length) <10 || parseInt(repMobileNo.trim().length) >10 || parseInt(repMobileNo.trim().length) !=10){
 			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid mobile no.</h5>");
 			$('#saveButtonId').show();
 		}else{
 			$('#mobileNumberErr'+typeVal+'').html("");
 		}
 		if(repEmail != undefined && repEmail != "undefined" && repEmail.trim() != '' && repEmail != null){
-			var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-			if (!filter.test(repEmail.trim())) {
+			 var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+			 if (!filter.test(repEmail.trim())) {
 				$('#emailIdErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid email address.</h5>");
 				$('#saveButtonId').show();
-			}
+			 }
 		}else{
 			$('#emailIdErr'+typeVal+'').html("");
 		}
@@ -1951,6 +1958,13 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			flag = false;
 		}else{
 			$("#mandalErr"+typeVal+'').html("");
+		}
+		if(repPanchayatId == 0 || repPanchayatId == null || repPanchayatId == ''){
+			$("#panchayatErr"+typeVal+'').html("<h5 style='color:red;'>Please select  panchayat.</h5>");
+			$('#saveButtonId').show();
+			flag = false;
+		}else{
+			$("#panchayatErr"+typeVal+'').html("");
 		}
 		if(repdesignation == 0 || repdesignation == null || repdesignation == ''){
 			$("#designationErr"+typeVal+'').html("<h5 style='color:red;'>Please select  designation.</h5>");
@@ -2108,6 +2122,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			districtId = $("#districtId"+typeVal+mainCountMain+innerCountMain).val();
 			constituencyId = $("#constituencyId"+typeVal+mainCountMain+innerCountMain).val();
 			mandalId = $("#mandalId"+typeVal+mainCountMain+innerCountMain).val();
+			panchayatId = $("#panchayatId"+typeVal+mainCountMain+innerCountMain).val();
 			
 			if(locationLevelId == 0 || locationLevelId == null || locationLevelId == ''){
 				$(".locationLevelId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Location Type</h5>");
@@ -2123,7 +2138,13 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				}else{
 					$(".districtId"+typeVal+mainCount+innerCount).html("");
 				}
-			}else if(locationLevelId == 4){					
+			}else if(locationLevelId == 4){	
+				if(districtId == 0 || districtId == null || districtId == ''){
+					$(".districtId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select District</h5>");
+					flag = false;
+				}else{
+					$(".districtId"+typeVal+mainCount+innerCount).html("");
+				}				
 				if(constituencyId == 0 || constituencyId == null || constituencyId == ''){
 					$(".constituencyId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Constituency</h5>");
 					flag = false;
@@ -2131,14 +2152,52 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 					$(".constituencyId"+typeVal+mainCount+innerCount).html("");
 				}
 			}else if(locationLevelId == 5){
+
+				if(districtId == 0 || districtId == null || districtId == ''){
+					$(".districtId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select District</h5>");
+					flag = false;
+				}else{
+					$(".districtId"+typeVal+mainCount+innerCount).html("");
+				}				
+				if(constituencyId == 0 || constituencyId == null || constituencyId == ''){
+					$(".constituencyId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Constituency</h5>");
+					flag = false;
+				}else{
+					$(".constituencyId"+typeVal+mainCount+innerCount).html("");
+				}
 				if(mandalId == 0 || mandalId == null || mandalId == ''){
 					$(".mandalId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Mandal</h5>");
 					flag = false;
 				}else{
 					$(".mandalId"+typeVal+mainCount+innerCount).html("");
 				}
+			}else if(locationLevelId == 6){
+
+				if(districtId == 0 || districtId == null || districtId == ''){
+					$(".districtId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select District</h5>");
+					flag = false;
+				}else{
+					$(".districtId"+typeVal+mainCount+innerCount).html("");
+				}				
+				if(constituencyId == 0 || constituencyId == null || constituencyId == ''){
+					$(".constituencyId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Constituency</h5>");
+					flag = false;
+				}else{
+					$(".constituencyId"+typeVal+mainCount+innerCount).html("");
+				}
+				if(mandalId == 0 || mandalId == null || mandalId == ''){
+					$(".mandalId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Mandal</h5>");
+					flag = false;
+				}else{
+					$(".mandalId"+typeVal+mainCount+innerCount).html("");
+				}
+				if(panchayatId == 0 || panchayatId == null || panchayatId == ''){
+					$(".panchayatId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Panchayat</h5>");
+					flag = false;
+				}else{
+					$(".panchayatId"+typeVal+mainCount+innerCount).html("");
+				}
 			}
-			
 		}
 	});
 	
@@ -2156,6 +2215,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			districtInnerId = $("#districtInnerId"+typeVal+mainCountIn+innerCountIn).val();
 			constituencyInnerId = $("#constituencyInnerId"+typeVal+mainCountIn+innerCountIn).val();
 			mandalInnerId = $("#mandalInnerId"+typeVal+mainCountIn+innerCountIn).val();
+			panchayatInnerId = $("#panchayatId"+typeVal+mainCountIn+innerCountIn).val();
 			
 			
 			if(workTypeInnerId == 0 || workTypeInnerId == null || workTypeInnerId == ''){
@@ -2202,6 +2262,14 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 					$(".districtInnerId"+typeVal+mainCountIn+innerCountIn).html("");
 				}
 			}else if(locationLevelInnerId == 4){
+				if(districtInnerId == 0 || districtInnerId == null || districtInnerId == ''){
+					$(".districtInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select District</h5>");
+					flag = false;
+					
+				}else{
+					$(".districtInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+				}
+
 				if(constituencyInnerId == 0 || constituencyInnerId == null || constituencyInnerId == ''){
 					$(".constituencyInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select Constituency</h5>");
 						
@@ -2210,12 +2278,59 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 					$(".constituencyInnerId"+typeVal+mainCountIn+innerCountIn).html("");
 				}
 			}else if(locationLevelInnerId == 5){
+
+				if(districtInnerId == 0 || districtInnerId == null || districtInnerId == ''){
+					$(".districtInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select District</h5>");
+					flag = false;
+					
+				}else{
+					$(".districtInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+				}
+
+				if(constituencyInnerId == 0 || constituencyInnerId == null || constituencyInnerId == ''){
+					$(".constituencyInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select Constituency</h5>");
+						
+					flag = false;
+				}else{
+					$(".constituencyInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+				}
 				if(mandalInnerId == 0 || mandalInnerId == null || mandalInnerId == ''){
 					$(".mandalInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select Mandal</h5>");
 					flag = false;
 						
 				}else{
 					$(".mandalInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+				}
+			}else if(locationLevelInnerId == 6){
+
+				if(districtInnerId == 0 || districtInnerId == null || districtInnerId == ''){
+					$(".districtInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select District</h5>");
+					flag = false;
+					
+				}else{
+					$(".districtInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+				}
+
+				if(constituencyInnerId == 0 || constituencyInnerId == null || constituencyInnerId == ''){
+					$(".constituencyInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select Constituency</h5>");
+						
+					flag = false;
+				}else{
+					$(".constituencyInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+				}
+				if(mandalInnerId == 0 || mandalInnerId == null || mandalInnerId == ''){
+					$(".mandalInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select Mandal</h5>");
+					flag = false;
+						
+				}else{
+					$(".mandalInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+				}
+				if(panchayatInnerId == 0 || panchayatInnerId == null || panchayatInnerId == ''){
+					$(".panchayatInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select Panchayat</h5>");
+					flag = false;
+						
+				}else{
+					$(".panchayatInnerId"+typeVal+mainCountIn+innerCountIn).html("");
 				}
 			}
 	});	
