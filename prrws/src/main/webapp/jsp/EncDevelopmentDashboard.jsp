@@ -234,7 +234,9 @@
 												</div>
 											</div>
 										</div>
-										
+										<div class="col-sm-4 m_top10">
+										</div>
+										<div class="clearfix"></div>
 										<div class="col-sm-4 m_top10">
 											<div class="enc_block">
 												<div class="media">
