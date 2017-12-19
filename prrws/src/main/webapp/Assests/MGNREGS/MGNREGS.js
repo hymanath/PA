@@ -1342,6 +1342,9 @@ function overviewData(divId,levelId,locationId)
 										collapse+='<input levelId="'+levelId+'" class="timelyPaymentOverviewCls" type="radio" attr_type="DCC" name="timelyPayment'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'Overview"/>DCC';
 									collapse+='</label>';
 								}
+								/* if(divId == "Labour Budget"){
+									collapse+='<div id="radioButtonBlock'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'"></div>';
+								} */
 								collapse+='<div id="projectOvervw'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'"></div>';
 							collapse+='</div>';
 						collapse+='</div>';
@@ -2005,18 +2008,19 @@ function getNREGSLabourBudgetOverview(projectDivId,menuLocationType,menuLocation
 }
 
 //LabourBudget Expenditure Call  נSravanth
-function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId)
+function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId,buildType)
 {
 	var districtId = $("#selectedName").attr("attr_distid");
-	$("#projectOvervw"+projectDivId).html(spinner);
-	$("#projectExp"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(str);
+	$("#projectExp"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(spinner);
+	$("#labourRadioDivId").show();
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
         toDate : glEndDate,
         locationType : menuLocationType,
         locationId : menuLocationId,
-		districtId:districtId
+		districtId:districtId,
+		pType : buildType
 	}
   $.ajax({
     url: 'getLabourBudgetExpenditure',
@@ -2028,7 +2032,7 @@ function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocat
       xhr.setRequestHeader("Content-Type", "application/json");
     },
     success: function(ajaxresp) {
-		buildLabrBudgetExpBlock(ajaxresp,projectDivId,menuLocationType,menuLocationId)
+		buildLabrBudgetExpBlock(ajaxresp,projectDivId,menuLocationType,menuLocationId,buildType)
     }
   });
 }
@@ -2361,7 +2365,21 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 			str1+='</tbody>';
 		str1+='</table>';
 	str1+='</div>';
+	if(projectDivId == 'Labour Budget'){
+	str1+='<div id="labourRadioDivId" style="display:none;">';
+		str1+='<label class="radio-inline">';
+			str1+='<input name="'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" overview-locationId="'+menuLocationId+'" attr_locationType="'+menuLocationType+'" attr_name="TOT"  type="radio" checked attr_levelId="2" attr_labr_budget_radioBtn="'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'"/> Total';
+		str1+='</label>';
+		str1+='<label class="radio-inline">';
+			str1+='<input name="'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" overview-locationId="'+menuLocationId+'" attr_locationType="'+menuLocationType+'" attr_name="WAGE" type="radio"  attr_levelId="2" attr_labr_budget_radioBtn="'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'"/> Wage';
+		str1+='</label>';
+		str1+='<label class="radio-inline">';
+			str1+='<input name="'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" overview-locationId="'+menuLocationId+'" attr_locationType="'+menuLocationType+'" attr_name="MAT" type="radio"  attr_levelId="2" attr_labr_budget_radioBtn="'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'"/> Material';
+		str1+='</label>';
+	str1+='</div>';
 	str1+='<div id="projectExp'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" style="margin-top:10px;"></div>';
+	
+	}
 	/* if(result.targettedPersonDays != null)
 	{
 		str1+='<div id="projectExp'+projectDivId.replace(/\s+/g, '')+'" style="margin-top:10px;"></div>';
@@ -2390,27 +2408,17 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 		str1+='</div>';
 		
 	} */
-	if(projectDivId == 'Labour Budget')
-		getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId);
 	$("#projectOvervw"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(str1);
-	
+	if(projectDivId == 'Labour Budget'){
+		getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocationId,"TOT");
+	}
 }
 
 //LabourBudget Exp Builing --  Nandhini
-function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocationId){
+function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocationId,radioType){
 	var str='';
 	str+='<p class="text-center expenditure"><strong>No of Panchayaties Vs Expenditure In Lakhs</strong></p>';
-	str+='';
-		str+='<label class="radio-inline">';
-			str+='<input name="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="TOT"  type="radio" checked attr_labr_budget_radioBtn="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'"/> Total';
-		str+='</label>';
-		str+='<label class="radio-inline">';
-			str+='<input name="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="WAGE" type="radio"  attr_labr_budget_radioBtn="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'"/> Wage';
-		str+='</label>';
-		str+='<label class="radio-inline">';
-			str+='<input name="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" overview-locationId="'+locationId+'" attr_levelId="'+levelId+'" attr_locationType="'+dataArr[i]+'" attr_name="MAT" type="radio" attr_labr_budget_radioBtn="'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'"/> Material';
-		str+='</label>';
-		str+='<div class="table-responsive">';
+	 str+='<div class="table-responsive">';
 			str+='<table class="table table-striped table-bordered m_top10">';
 				str+='<tbody>';
 					 str+='<tr>';
@@ -2423,7 +2431,7 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 						str+=' <td>Grand Total</td>';
 						for(var i in result){
 							if(result[i].count != null && result[i].count != 0){
-								str+='<td class="cuntCls" style="cursor:pointer;" attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'">'+result[i].count+'</td>';
+								str+='<td class="cuntCls" style="cursor:pointer;" attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'" attr_radioType="'+radioType+'">'+result[i].count+'</td>';
 							}else{
 								str+='<td attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'">'+result[i].count+'</td>';
 							}
@@ -6295,6 +6303,7 @@ $(document).on("click",".cuntCls",function(){
 	var range = $(this).attr("attr_range");
 	var locationType = $(this).attr("attr_location_type");
 	var locationId = $(this).attr("attr_loaction_id");
+	var radioType = $(this).attr("attr_radioType");
 	var districtId = $("#selectedName").attr("attr_distid");
 	var rangeArr;
 	var fromRange;
@@ -6327,7 +6336,8 @@ $(document).on("click",".cuntCls",function(){
 		locationId : locationId,
 		fromRange : fromRange,
 		toRange : toRange,
-		districtId : districtId
+		districtId : districtId, 
+		pType : radioType
 		
 	}
 	$.ajax({
@@ -8225,7 +8235,7 @@ $(document).on("click","[attr_labr_budget_radioBtn]",function(){
 	var menuLocationType = '';
 	var menuLocationId = '';
 	var buildType = $(this).attr("attr_name");
-	if(levelId == 2)
+	/* if(levelId == 2)
 	{
 		menuLocationId = "-1";
 		menuLocationType = "state";
@@ -8233,6 +8243,6 @@ $(document).on("click","[attr_labr_budget_radioBtn]",function(){
 	{
 		menuLocationId = locationId;
 		menuLocationType = "district";
-	}
-	getNREGSLabourBudgetExpenditure(blockName,menuLocationType,menuLocationId,buildType)
+	} */
+	getNREGSLabourBudgetExpenditure(blockName,locationType,locationId,buildType)
 });

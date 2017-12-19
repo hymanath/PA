@@ -3651,6 +3651,8 @@ function getMeesevaKPIOverViewDetails(type,divId,blockId){
 		getMeesevaKPIMobileAppServiceOverviewCount();
 		getMeesevaKPIOnlineServiceYearWiseDetails();//New Call FR Online Services
 		getMeesevaKPIMobileSevicesYearWiseDetails();//New Call FR Mobile App Services
+		getMeesevaKPINewOnlineServiceOverviewCount();//New OnLine Services OverView
+		getMeesevaKPINewOnlineServiceYearWiseDetails();//New OnLine Services Year Data
 	});	
 }
 function buildMeesevaKPIOverViewDetails(result,divId,blockId){
@@ -3698,12 +3700,17 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 		
 	str+='</div>';
 	str+='<div class="row">';
-		str+='<div class="col-sm-6  m_top10">';
+		str+='<div class="col-sm-4  m_top10">';
+			str+='<div class="white_block_ITC">';
+				str+='<div id="newOnlineSerOvrCuntCls"></div>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-4  m_top10">';
 			str+='<div class="white_block_ITC">';
 				str+='<div id="onlineSerOvrCuntCls"></div>';
 			str+='</div>';
 		str+='</div>';
-		str+='<div class="col-sm-6  m_top10">';
+		str+='<div class="col-sm-4  m_top10">';
 			str+='<div class="white_block_ITC">';
 					str+='<div id="mobileAppSerOvrCuntCls"></div>';
 			str+='</div>';
@@ -3754,8 +3761,27 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 		str+='</div>';
 	str+='</div>';
 	
+	//New OnLine Services
 	str+='<div class="row m_top10 OnlinServiceKPIOpen">';
-		str+='<div class="col-sm-6">';
+		str+='<div class="col-sm-4">';
+			str+='<div class="panel-group" id="accordionNewOnlinServiceKPI" role="tablist" aria-multiselectable="true">';
+				str+='<div class="panel panel-default panel-black">';
+						str+='<div class="panel-heading" role="tab" id="headingNewOnlinServiceKPI">';
+							str+='<a role="button" class="panelCollapseIcon NewOnlinServiceKPICollapsed collapsed"  data-toggle="collapse" data-parent="#accordionNewOnlinServiceKPI" href="#collapseNewOnlinServiceKPI" aria-expanded="true" aria-controls="collapseNewOnlinServiceKPI">';
+								str+='<h4 class="panel-title">NEW ONLINE SERVICES</h4>';
+							str+='</a>';
+						str+='</div>';
+					str+='<div id="collapseNewOnlinServiceKPI" class="panel-collapse collapse newOnlinServiceKPICollapsedIN" role="tabpanel" aria-labelledby="headingNewOnlinServiceKPI">';
+						str+='<div class="panel-body borderColorCSSBlack table-responsive">';
+							str+='<div id="newOnlineServicesDiv"></div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		//OnLine Services
+	 // str+='<div class="row m_top10 OnlinServiceKPIOpen">';
+		str+='<div class="col-sm-4">';
 			str+='<div class="panel-group" id="accordionOnlinServiceKPI" role="tablist" aria-multiselectable="true">';
 				str+='<div class="panel panel-default panel-black">';
 						str+='<div class="panel-heading" role="tab" id="headingOnlinServiceKPI">';
@@ -3764,7 +3790,7 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 							str+='</a>';
 						str+='</div>';
 					str+='<div id="collapseOnlinServiceKPI" class="panel-collapse collapse OnlinServiceKPICollapsedIN" role="tabpanel" aria-labelledby="headingOnlinServiceKPI">';
-						str+='<div class="panel-body borderColorCSSBlack">';
+						str+='<div class="panel-body borderColorCSSBlack table-responsive">';
 							str+='<div id="onlineServicesDiv"></div>';
 						str+='</div>';
 					str+='</div>';
@@ -3772,7 +3798,7 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 			str+='</div>';
 		str+='</div>';
 		//Mobile App Services
-		str+='<div class="col-sm-6">';
+		str+='<div class="col-sm-4">';
 			str+='<div class="panel-group" id="accordionMobileAppServiceKPI" role="tablist" aria-multiselectable="true">';
 				str+='<div class="panel panel-default panel-black">';
 						str+='<div class="panel-heading" role="tab" id="headingMobileAppServiceKPI">';
@@ -3781,7 +3807,7 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 							str+='</a>';
 						str+='</div>';
 					str+='<div id="collapseMobileAppServiceKPI" class="panel-collapse collapse mobileKPICollapsedIN" role="tabpanel" aria-labelledby="headingMobileAppServiceKPI">';
-						str+='<div class="panel-body borderColorCSSBlack">';
+						str+='<div class="panel-body borderColorCSSBlack table-responsive">';
 							str+='<div id="mobileAppServicesDiv"></div>';
 						str+='</div>';
 					str+='</div>';
@@ -3789,6 +3815,7 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
+	
 	
 	$("#"+divId+"Block"+blockId).html(str);
 }
@@ -3972,16 +3999,20 @@ function getMeesevaKPIOnlineServiceYearWiseDetails(){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildMeesevaKPIOnlineServiceDetails(result);
+			buildMeesevaKPIOnlineServiceDetails(result,'online');
 		}else{
 			$("#onlineServicesDiv").html("No Data Available")
 		}
 	});	
 }
 
-function buildMeesevaKPIOnlineServiceDetails(result){
+function buildMeesevaKPIOnlineServiceDetails(result,type){
 	var str='';
-	str+='<table class="table" id="onlineServicesTableId">';
+			if(type != null && type == 'online'){
+				str+='<table class="table" id="onlineServicesTableId">';
+			}else{
+				str+='<table class="table" id="newOnlineServicesTableId">';
+			}
 			str+='<thead>';
 				str+='<tr>';
 					str+='<th>Department</th>';
@@ -3996,22 +4027,22 @@ function buildMeesevaKPIOnlineServiceDetails(result){
 					str+='<tr>';
 						str+='<td>'+result[i].name+'</td>';
 						if(result[i].onLineServices2014 != null && result[i].onLineServices2014 != 0){
-							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2014"><u>'+result[i].onLineServices2014+'</u></td>';
+							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_type="'+type+'" attr_year="2014"><u>'+result[i].onLineServices2014+'</u></td>';
 						}else{
 							str+='<td>0</td>';
 						}
 						if(result[i].onLineServices2015 != null && result[i].onLineServices2015 != 0){
-							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2015"><u>'+result[i].onLineServices2015+'</u></td>';
+							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'"  attr_type="'+type+'" attr_year="2015"><u>'+result[i].onLineServices2015+'</u></td>';
 						}else{
 							str+='<td>0</td>';
 						}
 						if(result[i].onLineServices2016 != null && result[i].onLineServices2016 != 0){
-							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2016"><u>'+result[i].onLineServices2016+'</u></td>';
+							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'"  attr_type="'+type+'" attr_year="2016"><u>'+result[i].onLineServices2016+'</u></td>';
 						}else{
 							str+='<td>0</td>';
 						}
 						if(result[i].onLineServices2017 != null && result[i].onLineServices2017 != 0){
-							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'" attr_year="2017"><u>'+result[i].onLineServices2017+'</u></td>';
+							str+='<td class="dptSrvCuntCls" attr_dept_id = "'+result[i].id+'" style="cursor:pointer;" attr_dept_name = "'+result[i].name+'"  attr_type="'+type+'" attr_year="2017"><u>'+result[i].onLineServices2017+'</u></td>';
 						}else{
 							str+='<td>0</td>';
 						}
@@ -4021,15 +4052,26 @@ function buildMeesevaKPIOnlineServiceDetails(result){
 				}
 			str+='<tbody>';
 		str+='</table>';
-		$("#onlineServicesDiv").html(str);
-		$("#onlineServicesTableId").dataTable();
+		if(type != null && type == 'online'){
+			$("#onlineServicesDiv").html(str);
+			$("#onlineServicesTableId").dataTable();
+		}else{
+			$("#newOnlineServicesDiv").html(str);
+			$("#newOnlineServicesTableId").dataTable();
+		}
 }
 $(document).on("click",".dptSrvCuntCls",function(){
 	$("#kpiOnlineDeptModalId").modal("show");
 	var deptName =  $(this).attr("attr_dept_name");
 	var year =  $(this).attr("attr_year");
+	var type =  $(this).attr("attr_type");
 	$("#deptServiceHeadingId").html(deptName +" Department "+year+" Services");
-	getMeesevaKPIOnlineDeptWiseDetails($(this).attr("attr_dept_id"),year);
+	if(type != null && type == 'online'){
+		getMeesevaKPIOnlineDeptWiseDetails($(this).attr("attr_dept_id"),year);
+	}else{
+		getMeesevaKPINewOnlineDeptWiseCuntDetails($(this).attr("attr_dept_id"),year);
+	}
+	
 });
 function buildMeesevaKPIOnlineDeptWiseDetails(result){
 	var str='';
@@ -4224,7 +4266,8 @@ function buildMeesevaKPIOnlineServiceOverviewCount(result){
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-	$("#onlineSerOvrCuntCls").html(str);
+		$("#onlineSerOvrCuntCls").html(str);
+		
 }
 function getMeesevaKPIMobileAppServiceOverviewCount(){
 	$("#mobileAppSerOvrCuntCls").html(spinner);
@@ -4279,7 +4322,7 @@ function buildMeesevaKPIMobileAppServiceOverviewCount(result){
 		str+='</div>';
 	$("#mobileAppSerOvrCuntCls").html(str);
 }
-$(document).on("click",".onlinePanelBlock",function(){	
+$(document).on("click",".onlinePanelBlock",function(){
 	if(!$(".OnlinServiceKPICollapsedIN").hasClass("in")){
 		$(".OnlinServiceKPICollapsed").removeClass("collapsed")
 		$(".OnlinServiceKPICollapsedIN").addClass("in")
@@ -4313,3 +4356,118 @@ $(document).on("click","#addIcon",function(){
 	$('#droppedBlockModalId').modal('show');
 
 });
+
+function getMeesevaKPINewOnlineServiceOverviewCount(){
+	$("#newOnlineSerOvrCuntCls").html(spinner);
+	var json = {
+		year : "2014"
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPINewOnlineServiceOverviewCount',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			buildMeesevaKPINewOnlineServiceOverviewCount(result);
+		}else{
+			$("#newOnlineSerOvrCuntCls").html("No Data Available")
+		}
+	});	
+}
+function buildMeesevaKPINewOnlineServiceOverviewCount(result){
+	var str='';
+		str+='<h4 class="text-center"><b style="font-size: 20px !important;">New Online Services - '+result.onLineServicesCount+'</b></h4>';
+		str+='<div class="row m_top10">';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="border-right:1px solid #000;text-align:center;">';
+					str+='<h4><b>2014</b></h4>';
+					str+='<h5 class="m_top10 newOnlinePanelBlock">'+result.onLineServices2014+'</h5>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="border-right:1px solid #000;text-align:center;">';
+					str+='<h4><b>2015</b></h4>';
+					str+='<h5 class="m_top10 newOnlinePanelBlock">'+result.onLineServices2015+'</h5>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="border-right:1px solid #000;text-align:center;">';
+					str+='<h4><b>2016</b></h4>';
+					str+='<h5 class="m_top10 newOnlinePanelBlock">'+result.onLineServices2016+'</h5>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3 m_top10">';
+				str+='<div style="text-align:center;">';
+					str+='<h4><b>2017</b></h4>';
+					str+='<h5 class="m_top10 newOnlinePanelBlock">'+result.onLineServices2017+'</h5>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#newOnlineSerOvrCuntCls").html(str);
+}
+$(document).on("click",".newOnlinePanelBlock",function(){
+if(!$(".newOnlinServiceKPICollapsedIN").hasClass("in")){
+		$(".NewOnlinServiceKPICollapsed").removeClass("collapsed")
+		$(".newOnlinServiceKPICollapsedIN").addClass("in")
+		$('html,body').animate({
+			scrollTop: $(".OnlinServiceKPIOpen").offset().top},
+		'slow');
+		$(".borderColorCSSBlack").addClass("border_black")
+	}else{
+		$('html,body').animate({
+			scrollTop: $(".OnlinServiceKPIOpen").offset().top},
+		'slow');
+		$(".borderColorCSSBlack").addClass("border_black")
+	}
+});
+
+function getMeesevaKPINewOnlineServiceYearWiseDetails(){
+	$("#newOnlineServicesDiv").html(spinner);
+	var json = {
+		year : "2014"
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPINewOnlineServiceYearWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMeesevaKPIOnlineServiceDetails(result,'New Online');
+		}else{
+			$("#newOnlineServicesDiv").html("No Data Available")
+		}
+	});	
+}
+function getMeesevaKPINewOnlineDeptWiseCuntDetails(departmentId,year){
+	$("#kpiOnlineDeptDivId").html(spinner);
+	var json = {
+		year : year,
+		deptId : departmentId
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaKPINewOnlineDeptWiseCuntDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMeesevaKPIOnlineDeptWiseDetails(result);
+		}else{
+			$("#kpiOnlineDeptDivId").html("No Data Available")
+		}
+	});	
+}

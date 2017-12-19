@@ -61,4 +61,7 @@ public interface IItcDashboardService {
 	public MeesevaKPIDtlsVO getMeesevaKPIMobileAppServiceOverviewCount(InputVO inputVO);
 	public List<MeesevaKPIDtlsVO> getMeesevaKPIOnlineServiceYearWiseDetails(InputVO inputVO);
 	public List<MeesevaKPIDtlsVO> getMeesevaKPIMobileSevicesYearWiseDetails(InputVO inputVO);
+	public MeesevaKPIDtlsVO getMeesevaKPINewOnlineServiceOverviewCount(InputVO inputVO);
+	public List<MeesevaKPIDtlsVO> getMeesevaKPINewOnlineServiceYearWiseDetails(InputVO inputVO);
+	public List<MeesevaKPIDtlsVO> getMeesevaKPINewOnlineDeptWiseCuntDetails(InputVO inputVO);
 }

@@ -214,7 +214,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
 		try {
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetExpenditureNew", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -3523,7 +3523,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			String str = convertingInputVOToString(inputVO); 
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataPanchayatNew", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6495,7 +6495,7 @@ public class NREGSTCSService implements INREGSTCSService{
 						inputVO.setToRange(Long.valueOf(rangeValues[1]));
 						
 						String str = convertingInputVOToString(inputVO); 
-						ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataPanchayatNew", str);
+						ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
 				        
 				        if(response.getStatus() != 200){
 				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
