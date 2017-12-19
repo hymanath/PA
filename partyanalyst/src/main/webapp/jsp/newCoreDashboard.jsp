@@ -728,10 +728,9 @@
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks hdCls"  expand-block-more="training">
 									<ul class="list-inline pull-right activeUlCls trainingMoreDetailedCls">
-										<li id="" class="trainingDetailed" attr_type="detailed">Detailed</li>
+										<li class="trainingDetailed" attr_type="feedback">FeedBack</li>
+										<li id="" class="" attr_type="detailed">Detailed</li>
 										<li class="" attr_type="comparision">Comparison</li>
-										<li class="" attr_type="feedback">FeedBack</li>
-										<!--<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>-->
 									</ul>
 							</div> 
 							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls"  expand-block-more="training">
@@ -819,7 +818,7 @@
 								</div>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingFeedBackBlock" expand-block-more="training" style="display:none;">
-								<div class="row">
+								<div class="row" style="display:none;">
 									<div class="col-sm-4">
 										<select class="form-control chosen-select" id="trainingCampLevelId">
 											<option value="all">Over-All Levels</option>
@@ -6022,7 +6021,7 @@ var globalImages;
 	});
 	getLoggedInUserStructure();
 	onLoadCalls()
-	function onLoadCalls(){
+	function onLoadCalls(){    
 		getUserTypeWiseBoothCommitteesInchargeDetails();
 		//Preemeet
 		preemeeetOnloadCalls();
