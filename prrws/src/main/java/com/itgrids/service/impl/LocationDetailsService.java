@@ -274,7 +274,8 @@ public class LocationDetailsService implements ILocationDetailsService {
 					KeyValueVO vo = new KeyValueVO();
 					String idStr= "2"+commonMethodsUtilService.getStringValueForObject(param[0]);
 					vo.setKey(commonMethodsUtilService.getLongValueForString(idStr));
-					vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					String panchaytName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+					vo.setValue(panchaytName);
 					voList.add(vo);
 				}
 			}
