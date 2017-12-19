@@ -123,7 +123,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		try {
 			
 			if(pmRequestVO.getExistingPetitionId() != null && pmRequestVO.getExistingPetitionId().longValue()>0L){
-				updatePetitionSubWorksAndDocumentDetails(pmRequestVO.getExistingPetitionId(),pmRequestVO.getUserId());
+				return null;
+				//updatePetitionSubWorksAndDocumentDetails(pmRequestVO.getExistingPetitionId(),pmRequestVO.getUserId());
 			}
 			/** Start Petition Representee Details saving */
 				PmRepresentee pmRepresentee = saveRepresenteeDetails(pmRequestVO);
