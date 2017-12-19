@@ -80,10 +80,12 @@ function representationRequestEntryTable(result){
 		str+='</thead>';
 		str+='<tbody>';
 			for(var i in result){
+			var endorsmentNo='';
 			str+='<tr>';
-				if (result[i].endorsementNO != null && typeof(result[i].endorsementNO) != "undefined")
+				if (result[i].endorsementNO != null && typeof(result[i].endorsementNO) != "undefined"){
 					str+='<td>'+result[i].endorsementNO+'</td>';
-				else
+					endorsmentNo=result[i].endorsementNO;
+				}else
 					str+='<td> - </td>';
 				if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
 					str+='<td>'+result[i].raisedDate+'</td>';
@@ -120,7 +122,7 @@ function representationRequestEntryTable(result){
 				else
 					str+='<td>-</td>';
 				
-				str+='<td class="text-center"><a class="btn btn-xs viewEditCss viewBtnCls" attr_petiotion_id="'+result[i].petitionId+'"> View</a></td>';
+				str+='<td class="text-center"><a class="btn btn-xs viewEditCss viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"> View</a></td>';
 				//<a href="'+wurl+'/representationRequestEntry" target="_blank" class="btn btn-xs viewEditCss m_top10"> Edit </a>
 			str+='</tr>';
 			}
@@ -219,6 +221,7 @@ $(document).on("change","#constituencyCanId",function(){
 });
 
 function getDistrictBySearchType(searchType,selBoxId){
+
 	$("#"+selBoxId).html("");
  var json = {
 		 searchType :searchType
@@ -442,9 +445,10 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 
 $(document).on("click",".viewBtnCls",function(){
 	var petionId = $(this).attr("attr_petiotion_id");
+	var endorsNo = $(this).attr("attr_enrorsNo");
 	$("#representeeViewId").html("");
 	$("#representeeDetailsModelDivId").modal("show");
-   getPetitionDetails(petionId);
+   getPetitionDetails(petionId,endorsNo);
  });
 function getRepresentativeSearchDetails1(){
 	$("#errMsgId").html("");
@@ -560,8 +564,8 @@ function getStatusList(){
 		$("#statusId").trigger('chosen:updated');
   }); 
 }
-//getPetitionDetails(1778);
-function getPetitionDetails(petitionId){
+//getPetitionDetails(1778,'');
+function getPetitionDetails(petitionId,endorsNo){
 	$("#representeeViewId").html(spinner);
    var json = {
        petitionId:petitionId
@@ -578,7 +582,7 @@ function getPetitionDetails(petitionId){
   }).done(function(result){
     console.log(result);
 	if(result != null){
-		setPmRepresenteeDataToResultView(result);
+		setPmRepresenteeDataToResultView(result,endorsNo);
 	}else{
 		$("#representeeViewId").html("NO DATA AVAILABLE");
 	}
@@ -586,7 +590,7 @@ function getPetitionDetails(petitionId){
 }
 var referralDocs = [];
 var workDocs = [];
-function setPmRepresenteeDataToResultView(result){
+function setPmRepresenteeDataToResultView(result,endorsNo){
 	var str="";
 	referralDocs = [];
 	workDocs = [];
@@ -596,44 +600,42 @@ function setPmRepresenteeDataToResultView(result){
 		
 		
 		var representeeList = [];
-		if(result.representationType =="SELF"){
-			 representeeList = result.referDetailsList;
-		}else{
+		if(result.representationType =="SELF" && result.referDetailsList.length >0){
+			representeeList = result.referDetailsList;
+		}else if(result.representeeDetailsList.length >0){
 			representeeList = result.representeeDetailsList;
 		}
-	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+	str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				str+='<div class="col-sm-6">';
-					str+='<h4>REPRESENTEE DETAILS</h4>';
-					str+='<div class="block_padding_10">';
+					str+='<h4>REPRESENTEE DETAILS  <span style="margin-left:20px;">(<b>Endorsement No: </b> '+endorsNo+')</span></h4>';
+					str+='<div class="block_padding_10 m_top10">';
 						
 						str+='<div class="media">';
 							str+='<div class="media-left" style="text-align:center">';
 								str+='<i class="fa fa-user-circle fa-5x" aria-hidden="true" style="#EBEBEB"></i>';
 								str+='<div class="bg_light-Color" style="padding:10px;margin-top:5px;">';
-									str+='<p>Representation Date</p>';
+									str+='<p alt="Representation Date">Repr.&nbsp;Date</p>';
 									str+='<p><b>'+result.representationdate+'</b></p>';
 								str+='</div>';
 							str+='</div>';
 							str+='<div class="media-body">';
 								str+='<div class="bg_light-Color" style="padding:10px">';
-									str+='<p><b>Name</b></p>';
+									//str+='<p><b>Name</b></p>';
 									str+='<h4><b>'+representeeList[0].name+'</b></h4>';
 									if(representeeList[0].tdpCadreId != null)
-									str+='<span><b>TDP Cadre</b></span>';
-									str+='<div class="row">';
+									str+='<span><b style="color:orange;">TDP CADRE</b></span>';
+									str+='<div class="row" style="margin-top:10px;">';
 										str+='<div class="col-sm-12 col-md-6">';
-											str+='<h5><b>Address Details:</b></h5>';
-											//str+='<p>Village : Sangadigunta</p>';
-											str+='<p>Mandal: '+representeeList[0].addressVO.tehsilName+'</p>';
-											str+='<p>Constituency : '+representeeList[0].addressVO.assemblyName+'</p>';
-											str+='<p>District : '+representeeList[0].addressVO.districtName+'</p>';
-										str+='</div>';
-										str+='<div class="col-sm-12 col-md-6">';
-											str+='<h5><b>Contact Details:</b></h5>';
-											str+='<p>Email id : '+representeeList[0].email+'</p>';
-											str+='<p>Contact No : '+representeeList[0].mobileNO+'</p>';
-											if(representeeList[0].voterCardNo != undefined)
-											str+='<p>Voter Id : '+representeeList[0].voterCardNo+'</p>';
+											str+='<h5><b>ADDRESS DETAILS:</b></h5>';
+												str+='<p>Mandal: '+(representeeList[0].addressVO.tehsilName != ""?representeeList[0].addressVO.tehsilName:" - ")+'</p>';
+												str+='<p>Constituency : '+(representeeList[0].addressVO.assemblyName != ""?representeeList[0].addressVO.assemblyName:" - ")+'</p>';
+												str+='<p>District : '+(representeeList[0].addressVO.districtName != ""?representeeList[0].addressVO.districtName:" - ")+'</p>';
+											str+='</div>';
+										str+='<div class="col-sm-12 col-md-6"  style="margin-top:10px;">';
+											str+='<h5><b>CONTACT DETAILS :</b></h5>';
+												str+='<p>Email id : '+(representeeList[0].email != ""?representeeList[0].email:" - ")+'</p>';
+												str+='<p>Contact No : '+(representeeList[0].mobileNO != ""?representeeList[0].mobileNO:" - ")+'</p>';
+											str+='<p>Voter Card No : '+(representeeList[0].voterCardNo != "" && representeeList[0].voterCardNo != undefined?representeeList[0].voterCardNo:" - ")+'</p>';
 										str+='</div>';
 									str+='</div>';
 									
@@ -643,14 +645,13 @@ function setPmRepresenteeDataToResultView(result){
 					str+='</div>';
 					
 				str+='</div>';
-				str+='<div class="col-sm-6">';
-					str+='<h4>REFERRED BY</h4>';
-					str+='<div class="block_padding_10">';
+				str+='<div class="col-sm-6 ">';
+					str+='<h4>REFERRED DETAILS </h4>';
+					str+='<div class="block_padding_10 m_top10">';
 						for(var i in result.referDetailsList){
 						str+='<div class="media">';
 							//str+='<div class="media-left" style="text-align:center">';
-								//str+='<img class="media-object thumbnail" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;" src="http://mytdp.com/'+result.referDetailsList.candidatePath+'"></img>';
-								
+								//str+='<img class="media-object thumbnail" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;" src="http://mytdp.com/'+result.referDetailsList.candidatePath+'"></img>';								
 							//str+='</div>';
 							str+='<div class="media-left" >';
 												str+='<img style="width: 60px ! important; height: 60px ! important; margin-top: 6px;" src="'+result.referDetailsList[i].candidatePath+'" class="imageCss"></img>';
@@ -658,7 +659,7 @@ function setPmRepresenteeDataToResultView(result){
 										str+='</div>';
 							str+='<div class="media-body">';
 								str+='<div class="bg_light-Color" style="padding:10px">';
-									str+='<p><b>Name</b></p>';
+									//str+='<p><b>Name</b></p>';
 									str+='<h4><b>'+result.referDetailsList[i].name+'</b></h4>';
 									str+='<span><b>('+result.referDetailsList[i].designation+'), '+result.referDetailsList[i].addressVO.assemblyName+' Constituency, '+result.referDetailsList[i].addressVO.districtName+' District.</b></span>';
 									str+='<div class="row">';
@@ -667,15 +668,17 @@ function setPmRepresenteeDataToResultView(result){
 											str+='<p>'+result.referDetailsList[i].partyName+' '+result.referDetailsList[i].addressVO.districtName+'</p>';
 										str+='</div>';
 										str+='<div class="col-sm-12 col-md-6">';
-											str+='<h5><b>Contact Details:</b></h5>';
-											str+='<p>Email id : '+result.referDetailsList[i].email+'</p>';
-											str+='<p>Contact No : '+result.referDetailsList[i].mobileNO+'</p>';
+											str+='<h5><b>CONTACT DETAILS :</b></h5>';
+											if(result.referDetailsList[i].email != "")
+												str+='<p>Email id : '+result.referDetailsList[i].email+'</p>';
+											if(result.referDetailsList[i].mobileNO != "")
+												str+='<p>Contact No : '+result.referDetailsList[i].mobileNO+'</p>';
 										str+='</div>';
 										if(result.referDetailsList[i].fileNamesList.length >0){
 										referralDocs.push(result.referDetailsList[i]);
-											str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="referral" attr_candidate_id="'+result.referDetailsList[i].id+'" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW REFERRAL LETTER</p></div>';
+											str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="referral" attr_candidate_id="'+result.referDetailsList[i].id+'" style="cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW REFERRAL LETTER </p></div>';
 										}
-										str+='</div>';
+									str+='</div>';
 									
 								str+='</div>';
 							str+='</div>';
@@ -707,32 +710,34 @@ function setPmRepresenteeDataToResultView(result){
 				//for(var j in result.worksList){
 				str+='<div class="col-sm-10 m_top20">';
 					str+='<h5><b>WORK TYPE DETAILS</b></h5>';
-					str+='<table class="table table-bordered" cellpadding="100" style="border:1px solid grey">';
+
+					str+='<table class="table table-bordered" cellpadding="100" style="border:1px solid grey;margin-top:10px;">';
 						str+='<tbody>';
 							str+='<tr>';
-								str+='<td>Name of the Work</td>';
-								str+='<td style="background-color:#D1AB66">No of Works</td>';
-								str+='<td style="background-color:#D1AB66">Work Cost (Est. Cost in Lakh)</td>';
+								str+='<td style="background-color:lightgrey;text-align: center;font-weight: bold;padding: 17px" > NAME OF THE WORK </td>';
+								str+='<td style="background-color:#D1AB66;text-align: center;font-weight: bold;padding: 17px;">NO OF WORKS </td>';
+								str+='<td style="background-color:#D1AB66;text-align: center;font-weight: bold;padding: 17px">WORK IN COST </td>';
 							str+='</tr>';
 							str+='<tr>';
 								str+='<td>'+result.workName+'</td>';
-								str+='<td style="background-color:#D1AB66">'+result.noOfWorks+'</td>';
-								str+='<td style="background-color:#D1AB66">'+result.estimateCost+'</td>';
+								str+='<td style="background-color:#D1AB66;text-align: center;font-weight: bold;padding: 17px">'+result.noOfWorks+'</td>';
+								str+='<td style="background-color:#D1AB66;text-align: center;font-weight: bold;padding: 17px">'+result.estimateCost+'</td>';
 							str+='</tr>';
 						str+='</tbody>';
 					str+='</table>';
+
 				str+='</div>';
+				if(result.fileList.length >0){
 				str+='<div class="col-sm-2 m_top20">';
 					str+='<h5><b>PROJECT DOCUMENTS</b></h5>';
-					workDocs = [];
 					workDocs = result.fileList;
-					str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="workDocs" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW DOCUMENT</p></div>';
+						str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="workDocs" style="cursor:pointer;margin-right: 30px;margin-top: 10px;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW DOCUMENT</p></div>';
 				str+='</div>';
-				
+				}
 				str+='<div class="clearfix"></div>';
 				str+='<div class="col-sm-12 m_top20" style="border-bottom:5px solid #EBEBEB;border-top:5px solid #EBEBEB;">';
 					str+='<table class="table">';
-						str+='<td>NO OF WORKS - '+result.noOfWorks+'</td>';
+						str+='<td style="font-weight: bold;"> NO OF WORKS - '+result.noOfWorks+'</td>';
 						/* str+='<td style="padding:15px"><i class="fa fa-check-circle-o" aria-hidden="true" style="padding-right:10px;color:#01A64E;font-size:15px"></i>Endorse</td>';
 						str+='<td style="padding:15px"><i class="fa fa-times-circle-o" aria-hidden="true" style="padding-right:10px;color:#EC2027;font-size:15px"></i>Rejected</td>';
 						str+='<td><button class="btn">Select All</button></td>';
@@ -749,37 +754,37 @@ function setPmRepresenteeDataToResultView(result){
 				for(var k in result.subWorksList[j].subWorksList){
 					workCount = workCount+1;
 					
-						str+='<div class="col-sm-6">';
-							str+='<h5><b>WORK No '+workCount+'</b></h5>';
+						str+='<div class="col-sm-6 m_top10">';
+							str+='<h5><b>WORK NO '+workCount+'</b></h5>';
 							str+='<div class="bg_light-Color block_padding_10 m_top10">';
 								str+='<table class="table table-bordered">';
 									str+='<tr>';
-										str+='<td>Work Type</br><b>'+result.subWorksList[j].subWorksList[k].workType+'</b>(status:'+result.subWorksList[j].subWorksList[k].status+')</td>';
+										str+='<td><b>WORK TYPE </b></br><b>'+result.subWorksList[j].subWorksList[k].workType+'</b>(status:'+result.subWorksList[j].subWorksList[k].status+')</td>';
 										str+='<td colspan="2">';
-											str+='<p>LOCATION</p>';
-											str+='<span style="display:inline-block;padding:3px">District</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.districtName+'</b></span>';
+											str+='<p><b>LOCATION</b></p>';
+											str+='<span style="display:inline-block;padding:10px"><b>District</b></br>'+result.subWorksList[j].subWorksList[k].addressVO.districtName+'</span>';
 											if(result.subWorksList[j].subWorksList[k].addressVO.assemblyName != "")
-											str+='<span style="display:inline-block;padding:3px">Constituency</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.assemblyName+'</b></span>';
-											if(result.subWorksList[j].subWorksList[k].addressVO.tehsilName != "")
-											str+='<span style="display:inline-block;padding:3px">Mandal</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.tehsilName+'</b></span>';
+											str+='<span style="display:inline-block;padding:10px" class="text-capitalized"><b>Constituency</b></br>'+result.subWorksList[j].subWorksList[k].addressVO.assemblyName+'</span>';
+											if(result.subWorksList[j].subWorksList[k].addressVO.tehsilName.trim() != "")
+											str+='<span style="display:inline-block;padding:10px">Mandal</br><b>'+result.subWorksList[j].subWorksList[k].addressVO.tehsilName+'</b></span>';
 										str+='</td>';
 									str+='</tr>';
 									str+='<tr>';
-										str+='<td>Subject <b>'+result.subWorksList[j].subWorksList[k].subject+')</b></td>';
-										str+='<td>Sub-Subject <b>'+result.subWorksList[j].subWorksList[k].subSubject+'</b></td>';
-										str+='<td>Department <b>'+result.subWorksList[j].subWorksList[k].deptName+'</b></td>';
+										str+='<td><b>SUBJECT: </b>'+result.subWorksList[j].subWorksList[k].subject+'</td>';
+										str+='<td><b>SUB-SUBJECT:  </b>'+result.subWorksList[j].subWorksList[k].subSubject+'</td>';
+										str+='<td><b>DEPARTMENT : </b>'+result.subWorksList[j].subWorksList[k].deptName+'</td>';
 										
 									str+='</tr>';
 								str+='</table>';
 							str+='</div>';
 						str+='</div>';
 						
-						str+='<div class="col-sm-6">';
+						str+='<div class="col-sm-6 m_top10">';
 							str+='<h5><b>WORK DESCRIPTION</b> ';
 							//str+='<button class="btn pull-right">Select</button>
 							str+='</h5>';
 							str+='<div class=" block_padding_3 m_top10">';
-								str+='<p style="font-size:12px">'+result.subWorksList[j].subWorksList[k].workName+'</p>';
+								str+='<p style="font-size:12px;border: 1px solid lightgray; width: 570px;height: 150px;padding: 10px;">'+result.subWorksList[j].subWorksList[k].workName+'</p>';
 							str+='</div>';
 						str+='</div>';
 						
@@ -822,7 +827,11 @@ $(document).on("click",".docsViewCls",function(){
 	var docsList = [];
 	var str="";
 	if($(this).attr("attr_docs") == "referral"){
-		docsList  = referralDocs;
+		 for(var i = 0; i<referralDocs.length; i++){
+			if(referralDocs[i].id == $(this).attr("attr_candidate_id")){
+				docsList  = referralDocs[i].fileNamesList;
+			 }
+		 }
 	}else if($(this).attr("attr_docs") == "workDocs"){
 		docsList = workDocs;
 	}

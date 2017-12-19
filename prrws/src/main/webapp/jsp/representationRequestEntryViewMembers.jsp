@@ -94,7 +94,7 @@
 					<div class="panel-group">
 						<div class="panel panel-default panel-lightGreen">
 							<div class="panel-heading">
-								<h4 class="panel-title f_22" style="font-weight:normal !important;">REPRESENTATION REQUEST</h4>
+								<h4 class="panel-title f_22" style="font-weight:normal !important;">VIEW PETITION DETAILS</h4>
 							</div>
 								<div class="panel-body">								
 									<div class="row m_top20">
@@ -146,63 +146,63 @@
 											</div>
 										<span id="parametersList" style="display:none;">
 											<div class="col-sm-3" id="designationDiv" style="display:none;">
-												<label> Designation </label>
-												<select class="form-control chosen-select v" id="designationsId" multiple>
+												<label> DESIGNATION </label>
+												<select class="form-control chosen-select"  data-placeholder="SELECT DESIGNATION "  id="designationsId" multiple>
 													<!--<option value="0">Select Designation</option>-->
 												</select>
 												<div class="error_colorCls" id="designationErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="departMentsDiv" style="display:none;">
-											<label> Department</label>
-												<select class="form-control chosen-select clearDataCls" id="departmentId" multiple>
+											<label> DEPARTMENT</label>
+												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT DEPARTMENT "  id="departmentId" multiple>
 													<!--<option value="0">Select Department</option>-->
 												</select>
 												<div class="error_colorCls" id="departMentsErrDiv"></div>
 											</div>	
 											<div class="col-sm-3" id="nameDivid" style="display:none;">
-											<label> Name</label>
+											<label> NAME </label>
 												<input type="text" class="form-control clearCls" style="text-align:center;height:40px" onkeyUp="clearData()" id="nameId" placeholder="Please enter Name">
 												<div class="error_colorCls" id="nameErrDivId"></div>
 											</div>	
 											<div class="col-sm-3" id="mobileDivid" style="display:none;">
-											<label>Mobile Number</label>
+											<label>MOBILE NO </label>
 												<input type="text" class="form-control  clearCls " style="text-align:center;height:40px"  onkeyUp="clearData()" id="mobileId" placeholder="Please enter mobile number">
 												<div class="error_colorCls" id="mobileErrDivId"></div>
 											</div>	
 											<div class="col-sm-3" id="emailDivid"  onkeyUp="clearData()" style="display:none;">
-											<label> Email</label>
+											<label> EMAIL-ID</label>
 												<input type="text" class="form-control  clearCls" style="text-align:center;height:40px" id="emailId" placeholder="Please enter email">
 												<div class="error_colorCls" id="emailErrDivId"></div>
 											</div>	
 											<div class="col-sm-3" id="endorsmentNoDivid" style="display:none;">
-											<label> Endorsment Number</label>
+											<label> ENDORSMENT NO </label>
 												<input type="text"  onkeyUp="clearData()" class="form-control  clearCls" style="text-align:center;height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
 												<div class="error_colorCls" id="endorsmentNoErrDivId"></div>
 											</div>
 											<div class="col-sm-3" id="districtCandDiv">
-												<label>District</label>
-												<select class="form-control chosen-select clearDataCls" id="districtCandId" multiple>
+												<label>DISTRICT</label>
+												<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId" multiple>
 													<!--<option value="0">All</option>-->
 												</select>
 												<div class="error_colorCls" id="districtCandErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="constituencyCanDiv">
-											<label>Constituency</label>
-												<select class="form-control chosen-select clearDataCls" id="constituencyCanId" multiple>
+											<label>CONSTITUENCY</label>
+												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT CONSTITUENCY "  id="constituencyCanId" multiple>
 													<!--<option value="0">All</option>-->
 												</select>
 												<div class="error_colorCls" id="constituencyCanErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="mandalCanDiv">
-											<label>Mandal</label>
-												<select class="form-control chosen-select clearDataCls" id="mandalCanId" multiple>
+											<label>MANDAL</label>
+												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT MANDAL "  id="mandalCanId" multiple>
 													<!--<option value="0">All</option>-->
 												</select>
 												<div class="error_colorCls" id="mandalCanErrDiv"></div>
 											</div>
 											<div class="col-sm-3" id="statusDiv">
-											<label>Status</label>
-												<select class="form-control chosen-select clearDataCls" id="statusId" multiple>
+											<label>STATUS</label>
+												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT STATUS "  id="statusId" multiple>
 													<option value="0">Select Status</option>
 												</select>
 											</div>	
