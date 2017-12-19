@@ -6007,9 +6007,6 @@ var globalImages;
 	  
 	  
 	   var globalBasicCommitteeIdsArray = []; //basicCommitteeIdsArray
-	  getCheckedBasicCommitteeIds();
-	  
-	 
 	$(document).ready(function(){
 		//Main header remove
 		//$(".eventsheader").hide();
