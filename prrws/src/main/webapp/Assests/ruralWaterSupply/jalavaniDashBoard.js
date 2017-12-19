@@ -1993,6 +1993,9 @@
 				$("#alertStatus"+locationType).html(tableView);
 				if(locationType !="state" || locationType !="district"){
 					$(".dataTableAlert"+locationType).dataTable({
+						"iDisplayLength": 10,
+						"aaSorting": [],
+						"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 							"<'row'<'col-sm-12'tr>>" +
 							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -2082,6 +2085,9 @@
 				$("#drinking"+locationType).html(tableView);
 				if(locationType !="state" || locationType !="district"){
 					$(".dataTableDrinking"+locationType).dataTable({
+						"iDisplayLength": 10,
+						"aaSorting": [],
+						"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 							"<'row'<'col-sm-12'tr>>" +
 							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -4520,7 +4526,12 @@
 		});
 		 */
 		$("#dataTableAlertTable").dataTable({
-						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+							"paging":   false,
+							"info":     false,
+							"searching": false,
+							"autoWidth": true,			
+			"order": [ 0, 'desc' ],
+							"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 							"<'row'<'col-sm-12'tr>>" +
 							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 		buttons: [
@@ -4545,7 +4556,7 @@
 				}
 			]
 		});
-			/* if(startIndex == 0 && totalCount > 0){
+			 if(startIndex == 0 && totalCount > 0){
 				$(".paginationId").pagination({
 					items: totalCount,
 					itemsOnPage: 10,
@@ -4557,8 +4568,8 @@
 					}
 					
 				});
-			} */
-		//$(".prev,.next").css("width","70px !important");	
+			} 
+		$(".prev,.next").css("width","70px !important");	
 	} 
 	//habilationOneTAbbuild
 	function buildHabitationDetailsByStatusByLocationType1(result,type,status,locationType,locationValue,districtVal,startIndex,totalCount){
