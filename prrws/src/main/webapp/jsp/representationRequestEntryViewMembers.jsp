@@ -64,7 +64,7 @@
 													<h4><a target="_blank" href="representationRequestEntry">ADD PETITION</a></h4>
 												</div>
 												<div class="col-sm-6">
-													<h4 class=""><a target="_blank" href="representationRequestEntry">VIEW PETITION</a></h4>
+													<h4 class=""><a target="_blank" href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
 												</div>
 											</div>
 										</div>
