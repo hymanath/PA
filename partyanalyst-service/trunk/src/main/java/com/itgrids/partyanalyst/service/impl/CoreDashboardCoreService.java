@@ -1220,7 +1220,8 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		
 	}
 	public  List<TrainingCampSurveyVO> getTrainingCampFeedBackDetailsProgramWise(List<Long> programIdList,Long userAccessLevelId,List<Long> userAccessLevelValues,List<Long> enrollmentYrIds,List<Long> committeeLevelIdList ){
-		List<TrainingCampSurveyVO> programlist = new ArrayList<TrainingCampSurveyVO>();
+		List<TrainingCampSurveyVO> finalList = new ArrayList<TrainingCampSurveyVO>();
+		List<TrainingCampSurveyVO> programlist = null;
 		try{
 			
 			String ProgramlistString = programIdList.get(0).toString();
@@ -1253,37 +1254,47 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 				  if(output != null && !output.isEmpty()){
 		 	    		JSONArray finalArray = new JSONArray(output);
 		 	    		if(finalArray!=null && finalArray.length()>0){
-			 	    		
-			 	    		 for(int i=0;i<finalArray.length();i++){
-			 	    			TrainingCampSurveyVO vo = new TrainingCampSurveyVO();
-			 	    			JSONObject tmp = (JSONObject) finalArray.get(i);
-			 	    			
-			 	    			vo.setSurveyQuestionId(tmp.getLong("surveyQuestionId"));
-			 	    			vo.setQuestion(tmp.getString("question"));
-			 	    			vo.setTotalMemberAnswered(tmp.getLong("totalMemberAnswered"));
-			 	    			String s1 = tmp.getString("optionList");
-			 	    			JSONArray inArr = new JSONArray(s1);
-			 	    			
-			 	    			if(inArr != null && inArr.length() > 0){
-			 	    				for (int j = 0; j < inArr.length(); j++) {
-			 	    					JSONObject tmp1 = (JSONObject) inArr.get(j);
-			 	    					
-			 	    					TrainingCampSurveyVO invo = new TrainingCampSurveyVO();
-			 	    					invo.setCampId(tmp1.getLong("optionId"));
-			 	    					invo.setName(tmp1.getString("options"));
-			 	    					invo.setTotalMemberAnswered(tmp1.getLong("totalMemberAnswered"));
-			 	    					invo.setCorrectAnswerPercent(tmp1.getDouble("correctAnswerPercent"));
-			 	    					vo.getCenterList().add(invo);
-									}
-			 	    			}
-			 	    			
-			 	    			programlist.add(vo);
-			 	    		 }
+		 	    			for(int k=0;k<finalArray.length();k++){
+		 	    				TrainingCampSurveyVO vo1 = new TrainingCampSurveyVO();
+		 	    				JSONObject tmp2 = (JSONObject) finalArray.get(k);
+		 	    				vo1.setId(tmp2.getLong("id"));
+		 	    				String s2 = tmp2.getString("optionList");
+		 	    				JSONArray outArr = new JSONArray(s2);
+		 	    				programlist = new ArrayList<TrainingCampSurveyVO>();
+		 	    				if(outArr!=null && outArr.length()>0){
+		 	    					for(int i=0;i<outArr.length();i++){
+				 	    				TrainingCampSurveyVO vo = new TrainingCampSurveyVO();
+					 	    			JSONObject tmp = (JSONObject) outArr.get(i);
+					 	    			
+					 	    			vo.setSurveyQuestionId(tmp.getLong("surveyQuestionId"));
+					 	    			vo.setQuestion(tmp.getString("question"));
+					 	    			vo.setTotalMemberAnswered(tmp.getLong("totalMemberAnswered"));
+					 	    			String s1 = tmp.getString("optionList");
+					 	    			JSONArray inArr = new JSONArray(s1);
+					 	    			
+					 	    			if(inArr != null && inArr.length() > 0){
+					 	    				for (int j = 0; j < inArr.length(); j++) {
+					 	    					JSONObject tmp1 = (JSONObject) inArr.get(j);
+					 	    					
+					 	    					TrainingCampSurveyVO invo = new TrainingCampSurveyVO();
+					 	    					invo.setCampId(tmp1.getLong("optionId"));
+					 	    					invo.setName(tmp1.getString("options"));
+					 	    					invo.setTotalMemberAnswered(tmp1.getLong("totalMemberAnswered"));
+					 	    					invo.setCorrectAnswerPercent(tmp1.getDouble("correctAnswerPercent"));
+					 	    					vo.getCenterList().add(invo);
+											}
+					 	    			}
+					 	    			
+					 	    			programlist.add(vo);
+					 	    		 }
+		 	    				}
+		 	    				vo1.getOptionList().addAll(programlist);
+		 	    				finalList.add(vo1);
+		 	    			}
 		 	    		}
-		 	    		
 		 	    	}
 			  }
-			 return programlist;
+			 return finalList;
 			
 		}catch(Exception e){
 			LOG.error("Error occured at getTrainingCampFeedBackDetailsProgramWise() in CoreDashboardMainService {}",e); 
