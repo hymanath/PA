@@ -454,18 +454,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				
 				String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
 				String fileExtensionStr = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."), file.getOriginalFilename().length());
-				String fileName = datePath+"_"+Math.abs(new Random().nextInt())+fileExtensionStr;
-				String fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+"/"+fileName;
-				
-				byte[] fileData = file.getBytes();
-				
-				Files.write(fileData,new File(staticPath+fileName));
-				
-				document = new Document();
-				document.setPath(fileUrl);
-				document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				document.setInsertedUserId(userId);
-				document = documentDAO.save(document);
+				if(fileExtensionStr.equalsIgnoreCase("PNG") || fileExtensionStr.equalsIgnoreCase("PDF") || fileExtensionStr.equalsIgnoreCase("JPG") 
+						|| fileExtensionStr.equalsIgnoreCase("JPEG") || fileExtensionStr.equalsIgnoreCase("BMP") || fileExtensionStr.equalsIgnoreCase("TIFF") ){
+					String fileName = datePath+"_"+Math.abs(new Random().nextInt())+fileExtensionStr;
+					String fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+"/"+fileName;
+					
+					byte[] fileData = file.getBytes();
+					
+					Files.write(fileData,new File(staticPath+fileName));
+					
+					document = new Document();
+					document.setPath(fileUrl);
+					document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					document.setInsertedUserId(userId);
+					document = documentDAO.save(document);
+				}
 			}
 		} catch (Exception e) {
 			LOG.error("Exception Occured in PmRequestDetailsService @ saveDocument() "+e.getMessage());
@@ -1107,7 +1110,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				 addressVO.setTehsilId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(mandal)));
 				 addressVO.setPanchayatId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(panchayat)));
 				 if(addressVO.getTehsilId() != null && addressVO.getTehsilId().longValue()>0L){
-					 List<KeyValueVO> panchaytsList = locationDetailsService.getPanchayatsByTehsilId(addressVO.getTehsilId());//starting letter 2 for panchayats, 1 for wards
+					 List<KeyValueVO> panchaytsList = locationDetailsService.getPanchayatsByTehsilId(commonMethodsUtilService.getLongValueForObject(mandal));//starting letter 2 for panchayats, 1 for wards
 					 if(commonMethodsUtilService.isListOrSetValid(panchaytsList)){
 						 addressVO.getPanchaytsList().addAll(panchaytsList);
 					 } 
