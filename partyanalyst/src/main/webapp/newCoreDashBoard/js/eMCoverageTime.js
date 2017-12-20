@@ -34,25 +34,59 @@ $('#dateRangeEMCoverageTimeId').on('apply.daterangepicker', function(ev, picker)
 	$("#EMCoverageTimeHeadDate").html("("+picker.startDate.format("DD/MM/YY")+" to "+picker.endDate.format("DD/MM/YY")+")");
 	onLoadEmCoverageTimeCalls();
 	if($(".EMCoverageTimeIconExpand").find("i").hasClass("glyphicon glyphicon-resize-small" )){
-		getDayWiseCandidateCoverageTime(); // Main Block right expand
+		$(".dayWiseTimeBlock").show();
+		var categoryId = $("#categoryEmId").val();
+		var type = '';
+		$(".EMCoverageTimeCls").each(function(){
+			if (this.checked) {
+				type = $(this).val();
+			}
+		});
+		getDayWiseCandidateCoverageTime(type,categoryId); // Main Block right expand
 	}
 	
 });
 
 function onLoadEmCoverageTimeCalls(){
-	getCandidateAndPartyWiseNewsChannals(); //Main Block 
-	
+	getCandidateAndPartyWiseNewsChannals("candidate",0); //Main Block 
 }
+$(document).on("click",".EMCoverageTimeCls",function(){
+	var type = $(this).val();
+	var categoryId = $("#categoryEmId").val();
+	getCandidateAndPartyWiseNewsChannals(type,categoryId);
+	getDayWiseCandidateCoverageTime(type,categoryId); 
+});
 $(document).on("click",".EMCoverageTimeIconExpand",function(){
+	var type ='';
+	$(".EMCoverageTimeCls").each(function(){
+		if (this.checked) {
+			type = $(this).val();
+		}
+	});
+	var categoryId = $("#categoryEmId").val();
 	if($(this).find("i").hasClass("glyphicon glyphicon-resize-small" )){
-		getDayWiseCandidateCoverageTime(); // Main Block right expand
+		$(".dayWiseTimeBlock").show();
+		getDayWiseCandidateCoverageTime(type,categoryId); // Main Block right expand
+	}else{
+		$(".dayWiseTimeBlock").hide();
 	}
 });
-
-function getCandidateAndPartyWiseNewsChannals(){
+$(document).on("change","#categoryEmId",function(){
+	var categoryId = $(this).val();
+	var type='';
+		$(".EMCoverageTimeCls").each(function(){
+			if (this.checked) {
+				type = $(this).val();
+			}
+		});
+		
+	getCandidateAndPartyWiseNewsChannals(type,categoryId);
+	getDayWiseCandidateCoverageTime(type,categoryId); 
+});
+function getCandidateAndPartyWiseNewsChannals(type,categoryId){
 	$("#EMCoverageTimeSummaryDivId").html(spinner);
-	var type="candidate";
-	var categoryId = 0;
+	var type=type;
+	var categoryId = categoryId;
 	
 	$.ajax({	
 		//url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+type
@@ -74,7 +108,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result){
 				if(result[0].coreDashBoardVOList != null && result[0].coreDashBoardVOList.length > 0){
 					str+='<td rowspan="2">Channel</td>';
 					for(var i in result[0].coreDashBoardVOList){
-						str+='<td colspan="2">'+result[0].coreDashBoardVOList[i].organization+'</td>';
+						str+='<td colspan="4">'+result[0].coreDashBoardVOList[i].organization+'</td>';
 					}
 				}
 			str+='</tr>';
@@ -82,9 +116,9 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result){
 				if(result[0].coreDashBoardVOList != null && result[0].coreDashBoardVOList.length > 0){
 					for(var i in result[0].coreDashBoardVOList){
 						str+='<td>+ve</td>';
-						//str+='<td>%</td>';
+						str+='<td class="text-success">%</td>';
 						str+='<td>-ve</td>';
-						//str+='<td>%</td>';
+						str+='<td class="text-danger">%</td>';
 					}
 				}
 			str+='</tr>';
@@ -96,7 +130,9 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result){
 					if(result[i].coreDashBoardVOList != null && result[i].coreDashBoardVOList.length > 0){
 						for(var j in result[i].coreDashBoardVOList){
 							str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>';
+							str+='<td class="text-success">'+result[i].coreDashBoardVOList[j].positivePerc+'</td>';
 							str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>';
+							str+='<td class="text-danger">'+result[i].coreDashBoardVOList[j].negativePerc+'</td>';
 						}
 					}
 				str+='</tr>';
@@ -108,19 +144,205 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result){
 	$("#EMCoverageTimeSummaryDivId").html(str);
 }
 
-function getDayWiseCandidateCoverageTime(){
+function getDayWiseCandidateCoverageTime(type,categoryId){
 	$("#EMCoverageTimeDayWiseDivId").html(spinner);
-	var type="candidate";
-	var categoryId = 0;
+	var type=type;
+	var categoryId = categoryId;
 	
 	$.ajax({	
 		//url: wurl+"/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+type
 		url: "http://localhost:8080/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
 		if(result != null && result.length > 0){
-			//buildDayWiseCandidateCoverageTime(result);
+			buildDayWiseCandidateCoverageTime(result);
 		}else{
 			$("#EMCoverageTimeDayWiseDivId").html("No Data Available");
 		}
 	});
+}
+function buildDayWiseCandidateCoverageTime(result){
+	var str='';
+	for(var i in result){
+		str+='<div style="padding:10px;border:1px solid #ddd;margin-top:10px;">';
+			str+='<div class="row">';
+			str+='<div class="col-sm-12">';
+			str+='<div class="col-sm-1" style="margin-top: 30px;">';
+				str+='<p>'+result[i].organization+'</p>';
+			str+='</div>';
+			str+='<div class="col-sm-11">';
+				str+='<ul class="partyWiseSlickApplyEm">';
+					for(var j in result[i].coreDashBoardVOList){
+						str+='<li><div id="partywisegraphEm'+i+''+j+'"  style="height:200px;width:350px"></div></li>';
+					}
+				str+='</ul>';
+			str+='</div>';
+			str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	}
+	$("#EMCoverageTimeDayWiseDivId").html(str);
+	if(result !=null && result.length >0){
+				for(var i in result){
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						var channelName='';
+						for(var j in result[i].coreDashBoardVOList){
+								channelName = result[i].coreDashBoardVOList[j].organization;
+								var dateNames=[];
+								var positivePercArray=[];
+								var negativePercArray=[];
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								
+								for(var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
+									dateNames.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].organization)
+									positivePercArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positiveCountMain)
+									negativePercArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain)
+								}
+							}
+							
+							$('#partywisegraphEm'+i+''+j+'').highcharts({
+								 colors: ['#64C664','#D33E39'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: channelName
+								},
+							   
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										 categories: dateNames,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											},
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									}
+								},
+								tooltip: {
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
+									},
+									shared: true
+								},
+								legend: {
+														
+										enabled: false,				
+														
+									},				
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels:{
+											enabled: true,
+											formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.percentage,0) + '%';
+												}
+											}
+										},
+										
+									},
+								},
+								series: [{
+									name: 'Positive',
+									data: positivePercArray
+								}, {
+									name: 'Negative',
+									data: negativePercArray
+								}]
+							});
+								
+							
+							
+						}
+						
+					}
+					
+					
+					
+				}
+			}
+				
+			else{
+				$("#EMCoverageTimeDayWiseDivId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
+			}
+			
+			$(".partyWiseSlickApplyEm").slick({
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 3,
+			 infinite: false,
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false,
+			 variableWidth: true,
+			 responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3
+				  }
+				},
+				{
+				  breakpoint: 768,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+				// You can unslick at a given breakpoint now by adding:
+				// settings: "unslick"
+				// instead of a settings object
+			  ]
+		});
+}
+function refreshEm(){
+	var categoryId = $("#categoryEmId").val();
+	var type='';
+	$(".EMCoverageTimeCls").each(function(){
+		if (this.checked) {
+			type = $(this).val();
+		}
+	});
+	if($(".EMCoverageTimeIconExpand").find("i").hasClass("glyphicon glyphicon-resize-small" )){
+		$(".dayWiseTimeBlock").show();
+		getDayWiseCandidateCoverageTime(type,categoryId); // Main Block right expand
+	}
+	getCandidateAndPartyWiseNewsChannals(type,categoryId);
 }
