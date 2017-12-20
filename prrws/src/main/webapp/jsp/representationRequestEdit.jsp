@@ -120,12 +120,11 @@
 									</div>
 									<div class="row m_top20 loadingCls">
 									</div>
-									<!--<div class="row m_top20">
+									<div class="row m_top20">
 										<div class="col-sm-12">
 											<div id="SELFDetailsDivId"></div>
 										</div>
 									</div>
-									-->
 									<div class="row m_top20">
 										<div class="col-sm-12">
 											<div id="REPRESENTEEDetailsDivId"></div>
