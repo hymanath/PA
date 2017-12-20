@@ -256,7 +256,7 @@ function getSubjectPetitionsDepartmentList(type){
 		}
 		if(type=="onload"){
 			
-			getPetitionDetails();
+			//getPetitionDetails();
 		}
 	});	
 }
@@ -696,7 +696,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>WORK IN COST  <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
-										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].estimateCost" class="form-control m_top5 height45 validateCls" id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
+										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls" id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"  onkeyUp="checkIsNumber(this.id,this.value);">';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>WORK DETAILS <span class="starColor">*</span><span class="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
@@ -772,7 +772,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>WORK IN COST <span class="starColor">*</span><span class="appendWorkCostInner'+typeVal+''+counterId+''+innerWorkCount+'"></span></label>';
-							clonedInnerTemplate+='<input type="text"  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45 validateCls" id="appendWorkCostInner'+typeVal+''+counterId+''+innerWorkCount+'" placeholder="Enter Work Cost" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'">';
+							clonedInnerTemplate+='<input type="text"  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls" id="appendWorkCostInner'+typeVal+''+counterId+''+innerWorkCount+'" placeholder="Enter Work Cost" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'"  onkeyUp="checkIsNumber(this.id,this.value);">';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>WORK DETAILS <span class="starColor">*</span><span class="appendWorkDetailsInnerId'+typeVal+''+counterId+''+innerWorkCount+'"></span></label>';
@@ -1142,22 +1142,25 @@ function buildPetitionDetails(result){
 				*/
 				str+='<div class="col-sm-3">';
 					str+='<h6>NAME</h6>';
-					str+='<input type="text"  name="name" readOnly="true"  value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
+					str+='<input type="text"  name="name"  value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
+str+='<span class="ErrCls" id="nameErr'+result.representationType+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<h6>MOBILE NO</h6>';
-					str+='<input type="text" name="mobileNO" readOnly="true" maxlength="10" value="'+result.representeeDetailsList[i].mobileNO+'"  class="form-control m_top10 height45" id="mobileNumber'+result.representationType+'" placeholder="Enter Mobile Number">';					
+					str+='<input type="text" name="mobileNO"  maxlength="10" value="'+result.representeeDetailsList[i].mobileNO+'"  class="form-control m_top10 height45" id="mobileNumber'+result.representationType+'" placeholder="Enter Mobile Number" onkeyUp="checkIsNumber(this.id,this.value);">';	
+str+='<span class="ErrCls" id="mobileNumberErr'+result.representationType+'" ></span>';				
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<h6>EMAIL-ID</h6>';
-					str+='<input type="text" name="email"  readOnly="true"  value="'+result.representeeDetailsList[i].email+'" class="form-control m_top10 height45" id="emailId'+result.representationType+'" placeholder="Enter E-mail ID">';					
+					str+='<input type="text" name="email"    value="'+result.representeeDetailsList[i].email+'" class="form-control m_top10 height45" id="emailId'+result.representationType+'" placeholder="Enter E-mail ID">';	
+str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>';				
 				str+='</div>';
 				
 			str+='</div>';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-3">';	
 					str+='<h6>DISTRICT</h6>';
-					str+='<select   name="addressVO.districtId" readOnly="true" class="form-control chosen-select m_top10" id="district'+result.representationType+'">';
+					str+='<select   name="addressVO.districtId" class="form-control chosen-select m_top10" id="district'+result.representationType+'">';
 						for(var dis in globaldistrictList){
 							if(globaldistrictList[dis].id == result.representeeDetailsList[i].addressVO.districtId){
 								str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
@@ -1166,10 +1169,11 @@ function buildPetitionDetails(result){
 							}
 						}
 					str+='</select>';
+str+='<span class="ErrCls" id="districtErr'+result.representationType+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';	
 					str+='<h6>CONSTITUENCY</h6>';
-					str+='<select  name="addressVO.assemblyId"  readOnly="true"  class="form-control chosen-select m_top10" id="constituency'+result.representationType+'">';
+					str+='<select  name="addressVO.assemblyId"   class="form-control chosen-select m_top10" id="constituency'+result.representationType+'">';
 						for(var c in result.representeeDetailsList[0].addressVO.constituencyList){
 							if(result.representeeDetailsList[0].addressVO.constituencyList[c].key == result.representeeDetailsList[i].addressVO.assemblyId){
 								str+='<option value="'+result.representeeDetailsList[0].addressVO.constituencyList[c].key+'">'+result.representeeDetailsList[0].addressVO.constituencyList[c].value+'</option>';
@@ -1183,7 +1187,7 @@ function buildPetitionDetails(result){
 				str+='</div>';
 				str+='<div class="col-sm-3">';	
 					str+='<h6>MANDAL/MUNCI.</h6>';
-					str+='<select   name="addressVO.tehsilId"  readOnly="true" class="form-control chosen-select m_top10" id="mandal'+result.representationType+'">';
+					str+='<select   name="addressVO.tehsilId"   class="form-control chosen-select m_top10" id="mandal'+result.representationType+'">';
 						for(var c in result.representeeDetailsList[0].addressVO.mandalsList){
 							if(result.representeeDetailsList[0].addressVO.mandalsList[c].key == result.representeeDetailsList[i].addressVO.tehsilId){
 								str+='<option value="'+result.representeeDetailsList[0].addressVO.mandalsList[c].key+'">'+result.representeeDetailsList[0].addressVO.mandalsList[c].value+'</option>';
@@ -1192,11 +1196,12 @@ function buildPetitionDetails(result){
 							}
 						}
 					str+='</select>';
+	str+='<span class="ErrCls"  id="constituencyErr'+result.representationType+'"></span>';
 				str+='</div>';
 			
 				str+='<div class="col-sm-3">';	
 					str+='<h6>PANCHAYAT</h6>';
-					str+='<select   name="addressVO.panchayatId" readOnly="true"  class="form-control chosen-select m_top10" id="panchayat'+result.representationType+'">';
+					str+='<select   name="addressVO.panchayatId"  class="form-control chosen-select m_top10" id="panchayat'+result.representationType+'">';
 						for(var c in result.representeeDetailsList[0].addressVO.panchaytsList){
 							if(result.representeeDetailsList[0].addressVO.panchaytsList[c].key == 233269){
 								str+='<option value="'+result.representeeDetailsList[0].addressVO.panchaytsList[c].key+'">'+result.representeeDetailsList[0].addressVO.panchaytsList[c].value+'</option>';
@@ -1205,6 +1210,7 @@ function buildPetitionDetails(result){
 							}
 						}
 					str+='</select>';
+str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row m_top20">';
@@ -1221,8 +1227,10 @@ function buildPetitionDetails(result){
 					}
 				}					
 				str+='</select>';
+	str+='<span class="ErrCls"  id="designationErr'+result.representationType+'"></span>';
 				str+='<input type="hidden" id="repTdpCadreId'+result.representationType+'" value="'+result.representeeDetailsList[i].tdpCadreId+'" name="tdpCadreId"/>';
 				str+='<input type="hidden" id="repImagePathId'+result.representationType+'" value="'+result.representeeDetailsList[i].candidatePath+'" name="repImagePath"/>';
+				str+='<input type="hidden" id="existingPetitionId'+result.representationType+'" value="'+result.petitionId+'" name="existingPetitionId"/>';
 			str+='</div>';
 			str+='</div>';
 		}
@@ -1387,15 +1395,15 @@ function buildPetitionDetails(result){
 		str+='<div class="row m_top10">';
 				str+='<div class="col-sm-8">';
 					str+='<label>COMPLETE WORK DESCRIPTION <span class="starColor">*</span><span id="completeWorkNameId'+result.representationType+'"></span></label>';
-					str+='<input type="text"  name="worksList[0].workName"  value="'+result.grievanceDescription+'" class="form-control m_top5 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
+					str+='<input type="text"  name="worksList[0].workName"  value="'+result.grievanceDescription+'" class="form-control m_top5 height45" id="workName'+result.representationType+'" placeholder="Enter Name">';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
 					str+='<label>NO OF WORKS <span class="starColor">*</span><span id="noOfWorksId'+result.representationType+'"></span></label>';
-						str+='<input   name="worksList[0].noOfWorks" value="'+result.noOfWorks+'"  type="text" class="form-control m_top5 height45" id="noofWork'+result.representationType+'" placeholder="Enter No Of Work">';
+						str+='<input   name="worksList[0].noOfWorks" value="'+result.noOfWorks+'"  type="text" class="form-control m_top5 height45" id="noofWork'+result.representationType+'" placeholder="Enter No Of Work"  onkeyUp="checkIsNumber(this.id,this.value);">';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
 					str+='<label>WORKS IN COST (in Lakh) <span class="starColor">*</span><span id="workCostId'+result.representationType+'"></span></label>';
-					str+='<input type="text"  name="worksList[0].estimateCost" value="'+result.estimateCost+'"  class="form-control m_top5 height45" id="workCost'+result.representationType+'" placeholder="Enter Work Cost">';
+					str+='<input type="text"  name="worksList[0].estimateCost" value="'+result.estimateCost+'"  class="form-control m_top5 height45" id="workCost'+result.representationType+'" placeholder="Enter Work Cost"  onkeyUp="checkIsNumber(this.id,this.value);">';
 				str+='</div>';
 		str+='</div>';
 		
@@ -1545,7 +1553,7 @@ function buildPetitionDetails(result){
 														str+='</div>';
 														str+='<div class="col-sm-3">';
 															str+='<label>WORK IN COST <span class="starColor">*</span><span class="appendWorkCost'+result.representationType+''+i+''+j+'"></span></label>';
-															str+='<input type="text"  value="'+result.subWorksList[i].subWorksList[j].estimateCost+'" name="worksList['+i+'].subWorksList['+j+'].estimateCost" class="form-control m_top5 height45 validateCls" id="appendWorkCost'+result.representationType+''+i+''+j+'" placeholder="Enter Work Cost" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+															str+='<input type="text"  value="'+result.subWorksList[i].subWorksList[j].estimateCost+'" name="worksList['+i+'].subWorksList['+j+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls" id="appendWorkCost'+result.representationType+''+i+''+j+'" placeholder="Enter Work Cost" attr_main_count="'+i+'" attr_inner_count="'+j+'"  onkeyUp="checkIsNumber(this.id,this.value);">';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
 															str+='<label>WORK DETAILS <span class="starColor">*</span><span class="appendWorkDetailsId'+result.representationType+''+i+''+j+'"></span></label>';
@@ -1870,11 +1878,6 @@ function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal){
 		$("#mandalREPRESENTEE").trigger('chosen:updated');
 	});	
 }
-$(document).on("click",".removeWorkCls",function(){
-	var divIdStr = $(this).attr('attr_id');
-	$('#'+divIdStr+'').remove();
-});
-
 
 function getParliamentIdsByConstituencyList(){
 	var json = {};
@@ -1898,33 +1901,6 @@ function getParliamentIdsByConstituencyList(){
 	});	
 }
 
-function validation(typeVal){
-	var completeWorkName='';
-	var noofWorks='';
-	var workCost='';
-	var phonePattern= /^\d{0-9}$/;
-	
-	completeWorkName = $("#name"+typeVal).val();
-	noofWorks = $("#noofWork"+typeVal).val();
-	workCost = $("#workCost"+typeVal).val();
-	//alert(completeWorkName)
-	//alert(noofWorks)
-	//alert(workCost)
-	
-	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName === undefined){
-		$("#completeWorkNameId"+typeVal).html("<h5>Please enter work name</h5>");
-		return;
-	}
-	if(noofWorks == undefined || noofWorks == "undefined" || noofWorks === undefined){
-		$("#noofWork"+typeVal).html("<h5>Please enter work name</h5>");
-		return;
-	}
-	if(workCost == undefined || workCost == "undefined" || workCost === undefined){
-		$("#workCost"+typeVal).html("<h5>Please enter work name</h5>");
-		return;
-	}
-	
-}
 
 function getPetitionDesignationLst(typeVal){
 
@@ -1944,7 +1920,7 @@ function getPetitionDesignationLst(typeVal){
 		if(result !=null && result.length>0){
 			globalDesignationList=result;
 		}
-		//getPetitionDetails();
+		getPetitionDetails();
 	});	
 
 }
@@ -2096,11 +2072,6 @@ function getAllDistrictsListInState(districtId){
 	});	
 }
 
-$(document).on("change","#districtrepresent",function(){
-	var levelVal = $(this).val();
-	getConstituencyNamesBiDistrictId(levelVal,""); 
-	
-});
 function getConstituencyNamesBiDistrictId(levelVal,constincyId){
 	  $("#constituencyREPRESENTEE").html('');
 	  $("#constituencyREPRESENTEE").append('<option value="0">Select Constituency</option>');	
@@ -2269,10 +2240,9 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	completeWorkName = $("#workName"+typeVal).val();
 	noofWorks = $("#noofWork"+typeVal).val();
 	workCost = $("#workCost"+typeVal).val();
-	
-	if(typeVal =='represent' || typeVal =='representee'){
+	if(typeVal =='REPRESENT' || typeVal =='REPRESENTEE'){
 		var repName=$('#name'+typeVal+'').val();
-		var repMobileNo=$('#mobileNumberrepresent').val();
+		var repMobileNo=$('#mobileNumber'+typeVal+'').val();
 		var repEmail=$('#emailId'+typeVal+'').val();
 		var repDistrictId=$('#district'+typeVal+'').val();
 		var repCostituencyId=$('#constituency'+typeVal+'').val();
@@ -2286,7 +2256,6 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		}else{
 			$('#nameErr'+typeVal+'').html("");
 		}
-
 		if(repMobileNo == undefined || repMobileNo == "undefined" || repMobileNo.trim() == '' || repMobileNo == null){
 			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  mobile no.</h5>");
 			$('#saveButtonId').show();
@@ -2343,7 +2312,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		}		
 	}
 	
-	var totalRefCount=0;
+	/*var totalRefCount=0;
 	$('#refCandidatesErr').html('');
 	$('.refCandidatesCls').each(function(){
 		var value = $(this).val();
@@ -2359,7 +2328,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		else 
 			$('#refCandidatesErr').html('Please add Self member details.');
 		
-	}
+	}*/
 	
 	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName.trim() == '' || completeWorkName == null){
 		$("#completeWorkNameId"+typeVal).html("<h5 style='color:red;'>Please enter work name</h5>");
@@ -2385,33 +2354,33 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	}else{
 		$("#workCostId"+typeVal).html("");
 	}
-	
+	/*
 	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
 	if((parseInt(estimationWorksCount)>parseInt(globalInnerWorksCount)) || (parseInt(estimationWorksCount)<parseInt(globalInnerWorksCount))){ 
 		alert("Max no of works data not matched. Please check once.");
 		flag = false;
 	}
-	
+	*/
 	var enteredAmount =parseFloat(0.0);
 	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
 	$(".amountCls").each(function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
-			if(parseFloat(value) <=0){
-				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+			if(parseFloat(value) <=0){				
 				flag = false;
-				//return;
 			}else{
 				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
 			}
 		}
 	});
-	
 	if((enteredAmount<estimationAmount) || (enteredAmount>estimationAmount)){
 		alert("Work wise total estimation cost not matched. Please check once.");
 		flag = false;
 	}
 	
+alert(flag);
+	return;
+
 	$(".validateCls").each(function(){
 		
 		
@@ -2707,8 +2676,9 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		return;
 	}
 	
-	
-	
+alert("no issue");
+	return;
+	alert("saving");
 	$("#savingDetailsSpinner").html(spinner)
 	 var formData = new FormData();
 	$('#adminProfileForm input').each(
@@ -2818,436 +2788,3 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 
 });
 
-
-
-$(document).on("change","#districtREPRESENTEE",function(){
-	var levelVal = $(this).val();
-	getConstituencyNamesBiDistrictId(levelVal); 
-	
-});
-
-
-function getConstituencyNamesBiDistrictId(levelVal){
-	  $("#constituencyREPRESENTEE").html('');
-	  $("#constituencyREPRESENTEE").append('<option value="0">Select Constituency</option>');	
-	  $("#constituencyREPRESENTEE").trigger('chosen:updated');
-	   var searchType= "all";		
-	  var json = {
-		  districtId:levelVal,
-		  searchType:"all",
-		  searchId:0
-		}
-	$.ajax({                
-		type:'POST',    
-		url: 'getConstituencyNamesByDistrictId',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length>0){	
-			for(var i in result){
-				$("#constituencyREPRESENTEE").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
-			}
-		}
-		$("#constituencyREPRESENTEE").trigger('chosen:updated');		
-	});	
-}
-
-$(document).on("change","#constituencyREPRESENTEE",function(){
-	var levelVal = $(this).val();
-	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal); 
-	
-});
-function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal){
-	  $("#mandalREPRESENTEE").html('');	
-	  $("#mandalREPRESENTEE").append('<option value="0">Select Mandal</option>');	
-	  $("#mandalREPRESENTEE").trigger('chosen:updated');	
-	  var json = {
-		  constituencyId:levelVal,
-		  searchType:"all",
-		  searchId:0
-		}        
-	$.ajax({                
-		type:'POST',    
-		url: 'getTehsilsAndLocalElectionBodyForConstituencyId',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length>0){			 		
-			for(var i in result){
-					var tehsilId = result[i].key;
-					var levelId = tehsilId;//tehsilId.toString().substr(1, 4);
-					if(result[i].electionType != null){
-						$("#mandalREPRESENTEE").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
-					}else{
-						$("mandalREPRESENTEE").append('<option value="'+levelId+'">'+result[i].value+'</option>');
-					}
-			}
-		}
-		$("#mandalREPRESENTEE").trigger('chosen:updated');
-	});	
-}
-$(document).on("click",".removeWorkCls",function(){
-	var divIdStr = $(this).attr('attr_id');
-	$('#'+divIdStr+'').remove();
-});
-
-
-function getParliamentIdsByConstituencyList(){
-	var json = {};
-	$.ajax({              
-		type:'POST',    
-		url: 'getParliamentIdsByConstituencyList',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length>0){
-			 $("#constituencyCanId").append('<option value="0">All</option>');
-			for(var i in result){
-				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
-			}
-		}
-		$("#constituencyCanId").trigger('chosen:updated');
-	});	
-}
-
-function validation(typeVal){
-	var completeWorkName='';
-	var noofWorks='';
-	var workCost='';
-	var phonePattern= /^\d{0-9}$/;
-	
-	completeWorkName = $("#name"+typeVal).val();
-	noofWorks = $("#noofWork"+typeVal).val();
-	workCost = $("#workCost"+typeVal).val();
-	//alert(completeWorkName)
-	//alert(noofWorks)
-	//alert(workCost)
-	
-	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName === undefined){
-		$("#completeWorkNameId"+typeVal).html("<h5>Please enter work name</h5>");
-		return;
-	}
-	if(noofWorks == undefined || noofWorks == "undefined" || noofWorks === undefined){
-		$("#noofWork"+typeVal).html("<h5>Please enter work name</h5>");
-		return;
-	}
-	if(workCost == undefined || workCost == "undefined" || workCost === undefined){
-		$("#workCost"+typeVal).html("<h5>Please enter work name</h5>");
-		return;
-	}
-	
-}
-
-function getPetitionDesignationLst(typeVal){
-
-	  var json = {
-		   searchType:"all"// all/refCandidateDesignations/petitionGivenRefCandidateDesignations
-	  };
-	$.ajax({              
-		type:'POST',    
-		url: 'getPetitionDesignationList',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length>0){
-			globalDesignationList=result;
-		}
-		getPetitionDetails();
-	});	
-
-}
-
-
-
-function validateAmount(value,fieldId,typeVal){
-	
-	$('.ErrCls').html('');
-	var enteredAmount =parseFloat(0.0);
-	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
-	$(".amountCls").each(function(){
-		var value = $(this).val();
-		if(value!= null && value.length>0){
-			if(parseFloat(value) <=0){
-				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
-				return;
-			}else{
-				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
-			}
-		}
-	});
-	
-	if(enteredAmount>estimationAmount){
-		$('#Err'+fieldId+'').html("Total estimation cost reached. Please check once.");
-		$('#'+fieldId+'').val('');
-	}
-}
-
-
-$(document).on("click","#getVoterDetailsId",function(){
-	var typeVal=$(this).attr("attr_type");
-	var voterId=$("#voterId"+typeVal).val();
-	getRegistrationPersonDetails(voterId,typeVal);
-});
-
-
-function getRegistrationPersonDetails(voterId,typeVal){
-			  
-	$("#name"+typeVal).val('');
-	$("#mobileNumber"+typeVal).val('');
-	$("#emailId"+typeVal).val('');
-	$("#repTdpCadreId"+typeVal).val('');
-	$('#district'+typeVal).val(0);
-	$('#constituency'+typeVal).val(0);
-	$('#mandal'+typeVal).val(0);
-	$('#panchayat'+typeVal).val(0);
-	$("#repImagePathId"+typeVal).val('');
-	$("#district"+typeVal).trigger('chosen:updated');
-	$("#constituency"+typeVal).trigger('chosen:updated');
-	$("#mandal"+typeVal).trigger('chosen:updated');
-	$("#panchayat"+typeVal).trigger('chosen:updated');
-	 
-  var json = {
-			voterId:voterId,
-			familyVoterId:"0",
-			tdpCadreId:"0",
-			status:""
-
-			};
-  
-	$.ajax({              
-		type:'POST',    
-		url: 'getRegistrationPersonDetails',
-		dataType: 'json',  
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		},
-		error: function (xhr, status, err) {
-            //alert("Local error callback.");
-        },
-	}).done(function(result){
-		if(result != null ){
-			if(result.lastName != null && result.lastName !='null'){
-				$("#name"+typeVal).val(result.lastName);
-			}
-			if(result.mobileNumber != null && result.mobileNumber !='null'){
-				$("#mobileNumber"+typeVal).val(result.mobileNumber);
-			}
-			if(result.email != null && result.email !='null'){
-				$("#emailId"+typeVal).val(result.email);
-			}
-			if(result.tdpCadreId != null && result.tdpCadreId !='null' && parseInt(result.tdpCadreId)>0){
-				$("#repTdpCadreId"+typeVal).val(result.tdpCadreId);
-			}
-			if(result.imageBase64String != null && result.imageBase64String.length > 0 && result.imageBase64String !='null'){
-				$("#repImagePathId"+typeVal).val("http://www.mytdp.com/images/cadre_images/"+result.imageBase64String);
-			  }else  if(result.imagePath != null && result.imagePath.length > 0 && result.imagePath !='null'){
-				$("#repImagePathId"+typeVal).val(result.imagePath);
-			  }
-			if(result.districtId != null){
-				getAllDistrictsListInState(result.districtId);
-			}
-			if(result.constituencyId != null){
-				getConstituencyNamesBiDistrictId(result.districtId,result.constituencyId);
-			}
-			var maandalId2='';
-			if(result.mandalId != null){
-				maandalId2=result.mandalId.toString().substring(1,result.mandalId.length);
-				getTehsilsAndLocalElectionBodiForConstituencyId(result.constituencyId,"2"+maandalId2);
-			}else if(result.localElectionBodyId != null){
-					maandalId2=result.localElectionBodyId.toString().substring(1,result.localElectionBodyId.length);
-				getTehsilsAndLocalElectionBodiForConstituencyId(result.constituencyId,"1"+maandalId2);
-			}
-			var villageId="2"+result.villageId.toString().substring(1,result.villageId.length);
-			if(result.villageId != null	){
-				getPanchayatsByTehsilId(maandalId2,villageId); 
-			}
-		}else{
-			alert("No data available with this Voter Card No.Please check once.");
-		}
-	}).error(function(){
-		alert("No data available with this Voter Card No.Please check once.");
-	});	
- 
-}
-
-
-function getAllDistrictsListInState(districtId){	
-	$("#districtREPRESENTEE").html('');
-	var json = {
-		  stateId:"1",
-		  searchType:"all",
-		  searchId:0
-		}
-	$.ajax({                
-		type:'POST',    
-		url: 'getAllDistrictsInState',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length>0){
-			 $("#districtREPRESENTEE").append('<option value="0">Select District</option>');
-				for(var i in result){
-					if(districtId == result[i].id){
-						$("#districtREPRESENTEE").append('<option value="'+result[i].id+'" selected>'+result[i].name+' </option>');
-					}else{
-						$("#districtREPRESENTEE").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
-					}
-				}
-			}
-			$("#districtREPRESENTEE").trigger('chosen:updated');
-	});	
-}
-
-$(document).on("change","#districtrepresent",function(){
-	var levelVal = $(this).val();
-	getConstituencyNamesBiDistrictId(levelVal,""); 
-	
-});
-function getConstituencyNamesBiDistrictId(levelVal,constincyId){
-	  $("#constituencyREPRESENTEE").html('');
-	  $("#constituencyREPRESENTEE").append('<option value="0">Select Constituency</option>');	
-	  $("#constituencyREPRESENTEE").trigger('chosen:updated');
-	   var searchType= "all";		
-	  var json = {
-		  districtId:levelVal,
-		  searchType:"all",
-		  searchId:0
-		}
-	$.ajax({                
-		type:'POST',    
-		url: 'getConstituencyNamesByDistrictId',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length>0){	
-			for(var i in result){
-				if(constincyId == result[i].locationId){
-					$("#constituencyREPRESENTEE").append('<option value="'+result[i].locationId+'" selected>'+result[i].locationName+' </option>');
-				}else{
-					$("#constituencyREPRESENTEE").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
-				}
-			}
-		}
-		$("#constituencyREPRESENTEE").trigger('chosen:updated');		
-	});	
-}
-
-$(document).on("change","#constituencyrepresent",function(){
-	var levelVal = $(this).val();
-	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,""); 
-	
-});
-function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,mandalId){
-	  $("#mandalREPRESENTEE").html('');	
-	  $("#mandalREPRESENTEE").append('<option value="0">Select Mandal</option>');	
-	  $("#mandalREPRESENTEE").trigger('chosen:updated');	
-	  var json = {
-		  constituencyId:levelVal,
-		  searchType:"all",
-		  searchId:0
-		}        
-	$.ajax({                
-		type:'POST',    
-		url: 'getTehsilsAndLocalElectionBodyForConstituencyId',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length>0){			 		
-			for(var i in result){
-					var tehsilId = result[i].key;
-					var levelId = tehsilId;//tehsilId.toString().substr(1, 4);
-					if(result[i].electionType != null){
-						if(mandalId == levelId){
-							$("#mandalREPRESENTEE").append('<option value="'+levelId+'" selected>'+result[i].value+' '+result[i].electionType+'</option>');
-						}else{
-							$("#mandalREPRESENTEE").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
-						}
-					}else{
-						if(mandalId == levelId){
-							$("#mandalREPRESENTEE").append('<option value="'+levelId+'" selected>'+result[i].value+'</option>');
-						}else{
-							$("#mandalREPRESENTEE").append('<option value="'+levelId+'">'+result[i].value+'</option>');
-						}
-					}
-			}
-		}
-		$("#mandalREPRESENTEE").trigger('chosen:updated');
-	});	
-}
-$(document).on("change","#mandalrepresent",function(){
-	var levelVal = $(this).val();
-	levelVal=levelVal.toString().substring(1,levelVal.length);
-	getPanchayatsByTehsilId(levelVal,""); 
-	
-});
-
-function getPanchayatsByTehsilId(levelVal,panchayatId){
-	  $("#panchayatREPRESENTEE").html('');	
-	  $("#panchayatREPRESENTEE").append('<option value="0">Select Panchayat</option>');	
-	  $("#panchayatREPRESENTEE").trigger('chosen:updated');	
-	  var json = {
-		  tehsilId:levelVal,
-		  searchType:"all",
-		  searchId:0
-		}        
-	$.ajax({                
-		type:'POST',    
-		url: 'getPanchayatsByTehsilId',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length>0){			 		
-			for(var i in result){
-				if(panchayatId == result[i].key){
-					$("#panchayatREPRESENTEE").append('<option value="'+result[i].key+'" selected>'+result[i].value+' </option>');
-				}else{
-					$("#panchayatREPRESENTEE").append('<option value="'+result[i].key+'" >'+result[i].value+' </option>');
-				}
-			}
-		}
-		$("#panchayatREPRESENTEE").trigger('chosen:updated');
-	});	
-}
-
-
-function checkIsNumber(id,value){
-	 if(isNaN(value)){
-		$('#'+id+'').val('');
-	 }else {
-		 ;
-	 }
-}
