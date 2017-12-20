@@ -436,7 +436,7 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 	}
 	@Override
 	public List<Object[]> getEncDistricts() {
-		 Query query = getSession().createQuery(" select model.encDistrictId, model.districtName from District where model.encDistrictId is not null");
+		 Query query = getSession().createQuery(" select model.encDistrictId, model.districtName from District model where model.encDistrictId is not null");
 		 return query.list();
 	}
 	
