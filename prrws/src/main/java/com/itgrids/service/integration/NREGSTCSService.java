@@ -17,9 +17,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
+import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.INregaComponentCommentsDAO;
 import com.itgrids.dao.INregaComponentCommentsHistoryDAO;
 import com.itgrids.dao.INregaComponentStatusDAO;
+import com.itgrids.dao.INregaFATypeDAO;
+import com.itgrids.dao.INregaFAVacantPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.IPrConstituencyDAO;
 import com.itgrids.dao.IPrDistrictDAO;
@@ -40,6 +43,7 @@ import com.itgrids.dto.WebserviceDetailsVO;
 import com.itgrids.model.NregaComponentComments;
 import com.itgrids.model.NregaComponentCommentsHistory;
 import com.itgrids.model.NregaComponentStatus;
+import com.itgrids.model.NregaFAType;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -82,6 +86,13 @@ public class NREGSTCSService implements INREGSTCSService{
 	private IPrPanchayatDAO prPanchayatDAO;
 	@Autowired
 	private INregaComponentCommentsHistoryDAO nregaComponentCommentsHistoryDAO;
+	@Autowired
+	private IDistrictDAO districtDAO;
+	@Autowired
+	private INregaFAVacantPanchayatDAO nregaFAVacantPanchayatDAO;
+	@Autowired
+	private INregaFATypeDAO nregaFATypeDAO;
+	
 	/*
 	 * Date : 16/06/2017
 	 * Author :Sravanth
@@ -3007,22 +3018,96 @@ public class NREGSTCSService implements INREGSTCSService{
 	}
 	
 	public List<NregsProjectsVO> getLocationWiseEmptyVacenciesDetails(InputVO inputVO){
-		List<NregsProjectsVO> voList = new ArrayList<NregsProjectsVO>(0);
+		List<NregsProjectsVO> returnList = new ArrayList<NregsProjectsVO>(0);
 		try {
 			Map<Long,NregsProjectsVO> locationMap = new LinkedHashMap<Long,NregsProjectsVO>();
-			if(inputVO.getLocation() != null && inputVO.getLocation().trim().equalsIgnoreCase("state")){
+			if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state")){
 				inputVO.setLocationId(1L);
-			}else if(inputVO.getLocation() != null && inputVO.getLocation().trim().equalsIgnoreCase("district")){
-				inputVO.setLocationId(1L);
-			}else if(inputVO.getLocation() != null && inputVO.getLocation().trim().equalsIgnoreCase("constituency")){
-				inputVO.setLocationId(1L);
+			}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+				inputVO.setLocationId(districtDAO.getDistrictIdFromPRDistrictCode(inputVO.getLocationIdStr()));
+			}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+				inputVO.setLocationId(constituencyDAO.getConstituencyIdFromPRConstituencyId(inputVO.getLocationIdStr()));
 			}
 			
+			List<NregaFAType> typeList = nregaFATypeDAO.getAll();
+			
+			List<Object[]> list = nregaFAVacantPanchayatDAO.getLocationWiseEmptyVacencies(inputVO.getLocationType(), inputVO.getLocationId(), inputVO.getSublocationType());
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					Long locationId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					Long typeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					NregsProjectsVO locationvo = locationMap.get(locationId);
+					if(locationvo == null){
+						locationvo = new NregsProjectsVO();
+						locationvo.setId(locationId);
+						locationvo.setName(obj[4] != null ? obj[4].toString():"");
+						locationvo.setSubList(setTypeListToSubList(typeList));
+							NregsProjectsVO subvo = getMatchedNregsProjectsVO(locationvo.getSubList(), typeId);
+							subvo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						locationvo.setCount(subvo.getCount());
+						
+						if(inputVO.getSublocationType() != null && inputVO.getSublocationType().trim().length() > 0L){
+							locationvo.setState(obj[4] != null ? obj[4].toString():"");
+							if(!inputVO.getSublocationType().trim().equalsIgnoreCase("state"))
+								locationvo.setDistrict(obj[5] != null ? obj[5].toString():"");
+							if(!inputVO.getSublocationType().trim().equalsIgnoreCase("state") && !inputVO.getSublocationType().trim().equalsIgnoreCase("district"))
+								locationvo.setConstituency(obj[6] != null ? obj[6].toString():"");
+							if(inputVO.getSublocationType().trim().equalsIgnoreCase("mandal") || inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat"))
+								locationvo.setMandal(obj[7] != null ? obj[7].toString():"");
+							if(inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat"))
+								locationvo.setPanchayat(obj[8] != null ? obj[8].toString():"");
+						}
+						
+						locationMap.put(locationId, locationvo);
+					}else{
+						NregsProjectsVO subvo = getMatchedNregsProjectsVO(locationvo.getSubList(), typeId);
+						subvo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						locationvo.setCount(locationvo.getCount()+subvo.getCount());
+					}
+				}
+			}
+			
+			if(locationMap != null)
+				returnList = new ArrayList<NregsProjectsVO>(locationMap.values());
+			
 		} catch (Exception e) {
-			LOG.error("Exception raised at getNREGSProjectsAbstractNew - NREGSTCSService service", e);
+			LOG.error("Exception raised at getLocationWiseEmptyVacenciesDetails - NREGSTCSService service", e);
 		}
 		
-		return voList;
+		return returnList;
+	}
+	
+	public NregsProjectsVO getMatchedNregsProjectsVO(List<NregsProjectsVO> list,Long id){
+		try{
+			if(list != null && !list.isEmpty()){
+				for (NregsProjectsVO nregaPaymentsVO : list) {
+					if(nregaPaymentsVO.getId().equals(id)){
+						return nregaPaymentsVO;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getMatchedVOList - NREGSTCSService service", e);
+		}
+		return null;
+	}
+	
+	public List<NregsProjectsVO> setTypeListToSubList(List<NregaFAType> typeList){
+		List<NregsProjectsVO> returnList = new ArrayList<NregsProjectsVO>(0);
+		try {
+			if(typeList != null && !typeList.isEmpty()){
+				for (NregaFAType nregaFAType : typeList) {
+					NregsProjectsVO vo = new NregsProjectsVO();
+					vo.setId(nregaFAType.getNregaFaTypeId());
+					vo.setName(nregaFAType.getType());
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at setTypeListToSubList - NREGSTCSService service", e);
+		}
+		return returnList;
 	}
 	
 	public List<NregsProjectsVO> getNREGSAbstractDataByType(InputVO inputVO){

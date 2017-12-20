@@ -440,5 +440,9 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		 return query.list();
 	}
 	
-	
+	public Long getDistrictIdFromPRDistrictCode(String locationIdStr){
+		Query query = getSession().createQuery("select distinct model.districtId from District model where model.prDistrict.districtCode = :locationIdStr");
+		query.setParameter("locationIdStr", locationIdStr);
+		return (Long) query.uniqueResult();
+	}
 }

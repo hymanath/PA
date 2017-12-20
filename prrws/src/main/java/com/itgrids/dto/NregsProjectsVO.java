@@ -19,7 +19,65 @@ public class NregsProjectsVO implements Serializable{
 	private String PENDINGRESPONSECNT;
 	private List<NregsProjectsVO> subList = new ArrayList<NregsProjectsVO>();
 	private String componentType;
+	private Long id;
+	private String name;
+	private Long count = 0L;
 	
+	private String state;
+	private String district;
+	private String constituency;
+	private String mandal;
+	private String panchayat;
+	
+	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+	public String getMandal() {
+		return mandal;
+	}
+	public void setMandal(String mandal) {
+		this.mandal = mandal;
+	}
+	public String getPanchayat() {
+		return panchayat;
+	}
+	public void setPanchayat(String panchayat) {
+		this.panchayat = panchayat;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getType() {
 		return type;
 	}
