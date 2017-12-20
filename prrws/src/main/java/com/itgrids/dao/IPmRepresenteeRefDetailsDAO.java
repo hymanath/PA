@@ -11,6 +11,6 @@ import com.itgrids.model.PmRepresenteeRefDetails;
 public interface IPmRepresenteeRefDetailsDAO extends GenericDao<PmRepresenteeRefDetails, Long> {
 	public List<Object[]> getPmRepresenteRefDetails(Long petitionId);
 	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO,Date toDate,Date fromDate);
-	public List<Long> getPmRepresenteRefDetailsIds(Long petitionId);
+	public List<Long> getPmRepresenteeRefDetailsIds(Long petitionId);
 	public int updatePmRepresenteRefDetails(List<Long> representeRefDetailsIds,Date updatedTime,Long userId);
 }
