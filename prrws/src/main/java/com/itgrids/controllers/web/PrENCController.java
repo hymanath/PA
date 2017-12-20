@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.EncTargetsVO;
 import com.itgrids.dto.EncVO;
 import com.itgrids.dto.EncWorksVO;
 import com.itgrids.dto.InputVO;
@@ -70,4 +71,17 @@ public class PrENCController {
 		}
 		return returnList;
 	}
+
+	@PostMapping("/getEncTargetsAchievement")
+	public @ResponseBody List<EncTargetsVO>  getEncTargetsAchievement(@RequestBody InputVO inputVO){
+		List<EncTargetsVO> returnList = null;
+		try {
+			returnList = prENCService.getEncTargetsAchievement(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEncTargetsAchievement - PrENCController", e);
+		}
+		return returnList;
+	}
 }
+	
