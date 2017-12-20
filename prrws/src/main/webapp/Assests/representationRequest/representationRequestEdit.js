@@ -14,15 +14,16 @@ var globalSubjectList='';
 var globalSubSubjectsList='';
 var globalWorkTypeList='';
 var globaldistrictList='';
-var globalDesignationList='';
+var globalDesignationList=[];
 var alreadyCandidateId=[];
 var searchCandidateIds=[];
 var diffArr=[];
 var commonArr=[];
-getSubjectPetitionsDepartmentList();
+//getSubjectPetitionsDepartmentList();
+
 getWorkTypeList("","","","","onload");
 getAllDistrictsInState("","","","onload");
-getPetitionDesignationLst();
+getPetitionDesignationLst('REPRESENTEE');
 //District Build
 /* $(document).on("click",".selfRepresenceCls",function(){
 	if($(this).is(":checked")){
@@ -1134,7 +1135,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 function getPetitionDetails(){
 	//$("#"+result.representationType+"DetailsDivId").html(str);
    var json = {
-       petitionId:"1778"
+       petitionId:"1872"
     };
   $.ajax({              
     type:'POST',    
@@ -1157,7 +1158,6 @@ function getPetitionDetails(){
 
 function buildPetitionDetails(result){
 	var str='';
-	
 	if(result.representationType == "SELF"){
 		$("#self").prop("checked",true);
 		$(".RepresenteeHideShow").hide();
@@ -1167,44 +1167,42 @@ function buildPetitionDetails(result){
 		$(".selfHideShow").hide();
 		$(".RepresenteeHideShow").show();
 	}
+	$('#endorsmentNo').val(result.endorsmentNo);
+	$('#endorsmentDate').val(result.endorsmentDate);
+	$('#representationDate').val(result.representationdate);
+	$('#representationType').val(result.representationType);
+
 	if(result.representationType == "REPRESENTEE"){
 		for(var i in result.representeeDetailsList){
-			str+='<div class="row m_top20">';
-				str+='<div class="col-sm-12">';
-					str+='<h3 class="font_weight text-capital f_22">Representee Details:</h3>';
-				str+='</div>';
-			str+='</div>';
-			
-			str+='<div class="row m_top20">';
+			str+='<div class="row ">';
+
 				str+='<div class="col-sm-2">';
-					str+='<label>VOTER ID</label>';
-					str+='<input type="text"  name="voterCardNo"  value="'+result.representeeDetailsList[i].voterCardNo+'"  class="form-control m_top10 height45" id="voterId'+result.representationType+'" placeholder="Enter Voter ID">';
-					
+					str+='<h6>VOTER CARD NO</h6>';
+					str+='<input type="text"   name="voterCardNo"  value="'+result.representeeDetailsList[i].voterCardNo+'"  class="form-control m_top10 height45" id="voterId'+result.representationType+'" placeholder="Enter Voter ID">';
 				str+='</div>';
 				str+='<div class="col-sm-1">';
 					str+='<label></label>';
-					str+='<input type="button" class="btn btn-success btn-md m_top20" id="getVoterDetailsId" value="Get Details" ></input>';
+					str+='<input type="button" class="btn btn-warning btn-md m_top10" id="getVoterDetailsId" attr_type="'+result.representationType+'" value="Get Details" ></input>';
+				str+='</div>';
+
+				str+='<div class="col-sm-3">';
+					str+='<h6>NAME</h6>';
+					str+='<input type="text"  name="name" readOnly="true"  value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
-					str+='<label>NAME</label>';
-					str+='<input type="text"  name="name"  value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
-					
+					str+='<h6>MOBILE NO</h6>';
+					str+='<input type="text" name="mobileNO" readOnly="true" maxlength="10" value="'+result.representeeDetailsList[i].mobileNO+'"  class="form-control m_top10 height45" id="mobileNumber'+result.representationType+'" placeholder="Enter Mobile Number">';					
 				str+='</div>';
 				str+='<div class="col-sm-3">';
-					str+='<label>MOBILE NO</label>';
-					str+='<input type="text" name="mobileNO" maxlength="10" value="'+result.representeeDetailsList[i].mobileNO+'"  class="form-control m_top10 height45" id="mobileNumber'+result.representationType+'" placeholder="Enter Mobile Number">';
-					
+					str+='<h6>EMAIL-ID</h6>';
+					str+='<input type="text" name="email"  readOnly="true"  value="'+result.representeeDetailsList[i].email+'" class="form-control m_top10 height45" id="emailId'+result.representationType+'" placeholder="Enter E-mail ID">';					
 				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<label>EMAIL-ID</label>';
-					str+='<input type="text" name="email"   value="'+result.representeeDetailsList[i].email+'" class="form-control m_top10 height45" id="emailId'+result.representationType+'" placeholder="Enter E-mail ID">';
-					
-				str+='</div>';
+				
 			str+='</div>';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-3">';	
-					str+='<label>DISTRICT</label>';
-					str+='<select   name="addressVO.districtId" class="form-control chosen-select m_top10" id="district'+result.representationType+'">';
+					str+='<h6>DISTRICT</h6>';
+					str+='<select   name="addressVO.districtId" readOnly="true" class="form-control chosen-select m_top10" id="district'+result.representationType+'">';
 						for(var dis in globaldistrictList){
 							if(globaldistrictList[dis].id == result.representeeDetailsList[i].addressVO.districtId){
 								str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
@@ -1213,25 +1211,33 @@ function buildPetitionDetails(result){
 							}
 						}
 					str+='</select>';
-					
 				str+='</div>';
 				str+='<div class="col-sm-3">';	
-					str+='<label>CONSTITUENCY</label>';
-					str+='<select  name="addressVO.assemblyId"   class="form-control chosen-select m_top10" id="constituency'+result.representationType+'">';
+					str+='<h6>CONSTITUENCY</h6>';
+					str+='<select  name="addressVO.assemblyId"  readOnly="true"  class="form-control chosen-select m_top10" id="constituency'+result.representationType+'">';
 						str+='<option value="'+result.representeeDetailsList[i].addressVO.assemblyId+'">'+result.representeeDetailsList[i].addressVO.assemblyName+'</option>';
 					str+='</select>';
 					
 				str+='</div>';
 				str+='<div class="col-sm-3">';	
-					str+='<label>MANDAL/MUNCI.</label>';
-					str+='<select   name="addressVO.tehsilId"  class="form-control chosen-select m_top10" id="mandal'+result.representationType+'">';
+					str+='<h6>MANDAL/MUNCI.</h6>';
+					str+='<select   name="addressVO.tehsilId"  readOnly="true" class="form-control chosen-select m_top10" id="mandal'+result.representationType+'">';
 						str+='<option value="'+result.representeeDetailsList[i].addressVO.tehsilId+'">'+result.representeeDetailsList[i].addressVO.tehsilName+'</option>';
 					str+='</select>';
-					
 				str+='</div>';
+			
 				str+='<div class="col-sm-3">';	
-				str+='<label>REPRESENTEE DESIGNATION.</label>';
+					str+='<h6>PANCHAYAT</h6>';
+					str+='<select   name="addressVO.panchayatId" readOnly="true"  class="form-control chosen-select m_top10" id="panchayat'+result.representationType+'">';
+						str+='<option value="0">Select Panchayat</option>';
+					str+='</select>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="row m_top20">';
+				str+='<div class="col-sm-3">';	
+				str+='<h6>REPRESENTEE DESIGNATION.</h6>';
 				str+='<select   name="representeeDesignationId"  class="form-control chosen-select m_top10" id="designation'+result.representationType+'">';
+				if(globalDesignationList != null && globalDesignationList.length>0){
 					for(var dig in globalDesignationList){
 						if(globalDesignationList[dig].id == result.representeeDetailsList[i].addressVO.districtId){
 							str+='<option value="'+globalDesignationList[dig].key+'" selected>'+globalDesignationList[dig].value+'</option>';
@@ -1239,8 +1245,10 @@ function buildPetitionDetails(result){
 							str+='<option value="'+globalDesignationList[dig].key+'">'+globalDesignationList[dig].value+'</option>';
 						}
 					}
+				}					
 				str+='</select>';
-				
+				str+='<input type="hidden" id="repTdpCadreId'+result.representationType+'" value="" name="tdpCadreId"/>';
+				str+='<input type="hidden" id="repImagePathId'+result.representationType+'" value="" name="repImagePath"/>';
 			str+='</div>';
 			str+='</div>';
 		}
@@ -1251,13 +1259,26 @@ function buildPetitionDetails(result){
 		str+='<div class="col-sm-12">';
 		for(var i in result.referDetailsList){
 			alreadyCandidateId.push(result.referDetailsList[i].refCandidateId)
+			
 				str+='<div  style="position:relative;">';
 					str+='<div class="bgColorCandidatesView">';
 						str+='<div class="row">';
+						if(result.representationType == "REPRESENTEE" || result.representationType == "REPRESENT"){
+							str+='<input id="petitionRef0" class="refCandidatesCls" name="refCandidateId" value="'+result.referDetailsList[i].refCandidateId+'" type="hidden">';
+						}else{
+							str+='<input id="petitionRef0" class="refCandidatesCls" name="referList['+i+'].refCandidateId" value="'+result.referDetailsList[i].refCandidateId+'" type="hidden">';
+						}
+						
 							str+='<div class="pull-right showRemoveIcon"><i class="glyphicon glyphicon-remove"></i></div>';
 								str+='<div class="col-sm-2">';
-									str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
-									str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+									if(result.referDetailsList[i].candidatePath != null && result.referDetailsList[i].candidatePath.length>0)
+										str+='<img src="'+result.referDetailsList[i].candidatePath+'" class="imageCss"></img>';
+									else 
+										str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+									if(result.referDetailsList[i].partyName != null && result.referDetailsList[i].partyName.length>0)
+										str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/"'+result.referDetailsList[i].partyName+'".PNG" class="smallerImg"></img></span>';
+									else
+										str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
 								str+='</div>';
 							
 								str+='<div class="col-sm-2">';
@@ -1267,8 +1288,8 @@ function buildPetitionDetails(result){
 										str+='<h5 class="m_top10 font_weight">Designation</h5>';
 										str+='<h5 class="text_bold m_top10">'+result.referDetailsList[i].designation+'</h5>';
 									
-										str+='<h5 class="m_top5">'+result.referDetailsList[i].addressVO.assemblyName+' constituency,</h5>';
-										str+='<h5 class="m_top5">'+result.referDetailsList[i].addressVO.districtName+' District, '+result.referDetailsList[i].addressVO.stateName+'</h5>';
+										str+='<h5 class="m_top5">'+result.referDetailsList[i].addressVO.assemblyName+' CONSTITUENCY,</h5>';
+										str+='<h5 class="m_top5">'+result.referDetailsList[i].addressVO.districtName+' DISTRICT, '+result.referDetailsList[i].addressVO.stateName+'</h5>';
 									str+='</div>';
 							str+='</div>';
 						
@@ -1285,7 +1306,17 @@ function buildPetitionDetails(result){
 							str+='<div class="col-sm-2">';
 								str+='<div class="nameAddressCss">';
 									str+='<h5 class="font_weight">Address:</h5>';
-									str+='<h5 class="m_top5">Not Available</h5>';
+									if(result.referDetailsList[i].candidateAddressVO != null && result.referDetailsList[i].candidateAddressVO.stateName != null && result.referDetailsList[i].candidateAddressVO.stateName.length>0){
+										
+										
+										str+='<h5 class="m_top5">CONSTITUENCY  : '+result.referDetailsList[i].candidateAddressVO.assemblyName+' </h5>';
+										str+='<h5 class="m_top5"> DISTRICT  : '+result.referDetailsList[i].candidateAddressVO.districtName+' ,</h5> <h5  class="m_top5"> STATE : '+result.referDetailsList[i].candidateAddressVO.stateName+'</h5>';
+									}else{
+										str+='<h5 class="m_top5">Not Available</h5>';
+									}
+									
+										
+									
 								str+='</div>';
 							str+='</div>';
 							str+='<div class="col-sm-4" style="margin-top:-20px;">';
@@ -1298,6 +1329,9 @@ function buildPetitionDetails(result){
 								str+='<h4>Already Uploaded Documents</h4>';
 								str+='<div class="row">';
 									for(var j in result.referDetailsList[i].fileNamesList){
+										
+										str+='<input id="mainBlockFileUpload2'+result.representationType+'" attr_name="referList[0]" name="referList['+i+'].fileList['+j+']" value="'+result.referDetailsList[i].fileNamesList[j].value+'" attr_image_tyep="refImage" type="hidden">';
+										
 										var scanCopySpl = result.referDetailsList[i].fileNamesList[j].value.split("."); 
 										var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
 											str+='<div class="col-sm-2">';
@@ -1354,7 +1388,7 @@ function buildPetitionDetails(result){
 		
 		str+='<div class="row m_top10">';
 				str+='<div class="col-sm-8">';
-					str+='<label>COMPLETE WORK DISCRIPTION <span class="starColor">*</span><span id="completeWorkNameId'+result.representationType+'"></span></label>';
+					str+='<label>COMPLETE WORK DESCRIPTION <span class="starColor">*</span><span id="completeWorkNameId'+result.representationType+'"></span></label>';
 					str+='<input type="text"  name="worksList[0].workName"  value="'+result.grievanceDescription+'" class="form-control m_top5 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
@@ -1378,6 +1412,9 @@ function buildPetitionDetails(result){
 			str+='<h4>Already Uploaded Documents</h4>';
 			str+='<div class="row">';
 				for(var i in result.fileList){
+					
+					str+='<input id="projectDocUpload'+result.representationType+'" attr_name="worksList[0]" name="worksList[0].fileList['+i+']" value="'+result.fileList[i].value+'" attr_image_tyep="refImage" type="hidden">';
+					
 					var scanCopySpl = result.fileList[i].value.split("."); 
 					var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
 					
@@ -1428,7 +1465,7 @@ function buildPetitionDetails(result){
 							
 							str+='<div class="row m_top10" >';
 								str+='<div class="col-sm-3">';
-										str+='<label>DEPARTMENT <span class="starColor">*</span><span class="WorkTypeWiseDepartmentId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span></label>';
+										str+='<label>DEPARTMENT : <span class="starColor">*</span><span class="WorkTypeWiseDepartmentId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span></label>';
 										str+='<select  name="worksList['+i+'].subWorksList['+globalWorkTypeCount+'].deptId"  class="form-control chosen-select m_top10 validateCls"  id="WorkTypeWiseDepartmentId'+result.representationType+''+i+''+globalWorkTypeCount+'" attr_main_count="'+i+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox" onChange=getPetitionSubjectList(this.value,"subjectId'+result.representationType+''+i+'","'+globalWorkTypeCount+'","change")>';
 											for(var d in globalDepartmentsList){
 												if(globalDepartmentsList[d].key == result.subWorksList[i].deptId){
@@ -1717,40 +1754,378 @@ function buildPetitionDetails(result){
 			initializeEditFileProjDoc(result.representationType);
 			$(".chosen-select").chosen();
 			$(".fancyboxView").fancybox();
+			$("#designationREPRESENTEE").trigger('chosen:updated');
 }
 function openDoc(docmnt){
 	 window.open(docmnt);
 }
-function getPetitionDesignationLst(){
-	
-	  var json = {
-		   searchType:"all"// all/refCandidateDesignations/petitionGivenRefCandidateDesignations
-	  };
-	$.ajax({              
-		type:'POST',    
-		url: 'getPetitionDesignationList',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length>0){
-			globalDesignationList=result;
-		}
-		
-	});	
-
-}
 
 $(document).on("click",".saveRepresentRequestDetails",function(){
+	var typeVal = $(this).attr("attr_type");
+	/*
+	var completeWorkName='';
+	var noofWorks='';
+	var workCost='';
+	var WorkTypeWiseDepartmentId='';
+	var subjectId='';
+	var subSubjectId='';
+	
+	var workTypeId='';
+	var appendWorkCost='';
+	var appendWorkDetailsId='';
+	var appendEofficeId='';
+	var locationLevelId='';
+	var districtId='';
+	var constituencyId='';
+	var mandalId='';
+	
+	var workTypeInnerId='';
+	var appendWorkCostInner='';
+	var appendWorkDetailsInnerId='';
+	var appendEofficeInnerId='';
+	var locationLevelInnerId='';
+	var districtInnerId='';
+	var constituencyInnerId='';
+	var mandalInnerId='';
+	
+	var flag = true;
+	$('#saveButtonId').hide();
+	completeWorkName = $("#workName"+typeVal).val();
+	noofWorks = $("#noofWork"+typeVal).val();
+	workCost = $("#workCost"+typeVal).val();
+	
+	if(typeVal =='represent' || typeVal =='representee'){
+		var repName=$('#name'+typeVal+'').val();
+		var repMobileNo=$('#mobileNumber'+typeVal+'').val();
+		var repEmail=$('#emailId'+typeVal+'').val();
+		var repDistrictId=$('#district'+typeVal+'').val();
+		var repCostituencyId=$('#constituency'+typeVal+'').val();
+		var repTehsilId=$('#mandal'+typeVal+'').val();
+		var repdesignation= $('#designation'+typeVal+'').val();
+		
+		if(repName == undefined || repName == "undefined" || repName.trim() == '' || repName == null){
+			$('#nameErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  name</h5>");
+			$('#saveButtonId').show();
+		}else{
+			$('#nameErr'+typeVal+'').html("");
+		}
+		if(repMobileNo == undefined || repMobileNo == "undefined" || repMobileNo.trim() == '' || repMobileNo == null){
+			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  mobile no.</h5>");
+			$('#saveButtonId').show();
+		}else if(parseInt(repMobileNo.trim().lenght) <10 || parseInt(repMobileNo.trim().lenght) >10 ){
+			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid mobile no.</h5>");
+			$('#saveButtonId').show();
+		}else{
+			$('#mobileNumberErr'+typeVal+'').html("");
+		}
+		if(repEmail != undefined && repEmail != "undefined" && repEmail.trim() != '' && repEmail != null){
+			var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			if (!filter.test(repEmail.trim())) {
+				$('#emailIdErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid email address.</h5>");
+				$('#saveButtonId').show();
+			}
+		}else{
+			$('#emailIdErr'+typeVal+'').html("");
+		}
+		
+		if(repDistrictId == 0 || repDistrictId == null || repDistrictId == ''){
+			$("#districtErr"+typeVal+'').html("<h5 style='color:red;'>Please select  district.</h5>");
+			$('#saveButtonId').show();
+			flag = false;
+		}else{
+			$("#districtErr"+typeVal+'').html("");
+		}
+		if(repCostituencyId == 0 || repCostituencyId == null || repCostituencyId == ''){
+			$("#constituencyErr"+typeVal+'').html("<h5 style='color:red;'>Please select  constituency.</h5>");
+			$('#saveButtonId').show();
+			flag = false;
+		}else{
+			$("#constituencyErr"+typeVal+'').html("");
+		}
+		if(repTehsilId == 0 || repTehsilId == null || repTehsilId == ''){
+			$("#mandalErr"+typeVal+'').html("<h5 style='color:red;'>Please select  mandal/munci.</h5>");
+			$('#saveButtonId').show();
+			flag = false;
+		}else{
+			$("#mandalErr"+typeVal+'').html("");
+		}
+		if(repdesignation == 0 || repdesignation == null || repdesignation == ''){
+			$("#designationErr"+typeVal+'').html("<h5 style='color:red;'>Please select  designation.</h5>");
+			$('#saveButtonId').show();
+			flag = false;
+		}else{
+			$("#designationErr"+typeVal+'').html("");
+		}		
+	}
+	
+	var totalRefCount=0;
+	$('#refCandidatesErr').html('');
+	$('.refCandidatesCls').each(function(){
+		var value = $(this).val();
+		
+		if(value != undefined && value != "undefined" && value.trim() != '' && value != null && parseInt(value)>0)
+			totalRefCount = parseInt(totalRefCount)+1;
+	});
+	
+	if(totalRefCount == undefined || totalRefCount == "undefined" || totalRefCount == null || parseInt(totalRefCount) == 0 ){
+		flag = false;
+		if(typeVal =='represent' || typeVal =='representee')
+			$('#refCandidatesErr').html('Please add atleast one referral details.');
+		else 
+			$('#refCandidatesErr').html('Please add Self member details.');
+		
+	}
+	
+	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName.trim() == '' || completeWorkName == null){
+		$("#completeWorkNameId"+typeVal).html("<h5 style='color:red;'>Please enter work name</h5>");
+		$('#saveButtonId').show();
+		flag = false;
+		//return;
+	}else{
+		$("#completeWorkNameId"+typeVal).html("");
+	}
+	if(noofWorks == undefined || noofWorks == "undefined" || noofWorks === undefined || noofWorks.trim() == '' || noofWorks == null){
+		$("#noOfWorksId"+typeVal).html("<h5 style='color:red;'>Please enter no of works</h5>");
+		$('#saveButtonId').show();
+		flag = false;
+		//return;
+	}else{
+		$("#noOfWorksId"+typeVal).html("");
+	}
+	if(workCost == undefined || workCost == "undefined" || workCost === undefined || workCost.trim() == '' || workCost == null){
+		$("#workCostId"+typeVal).html("<h5 style='color:red;'>Please enter work cost</h5>");
+		$('#saveButtonId').show();
+		flag = false;
+		//return;
+	}else{
+		$("#workCostId"+typeVal).html("");
+	}
+	
+	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
+	if((parseInt(estimationWorksCount)>parseInt(globalInnerWorksCount)) || (parseInt(estimationWorksCount)<parseInt(globalInnerWorksCount))){ 
+		alert("Max no of works data not matched. Please check once.");
+		flag = false;
+	}
+	
+	var enteredAmount =parseFloat(0.0);
+	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseFloat(value) <=0){
+				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				flag = false;
+				//return;
+			}else{
+				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
+			}
+		}
+	});
+	
+	if((enteredAmount<estimationAmount) || (enteredAmount>estimationAmount)){
+		alert("Work wise total estimation cost not matched. Please check once.");
+		flag = false;
+	}
+	
+	$(".validateCls").each(function(){
+		
+		
+		var appendInnerType = $(this).attr("attr_type_change")
+		var mainCount = $(this).attr("attr_main_count")
+		var innerCount = $(this).attr("attr_inner_count")
+		
+		WorkTypeWiseDepartmentId = $("#WorkTypeWiseDepartmentId"+typeVal+mainCount+innerCount).val();
+		subjectId = $("#subjectId"+typeVal+mainCount+innerCount).val();
+		subSubjectId = $("#subSubjectId"+typeVal+mainCount+innerCount).val();
+		
+		workTypeId = $("#workTypeId"+typeVal+mainCount+innerCount).val();
+		appendWorkCost = $("#appendWorkCost"+typeVal+mainCount+innerCount).val();
+		appendWorkDetailsId = $("#appendWorkDetailsId"+typeVal+mainCount+innerCount).val();
+		appendEofficeId = $("#appendEofficeId"+typeVal+mainCount+innerCount).val();
+		
+		
+		
+		if(WorkTypeWiseDepartmentId == 0 || WorkTypeWiseDepartmentId == null || WorkTypeWiseDepartmentId == ''){
+			$(".WorkTypeWiseDepartmentId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Department</h5>");
+			flag = false;
+		}else{
+			$(".WorkTypeWiseDepartmentId"+typeVal+mainCount+innerCount).html("");
+		}
+		
+		if(subjectId == 0 || subjectId == null || subjectId == ''){
+			$(".subjectId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Subject</h5>");
+			flag = false;
+		}else{
+			$(".subjectId"+typeVal+mainCount+innerCount).html("");
+		}
+		
+		if(subSubjectId == 0 || subSubjectId == null || subSubjectId == ''){
+			$(".subSubjectId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Sub Subject</h5>");
+			flag = false;
+		}else{
+			$(".subSubjectId"+typeVal+mainCount+innerCount).html("");
+		}
+		
+		
+		
+		if(workTypeId == 0 || workTypeId == null || workTypeId == ''){
+				$(".workTypeId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Work Type</h5>");
+				flag = false;
+			}else{
+				$(".workTypeId"+typeVal+mainCount+innerCount).html("");
+			}
+			
+			if(appendWorkCost == 0 || appendWorkCost == null || appendWorkCost == ''){
+				$(".appendWorkCost"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
+				flag = false;
+			}else{
+				$(".appendWorkCost"+typeVal+mainCount+innerCount).html("");
+			}
+			
+			if(appendWorkDetailsId == 0 || appendWorkDetailsId == null || appendWorkDetailsId == ''){
+				$(".appendWorkDetailsId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Details</h5>");
+				flag = false;
+			}else{
+				$(".appendWorkDetailsId"+typeVal+mainCount+innerCount).html("");
+			}
+			
+			if(appendEofficeId == 0 || appendEofficeId == null || appendEofficeId == ''){
+				$(".appendEofficeId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter eOFFICE-ID</h5>");
+				flag = false;
+			}else{
+				$(".appendEofficeId"+typeVal+mainCount+innerCount).html("");
+			}
+			
+			
+		if(appendInnerType == "main"){
+			var mainCountMain = $(this).attr("attr_main_count")
+			var innerCountMain = $(this).attr("attr_inner_count")
+		
+			locationLevelId = $("#locationLevelId"+typeVal+mainCountMain+innerCountMain).val();
+			districtId = $("#districtId"+typeVal+mainCountMain+innerCountMain).val();
+			constituencyId = $("#constituencyId"+typeVal+mainCountMain+innerCountMain).val();
+			mandalId = $("#mandalId"+typeVal+mainCountMain+innerCountMain).val();
+			
+			if(locationLevelId == 0 || locationLevelId == null || locationLevelId == ''){
+				$(".locationLevelId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Location Type</h5>");
+				flag = false;
+			}else{
+				$(".locationLevelId"+typeVal+mainCount+innerCount).html("");
+			}
+			
+			if(locationLevelId == 3){
+				if(districtId == 0 || districtId == null || districtId == ''){
+					$(".districtId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select District</h5>");
+					flag = false;
+				}else{
+					$(".districtId"+typeVal+mainCount+innerCount).html("");
+				}
+			}else if(locationLevelId == 4){					
+				if(constituencyId == 0 || constituencyId == null || constituencyId == ''){
+					$(".constituencyId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Constituency</h5>");
+					flag = false;
+				}else{
+					$(".constituencyId"+typeVal+mainCount+innerCount).html("");
+				}
+			}else if(locationLevelId == 5){
+				if(mandalId == 0 || mandalId == null || mandalId == ''){
+					$(".mandalId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Select Mandal</h5>");
+					flag = false;
+				}else{
+					$(".mandalId"+typeVal+mainCount+innerCount).html("");
+				}
+			}
+			
+		}
+	});
+	
+	$(".validateInnerCls").each(function(){
+			var mainCountIn = $(this).attr("attr_main_count")
+			var innerCountIn = $(this).attr("attr_inner_count")
+			
+			
+			workTypeInnerId = $("#workTypeInnerId"+typeVal+mainCountIn+innerCountIn).val();
+			appendWorkCostInner = $("#appendWorkCostInner"+typeVal+mainCountIn+innerCountIn).val();
+			appendWorkDetailsInnerId = $("#appendWorkDetailsInnerId"+typeVal+mainCountIn+innerCountIn).val();
+			appendEofficeInnerId = $("#appendEofficeInnerId"+typeVal+mainCountIn+innerCountIn).val();
+			
+			locationLevelInnerId = $("#locationLevelInnerId"+typeVal+mainCountIn+innerCountIn).val();
+			districtInnerId = $("#districtInnerId"+typeVal+mainCountIn+innerCountIn).val();
+			constituencyInnerId = $("#constituencyInnerId"+typeVal+mainCountIn+innerCountIn).val();
+			mandalInnerId = $("#mandalInnerId"+typeVal+mainCountIn+innerCountIn).val();
+			
+			
+			if(workTypeInnerId == 0 || workTypeInnerId == null || workTypeInnerId == ''){
+				$(".workTypeInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select Work Type</h5>");
+				flag = false;
+			}else{
+				$(".workTypeId"+typeVal+mainCountIn+innerCountIn).html("");
+			}
+			
+			if(appendWorkCostInner == 0 || appendWorkCostInner == null || appendWorkCostInner == ''){
+				$(".appendWorkCostInner"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
+				flag = false;
+			}else{
+				$(".appendWorkCostInner"+typeVal+mainCountIn+innerCountIn).html("");
+			}
+			
+			if(appendWorkDetailsInnerId == 0 || appendWorkDetailsInnerId == null || appendWorkDetailsInnerId == ''){
+				$(".appendWorkDetailsInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Enter Work Details</h5>");
+				flag = false;
+			}else{
+				$(".appendWorkDetailsInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+			}
+			
+			if(appendEofficeInnerId == 0 || appendEofficeInnerId == null || appendEofficeInnerId == ''){
+				$(".appendEofficeInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Enter eOFFICE-ID</h5>");
+				flag = false;
+			}else{
+				$(".appendEofficeInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+			}
+			
+			if(locationLevelInnerId == 0 || locationLevelInnerId == null || locationLevelInnerId == ''){
+				$(".locationLevelInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select Location Type</h5>");
+				flag = false;
+			}else{
+				$(".locationLevelInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+			}
+			
+			if(locationLevelInnerId == 3){
+				if(districtInnerId == 0 || districtInnerId == null || districtInnerId == ''){
+					$(".districtInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select District</h5>");
+					flag = false;
+					
+				}else{
+					$(".districtInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+				}
+			}else if(locationLevelInnerId == 4){
+				if(constituencyInnerId == 0 || constituencyInnerId == null || constituencyInnerId == ''){
+					$(".constituencyInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select Constituency</h5>");
+						
+					flag = false;
+				}else{
+					$(".constituencyInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+				}
+			}else if(locationLevelInnerId == 5){
+				if(mandalInnerId == 0 || mandalInnerId == null || mandalInnerId == ''){
+					$(".mandalInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Select Mandal</h5>");
+					flag = false;
+						
+				}else{
+					$(".mandalInnerId"+typeVal+mainCountIn+innerCountIn).html("");
+				}
+			}
+	});	
+	if(flag == false){
+		$('#saveButtonId').show();
+		return;
+	}
 	
 	
+	$("#savingDetailsSpinner").html(spinner);
+	*/
 	
-	
-	$("#savingDetailsSpinner").html(spinner)
-	 var formData = new FormData();
+	var formData = new FormData();
 	$('#adminProfileForm input').each(
 		  function(){			  
 			var input = $(this);
@@ -1760,7 +2135,6 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			if (typeof id !== typeof undefined && id !== false) {
 				if(text=='text' || text=='hidden'){
 					var name = $('#'+id+'').attr('name');
-					//alert($('#'+id+'').val());
 					formData.append(name, $('#'+id+'').val());
 				}else if(text=='radio'){
 					if($('#'+id+'').is(':checked')){
@@ -1791,6 +2165,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			}			
 		}
 	);
+	
 	$('#adminProfileForm textarea').each(
 		  function(){			  
 			var input = $(this);
@@ -1813,6 +2188,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		}
 	);
 	
+	//console.log(formData);
+	//return;
 	  $.ajax({
 			url: $("#adminProfileForm").attr("action"),
 			data: formData,
@@ -1823,22 +2200,24 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				$("#savingDetailsSpinner").html('')
 				if(result!=null){
 				  if(result.responseCode == "0"){
-					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Updated Successfully</h3></center>").fadeOut(4000);
+					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
 					  
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); 
 						window.location.reload(); 
 						$(".defaultCheckCls").prop("checked",true)},6000);
 						 
 				  }else{
-					  $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Updated Failed..Try Later</h3></center>").fadeOut(4000);
+					  $('#saveButtonId').show();
+					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
 					  setTimeout(function () {
 						 
 						}, 500);
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				  }
 				}else{
+					  $('#saveButtonId').show();
 					setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Updated Failed..Try Later</h3></center>").fadeOut(4000);
+						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
 						}, 500);
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				 }
@@ -1847,11 +2226,14 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			},
 			error: function(request,error) { 
 				$("#savingDetailsSpinner").html('')
-				alert("error");				
+				alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
+				$('#saveButtonId').show();				
 			}
      });	 
 
 });
+
+
 
 $(document).on("change","#districtREPRESENTEE",function(){
 	var levelVal = $(this).val();
@@ -1931,3 +2313,356 @@ $(document).on("click",".removeWorkCls",function(){
 	var divIdStr = $(this).attr('attr_id');
 	$('#'+divIdStr+'').remove();
 });
+
+
+function getParliamentIdsByConstituencyList(){
+	var json = {};
+	$.ajax({              
+		type:'POST',    
+		url: 'getParliamentIdsByConstituencyList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#constituencyCanId").append('<option value="0">All</option>');
+			for(var i in result){
+				$("#constituencyCanId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#constituencyCanId").trigger('chosen:updated');
+	});	
+}
+
+function validation(typeVal){
+	var completeWorkName='';
+	var noofWorks='';
+	var workCost='';
+	var phonePattern= /^\d{0-9}$/;
+	
+	completeWorkName = $("#name"+typeVal).val();
+	noofWorks = $("#noofWork"+typeVal).val();
+	workCost = $("#workCost"+typeVal).val();
+	//alert(completeWorkName)
+	//alert(noofWorks)
+	//alert(workCost)
+	
+	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName === undefined){
+		$("#completeWorkNameId"+typeVal).html("<h5>Please enter work name</h5>");
+		return;
+	}
+	if(noofWorks == undefined || noofWorks == "undefined" || noofWorks === undefined){
+		$("#noofWork"+typeVal).html("<h5>Please enter work name</h5>");
+		return;
+	}
+	if(workCost == undefined || workCost == "undefined" || workCost === undefined){
+		$("#workCost"+typeVal).html("<h5>Please enter work name</h5>");
+		return;
+	}
+	
+}
+
+function getPetitionDesignationLst(typeVal){
+
+	  var json = {
+		   searchType:"all"// all/refCandidateDesignations/petitionGivenRefCandidateDesignations
+	  };
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionDesignationList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			globalDesignationList=result;
+		}
+		getPetitionDetails();
+	});	
+
+}
+
+
+
+function validateAmount(value,fieldId,typeVal){
+	
+	$('.ErrCls').html('');
+	var enteredAmount =parseFloat(0.0);
+	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseFloat(value) <=0){
+				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				return;
+			}else{
+				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
+			}
+		}
+	});
+	
+	if(enteredAmount>estimationAmount){
+		$('#Err'+fieldId+'').html("Total estimation cost reached. Please check once.");
+		$('#'+fieldId+'').val('');
+	}
+}
+
+
+$(document).on("click","#getVoterDetailsId",function(){
+	var typeVal=$(this).attr("attr_type");
+	var voterId=$("#voterId"+typeVal).val();
+	getRegistrationPersonDetails(voterId,typeVal);
+});
+
+
+function getRegistrationPersonDetails(voterId,typeVal){
+			  
+	$("#name"+typeVal).val('');
+	$("#mobileNumber"+typeVal).val('');
+	$("#emailId"+typeVal).val('');
+	$("#repTdpCadreId"+typeVal).val('');
+	$('#district'+typeVal).val(0);
+	$('#constituency'+typeVal).val(0);
+	$('#mandal'+typeVal).val(0);
+	$('#panchayat'+typeVal).val(0);
+	$("#repImagePathId"+typeVal).val('');
+	$("#district"+typeVal).trigger('chosen:updated');
+	$("#constituency"+typeVal).trigger('chosen:updated');
+	$("#mandal"+typeVal).trigger('chosen:updated');
+	$("#panchayat"+typeVal).trigger('chosen:updated');
+	 
+  var json = {
+			voterId:voterId,
+			familyVoterId:"0",
+			tdpCadreId:"0",
+			status:""
+
+			};
+  
+	$.ajax({              
+		type:'POST',    
+		url: 'getRegistrationPersonDetails',
+		dataType: 'json',  
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		error: function (xhr, status, err) {
+            //alert("Local error callback.");
+        },
+	}).done(function(result){
+		if(result != null ){
+			if(result.lastName != null && result.lastName !='null'){
+				$("#name"+typeVal).val(result.lastName);
+			}
+			if(result.mobileNumber != null && result.mobileNumber !='null'){
+				$("#mobileNumber"+typeVal).val(result.mobileNumber);
+			}
+			if(result.email != null && result.email !='null'){
+				$("#emailId"+typeVal).val(result.email);
+			}
+			if(result.tdpCadreId != null && result.tdpCadreId !='null' && parseInt(result.tdpCadreId)>0){
+				$("#repTdpCadreId"+typeVal).val(result.tdpCadreId);
+			}
+			if(result.imageBase64String != null && result.imageBase64String.length > 0 && result.imageBase64String !='null'){
+				$("#repImagePathId"+typeVal).val("http://www.mytdp.com/images/cadre_images/"+result.imageBase64String);
+			  }else  if(result.imagePath != null && result.imagePath.length > 0 && result.imagePath !='null'){
+				$("#repImagePathId"+typeVal).val(result.imagePath);
+			  }
+			if(result.districtId != null){
+				getAllDistrictsListInState(result.districtId);
+			}
+			if(result.constituencyId != null){
+				getConstituencyNamesBiDistrictId(result.districtId,result.constituencyId);
+			}
+			var maandalId2='';
+			if(result.mandalId != null){
+				maandalId2=result.mandalId.toString().substring(1,result.mandalId.length);
+				getTehsilsAndLocalElectionBodiForConstituencyId(result.constituencyId,"2"+maandalId2);
+			}else if(result.localElectionBodyId != null){
+					maandalId2=result.localElectionBodyId.toString().substring(1,result.localElectionBodyId.length);
+				getTehsilsAndLocalElectionBodiForConstituencyId(result.constituencyId,"1"+maandalId2);
+			}
+			var villageId="2"+result.villageId.toString().substring(1,result.villageId.length);
+			if(result.villageId != null	){
+				getPanchayatsByTehsilId(maandalId2,villageId); 
+			}
+		}else{
+			alert("No data available with this Voter Card No.Please check once.");
+		}
+	}).error(function(){
+		alert("No data available with this Voter Card No.Please check once.");
+	});	
+ 
+}
+
+
+function getAllDistrictsListInState(districtId){	
+	$("#districtREPRESENTEE").html('');
+	var json = {
+		  stateId:"1",
+		  searchType:"all",
+		  searchId:0
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getAllDistrictsInState',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#districtREPRESENTEE").append('<option value="0">Select District</option>');
+				for(var i in result){
+					if(districtId == result[i].id){
+						$("#districtREPRESENTEE").append('<option value="'+result[i].id+'" selected>'+result[i].name+' </option>');
+					}else{
+						$("#districtREPRESENTEE").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
+				}
+			}
+			$("#districtREPRESENTEE").trigger('chosen:updated');
+	});	
+}
+
+$(document).on("change","#districtrepresent",function(){
+	var levelVal = $(this).val();
+	getConstituencyNamesBiDistrictId(levelVal,""); 
+	
+});
+function getConstituencyNamesBiDistrictId(levelVal,constincyId){
+	  $("#constituencyREPRESENTEE").html('');
+	  $("#constituencyREPRESENTEE").append('<option value="0">Select Constituency</option>');	
+	  $("#constituencyREPRESENTEE").trigger('chosen:updated');
+	   var searchType= "all";		
+	  var json = {
+		  districtId:levelVal,
+		  searchType:"all",
+		  searchId:0
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getConstituencyNamesByDistrictId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){	
+			for(var i in result){
+				if(constincyId == result[i].locationId){
+					$("#constituencyREPRESENTEE").append('<option value="'+result[i].locationId+'" selected>'+result[i].locationName+' </option>');
+				}else{
+					$("#constituencyREPRESENTEE").append('<option value="'+result[i].locationId+'">'+result[i].locationName+' </option>');
+				}
+			}
+		}
+		$("#constituencyREPRESENTEE").trigger('chosen:updated');		
+	});	
+}
+
+$(document).on("change","#constituencyrepresent",function(){
+	var levelVal = $(this).val();
+	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,""); 
+	
+});
+function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,mandalId){
+	  $("#mandalREPRESENTEE").html('');	
+	  $("#mandalREPRESENTEE").append('<option value="0">Select Mandal</option>');	
+	  $("#mandalREPRESENTEE").trigger('chosen:updated');	
+	  var json = {
+		  constituencyId:levelVal,
+		  searchType:"all",
+		  searchId:0
+		}        
+	$.ajax({                
+		type:'POST',    
+		url: 'getTehsilsAndLocalElectionBodyForConstituencyId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){			 		
+			for(var i in result){
+					var tehsilId = result[i].key;
+					var levelId = tehsilId;//tehsilId.toString().substr(1, 4);
+					if(result[i].electionType != null){
+						if(mandalId == levelId){
+							$("#mandalREPRESENTEE").append('<option value="'+levelId+'" selected>'+result[i].value+' '+result[i].electionType+'</option>');
+						}else{
+							$("#mandalREPRESENTEE").append('<option value="'+levelId+'">'+result[i].value+' '+result[i].electionType+'</option>');
+						}
+					}else{
+						if(mandalId == levelId){
+							$("#mandalREPRESENTEE").append('<option value="'+levelId+'" selected>'+result[i].value+'</option>');
+						}else{
+							$("#mandalREPRESENTEE").append('<option value="'+levelId+'">'+result[i].value+'</option>');
+						}
+					}
+			}
+		}
+		$("#mandalREPRESENTEE").trigger('chosen:updated');
+	});	
+}
+$(document).on("change","#mandalrepresent",function(){
+	var levelVal = $(this).val();
+	levelVal=levelVal.toString().substring(1,levelVal.length);
+	getPanchayatsByTehsilId(levelVal,""); 
+	
+});
+
+function getPanchayatsByTehsilId(levelVal,panchayatId){
+	  $("#panchayatREPRESENTEE").html('');	
+	  $("#panchayatREPRESENTEE").append('<option value="0">Select Panchayat</option>');	
+	  $("#panchayatREPRESENTEE").trigger('chosen:updated');	
+	  var json = {
+		  tehsilId:levelVal,
+		  searchType:"all",
+		  searchId:0
+		}        
+	$.ajax({                
+		type:'POST',    
+		url: 'getPanchayatsByTehsilId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){			 		
+			for(var i in result){
+				if(panchayatId == result[i].key){
+					$("#panchayatREPRESENTEE").append('<option value="'+result[i].key+'" selected>'+result[i].value+' </option>');
+				}else{
+					$("#panchayatREPRESENTEE").append('<option value="'+result[i].key+'" >'+result[i].value+' </option>');
+				}
+			}
+		}
+		$("#panchayatREPRESENTEE").trigger('chosen:updated');
+	});	
+}
+
+
+function checkIsNumber(id,value){
+	 if(isNaN(value)){
+		$('#'+id+'').val('');
+	 }else {
+		 ;
+	 }
+}

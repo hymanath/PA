@@ -77,7 +77,7 @@
 				<div class="panel-group">
 					<div class="panel panel-default panel-lightGreen">
 						<div class="panel-heading">
-							<h4 class="panel-title f_22" style="font-weight:normal !important;">REPRESENTATION REQUEST</h4>
+							<h4 class="panel-title f_22" style="font-weight:normal !important;"> EDIT/UPDATE PETITION DETAILS </h4>
 						</div>
 						<form action="saveRepresentRequestDetails" id="adminProfileForm" name="adminProfileFormName" enctype="multipart/form-data" method="post">
 						<input type="hidden"  name=""  value="100" class="form-control m_top10 height45" id="reffererCandidate0">
@@ -86,40 +86,46 @@
 								<div class="col-sm-12">
 									<h3 class="panel-title f_22">REPRESENTEE DETAILS</h3>
 									<div class="row m_top20">
-										<div class="col-sm-2">
-											<h4>REPRESENTATION DATE </h4>
+										<div class="col-sm-3">
+											<h6> ENDORSMENT NO </h6>
+											<div class=" inline-block m_top10">
+												<input type="text" name="endorsmentNo" readOnly="true" class="form-control" id="endorsmentNo"/>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<h6> ENDORSMENT DATE </h6>
 											<div class="input-group inline-block m_top10">
 												<span class="input-group-addon">
 													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 												</span>
-												<input type="text" name="pmRequestVO.representationdate" class="form-control" id="dateRangePickerMGNF"/>
+												<input type="text" name="endorsmentDate" readOnly="true"  class="form-control" id="endorsmentDate"/>
 											</div>
 										</div>
 										<div class="col-sm-3">
-											<h4>REPRESENTATION BY </h4>
-												<div class="row m_top10">
-													<div class="col-sm-3 selfHideShow">
-														<div class="borederCss">
-															<input type="radio" name="pmRequestVO.representationType" value="SELF" id="self" attr_name="selfMemberType" class="selfRepresenceCls" attr_type="self" checked>
-															<label><h5>SELF</span></h5>
-														</div>
-													</div>
-													<div class="col-sm-6 RepresenteeHideShow">
-														<div class="borederCss">
-															<input type="radio" name="pmRequestVO.representationType"  value="REPRESENT"  id="Representee"  class="selfRepresenceCls" attr_type="represent" attr_name="representMemberType"  >
-															<label><h5 class="text-capital">Representee</h5></label>
-														</div>
-													</div>
-												</div>
+											<h6>REPRESENTATION DATE </h6>
+											<div class="input-group inline-block m_top10">
+												<span class="input-group-addon">
+													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+												</span>
+												<input type="text" name="representationdate"  readOnly="true" class="form-control" id="representationDate"/>
+											</div>
+										</div>
+
+										<div class="col-sm-3">
+											<h6>REPRESENTATION BY </h6>
+											<div class=" inline-block m_top10">
+												<input type="text"  value="" readOnly="true" id="representationType"  readOnly="true" class="form-control" />
+											</div>
 										</div>
 									</div>
 									<div class="row m_top20 loadingCls">
 									</div>
-									<div class="row m_top20">
+									<!--<div class="row m_top20">
 										<div class="col-sm-12">
 											<div id="SELFDetailsDivId"></div>
 										</div>
 									</div>
+									-->
 									<div class="row m_top20">
 										<div class="col-sm-12">
 											<div id="REPRESENTEEDetailsDivId"></div>
