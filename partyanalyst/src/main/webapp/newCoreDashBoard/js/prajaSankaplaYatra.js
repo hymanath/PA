@@ -772,17 +772,9 @@ $(document).on("click","[role='tabCummulative'] li",function(){
 	
 });
 $(document).on("change","#categoryId",function(){
-	var categoryName=$(this).find('option:selected').text();
-	if(categoryName=='KAPU RESERVATIONS')
-	{
-		$('#prajaSankalpaYatraDivId').html(categoryName+"-<span style='color:green;'>5%</span>");
-	}
-	else{
-	$('#prajaSankalpaYatraDivId').html(categoryName+"-");
-	}	
+	$('#prajaSankalpaYatraDivId').html($(this).find('option:selected').text()+" -");
 	globalcategoryId = $(this).val();
 	onloadPrajaSankaplaYatraCalls();
-	
 });
 $(document).on("click",".partyMainEditionCls",function(){
 	var editionType="Main";

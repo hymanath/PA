@@ -4162,6 +4162,7 @@
 										<option value="0">Select Category</option>
 										<option value="1051" selected="selected">Praja sankalpa yatra</option>
 										<option value="1050">Counter on praja sankalpa yatra</option>
+										<option value="1063">KAPU RESERVATIONS - 5%</option>
 										<option value="710">GADAPA GADAPAKU YSRCP - 2016</option>
 										<option value="691">JANA CHAITANYA YATRA</option>
 										<option value="943">NANDYALA BYE ELECTION</option>
@@ -4191,7 +4192,6 @@
 										<option value="971">ANNA CANTEENS</option>
 										<option value="1008">JAGAN PADAYATRA</option>
 										<option value="1039">MEE INTIKI MEE MLA</option>
-										<option value="1063">KAPU RESERVATIONS</option>
 									</select>
 								</div>
 							</div>
@@ -4446,6 +4446,9 @@
 							</h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="EMCoverageTime">
+							<span class="EmSettings pull-right" onClick="refreshEm();">
+								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+							</span> 
 							<span class="EMCoverageTimeIconExpand pull-right" expand-icon="EMCoverageTime">
 								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
 							</span>
@@ -4460,19 +4463,35 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="EMCoverageTime">
+					<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="EMCoverageTime">
+						<div class="col-sm-6">
+							<label class="radio-inline">
+							  <input type="radio" id="inlineCheckbox1" class="EMCoverageTimeCls" name="optionsRadios"  value="candidate" checked><b>Candidate</b>
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" id="inlineCheckbox2" class="EMCoverageTimeCls"  name="optionsRadios"  value="party"><b>Party</b>
+							</label>
+						</div>
+						<div class="col-sm-6">
+							<select class="form-control chosen-select" id="categoryEmId">
+								<option value="0">Select Category</option>
+								<option value="1051" selected="selected">Praja sankalpa yatra</option>
+								<option value="1050">Counter on praja sankalpa yatra</option>
+								<option value="1063">KAPU RESERVATIONS - 5%</option>
+							</select>
+						</div>
+					</div>	
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock">
 							<div class="row m_top10">
 								<div class="col-sm-12">
 									<div id="EMCoverageTimeSummaryDivId"></div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="EMCoverageTime" style="display:none;" >
-							<div class="row">
-								<div class="col-sm-12">
-									<div id="EMCoverageTimeDayWiseDivId">456</div>
-								 </div>
-							</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 dayWiseTimeBlock" >
+							<div id="EMCoverageTimeDayWiseDivId"></div>
 						</div>
 					</div>
 				</div>
@@ -6017,8 +6036,8 @@ var globalImages;
 		getBoothCadreEnrolmentYears();
 	});
 	getLoggedInUserStructure();
-	onLoadCalls()
-	function onLoadCalls(){    
+	onLoadCalls();
+	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();
 		//Preemeet
 		preemeeetOnloadCalls();
