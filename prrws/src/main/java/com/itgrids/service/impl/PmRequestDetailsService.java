@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -904,15 +905,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 representeeVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[34]));
 							 representeeVO.setRefCandidateId(commonMethodsUtilService.getLongValueForObject(param[31]));
 							 representeeVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[51]));
-							 AddressVO addressVO = setAddressDetailsToResultView(param[4],param[5],param[6],param[7],param[8]);
+							 AddressVO addressVO = setAddressDetailsToResultView(param[4],param[5],param[6],param[7],param[8],param[63]);
 							 
 							 addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[37]));
 							 addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[38]));
 							 addressVO.setAssemblyName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[39])));
 							 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
 								 addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[41])+" "+commonMethodsUtilService.getStringValueForObject(param[42]));
-							 else
+							 else{
 								 addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[40]));
+								 addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[64]));
+							 }
+							 
 							 representeeVO.setAddressVO(addressVO);
 							 returnVO.getRepresenteeDetailsList().add(representeeVO);
 						 }
@@ -937,24 +941,28 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 refVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[35]));
 					 refVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[36]));
 					 
-					 AddressVO natAddressVO = setAddressDetailsToResultView(param[58],param[59],param[60],param[61],param[62]);
+					 AddressVO natAddressVO = setAddressDetailsToResultView(param[58],param[59],param[60],param[61],param[62],param[67]);
 					 natAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[52]));
 					 natAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[53]));
 					 natAddressVO.setAssemblyName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[54])));
 					 if(commonMethodsUtilService.getLongValueForObject(param[62]) >0L)// muncipality
 						 natAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[56])+" "+commonMethodsUtilService.getStringValueForObject(param[57]));
-					 else
+					 else{
 						 natAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[55]));
+						 natAddressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[68]));
+					 }
 					 refVO.setCandidateAddressVO(natAddressVO);
 					 
-					 AddressVO refAddressVO = setAddressDetailsToResultView(param[16],param[17],param[18],param[19],param[20]);
+					 AddressVO refAddressVO = setAddressDetailsToResultView(param[16],param[17],param[18],param[19],param[20],param[65]);
 					 refAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[43]));
 					 refAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[44]));
 					 refAddressVO.setAssemblyName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[45])));
 					 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
 						 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[47])+" "+commonMethodsUtilService.getStringValueForObject(param[48]));
-					 else
+					 else{
 						 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[46]));
+						 refAddressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[66]));
+					 }
 					 refVO.setAddressVO(refAddressVO);
 					 
 					 if(commonMethodsUtilService.isMapValid(refFilesListMap)){
@@ -968,13 +976,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 }else{
 						 boolean isAvailable=false;
 						 for (PmRequestVO childReffVO : returnVO.getReferDetailsList()) {
-							if(childReffVO.getRefCandidateId() != null && refVO.getRefCandidateId() != null && childReffVO.getRefCandidateId().longValue() == refVO.getRefCandidateId().longValue()){
-								childReffVO.setDesignation(childReffVO.getDesignation()+", "+refVO.getDesignation());
-								if(commonMethodsUtilService.isMapValid(refFilesListMap)){
-									childReffVO.getFileNamesList().addAll(refFilesListMap.get(refVO.getId()));
-								 }
-								isAvailable=true;
-							}
+							 if(childReffVO != null){
+								 if(childReffVO.getRefCandidateId() != null && refVO.getRefCandidateId() != null && childReffVO.getRefCandidateId().longValue() == refVO.getRefCandidateId().longValue()){
+									childReffVO.setDesignation(childReffVO.getDesignation()+", "+refVO.getDesignation());
+									if(commonMethodsUtilService.isMapValid(refFilesListMap)){
+										if(commonMethodsUtilService.isListOrSetValid(refFilesListMap.get(refVO.getId())))
+											childReffVO.getFileNamesList().addAll(refFilesListMap.get(refVO.getId()));
+									 }
+									isAvailable=true;
+								}
+							 }
 						}
 						 if(!isAvailable){
 							 returnVO.getReferDetailsList().add(refVO);
@@ -1014,33 +1025,35 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[30]));
 						vo.setStatusId(commonMethodsUtilService.getLongValueForObject(param[9]));
 						
-						if(vo.getDeptId() != null && vo.getDeptId().longValue()>0L){
-							List<KeyValueVO> subjectsList = locationDetailsService.getPmSubjectList(vo.getDeptId());
-							if(commonMethodsUtilService.isListOrSetValid(subjectsList)){
-								vo.getSubjectsList().addAll(subjectsList);
-							}
-						}
-						if(vo.getSubjectId() != null && vo.getSubjectId().longValue()>0L){
-							List<KeyValueVO> subSubjectsList = locationDetailsService.getPmSubSubjectList(vo.getSubjectId());
-							if(commonMethodsUtilService.isListOrSetValid(subSubjectsList)){
-								vo.getSubSubjectsList().addAll(subSubjectsList);
-							}
-						}
-							
-						 AddressVO refAddressVO = setAddressDetailsToResultView(param[12],param[13],param[14],param[15],param[16]);
+						 AddressVO refAddressVO = setAddressDetailsToResultView(param[12],param[13],param[14],param[15],param[16],param[36]); 
 						 refAddressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[21]));
 						 refAddressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[22]));
 						 refAddressVO.setAssemblyName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[23])));
 						 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
 							 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[25])+" "+commonMethodsUtilService.getStringValueForObject(param[26]));
-						 else
+						 else{
 							 refAddressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[24]));
+							 refAddressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[37]));
+						 }
 						 vo.setAddressVO(refAddressVO);
 						 
 						 Long seriesNo = commonMethodsUtilService.getLongValueForObject(param[35]);
-						 List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>();
+						 List<PetitionsWorksVO> worksList = new LinkedList<PetitionsWorksVO>();
 						 if(petitionSubWorksMap.get(seriesNo) != null){
 							 worksList=petitionSubWorksMap.get(seriesNo);
+						 }else{
+							 if(vo.getDeptId() != null && vo.getDeptId().longValue()>0L){
+									List<KeyValueVO> subjectsList = locationDetailsService.getPmSubjectList(vo.getDeptId());
+									if(commonMethodsUtilService.isListOrSetValid(subjectsList)){
+										vo.getSubjectsList().addAll(subjectsList);
+									}
+								}
+								if(vo.getSubjectId() != null && vo.getSubjectId().longValue()>0L){
+									List<KeyValueVO> subSubjectsList = locationDetailsService.getPmSubSubjectList(vo.getSubjectId());
+									if(commonMethodsUtilService.isListOrSetValid(subSubjectsList)){
+										vo.getSubSubjectsList().addAll(subSubjectsList);
+									}
+								}
 						 }
 						 worksList.add(vo);
 						 petitionSubWorksMap.put(seriesNo, worksList);
@@ -1049,18 +1062,30 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isMapValid(petitionSubWorksMap)){
 					for (Long seriesNo : petitionSubWorksMap.keySet()) {
 						List<PetitionsWorksVO> workTypeVOList = petitionSubWorksMap.get(seriesNo);
-						PetitionsWorksVO worksVO= workTypeVOList.get(0);
-						
-						PetitionsWorksVO vo = new PetitionsWorksVO();
-						vo.setUiSeriesNo(seriesNo);
-						vo.setDeptId(worksVO.getDeptId());
-						vo.setDeptName(worksVO.getDeptName());
-						vo.setSubjectId(worksVO.getSubjectId());
-						vo.setSubject(worksVO.getSubject());
-						vo.setSubSubjectId(worksVO.getSubSubjectId());
-						vo.setSubSubject(worksVO.getSubSubject());
-						vo.getSubWorksList().addAll(workTypeVOList);
-						returnVO.getSubWorksList().add(vo);
+						if(commonMethodsUtilService.isListOrSetValid(workTypeVOList)){
+							PetitionsWorksVO worksVO= workTypeVOList.get(0);
+							if(commonMethodsUtilService.isListOrSetValid(worksVO.getSubWorksList())){
+								PetitionsWorksVO subWorksVO= worksVO.getSubWorksList().get(0);
+								for (PetitionsWorksVO vo : worksVO.getSubWorksList()) {
+									if(commonMethodsUtilService.isListOrSetValid(worksVO.getSubjectsList())){
+										subWorksVO.setSubjectsList(vo.getSubjectsList());
+										subWorksVO.setSubSubjectsList(vo.getSubSubjectsList());
+										break;
+									}
+								}
+							}
+							
+							PetitionsWorksVO vo = new PetitionsWorksVO();
+							vo.setUiSeriesNo(seriesNo);
+							vo.setDeptId(worksVO.getDeptId());
+							vo.setDeptName(worksVO.getDeptName());
+							vo.setSubjectId(worksVO.getSubjectId());
+							vo.setSubject(worksVO.getSubject());
+							vo.setSubSubjectId(worksVO.getSubSubjectId());
+							vo.setSubSubject(worksVO.getSubSubject());
+							vo.getSubWorksList().addAll(workTypeVOList);
+							returnVO.getSubWorksList().add(vo);
+						}
 					}
 				}
 			}
@@ -1070,18 +1095,24 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		 return returnVO;
 	 }
 	 
-	 public AddressVO setAddressDetailsToResultView(Object param4,Object param5,Object param6,Object param7,Object param8){
+	 public AddressVO setAddressDetailsToResultView(Object state,Object district,Object assembly,Object mandal,Object muncipality,Object panchayat){
 		 AddressVO addressVO = new AddressVO();
 		 try {
-			 addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param4));
-			 addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param5));
-			 addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param6));
-			 boolean isMandal = false;
-			 if(commonMethodsUtilService.getLongValueForObject(param8) >0L){// muncipality{
-				 addressVO.setTehsilId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(param8)));
+			 addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(state));
+			 addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(district));
+			 addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(assembly));
+			 if(commonMethodsUtilService.getLongValueForObject(muncipality) >0L){// muncipality{
+				 addressVO.setTehsilId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(muncipality)));
 		 	}else{
-				 addressVO.setTehsilId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(param7)));
+				 addressVO.setTehsilId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(mandal)));
+				 addressVO.setPanchayatId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(panchayat)));
 				 isMandal = true;
+				 if(addressVO.getTehsilId() != null && addressVO.getTehsilId().longValue()>0L){
+					 List<KeyValueVO> panchaytsList = locationDetailsService.getPanchayatsByTehsilId(addressVO.getTehsilId());//starting letter 2 for panchayats, 1 for wards
+					 if(commonMethodsUtilService.isListOrSetValid(panchaytsList)){
+						 addressVO.getPanchaytsList().addAll(panchaytsList);
+					 } 
+				 }
 		 	}
 			 
 			 List<LocationVO> constituencyList = locationDetailsService.getConstituencyNamesByDistrictId(addressVO.getDistrictId(),"all",null);
@@ -1096,12 +1127,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 addressVO.getMandalsList().addAll(mandalsList);
 			 }
 			 
-			 if(isMandal){
-				 List<KeyValueVO> panchaytsList = locationDetailsService.getPanchayatsByTehsilId(commonMethodsUtilService.getLongValueForObject(param7));
-				 if(commonMethodsUtilService.isListOrSetValid(constituencyList)){
-					 addressVO.getPanchaytsList().addAll(panchaytsList);
-				 } 
-			 }
 			 
 		} catch (Exception e) {
 			LOG.error("Exception Occured in setAddressDetailsToResultView "+e.getMessage());
@@ -1122,7 +1147,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 				
 			}catch(Exception e){
-				LOG.error("Exception Occured in setAddressDetailsToResultView ");
+				LOG.error("Exception Occured in getPmOffceUserDetails ");
 			}
 			return userVO;
 		}
@@ -1138,7 +1163,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			 	      }else{
 			 	    	 String output = response.getEntity(String.class);
-			 	    	if(output != null && !output.isEmpty()){
 			 	    		JSONObject jobj = new JSONObject(output);
 			 	    		cadrInfoVo = new CadreRegistrationVO();
 			 	    		cadrInfoVo.setLastName(jobj.getString("lastName"));
@@ -1169,7 +1193,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 	    		cadrInfoVo.setVoterCardNumber(jobj.getString("voterCardNumber"));
 			 	    		cadrInfoVo.setImageBase64String(jobj.getString("imageBase64String"));
 			 	    	}
-			 	      }
+			 	      
 			}catch(Exception e){
 				LOG.error("Exception Occured in getRegistrationPersonDetails ");
 			}
