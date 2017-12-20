@@ -48,7 +48,6 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.container.MappableContainerException;
 import com.sun.jersey.api.json.JSONConfiguration;
 
 
@@ -1245,7 +1244,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 		     WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getTrainingFeedbackDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_PROGRAM_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
-		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingFeedbackDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+		     //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingFeedbackDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_PROGRAM_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
 			 ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 			 if(response.getStatus() != 200){
 				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1330,8 +1329,8 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			 ClientConfig clientConfig = new DefaultClientConfig();
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
+		     //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
 		     WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
-		     //WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getTrainingQuizDetails/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
 			 ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 			 if(response.getStatus() != 200){
 				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1459,9 +1458,9 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			 ClientConfig clientConfig = new DefaultClientConfig();
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
-		     WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceDetailsForEfficiency/"+daysListstring+"/"+grievanceReqType+"/"+enrollmentyearId.toString());
-		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getGrivanceDetailsForEfficiency/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
-			 ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class);
+		     WebResource webResource = client.resource("http://mytdp.com/Grievance/WebService/getGrivanceDetailsForEfficiency/"+daysListstring+"/"+grievanceReqType+"/"+enrollmentyearId.toString());
+		     //WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceDetailsForEfficiency/"+daysListstring+"/"+grievanceReqType+"/"+enrollmentyearId.toString());
+		     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class);
 			 if(response.getStatus() != 200){
 				  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			  }else{
@@ -1498,8 +1497,8 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			 ClientConfig clientConfig = new DefaultClientConfig();
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
-		     WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceDetailsForIssueTypeWiseGraph");
-		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getGrivanceDetailsForEfficiency/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+		     WebResource webResource = client.resource("http://mytdp.com/Grievance/WebService/getGrivanceDetailsForIssueTypeWiseGraph");
+		     //WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceDetailsForIssueTypeWiseGraph");
 		     String jsonInString = new ObjectMapper().writeValueAsString(complaintStatusCountVO);
 	         System.out.println(jsonInString);
 	         
@@ -1541,8 +1540,8 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			 ClientConfig clientConfig = new DefaultClientConfig();
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
-		     WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceSearch");
-		  // WebResource webResource2 = client.resource("http://mytdp.com/Survey/WebService/getGrivanceDetailsForEfficiency/"+ProgramlistString+"/"+IConstants.TRAINING_CAMP_SURVEY_QUIZS_FEEDBACK_IDS+"/"+userAccessLevelId.toString()+"/"+userAccessLevelValuesstring+"/"+committeeLevelIdArrstring+"/");
+		     //WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceSearch");
+		     WebResource webResource = client.resource("http://mytdp.com/Grievance/WebService/getGrivanceSearch");
 		     String jsonInString = new ObjectMapper().writeValueAsString(complaintStatusCountVO);
 	         System.out.println(jsonInString);
 	         
@@ -1587,5 +1586,3 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
   }
 	        
 }
-
-	
