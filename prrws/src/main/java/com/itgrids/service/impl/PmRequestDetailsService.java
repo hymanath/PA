@@ -1015,13 +1015,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setStatusId(commonMethodsUtilService.getLongValueForObject(param[9]));
 						
 						if(vo.getDeptId() != null && vo.getDeptId().longValue()>0L){
-							List<KeyValueVO> subjectsList = null;//locationDetailsService.getPmSubjectList(vo.getDeptId());
+							List<KeyValueVO> subjectsList = locationDetailsService.getPmSubjectList(vo.getDeptId());
 							if(commonMethodsUtilService.isListOrSetValid(subjectsList)){
 								vo.getSubjectsList().addAll(subjectsList);
 							}
 						}
 						if(vo.getSubjectId() != null && vo.getSubjectId().longValue()>0L){
-							List<KeyValueVO> subSubjectsList = null;//locationDetailsService.getPmSubSubjectList(vo.getSubjectId());
+							List<KeyValueVO> subSubjectsList = locationDetailsService.getPmSubSubjectList(vo.getSubjectId());
 							if(commonMethodsUtilService.isListOrSetValid(subSubjectsList)){
 								vo.getSubSubjectsList().addAll(subSubjectsList);
 							}
@@ -1084,20 +1084,20 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				 isMandal = true;
 		 	}
 			 
-			 List<LocationVO> constituencyList = null;//locationDetailsService.getConstituencyNamesByDistrictId(addressVO.getDistrictId(),"all",null);
+			 List<LocationVO> constituencyList = locationDetailsService.getConstituencyNamesByDistrictId(addressVO.getDistrictId(),"all",null);
 			 if(commonMethodsUtilService.isListOrSetValid(constituencyList)){
 				 for (LocationVO vo : constituencyList) {
 					 addressVO.getConstituencyList().add(new KeyValueVO(vo.getLocationId(), vo.getLocationName()));
 				}
 			 }
 			 
-			 List<KeyValueVO> mandalsList = null;//locationDetailsService.getTehsilsAndLocalElectionBodyForConstituencyId(addressVO.getAssemblyId(),"all",null);
+			 List<KeyValueVO> mandalsList = locationDetailsService.getTehsilsAndLocalElectionBodyForConstituencyId(addressVO.getAssemblyId(),"all",null);
 			 if(commonMethodsUtilService.isListOrSetValid(mandalsList)){
 					 addressVO.getMandalsList().addAll(mandalsList);
 			 }
 			 
 			 if(isMandal){
-				 List<KeyValueVO> panchaytsList = null;//locationDetailsService.getPanchayatsByTehsilId(commonMethodsUtilService.getLongValueForObject(param7));
+				 List<KeyValueVO> panchaytsList = locationDetailsService.getPanchayatsByTehsilId(commonMethodsUtilService.getLongValueForObject(param7));
 				 if(commonMethodsUtilService.isListOrSetValid(constituencyList)){
 					 addressVO.getPanchaytsList().addAll(panchaytsList);
 				 } 
