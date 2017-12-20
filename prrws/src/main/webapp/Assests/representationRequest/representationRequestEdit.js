@@ -449,26 +449,26 @@ $(document).on("click",".candidateAddedView",function(){
 		
 	alreadyCandidateId.push(parseInt(candidateId));
 	
-	$("#candidateDetails"+typeVal+"DivId").append($("#candidatesAppendDiv"+candidateId).html());
+	$(".candidateDetails"+typeVal+"DivId").append($("#candidatesAppendDiv"+candidateId).html());
 	
-	$("#candidateDetails"+typeVal+"DivId").find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-3").addClass("col-sm-2");
-	$("#candidateDetails"+typeVal+"DivId").find("#fileUpload"+typeVal+candidateId).show();
+	$(".candidateDetails"+typeVal+"DivId").find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-3").addClass("col-sm-2");
+	$(".candidateDetails"+typeVal+"DivId").find("#fileUpload"+typeVal+candidateId).show();
 	
 	$("#fileUpload"+typeVal+candidateId).append('<div class="col-sm-4" style="margin-top:-20px;"><label>REFERAL LETTER</label><input type="file"   attr_name="referList['+refCandCount+']" name="" attr_image_tyep="refImage"  id="editFileUpload'+candidateId+''+typeVal+'" multiple="multiple" class=""/></div>');
 	if(representeeType =='SELF'){
-		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="refCandidateId" value="'+candidateId+'" />');	
+		$(".candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="refCandidateId" value="'+candidateId+'" />');	
 	}
 	else if(representeeType =='REPRESENTEE'){
-		$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="referList['+refCandCount+'].refCandidateId" value="'+candidateId+'" />');	
+		$(".candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="referList['+refCandCount+'].refCandidateId" value="'+candidateId+'" />');	
 	}
 	refCandCount=refCandCount+1;
 	$(this).parent().find(".representation-selected").addClass("display_block");
 	$("#candidatesAppendDiv"+candidateId).find("#candidate"+typeVal+candidateId).removeClass("candidateAddedView");
 	
-	$("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").removeClass("candidateAddedView");
-	$("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").css("cursor","auto");
+	$(".candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").removeClass("candidateAddedView");
+	$(".candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").css("cursor","auto");
 	$(".showRemoveIcon").attr("attr_candidateId",candidateId)
-	$("#candidateDetails"+typeVal+"DivId").find(".showRemoveIcon").show();
+	$(".candidateDetails"+typeVal+"DivId").find(".showRemoveIcon").show();
 	initializeEditFileUploadMainBlock(typeVal,candidateId);
 });
 
@@ -477,7 +477,7 @@ $(document).on("click",".ccccc",function(){
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $(this).attr("attr_candidateId");
 	
-	$("#candidateDetails"+typeVal+"DivId").find("#candidate"+typeVal+candidateId).remove();
+	$(".candidateDetails"+typeVal+"DivId").find("#candidate"+typeVal+candidateId).remove();
 	$("#candidatesAppendDiv"+candidateId).find(".representation-selected").removeClass("display_block");
 	$("#candidatesAppendDiv"+candidateId).find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
 	
@@ -499,11 +499,11 @@ $(document).on("click",".ccccc",function(){
 });
 $(document).on("click",".showRemoveIcon",function(){
 	var typeVal = $(this).attr("attr_type");
-	var candidateId = $("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").attr("attr_candidateId");
+	var candidateId = $(".candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").attr("attr_candidateId");
 	
 	$(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
 	//$("#candidateDetails"+typeVal+"DivId").find(".showRemoveIcon").hide();
-	$("#candidateDetails"+typeVal+"DivId").find("#candidate"+typeVal+candidateId).remove();
+	$(".candidateDetails"+typeVal+"DivId").find("#candidate"+typeVal+candidateId).remove();
 	var itemtoRemove = parseInt(candidateId);
 	alreadyCandidateId.splice($.inArray(itemtoRemove, alreadyCandidateId),1);
 });
@@ -1230,12 +1230,14 @@ function buildPetitionDetails(result){
 	}
 	
 	str+='<div class="row">';
-		str+='<div class="col-sm-12">';
+		
 		for(var i in result.referDetailsList){
 			alreadyCandidateId.push(result.referDetailsList[i].refCandidateId)
-			
-				str+='<div  style="position:relative;">';
-					str+='<div class="bgColorCandidatesView">';
+				str+='<div class="col-sm-12">';
+				str+='<div class="candidateDetails'+result.representationType+'DivId">';
+				
+					str+='<div class="bgColorCandidatesView" attr_type='+result.representationType+' attr_candidateId='+result.referDetailsList[i].refCandidateId+' id="candidate'+result.representationType+''+result.referDetailsList[i].refCandidateId+'">';
+					str+='<div id="candidatesAppendDiv'+result.referDetailsList[i].refCandidateId+'" style="position:relative;">';
 						str+='<div class="row">';
 						if(result.representationType == "REPRESENTEE" || result.representationType == "REPRESENT"){
 							str+='<input id="petitionRef0" class="refCandidatesCls" name="refCandidateId" value="'+result.referDetailsList[i].refCandidateId+'" type="hidden">';
@@ -1243,7 +1245,7 @@ function buildPetitionDetails(result){
 							str+='<input id="petitionRef0" class="refCandidatesCls" name="referList['+i+'].refCandidateId" value="'+result.referDetailsList[i].refCandidateId+'" type="hidden">';
 						}
 						
-							str+='<div class="pull-right showRemoveIcon"><i class="glyphicon glyphicon-remove"></i></div>';
+							str+='<div class="pull-right showRemoveIcon" attr_type='+result.representationType+'><i class="glyphicon glyphicon-remove"></i></div>';
 								str+='<div class="col-sm-2">';
 									if(result.referDetailsList[i].candidatePath != null && result.referDetailsList[i].candidatePath.length>0)
 										str+='<img src="'+result.referDetailsList[i].candidatePath+'" class="imageCss"></img>';
@@ -1322,6 +1324,7 @@ function buildPetitionDetails(result){
 												}
 												if(scanCopyExt =="pdf"){
 													str+='<a class="fancyboxView" href="#inline'+i+''+j+'">';
+														str+='<div class="mouse-over">Expand</div>';
 														str+='<object data="'+result.referDetailsList[i].fileNamesList[j].value+'" type="application/pdf" width="100%" height="100px;"></object>';
 													str+='</a>';
 													str+='<div id="inline'+i+''+j+'" style="width:100%;display: none;">';
@@ -1348,19 +1351,31 @@ function buildPetitionDetails(result){
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
+			str+='</div>';
 		}
 		str+='</div>';
 		
 			str+='<div class="col-sm-12">';
-				str+='<div id="candidateDetails'+result.representationType+'DivId"></div>';
+				str+='<div class="candidateDetails'+result.representationType+'DivId"></div>';
 			str+='</div>';
 	str+='</div>';
 	
 		if(result.representationType == "SELF"){
-			str+='<div class="row m_top10">';
+			if(!$(".candidateDetails"+result.representationType+"DivId").find(".bgColorCandidatesView")){
+				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-12">';
 						str+='<div class="pull-right">';
 							str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+result.representationType+'">ADD MEMBER</button>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			}
+			
+		}else if(result.representationType == "REPRESENTEE"){
+			str+='<div class="row m_top10">';
+					str+='<div class="col-sm-12">';
+						str+='<div class="pull-right">';
+							str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+result.representationType+'">ADD REFERAL</button>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
