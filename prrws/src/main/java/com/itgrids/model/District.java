@@ -111,7 +111,7 @@ public class District{
 		this.rwsDistrict = rwsDistrict;
 	}
 
-	@Column(name="enc_district_id")
+	@Column(name = "enc_district_id")
 	public Long getEncDistrictId() {
 		return encDistrictId;
 	}
