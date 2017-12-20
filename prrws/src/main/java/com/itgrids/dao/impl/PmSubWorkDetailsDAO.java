@@ -31,13 +31,14 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				" state.stateName,district.districtName,constituency.name,tehsil.tehsilName,localBody.name,electionType.electionType," +//21,22,23,24,25,26
 				//"'','','','','','','',''"+
 				" pmLead.leadName,pmBriefLead.briefLead,pmGrant.pmGrantName,pmStatus.status,pmDepartment.department,pmWorkType.workType, pmSubject.subject,pmSubSubject.subject " +//27,28,29,30,31,32,33,34
-				" ,model.uiBuildSeriesNo " +//35
+				" ,model.uiBuildSeriesNo,panchayat.panchayatId,panchayat.panchayatName " +//35,36,37
 				" from PmSubWorkDetails model " +
 				" left join model.locationAddress address" +
 				" left join address.state state " +
 				" left join address.district district" +
 				" left join address.constituency constituency" +
 				" left join address.tehsil tehsil" +
+				" left join address.panchayat panchayat" +
 				" left join address.localElectionBody localBody " +
 				" left join localBody.electionType electionType" +
 				" left join model.pmSubject pmSubject " +

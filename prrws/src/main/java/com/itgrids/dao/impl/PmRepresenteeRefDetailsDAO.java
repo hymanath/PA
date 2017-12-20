@@ -37,6 +37,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				",pmRepresentee.tdpCadreId, " +//51
 				" natState.stateName, natDistrict.districtName,natConstituency.name,natTehsil.tehsilName,natLocalBody.name,natElectionType.electionType," +//52,53,54,55,56,57
 				" natState.stateId, natDistrict.districtId,natConstituency.constituencyId,natTehsil.tehsilId,natLocalBody.localElectionBodyId " +//58,59,60,61,62
+				" ,panchayat.panchayatId,panchayat.panchayatName,refPanchayat.panchayatId,refPanchayat.panchayatName,natPanchayat.panchayatId,natPanchayat.panchayatName "+//63,64,65,66,67,68
 				" from PmRepresenteeRefDetails model " +
 				" left join model.pmRepresentee pmRepresentee " +
 				" left join pmRepresentee.userAddress userAddress " +
@@ -44,6 +45,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" left join userAddress.district district " +
 				" left join userAddress.constituency constituency" +
 				" left join userAddress.tehsil tehsil  " +
+				" left join userAddress.panchayat panchayat " +
 				" left join userAddress.localElectionBody localBody " +
 				" left join localBody.electionType electionType" +
 				" " +
@@ -53,6 +55,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" left join refUserAddress.district refDistrict " +
 				" left join refUserAddress.constituency refConstituency" +
 				" left join refUserAddress.tehsil refTehsil  " +
+				" left join refUserAddress.panchayat refPanchayat " +
 				" left join refUserAddress.localElectionBody refLocalBody " +
 				" left join refLocalBody.electionType refElectionType" +
 				" " +
@@ -61,9 +64,10 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" left join nativAddress.district natDistrict " +
 				" left join nativAddress.constituency natConstituency" +
 				" left join nativAddress.tehsil natTehsil  " +
+				" left join nativAddress.panchayat natPanchayat " +
 				" left join nativAddress.localElectionBody natLocalBody " +
 				" left join natLocalBody.electionType natElectionType" +
-				"" +
+				" " +
 				" left join model.petition petition " + 
 				" left join petition.pmStatus pmStatus " +
 				" " +
