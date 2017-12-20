@@ -4138,6 +4138,8 @@
 							<span class="prajaSankaplaYatraIconExpand pull-right" expand-icon="prajaSankaplaYatra">
 								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
 							</span>
+							<span class="cadreSettings pull-right refreshPrajaSankalpaCls"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
+							
 							<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="prajaSankaplaYatra" style="width:200px;">
 									<input type="text" id="dateRangePrajaSankalpaId" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
@@ -4160,8 +4162,8 @@
 									<label>Category Name</label>
 									<select class="form-control chosen-select" id="categoryId">
 										<option value="0">Select Category</option>
-										<option value="1051" selected="selected">Praja sankalpa yatra</option>
-										<option value="1050">Counter on praja sankalpa yatra</option>
+										<option value="1051" selected="selected">PRAJA SANKALPA YATRA</option>
+										<option value="1050">COUNTER ON PRAJA SANKALPA YATRA</option>
 										<option value="1063">KAPU RESERVATIONS - 5%</option>
 										<option value="710">GADAPA GADAPAKU YSRCP - 2016</option>
 										<option value="691">JANA CHAITANYA YATRA</option>
@@ -5432,19 +5434,19 @@
 </div><!-- /.modal -->
 <!-- Model For Start PrajaSankalpaYatra -->
 <div class="modal" tabindex="-1" role="dialog" id="prajaSankalpaYatraModalId">
-		  <div class="modal-dialog modal-lg" style="width:90%;">       
+		  <div class="modal-dialog modal-lg" style="width:70%;">       
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<!--<h4 class="modal-title" id="tourDetailsHeadingId"></h4>--> 
 				<div class="row">
 					<div class="col-md-9 col-xs-12 col-sm-9">
-						<h4 class="modal-title text-capital" id="tourLeadrDtlsHeadingId">Location Wise Articles</h4>
+						<h4 class="modal-title text-capital" id="prajaSankalpaHeadingId"></h4>
 					</div>
 					
 				</div>
 			  </div>
 			  <div class="modal-body">
+						<div id="popImgDiv"></div>
 						<div class="clearModalTables" id="prajaSankalpaYatraStateTableId"></div>
 						<div class="clearModalTables" id="prajaSankalpaYatraDistrictTableId"></div>
 						<div class="clearModalTables" id="prajaSankalpaYatraPanchayatTableId"></div>
@@ -5635,21 +5637,16 @@ $("[expand-icon]").click(function(){
 		}else if(blockName == 'cadreInsurance')
 		{
 			getUserTypeWiseTotalCadreInsuranceComplainctCnt("All Time",4);
+		}else if(blockName == 'prajaSankaplaYatra'){
+			getChannelWisePartiesAnalysis(globalcategoryId);
 		}
 	}else if(iconClass == 'glyphicon glyphicon-resize-small')
 	{
 		closeBlocks();
 		$("[expand-icon="+blockName+"]").removeClass("active");
 		$("[expand-icon-inner="+blockName+"],[expand-icon-inner]").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
-	}/* else if(iconClass == 'prajaSankalpa')
-	{
-		$("[right-nav]").removeClass("active");
-		$("[expand-icon="+blockName+"]").addClass("active");
-		$("[expand-block-right="+blockName+"]").show();
-		$('html, body').animate({
-			scrollTop: $('.prajaSankaplaYatraBlock').offset().top - 20
-		}, 'slow');
-	} */
+		
+	}
 	
 });
 $(document).on("click","[expand-icon-inner]",function(){
