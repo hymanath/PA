@@ -19,7 +19,7 @@ public class PmSubWorkDetails {
 
 	private Long pmSubWorkDetailsId;
 	private Long petitionId;
-	private Double costEstimation;
+	private Long costEstimation;
 	private Long pmDepartmentId;
 	private Long pmSubjectId;
 	private Long pmSubSubjectId;
@@ -71,10 +71,10 @@ public class PmSubWorkDetails {
 		this.petitionId = petitionId;
 	}
 	@Column(name="cost_estimation")
-	public Double getCostEstimation() {
+	public Long getCostEstimation() {
 		return costEstimation;
 	}
-	public void setCostEstimation(Double costEstimation) {
+	public void setCostEstimation(Long costEstimation) {
 		this.costEstimation = costEstimation;
 	}
 	@Column(name="pm_department_id")

@@ -38,6 +38,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" natState.stateName, natDistrict.districtName,natConstituency.name,natTehsil.tehsilName,natLocalBody.name,natElectionType.electionType," +//52,53,54,55,56,57
 				" natState.stateId, natDistrict.districtId,natConstituency.constituencyId,natTehsil.tehsilId,natLocalBody.localElectionBodyId " +//58,59,60,61,62
 				" ,panchayat.panchayatId,panchayat.panchayatName,refPanchayat.panchayatId,refPanchayat.panchayatName,natPanchayat.panchayatId,natPanchayat.panchayatName "+//63,64,65,66,67,68
+				" ,pmRepresentee.imagePath" +//69
 				" from PmRepresenteeRefDetails model " +
 				" left join model.pmRepresentee pmRepresentee " +
 				" left join pmRepresentee.userAddress userAddress " +
@@ -195,7 +196,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		}
 		return query.list();
 	}
-	public List<Long> getPmRepresenteRefDetailsIds(Long petitionId){
+	public List<Long> getPmRepresenteeRefDetailsIds(Long petitionId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRepresenteeRefDetailsId from PmRepresenteeRefDetails model where model.isDeleted ='N' and model.petitionId =:petitionId ");
 		Query query=getSession().createQuery(sb.toString());

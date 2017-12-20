@@ -161,7 +161,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			if(commonMethodsUtilService.isListOrSetValid(subWorkIds))
 				pmSubWorkDetailsDAO.updatePmsubWorkDetails(subWorkIds, currentTime, userId);
 			
-			List<Long> pmRepresenteeRefDetailsIds =	pmRepresenteeRefDetailsDAO.getPmRepresenteRefDetailsIds(petitionId);
+			List<Long> pmRepresenteeRefDetailsIds =	pmRepresenteeRefDetailsDAO.getPmRepresenteeRefDetailsIds(petitionId);
 			if(commonMethodsUtilService.isListOrSetValid(pmRepresenteeRefDetailsIds))
 				pmRepresenteeRefDetailsDAO.updatePmRepresenteRefDetails(pmRepresenteeRefDetailsIds,currentTime,userId);
 			
@@ -318,7 +318,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						PmSubWorkDetails petitionSubWorkLocationDetails = new PmSubWorkDetails();
 						petitionSubWorkLocationDetails.setPetitionId(petitonId);						
 						petitionSubWorkLocationDetails.setGrievanceDescrption(dataVO.getGrievanceDescription());
-						petitionSubWorkLocationDetails.setCostEstimation(Double.valueOf(dataVO.getEstimateCost()));
+						petitionSubWorkLocationDetails.setCostEstimation(Long.valueOf(dataVO.getEstimateCost()));
 						petitionSubWorkLocationDetails.setPmDepartmentId(mainDataVO.getDeptId());
 						petitionSubWorkLocationDetails.setPmSubjectId(mainDataVO.getSubjectId());
 						petitionSubWorkLocationDetails.setPmSubSubjectId(mainDataVO.getSubSubjectId());
@@ -878,7 +878,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					if(i == 0){
 						 returnVO.setPetitionId(petitionId);
 						 returnVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[27]));
-						 returnVO.setEstimateCost(commonMethodsUtilService.getStringValueForObject(param[26]));
+						 returnVO.setEstimateCost(String.valueOf(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))));
 						 returnVO.setEndorsmentNo(commonMethodsUtilService.getStringValueForObject(param[22]));
 						 if(commonMethodsUtilService.getStringValueForObject(param[24]).length()>10)
 							 returnVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[24]).substring(0, 10));
@@ -908,6 +908,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 representeeVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[34]));
 							 representeeVO.setRefCandidateId(commonMethodsUtilService.getLongValueForObject(param[31]));
 							 representeeVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(param[51]));
+							 if(representeeVO.getTdpCadreId() != null && representeeVO.getTdpCadreId().longValue()>0L)
+								 representeeVO.setCandidatePath(commonMethodsUtilService.getStringValueForObject(param[69]));
+							 
 							 AddressVO addressVO = setAddressDetailsToResultView(param[4],param[5],param[6],param[7],param[8],param[63]);
 							 
 							 addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[37]));
@@ -1013,7 +1016,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setBriefLeadId(commonMethodsUtilService.getLongValueForObject(param[7]));
 						vo.setDeptId(commonMethodsUtilService.getLongValueForObject(param[10]));
 						vo.seteOfficeId(commonMethodsUtilService.getStringValueForObject(param[3]));
-						vo.setEstimateCost(commonMethodsUtilService.getStringValueForObject(param[1]));
+						vo.setEstimateCost(String.valueOf(new Double(commonMethodsUtilService.getDoubleValueForObject(param[1])).longValue()));
 						vo.setLocationScopeId(commonMethodsUtilService.getLongValueForObject(param[19]));
 						vo.setLocationValue(commonMethodsUtilService.getLongValueForObject(param[20]));
 						vo.setGrantId(commonMethodsUtilService.getLongValueForObject(param[8]));
