@@ -776,4 +776,15 @@ public class NregsDashboardController {
 		return levlWiseVOList;
 	}
 	
+	@PostMapping("/getLocationWiseEmptyVacenciesDetails")
+	public @ResponseBody List<NregsProjectsVO> getLocationWiseEmptyVacenciesDetails(@RequestBody InputVO vo){
+		List<NregsProjectsVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getLocationWiseEmptyVacenciesDetails(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseEmptyVacenciesDetails - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 }

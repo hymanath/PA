@@ -86,4 +86,6 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getPanchatVsExpData(InputVO inputVO,String locationId,Long levelId);
 	public InputVO savePanchayatComponentComments(Long componentComentId,Long statusId,String comment,String actionType,String uniqueCode,Long userId);
 	public List<NregsDataVO> getFieldManDaysWorkDetails(InputVO inputVO);
+	
+	public List<NregsProjectsVO> getLocationWiseEmptyVacenciesDetails(InputVO inputVO);
 }

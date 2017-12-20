@@ -29,25 +29,18 @@ public class NregaFAVacantPanchayatDAO extends GenericDaoHibernate<NregaFAVacant
 		sb.append("select model.nregaFAType.nregaFaTypeId,model.nregaFAType.type,"
 				+ " sum(model.noOfVacant),");
 		if(subLocationType != null && subLocationType.trim().equalsIgnoreCase("state"))
-			sb.append(" model.locationAddress.state.stateId,model.locationAddress.state.stateName,");
+			sb.append(" model.locationAddress.state.stateId,model.locationAddress.state.stateName");
 		else if(subLocationType != null && subLocationType.trim().equalsIgnoreCase("district"))
-			sb.append(" model.locationAddress.state.stateId,model.locationAddress.state.stateName,"
-					+ " model.locationAddress.district.districtId,model.locationAddress.district.districtName");
+			sb.append(" model.locationAddress.district.districtId,model.locationAddress.state.stateName,model.locationAddress.district.districtName");
 		else if(subLocationType != null && subLocationType.trim().equalsIgnoreCase("constituency"))
-			sb.append(" model.locationAddress.state.stateId,model.locationAddress.state.stateName,"
-					+ " model.locationAddress.district.districtId,model.locationAddress.district.districtName,"
-					+ " model.locationAddress.constituency.constituencyId,model.locationAddress.constituency.name");
+			sb.append(" model.locationAddress.constituency.constituencyId,model.locationAddress.state.stateName,"
+					+ " model.locationAddress.district.districtName,model.locationAddress.constituency.name");
 		else if(subLocationType != null && subLocationType.trim().equalsIgnoreCase("mandal"))
-			sb.append(" model.locationAddress.state.stateId,model.locationAddress.state.stateName,"
-					+ " model.locationAddress.district.districtId,model.locationAddress.district.districtName,"
-					+ " model.locationAddress.constituency.constituencyId,model.locationAddress.constituency.name,"
-					+ " model.locationAddress.tehsil.tehsilId,model.locationAddress.tehsil.tehsilName");
+			sb.append(" model.locationAddress.tehsil.tehsilId,model.locationAddress.state.stateName,model.locationAddress.district.districtName,"
+					+ " model.locationAddress.constituency.name,model.locationAddress.tehsil.tehsilName");
 		else if(subLocationType != null && subLocationType.trim().equalsIgnoreCase("panchayat"))
-			sb.append(" model.locationAddress.state.stateId,model.locationAddress.state.stateName,"
-					+ " model.locationAddress.district.districtId,model.locationAddress.district.districtName,"
-					+ " model.locationAddress.constituency.constituencyId,model.locationAddress.constituency.name,"
-					+ " model.locationAddress.tehsil.tehsilId,model.locationAddress.tehsil.tehsilName,"
-					+ " model.locationAddress.panchayat.panchayatId,model.locationAddress.panchayat.panchayatName");
+			sb.append(" model.locationAddress.panchayat.panchayatId,model.locationAddress.state.stateName,model.locationAddress.district.districtName,"
+					+ " model.locationAddress.constituency.name,model.locationAddress.tehsil.tehsilName,model.locationAddress.panchayat.panchayatName");
 		
 		sb.append(" from NregaFAVacantPanchayat model"
 				+ " where model.isFilled = 'N'");
@@ -72,6 +65,7 @@ public class NregaFAVacantPanchayatDAO extends GenericDaoHibernate<NregaFAVacant
 		sb.append(" model.nregaFAType.nregaFaTypeId");
 		
 		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("locationId", locationId);
 		
 		return query.list();
 	}
