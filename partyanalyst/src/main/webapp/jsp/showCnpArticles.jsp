@@ -65,7 +65,6 @@ var globalbenefitId = "${param.benefitId}";
 var globalstartIndex = "${param.startIndex}";
 var globalendIndex = "${param.endIndex}";
 var globaltype = "${param.type}";
-
 	$(document).ready(function(){
 		//Main header remove
 		$(".eventsheader").hide();
@@ -82,11 +81,11 @@ var globaltype = "${param.type}";
 			getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(0);
 		}else if(globalCallFrom == "prajaSankalpa"){
 			if(globaltype == "OverAllprintMedia"){
-				getPrintMediaPSYOverAllArticles(0)
+				getEditionTypeWisePartiesAnalysisForClick(0)
 			}else if(globaltype == "PartyprintMedia"){
-				getPrintMediaOrgWisePSYArticles(0)
+				getPublicationWisePartiesAnalysisForClick(0)
 			}else if(globaltype == "PublicationprintMedia"){
-				getPrintMediaPublicationWisePSYArticles(0)
+				getDistrictWisePartyOverViewForClick(0)
 			}
 		}
 			
@@ -591,9 +590,9 @@ var globaltype = "${param.type}";
 							if(globaltype == "OverAllprintMedia"){
 								getPrintMediaPSYOverAllArticles(num)
 							}else if(globaltype == "PartyprintMedia"){
-								getPrintMediaOrgWisePSYArticles(num)
+								getPublicationWisePartiesAnalysisForClick(num)
 							}else if(globaltype == "PublicationprintMedia"){
-								getPrintMediaPublicationWisePSYArticles(num)
+								getDistrictWisePartyOverViewForClick(num)
 							}
 						}
 							
@@ -1124,34 +1123,36 @@ var globaltype = "${param.type}";
 		});
 	}
 //Clicks Print Media
-function getPrintMediaPSYOverAllArticles(globalstartIndex){
+function getEditionTypeWisePartiesAnalysisForClick(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex+"/"+globalStartDate+"/"+globalEndDate
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPSYOverAllArticles/"+globalcategoryId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex+"/"+globalStartDate+"/"+globalEndDate
+		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
+		
+		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
 		buildArticlesByDateRangeWise(result,globalstartIndex,countByDate)
 	});
 }
-function getPrintMediaOrgWisePSYArticles(globalstartIndex){
+function getPublicationWisePartiesAnalysisForClick(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaOrgWisePSYArticles/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex+"/"+globalStartDate+"/"+globalEndDate
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaOrgWisePSYArticles/"+globalcategoryId+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex+"/"+globalStartDate+"/"+globalEndDate
+		url: wurl+"/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
+		
+		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
 		buildArticlesByDateRangeWise(result,globalstartIndex,countByDate)
 	});
 }
-function getPrintMediaPublicationWisePSYArticles(globalstartIndex){
+function getDistrictWisePartyOverViewForClick(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	var globalpublicationId = globalorganizationId;
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYArticles/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex+"/"+globalStartDate+"/"+globalEndDate
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaPublicationWisePSYArticles/"+globalcategoryId+"/"+globalpublicationId+"/"+globalbenefitId+"/"+globalstartIndex+"/"+globalendIndex+"/"+globalStartDate+"/"+globalEndDate
+		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
+		
+		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
