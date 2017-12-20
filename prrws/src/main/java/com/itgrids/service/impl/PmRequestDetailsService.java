@@ -1106,7 +1106,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		 	}else{
 				 addressVO.setTehsilId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(mandal)));
 				 addressVO.setPanchayatId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(panchayat)));
-				 isMandal = true;
 				 if(addressVO.getTehsilId() != null && addressVO.getTehsilId().longValue()>0L){
 					 List<KeyValueVO> panchaytsList = locationDetailsService.getPanchayatsByTehsilId(addressVO.getTehsilId());//starting letter 2 for panchayats, 1 for wards
 					 if(commonMethodsUtilService.isListOrSetValid(panchaytsList)){
