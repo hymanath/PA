@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +22,15 @@ public class AlertInputsVO {
 	   private Long parliamentId;
 	   private Long activityMemerId;
 	   private String type;
+	   private List<Long> tdpCadreIds = new ArrayList<Long>();
 	   
+	   
+		public List<Long> getTdpCadreIds() {
+			return tdpCadreIds;
+		}
+		public void setTdpCadreIds(List<Long> tdpCadreIds) {
+			this.tdpCadreIds = tdpCadreIds;
+		}
 		public Long getUserAccessLevelId() {
 			return userAccessLevelId;
 		}
