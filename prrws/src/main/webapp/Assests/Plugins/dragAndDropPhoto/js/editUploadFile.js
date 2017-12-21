@@ -51,7 +51,7 @@ function initializeEditFileUploadMainBlock(typeVal,candidateId) {
 		itemAppendStr+='</li>';  
 				
 	$('#editFileUpload'+candidateId+typeVal).filer({      
-    changeInput: '<div class="jFiler-input-dragDrop" style="margin:0px;padding:10px;"><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
+    changeInput: '<div class="jFiler-input-dragDrop" style="margin:0px;padding:10px;"><a class="jFiler-input-choose-btn blue">Browse <b style="color:green;"> PDF / IMAGES </b> Files (<i style="color:red">Max size 10 MB</i>) </a></div></div>',
     showThumbs: true,
     theme: "dragdropbox",
     templates: {  
