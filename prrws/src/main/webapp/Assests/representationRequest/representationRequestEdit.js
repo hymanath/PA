@@ -19,8 +19,7 @@ var alreadyCandidateId=[];
 var searchCandidateIds=[];
 var diffArr=[];
 var commonArr=[];
-var globalFileUpload='';
-var globalWorkFileUpload='';
+var refCandCount=0;
 getSubjectPetitionsDepartmentList("onload");
 
 getWorkTypeList("","","","","onload");
@@ -231,57 +230,6 @@ function getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,type
 		}
 	});	
 }
-function getPanchayatsByTehsilId(levelVal,counterId,typeVal,typeChange){
-	    $("#panchayatId"+typeVal+counterId).html('');
-		if(typeChange == "Inner"){
-			$("#panchayatInnerId"+typeVal+counterId).html('');
-		}
-	    
-		
-	  var searchType="all";
-	  var searchId=0;
-			if(typeVal=="popup"){
-				searchType = "refCandidate";
-				searchId = $('#designationsId').val();
-			}else if(counterId !="" && parseInt(counterId)>=0){
-				 $("#panchayatId"+typeVal+counterId).html('');
-			}
-		
-	  var json = {
-		  constituencyId:levelVal,
-		  searchType:"all",
-		  searchId:searchId
-		}        
-	$.ajax({                
-		type:'POST',    
-		url: 'getPanchayatsByTehsilId',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length>0){
-			 $("#panchayatId"+typeVal+counterId).append('<option value="0">Select Mandal</option>');
-			 if(typeChange == "Inner"){
-				 $("#panchayatInnerId"+typeVal+counterId).append('<option value="0">Select Mandal</option>');
-			 }
-			for(var i in result){
-				var tehsilId = result[i].key;
-				var levelId = tehsilId.toString().substr(1, 5);
-				$("#panchayatId"+typeVal+counterId).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
-				if(typeChange == "Inner"){
-					$("#panchayatInnerId"+typeVal+counterId).append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
-				}
-			}
-		}
-		$("#panchayatId"+typeVal+counterId).trigger('chosen:updated');
-		if(typeChange == "Inner"){
-			$("#panchayatInnerId"+typeVal+counterId).trigger('chosen:updated');
-		}
-	});	
-}
 function getSubjectPetitionsDepartmentList(type){
 	$(".loadingCls").html(spinner);
 	   var json = { 
@@ -483,16 +431,12 @@ $(document).on("click",".selectionSearchDetailsCls",function(){
 	
 });
 
-var refCandCount=0;
+
 $(document).on("click",".candidateAddedView",function(){
 	
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $(this).attr("attr_candidateId");
-	var representeeType='SELF';
-	if(typeVal=='representee'){
-		representeeType='REPRESENTEE';
-	}
-		
+	
 	alreadyCandidateId.push(parseInt(candidateId));
 	
 	$(".candidateDetails"+typeVal+"DivId").append($("#candidatesAppendDiv"+candidateId).html());
@@ -501,10 +445,10 @@ $(document).on("click",".candidateAddedView",function(){
 	$(".candidateDetails"+typeVal+"DivId").find("#fileUpload"+typeVal+candidateId).show();
 	
 	$("#fileUpload"+typeVal+candidateId).append('<div class="col-sm-4" style="margin-top:-20px;"><label>REFERAL LETTER</label><input type="file"   attr_name="referList['+refCandCount+']" name="" attr_image_tyep="refImage"  id="editFileUpload'+candidateId+''+typeVal+'" multiple="multiple" class=""/></div>');
-	if(representeeType =='SELF'){
+	if(typeVal =='SELF'){
 		$(".candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="refCandidateId" value="'+candidateId+'" />');	
 	}
-	else if(representeeType =='REPRESENTEE'){
+	else if(typeVal =='REPRESENTEE'){
 		$(".candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="referList['+refCandCount+'].refCandidateId" value="'+candidateId+'" />');	
 	}
 	refCandCount=refCandCount+1;
@@ -544,15 +488,26 @@ $(document).on("click",".ccccc",function(){
 	return;
 });
 $(document).on("click",".showRemoveIcon",function(){
+	if(!confirm("Are you sure want to delete this reffaral memeber?"))
+		return;
 	var typeVal = $(this).attr("attr_type");
-	var candidateId = $(".candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").attr("attr_candidateId");
-	
+	var candidateId = $(this).attr("attr_candidate_id");
+	refCandCount=refCandCount-1;
 	$(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
 	//$("#candidateDetails"+typeVal+"DivId").find(".showRemoveIcon").hide();
 	$(".candidateDetails"+typeVal+"DivId").find("#candidate"+typeVal+candidateId).remove();
 	var itemtoRemove = parseInt(candidateId);
 	alreadyCandidateId.splice($.inArray(itemtoRemove, alreadyCandidateId),1);
 });
+
+$(document).on("click",".removeFileCls",function(){
+	if(!confirm("Are you sure want to delete this work document?"))
+		return;
+	var divId = $(this).attr("attr_id");
+	$("#"+divId+"").remove();
+	$("#existing"+divId+"").remove();
+});
+
 $(document).on("change",".locationLevelChange",function(){
 	var levelVal = $(this).val();
 	var counterId = $(this).attr("attr_counterval");
@@ -628,34 +583,7 @@ $(document).on("change",".locationLevelChange",function(){
 			$(".panchayatInnerCls"+typeVal+counterId).hide();
 		}
 		
-	}else if(levelVal == 6){
-		if(changeType == "main"){
-			$("#districtId"+typeVal+counterId).html('');
-			$("#districtId"+typeVal+counterId).trigger("chosen:updated");
-			getAllDistrictsInState(typeVal,counterId,changeType,"change");
-			$("#constituencyId"+typeVal+counterId).html('');
-			$("#constituencyId"+typeVal+counterId).trigger("chosen:updated");
-			$("#mandalId"+typeVal+counterId).html('');
-			$("#mandalId"+typeVal+counterId).trigger("chosen:updated");
-			$(".districtCls"+typeVal+counterId).show();
-			$(".constituencyCls"+typeVal+counterId).show();
-			$(".mandalCls"+typeVal+counterId).show();
-			$(".panchayatCls"+typeVal+counterId).show();
-		}else{
-			$("#districtInnerId"+typeVal+counterId).html('');
-			$("#districtInnerId"+typeVal+counterId).trigger("chosen:updated");
-			getAllDistrictsInState(typeVal,counterId,changeType,"change");
-			$("#constituencyInnerId"+typeVal+counterId).html('');
-			$("#constituencyInnerId"+typeVal+counterId).trigger("chosen:updated");
-			$("#mandalInnerId"+typeVal+counterId).html('');
-			$("#mandalInnerId"+typeVal+counterId).trigger("chosen:updated");
-			$(".districtInnerCls"+typeVal+counterId).show();
-			$(".constituencyInnerCls"+typeVal+counterId).show();
-			$(".mandalInnerCls"+typeVal+counterId).show();
-			$(".panchayatInnerCls"+typeVal+counterId).show();
-		}
-	}
-		else{
+	}else{
 			if(changeType == "main"){
 				$(".districtCls"+typeVal+counterId).hide();
 				$(".constituencyCls"+typeVal+counterId).hide();
@@ -685,14 +613,6 @@ $(document).on("change",".constituencyLevelChange",function(){
 	var typeVal = $(this).attr("attr_type");
 	var typeChange = $(this).attr("attr_type_change");
 	getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,typeVal,typeChange);
-	
-});
-$(document).on("change",".mandalLevelChange",function(){
-	var levelVal = $(this).val();
-	var counterId = $(this).attr("attr_counterval");
-	var typeVal = $(this).attr("attr_type");
-	var typeChange = $(this).attr("attr_type_change");
-	getPanchayatsByTehsilId(levelVal,counterId,typeVal,typeChange);
 	
 });
 $(document).on("click",".cloned_Element",function(){
@@ -964,12 +884,23 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 										str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
 										
 										str+='<div class="representation-selected display_block" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
-										
+										/*/
 										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
 												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
 										str+='</div>';
-										
+										*/
+										if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="'+result[i].petitionMemberVO.imagePath+'" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}else{
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}
 										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 											str+='<div class="nameAddressCss">';
 												str+='<h5 class="font_weight">Name:</h5>';
@@ -1002,14 +933,20 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 									
 									str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 											str+='<div class="nameAddressCss">';
-												str+='<h5 class="font_weight">Address:</h5>';
-										/*		str+='<h5 class="m_top5">H No :</h5>';
-												str+='<h5 class="m_top10">14-48-20/58, Kothapet</h5>';
-												str+='<h5 class="text_bold m_top10">Sangadigunta, Kothapeta,</h5>';
-												str+='<h5 class="m_top5">Guntur,</h5>';
-												str+='<h5 class="m_top5">Andhra Pradesh 522001.</h5>';
-												*/
-												str+='<h5 class="m_top5">Not Available</h5>';
+												str+='<h5 class="font_weight"> Address:</h5>';
+												if(result[i].candidateNativeAddressVO != null){
+													//str+='<h5 class="m_top5">H No :</h5>';
+													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
+														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
+													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
+														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+' Mandal/Munci. </h5>';
+													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+													if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+												}else{
+													str+='<h5 class="m_top5">Not Available</h5>';
+												}
 											str+='</div>';
 									str+='</div>';
 									str+='<div id="fileUpload'+typeVal+''+result[i].referrerCandidateId+'" style="display:none"></div>';
@@ -1035,11 +972,22 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 									
 										str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
 										
-										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+										/*str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
 												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
 										str+='</div>';
-										
+										*/
+										if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="'+result[i].petitionMemberVO.imagePath+'" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}else{
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}
 										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 											str+='<div class="nameAddressCss">';
 												str+='<h5 class="font_weight">Name:</h5>';
@@ -1073,13 +1021,19 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 									str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 											str+='<div class="nameAddressCss">';
 												str+='<h5 class="font_weight">Address:</h5>';
-										/*		str+='<h5 class="m_top5">H No :</h5>';
-												str+='<h5 class="m_top10">14-48-20/58, Kothapet</h5>';
-												str+='<h5 class="text_bold m_top10">Sangadigunta, Kothapeta,</h5>';
-												str+='<h5 class="m_top5">Guntur,</h5>';
-												str+='<h5 class="m_top5">Andhra Pradesh 522001.</h5>';
-												*/
-												str+='<h5 class="m_top5">Not Available</h5>';
+										if(result[i].candidateNativeAddressVO != null){
+													//str+='<h5 class="m_top5">H No :</h5>';
+													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
+														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
+													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
+														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+' Mandal/Munci. </h5>';
+													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+													if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+												}else{
+													str+='<h5 class="m_top5">Not Available</h5>';
+												}
 											str+='</div>';
 									str+='</div>';
 									str+='<div id="fileUpload'+typeVal+''+result[i].referrerCandidateId+'" style="display:none;"></div>';
@@ -1100,10 +1054,21 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 					str+='<div class="row">';
 					str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
 					str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
-					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+					if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
+						str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+							str+='<img src="'+result[i].petitionMemberVO.imagePath+'" class="imageCss"></img>';
+							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+					str+='</div>';
+					}else{
+						str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 							str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
 							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
 					str+='</div>';
+					}
+					/*str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+							str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+					str+='</div>';*/
 					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 						str+='<div class="nameAddressCss">';
 							str+='<h5 class="font_weight">Name:</h5>';
@@ -1137,12 +1102,19 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 						str+='<div class="nameAddressCss">';
 							str+='<h5 class="font_weight">Address:</h5>';
-					/*		str+='<h5 class="m_top5">H No :</h5>';
-							str+='<h5 class="m_top10">14-48-20/58, Kothapet</h5>';
-							str+='<h5 class="text_bold m_top10">Sangadigunta, Kothapeta,</h5>';
-							str+='<h5 class="m_top5">Guntur,</h5>';
-							str+='<h5 class="m_top5">Andhra Pradesh 522001.</h5>';
-							*/
+					if(result[i].candidateNativeAddressVO != null){
+													//str+='<h5 class="m_top5">H No :</h5>';
+													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
+														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
+													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
+														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+' Mandal/Munci. </h5>';
+													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+													if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+												}else{
+													str+='<h5 class="m_top5">Not Available</h5>';
+												}
 							str+='<h5 class="m_top5">Not Available</h5>';
 						str+='</div>';
 					str+='</div>';
@@ -1195,8 +1167,6 @@ function getPetitionDetails(){
 
 function buildPetitionDetails(result){
 	var str='';
-	globalFileUpload='';
-	globalWorkFileUpload='';
 	if(result.representationType == "SELF"){
 		$("#self").prop("checked",true);
 		$(".RepresenteeHideShow").hide();
@@ -1253,7 +1223,7 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 							}
 						}
 					str+='</select>';
-					str+='<span class="ErrCls" id="districtErr'+result.representationType+'"></span>';
+str+='<span class="ErrCls" id="districtErr'+result.representationType+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';	
 					str+='<h6>CONSTITUENCY</h6>';
@@ -1280,7 +1250,7 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 							}
 						}
 					str+='</select>';
-				str+='<span class="ErrCls"  id="constituencyErr'+result.representationType+'"></span>';
+	str+='<span class="ErrCls"  id="constituencyErr'+result.representationType+'"></span>';
 				str+='</div>';
 			
 				str+='<div class="col-sm-3">';	
@@ -1294,7 +1264,7 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 							}
 						}
 					str+='</select>';
-				str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span>';
+str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row m_top20">';
@@ -1311,7 +1281,7 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 					}
 				}					
 				str+='</select>';
-				str+='<span class="ErrCls"  id="designationErr'+result.representationType+'"></span>';
+	str+='<span class="ErrCls"  id="designationErr'+result.representationType+'"></span>';
 				str+='<input type="hidden" id="repTdpCadreId'+result.representationType+'" value="'+result.representeeDetailsList[i].tdpCadreId+'" name="tdpCadreId"/>';
 				str+='<input type="hidden" id="repImagePathId'+result.representationType+'" value="'+result.representeeDetailsList[i].candidatePath+'" name="repImagePath"/>';
 				str+='<input type="hidden" id="existingPetitionId'+result.representationType+'" value="'+result.petitionId+'" name="existingPetitionId"/>';
@@ -1322,23 +1292,28 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 	}
 	
 	str+='<div class="row">';
-		
-		for(var i in result.referDetailsList){
-			globalFileUpload = result.referDetailsList;
-			alreadyCandidateId.push(result.referDetailsList[i].refCandidateId)
-				str+='<div class="col-sm-12">';
+		str+='<div class="col-sm-12">';
 				str+='<div class="candidateDetails'+result.representationType+'DivId">';
-				
+		for(var i in result.referDetailsList){
+			alreadyCandidateId.push(result.referDetailsList[i].refCandidateId);
+				refCandCount=refCandCount+1;
 					str+='<div class="bgColorCandidatesView" attr_type='+result.representationType+' attr_candidateId='+result.referDetailsList[i].refCandidateId+' id="candidate'+result.representationType+''+result.referDetailsList[i].refCandidateId+'">';
+					
 					str+='<div id="candidatesAppendDiv'+result.referDetailsList[i].refCandidateId+'" style="position:relative;">';
 						str+='<div class="row">';
 						if(result.representationType == "REPRESENTEE" || result.representationType == "REPRESENT"){
-							str+='<input id="petitionRef0" class="refCandidatesCls" name="refCandidateId" value="'+result.referDetailsList[i].refCandidateId+'" type="hidden">';
-						}else{
-							str+='<input id="petitionRef0" class="refCandidatesCls" name="referList['+i+'].refCandidateId" value="'+result.referDetailsList[i].refCandidateId+'" type="hidden">';
+							str+='<input id="existinfRefDetails'+i+'" class="refCandidatesCls" name="referList['+i+'].refCandidateId" value="'+result.referDetailsList[i].refCandidateId+'" type="hidden">';
+						}else{							
+							str+='<input id="existinfRefDetails'+i+''+j+'" class="refCandidatesCls" name="refCandidateId" value="'+result.referDetailsList[i].refCandidateId+'" type="hidden">';
 						}
 						
-							str+='<div class="pull-right showRemoveIcon" attr_type='+result.representationType+'><i class="glyphicon glyphicon-remove"></i></div>';
+						if(result.referDetailsList[i].fileNamesList !=null && result.referDetailsList[i].fileNamesList.length>0){
+							for(var j in result.referDetailsList[i].fileNamesList){
+								str+='<input type="hidden" id="existingrefDocument'+i+''+j+'" name="referList['+i+'].fileNamesList['+j+'].value" value="'+result.referDetailsList[i].fileNamesList[j].value+'">';	
+							}
+						}
+						
+							str+='<div class="pull-right showRemoveIcon" attr_type='+result.representationType+' attr_candidate_id="'+result.referDetailsList[i].refCandidateId+'"><i class="glyphicon glyphicon-remove"></i></div>';
 								str+='<div class="col-sm-2">';
 									if(result.referDetailsList[i].candidatePath != null && result.referDetailsList[i].candidatePath.length>0)
 										str+='<img src="'+result.referDetailsList[i].candidatePath+'" class="imageCss"></img>';
@@ -1390,29 +1365,68 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 							str+='</div>';
 							str+='<div class="col-sm-4" style="margin-top:-20px;">';
 								str+='<label>REFERAL LETTER</label>';
-								if(result.referDetailsList[i].fileNamesList !=null && result.referDetailsList[i].fileNamesList.length >0){
-									str+='<input type="file"  attr_file_existing_size="'+result.referDetailsList[i].fileNamesList.length+'" attr_name="referList[0]" name="[]"  attr_image_tyep="refImage" id="editFileUpload'+result.referDetailsList[i].refCandidateId+''+result.representationType+'" multiple="multiple" class=""/>';
-								}else{
-									str+='<input type="file"  attr_file_existing_size="0" attr_name="referList[0]" name="[]"  attr_image_tyep="refImage" id="editFileUpload'+result.referDetailsList[i].refCandidateId+''+result.representationType+'" multiple="multiple" class=""/>';
-								}
 								
-								str+='<div class="viewLetterCss">';
-									str+='<h5 class="font_weight viewDocumentsModalCls" style="color:#fff;" attr_candidateId="'+result.referDetailsList[i].refCandidateId+'" attr_name="'+result.referDetailsList[i].name+'" attr_type ="'+result.representationType+'" attr_view_type="candidateDoc"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 16px;"></i>  VIEW REFERRAL LETTER</h5>';
-								str+='</div>';	
+								str+='<input type="file"  attr_name="referList['+i+']" name="[]"  attr_image_tyep="refImage" id="editFileUpload'+result.referDetailsList[i].refCandidateId+''+result.representationType+'" multiple="multiple" class=""/>';
+
 								
 							str+='</div>';
 						str+='</div>';
 					
+							str+='<div class="alreadyUploadFilesCss">';
+								str+='<h4>ALREADY REFFERED DOCUMENTS BY : <b> '+result.referDetailsList[i].name+' </b></h4>';
+								str+='<div class="row">';
+									for(var j in result.referDetailsList[i].fileNamesList){
+										
+										
+										var scanCopySpl = result.referDetailsList[i].fileNamesList[j].value.split("."); 
+										var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
+											str+='<div class="col-sm-2" id="refDocument'+i+''+j+'">';
+											
+												if((scanCopyExt !="pdf") && (scanCopyExt != "jpeg" || scanCopyExt !=  "jpg"  || scanCopyExt !=  "gif"  || scanCopyExt !=  "bmp"  || scanCopyExt !=  "png")){
+													str+='<div class="viewImageCss m_top20">';
+												}else{
+													str+='<div class="viewImageCss">';
+												}
+												str+='<div class="pull-right removeFileCls" attr_id="refDocument'+i+''+j+'" style="margin-right: 15px;cursor:pointer"><i class="glyphicon glyphicon-remove"></i></div>';
+												if(scanCopyExt =="pdf"){
+													str+='<a class="fancyboxView" href="#inline'+i+''+j+'">';
+														str+='<div class="mouse-over">Expand</div>';
+														str+='<object data="'+result.referDetailsList[i].fileNamesList[j].value+'" type="application/pdf" width="100%" height="100px;"></object>';
+													str+='</a>';
+													str+='<div id="inline'+i+''+j+'" style="width:100%;display: none;">';
+														str+='<object data="'+result.referDetailsList[i].fileNamesList[j].value+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
+													str+='</div>';
+													
+												}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
+													str+='<a class="fancyboxView" href="#inline'+i+''+j+'">';
+														str+='<img src="'+result.referDetailsList[i].fileNamesList[j].value+'"  width="100%" height="100px;"></img>';
+													str+='</a>';
+													str+='<div id="inline'+i+''+j+'" style="width:100%;display: none;">';
+														str+='<img src="'+result.referDetailsList[i].fileNamesList[j].value+'"    style="cursor:pointer;height:1000px;width:1000px"></object>';
+													str+='</div>';
+												}else{
+													str+='<b>Click <a href="javascript:{};" onclick="openDoc(\''+result.referDetailsList[i].fileNamesList[j].value+'\')">Here</a> To View Document</b>';
+												}
+									
+										str+='</div>';
+									str+='</div>';
+							
+								}
+							str+='</div>';
+						str+='</div>';
+
+									
 					str+='</div>';
 				str+='</div>';
-			str+='</div>';
-			str+='</div>';
+			
 		}
 		str+='</div>';
-		
-			str+='<div class="col-sm-12">';
-				str+='<div class="candidateDetails'+result.representationType+'DivId"></div>';
 			str+='</div>';
+		str+='</div>';
+		
+			/*str+='<div class="col-sm-12">';
+				str+='<div class="candidateDetails'+result.representationType+'DivId"></div>';
+			str+='</div>';*/
 	str+='</div>';
 	
 		if(result.representationType == "SELF"){
@@ -1455,7 +1469,7 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 		str+='</div>';
 		
 		str+='<div class="row m_top10">';
-			str+='<div class="col-sm-8">';
+			str+='<div class="col-sm-12">';
 					str+='<h4 class="panel-title f_18"> UPLOAD WORK DOCUMENTS </h4>';
 					if(result.fileList !=null && result.fileList.length >0){
 						str+='<input type="file"  attr_file_existing_size="'+result.fileList.length+'" attr_name="worksList[0]" name="[]"  attr_image_tyep="projImage" id="editprojectDocUpload'+result.representationType+'" multiple="multiple" class=""/>';
@@ -1463,17 +1477,54 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 						str+='<input type="file"  attr_file_existing_size="0" attr_name="worksList[0]" name="[]"  attr_image_tyep="projImage" id="editprojectDocUpload'+result.representationType+'" multiple="multiple" class=""/>';
 					}
 
-				//str+='<input type="file"  attr_name="worksList[0]" name="" attr_image_tyep="projImage"  id="editprojectDocUpload'+result.representationType+'" multiple="multiple" class="m_top20"/>';
-
-			str+='</div>';
-			str+='<div class="col-sm-4">';
-				str+='<div class="viewLetterCss" style="margin-top: 40px; height: 115px;cursor:pointer;">';
-					str+='<h4 class="font_weight viewDocumentsModalCls" style="color:#fff;" attr_name="WORK DOCUMENTS" attr_type ="'+result.representationType+'" attr_view_type="mainDoc"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 25px;"></i><br/>  <p class="m_top20" style="color:#fff;">VIEW WORK DOCUMENTS</p></h4>';
-				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-		globalWorkFileUpload = result.fileList
 		
+		str+='<div class="alreadyUploadFilesCss">';
+			str+='<h4>ALREADY UPLOADED WORK DOCUMENTS : </h4>';
+			str+='<div class="row">';
+				for(var i in result.fileList){
+					
+					var scanCopySpl = result.fileList[i].value.split("."); 
+					var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
+					
+						str+='<div class="col-sm-2" id="workDocument'+i+'" >';
+						str+='<input id="existingworkDocument'+i+'" name="fileNamesList['+i+'].value" value="'+result.fileList[i].value+'" attr_image_tyep="projImage" type="hidden">';
+							if((scanCopyExt !="pdf") && (scanCopyExt != "jpeg" || scanCopyExt !=  "jpg"  || scanCopyExt !=  "gif"  || scanCopyExt !=  "bmp"  || scanCopyExt !=  "png")){
+								str+='<div class="viewImageCss m_top20">';
+							}else{
+								str+='<div class="viewImageCss m_top20">';
+							}
+							str+='<div class="pull-right removeFileCls" attr_id="workDocument'+i+'" style="margin-right: 15px;cursor:pointer"><i class="glyphicon glyphicon-remove"></i></div>';
+							if(scanCopyExt =="pdf"){
+								str+='<a class="fancyboxView" href="#inlineMain'+i+''+j+'">';
+									str+='<div class="mouse-over">Expand</div>';
+									
+									str+='<object data="'+result.fileList[i].value+'" type="application/pdf" width="100%" height="100px;"></object>';
+								str+='</a>';
+
+								str+='<div id="inlineMain'+i+''+j+'" style="width:100%;display: none;">';
+									str+='<object data="'+result.fileList[i].value+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
+								str+='</div>';
+								
+							}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
+								str+='<a class="fancyboxView" href="#inlineMain'+i+''+j+'">';
+									str+='<img src="'+result.fileList[i].value+'"  width="100%" height="100px;"></img>';
+								str+='</a>';
+								str+='<div id="inlineMain'+i+''+j+'" style="width:100%;display: none;">';
+									str+='<img src="'+result.fileList[i].value+'"    style="cursor:pointer;height:1000px;width:1000px"></object>';
+								str+='</div>';
+							}else{
+								str+='<b>Click <a href="javascript:{};" onclick="openDoc(\''+result.fileList[i].value+'\')">Here</a> To View Document</b>';
+							}
+				
+					str+='</div>';
+				str+='</div>';
+		
+			}
+		str+='</div>';
+	str+='</div>';
+	
 	//work Details
 	str+='<div class="row">';
 	var addWorkTypeCountMain=0;
@@ -1608,97 +1659,7 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 																
 															str+='</select>';
 														str+='</div>';
-														if(result.subWorksList[i].subWorksList[j].locationScopeId == 6){
-																
-																if(result.subWorksList[i].subWorksList[j].addressVO.tehsilId == null || result.subWorksList[i].subWorksList[j].addressVO.tehsilId == ""){
-																	str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" style="display:none">';
-																	str+='<label>DISTRICT <span class="starColor">*</span><span class="districtId'+result.representationType+''+i+''+j+'"></span></label>';
-																	str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																		str+='<option value="0">Select District</option>';
-																	str+='</select>';
-																str+='</div>';
-																	str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" style="display:none">';
-																	str+='<label>CONSTITUENCY <span class="starColor">*</span><span class="constituencyId'+result.representationType+''+i+''+j+'"></span></label>';
-																	str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																		str+='<option value="0">Select Constituency</option>';
-																	str+='</select>';
-																str+='</div>';
-																str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'" style="display:none">';
-																	str+='<label>MANDAL/MUNCI. <span class="starColor">*</span><span class="mandalId'+result.representationType+''+i+''+j+'"></span></label>';
-																	str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																		str+='<option value="0">Select Mandal</option>';
-																	str+='</select>';
-																str+='</div>';
-																
-																str+='<div class="col-sm-2 panchayatCls'+result.representationType+''+i+''+j+'" style="display:none">';
-																	str+='<label>PANCHAYAT<span class="starColor">*</span><span class="panchayatId'+result.representationType+''+i+''+j+'"></span></label>';
-																	str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10 panchayatLevelChange validateCls" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																		str+='<option value="0">Select Panchayat</option>';
-																	str+='</select>';
-																str+='</div>';
-																
-																}else{
-																	str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
-																	str+='<label>DISTRICT <span class="starColor">*</span><span class="districtId'+result.representationType+''+i+''+j+'"></span></label>';
-																	str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																		for(var dis in globaldistrictList){
-																			if(globaldistrictList[dis].id == result.subWorksList[i].subWorksList[j].addressVO.districtId){
-																				str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
-																			}else{
-																				str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
-																			}
-																		}
-																		
-																	str+='</select>';
-																str+='</div>';
-																
-																str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" >';
-																str+='<label>CONSTITUENCY <span class="starColor">*</span><span class="constituencyId'+result.representationType+''+i+''+j+'"></span></label>';
-																str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.constituencyList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key == result.subWorksList[i].subWorksList[j].addressVO.assemblyId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'">';
-																str+='<label>MANDAL/MUNCI. <span class="starColor">*</span><span class="mandalId'+result.representationType+''+i+''+j+'"></span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 panchayatCls'+result.representationType+''+i+''+j+'">';
-																str+='<label>PANCHAYAT<span class="starColor">*</span><span class="panchayatId'+result.representationType+''+i+''+j+'"></span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10 panchayatLevelChange validateCls" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.panchaytsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.panchayatId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select>';
-															str+='</div>';
-															
-															
-																}
-															}
-															
-															else if(result.subWorksList[i].subWorksList[j].locationScopeId == 5){
+															if(result.subWorksList[i].subWorksList[j].locationScopeId == 5){
 																
 																if(result.subWorksList[i].subWorksList[j].addressVO.tehsilId == null || result.subWorksList[i].subWorksList[j].addressVO.tehsilId == ""){
 																	str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" style="display:none">';
@@ -1901,7 +1862,7 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 			}
 			initializeEditFileProjDoc(result.representationType);
 			$(".chosen-select").chosen();
-			
+			$(".fancyboxView").fancybox();
 			$("#designationREPRESENTEE").trigger('chosen:updated');
 }
 function openDoc(docmnt){
@@ -2886,106 +2847,30 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
      });	 
 
 });
-$(document).on("click",".viewDocumentsModalCls",function(){
-	$("#candidateUploadFileModelDivId").modal("show");
-	
-	var candidateId = $(this).attr("attr_candidateId")
-	var candidateName = $(this).attr("attr_name")
-	var type = $(this).attr("attr_type")
-	var viewType = $(this).attr("attr_view_type")
-	$("#candidateNameId").html(candidateName);
-	setTimeout(function(){ 
-		buildAlreadyUploadDocumentsView(candidateId,type,candidateName,viewType);
-	}, 1000);
-	
-});
-function buildAlreadyUploadDocumentsView(candidateId,type,candidateName,viewType){
-	
-	var str='';
-		str+='<div class="col-sm-12">';
-		str+='<div class="alreadyUploadFilesCss">';
-		if(viewType == "candidateDoc"){
-			for(var i in globalFileUpload){
-				if(candidateId == globalFileUpload[i].refCandidateId){	
-					for(var j in globalFileUpload[i].fileNamesList){
-						
-						//str+='<input id="mainBlockFileUpload2'+type+'" name="referList['+i+'].fileList['+j+']" value="'+result.referDetailsList[i].fileNamesList[j].value+'" attr_image_tyep="refImage" type="hidden">';
-								var scanCopySpl = globalFileUpload[i].fileNamesList[j].value.split("."); 
-								var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
-									str+='<div class="col-sm-4">';
-										if((scanCopyExt !="pdf") && (scanCopyExt != "jpeg" || scanCopyExt !=  "jpg"  || scanCopyExt !=  "gif"  || scanCopyExt !=  "bmp"  || scanCopyExt !=  "png")){
-											str+='<div class="viewImageCss m_top20">';
-										}else{
-											str+='<div class="viewImageCss">';
-										}
-										if(scanCopyExt =="pdf"){
-											str+='<a class="fancyboxView" href="#inline'+i+''+j+'">';
-												str+='<div class="mouse-over">Expand</div>';
-												str+='<object data="'+globalFileUpload[i].fileNamesList[j].value+'" type="application/pdf" width="100%" height="200px;"></object>';
-											str+='</a>';
-											str+='<div id="inline'+i+''+j+'" style="width:100%;display: none;">';
-												str+='<object data="'+globalFileUpload[i].fileNamesList[j].value+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
-											str+='</div>';
-											
-										}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
-											str+='<a class="fancyboxView" href="#inline'+i+''+j+'">';
-												str+='<img src="'+globalFileUpload[i].fileNamesList[j].value+'"  width="100%" height="200px;"></img>';
-											str+='</a>';
-											str+='<div id="inline'+i+''+j+'" style="width:100%;display: none;">';
-												str+='<img src="'+globalFileUpload[i].fileNamesList[j].value+'"    style="cursor:pointer;height:1000px;width:1000px"></object>';
-											str+='</div>';
-										}else{
-											str+='<b>Click <a href="javascript:{};" onclick="openDoc(\''+globalFileUpload[i].fileNamesList[j].value+'\')">Here</a> To View Document</b>';
-										}
-							
-								str+='</div>';
-							str+='</div>';
-						}
-						
-			
-				}
-			}
-		}else{
-		
-				for(var j in globalWorkFileUpload){
-						var scanCopySpl = globalWorkFileUpload[j].value.split("."); 
-						var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
-							str+='<div class="col-sm-4">';
-								if((scanCopyExt !="pdf") && (scanCopyExt != "jpeg" || scanCopyExt !=  "jpg"  || scanCopyExt !=  "gif"  || scanCopyExt !=  "bmp"  || scanCopyExt !=  "png")){
-									str+='<div class="viewImageCss m_top20">';
-								}else{
-									str+='<div class="viewImageCss">';
-								}
-								if(scanCopyExt =="pdf"){
-									str+='<a class="fancyboxView" href="#inline'+j+'">';
-										str+='<div class="mouse-over">Expand</div>';
-										str+='<object data="'+globalWorkFileUpload[j].value+'" type="application/pdf" width="100%" height="200px;"></object>';
-									str+='</a>';
-									str+='<div id="inline'+j+'" style="width:100%;display: none;">';
-										str+='<object data="'+globalWorkFileUpload[j].value+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
-									str+='</div>';
-									
-								}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
-									str+='<a class="fancyboxView" href="#inline'+j+'">';
-										str+='<img src="'+globalWorkFileUpload[j].value+'"  width="100%" height="200px;"></img>';
-									str+='</a>';
-									str+='<div id="inline'+j+'" style="width:100%;display: none;">';
-										str+='<img src="'+globalWorkFileUpload[j].value+'"    style="cursor:pointer;height:1000px;width:1000px"></object>';
-									str+='</div>';
-								}else{
-									str+='<b>Click <a href="javascript:{};" onclick="openDoc(\''+globalWorkFileUpload[j].value+'\')">Here</a> To View Document</b>';
-								}
-					
-						str+='</div>';
-					str+='</div>';
-				}
-			
-		}
-			
-	str+='</div>';
-	str+='</div>';
-	$("#candidateUploadDFiesDivId").html(str);
-	$(".fancyboxView").fancybox();
-}
-			
 
+
+//Disignation Build
+function getPetitionDesignationList(){
+    $("#designationsId").html('');
+	  var json = {
+		   searchType:"refCandidateDesignations"// all/refCandidateDesignations/petitionGivenRefCandidateDesignations
+	  };
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionDesignationList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#designationsId").append('<option value="0">Select Designation</option>');
+			for(var i in result){
+				$("#designationsId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#designationsId").trigger('chosen:updated');
+	});	
+}
