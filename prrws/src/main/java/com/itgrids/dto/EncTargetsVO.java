@@ -24,6 +24,8 @@ public class EncTargetsVO {
 	private String schemeName;
 	private Long totPer=0L;
 	private Long q4Per=0L;
+	private Long constituencyId;
+	private String constituencyname;
 	
 	public Long getLocationId() {
 		return locationId;
@@ -163,4 +165,20 @@ public class EncTargetsVO {
 	public void setQ4Per(Long q4Per) {
 		this.q4Per = q4Per;
 	}
+	public Long getConstituencyId() {
+		return constituencyId;
 	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId=constituencyId;
+		
+	}
+	public void setConstituencyname(String constituencyname) {
+		this.constituencyname=constituencyname;
+		
+	}
+	
+	public String getConstituencyname() {
+		return constituencyname;
+	}
+	
+}
