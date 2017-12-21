@@ -13,4 +13,5 @@ public interface IPmRepresenteeRefDetailsDAO extends GenericDao<PmRepresenteeRef
 	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO,Date toDate,Date fromDate);
 	public List<Long> getPmRepresenteeRefDetailsIds(Long petitionId);
 	public int updatePmRepresenteRefDetails(List<Long> representeRefDetailsIds,Date updatedTime,Long userId);
+	public Long getRepresenteeDetailsByPetitonId(Long petitionId);
 }

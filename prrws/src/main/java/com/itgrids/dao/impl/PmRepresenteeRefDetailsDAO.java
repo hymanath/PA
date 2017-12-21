@@ -213,4 +213,12 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		query.setParameter("userId", userId);
 		return query.executeUpdate();
 	}
+	
+	public Long getRepresenteeDetailsByPetitonId(Long petitionId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.pmRepresenteeId from PmRepresenteeRefDetails model where model.isDeleted ='N' and model.petitionId =:petitionId ");
+		Query query=getSession().createQuery(sb.toString());
+		query.setParameter("petitionId", petitionId);
+		return (Long) query.uniqueResult();
+	}
 }
