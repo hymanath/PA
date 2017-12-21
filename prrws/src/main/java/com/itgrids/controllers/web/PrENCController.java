@@ -36,6 +36,10 @@ public class PrENCController {
     public String getEncDevelopmentDashboard(ModelMap model) {
 		return "EncDevelopmentDashboard";
     }
+	@RequestMapping(value ="/EncWorksDashboard", method = RequestMethod.GET)
+    public String getEncWorksDashboard(ModelMap model) {
+		return "EncWorksDashboard";
+    }
 	
 	@PostMapping("/getLocationWiseRoadsInformation")
 	public @ResponseBody List<EncVO>  getLocationWiseRoadsInformation(@RequestBody InputVO inputVO){
