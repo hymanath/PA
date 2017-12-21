@@ -7,17 +7,17 @@ public class EncWorksVO {
 
 	private Long locationId;
 	private String locationName;
-	private Long underProcessCount;
-	private Long adminSanctionCount;
-	private Long technicallySanctionedCount;
-	private Long CompletedCount;
-	private Long notGrounded;
-	private Long districtCode;
-	private String districtName;
+	private Long underProcessCount=0l;
+	private Long adminSanctionCount=0l;
+	private Long technicallySanctionedCount=0l;
+	private Long CompletedCount=0l;
+	private Long notGrounded=0l;
+	private Long constituencyId;
+	private String constituencyname;
 	private Long mandalCode;
 	private String mandalName;
 	private List<EncWorksVO> subList = new ArrayList<EncWorksVO>();
-	private Long groundedCount;
+	private Long groundedCount=0l;
 	
 	
 	public Long getLocationId() {
@@ -75,17 +75,18 @@ public class EncWorksVO {
 	public void setMandalName(String mandalName) {
 		this.mandalName = mandalName;
 	}
-	public Long getDistrictCode() {
-		return districtCode;
+	
+	public Long getConstituencyId() {
+		return constituencyId;
 	}
-	public void setDistrictCode(Long districtCode) {
-		this.districtCode = districtCode;
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
-	public String getDistrictName() {
-		return districtName;
+	public String getConstituencyname() {
+		return constituencyname;
 	}
-	public void setDistrictName(String districtName) {
-		this.districtName = districtName;
+	public void setConstituencyname(String constituencyname) {
+		this.constituencyname = constituencyname;
 	}
 	public List<EncWorksVO> getSubList() {
 		return subList;
