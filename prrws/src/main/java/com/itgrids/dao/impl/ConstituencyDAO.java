@@ -536,14 +536,13 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long> imp
 	public List<Object[]> getEncconstituencies() {
 		
 		Query query = getSession().createQuery("select model.constituency.encConstituencyId,model.constituency.name,model.tehsil.encTehsilId, model.tehsil.tehsilName " +
-				"from TehsilConstituency model");
+				"from TehsilConstituency model where model.constituency.encConstituencyId is not null");
 		return query.list();
 	}
 	@Override
-	public List<Long> getTehsilIds(Long constituencyId) {
-		Query query = getSession().createQuery("select model.tehsil.encTehsilId " +
-				"from TehsilConstituency model where model.constituency.encConstituencyId=:constituencyId");
-		query.setParameter("constituencyId", constituencyId);
+	public List<Long> getEncConstituencyIds() {
+		Query query = getSession().createQuery("select model.encConstituencyId " +
+				"from Constituency model where model.constituencyId is not null");
 		return query.list();
 	}
 	
