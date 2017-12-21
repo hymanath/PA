@@ -2617,7 +2617,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		});  
 	}); 	
 	function buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,locationType,isPublication,publicationValue){
-		//alert(222);
+		var locationElectionBodyId = 0;
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
 		$("#alertCntTitId").html("TOTAL ALERTS - "+totalAlertCnt);        
@@ -2639,6 +2639,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				districtIdArr.push(districtId); 
 			 }
 			  scopeIdsArr = globalCorpGhmcImpactScopeSArr; 
+			  locationElectionBodyId=constituencyId;
+			  constituencyId=0;
 		 }  
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -2669,7 +2671,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			locationLevel : locationLevel,
 			isPublication:isPublication,
 			publicationId:publicationValue,
-			locationElectionBodyId:0,
+			locationElectionBodyId:locationElectionBodyId,
 			parliamentId:parliamentId,
 			type : "impactScopeWise"
 		}                  
@@ -3837,6 +3839,8 @@ function getTotalArticledetails(articleId){
 		   districtIdArr = locationIdStr.split(",");	
 		}else if(loctionType=="Parliament"){               
 			constituencyId = locationIdStr;
+		}else if(loctionType=="GHMCImpactLevel"){
+			constituencyId = locationIdStr;
 		} 
 		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,loctionType,"false",0);
 	}
@@ -4701,7 +4705,7 @@ var globalParliamentLevelRlst;
 	  if(selectedLevel == "Overview"){
 		 buildStateImpactLevelTabularRslt(globalStateLevelRslt,selectionType);  
 	  }else if(selectedLevel == "Status"){
-		buildStateOrGhmcImpactLevelTabularRsltStatusWise(globalStateLevelRslt,"stateImpactLevelTblDivId","StateImpactLevel");
+		buildStateImpactLevelTabularRsltStatusWise(globalStateLevelRslt,"stateImpactLevelTblDivId","StateImpactLevel");
 	  }else if(selectedLevel == "Publication"){
 		buildStateOrGhmcImpactLevelTabularRsltPublicationWise(globalStateLevelRslt,"stateImpactLevelTblDivId","StateImpactLevel");  
 	  }
@@ -4735,7 +4739,7 @@ var globalParliamentLevelRlst;
 	  if(selectedLevel == "Overview"){
 		 buildCorpGmcImpactLevelHighChartRslt(globalCorpGmcLevelRlst);  
 	  }else if(selectedLevel == "Status"){
-		buildCorpGmcImpactLevelHighChartRsltStatusWise(globalCorpGmcLevelRlst);
+		buildCorpGmcImpactLevelHighChartRsltStatusWise1(globalCorpGmcLevelRlst);
 	  }else if(selectedLevel == "Publication"){
 	    buildStateOrGhmcImpactLevelHighChartRsltPublicationWise(globalCorpGmcLevelRlst,"gmcImpactLevelHighChartDivId","GHMCImpactLevel");	  
 	  }
@@ -5815,21 +5819,244 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 			data : {task :JSON.stringify(jsObj)}          
 		}).done(function(result){
 			globalCorpGmcLevelRlst = result;
-			if(result.alertCount == 0){
-			  $(".gmcImpactLevelBlockCls").hide();	
-			}
-			if(result != null && result.statusList != null && result.statusList.length > 0){
-			  buildCorpGmcImpactLevelHighChartRsltStatusWise(result);	
+			// if(result.alertCount == 0){
+			  // $(".gmcImpactLevelBlockCls").hide();	
+			// }
+			if(result != null && result.categoryList != null && result.categoryList.length > 0){
+			  //buildCorpGmcImpactLevelHighChartRsltStatusWise(result);	
+			  buildCorpGmcImpactLevelHighChartRsltStatusWise1(result);
 			}else{
 			  $(".gmcImpactLevelBlockCls").hide();		
 			}
 			
       });	
 	}
+	function buildCorpGmcImpactLevelHighChartRsltStatusWise1(result){
+		if(result != null && result.categoryList.length > 10){
+			var highChartDivHight = result.categoryList.length*40;
+			$("#gmcImpactLevelHighChartDivId").height(highChartDivHight);
+		}else{
+			$("#gmcImpactLevelHighChartDivId").height(400);		
+		}
+		var locationType ="GHMCImpactLevel"	
+		if(result != null && result.categoryList.length > 0){
+			var locatinNameArr = [];
+			for(var i in result.categoryList){
+				locatinNameArr.push(result.categoryList[i].name);
+				
+			} 
+			/* var locatinNameArr = [];
+			var str = '';
+			if(divId=="districtImpactLevelHighChartDivId"){
+				//  str+='<option value="-1">Select District</option>';	 
+			    str+='<option value="0">All</option>';	 
+			}else if(divId=="constituencyLevelHighChartDivId"){
+				//str+='<option value="-1">Select Constituency</option>'; 
+				str+='<option value="0">All</option>'; 
+			}else{
+				str+='<option value="0">All</option>'; 
+			}
+			for(var i in result.categoryList){
+				locatinNameArr.push(result.categoryList[i].name);
+				str+='<option value="'+result.categoryList[i].id+'">'+result.categoryList[i].name+'</option>';
+			} */
+			
+			var pendingAlertArr = [];
+			var notifiedAlertArr = [];
+			var actionInProgessAlertArr = [];
+			var completedAlertArr = [];
+			var unblTRslvAlertArr = [];
+			var actionNotRequiredAlertArr = [];
+			var duplicateAlertArr = [];
+			 
+			var wrnglyMppdDsgntnAlertArr = [];
+			var wrnglyMppdDprtmntAlertArr = [];
+			var rejoinderAlertArr = [];
+			var incompleteAlertArr = [];
+			var closedAlertArr = [];
+			var proposalAlertArr = [];
+			 
+			for(var i in result.categoryList){
+				for(var j in result.categoryList[i].statusList){
+					if(result.categoryList[i].statusList[j].id==1){
+						pendingAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name}); 
+					}else if(result.categoryList[i].statusList[j].id==2){
+						notifiedAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==3){
+						actionInProgessAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==4){
+						completedAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==5){
+						unblTRslvAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==6){
+						actionNotRequiredAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==7){
+						duplicateAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==8){
+						wrnglyMppdDsgntnAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==9){
+						wrnglyMppdDprtmntAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==10){
+						rejoinderAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==11){
+						incompleteAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==12){
+						closedAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}else if(result.categoryList[i].statusList[j].id==13){
+						proposalAlertArr.push({y:result.categoryList[i].statusList[j].alertCount,"extra":result.categoryList[i].statusList[j].id+"-"+result.categoryList[i].id+"-"+result.categoryList[i].statusList[j].alertCount+"-"+locationType+"-"+result.categoryList[i].name});
+					}
+				}
+			}
+			var mainJosnObjArr = [];
+			if(pendingAlertArr != null && pendingAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Pending',data:pendingAlertArr,color:"#A27FC2"});  
+			}
+			if(notifiedAlertArr != null && notifiedAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Notified',data:notifiedAlertArr,color:"#0175F3"});  
+			}
+			if(actionInProgessAlertArr != null && actionInProgessAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Action In Progess',data:actionInProgessAlertArr,color:"#3EC3FF"});  
+			}
+			if(completedAlertArr != null && completedAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Completed',data:completedAlertArr,color:"#049968"});  
+			}
+			if(unblTRslvAlertArr != null && unblTRslvAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Unable to Resolve',data:unblTRslvAlertArr,color:"#F21A98"});  
+			}
+			if(actionNotRequiredAlertArr != null && actionNotRequiredAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Action Not Required',data:actionNotRequiredAlertArr,color:"#FD6E07"});  
+			}
+			if(duplicateAlertArr != null && duplicateAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Duplicate',data:duplicateAlertArr,color:"#CF0001"});  
+			}
+			if(wrnglyMppdDsgntnAlertArr != null && wrnglyMppdDsgntnAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Wrongly Mapped Designation',data:wrnglyMppdDsgntnAlertArr,color:"#FE9900"});  
+			} 
+			if(wrnglyMppdDprtmntAlertArr != null && wrnglyMppdDprtmntAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Wrongly Mapped Department',data:wrnglyMppdDprtmntAlertArr,color:"#0C9514"});  
+			}
+			if(rejoinderAlertArr != null && rejoinderAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Rejoinder',data:rejoinderAlertArr,color:"#82CA9C"});  
+			} 
+			if(incompleteAlertArr != null && incompleteAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Incomplete',data:incompleteAlertArr,color:"#C9AC82"});  
+			} 
+			if(closedAlertArr != null && closedAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Closed',data:closedAlertArr,color:"#ababab"});  
+			}
+			if(proposalAlertArr != null && proposalAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Proposal',data:proposalAlertArr,color:"#FFA07A"});  
+			}
+			var getWidth = $("#corpGmcOvervwGraph").width();
+			$("#gmcImpactLevelHighChartDivId").css("width",getWidth);	
+			$("#gmcImpactLevelHighChartDivId").highcharts({
+				chart: {
+					type: 'bar'
+				},
+				title: {
+					text: ''
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locatinNameArr,
+					title: {
+						text: null
+					}
+				},
+				yAxis: {
+					min: 0,
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: '',
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify'
+					}, 
+					stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						},
+						formatter: function() {
+                        return  (this.total);
+                    },
+					}
+				},
+				tooltip: {
+					valueSuffix: ' ',
+					shared:true
+				},
+				plotOptions: {
+					bar: {
+					stacking: 'normal',
+						dataLabels: {
+							align: 'center',
+							x :5,
+							y:-3,
+							enabled: false,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,0);      
+								}
+							}
+						}
+					},
+					series: {
+							cursor: 'pointer',
+							point: {
+							events: {
+								click: function () {
+									var locationInfo = (this.extra).split("-");
+									var alertStatusId = locationInfo[0];
+									var locationId = locationInfo[1];
+									var totalAlertCnt = locationInfo[2];
+									var locationType = locationInfo[3];
+									var locationName = locationInfo[4];
+									 if(totalAlertCnt == 0){
+										return;  
+									 }
+									 
+									locationAlertDetails(alertStatusId,locationId,totalAlertCnt,locationType,locationName);
+								}
+							}
+						}
+					}
+				},
+				legend: {
+						reversed: false,
+						verticalAlign:'top'
+						},
+				credits: {
+					enabled: false
+				},
+				series: mainJosnObjArr
+			});
+		}else{
+			 $("#gmcImpactLevelHighChartDivId").html("NO DATA AVAILABLE.");
+		}
+		if(result != null && result.categoryList.length > 10){ 
+			$("#corpGmcOvervwGraph").mCustomScrollbar();//{setHeight:'600px'}
+			$("#corpGmcOvervwGraph").css("height","655px");
+			//$("#constituencyOvervwGraph").mCustomScrollbar({setHeight:'655px'})
+		}else{
+			$("#corpGmcOvervwGraph").css("height","auto");
+		}
+	} 
 	function buildCorpGmcImpactLevelHighChartRsltStatusWise(result){
 		
 		if(result.statusList != null && result.statusList.length > 0 ){
-				 var statusList = result.statusList;
+				 var statusList = result.categoryList[0].statusList;
 			     var statusNameArr =[];
 				 var alertCnt = [];
 				 var count = [];
@@ -5972,7 +6199,7 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 				$("#gmcImpactLevelHighChartDivId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
 			}
 	}
-	function buildStateOrGhmcImpactLevelTabularRsltStatusWise(result,divId,locationType){
+	function buildStateImpactLevelTabularRsltStatusWise(result,divId,locationType){
 	  var str= '';
 	   if(result.statusList != null && result.statusList.length > 0){
 		   str+='<div class="table-responsive">';
@@ -5999,6 +6226,56 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 					 }
 				}
 				str+='</tr>';
+			str+='</table>';
+		str+='</div>'
+	   }else{
+		 str+='NO DATA AVAILABLE';  
+	   }
+	   $("#"+divId).html(str);
+	}
+	function buildStateOrGhmcImpactLevelTabularRsltStatusWise(result,divId,locationType){
+		var str= '';
+	   if(result.categoryList != null && result.categoryList.length > 0){
+		   str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered text_align_center">';
+				str+='<thead class="bg_ED">';
+				str+='<th>Corporation/GHMC Name</th>';
+				str+='<th>Total</th>';
+				for(var i in result.categoryList[0].statusList){
+				str+='<th>'+result.categoryList[0].statusList[i].name+'</th>';	
+				}
+				str+='</thead>';
+				str+='<tbody>';
+				 
+				 for(var i in result.categoryList){
+					 str+='<tr>';
+					str+='<td>'+result.categoryList[i].name+'</td>';
+					if(result.categoryList[i].alertCount >0){
+					 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="locationAlertDetails(0,\''+result.categoryList[i].id+'\',\''+result.categoryList[i].alertCount+'\',\''+locationType+'\',\''+result.categoryList[i].name+'\');">'+result.categoryList[i].alertCount+'</td>';  
+				   }else{
+					str+='<td style="text-align:center;">-</td>';   
+				   }
+				   for(var j in result.categoryList[i].statusList){
+							if(result.categoryList[i].statusList[j].alertCount > 0){
+							 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="locationAlertDetails(\''+result.categoryList[i].statusList[j].id+'\',\''+result.categoryList[i].id+'\',\''+result.categoryList[i].statusList[j].alertCount+'\',\''+locationType+'\',\''+result.categoryList[i].statusList[j].name+'\');">'+result.categoryList[i].statusList[j].alertCount+'</td>';
+							}else{
+							str+='<td style="text-align:center">-</td>'; 
+							} 
+					 }
+					 str+='</tr>';
+				}
+				   
+				  
+				/*  for(var i in result.categoryList){
+					 for(var j in result.categoryList[i].statusList){
+							if(result.categoryList[i].statusList[j].alertCount > 0){
+							 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="locationAlertDetails(\''+result.categoryList[i].statusList[j].id+'\',0,\''+result.categoryList[i].statusList[j].alertCount+'\',\''+locationType+'\',\''+result.categoryList[i].statusList[j].name+'\');">'+result.categoryList[i].statusList[j].alertCount+'</td>';
+							}else{
+							str+='<td style="text-align:center">-</td>'; 
+							} 
+					 }
+				} */
+				
 			str+='</table>';
 		str+='</div>'
 	   }else{
