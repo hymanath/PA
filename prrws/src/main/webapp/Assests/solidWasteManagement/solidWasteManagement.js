@@ -501,7 +501,7 @@ function getAllDistricts(divId){
 		var json = {}
 		$.ajax({                
 			type:'POST',    
-			url: 'getAllDistricts',
+			url: 'getAllDistrictsForPris',
 			dataType: 'json',
 			data : JSON.stringify(json),
 			beforeSend :   function(xhr){
