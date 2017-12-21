@@ -4477,7 +4477,7 @@
 						<div class="col-sm-6">
 							<select class="form-control chosen-select" id="categoryEmId">
 								<option value="0">Select Category</option>
-								<option value="1051" selected="selected">Praja sankalpa yatra</option>
+								<option value="1051">Praja sankalpa yatra</option>
 								<option value="1050">Counter on praja sankalpa yatra</option>
 								<option value="1063">KAPU RESERVATIONS - 5%</option>
 							</select>
