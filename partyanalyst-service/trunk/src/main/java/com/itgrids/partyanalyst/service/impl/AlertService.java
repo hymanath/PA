@@ -6071,25 +6071,60 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				locationValues.addAll(parliamentAssemlyIds);      
 			}
 			 List<Object[]> rtrnStatusObjLst = alertDepartmentStatusDAO.getAlertStatusByAlertStatusId(alertStatusIds,alertTypeId);
-			 prepareRquiredTemplate(rtrnStatusObjLst,resultVO.getStatusList());
+			 
+			
 			  List<Object[]> rtrnStatusWiseCntObjLst = alertDAO.getStateImpactLevelAlertCnt(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate,alertTypeList,editionList,alertStatusIds,districtId);	
-			  if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
+			  if(impactLevelIds != null && impactLevelIds.size() > 0 && impactLevelIds.size() == 1 &&  impactLevelIds.contains(8l)){
 				  if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
-				 		for(Object[] param:rtrnStatusWiseCntObjLst){
-				 			Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
-				 			AlertOverviewVO statusVO = getRequiredMatchVO(resultVO.getStatusList(),statusId);
-				 			if(statusVO != null){
-				 				statusVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-				 			}
-				 		}
-				 	} 
+						 // if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
+						 		for(Object[] param:rtrnStatusWiseCntObjLst){
+						 			Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						 			Long locationId = commonMethodsUtilService.getLongValueForObject(param[3]);
+						 			AlertOverviewVO locationVO = getRequiredMatchVO(resultVO.getCategoryList(),locationId);
+						 			if(locationVO == null){
+						 				locationVO = new AlertOverviewVO();
+						 				locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[3]));
+						 				locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						 				resultVO.getCategoryList().add(locationVO);
+						 				prepareRquiredTemplate(rtrnStatusObjLst,locationVO.getStatusList());
+						 			}
+						 			AlertOverviewVO statusVO = getRequiredMatchVO(locationVO.getStatusList(),statusId);
+						 			if(statusVO != null){
+						 				statusVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						 			}
+						 		}
+						 	//} 
+					  }
+			  }else {
+				  prepareRquiredTemplate(rtrnStatusObjLst,resultVO.getStatusList());
+				  if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
+					 // if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
+					 		for(Object[] param:rtrnStatusWiseCntObjLst){
+					 			Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					 			AlertOverviewVO statusVO = getRequiredMatchVO(resultVO.getStatusList(),statusId);
+					 			if(statusVO != null){
+					 				statusVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					 			}
+					 		}
+					 	//} 
+				  }
 			  }
 			  //Calculate overall alert
-			if(resultVO.getStatusList() != null && resultVO.getStatusList().size() > 0){
-				for(AlertOverviewVO statusVO:resultVO.getStatusList()){
-					resultVO.setAlertCount(resultVO.getAlertCount()+statusVO.getAlertCount());
-				}
-			}
+			  if(impactLevelIds != null && impactLevelIds.size() > 0 && impactLevelIds.size() == 1 &&  impactLevelIds.contains(8l) && resultVO.getCategoryList() != null && resultVO.getCategoryList().size() >0){
+				  for(AlertOverviewVO locationVO :resultVO.getCategoryList()){
+				  if(locationVO.getStatusList() != null && locationVO.getStatusList().size() > 0){
+						for(AlertOverviewVO statusVO:locationVO.getStatusList()){
+							locationVO.setAlertCount(locationVO.getAlertCount().longValue()+statusVO.getAlertCount().longValue());
+						}
+					}
+				  }
+			  }else{
+					if(resultVO.getStatusList() != null && resultVO.getStatusList().size() > 0){
+						for(AlertOverviewVO statusVO:resultVO.getStatusList()){
+							resultVO.setAlertCount(resultVO.getAlertCount().longValue()+statusVO.getAlertCount().longValue());
+						}
+					}
+			  }
 	 }catch(Exception e){
 		 LOG.error("Exception occured  in getStateOrGhmcImpactLevelAlertStatusWise() in AlertService class ",e);  
 	 }
@@ -9437,6 +9472,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  	    				         			impactLevelIds.remove(2l);//We are not display 2 district,8 ghmc impact level for those designation candidate who has constituency access
  	    				        			impactLevelIds.remove(8l);
  	    				                }	
+    				                   	if(commonMethodsUtilService.isMapValid(childActivityMembersMap)){
+    				                   		for (Map.Entry<Long,UserTypeVO> entryUser : childActivityMembersMap.entrySet()) {
+    				                   			inputVO.getTdpCadreIds().add(entryUser.getValue().getTdpCadreId());
+    				                   			inputVO.setType("selectedUserType");
+											}
+    				                   	}
     				                }
     						       if(reportType.equalsIgnoreCase("directChild")){
     				                		impactLevelIds.remove(2l);//We are not display 2 district,8 ghmc impact level for those designation candidate who has constituency access
