@@ -52,7 +52,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency,Long>{
 	public List<Object[]> getConstituencyNamesByDistrictId(Long districtId);
 	public List<Object[]> getPetitionsConstituencyList(Long districtId,String searchType,Long searchId);
 	public List<Object[]> getEncconstituencies();
-	public List<Long> getTehsilIds(Long longValueForObject);
+	public List<Long> getEncConstituencyIds();
 	
 	public Long getConstituencyIdFromPRConstituencyId(String locationIdStr);
 }
