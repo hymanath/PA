@@ -46,6 +46,11 @@ public class ItecEOfficeVO {
 	private Long parkedFiles = 0L;
 	private Long receiptCreated = 0L;
 	private Long actionFiles = 0L;
+	private String ZeroToSevenPerc;
+	private String eightToFifteenPerc;
+	private String sixteenToThirtyPerc;
+	private String thirtyoneToSixtyPerc;
+	private String aboveSixtyPerc;
 	
 	
 	public Long getId() {
@@ -275,5 +280,35 @@ public class ItecEOfficeVO {
 	}
 	public void setActionFiles(Long actionFiles) {
 		this.actionFiles = actionFiles;
+	}
+	public String getZeroToSevenPerc() {
+		return ZeroToSevenPerc;
+	}
+	public void setZeroToSevenPerc(String zeroToSevenPerc) {
+		ZeroToSevenPerc = zeroToSevenPerc;
+	}
+	public String getEightToFifteenPerc() {
+		return eightToFifteenPerc;
+	}
+	public void setEightToFifteenPerc(String eightToFifteenPerc) {
+		this.eightToFifteenPerc = eightToFifteenPerc;
+	}
+	public String getSixteenToThirtyPerc() {
+		return sixteenToThirtyPerc;
+	}
+	public void setSixteenToThirtyPerc(String sixteenToThirtyPerc) {
+		this.sixteenToThirtyPerc = sixteenToThirtyPerc;
+	}
+	public String getThirtyoneToSixtyPerc() {
+		return thirtyoneToSixtyPerc;
+	}
+	public void setThirtyoneToSixtyPerc(String thirtyoneToSixtyPerc) {
+		this.thirtyoneToSixtyPerc = thirtyoneToSixtyPerc;
+	}
+	public String getAboveSixtyPerc() {
+		return aboveSixtyPerc;
+	}
+	public void setAboveSixtyPerc(String aboveSixtyPerc) {
+		this.aboveSixtyPerc = aboveSixtyPerc;
 	}
 }

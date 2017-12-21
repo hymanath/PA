@@ -1351,7 +1351,7 @@ function getAPISXLR8APDetailedData(){
 			overview+='<div style="padding:10px;">';
 				overview+='<div class="row">';
 					overview+='<div class="col-sm-12">';
-						overview+='<h4>Batchs</h4>';
+						overview+='<h4>Batches</h4>';
 						overview+='<h3>'+totalBatches+'</h3>';
 					overview+='</div>';
 					overview+='<div class="col-sm-6">';
@@ -1646,12 +1646,12 @@ function getEOfcDepartWiseOverviewDetails(type){
 		$("#eOfficeDeparmentsOverViewBlock").html(spinner);
 	}
 	var json = {
-		fromDate:"2017-11-01",	
-		toDate:"2017-12-31"	
+		//fromDate:"",	
+		//toDate:""	
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getEOfcDepartOverviewDetails',
+		url: 'getEOfcDepartOverviewDetailsNew',//'getEOfcDepartOverviewDetails',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -2789,6 +2789,7 @@ function getCMeoDBSectorWiseStatusDetais(){
 
 function buildEOfcDepartWiseOverviewDetails(result){
 	var str = '';
+	var daysArr=["0to7DAYS","8to15DAYS","16to30DAYS","31to60DAYS","60DAYS"];
 	str+='<div class="row">';	
 		str+='<div class="col-sm-10">';	
 			str+='<h4 class="text-capital font_weight text-center">Information TECHNOLOGY Electronics And Communication Department</h4>';
@@ -2797,6 +2798,7 @@ function buildEOfcDepartWiseOverviewDetails(result){
 			str+='<button type="button" class="btn btn-default btn-sm hieraricalViewCls pull-right hieraricalButtonShowCls" attr_type="show" >Show Graph View</button>';
 		str+='</div>';
 	str+='</div>';
+	str+='<div class="row">';
 	str+='<div class="col-sm-12">';	
 			str+='<ul class="list-inline pull-right">';	
 				str+='<li><span class="roundCircleITC" style="background-color:#00af50"></span> 0% - 10%</li>';	
@@ -2804,71 +2806,66 @@ function buildEOfcDepartWiseOverviewDetails(result){
 				str+='<li><span class="roundCircleITC" style="background-color:#ff0000"></span> 20% and above&nbsp;&nbsp;&nbsp;</li>';	
 			str+='</ul>  ';	
 	str+='</div>'; 
+	str+='</div>'; 
 	for(var i in result){
 		if(result[i].departmentName == "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
-			str+='<div class="col-sm-12 m_top20">';	
-				str+='<div class="table-responsive">';
-					str+='<table class="table table-bordered">';
+				str+='<div class="col-sm-12 m_top20">';	
+				str+='<div class="col-sm-12" style="border:1px solid #000;padding:5px;">';	
 						
-							str+='<tr>';
-								str+='<th rowspan="2" style="vertical-align: middle; text-align: center;cursor:pointer;min-width:409px;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'" style="color:#A349A4">SECRETARIAT DEPARTMENT</a></th>';
-								
-								str+='<th style="background-color:#B2DFDB">Total</th>';
-								str+='<th style="background-color:#FBACAC">Action</th>';
-								str+='<th style="background-color:#FBACAC">Total Pendency</th>';
-								str+='<th style="background-color:#FBACAC">%</th>';
-								str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
-								str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
-								str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
-								str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
-								str+='<th style="background-color:#FDCECE"> > 60 days</th>';
-							str+='</tr>';
-							str+='<tr>';
-								str+='<td>'+result[i].created+'</td>';
-								str+='<td>'+result[i].actionFiles+'</td>';
-								str+='<td>'+result[i].totalCount+'</td>';
-								if(result[i].percentage < 10){
-									str+='<td style="background-color:#00AF50;color:#fff">'+result[i].percentage+'</td>';
-								}else if(result[i].percentage >= 10 && result[i].percentage < 20){
-									str+='<td style="background-color:#FFBA00;color:#fff">'+result[i].percentage+'</td>';
-								}else if(result[i].percentage >= 20){
-									str+='<td style="background-color:#ff0000;color:#fff">'+result[i].percentage+'</td>';
-								}
-								str+='<td>'+result[i].zeroToSeven+'</td>';
-								str+='<td >'+result[i].eightToFifteen+'</td>';
-								str+='<td>'+result[i].sixteenToThirty+'</td>';
-								str+='<td >'+result[i].thirtyoneToSixty+'</td>';
-								str+='<td>'+result[i].aboveSixty+'</td>';
-						str+='</tr>';
-						
-					str+='</table>';
+						str+='<div class="col-sm-4">';
+							str+='<h3 class="font_weight" style="text-align: center;margin-top: 40px;">Secretariat Department</h3>';
+							str+='<div class="row" style="margin-top: 50px;">';
+								str+='<div class="col-sm-4">';
+									str+='<h4 class="font_weight">'+result[i].created+'</h4>';
+									str+='<h5 class="font_weight m_top10">TOTAL</h5>';
+								str+='</div>';
+								str+='<div class="col-sm-4">';
+									str+='<h4 class="font_weight">'+result[i].actionFiles+'</h4>';
+									str+='<h5 class="font_weight m_top10">ACTION</h5>';
+								str+='</div>';
+								str+='<div class="col-sm-4">';
+									str+='<h4 class="font_weight">'+result[i].totalCount+' <span style="color:green;">&nbsp; &nbsp;&nbsp;'+result[i].percentage+'%</span></h4>';
+									str+='<h5 class="font_weight m_top10">TOTAL PENDENCY</h5>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-8">';
+							str+='<div class="row">';
+							for(var d in daysArr){
+								str+='<div class="col-sm-2 border_left_RightE">';
+									str+='<div id="'+daysArr[d]+'" style="height:200px;"></div>';
+								str+='</div>';
+							}
+							str+='</div>';
+						str+='</div>';
 				str+='</div>';
 			str+='</div>';
+		
 		}
 	}
 	
 	str+='<div class="col-sm-12 m_top20">';	
 		str+='<div class="table-responsive">';
 			str+='<table class="table table-bordered table_ITC" id="dataTableITCDepartment">';
-				str+='<thead>';
+				str+='<thead style="background-color:#CCCCCC">';
 					str+='<tr>';
-						str+='<th style="color:#A349A4;text-align:center">Departments</th>';
-						str+='<th style="background-color:#B2DFDB">Total</th>';
-						str+='<th style="background-color:#FBACAC">Action</th>';
-						str+='<th style="background-color:#FBACAC">Total Pendency</th>';
-						str+='<th style="background-color:#FBACAC">%</th>';
-						str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
-						str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
-						str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
-						str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
-						str+='<th style="background-color:#FDCECE"> > 60 days</th>';
+						str+='<th>Departments</th>';
+						str+='<th>Total</th>';
+						str+='<th>Action</th>';
+						str+='<th>Total Pendency</th>';
+						str+='<th>%</th>';
+						str+='<th>0 - 7 days</th>';
+						str+='<th>8 - 15 days</th>';
+						str+='<th>16 - 30 days</th>';
+						str+='<th>31 - 60 days</th>';
+						str+='<th> > 60 days</th>';
 					str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
 					for(var i in result){
 						if(result[i].departmentName != "ITE & C" && result[i].departmentName != "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
 							str+='<tr>';
-								str+='<td style="cursor:pointer;"><a class="departmentDetailsCls" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'">'+result[i].departmentName+'</a></td>';
+								str+='<td style="cursor:pointer;"><i class="fa fa-external-link departmentDetailsCls" aria-hidden="true" class="" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'"></i><b> '+result[i].departmentName+'</b></td>';
 								str+='<td >'+result[i].created+'</td>';
 								str+='<td >'+result[i].actionFiles+'</td>';
 								str+='<td >'+result[i].totalCount+'</td>';
@@ -2908,24 +2905,23 @@ function buildEOfcDepartWiseOverviewDetails(result){
 			str+='</table>';
 		str+='</div>';
 	str+='</div>';
-	
 	str+='<div class="col-sm-12 m_top20">';	
 		str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered" id="dataTableITCHODS">';
-				str+='<thead>';
+			str+='<table class="table table-bordered table_ITC" id="dataTableITCHODS">';
+				str+='<thead style="background-color:#CCCCCC">';
 					str+='<tr>';
 						//str+='<th style="color:#A349A4;text-align:center">HODS</th>';
 						str+='<th>HODS</th>';
 						str+='<th>Department</th>';
-						str+='<th style="background-color:#B2DFDB">Total</th>';
-						str+='<th style="background-color:#FBACAC">Action</th>';
-						str+='<th style="background-color:#FBACAC">Total Pendency</th>';
-						str+='<th style="background-color:#FBACAC">%</th>';
-						str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
-						str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
-						str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
-						str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
-						str+='<th style="background-color:#FDCECE"> > 60 days</th>';
+						str+='<th>Total</th>';
+						str+='<th>Action</th>';
+						str+='<th>Total Pendency</th>';
+						str+='<th>%</th>';
+						str+='<th>0 - 7 days</th>';
+						str+='<th>8 - 15 days</th>';
+						str+='<th>16 - 30 days</th>';
+						str+='<th>31 - 60 days</th>';
+						str+='<th> > 60 days</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -2970,6 +2966,113 @@ $("#dataTableITCHODS").dataTable({
 	"searching": false,
 	"autoWidth": true
 });
+for(var i in daysArr){
+		var mainArr=[];
+		var daysNamesArr=[];
+		var globalStatusObj={}
+		for(var j in result){
+			if(result[j].departmentName == "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
+				globalStatusObj={"0-7DAYS":result[j].zeroToSeven,"8-15 DAYS":result[j].eightToFifteen,"16-30DAYS":result[j].sixteenToThirty,"31-60DAYS":result[j].thirtyoneToSixty,"Above60DAYS":result[j].aboveSixty}
+				
+				var eightToFifteenPercArr=[];
+				var sixteenToThirtyPercArr=[];
+				var thirtyoneToSixtyPercArr=[];
+				var aboveSixtyPercArr=[];
+				var zeroToSevenPercArr=[];
+				eightToFifteenPercArr.push(parseFloat(result[j].eightToFifteenPerc))
+				sixteenToThirtyPercArr.push(parseFloat(result[j].sixteenToThirtyPerc))
+				thirtyoneToSixtyPercArr.push(parseFloat(result[j].thirtyoneToSixtyPerc))
+				aboveSixtyPercArr.push(parseFloat(result[j].aboveSixtyPerc))
+				zeroToSevenPercArr.push(parseFloat(result[j].zeroToSevenPerc))
+			}
+		}
+		if(daysArr[i] == "0to7DAYS"){
+			mainArr.push(zeroToSevenPercArr)
+			daysNamesArr.push("0-7DAYS")
+		}else if(daysArr[i] == "8to15DAYS"){
+			mainArr.push(eightToFifteenPercArr)
+			daysNamesArr.push("8-15 DAYS")
+		}else if(daysArr[i] == "16to30DAYS"){
+			mainArr.push(sixteenToThirtyPercArr)
+			daysNamesArr.push("16-30DAYS")
+		}else if(daysArr[i] == "31to60DAYS"){
+			mainArr.push(thirtyoneToSixtyPercArr)
+			daysNamesArr.push("31-60DAYS")
+		}else if(daysArr[i] == "60DAYS"){
+			mainArr.push(aboveSixtyPercArr)
+			daysNamesArr.push("Above60DAYS")
+		}
+		
+		
+		$("#"+daysArr[i]).highcharts({
+			colors:['#12A89D'],
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: ''
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+				 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,	
+				 categories:daysNamesArr,
+				 labels: {
+					useHTML:true,
+					formatter: function() {
+						return '<h5>'+this.value+'<br/><p style="color:#000;text-align:center;"><b>'+globalStatusObj[this.value]+'</b></p></h5>';
+						
+						
+					},
+					
+				}
+			},
+			yAxis: {
+				 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,
+				labels: {
+					enabled: false
+				},
+				title: {
+					text: ''
+				}
+			},
+			legend: {
+				enabled: false
+			},
+			plotOptions:{
+				column: {
+						pointWidth: 30,
+						gridLineWidth: 15,
+					}
+				},
+			tooltip: {
+				pointFormat: 'Pendency:<b>{point.y}</b>'
+			},
+			series: [{
+				name: 'Pendency',
+				data: mainArr,
+				dataLabels: {
+					useHTML:true,
+					enabled: true,
+					color: '#000',
+					align: 'center',
+					style: {
+						fontSize:"14px",
+						fontWeight:"bold"
+					},
+					formatter: function() {
+							return '<span>'+this.y+' %</span>';
+					},
+						
+				}
+			}]
+		});
+	}
 }
 $(document).on("click",".departmentDetailsCls",function(){	
 	var departmentId =  $(this).attr("attr_department_id")
@@ -2982,12 +3085,12 @@ function getEofficeDesginationDetailsByDepartment(departmentId){
 	$("#departmentDetailsDivId").html(spinner);
 	var json = {
 		departmentId:departmentId,	
-		fromDate:"2017-11-01",	
-		toDate:"2017-12-31"		
+		//fromDate:"2017-11-01",	
+		//toDate:"2017-12-31"		
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getEofficeDesginationWiseDetailsFrDepartment',
+		url: 'getEofficeDesginationWiseDetailsFrDepartmentNew',  //'getEofficeDesginationWiseDetailsFrDepartment',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -3005,20 +3108,20 @@ function getEofficeDesginationDetailsByDepartment(departmentId){
 function buildEofficeDesginationDetailsByDepartment(result){
 	var str='';
 			str+='<div class="table-responsive">';
-				str+='<table class="table table-bordered" id="dataTableDepartmentId">';
-						str+='<thead>';
+				str+='<table class="table table-bordered table_ITC" id="dataTableDepartmentId">';
+						str+='<thead style="background-color:#CCCCCC">';
 						str+='<tr>';
 							str+='<th class="text-center">POST NAME</th>';
 							str+='<th class="text-center">EMPLOYEE</th>';
-							str+='<th style="background-color:#B2DFDB">Total</th>';
-							str+='<th style="background-color:#FBACAC">Action</th>';
-							str+='<th style="background-color:#FBACAC">Total Pendency</th>';
-							str+='<th style="background-color:#FBACAC">%</th>';
-							str+='<th style="background-color:#FDCECE">0 - 7 days</th>';
-							str+='<th style="background-color:#FDCECE">8 - 15 days</th>';
-							str+='<th style="background-color:#FDCECE">16 - 30 days</th>';
-							str+='<th style="background-color:#FDCECE">31 - 60 days</th>';
-							str+='<th style="background-color:#FDCECE"> > 60 days</th>';
+							str+='<th>Total</th>';
+							str+='<th>Action</th>';
+							str+='<th>Total Pendency</th>';
+							str+='<th>%</th>';
+							str+='<th>0 - 7 days</th>';
+							str+='<th>8 - 15 days</th>';
+							str+='<th>16 - 30 days</th>';
+							str+='<th>31 - 60 days</th>';
+							str+='<th> > 60 days</th>';
 						str+='</tr>';
 						str+='</thead>';
 						str+='<tbody>';
@@ -3659,7 +3762,7 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 	var str='';
 	str+='<div class="row">';
 		str+='<div class="col-sm-12">';
-			str+='<h3 class="font_weight">MEESEVA CETERES</h3>';
+			str+='<h3 class="font_weight">MEESEVA CENTERS</h3>';
 		str+='</div>';
 	str+='</div>';
 	str+='<div class="row">';
@@ -3724,7 +3827,7 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 				str+='<div class="panel panel-default panel-black">';
 						str+='<div class="panel-heading" role="tab" id="headingMonthKPI">';
 							str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordionMonthKPI" href="#collapseMonthKPI" aria-expanded="true" aria-controls="collapseMonthKPI">';
-								str+='<h4 class="panel-title">TARGET ACHIVED</h4>';
+								str+='<h4 class="panel-title">2017 MEESEVA CENTERS TARGET WISE ACHIEVED</h4>';
 							str+='</a>';
 						str+='</div>';
 					str+='<div id="collapseMonthKPI" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingMonthKPI">';

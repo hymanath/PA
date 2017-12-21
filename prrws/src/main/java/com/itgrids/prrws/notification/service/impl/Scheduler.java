@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.itgrids.dto.InputVO;
+import com.itgrids.service.IItcDashboardService;
 import com.itgrids.service.ILightMonitoring;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
@@ -25,6 +26,8 @@ public class Scheduler {
     private IRWSNICService rWSNICService;
     @Autowired
 	private IRwsWorksSchedulerService rwsWorksSchedulerService;
+    @Autowired
+  	private IItcDashboardService itcDashboardService;
 	
 	@Scheduled(cron = "0 30 2,14 * * * ")
 	public void runTheSchedulerEveryDay()
@@ -74,6 +77,20 @@ public class Scheduler {
 			rwsWorksSchedulerService.getWorksDataInsertion(input);
 			LOG.error("Cron Job For worksInsertion Completed");
 		
+			return;
+	}
+	
+	@Scheduled(cron ="0 0 0/2 * * ?")
+
+	public void runTheSchedulerForEvryTwoHrs()
+	{
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			LOG.error("Cron Job For ITE&C E-Ofc Started");
+			itcDashboardService.savingEofcDataDetails();
+			LOG.error("Cron Job For ITE&C E-Ofc Completed");
+		}
+		else 
 			return;
 	}
 	
