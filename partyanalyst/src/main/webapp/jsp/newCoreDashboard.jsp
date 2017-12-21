@@ -4754,7 +4754,7 @@
 		  <div class="modal-dialog modal-lg" style="width:85%">
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
-				<button type="button" class="close closeModalDeb" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close addClassClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="modalLabelNameId">Debate Details</h4>
 			  </div>
 			  <div class="modal-body">
@@ -4766,7 +4766,7 @@
 					<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
 			  </div>
 			  <div class="modal-footer">
-				<button type="button" class="btn btn-default closeModalDeb" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default addClassClose" data-dismiss="modal">Close</button>
 			  </div>
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->

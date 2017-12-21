@@ -18661,5 +18661,10 @@
 			<param name="root">grievanceReportVO</param>
 		</result>
 	 </action>
+	 <action name="getEachCharacterWiseMaxScaleAction" class="debateAction"  method="getEachCharacterWiseMaxScale">
+		<result type="json" name="success">
+			<param name="root">debateReportList</param>
+		</result>
+	 </action>
  </package>
 </struts>
