@@ -257,13 +257,21 @@ public class PrENCService implements IPrENCService {
 		}
 		return null;
 	}
-
+	
+	/***
+	 * LocationWiseInfo
+	 * @Author: sanjeev
+	 * 
+	 */
 	@Override
 	public List<EncWorksVO> getLocationWiseWorksInformation(InputVO inputVO) {
 		List<EncWorksVO> finalList= new ArrayList<EncWorksVO>();
 				
 		try{
 			Map<Long,EncWorksVO> locationMap= new HashMap<Long, EncWorksVO>();
+			Map<Long,Map<Long,EncWorksVO>> assemblylocationMap= new HashMap<Long, Map<Long,EncWorksVO>>();
+			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus",null);
+			
 			List<Object[]> locationData = null;
 			if(inputVO.getLocationType().equalsIgnoreCase("d")){
 				locationData= districtDAO.getEncDistricts();
@@ -272,85 +280,160 @@ public class PrENCService implements IPrENCService {
 			}else if(inputVO.getLocationType().equalsIgnoreCase("A")){
 				locationData= constituencyDAO.getEncconstituencies();
 			}
-			for (Object[] objects : locationData) {
-				EncWorksVO locationVO = locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
-					if(locationVO == null){
-						locationVO = new EncWorksVO();
-						locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-						locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), locationVO);
-					}				
-			     }
-			    ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/wbsMinisterRoadMinMaxMv",null);
+			if(!inputVO.getLocationType().equalsIgnoreCase("S") && !inputVO.getLocationType().equalsIgnoreCase("A")){
+				for (Object[] objects : locationData) {
+					EncWorksVO locationVO = locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						if(locationVO == null){
+							locationVO = new EncWorksVO();
+							locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), locationVO);
+						}
+					
+				}
+			}else if(!inputVO.getLocationType().equalsIgnoreCase("S") && inputVO.getLocationType().equalsIgnoreCase("A")){
+				
+				for (Object[] objects : locationData) {
+					Map<Long,EncWorksVO> mandallocationMap =assemblylocationMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					if(mandallocationMap == null){
+						mandallocationMap = new HashMap<Long, EncWorksVO>();
+						EncWorksVO locationVO = mandallocationMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
+						if(locationVO == null){
+							locationVO = new EncWorksVO();
+							locationVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							locationVO.setConstituencyname(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+							locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							mandallocationMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]), locationVO);
+						}
+						assemblylocationMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), mandallocationMap);
+					}else{
+						EncWorksVO locationVO = mandallocationMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
+						if(locationVO == null){
+							locationVO = new EncWorksVO();
+							locationVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							locationVO.setConstituencyname(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+							locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							mandallocationMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]), locationVO);
+						}
+						//assemblylocationMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), mandallocationMap);
+					}
+					
+				}
+				for(Long  locationId :assemblylocationMap.keySet()){
+					locationMap.putAll(assemblylocationMap.get(locationId));
+				}
+			}else if(inputVO.getLocationType().equalsIgnoreCase("S")){
+				EncWorksVO locationVO = new EncWorksVO();
+				locationVO.setLocationId(1l);
+				locationVO.setLocationName("AndraPradesh");
+				locationMap.put(1l, locationVO);
+			}
 			
-			    if (response.getStatus() != 200) {
+			
+			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-			} else {
-				String output = response.getEntity(String.class);
-				if (output != null && !output.isEmpty()) {
-					JSONArray resultArray= new JSONArray(output);
-					JSONObject Obj = resultArray.getJSONObject(0);
-					JSONArray array = Obj.getJSONArray("result");
-					for (int i = 0; i < array.length(); i++) {
-						JSONObject json = array.getJSONObject(i);
-						if(inputVO.getLocationType().equalsIgnoreCase("d") || inputVO.getLocationType().equalsIgnoreCase("m")){
-							EncWorksVO workVo = locationMap.get(json.getLong("DIST_CODE"));
-							if(workVo != null){
-								workVo.setAdminSanctionCount(json.getLong("TOT_WORKS"));
-								workVo.setTechnicallySanctionedCount(json.getLong("TOT_WORKS_TECHSANC"));
-								workVo.setCompletedCount(json.getLong("TOTWORKSCOMPLETED"));
-								workVo.setNotGrounded(json.getLong("TOT_WORKS_NOTGROUNDED"));
-								workVo.setUnderProcessCount(json.getLong("TOT_WORKS_ONGOING"));
-								workVo.setGroundedCount(json.getLong("GROUNDED"));
-							}
-						}else if(inputVO.getLocationType().equalsIgnoreCase("C")){
-							for (Object[] objects : locationData) {						
-								EncWorksVO workVo = locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
-								if(workVo != null){
-									List<Long> getMandalIds= constituencyDAO.getTehsilIds(commonMethodsUtilService.getLongValueForObject(objects[0]));
-									if(getMandalIds.contains(json.getLong("MAND_CODE"))){
-										workVo.setAdminSanctionCount(json.getLong("TOT_WORKS"));
-										workVo.setTechnicallySanctionedCount(json.getLong("TOT_WORKS_TECHSANC"));
-										workVo.setCompletedCount(json.getLong("TOTWORKSCOMPLETED"));
-										workVo.setNotGrounded(json.getLong("TOT_WORKS_NOTGROUNDED"));
-										workVo.setUnderProcessCount(json.getLong("TOT_WORKS_ONGOING"));
-										workVo.setGroundedCount(json.getLong("GROUNDED"));
+				} else {
+					String output = response.getEntity(String.class);
+					if (output != null && !output.isEmpty()) {
+						JSONArray resultArray= new JSONArray(output);
+						JSONObject Obj = resultArray.getJSONObject(0);
+						JSONArray array = Obj.getJSONArray("result");
+						if(!inputVO.getLocationType().equalsIgnoreCase("A")){
+							for (int i = 0; i < array.length(); i++) {
+								JSONObject json = array.getJSONObject(i);
+								EncWorksVO workVo =null;
+								if(inputVO.getLocationType().equalsIgnoreCase("d") || inputVO.getLocationType().equalsIgnoreCase("m")){
+									if(inputVO.getLocationType().equalsIgnoreCase("d")){
+										workVo = locationMap.get(json.getLong("DIST_CODE"));
+									}else{
+										workVo = locationMap.get(json.getLong("MAND_CODE"));
+									}
+									if(workVo != null){
+										workVo.setAdminSanctionCount(workVo.getAdminSanctionCount()+json.getLong("TOT_WORKS"));
+										workVo.setTechnicallySanctionedCount(workVo.getTechnicallySanctionedCount()+json.getLong("TOT_WORKS_TECHSANC"));
+										workVo.setCompletedCount(workVo.getCompletedCount()+json.getLong("TOTWORKSCOMPLETED"));
+										workVo.setNotGrounded(workVo.getNotGrounded()+json.getLong("TOT_WORKS_NOTGROUNDED"));
+										workVo.setUnderProcessCount(workVo.getUnderProcessCount()+json.getLong("TOT_WORKS_ONGOING"));
+										workVo.setGroundedCount(workVo.getGroundedCount()+json.getLong("GROUNDED"));
+									}
+								}else if(inputVO.getLocationType().equalsIgnoreCase("s")){
+									workVo = locationMap.get(1l);
+									if(workVo!=null){
+										workVo.setAdminSanctionCount(workVo.getAdminSanctionCount()+json.getLong("TOT_WORKS"));
+										workVo.setTechnicallySanctionedCount(workVo.getTechnicallySanctionedCount()+json.getLong("TOT_WORKS_TECHSANC"));
+										workVo.setCompletedCount(workVo.getCompletedCount()+json.getLong("TOTWORKSCOMPLETED"));
+										workVo.setNotGrounded(workVo.getNotGrounded()+json.getLong("TOT_WORKS_NOTGROUNDED"));
+										workVo.setUnderProcessCount(workVo.getUnderProcessCount()+json.getLong("TOT_WORKS_ONGOING"));
+										workVo.setGroundedCount(workVo.getGroundedCount()+json.getLong("GROUNDED"));
 									}
 								}
 								
-							}	
-							
-						}else if(inputVO.getLocationType().equalsIgnoreCase("s")){
-							EncWorksVO workVo=  new EncWorksVO();
-							workVo.setAdminSanctionCount(json.getLong("TOT_WORKS"));
-							workVo.setTechnicallySanctionedCount(json.getLong("TOT_WORKS_TECHSANC"));
-							workVo.setCompletedCount(json.getLong("TOTWORKSCOMPLETED"));
-							workVo.setNotGrounded(json.getLong("TOT_WORKS_NOTGROUNDED"));
-							workVo.setUnderProcessCount(json.getLong("TOT_WORKS_ONGOING"));
-							workVo.setGroundedCount(json.getLong("GROUNDED"));
-							finalList.add(workVo);
+							}
+							finalList.addAll(locationMap.values());
+						}else{
+							for (int i = 0; i < array.length(); i++) {
+								JSONObject json = array.getJSONObject(i);
+								EncWorksVO workVo = locationMap.get(json.getLong("MAND_CODE"));
+								if(workVo != null){
+									workVo.setAdminSanctionCount(workVo.getAdminSanctionCount()+json.getLong("TOT_WORKS"));
+									workVo.setTechnicallySanctionedCount(workVo.getTechnicallySanctionedCount()+json.getLong("TOT_WORKS_TECHSANC"));
+									workVo.setCompletedCount(workVo.getCompletedCount()+json.getLong("TOTWORKSCOMPLETED"));
+									workVo.setNotGrounded(workVo.getNotGrounded()+json.getLong("TOT_WORKS_NOTGROUNDED"));
+									workVo.setUnderProcessCount(workVo.getUnderProcessCount()+json.getLong("TOT_WORKS_ONGOING"));
+									workVo.setGroundedCount(workVo.getGroundedCount()+json.getLong("GROUNDED"));
+								}
+							}
+							Map<Long, EncWorksVO> assemblyListMap= new HashMap<Long, EncWorksVO>();
+							for (Long mandalId : locationMap.keySet()) {
+								EncWorksVO vo = locationMap.get(mandalId);
+								if(vo!= null){
+									EncWorksVO encVo =assemblyListMap.get(vo.getConstituencyId());
+									if(encVo == null){
+										encVo = new EncWorksVO();
+										encVo.setLocationId(vo.getConstituencyId());
+										encVo.setLocationName(vo.getConstituencyname());
+										encVo.setAdminSanctionCount(encVo.getAdminSanctionCount()+vo.getAdminSanctionCount());
+										encVo.setTechnicallySanctionedCount(encVo.getTechnicallySanctionedCount()+vo.getTechnicallySanctionedCount());
+										encVo.setCompletedCount(encVo.getCompletedCount()+vo.getCompletedCount());
+										encVo.setNotGrounded(encVo.getNotGrounded()+vo.getNotGrounded());
+										encVo.setUnderProcessCount(encVo.getUnderProcessCount()+vo.getUnderProcessCount());
+										encVo.setGroundedCount(encVo.getGroundedCount()+vo.getGroundedCount());
+										assemblyListMap.put(vo.getConstituencyId(), encVo);
+									}else{
+										encVo.setAdminSanctionCount(encVo.getAdminSanctionCount()+vo.getAdminSanctionCount());
+										encVo.setTechnicallySanctionedCount(encVo.getTechnicallySanctionedCount()+vo.getTechnicallySanctionedCount());
+										encVo.setCompletedCount(encVo.getCompletedCount()+vo.getCompletedCount());
+										encVo.setNotGrounded(encVo.getNotGrounded()+vo.getNotGrounded());
+										encVo.setUnderProcessCount(encVo.getUnderProcessCount()+vo.getUnderProcessCount());
+										encVo.setGroundedCount(encVo.getGroundedCount()+vo.getGroundedCount());
+									}
+								}
+							}
+							finalList.addAll(assemblyListMap.values());
 						}
-						
-					}
+					
 				}
-				
-			}
-			if(!inputVO.getLocationType().equalsIgnoreCase("s")){
-				
-				finalList.addAll(locationMap.values());
 			}
 		}catch(Exception e){
 			LOG.error("Exception raised at PrEncService - getLocationWiseWorksInformation  ", e);
 		}
 			
-		return null;
+		return finalList;
+		
 	}
-
+	/**
+	 * getEncTargetsAchievement
+	 * Author: Swapna
+	 * 
+	 */
 	@Override
 	public List<EncTargetsVO> getEncTargetsAchievement(InputVO inputVO) {
 		   List<EncTargetsVO> finalList= new ArrayList<EncTargetsVO>();
 		try{
 			Map<String,EncTargetsVO> locationMap= new HashMap<String, EncTargetsVO>();
+			Map<String,Map<String,EncTargetsVO>> assemblylocationMap= new HashMap<String, Map<String,EncTargetsVO>>();
 			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalTarAchievements",null);
 			List<Object[]> locationData = null;
 			if(inputVO.getLocationType().equalsIgnoreCase("d")){
@@ -360,7 +443,8 @@ public class PrENCService implements IPrENCService {
 			}else if(inputVO.getLocationType().equalsIgnoreCase("A")){
 				locationData= constituencyDAO.getEncconstituencies();
 			}
-			if(!inputVO.getLocationType().equalsIgnoreCase("S")){
+			
+			if(!inputVO.getLocationType().equalsIgnoreCase("S") && !inputVO.getLocationType().equalsIgnoreCase("A")){
 				for (Object[] objects : locationData) {
 					EncTargetsVO locationVO = locationMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
 						if(locationVO == null){
@@ -368,14 +452,49 @@ public class PrENCService implements IPrENCService {
 							locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 							locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 							locationMap.put(commonMethodsUtilService.getStringValueForObject(objects[1]), locationVO);
-						}					
+						}
+					
 				}
-				}else{
+			}else if(!inputVO.getLocationType().equalsIgnoreCase("S") && inputVO.getLocationType().equalsIgnoreCase("A")){
+				
+				for (Object[] objects : locationData) {
+					Map<String, EncTargetsVO> mandallocationMap =assemblylocationMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					if(mandallocationMap == null){
+						mandallocationMap = new HashMap<String, EncTargetsVO>();
+						EncTargetsVO locationVO = mandallocationMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
+						if(locationVO == null){
+							locationVO = new EncTargetsVO();
+							locationVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							locationVO.setConstituencyname(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+							locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							mandallocationMap.put(commonMethodsUtilService.getStringValueForObject(objects[3]), locationVO);
+						}
+						assemblylocationMap.put(commonMethodsUtilService.getStringValueForObject(objects[1]), mandallocationMap);
+					}else{
+						EncTargetsVO locationVO = mandallocationMap.get(commonMethodsUtilService.getStringValueForObject(objects[3]));
+						if(locationVO == null){
+							locationVO = new EncTargetsVO();
+							locationVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							locationVO.setConstituencyname(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+							locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							mandallocationMap.put(commonMethodsUtilService.getStringValueForObject(objects[3]), locationVO);
+						}
+						//assemblylocationMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), mandallocationMap);
+					}
+					
+				}
+				for(String  locationName :assemblylocationMap.keySet()){
+					locationMap.putAll(assemblylocationMap.get(locationName));
+				}
+			}else if(inputVO.getLocationType().equalsIgnoreCase("S")){
 				EncTargetsVO locationVO = new EncTargetsVO();
 				locationVO.setLocationId(1l);
 				locationVO.setLocationName("AndraPradesh");
 				locationMap.put("AndraPradesh", locationVO);
-			 }
+			}
+			
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			 } else {
@@ -384,77 +503,70 @@ public class PrENCService implements IPrENCService {
 					JSONArray resultArray= new JSONArray(output);
 					JSONObject Obj = resultArray.getJSONObject(0);
 					JSONArray array = Obj.getJSONArray("result");
-					for (int i = 0; i < array.length(); i++) {
-						JSONObject json = array.getJSONObject(i);
-						if(inputVO.getLocationType().equalsIgnoreCase("d") || inputVO.getLocationType().equalsIgnoreCase("m")){
-							EncTargetsVO encTargetsVO = locationMap.get(json.getString("DIST_NAME"));
-							if(encTargetsVO != null){
-								encTargetsVO.setLocationId(!json.getString("MAND_CODE").equalsIgnoreCase("null") ? json.getLong("MAND_CODE") : 0l);
-	        					encTargetsVO.setLocationName(!json.getString("DIST_NAME").trim().equalsIgnoreCase("null") ? json.getString("DIST_NAME") : "");	 
-	        					encTargetsVO.setLocationName(!json.getString("MAND_NAME").trim().equalsIgnoreCase("null") ? json.getString("MAND_NAME") : "");	 
-	        					encTargetsVO.setTotAchv(!json.getString("TOT_ACHV").equalsIgnoreCase("null") ? json.getLong("TOT_ACHV") : 0l);
-	        					encTargetsVO.setTotTarget(!json.getString("TOT_TARGET").equalsIgnoreCase("null") ? json.getLong("TOT_TARGET"):0l);
-	        					encTargetsVO.setTotPopu(!json.getString("TOT_POPU").equalsIgnoreCase("null") ? json.getDouble("TOT_POPU") : 0.00);
-	        					encTargetsVO.setTotWorks(!json.getString("TOT_WORKS").equalsIgnoreCase("null") ? json.getLong("TOT_WORKS") : 0l);
-	        					encTargetsVO.setQ1Achv(!json.getString("Q1_ACHV").equalsIgnoreCase("null") ? json.getLong("Q1_ACHV") : 0l);
-	        					encTargetsVO.setTotLength(!json.getString("TOT_LENGTH").equalsIgnoreCase("null") ? json.getDouble("TOT_LENGTH") : 0.00);
-	        					encTargetsVO.setTotPer(!json.getString("TOT_PER").equalsIgnoreCase("null") ? json.getLong("TOT_PER") : 0l);
-	        					encTargetsVO.setQ1Per(!json.getString("Q1_PER").equalsIgnoreCase("null") ? json.getLong("Q1_PER") : 0l);
-	        					encTargetsVO.setQ1Target(!json.getString("Q1_TARGET").equalsIgnoreCase("null") ? json.getLong("Q1_TARGET") : 0l);
-	        					encTargetsVO.setQ2Achv(!json.getString("Q2_ACHV").equalsIgnoreCase("null") ? json.getLong("Q2_ACHV") : 0l);
-	        					encTargetsVO.setQ2Per(!json.getString("Q2_PER").equalsIgnoreCase("null") ? json.getLong("Q2_PER") : 0l);
-	        					encTargetsVO.setQ2Target(!json.getString("Q2_TARGET").equalsIgnoreCase("null") ? json.getLong("Q2_TARGET") : 0l);
-	        					encTargetsVO.setQ3Achv(!json.getString("Q3_ACHV").equalsIgnoreCase("null") ? json.getLong("Q3_ACHV") : 0l);
-	        					encTargetsVO.setQ3Per(!json.getString("Q3_PER").equalsIgnoreCase("null") ? json.getLong("Q3_PER") : 0l);
-	        					encTargetsVO.setQ3Target(!json.getString("Q3_TARGET").equalsIgnoreCase("null") ? json.getLong("Q3_TARGET") : 0l);
-	        					encTargetsVO.setQ4Target(!json.getString("Q4_TARGET").equalsIgnoreCase("null") ? json.getLong("Q4_TARGET") : 0l);
-	        					encTargetsVO.setQ4Per(!json.getString("Q4_PER").equalsIgnoreCase("null") ? json.getLong("Q4_PER") : 0l);
-	        					encTargetsVO.setQ4Achv(!json.getString("Q4_ACHV").equalsIgnoreCase("null") ? json.getLong("Q4_ACHV") : 0l);
-	        					encTargetsVO.setSchemeName(!json.getString("SCHEME_NAME").trim().equalsIgnoreCase("null") ? json.getString("SCHEME_NAME") : "");
-	        					encTargetsVO.setAgreementAmount(!json.getString("AGREEMENT_AMOUNT").equalsIgnoreCase("null") ? json.getDouble("AGREEMENT_AMOUNT") : 0.00);
-	        					encTargetsVO.setScheme(!json.getString("SCHEME").equalsIgnoreCase("null") ? json.getLong("SCHEME") : 0l);    	
-							}
-						}else if(inputVO.getLocationType().equalsIgnoreCase("C")){
-							for (Object[] objects : locationData) {						
-								EncTargetsVO encTargetsVO = locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
-								if(encTargetsVO != null){
-									List<Long> getMandalIds= constituencyDAO.getTehsilIds(commonMethodsUtilService.getLongValueForObject(objects[0]));
-									if(getMandalIds.contains(json.getLong("MAND_CODE"))){
-										encTargetsVO.setLocationId(!json.getString("MAND_CODE").equalsIgnoreCase("null") ? json.getLong("MAND_CODE") : 0l);
-			        					encTargetsVO.setLocationName(!json.getString("DIST_NAME").trim().equalsIgnoreCase("null") ? json.getString("DIST_NAME") : "");	 
-			        					encTargetsVO.setLocationName(!json.getString("MAND_NAME").trim().equalsIgnoreCase("null") ? json.getString("MAND_NAME") : "");	 
-			        					encTargetsVO.setTotAchv(!json.getString("TOT_ACHV").equalsIgnoreCase("null") ? json.getLong("TOT_ACHV") : 0l);
-			        					encTargetsVO.setTotTarget(!json.getString("TOT_TARGET").equalsIgnoreCase("null") ? json.getLong("TOT_TARGET"):0l);
-			        					encTargetsVO.setTotPopu(!json.getString("TOT_POPU").equalsIgnoreCase("null") ? json.getDouble("TOT_POPU") : 0.00);
-			        					encTargetsVO.setTotWorks(!json.getString("TOT_WORKS").equalsIgnoreCase("null") ? json.getLong("TOT_WORKS") : 0l);
-			        					encTargetsVO.setQ1Achv(!json.getString("Q1_ACHV").equalsIgnoreCase("null") ? json.getLong("Q1_ACHV") : 0l);
-			        					encTargetsVO.setTotLength(!json.getString("TOT_LENGTH").equalsIgnoreCase("null") ? json.getDouble("TOT_LENGTH") : 0.00);
-			        					encTargetsVO.setTotPer(!json.getString("TOT_PER").equalsIgnoreCase("null") ? json.getLong("TOT_PER") : 0l);
-			        					encTargetsVO.setQ1Per(!json.getString("Q1_PER").equalsIgnoreCase("null") ? json.getLong("Q1_PER") : 0l);
-			        					encTargetsVO.setQ1Target(!json.getString("Q1_TARGET").equalsIgnoreCase("null") ? json.getLong("Q1_TARGET") : 0l);
-			        					encTargetsVO.setQ2Achv(!json.getString("Q2_ACHV").equalsIgnoreCase("null") ? json.getLong("Q2_ACHV") : 0l);
-			        					encTargetsVO.setQ2Per(!json.getString("Q2_PER").equalsIgnoreCase("null") ? json.getLong("Q2_PER") : 0l);
-			        					encTargetsVO.setQ2Target(!json.getString("Q2_TARGET").equalsIgnoreCase("null") ? json.getLong("Q2_TARGET") : 0l);
-			        					encTargetsVO.setQ3Achv(!json.getString("Q3_ACHV").equalsIgnoreCase("null") ? json.getLong("Q3_ACHV") : 0l);
-			        					encTargetsVO.setQ3Per(!json.getString("Q3_PER").equalsIgnoreCase("null") ? json.getLong("Q3_PER") : 0l);
-			        					encTargetsVO.setQ3Target(!json.getString("Q3_TARGET").equalsIgnoreCase("null") ? json.getLong("Q3_TARGET") : 0l);
-			        					encTargetsVO.setQ4Target(!json.getString("Q4_TARGET").equalsIgnoreCase("null") ? json.getLong("Q4_TARGET") : 0l);
-			        					encTargetsVO.setQ4Per(!json.getString("Q4_PER").equalsIgnoreCase("null") ? json.getLong("Q4_PER") : 0l);
-			        					encTargetsVO.setQ4Achv(!json.getString("Q4_ACHV").equalsIgnoreCase("null") ? json.getLong("Q4_ACHV") : 0l);
-			        					encTargetsVO.setSchemeName(!json.getString("SCHEME_NAME").trim().equalsIgnoreCase("null") ? json.getString("SCHEME_NAME") : "");
-			        					encTargetsVO.setAgreementAmount(!json.getString("AGREEMENT_AMOUNT").equalsIgnoreCase("null") ? json.getDouble("AGREEMENT_AMOUNT") : 0.00);
-			        					encTargetsVO.setScheme(!json.getString("SCHEME").equalsIgnoreCase("null") ? json.getLong("SCHEME") : 0l);    	
-									}
+					if(!inputVO.getLocationType().equalsIgnoreCase("A")){
+						for (int i = 0; i < array.length(); i++) {
+							JSONObject json = array.getJSONObject(i);
+							EncTargetsVO encTargetsVO = null;
+							if(inputVO.getLocationType().equalsIgnoreCase("d") || inputVO.getLocationType().equalsIgnoreCase("m")){
+								if(inputVO.getLocationType().equalsIgnoreCase("d")){
+									encTargetsVO = locationMap.get(json.getString("DIST_NAME"));
+								}else{
+									encTargetsVO = locationMap.get(json.getString("MAND_NAME"));
 								}
-								
-							}	
-						    }else if(inputVO.getLocationType().equalsIgnoreCase("s")){
-							 EncTargetsVO	encTargetsVO = locationMap.get("AndraPradesh");
-						        if(encTargetsVO != null){
-								encTargetsVO.setLocationId(!json.getString("MAND_CODE").equalsIgnoreCase("null") ? json.getLong("MAND_CODE") : 0l);
-	        					encTargetsVO.setLocationName(!json.getString("DIST_NAME").trim().equalsIgnoreCase("null") ? json.getString("DIST_NAME") : "");	 
-	        					encTargetsVO.setLocationName(!json.getString("MAND_NAME").trim().equalsIgnoreCase("null") ? json.getString("MAND_NAME") : "");	 
-	        					encTargetsVO.setTotAchv(!json.getString("TOT_ACHV").equalsIgnoreCase("null") ? json.getLong("TOT_ACHV") : 0l);
+								if(encTargetsVO != null){
+		        					encTargetsVO.setTotAchv(!json.getString("TOT_ACHV").equalsIgnoreCase("null") ? json.getLong("TOT_ACHV") : 0l);
+		        					encTargetsVO.setTotTarget(!json.getString("TOT_TARGET").equalsIgnoreCase("null") ? json.getLong("TOT_TARGET"):0l);
+		        					encTargetsVO.setTotPopu(!json.getString("TOT_POPU").equalsIgnoreCase("null") ? json.getDouble("TOT_POPU") : 0.00);
+		        					encTargetsVO.setTotWorks(!json.getString("TOT_WORKS").equalsIgnoreCase("null") ? json.getLong("TOT_WORKS") : 0l);
+		        					encTargetsVO.setQ1Achv(!json.getString("Q1_ACHV").equalsIgnoreCase("null") ? json.getLong("Q1_ACHV") : 0l);
+		        					encTargetsVO.setTotLength(!json.getString("TOT_LENGTH").equalsIgnoreCase("null") ? json.getDouble("TOT_LENGTH") : 0.00);
+		        					encTargetsVO.setTotPer(!json.getString("TOT_PER").equalsIgnoreCase("null") ? json.getLong("TOT_PER") : 0l);
+		        					encTargetsVO.setQ1Per(!json.getString("Q1_PER").equalsIgnoreCase("null") ? json.getLong("Q1_PER") : 0l);
+		        					encTargetsVO.setQ1Target(!json.getString("Q1_TARGET").equalsIgnoreCase("null") ? json.getLong("Q1_TARGET") : 0l);
+		        					encTargetsVO.setQ2Achv(!json.getString("Q2_ACHV").equalsIgnoreCase("null") ? json.getLong("Q2_ACHV") : 0l);
+		        					encTargetsVO.setQ2Per(!json.getString("Q2_PER").equalsIgnoreCase("null") ? json.getLong("Q2_PER") : 0l);
+		        					encTargetsVO.setQ2Target(!json.getString("Q2_TARGET").equalsIgnoreCase("null") ? json.getLong("Q2_TARGET") : 0l);
+		        					encTargetsVO.setQ3Achv(!json.getString("Q3_ACHV").equalsIgnoreCase("null") ? json.getLong("Q3_ACHV") : 0l);
+		        					encTargetsVO.setQ3Per(!json.getString("Q3_PER").equalsIgnoreCase("null") ? json.getLong("Q3_PER") : 0l);
+		        					encTargetsVO.setQ3Target(!json.getString("Q3_TARGET").equalsIgnoreCase("null") ? json.getLong("Q3_TARGET") : 0l);
+		        					encTargetsVO.setQ4Target(!json.getString("Q4_TARGET").equalsIgnoreCase("null") ? json.getLong("Q4_TARGET") : 0l);
+		        					encTargetsVO.setQ4Per(!json.getString("Q4_PER").equalsIgnoreCase("null") ? json.getLong("Q4_PER") : 0l);
+		        					encTargetsVO.setQ4Achv(!json.getString("Q4_ACHV").equalsIgnoreCase("null") ? json.getLong("Q4_ACHV") : 0l);
+		        					encTargetsVO.setAgreementAmount(!json.getString("AGREEMENT_AMOUNT").equalsIgnoreCase("null") ? json.getDouble("AGREEMENT_AMOUNT") : 0.00);
+								}
+							}else if(inputVO.getLocationType().equalsIgnoreCase("s")){
+								 	encTargetsVO = locationMap.get("AndraPradesh");
+							        if(encTargetsVO != null){
+		        					encTargetsVO.setTotAchv(!json.getString("TOT_ACHV").equalsIgnoreCase("null") ? json.getLong("TOT_ACHV") : 0l);
+		        					encTargetsVO.setTotTarget(!json.getString("TOT_TARGET").equalsIgnoreCase("null") ? json.getLong("TOT_TARGET"):0l);
+		        					encTargetsVO.setTotPopu(!json.getString("TOT_POPU").equalsIgnoreCase("null") ? json.getDouble("TOT_POPU") : 0.00);
+		        					encTargetsVO.setTotWorks(!json.getString("TOT_WORKS").equalsIgnoreCase("null") ? json.getLong("TOT_WORKS") : 0l);
+		        					encTargetsVO.setQ1Achv(!json.getString("Q1_ACHV").equalsIgnoreCase("null") ? json.getLong("Q1_ACHV") : 0l);
+		        					encTargetsVO.setTotLength(!json.getString("TOT_LENGTH").equalsIgnoreCase("null") ? json.getDouble("TOT_LENGTH") : 0.00);
+		        					encTargetsVO.setTotPer(!json.getString("TOT_PER").equalsIgnoreCase("null") ? json.getLong("TOT_PER") : 0l);
+		        					encTargetsVO.setQ1Per(!json.getString("Q1_PER").equalsIgnoreCase("null") ? json.getLong("Q1_PER") : 0l);
+		        					encTargetsVO.setQ1Target(!json.getString("Q1_TARGET").equalsIgnoreCase("null") ? json.getLong("Q1_TARGET") : 0l);
+		        					encTargetsVO.setQ2Achv(!json.getString("Q2_ACHV").equalsIgnoreCase("null") ? json.getLong("Q2_ACHV") : 0l);
+		        					encTargetsVO.setQ2Per(!json.getString("Q2_PER").equalsIgnoreCase("null") ? json.getLong("Q2_PER") : 0l);
+		        					encTargetsVO.setQ2Target(!json.getString("Q2_TARGET").equalsIgnoreCase("null") ? json.getLong("Q2_TARGET") : 0l);
+		        					encTargetsVO.setQ3Achv(!json.getString("Q3_ACHV").equalsIgnoreCase("null") ? json.getLong("Q3_ACHV") : 0l);
+		        					encTargetsVO.setQ3Per(!json.getString("Q3_PER").equalsIgnoreCase("null") ? json.getLong("Q3_PER") : 0l);
+		        					encTargetsVO.setQ3Target(!json.getString("Q3_TARGET").equalsIgnoreCase("null") ? json.getLong("Q3_TARGET") : 0l);
+		        					encTargetsVO.setQ4Target(!json.getString("Q4_TARGET").equalsIgnoreCase("null") ? json.getLong("Q4_TARGET") : 0l);
+		        					encTargetsVO.setQ4Per(!json.getString("Q4_PER").equalsIgnoreCase("null") ? json.getLong("Q4_PER") : 0l);
+		        					encTargetsVO.setQ4Achv(!json.getString("Q4_ACHV").equalsIgnoreCase("null") ? json.getLong("Q4_ACHV") : 0l);
+		        					encTargetsVO.setAgreementAmount(!json.getString("AGREEMENT_AMOUNT").equalsIgnoreCase("null") ? json.getDouble("AGREEMENT_AMOUNT") : 0.00);
+								}
+							}
+						}
+						finalList.addAll(locationMap.values());
+					}else{
+
+						for (int i = 0; i < array.length(); i++) {
+							JSONObject json = array.getJSONObject(i);
+							EncTargetsVO encTargetsVO = locationMap.get(!json.getString("MAND_NAME").trim().equalsIgnoreCase("null") ? json.getString("MAND_NAME") : "");
+							if(encTargetsVO != null){
+								encTargetsVO.setTotAchv(!json.getString("TOT_ACHV").equalsIgnoreCase("null") ? json.getLong("TOT_ACHV") : 0l);
 	        					encTargetsVO.setTotTarget(!json.getString("TOT_TARGET").equalsIgnoreCase("null") ? json.getLong("TOT_TARGET"):0l);
 	        					encTargetsVO.setTotPopu(!json.getString("TOT_POPU").equalsIgnoreCase("null") ? json.getDouble("TOT_POPU") : 0.00);
 	        					encTargetsVO.setTotWorks(!json.getString("TOT_WORKS").equalsIgnoreCase("null") ? json.getLong("TOT_WORKS") : 0l);
@@ -472,15 +584,68 @@ public class PrENCService implements IPrENCService {
 	        					encTargetsVO.setQ4Target(!json.getString("Q4_TARGET").equalsIgnoreCase("null") ? json.getLong("Q4_TARGET") : 0l);
 	        					encTargetsVO.setQ4Per(!json.getString("Q4_PER").equalsIgnoreCase("null") ? json.getLong("Q4_PER") : 0l);
 	        					encTargetsVO.setQ4Achv(!json.getString("Q4_ACHV").equalsIgnoreCase("null") ? json.getLong("Q4_ACHV") : 0l);
-	        					encTargetsVO.setSchemeName(!json.getString("SCHEME_NAME").trim().equalsIgnoreCase("null") ? json.getString("SCHEME_NAME") : "");
 	        					encTargetsVO.setAgreementAmount(!json.getString("AGREEMENT_AMOUNT").equalsIgnoreCase("null") ? json.getDouble("AGREEMENT_AMOUNT") : 0.00);
-	        					encTargetsVO.setScheme(!json.getString("SCHEME").equalsIgnoreCase("null") ? json.getLong("SCHEME") : 0l);    	
 							}
-						}						
+						}
+						Map<String, EncTargetsVO> assemblyListMap= new HashMap<String, EncTargetsVO>();
+						for (String mandalName : locationMap.keySet()) {
+							EncTargetsVO vo = locationMap.get(mandalName);
+							if(vo!= null){
+								EncTargetsVO encTargetsVO =assemblyListMap.get(vo.getConstituencyId());
+								if(encTargetsVO == null){
+									encTargetsVO = new EncTargetsVO();
+									encTargetsVO.setLocationId(vo.getConstituencyId());
+									encTargetsVO.setLocationName(vo.getConstituencyname());
+									encTargetsVO.setTotAchv(vo.getTotAchv()+encTargetsVO.getTotAchv());
+		        					encTargetsVO.setTotTarget(vo.getTotTarget()+encTargetsVO.getTotTarget());
+		        					encTargetsVO.setTotPopu(vo.getTotPopu()+encTargetsVO.getTotPopu());
+		        					encTargetsVO.setTotWorks(vo.getTotWorks()+encTargetsVO.getTotWorks());
+		        					encTargetsVO.setQ1Achv(vo.getQ1Achv()+encTargetsVO.getQ1Achv());
+		        					encTargetsVO.setTotLength(vo.getTotLength());
+		        					encTargetsVO.setTotPer(vo.getTotPer());
+		        					encTargetsVO.setQ1Per(vo.getQ1Per());
+		        					encTargetsVO.setQ1Target(vo.getQ1Target());
+		        					encTargetsVO.setQ2Achv(vo.getQ2Achv());
+		        					encTargetsVO.setQ2Per(vo.getQ2Per());
+		        					encTargetsVO.setQ2Target(vo.getQ2Target());
+		        					encTargetsVO.setQ3Achv(vo.getQ3Achv());
+		        					encTargetsVO.setQ3Per(vo.getQ3Per());
+		        					encTargetsVO.setQ3Target(vo.getQ3Target());
+		        					encTargetsVO.setQ4Target(vo.getQ4Target());
+		        					encTargetsVO.setQ4Per(vo.getQ4Per());
+		        					encTargetsVO.setQ4Achv(vo.getQ4Achv());
+		        					encTargetsVO.setAgreementAmount(vo.getAgreementAmount());
+									assemblyListMap.put(vo.getConstituencyname(), encTargetsVO);
+								}else{
+									encTargetsVO.setTotAchv(vo.getTotAchv()+encTargetsVO.getTotAchv());
+		        					encTargetsVO.setTotTarget(vo.getTotTarget()+encTargetsVO.getTotTarget());
+		        					encTargetsVO.setTotPopu(vo.getTotPopu()+encTargetsVO.getTotPopu());
+		        					encTargetsVO.setTotWorks(vo.getTotWorks()+encTargetsVO.getTotWorks());
+		        					encTargetsVO.setQ1Achv(vo.getQ1Achv()+encTargetsVO.getQ1Achv());
+		        					encTargetsVO.setTotLength(vo.getTotLength());
+		        					encTargetsVO.setTotPer(vo.getTotPer());
+		        					encTargetsVO.setQ1Per(vo.getQ1Per());
+		        					encTargetsVO.setQ1Target(vo.getQ1Target());
+		        					encTargetsVO.setQ2Achv(vo.getQ2Achv());
+		        					encTargetsVO.setQ2Per(vo.getQ2Per());
+		        					encTargetsVO.setQ2Target(vo.getQ2Target());
+		        					encTargetsVO.setQ3Achv(vo.getQ3Achv());
+		        					encTargetsVO.setQ3Per(vo.getQ3Per());
+		        					encTargetsVO.setQ3Target(vo.getQ3Target());
+		        					encTargetsVO.setQ4Target(vo.getQ4Target());
+		        					encTargetsVO.setQ4Per(vo.getQ4Per());
+		        					encTargetsVO.setQ4Achv(vo.getQ4Achv());
+		        					encTargetsVO.setAgreementAmount(vo.getAgreementAmount());
+									assemblyListMap.put(vo.getConstituencyname(), encTargetsVO);
+								}
+							}
+						}
+						finalList.addAll(assemblyListMap.values());
+					
 					}
-					}
-					}
-			finalList.addAll(locationMap.values());
+					
+				}
+			}
 			
 		 }catch(Exception e){
 			LOG.error("Exception raised at PrEncService - getEncTargetsAchievement  ", e);
