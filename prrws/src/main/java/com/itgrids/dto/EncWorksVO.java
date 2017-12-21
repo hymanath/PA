@@ -5,6 +5,7 @@ import java.util.List;
 
 public class EncWorksVO {
 
+	private Long totalWorksEntrusted = 0l;
 	private Long locationId;
 	private String locationName;
 	private Long underProcessCount=0l;
@@ -106,6 +107,12 @@ public class EncWorksVO {
 	}
 	public String getLocationName() {
 		return locationName;
+	}
+	public Long getTotalWorksEntrusted() {
+		return totalWorksEntrusted;
+	}
+	public void setTotalWorksEntrusted(Long totalWorksEntrusted) {
+		this.totalWorksEntrusted = totalWorksEntrusted;
 	}
 	
 	
