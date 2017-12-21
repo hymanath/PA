@@ -102,7 +102,7 @@ function getCandidateAndPartyWiseNewsChannals(type,categoryId){
 function getCandidateAndPartyWiseNewsChannelsBuilding(result){
 	var str="";
 	str+='<div class="table-responsive">';
-	str+='<table class="table table-bordered" style="width:100%">';
+	str+='<table class="table table-bordered" id="dataTableCanAndPartyWiseNewsChannel" style="width:100%">';
 		str+='<thead>';
 			str+='<tr>';
 				if(result[0].coreDashBoardVOList != null && result[0].coreDashBoardVOList.length > 0){
@@ -142,6 +142,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result){
 	str+='</div>';
 	
 	$("#EMCoverageTimeSummaryDivId").html(str);
+	$("#dataTableCanAndPartyWiseNewsChannel").dataTable();
 }
 
 function getDayWiseCandidateCoverageTime(type,categoryId){
