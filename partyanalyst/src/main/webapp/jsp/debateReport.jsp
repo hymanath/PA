@@ -207,7 +207,7 @@ function generateDebateReport(result)
 			str += '<th style="width: 234px;">'+result.participantsList[0].scaleList[a].name.split("(")[0]+'</th>';	
 			for(var i = 0 ; i<noOfParticepents ; i++)
 			{
-				str += '<td><input class="performanceRating" value="'+result.participantsList[i].scaleList[a].perc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly/><span class="label label-default label-xs labelCustom"  data-readonly>'+result.participantsList[i].scaleList[a].perc+'</span></td>';	
+				str += '<td><input class="performanceRating" value="'+result.participantsList[i].scaleList[a].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly/><span class="label label-default label-xs labelCustom"  data-readonly>'+result.participantsList[i].scaleList[a].scalePerc+'</span></td>';	
 			}
 			str += '</tr>';
 		}

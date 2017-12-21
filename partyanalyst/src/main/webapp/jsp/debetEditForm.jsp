@@ -650,7 +650,7 @@ function prepopulateDebateForm(result)
 	$(".radioDebateStateCls").each(function(){
 		if($(this).val() == result.debateLocId){
 		   $(this).prop('checked', true);
-		}else if(result.debateLocId == 0){
+		}else if(result.debateLocId == 0 || result.debateLocId == null){
 			$( 'input[name="stateSelection9"][value="2"]').prop('checked', true);
 		}
 	});
@@ -978,9 +978,33 @@ function validateFieldsForEdit(){
 				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' required.');				
 				flag = false;			
 			}
-			if(prsentation >5){
+			/* if(prsentation >5){
 				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - 5.');
 				flag = false;	
+			} */
+			if(rolesids.slice(0, rolesids.lastIndexOf("1")) == "Subject"){
+			if(prsentation > globalSubjectScale){
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - '+globalSubjectScale+'.');
+				flag = false;	
+			}
+			}
+			if(rolesids.slice(0, rolesids.lastIndexOf("1")) == "Presentation"){
+			if(prsentation > globalPresentationScale){
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - '+globalPresentationScale+'.');
+				flag = false;	
+			}
+			}
+			if(rolesids.slice(0, rolesids.lastIndexOf("1")) == "CounterAttack"){
+			if(prsentation > globalCounterAttack){
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - '+globalCounterAttack+'.');
+				flag = false;	
+			}
+			}
+			if(rolesids.slice(0, rolesids.lastIndexOf("1")) == "BodyLanguage"){
+			if(prsentation > globalBodyLanguage){
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - '+globalBodyLanguage+'.');
+				flag = false;	
+			}
 			}
 
 		});
@@ -1055,7 +1079,6 @@ function validateFieldsForEdit(){
 			$("#participantErrSpanId").html('Please add minimum one Participant.');
 				flag = false;			
 		}
-		//srujana validations
      var count=1;
 	 //var debateCandidateLocationId =0;
 	 var sateId=0;
@@ -1082,6 +1105,42 @@ function validateFieldsForEdit(){
 $(document).on("keypress",".participntRoles",function(event){
          return isNumberAndDecimal(event, this);
 });
+    var globalSubjectScale;
+	var globalPresentationScale;
+	var globalCounterAttack;
+	var globalBodyLanguage;
+	getEachCharacterWiseMaxScale();
+	function getEachCharacterWiseMaxScale(){
+	
+	  var jsObj = {
+		
+		}
+		
+    $.ajax({
+          type:'GET',
+          url: 'getEachCharacterWiseMaxScaleAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	 if(result != null && result.length >0){
+		 for(var i in result){
+			 if(result[i].characterSticsId == 1){
+				 globalSubjectScale = result[i].maxScale;
+			 }
+			if(result[i].characterSticsId == 2){
+				globalPresentationScale = result[i].maxScale;
+			}
+			if(result[i].characterSticsId == 3){
+				globalCounterAttack = result[i].maxScale;
+			}
+			if(result[i].characterSticsId == 4){
+				globalBodyLanguage = result[i].maxScale;
+			}
+			 
+		 } 
+	   } 
+   });
+  }
 </script>
 </body>
 </html>

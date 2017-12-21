@@ -323,7 +323,9 @@ function buildScaleBasedPerformanceCohort(result,debateLocationIdArry)
 						str+='<td>';
 							str+='<p class="text-capital">overall Performance</p>';
 							if(result[i].overAllPerc !=null && result[i].overAllPerc>0.0){
-								str+='<p class="text-capital"><input class="performanceRating" value="'+(result[i].overAllPerc / (result[i].coreDebateVOList).length).toFixed(1)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+(result[i].overAllPerc / (result[i].coreDebateVOList).length).toFixed(1)+'</span></p>';
+								//str+='<p class="text-capital"><input class="performanceRating" value="'+(result[i].overAllPerc / (result[i].coreDebateVOList).length).toFixed(1)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+(result[i].overAllPerc / (result[i].coreDebateVOList).length).toFixed(1)+'</span></p>';
+								str+='<p class="text-capital"><input class="performanceRating" value="'+result[i].overAllPerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result[i].overAllPerc+'</span></p>';
+								
 							}else{
 								str+='<p class="text-capital"><input class="performanceRating" value="0.0" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">0.0</span></p>';
 							}
@@ -1223,6 +1225,7 @@ $(document).on("click",".partyWiseDebateCls",function(){
 	   popupLocationId.push(str_array[i]);
    }
    $("#debateModelDivId").modal("show");
+   $(".addClassClose").removeClass("closeModalDeb");
 	getCoreDebateBasicDetailsOfPartyDetails(designationId,partyId,type,popupLocationId);
 });
 function getCoreDebateBasicDetailsOfPartyDetails(designationId,partyId,type,popupLocationId){
@@ -1307,6 +1310,7 @@ $(document).on("click",".debateDetailsCls",function(){
 	
 	$(document).on("click",".overAllCandidateCls",function(){
 		$("#debateParticipantModelDivId").modal("show");
+		$(".addClassClose").removeClass("closeModalDeb");
 		var partyId = $(this).attr("attr_party_id");		
 		var candidateId = $(this).attr("attr_candidate_id");
         var designationId=0;		
@@ -1484,6 +1488,7 @@ function buildCoreDebatesBasicDetailsOfPartyDebates(result,type){
 }
 $(document).on("click",".perforamnceDebateCls",function(){
 	$("#debateModelDivId").modal("show");
+	$(".addClassClose").removeClass("closeModalDeb");
 	var partyId = $(this).attr("attr_partyId");
 	var type = $(this).attr("attr_type");
 	var candidateId = $(this).attr("attr_candidateId");
@@ -1822,7 +1827,7 @@ function buildDesignationWiseCandidateOverAllPerformanceCohort(result,participan
 }
 $(document).on("click",".designationWiseDebateCls",function(){
 	var popupLocationId =[];
-	
+	$(".addClassClose").addClass("closeModalDeb");
 	var designationId = $(this).attr("attr_partyId");
 	var partyId=0;
 	var type = $(this).attr("attr_type");
@@ -1856,7 +1861,7 @@ $(document).on("click",".designationWiseCandidatesCls",function(){
 $(document).on("click",".closeModalDeb",function(){
 	setTimeout(function(){
 		$('body').addClass("modal-open");
-	}, 400);                     
+	}, 1000);                     
 });
 $(document).on("click","#debatesTabViewDebateId",function(){
 	 $("#headingId").html("Debate Location");                   

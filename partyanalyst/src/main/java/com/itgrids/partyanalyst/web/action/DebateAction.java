@@ -1700,4 +1700,14 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS; 
 	}
+	public String getEachCharacterWiseMaxScale(){
+		try{			
+			jObj = new JSONObject(getTask());			
+			debateReportList = debateService.getEachCharacterWiseMaxScale();
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getEachCharacterWiseMaxScale() in DebateAction class. "+e);
+		}
+		return Action.SUCCESS; 
+	}
 }

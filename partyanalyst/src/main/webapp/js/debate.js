@@ -173,9 +173,30 @@ function validateFields(){
 				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' required.');				
 				flag = false;			
 			}
-			if(prsentation >5){
-				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - 5.');
+			//srujana
+			if(rolesids.slice(0, rolesids.lastIndexOf("1")) == "Subject"){
+			if(prsentation > globalSubjectScale){
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - '+globalSubjectScale+'.');
 				flag = false;	
+			}
+			}
+			if(rolesids.slice(0, rolesids.lastIndexOf("1")) == "Presentation"){
+			if(prsentation > globalPresentationScale){
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - '+globalPresentationScale+'.');
+				flag = false;	
+			}
+			}
+			if(rolesids.slice(0, rolesids.lastIndexOf("1")) == "CounterAttack"){
+			if(prsentation > globalCounterAttack){
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - '+globalCounterAttack+'.');
+				flag = false;	
+			}
+			}
+			if(rolesids.slice(0, rolesids.lastIndexOf("1")) == "BodyLanguage"){
+			if(prsentation > globalBodyLanguage){
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - '+globalBodyLanguage+'.');
+				flag = false;	
+			}
 			}
 
 		});
@@ -3338,3 +3359,39 @@ function onlyAlphabets(e, t) {
 
         return true;
     } 
+	var globalSubjectScale;
+	var globalPresentationScale;
+	var globalCounterAttack;
+	var globalBodyLanguage;
+	getEachCharacterWiseMaxScale();
+	function getEachCharacterWiseMaxScale(){
+	
+	  var jsObj = {
+		
+		}
+		
+    $.ajax({
+          type:'GET',
+          url: 'getEachCharacterWiseMaxScaleAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	 if(result != null && result.length >0){
+		 for(var i in result){
+			 if(result[i].characterSticsId == 1){
+				 globalSubjectScale = result[i].maxScale;
+			 }
+			if(result[i].characterSticsId == 2){
+				globalPresentationScale = result[i].maxScale;
+			}
+			if(result[i].characterSticsId == 3){
+				globalCounterAttack = result[i].maxScale;
+			}
+			if(result[i].characterSticsId == 4){
+				globalBodyLanguage = result[i].maxScale;
+			}
+			 
+		 } 
+	   } 
+   });
+  }
