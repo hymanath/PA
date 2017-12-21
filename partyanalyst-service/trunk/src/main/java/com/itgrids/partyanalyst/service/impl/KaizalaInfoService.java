@@ -862,6 +862,14 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 							kri.setMobileNumber(jsonObj.getString("fromUser"));
 							kri.setIsDeleted("N");
 							kri = kaizalaResponderInfoDAO.save(kri);
+							
+							KaizalaGroupResponderRelation kgrr = new KaizalaGroupResponderRelation();
+							kgrr.setGroupId(jsonObj.getString("objectId"));
+							kgrr.setKaizalaGroupsId(id);
+							kgrr.setKaizalaResponderInfoId(kri.getKaizalaResponderInfoId());
+							kgrr.setIsDeleted("N");
+							kaizalaGroupResponderRelationDAO.save(kgrr);
+							
 							KER.setInsertedBy(kri.getKaizalaResponderInfoId());
 							KER.setUpdatedBy(kri.getKaizalaResponderInfoId());
 						}
@@ -1636,10 +1644,10 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 											subuservo.setPending(subvo.getPending());
 											subuservo.setNotSmartPhone(subvo.getNotHavingSmartPhone());
 											
-											vo.setTotalCount(subvo.getTotalCount());
-											vo.setInstalled(subvo.getInstalled());
-											vo.setPending(subvo.getPending());
-											vo.setNotSmartPhone(subvo.getNotHavingSmartPhone());
+											vo.setTotalCount(vo.getTotalCount()+subvo.getTotalCount());
+											vo.setInstalled(vo.getInstalled()+subvo.getInstalled());
+											vo.setPending(vo.getPending()+subvo.getPending());
+											vo.setNotSmartPhone(vo.getNotSmartPhone()+subvo.getNotHavingSmartPhone());
 											vo.getSubList1().add(subuservo);
 										}else{
 											subuservo.setTotalCount(subuservo.getTotalCount()+subvo.getTotalCount());
