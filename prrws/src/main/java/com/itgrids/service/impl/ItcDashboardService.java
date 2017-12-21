@@ -5,11 +5,13 @@ package com.itgrids.service.impl;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +38,14 @@ import org.tempuri.TrackerITServiceSoapProxy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.itgrids.dao.IEofficeEmployeeWorkDetailsDAO;
 import com.itgrids.dao.ILocationWiseMeesevaCentersDAO;
 import com.itgrids.dao.IMeesevaCentersAchievementDAO;
 import com.itgrids.dto.ApInnovationCenterVO;
 import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.CmEoDBDtlsVO;
 import com.itgrids.dto.CohortDtlsVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.ItecCMeoDBDetailsVO;
@@ -49,8 +53,11 @@ import com.itgrids.dto.ItecEOfficeVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
 import com.itgrids.dto.MeesevaKPIDtlsVO;
+import com.itgrids.model.EofficeEmployeeWorkDetails;
 import com.itgrids.service.IItcDashboardService;
 import com.itgrids.service.integration.external.ItcWebServiceUtilService;
+import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 
@@ -67,6 +74,12 @@ public class ItcDashboardService implements IItcDashboardService {
 	private ILocationWiseMeesevaCentersDAO locationWiseMeesevaCentersDAO;
 	@Autowired
 	private IMeesevaCentersAchievementDAO meesevaCentersAchievementDAO;
+	@Autowired
+	private DateUtilService dateUtilService;
+	@Autowired
+	private IEofficeEmployeeWorkDetailsDAO eofficeEmployeeWorkDetailsDAO;
+	@Autowired
+	private CommonMethodsUtilService commonMethodsUtilService;
 	
 	/**
 	 * @author Santosh Kumar Verma
@@ -3966,4 +3979,472 @@ public class ItcDashboardService implements IItcDashboardService {
 		 }
 		 return returnList;
 	}
+	/**
+	 * @author Nandhini
+	 * @param No inputs
+	 * @description {Saving EOFC Data Into Local DB.}
+	 * @return IdNameVO
+	 * @Date 20-12-2017
+	 */
+	public IdNameVO savingEofcDataDetails() {
+		IdNameVO returnVO = new IdNameVO();
+		try {
+			
+			List<EofficeEmployeeWorkDetails> finalList = new ArrayList<EofficeEmployeeWorkDetails>(0);
+			Long[] deptIdsArr = IConstants.ITEC_EOFFICE_DEPT_IDS;
+			List<Long> deptIds = new ArrayList<Long>(0);
+			if(deptIdsArr != null && deptIdsArr.length > 0){
+				for (int i = 0; i < deptIdsArr.length; i++) {
+					deptIds.add(Long.valueOf(deptIdsArr[i].toString()));
+				}
+			}
+			//DateFormat sdf = new SimpleDateFormat(dateUtilService.getCurrentDateAndTimeInStringFormat());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String fromDateStr ="2014-01-01";
+			Date toDateStr =dateUtilService.getCurrentDateAndTime();
+			String toDateStr1 = sdf.format(toDateStr);
+			
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall("https://demo.eoffice.ap.gov.in/TTReports/Filesumm1.php?strFromDate="+fromDateStr+"&strToDate="+toDateStr1+"");
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+					JSONArray finalArray = new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+								if(Long.valueOf(jObj.getLong("departmentid")) != null && deptIds.contains(jObj.getLong("departmentid"))){
+									EofficeEmployeeWorkDetails model = new EofficeEmployeeWorkDetails();
+											model.setDepartmentId(jObj.getLong("departmentid"));
+										 	model.setDepartmentName(jObj.getString("departmentname"));
+										 	model.setOrgName(jObj.getString("orgname"));
+										 	model.setEmployeeName(jObj.getString("employeename"));
+										 	model.setPostName(jObj.getString("postname"));
+										 	model.setPostDetailsActive(jObj.getString("postdetailactive"));
+										 	model.setOpBalanceCount(jObj.getLong("opbalancecount"));
+										 	model.setFileCreated(jObj.getLong("filecreated"));
+										 	model.setFileReceived(jObj.getLong("file_received"));
+										 	model.setTotalFiles(jObj.getLong("totalfiles"));
+										 	model.setFilesClosed(jObj.getLong("files_closed"));
+										 	model.setFilesForwarded(jObj.getLong("files_forwarded"));
+										 	model.setFilesParked(jObj.getLong("files_parked"));
+										 	model.setFileAction(jObj.getLong("fileaction"));
+										 	model.setFirstCount(jObj.getLong("firstcount"));
+										 	model.setSecondCount(jObj.getLong("secondcount"));
+										 	model.setThirdCount(jObj.getLong("thirdcount"));
+										 	model.setFourthCount(jObj.getLong("fourthcount"));
+										 	model.setFifthCount(jObj.getLong("fifthcount"));
+										 	model.setTotalCount(jObj.getLong("totalcount"));
+										 	model.setFromDate(sdf.parse(fromDateStr));
+										 	model.setToDate(sdf.parse(toDateStr1));
+										 	model.setIsDeleted("N");
+										 	model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										 	finalList.add(model);
+										 	//eofficeEmployeeWorkDetailsDAO.save(model);
+									}
+								}
+							}
+						}
+			//Deleting Existing Data From Table
+			Long deletedStatus = eofficeEmployeeWorkDetailsDAO.deleteRecrdsFrmTable();
+			
+			//Inserting New Data Into a Table
+			if(deletedStatus != null && deletedStatus.longValue() > 0L){
+				if(commonMethodsUtilService.isListOrSetValid(finalList)){
+					for (EofficeEmployeeWorkDetails finalModel : finalList) {
+						eofficeEmployeeWorkDetailsDAO.save(finalModel);
+					}
+				}
+				returnVO.setName("SUCCESS");	
+			}else{
+				returnVO.setName("FAIL");
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured at savingEofcDataDetails() in  ItcDashboardService class",e);
+		}
+		return returnVO;
+	}
+	
+	/**
+	 * @author Nandhini
+	 * @param inputVO {@link InputVO}
+	 * @description {This service is used to get getEOfcDepartOverviewDetailsNew.}
+	 * @return List<ItecEOfficeVO>
+	 * @Date 20-12-2017
+	 */
+	public List<ItecEOfficeVO> getEOfcDepartOverviewDetailsNew(InputVO inputVO) {
+		List<ItecEOfficeVO> returnList = new ArrayList<ItecEOfficeVO>(0);
+		try {
+			List<ItecEOfficeVO> hodList = new ArrayList<ItecEOfficeVO>(0);
+			Map<String,ItecEOfficeVO> departMap = new HashMap<String,ItecEOfficeVO>(0);
+			Long[] deptIdsArr = IConstants.ITEC_EOFFICE_DEPT_IDS;
+			List<Long> deptIds = new ArrayList<Long>(0);
+			if(deptIdsArr != null && deptIdsArr.length > 0){
+				for (int i = 0; i < deptIdsArr.length; i++) {
+					deptIds.add(Long.valueOf(deptIdsArr[i].toString()));
+				}
+			}
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date fromDate = null;
+			Date toDate = null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
+			}
+			
+			List<Object[]> overViewCuntList = eofficeEmployeeWorkDetailsDAO.getEOfcDepartmentCunts(fromDate,toDate);
+			if(overViewCuntList != null && !overViewCuntList.isEmpty()){
+				for (Object[] param : overViewCuntList) {
+					ItecEOfficeVO hodVO = new ItecEOfficeVO();
+					Object[] hodObj = null;
+					Long departmentId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					String deptName = commonMethodsUtilService.getStringValueForObject(param[1]);
+					if( departmentId != null && deptIds.contains(departmentId)){
+						ItecEOfficeVO departVO = departMap.get(deptName);
+						 if(departVO == null){
+							departVO = new ItecEOfficeVO();
+							departVO.setDepartmentId(departmentId);
+							departVO.setDepartmentName(deptName);
+							departVO.setCreated(commonMethodsUtilService.getLongValueForObject(param[2])+commonMethodsUtilService.getLongValueForObject(param[3])+commonMethodsUtilService.getLongValueForObject(param[4]));//created
+							departVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5])+commonMethodsUtilService.getLongValueForObject(param[6])+commonMethodsUtilService.getLongValueForObject(param[7])+commonMethodsUtilService.getLongValueForObject(param[8])+commonMethodsUtilService.getLongValueForObject(param[9]));
+							departVO.setZeroToSeven(commonMethodsUtilService.getLongValueForObject(param[5]));
+							departVO.setEightToFifteen(commonMethodsUtilService.getLongValueForObject(param[6]));
+							departVO.setSixteenToThirty(commonMethodsUtilService.getLongValueForObject(param[7]));
+							departVO.setThirtyoneToSixty(commonMethodsUtilService.getLongValueForObject(param[8]));
+							departVO.setAboveSixty(commonMethodsUtilService.getLongValueForObject(param[9]));
+							departVO.setActionFiles(commonMethodsUtilService.getLongValueForObject(param[10])+commonMethodsUtilService.getLongValueForObject(param[11])+commonMethodsUtilService.getLongValueForObject(param[12]));
+							departMap.put(departVO.getDepartmentName(), departVO);
+						 }else{
+							// departVO.setReceiptCreated(departVO.getReceiptCreated()+jObj.getLong("receiptcreated"));
+							departVO.setCreated(departVO.getCreated()+commonMethodsUtilService.getLongValueForObject(param[2])+commonMethodsUtilService.getLongValueForObject(param[3])+commonMethodsUtilService.getLongValueForObject(param[4]));//created
+							departVO.setTotalCount(departVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5])+commonMethodsUtilService.getLongValueForObject(param[6])+commonMethodsUtilService.getLongValueForObject(param[7])+commonMethodsUtilService.getLongValueForObject(param[8])+commonMethodsUtilService.getLongValueForObject(param[9]));
+							departVO.setZeroToSeven(departVO.getZeroToSeven()+commonMethodsUtilService.getLongValueForObject(param[5]));
+							departVO.setEightToFifteen(departVO.getEightToFifteen()+commonMethodsUtilService.getLongValueForObject(param[6]));
+							departVO.setSixteenToThirty(departVO.getSixteenToThirty()+commonMethodsUtilService.getLongValueForObject(param[7]));
+							departVO.setThirtyoneToSixty(departVO.getThirtyoneToSixty()+commonMethodsUtilService.getLongValueForObject(param[8]));
+							departVO.setAboveSixty(departVO.getAboveSixty()+commonMethodsUtilService.getLongValueForObject(param[9]));
+							departVO.setActionFiles(departVO.getActionFiles()+commonMethodsUtilService.getLongValueForObject(param[10])+commonMethodsUtilService.getLongValueForObject(param[11])+commonMethodsUtilService.getLongValueForObject(param[12]));
+						 }
+						 if(departVO.getCreated() != null && departVO.getCreated().longValue() > 0L && departVO.getTotalCount() != null && departVO.getTotalCount().longValue() > 0L){
+								departVO.setPercentage(new BigDecimal(departVO.getTotalCount()*100.00/departVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						 }else{
+							departVO.setPercentage("0.00");
+							}
+						}
+						//HOD's List Data
+						//Long departmentId =  jObj.getLong("departmentid");
+						String hodName = commonMethodsUtilService.getStringValueForObject(param[13]);
+						if(departmentId != null && departmentId.longValue() == 6581L && hodName.trim().equalsIgnoreCase("K. BHASKAR REDDY")){
+							hodObj =  param;
+						}else if(departmentId != null && departmentId.longValue() == 1257L && hodName.trim().equalsIgnoreCase("VALETI PREMCHAND")){
+							hodObj =  param;
+						}else if(departmentId != null && departmentId.longValue() == 1260L && hodName.trim().equalsIgnoreCase("SUNDAR B")){
+							hodObj =  param;
+						}else if(departmentId != null && departmentId.longValue() == 3688L && hodName.trim().equalsIgnoreCase("SUNDAR B")){
+							hodObj =  param;
+						}else if(departmentId != null && departmentId.longValue() == 6575L && hodName.trim().equalsIgnoreCase("N.BALASUBRAMANYAM.IPS")){
+							hodObj =  param;
+						}else if(departmentId != null && departmentId.longValue() == 5300L && hodName.trim().equalsIgnoreCase("SUNDAR B")){
+							hodObj =  param;
+						}else if(departmentId != null && departmentId.longValue() == 6567L && hodName.trim().equalsIgnoreCase("VALLI KUMARI VATSAVAYI")){
+							hodObj =  param;
+						}
+						if(hodObj != null){
+							hodVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(hodObj[0]));
+							hodVO.setDepartmentName(commonMethodsUtilService.getStringValueForObject(hodObj[1]));
+							hodVO.setCreated(commonMethodsUtilService.getLongValueForObject(hodObj[2])+commonMethodsUtilService.getLongValueForObject(hodObj[3])+commonMethodsUtilService.getLongValueForObject(hodObj[4]));//created
+							hodVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(hodObj[5])+commonMethodsUtilService.getLongValueForObject(hodObj[6])+commonMethodsUtilService.getLongValueForObject(hodObj[7])+commonMethodsUtilService.getLongValueForObject(hodObj[8])+commonMethodsUtilService.getLongValueForObject(hodObj[9]));
+							hodVO.setZeroToSeven(commonMethodsUtilService.getLongValueForObject(hodObj[5]));
+							hodVO.setEightToFifteen(commonMethodsUtilService.getLongValueForObject(hodObj[6]));
+							hodVO.setSixteenToThirty(commonMethodsUtilService.getLongValueForObject(hodObj[7]));
+							hodVO.setThirtyoneToSixty(commonMethodsUtilService.getLongValueForObject(hodObj[8]));
+							hodVO.setAboveSixty(commonMethodsUtilService.getLongValueForObject(hodObj[9]));
+							hodVO.setActionFiles(commonMethodsUtilService.getLongValueForObject(hodObj[10])+commonMethodsUtilService.getLongValueForObject(hodObj[11])+commonMethodsUtilService.getLongValueForObject(hodObj[12]));
+							hodVO.setEmployeeName(commonMethodsUtilService.getStringValueForObject(hodObj[13]));
+							hodVO.setPostName(commonMethodsUtilService.getStringValueForObject(hodObj[14]));
+							
+							if(hodVO.getCreated() != null && hodVO.getCreated().longValue() > 0L && hodVO.getTotalCount() != null && hodVO.getTotalCount().longValue() > 0L){
+								hodVO.setPercentage(new BigDecimal(hodVO.getTotalCount()*100.00/hodVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							}else{
+								hodVO.setPercentage("0.00");
+							}
+							
+							hodList.add(hodVO);
+						}
+					
+					}
+				}
+			
+							
+							
+			
+			if(departMap != null){
+				returnList = new ArrayList<ItecEOfficeVO>(departMap.values());
+			}
+			
+			Long totalRange = 0L;
+			if(returnList != null && !returnList.isEmpty()){
+				ItecEOfficeVO finalCountVO = new ItecEOfficeVO();
+				for (ItecEOfficeVO vo : returnList) {
+					if(vo.getDepartmentName() != null && vo.getDepartmentName().trim().equalsIgnoreCase("INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT")){
+						totalRange = vo.getZeroToSeven()+vo.getEightToFifteen()+vo.getSixteenToThirty()+vo.getThirtyoneToSixty()+vo.getAboveSixty();
+						//0 to 7 Range Count Perc
+						if(vo.getZeroToSeven() != null && vo.getZeroToSeven().longValue() > 0L && totalRange != null && totalRange.longValue() > 0L){
+							vo.setZeroToSevenPerc(new BigDecimal(vo.getZeroToSeven()*100.00/totalRange).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						}else{
+							vo.setZeroToSevenPerc("0.00");
+						}
+						//8 to 15 Range Count Perc
+						if(vo.getEightToFifteen() != null && vo.getEightToFifteen().longValue() > 0L && totalRange != null && totalRange.longValue() > 0L){
+							vo.setEightToFifteenPerc(new BigDecimal(vo.getEightToFifteen()*100.00/totalRange).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						}else{
+							vo.setEightToFifteenPerc("0.00");
+						}
+						//16 to 30 Range Count Perc
+						if(vo.getSixteenToThirty() != null && vo.getSixteenToThirty().longValue() > 0L && totalRange != null && totalRange.longValue() > 0L){
+							vo.setSixteenToThirtyPerc(new BigDecimal(vo.getSixteenToThirty()*100.00/totalRange).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						}else{
+							vo.setSixteenToThirtyPerc("0.00");
+						}
+						//31 to 60 Range Count Perc
+						if(vo.getThirtyoneToSixty() != null && vo.getThirtyoneToSixty().longValue() > 0L && totalRange != null && totalRange.longValue() > 0L){
+							vo.setThirtyoneToSixtyPerc(new BigDecimal(vo.getThirtyoneToSixty()*100.00/totalRange).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						}else{
+							vo.setThirtyoneToSixtyPerc("0.00");
+						}
+						//>60 Range Count Perc
+						if(vo.getAboveSixty() != null && vo.getAboveSixty().longValue() > 0L && totalRange != null && totalRange.longValue() > 0L){
+							vo.setAboveSixtyPerc(new BigDecimal(vo.getAboveSixty()*100.00/totalRange).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						}else{
+							vo.setAboveSixtyPerc("0.00");
+						}
+					}
+					finalCountVO.setCreated(finalCountVO.getCreated()+vo.getCreated());
+					finalCountVO.setTotalCount(finalCountVO.getTotalCount()+vo.getTotalCount());
+					finalCountVO.setZeroToSeven(finalCountVO.getZeroToSeven()+vo.getZeroToSeven());
+					finalCountVO.setEightToFifteen(finalCountVO.getEightToFifteen()+vo.getEightToFifteen());
+					finalCountVO.setSixteenToThirty(finalCountVO.getSixteenToThirty()+vo.getSixteenToThirty());
+					finalCountVO.setThirtyoneToSixty(finalCountVO.getThirtyoneToSixty()+vo.getThirtyoneToSixty());
+					finalCountVO.setAboveSixty(finalCountVO.getAboveSixty()+vo.getAboveSixty());
+					finalCountVO.setActionFiles(finalCountVO.getActionFiles()+vo.getActionFiles());
+					finalCountVO.setDepartmentName("ITE & C");
+				}
+				if(finalCountVO.getCreated() != null && finalCountVO.getCreated().longValue() > 0L && finalCountVO.getTotalCount() != null && finalCountVO.getTotalCount().longValue() > 0L){
+					finalCountVO.setPercentage(new BigDecimal(finalCountVO.getTotalCount()*100.00/finalCountVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}else{
+					finalCountVO.setPercentage("0.00");
+				}
+				finalCountVO.setOrderNumber(1L);
+				returnList.add(finalCountVO);
+			}
+			Collections.sort(returnList, new Comparator<ItecEOfficeVO>() {
+	    	    public int compare(ItecEOfficeVO vo1, ItecEOfficeVO vo2) {
+	    	        return vo2.getOrderNumber().compareTo(vo1.getOrderNumber());
+	    	    }
+		    });
+			 
+			 returnList.get(0).getSubList().addAll(hodList);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured at getEOfcDepartOverviewDetailsNew() in  ItcDashboardService class",e);
+		}
+		return returnList;
+	}
+	
+	/**
+	 * @author Nandhini
+	 * @param InputVO inputVO {fromDate,toDate,DepartmentId}
+	 * @description {This service is used to get E Office Designation Wise Deatails New.}
+	 * @return List<ItecEOfficeVO>
+	 * @Date 20-12-2017
+	 */
+	
+	public List<ItecEOfficeVO> getEofficeDesginationWiseDetailsFrDepartmentNew(InputVO inputVO){
+	    List<ItecEOfficeVO> returnList = new ArrayList<ItecEOfficeVO>(0);
+	    try {
+	    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date fromDate = null;
+			Date toDate = null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
+			}
+			
+			List<Object[]> overViewCuntList = eofficeEmployeeWorkDetailsDAO.getEOfcDepartmentCunts(fromDate,toDate);
+			if(commonMethodsUtilService.isListOrSetValid(overViewCuntList)){
+				for (Object[] param : overViewCuntList) {
+					Long departmentId = commonMethodsUtilService.getLongValueForObject(param[0]);
+		              String postName = commonMethodsUtilService.getStringValueForObject(param[14]);
+		              if(inputVO.getDepartmentId() != null && inputVO.getDepartmentId().longValue() == departmentId.longValue()){
+		            	  ItecEOfficeVO  designationVO = new ItecEOfficeVO();
+		            	  if(departmentId != null && departmentId.longValue() == 15L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("MINISTER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PRINCIPAL SECRETARY")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT SECRETARY")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("DIRECTOR")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT DIRECTOR")){
+		            			  designationVO.setOrderNumber(6L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SPECIAL OFFICER")){
+		            			  designationVO.setOrderNumber(7L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROJECT MANAGER")){
+		            			  designationVO.setOrderNumber(8L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SECTION OFFICER")){
+		            			  designationVO.setOrderNumber(9L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT SECTION OFFICER")){
+		            			  designationVO.setOrderNumber(10L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROJECT ENGINEER")){
+		            			  designationVO.setOrderNumber(11L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ADMIN ASSISTANT")){
+		            			  designationVO.setOrderNumber(12L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(13L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JUNIOR ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(14L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT ACCOUNT OFFICER")){
+		            			  designationVO.setOrderNumber(15L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(16L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 1260L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("Director")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Assistant Secetary")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Deputy Director")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SUPERINTENDENT")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SENIOR ASSISTANT")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("COMPUTER OPERATOR")){
+		            			  designationVO.setOrderNumber(6L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PERSONAL ASSISTANT")){
+		            			  designationVO.setOrderNumber(7L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(8L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 6567L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Joint Director")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("JOINT SECRETARY")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Manager")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Executive Assistant")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(6L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 6581L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("VICE PRESIDENT")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(6L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 1257L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(3L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 3688L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("SPECIAL OFFICER")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROJECT MANAGER")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("PROGRAMME MANAGER")){
+		            			  designationVO.setOrderNumber(6L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(7L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("IT ASSOCIATE")){
+		            			  designationVO.setOrderNumber(8L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("TEAM LEAD")){
+		            			  designationVO.setOrderNumber(9L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(10L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 5300L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CHIEF EXECUTIVE OFFICER")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("GENERAL MANAGER")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(4L);
+		            		  }
+		            	  }else if(departmentId != null && departmentId.longValue() == 6575L){
+		            		  if(postName != null && postName.trim().equalsIgnoreCase("CEO EGOVERNANCE")){
+		            			  designationVO.setOrderNumber(1L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("Joint Director")){
+		            			  designationVO.setOrderNumber(2L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("MANAGER")){
+		            			  designationVO.setOrderNumber(3L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(4L);
+		            		  }else if(postName != null && postName.trim().equalsIgnoreCase("ASSISTANT ACCOUNTS OFFICER")){
+		            			  designationVO.setOrderNumber(5L);
+		            		  }else{
+		            			  designationVO.setOrderNumber(6L);
+		            		  }
+		            	  }
+		            	  
+		            	 
+		            		  designationVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[14]));
+		            		  designationVO.setCreated(commonMethodsUtilService.getLongValueForObject(param[2])+commonMethodsUtilService.getLongValueForObject(param[3])+commonMethodsUtilService.getLongValueForObject(param[4]));//created);
+		            		  designationVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5])+commonMethodsUtilService.getLongValueForObject(param[6])+commonMethodsUtilService.getLongValueForObject(param[7])+commonMethodsUtilService.getLongValueForObject(param[8])+commonMethodsUtilService.getLongValueForObject(param[9]));
+		            		  designationVO.setEmployeeName(commonMethodsUtilService.getStringValueForObject(param[13]));
+		            		  designationVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(param[0]));
+		            		  designationVO.setDepartmentName(commonMethodsUtilService.getStringValueForObject(param[1]));
+		            		  designationVO.setZeroToSeven(commonMethodsUtilService.getLongValueForObject(param[5]));
+		            		  designationVO.setEightToFifteen(commonMethodsUtilService.getLongValueForObject(param[6]));
+		            		  designationVO.setSixteenToThirty(commonMethodsUtilService.getLongValueForObject(param[7]));
+		            		  designationVO.setThirtyoneToSixty(commonMethodsUtilService.getLongValueForObject(param[8]));
+		            		  designationVO.setAboveSixty(commonMethodsUtilService.getLongValueForObject(param[9]));
+		            		  designationVO.setActionFiles(commonMethodsUtilService.getLongValueForObject(param[10])+commonMethodsUtilService.getLongValueForObject(param[11])+commonMethodsUtilService.getLongValueForObject(param[12]));
+		            		  if(designationVO.getCreated() != null && designationVO.getCreated().longValue() > 0L && designationVO.getTotalCount() != null && designationVO.getTotalCount().longValue() > 0L){
+			            		designationVO.setPercentage(new BigDecimal(designationVO.getTotalCount()*100.00/designationVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							  }else{
+								designationVO.setPercentage("0.00");
+							  }
+			            	  returnList.add(designationVO);
+		              		}
+					
+						}
+					}
+		      
+		      Collections.sort(returnList, new Comparator<ItecEOfficeVO>() {
+		    	    public int compare(ItecEOfficeVO vo1, ItecEOfficeVO vo2) {
+		    	        return vo1.getOrderNumber().compareTo(vo2.getOrderNumber());
+		    	    }
+		    	});
+		      
+		    } catch (Exception e) {
+		      LOG.error("Exception raised at getEofficeDesginationWiseDetailsFrDepartment - ItcDashboardService service",e);
+		    }
+		    return returnList;
+		}
 }

@@ -17,6 +17,7 @@ import com.itgrids.dto.ApInnovationCenterVO;
 import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.CmEoDBDtlsVO;
 import com.itgrids.dto.CohortDtlsVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.ItecCMeoDBDetailsVO;
@@ -305,5 +306,23 @@ public class ItcController {
 	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPINewOnlineDeptWiseCuntDetails(@RequestBody InputVO inputVO) {
 		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPINewOnlineDeptWiseCuntDetails(inputVO);
 		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/savingEofcDataDetails", method = RequestMethod.POST)
+	   public @ResponseBody  IdNameVO  savingEofcDataDetails() {
+		   IdNameVO  finalVO = itcDashboardService.savingEofcDataDetails();
+		   return finalVO;
+	   }
+	   
+	   @RequestMapping(value = "/getEOfcDepartOverviewDetailsNew", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEOfcDepartOverviewDetailsNew(@RequestBody InputVO inputVO) {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEOfcDepartOverviewDetailsNew(inputVO);
+		   return returnList;
+	   }
+	   
+	   @RequestMapping(value = "/getEofficeDesginationWiseDetailsFrDepartmentNew", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEofficeDesginationWiseDetailsFrDepartmentNew(@RequestBody InputVO inputVO) {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEofficeDesginationWiseDetailsFrDepartmentNew(inputVO);
+		   return returnList;
 	   }
 }
