@@ -76,11 +76,9 @@ import com.itgrids.partyanalyst.model.DebateSmsQuestionOption;
 import com.itgrids.partyanalyst.model.DebateSubject;
 import com.itgrids.partyanalyst.model.Observer;
 import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.model.TelecastType;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IDebateAnalysisService;
 import com.itgrids.partyanalyst.service.IDebateService;
-import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -577,6 +575,8 @@ public class DebateService implements IDebateService{
 				debateVO.setDebateSummery(debateDetails[5] != null ? StringEscapeUtils.unescapeJava(debateDetails[5].toString()) :"");
 				debateVO.setYoutubeUrl(debateDetails[6] != null ? debateDetails[6].toString():"");
 				debateVO.setDebateLocation(debateDetails[7] != null ? debateDetails[7].toString() :null);
+				debateVO.setDebateLocId(debateDetails[8] != null ? (Long)debateDetails[8] :0l);
+				
 			}
 			// here we are getting the all details of the sma question and answer with percentage details
 			List<Object[]> debateSmsDetails = debateSmsQuestionOptionDAO.getDebateSmsQuestionsForSelectedDebate(debateId);
@@ -596,7 +596,7 @@ public class DebateService implements IDebateService{
 				debateVO.setSmsPoleList(debateSmsDetailsList);
 			}
 			// here we getting the all candidate details with part wise
-			List<Object[]> debatePaticepentDetails = debateParticipantDAO.getDebatePaticepantsAndSummeryDetails(debateId,stateId);//srujana
+			List<Object[]> debatePaticepentDetails = debateParticipantDAO.getDebatePaticepantsAndSummeryDetails(debateId,stateId);
 			if(debatePaticepentDetails != null && debatePaticepentDetails.size() > 0)
 			{
 				debatePaticepentDetailsList = new ArrayList<SelectOptionVO>();
@@ -668,7 +668,11 @@ public class DebateService implements IDebateService{
 						charactesMap.put((Long)parms[0], charactrsDetails);
 					}
 					selectOptionVO.setName(parms[4] != null ?parms[4].toString() :"");//scale
-					selectOptionVO.setPerc(parms[5] != null ?(Double)parms[5]: 0.0);//rating
+					selectOptionVO.setPerc(parms[5] != null ?(Double)parms[5]: 0.0);//rating //srujana//overall
+					if(selectOptionVO.getPerc() != null && selectOptionVO.getPerc() >0.0){
+					Double scalePerc = getAvgDetailsOfDebate(selectOptionVO.getPerc(),(Long)parms[6]);
+					   selectOptionVO.setScalePerc(scalePerc);
+					}
 					selectOptionVO.setId(parms[6] != null ? (Long)parms[6]:0l);//charectersticId
 					//scalesList.add(selectOptionVO);
 					charactrsDetails.add(selectOptionVO);;
@@ -726,7 +730,7 @@ public class DebateService implements IDebateService{
 					participantVO.setPartyId(paticiVO.getCount());
 					participantVO.setId(paticiVO.getId());
 					participantVO.setSummery(paticiVO.getPartno());
-					participantVO.setLocationId(paticiVO.getLocationId());//srujana
+					participantVO.setLocationId(paticiVO.getLocationId());
 					List<SelectOptionVO> scopesList = charactesMap.get(candidateId);
 					//List<SelectOptionVO> scopesList = chatesVO.getSelectOptionsList();
 					List<SelectOptionVO> scopeList = new ArrayList<SelectOptionVO>();
@@ -736,10 +740,15 @@ public class DebateService implements IDebateService{
 						SelectOptionVO scopesVO = new SelectOptionVO();
 						scopesVO.setName(scopesVOVO.getName());
 						scopesVO.setPerc(scopesVOVO.getPerc());
+						scopesVO.setScalePerc(scopesVOVO.getScalePerc());
 						total = total + (Double.valueOf(scopesVOVO.getPerc()));
 						scopeList.add(scopesVO);
 					}
 					participantVO.setPerc(total);
+					if(participantVO.getPerc() != null && participantVO.getPerc() >0.0){
+						Double scalePerc = getAvgDetailsOfDebate(participantVO.getPerc(),null);
+						   participantVO.setPerc(scalePerc);
+						}
 					List<SelectOptionVO> roleList = rolesMap.get(candidateId);
 					if(roleList != null && roleList.size() > 0)
 					{
@@ -807,7 +816,7 @@ public class DebateService implements IDebateService{
 							candiVO.setId(Long.valueOf(candidate[0].toString()));
 							candiVO.setName(candidate[1].toString());
 							//candiVO.setLo
-							candidatesList.add(candiVO);//srujana
+							candidatesList.add(candiVO);
 						}
 					}
 					
@@ -2270,5 +2279,37 @@ public class DebateService implements IDebateService{
 			 LOG.error("Exception occured in convertDebateContentToUnicode Method",e);
 		 }
 	 }
+	 public List<DebateTopicVO> getEachCharacterWiseMaxScale(){
+		 List<DebateTopicVO> finalList = new ArrayList<DebateTopicVO>(0);
+		 try{
+			 
+			List<Object[]> characterOfScaleList = characteristicsDAO.getEachCharacterWiseMaxScale();
+			if(characterOfScaleList != null && characterOfScaleList.size()>0){
+				for(Object[] param : characterOfScaleList){
+					DebateTopicVO VO = new DebateTopicVO();
+					VO.setCharacterSticsId(param[0] !=null ? (Long)param[0]:0l);
+					VO.setMaxScale(param[1] !=null ? (Long)param[1]:0l);
+					finalList.add(VO);
+				}
+			}
+			 
+		 }catch (Exception e) {
+			 LOG.error(" Exception Occured in getEachCharacterWiseMaxScale method, Exception - ",e);
+		}
+		 
+		 return finalList;
+	 }
+	 public Double getAvgDetailsOfDebate(Double charactersSum,Long charactersticId){
+			Double avg = 0.00;
+			try {
+				Long sum = characteristicsDAO.getSumOfCharacters(charactersticId);
+				if(charactersSum !=null && charactersSum>0){
+					avg = Double.parseDouble(new BigDecimal((charactersSum/sum)*(IConstants.DEBATE_AVG_VALUE)).setScale(1, BigDecimal.ROUND_HALF_UP).toString());
+				}			
+			} catch (Exception e) {
+				LOG.error("Exception raised at getAvgDetailsOfDebate() method of CoreDashboardMainService",e);
+			}
+			return avg;
+		}
 	
 }

@@ -7,7 +7,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDebateDAO;
 import com.itgrids.partyanalyst.model.Debate;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class DebateDAO  extends GenericDaoHibernate<Debate, Long> implements IDebateDAO{
 
@@ -27,7 +26,7 @@ public class DebateDAO  extends GenericDaoHibernate<Debate, Long> implements IDe
 		sb.append(" select model.debateId,model.startTime," +
 				" model.endTime," +
 				" model.channel.channelId,model.channel.channelName , " +
-				" model.summary,model.youtubeUrl,state.stateName" +
+				" model.summary,model.youtubeUrl,state.stateName,state.stateId " +
 				" from Debate model " +
 				" left join model.address address " +
 				" left join address.state state " );

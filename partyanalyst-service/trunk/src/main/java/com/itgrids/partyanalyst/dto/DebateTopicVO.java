@@ -30,6 +30,8 @@ public class DebateTopicVO implements Serializable{
 	private List<DebateTopicVO> weak;
 	
 	private Long debateId;
+	private Long characterSticsId;
+	private Long maxScale;
 
 	public Long getPartyId() {
 		return partyId;
@@ -143,8 +145,20 @@ public class DebateTopicVO implements Serializable{
 		this.debateId = debateId;
 	}
 
-	
-	
-	
-	
+	public Long getCharacterSticsId() {
+		return characterSticsId;
+	}
+
+	public void setCharacterSticsId(Long characterSticsId) {
+		this.characterSticsId = characterSticsId;
+	}
+
+	public Long getMaxScale() {
+		return maxScale;
+	}
+
+	public void setMaxScale(Long maxScale) {
+		this.maxScale = maxScale;
+	}
+
 }
