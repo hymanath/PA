@@ -64,7 +64,7 @@ public class PrisSurveyDashBoardController {
 		}
 		return returnVo;
 	}
-	@RequestMapping("/getAllDistricts")
+	@RequestMapping("/getAllDistrictsForPris")
 	public @ResponseBody List<IdNameVO> getAllDistricts(){
 		List<IdNameVO> returnVoList = new ArrayList<IdNameVO>(0);
 		try {
