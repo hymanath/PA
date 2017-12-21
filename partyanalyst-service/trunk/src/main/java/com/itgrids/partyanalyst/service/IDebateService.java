@@ -72,5 +72,6 @@ public interface IDebateService {
 	 public List<DebateTopicVO> getPartyWiseStrongAndWeakTopicAndCandidates(Long cadreId);
 	 public Long getTotalAttendedDebatesOfCadreNew(Long tdpCadreId);
 	 public void convertDebateContentToUnicode();
+	 public List<DebateTopicVO> getEachCharacterWiseMaxScale();
 	 
 }

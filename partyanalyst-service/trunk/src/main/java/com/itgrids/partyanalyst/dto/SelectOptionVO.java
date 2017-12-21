@@ -57,6 +57,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String votingPercentage;
 	private List<SelectOptionVO> subList = new ArrayList<SelectOptionVO>(0);
 	private Long locationId;
+	private Double scalePerc;
 	public String getVotingPercentage() {
 		return votingPercentage;
 	}
@@ -514,6 +515,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setLocationId(Long locationId) {
 		this.locationId = locationId;
+	}
+
+	public Double getScalePerc() {
+		return scalePerc;
+	}
+
+	public void setScalePerc(Double scalePerc) {
+		this.scalePerc = scalePerc;
 	}
 	
 	

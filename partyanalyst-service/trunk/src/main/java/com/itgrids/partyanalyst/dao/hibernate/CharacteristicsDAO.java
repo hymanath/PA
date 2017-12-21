@@ -54,5 +54,15 @@ public class CharacteristicsDAO extends GenericDaoHibernate<Characteristics, Lon
 		}
 		return (Long)query.uniqueResult();
 	}
+	
+	public List<Object[]> getEachCharacterWiseMaxScale(){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.characteristicsId,model.maxScale from Characteristics model " +
+				" where model.isDeleted ='N' ");
+		Query query = getSession().createQuery(str.toString());
+
+		return query.list();
+	}
 
 }
