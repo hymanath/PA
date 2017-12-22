@@ -28,11 +28,12 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
+					<h4 class="text-capital">Panchayat Raj, RD & RWS</h4>
 					<p>Panchayat Vs Expenditure - AP</p>
 				</div>
-				<div class="col-sm-2 col-sm-offset-4 m_top20" id="logOutId">
-					 <a href="petitionsLoginPage" class="btn btn-success btn-logout font_weight pull-right" style="border-radius:0px;">Logout</a>
+				
+				<div class="col-sm-2 col-sm-offset-4 m_top20">
+					<a class="btn btn-success m_top5 pull-right" href="MGNREGSFieldLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
 				</div>
 			</div>
 		</div>

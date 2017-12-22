@@ -181,7 +181,7 @@ function departmentWiseOverView(){
 $(document).on('click','.blockWiseDetails',function(){
 	$(".blockWiseDetails").removeClass("active");
 	$(this).addClass("active");
-	$("#campusOverviewBlock,#APISXLr8APOverview,#campaignsOverviewBlock").html(" ");
+	$("#campusOverviewBlock,#APISXLr8APOverview,#campaignsOverviewBlock").html("");
 	var blockName = $(this).attr("attr_block_name");
 	departmentBlockWiseDetails(blockName);	
 });
@@ -1352,15 +1352,15 @@ function getAPISXLR8APDetailedData(){
 				overview+='<div class="row">';
 					overview+='<div class="col-sm-12">';
 						overview+='<h4>Batches</h4>';
-						overview+='<h3>'+totalBatches+'</h3>';
+						overview+='<h3 class="m_top10">'+totalBatches+'</h3>';
 					overview+='</div>';
 					overview+='<div class="col-sm-6">';
 						overview+='<h4>Companies Registered</h4>';
-						overview+='<h3>'+totalCompanies+'</h3>';
+						overview+='<h3 class="m_top10">'+totalCompanies+'</h3>';
 					overview+='</div>';
 					overview+='<div class="col-sm-6">';
 						overview+='<h4>Job Created</h4>';
-						overview+='<h3>'+totalJobsCreated+'</h3>';
+						overview+='<h3 class="m_top10">'+totalJobsCreated+'</h3>';
 					overview+='</div>';
 				overview+='</div>';
 			overview+='</div>';

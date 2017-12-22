@@ -99,4 +99,15 @@ public class LoginController {
 		 session.setAttribute("USER" , userVO); 
 		return userVO;
 	}
+	
+	@RequestMapping("/MGNREGSFieldLogin")
+    public String nregaFieldLogin() {
+        return "MGNREGSFieldLoginUpdates";
+    }
+	
+	@GetMapping("/MGNREGSFieldLogout")
+    public String nregaFieldLogout(HttpServletRequest request) {
+		request.getSession().invalidate();
+        return "MGNREGSFieldLoginUpdates";
+    }
 }
