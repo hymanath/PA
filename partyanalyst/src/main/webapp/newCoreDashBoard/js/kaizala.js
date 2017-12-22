@@ -4,6 +4,8 @@ levelWiseArr=[{name:'district',id:'3'},{name:'parliament',id:'10'},{name:'consti
 function onloadKaizalaCalls1(){
 	getOverAllCommitteeWiseMembersCounts();
 	if($(".kaizalaIconExpand").find("i").hasClass("glyphicon glyphicon-resize-small" )){
+		 $("[role='tabCummulativeKai'] li").removeClass("active");
+		 $("[role='tabCummulativeKai'] li:nth-child(1)").addClass("active");
 		 getUserTypeWiseKaizalaCommitteeMemberDetailsCnt();
 	}
 	 if($(".morekaizalaBlocksIcon").hasClass("expandBlockKaizala")){
@@ -13,6 +15,8 @@ function onloadKaizalaCalls1(){
 }
 $(document).on("click",".kaizalaIconExpand",function(){
 	if($(this).find("i").hasClass("glyphicon glyphicon-resize-small" )){
+		$("[role='tabCummulativeKai'] li").removeClass("active");
+		 $("[role='tabCummulativeKai'] li:nth-child(1)").addClass("active");
 		getUserTypeWiseKaizalaCommitteeMemberDetailsCnt();
 	}
 		
@@ -225,7 +229,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 				
 				if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
-						candidateNameArray.push(result[i][j].name);
+						candidateNameArray.push(result[i][j].name.toUpperCase());
 						installedCountArr.push({"y":parseFloat(result[i][j].installedPerc),"extra":result[i][j].installed})
 						pendingCountArr.push({"y":parseFloat(result[i][j].pendingPerc),"extra":result[i][j].pending})
 						notHavingCountArr.push({"y":parseFloat(result[i][j].notSmartPhonePerc),"extra":result[i][j].notSmartPhone})
@@ -378,7 +382,7 @@ function buildgetUserTypeWiseKaizalaTopFiveStrong(result){
 						pending = result[i][j].pending;
 						notSmartPhone = result[i][j].notSmartPhone;
 						
-						candidateNameArray.push(result[i][j].name);
+						candidateNameArray.push(result[i][j].name.toUpperCase());
 						
 						installedCountArr.push({"y":parseFloat(result[i][j].installedPerc),"extra":result[i][j].installed})
 						pendingCountArr.push({"y":parseFloat(result[i][j].pendingPerc),"extra":result[i][j].pending})
@@ -657,7 +661,7 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 							str+='<tr>';
 								if(locationType == "constituency")
 									str+='<td>'+result[i].parlName+'</td>';
-								str+='<td>'+result[i].name+'</td>';
+								str+='<td>'+result[i].name.toLowerCase()+'</td>';
 								
 								/*str+='<td>'+result[i].totalCount+'</td>';
 								str+='<td>'+result[i].installed+'</td>';
@@ -770,3 +774,7 @@ function  buildLocationWiseCommitteeMemberDetails(result,locationType){
 				});
 			} 
 }
+$(document).on("click",".KaizalaRefresh",function(){
+	onloadKaizalaCalls1();
+		
+});
