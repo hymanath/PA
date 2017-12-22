@@ -393,8 +393,16 @@ public class ItcDashboardService implements IItcDashboardService {
 			 overStatusDltsVO.setReAprooved(Long.valueOf(overViewData.getTotal_ReApproved()));
 			 overStatusDltsVO.setPendingWithinSLA(Long.valueOf(overViewData.getTotal_Pending_Within_SLA()));
 			 overStatusDltsVO.setPendingBeyondSLA(Long.valueOf(overViewData.getTotal_Pending_Beyond_SLA()));
+			 overStatusDltsVO.setTotalPending(overStatusDltsVO.getPendingWithinSLA()+overStatusDltsVO.getPendingBeyondSLA());
 			 overStatusDltsVO.setTotal(overStatusDltsVO.getAprooved()+overStatusDltsVO.getReAprooved()
 			 +overStatusDltsVO.getRejected()+overStatusDltsVO.getPendingBeyondSLA()+overStatusDltsVO.getPendingWithinSLA());
+			 
+			 overStatusDltsVO.setApprovedPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(overStatusDltsVO.getAprooved(), overStatusDltsVO.getTotal())));
+			 overStatusDltsVO.setRejectedPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(overStatusDltsVO.getRejected(), overStatusDltsVO.getTotal())));
+			 overStatusDltsVO.setReApprovedPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(overStatusDltsVO.getReAprooved(), overStatusDltsVO.getTotal())));
+			 overStatusDltsVO.setPendingPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(overStatusDltsVO.getTotalPending(), overStatusDltsVO.getTotal())));
+			 overStatusDltsVO.setBeyongSLAPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(overStatusDltsVO.getPendingBeyondSLA(), overStatusDltsVO.getTotalPending())));
+			 overStatusDltsVO.setWithinSLAPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(overStatusDltsVO.getPendingWithinSLA(), overStatusDltsVO.getTotalPending())));
 			
 		 } catch (Exception e) {
 			 LOG.error("Exception occured at getCmEodbStatusWiseOverviewDetails() in  ItcDashboardService class",e);
@@ -2032,6 +2040,13 @@ public class ItcDashboardService implements IItcDashboardService {
 				   deptVO.setPendingWithinSLA(deptVO.getPendingWithinSLA()+Long.valueOf(obj.getTotal_Pending_Within_SLA()));
 				}
 				deptVO.setTotal(deptVO.getAprooved()+deptVO.getReAprooved()+deptVO.getRejected()+deptVO.getPendingBeyondSLA()+deptVO.getPendingWithinSLA());
+				
+				deptVO.setApprovedPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(deptVO.getAprooved(), deptVO.getTotal())));
+				deptVO.setRejectedPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(deptVO.getRejected(), deptVO.getTotal())));
+				deptVO.setReApprovedPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(deptVO.getReAprooved(), deptVO.getTotal())));
+				deptVO.setPendingPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(deptVO.getTotalPending(), deptVO.getTotal())));
+				deptVO.setBeyongSLAPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(deptVO.getPendingBeyondSLA(), deptVO.getTotalPending())));
+				deptVO.setWithinSLAPerc(String.valueOf(commonMethodsUtilService.calculatePercantage(deptVO.getPendingWithinSLA(), deptVO.getTotalPending())));
 			}
 		}catch(Exception e){
 			 LOG.error("Exception raised at setStatusCountsOfSectors - ItcDashboardService service",e);
