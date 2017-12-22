@@ -886,16 +886,16 @@ function buildingPmTable1(jsonObject){
 	var str=" ";
 		if(jsonObject[0].stateVoList !=null && jsonObject[0].stateVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>State Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 		
 				
-				str+='<ul class="m_top10 list-inline memberMeetingCls">';
+				str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].stateVoList)
 					{
-							str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+							str+="<li class='text-capital' style='margin-left:5px;'>";
 							str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_region_scopeid="+jsonObject[0].stateVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].stateVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].stateVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].stateVoList[i].locationName+"</span></h5>";
 							str+="</li>";
 					}
@@ -906,15 +906,15 @@ function buildingPmTable1(jsonObject){
 		}
 		if(jsonObject[0].districtVoList !=null && jsonObject[0].districtVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>District Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].districtVoList)
 					{
-							str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+							str+="<li class='text-capital' style='margin-left:5px;'>";
 							str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_region_scopeid="+jsonObject[0].districtVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].districtVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].districtVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].districtVoList[i].locationName+"</span></h5>";
 							str+="</li>";
 					}
@@ -925,15 +925,15 @@ function buildingPmTable1(jsonObject){
 		}
 		if(jsonObject[0].panchayatVoList !=null && jsonObject[0].panchayatVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Panchayat Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].panchayatVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:5px;'>";
 						str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_region_scopeid="+jsonObject[0].panchayatVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].panchayatVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].panchayatVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].panchayatVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -944,15 +944,15 @@ function buildingPmTable1(jsonObject){
 		}
 		if(jsonObject[0].mandalVoList !=null && jsonObject[0].mandalVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Mandal Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].mandalVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:5px;'>";
 						str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_region_scopeid="+jsonObject[0].mandalVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].mandalVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].mandalVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].mandalVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -963,15 +963,15 @@ function buildingPmTable1(jsonObject){
 		}
 		if(jsonObject[0].constoList !=null && jsonObject[0].constoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Constituency Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].constoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:5px;'>";
 						str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_region_scopeid="+jsonObject[0].constoList[i].scopeId+" attr_scopeValue="+jsonObject[0].constoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].constoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].constoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -983,15 +983,15 @@ function buildingPmTable1(jsonObject){
 		}
 		if(jsonObject[0].corpGmcVoList !=null && jsonObject[0].corpGmcVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Corporation Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].corpGmcVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:5px;'>";
 						str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_region_scopeid="+jsonObject[0].corpGmcVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].corpGmcVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].corpGmcVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].corpGmcVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1008,15 +1008,15 @@ function buildingPmTable2(jsonObject){
 	var str=" ";
 		if(jsonObject[0].stateVoList !=null && jsonObject[0].stateVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>State Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 		
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].stateVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:5px;'>";
 						str+="<h5><span class='articleWisePMPartyCls roundCssCls' attr_region_scopeid="+jsonObject[0].stateVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].stateVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].stateVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].stateVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1027,15 +1027,15 @@ function buildingPmTable2(jsonObject){
 		}
 		if(jsonObject[0].districtVoList !=null && jsonObject[0].districtVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>District Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].districtVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:5px;'>";
 						str+="<h5><span class='articleWisePMPartyCls roundCssCls' attr_region_scopeid="+jsonObject[0].districtVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].districtVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].districtVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].districtVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1047,15 +1047,15 @@ function buildingPmTable2(jsonObject){
 		}
 		if(jsonObject[0].panchayatVoList !=null && jsonObject[0].panchayatVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Panchayat Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].panchayatVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:5px;'>";
 						str+="<h5><span class='articleWisePMPartyCls roundCssCls' attr_region_scopeid="+jsonObject[0].panchayatVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].panchayatVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].panchayatVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].panchayatVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1066,15 +1066,15 @@ function buildingPmTable2(jsonObject){
 		}
 		if(jsonObject[0].mandalVoList !=null && jsonObject[0].mandalVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Mandal Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].mandalVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePMPartyCls roundCssCls' attr_region_scopeid="+jsonObject[0].mandalVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].mandalVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].mandalVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].mandalVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1085,15 +1085,15 @@ function buildingPmTable2(jsonObject){
 		}
 		if(jsonObject[0].constoList !=null && jsonObject[0].constoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Constituency Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].constoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePMPartyCls roundCssCls' attr_region_scopeid="+jsonObject[0].constoList[i].scopeId+" attr_scopeValue="+jsonObject[0].constoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].constoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].constoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1104,15 +1104,15 @@ function buildingPmTable2(jsonObject){
 		}
 		if(jsonObject[0].corpGmcVoList !=null && jsonObject[0].corpGmcVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Corporation Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].corpGmcVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePMPartyCls roundCssCls' attr_region_scopeid="+jsonObject[0].corpGmcVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].corpGmcVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].corpGmcVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].corpGmcVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1126,15 +1126,15 @@ function buildingPmTable3(jsonObject){
 	var str=" ";
 		if(jsonObject[0].stateVoList !=null && jsonObject[0].stateVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>State Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].stateVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePMDistCls roundCssCls' attr_region_scopeid="+jsonObject[0].stateVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].stateVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].stateVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].stateVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1145,15 +1145,15 @@ function buildingPmTable3(jsonObject){
 		}
 		if(jsonObject[0].districtVoList !=null && jsonObject[0].districtVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>District Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].districtVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePMDistCls roundCssCls' attr_region_scopeid="+jsonObject[0].districtVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].districtVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].districtVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].districtVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1164,15 +1164,15 @@ function buildingPmTable3(jsonObject){
 		}
 		if(jsonObject[0].panchayatVoList !=null && jsonObject[0].panchayatVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Panchayat Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].panchayatVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePMDistCls roundCssCls' attr_region_scopeid="+jsonObject[0].panchayatVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].panchayatVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].panchayatVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].panchayatVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1183,15 +1183,15 @@ function buildingPmTable3(jsonObject){
 		}
 		if(jsonObject[0].mandalVoList !=null && jsonObject[0].mandalVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Mandal Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].mandalVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePMDistCls roundCssCls' attr_region_scopeid="+jsonObject[0].mandalVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].mandalVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].mandalVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].mandalVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1204,15 +1204,15 @@ function buildingPmTable3(jsonObject){
 		}
 		if(jsonObject[0].constoList !=null && jsonObject[0].constoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Constituency Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].constoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePMDistCls roundCssCls' attr_region_scopeid="+jsonObject[0].constoList[i].scopeId+" attr_scopeValue="+jsonObject[0].constoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].constoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].constoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1224,15 +1224,15 @@ function buildingPmTable3(jsonObject){
 		}
 		if(jsonObject[0].corpGmcVoList !=null && jsonObject[0].corpGmcVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Corporation Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].corpGmcVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePMDistCls roundCssCls' attr_region_scopeid="+jsonObject[0].corpGmcVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].corpGmcVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].corpGmcVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].corpGmcVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1248,15 +1248,15 @@ function buildingTable1(jsonObject)
 	var str=" ";
 		if(jsonObject[0].stateVoList !=null && jsonObject[0].stateVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>State Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].stateVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWiseEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].stateVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].stateVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].stateVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].stateVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1268,15 +1268,15 @@ function buildingTable1(jsonObject)
 		}
 		if(jsonObject[0].districtVoList !=null && jsonObject[0].districtVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>District Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].districtVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWiseEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].districtVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].districtVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].districtVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].districtVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1288,15 +1288,15 @@ function buildingTable1(jsonObject)
 		}
 		if(jsonObject[0].panchayatVoList !=null && jsonObject[0].panchayatVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Panchayat Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].panchayatVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWiseEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].panchayatVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].panchayatVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].panchayatVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].panchayatVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1308,15 +1308,15 @@ function buildingTable1(jsonObject)
 		}
 		if(jsonObject[0].mandalVoList !=null && jsonObject[0].mandalVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Mandal Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].mandalVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWiseEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].mandalVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].mandalVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].mandalVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].mandalVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1328,15 +1328,15 @@ function buildingTable1(jsonObject)
 		}
 		if(jsonObject[0].constoList !=null && jsonObject[0].constoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Constituency Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].constoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWiseEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].constoList[i].scopeId+" attr_scopeValue="+jsonObject[0].constoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].constoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].constoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1348,15 +1348,15 @@ function buildingTable1(jsonObject)
 		}
 		if(jsonObject[0].corpGmcVoList !=null && jsonObject[0].corpGmcVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Corporation Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].corpGmcVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWiseEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].corpGmcVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].corpGmcVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].corpGmcVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].corpGmcVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1374,15 +1374,15 @@ function buildingTable2(jsonObject)
 	var str=" ";
 		if(jsonObject[0].stateVoList !=null && jsonObject[0].stateVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>State Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-		str+='<ul class="m_top10 list-inline memberMeetingCls">';
+		str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].stateVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePartyEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].stateVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].stateVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].stateVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].stateVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1394,15 +1394,15 @@ function buildingTable2(jsonObject)
 		}
 		if(jsonObject[0].districtVoList !=null && jsonObject[0].districtVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>District Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-		    str+='<ul class="m_top10 list-inline memberMeetingCls">';
+		    str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].districtVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePartyEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].districtVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].districtVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].districtVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].districtVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1414,15 +1414,15 @@ function buildingTable2(jsonObject)
 		}
 		if(jsonObject[0].panchayatVoList !=null && jsonObject[0].panchayatVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Panchayat Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 	
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].panchayatVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePartyEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].panchayatVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].panchayatVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].panchayatVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].panchayatVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1434,15 +1434,15 @@ function buildingTable2(jsonObject)
 		}
 		if(jsonObject[0].mandalVoList !=null && jsonObject[0].mandalVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Mandal Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 	
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].mandalVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePartyEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].mandalVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].mandalVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].mandalVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].mandalVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1454,15 +1454,15 @@ function buildingTable2(jsonObject)
 		}
 		if(jsonObject[0].constoList !=null && jsonObject[0].constoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Constituency Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 	
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].constoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePartyEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].constoList[i].scopeId+" attr_scopeValue="+jsonObject[0].constoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].constoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].constoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1474,15 +1474,15 @@ function buildingTable2(jsonObject)
 		}
 		if(jsonObject[0].corpGmcVoList !=null && jsonObject[0].corpGmcVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Corporation Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].corpGmcVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWisePartyEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].corpGmcVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].corpGmcVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].corpGmcVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].corpGmcVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1499,15 +1499,15 @@ function buildingTable3(jsonObject){
 	var str=" ";
 		if(jsonObject[0].stateVoList !=null && jsonObject[0].stateVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>State Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].stateVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWiseDistEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].stateVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].stateVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].stateVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].stateVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1519,15 +1519,15 @@ function buildingTable3(jsonObject){
 		}
 		if(jsonObject[0].districtVoList !=null && jsonObject[0].districtVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>District Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 		
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].districtVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWiseDistEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].districtVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].districtVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].districtVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].districtVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1539,15 +1539,15 @@ function buildingTable3(jsonObject){
 		}
 		if(jsonObject[0].panchayatVoList !=null && jsonObject[0].panchayatVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Panchayat Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].panchayatVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWiseDistEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].panchayatVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].panchayatVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].panchayatVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].panchayatVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1559,15 +1559,15 @@ function buildingTable3(jsonObject){
 		}
 		if(jsonObject[0].mandalVoList !=null && jsonObject[0].mandalVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Mandal Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 			
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].mandalVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:10px;'>";
 						str+="<h5><span class='articleWiseDistEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].mandalVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].mandalVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].mandalVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].mandalVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1579,15 +1579,15 @@ function buildingTable3(jsonObject){
 		}
 		if(jsonObject[0].constoList !=null && jsonObject[0].constoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Constituency Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
 	
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].constoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:5px;'>";
 						str+="<h5><span class='articleWiseDistEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].constoList[i].scopeId+" attr_scopeValue="+jsonObject[0].constoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].constoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].constoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
@@ -1599,14 +1599,14 @@ function buildingTable3(jsonObject){
 		}
 		if(jsonObject[0].corpGmcVoList !=null && jsonObject[0].corpGmcVoList.length>0){
 		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading'>";
+			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
 				str+="<h3 class='panel-title'>Corporation Level</h3>";
 			str+="</div>";
-			str+="<div class='panel-body'>";
-			str+='<ul class="m_top10 list-inline memberMeetingCls">';
+			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
+			str+='<ul class="list-inline memberMeetingCls">';
 					for(var i in jsonObject[0].corpGmcVoList)
 					{
-						str+="<li class='text-capital m_top10' style='margin-left:10px;'>";
+						str+="<li class='text-capital' style='margin-left:5px;'>";
 						str+="<h5><span class='articleWiseDistEmnCls roundCssCls' attr_region_scopeid="+jsonObject[0].corpGmcVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].corpGmcVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].corpGmcVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].corpGmcVoList[i].locationName+"</span></h5>";
 						str+="</li>";
 					}
