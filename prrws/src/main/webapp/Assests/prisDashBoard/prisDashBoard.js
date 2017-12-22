@@ -408,8 +408,8 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 								
 							tableView+='</div>';
 						tableView+='</div>';
-						tableView+='<div class="table-responsive">';
-						tableView+='<table class="table dataTable'+blockId+'" id="table'+blockName+'" style="width:100%">';
+						tableView+='<div class="table-responsive" id="pdf'+blockName+'">';
+						tableView+='<table class="table dataTable'+blockId+' table_customPris" id="table'+blockName+'" style="width:100%">';
 								tableView+='<thead>';
 								
 								if(blockName == 'District'){
@@ -524,7 +524,7 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 									for(var i in result.subList){
 									tableView+='<tr>';
 										if(blockName == 'District'){
-											tableView+='<td  style="font-size:12px;"><img src="Assests/icons/'+result.subList[i].name+'.png" style="height: 30px;margin-right: 7px;width:30px;"/></br>'+result.subList[i].name+'</td>';
+											tableView+='<td  style="font-size:12px;background-color:#fff;"><img src="Assests/icons/'+result.subList[i].name+'.png" style="height: 30px;margin-right: 7px;width:30px;"/></br>'+result.subList[i].name+'</td>';
 											tableView+='<td style="font-size:12px;" class="cyan_color">'+result.subList[i].districtStarted+'</td>';
 											tableView+='<td style="font-size:12px;" class="light_pink_color">'+result.subList[i].consStarted+'</td>';
 											tableView+='<td style="font-size:12px;" class="light_pink_color">'+result.subList[i].consNotStarted+'</td>';
@@ -540,11 +540,11 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 										else if(blockName == 'Constituency')
 										{
 												if(subBlockName == "Districts" || subBlockName == "districts"){
-													tableView+='<td>'+result.subList[i].districtName+'</td>';
-													tableView+='<td>'+result.subList[i].name+'</td>';
+													tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].districtName+'</td>';
+													tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].name+'</td>';
 												}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
-													tableView+='<td>'+result.subList[i].parliament+'</td>';
-													tableView+='<td>'+result.subList[i].name+'</td>';
+													tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].parliament+'</td>';
+													tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].name+'</td>';
 													
 												}
 												
@@ -559,13 +559,13 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 										{
 											
 											if(subBlockName == "Districts" || subBlockName == "districts"){
-												tableView+='<td>'+result.subList[i].districtName+'</td>';
-												tableView+='<td>'+result.subList[i].assemblyName+'</td>';
-												tableView+='<td>'+result.subList[i].name+'</td>';
+												tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].districtName+'</td>';
+												tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].assemblyName+'</td>';
+												tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].name+'</td>';
 											}else if(subBlockName == "Parliament" || subBlockName == "parliament"){
-												tableView+='<td>'+result.subList[i].constituencyName+'</td>';
-												tableView+='<td>'+result.subList[i].assemblyName+'</td>';
-												tableView+='<td>'+result.subList[i].name+'</td>';
+												tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].constituencyName+'</td>';
+												tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].assemblyName+'</td>';
+												tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].name+'</td>';
 												
 											}
 												
@@ -574,10 +574,10 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 												tableView+='<td style="font-size:12px;" class="light_rose_color">'+result.subList[i].panchayatCompleted+'</td>';
 										}
 										
-										tableView+='<td>'+result.subList[i].total+'</td>';
-										tableView+='<td>'+result.subList[i].target+'</td>';
-										tableView+='<td>'+result.subList[i].achieved+'</td>';
-										tableView+='<td>'+result.subList[i].achievedPercentage+'</td>'; 
+										tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].total+'</td>';
+										tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].target+'</td>';
+										tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].achieved+'</td>';
+										tableView+='<td style="font-size:12px;background-color:#fff;">'+result.subList[i].achievedPercentage+'</td>'; 
 									tableView+='</tr>';
 									}
 								tableView+='</tbody>';
@@ -605,16 +605,16 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 							filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 						},
 						{
-							extend:    'pdfHtml5',
-							text:      '<i class="fa fa-file-pdf-o"></i>',
+							//extend:    'pdfHtml5',
+							text:      '<i class="fa fa-file-pdf-o exportToPdf" attr_id="table'+blockName+'"></i>',
 							titleAttr: 'PDF',
-							title:	   blockName,
-							filename:  blockName+'_'+blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-							orientation: "landscape",
-							pageSize:'A3',
-							customize: function (doc) {
-								doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-							}
+							//title:	   divId,
+							//filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+							//orientation: "landscape",
+							//pageSize:'A3',
+							//customize: function (doc) {
+							//	doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+							//}
 						}
 					]
 				});
@@ -639,16 +639,16 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 								filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 							},
 							{
-								extend:    'pdfHtml5',
-								text:      '<i class="fa fa-file-pdf-o"></i>',
+								//extend:    'pdfHtml5',
+								text:      '<i class="fa fa-file-pdf-o exportToPdf" attr_id="table'+blockName+'"></i>',
 								titleAttr: 'PDF',
-								title:	   blockId,
-								filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-								orientation: "landscape",
-								pageSize:'A3',
-								customize: function (doc) {
-									doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-								}
+								//title:	   divId,
+								//filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+								//orientation: "landscape",
+								//pageSize:'A3',
+								//customize: function (doc) {
+								//	doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+								//}
 							}
 						]
 				});
@@ -1445,3 +1445,24 @@ function buildTableData(result,blockId,blockName,subBlockName,viewType){//Teja
 		}
 		
 	}
+	$(document).on("click",".exportToPdf",function(){
+	var id = $(this).attr("attr_id");
+	
+	//getPdf(id);
+	var divHeight = $('#'+id).height();
+	var divWidth = $('#'+id).width();
+	var ratio = divHeight / divWidth;
+	html2canvas(document.getElementById(id), {
+		 height: divHeight,
+		 width: divWidth,
+		 onrendered: function(canvas) {
+			  var image = canvas.toDataURL("image/jpeg");
+			  var doc = new jsPDF(); // using defaults: orientation=portrait, unit=mm, size=A4
+			  var width = doc.internal.pageSize.width;    
+			  var height = doc.internal.pageSize.height;
+			  height = ratio * width;
+			  doc.addImage(image, 'JPEG', 0, 0, width-5, height-5);
+			  doc.save('myPage.pdf'); //Download the rendered PDF.
+		 }
+	});
+});
