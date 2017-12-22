@@ -452,7 +452,8 @@ $(document).on("click",".candidateAddedView",function(){
 	
 	$("#fileUpload"+typeVal+candidateId).append('<div class="col-sm-4" style="margin-top:-20px;"><label>REFERAL LETTER</label><input type="file"   attr_name="referList['+refCandCount+']" name="" attr_image_tyep="refImage"  id="editFileUpload'+candidateId+''+typeVal+'" multiple="multiple" class=""/></div>');
 	if(typeVal =='SELF'){
-		$(".candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="refCandidateId" value="'+candidateId+'" />');	
+		$(".candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="refCandidateId" value="'+candidateId+'" />');
+		$('.searchCandidateCls').hide();
 	}
 	else if(typeVal =='REPRESENTEE'){
 		$(".candidateDetails"+typeVal+"DivId").append('<input type="hidden" id="petitionRef'+refCandCount+'" name="referList['+refCandCount+'].refCandidateId" value="'+candidateId+'" />');	
@@ -500,10 +501,16 @@ $(document).on("click",".showRemoveIcon",function(){
 	var candidateId = $(this).attr("attr_candidate_id");
 	refCandCount=refCandCount-1;
 	$(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
-	//$("#candidateDetails"+typeVal+"DivId").find(".showRemoveIcon").hide();
+	
 	$(".candidateDetails"+typeVal+"DivId").find("#candidate"+typeVal+candidateId).remove();
 	var itemtoRemove = parseInt(candidateId);
 	alreadyCandidateId.splice($.inArray(itemtoRemove, alreadyCandidateId),1);
+
+	if(typeVal=='SELF'){
+		$(".candidateDetails"+typeVal+"DivId").html('');
+		$('.searchCandidateCls').show();
+	}
+	
 });
 
 $(document).on("click",".removeFileCls",function(){
@@ -1200,6 +1207,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 		str+='</table>';
 		str+='</div>';
 	$("#candidateDetailsDivId").html(str);
+	
 	$('#candidatesTab').dataTable({
 		"paging":   true,
 		"info":     false,
@@ -1506,15 +1514,15 @@ function buildPetitionDetails(result){
 	str+='</div>';
 	
 		if(result.representationType == "SELF"){
-			if(!$(".candidateDetails"+result.representationType+"DivId").find(".bgColorCandidatesView")){
+			//if(!$(".candidateDetails"+result.representationType+"DivId").find(".bgColorCandidatesView")){
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-12">';
 						str+='<div class="pull-right">';
-							str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+result.representationType+'">ADD MEMBER</button>';
+							str+='<button type="button" style="display:none;" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+result.representationType+'">ADD MEMBER</button>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-			}
+		//	}
 			
 		}else if(result.representationType == "REPRESENTEE"){
 			str+='<div class="row m_top10">';
@@ -2907,7 +2915,12 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	);
 	
 	//console.log(formData);
-	//return;
+	$("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Updated Successfully</h3></center>").fadeOut(4000);	  
+	setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); 
+	window.location.reload(); 
+	$(".defaultCheckCls").prop("checked",true)},6000);
+	
+	return;
 	  $.ajax({
 			url: $("#adminProfileForm").attr("action"),
 			data: formData,
@@ -2918,7 +2931,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				$("#savingDetailsSpinner").html('')
 				if(result!=null){
 				  if(result.responseCode == "0"){
-					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
+					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Updation Successfully</h3></center>").fadeOut(4000);
 					  
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); 
 						window.location.reload(); 
@@ -2926,7 +2939,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 						 
 				  }else{
 					  $('#saveButtonId').show();
-					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
+					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Updation Failed..Try Later</h3></center>").fadeOut(4000);
 					  setTimeout(function () {
 						 
 						}, 500);
@@ -2935,7 +2948,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				}else{
 					  $('#saveButtonId').show();
 					setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
+						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Updation Failed..Try Later</h3></center>").fadeOut(4000);
 						}, 500);
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				 }

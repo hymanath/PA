@@ -79,14 +79,6 @@ public class RepresentationRequestController {
     public @ResponseBody List<KeyValueVO> getParliamentByDistricList(@RequestBody Map<String,String> inputMap ) {
        return locationDetailsService.getParliamentIdsByConstituencyList();
     }
-	@RequestMapping(value ="/representationRequestEdit/{petitionId},/representationRequestEdit1", method = RequestMethod.GET)
-    public String representationRequestEdit(ModelMap model,HttpServletRequest request,@PathVariable int petitionId) {
-	    UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
-		if (uservo==null){
-	      return "petitionsLoginPage";
-	    }
-		return "representationRequestEdit";
-    }
 	
 	@RequestMapping(value ="/representationRequestEdit", method = RequestMethod.GET)
     public String representationRequestEdit(ModelMap model,HttpServletRequest request) {

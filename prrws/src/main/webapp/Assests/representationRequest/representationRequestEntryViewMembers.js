@@ -128,7 +128,11 @@ function representationRequestEntryTable(result){
 					str+='<td>-</td>';
 				
 				str+='<td class="text-center"><a style="margin-right:5px;" class="btn btn-xs viewEditCss viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"> View</a>';
-				str+='<a style="margin-left:15px;" href="'+wurl+'/representationRequestEdit/'+result[i].petitionId+'" target="_blank" class="btn btn-xs viewEditCss m_top10 btn-warning"> Edit </a></td>';
+				
+				if(endorsmentNo != null && endorsmentNo != 'undefined' &&  (parseInt(endorsmentNo) ==0 || endorsmentNo=='') )
+					str+='<a style="" href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank" class="btn btn-xs  m_top10 btn-warning"> Edit </a>';
+				
+				str+='</td>';
 			str+='</tr>';
 			}
 		str+='</tbody>';
