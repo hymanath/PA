@@ -55,12 +55,14 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 	public List<Long> getPmDeptStatusIdByUserId(Long userId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct dept.pmDepartmentId from PmOfficerUser model "
-				  + " left outer join model.pmDepartmentDesignation.pmDepartment dept " 
-				  + " where model.userId =:userId " 
-				  +"  and model.pmDepartmentDesignation.isDeleted = 'N'"
-				  + " and model.pmDepartmentDesignation.pmDepartment.isDeleted = 'N'");
-		
-		Query query = getSession().createQuery(sb.toString());//
+				  + " left outer join model.pmDepartmentDesignation.pmDepartment dept ");
+				if(userId != null && userId.longValue() >0l){
+					sb.append(" where model.userId =:userId " );
+				}
+				sb.append(" and model.pmDepartmentDesignation.isDeleted = 'N'");
+				sb.append(" and model.pmDepartmentDesignation.pmDepartment.isDeleted = 'N'");
+				
+		Query query = getSession().createQuery(sb.toString());
 		if(userId != null && userId.longValue() >0l){
 			query.setParameter("userId", userId);
 		}	
@@ -72,10 +74,12 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model1.pmStatusId  from PmOfficerUser model,PmDepartmentDesignationStatus model1 "
-				+ " where model.pmDepartmentDesignationId =  model1.pmDepartmentDesignationId " 
-				+ " and model.userId = :userId "
-				+" and model.isActive ='Y'");
-		Query query = getSession().createQuery(sb.toString());//
+				+ " where model.pmDepartmentDesignationId =  model1.pmDepartmentDesignationId ");
+				if(userId != null && userId.longValue() >0l){
+					sb.append(" and model.userId =:userId");
+				}
+				sb.append(" and model.isActive ='Y'");
+		Query query = getSession().createQuery(sb.toString());
 		if(userId != null && userId.longValue() >0l){
 			query.setParameter("userId", userId);
 		}	
