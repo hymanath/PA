@@ -199,10 +199,14 @@ function buildLocationWiseWorksGraph(result){
 			type: 'category'
 		},
 		yAxis: {
-			title: {
-				text: ''
-			}
-
+			min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				allowDecimals: false,
+				min: 0,
+				title: {
+					text: null
+				}
 		},
 		legend: {
 			enabled: false
@@ -346,14 +350,14 @@ function buildGraph(result)	{
 				}
 			},
 			series: [{
-				name: 'Targets',
+				name: 'Target',
 				data: [result[0].totTarget],
-				stack: 'targets',
+				stack: 'target',
 				color:'#EE6CA9'
 			}, {
-				name: 'Achievments',
+				name: 'Achievment',
 				data: [result[0].totAchv],
-				stack: 'Achievments',
+				stack: 'Achievment',
 				color:'#C61379'
 			}]
 		});
@@ -368,6 +372,8 @@ function buildGraph(result)	{
 				categories:cateArr
 			},
 			yAxis: {
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
 				allowDecimals: false,
 				min: 0,
 				title: {
@@ -388,14 +394,14 @@ function buildGraph(result)	{
 				}
 			},
 			series: [{
-				name: 'Targets',
+				name: 'Target',
 				data: targetsArr,
-				stack: 'Targets',
+				stack: 'Target',
 				color:'#EE6CA9'
 			}, {
-				name: 'Achievments',
+				name: 'Achievment',
 				data: AchievmentArr,
-				stack: 'Achievments',
+				stack: 'Achievment',
 				color:'#C61379'
 			}]
 		});
