@@ -51,7 +51,7 @@
 			</div>
 			<div class="col-sm-9 col-xs-6">
 				<h5 style="margin-bottom: 0px;margin-top: 10px;color: #EC2027"><b>MINISTER <span style="font-size: 10px;">DASHBOARD</span></b></h5>
-				<p style="font-size: 10px;color : #22A67E"><b>Information Technology, Panchayathi Raj & <br/>
+				<p style="font-size: 10px;color : #22A67E"><b>Information Technology, Panchayath Raj & <br/>
 				Rural Development</b></p>
 			</div>
 			<div class="col-sm-2 col-xs-3">
@@ -69,7 +69,7 @@
 						<div style="height:70px;width:100%;margin:auto;">
 							<img src="Assests/img/Path 233.png" alt="FAVOURITE" style="display:block;margin:auto">
 						</div>
-						<h5>FAVOURITE</h5>
+						<h5>FAVOURITES</h5>
 					</div>
 				</div>
 				<div class="col-sm-2 text-center">
@@ -85,7 +85,7 @@
 						<div style="height:70px;width:100%;margin:auto;">
 							<img src="Assests/img/Group 2354.png" alt="Panchayat Raj" style="display:block;margin:auto">
 						</div>
-						<h5>PANCHAYATI RAJ</h5>
+						<h5>PANCHAYAT RAJ</h5>
 					</div>
 				</div>
 				<div class="col-sm-2 text-center">
@@ -122,7 +122,7 @@
 			<div class="col-sm-6 col-sm-offset-3 text-center">
 				<img src="Assests/img/Group 2329.png" alt="image">
 				<h4 style="color: #EC2027"><b>NARA LOKESH</b></h4>
-				<p style="font-size: 12px;">Minister for Information Technology,<br/> Panchayathi Raj and Rural Development,<br/>(Government of Andhra Pradesh)</p>
+				<p style="font-size: 12px;">Minister for Information Technology,<br/> Panchayath Raj and Rural Development,<br/>(Government of Andhra Pradesh)</p>
 			</div>
 		</div>
 	</div>

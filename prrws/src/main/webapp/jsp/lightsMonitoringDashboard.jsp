@@ -35,7 +35,7 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
+					<h4 class="text-capital">Panchayat Raj, RD & RWS</h4>
 					<p>LED - Dashboard</p>
 				</div>
 				
@@ -87,7 +87,7 @@
 								</div>
 								<div class="col-sm-12 m_top10">
 									<div class="menu-heading-block">
-										<h4>PANCHAYATI RAJ</h4>
+										<h4>PANCHAYAT RAJ</h4>
 										<div class="row">
 											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#0F685C">
@@ -254,14 +254,10 @@
 <div class="modal fade" id="surveryStartedLocationDtlsModelDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="width:90%;margin:auto">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<div class="col-sm-11">
-			<h4 class="modal-title text-capital" id="surveryStartedLocHeadingId" style="text-align:center;font-weight: bold"></h4> 
+		<div class="modal-header">
+			<button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title text-capital text-center" id="surveryStartedLocHeadingId" style="text-align:center;font-weight: bold"></h4> 
 		</div>
-		
-	    
-		 </div>
       <div class="modal-body">
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">

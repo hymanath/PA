@@ -63,13 +63,13 @@
 								<div class="paddingLogin">
 									<div class="col-sm-12">
 										<label class="login-field-icon fui-user" for="login-name">USERNAME
-											<input type="text" class="form-control m_top5" value="" placeholder="User Name" id="loginName"/>
+											<input type="text" class="form-control m_top5" value="" placeholder="User Name" id="login-name"/>
 											<span id="statusErrUserId"></span>	
 										</label>
 									</div>
 									<div class="col-sm-12">
 										<label class="login-field-icon fui-lock" for="login-pass">PASSWORD
-											<input type="password" class="form-control m_top5" value="" placeholder="Password" id="loginPass" >
+											<input type="password" class="form-control m_top5" value="" placeholder="Password" id="login-pass" >
 											<span id="statusErrPwdId"></span>	
 										</label>
 									</div>
@@ -104,7 +104,7 @@
 			<div class="col-sm-6 col-sm-offset-3 text-center">
 				<img src="Assests/img/Group 2329.png" alt="image">
 				<h4 style="color: #EC2027"><b>NARA LOKESH</b></h4>
-				<p style="font-size: 12px;">Minister for Information Technology,<br/> Panchayathi Raj and Rural Development,<br/>(Government of Andhra Pradesh)</p>
+				<p style="font-size: 12px;">Minister for Information Technology,<br/> Panchayath Raj and Rural Development,<br/>(Government of Andhra Pradesh)</p>
 			</div>
 		</div>
 	</div>
@@ -131,8 +131,8 @@ function userLogin(){
 	$("#statusErrPwdId").html(' ');
 	$("#successMessage").html(' ');
 		
-	var userName = $("#loginName").val();
-	var password = $("#loginPass").val();
+	var userName = $("#login-name").val();
+	var password = $("#login-pass").val();
 
 	var errorStr = '';
 	var errorPwdStr='';
