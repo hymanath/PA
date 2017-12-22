@@ -231,7 +231,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 															documentId = docId;break;
 													}
 													if(documentId != null)
-														savePetitionWorkDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
+														savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
 												} 
 											}catch (Exception e) {}
 											
@@ -295,7 +295,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																				documentId = docId;break;
 																		}
 																		if(documentId != null)
-																			savePetitionWorkDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
+																			savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
 																	}
 																}catch (Exception e) {}
 															}
@@ -340,7 +340,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																		documentId = docId;break;
 																}
 																if(documentId != null)
-																	savePetitionWorkDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
+																	savePetitionReffererDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
 															}
 														}catch (Exception e) {}
 													}
