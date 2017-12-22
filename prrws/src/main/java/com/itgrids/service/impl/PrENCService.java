@@ -401,7 +401,7 @@ public class PrENCService implements IPrENCService {
 	}
 	/**
 	 * getEncTargetsAchievement
-	 * Author: Swapna/sanjay
+	 * Author: sanjay
 	 * 
 	 */
 	@Override
