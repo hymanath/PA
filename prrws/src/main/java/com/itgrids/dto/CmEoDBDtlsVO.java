@@ -31,7 +31,50 @@ public class CmEoDBDtlsVO {
 	private CmEoDBDtlsVO itDtlsVO;
 	private CmEoDBDtlsVO electronicsDtlsVO;
 	
+	private String approvedPerc;
+	private String rejectedPerc;
+	private String reApprovedPerc;
+	private String pendingPerc;
+	private String withinSLAPerc;
+	private String beyongSLAPerc;
 	
+	
+	public String getApprovedPerc() {
+		return approvedPerc;
+	}
+	public void setApprovedPerc(String approvedPerc) {
+		this.approvedPerc = approvedPerc;
+	}
+	public String getRejectedPerc() {
+		return rejectedPerc;
+	}
+	public void setRejectedPerc(String rejectedPerc) {
+		this.rejectedPerc = rejectedPerc;
+	}
+	public String getReApprovedPerc() {
+		return reApprovedPerc;
+	}
+	public void setReApprovedPerc(String reApprovedPerc) {
+		this.reApprovedPerc = reApprovedPerc;
+	}
+	public String getPendingPerc() {
+		return pendingPerc;
+	}
+	public void setPendingPerc(String pendingPerc) {
+		this.pendingPerc = pendingPerc;
+	}
+	public String getWithinSLAPerc() {
+		return withinSLAPerc;
+	}
+	public void setWithinSLAPerc(String withinSLAPerc) {
+		this.withinSLAPerc = withinSLAPerc;
+	}
+	public String getBeyongSLAPerc() {
+		return beyongSLAPerc;
+	}
+	public void setBeyongSLAPerc(String beyongSLAPerc) {
+		this.beyongSLAPerc = beyongSLAPerc;
+	}
 	public Long getTotal() {
 		return total;
 	}
