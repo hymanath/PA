@@ -44,7 +44,7 @@
 		<div class="row m_top10">
 			<div class="col-sm-12">
 				<div class="white_block">
-					<label><input type="radio" name="radio" value="TOT" checked class="radioBtnCls"/>&nbsp;Total&nbsp;</label> 
+						<label><input type="radio" name="radio" value="TOT" checked class="radioBtnCls"/>&nbsp;Total&nbsp;</label> 
 					<label><input type="radio" name="radio" value="WAGE" class="radioBtnCls"/>&nbsp;Wage&nbsp;</label> 
 					<label><input type="radio" name="radio" value="MAT" class="radioBtnCls"/>&nbsp;Material&nbsp;</label> 
 				</div>
@@ -206,7 +206,7 @@ function getPanchatVsExpData(radioType)
 		year : "2017",
 		fromDate : fromDate,
         toDate : toDate,
-		pType : radioType
+        pType : radioType
        
 	}
   $.ajax({
@@ -440,6 +440,7 @@ $(document).on("click",".radioBtnCls",function(){
 	getPanchayatsExpenditure(radioType);
 	getPanchatVsExpData(radioType);
 });
+
 </script> 
 </body>
 </html>
