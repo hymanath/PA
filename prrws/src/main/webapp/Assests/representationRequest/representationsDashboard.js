@@ -3,7 +3,7 @@
 function getDeptIdsListBYUserIdsLst(){
 	$("#designationrepresent").html('');
 	  var json = {
-			  userId:"2"
+			 
 	  };
 	$.ajax({              
 		type:'POST',    
@@ -24,7 +24,7 @@ function getDeptIdsListBYUserIdsLst(){
 function getPmDeptStatusIdsByUserIdsLst(){
 	
 	  var json = {
-			  userId:"2"
+			 
 	  };
 	$.ajax({              
 		type:'POST',    
