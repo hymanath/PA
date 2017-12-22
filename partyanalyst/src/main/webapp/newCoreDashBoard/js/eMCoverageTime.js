@@ -42,7 +42,7 @@ $('#dateRangeEMCoverageTimeId').on('apply.daterangepicker', function(ev, picker)
 				type = $(this).val();
 			}
 		});
-		getDayWiseCandidateCoverageTime(type,categoryId,""); // Main Block right expand
+		getDayWiseCandidateCoverageTime(type,categoryId,"N"); // Main Block right expand
 	}
 	
 });
@@ -93,13 +93,13 @@ function getCandidateAndPartyWiseNewsChannals(type,categoryId,isParticipated){
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+type+"/"+isParticipated
 	}).then(function(result){
 		if(result != null && result.length > 0){
-			getCandidateAndPartyWiseNewsChannelsBuilding(result);
+			getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated);
 		}else{
 			$("#EMCoverageTimeSummaryDivId").html("No Data Available");
 		}
 	});
 }
-function getCandidateAndPartyWiseNewsChannelsBuilding(result){
+function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 	var str="";
 	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered" id="dataTableCanAndPartyWiseNewsChannel" style="width:100%">';
@@ -129,10 +129,24 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result){
 					str+='<td>'+result[i].organization+'</td>';
 					if(result[i].coreDashBoardVOList != null && result[i].coreDashBoardVOList.length > 0){
 						for(var j in result[i].coreDashBoardVOList){
-							str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>';
+							if(result[i].coreDashBoardVOList[j].positiveCountMain != null && result[i].coreDashBoardVOList[j].positiveCountMain>0){
+								str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].positiveCountMain+'</a></td>';
+							
+							   str+='<td class="text-success">'+result[i].coreDashBoardVOList[j].positivePerc+'</td>';
+							}else{
+								str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>';
+							
 							str+='<td class="text-success">'+result[i].coreDashBoardVOList[j].positivePerc+'</td>';
-							str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>';
+							}
+							if(result[i].coreDashBoardVOList[j].negativCountMain != null && result[i].coreDashBoardVOList[j].negativCountMain >0){
+								str+='<td><a class="emctClickCls" attr_benefit_id="2" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].negativCountMain+'</a></td>';
 							str+='<td class="text-danger">'+result[i].coreDashBoardVOList[j].negativePerc+'</td>';
+							}else{
+								str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>';
+							str+='<td class="text-danger">'+result[i].coreDashBoardVOList[j].negativePerc+'</td>';
+							}
+						
+							
 						}
 					}
 				str+='</tr>';
@@ -363,4 +377,19 @@ $('#participatedCheckBoxId').change(function(){
             getDayWiseCandidateCoverageTime(type,categoryId,"N");
 		}
  });
-   
+$(document).on("click",".emctClickCls",function(){
+	var categoryId = $("#categoryEmId").val();
+	var type='';
+	$(".EMCoverageTimeCls").each(function(){
+		if (this.checked) {
+			type = $(this).val();
+		}
+	});
+		var benefitId = $(this).attr("attr_benefit_id"); 
+		var candidateId = $(this).attr("attr_candidateId");
+		var channelId = $(this).attr("attr_channelId");
+		var participate = $(this).attr("attr_participate");
+		
+		window.open('showElectronicBulletinsAction.action?organizationId='+candidateId+'&benefitId='+benefitId+'&categoryId='+categoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+channelId+'&type='+type+'&&orgType='+participate+'&stIdx=0&edIdx=6&callFrom=EMCT');
+		
+});
