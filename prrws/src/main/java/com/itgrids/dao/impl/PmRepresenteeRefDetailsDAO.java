@@ -77,7 +77,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" " +
 				" left join model.pmRefCandidateDesignation pmRefCandidateDesignation " +
 				" left join pmRefCandidateDesignation.pmDesignation refPmDesignation " );
-		str.append(" where model.petitionId =:petitionId and model.petition.isDeleted='N' ");
+		str.append(" where model.petitionId =:petitionId and model.petition.isDeleted='N' and model.isDeleted='N' ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("petitionId", petitionId);	
 		return query.list();
