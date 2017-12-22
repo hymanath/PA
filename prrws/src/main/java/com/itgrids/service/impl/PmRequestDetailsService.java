@@ -221,15 +221,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								
 								if(pmRequestVO.getReferList().get(0).getFileNamesList() != null && pmRequestVO.getReferList().get(0).getFileNamesList().size()>0){
 									for (KeyValueVO item : pmRequestVO.getReferList().get(0).getFileNamesList()) {
-										List<Long> documentsIsList=documentDAO.getdocumentByFilePath(item.getValue().substring(34));
-										if(commonMethodsUtilService.isListOrSetValid(documentsIsList)){
-											Long documentId=0L;
-											for (Long docId : documentsIsList) {
-												if(docId != null && docId.longValue()>0L)
-													documentId = docId;
-											}
-											if(documentId != null)
-												savePetitionWorkDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
+										if(item != null && item.getValue() != null){
+											try {
+												List<Long> documentsIsList=documentDAO.getdocumentByFilePath(item.getValue().substring(34));
+												if(commonMethodsUtilService.isListOrSetValid(documentsIsList)){
+													Long documentId=0L;
+													for (Long docId : documentsIsList) {
+														if(docId != null && docId.longValue()>0L)
+															documentId = docId;break;
+													}
+													if(documentId != null)
+														savePetitionWorkDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
+												} 
+											}catch (Exception e) {}
+											
+											
 										}
 									}
 								}
@@ -279,16 +285,19 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 														 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
 													if(refVO.getFileNamesList() != null && refVO.getFileNamesList().size()>0){
 														for (KeyValueVO item : refVO.getFileNamesList()) {
-															//Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
-															List<Long> documentsIsList=documentDAO.getdocumentByFilePath(item.getValue().substring(33));
-															if(commonMethodsUtilService.isListOrSetValid(documentsIsList)){
-																Long documentId=0L;
-																for (Long docId : documentsIsList) {
-																	if(docId != null && docId.longValue()>0L)
-																		documentId = docId;
-																}
-																if(documentId != null)
-																	savePetitionWorkDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
+															if(item != null && item.getValue() != null){
+																try{
+																	List<Long> documentsIsList=documentDAO.getdocumentByFilePath(item.getValue().substring(33));
+																	if(commonMethodsUtilService.isListOrSetValid(documentsIsList)){
+																		Long documentId=0L;
+																		for (Long docId : documentsIsList) {
+																			if(docId != null && docId.longValue()>0L)
+																				documentId = docId;break;
+																		}
+																		if(documentId != null)
+																			savePetitionWorkDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
+																	}
+																}catch (Exception e) {}
 															}
 														}
 													}
@@ -321,16 +330,19 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 												 commonMethodsUtilService.isListOrSetValid(refVO.getFileList())){
 											if(refVO.getFileNamesList() != null && refVO.getFileNamesList().size()>0){
 												for (KeyValueVO item : refVO.getFileNamesList()) {
-													//Document petitionWorkDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,pmRequestVO.getUserId());
-													List<Long> documentsIsList=documentDAO.getdocumentByFilePath(item.getValue().substring(33));
-													if(commonMethodsUtilService.isListOrSetValid(documentsIsList)){
-														Long documentId=0L;
-														for (Long docId : documentsIsList) {
-															if(docId != null && docId.longValue()>0L)
-																documentId = docId;
-														}
-														if(documentId != null)
-															savePetitionWorkDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
+													if(item != null && item.getValue() != null){
+														try{
+															List<Long> documentsIsList=documentDAO.getdocumentByFilePath(item.getValue().substring(33));
+															if(commonMethodsUtilService.isListOrSetValid(documentsIsList)){
+																Long documentId=0L;
+																for (Long docId : documentsIsList) {
+																	if(docId != null && docId.longValue()>0L)
+																		documentId = docId;break;
+																}
+																if(documentId != null)
+																	savePetitionWorkDocument(petitionRefferer.getPmRepresenteeRefDetailsId(),documentId,pmRequestVO.getUserId());
+															}
+														}catch (Exception e) {}
 													}
 												}
 											}
@@ -480,15 +492,19 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								}
 								if(pmRequestVO.getFileNamesList() != null && pmRequestVO.getFileNamesList().size()>0){
 									for (KeyValueVO item : pmRequestVO.getFileNamesList()) {
-										List<Long> documentsIsList=documentDAO.getdocumentByFilePath(item.getValue().substring(34));
-										if(commonMethodsUtilService.isListOrSetValid(documentsIsList)){
-											Long documentId=0L;
-											for (Long docId : documentsIsList) {
-												if(docId != null && docId.longValue()>0L)
-													documentId = docId;
-											}
-											if(documentId != null)
-												savePetitionWorkDocument(petition.getPetitionId(),documentId,pmRequestVO.getUserId());
+										if(item != null && item.getValue() != null){
+											try{
+												List<Long> documentsIsList=documentDAO.getdocumentByFilePath(item.getValue().substring(34));
+												if(commonMethodsUtilService.isListOrSetValid(documentsIsList)){
+													Long documentId=0L;
+													for (Long docId : documentsIsList) {
+														if(docId != null && docId.longValue()>0L)
+															documentId = docId;break;
+													}
+													if(documentId != null)
+														savePetitionWorkDocument(petition.getPetitionId(),documentId,pmRequestVO.getUserId());
+												}
+											}catch (Exception e) {}
 										}
 									}
 								}
