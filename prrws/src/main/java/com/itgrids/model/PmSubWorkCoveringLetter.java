@@ -21,6 +21,7 @@ public class PmSubWorkCoveringLetter implements Serializable {
 	private String endorsmentNo;
 	private Long pmSubWorkDetailsId;
 	private Long documentId;
+	private String isDeleted;
 	
 	private PmSubWorkDetails pmSubWorkDetails;
 	private Document document;
@@ -70,6 +71,14 @@ public class PmSubWorkCoveringLetter implements Serializable {
 	}
 	public void setDocument(Document document) {
 		this.document = document;
+	}
+	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	
 

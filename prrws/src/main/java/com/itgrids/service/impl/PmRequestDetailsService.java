@@ -32,6 +32,7 @@ import com.itgrids.dao.IPmRepresenteeDAO;
 import com.itgrids.dao.IPmRepresenteeDesignationDAO;
 import com.itgrids.dao.IPmRepresenteeRefDetailsDAO;
 import com.itgrids.dao.IPmRepresenteeRefDocumentDAO;
+import com.itgrids.dao.IPmSubWorkCoveringLetterDAO;
 import com.itgrids.dao.IPmStatusDAO;
 import com.itgrids.dao.IPmSubWorkDetailsDAO;
 import com.itgrids.dto.AddressVO;
@@ -123,6 +124,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	private ILocationDetailsService locationDetailsService;
 	@Autowired
 	private IPmStatusDAO pmStatusDAO;
+	
+	@Autowired
+	private IPmSubWorkCoveringLetterDAO pmSubWorkCoveringLetterDAO;
 	
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO){
 		ResponseVO responseVO = new ResponseVO();
@@ -453,7 +457,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isListOrSetValid(pmRequestVO.getWorksList())){
 					int i=0;
 					Long submittedWorksCount=0L;
-					Long noOfWorks=0L;
+					//Long noOfWorks=0L;
 					for (PetitionsWorksVO dataVO : pmRequestVO.getWorksList()) {
 						//if(dataVO.getDeptId() != null && dataVO.getDeptId().longValue()>0L && dataVO.getSubjectId() != null && dataVO.getSubjectId().longValue()>0L){
 							if(i==0){
@@ -480,7 +484,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								petition.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								petition.setUpdatedUserId(pmRequestVO.getUserId());
 								petition = pititionDAO.save(petition);
-								noOfWorks = dataVO.getNoOfWorks();
+								//noOfWorks = dataVO.getNoOfWorks();
 							}
 							i=i+1;
 							if(petition != null && petition.getPetitionId() != null && petition.getPetitionId().longValue()>0L && commonMethodsUtilService.isListOrSetValid(dataVO.getSubWorksList())){
@@ -866,8 +870,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					vo.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
 					vo.setReferrerName(commonMethodsUtilService.getStringValueForObject(param[5]));
 					vo.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[6]));
-					Long petionPendingDays = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[8]),commonMethodsUtilService.getStringValueForObject(param[9]));
-					Long statusId = commonMethodsUtilService.getLongValueForObject(param[10]);
+					 dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[8]),commonMethodsUtilService.getStringValueForObject(param[9]));
+					commonMethodsUtilService.getLongValueForObject(param[10]);
 					vo.setWorkName(commonMethodsUtilService.getStringValueForObject(param[11]));
 					//RepresenteeViewVO vo =mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(param[8] != null){
@@ -963,6 +967,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 			}
 			
+			String endorsmentNo ="";
 			List<Object[]> pmRepresenteePetitionsDetils = pmRepresenteeRefDetailsDAO.getPmRepresenteRefDetails(petitionId);
 			if(commonMethodsUtilService.isListOrSetValid(pmRepresenteePetitionsDetils)){
 					returnVO = new PmRequestEditVO();
@@ -970,6 +975,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				for (Object[] param : pmRepresenteePetitionsDetils) {
 					
 					if(i == 0){
+						endorsmentNo = commonMethodsUtilService.getStringValueForObject(param[22]);
 						 returnVO.setPetitionId(petitionId);
 						 returnVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[27]));
 						 returnVO.setEstimateCost(String.valueOf(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))));
@@ -1188,6 +1194,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}
 					}
 				}
+				
+				if(endorsmentNo != null && !endorsmentNo.isEmpty()){
+					List<String> coveringLetterDetails = pmSubWorkCoveringLetterDAO.getCoveringLetterDetailsByEndorsmentNo(endorsmentNo);
+					if(commonMethodsUtilService.isListOrSetValid(coveringLetterDetails)){
+						List<KeyValueVO> coveringLetterPathsList = new ArrayList<KeyValueVO>(0);
+						for (String letterPath : coveringLetterDetails) {
+							coveringLetterPathsList.add(new KeyValueVO(0L,"http://www.mydepartments.in/PRRWS/"+letterPath));
+						}
+						returnVO.getCoveringLetterPathsList().addAll(coveringLetterPathsList);
+					}
+				}
 			}
 		} catch (Exception e) {
 			 LOG.error("Exception Occured in setPmRepresenteeDataToResultView "+e.getMessage());
@@ -1195,7 +1212,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		 return returnVO;
 	 }
 	 
-	 public AddressVO setAddressDetailsToResultView(String pageType, Object state,Object district,Object assembly,Object mandal,Object muncipality,Object panchayat){
+	 @SuppressWarnings("static-access")
+	public AddressVO setAddressDetailsToResultView(String pageType, Object state,Object district,Object assembly,Object mandal,Object muncipality,Object panchayat){
 		 AddressVO addressVO = new AddressVO();
 		 try {
 			 addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(state));
@@ -1300,6 +1318,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return cadrInfoVo;
 		}
 		
+		@SuppressWarnings("static-access")
 		public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate){
 			RepresenteeViewVO returnVO = new RepresenteeViewVO();
 			try {
@@ -1370,6 +1389,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return returnVO;
 		}
+		@SuppressWarnings("static-access")
 		public void setObjectListForCompleteOverview(List<Object[]> objectList,RepresenteeViewVO returnVO,String type){
 			try {
 				
@@ -1417,6 +1437,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				LOG.error("Exception Occured in setObjectListToMap ");
 			}
 		}
+		@SuppressWarnings("static-access")
 		public void setObjectListToMap(List<Object[]> objectList,Map<Long,RepresenteeViewVO> statuMap,String type){
 			try {
 				

@@ -16,11 +16,18 @@ public class PmRequestEditVO {
 	private String estimateCost;
 	private String grievanceDescription;
 	
+	private List<KeyValueVO> coveringLetterPathsList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> fileList = new ArrayList<KeyValueVO>();
 	private List<PmRequestVO> representeeDetailsList = new ArrayList<PmRequestVO>(0);	
 	private List<PmRequestVO> referDetailsList = new ArrayList<PmRequestVO>(0);
 	private List<PetitionsWorksVO> subWorksList = new ArrayList<PetitionsWorksVO>();
 	
+	public List<KeyValueVO> getCoveringLetterPathsList() {
+		return coveringLetterPathsList;
+	}
+	public void setCoveringLetterPathsList(List<KeyValueVO> coveringLetterPathsList) {
+		this.coveringLetterPathsList = coveringLetterPathsList;
+	}
 	public String getEstimateCost() {
 		return estimateCost;
 	}
