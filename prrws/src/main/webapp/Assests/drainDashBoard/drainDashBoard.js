@@ -681,7 +681,7 @@ function buildingTable(result,locationType,divId){
     str+='</div>';
 	$("#"+divId+"TableDivId").html(str);
 	$("#datatable"+locationType).dataTable({
-		"iDisplayLength": 10,
+		"iDisplayLength": 15,
 		"aaSorting": [],
 		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
@@ -1421,4 +1421,4 @@ function getIvrSurveyQuestions(divId)
 		}
 		
 	});
-}
+}s
