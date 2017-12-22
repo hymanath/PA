@@ -123,4 +123,51 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		query.setParameter("userId", userId);
 		return query.executeUpdate();
 	}
+
+	public List<Object[]> getCompleteOrStatusOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate,String type){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(model.pmSubWorkDetailsId),model.petition.petitionId, model.pmStatus.pmStatusId,model.pmStatus.status ");
+		
+		if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
+			sb.append(", model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId,model1.pmRefCandidateDesignation.pmDesignation.designation  ");
+		}/*else if(type != null && (type.equalsIgnoreCase("overallStatus") || type.equalsIgnoreCase("status"))){
+			sb.append(", model.pmStatus.pmStatusId,model.pmStatus.status ");
+		}*/else if(type != null && (type.equalsIgnoreCase("statusSubject") || type.equalsIgnoreCase("subject"))){
+			sb.append(", model.pmSubject.pmSubjectId,model.pmSubject.subject ");
+		}else if(type != null && (type.equalsIgnoreCase("statusDept") || type.equalsIgnoreCase("department"))){
+			sb.append(", model.pmDepartment.pmDepartmentId,model.pmDepartment.department ");
+		}
+		sb.append("  from PmSubWorkDetails model  ");
+		if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
+			sb.append(" ,PmRepresenteeRefDetails model1 where model1.petition.petitionId=model.petition.petitionId and " +
+					" model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and model1.isDeleted='N' ");
+		}else{
+			sb.append(" where model.pmSubject.isDeleted='N' and model.pmDepartment.isDeleted='N' ");
+		}
+		if(deptIds != null && deptIds.size() >0){
+			 sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		if(startDate != null && endDate != null){
+			 sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
+		}
+		sb.append(" group by   model.petition.petitionId, model.pmStatus.pmStatusId " );
+		if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
+			sb.append(", model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId ");
+		}/*else if(type != null && (type.equalsIgnoreCase("overallStatus") || type.equalsIgnoreCase("status"))){
+			sb.append(", model.pmStatus.pmStatusId ");
+		}*/else if(type != null && (type.equalsIgnoreCase("statusSubject") || type.equalsIgnoreCase("subject"))){
+			sb.append(", model.pmSubject.pmSubjectId ");
+		}else if(type != null && (type.equalsIgnoreCase("statusDept") || type.equalsIgnoreCase("department"))){
+			sb.append(", model.pmDepartment.pmDepartmentId ");
+		}
+		Query query =getSession().createQuery(sb.toString());
+		if(deptIds != null && deptIds.size() >0){
+			query.setParameterList("deptIds", deptIds);
+		}
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		return query.list();
+	}
 }
