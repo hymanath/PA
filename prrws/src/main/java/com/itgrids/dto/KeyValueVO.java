@@ -1,9 +1,13 @@
 package com.itgrids.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class KeyValueVO {
 	private Long key;
 	private String value;
 	private String electionType;
+	private List<Long> deptIdsList = new ArrayList<Long>();
 	
 	public KeyValueVO(){}
 	public KeyValueVO(Long key,String value){
@@ -29,7 +33,11 @@ public class KeyValueVO {
 	public void setElectionType(String electionType) {
 		this.electionType = electionType;
 	}
-	
-	
+	public List<Long> getDeptIdsList() {
+		return deptIdsList;
+	}
+	public void setDeptIdsList(List<Long> deptIdsList) {
+		this.deptIdsList = deptIdsList;
+	}
 	
 }

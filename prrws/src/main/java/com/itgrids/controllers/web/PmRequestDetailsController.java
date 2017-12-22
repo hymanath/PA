@@ -129,4 +129,12 @@ public class PmRequestDetailsController {
 		    }
 			return "representationsDashboard";
 	    }
+	    @RequestMapping(value ="/getDeptIdsListBYUserIdsLst",method = RequestMethod.POST)
+	    public @ResponseBody KeyValueVO getDeptIdsListBYUserIds(@RequestBody Map<String,String> inputMap ) {
+	       return pmRequestDetailsService.getDeptIdsListBYUserIds(Long.valueOf(inputMap.get("userId")));
+	    }
+	    @RequestMapping(value ="/getPmDeptStatusIdsByUserIdsLst",method = RequestMethod.POST)
+	    public @ResponseBody KeyValueVO getPmDeptStatusIdsByUserIds(@RequestBody Map<String,String> inputMap ) {
+	       return pmRequestDetailsService.getPmDeptStatusIdsByUserIdsLst(Long.valueOf(inputMap.get("userId")));
+	    }
 }

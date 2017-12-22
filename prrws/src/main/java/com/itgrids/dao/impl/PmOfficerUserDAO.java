@@ -36,4 +36,50 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 		query.setParameter("userId", userId);
 		return (Object[]) query.uniqueResult();
 	}
+	public List<Long> getPmDeptIdByUserId(Long userId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct dept.pmDepartmentId from PmOfficerUser model "
+				  + " left outer join model.pmDepartmentDesignation.pmDepartment dept " 
+				  + " where model.userId =:userId " 
+				  +"  and model.pmDepartmentDesignation.isDeleted = 'N'"
+				  + " and model.pmDepartmentDesignation.pmDepartment.isDeleted = 'N'");
+		
+		Query query = getSession().createQuery(sb.toString());//
+		if(userId != null && userId.longValue() >0l){
+			query.setParameter("userId", userId);
+		}	
+		return query.list();
+		
+	}
+	
+	public List<Long> getPmDeptStatusIdByUserId(Long userId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct dept.pmDepartmentId from PmOfficerUser model "
+				  + " left outer join model.pmDepartmentDesignation.pmDepartment dept " 
+				  + " where model.userId =:userId " 
+				  +"  and model.pmDepartmentDesignation.isDeleted = 'N'"
+				  + " and model.pmDepartmentDesignation.pmDepartment.isDeleted = 'N'");
+		
+		Query query = getSession().createQuery(sb.toString());//
+		if(userId != null && userId.longValue() >0l){
+			query.setParameter("userId", userId);
+		}	
+		return query.list();
+		
+	}
+	
+	public List<Long> getPmDeptStatusIdByUserIdsLst(Long userId){
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model1.pmStatusId  from PmOfficerUser model,PmDepartmentDesignationStatus model1 "
+				+ " where model.pmDepartmentDesignationId =  model1.pmDepartmentDesignationId " 
+				+ " and model.userId =: userId "
+				+" and model.isActive ='Y'");
+		Query query = getSession().createQuery(sb.toString());//
+		if(userId != null && userId.longValue() >0l){
+			query.setParameter("userId", userId);
+		}	
+		return query.list();
+		
+	}
 }

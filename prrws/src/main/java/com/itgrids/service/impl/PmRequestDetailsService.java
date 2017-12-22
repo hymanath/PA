@@ -1458,5 +1458,32 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 }
 			 return null;
 		}
+		public KeyValueVO getDeptIdsListBYUserIds(Long userId){
+			KeyValueVO deptVO = new KeyValueVO();
+			try{
+				LOG.info("entered into PmRequestDetailsService  of getDeptIdsListBYUserIds");
+				List<Long> deptIdsObjLst = pmOfficerUserDAO.getPmDeptIdByUserId(userId);
+				if(deptIdsObjLst != null && deptIdsObjLst.size() >0){
+					deptVO.setDeptIdsList(deptIdsObjLst);
+				}
+			}catch(Exception e){
+				LOG.error("Exception raised into PmRequestDetailsService of getDeptIdsListBYUserIds() ",e);
+			}
+			return deptVO;
+		}
+		
+		public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId){
+			KeyValueVO deptVO = new KeyValueVO();
+			try{
+				LOG.info("entered into PmRequestDetailsService  of getPmDeptStatusIdsByUserIds");
+				List<Long> deptIdsObjLst = pmOfficerUserDAO.getPmDeptStatusIdByUserIdsLst(userId);
+				if(deptIdsObjLst != null && deptIdsObjLst.size() >0){
+					deptVO.setDeptIdsList(deptIdsObjLst);
+				}
+			}catch(Exception e){
+				LOG.error("Exception raised into PmRequestDetailsService of getPmDeptStatusIdsByUserIds() ",e);
+			}
+			return deptVO;
+		}
 		
 }
