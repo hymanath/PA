@@ -21,4 +21,5 @@ public interface IPmRequestDetailsService {
 	public UserVO getPmOffceUserDetails(Long userId, UserVO userVO);
 	
 	public CadreRegistrationVO getRegistrationPersonDetails(Map<String,String> inputMap);
+	public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate);
 }
