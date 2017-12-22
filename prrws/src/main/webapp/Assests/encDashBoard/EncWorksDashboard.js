@@ -4,8 +4,10 @@ var glStartDate = "01-04-"+moment().subtract(40,'years').format("YYYY");
 
 var glEndDate = "01-04-"+moment().add(10, 'years').format("YYYY");
 
+var blocksArr=[{name:'Total Works',id:'totalworksId'},{name:'Target Works',id:'targetworksId'}];
 onloadCalls();
 function onloadCalls(){
+	
 	levelWiseOverview();
 	getLocationWiseWorksInformation("state","s","graph");
 	getLocationWiseWorkTargetsNacheivements("state","s","graph");
@@ -45,6 +47,7 @@ function levelWiseOverview()
 					collapse+='<div id="collapse'+levelWiseOverviewArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+levelWiseOverviewArr[i]+'">';
 				}
 				
+				
 					collapse+='<div class="panel-body">';
 						
 						collapse+='<div class="row">';
@@ -52,6 +55,7 @@ function levelWiseOverview()
 								collapse+='<div id="'+levelWiseOverviewArr[i]+'levelBlockId"></div>';
 							collapse+='</div>';
 						collapse+='</div>';
+					
 					collapse+='</div>';
 				collapse+='</div>';
 			collapse+='</div>';
@@ -63,16 +67,20 @@ function levelWiseOverview()
 	{
 		if(levelWiseOverviewArr[i] == "state"){
 			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','s','table');
+			getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','s','table');
 		}
 		else if(levelWiseOverviewArr[i] == "district"){
 			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','d','table');
+			getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','d','table');
 		}
 		else if(levelWiseOverviewArr[i] == "constituency"){
 			
 			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','a','table');
+			getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','a','table');
 		}
 		else if(levelWiseOverviewArr[i] == "mandal"){
 			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','m','table');
+			getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','m','table');
 		}
 		
 	}
@@ -104,14 +112,14 @@ function getLocationWiseWorksInformation(blockId,locationType,type){
 				if(type=='graph'){
 					buildLocationWiseWorksGraph(result)
 				}
-				locationwiseTableBlocks(result,blockId,locationType);
+				//locationwiseTableBlocks(result,blockId,locationType);
 			}else{
 				
 				$('#'+blockId).html("NO DATA AVAILABLE");
 			}
 		});
 }
-function locationwiseTableBlocks(result,blockId,locationType){
+/*function locationwiseTableBlocks(result,blockId,locationType){
 	var table='';
 		table+='<div class="table-responsive">';
 			table+='<table class="table table-bordered m_top10" id="'+blockId+'dataTableId">';
@@ -183,7 +191,7 @@ function locationwiseTableBlocks(result,blockId,locationType){
 			]
 		});
 	}
-}
+}*/
 
 function buildLocationWiseWorksGraph(result){
 
@@ -199,14 +207,10 @@ function buildLocationWiseWorksGraph(result){
 			type: 'category'
 		},
 		yAxis: {
-			min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				allowDecimals: false,
-				min: 0,
-				title: {
-					text: null
-				}
+			title: {
+				text: ''
+			}
+
 		},
 		legend: {
 			enabled: false
@@ -284,7 +288,7 @@ function getLocationWiseWorkTargetsNacheivements(blockId,locationType,type){
 				if(type=='graph'){
 					buildGraph(result)
 				}
-				locationwiseTableBlocks(result,blockId,locationType);
+				buildTargetsAndAchievemntsBlocks(result,blockId,locationType);
 			}else{
 				
 				$('#'+blockId).html("NO DATA AVAILABLE");
@@ -350,14 +354,14 @@ function buildGraph(result)	{
 				}
 			},
 			series: [{
-				name: 'Target',
+				name: 'Targets',
 				data: [result[0].totTarget],
-				stack: 'target',
+				stack: 'targets',
 				color:'#EE6CA9'
 			}, {
-				name: 'Achievment',
+				name: 'Achievments',
 				data: [result[0].totAchv],
-				stack: 'Achievment',
+				stack: 'Achievments',
 				color:'#C61379'
 			}]
 		});
@@ -372,8 +376,6 @@ function buildGraph(result)	{
 				categories:cateArr
 			},
 			yAxis: {
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
 				allowDecimals: false,
 				min: 0,
 				title: {
@@ -394,15 +396,111 @@ function buildGraph(result)	{
 				}
 			},
 			series: [{
-				name: 'Target',
+				name: 'Targets',
 				data: targetsArr,
-				stack: 'Target',
+				stack: 'Targets',
 				color:'#EE6CA9'
 			}, {
-				name: 'Achievment',
+				name: 'Achievments',
 				data: AchievmentArr,
-				stack: 'Achievment',
+				stack: 'Achievments',
 				color:'#C61379'
 			}]
 		});
 	}
+	
+	
+	function buildTargetsAndAchievemntsBlocks(result,blockId,locationType){
+	var table='';
+		table+='<div class="table-responsive">';
+			table+='<table class="table table-bordered m_top10" id="'+blockId+'dataTableId">';
+				table+='<thead>';
+					table+='<tr>';
+						if(blockId == 'statelevelBlockId'){
+							table+='<th rowspan="2">STATE</th>';
+						}
+						else if(blockId == 'districtlevelBlockId'){
+							table+='<th rowspan="2">DISTRICTS</th>';
+						}else if(blockId == 'constituencylevelBlockId'){
+							table+='<th rowspan="2">CONSTITUENCY</th>';
+						}else if(blockId == 'mandallevelBlockId'){
+							table+='<th rowspan="2">MANDALS</th>';
+						}
+						table+='<th colspan="4" class="text-center">TOTAL</th>';
+						table+='<th colspan="2" class="text-center">QUERTER 1</th>';
+						table+='<th colspan="2" class="text-center">QUERTER 2</th>';
+						table+='<th colspan="2" class="text-center">QUERTER 3</th>';
+						table+='<th colspan="2" class="text-center">QUERTER 4</th>';
+					table+='</tr>';
+					table+='<tr>';
+						table+='<th>TOTAL POPULATION</th>';
+						table+='<th>TOTAL WORKS</th>';
+						table+='<th>TOTAL LENGTH</th>';
+						table+='<th>TOTAL PERCENTAGE</th>';
+						table+='<th>TARGET</th>';
+						table+='<th>ACHIEVEMENT</th>';
+						table+='<th>TARGET</th>';
+						table+='<th>ACHIEVEMENT</th>';
+						table+='<th>TARGET</th>';
+						table+='<th>ACHIEVEMENT</th>';
+						table+='<th>TARGET</th>';
+						table+='<th>ACHIEVEMENT</th>';
+					table+='</tr>';
+					
+				table+='</thead>';
+				table+='<tbody>';
+				for(var i in result){
+					table+='<tr>';
+						table+='<td>'+result[i].locationName+'</td>';
+						table+='<td>'+result[i].totPopu+'</td>';
+						table+='<td>'+result[i].totWorks+'</td>';
+						table+='<td>'+result[i].totLength+'</td>';
+						table+='<td>'+result[i].totPer+'</td>';
+						table+='<td>'+result[i].q1Target+'</td>';
+						table+='<td>'+result[i].q1Achv+'</td>';
+						table+='<td>'+result[i].q2Target+'</td>';
+						table+='<td>'+result[i].q2Achv+'</td>';
+						table+='<td>'+result[i].q3Target+'</td>';
+						table+='<td>'+result[i].q3Achv+'</td>';
+						table+='<td>'+result[i].q4Target+'</td>';
+						table+='<td>'+result[i].q4Achv+'</td>';
+						
+					table+='</tr>';
+				}
+				table+='</tbody>';
+			table+='</table>';
+		table+='</div>';
+		$("#"+blockId).html(table);
+		if(blockId != 'statelevelBlockId'){
+		$("#"+blockId+"dataTableId").dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [],
+			"order": [ 0, 'asc' ],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			buttons: [
+				{
+					extend		:'csvHtml5',
+					text		:'<i class="fa fa-file-text-o"></i>',
+					titleAttr	: 'CSV',
+					title		:  "ENC WORKS DASHBOARD",
+					filename	:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend		:'pdfHtml5',
+					text		:'<i class="fa fa-file-pdf-o"></i>',
+					titleAttr	:'PDF',
+					title		: "ENC WORKS DASHBOARD",
+					filename	: blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation	: "landscape",
+					pageSize	: 'A3',
+					customize	: function (doc) {
+								doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+								}
+				}
+			]
+		});
+	}
+}
