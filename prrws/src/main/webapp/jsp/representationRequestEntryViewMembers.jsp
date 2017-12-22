@@ -43,48 +43,33 @@
 </head>
 <body>
 
-<header>
-	<nav>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="bg_backGroundMain">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="text-center col-sm-11">
-								<img src="Assests/images/Group 2.png" class="" alt="logo">
-							</div>
-							<div class="col-sm-1 m_top20">
-								<i class="glyphicon glyphicon-th menu-cls pull-right" style="top:8px;"></i>
-							
-								<div class="menu-data-cls">
-									<div class="arrow_box_top">
-										<div class="row">
-											<div style="padding:10px;">
-												<div class="col-sm-6">
-													<h4><a target="_blank" href="representationRequestEntry">ADD PETITION</a></h4>
-												</div>
-												<div class="col-sm-6">
-													<h4 class=""><a target="_blank" href="representationRequestEntry">VIEW PETITION</a></h4>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div style="padding:10px;">
-											<div class="col-sm-12">
-												<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
-												
-											</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+<header style="box-shadow:none;">
+	<img src="Assests/images/PetitionMainStrip.png" class="" alt="logo">
+	<div class="col-sm-12">
+		<i class="glyphicon glyphicon-th menu-cls pull-right" style="position:relative;top:-70px;color:#AA8440"></i>
+		<div class="menu-data-cls" style="top:-10px;">
+			<div class="arrow_box_top">
+				<div class="row">
+					<div style="padding:10px;">
+						<div class="col-sm-6">
+							<h4><a target="_blank" href="representationRequestEntry">ADD PETITION</a></h4>
 						</div>
+						<div class="col-sm-6">
+							<h4 class=""><a target="_blank" href="representationRequestEntry">VIEW PETITION</a></h4>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div style="padding:10px;">
+					<div class="col-sm-12">
+						<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
+						
+					</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</nav>
+	</div>
 </header>
 <main>
 	<section>
@@ -93,11 +78,11 @@
 				<div class="col-sm-12">
 					<div class="panel-group">
 						<div class="panel panel-default panel-lightGreen">
-							<div class="panel-heading">
+							<div class="panel-heading" style="padding-top:10px;padding-bottom:10px;">
 								<h4 class="panel-title f_22" style="font-weight:normal !important;">VIEW PETITION DETAILS</h4>
 							</div>
 								<div class="panel-body">								
-									<div class="row m_top20">
+									<div class="row">
 										<div class="col-sm-12">
 									<!--	<div class="col-sm-9">	
 											<label class="radio-inline ">
@@ -321,19 +306,15 @@
 </div>
 </div>
 <div class="modal fade" id="docsModalDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="width:90%;margin:auto">
+  <div class="modal-dialog" role="document" style="width:60%;margin:auto">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<div class="col-sm-11">
-			<h4 class="modal-title text-capital" id="" style="text-align:center;font-weight: bold"></h4> 
-		</div>
-		
-	    
-		 </div>
+			<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title text-capital" id="viewDocumentHeading" style="font-weight: bold"></h4> 
+	  </div>
       <div class="modal-body">
-        <div class="row" id="docsViewModalId">
-			
+        <div class="row">
+			<div id="docsViewModalId"></div>
 		</div>
       </div>
       <div class="modal-footer">

@@ -127,10 +127,10 @@ function representationRequestEntryTable(result){
 				else
 					str+='<td>-</td>';
 				
-				str+='<td class="text-center"><a style="margin-right:5px;" class="btn btn-xs viewEditCss viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"> View</a>';
+				str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
 				
-				if(endorsmentNo != null && endorsmentNo != 'undefined' &&  (parseInt(endorsmentNo) ==0 || endorsmentNo=='') )
-					str+='<a style="" href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank" class="btn btn-xs  m_top10 btn-warning"> Edit </a>';
+				//if(endorsmentNo != null && endorsmentNo != 'undefined' &&  (parseInt(endorsmentNo) ==0 || endorsmentNo=='') )
+					str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
 				
 				str+='</td>';
 			str+='</tr>';
@@ -577,7 +577,7 @@ function getStatusList(){
 function getPetitionDetails(petitionId,endorsNo){
 	$("#representeeViewId").html(spinner);
    var json = {
-       petitionId:petitionId,
+       petitionId:1,
 	   pageType:"viewPage"
     };
   $.ajax({              
@@ -600,6 +600,7 @@ function getPetitionDetails(petitionId,endorsNo){
 }
 var referralDocs = [];
 var workDocs = [];
+var coveringDocs=[];
 function setPmRepresenteeDataToResultView(result,endorsNo){
 	var str="";
 	referralDocs = [];
@@ -653,6 +654,9 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
+					coveringDocs = result.coveringLetterPathsList;
+					//ara
+					str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="covering" style="cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW COVERING LETTER </p></div>';
 					
 				str+='</div>';
 				str+='<div class="col-sm-6 ">';
@@ -837,50 +841,54 @@ $(document).on("click",".docsViewCls",function(){
 	var docsList = [];
 	var str="";
 	if($(this).attr("attr_docs") == "referral"){
+		$("#viewDocumentHeading").html("Referral Documents")
 		 for(var i = 0; i<referralDocs.length; i++){
 			if(referralDocs[i].id == $(this).attr("attr_candidate_id")){
 				docsList  = referralDocs[i].fileNamesList;
 			 }
 		 }
 	}else if($(this).attr("attr_docs") == "workDocs"){
+		$("#viewDocumentHeading").html("Work Documents")
 		docsList = workDocs;
+	}else if($(this).attr("attr_docs") == "covering"){
+		$("#viewDocumentHeading").html("Covering Letter")
+		docsList = coveringDocs;
 	}
+	
 	if(docsList != null && docsList.length >0){
-		//str+='<div class="row">';
-									for(var j in docsList){
-										var scanCopySpl = docsList[j].value.split("."); 
-										var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
-											str+='<div class="col-sm-2">';
-												
-												str+='<div class="viewImageCss">';
-												if(scanCopyExt =="pdf"){
-													str+='<a class="fancyboxView" href="#inline'+j+'">';
-													str+='<div class="mouse-over">Expand</div>';
-														str+='<object data="'+docsList[j].value+'" type="application/pdf" width="100%" height="100px;"></object>';
-													str+='</a>';
-													str+='<div id="inline'+j+'" style="width:100%;display: none;">';
-														str+='<object data="'+docsList[j].value+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
-													str+='</div>';
-													
-												}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
-													str+='<a class="fancyboxView" href="#inline'+j+'">';
-														str+='<img src="'+docsList[j].value+'"  width="100%" height="100px;"></img>';
-													str+='</a>';
-													str+='<div id="inline'+j+'" style="width:100%;display: none;">';
-														str+='<img src="'+docsList[j].value+'"    style="cursor:pointer;height:1000px;width:1000px"></object>';
-													str+='</div>';
-												}else{
-													str+='<b>Click <a href="javascript:{};" onclick="openDoc(\''+docsList[j].value+'\')">Here</a> To View Document</b>';
-												}
-									
-										str+='</div>';
-									str+='</div>';
+			for(var j in docsList){
+				var scanCopySpl = docsList[j].value.split("."); 
+				var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
+					str+='<div class="col-sm-6">';
+						
+						str+='<div class="viewImageCss">';
+						if(scanCopyExt =="pdf"){
+							str+='<a class="fancyboxView" href="#inline'+j+'">';
+							str+='<div class="mouse-over">Expand</div>';
+								str+='<object data="'+docsList[j].value+'" type="application/pdf" width="100%"height="300px;"></object>';
+							str+='</a>';
+							str+='<div id="inline'+j+'" style="width:100%;display: none;">';
+								str+='<object data="'+docsList[j].value+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
+							str+='</div>';
 							
-								}
-							//str+='</div>';
+						}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
+							str+='<a class="fancyboxView" href="#inline'+j+'">';
+								str+='<img src="'+docsList[j].value+'"  width="100%" height="300px;"></img>';
+							str+='</a>';
+							str+='<div id="inline'+j+'" style="width:100%;display: none;">';
+								str+='<img src="'+docsList[j].value+'"    style="cursor:pointer;height:1000px;width:1000px"></object>';
+							str+='</div>';
+						}else{
+							str+='<b>Click <a href="javascript:{};" onclick="openDoc(\''+docsList[j].value+'\')">Here</a> To View Document</b>';
+						}
+			
+				str+='</div>';
+			str+='</div>';
+	
+		}
 	}
 
-	$("#docsViewModalId").html(str);
+		$("#docsViewModalId").html(str);
 		$(".fancyboxView").fancybox();
 });
 
