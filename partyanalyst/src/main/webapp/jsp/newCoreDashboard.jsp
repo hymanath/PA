@@ -5440,7 +5440,7 @@
 </div><!-- /.modal -->
 <!-- Model For Start PrajaSankalpaYatra -->
 <div class="modal" tabindex="-1" role="dialog" id="prajaSankalpaYatraModalId">
-		  <div class="modal-dialog modal-lg" style="width:70%;">       
+		  <div class="modal-dialog modal-lg" style="width:40%;">       
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -5451,7 +5451,7 @@
 					
 				</div>
 			  </div>
-			  <div class="modal-body">
+			  <div class="modal-body" style="padding-bottom: 0px; padding-top: 5px;">
 						<div id="popImgDiv"></div>
 						<div class="clearModalTables" id="prajaSankalpaYatraStateTableId"></div>
 						<div class="clearModalTables" id="prajaSankalpaYatraDistrictTableId"></div>
@@ -5461,7 +5461,7 @@
 						<div class="clearModalTables" id="prajaSankalpaYatraCorpTableId"></div>
 						
 			  </div>
-			  <div class="modal-footer">     
+			  <div class="modal-footer" style="padding-bottom: 0px;">     
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			  </div>
 			</div><!-- /.modal-content -->
