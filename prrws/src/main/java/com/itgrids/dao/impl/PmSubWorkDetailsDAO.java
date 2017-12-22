@@ -56,12 +56,19 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	}
 	
 	
-	public List<Object[]> getAllDistricts(){
+	public List<Object[]> getAllDistricts(List<Long> deptIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.locationAddress.district.districtId");
 		sb.append(",model.locationAddress.district.districtName ");
-		sb.append(" from PmSubWorkDetails model where model.isDeleted = 'N' order by model.locationAddress.district.districtName asc ");
+		sb.append(" from PmSubWorkDetails model where model.isDeleted = 'N' " );
+		if(deptIds != null && deptIds.size() >0){
+			sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+				sb.append(" order by model.locationAddress.district.districtName asc ");
 		Query query =getSession().createQuery(sb.toString());
+		if(deptIds != null && deptIds.size() >0){
+			query.setParameterList("deptIds", deptIds);
+		}
 		return query.list();
 	}
 	

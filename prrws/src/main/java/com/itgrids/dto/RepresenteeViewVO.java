@@ -13,17 +13,24 @@ public class RepresenteeViewVO {
 	private String referrerName;
 	private String desigName;
 	private String workName;
-	private Long noOfWorks;
+	private Long noOfWorks = 0l;
 	private String estimationCost;
 	private String statusType="";
 	private List<String> desigList = new ArrayList<String>();
 	private String raisedDate;
-	private Long totalRepresents;
+	private Long totalRepresents=0l;
 	private List<RepresenteeViewVO> referrerList = new ArrayList<RepresenteeViewVO>();
 	private List<RepresenteeViewVO> subList = new ArrayList<RepresenteeViewVO>();
 	private List<RepresenteeViewVO> deptList = new ArrayList<RepresenteeViewVO>();
+	private List<RepresenteeViewVO> statusList = new ArrayList<RepresenteeViewVO>();
 	
 	
+	public List<RepresenteeViewVO> getStatusList() {
+		return statusList;
+	}
+	public void setStatusList(List<RepresenteeViewVO> statusList) {
+		this.statusList = statusList;
+	}
 	public List<RepresenteeViewVO> getReferrerList() {
 		return referrerList;
 	}

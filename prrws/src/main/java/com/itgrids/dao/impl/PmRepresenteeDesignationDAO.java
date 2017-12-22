@@ -29,12 +29,19 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 		return query.list();
 	}
 	
-	public List<Object[]> getAllDistrictsByRepresenteeDesignationWise(){
+	public List<Object[]> getAllDistrictsByRepresenteeDesignationWise(List<Long> deptIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model.pmRepresentee.userAddress.district.districtId,model.pmRepresentee.userAddress.district.districtName ");
-		sb.append( " from PmRepresenteeDesignation model ");
-		sb.append( "order by model.pmRepresentee.userAddress.district.districtName asc ");
+		sb.append("select distinct model.pmRepresenteeDesignation.pmRepresentee.userAddress.district.districtId,model.pmRepresenteeDesignation.pmRepresentee.userAddress.district.districtName ");
+		sb.append( " from PmRepresenteeRefDetails model,PmSubWorkDetails model1 " +
+				" where model.isDeleted='N' and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId  ");
+		if(deptIds != null && deptIds.size()>0){
+			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		sb.append( "order by model.pmRepresenteeDesignation.pmRepresentee.userAddress.district.districtName asc ");
 		Query query =getSession().createQuery(sb.toString());
+		if(deptIds != null && deptIds.size()>0){
+			query.setParameterList("deptIds", deptIds);
+		}
 		return query.list();
 	}
 	public List<Object[]> getDesignationsByRepresenteeDesigtion(){
