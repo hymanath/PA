@@ -136,6 +136,7 @@
 		<li expand-icon="electronic" right-nav="true">News - electronic media</li>
 		<li expand-icon="prajaSankaplaYatra" right-nav="true">Praja Sankapla Yatra</li>
 		<li expand-icon="EMCoverageTime" right-nav="true">EM Coverage Time</li>
+		<li expand-icon="kaizala" right-nav="true">kaizala</li>
 		<li expand-icon="pressmeet" right-nav="true">Press Meet</li>
 		<li expand-icon="tours" right-nav="true">Tours</li>
 		<li expand-icon="meetings" right-nav="true">meetings</li>
@@ -146,7 +147,6 @@
 		<li expand-icon="attendance" right-nav="true">emp attendance</li>
 		<li expand-icon="training" right-nav="true">training</li>
 		<li expand-icon="cadreInsurance" right-nav="true">Insurance</li>
-		<li expand-icon="kaizala" right-nav="true">kaizala</li>
 		<!--<li expand-icon="trainingCampInfo" right-nav="true">TrainingCampInfo</li>-->
 		<li expand-icon="grivance" right-nav="true">grivance</li>
 	</ul>
@@ -2388,6 +2388,9 @@
 								</h4>
 							</div>
 							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="kaizala">
+								<span class="KaizalaRefresh pull-right">
+									<i class="glyphicon glyphicon-refresh"></i>
+								</span>
 								<span class="kaizalaIconExpand pull-right" expand-icon="kaizala">
 									<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
 								</span>
@@ -2410,7 +2413,7 @@
 							<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="kaizala" style="display:none;" >
 								<div class="row">
 									<div class="col-sm-12">
-										<ul class="activeUlCls list-inline pull-right kaizalaLicls">
+										<ul class="activeUlCls list-inline pull-right kaizalaLicls" role='tabCummulativeKai'>
 											<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
 											<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
 										</ul>
@@ -4757,7 +4760,7 @@
 		  <div class="modal-dialog modal-lg" style="width:85%">
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
-				<button type="button" class="close addClassClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close closeModalDeb" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="modalLabelNameId">Debate Details</h4>
 			  </div>
 			  <div class="modal-body">
@@ -4769,7 +4772,7 @@
 					<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
 			  </div>
 			  <div class="modal-footer">
-				<button type="button" class="btn btn-default addClassClose" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default closeModalDeb" data-dismiss="modal">Close</button>
 			  </div>
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
@@ -5642,6 +5645,8 @@ $("[expand-icon]").click(function(){
 			getUserTypeWiseTotalCadreInsuranceComplainctCnt("All Time",4);
 		}else if(blockName == 'prajaSankaplaYatra'){
 			getChannelWisePartiesAnalysis(globalcategoryId);
+		}else if(blockName == 'kaizala'){
+			getUserTypeWiseKaizalaCommitteeMemberDetailsCnt();
 		}
 	}else if(iconClass == 'glyphicon glyphicon-resize-small')
 	{
