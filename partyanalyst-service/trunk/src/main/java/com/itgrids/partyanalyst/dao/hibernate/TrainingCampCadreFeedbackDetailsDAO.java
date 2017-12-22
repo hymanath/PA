@@ -323,7 +323,7 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 	  		    " from TdpCommitteeMember model2 " );
 		    if(userAccessLevelValueList!= null && userAccessLevelValueList.size()>0L){
 	    	 if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 2l){
-	    	      sb.append(" left join model2.tdpCadre.userAddress.state state ");
+	    	      sb.append(" left join model2.tdpCadre.userAddress.district state ");
 	    	  }else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 3l){
 	    	      sb.append(" left join model2.tdpCadre.userAddress.district district ");
 	    	    }else if(userAccessLevelId != null && userAccessLevelId.longValue() > 0l && userAccessLevelId.longValue() == 4l){
@@ -336,7 +336,7 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 		    " model.trainingCampProgramId in(:trainingCampProgramId) and " +
 		    " model2.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in(:tdpCommitteeLevelId) " );
 		   if(userAccessLevelId != null && userAccessLevelId.longValue()  == 2l && userAccessLevelValueList != null && userAccessLevelValueList.size() >0l ){
-		      sb.append(" and state.stateId  in (:userAccessLevelValueList) ");
+		      sb.append(" and state.districtId  in (11,12,13,14,15,16,17,18,19,20,21,22,23,517) ");
 			}else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 3l && userAccessLevelValueList != null && userAccessLevelValueList.size() >0l ){
 		      sb.append(" and district.districtId  in (:userAccessLevelValueList) ");
 		    }else if(userAccessLevelId != null && userAccessLevelId.longValue()  == 4l && userAccessLevelValueList != null && userAccessLevelValueList.size() >0l){
@@ -345,9 +345,11 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 		    	 sb.append(" and constituency.constituencyId in (:userAccessLevelValueList)");
 		     }
 		 Query query = getSession().createQuery(sb.toString());
-	  		query.setParameterList("trainingCampProgramId", programIdList);
+	  		query.setParameterList("trainingCampProgramId", programIdList );
 	  		query.setParameterList("tdpCommitteeLevelId", commiteeLevel);
-	  		query.setParameterList("userAccessLevelValueList", userAccessLevelValueList);
+	  		if(userAccessLevelId != null && userAccessLevelId.longValue()  != 2l && userAccessLevelValueList != null && userAccessLevelValueList.size() >0l ){
+		  		query.setParameterList("userAccessLevelValueList", userAccessLevelValueList);
+		  		}
 	   return (Long)query.uniqueResult();
 }
 }
