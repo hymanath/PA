@@ -132,6 +132,7 @@ var globalbenefitId = "${param.benefitId}";
 var globalstartIndexP = "${param.startIndex}";
 var globalendIndexP = "${param.endIndex}";
 var globaltype = "${param.type}";
+var globalPartyId = "${param.partyId}";
 
 /*  var globalOrgType = "N";//isDepartment
 var globalOrgIdStr = "872,1117,163,362";//OrganizationIds
@@ -809,10 +810,15 @@ $(document).ready(function(){
   }
   function getCoverageTimeOfTvNewsBulletinPointClick(globalstartIndexP){
   	$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	if(globaltype == "party"){
+		globalorganizationId =0;
+	}else if(globaltype == "candidate"){
+		globalPartyId =0;
+	}
   	$.ajax({
-  		url: wurl+"/CommunityNewsPortal/webservice/getCoverageTimeOfTvNewsBulletinPointClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globaltype+"/"+globalorganizationId+"/"+globalNewsChannelIds+"/"+globalbenefitId+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex
+  		url: wurl+"/CommunityNewsPortal/webservice/getCoverageTimeOfTvNewsBulletinPointClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globaltype+"/"+globalorganizationId+"/"+globalNewsChannelIds+"/"+globalbenefitId+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalPartyId
 		
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCoverageTimeOfTvNewsBulletinPointClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globaltype+"/"+globalorganizationId+"/"+globalNewsChannelIds+"/"+globalbenefitId+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex
+		//url: "http://localhost:8086/CommunityNewsPortal/webservice/getCoverageTimeOfTvNewsBulletinPointClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globaltype+"/"+globalorganizationId+"/"+globalNewsChannelIds+"/"+globalbenefitId+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalPartyId
   	}).then(function(result){
   		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('');
   		var countByDate = 0;

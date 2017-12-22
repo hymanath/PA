@@ -53,7 +53,7 @@ function onLoadEmCoverageTimeCalls(){
 $(document).on("click",".EMCoverageTimeCls",function(){
 	var type = $(this).val();
 	var categoryId = $("#categoryEmId").val();
-	getCandidateAndPartyWiseNewsChannals(type,categoryId,"");
+	getCandidateAndPartyWiseNewsChannals(type,categoryId,"N");
 	getDayWiseCandidateCoverageTime(type,categoryId,"N"); 
 });
 $(document).on("click",".EMCoverageTimeIconExpand",function(){
@@ -90,7 +90,7 @@ function getCandidateAndPartyWiseNewsChannals(type,categoryId,isParticipated){
 	
 	$.ajax({	
 		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+type+"/"+isParticipated
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+type+"/"+isParticipated
+		//url: "http://localhost:8086/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+type+"/"+isParticipated
 	}).then(function(result){
 		if(result != null && result.length > 0){
 			getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated);
@@ -130,7 +130,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 					if(result[i].coreDashBoardVOList != null && result[i].coreDashBoardVOList.length > 0){
 						for(var j in result[i].coreDashBoardVOList){
 							if(result[i].coreDashBoardVOList[j].positiveCountMain != null && result[i].coreDashBoardVOList[j].positiveCountMain>0){
-								str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].positiveCountMain+'</a></td>';
+								str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].positiveCountMain+'</a></td>';
 							
 							   str+='<td class="text-success">'+result[i].coreDashBoardVOList[j].positivePerc+'</td>';
 							}else{
@@ -139,7 +139,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 							str+='<td class="text-success">'+result[i].coreDashBoardVOList[j].positivePerc+'</td>';
 							}
 							if(result[i].coreDashBoardVOList[j].negativCountMain != null && result[i].coreDashBoardVOList[j].negativCountMain >0){
-								str+='<td><a class="emctClickCls" attr_benefit_id="2" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].negativCountMain+'</a></td>';
+								str+='<td><a class="emctClickCls" attr_benefit_id="2" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].negativCountMain+'</a></td>';
 							str+='<td class="text-danger">'+result[i].coreDashBoardVOList[j].negativePerc+'</td>';
 							}else{
 								str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>';
@@ -389,7 +389,13 @@ $(document).on("click",".emctClickCls",function(){
 		var candidateId = $(this).attr("attr_candidateId");
 		var channelId = $(this).attr("attr_channelId");
 		var participate = $(this).attr("attr_participate");
+		var partyId =$(this).attr("attr_partId");
+		if(type == "party"){
+			candidateId =0;
+		}else if(type == "candidate"){
+			partyId =0;
+		}
 		
-		window.open('showElectronicBulletinsAction.action?organizationId='+candidateId+'&benefitId='+benefitId+'&categoryId='+categoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+channelId+'&type='+type+'&&orgType='+participate+'&stIdx=0&edIdx=6&callFrom=EMCT');
+		window.open('showElectronicBulletinsAction.action?organizationId='+candidateId+'&benefitId='+benefitId+'&categoryId='+categoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+channelId+'&type='+type+'&orgType='+participate+'&partyId='+partyId+'&stIdx=0&edIdx=6&callFrom=EMCT');
 		
 });
