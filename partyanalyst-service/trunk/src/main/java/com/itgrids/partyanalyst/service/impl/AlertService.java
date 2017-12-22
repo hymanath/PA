@@ -9482,12 +9482,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
     						      if(impactLevelIds.size() == 0){
     						    	   impactLevelIds.add(0l);
     						       }
-    						      if(commonMethodsUtilService.isMapValid(childActivityMembersMap)){
+    						      /*if(commonMethodsUtilService.isMapValid(childActivityMembersMap)){
 				                   		for (Map.Entry<Long,UserTypeVO> entryUser : childActivityMembersMap.entrySet()) {
 				                   			inputVO.getTdpCadreIds().add(entryUser.getValue().getTdpCadreId());
 				                   			inputVO.setType("selectedUserType");
 										}
-				                   	}
+				                   	}*/
     				    		   List<Object[]> returnTotalAlertObjList = alertDAO.getLocationWiseAssignedAndInvolveAlertCnt(inputVO, "Total",null);
     						       List<Object[]> returnInvolveAlertObjList = alertDAO.getLocationWiseAssignedAndInvolveAlertCnt(inputVO, "Involve",null);
     						       List<Object[]> returnAssignedAlertObjList = alertDAO.getLocationWiseAssignedAndInvolveAlertCnt(inputVO, "Assigned",null);
