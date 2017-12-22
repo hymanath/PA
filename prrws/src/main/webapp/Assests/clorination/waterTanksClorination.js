@@ -188,8 +188,8 @@ function buildlevelWiseData(divId,sessionToken)
 		var clorinatedMainPerc = (result.clorinated/result.checked*100).toFixed(2);
 		var notClorinatedMainPerc = (result.notClorinated/result.checked*100).toFixed(2); 
 		str+='<div class="col-sm-4">';
-				str+='<div class="block_styles" style="background-color:#fff">';
-					str+='<h3>'+type+' <span class="pull-right" style="margin-top: 10px; font-size: 14px;">( SP - '+result.noOfSPs+' )</span> </h3>';
+				str+='<div class="block_styles" style="background-color:#fff;cursor:pointer;">';
+					str+='<h3>'+type+' <span class="pull-right tooltipCls" style="margin-top: 10px; font-size: 14px;" data-toggle="tooltip" data-placement="top" title="Service Points">( SP - '+result.noOfSPs+' )</span> </h3>';
 						if(result.checked !=null && result.checked>0){
 							str+='<h3 class="m_top10 font_weight">'+result.checked+'</h3>';
 						}else{
@@ -225,6 +225,7 @@ function buildlevelWiseData(divId,sessionToken)
 				str+='</div>';
 			str+='</div>';
 		$("#levelWise"+type).html(str);	
+		$('.tooltipCls').tooltip();
 	}
 	
 	function getDistrictWiseClorinationDetails(sessionToken,divId){
