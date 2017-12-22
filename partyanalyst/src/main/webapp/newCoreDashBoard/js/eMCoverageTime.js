@@ -156,7 +156,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 	str+='</div>';
 	
 	$("#EMCoverageTimeSummaryDivId").html(str);
-	$("#dataTableCanAndPartyWiseNewsChannel").dataTable();
+	$("#dataTableCanAndPartyWiseNewsChannel").dataTable({searching: false, paging: false});
 }
 
 function getDayWiseCandidateCoverageTime(type,categoryId,isParticipated){
