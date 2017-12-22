@@ -1172,8 +1172,12 @@ function buildTableData(ajaxresp,blockName,filterType,glStartDate,glEndDate){
 	buildTable+='</div>';
 	$("#"+blockName+"-tableDivId").html(buildTable);
 	$("#build"+blockName+"-tableId").dataTable({
-		"aLengthMenu": [[10, 15, 20,100, -1], [10, 15, 20,100, "All"]]   
+		"aLengthMenu": [[10, 15, 20,100, -1], [10, 15, 20,100, "All"]],
+		 "iDisplayLength": 15	
 	});
+	
+	
+	
 }
 
 function getSubLocationsBySuperLocationId(globalStateIdForSelectBox,divId,selectedType){
