@@ -105,7 +105,12 @@ function buildFavouriteComponentsResult(result) {
 							str+='<h5 class="tooltipCls" style="display: inline-block;text-transform:uppercase;cursor:pointer;" data-toogle="tooltip" title="'+result[i].name+'">'+result[i].name.substring(0, 15)+'...</h5>';
 							
 						}else{
-							str+='<h5 style="display: inline-block;text-transform:uppercase;">'+result[i].name+'</h5>';
+							if(result[i].name != null && result[i].name == 'E OFFICE'){
+								str+='<h5 style="display: inline-block;">e Office</h5>';
+							}else{
+								str+='<h5 style="display: inline-block;text-transform:uppercase;">'+result[i].name+'</h5>';
+							}
+							
 						}
 						if(result[i].name == 'LED MONITORING' || result[i].name == 'Led Monitoring')
 						{
@@ -1937,7 +1942,12 @@ function buildPageWiseComponents(result,pageId){
 					str+='<div class="col-sm-4 draggable-element'+result[i].shortName+'" attr_blockId="'+result[i].id+'" attr_block_listIds="'+result[i].subList[j].id+'">';
 							str+='<div class="whiteBlock">';
 								str+='<img src="Assests/img/'+imagesObj[result[i].subList[j].name]+'" >';
-								str+='<h4 style="display: inline-block;">'+result[i].subList[j].name+'</h4>';
+								if(result[i].subList[j].name != null && result[i].subList[j].name == "E OFFICE"){
+									str+='<h4 style="display: inline-block;">e Office</h4>';
+								}else{
+									str+='<h4 style="display: inline-block;">'+result[i].subList[j].name+'</h4>';
+								}
+								
 								
 								if(result[i].subList[j].name == "AC WORKS"){
 									str+='<div class=" " style="text-align: right">';

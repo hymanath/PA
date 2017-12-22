@@ -911,7 +911,7 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 								str+='<p><small>INDUSTRIES</small></p>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
-								str+='<h4 style="font-size:16px;">'+result[i].investment+'Cr</h4>';
+								str+='<h4 style="font-size:16px;">'+result[i].investment+'&nbsp;Cr</h4>';
 								str+='<p><small>INVESTMENTS</small></p>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
@@ -1018,7 +1018,7 @@ function getITSectorLeadCategoryWiseDetails(type,sector){
 						str+='<p><small>INDUSTRIES</small></p>';
 					str+='</div>';
 					str+='<div class="col-sm-4">';
-						str+='<h4 style="font-size:16px;">'+result[i].investment+'Cr</h4>';
+						str+='<h4 style="font-size:16px;">'+result[i].investment+'&nbsp;Cr</h4>';
 						str+='<p><small>INVESTMENTS</small></p>';
 					str+='</div>';
 					str+='<div class="col-sm-4">';
@@ -1341,7 +1341,7 @@ function getAPISXLR8APDetailedData(){
 		{
 			totalBatches = result.length;
 			totalCompanies = totalCompanies + result[i].companiesRegisterd;
-			if(result[i].jobsCreated != null && result[i].jobsCreated != '-')
+			if(result[i].jobsCreated != null && result[i].jobsCreated != '-' && result[i].jobsCreated.length > 0)
 			{
 				totalJobsCreated = totalJobsCreated + parseInt(result[i].jobsCreated);
 			}
@@ -4040,6 +4040,7 @@ function buildMeesevaKPILocationWiseDetails(result){
 				str+='<tr>';
 					str+='<th>Location</th>';
 					str+='<th>Total Center</th>';
+					str+='<th>%</th>';
 					str+='<th>Est from 2014</th>';
 					str+='<th>Last Year Est</th>';
 					str+='<th>This Year Est</th>';
@@ -4051,6 +4052,7 @@ function buildMeesevaKPILocationWiseDetails(result){
 					str+='<tr>';
 						str+='<td>'+result[i].name+'</td>';
 						str+='<td>'+result[i].totalMeesevaCentres+'</td>';
+						str+='<td>'+result[i].percenatge+'</td>';
 						str+='<td>'+result[i].establishedFrom2014+'</td>';
 						str+='<td>'+result[i].establishedLastYear+'</td>';
 						str+='<td>'+result[i].establishedThisYear+'</td>';
@@ -4111,6 +4113,65 @@ function getMeesevaKPIOnlineServiceYearWiseDetails(){
 
 function buildMeesevaKPIOnlineServiceDetails(result,type){
 	var str='';
+	str+='<h4><b>Summary</b></h4>';
+	if(type != null && type == 'online'){
+		str+='<div class="row">';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="border-right:1px solid #000;text-align:center;">';
+				str+='<h4><b>2014</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalOnlServ2014+'</h5>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="border-right:1px solid #000;text-align:center;">';
+				str+='<h4><b>2015</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalOnlServ2015+'</h5>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="border-right:1px solid #000;text-align:center;">';
+				str+='<h4><b>2016</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalOnlServ2016+'</h5>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="text-align:center;">';
+				str+='<h4><b>2017</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalOnlServ2017+'</h5>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	}else{
+		str+='<div class="row">';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="border-right:1px solid #000;text-align:center;">';
+				str+='<h4><b>2014</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalNewOnlServ2014+'</h5>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="border-right:1px solid #000;text-align:center;">';
+				str+='<h4><b>2015</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalNewOnlServ2015+'</h5>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="border-right:1px solid #000;text-align:center;">';
+				str+='<h4><b>2016</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalNewOnlServ2016+'</h5>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="text-align:center;">';
+				str+='<h4><b>2017</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalNewOnlServ2017+'</h5>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	}
+	
+	
+	str+='<div class="m_top20">';
 			if(type != null && type == 'online'){
 				str+='<table class="table" id="onlineServicesTableId">';
 			}else{
@@ -4155,6 +4216,7 @@ function buildMeesevaKPIOnlineServiceDetails(result,type){
 				}
 			str+='<tbody>';
 		str+='</table>';
+		str+='</div>';
 		if(type != null && type == 'online'){
 			$("#onlineServicesDiv").html(str);
 			$("#onlineServicesTableId").dataTable();
@@ -4221,6 +4283,34 @@ function getMeesevaKPIMobileSevicesYearWiseDetails(){
 
 function buildMeesevaKPIMobileSevicesDetails(result){
 	var str='';
+	str+='<h4><b>Summary</b></h4>';
+	str+='<div class="row">';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="border-right:1px solid #000;text-align:center;">';
+				str+='<h4><b>2014</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalMblAppServ2014+'</h5>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="border-right:1px solid #000;text-align:center;">';
+				str+='<h4><b>2015</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalMblAppServ2015+'</h5>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="border-right:1px solid #000;text-align:center;">';
+				str+='<h4><b>2016</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalMblAppServ2016+'</h5>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div style="text-align:center;">';
+				str+='<h4><b>2017</b></h4>';
+				str+='<h5 class="m_top10 onlinePanelBlock">'+globalMblAppServ2017+'</h5>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="m_top20">';
 	str+='<table class="table" id="mobileAppServicesTableId">';
 		str+='<thead>';
 			str+='<tr>';
@@ -4262,6 +4352,7 @@ function buildMeesevaKPIMobileSevicesDetails(result){
 			}
 		str+='<tbody>';
 	str+='</table>';
+	str+='</div>';
 	$("#mobileAppServicesDiv").html(str);
 	$("#mobileAppServicesTableId").dataTable();
 }
@@ -4340,7 +4431,12 @@ function getMeesevaKPIOnlineServiceOverviewCount(){
 		}
 	});	
 }
+
 function buildMeesevaKPIOnlineServiceOverviewCount(result){
+	globalOnlServ2014 = result.onLineServices2014;
+	globalOnlServ2015 = result.onLineServices2015;
+	globalOnlServ2016 = result.onLineServices2016;
+	globalOnlServ2017 = result.onLineServices2017;
 	var str='';
 		str+='<h4 class="text-center"><b style="font-size: 20px !important;">Online Services - '+result.onLineServicesCount+'</b></h4>';
 		str+='<div class="row m_top10">';
@@ -4394,7 +4490,15 @@ function getMeesevaKPIMobileAppServiceOverviewCount(){
 		}
 	});	
 }
+var globalMblAppServ2014;
+var globalMblAppServ2015;
+var globalMblAppServ2016;
+var globalMblAppServ2017;
 function buildMeesevaKPIMobileAppServiceOverviewCount(result){
+	globalMblAppServ2014 = result.mobileAppServices2014;
+	globalMblAppServ2015 = result.mobileAppServices2015;
+	globalMblAppServ2016 = result.mobileAppServices2016;
+	globalMblAppServ2017 = result.mobileAppServices2017;
 	var str='';
 		str+='<h4 class="text-center"><b style="font-size: 20px !important;">Mobile App Services - '+result.totalMobileAppServices+'</b></h4>';
 		str+='<div class="row m_top10">';
@@ -4482,7 +4586,15 @@ function getMeesevaKPINewOnlineServiceOverviewCount(){
 		}
 	});	
 }
+var globalNewOnlServ2014;
+var globalNewOnlServ2015;
+var globalNewOnlServ2016;
+var globalNewOnlServ2017;
 function buildMeesevaKPINewOnlineServiceOverviewCount(result){
+	globalNewOnlServ2014 = result.onLineServices2014;
+	globalNewOnlServ2015 = result.onLineServices2015;
+	globalNewOnlServ2016 = result.onLineServices2016;
+	globalNewOnlServ2017 = result.onLineServices2017;
 	var str='';
 		str+='<h4 class="text-center"><b style="font-size: 20px !important;">New Online Services - '+result.onLineServicesCount+'</b></h4>';
 		str+='<div class="row m_top10">';

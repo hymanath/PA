@@ -34,6 +34,7 @@ public class MeesevaKPIDtlsVO {
 	private Long mobileAppServices2016 = 0L;
 	private Long mobileAppServices2017 = 0L;
 	private Long totalMobileAppServices = 0L;
+	private String percenatge;
 	
 	public Long getId() {
 		return id;
@@ -220,6 +221,12 @@ public class MeesevaKPIDtlsVO {
 	}
 	public void setTotalMobileAppServices(Long totalMobileAppServices) {
 		this.totalMobileAppServices = totalMobileAppServices;
+	}
+	public String getPercenatge() {
+		return percenatge;
+	}
+	public void setPercenatge(String percenatge) {
+		this.percenatge = percenatge;
 	} 
 	
 }
