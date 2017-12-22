@@ -882,7 +882,7 @@ $(document).on("click",".cloned_Inner_Element",function(){
 });
 
 
-function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount,conterInnerVal){
+function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount,conterInnerVal){ 
 	var clonedInnerTemplate='';
 	clonedInnerTemplate+='<div class="m_top10" >';
 		clonedInnerTemplate+='<div class="col-sm-12 m_top10" >';
@@ -944,12 +944,12 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 							clonedInnerTemplate+='</select><br><span class="mandalInnerId'+typeVal+''+counterId+''+innerWorkCount+'"></span>';
 						clonedInnerTemplate+='</div>';
 						
-							clonedTemplate+='<div class="col-sm-2 panchayatInnerCls'+typeVal+''+counterId+''+innerWorkCount+'" style="display:none">';
-							clonedTemplate+='<label>PANCHAYAT <span class="starColor">*</span></label>';
-							clonedTemplate+='<select  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls" id="panchayatId'+typeVal+''+counterId+''+innerWorkCount+'" attr_counterval="'+counterId+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'">';
-								clonedTemplate+='<option value="0">Select Panchayat</option>';
-							clonedTemplate+='</select><br><span class="panchayatId'+typeVal+''+counterId+''+innerWorkCount+'"></span>';
-						clonedTemplate+='</div>';
+							clonedInnerTemplate+='<div class="col-sm-2 panchayatInnerCls'+typeVal+''+counterId+''+innerWorkCount+'" style="display:none">';
+							clonedInnerTemplate+='<label>PANCHAYAT <span class="starColor">*</span></label>';
+							clonedInnerTemplate+='<select  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls" id="panchayatId'+typeVal+''+counterId+''+innerWorkCount+'" attr_counterval="'+counterId+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'">';
+								clonedInnerTemplate+='<option value="0">Select Panchayat</option>';
+							clonedInnerTemplate+='</select><br><span class="panchayatId'+typeVal+''+counterId+''+innerWorkCount+'"></span>';
+						clonedInnerTemplate+='</div>';
 				clonedInnerTemplate+='</div>';
 			clonedInnerTemplate+='</div>';
 		clonedInnerTemplate+='</div>';
