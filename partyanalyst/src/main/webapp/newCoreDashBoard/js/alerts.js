@@ -6239,7 +6239,7 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 		   str+='<div class="table-responsive">';
 			str+='<table class="table table-bordered text_align_center">';
 				str+='<thead class="bg_ED">';
-				str+='<th>Corporation/GHMC Name</th>';
+				str+='<th>Corporation/GMC</th>';
 				str+='<th>Total</th>';
 				for(var i in result.categoryList[0].statusList){
 				str+='<th>'+result.categoryList[0].statusList[i].name+'</th>';	
