@@ -45,7 +45,7 @@ var searchParams = new URLSearchParams(window.location.search);
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
+					<h4 class="text-capital">Panchayat Raj, RD & RWS</h4>
 					<p>MGNREGS - AP</p>
 				</div>
 				<div class="col-sm-2 col-xs-12 col-sm-offset-3">
@@ -288,7 +288,7 @@ var searchParams = new URLSearchParams(window.location.search);
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading" role="tab" id="headingOne">
 							<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-								<h4 class="panel-title">MGNREGS PROJECTS</h4>
+								<h4 class="panel-title">MGNREGS - PROJECTS</h4>
 							</a>
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
