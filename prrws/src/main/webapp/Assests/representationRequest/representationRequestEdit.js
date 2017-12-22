@@ -20,6 +20,12 @@ var searchCandidateIds=[];
 var diffArr=[];
 var commonArr=[];
 var refCandCount=0;
+var globalInnerWorksCount =0;
+var maxWorksCount =0;
+var maxCost =0;
+
+
+
 getSubjectPetitionsDepartmentList("onload");
 
 getWorkTypeList("","","","","onload");
@@ -617,45 +623,52 @@ $(document).on("change",".constituencyLevelChange",function(){
 });
 $(document).on("click",".cloned_Element",function(){
 	var typeVal = $(this).attr("attr_type");
+	
+
+	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
+	
+	var enteredAmount =parseInt(0);
+	var estimationAmount= parseInt($('#workCost'+typeVal+'').val());
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseInt(value) <=0){
+				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				return;
+			}else{
+				enteredAmount = parseInt(enteredAmount)+parseInt(value);
+			}
+		}
+	});
+	
+	if(enteredAmount>=estimationAmount){
+		alert("Total estimation cost reached. Please check once.");
+		return;
+	}
+	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
+		alert("Max no of works data entered. Please check once.");
+		return;
+	}
+	
 	var workCount = $("#noofWork"+typeVal).val();
 	var counterappendId = $(this).attr("block-clone-counter-"+typeVal+"");
 	var counterId = $(this).attr("block-clone-counter-"+typeVal+"");
 		counterId = parseInt(counterId) + 1;
 		
 	var blockId = $(this).attr("block-clone-"+typeVal+"");
-
-	//if(counterId <= parseInt(workCount)){
-		$(".appendWorkDetailsDiv"+typeVal+"").append(clonedTemplate(blockId,'clone',counterId,typeVal,counterappendId));
-		$(".chosen-select").chosen({width:'100%'});
-		$("[block-clone-"+typeVal+"="+blockId+"]").attr("block-clone-counter-"+typeVal+"",counterId);
-		globalWorkTypeCount = parseInt(globalWorkTypeCount)+1;
-		getSubjectPetitionsDepartmentList(typeVal,counterappendId,blockId,"change");
-		//getWorkTypeList('workTypeId',typeVal,counterappendId,blockId);
-		
-	//}
-});
-$(document).on("click",".cloned_Inner_Element",function(){
-	var typeVal = $(this).attr("attr_type");
-	var counterId = $(this).attr("attr_counterval");	
-	var mainWorkCount = $(this).attr("main_work_count");
-	var innerWorkCount = $(this).attr("inner_work_count");
-	$(this).attr("inner_work_count",parseInt(innerWorkCount)+1);
-	var conterInnerVal = parseInt(innerWorkCount)+1
-	
-	$(".appendInnerBlocks"+typeVal+counterId+innerWorkCount).append(clonedInnerTemplate('clone',counterId,typeVal,mainWorkCount,innerWorkCount,conterInnerVal));
+	$(".appendWorkDetailsDiv"+typeVal+"").append(clondTemplate(blockId,'clone',counterId,typeVal,counterappendId));
 	$(".chosen-select").chosen({width:'100%'});
-	getWorkTypeList('workTypeInnerId',typeVal,counterId,innerWorkCount,"change");
+	$("[block-clone-"+typeVal+"="+blockId+"]").attr("block-clone-counter-"+typeVal+"",counterId);
+	globalWorkTypeCount = parseInt(globalWorkTypeCount)+1;
+	globalInnerWorksCount=parseInt(globalInnerWorksCount)+1;
 });
 
-function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
+function clondTemplate(blockId,type,counterId,typeVal,counterappendId){
 	
 	var clonedTemplate='';
-	// here for evary new work  adding based on diff dept /subject/sub subject wise the subworksList should be start from ZERO ,but globalWorkTypeCount is same
-	//var tempcounterId = counterId;
-	//counterId = 0;
 	var tempcounterId=1;
 	clonedTemplate+='<div class="col-sm-12" cloned_block_'+typeVal+'='+counterappendId+' id="mainWorkDivId'+counterappendId+''+blockId+'">';
-	clonedTemplate+='<div class="pull-right removeWorkCls" attr_id="mainWorkDivId'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_candidateid="1"><i class="glyphicon glyphicon-remove"></i></div>';
+	clonedTemplate+='<div class="pull-right removeWorkCls" attr_inner_works_Count="0" attr_id="mainWorkDivId'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_candidateid="1"><i class="glyphicon glyphicon-remove"></i></div>';
 		clonedTemplate+='<div style="border:3px solid #dddddd;padding:10px;">';
 			clonedTemplate+='<div  cloned_block_'+typeVal+'='+counterappendId+'>';
 				//clonedTemplate+='<h3 class="panel-title f_22">WORK TYPE '+counterId+'</h3>';
@@ -664,13 +677,19 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 				
 					clonedTemplate+='<div class="col-sm-3">';
 							clonedTemplate+='<label>DEPARTMENT <span class="starColor">*</span><span class="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
-							clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].deptId"  class="form-control chosen-select m_top10 validateCls "  id="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
+							clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].deptId"  class="form-control chosen-select m_top10 validateCls "  id="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'" onChange=getPetitionSubjectList(this.value,"subjectId'+typeVal+''+counterappendId+'","'+blockId+'","change")>';
+							clonedTemplate+='<option value="0"> Select Department </option>';
+							if(globalDepartmentsList != null && globalDepartmentsList.length>0){
+								for(var x in globalDepartmentsList){
+									clonedTemplate+='<option value="'+globalDepartmentsList[x].key+'">'+globalDepartmentsList[x].value+'</option>';
+								}
+							}
 							clonedTemplate+='</select>';
 						clonedTemplate+='</div>';
 					
 					clonedTemplate+='<div class="col-sm-3">';
 						clonedTemplate+='<label>SUBJECT <span class="starColor">*</span><span class="subjectId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
-						clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].subjectId"  class="form-control chosen-select m_top10 validateCls"  id="subjectId'+typeVal+''+counterappendId+''+blockId+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+typeVal+''+counterappendId+'","'+blockId+'") attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
+						clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].subjectId"  class="form-control chosen-select m_top10 validateCls"  id="subjectId'+typeVal+''+counterappendId+''+blockId+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+typeVal+''+counterappendId+'","'+blockId+'","change") attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'" >';
 							clonedTemplate+='<option value="0">Select Subject</option>';
 						clonedTemplate+='</select>';
 					clonedTemplate+='</div>';
@@ -684,8 +703,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 								
 				clonedTemplate+='</div>';
 				
-				clonedTemplate+='<div class="row m_top10" id="workDivId'+counterappendId+''+blockId+'" >';
-				//clonedTemplate+='<div class="pull-right removeWorkCls" attr_id="workDivId'+globalWorkTypeCount+''+counterId+'" attr_type="self" attr_candidateid="1" style="margin-top: -50px;cursor:pointer"><i class="glyphicon glyphicon-remove"></i></div>';
+				clonedTemplate+='<div class="row m_top10 removeInnerWorkCls" id="workDivId'+counterappendId+''+blockId+'" >';
 					clonedTemplate+='<div class="col-sm-12">';
 						clonedTemplate+='<div class="bg_color_view">';
 							//clonedTemplate+='<h3 class="panel-title f_16 font_weight">WORK TYPE 1</h3>';
@@ -693,7 +711,11 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>WORK TYPE <span class="starColor">*</span><span class="workTypeId'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
 										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+blockId+'].workTypeId"  class="form-control chosen-select m_top10 validateCls" id="workTypeId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
-											clonedTemplate+='<option value="0">Select Work Type</option>';
+										clonedTemplate+='<option value="0"> Select Work Type </option>';
+										for(var w in globalWorkTypeList){
+											clonedTemplate+='<option value='+globalWorkTypeList[w].key+'>'+globalWorkTypeList[w].value+'</option>';
+										}
+											
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
@@ -758,18 +780,66 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 	return clonedTemplate;
 	
 }
+
+$(document).on("click",".cloned_Inner_Element",function(){
+	var typeVal = $(this).attr("attr_type");
+	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
+	
+	var enteredAmount =parseInt(0);
+	var estimationAmount= parseInt($('#workCost'+typeVal+'').val());
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseInt(value) <=0){
+				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				return;
+			}else{
+				enteredAmount = parseInt(enteredAmount)+parseInt(value);
+			}
+		}
+	});
+	
+	if(enteredAmount>=estimationAmount){
+		alert("Total estimation cost reached. Please check once.");
+		return;
+	}
+	
+	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
+		alert("Max no of works data entered. Please check once.");
+		return;
+	}
+	
+	var counterId = $(this).attr("attr_counterval");	
+	var mainWorkCount = $(this).attr("main_work_count");
+	var innerWorkCount = $(this).attr("inner_work_count");
+	$(this).attr("inner_work_count",parseInt(innerWorkCount)+1);
+	var conterInnerVal = parseInt(innerWorkCount)+1
+	
+	
+	globalInnerWorksCount = parseInt(globalInnerWorksCount)+1;
+
+		$(".appendInnerBlocks"+typeVal+counterId+innerWorkCount).append(clonedInnerTemplate('clone',counterId,typeVal,mainWorkCount,innerWorkCount,conterInnerVal));
+		$(".chosen-select").chosen({width:'100%'});
+		//getWorkTypeList('workTypeInnerId',typeVal,counterId,innerWorkCount,"change");
+		
+});
+
+
 function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount,conterInnerVal){
 	var clonedInnerTemplate='';
 	clonedInnerTemplate+='<div class="m_top10" >';
 		clonedInnerTemplate+='<div class="col-sm-12 m_top10" >';
-		clonedInnerTemplate+='<div class="pull-right removeWorkCls" attr_id="workDivId'+counterId+''+innerWorkCount+'" attr_type="self" attr_candidateid="1"><i class="glyphicon glyphicon-remove"></i></div>';
+		clonedInnerTemplate+='<div class="pull-right " attr_id="workDivId'+counterId+''+innerWorkCount+'" attr_type="self" attr_candidateid="1"><i class="glyphicon glyphicon-remove"></i></div>';
 			clonedInnerTemplate+='<div class="bg_color_view row " id="workDivId'+counterId+''+innerWorkCount+'">';
 				//clonedInnerTemplate+='<h3 class="panel-title f_16 font_weight">WORK TYPE 1</h3>';
 				clonedInnerTemplate+='<div class="row m_top10" >';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>WORK TYPE  <span class="starColor">*</span><span class="workTypeInnerId'+typeVal+''+counterId+''+innerWorkCount+'"></span></label>';
 							clonedInnerTemplate+='<select  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].workTypeId"  class="form-control chosen-select m_top10 validateCls validateInnerCls" id="workTypeInnerId'+typeVal+''+counterId+''+innerWorkCount+'" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'">';
-								clonedInnerTemplate+='<option value="0">Select Work Type</option>';
+								clonedInnerTemplate+='<option value="0"> Select Work Type </option>';
+										for(var w in globalWorkTypeList){
+											clonedInnerTemplate+='<option value='+globalWorkTypeList[w].key+'>'+globalWorkTypeList[w].value+'</option>';
+										}
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
@@ -820,7 +890,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 			clonedInnerTemplate+='</div>';
 		clonedInnerTemplate+='</div>';
 		clonedInnerTemplate+='</div>';
-		clonedInnerTemplate+='<div class="appendInnerBlocks'+typeVal+''+counterId+''+conterInnerVal+'"></div>';
+		clonedInnerTemplate+='<div class="appendInnerBlocks'+typeVal+''+counterId+''+conterInnerVal+'">';
 		return clonedInnerTemplate;
 }
 function getPetitionReferredMemberDetails(desiganationId,locationLevelId,locationValue,typeVal){
@@ -1144,7 +1214,8 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 function getPetitionDetails(){
 	//$("#"+result.representationType+"DetailsDivId").html(str);
    var json = {
-       petitionId:"1872"
+       petitionId:petitionId,//	"1872",
+       pageType:"editPage"
     };
   $.ajax({              
     type:'POST',    
@@ -1197,17 +1268,17 @@ function buildPetitionDetails(result){
 				str+='<div class="col-sm-3">';
 					str+='<h6>NAME</h6>';
 					str+='<input type="text"  name="name"  value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
-str+='<span class="ErrCls" id="nameErr'+result.representationType+'"></span>';
+					str+='<span class="ErrCls" id="nameErr'+result.representationType+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<h6>MOBILE NO</h6>';
 					str+='<input type="text" name="mobileNO"  maxlength="10" value="'+result.representeeDetailsList[i].mobileNO+'"  class="form-control m_top10 height45" id="mobileNumber'+result.representationType+'" placeholder="Enter Mobile Number" onkeyUp="checkIsNumber(this.id,this.value);">';	
-str+='<span class="ErrCls" id="mobileNumberErr'+result.representationType+'" ></span>';				
+					str+='<span class="ErrCls" id="mobileNumberErr'+result.representationType+'" ></span>';				
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<h6>EMAIL-ID</h6>';
 					str+='<input type="text" name="email"    value="'+result.representeeDetailsList[i].email+'" class="form-control m_top10 height45" id="emailId'+result.representationType+'" placeholder="Enter E-mail ID">';	
-str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>';				
+					str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>';				
 				str+='</div>';
 				
 			str+='</div>';
@@ -1215,6 +1286,7 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 				str+='<div class="col-sm-3">';	
 					str+='<h6>DISTRICT</h6>';
 					str+='<select   name="addressVO.districtId" class="form-control chosen-select m_top10" id="district'+result.representationType+'">';
+					str+='<option value="0"> Select District </option>';
 						for(var dis in globaldistrictList){
 							if(globaldistrictList[dis].id == result.representeeDetailsList[i].addressVO.districtId){
 								str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
@@ -1223,11 +1295,12 @@ str+='<span class="ErrCls" id="emailIdErr'+result.representationType+'"></span>'
 							}
 						}
 					str+='</select>';
-str+='<span class="ErrCls" id="districtErr'+result.representationType+'"></span>';
+				str+='<span class="ErrCls" id="districtErr'+result.representationType+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';	
 					str+='<h6>CONSTITUENCY</h6>';
 					str+='<select  name="addressVO.assemblyId"   class="form-control chosen-select m_top10" id="constituency'+result.representationType+'">';
+					str+='<option value="0"> Select Constituency </option>';
 						for(var c in result.representeeDetailsList[0].addressVO.constituencyList){
 							if(result.representeeDetailsList[0].addressVO.constituencyList[c].key == result.representeeDetailsList[i].addressVO.assemblyId){
 								str+='<option value="'+result.representeeDetailsList[0].addressVO.constituencyList[c].key+'">'+result.representeeDetailsList[0].addressVO.constituencyList[c].value+'</option>';
@@ -1242,6 +1315,7 @@ str+='<span class="ErrCls" id="districtErr'+result.representationType+'"></span>
 				str+='<div class="col-sm-3">';	
 					str+='<h6>MANDAL/MUNCI.</h6>';
 					str+='<select   name="addressVO.tehsilId"   class="form-control chosen-select m_top10" id="mandal'+result.representationType+'">';
+					str+='<option value="0"> Select Mandal/Munci./Corp. </option>';
 						for(var c in result.representeeDetailsList[0].addressVO.mandalsList){
 							if(result.representeeDetailsList[0].addressVO.mandalsList[c].key == result.representeeDetailsList[i].addressVO.tehsilId){
 								str+='<option value="'+result.representeeDetailsList[0].addressVO.mandalsList[c].key+'">'+result.representeeDetailsList[0].addressVO.mandalsList[c].value+'</option>';
@@ -1250,12 +1324,13 @@ str+='<span class="ErrCls" id="districtErr'+result.representationType+'"></span>
 							}
 						}
 					str+='</select>';
-	str+='<span class="ErrCls"  id="constituencyErr'+result.representationType+'"></span>';
+				str+='<span class="ErrCls"  id="constituencyErr'+result.representationType+'"></span>';
 				str+='</div>';
 			
 				str+='<div class="col-sm-3">';	
 					str+='<h6>PANCHAYAT</h6>';
 					str+='<select   name="addressVO.panchayatId"  class="form-control chosen-select m_top10" id="panchayat'+result.representationType+'">';
+					str+='<option value="0"> Select Panchayat </option>';
 						for(var c in result.representeeDetailsList[0].addressVO.panchaytsList){
 							if(result.representeeDetailsList[0].addressVO.panchaytsList[c].key == 233269){
 								str+='<option value="'+result.representeeDetailsList[0].addressVO.panchaytsList[c].key+'">'+result.representeeDetailsList[0].addressVO.panchaytsList[c].value+'</option>';
@@ -1264,13 +1339,14 @@ str+='<span class="ErrCls" id="districtErr'+result.representationType+'"></span>
 							}
 						}
 					str+='</select>';
-str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span>';
+					str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-3">';	
 				str+='<h6>REPRESENTEE DESIGNATION.</h6>';
 				str+='<select   name="representeeDesignationId"  class="form-control chosen-select m_top10" id="designation'+result.representationType+'">';
+				str+='<option value="0"> Select Designation </option>';
 				if(globalDesignationList != null && globalDesignationList.length>0){
 					for(var dig in globalDesignationList){
 						if(globalDesignationList[dig].id == result.representeeDetailsList[i].addressVO.districtId){
@@ -1281,7 +1357,7 @@ str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span
 					}
 				}					
 				str+='</select>';
-	str+='<span class="ErrCls"  id="designationErr'+result.representationType+'"></span>';
+				str+='<span class="ErrCls"  id="designationErr'+result.representationType+'"></span>';
 				str+='<input type="hidden" id="repTdpCadreId'+result.representationType+'" value="'+result.representeeDetailsList[i].tdpCadreId+'" name="tdpCadreId"/>';
 				str+='<input type="hidden" id="repImagePathId'+result.representationType+'" value="'+result.representeeDetailsList[i].candidatePath+'" name="repImagePath"/>';
 				str+='<input type="hidden" id="existingPetitionId'+result.representationType+'" value="'+result.petitionId+'" name="existingPetitionId"/>';
@@ -1452,7 +1528,8 @@ str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span
 	
 
 	//candidate Search End		
-		
+		maxWorksCount =result.noOfWorks;
+		maxCost =result.estimateCost;
 		str+='<div class="row m_top10">';
 				str+='<div class="col-sm-8">';
 					str+='<label>COMPLETE WORK DESCRIPTION <span class="starColor">*</span><span id="completeWorkNameId'+result.representationType+'"></span></label>';
@@ -1460,11 +1537,11 @@ str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span
 				str+='</div>';
 				str+='<div class="col-sm-2">';
 					str+='<label>NO OF WORKS <span class="starColor">*</span><span id="noOfWorksId'+result.representationType+'"></span></label>';
-						str+='<input   name="worksList[0].noOfWorks" value="'+result.noOfWorks+'"  type="text" class="form-control m_top5 height45" id="noofWork'+result.representationType+'" placeholder="Enter No Of Work"  onkeyUp="checkIsNumber(this.id,this.value);">';
+						str+='<input   name="worksList[0].noOfWorks" value="'+result.noOfWorks+'"  type="text" class="form-control m_top5 height45" id="noofWork'+result.representationType+'" placeholder="Enter No Of Work"  onkeyUp="rebuildWorkDetails(this.id,this.value,\'total work \',\''+result.representationType+'\');">';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
 					str+='<label>WORKS IN COST (in Lakh) <span class="starColor">*</span><span id="workCostId'+result.representationType+'"></span></label>';
-					str+='<input type="text"  name="worksList[0].estimateCost" value="'+result.estimateCost+'"  class="form-control m_top5 height45" id="workCost'+result.representationType+'" placeholder="Enter Work Cost"  onkeyUp="checkIsNumber(this.id,this.value);">';
+					str+='<input type="text"  name="worksList[0].estimateCost" value="'+result.estimateCost+'"  class="form-control m_top5 height45" id="workCost'+result.representationType+'" placeholder="Enter Work Cost"  onkeyUp="rebuildWorkDetails(this.id,this.value,\'total cost estimation \',\''+result.representationType+'\');">';
 				str+='</div>';
 		str+='</div>';
 		
@@ -1526,16 +1603,17 @@ str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span
 	str+='</div>';
 	
 	//work Details
-	str+='<div class="row">';
+	str+='<div class="row" id="workDetailsDiv">';
 	var addWorkTypeCountMain=0;
 	var innerWorkTypeCount=0;
 		for(var i in result.subWorksList){
 			
 				str+='<div class="col-sm-12 m_top20" id="mainWorkDivId'+i+''+globalWorkTypeCount+'">';
+				str+='<div class="pull-right removeWorkCls"  attr_inner_works_Count="'+result.subWorksList[i].subWorksList.length+'"  attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'">';
 				if(i !=0){
-					str+='<div class="pull-right removeWorkCls" attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'"><i class="glyphicon glyphicon-remove"></i></div>';
+					str+='<i class="glyphicon glyphicon-remove"></i>';
 				}
-					
+					str+='</div>';
 					
 					str+='<div style="border:3px solid #dddddd;padding:10px;">';
 						str+='<div>';
@@ -1545,6 +1623,7 @@ str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span
 								str+='<div class="col-sm-3">';
 										str+='<label>DEPARTMENT : <span class="starColor">*</span><span class="WorkTypeWiseDepartmentId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span></label>';
 										str+='<select  name="worksList['+i+'].subWorksList['+globalWorkTypeCount+'].deptId"  class="form-control chosen-select m_top10 validateCls"  id="WorkTypeWiseDepartmentId'+result.representationType+''+i+''+globalWorkTypeCount+'" attr_main_count="'+i+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox" onChange=getPetitionSubjectList(this.value,"subjectId'+result.representationType+''+i+'","'+globalWorkTypeCount+'","change")>';
+										str+='<option value="0"> Select Department </option>';
 											for(var d in globalDepartmentsList){
 												if(globalDepartmentsList[d].key == result.subWorksList[i].deptId){
 													str+='<option value='+globalDepartmentsList[d].key+' selected>'+globalDepartmentsList[d].value+'</option>';
@@ -1558,6 +1637,7 @@ str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span
 								str+='<div class="col-sm-3">';
 									str+='<label>SUBJECT <span class="starColor">*</span><span class="subjectId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span></label>';
 									str+='<select  name="worksList['+i+'].subWorksList['+globalWorkTypeCount+'].subjectId"  class="form-control chosen-select m_top10 validateCls"  id="subjectId'+result.representationType+''+i+''+globalWorkTypeCount+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+result.representationType+''+i+'","'+globalWorkTypeCount+'","change") attr_main_count="'+i+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox">';
+									str+='<option value="0"> Select Subject </option>';
 											for(var sd in result.subWorksList[i].subWorksList[0].subjectsList){
 												if(result.subWorksList[i].subWorksList[0].subjectsList[sd].key == result.subWorksList[i].subjectId){
 													str+='<option value='+result.subWorksList[i].subWorksList[0].subjectsList[sd].key+' selected>'+result.subWorksList[i].subWorksList[0].subjectsList[sd].value+'</option>';
@@ -1573,6 +1653,7 @@ str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span
 								str+='<div class="col-sm-3">';
 									str+='<label>SUB-SUBJECT <span class="starColor">*</span><span class="subSubjectId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span></label>';
 									str+='<select  name="worksList['+i+'].subWorksList['+globalWorkTypeCount+'].subSubjectId"  class="form-control chosen-select m_top10 validateCls"  id="subSubjectId'+result.representationType+''+i+''+globalWorkTypeCount+'" attr_main_count="'+i+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox">';
+									str+='<option value="0"> Select Sub Subject </option>';
 										for(var sd in result.subWorksList[i].subWorksList[0].subSubjectsList){
 												if(result.subWorksList[i].subWorksList[0].subSubjectsList[sd].key == result.subWorksList[i].subSubjectId){
 													str+='<option value='+result.subWorksList[i].subWorksList[0].subSubjectsList[sd].key+' selected>'+result.subWorksList[i].subWorksList[0].subSubjectsList[sd].value+'</option>';
@@ -1588,19 +1669,23 @@ str+='<span class="ErrCls" id="panchayatErr'+result.representationType+'"></span
 							//add work individual append
 							
 							for(var j in result.subWorksList[i].subWorksList){
+								globalInnerWorksCount = parseInt(globalInnerWorksCount)+1;
 								str+='<div class="row">';
 								
 								str+='<div class="m_top10" id="workDivId'+i+''+j+'">';
 										str+='<div class="col-sm-12">';
+										str+='<div class="pull-right removeInnerWorkCls" attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1">';
 											if(j !=0){
-												str+='<div class="pull-right removeWorkCls" attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1"><i class="glyphicon glyphicon-remove"></i></div>';
+												str+='<i class="glyphicon glyphicon-remove"></i>';
 											}
+											str+='</div>';
 											str+='<div class="bg_color_view">';
 												//str+='<h3 class="panel-title f_16 font_weight">WORK 1</h3>';
 												str+='<div class="row m_top10">';
 														str+='<div class="col-sm-3">';
 															str+='<label> WORK TYPE <span class="starColor">*</span><span class="workTypeId'+result.representationType+''+i+''+j+'"></span></label>';
 															str+='<select  name="worksList['+i+'].subWorksList['+j+'].workTypeId"  class="form-control chosen-select m_top10 validateCls" id="workTypeId'+result.representationType+''+i+''+j+'" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+															str+='<option value="0"> Select Work Type </option>';
 																for(var w in globalWorkTypeList){
 																		if(globalWorkTypeList[w].key == result.subWorksList[i].subWorksList[j].workTypeId){
 																			str+='<option value='+globalWorkTypeList[w].key+' selected>'+globalWorkTypeList[w].value+'</option>';
@@ -1996,22 +2081,25 @@ function getPetitionDesignationLst(typeVal){
 function validateAmount(value,fieldId,typeVal){
 	
 	$('.ErrCls').html('');
-	var enteredAmount =parseFloat(0.0);
-	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
+	var enteredAmount =parseInt(0);
+	var estimationAmount= parseInt($('#workCost'+typeVal+'').val());
 	$(".amountCls").each(function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
-			if(parseFloat(value) <=0){
-				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+			if(parseInt(value) <=0){
+				$('.'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
 				return;
 			}else{
-				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
+				enteredAmount = parseInt(enteredAmount)+parseInt(value);
 			}
+		}else{
+			$('.'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				return;
 		}
 	});
 	
 	if(enteredAmount>estimationAmount){
-		$('#Err'+fieldId+'').html("Total estimation cost reached. Please check once.");
+		$('.'+fieldId+'').html("Total estimation cost reached. Please check once.");
 		$('#'+fieldId+'').val('');
 	}
 }
@@ -2264,10 +2352,25 @@ function checkIsNumber(id,value){
 		 ;
 	 }
 }
-$(document).on("click",".removeWorkCls",function(){
+
+$(document).on("click",".removeInnerWorkCls",function(){	
+	if(!confirm("Are you sure want to delete this work details?"))
+		return;
+	
 	var divIdStr = $(this).attr('attr_id');
 	$('#'+divIdStr+'').remove();
+	globalInnerWorksCount = parseInt(globalInnerWorksCount)-1;
 	$(this).remove();
+});
+
+$(document).on("click",".removeWorkCls",function(){	
+	if(!confirm("Are you sure want to delete this all work details?"))
+		return;
+	var innerWorksCount=$(this).attr('attr_inner_works_Count');	
+	globalInnerWorksCount = parseInt(globalInnerWorksCount)-parseInt(innerWorksCount);
+	var divIdStr = $(this).attr('attr_id');
+	$('#'+divIdStr+'').remove();
+
 });
 
 $(document).on("click",".saveRepresentRequestDetails",function(){
@@ -2873,4 +2976,22 @@ function getPetitionDesignationList(){
 		}
 		$("#designationsId").trigger('chosen:updated');
 	});	
+}
+
+function rebuildWorkDetails(id,value,type,reprType){
+	checkIsNumber(id,value);
+	if(value>0){
+		if(!confirm("Are you sure want to change "+type+" Details ?")){
+			/*if(id.trim() == "total work")
+				$('#'+id+'').val(maxWorksCount);
+			else
+				$('#'+id+'').val(maxCost);*/
+			return;
+		}
+		
+		$('#workDetailsDiv').html('');
+		$("#workDetailsDiv").append(clondTemplate(0,'clone',0,reprType,0));
+		globalInnerWorksCount =0;
+		//getSubjectPetitionsDepartmentList(reprType,0,0,"change");
+	}
 }

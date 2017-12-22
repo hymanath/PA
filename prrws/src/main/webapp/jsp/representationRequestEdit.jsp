@@ -203,4 +203,7 @@
 <script type="text/javascript" src="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.js"></script>
 <script src="Assests/representationRequest/representationRequestEdit.js" type="text/javascript"></script>
 </body>
+<script>
+var petitionId='${param.petitionId}';
+</script>
 </html>

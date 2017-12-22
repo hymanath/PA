@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -78,6 +79,15 @@ public class RepresentationRequestController {
     public @ResponseBody List<KeyValueVO> getParliamentByDistricList(@RequestBody Map<String,String> inputMap ) {
        return locationDetailsService.getParliamentIdsByConstituencyList();
     }
+	@RequestMapping(value ="/representationRequestEdit/{petitionId},/representationRequestEdit1", method = RequestMethod.GET)
+    public String representationRequestEdit(ModelMap model,HttpServletRequest request,@PathVariable int petitionId) {
+	    UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
+		if (uservo==null){
+	      return "petitionsLoginPage";
+	    }
+		return "representationRequestEdit";
+    }
+	
 	@RequestMapping(value ="/representationRequestEdit", method = RequestMethod.GET)
     public String representationRequestEdit(ModelMap model,HttpServletRequest request) {
 	    UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
