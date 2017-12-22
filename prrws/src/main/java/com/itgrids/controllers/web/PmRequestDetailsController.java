@@ -111,4 +111,22 @@ public class PmRequestDetailsController {
 	    public @ResponseBody CadreRegistrationVO getRegistrationPersonDetails(@RequestBody Map<String,String> inputMap ) {
 	       return pmRequestDetailsService.getRegistrationPersonDetails(inputMap);
 	    }
+	    @RequestMapping(value ="/getCompleteOrStatusOverviewDetails",method = RequestMethod.POST)
+	    public @ResponseBody RepresenteeViewVO getCompleteOrStatusOverviewDetails(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
+			/*HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); */
+			Long userId =null;
+			/*if(userVO != null){
+				userId = userVO.getUserId();
+			}*/
+	    	return pmRequestDetailsService.getCompleteOrStatusOverviewDetails(userId,inputMap.get("fromDate"),inputMap.get("toDate"));
+	    }
+	    @RequestMapping(value ="/representationsDashboard", method = RequestMethod.GET)
+	    public String representationsDashboard(ModelMap model,HttpServletRequest request) {
+		    UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
+			if (uservo==null){
+		      return "petitionsLoginPage";
+		    }
+			return "representationsDashboard";
+	    }
 }
