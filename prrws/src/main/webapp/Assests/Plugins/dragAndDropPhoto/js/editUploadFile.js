@@ -54,6 +54,7 @@ function initializeEditFileUploadMainBlock(typeVal,candidateId) {
     changeInput: '<div class="jFiler-input-dragDrop" style="margin:0px;padding:10px;"><a class="jFiler-input-choose-btn blue">Browse <b style="color:green;"> PDF / IMAGES </b> Files (<i style="color:red">Max size 10 MB</i>) </a></div></div>',
     showThumbs: true,
     theme: "dragdropbox",
+    extensions :["pdf","bmp","png","jpg","jpeg","tiff"],
     templates: {  
         box: '<ul class="jFiler-items-list jFiler-items-grid"></ul>',
         item: itemStr,
@@ -131,7 +132,7 @@ function initializeEditFileUploadMainBlock(typeVal,candidateId) {
             removeConfirmation: "Are you sure you want to remove this file?",
             errors: {
                 filesLimit: "Only {{fi-limit}} files are allowed to be uploaded.",
-                filesType: "Only Images are allowed to be uploaded.",
+                filesType: " Only PDF / IMAGES are allowed ",
                 filesSize: "{{fi-name}} is too large! Please upload file up to {{fi-maxSize}} MB.",
                 filesSizeAll: "Files you've choosed are too large! Please upload files up to {{fi-maxSize}} MB."
             }
