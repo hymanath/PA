@@ -178,6 +178,8 @@ $(document).ready(function(){
 		}else if(globaltype == "distWiseCnt"){
 			getDistrictWisePartyViewForElectrronicMediaInfoForClik(0);
 		}
+	}else if(callFrom == "EMCT"){
+		getCoverageTimeOfTvNewsBulletinPointClick(0);
 	}
 		
 	}, 1000);
@@ -582,6 +584,8 @@ $(document).ready(function(){
 								}else if(globaltype == "distWiseCnt"){
 									getDistrictWisePartyViewForElectrronicMediaInfoForClik(0);
 								}
+							}else if(callFrom == "EMCT"){
+								getCoverageTimeOfTvNewsBulletinPointClick(0);
 							}
 					}					
 				});
@@ -797,6 +801,18 @@ $(document).ready(function(){
   		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
 		
 		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
+  	}).then(function(result){
+  		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('');
+  		var countByDate = 0;
+  		buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalstartIndexP,countByDate)
+  	}); 
+  }
+  function getCoverageTimeOfTvNewsBulletinPointClick(globalstartIndexP){
+  	$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+  	$.ajax({
+  		url: wurl+"/CommunityNewsPortal/webservice/getCoverageTimeOfTvNewsBulletinPointClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globaltype+"/"+globalorganizationId+"/"+globalNewsChannelIds+"/"+globalbenefitId+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex
+		
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getCoverageTimeOfTvNewsBulletinPointClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globaltype+"/"+globalorganizationId+"/"+globalNewsChannelIds+"/"+globalbenefitId+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex
   	}).then(function(result){
   		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('');
   		var countByDate = 0;
