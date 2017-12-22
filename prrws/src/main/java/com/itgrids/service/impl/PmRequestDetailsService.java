@@ -1280,4 +1280,167 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return cadrInfoVo;
 		}
 		
+		public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate){
+			RepresenteeViewVO returnVO = new RepresenteeViewVO();
+			try {
+				List<Long> deptIds = null;
+				Date fromDate = null;
+				Date toDate = null;
+				//List<>
+				Map<Long,RepresenteeViewVO> statuMap = null;
+				List<Object[]> objectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"");
+				if(commonMethodsUtilService.isListOrSetValid(objectList)){
+					statuMap = new HashMap<Long,RepresenteeViewVO>();
+					for (Object[] param : objectList) {
+						RepresenteeViewVO statusVO = statuMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+						if(statusVO == null){
+							statusVO = new RepresenteeViewVO();
+							statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+							statuMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusVO);
+						}
+						statusVO.setTotalRepresents(statusVO.getTotalRepresents().longValue()+1l);
+						statusVO.setNoOfWorks(statusVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						
+					}
+				}
+				List<Object[]> referrerList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusReferral");
+				setObjectListToMap(referrerList,statuMap, "statusReferral");
+				setObjectListForCompleteOverview(referrerList,returnVO, "statusReferral");
+				List<Object[]> subjectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusSubject");
+				setObjectListToMap(subjectList,statuMap, "statusSubject");
+				setObjectListForCompleteOverview(subjectList,returnVO, "statusSubject");
+				List<Object[]> deptlist = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusDept");
+				setObjectListToMap(deptlist,statuMap, "statusDept");
+				setObjectListForCompleteOverview(deptlist,returnVO, "statusDept");
+				
+				/*if(commonMethodsUtilService.isListOrSetValid(objectList)){
+					statuMap = new HashMap<Long,RepresenteeViewVO>();
+					for (Object[] param : objectList) {
+						RepresenteeViewVO statusVO = statuMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+						if(statusVO == null){
+							statusVO = new RepresenteeViewVO();
+							statuMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusVO);
+						}
+						statusVO.setTotalRepresents(statusVO.getTotalRepresents().longValue()+1l);
+						statusVO.setNoOfWorks(statusVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						
+					}
+				}*/
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in getCompleteOrStatusOverviewDetails ");
+			}
+			return returnVO;
+		}
+		public void setObjectListForCompleteOverview(List<Object[]> objectList,RepresenteeViewVO returnVO,String type){
+			try {
+				
+				if(commonMethodsUtilService.isListOrSetValid(objectList)){
+					//statuMap = new HashMap<Long,RepresenteeViewVO>();
+					for (Object[] param : objectList) {
+						/*RepresenteeViewVO statusVO = statuMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+						if(statusVO == null){
+							statusVO = new RepresenteeViewVO();
+							statuMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusVO);
+						}*/
+						RepresenteeViewVO VO  = null;
+						if(type != null && type.equalsIgnoreCase("statusReferral")){
+							 VO = getMatchVO(returnVO.getReferrerList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							 if(VO == null){
+								 VO = new  RepresenteeViewVO();
+								 returnVO.getReferrerList().add(VO);
+							 }
+							 returnVO.setTotalRepresents(VO.getTotalRepresents().longValue()+1l);
+							 returnVO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						}else if(type != null && type.equalsIgnoreCase("statusDept")){
+							 VO = getMatchVO(returnVO.getDeptList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							
+							 if(VO == null){
+								 VO = new  RepresenteeViewVO();
+								 returnVO.getDeptList().add(VO);
+							 }
+						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
+							 VO = getMatchVO(returnVO.getSubList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							
+							 if(VO == null){
+								 VO = new  RepresenteeViewVO();
+								 returnVO.getSubList().add(VO);
+							 }
+						}
+						 VO.setId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						 VO.setName(commonMethodsUtilService.getStringValueForObject(param[5]));
+						VO.setTotalRepresents(VO.getTotalRepresents().longValue()+1l);
+						VO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in setObjectListToMap ");
+			}
+		}
+		public void setObjectListToMap(List<Object[]> objectList,Map<Long,RepresenteeViewVO> statuMap,String type){
+			try {
+				
+				if(commonMethodsUtilService.isListOrSetValid(objectList) && commonMethodsUtilService.isMapValid(statuMap)){
+					//statuMap = new HashMap<Long,RepresenteeViewVO>();
+					for (Object[] param : objectList) {
+						RepresenteeViewVO statusVO = statuMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+						if(statusVO == null){
+							statusVO = new RepresenteeViewVO();
+							statuMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusVO);
+						}
+						RepresenteeViewVO VO  = null;
+						if(type != null && type.equalsIgnoreCase("statusReferral")){
+							 VO = getMatchVO(statusVO.getReferrerList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							 if(VO == null){
+								 VO = new  RepresenteeViewVO();
+								 statusVO.getReferrerList().add(VO);
+							 }
+						}else if(type != null && type.equalsIgnoreCase("statusDept")){
+							 VO = getMatchVO(statusVO.getDeptList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							
+							 if(VO == null){
+								 VO = new  RepresenteeViewVO();
+								 statusVO.getDeptList().add(VO);
+							 }
+						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
+							 VO = getMatchVO(statusVO.getSubList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							
+							 if(VO == null){
+								 VO = new  RepresenteeViewVO();
+								 statusVO.getSubList().add(VO);
+							 }
+						}
+						 VO.setId(commonMethodsUtilService.getLongValueForObject(param[4]));
+						 VO.setName(commonMethodsUtilService.getStringValueForObject(param[5]));
+						VO.setTotalRepresents(VO.getTotalRepresents().longValue()+1l);
+						VO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in setObjectListToMap ");
+			}
+		}
+		private RepresenteeViewVO getMatchVO(List<RepresenteeViewVO> subList,Long id) {
+			 try {
+				  if (subList == null || subList.size() == 0) {
+					  return null;
+				  }
+				  for (RepresenteeViewVO VO : subList) {
+					if (VO.getId() == id) {
+						return VO;
+					}
+				}
+				 
+				 
+			 } catch (Exception e) {
+				 LOG.error("Exception raised at getMatchVO - PmRequestDetailsService service",e);
+			 }
+			 return null;
+		}
+		
 }
