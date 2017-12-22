@@ -47,7 +47,7 @@
 <header style="box-shadow:none;">
 	<img src="Assests/images/petitionStripGrid.png" class="" alt="logo" style="height:165px;width:100%">
 	<div class="col-sm-12">
-			<button class="btn btn-success btn-sm pull-right menu-login" style="border-radius:0px;background-color:#AA8440;font-weight:bold;position:relative;top:-70px;">Login</button>
+			<button class="btn btn-success btn-sm pull-right menu-login" style="border-radius:0px;background-color:#AA8440;font-weight:bold;position:relative;top:-85px;right:120px;">Login</button>
 			<div class="menu-data-cls" style="top:-10px;">
 				<div class="arrow_box_top">
 					<div class="row">
@@ -106,7 +106,7 @@ $(document).click(function() {
 	$(".menu-data-cls").hide();
 });
 
-$(document).on("click",".login-field-icon",function(e){
+$(document).on("click",".login-field-icon,.btnSearch",function(e){
 	e.stopPropagation();
 	//$(".menu-data-cls").toggle();
 });

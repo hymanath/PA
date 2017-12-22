@@ -62,7 +62,7 @@
 			<div class="col-sm-12">
 				<div class="panel-group">
 					<div class="panel panel-default panel-lightGreen">
-						<div class="panel-heading">
+						<div class="panel-heading padTopBottom">
 							<h4 class="panel-title f_22" style="font-weight:normal !important;">REPRESENTATION REQUEST</h4>
 						</div>
 						<form action="saveRepresentRequestDetails" id="adminProfileForm" name="adminProfileFormName" enctype="multipart/form-data" method="post">
