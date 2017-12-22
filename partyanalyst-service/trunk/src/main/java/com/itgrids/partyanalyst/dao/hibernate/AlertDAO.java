@@ -5946,16 +5946,16 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	  				    " from Alert model,AlertDepartmentStatus model1");
 	     if(resultType.equalsIgnoreCase("Assigned")){
 	    	 queryStr.append(",AlertAssigned ASSG where ASSG.alert.alertId = model.alertId and ASSG.isDeleted='N' ");
-	    	 if(alertInputsVO.getType() != null && alertInputsVO.getType().equalsIgnoreCase("selectedUserType") 
+	    	 /*if(alertInputsVO.getType() != null && alertInputsVO.getType().equalsIgnoreCase("selectedUserType") 
 	    			 && alertInputsVO.getTdpCadreIds() != null && alertInputsVO.getTdpCadreIds().size() >0){
 	    		 queryStr.append(" and ASSG.tdpCadre.tdpCadreId in (:tdpCadreIds) ");
-	    	 }
+	    	 }*/
 	     }else if(resultType.equalsIgnoreCase("Involve")){
 	    	 queryStr.append(",AlertCandidate AC where AC.alert.alertId = model.alertId "); 
-	    	 if(alertInputsVO.getType() != null && alertInputsVO.getType().equalsIgnoreCase("selectedUserType") 
+	    	 /*if(alertInputsVO.getType() != null && alertInputsVO.getType().equalsIgnoreCase("selectedUserType") 
 	    			 && alertInputsVO.getTdpCadreIds() != null && alertInputsVO.getTdpCadreIds().size() >0){
 	    		 queryStr.append(" and AC.tdpCadre.tdpCadreId in (:tdpCadreIds) ");
-	    	 }
+	    	 }*/
 	     }else if(resultType.equalsIgnoreCase("Total")){
 	    	 queryStr.append(" where model1.alertType.alertTypeId = model.alertType.alertTypeId ");	 
 	     }
@@ -6028,11 +6028,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(alertInputsVO.getAlertStatusIds() != null && alertInputsVO.getAlertStatusIds().size() >0){
 			 query.setParameterList("alertStatusIds", alertInputsVO.getAlertStatusIds()); 
 		}
-		if(alertInputsVO.getType() != null && alertInputsVO.getType().equalsIgnoreCase("selectedUserType") 
+		/*if(alertInputsVO.getType() != null && alertInputsVO.getType().equalsIgnoreCase("selectedUserType") 
    			 && alertInputsVO.getTdpCadreIds() != null && alertInputsVO.getTdpCadreIds().size() >0 && (resultType.equalsIgnoreCase("Assigned") 
    			|| resultType.equalsIgnoreCase("Involve"))){
 			 query.setParameterList("tdpCadreIds", alertInputsVO.getTdpCadreIds());
-		}
+		}*/
 	return query.list();
 }
    public List<Object[]> getLocationAndImapctLevelWiseAssignedAndInvolveAlertCnt(AlertInputsVO alertInputsVO,String resultType){
