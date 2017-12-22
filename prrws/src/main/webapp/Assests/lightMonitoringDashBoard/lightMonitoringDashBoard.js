@@ -218,9 +218,9 @@ function getBasicLedOverviewDetails(){
 }
 function buildLedOverviewForStartedLocationsDetailsCounts(result){
 	var str='';
-	str+='<div class="col-sm-10 col-sm-offset-1">';
+	str+='<div class="col-sm-12">';
 				str+='<div class="dropdown">';
-			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-top:-27px;color: #8341D7;" id="surveyDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Survey Details Location Wise">&#9432;</span>';
+			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-top:-27px;color: #8341D7;margin-right:60px;" id="surveyDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Survey Details Location Wise">&#9432;</span>';
 				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar arrow_box_top_led" aria-labelledby="surveyDropdownMenu" style="margin-right: -10px">';
 				str+='<div class="poles_block">';
 					str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
@@ -403,7 +403,7 @@ function buildBasicLedOverviewDetails(result)
 	
 			str+='<div class="col-sm-12">';
 			
-				str+='<div class="col-sm-3 m_top5 addRemoveClass">';
+				str+='<div class="col-sm-2 m_top5 addRemoveClass">';
 				str+='<div class="media">';
 					str+='<div class="media-left">';
 						str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
@@ -463,8 +463,7 @@ function buildBasicLedOverviewDetails(result)
 					str+='</div>';
 			str+='</div>';
 			
-		str+='</div>';	
-		str+='<div class="col-sm-10 col-sm-offset-2">';
+		
 		str+='<div class="dropdown">';
 			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-right:60px;" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
 				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar arrow_box_top_led" aria-labelledby="dropdownMenu" style="margin-top: 32px;">';
@@ -1292,7 +1291,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<h4>'+result.eeslVO.totalLights+'</h4>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="col-sm-3 media m_top5">';
+								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/Operational_LED_Light_Icon.png" alt="poles_icon" style="width: 25px; height: 35px;">';
 									str+='</div>';
@@ -1301,7 +1300,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<h4>'+result.eeslVO.workingLights+'</h4>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="col-sm-5 media m_top5">';
+								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/Non_Operational_LED_Light_Ico.png" alt="poles_icon" style="width: 25px; height: 35px;">';
 									str+='</div>';
@@ -1445,7 +1444,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<h4>'+result.nredcapVO.totalLights+'</h4>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="col-sm-3 media m_top5">';
+								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/Operational_LED_Light_Icon.png" alt="poles_icon" style="width: 25px; height: 35px;">';
 									str+='</div>';
@@ -1454,7 +1453,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<h4>'+result.nredcapVO.workingLights+'</h4>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="col-sm-5 media m_top5">';
+								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/Non_Operational_LED_Light_Ico.png" alt="poles_icon" style="width: 25px; height: 35px;">';
 									str+='</div>';
@@ -2105,7 +2104,7 @@ function bulidStateWiseClickData(result){
 function buildnewAddedLightsDetails(result){
 	var str='';
 		str+='<div class="clearfix"></div>';
-		str+='<h4 style="margin-top:10px;margin-bottom:10px;padding-left:10px" class="text-capital"><b>NEWLY ADDED LIGHTS DETAILS</b></h4>';
+		str+='<h4 style="margin-top:10px;margin-bottom:10px;padding-left:10px" class="text-capital"><b>New Installed LEDS Details</b></h4>';
 		str+='<p style="padding-left:10px">Targets From '+result[0].overDtlsVO.name+'</p>';
 			for(var i in vendorArr){
 					str+='<div class="col-sm-4 m_top10">';
