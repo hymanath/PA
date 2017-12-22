@@ -27,48 +27,33 @@
 </style>
 </head>
 <body>
-<header>
-	<nav>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="bg_backGroundMain">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="text-center col-sm-11">
-								<img src="Assests/images/Group 2.png" class="" alt="logo">
-							</div>
-							<div class="col-sm-1 m_top20">
-								<i class="glyphicon glyphicon-th menu-cls pull-right" style="top:8px;"></i>
-							
-								<div class="menu-data-cls">
-									<div class="arrow_box_top">
-										<div class="row">
-											<div style="padding:10px;">
-												<div class="col-sm-6">
-													<h4><a href="representationRequestEntry">ADD PETITION</a></h4>
-												</div>
-												<div class="col-sm-6">
-													<h4 class=""><a href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div style="padding:10px;">
-											<div class="col-sm-12">
-												<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
-												
-											</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+<header style="box-shadow:none;">
+	<img src="Assests/images/PetitionMainStrip.png" class="" alt="logo">
+	<div class="col-sm-12">
+		<i class="glyphicon glyphicon-th menu-cls pull-right" style="position:relative;top:-70px;color:#AA8440"></i>
+		<div class="menu-data-cls" style="top:-10px;">
+			<div class="arrow_box_top">
+				<div class="row">
+					<div style="padding:10px;">
+						<div class="col-sm-6">
+							<h4><a target="_blank" href="representationRequestEntry">ADD PETITION</a></h4>
 						</div>
+						<div class="col-sm-6">
+							<h4 class=""><a target="_blank" href="representationRequestEntry">VIEW PETITION</a></h4>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div style="padding:10px;">
+					<div class="col-sm-12">
+						<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
+						
+					</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</nav>
+	</div>
 </header>
 
 <main>

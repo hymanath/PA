@@ -44,67 +44,47 @@
 </style>
 </head>
 <body>
-<header>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-sm-1 col-xs-3">
-				<img src="Assests/img/aplogo.png" class="logoCls" alt="logo">
-			</div>
-			<div class="col-sm-9 col-xs-6">
-				<h5 style="margin-bottom: 0px;margin-top: 20px;color: #22A67E"><b>PETITIONS MANAGMENT SYSTEM</b></h5>
-				
-			</div>
-			<div class="col-sm-2 m_top20">
-				<button class="btn btn-success btn-md pull-right menu-login" style="border-radius:0px;background-color:#22A67E;font-weight:bold;">Login</button>
-				<div class="menu-data-cls">
-					<div class="arrow_box_top">
-						<div class="row">
-							
-								<div class="paddingLogin">
-									<div class="col-sm-12">
-										<label class="login-field-icon fui-user" for="login-name">USERNAME
-											<input type="text" class="form-control m_top5" value="" placeholder="User Name" id="login-name"/>
-											<span id="statusErrUserId"></span>	
-										</label>
-									</div>
-									<div class="col-sm-12">
-										<label class="login-field-icon fui-lock" for="login-pass">PASSWORD
-											<input type="password" class="form-control m_top5" value="" placeholder="Password" id="login-pass" >
-											<span id="statusErrPwdId"></span>	
-										</label>
-									</div>
-									<div class="col-sm-12">
-										<a class="btn btn-primary btnSearch m_top5" style="display:inline-block" onClick="userLogin();" id="signinId" style="cursor:pointer;">SIGN IN</a>
-										<img src="Assests/images/spinner.gif" style="width:40px;height:40px;margin-left:10px;margin-top:10px;display:none;" id="spinnerImg"/>
-										<p id="successMessage"></p>	
-									</div>
+<header style="box-shadow:none;">
+	<img src="Assests/images/petitionStripGrid.png" class="" alt="logo" style="height:165px;width:100%">
+	<div class="col-sm-12">
+			<button class="btn btn-success btn-sm pull-right menu-login" style="border-radius:0px;background-color:#AA8440;font-weight:bold;position:relative;top:-70px;">Login</button>
+			<div class="menu-data-cls" style="top:-10px;">
+				<div class="arrow_box_top">
+					<div class="row">
+						
+							<div class="paddingLogin">
+								<div class="col-sm-12">
+									<label class="login-field-icon fui-user" for="login-name">USERNAME
+										<input type="text" class="form-control m_top5" value="" placeholder="User Name" id="loginName"/>
+										<span id="statusErrUserId"></span>	
+									</label>
 								</div>
-							
-						</div>
+								<div class="col-sm-12">
+									<label class="login-field-icon fui-lock" for="login-pass">PASSWORD
+										<input type="password" class="form-control m_top5" value="" placeholder="Password" id="loginPass" >
+										<span id="statusErrPwdId"></span>	
+									</label>
+								</div>
+								<div class="col-sm-12">
+									<a class="btn btn-primary btnSearch m_top5" style="display:inline-block" onClick="userLogin();" id="signinId" style="cursor:pointer;">SIGN IN</a>
+									<img src="Assests/images/spinner.gif" style="width:40px;height:40px;margin-left:10px;margin-top:10px;display:none;" id="spinnerImg"/>
+									<p id="successMessage"></p>	
+								</div>
+							</div>
+						
 					</div>
 				</div>
 			</div>
-		</div>
 	</div>
-</header>
-<section>
-	<div class="bg_backGround">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="text-center">
-					<img src="Assests/images/Group 2.png" class="" alt="logo">
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+			
+</header> 
 <section style="padding:20px 0px;margin-bottom: 45px;" id="showMainBlock">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3 text-center">
 				<img src="Assests/img/Group 2329.png" alt="image">
-				<h4 style="color: #EC2027"><b>NARA LOKESH</b></h4>
-				<p style="font-size: 12px;">Minister for Information Technology,<br/> Panchayath Raj and Rural Development,<br/>(Government of Andhra Pradesh)</p>
+				<h3 style="color: #EC2027" style="margin-top:20px;"><b>NARA LOKESH</b></h3>
+				<p style="font-size: 16px;">Minister for Information Technology,<br/> Panchayathi Raj and Rural Development,<br/>(Government of Andhra Pradesh)</p>
 			</div>
 		</div>
 	</div>
@@ -121,6 +101,15 @@
 </footer>	
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+$(document).click(function() {
+	$(".menu-data-cls").hide();
+});
+
+$(document).on("click",".login-field-icon",function(e){
+	e.stopPropagation();
+	//$(".menu-data-cls").toggle();
+});
 $("header").on("click",".menu-login",function(e){
 	e.stopPropagation();
 	$(".menu-data-cls").toggle();
@@ -131,8 +120,8 @@ function userLogin(){
 	$("#statusErrPwdId").html(' ');
 	$("#successMessage").html(' ');
 		
-	var userName = $("#login-name").val();
-	var password = $("#login-pass").val();
+	var userName = $("#loginName").val();
+	var password = $("#loginPass").val();
 
 	var errorStr = '';
 	var errorPwdStr='';
