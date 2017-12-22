@@ -9104,7 +9104,11 @@ public List<CoreDebateVO> getDesignationWiseCandidateOverAllPerformanceCohort(St
 										for (CoreDebateVO vo : voList) {
 											vo.setDebateCount(vo.getDebateCount()+commonMethodsUtilService.getLongValueForObject(obj[2]));	
 											if(vo.getScale() !=null && vo.getScale()>0.0 && vo.getDebateCount() !=null && vo.getDebateCount()>0){
-												vo.setScalePerc(Double.parseDouble(new BigDecimal(vo.getScale()/vo.getDebateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));	
+												vo.setScalePerc(Double.parseDouble(new BigDecimal(vo.getScale()/vo.getDebateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+												if(vo.getScalePerc() != null && vo.getScalePerc() >0.0){
+													 Double scalePer = getAvgDetailsOfDebate(vo.getScalePerc(),vo.getCharecterId());
+													 vo.setScalePerc(scalePer);
+													}
 												candidateScale = candidateScale + vo.getScale();
 											}
 											
@@ -9112,8 +9116,12 @@ public List<CoreDebateVO> getDesignationWiseCandidateOverAllPerformanceCohort(St
 											
 											CoreDebateVO firstVo  = voList.get(0);
 											if(candidateScale>0.00 && (vo.getDebateCount() !=null && vo.getDebateCount() >0l))
-												firstVo.setOverAllPerc(Double.parseDouble(new BigDecimal((candidateScale/vo.getDebateCount())/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
-											
+												//firstVo.setOverAllPerc(Double.parseDouble(new BigDecimal((candidateScale/vo.getDebateCount())/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+												firstVo.setOverAllPerc(Double.parseDouble(new BigDecimal((candidateScale/vo.getDebateCount())).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+											if(firstVo.getOverAllPerc() != null && firstVo.getOverAllPerc() >0.0){
+												 Double scalePer = getAvgDetailsOfDebate(firstVo.getOverAllPerc(),null);
+												 firstVo.setOverAllPerc(scalePer);
+												}
 										}
 									}
 								}						
