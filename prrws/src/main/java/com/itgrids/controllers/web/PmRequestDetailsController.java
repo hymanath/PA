@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,8 +85,17 @@ public class PmRequestDetailsController {
 	       return locationDetailsService.getPmDesignations(inputMap.get("searchType"));
 	    }
 	    @RequestMapping(value ="/getDistrictBySearchType",method = RequestMethod.POST)
-	    public @ResponseBody List<KeyValueVO> getDistrictBySearchType(@RequestBody Map<String,String> inputMap ) {
-	       return locationDetailsService.getDistrictBySearchType(inputMap.get("searchType"));
+	    public @ResponseBody List<KeyValueVO> getDistrictBySearchType(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}
+			List<Long> deptIds = null;
+			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+			 deptIds = deptVO.getDeptIdsList();
+	    	return locationDetailsService.getDistrictBySearchType(inputMap.get("searchType"),deptIds);
 	    }
 	    @RequestMapping(value ="/getConstituenciesBySearchTypeAndDistrict",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getConstituenciesBySearchTypeAndDistrict(@RequestBody InputVO inputVO ) {
@@ -113,20 +123,21 @@ public class PmRequestDetailsController {
 	    }
 	    @RequestMapping(value ="/getCompleteOrStatusOverviewDetails",method = RequestMethod.POST)
 	    public @ResponseBody RepresenteeViewVO getCompleteOrStatusOverviewDetails(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
-			/*HttpSession session=request.getSession();
-			UserVO userVO = (UserVO) session.getAttribute("USER"); */
-			Long userId =null;
-			/*if(userVO != null){
+	    	Long userId =null;
+	    	/*HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
 				userId = userVO.getUserId();
 			}*/
 	    	return pmRequestDetailsService.getCompleteOrStatusOverviewDetails(userId,inputMap.get("fromDate"),inputMap.get("toDate"));
 	    }
 	    @RequestMapping(value ="/representationsDashboard", method = RequestMethod.GET)
 	    public String representationsDashboard(ModelMap model,HttpServletRequest request) {
-		    UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
+		    /*UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
 			if (uservo==null){
 		      return "petitionsLoginPage";
-		    }
+		    }*/
 			return "representationsDashboard";
 	    }
 	    @RequestMapping(value ="/getDeptIdsListBYUserIdsLst",method = RequestMethod.POST)

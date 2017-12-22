@@ -1,5 +1,5 @@
 
-getDeptIdsListBYUserIdsLst();
+//getDeptIdsListBYUserIdsLst();
 function getDeptIdsListBYUserIdsLst(){
 	$("#designationrepresent").html('');
 	  var json = {
@@ -20,7 +20,7 @@ function getDeptIdsListBYUserIdsLst(){
 
 }
 
-getPmDeptStatusIdsByUserIdsLst();
+//getPmDeptStatusIdsByUserIdsLst();
 function getPmDeptStatusIdsByUserIdsLst(){
 	
 	  var json = {
@@ -39,4 +39,24 @@ function getPmDeptStatusIdsByUserIdsLst(){
 		
 	});	
 
+}
+//getDistrictBySearchType();
+function getDistrictBySearchType(){
+
+var json = {
+		 fromDate :"",
+		 toDate:""
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getCompleteOrStatusOverviewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result)
+	});	
 }

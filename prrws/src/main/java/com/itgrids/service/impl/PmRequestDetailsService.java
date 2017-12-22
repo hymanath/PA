@@ -32,6 +32,7 @@ import com.itgrids.dao.IPmRepresenteeDAO;
 import com.itgrids.dao.IPmRepresenteeDesignationDAO;
 import com.itgrids.dao.IPmRepresenteeRefDetailsDAO;
 import com.itgrids.dao.IPmRepresenteeRefDocumentDAO;
+import com.itgrids.dao.IPmStatusDAO;
 import com.itgrids.dao.IPmSubWorkDetailsDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.CadreRegistrationVO;
@@ -58,6 +59,7 @@ import com.itgrids.model.PmRepresentee;
 import com.itgrids.model.PmRepresenteeDesignation;
 import com.itgrids.model.PmRepresenteeRefDetails;
 import com.itgrids.model.PmRepresenteeRefDocument;
+import com.itgrids.model.PmStatus;
 import com.itgrids.model.PmSubWorkDetails;
 import com.itgrids.service.ILocationDetailsService;
 import com.itgrids.service.IPmRequestDetailsService;
@@ -119,6 +121,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	@Autowired
 	private ILocationDetailsService locationDetailsService;
+	@Autowired
+	private IPmStatusDAO pmStatusDAO;
 	
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO){
 		ResponseVO responseVO = new ResponseVO();
@@ -1299,14 +1303,27 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate){
 			RepresenteeViewVO returnVO = new RepresenteeViewVO();
 			try {
-				List<Long> deptIds = null;
+				KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
+				List<Long> deptIds = deptVO.getDeptIdsList();
 				Date fromDate = null;
 				Date toDate = null;
 				//List<>
 				Map<Long,RepresenteeViewVO> statuMap = null;
+				List<PmStatus> statusList = pmStatusDAO.getAll();
+				if(commonMethodsUtilService.isListOrSetValid(statusList)){
+					statuMap = new HashMap<Long,RepresenteeViewVO>();
+					for (PmStatus pmStatus : statusList) {
+						if(pmStatus.getPmStatusId().longValue() != 2l){
+							RepresenteeViewVO	statusVO = new RepresenteeViewVO();
+							statusVO.setId(pmStatus.getPmStatusId());
+							statusVO.setName(pmStatus.getStatus());
+							statuMap.put(statusVO.getId(), statusVO);
+						}
+					}
+				}
 				List<Object[]> objectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"");
 				if(commonMethodsUtilService.isListOrSetValid(objectList)){
-					statuMap = new HashMap<Long,RepresenteeViewVO>();
+					
 					for (Object[] param : objectList) {
 						RepresenteeViewVO statusVO = statuMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
 						if(statusVO == null){
@@ -1320,6 +1337,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						
 					}
 				}
+				
 				List<Object[]> referrerList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusReferral");
 				setObjectListToMap(referrerList,statuMap, "statusReferral");
 				setObjectListForCompleteOverview(referrerList,returnVO, "statusReferral");
@@ -1330,6 +1348,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				setObjectListToMap(deptlist,statuMap, "statusDept");
 				setObjectListForCompleteOverview(deptlist,returnVO, "statusDept");
 				
+				if(commonMethodsUtilService.isMapValid(statuMap)){
+					returnVO.getStatusList().addAll(statuMap.values());
+				}
 				/*if(commonMethodsUtilService.isListOrSetValid(objectList)){
 					statuMap = new HashMap<Long,RepresenteeViewVO>();
 					for (Object[] param : objectList) {
@@ -1367,8 +1388,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								 VO = new  RepresenteeViewVO();
 								 returnVO.getReferrerList().add(VO);
 							 }
-							 returnVO.setTotalRepresents(VO.getTotalRepresents().longValue()+1l);
-							 returnVO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
+							 returnVO.setTotalRepresents(returnVO.getTotalRepresents().longValue()+1l);
+							 returnVO.setNoOfWorks(returnVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						}else if(type != null && type.equalsIgnoreCase("statusDept")){
 							 VO = getMatchVO(returnVO.getDeptList(),commonMethodsUtilService.getLongValueForObject(param[4]));
 							
@@ -1451,9 +1472,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						return VO;
 					}
 				}
-				 
-				 
-			 } catch (Exception e) {
+			} catch (Exception e) {
 				 LOG.error("Exception raised at getMatchVO - PmRequestDetailsService service",e);
 			 }
 			 return null;

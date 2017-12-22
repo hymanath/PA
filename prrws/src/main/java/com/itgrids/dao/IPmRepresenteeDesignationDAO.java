@@ -8,7 +8,7 @@ import com.itgrids.model.PmRepresenteeDesignation;
 
 public interface IPmRepresenteeDesignationDAO extends GenericDao<PmRepresenteeDesignation, Long> {
 	public List<PmRepresenteeDesignation> getPmRepresenteeDesignationByRepresenteeId(Long representeeId);
-	public List<Object[]> getAllDistrictsByRepresenteeDesignationWise();
+	public List<Object[]> getAllDistrictsByRepresenteeDesignationWise(List<Long> deptIds);
 	public List<Object[]> getDesignationsByRepresenteeDesigtion();
 	public List<Object[]> getAllConstituenciesByRepresenteeDesignationWise(List<Long> districtIds);
 	public List<Object[]> getAllMandalsByRepresenteeDesignationAndconstincy(List<Long> constituencyIds);

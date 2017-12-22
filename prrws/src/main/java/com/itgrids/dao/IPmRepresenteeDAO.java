@@ -10,7 +10,7 @@ public interface IPmRepresenteeDAO extends GenericDao<PmRepresentee, Long> {
 	public List<Long> getExistingPetitionRepresenteeDetailsById(String voterCardNo,String adharCardNo);
 	public List<Long> getExistingPetitionRepresenteeDetailsByRefId(Long refCandidateId);
 	
-	public List<Object[]> getAllDistrictsBySearchType();
+	public List<Object[]> getAllDistrictsBySearchType(List<Long> deptIds);
 	public List<Object[]> getAlConstituenciesBySearchType(List<Long> districtIds);
 	public List<Object[]> getAllMandalsBySearchType(List<Long> constituencyIds);
 	

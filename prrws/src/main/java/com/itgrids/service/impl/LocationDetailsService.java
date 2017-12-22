@@ -610,20 +610,22 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 	return finalList;
 }
 
-	public List<KeyValueVO> getDistrictBySearchType(String serchType){
+	public List<KeyValueVO> getDistrictBySearchType(String serchType,List<Long> deptIds){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> districtObjs=null;
+			/*KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
+			List<Long> deptIds = deptVO.getDeptIdsList();*/
 			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("department"))){
-				districtObjs=pmSubWorkDetailsDAO.getAllDistricts();
+				districtObjs=pmSubWorkDetailsDAO.getAllDistricts(deptIds);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referral")){
-				districtObjs=pmRefCandidateDAO.getAllDistrictsByReferral();
+				districtObjs=pmRefCandidateDAO.getAllDistrictsByReferral(deptIds);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referrelDesignation")){
-				districtObjs=pmRefCandidateDesignationDAO.getAllDistrictsByReferalAndDesignation();
+				districtObjs=pmRefCandidateDesignationDAO.getAllDistrictsByReferalAndDesignation(deptIds);
 			}else if(serchType !=null && (serchType.trim().equalsIgnoreCase("representee") || serchType.trim().equalsIgnoreCase("name") || serchType.trim().equalsIgnoreCase("mobile") || serchType.trim().equalsIgnoreCase("email") || serchType.trim().equalsIgnoreCase("endorsmentNO"))){
-				districtObjs=pmRepresenteeDAO.getAllDistrictsBySearchType();
+				districtObjs=pmRepresenteeDAO.getAllDistrictsBySearchType(deptIds);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("representeeDesignation")){
-				districtObjs=pmRepresenteeDesignationDAO.getAllDistrictsByRepresenteeDesignationWise();
+				districtObjs=pmRepresenteeDesignationDAO.getAllDistrictsByRepresenteeDesignationWise(deptIds);
 			}
 			if(districtObjs != null && districtObjs.size() >0 ){
 				for(Object[] param : districtObjs ){

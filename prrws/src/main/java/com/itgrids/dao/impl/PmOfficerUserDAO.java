@@ -73,7 +73,7 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model1.pmStatusId  from PmOfficerUser model,PmDepartmentDesignationStatus model1 "
 				+ " where model.pmDepartmentDesignationId =  model1.pmDepartmentDesignationId " 
-				+ " and model.userId =: userId "
+				+ " and model.userId = :userId "
 				+" and model.isActive ='Y'");
 		Query query = getSession().createQuery(sb.toString());//
 		if(userId != null && userId.longValue() >0l){

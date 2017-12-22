@@ -21,12 +21,19 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 		super(PmRefCandidate.class);
 		
 	}
-	public List<Object[]> getAllDistrictsByReferral(){
+	public List<Object[]> getAllDistrictsByReferral(List<Long> deptIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model.address.district.districtId ");
-		sb.append( ",model.address.district.districtName from PmRefCandidate model where model.isDeleted='N' ");
-		sb.append(" order by model.address.district.districtName asc");
+		sb.append("select distinct model.pmRefCandidate.address.district.districtId ");
+		sb.append( ",model.pmRefCandidate.address.district.districtName from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where " +
+				"model.pmRefCandidate.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId ");
+		if(deptIds != null && deptIds.size()>0){
+			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		sb.append(" order by model.pmRefCandidate.address.district.districtName asc");
 		Query query =getSession().createQuery(sb.toString());
+		if(deptIds != null && deptIds.size()>0){
+			query.setParameterList("deptIds", deptIds);
+		}
 		return query.list();
 	}
 	public List<Object[]> getAllConstituenciesByReferralAndDistrict(List<Long> districtIds){
