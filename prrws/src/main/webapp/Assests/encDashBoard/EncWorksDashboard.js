@@ -7,6 +7,9 @@ var glEndDate = "01-04-"+moment().add(10, 'years').format("YYYY");
 onloadCalls();
 function onloadCalls(){
 	levelWiseOverview();
+	getLocationWiseWorksInformation("state","s","graph");
+	getLocationWiseWorkTargetsNacheivements("state","s","graph");
+	
 }
 
 $("header").on("click",".menu-cls",function(e){
@@ -59,17 +62,17 @@ function levelWiseOverview()
 	for(var i in levelWiseOverviewArr)
 	{
 		if(levelWiseOverviewArr[i] == "state"){
-			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','s');
+			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','s','table');
 		}
 		else if(levelWiseOverviewArr[i] == "district"){
-			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','d');
+			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','d','table');
 		}
 		else if(levelWiseOverviewArr[i] == "constituency"){
 			
-			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','a');
+			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','a','table');
 		}
 		else if(levelWiseOverviewArr[i] == "mandal"){
-			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','m');
+			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','m','table');
 		}
 		
 	}
@@ -77,9 +80,13 @@ function levelWiseOverview()
 }
 
 
-function getLocationWiseWorksInformation(blockId,locationType){
-	$("#"+blockId).html(spinner);
-	$("#enclocationWiseChart").html(spinner);
+function getLocationWiseWorksInformation(blockId,locationType,type){
+	if(type=='graph'){
+		$("#enclocationWiseChart").html(spinner);
+	}else{
+		$("#"+blockId).html(spinner);
+		
+	}
 		var json = {
 			locationType:locationType
 		}
@@ -94,7 +101,9 @@ function getLocationWiseWorksInformation(blockId,locationType){
 			}
 		}).done(function(result){
 		 	if(result !=null && result.length>0){
-				buildLocationWiseWorksGraph(result)
+				if(type=='graph'){
+					buildLocationWiseWorksGraph(result)
+				}
 				locationwiseTableBlocks(result,blockId,locationType);
 			}else{
 				
@@ -117,23 +126,25 @@ function locationwiseTableBlocks(result,blockId,locationType){
 					}else if(blockId == 'mandallevelBlockId'){
 						table+='<th>MANDALS</th>';
 					}
-					table+='<th>UNDER PROCESS COUNT</th>';
-					table+='<th>ADMIN SANCTION COUNT</th>';
-					table+='<th>TECHNICALLY SANCTIONED COUNT</th>';
-					table+='<th>GROUNDED COUNT</th>';
-					table+='<th>NOT GROUNDED COUNT</th>';
-					table+='<th>COMPLETED COUNT</th>';
+					table+='<th>ADMIN SANCTIONED</th>';
+					table+='<th>TECHNICALLY SANCTIONED</th>';
+					table+='<th>ENTRUSTED</th>';
+					table+='<th>UNDER PROCESS</th>';
+					table+='<th>GROUNDED</th>';
+					table+='<th>COMPLETED</th>';
+					table+='<th>NOT GROUNDED</th>';
 				table+='</thead>';
 				table+='<tbody>';
 				for(var i in result){
 					table+='<tr>';
 						table+='<td>'+result[i].locationName+'</td>';
-						table+='<td>'+result[i].underProcessCount+'</td>';
 						table+='<td>'+result[i].adminSanctionCount+'</td>';
 						table+='<td>'+result[i].technicallySanctionedCount+'</td>';
+						table+='<td>'+result[i].totalWorksEntrusted+'</td>';
+						table+='<td>'+result[i].underProcessCount+'</td>';
 						table+='<td>'+result[i].groundedCount+'</td>';
-						table+='<td>'+result[i].notGrounded+'</td>';
 						table+='<td>'+result[i].completedCount+'</td>';
+						table+='<td>'+result[i].notGrounded+'</td>';
 					table+='</tr>';
 				}
 				table+='</tbody>';
@@ -189,7 +200,7 @@ function buildLocationWiseWorksGraph(result){
 		},
 		yAxis: {
 			title: {
-				text: 'Counts'
+				text: ''
 			}
 
 		},
@@ -225,7 +236,7 @@ function buildLocationWiseWorksGraph(result){
 			},{
 				name: 'Entrusted',
 				y: result[0].totalWorksEntrusted,
-				color:'red'
+				
 			},{
 				name: 'Grounded',
 				y: result[0].groundedCount
@@ -243,3 +254,149 @@ function buildLocationWiseWorksGraph(result){
 		}]
 	});
 }
+
+function getLocationWiseWorkTargetsNacheivements(blockId,locationType,type){
+	if(type=='graph'){
+		$("#TargetNAcheievementDetailsTotal").html(spinner);
+		$("#quaterWiseTargetAchievement").html(spinner);
+	}else{
+		$("#"+blockId).html(spinner);
+		
+	}
+		var json = {
+			locationType:locationType
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getEncTargetsAchievement',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+		 	if(result !=null && result.length>0){
+				if(type=='graph'){
+					buildGraph(result)
+				}
+				locationwiseTableBlocks(result,blockId,locationType);
+			}else{
+				
+				$('#'+blockId).html("NO DATA AVAILABLE");
+			}
+		});
+}
+
+
+function buildGraph(result)	{
+		var colorsArr=['#EE6CA9','#C61379'];
+		var cateArr = [];
+		var targetsArr = [];
+		var AchievmentArr = [];
+		
+		cateArr.push("Quarter-1");
+		cateArr.push("Quarter-2");
+		cateArr.push("Quarter-3");
+		cateArr.push("Quarter-4");
+		
+		targetsArr.push({"y":result[0].q1Target,"extra":""});
+		targetsArr.push({"y":result[0].q2Target,"extra":""});
+		targetsArr.push({"y":result[0].q3Target,"extra":""});
+		targetsArr.push({"y":result[0].q4Target,"extra":""});
+		AchievmentArr.push({"y":result[0].q1Achv,"extra":""});
+		AchievmentArr.push({"y":result[0].q2Achv,"extra":""});
+		AchievmentArr.push({"y":result[0].q3Achv,"extra":""});
+		AchievmentArr.push({"y":result[0].q4Achv,"extra":""});
+		
+		$("#TargetNAcheievementDetailsTotal").highcharts({
+			chart: {
+				type: 'column'
+				
+			},
+			title: {
+				text: null
+			},
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories:["Total"]
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				allowDecimals: false,
+				min: 0,
+				title: {
+					text: null
+				}
+			},
+			tooltip: {
+				formatter: function () {
+					return '<b>' + this.x + '</b><br/>' +
+						this.series.name + ': ' + this.y + '<br/>'
+						//+'Total: ' + this.point.stackTotal;
+				}
+			},
+			plotOptions: {
+				column: {
+					stacking: 'normal'
+				}
+			},
+			series: [{
+				name: 'Targets',
+				data: [result[0].totTarget],
+				stack: 'targets',
+				color:'#EE6CA9'
+			}, {
+				name: 'Achievments',
+				data: [result[0].totAchv],
+				stack: 'Achievments',
+				color:'#C61379'
+			}]
+		});
+		$("#quaterWiseTargetAchievement").highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: null
+			},
+			xAxis: {
+				categories:cateArr
+			},
+			yAxis: {
+				allowDecimals: false,
+				min: 0,
+				title: {
+					text: null
+				}
+			},
+			tooltip: {
+				formatter: function () {
+					var value = (this.point.extra).split("-");
+					return '<b>' + this.x + '</b><br/>' +
+						this.series.name + ': ' + this.y ;
+						//'Total: ' + this.point.stackTotal + '<br/>' +
+				}
+			},
+			plotOptions: {
+				column: {
+					stacking: 'normal'
+				}
+			},
+			series: [{
+				name: 'Targets',
+				data: targetsArr,
+				stack: 'Targets',
+				color:'#EE6CA9'
+			}, {
+				name: 'Achievments',
+				data: AchievmentArr,
+				stack: 'Achievments',
+				color:'#C61379'
+			}]
+		});
+	}

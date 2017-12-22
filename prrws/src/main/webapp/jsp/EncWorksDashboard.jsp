@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ENC Dashboard</title>
+<title>ENC Works Dashboard</title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
@@ -202,14 +202,23 @@
 					</div>
 					<div class="white-block" style="padding:10px;">	
 						<div class="row">
-							<div class="col-sm-6">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Works</span></h5>
+							<div class="col-sm-12">
+								<hd style="padding:5px"><span class="chartTitleAlign">Works</span></h4><br/>
 								<div class="chart2" id="enclocationWiseChart" style="height:315px;"></div>
 							</div>
-							<div class="col-sm-6">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Works</span></h5>
-								<div class="chart2" id="habitationWorksCPWS" style="height:315px;"></div>
+							
+						</div>
+						<div class="row">
+						
+							<div class="col-sm-3">
+								<h4 style="padding:5px"><span class="chartTitleAlign">Targets And Achievements</span></h4><br/>
+								<div class="chart2" id="TargetNAcheievementDetailsTotal" style="height:315px;"></div>
 							</div>
+							<div class="col-sm-9">
+								<h4></h4><br><br>
+								<div class="chart2" id="quaterWiseTargetAchievement" style="height:315px;"></div>
+							</div>
+							
 						</div>
 						<div id="graphTable" style="display:none;"></div>
 						<div id="graphTable2" style="display:none;"></div>
