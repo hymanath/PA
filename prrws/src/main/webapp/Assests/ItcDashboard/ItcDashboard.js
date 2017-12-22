@@ -2791,20 +2791,23 @@ function buildEOfcDepartWiseOverviewDetails(result){
 	var str = '';
 	var daysArr=["0to7DAYS","8to15DAYS","16to30DAYS","31to60DAYS","60DAYS"];
 	str+='<div class="row">';	
-		str+='<div class="col-sm-10">';	
+		str+='<div class="col-sm-12">';	
 			str+='<h4 class="text-capital font_weight text-center">Information TECHNOLOGY Electronics And Communication Department</h4>';
 		str+='</div>';
-		str+='<div class="col-sm-2">';	
+		/*str+='<div class="col-sm-2">';	
 			str+='<button type="button" class="btn btn-default btn-sm hieraricalViewCls pull-right hieraricalButtonShowCls" attr_type="show" >Show Graph View</button>';
-		str+='</div>';
+		str+='</div>';*/
 	str+='</div>';
 	str+='<div class="row">';
-	str+='<div class="col-sm-12">';	
-			str+='<ul class="list-inline pull-right">';	
+	str+='<div class="col-sm-6" style="padding-left: 30px;">';	
+			str+='<ul class="list-inline ">';	
 				str+='<li><span class="roundCircleITC" style="background-color:#00af50"></span> 0% - 10%</li>';	
 				str+='<li><span class="roundCircleITC" style="background-color:#ffba00"></span> 10% - 20%</li>';	
 				str+='<li><span class="roundCircleITC" style="background-color:#ff0000"></span> 20% and above&nbsp;&nbsp;&nbsp;</li>';	
 			str+='</ul>  ';	
+	str+='</div>'; 
+	str+='<div class="col-sm-6 ">';	
+			str+='<div class="pull-right" id="lastUpdatedTimeDivId"><span style="padding-right: 15px;"><b>Last Updated Time : </b>'+result[0].lastUpdatedTime+'</span></div>';
 	str+='</div>'; 
 	str+='</div>'; 
 	for(var i in result){
@@ -2972,7 +2975,7 @@ for(var i in daysArr){
 		var globalStatusObj={}
 		for(var j in result){
 			if(result[j].departmentName == "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
-				globalStatusObj={"0-7DAYS":result[j].zeroToSeven,"8-15 DAYS":result[j].eightToFifteen,"16-30DAYS":result[j].sixteenToThirty,"31-60DAYS":result[j].thirtyoneToSixty,"Above60DAYS":result[j].aboveSixty}
+				globalStatusObj={"0-7 DAYS":result[j].zeroToSeven,"8-15 DAYS":result[j].eightToFifteen,"16-30 DAYS":result[j].sixteenToThirty,"31-60 DAYS":result[j].thirtyoneToSixty,"Above 60 DAYS":result[j].aboveSixty}
 				
 				var eightToFifteenPercArr=[];
 				var sixteenToThirtyPercArr=[];
@@ -2988,19 +2991,19 @@ for(var i in daysArr){
 		}
 		if(daysArr[i] == "0to7DAYS"){
 			mainArr.push(zeroToSevenPercArr)
-			daysNamesArr.push("0-7DAYS")
+			daysNamesArr.push("0-7 DAYS")
 		}else if(daysArr[i] == "8to15DAYS"){
 			mainArr.push(eightToFifteenPercArr)
 			daysNamesArr.push("8-15 DAYS")
 		}else if(daysArr[i] == "16to30DAYS"){
 			mainArr.push(sixteenToThirtyPercArr)
-			daysNamesArr.push("16-30DAYS")
+			daysNamesArr.push("16-30 DAYS")
 		}else if(daysArr[i] == "31to60DAYS"){
 			mainArr.push(thirtyoneToSixtyPercArr)
-			daysNamesArr.push("31-60DAYS")
+			daysNamesArr.push("31-60 DAYS")
 		}else if(daysArr[i] == "60DAYS"){
 			mainArr.push(aboveSixtyPercArr)
-			daysNamesArr.push("Above60DAYS")
+			daysNamesArr.push("Above 60 DAYS")
 		}
 		
 		
