@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BIOMETRIC - AP</title>
+<title>BIOMETRIC-ITE&C SECRETARIAT</title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
@@ -102,7 +102,7 @@
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayati Raj, RD & RWS</h4>
-					<p>BIOMETRIC - AP</p>
+					<p>BIOMETRIC&nbsp;-&nbsp;ITE&C&nbsp;SECRETARIAT</p>
 				</div>
 				
 				<div class="col-sm-3 col-xs-12 pull-right">

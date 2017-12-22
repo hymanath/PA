@@ -1103,7 +1103,7 @@ public class ItcDashboardService implements IItcDashboardService {
 							}else{
 								finalVO.setCategoryCount(finalVO.getCategoryCount()+1);
 								finalVO.setInvestment(String.valueOf(Double.valueOf(finalVO.getInvestment())+Double.valueOf(list[i].getINVESTMENT().replaceAll(",", ""))));
-								finalVO.setEmployment(String.valueOf(Double.valueOf(finalVO.getEmployment())+Double.valueOf(list[i].getEMPLOYMENT().replaceAll(",", ""))));
+								finalVO.setEmployment(String.valueOf(Long.valueOf(finalVO.getEmployment())+Long.valueOf(list[i].getEMPLOYMENT().replaceAll(",", ""))));
 							}
 						}
 					}
@@ -1113,7 +1113,7 @@ public class ItcDashboardService implements IItcDashboardService {
 			if(returnList != null && !returnList.isEmpty()){
 				for (ItecPromotionDetailsVO vo : returnList) {
 					vo.setInvestment(new BigDecimal(vo.getInvestment()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-					vo.setEmployment(new BigDecimal(vo.getEmployment()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					vo.setEmployment(vo.getEmployment());
 				}
 			}
 		} catch (Exception e) {
@@ -2452,6 +2452,7 @@ public class ItcDashboardService implements IItcDashboardService {
 	public List<MeesevaKPIDtlsVO> getMeesevaKPILocationWiseDetails() {
 		List<MeesevaKPIDtlsVO> finalList = new ArrayList<MeesevaKPIDtlsVO>();
 		try{
+			Long totalCenters = 0L;
 			List<Object[]> meesevaDetList = locationWiseMeesevaCentersDAO.getLocationWiseMeesevaCentres();
 			if(meesevaDetList != null && !meesevaDetList.isEmpty()){
 				for (Object[] param : meesevaDetList) {
@@ -2463,7 +2464,17 @@ public class ItcDashboardService implements IItcDashboardService {
 					vo.setEstablishedLastYear(Long.valueOf(param[4] != null ? param[4].toString():"0"));
 					vo.setEstablishedThisYear(Long.valueOf(param[5] != null ? param[5].toString():"0"));
 					vo.setEstablishedLastOneMonth(Long.valueOf(param[6] != null ? param[6].toString():"0"));
+					totalCenters = totalCenters+vo.getTotalMeesevaCentres();
 					finalList.add(vo);
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				for (MeesevaKPIDtlsVO vo : finalList) {
+					if(vo.getTotalMeesevaCentres() != null && vo.getTotalMeesevaCentres().longValue() >0L && totalCenters != null && totalCenters.longValue() > 0L){
+						vo.setPercenatge(new BigDecimal(vo.getTotalMeesevaCentres()*100.00/totalCenters).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}else{
+						vo.setPercenatge("0.00");
+					}
 				}
 			}
 			 
