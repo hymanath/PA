@@ -3208,14 +3208,11 @@ background-color:#FFE08E !important;
 	 position: relative;
 	 float: left;
 }
-.memberMeetingCls{
-	background-color:#F4F4F5;
-	padding:10px;
-}
 .memberMeetingCls li{
 	background-color: #ffffff;
     border: 1px solid #ccc;
     padding: 10px;
+     border-radius: 10px;
 }
 .f-12{font-size: 12px !important;}
 .roundCssCls{
