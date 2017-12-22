@@ -184,29 +184,29 @@ $(document).on('click','[overview-level]', function(){
 			var theadArr = [];
 			if((globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') )
 			{
-				theadArr = [levelType,'Target','Sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage','Sanctioned Percentage'];
+				theadArr = [levelType,'Target','Sanctioned Target','Grounded','Not-Grounded','In Progress','Completed','Achievement Percentage','Sanctioned Percentage'];
 				if(levelType == "constituency")
-					theadArr = ["District",levelType,'Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["District",levelType,'Target','Grounded','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(levelType == "mandal")
-					theadArr = ["District","Constituency",levelType,'Target','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["District","Constituency",levelType,'Target','Grounded','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(levelType == "panchayat")
-					theadArr = ["district","constituency","mandal",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency","mandal",levelType,'TARGET','Grounded','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				
 			}
 			if(globalDivName == 'Ntr Jalasiri')
 			{
 				if(levelType == "state" || levelType == "district")
 				{
-					theadArr = [levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+					theadArr = [levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','Pumpsets Installed Percentage'];
 				}else if(levelType == "constituency")
 				{
-					theadArr = ["district",levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+					theadArr = ["district",levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','Pumpsets Installed Percentage'];
 				}else if(levelType == "mandal")
 				{
-					theadArr = ["district","constituency",levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+					theadArr = ["district","constituency",levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','Pumpsets Installed Percentage'];
 				}else if(levelType == "panchayat")
 				{
-					theadArr = ["district","constituency","mandal",levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','percentage'];
+					theadArr = ["district","constituency","mandal",levelType,'Targeted Bore Wells ','Number of Bore Wells Drilled Succesfully','No of LT applications Filled','Demand Notices Received from TRANSCO','Beneficiaries Contribution Received (Nos)','Amount Paid to TRANSCO (Nos)','No of Solar Pumpsets Installed','Pumpsets Installed Percentage'];
 				}
 			}
 			
