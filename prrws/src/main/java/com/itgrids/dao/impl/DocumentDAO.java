@@ -24,7 +24,7 @@ public class DocumentDAO extends GenericDaoHibernate<Document, Long> implements 
 	public List<Long> getdocumentByFilePath(String path){
 		if(path != null && !path.isEmpty()){
 			StringBuilder str = new StringBuilder();
-			str.append(" select model.documentId from Document model where model.path='"+path+"' and model.isDeleted='N'");
+			str.append(" select distinct model.documentId from Document model where model.path like'%"+path+"%' ");
 			Query query = getSession().createQuery(str.toString());
 			return query.list();
 		}

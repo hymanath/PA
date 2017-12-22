@@ -115,7 +115,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	
 	public int updatePmsubWorkDetails(List<Long> subWorkDetailsIds,Date updateTime,Long userId){
 		StringBuilder sb = new StringBuilder();
-		sb.append("update PmSubWorkDetails model set model.isDeleted='Y', model.updatedTime =:updateTime,model.updatedUserId =:userId "
+		sb.append(" update PmSubWorkDetails model set model.isDeleted='Y', model.updatedTime =:updateTime,model.updatedUserId =:userId "
 				+ " where model.pmSubWorkDetailsId  in (:subWorkDetailsIds) ");
 		Query query =getSession().createQuery(sb.toString());
 		query.setParameterList("subWorkDetailsIds", subWorkDetailsIds);

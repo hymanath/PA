@@ -37,7 +37,7 @@ public class PmPetitionDocumentDAO extends GenericDaoHibernate<PmPetitionDocumen
 	}
 	public int updatePmpetitionDocuments(List<Long> petitiionDocIds,Long userId ){
 		StringBuilder str = new StringBuilder();
-		str.append(" upadate PmPetitionDocument model set model.isDeleted ='Y', model.updatedUserId =:updatedUserId where model.pmPetitionDocumentId in (:petitiionDocIds) " );
+		str.append(" update PmPetitionDocument model set model.isDeleted ='Y', model.updatedUserId =:updatedUserId where model.pmPetitionDocumentId in (:petitiionDocIds) " );
 		Query query =getSession().createQuery(str.toString());
 		query.setParameterList("petitiionDocIds", petitiionDocIds);
 		query.setParameter("updatedUserId", userId);

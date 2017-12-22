@@ -33,7 +33,7 @@ public class PmRepresenteeRefDocumentDAO extends GenericDaoHibernate<PmRepresent
 		sb.append("select distinct model.pmRepresenteeRefDocumentId from PmRepresenteeRefDocument model where "
 				+ " model.isDeleted ='N' and model.pmRepresenteeRefDetailsId in (:representeeRefDetailsIds) ");
 		Query query =getSession().createQuery(sb.toString());
-		query.setParameter("representeeRefDetailsIds", representeeRefDetailsIds);
+		query.setParameterList("representeeRefDetailsIds", representeeRefDetailsIds);
 		return query.list();
 	}
 	public int updatePmPmRepresenteeRefDocumens(List<Long> representeeRefDocIds,Date updatedTime,Long userId){
@@ -41,7 +41,7 @@ public class PmRepresenteeRefDocumentDAO extends GenericDaoHibernate<PmRepresent
 		sb.append(" update PmRepresenteeRefDocument model set model.isDeleted ='Y',model.updatedTime =:updatedTime, model.updatedUserId =:userId  " +
 				" where model.pmRepresenteeRefDocumentId in (:representeeRefDocIds) ");
 		Query query =getSession().createQuery(sb.toString());
-		query.setParameter("representeeRefDocIds", representeeRefDocIds);
+		query.setParameterList("representeeRefDocIds", representeeRefDocIds);
 		query.setParameter("updatedTime", updatedTime);
 		query.setParameter("userId", userId);
 		return query.executeUpdate();
