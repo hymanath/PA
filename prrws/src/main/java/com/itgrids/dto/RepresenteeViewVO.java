@@ -18,8 +18,36 @@ public class RepresenteeViewVO {
 	private String statusType="";
 	private List<String> desigList = new ArrayList<String>();
 	private String raisedDate;
+	private Long totalRepresents;
+	private List<RepresenteeViewVO> referrerList = new ArrayList<RepresenteeViewVO>();
+	private List<RepresenteeViewVO> subList = new ArrayList<RepresenteeViewVO>();
+	private List<RepresenteeViewVO> deptList = new ArrayList<RepresenteeViewVO>();
 	
 	
+	public List<RepresenteeViewVO> getReferrerList() {
+		return referrerList;
+	}
+	public void setReferrerList(List<RepresenteeViewVO> referrerList) {
+		this.referrerList = referrerList;
+	}
+	public List<RepresenteeViewVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<RepresenteeViewVO> subList) {
+		this.subList = subList;
+	}
+	public List<RepresenteeViewVO> getDeptList() {
+		return deptList;
+	}
+	public void setDeptList(List<RepresenteeViewVO> deptList) {
+		this.deptList = deptList;
+	}
+	public Long getTotalRepresents() {
+		return totalRepresents;
+	}
+	public void setTotalRepresents(Long totalRepresents) {
+		this.totalRepresents = totalRepresents;
+	}
 	public String getRaisedDate() {
 		return raisedDate;
 	}
