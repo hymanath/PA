@@ -2,6 +2,11 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 
 var startDate = moment().subtract(7,"year").format("DD-MM-YYYY");
 var endDate = moment().add(38,"year").format("DD-MM-YYYY");
+//getting Dynamic Browser URL
+var windowUrl = window.location.href;
+var wurl = windowUrl.substr(0,(windowUrl.indexOf("/cadreDetailsAction")));
+wurl = wurl.replace("/PartyAnalyst","");
+
 
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
@@ -122,8 +127,8 @@ function representationRequestEntryTable(result){
 				else
 					str+='<td>-</td>';
 				
-				str+='<td class="text-center"><a class="btn btn-xs viewEditCss viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"> View</a></td>';
-				//<a href="'+wurl+'/representationRequestEntry" target="_blank" class="btn btn-xs viewEditCss m_top10"> Edit </a>
+				str+='<td class="text-center"><a style="margin-right:5px;" class="btn btn-xs viewEditCss viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"> View</a>';
+				str+='<a style="margin-left:15px;" href="'+wurl+'/representationRequestEdit/'+result[i].petitionId+'" target="_blank" class="btn btn-xs viewEditCss m_top10 btn-warning"> Edit </a></td>';
 			str+='</tr>';
 			}
 		str+='</tbody>';
@@ -568,7 +573,8 @@ function getStatusList(){
 function getPetitionDetails(petitionId,endorsNo){
 	$("#representeeViewId").html(spinner);
    var json = {
-       petitionId:petitionId
+       petitionId:petitionId,
+	   pageType:"viewPage"
     };
   $.ajax({              
     type:'POST',    
