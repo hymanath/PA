@@ -202,24 +202,26 @@
 					</div>
 					<div class="white-block" style="padding:10px;">	
 						<div class="row">
-							<div class="col-sm-12">
+							<div class="col-sm-5">
 								<hd style="padding:5px"><span class="chartTitleAlign">Works</span></h4><br/>
 								<div class="chart2" id="enclocationWiseChart" style="height:315px;"></div>
 							</div>
+							<div class="col-sm-7">
+								<h4 style="padding:5px;" class="col-sm-offset-3"><span class="chartTitleAlign">TARGETS AND ACHIEVEMENTS</span></h4>
+								<div class="col-sm-5 m_top10">
+									<h6><b>FINANCIAL YEAR DETAILS</b></h6>
+									<div class="chart2 m_top20" id="TargetNAcheievementDetailsTotal" style="height:315px;"></div>
+								</div>
+								<div class="col-sm-7 m_top10">
+									<h6><b>QUARTER WISE DETAILS</b></h6>
+									<div class="chart2 m_top20" id="quaterWiseTargetAchievement" style="height:315px;"></div>
+								</div>
+							</div>
 							
-						</div>
-						<div class="row">
+							
 						
-							<div class="col-sm-3">
-								<h4 style="padding:5px"><span class="chartTitleAlign">Targets And Achievements</span></h4><br/>
-								<div class="chart2" id="TargetNAcheievementDetailsTotal" style="height:315px;"></div>
-							</div>
-							<div class="col-sm-9">
-								<h4></h4><br><br>
-								<div class="chart2" id="quaterWiseTargetAchievement" style="height:315px;"></div>
-							</div>
-							
 						</div>
+						
 						<div id="graphTable" style="display:none;"></div>
 						<div id="graphTable2" style="display:none;"></div>
 					</div>
