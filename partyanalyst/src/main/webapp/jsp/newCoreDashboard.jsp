@@ -4466,7 +4466,10 @@
 				<div class="panel-body">
 					<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="EMCoverageTime">
-						<div class="col-sm-6">
+						<div class="col-sm-7">
+						<label class="radio-inline">
+							  <input type="checkbox" id="participatedCheckBoxId" class="participatedCheckCls" value="Participated"><b style="padding-left:7px;">Participated</b>
+							</label>
 							<label class="radio-inline">
 							  <input type="radio" id="inlineCheckbox1" class="EMCoverageTimeCls" name="optionsRadios"  value="candidate" checked><b>Candidate</b>
 							</label>
@@ -4474,7 +4477,7 @@
 							  <input type="radio" id="inlineCheckbox2" class="EMCoverageTimeCls"  name="optionsRadios"  value="party"><b>Party</b>
 							</label>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-5">
 							<select class="form-control chosen-select" id="categoryEmId">
 								<option value="0">Select Category</option>
 								<option value="1051">Praja sankalpa yatra</option>
