@@ -21,7 +21,7 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
-.error_colorCls{
+.error_colorCls,.ErrCls {
    color: red;
 }
 </style>
@@ -114,7 +114,7 @@
 										<div class="col-sm-3">
 											<h6>REPRESENTATION BY </h6>
 											<div class=" inline-block m_top10">
-												<input type="text"  value="" readOnly="true" id="representationType"  readOnly="true" class="form-control" />
+												<input type="text"  value="" readOnly="true" name="representationType" id="representationType"  readOnly="true" class="form-control" />
 											</div>
 										</div>
 									</div>
