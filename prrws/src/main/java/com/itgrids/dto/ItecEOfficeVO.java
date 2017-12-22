@@ -51,8 +51,15 @@ public class ItecEOfficeVO {
 	private String sixteenToThirtyPerc;
 	private String thirtyoneToSixtyPerc;
 	private String aboveSixtyPerc;
+	private String lastUpdatedTime;
 	
 	
+	public String getLastUpdatedTime() {
+		return lastUpdatedTime;
+	}
+	public void setLastUpdatedTime(String lastUpdatedTime) {
+		this.lastUpdatedTime = lastUpdatedTime;
+	}
 	public Long getId() {
 		return id;
 	}

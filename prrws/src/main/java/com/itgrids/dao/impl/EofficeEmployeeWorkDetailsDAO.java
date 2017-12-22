@@ -19,8 +19,9 @@ public class EofficeEmployeeWorkDetailsDAO extends GenericDaoHibernate<EofficeEm
 
 	public List<Object[]> getEOfcDepartmentCunts(Date fromDate,Date toDate){
 		StringBuilder sb = new  StringBuilder();
-		sb.append("select model.departmentId,model.departmentName,model.fileCreated,model.fileReceived,model.opBalanceCount,model.firstCount,model.secondCount,"
-				+ "model.thirdCount,model.fourthCount,model.fifthCount,model.filesForwarded,model.filesParked,model.filesClosed,model.employeeName,model.postName"
+		sb.append("select model.departmentId,model.departmentName,model.fileCreated,model.fileReceived,model.opBalanceCount,"
+				+ " model.firstCount,model.secondCount,model.thirdCount,model.fourthCount,model.fifthCount,model.filesForwarded,model.filesParked,model.filesClosed,"
+				+ " model.employeeName,model.postName,model.insertedTime"
 				+ " from EofficeEmployeeWorkDetails model"
 				+ " where model.isDeleted = 'N'");
 		if(fromDate != null && toDate != null){

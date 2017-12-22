@@ -4125,6 +4125,7 @@ public class ItcDashboardService implements IItcDashboardService {
 							departVO.setThirtyoneToSixty(commonMethodsUtilService.getLongValueForObject(param[8]));
 							departVO.setAboveSixty(commonMethodsUtilService.getLongValueForObject(param[9]));
 							departVO.setActionFiles(commonMethodsUtilService.getLongValueForObject(param[10])+commonMethodsUtilService.getLongValueForObject(param[11])+commonMethodsUtilService.getLongValueForObject(param[12]));
+							departVO.setLastUpdatedTime(param[15] != null ? param[15].toString():"");
 							departMap.put(departVO.getDepartmentName(), departVO);
 						 }else{
 							// departVO.setReceiptCreated(departVO.getReceiptCreated()+jObj.getLong("receiptcreated"));
@@ -4194,6 +4195,9 @@ public class ItcDashboardService implements IItcDashboardService {
 				returnList = new ArrayList<ItecEOfficeVO>(departMap.values());
 			}
 			
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm a");
+			
 			Long totalRange = 0L;
 			if(returnList != null && !returnList.isEmpty()){
 				ItecEOfficeVO finalCountVO = new ItecEOfficeVO();
@@ -4231,6 +4235,7 @@ public class ItcDashboardService implements IItcDashboardService {
 							vo.setAboveSixtyPerc("0.00");
 						}
 					}
+					vo.setLastUpdatedTime(sdf2.format(sdf1.parse(vo.getLastUpdatedTime())));
 					finalCountVO.setCreated(finalCountVO.getCreated()+vo.getCreated());
 					finalCountVO.setTotalCount(finalCountVO.getTotalCount()+vo.getTotalCount());
 					finalCountVO.setZeroToSeven(finalCountVO.getZeroToSeven()+vo.getZeroToSeven());
@@ -4240,6 +4245,7 @@ public class ItcDashboardService implements IItcDashboardService {
 					finalCountVO.setAboveSixty(finalCountVO.getAboveSixty()+vo.getAboveSixty());
 					finalCountVO.setActionFiles(finalCountVO.getActionFiles()+vo.getActionFiles());
 					finalCountVO.setDepartmentName("ITE & C");
+					finalCountVO.setLastUpdatedTime(vo.getLastUpdatedTime());
 				}
 				if(finalCountVO.getCreated() != null && finalCountVO.getCreated().longValue() > 0L && finalCountVO.getTotalCount() != null && finalCountVO.getTotalCount().longValue() > 0L){
 					finalCountVO.setPercentage(new BigDecimal(finalCountVO.getTotalCount()*100.00/finalCountVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
