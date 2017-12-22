@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.PmRequestEditVO;
 import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
@@ -22,4 +23,7 @@ public interface IPmRequestDetailsService {
 	
 	public CadreRegistrationVO getRegistrationPersonDetails(Map<String,String> inputMap);
 	public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate);
+	public KeyValueVO getDeptIdsListBYUserIds(Long userId);
+	public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId);
+	
 }
