@@ -192,16 +192,31 @@ function getAllConvergenceTypesConsolidated()
 function buildAllConvergenceTypes(result)
 {
 	var selectionMenu = '';
+	var convergence=[];
+	var convergenceSub=[];
+	var convergenceName;
 	selectionMenu+='<div class="navTabsMenuSelection">';
 		selectionMenu+='<div class="col-sm-6">';
 			selectionMenu+='<ul class="nav nav-tabs" role="tablist">';
 				for(var i in result)
 				{
+					convergence=result[i].name.split('-');
+					convergenceSub=convergence[1].split(' ');
+					if(i>0)
+					{	
+						if(convergenceSub[1]=="OTHER")
+						{
+						convergenceName=convergence[0]+'-<p>'+convergenceSub[1].substr(0,1).toUpperCase()+convergenceSub[1].substr(1,convergenceSub[1].length).toLowerCase()+' '+convergenceSub[2].substr(0,1).toUpperCase()+convergenceSub[2].substr(1,convergenceSub[2].length).toLowerCase()+'</p>';
+						}
+						else{
+							convergenceName=result[i].name;
+						}
+					}
 					if(i == 0)
 					{
 						selectionMenu+='<li role="presentation" class="active"><a href="#selectionMenuId'+result[i].id+'" aria-controls="selectionMenuId'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+'</a></li>';
 					}else{
-						selectionMenu+='<li role="presentation"><a href="#selectionMenuId'+result[i].id+'" aria-controls="selectionMenuId'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+'</a></li>';
+						selectionMenu+='<li role="presentation"><a href="#selectionMenuId'+result[i].id+'" aria-controls="selectionMenuId'+result[i].id+'" role="tab" data-toggle="tab">'+convergenceName+'</a></li>';
 					}
 				}
 			selectionMenu+='</ul>';
@@ -278,7 +293,12 @@ function buildComponentByConvergType(result,divId,convergenceId)
 				}else if(result[i].name == 'Imp to CD')
 				{
 					selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>Improvements to Check Dams and Percolation Tanks</label>';
-				}else{
+				}
+				else if(result[i].name == 'UGDrainage')
+				{
+					selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>UG Drainage</label>';
+				}
+				else{
 					selectionMenu+='<label class="checkbox-inline"><input type="checkbox" checked class="menuSelectionCheckBox '+divId+'" checkboxName="'+result[i].name+'" checkboxId="'+result[i].id+'"/>'+result[i].name+'</label>';
 				}
 				
