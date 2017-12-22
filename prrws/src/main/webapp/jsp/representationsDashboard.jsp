@@ -75,14 +75,341 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-12">
-					<div class="panel-group">
-						<div class="panel panel-default panel-lightGreen">
-							
+					<div class="white-block petition_block">
+						<div class="row">
+						
+							<div class="col-sm-6">
+								<h4><img src="Assests/icons/Group 4361.png"><b>Complete Overview</b></h4>
+								<div class="petition_cls m_top10" style="border:1px solid #6DA4D6;background-color:#E2F2F9">
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="col-sm-6">
+												<div class="media">
+													<div class="media-left">
+														<img src="Assests/icons/Group 4370.png">
+													</div>
+													<div class="media-body">
+														<h4><b>Total Reprasentations</b></h4>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="white-block">
+													<div class="media">
+														<div class="media-left">
+															<img src="Assests/icons/Group 4377.png">
+														</div>
+														<div class="media-body">
+															<p>Representations</p>
+															<h4><b>1500</b></h4>
+														</div>
+													</div>
+												</div>
+												
+											</div>
+											<div class="col-sm-3">
+												<div class="white-block">
+													<div class="media">
+														<div class="media-left">
+															<img src="Assests/icons/Group 4378.png">
+														</div>
+														<div class="media-body">
+															<p>Works</p>
+															<h4><b>1500</b></h4>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+										</div>
+										
+									</div>
+									<div class="row m_top10 ">
+										<div class="">
+											<div class="white-block">
+												<div class="row pad_10">
+													<div class="col-sm-12">
+														<div class="col-sm-3">
+															<p>MINISTER</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>MLA</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>MLC</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>TDP</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-3">
+															<p>OTHERS</p>
+															<h4>20</h4>
+														</div>
+													</div>
+													
+												</div>
+												<div class="row pad_10">
+													<div class="col-sm-12">
+														<div class="col-sm-3">
+															<p>RWS</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>PRRD</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>Street Light</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>IT</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-3">
+															<p>OTHERS</p>
+															<h4>20</h4>
+														</div>
+													</div>
+													
+												</div>
+												
+											</div>
+										</div>
+									</div>
 									
+								</div>
 							</div>
+							
+							
+							
+							<div class="col-sm-6">
+								<h4><img src="Assests/icons/Group 4375.png" style="height:25px"><b>My Actions</b></h4>
+								<div class="petition_cls m_top10" style="border:1px solid #FFBB00;background-color:#FFF8E5">
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="col-sm-6">
+												<div class="media">
+													<div class="media-left">
+														<img src="Assests/icons/Group 4370.png">
+													</div>
+													<div class="media-body">
+														<h4><b>Pending Endorsement</b></h4>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="white-block">
+													<div class="media">
+														<div class="media-left">
+														<img src="Assests/icons/Group 4377.png">
+															
+														</div>
+														<div class="media-body">
+															<p>Representations</p>
+															<h4><b>1500</b></h4>
+														</div>
+													</div>
+												</div>
+												
+											</div>
+											<div class="col-sm-3">
+												<div class="white-block">
+													<div class="media">
+														<div class="media-left">
+															<img src="Assests/icons/Group 4378.png">
+														</div>
+														<div class="media-body">
+															<p>Works</p>
+															<h4><b>1500</b></h4>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+										</div>
+										
+									</div>
+									<div class="row m_top10 ">
+										<div class="">
+											<div class="white-block">
+												<div class="row pad_10">
+													<div class="col-sm-12">
+														<div class="col-sm-3">
+															<p>MINISTER</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>MLA</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>MLC</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>TDP</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-3">
+															<p>OTHERS</p>
+															<h4>20</h4>
+														</div>
+													</div>
+													
+												</div>
+												<div class="row pad_10">
+													<div class="col-sm-12">
+														<div class="col-sm-3">
+															<p>RWS</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>PRRD</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>Street Light</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-2">
+															<p>IT</p>
+															<h4>20</h4>
+														</div>
+														<div class="col-sm-3">
+															<p>OTHERS</p>
+															<h4>20</h4>
+														</div>
+													</div>
+													
+												</div>
+												
+											</div>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						
+						
 						</div>
 					</div>
 				</div>
+				
+				<div class="col-sm-12 m_top20">
+					<div class="white-block">
+						<div class="media">
+							<div class="media-left"></div>
+							<div class="media-body">
+								<h4 class="m_top10"><img src="Assests/icons/Group 4631.png"><b>Status Overview</b></h4>
+							</div>
+						</div>
+						<div class="row m_top10">
+							<div class="col-sm-12">
+								<div class="col-sm-2">
+									<div class="panel panel-default">
+										<div class="panel-heading" style="background-color:#FFF8EF">
+											<h5><img src="Assests/icons/Group 4363.png"><b>Pending Endorsement</b></h5>
+										</div>
+										<div class="panel-body">
+											<div class="col-sm-8">
+												<p>Representations</p>
+												<h4><b>450</b></h4>
+											</div>
+											<div class="col-sm-4">
+												<p>Works</p>
+												<h4><b>450</b></h4>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-sm-2">
+									<div class="panel panel-default">
+										<div class="panel-heading" style="background-color:#FFF8EF">
+											<h5><img src="Assests/icons/Group 4362.png"><b>In Progress</b></h5>
+										</div>
+										<div class="panel-body">
+											<div class="col-sm-8">
+												<p>Representations</p>
+												<h4><b>450</b></h4>
+											</div>
+											<div class="col-sm-4">
+												<p>Works</p>
+												<h4><b>450</b></h4>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-sm-2">
+									<div class="panel panel-default">
+										<div class="panel-heading" style="background-color:#E5F6ED">
+											<h5><img src="Assests/icons/Group 4364.png"><b>Completed</b></h5>
+										</div>
+										<div class="panel-body">
+											<div class="col-sm-8">
+												<p>Representations</p>
+												<h4><b>450</b></h4>
+											</div>
+											<div class="col-sm-4">
+												<p>Works</p>
+												<h4><b>450</b></h4>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<div class="panel panel-default">
+										<div class="panel-heading" style="background-color:#FCEDFF">
+											<h5><img src="Assests/icons/Group 4369.png"><b>Look for Next year</b></h5>
+										</div>
+										<div class="panel-body">
+											<div class="col-sm-8">
+												<p>Representations</p>
+												<h4><b>450</b></h4>
+											</div>
+											<div class="col-sm-4">
+												<p>Works</p>
+												<h4><b>450</b></h4>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<div class="panel panel-default">
+										<div class="panel-heading" style="background-color:#FDE8F5">
+											<h5><img src="Assests/icons/Group 4427.png"><b>Not Possible</b></h5>
+										</div>
+										<div class="panel-body">
+											<div class="col-sm-8">
+												<p>Representations</p>
+												<h4><b>450</b></h4>
+											</div>
+											<div class="col-sm-4">
+												<p>Works</p>
+												<h4><b>450</b></h4>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+							
+								
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				
 			</div>
 		</div>
 	</section>
@@ -111,7 +438,9 @@
 <script type="text/javascript" src="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.js"></script>
 <script src="Assests/representationRequest/representationsDashboard.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 $(document).on("click",".closeSecondModal",function(){
+	
     setTimeout(function(){
       $("body").addClass("modal-open")
     },1000);
