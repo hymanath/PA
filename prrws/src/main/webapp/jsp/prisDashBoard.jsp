@@ -84,7 +84,7 @@
 								</div>
 								<div class="col-sm-12 m_top10">
 									<div class="menu-heading-block">
-										<h4>PANCHAYATI RAJ</h4>
+										<h4>PANCHAYAT RAJ</h4>
 										<div class="row">
 											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#0F685C">
