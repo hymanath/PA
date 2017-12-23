@@ -39,6 +39,20 @@ $(document).on("click","#promotionsBlockSwitch li",function(){
 	getITSectorLeadCategoryWiseDetails("GREEN",typeOfBlock);
 	getITSectorLeadCategoryWiseDetails("DROPPED",typeOfBlock);
 });
+function highcharts(id,type,data,plotOptions,title,tooltip,legend){
+	'use strict';
+	$('#'+id).highcharts({
+		chart: type,
+		title: title,
+		tooltip:tooltip,
+		subtitle: {
+			text: null
+		},
+		plotOptions: plotOptions,
+		legend:legend,
+		series: data
+	});
+}
 onloadCalls();
 function onloadCalls(){
 	if(searchParams == null)
@@ -327,24 +341,45 @@ function departmentBlockWiseDetails(divId)
 							}
 							if(divId == "cMeoDB")
 							{
-								collapse+='<div class="col-sm-12">';
-										collapse+='<ul class="list-inline pull-right">';
-											  collapse+='<div class="input-group">';
-												collapse+='<span class="input-group-addon">';
-													collapse+='<i class="glyphicon glyphicon-calendar"></i>';
-												collapse+='</span>';
-												collapse+=' <input type="text" class="form-control" id="itcDateRangePickerId" style="width: 200px;"/>';
-											collapse+=' </div>';
-										collapse+='</ul>';
+								collapse+='<div class="row">';	
+									collapse+='<div class="col-sm-12">';
+											collapse+='<ul class="list-inline pull-right">';
+												  collapse+='<div class="input-group">';
+													collapse+='<span class="input-group-addon">';
+														collapse+='<i class="glyphicon glyphicon-calendar"></i>';
+													collapse+='</span>';
+													collapse+=' <input type="text" class="form-control" id="itcDateRangePickerId" style="width: 200px;"/>';
+												collapse+=' </div>';
+											collapse+='</ul>';
+										collapse+='</div>';
 									collapse+='</div>';
+								
+								collapse+='<div class="row m_top10">';	
+									collapse+='<div class="col-sm-4">';
+										collapse+='<div id="cmedobBlockMainDivId"></div>';
+									collapse+='</div>';
+									collapse+='<div class="col-sm-4">';
+										collapse+='<div id="cmedobSectorWiseInformationId"></div>';
+									collapse+='</div>';
+									collapse+='<div class="col-sm-4">';
+										collapse+='<div id="cmedobSectorWiseElectronicSectorId"></div>';
+									collapse+='</div>';
+								collapse+='</div>';
 									
-								collapse+='<div class="col-sm-12 m_top10" style="margin-bottom: 20px; padding-left: 0px; padding-right: 0px;">';
-									collapse+='<div id="cmedobSectorWiseStatusId"></div>';
+								/* collapse+='<div class="row">';	
+									collapse+='<div class="col-sm-12 m_top10">';
+										collapse+='<div id="cmedobSectorWiseStatusId"></div>';
+									collapse+='</div>';
 								collapse+='</div>';
 								
 								collapse+='<div class="row" style="margin-bottom:50px;">';
 									collapse+='<div class="col-sm-12 m_top10" style="margin-bottom: 20px; padding-left: 0px; padding-right: 0px;">';
 										collapse+='<div id="cmedobBlockMainDivId"></div>';
+									collapse+='</div>';	
+								collapse+='</div>'; */
+								collapse+='<div class="row m_top20">';
+									collapse+='<div class="col-sm-12">';
+										collapse+='<div id="cmedobDepartmentBlockMainDivId"></div>';
 									collapse+='</div>';	
 								collapse+='</div>';
 								collapse+='<div class="row m_top20" style="margin-top:60px;">';
@@ -510,7 +545,7 @@ function departmentBlockWiseDetails(divId)
 			$("#itcDateRangePickerId").val('All');
 		}
 		$("#sectorSelId").val("B");
-		$("#cmedobSectorWiseStatusId,#cmedobBlockMainDivId,#cmedobDivId").html('');
+		$("#cmedobSectorWiseInformationId,#cmedobSectorWiseElectronicSectorId,#cmedobBlockMainDivId,#cmedobDivId").html('');
 		getCMEDOBOverview("cMeoDB",5,"Detailed");
 		getCMEDOBReportStatusWise("B");
 		getCMeoDBSectorWiseStatusDetais();
@@ -2354,6 +2389,7 @@ function getCMEDOBOverview(divId,blockId,type){
 		$("#cMeoDBTotalId").html(spinner)
 	}else{
 		$("#cmedobBlockMainDivId").html(spinner);
+		$("#cmedobDepartmentBlockMainDivId").html(spinner);
 	}
 	var json = {
 		 sector:"B",
@@ -2376,6 +2412,7 @@ function getCMEDOBOverview(divId,blockId,type){
 			}else{
 				buildgetCMEDOBOverview(result);
 				buildgetCMEDOBDetailed(result,divId,blockId,type);
+				buildgetCMEDOBDepartmentDetailed(result);
 			}
 		}else{
 			if(type =="overview"){
@@ -2383,6 +2420,8 @@ function getCMEDOBOverview(divId,blockId,type){
 				$("#cMeoDBApprovedId").html("0")
 			}else{
 				$("#"+divId+"Block"+blockId).html("No Data Available");
+				$("#cmedobBlockMainDivId").html("No Data Available");
+				$("#cmedobDepartmentBlockMainDivId").html("No Data Available");
 			}
 			
 		}
@@ -2405,155 +2444,268 @@ function buildgetCMEDOBOverview(result){
 	}
 }
 function buildgetCMEDOBDetailed(result,divId,blockId,type){
-	
-	var CMEDOBODetailedArr=[{name:'Total',color:'#D28000',image:'Group 2873.png'},{name:'Approved',color:'#007500',image:'Path -1.png'},{name:'Rejected',color:'#FF003C',image:'Group 2874.png'},{name:'Re-Approve',color:'#007500',image:'Path -1.png'},{name:'Pending',color:'#000',image:'Group 2875.png'}];
 	var str='';
-	str+='<h4><b>IT & E&nbsp&nbspSector Status Overview</b></h4>';
-	str+='<div class="row m_top10">';
-	if ( result != null && result.overviewDtls != null) {
-	
+	if(result !=null && result.overviewDtls !=null){
+	str+='<div class="block_styles">';
+		str+='<div class="row">';
+			str+='<div class="col-sm-2">';	
+				str+='<img src="Assests/images/total-icon.png" />';
+			str+='</div>';
+			str+='<div class="col-sm-10">';
+				str+='<h3 class="font_weight">Total Status<br> OverView </h3>';
+			str+='</div>';
+		str+='</div>';
 		
-		
-		for(var i in CMEDOBODetailedArr){
-			if(CMEDOBODetailedArr[i].name == "Total" || CMEDOBODetailedArr[i].name == "Approved" || CMEDOBODetailedArr[i].name == "Rejected"  || CMEDOBODetailedArr[i].name == "Re-Approve"){
-				str+='<div class="col-sm-2">';
-			}else if(CMEDOBODetailedArr[i].name == "Pending"){
-				str+='<div class="col-sm-3">';
-			}
-					str+='<div class="white_block pad_0">';
-						str+='<div class="media pad_10">';
-							str+='<div class="media-body">';
-								str+='<h4>'+CMEDOBODetailedArr[i].name+'</h4>';
-								if(CMEDOBODetailedArr[i].name == "Pending"){
-										str+='<div class="col-sm-6 m_top10" style="padding:0px 5px">';
-											str+='<h5 style="font-weight:600">Within SLA</h5>';
-											str+='<h5 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.overviewDtls.pendingWithinSLA+'</h5>';
-										str+='</div>';
-										str+='<div class="col-sm-6 m_top10" style="padding:0px 1px">';
-											str+='<h5 style="font-weight:600">Beyond SLA</h5>';
-											str+='<h5 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.overviewDtls.pendingBeyondSLA+'</h5>';
-										str+='</div>';
-								}else{
-									if(CMEDOBODetailedArr[i].name == "Total"){
-										if(result.overviewDtls.total !=null && result.overviewDtls.total>0){
-											str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.overviewDtls.total+'</h4>';
-										}else{
-											str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-										}
-										
-									}else if(CMEDOBODetailedArr[i].name == "Approved"){
-										if(result.overviewDtls.aprooved !=null && result.overviewDtls.aprooved>0){
-											str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.overviewDtls.aprooved+'</h4>';
-										}else{
-											str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-										}
-									}else if(CMEDOBODetailedArr[i].name == "Rejected"){
-										if(result.overviewDtls.rejected !=null && result.overviewDtls.rejected>0){
-											str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.overviewDtls.rejected+'</h4>';
-										}else{
-											str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-										}
-									}else if(CMEDOBODetailedArr[i].name == "Re-Approve"){
-										if(result.overviewDtls.reAprooved !=null && result.overviewDtls.reAprooved>0){
-											str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.overviewDtls.reAprooved+'</h4>';
-										}else{
-											str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-										}
-									}
-									
-								}
-								str+='</div>';
-								str+='<div class="media-right">';
-									str+='<img src="Assests/icons/ITC/'+CMEDOBODetailedArr[i].image+'" class="pull-right">';
-								str+='</div>';
-							
+		str+='<div class="row">';
+			str+='<div class="col-sm-6">';	
+				str+='<h4 class="font_weight m_top10">Total - '+result.overviewDtls.total+'</h4>';
+				str+='<div id="totalStatusGraphId" style="height:200px;"></div>';	
+			str+='</div>';
+			str+='<div class="col-sm-6">';	
+				str+='<div class="statusColorCss">';
+					str+='<div class="row">';
+						str+='<div class="col-sm-4">';	
+							str+='<img src="Assests/images/Approved_icon.png" />';
 						str+='</div>';
-						
+						str+='<div class="col-sm-8">';	
+							str+='<h4 class="font_weight">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-1" style="padding-right:0px;">';
+										str+='<span class="approvedMainCss" style="background-color:#47E68D"></span>'; 
+									str+='</div>';
+									str+='<div class="col-sm-6">';
+										str+='Approved';
+									str+='</div>';
+								str+='</div>';
+							str+='</h4>';
+							str+='<h4 class="font_weight m_top10">'+result.overviewDtls.aprooved+' <small style="color:green;font-weight:bold;">'+result.overviewDtls.approvedPerc+'%</small></h4>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				
-			
-		}
+		
+				str+='<div class="statusColorCss" style="border-top:none;">';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';	
+							str+='<img src="Assests/images/Rejected_iocn.png" />';
+						str+='</div>';
+						str+='<div class="col-sm-8">';	
+							str+='<h4 class="font_weight">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-1" style="padding-right:0px;">';
+										str+='<span class="approvedMainCss" style="background-color:#F55A5A"></span>'; 
+									str+='</div>';
+									str+='<div class="col-sm-6">';
+										str+='Rejected'; 
+									str+='</div>';
+								str+='</div>';
+							str+='</h4>';
+							str+='<h4 class="font_weight m_top10">'+result.overviewDtls.rejected+' <small style="color:green;font-weight:bold;">'+result.overviewDtls.rejectedPerc+'%</small></h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+		
+				str+='<div class="statusColorCss" style="border-top:none;">';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';	
+							str+='<img src="Assests/images/Approved_icon.png" />';
+						str+='</div>';
+						str+='<div class="col-sm-8">';	
+							str+='<h4 class="font_weight">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-1" style="padding-right:0px;">';
+										str+='<span class="approvedMainCss" style="background-color:#8D4653"></span>'; 
+									str+='</div>';
+									str+='<div class="col-sm-6">';
+										str+='ReApproved'; 
+									str+='</div>';
+								str+='</div>';
+							str+='</h4>';
+							str+='<h4 class="font_weight m_top10">'+result.overviewDtls.reAprooved+' <small style="color:green;font-weight:bold;">'+result.overviewDtls.reApprovedPerc+'%</small></h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
 		str+='</div>';
+
+	str+='<div class="pendingstatusColorCss">';
+		str+='<div class="row">';
+			str+='<div class="col-sm-3">';	
+				str+='<img src="Assests/images/Pending_icon 70x70.png" />';
+			str+='</div>';
+			str+='<div class="col-sm-9">';	
+				str+='<h4 class="font_weight"><span class="approvedMainCss" style="background-color:#71A8EE;margin-right: 5px;"></span>Pending</h4>';
+					str+='<h4 class="font_weight m_top10">'+result.overviewDtls.totalPending+' <small style="color:green;font-weight:bold;">'+result.overviewDtls.pendingPerc+'%</small></h4>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-6">';
+							str+='<h5 class="">Within SLA</h5>';
+							str+='<h4 class="font_weight">'+result.overviewDtls.pendingWithinSLA+' <small style="color:green;font-weight:bold;">'+result.overviewDtls.withinSLAPerc+'%</small></h4>';
+						str+='</div>';
+						str+='<div class="col-sm-6">';
+							str+='<h5 class="">Beyond SLA</h5>';
+							str+='<h4 class="font_weight">'+result.overviewDtls.pendingBeyondSLA+' <small style="color:green;font-weight:bold;">'+result.overviewDtls.beyongSLAPerc+'%</small></h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';	
+		str+='</div>';	
+	str+='</div>';
+	$("#cmedobBlockMainDivId").html(str);
+}else{
+	$("#cmedobBlockMainDivId").html("No Data Available");
+}
+
+	var ApprovedCount=0;
+	var RejectedCount=0;
+	var ReApprovedCount=0;
+	var PendingCount=0;
+	
+	if(result !=null){
+		var pendingTotal = result.overviewDtls.pendingWithinSLA+result.overviewDtls.pendingBeyondSLA;
+		
+		ApprovedCount=parseFloat(result.overviewDtls.approvedPerc);
+		RejectedCount=parseFloat(result.overviewDtls.rejectedPerc);
+		ReApprovedCount=parseFloat(result.overviewDtls.reApprovedPerc);
+		PendingCount=parseFloat(result.overviewDtls.pendingPerc);
+	}
+	
+	var id = 'totalStatusGraphId';
+	var type = {
+		//width:350,
+		type: 'pie',
+		backgroundColor:'transparent',
+		options3d: {
+			enabled: true,
+			alpha: 25
+		}
+	};
+	var title = {
+		text: ''
+	};
+	var tooltip = {
+		useHTML: true,
+		backgroundColor: '#FCFFC5', 
+		formatter: function() {
+			var cnt = this.point.count;
+			return "<b style='color:"+this.point.color+"'>"+this.point.name+" - "+Highcharts.numberFormat(this.percentage,1)+"%</b>";
+		}  
+	}; 
+	var plotOptions ={ 
+		pie: {
+			innerSize: 100,
+			depth: 70,
+			dataLabels:{
+				useHTML: true,
+				enabled: false,
+				formatter: function() {
+						if (this.y === 0) {
+							return null;
+						} else {
+							return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+						}
+					} 
+			},
+			showInLegend: true
+		},
+	};
+	var legend = {
+		enabled: false,
+		layout: 'vertical',
+		align: 'left',
+		verticalAlign: 'bottom',
+		useHTML: true,
+		
+		labelFormatter: function() {
+			return '<div><span style="color:'+this.color+'">'+this.name + '-'+Highcharts.numberFormat(this.percentage,1)+'%</span></div>';
+		}
+	};
+	var data = [{
+		name: '',
+		data: [{
+				name: 'Approved',
+				y: ApprovedCount,
+				color:"#47E68D"
+			}, {
+				name: 'Rejected',
+				y: RejectedCount,
+				color:"#F55A5A"
+			}, {
+				name: 'Re-Approved',
+				y: ReApprovedCount,
+				color:"#8D4653"
+			}, {
+				name: 'Pending',
+				y: PendingCount,
+				color:"#71A8EE"
+			}]
+	}];
+	highcharts(id,type,data,plotOptions,title,tooltip,legend);
+	
+	
+}
+function buildgetCMEDOBDepartmentDetailed(result){
+	
+	var str='';
 	
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-4">';
-			str+='<div class="white_block pad_10">';
+			str+='<div class="department_block" style="border:2px solid #007500">';
 				str+='<div class="media">';
-					str+='<div class="media-left">';
-						str+='<img src="Assests/icons/ITC/Path -2.png">';
+					str+='<div class="media-left" style="vertical-align: middle;">';
+						str+='<img src="Assests/images/Approved_icon.png">';
 					str+='</div>';
 					str+='<div class="media-body">';
-						str+='<p>';
-							str+='<h4 class="font_weight">High Approval Department</h4>';
-							str+='<p>'+result.highApprovalDepartmentName+'</p>';
-							str+='<h3 style="color:#007500;" class="font_weight m_top10">'+result.highApprovalDepartmentCount+'</h3>';
-						str+='</p>';
-						str+='<p class="m_top10">';
-							str+='<h4 class="font_weight">Low Approval Department</h4>';
-							str+='<p>'+result.lowApprovalDepartmentName+'</p>';
-							str+='<h3 style="color:#007500;" class="font_weight">'+result.lowApprovalDepartmentCount+'</h3>';
-						str+='</p>';
+							str+='<h3 class="font_weight">High <span style="color:#007500">Approval</span> Department</h3>';
+							str+='<p class="m_top5">'+result.highApprovalDepartmentName+'</p>';
+							str+='<h3 class="font_weight m_top5">'+result.highApprovalDepartmentCount+'</h3>';
+							str+='<p class="m_top10" style="border-top: 1px solid green;"></p>';	
+							str+='<h3 class="font_weight m_top10">Low <span style="color:#007500">Approval</span> Department</h3>';
+							str+='<p class="m_top5">'+result.lowApprovalDepartmentName+'</p>';
+							str+='<h3 class="font_weight m_top5">'+result.lowApprovalDepartmentCount+'</h3>';
+					str+='</div>';
 				str+='</div>';
-				str+='</div>';
-				
 			str+='</div>';
 		str+='</div>';
 		
 		str+='<div class="col-sm-4">';
-			str+='<div class="white_block pad_10">';
+			str+='<div class="department_block" style="border:2px solid #FF003C">';
 				str+='<div class="media">';
-					str+='<div class="media-left">';
-						str+='<img src="Assests/icons/ITC/Group 2888.png">';
+					str+='<div class="media-left" style="vertical-align: middle;">';
+						str+='<img src="Assests/images/Rejected_iocn.png">';
 					str+='</div>';
 					str+='<div class="media-body">';
-						str+='<p>';
-							str+='<h4 class="font_weight">High Rejected Department</h4>';
-							str+='<p>'+result.highRejectedDepartmentName+'</p>';
-							str+='<h3 style="color:#FF003C;" class="font_weight m_top10">'+result.highRejectedDepartmentCount+'</h3>';
-					str+='</p>';
-					str+='<p class="m_top10">';
-						str+='<h4 class="font_weight">Low Rejected Department</h4>';
-						str+='<p>'+result.lowRejectedDepartmentName+'</p>';
-						str+='<h3 style="color:#FF003C;" class="font_weight">'+result.lowRejectedDepartmentCount+'</h3>';
-					str+='</p>';
+							str+='<h3 class="font_weight">High <span style="color:#FF003C">Approval</span> Department</h3>';
+							str+='<p class="m_top5">'+result.highRejectedDepartmentName+'</p>';
+							str+='<h3  class="font_weight m_top5">'+result.highRejectedDepartmentCount+'</h3>';
+						str+='<p class="m_top10" style="border-top: 1px solid #FF003C;"></p>';	
+							str+='<h3 class="font_weight m_top10">Low <span style="color:#FF003C">Approval</span> Department</h3>';
+							str+='<p class="m_top5">'+result.lowRejectedDepartmentName+'</p>';
+							str+='<h3 class="font_weight m_top5">'+result.lowRejectedDepartmentCount+'</h3>';
 					str+='</div>';
 				str+='</div>';
-				
 			str+='</div>';
 		str+='</div>';
 		
 		str+='<div class="col-sm-4">';
-			str+='<div class="white_block pad_10">';
+			str+='<div class="department_block" style="border:2px solid #71A8EE">';
 				str+='<div class="media">';
-					str+='<div class="media-left">';
-						str+='<img src="Assests/icons/ITC/Group 2882.png">';
+					str+='<div class="media-left" style="vertical-align: middle;">';
+						str+='<img src="Assests/images/Pending_Icon.png">';
 					str+='</div>';
 					str+='<div class="media-body">';
-						str+='<p>';
-							str+='<h4 class="font_weight">High Pending Department</h4>';
-							str+='<p>'+result.highPendingDepartmentName+'</p>';
-							str+='<h3 style="color:#000;" class="font_weight">'+result.highPendingDepartmentCount+'</h3>';
-					str+='</p>';
-					str+='<p class="m_top10">';
-						str+='<h4 class="font_weight">Low Pending Department</h4>';
-						str+='<p>'+result.lowPendingDepartmentName+'</p>';
-						str+='<h3 style="color:#000;" class="font_weight">'+result.lowPendingDepartmentCount+'</h3>';
-					str+='</p>';
+							str+='<h3 class="font_weight">High <span style="color:#71A8EE">Approval</span> Department</h3>';
+							str+='<p class="m_top5">'+result.highPendingDepartmentName+'</p>';
+							str+='<h3  class="font_weight m_top5">'+result.highPendingDepartmentCount+'</h3>';
+						str+='<p class="m_top10" style="border-top: 1px solid #71A8EE;"></p>';	
+							str+='<h3 class="font_weight m_top10">Low <span style="color:#71A8EE">Approval</span> Department</h3>';
+							str+='<p class="m_top5">'+result.lowPendingDepartmentName+'</p>';
+							str+='<h3 class="font_weight m_top5">'+result.lowPendingDepartmentCount+'</h3>';
+					str+='</div>';
 				str+='</div>';
-				str+='</div>';
-				
 			str+='</div>';
-		str+='</div>';
-	  str+='</div>';
-	  $("#cmedobBlockMainDivId").html(str);
-	} else {
-		$("#cmedobBlockMainDivId").html("NO DATA AVAILABLE.");
-	}
-	
-	
+		str+='</div>';		
 			
-	
+	  str+='</div>';
+	  $("#cmedobDepartmentBlockMainDivId").html(str);
 }
 
 function getCMEDOBReportStatusWise(sectorType){
@@ -2763,7 +2915,9 @@ function buildCMeoDBStatusCountDetails(result){
 }
 
 function getCMeoDBSectorWiseStatusDetais(){
-	$("#cmedobSectorWiseStatusId").html(spinner)
+	$("#cmedobSectorWiseInformationId").html(spinner)
+	$("#cmedobSectorWiseElectronicSectorId").html(spinner)
+	
 	var json={
 		sector:"B",
 		fromDate:getDateInRequiredFormat(globalFromDate),
@@ -2781,8 +2935,10 @@ function getCMeoDBSectorWiseStatusDetais(){
 	}).done(function(result){
 		if(result !=null){
 			buildCMeoDBSectorWiseStatusDetais(result);
+			buildCMeoDBSectorWiseElectronicSectorDetais(result);
 		}else{
-			$("#cmedobSectorWiseStatusId").html("No Data Available")
+			$("#cmedobSectorWiseInformationId").html("No Data Available")
+			$("#cmedobSectorWiseElectronicSectorId").html("No Data Available")
 		}
 	});	
 }
@@ -3194,141 +3350,399 @@ function getDateInRequiredFormat(date) {
 	return [dateArr[2],dateArr[1],dateArr[0]].join("-");
 }
 function buildCMeoDBSectorWiseStatusDetais(result){
-	var CMEDOBODetailedArr=[{name:'Total',color:'#D28000',image:'Group 2873.png'},{name:'Approved',color:'#007500',image:'Path -1.png'},{name:'Rejected',color:'#FF003C',image:'Group 2874.png'},{name:'Re-Approve',color:'#007500',image:'Path -1.png'},{name:'Pending',color:'#000',image:'Group 2875.png'}];
-	
 	var str='';
-	str+='<div class="col-sm-6" style="padding:10px;border:1px solid #000">';
-		str+='<h4><b>Information Technology Sector Status Overview</b></h4>';
+	if(result !=null && result.itDtlsVO !=null){
+	str+='<div class="block_styles">';
 		str+='<div class="row">';
-			for(var i in CMEDOBODetailedArr){
-				if(CMEDOBODetailedArr[i].name == "Total" || CMEDOBODetailedArr[i].name == "Approved" || CMEDOBODetailedArr[i].name == "Rejected"){
-					str+='<div class="col-sm-4 m_top10">';
-				}else if(CMEDOBODetailedArr[i].name == "Pending" || CMEDOBODetailedArr[i].name == "Re-Approve"){
-					str+='<div class="col-sm-6 m_top10">';
-				}
-						str+='<div class="white_block pad_0">';
-							str+='<div class="media pad_10">';
-								str+='<div class="media-body">';
-									str+='<h4>'+CMEDOBODetailedArr[i].name+'</h4>';
-									if(CMEDOBODetailedArr[i].name == "Pending"){
-											str+='<div class="col-sm-6 m_top10" style="padding:0px 5px">';
-												str+='<h5 style="font-weight:600">Within SLA</h5>';
-												str+='<h5 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.pendingWithinSLA+'</h5>';
-											str+='</div>';
-											str+='<div class="col-sm-6 m_top10" style="padding:0px 1px">';
-												str+='<h5 style="font-weight:600">Beyond SLA</h5>';
-												str+='<h5 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.pendingBeyondSLA+'</h5>';
-											str+='</div>';
-									}else{
-										if(CMEDOBODetailedArr[i].name == "Total"){
-											if(result.itDtlsVO.total !=null && result.itDtlsVO.total>0){
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.total+'</h4>';
-											}else{
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-											}
-											
-										}else if(CMEDOBODetailedArr[i].name == "Approved"){
-											if(result.itDtlsVO.aprooved !=null && result.itDtlsVO.aprooved>0){
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.aprooved+'</h4>';
-											}else{
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-											}
-										}else if(CMEDOBODetailedArr[i].name == "Rejected"){
-											if(result.itDtlsVO.rejected !=null && result.itDtlsVO.rejected>0){
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.rejected+'</h4>';
-											}else{
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-											}
-										}else if(CMEDOBODetailedArr[i].name == "Re-Approve"){
-											if(result.itDtlsVO.reAprooved !=null && result.itDtlsVO.reAprooved>0){
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.itDtlsVO.reAprooved+'</h4>';
-											}else{
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-											}
-										}
-										
-									}
+			str+='<div class="col-sm-2">';	
+				str+='<img src="Assests/images/IT_icon.png" />';
+			str+='</div>';
+			str+='<div class="col-sm-10">';
+				str+='<h3 class="font_weight">Information Technology Sector<br>Status Overview </h3>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="row">';
+			str+='<div class="col-sm-6">';	
+				str+='<h4 class="font_weight m_top10">Total - '+result.itDtlsVO.total+'</h4>';
+				str+='<div id="informationSectorGraphId" style="height:200px;"></div>';	
+			str+='</div>';
+			str+='<div class="col-sm-6">';	
+				str+='<div class="statusColorCss">';
+					str+='<div class="row">';
+						str+='<div class="col-sm-4">';	
+							str+='<img src="Assests/images/Approved_icon.png" />';
+						str+='</div>';
+						str+='<div class="col-sm-8">';	
+							str+='<h4 class="font_weight">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-1" style="padding-right:0px;">';
+										str+='<span class="approvedMainCss" style="background-color:#47E68D"></span>'; 
 									str+='</div>';
-									str+='<div class="media-right">';
-										str+='<img src="Assests/icons/ITC/'+CMEDOBODetailedArr[i].image+'" class="pull-right">';
+									str+='<div class="col-sm-6">';
+										str+='Approved';
 									str+='</div>';
-								
-							str+='</div>';
-							
+								str+='</div>';
+							str+='</h4>';
+							str+='<h4 class="font_weight m_top10">'+result.itDtlsVO.aprooved+' <small style="color:green;font-weight:bold;">'+result.itDtlsVO.approvedPerc+'%</small></h4>';
 						str+='</div>';
 					str+='</div>';
-					
-				
-			}
-			str+='</div>';
-	str+='</div>';
-	str+='<div class="col-sm-6" style="padding:10px;border:1px solid #000;border-left:none;">';
-		str+='<h4><b>Electronic Sector Status Overview</b></h4>';
-		str+='<div class="row">';
-			for(var i in CMEDOBODetailedArr){
-				if(CMEDOBODetailedArr[i].name == "Total" || CMEDOBODetailedArr[i].name == "Approved" || CMEDOBODetailedArr[i].name == "Rejected"){
-					str+='<div class="col-sm-4 m_top10">';
-				}else if(CMEDOBODetailedArr[i].name == "Pending" || CMEDOBODetailedArr[i].name == "Re-Approve"){
-					str+='<div class="col-sm-6 m_top10">';
-				}
-						str+='<div class="white_block pad_0">';
-							str+='<div class="media pad_10">';
-								str+='<div class="media-body">';
-									str+='<h4>'+CMEDOBODetailedArr[i].name+'</h4>';
-									if(CMEDOBODetailedArr[i].name == "Pending"){
-											str+='<div class="col-sm-6 m_top10" style="padding:0px 5px">';
-												str+='<h5 style="font-weight:600">Within SLA</h5>';
-												str+='<h5 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.pendingWithinSLA+'</h5>';
-											str+='</div>';
-											str+='<div class="col-sm-6 m_top10" style="padding:0px 1px">';
-												str+='<h5 style="font-weight:600">Beyond SLA</h5>';
-												str+='<h5 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.pendingBeyondSLA+'</h5>';
-											str+='</div>';
-									}else{
-										if(CMEDOBODetailedArr[i].name == "Total"){
-											if(result.electronicsDtlsVO.total !=null && result.electronicsDtlsVO.total>0){
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.total+'</h4>';
-											}else{
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-											}
-											
-										}else if(CMEDOBODetailedArr[i].name == "Approved"){
-											if(result.electronicsDtlsVO.aprooved !=null && result.electronicsDtlsVO.aprooved>0){
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.aprooved+'</h4>';
-											}else{
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-											}
-										}else if(CMEDOBODetailedArr[i].name == "Rejected"){
-											if(result.electronicsDtlsVO.rejected !=null && result.electronicsDtlsVO.rejected>0){
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.rejected+'</h4>';
-											}else{
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-											}
-										}else if(CMEDOBODetailedArr[i].name == "Re-Approve"){
-											if(result.electronicsDtlsVO.reAprooved !=null && result.electronicsDtlsVO.reAprooved>0){
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">'+result.electronicsDtlsVO.reAprooved+'</h4>';
-											}else{
-												str+='<h4 style="color:'+CMEDOBODetailedArr[i].color+'" class="m_top10">0</h4>';
-											}
-										}
-										
-									}
+				str+='</div>';
+		
+				str+='<div class="statusColorCss" style="border-top:none;">';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';	
+							str+='<img src="Assests/images/Rejected_iocn.png" />';
+						str+='</div>';
+						str+='<div class="col-sm-8">';	
+							str+='<h4 class="font_weight">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-1" style="padding-right:0px;">';
+										str+='<span class="approvedMainCss" style="background-color:#F55A5A"></span>'; 
 									str+='</div>';
-									str+='<div class="media-right">';
-										str+='<img src="Assests/icons/ITC/'+CMEDOBODetailedArr[i].image+'" class="pull-right">';
+									str+='<div class="col-sm-6">';
+										str+='Rejected'; 
 									str+='</div>';
-								
-							str+='</div>';
-							
+								str+='</div>';
+							str+='</h4>';
+							str+='<h4 class="font_weight m_top10">'+result.itDtlsVO.rejected+' <small style="color:green;font-weight:bold;">'+result.itDtlsVO.rejectedPerc+'%</small></h4>';
 						str+='</div>';
 					str+='</div>';
-					
-				
-			}
+				str+='</div>';
+		
+				str+='<div class="statusColorCss" style="border-top:none;">';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';	
+							str+='<img src="Assests/images/Approved_icon.png" />';
+						str+='</div>';
+						str+='<div class="col-sm-8">';	
+							str+='<h4 class="font_weight">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-1" style="padding-right:0px;">';
+										str+='<span class="approvedMainCss" style="background-color:#8D4653"></span>'; 
+									str+='</div>';
+									str+='<div class="col-sm-6">';
+										str+='ReApproved'; 
+									str+='</div>';
+								str+='</div>';
+							str+='</h4>';
+							str+='<h4 class="font_weight m_top10">'+result.itDtlsVO.reAprooved+' <small style="color:green;font-weight:bold;">'+result.itDtlsVO.reApprovedPerc+'%</small></h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
 			str+='</div>';
+		str+='</div>';
+
+	str+='<div class="pendingstatusColorCss">';
+		str+='<div class="row">';
+			str+='<div class="col-sm-3">';	
+				str+='<img src="Assests/images/Pending_icon 70x70.png" />';
+			str+='</div>';
+			str+='<div class="col-sm-9">';	
+				str+='<h4 class="font_weight"><span class="approvedMainCss" style="background-color:#71A8EE;margin-right: 5px;"></span>Pending</h4>';
+					str+='<h4 class="font_weight m_top10">'+result.itDtlsVO.totalPending+' <small style="color:green;font-weight:bold;">'+result.itDtlsVO.pendingPerc+'%</small></h4>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-6">';
+							str+='<h5 class="">Within SLA</h5>';
+							str+='<h4 class="font_weight">'+result.itDtlsVO.pendingWithinSLA+' <small style="color:green;font-weight:bold;">'+result.itDtlsVO.withinSLAPerc+'%</small></h4>';
+						str+='</div>';
+						str+='<div class="col-sm-6">';
+							str+='<h5 class="">Beyond SLA</h5>';
+							str+='<h4 class="font_weight">'+result.itDtlsVO.pendingBeyondSLA+' <small style="color:green;font-weight:bold;">'+result.itDtlsVO.beyongSLAPerc+'%</small></h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';	
+		str+='</div>';	
 	str+='</div>';
+	$("#cmedobSectorWiseInformationId").html(str)
+}else{
+	$("#cmedobSectorWiseInformationId").html("No Data Available")
+}
+	var ApprovedCount=0;
+	var RejectedCount=0;
+	var ReApprovedCount=0;
+	var PendingCount=0;
 	
-	$("#cmedobSectorWiseStatusId").html(str)
+	if(result !=null){
+		var pendingTotal = result.itDtlsVO.pendingWithinSLA+result.itDtlsVO.pendingBeyondSLA;
+		
+		ApprovedCount=parseFloat(result.itDtlsVO.approvedPerc);
+		RejectedCount=parseFloat(result.itDtlsVO.rejectedPerc);
+		ReApprovedCount=parseFloat(result.itDtlsVO.reApprovedPerc);
+		PendingCount=parseFloat(result.itDtlsVO.pendingPerc);
+	}
+	
+	var id = 'informationSectorGraphId';
+	var type = {
+		//width:350,
+		type: 'pie',
+		backgroundColor:'transparent',
+		options3d: {
+			enabled: true,
+			alpha: 25
+		}
+	};
+	var title = {
+		text: ''
+	};
+	var tooltip = {
+		useHTML: true,
+		backgroundColor: '#FCFFC5', 
+		formatter: function() {
+			var cnt = this.point.count;
+			return "<b style='color:"+this.point.color+"'>"+this.point.name+" - "+Highcharts.numberFormat(this.percentage,1)+"%</b>";
+		}  
+	}; 
+	var plotOptions ={ 
+		pie: {
+			innerSize: 100,
+			depth: 70,
+			dataLabels:{
+				useHTML: true,
+				enabled: false,
+				formatter: function() {
+						if (this.y === 0) {
+							return null;
+						} else {
+							return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+						}
+					} 
+			},
+			showInLegend: true
+		},
+	};
+	var legend = {
+		enabled: false,
+		layout: 'vertical',
+		align: 'left',
+		verticalAlign: 'bottom',
+		useHTML: true,
+		
+		labelFormatter: function() {
+			return '<div><span style="color:'+this.color+'">'+this.name + '-'+Highcharts.numberFormat(this.percentage,1)+'%</span></div>';
+		}
+	};
+	var data = [{
+		name: '',
+		data: [{
+				name: 'Approved',
+				y: ApprovedCount,
+				color:"#47E68D"
+			}, {
+				name: 'Rejected',
+				y: RejectedCount,
+				color:"#F55A5A"
+			}, {
+				name: 'Re-Approved',
+				y: ReApprovedCount,
+				color:"#8D4653"
+			}, {
+				name: 'Pending',
+				y: PendingCount,
+				color:"#71A8EE"
+			}]
+	}];
+	highcharts(id,type,data,plotOptions,title,tooltip,legend);
+										
+	
+}
+function buildCMeoDBSectorWiseElectronicSectorDetais(result){
+	var str='';
+	if(result !=null && result.electronicsDtlsVO !=null){
+	str+='<div class="block_styles">';
+		str+='<div class="row">';
+			str+='<div class="col-sm-2">';	
+				str+='<img src="Assests/images/Ec_icon.png" />';
+			str+='</div>';
+			str+='<div class="col-sm-10">';
+				str+='<h3 class="font_weight">Electronic Sector<br>Status Overview</h3>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="row">';
+			str+='<div class="col-sm-6">';	
+				str+='<h4 class="font_weight m_top10">Total - '+result.electronicsDtlsVO.total+'</h4>';
+				str+='<div id="electronicSectorGraphId" style="height:200px;"></div>';	
+			str+='</div>';
+			str+='<div class="col-sm-6">';	
+				str+='<div class="statusColorCss">';
+					str+='<div class="row">';
+						str+='<div class="col-sm-4">';	
+							str+='<img src="Assests/images/Approved_icon.png" />';
+						str+='</div>';
+						str+='<div class="col-sm-8">';	
+							str+='<h4 class="font_weight">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-1" style="padding-right:0px;">';
+										str+='<span class="approvedMainCss" style="background-color:#47E68D"></span>'; 
+									str+='</div>';
+									str+='<div class="col-sm-6">';
+										str+='Approved';
+									str+='</div>';
+								str+='</div>';
+							str+='</h4>';
+							str+='<h4 class="font_weight m_top10">'+result.electronicsDtlsVO.aprooved+' <small style="color:green;font-weight:bold;">'+result.electronicsDtlsVO.approvedPerc+'%</small></h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+		
+				str+='<div class="statusColorCss" style="border-top:none;">';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';	
+							str+='<img src="Assests/images/Rejected_iocn.png" />';
+						str+='</div>';
+						str+='<div class="col-sm-8">';	
+							str+='<h4 class="font_weight">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-1" style="padding-right:0px;">';
+										str+='<span class="approvedMainCss" style="background-color:#F55A5A"></span>'; 
+									str+='</div>';
+									str+='<div class="col-sm-6">';
+										str+='Rejected'; 
+									str+='</div>';
+								str+='</div>';
+							str+='</h4>';
+							str+='<h4 class="font_weight m_top10">'+result.electronicsDtlsVO.rejected+' <small style="color:green;font-weight:bold;">'+result.electronicsDtlsVO.rejectedPerc+'%</small></h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+		
+				str+='<div class="statusColorCss" style="border-top:none;">';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';	
+							str+='<img src="Assests/images/Approved_icon.png" />';
+						str+='</div>';
+						str+='<div class="col-sm-8">';	
+							str+='<h4 class="font_weight">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-1" style="padding-right:0px;">';
+										str+='<span class="approvedMainCss" style="background-color:#8D4653"></span>'; 
+									str+='</div>';
+									str+='<div class="col-sm-6">';
+										str+='ReApproved'; 
+									str+='</div>';
+								str+='</div>';
+							str+='</h4>';
+							str+='<h4 class="font_weight m_top10">'+result.electronicsDtlsVO.reAprooved+' <small style="color:green;font-weight:bold;">'+result.electronicsDtlsVO.reApprovedPerc+'%</small></h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+
+	str+='<div class="pendingstatusColorCss">';
+		str+='<div class="row">';
+			str+='<div class="col-sm-3">';	
+				str+='<img src="Assests/images/Pending_icon 70x70.png" />';
+			str+='</div>';
+			str+='<div class="col-sm-9">';	
+				str+='<h4 class="font_weight"><span class="approvedMainCss" style="background-color:#71A8EE;margin-right: 5px;"></span>Pending</h4>';
+					str+='<h4 class="font_weight m_top10">'+result.electronicsDtlsVO.totalPending+' <small style="color:green;font-weight:bold;">'+result.electronicsDtlsVO.pendingPerc+'%</small></h4>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-6">';
+							str+='<h5 class="">Within SLA</h5>';
+							str+='<h4 class="font_weight">'+result.electronicsDtlsVO.pendingWithinSLA+' <small style="color:green;font-weight:bold;">'+result.electronicsDtlsVO.withinSLAPerc+'%</small></h4>';
+						str+='</div>';
+						str+='<div class="col-sm-6">';
+							str+='<h5 class="">Beyond SLA</h5>';
+							str+='<h4 class="font_weight">'+result.electronicsDtlsVO.pendingBeyondSLA+' <small style="color:green;font-weight:bold;">'+result.electronicsDtlsVO.beyongSLAPerc+'%</small></h4>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';	
+		str+='</div>';	
+	str+='</div>';
+	$("#cmedobSectorWiseElectronicSectorId").html(str)
+}else{
+	$("#cmedobSectorWiseElectronicSectorId").html("No Data Available")
+}
+	var ApprovedCount=0;
+	var RejectedCount=0;
+	var ReApprovedCount=0;
+	var PendingCount=0;
+	
+	if(result !=null){
+		var pendingTotal = result.electronicsDtlsVO.pendingWithinSLA+result.electronicsDtlsVO.pendingBeyondSLA;
+		
+		ApprovedCount=parseFloat(result.electronicsDtlsVO.approvedPerc);
+		RejectedCount=parseFloat(result.electronicsDtlsVO.rejectedPerc);
+		ReApprovedCount=parseFloat(result.electronicsDtlsVO.reApprovedPerc);
+		PendingCount=parseFloat(result.electronicsDtlsVO.pendingPerc);
+	}
+	
+	var id = 'electronicSectorGraphId';
+	var type = {
+		//width:350,
+		type: 'pie',
+		backgroundColor:'transparent',
+		options3d: {
+			enabled: true,
+			alpha: 25
+		}
+	};
+	var title = {
+		text: ''
+	};
+	var tooltip = {
+		useHTML: true,
+		backgroundColor: '#FCFFC5', 
+		formatter: function() {
+			var cnt = this.point.count;
+			return "<b style='color:"+this.point.color+"'>"+this.point.name+" - "+Highcharts.numberFormat(this.percentage,1)+"%</b>";
+		}  
+	}; 
+	var plotOptions ={ 
+		pie: {
+			innerSize: 100,
+			depth: 70,
+			dataLabels:{
+				useHTML: true,
+				enabled: false,
+				formatter: function() {
+						if (this.y === 0) {
+							return null;
+						} else {
+							return "<b style='color:"+this.point.color+"'>"+this.point.name+"<br/>("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+						}
+					} 
+			},
+			showInLegend: true
+		},
+	};
+	var legend = {
+		enabled: false,
+		layout: 'vertical',
+		align: 'left',
+		verticalAlign: 'bottom',
+		useHTML: true,
+		
+		labelFormatter: function() {
+			return '<div><span style="color:'+this.color+'">'+this.name + '-'+Highcharts.numberFormat(this.percentage,1)+'%</span></div>';
+		}
+	};
+	var data = [{
+		name: '',
+		data: [{
+				name: 'Approved',
+				y: ApprovedCount,
+				color:"#47E68D"
+			}, {
+				name: 'Rejected',
+				y: RejectedCount,
+				color:"#F55A5A"
+			}, {
+				name: 'Re-Approved',
+				y: ReApprovedCount,
+				color:"#8D4653"
+			}, {
+				name: 'Pending',
+				y: PendingCount,
+				color:"#71A8EE"
+			}]
+	}];
+	highcharts(id,type,data,plotOptions,title,tooltip,legend);
+	
 }
 $(document).on("change","#sectorSelId",function(){
 var sectorVal=$("#sectorSelId").val();
