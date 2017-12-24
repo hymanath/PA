@@ -3959,9 +3959,9 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 									str+='<th>Transactions</th>';
 									//str+='<th>With in SLA</th>';
 									//str+='<th>Beyond SLA</th>';
-									str+='<th>SLA Transactions</th>';
 									str+='<th style="border-left:1px solid #ccc;">Services</th>';
 									str+='<th>Transactions</th>';
+									str+='<th>SLA Transactions</th>';
 									str+='<th>With in SLA</th>';
 									str+='<th>%</th>';
 									str+='<th>Beyond SLA</th>';
@@ -3987,6 +3987,12 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 											str+='<td>-</td>';
 										}
 										
+										if(result[i].catgryBServicesCount !=null && result[i].catgryBServicesCount>0){
+											str+='<td>'+result[i].catgryBServicesCount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										
 										if(result[i].catgryATransCount !=null && result[i].catgryATransCount>0){
 											str+='<td>'+result[i].catgryATransCount+'</td>';
 										}else{
@@ -4005,15 +4011,9 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 											str+='<td>-</td>';
 										} */
 										
-										
 										str+='<td>'+catBTotalSLATrans+'</td>';
 										if(result[i].catgryBTransCount !=null && result[i].catgryBTransCount>0){
 											str+='<td>'+result[i].catgryBTransCount+'</td>';
-										}else{
-											str+='<td>-</td>';
-										}
-										if(result[i].catgryBServicesCount !=null && result[i].catgryBServicesCount>0){
-											str+='<td>'+result[i].catgryBServicesCount+'</td>';
 										}else{
 											str+='<td>-</td>';
 										}
