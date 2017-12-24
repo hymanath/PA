@@ -21,6 +21,7 @@ public class PmRepresenteeDesignation {
 		private Long pmRepresenteeId;
 		private Long pmDesignationId;
 		private String isActive;
+		private String isDeleted;
 		private Date startDate;
 		private Date endDate;
 		
@@ -121,6 +122,14 @@ public class PmRepresenteeDesignation {
 		}
 		public void setUpdatedTime(Date updatedTime) {
 			this.updatedTime = updatedTime;
+		}
+		
+		@Column(name="is_deleted")
+		public String getIsDeleted() {
+			return isDeleted;
+		}
+		public void setIsDeleted(String isDeleted) {
+			this.isDeleted = isDeleted;
 		}
 		
 }

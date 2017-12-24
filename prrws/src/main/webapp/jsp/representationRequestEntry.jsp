@@ -129,15 +129,13 @@
 		  <div class="modal-body">
 			<div class="row">
 				<div class="col-sm-4">
-					<!--<label>NO OF WORKS <span class="starColor">*</span></label>-->
 					<input   name=""   onkeyUp="checkIsNumber('noofWorks',this.value)" type="text" class="form-control m_top5 height45 isNumberCls" id="noofWorks" placeholder="Enter No Of Work">
 					<br><span class="ErrCls" id="noofWorksErr"></span>
 				</div>
-				<div class="col-sm-4">
-					<!--<label>WORKS IN COST<span class="starColor">*</span></label>-->
+				<!--<div class="col-sm-4">
 					<input   name=""     onkeyUp="checkIsNumber('workCosts',this.value)"   type="text" class="form-control m_top5 height45 isNumberCls" id="workCosts" placeholder="Enter Work Cost">
 					<br><span class="ErrCls" id="workCostsErr"></span>
-				</div>
+				</div>-->
 				<div class="col-sm-4">
 					<button type="button" class="btn btn-success" id="basicBtnId" style="border-radius: 5px; font-weight: bold;margin-top:10px;">GO</button>
 				</div>
