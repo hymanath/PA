@@ -3959,8 +3959,8 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 									str+='<th>Transactions</th>';
 									//str+='<th>With in SLA</th>';
 									//str+='<th>Beyond SLA</th>';
+									str+='<th>SLA Transactions</th>';
 									str+='<th style="border-left:1px solid #ccc;">Services</th>';
-									str+='<th>Total SLA Transactions</th>';
 									str+='<th>Transactions</th>';
 									str+='<th>With in SLA</th>';
 									str+='<th>%</th>';
@@ -4005,17 +4005,19 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 											str+='<td>-</td>';
 										} */
 										
-										if(result[i].catgryBServicesCount !=null && result[i].catgryBServicesCount>0){
-											str+='<td>'+result[i].catgryBServicesCount+'</td>';
-										}else{
-											str+='<td>-</td>';
-										}
+										
 										str+='<td>'+catBTotalSLATrans+'</td>';
 										if(result[i].catgryBTransCount !=null && result[i].catgryBTransCount>0){
 											str+='<td>'+result[i].catgryBTransCount+'</td>';
 										}else{
 											str+='<td>-</td>';
 										}
+										if(result[i].catgryBServicesCount !=null && result[i].catgryBServicesCount>0){
+											str+='<td>'+result[i].catgryBServicesCount+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										
 										if(result[i].catgryBWithInSLACount !=null && result[i].catgryBWithInSLACount>0){
 											str+='<td>'+result[i].catgryBWithInSLACount+'</td>';
 										}else{
@@ -4086,13 +4088,18 @@ function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
 									str+='<th>Approve</th>';
 									str+='<th>Rejected</th>';
 									str+='<th>Revoked</th>';
+									str+='<th>InProgess</th>';
 									str+='<th>With in SLA</th>';
 									str+='<th>Beyond SLA</th>';
+									str+='<th>Beyond SLA%</th>';
 									
 								str+='</tr>';
 							str+='</thead>';
 							str+='<tbody>';
 								for(var i in result){
+									var BeyondPerc=0;
+									var total=result[i].totalWithInSlaCount+result[i].totalBeyondSlaCount;
+									BeyondPerc = (result[i].totalBeyondSlaCount/total*100).toFixed(2);
 									str+='<tr>';
 										str+='<td>'+result[i].name+'</td>';
 										str+='<td>'+result[i].serviceName+'</td>';
@@ -4117,8 +4124,15 @@ function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
 										}else{
 											str+='<td>-</td>';
 										}
+										str+='<td>'+total+'</td>';
 										str+='<td>'+result[i].totalWithInSlaCount+'</td>';
 										str+='<td>'+result[i].totalBeyondSlaCount+'</td>';
+										if(total !=null && total>0){
+											str+='<td>'+BeyondPerc+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										
 										
 									str+='</tr>';
 								}
