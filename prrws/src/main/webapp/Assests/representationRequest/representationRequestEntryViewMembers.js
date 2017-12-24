@@ -577,7 +577,7 @@ function getStatusList(){
 function getPetitionDetails(petitionId,endorsNo){
 	$("#representeeViewId").html(spinner);
    var json = {
-       petitionId:1,
+       petitionId:petitionId,
 	   pageType:"viewPage"
     };
   $.ajax({              
