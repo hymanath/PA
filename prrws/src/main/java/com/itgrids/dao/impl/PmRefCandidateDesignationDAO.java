@@ -144,7 +144,7 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmDesignation.pmDesignationId,model.pmDesignation.designation "
 				+ "from PmRefCandidateDesignation model where model.pmDesignation.isDeleted ='N' order by "
-				+ " model.pmDesignation.orderNo asc " );
+				+ " model.pmDesignation.designation asc " );
 		Query query =getSession().createQuery(sb.toString());
 		return query.list();
 	}

@@ -22,7 +22,7 @@ public class PmWorkTypeDAO extends GenericDaoHibernate<PmWorkType, Long> impleme
 
 	public List<Object[]> getWorkTypeList(){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select  model.pmWorkTypeId,model.workType from PmWorkType model where model.isDeleted='N' order by model.orderNo ");
+		sb.append("select  model.pmWorkTypeId,model.workType from PmWorkType model where model.isDeleted='N' order by model.workType ");
 		Query qry = getSession().createQuery(sb.toString());
 		return qry.list();
 	}

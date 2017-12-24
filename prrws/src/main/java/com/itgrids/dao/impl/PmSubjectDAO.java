@@ -26,7 +26,7 @@ public class PmSubjectDAO extends GenericDaoHibernate<PmSubject, Long> implement
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.pmSubjectId,model.subject "+
 				  " from PmSubject model " +
-				  " where model.parentPmSubjectId is null and model.isDeleted = 'N'  order by model.orderNo asc ");
+				  " where model.parentPmSubjectId is null and model.isDeleted = 'N'  order by model.subject  ");
 		Query qry = getSession().createQuery(sb.toString());
 		return qry.list();
 	}
@@ -38,7 +38,7 @@ public class PmSubjectDAO extends GenericDaoHibernate<PmSubject, Long> implement
 		sb.append( " where ");
 		if(subjectId != null && subjectId.longValue() >0l)
 			sb.append(" model.parentPmSubjectId= :subjectId and ");
-			sb.append("  model.isDeleted = 'N' ");
+			sb.append("  model.isDeleted = 'N' order by model.subject ");
 		Query qry =getSession().createQuery(sb.toString());
 		if(subjectId != null && subjectId.longValue() >0l){
 			qry.setParameter("subjectId", subjectId);

@@ -23,10 +23,22 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 
 	public List<PmRepresenteeDesignation> getPmRepresenteeDesignationByRepresenteeId(Long representeeId){
 		StringBuilder str = new StringBuilder();
-		str.append(" select model from PmRepresenteeDesignation model where model.pmRepresenteeId =:representeeId ");
+		str.append(" select model from PmRepresenteeDesignation model where model.pmRepresenteeId =:representeeId and model.isActive ='Y' and model.isDeleted='N'  ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("representeeId", representeeId);
 		return query.list();
+	}
+	
+	public int inActiveExistingDesignationsByIds(List<Long> pmRepresenteeDesignationIdsList){
+		if(pmRepresenteeDesignationIdsList != null && pmRepresenteeDesignationIdsList.size()>0){
+			StringBuilder str = new StringBuilder();
+			str.append(" update PmRepresenteeDesignation model set model.isActive='N',model.isDeleted='Y' where model.pmRepresenteeDesignationId in (:pmRepresenteeDesignationIdsList) and model.isActive ='Y' " +
+					" and  model.isDeleted='N' ");
+			Query query = getSession().createQuery(str.toString());
+			query.setParameterList("pmRepresenteeDesignationIdsList", pmRepresenteeDesignationIdsList);
+			return query.executeUpdate();
+		}
+		return 0;
 	}
 	
 	public List<Object[]> getAllDistrictsByRepresenteeDesignationWise(List<Long> deptIds){
@@ -37,7 +49,7 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 		if(deptIds != null && deptIds.size()>0){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
-		sb.append( "order by model.pmRepresenteeDesignation.pmRepresentee.userAddress.district.districtName asc ");
+		sb.append( " and and model.pmRepresenteeDesignation.isDeleted='N' order by model.pmRepresenteeDesignation.pmRepresentee.userAddress.district.districtName asc ");
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size()>0){
 			query.setParameterList("deptIds", deptIds);
@@ -47,8 +59,8 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 	public List<Object[]> getDesignationsByRepresenteeDesigtion(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmDesignation.pmDesignationId,model.pmDesignation.designation "
-				+ "from PmRepresenteeDesignation model where model.pmDesignation.isDeleted ='N' order by"
-				+ " model.pmDesignation.orderNo asc " );
+				+ "from PmRepresenteeDesignation model where model.pmDesignation.isDeleted ='N' and model.isDeleted ='N' order by "
+				+ " model.pmDesignation.designation asc " );
 		Query query =getSession().createQuery(sb.toString());
 		return query.list();
 	}

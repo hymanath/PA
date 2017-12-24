@@ -674,6 +674,7 @@ $(document).on("click",".cloned_Element",function(){
 
 	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
 	
+	/*
 	var enteredAmount =parseInt(0);
 	var estimationAmount= parseInt($('#workCost'+typeVal+'').val());
 	$(".amountCls").each(function(){
@@ -691,6 +692,28 @@ $(document).on("click",".cloned_Element",function(){
 	if(enteredAmount>=estimationAmount){
 		alert("Total estimation cost reached. Please check once.");
 		return;
+	}
+	*/
+	
+	var enteredAmount =parseInt(0);
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseInt(value) <=0){	
+				alert("Invalid estimation cost entered. Please check once.");
+				return;
+			}else{
+				enteredAmount = parseInt(enteredAmount)+parseInt(value);
+			}
+		}
+	});
+	
+	var estimationAmount= $('#workCost'+typeVal+'').val();
+	if(estimationAmount != null && estimationAmount !='' && estimationAmount.length>0 && parseInt(estimationAmount)>0){
+		if(enteredAmount>=estimationAmount){
+			alert("Total estimation cost reached. Please check once.");
+			return;
+		}
 	}
 	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
 		alert("Max no of works data entered. Please check once.");
@@ -842,13 +865,14 @@ $(document).on("click",".cloned_Inner_Element",function(){
 	var typeVal = $(this).attr("attr_type");
 	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
 	
+	/*
 	var enteredAmount =parseInt(0);
 	var estimationAmount= parseInt($('#workCost'+typeVal+'').val());
 	$(".amountCls").each(function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
 			if(parseInt(value) <=0){
-				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				alert("Invalid estimation cost entered. Please check once.");
 				return;
 			}else{
 				enteredAmount = parseInt(enteredAmount)+parseInt(value);
@@ -859,6 +883,28 @@ $(document).on("click",".cloned_Inner_Element",function(){
 	if(enteredAmount>=estimationAmount){
 		alert("Total estimation cost reached. Please check once.");
 		return;
+	}
+	*/
+	
+	var enteredAmount =parseInt(0);
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseInt(value) <=0){	
+				alert("Invalid estimation cost entered. Please check once.");
+				return;
+			}else{
+				enteredAmount = parseInt(enteredAmount)+parseInt(value);
+			}
+		}
+	});
+	
+	var estimationAmount= $('#workCost'+typeVal+'').val();
+	if(estimationAmount != null && estimationAmount !='' && estimationAmount.length>0 && parseInt(estimationAmount)>0){
+		if(enteredAmount>=estimationAmount){
+			alert("Total estimation cost reached. Please check once.");
+			return;
+		}
 	}
 	
 	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
@@ -874,7 +920,6 @@ $(document).on("click",".cloned_Inner_Element",function(){
 	
 	
 	globalInnerWorksCount = parseInt(globalInnerWorksCount)+1;
-
 		$(".appendInnerBlocks"+typeVal+counterId+innerWorkCount).append(clonedInnerTemplate('clone',counterId,typeVal,mainWorkCount,innerWorkCount,conterInnerVal));
 		$(".chosen-select").chosen({width:'100%'});
 		//getWorkTypeList('workTypeInnerId',typeVal,counterId,innerWorkCount,"change");
@@ -1332,7 +1377,7 @@ function buildPetitionDetails(result){
 				*/
 				str+='<div class="col-sm-3">';
 					str+='<h6>NAME</h6>';
-					str+='<input type="text"  name="name"  value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
+					str+='<input type="text" readOnly="true" value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
 					str+='<span class="ErrCls" id="nameErr'+result.representationType+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
@@ -1368,7 +1413,7 @@ function buildPetitionDetails(result){
 					str+='<option value="0"> Select Constituency </option>';
 						for(var c in result.representeeDetailsList[0].addressVO.constituencyList){
 							if(result.representeeDetailsList[0].addressVO.constituencyList[c].key == result.representeeDetailsList[i].addressVO.assemblyId){
-								str+='<option value="'+result.representeeDetailsList[0].addressVO.constituencyList[c].key+'">'+result.representeeDetailsList[0].addressVO.constituencyList[c].value+'</option>';
+								str+='<option value="'+result.representeeDetailsList[0].addressVO.constituencyList[c].key+'" selected>'+result.representeeDetailsList[0].addressVO.constituencyList[c].value+'</option>';
 							}else{
 								str+='<option value="'+result.representeeDetailsList[0].addressVO.constituencyList[c].key+'">'+result.representeeDetailsList[0].addressVO.constituencyList[c].value+'</option>';
 							}
@@ -1383,7 +1428,7 @@ function buildPetitionDetails(result){
 					str+='<option value="0"> Select Mandal/Munci./Corp. </option>';
 						for(var c in result.representeeDetailsList[0].addressVO.mandalsList){
 							if(result.representeeDetailsList[0].addressVO.mandalsList[c].key == result.representeeDetailsList[i].addressVO.tehsilId){
-								str+='<option value="'+result.representeeDetailsList[0].addressVO.mandalsList[c].key+'">'+result.representeeDetailsList[0].addressVO.mandalsList[c].value+'</option>';
+								str+='<option value="'+result.representeeDetailsList[0].addressVO.mandalsList[c].key+'" selected>'+result.representeeDetailsList[0].addressVO.mandalsList[c].value+'</option>';
 							}else{
 								str+='<option value="'+result.representeeDetailsList[0].addressVO.mandalsList[c].key+'">'+result.representeeDetailsList[0].addressVO.mandalsList[c].value+'</option>';
 							}
@@ -1397,8 +1442,8 @@ function buildPetitionDetails(result){
 					str+='<select   name="addressVO.panchayatId"  class="form-control chosen-select m_top10" id="panchayat'+result.representationType+'">';
 					str+='<option value="0"> Select Panchayat </option>';
 						for(var c in result.representeeDetailsList[0].addressVO.panchaytsList){
-							if(result.representeeDetailsList[0].addressVO.panchaytsList[c].key == 233269){
-								str+='<option value="'+result.representeeDetailsList[0].addressVO.panchaytsList[c].key+'">'+result.representeeDetailsList[0].addressVO.panchaytsList[c].value+'</option>';
+							if(result.representeeDetailsList[0].addressVO.panchaytsList[c].key == result.representeeDetailsList[0].addressVO.panchayatId){
+								str+='<option value="'+result.representeeDetailsList[0].addressVO.panchaytsList[c].key+'" selected>'+result.representeeDetailsList[0].addressVO.panchaytsList[c].value+'</option>';
 							}else{
 								str+='<option value="'+result.representeeDetailsList[0].addressVO.panchaytsList[c].key+'">'+result.representeeDetailsList[0].addressVO.panchaytsList[c].value+'</option>';
 							}
@@ -1414,7 +1459,7 @@ function buildPetitionDetails(result){
 				str+='<option value="0"> Select Designation </option>';
 				if(globalDesignationList != null && globalDesignationList.length>0){
 					for(var dig in globalDesignationList){
-						if(globalDesignationList[dig].id == result.representeeDetailsList[i].addressVO.districtId){
+						if(globalDesignationList[dig].key == result.representeeDetailsList[i].designationId){
 							str+='<option value="'+globalDesignationList[dig].key+'" selected>'+globalDesignationList[dig].value+'</option>';
 						}else{
 							str+='<option value="'+globalDesignationList[dig].key+'">'+globalDesignationList[dig].value+'</option>';
@@ -1621,8 +1666,8 @@ function buildPetitionDetails(result){
 						str+='<input   name="worksList[0].noOfWorks" value="'+result.noOfWorks+'"  type="text" class="form-control m_top5 height45" id="noofWork'+result.representationType+'" placeholder="Enter No Of Work"  onkeyUp="rebuildWorkDetails(this.id,this.value,\'total work \',\''+result.representationType+'\');">';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
-					str+='<label>WORKS IN COST (in Lakh) <span class="starColor">*</span><span id="workCostId'+result.representationType+'"></span></label>';
-					str+='<input type="text"  name="worksList[0].estimateCost" value="'+result.estimateCost+'"  class="form-control m_top5 height45" id="workCost'+result.representationType+'" placeholder="Enter Work Cost"  onkeyUp="rebuildWorkDetails(this.id,this.value,\'total cost estimation \',\''+result.representationType+'\');">';
+					str+='<label>WORKS IN COST  <span class="starColor">*</span><span id="workCostId'+result.representationType+'"></span></label>';
+					str+='<input type="text"  name="worksList[0].estimateCost" value="'+result.estimateCost+'"  class="form-control m_top5 height45" id="workCost'+result.representationType+'" placeholder="Cost auto calculates "  onkeyUp="checkIsNumber(this.id,this.value);">';
 				str+='</div>';
 		str+='</div>';
 		
@@ -1703,9 +1748,11 @@ function buildPetitionDetails(result){
 		for(var i in result.subWorksList){
 			
 				str+='<div class="col-sm-12 m_top20" id="mainWorkDivId'+i+''+globalWorkTypeCount+'">';
-				str+='<div class="pull-right removeWorkCls"  attr_inner_works_Count="'+result.subWorksList[i].subWorksList.length+'"  attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'">';
 				if(i !=0){
+					str+='<div class="pull-right removeWorkCls"  attr_inner_works_Count="'+result.subWorksList[i].subWorksList.length+'"  attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'">';
 					str+='<i class="glyphicon glyphicon-remove"></i>';
+				}else{
+					str+='<div class="pull-right "  attr_inner_works_Count="'+result.subWorksList[i].subWorksList.length+'"  attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'">';
 				}
 					str+='</div>';
 					
@@ -1768,9 +1815,11 @@ function buildPetitionDetails(result){
 								
 								str+='<div class="m_top10" id="workDivId'+i+''+j+'">';
 										str+='<div class="col-sm-12">';
-										str+='<div class="pull-right removeInnerWorkCls" attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1">';
-											if(j !=0){
+										if(j !=0){
+												str+='<div class="pull-right removeInnerWorkCls" attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1">';
 												str+='<i class="glyphicon glyphicon-remove"></i>';
+											}else{
+												str+='<div class="pull-right " attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1">';
 											}
 											str+='</div>';
 											str+='<div class="bg_color_view">';
@@ -2067,11 +2116,11 @@ function buildPetitionDetails(result){
 																str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
 																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
 																str+='<option value="0" > Select Panchayat </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.panchaytsList){
+																		if(result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.panchayatId){
+																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].value+'</option>';
 																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].value+'</option>';
 																		}
 																	}
 																	
@@ -2700,9 +2749,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	var flag = true;
 	$('#saveButtonId').hide();
 	$('.ErrCls').html('');
-	completeWorkName = $("#workName"+typeVal).val();
-	noofWorks = $("#noofWork"+typeVal).val();
-	workCost = $("#workCost"+typeVal).val();
+	
+	
 	if(typeVal =='REPRESENT' || typeVal =='REPRESENTEE'){
 		var repName=$('#name'+typeVal+'').val();
 		var repMobileNo=$('#mobileNumber'+typeVal+'').val();
@@ -2793,6 +2841,34 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		
 	}*/
 	
+	
+	var enteredAmount =parseInt(0.0);
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseInt(value) <=0){	
+				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");			
+				flag = false;
+			}else{
+				enteredAmount = parseInt(enteredAmount)+parseInt(value);
+			}
+		}
+	});
+	
+	var estimationAmount= $('#workCost'+typeVal+'').val();
+	if(estimationAmount != null && estimationAmount !='' && estimationAmount.length>0 && parseInt(estimationAmount)>0){
+		if((enteredAmount<estimationAmount) || (enteredAmount>estimationAmount)){
+			alert("Work wise total estimation cost not matched. Please check once.");
+			flag = false;
+		}
+	}else{
+		$('#workCost'+typeVal+'').val(enteredAmount);
+	}
+	
+	completeWorkName = $("#workName"+typeVal).val();
+	noofWorks = $("#noofWork"+typeVal).val();	
+	workCost = $("#workCost"+typeVal).val();
+	
 	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName.trim() == '' || completeWorkName == null){
 		$("#completeWorkNameId"+typeVal).html("<h5 style='color:red;'>Please enter work name</h5>");
 		$('#saveButtonId').show();
@@ -2810,6 +2886,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		$("#noOfWorksId"+typeVal).html("");
 	}
 	if(workCost == undefined || workCost == "undefined" || workCost === undefined || workCost.trim() == '' || workCost == null){
+		
 		$("#workCostId"+typeVal).html("<h5 style='color:red;'>Please enter work cost</h5>");
 		$('#saveButtonId').show();
 		flag = false;
@@ -2824,25 +2901,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		flag = false;
 	}
 	*/
-	var enteredAmount =parseFloat(0.0);
-	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
-	$(".amountCls").each(function(){
-		var value = $(this).val();
-		if(value!= null && value.length>0){
-			if(parseFloat(value) <=0){	
-				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");			
-				flag = false;
-			}else{
-				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
-			}
-		}
-	});
-	if((enteredAmount<estimationAmount) || (enteredAmount>estimationAmount)){
-		alert("Work wise total estimation cost not matched. Please check once.");
-		flag = false;
-	}
 	
-
+	
 	
 	$(".validateCls").each(function(){
 		
@@ -3136,7 +3196,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		return;
 	}
 
-	//$("#savingDetailsSpinner").html(spinner)
+	$('#saveButtonId').hide();	
+	$("#savingDetailsSpinner").html(spinner)
 	 var formData = new FormData();
 	$('#adminProfileForm input').each(
 		  function(){			  
@@ -3200,12 +3261,6 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		}
 	);
 	
-	//console.log(formData);
-	//$("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Updated Successfully</h3></center>").fadeOut(4000);	  
-	//setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); 
-	//$(".defaultCheckCls").prop("checked",true)},6000);
-	
-	//return;
 	  $.ajax({
 			url: $("#adminProfileForm").attr("action"),
 			data: formData,
@@ -3218,8 +3273,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				  if(result.responseCode == "0"){
 					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Updation Successfully</h3></center>").fadeOut(4000);
 					  
-						//setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); 
-						//window.location.reload(); 
+						setTimeout(function() {$('html, body').animate({scrollTop:0}, 3000)}); 
+						window.location.reload(); 
 						//$(".defaultCheckCls").prop("checked",true)},6000);
 						 
 				  }else{
@@ -3289,8 +3344,9 @@ function rebuildWorkDetails(id,value,type,reprType){
 		}
 		
 		$('#workDetailsDiv').html('');
-		$("#workDetailsDiv").append(clondTemplate(0,'clone',0,reprType,0));
-		globalInnerWorksCount =0;
+		$("#workDetailsDiv").append(clondTemplate(0,'clone','',reprType,0));
+		$(".chosen-select").chosen();
+		globalInnerWorksCount =1;
 		setTimeout(function(){
 			$('#WorkTypeWiseDepartmentId'+reprType+'00').trigger('chosen:updated');
 			$('#subjectId'+reprType+'00').trigger('chosen:updated');

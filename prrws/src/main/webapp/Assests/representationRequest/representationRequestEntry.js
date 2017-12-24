@@ -363,15 +363,15 @@ $(document).on("click","#basicBtnId",function(){
 		$("#noofWorksErr").html("<h5 style='color:red;'>Enter no of works.</h5>");
 		isError=true;
 	}
-	if(cost == undefined || cost == "undefined" || cost === undefined || cost.trim() == '' || cost == null){
+	/*if(cost == undefined || cost == "undefined" || cost === undefined || cost.trim() == '' || cost == null){
 		$("#workCostsErr").html("<h5 style='color:red;'>Enter total estimation cost. </h5>");
 		isError=true;
-	}
+	}*/
 	if(!isError){
 		$("#petitionBasicModal").modal('hide');
 		$('#workDetailsDivId'+typeVal+'').show();
 		$('#noofWork'+typeVal+'').val(works);
-		$('#workCost'+typeVal+'').val(cost);
+		//$('#workCost'+typeVal+'').val(cost);
 	}else{
 		return;
 	}
@@ -509,7 +509,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='</div>';
 				str+='<div class="col-sm-2">';
 					str+='<label>WORKS IN COST  <span class="starColor">*</span></label>';
-					str+='<input type="text"  name="worksList[0].estimateCost" class="form-control m_top5 height45 isNumberCls" id="workCost'+typeVal+'" placeholder="Enter Work Cost" onkeyUp="checkIsNumber(this.id,this.value)">';
+					str+='<input type="text"  name="worksList[0].estimateCost" class="form-control m_top5 height45 isNumberCls" id="workCost'+typeVal+'" placeholder="Cost auto calculates " onkeyUp="checkIsNumber(this.id,this.value)">';
 					str+='<span id="workCostId'+typeVal+'"></span>';
 				str+='</div>';
 		str+='</div>';
@@ -1336,7 +1336,7 @@ $(document).on("click",".cloned_Element",function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
 			if(parseFloat(value) <=0){
-				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				alert("Invalid estimation cost entered. Please check once.");
 				return;
 			}else{
 				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
@@ -1344,10 +1344,14 @@ $(document).on("click",".cloned_Element",function(){
 		}
 	});
 	
-	if(enteredAmount>=estimationAmount){
-		alert("Total estimation cost reached. Please check once.");
-		return;
-	}else if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){ 
+	if(estimationAmount != null && estimationAmount !='' && parseInt(estimationAmount)>0){
+		if(enteredAmount>=estimationAmount){
+			alert("Total estimation cost reached. Please check once.");
+			return;
+		}
+	}
+	
+	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){ 
 		alert("Max no of works data entered. Please check once.");
 		return;
 	}
@@ -1513,10 +1517,14 @@ $(document).on("click",".cloned_Inner_Element",function(){
 		}
 	});
 	
-	if(enteredAmount>=estimationAmount){
-		alert("Total estimation cost reached. Please check once.");
-		return;
-	}else if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
+	if(estimationAmount != null && estimationAmount !='' && parseInt(estimationAmount)>0){
+		if(enteredAmount>=estimationAmount){
+			alert("Total estimation cost reached. Please check once.");
+			return;
+		}
+	}
+
+	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
 		alert("Max no of works data entered. Please check once.");
 		return;
 	}
@@ -1898,9 +1906,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	var flag = true;
 	$('#saveButtonId').hide();
 	$('.ErrCls').html('');
-	completeWorkName = $("#workName"+typeVal).val();
-	noofWorks = $("#noofWork"+typeVal).val();
-	workCost = $("#workCost"+typeVal).val();
+	
 	
 	if(typeVal =='represent' || typeVal =='representee'){
 		var repName=$('#name'+typeVal+'').val();
@@ -1993,6 +1999,35 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		
 	}
 	
+	
+	var enteredAmount =parseInt(0);
+	var estimationAmount= parseInt($('#workCost'+typeVal+'').val());
+	$(".amountCls").each(function(){
+		var value = $(this).val();
+		if(value!= null && value.length>0){
+			if(parseInt(value) <=0){
+				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				flag = false;
+				//return;
+			}else{
+				enteredAmount = parseInt(enteredAmount)+parseInt(value);
+			}
+		}
+	});
+	
+	if(estimationAmount != null && parseInt(estimationAmount)>0){
+		if((enteredAmount<estimationAmount) || (enteredAmount>estimationAmount)){
+			alert("Work wise total estimation cost not matched. Please check once.");
+			flag = false;
+		}
+	}else{
+		$('#workCost'+typeVal+'').val(enteredAmount)
+	}
+	
+	completeWorkName = $("#workName"+typeVal).val();
+	noofWorks = $("#noofWork"+typeVal).val();
+	workCost = $("#workCost"+typeVal).val();
+	
 	if(completeWorkName == undefined || completeWorkName == "undefined" || completeWorkName.trim() == '' || completeWorkName == null){
 		$("#completeWorkNameId"+typeVal).html("<h5 style='color:red;'>Please enter work name</h5>");
 		$('#saveButtonId').show();
@@ -2021,26 +2056,6 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
 	if((parseInt(estimationWorksCount)>parseInt(globalInnerWorksCount)) || (parseInt(estimationWorksCount)<parseInt(globalInnerWorksCount))){ 
 		alert("Max no of works data not matched. Please check once.");
-		flag = false;
-	}
-	
-	var enteredAmount =parseFloat(0.0);
-	var estimationAmount= parseFloat($('#workCost'+typeVal+'').val());
-	$(".amountCls").each(function(){
-		var value = $(this).val();
-		if(value!= null && value.length>0){
-			if(parseFloat(value) <=0){
-				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
-				flag = false;
-				//return;
-			}else{
-				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
-			}
-		}
-	});
-	
-	if((enteredAmount<estimationAmount) || (enteredAmount>estimationAmount)){
-		alert("Work wise total estimation cost not matched. Please check once.");
 		flag = false;
 	}
 	
@@ -2215,7 +2230,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			districtInnerId = $("#districtInnerId"+typeVal+mainCountIn+innerCountIn).val();
 			constituencyInnerId = $("#constituencyInnerId"+typeVal+mainCountIn+innerCountIn).val();
 			mandalInnerId = $("#mandalInnerId"+typeVal+mainCountIn+innerCountIn).val();
-			panchayatInnerId = $("#panchayatId"+typeVal+mainCountIn+innerCountIn).val();
+			panchayatInnerId = $("#panchayatInnerId"+typeVal+mainCountIn+innerCountIn).val();
 			
 			
 			if(workTypeInnerId == 0 || workTypeInnerId == null || workTypeInnerId == ''){
