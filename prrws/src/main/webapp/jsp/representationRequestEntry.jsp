@@ -36,10 +36,10 @@
 				<div class="row">
 					<div style="padding:10px;">
 						<div class="col-sm-6">
-							<h4><a target="_blank" href="representationRequestEntry">ADD PETITION</a></h4>
+							<h4><a  href="representationRequestEntry">ADD PETITION</a></h4>
 						</div>
 						<div class="col-sm-6">
-							<h4 class=""><a target="_blank" href="representationRequestEntry">VIEW PETITION</a></h4>
+							<h4 class=""><a  href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
 						</div>
 					</div>
 				</div>
