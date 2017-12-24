@@ -2673,11 +2673,11 @@ function buildgetCMEDOBDepartmentDetailed(result){
 						str+='<img src="Assests/images/Rejected_iocn.png">';
 					str+='</div>';
 					str+='<div class="media-body">';
-							str+='<h3 class="font_weight">High <span style="color:#FF003C">Approval</span> Department</h3>';
+							str+='<h3 class="font_weight">High <span style="color:#FF003C">Rejected</span> Department</h3>';
 							str+='<p class="m_top5">'+result.highRejectedDepartmentName+'</p>';
 							str+='<h3  class="font_weight m_top5">'+result.highRejectedDepartmentCount+'</h3>';
 						str+='<p class="m_top10" style="border-top: 1px solid #FF003C;"></p>';	
-							str+='<h3 class="font_weight m_top10">Low <span style="color:#FF003C">Approval</span> Department</h3>';
+							str+='<h3 class="font_weight m_top10">Low <span style="color:#FF003C">Rejected</span> Department</h3>';
 							str+='<p class="m_top5">'+result.lowRejectedDepartmentName+'</p>';
 							str+='<h3 class="font_weight m_top5">'+result.lowRejectedDepartmentCount+'</h3>';
 					str+='</div>';
@@ -2692,11 +2692,11 @@ function buildgetCMEDOBDepartmentDetailed(result){
 						str+='<img src="Assests/images/Pending_Icon.png">';
 					str+='</div>';
 					str+='<div class="media-body">';
-							str+='<h3 class="font_weight">High <span style="color:#71A8EE">Approval</span> Department</h3>';
+							str+='<h3 class="font_weight">High <span style="color:#71A8EE">Pending</span> Department</h3>';
 							str+='<p class="m_top5">'+result.highPendingDepartmentName+'</p>';
 							str+='<h3  class="font_weight m_top5">'+result.highPendingDepartmentCount+'</h3>';
 						str+='<p class="m_top10" style="border-top: 1px solid #71A8EE;"></p>';	
-							str+='<h3 class="font_weight m_top10">Low <span style="color:#71A8EE">Approval</span> Department</h3>';
+							str+='<h3 class="font_weight m_top10">Low <span style="color:#71A8EE">Pending</span> Department</h3>';
 							str+='<p class="m_top5">'+result.lowPendingDepartmentName+'</p>';
 							str+='<h3 class="font_weight m_top5">'+result.lowPendingDepartmentCount+'</h3>';
 					str+='</div>';
