@@ -978,7 +978,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						endorsmentNo = commonMethodsUtilService.getStringValueForObject(param[22]);
 						 returnVO.setPetitionId(petitionId);
 						 returnVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[27]));
-						 returnVO.setEstimateCost(String.valueOf(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))));
+						 if(!commonMethodsUtilService.getStringValueForObject(param[26]).isEmpty())
+							 returnVO.setEstimateCost(String.valueOf(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))));
 						 returnVO.setEndorsmentNo(commonMethodsUtilService.getStringValueForObject(param[22]));
 						 if(commonMethodsUtilService.getStringValueForObject(param[24]).length()>10)
 							 returnVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[24]).substring(0, 10));
