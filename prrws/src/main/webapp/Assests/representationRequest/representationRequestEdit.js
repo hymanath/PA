@@ -1392,7 +1392,7 @@ function buildPetitionDetails(result){
 				*/
 				str+='<div class="col-sm-3">';
 					str+='<h6>NAME</h6>';
-					str+='<input type="text" readOnly="true" value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
+					str+='<input type="text" readOnly="true" name="name" value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
 					str+='<span class="ErrCls" id="nameErr'+result.representationType+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
