@@ -1661,6 +1661,229 @@
 	<!-- Electronic Media End -->
 	</div>
 	<div class="row">
+		<!-- Praja Sankalpam Yatra News  Start --> 
+			 <div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="prajaSankaplaYatra">
+				<div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="prajaSankaplaYatra">
+								<h4 class="panel-title text-capital" style="font-size:14px;">
+									<div>
+										<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+										<span id="prajaSankalpaYatraDivId">Praja Sankalpam Yatra News-</span> 
+										<small id="prajaHeadDate" class="text-muted"></small>
+									</div>
+								</h4>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="prajaSankaplaYatra">
+								<span class="prajaSankaplaYatraIconExpand pull-right" expand-icon="prajaSankaplaYatra">
+									<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+								</span>
+								<span class="cadreSettings pull-right refreshPrajaSankalpaCls"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
+								
+								<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="prajaSankaplaYatra" style="width:200px;">
+										<input type="text" id="dateRangePrajaSankalpaId" style="width:180px" class="form-control" />
+										<span class="input-group-addon">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</span>
+								</span>
+							</div>     
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 class="module_OwnerCss">Module Owner : K Rajesh</h5>
+						</div>
+						<div class="row m_top10">
+							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="prajaSankaplaYatra">
+								<div class="row">
+									<div class="col-sm-12">
+										<h4 style="font-weight:bold" id="categoryName"></h4>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<label>Category Name</label>
+										<select class="form-control chosen-select" id="categoryId">
+											<option value="0">Select Category</option>
+											<option value="1051" selected="selected">PRAJA SANKALPA YATRA</option>
+											<option value="1050">COUNTER ON PRAJA SANKALPA YATRA</option>
+											<option value="1063">KAPU RESERVATIONS - 5%</option>
+											<option value="710">GADAPA GADAPAKU YSRCP - 2016</option>
+											<option value="691">JANA CHAITANYA YATRA</option>
+											<option value="943">NANDYALA BYE ELECTION</option>
+											<option value="695">JANMABOOMI - MAA URU</option>
+											<option value="721">VANAM-MANAM 2016</option>
+											<option value="1030">YSR KUTUMBAM</option>
+											<option value="925">NAVA NIRMANA DEEKSHA</option>
+											<option value="688">NEERU - CHETTU </option>
+											<option value="472">AGAINST TDP</option>
+											<option value="483">TDP PROGRAMMES</option>
+											<option value="493">YS JAGAN</option>
+											<option value="494">ANTI JAGAN</option>
+											<option value="672">CHANDRANNA RAITHU YATRA</option>
+											<option value="689">MANA MATTI - MANA NEERU</option>
+											<option value="762">CHANDRANNA BHEEMA</option>
+											<option value="772">NTR AROGYA SREE</option>
+											<option value="773">NTR SRUJALA</option>
+											<option value="774">NTR JALASIRI</option>
+											<option value="787">CHANDRANNA DALITABATA</option>
+											<option value="788">MANA URU MANA MLA</option>
+											<option value="825">YUVA YATRA</option>
+											<option value="872">PRAJA CHAITANYA YATRA</option>
+											<option value="888">NEERU - PRAGATHI</option>
+											<option value="936">ERUVAKA PROGRAMME</option>
+											<option value="948">INTINTIKI TDP</option>
+											<option value="950">VANAM - MANAM - 2017</option>
+											<option value="971">ANNA CANTEENS</option>
+											<option value="1008">JAGAN PADAYATRA</option>
+											<option value="1039">MEE INTIKI MEE MLA</option>
+										</select>
+									</div>
+								</div>
+								<div class="row m_top10">
+									<div class="col-sm-12">
+										<div id="overAllPrintMediaNewsDivId"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="prajaSankaplaYatra" style="display:none;" >
+								<div class="row">
+									<div class="col-sm-12">
+										<div id="overAllElectronicMediaNewsDivId"></div>
+									 </div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="prajaSankaplaYatra" style="display: none;">
+								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreNewsPrajaSankalpaBlocksIcon" title="Click here for more"></i>
+							</div>	
+							<div class="col-md-12 col-xs-12 col-sm-12 moreNewsprajaSankaplaBlocksDetailed m_top10"  expand-block-more="prajaSankaplaYatra" style="display:none;">
+								<div class="row">
+									<div class="col-sm-12">
+										<ul class="activeUlCls list-inline pull-right" role='tabCummulative'>
+											<li class="removeActiveP active" attr_value="print">Print Media</li>
+											<li class="removeActiveP" attr_value="electronic">Electronic Media</li>
+										</ul>
+									</div>
+									<div class="col-sm-12 publicationWisePartiesCls">
+										<div id="publicationWisePartiesDivId"></div>
+									</div>
+									<div class="col-sm-12 districtWisePartiesCls">
+										<div id="districtWisePartiesDivId"></div>
+									</div>
+									<div class="col-sm-12 ChannelWisePartyCls" style="display:none;">
+										<div id="ChannelWisePartyDivId"></div>
+									</div>
+									<div class="col-sm-12 districtWiseChannelCls" style="display:none;">
+										<div id="districtWiseChannelDivId"></div>
+									</div>
+								</div> 
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> 
+	<!-- Praja Sankalpam Yatra News  END --> 
+	<!-- EM Coverage Time start -->
+		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="EMCoverageTime">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="EMCoverageTime">
+							<h4 class="panel-title text-capital" style="font-size:14px;">
+								<div>
+									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+									<span id="EMCoverageTimeDivId">Electronic Media Coverage Time - </span> 
+									<small id="EMCoverageTimeHeadDate" class="text-muted"></small>
+								</div>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="EMCoverageTime">
+							
+							<span class="EMCoverageSettingExpand pull-right">
+							   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							 </span>
+							<span class="EmSettings pull-right" onClick="refreshEm();">
+								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+							</span> 
+							<span class="EMCoverageTimeIconExpand pull-right" expand-icon="EMCoverageTime">
+								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="EMCoverageTime" style="width:200px;">
+									<input type="text" id="dateRangeEMCoverageTimeId" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+							</span>
+							<div class="eMCoverageTimeSettingsBody" style="display:none;top:15px;">
+									<div class="row">
+										<div class="col-sm-12">
+										 <i class="glyphicon glyphicon-remove eMCoverageTimeSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;border-radius: 2px;border: 1px solid #ddd;padding: 2px;background-color: #ddd;"></i>
+											
+										</div>
+									</div>
+									<div class="row m_top10">
+										<div class="col-sm-12">
+											<label class="radio-inline">
+											  <input type="radio" id="inlineCheckbox1" class="EMCoverageTimeCls" name="optionsRadios"  value="candidate" checked><b>Candidate</b>
+											</label>
+											<label class="radio-inline">
+											  <input type="radio" id="inlineCheckboxPartyEm" class="EMCoverageTimeCls"  name="optionsRadios"  value="party"><b>Party</b>
+											</label>
+										</div>
+									</div>
+									<div class="row m_top10">
+										<div class="col-sm-12">
+											<div id="participatedCheckDivId">
+												<label class="radio-inline">
+													<input type="checkbox" id="allParticipatedCheckBoxId" class="participatedCheckCls" value="all" checked><b style="padding-left:7px;">All</b>
+												</label>
+												<label class="radio-inline">
+													<input type="checkbox" id="participatedCheckBoxId" class="participatedCheckCls" value="Participated"><b style="padding-left:7px;">Participated</b>
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+						</div>     
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<h5 class="module_OwnerCss">Module Owner : K Rajesh</h5>
+					</div>
+					<div class="row m_top10">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="EMCoverageTime">
+							<div class="col-sm-5">
+								<select class="form-control chosen-select" id="categoryEmId">
+									<option value="0">Select Category</option>
+									<option value="1051">Praja sankalpa yatra</option>
+									<option value="1050">Counter on praja sankalpa yatra</option>
+									<option value="1063">KAPU RESERVATIONS - 5%</option>
+								</select>
+							</div>
+						</div>	
+					</div>
+					
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock">
+							<div class="row m_top10">
+								<div class="col-sm-12">
+									<div id="EMCoverageTimeSummaryDivId"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 dayWiseTimeBlock" >
+							<div id="EMCoverageTimeDayWiseDivId"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- EM Coverage Time End -->
+		
+	</div>
+	<div class="row">
 		<!-- DEBATES PROGRAM BLOCK -->
 			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock" expand-block="debates">
 				<div class="panel panel-default panelNewCustom panel2">
@@ -4123,126 +4346,7 @@
 		<!---------Cadre Registration End--->
 	</div>
 	<div class="row">
-	<!-- Praja Sankalpam Yatra News  Start --> 
-		 <div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="prajaSankaplaYatra">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="prajaSankaplaYatra">
-							<h4 class="panel-title text-capital" style="font-size:14px;">
-								<div>
-									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-									<span id="prajaSankalpaYatraDivId">Praja Sankalpam Yatra News-</span> 
-									<small id="prajaHeadDate" class="text-muted"></small>
-								</div>
-							</h4>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="prajaSankaplaYatra">
-							<span class="prajaSankaplaYatraIconExpand pull-right" expand-icon="prajaSankaplaYatra">
-								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
-							</span>
-							<span class="cadreSettings pull-right refreshPrajaSankalpaCls"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
-							
-							<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="prajaSankaplaYatra" style="width:200px;">
-									<input type="text" id="dateRangePrajaSankalpaId" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-							</span>
-						</div>     
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="prajaSankaplaYatra">
-							<div class="row">
-								<div class="col-sm-12">
-									<h4 style="font-weight:bold" id="categoryName"></h4>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<label>Category Name</label>
-									<select class="form-control chosen-select" id="categoryId">
-										<option value="0">Select Category</option>
-										<option value="1051" selected="selected">PRAJA SANKALPA YATRA</option>
-										<option value="1050">COUNTER ON PRAJA SANKALPA YATRA</option>
-										<option value="1063">KAPU RESERVATIONS - 5%</option>
-										<option value="710">GADAPA GADAPAKU YSRCP - 2016</option>
-										<option value="691">JANA CHAITANYA YATRA</option>
-										<option value="943">NANDYALA BYE ELECTION</option>
-										<option value="695">JANMABOOMI - MAA URU</option>
-										<option value="721">VANAM-MANAM 2016</option>
-										<option value="1030">YSR KUTUMBAM</option>
-										<option value="925">NAVA NIRMANA DEEKSHA</option>
-										<option value="688">NEERU - CHETTU </option>
-										<option value="472">AGAINST TDP</option>
-										<option value="483">TDP PROGRAMMES</option>
-										<option value="493">YS JAGAN</option>
-										<option value="494">ANTI JAGAN</option>
-										<option value="672">CHANDRANNA RAITHU YATRA</option>
-										<option value="689">MANA MATTI - MANA NEERU</option>
-										<option value="762">CHANDRANNA BHEEMA</option>
-										<option value="772">NTR AROGYA SREE</option>
-										<option value="773">NTR SRUJALA</option>
-										<option value="774">NTR JALASIRI</option>
-										<option value="787">CHANDRANNA DALITABATA</option>
-										<option value="788">MANA URU MANA MLA</option>
-										<option value="825">YUVA YATRA</option>
-										<option value="872">PRAJA CHAITANYA YATRA</option>
-										<option value="888">NEERU - PRAGATHI</option>
-										<option value="936">ERUVAKA PROGRAMME</option>
-										<option value="948">INTINTIKI TDP</option>
-										<option value="950">VANAM - MANAM - 2017</option>
-										<option value="971">ANNA CANTEENS</option>
-										<option value="1008">JAGAN PADAYATRA</option>
-										<option value="1039">MEE INTIKI MEE MLA</option>
-									</select>
-								</div>
-							</div>
-							<div class="row m_top10">
-								<div class="col-sm-12">
-									<div id="overAllPrintMediaNewsDivId"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="prajaSankaplaYatra" style="display:none;" >
-							<div class="row">
-								<div class="col-sm-12">
-									<div id="overAllElectronicMediaNewsDivId"></div>
-								 </div>
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="prajaSankaplaYatra" style="display: none;">
-							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreNewsPrajaSankalpaBlocksIcon" title="Click here for more"></i>
-						</div>	
-						<div class="col-md-12 col-xs-12 col-sm-12 moreNewsprajaSankaplaBlocksDetailed m_top10"  expand-block-more="prajaSankaplaYatra" style="display:none;">
-							<div class="row">
-								<div class="col-sm-12">
-									<ul class="activeUlCls list-inline pull-right" role='tabCummulative'>
-										<li class="removeActiveP active" attr_value="print">Print Media</li>
-										<li class="removeActiveP" attr_value="electronic">Electronic Media</li>
-									</ul>
-								</div>
-								<div class="col-sm-12 publicationWisePartiesCls">
-									<div id="publicationWisePartiesDivId"></div>
-								</div>
-								<div class="col-sm-12 districtWisePartiesCls">
-									<div id="districtWisePartiesDivId"></div>
-								</div>
-								<div class="col-sm-12 ChannelWisePartyCls" style="display:none;">
-									<div id="ChannelWisePartyDivId"></div>
-								</div>
-								<div class="col-sm-12 districtWiseChannelCls" style="display:none;">
-									<div id="districtWiseChannelDivId"></div>
-								</div>
-							</div> 
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> 
-<!-- Praja Sankalpam Yatra News  END --> 
+	
 	<!-- Attendance Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock" expand-block="attendance">
             <div class="panel panel-default panelNewCustom">
@@ -4435,102 +4539,7 @@
 	    </div>-->
 		<!-- grivance End-->
 	</div>
-	<div class="row">
-		<!-- EM Coverage Time start -->
-		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="EMCoverageTime">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="EMCoverageTime">
-							<h4 class="panel-title text-capital" style="font-size:14px;">
-								<div>
-									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-									<span id="EMCoverageTimeDivId">Electronic Media Coverage Time - </span> 
-									<small id="EMCoverageTimeHeadDate" class="text-muted"></small>
-								</div>
-							</h4>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="EMCoverageTime">
-							
-							<span class="EMCoverageSettingExpand pull-right">
-							   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							 </span>
-							<span class="EmSettings pull-right" onClick="refreshEm();">
-								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
-							</span> 
-							<span class="EMCoverageTimeIconExpand pull-right" expand-icon="EMCoverageTime">
-								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
-							</span>
-							<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="EMCoverageTime" style="width:200px;">
-									<input type="text" id="dateRangeEMCoverageTimeId" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-							</span>
-							<div class="eMCoverageTimeSettingsBody" style="display:none;top:15px;">
-									<div class="row">
-										<div class="col-sm-12">
-										 <i class="glyphicon glyphicon-remove eMCoverageTimeSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;border-radius: 2px;border: 1px solid #ddd;padding: 2px;background-color: #ddd;"></i>
-											
-										</div>
-									</div>
-									<div class="row m_top10">
-										<div class="col-sm-12">
-											<label class="radio-inline">
-											  <input type="radio" id="inlineCheckbox1" class="EMCoverageTimeCls" name="optionsRadios"  value="candidate" checked><b>Candidate</b>
-											</label>
-											<label class="radio-inline">
-											  <input type="radio" id="inlineCheckboxPartyEm" class="EMCoverageTimeCls"  name="optionsRadios"  value="party"><b>Party</b>
-											</label>
-										</div>
-									</div>
-									<div class="row m_top10">
-										<div class="col-sm-12">
-											<div id="participatedCheckDivId">
-												<label class="radio-inline">
-													<input type="checkbox" id="allParticipatedCheckBoxId" class="participatedCheckCls" value="all" checked><b style="padding-left:7px;">All</b>
-												</label>
-												<label class="radio-inline">
-													<input type="checkbox" id="participatedCheckBoxId" class="participatedCheckCls" value="Participated"><b style="padding-left:7px;">Participated</b>
-												</label>
-											</div>
-										</div>
-									</div>
-								</div>
-						</div>     
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="EMCoverageTime">
-							<div class="col-sm-5">
-								<select class="form-control chosen-select" id="categoryEmId">
-									<option value="0">Select Category</option>
-									<option value="1051">Praja sankalpa yatra</option>
-									<option value="1050">Counter on praja sankalpa yatra</option>
-									<option value="1063">KAPU RESERVATIONS - 5%</option>
-								</select>
-							</div>
-						</div>	
-					</div>
-					
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock">
-							<div class="row m_top10">
-								<div class="col-sm-12">
-									<div id="EMCoverageTimeSummaryDivId"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 dayWiseTimeBlock" >
-							<div id="EMCoverageTimeDayWiseDivId"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- EM Coverage Time End -->
-	</div>
+	
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
 <input type="hidden" id="alertEditionTypeHiddenId"></input>  
