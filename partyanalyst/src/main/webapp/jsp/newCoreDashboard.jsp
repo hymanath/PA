@@ -4451,6 +4451,10 @@
 							</h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="EMCoverageTime">
+							
+							<span class="EMCoverageSettingExpand pull-right">
+							   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							 </span>
 							<span class="EmSettings pull-right" onClick="refreshEm();">
 								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
 							</span> 
@@ -4463,33 +4467,53 @@
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
 							</span>
+							<div class="eMCoverageTimeSettingsBody" style="display:none;top:15px;">
+									<div class="row">
+										<div class="col-sm-12">
+										 <i class="glyphicon glyphicon-remove eMCoverageTimeSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;border-radius: 2px;border: 1px solid #ddd;padding: 2px;background-color: #ddd;"></i>
+											
+										</div>
+									</div>
+									<div class="row m_top10">
+										<div class="col-sm-12">
+											<label class="radio-inline">
+											  <input type="radio" id="inlineCheckbox1" class="EMCoverageTimeCls" name="optionsRadios"  value="candidate" checked><b>Candidate</b>
+											</label>
+											<label class="radio-inline">
+											  <input type="radio" id="inlineCheckboxPartyEm" class="EMCoverageTimeCls"  name="optionsRadios"  value="party"><b>Party</b>
+											</label>
+										</div>
+									</div>
+									<div class="row m_top10">
+										<div class="col-sm-12">
+											<div id="participatedCheckDivId">
+												<label class="radio-inline">
+													<input type="checkbox" id="allParticipatedCheckBoxId" class="participatedCheckCls" value="all" checked><b style="padding-left:7px;">All</b>
+												</label>
+												<label class="radio-inline">
+													<input type="checkbox" id="participatedCheckBoxId" class="participatedCheckCls" value="Participated"><b style="padding-left:7px;">Participated</b>
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
 						</div>     
 					</div>
 				</div>
 				<div class="panel-body">
 					<div class="row">
-					<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="EMCoverageTime">
-						<div class="col-sm-7">
-						<label class="radio-inline">
-							  <input type="checkbox" id="participatedCheckBoxId" class="participatedCheckCls" value="Participated"><b style="padding-left:7px;">Participated</b>
-							</label>
-							<label class="radio-inline">
-							  <input type="radio" id="inlineCheckbox1" class="EMCoverageTimeCls" name="optionsRadios"  value="candidate" checked><b>Candidate</b>
-							</label>
-							<label class="radio-inline">
-							  <input type="radio" id="inlineCheckbox2" class="EMCoverageTimeCls"  name="optionsRadios"  value="party"><b>Party</b>
-							</label>
-						</div>
-						<div class="col-sm-5">
-							<select class="form-control chosen-select" id="categoryEmId">
-								<option value="0">Select Category</option>
-								<option value="1051">Praja sankalpa yatra</option>
-								<option value="1050">Counter on praja sankalpa yatra</option>
-								<option value="1063">KAPU RESERVATIONS - 5%</option>
-							</select>
-						</div>
-					</div>	
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="EMCoverageTime">
+							<div class="col-sm-5">
+								<select class="form-control chosen-select" id="categoryEmId">
+									<option value="0">Select Category</option>
+									<option value="1051">Praja sankalpa yatra</option>
+									<option value="1050">Counter on praja sankalpa yatra</option>
+									<option value="1063">KAPU RESERVATIONS - 5%</option>
+								</select>
+							</div>
+						</div>	
 					</div>
+					
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock">
 							<div class="row m_top10">
@@ -5647,6 +5671,8 @@ $("[expand-icon]").click(function(){
 			getChannelWisePartiesAnalysis(globalcategoryId);
 		}else if(blockName == 'kaizala'){
 			getUserTypeWiseKaizalaCommitteeMemberDetailsCnt();
+		}else if(blockName == 'EMCoverageTime'){
+			ggetDayWiseCandidateCoverageTime("candidate",0,'N'); 
 		}
 	}else if(iconClass == 'glyphicon glyphicon-resize-small')
 	{

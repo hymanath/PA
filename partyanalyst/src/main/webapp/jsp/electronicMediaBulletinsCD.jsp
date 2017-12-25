@@ -818,7 +818,7 @@ $(document).ready(function(){
   	$.ajax({
   		url: wurl+"/CommunityNewsPortal/webservice/getCoverageTimeOfTvNewsBulletinPointClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globaltype+"/"+globalorganizationId+"/"+globalNewsChannelIds+"/"+globalbenefitId+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalPartyId
 		
-		//url: "http://localhost:8086/CommunityNewsPortal/webservice/getCoverageTimeOfTvNewsBulletinPointClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globaltype+"/"+globalorganizationId+"/"+globalNewsChannelIds+"/"+globalbenefitId+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalPartyId
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getCoverageTimeOfTvNewsBulletinPointClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globaltype+"/"+globalorganizationId+"/"+globalNewsChannelIds+"/"+globalbenefitId+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalPartyId
   	}).then(function(result){
   		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('');
   		var countByDate = 0;
