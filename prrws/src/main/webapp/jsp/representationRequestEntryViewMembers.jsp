@@ -28,48 +28,52 @@
 		padding: 10px;
 		border: 1px solid lightgrey;
 	}
-	.viewDivId{
-		background-color:#455963;
-		color: #fff;
-		font-weight:bold;
-		padding: 10px;
-		
-	}
 	.error_colorCls{
-   color: red;
-}
-	
+		color: red;
+	}
  </style>
 </head>
 <body>
-
 <header style="box-shadow:none;">
-	<img src="Assests/images/PetitionMainStrip.png" class="" alt="logo">
-	<div class="col-sm-12">
-		<i class="glyphicon glyphicon-th menu-cls pull-right" style="position:relative;top:-70px;color:#AA8440"></i>
-		<div class="menu-data-cls" style="top:-10px;">
-			<div class="arrow_box_top">
-				<div class="row">
-					<div style="padding:10px;">
-						<div class="col-sm-6">
-							<h4><a target="_blank" href="representationRequestEntry">ADD PETITION</a></h4>
-						</div>
-						<div class="col-sm-6">
-							<h4 class=""><a href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
-						</div>
-					</div>
+	<nav>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-1 col-xs-3">
+					<img src="Assests/images/aplogo.png" class="" style="width: 80px; height: 80px; padding: 10px;"/>
 				</div>
-				<div class="row">
-					<div style="padding:10px;">
-					<div class="col-sm-12">
-						<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
-						
-					</div>
+				<div class="col-sm-4 m_top10 col-xs-9">
+					<h3 class="text-capital"><span style="color: rgb(255, 255, 255); font-weight: bold; margin-right: 7px;font-size: 20px;">MINISTER</span> <span class="text-color">PETITION MANAGEMENT SYSTEM</span></h3>
+					<p style="color: rgb(255, 255, 255);">Information Technology,Panchayathi Raj & </p>
+					<p style="color: rgb(255, 255, 255);">Rural Development</p>
+				</div>
+				<div class="col-sm-5 col-xs-12 pull-right innerPageHeader">
+					<i class="glyphicon glyphicon-th menu-cls pull-right" style="position:relative;color:#AA8440"></i>
+					<div class="menu-data-cls">
+						<div class="arrow_box_top">
+							<div class="row">
+								<div style="padding:10px;">
+									<div class="col-sm-6">
+										<h4><a href="representationRequestEntry">ADD PETITION</a></h4>
+									</div>
+									<div class="col-sm-6">
+										<h4 class=""><a href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div style="padding:10px;">
+								<div class="col-sm-12">
+									<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
+									
+								</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+</nav>
 </header>
 <main>
 	<section>
