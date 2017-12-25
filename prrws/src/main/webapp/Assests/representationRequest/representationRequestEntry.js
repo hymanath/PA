@@ -508,8 +508,8 @@ function buildSelfAndRepresenteeDetails(typeVal){
 						str+='<span id="noOfWorksId'+typeVal+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
-					str+='<label>WORKS IN COST  <span class="starColor">*</span></label>';
-					str+='<input type="text"  name="worksList[0].estimateCost" class="form-control m_top5 height45 isNumberCls" id="workCost'+typeVal+'" placeholder="Cost auto calculates " onkeyUp="checkIsNumber(this.id,this.value)">';
+					str+='<label>WORKS IN COST </label>';
+					str+='<input type="text"  name="worksList[0].estimateCost" readOnly="true" class="form-control m_top5 height45 isNumberCls" id="workCost'+typeVal+'" placeholder="Cost auto calculates " onkeyUp="checkIsNumber(this.id,this.value)">';
 					str+='<span id="workCostId'+typeVal+'"></span>';
 				str+='</div>';
 		str+='</div>';
@@ -1095,7 +1095,7 @@ function buildTemplateWorkDetails(typeVal){
 										str+='</select>';
 									str+='</div>';
 									str+='<div class="col-sm-3">';
-										str+='<label>WORK IN COST   <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
+										str+='<label>WORK IN COST   <span class="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span></label>';
 										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].estimateCost" class="form-control m_top5 height45 validateCls amountCls isNumberCls" onkeyUp="validateAmount(this.value,this.id,\''+typeVal+'\');checkIsNumber(this.id,this.value)" id="appendWorkCost'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter Work Cost" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0"/>';
 										str+='<span class="ErrCls" id="ErrappendWorkCost'+typeVal+''+globalWorkTypeCount+'0"></span>';
 									str+='</div>';
@@ -1336,8 +1336,8 @@ $(document).on("click",".cloned_Element",function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
 			if(parseFloat(value) <=0){
-				alert("Invalid estimation cost entered. Please check once.");
-				return;
+				//alert("Invalid estimation cost entered. Please check once.");
+				//return;
 			}else{
 				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
 			}
@@ -1346,8 +1346,8 @@ $(document).on("click",".cloned_Element",function(){
 	
 	if(estimationAmount != null && estimationAmount !='' && parseInt(estimationAmount)>0){
 		if(enteredAmount>=estimationAmount){
-			alert("Total estimation cost reached. Please check once.");
-			return;
+			//alert("Total estimation cost reached. Please check once.");
+			//return;
 		}
 	}
 	
@@ -1425,7 +1425,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 										clonedTemplate+='</select>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
-										clonedTemplate+='<label>WORK IN COST  <span class="starColor">*</span><span class="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
+										clonedTemplate+='<label>WORK IN COST <span class="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span></label>';
 										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls isNumberCls" onkeyUp="validateAmount(this.value,this.id,\''+typeVal+'\');checkIsNumber(this.id,this.value)"  id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"/>';
 										clonedTemplate+='<span  class="ErrCls" id="ErrappendWorkCost'+typeVal+''+counterappendId+''+blockId+'"></span>';
 									clonedTemplate+='</div>';
@@ -1509,8 +1509,8 @@ $(document).on("click",".cloned_Inner_Element",function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
 			if(parseFloat(value) <=0){
-				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
-				return;
+				//$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				//return;
 			}else{
 				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
 			}
@@ -1519,8 +1519,8 @@ $(document).on("click",".cloned_Inner_Element",function(){
 	
 	if(estimationAmount != null && estimationAmount !='' && parseInt(estimationAmount)>0){
 		if(enteredAmount>=estimationAmount){
-			alert("Total estimation cost reached. Please check once.");
-			return;
+			//alert("Total estimation cost reached. Please check once.");
+			//return;
 		}
 	}
 
@@ -1552,7 +1552,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 							clonedInnerTemplate+='</select>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
-							clonedInnerTemplate+='<label>WORK IN COST   <span class="starColor">*</span><span class="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
+							clonedInnerTemplate+='<label>WORK IN COST <span class="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span></label>';
 							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45 validateInnerCls amountCls isNumberCls" onkeyUp="validateAmount(this.value,this.id,\''+typeVal+'\');checkIsNumber(this.id,this.value)"  id="appendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter Work Cost" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"/>';
 							clonedInnerTemplate+='<span  class="ErrCls"  id="ErrappendWorkCostInner'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span>';
 						clonedInnerTemplate+='</div>';
@@ -2006,8 +2006,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
 			if(parseInt(value) <=0){
-				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
-				flag = false;
+				//$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				//flag = false;
 				//return;
 			}else{
 				enteredAmount = parseInt(enteredAmount)+parseInt(value);
@@ -2017,13 +2017,13 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	
 	if(estimationAmount != null && parseInt(estimationAmount)>0){
 		if((enteredAmount<estimationAmount) || (enteredAmount>estimationAmount)){
-			alert("Work wise total estimation cost not matched. Please check once.");
-			flag = false;
+			//alert("Work wise total estimation cost not matched. Please check once.");
+			//flag = false;
 		}
 	}else{
-		$('#workCost'+typeVal+'').val(enteredAmount)
+	//	$('#workCost'+typeVal+'').val(enteredAmount)
 	}
-	
+	$('#workCost'+typeVal+'').val(enteredAmount);
 	completeWorkName = $("#workName"+typeVal).val();
 	noofWorks = $("#noofWork"+typeVal).val();
 	workCost = $("#workCost"+typeVal).val();
@@ -2044,7 +2044,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	}else{
 		$("#noOfWorksId"+typeVal).html("");
 	}
-	if(workCost == undefined || workCost == "undefined" || workCost === undefined || workCost.trim() == '' || workCost == null){
+	/*if(workCost == undefined || workCost == "undefined" || workCost === undefined || workCost.trim() == '' || workCost == null){
 		$("#workCostId"+typeVal).html("<h5 style='color:red;'>Please enter work cost</h5>");
 		$('#saveButtonId').show();
 		flag = false;
@@ -2052,7 +2052,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	}else{
 		$("#workCostId"+typeVal).html("");
 	}
-	
+	*/
 	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
 	if((parseInt(estimationWorksCount)>parseInt(globalInnerWorksCount)) || (parseInt(estimationWorksCount)<parseInt(globalInnerWorksCount))){ 
 		alert("Max no of works data not matched. Please check once.");
@@ -2552,7 +2552,7 @@ function validateAmount(value,fieldId,typeVal){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
 			if(parseFloat(value) <=0){
-				$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
+				//$('#Err'+fieldId+'').html("Invalid estimation cost entered. Please check once.");
 				return;
 			}else{
 				enteredAmount = parseFloat(enteredAmount)+parseFloat(value);
@@ -2561,8 +2561,8 @@ function validateAmount(value,fieldId,typeVal){
 	});
 	
 	if(enteredAmount>estimationAmount){
-		$('#Err'+fieldId+'').html("Total estimation cost reached. Please check once.");
-		$('#'+fieldId+'').val('');
+		//$('#Err'+fieldId+'').html("Total estimation cost reached. Please check once.");
+		//$('#'+fieldId+'').val('');
 	}
 }
 
