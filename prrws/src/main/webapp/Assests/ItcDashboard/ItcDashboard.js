@@ -4085,7 +4085,7 @@ function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
 									str+='<th>Service name</th>';
 									str+='<th>Category A/B</th>';
 									str+='<th>Transactions</th>';
-									str+='<th style="border-left:1px solid #ddd !important">Approve</th>';
+									str+='<th style="border-left:1px solid #ddd !important">Approved</th>';
 									str+='<th>Revoked</th>';
 									str+='<th>Rejected</th>';
 									str+='<th style="border-right:1px solid #ddd !important">Rejected %</th>';
