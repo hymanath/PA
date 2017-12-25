@@ -3151,17 +3151,32 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 .table_customPS{
 	thead{
 		tr{
+			th:nth-child(n+5){
+				background-color:#FDF1F1 ;
+				border-top:1px solid #ddd !important;
+			}
+			th:nth-child(n+5):last-child{
+				border-right:1px solid #ddd !important;
+			}
 			th:nth-child(n+9){
-				background-color:#ddd;
-				border-top:1px solid #ccc;
+				background-color:#F1FDFB ;
+				border-top:1px solid #ddd !important;
 			}
 		}
 	}
 	tbody{
 		tr{
+			td:nth-child(n+5):last-child{
+				border-right:1px solid #ddd !important;;
+			}
+			
+			td:nth-child(n+5){
+				background-color:#FDF1F1 ;
+				border-top:1px solid #ddd;
+			}
 			td:nth-child(n+9){
-				background-color:#ddd;
-				border-top:1px solid #ccc;
+				background-color:#F1FDFB ;
+				border-top:1px solid #ddd;
 			}
 		}
 	}
