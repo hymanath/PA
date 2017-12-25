@@ -4010,13 +4010,13 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 										}else{
 											str+='<td>-</td>';
 										} */
-										
-										str+='<td>'+catBTotalSLATrans+'</td>';
 										if(result[i].catgryBTransCount !=null && result[i].catgryBTransCount>0){
 											str+='<td>'+result[i].catgryBTransCount+'</td>';
 										}else{
 											str+='<td>-</td>';
 										}
+										str+='<td>'+catBTotalSLATrans+'</td>';
+										
 										
 										if(result[i].catgryBWithInSLACount !=null && result[i].catgryBWithInSLACount>0){
 											str+='<td>'+result[i].catgryBWithInSLACount+'</td>';
@@ -4085,9 +4085,10 @@ function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
 									str+='<th>Service name</th>';
 									str+='<th>Category A/B</th>';
 									str+='<th>Transactions</th>';
-									str+='<th>Approve</th>';
-									str+='<th>Rejected</th>';
+									str+='<th style="border-left:1px solid #ddd !important">Approve</th>';
 									str+='<th>Revoked</th>';
+									str+='<th>Rejected</th>';
+									str+='<th style="border-right:1px solid #ddd !important">Rejected %</th>';
 									str+='<th>InProgess</th>';
 									str+='<th>With in SLA</th>';
 									str+='<th>Beyond SLA</th>';
@@ -4098,8 +4099,11 @@ function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
 							str+='<tbody>';
 								for(var i in result){
 									var BeyondPerc=0;
+									var totalRejectedPerc=0;
 									var total=result[i].totalWithInSlaCount+result[i].totalBeyondSlaCount;
+									var totalRejectedCount=result[i].approved+result[i].revoke+result[i].rejected;
 									BeyondPerc = (result[i].totalBeyondSlaCount/total*100).toFixed(2);
+									totalRejectedPerc = (result[i].rejected/totalRejectedCount*100).toFixed(2);
 									str+='<tr>';
 										str+='<td>'+result[i].name+'</td>';
 										str+='<td>'+result[i].serviceName+'</td>';
@@ -4110,7 +4114,12 @@ function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
 											str+='<td>-</td>';
 										}
 										if(result[i].approved !=null && result[i].approved>0){
-											str+='<td>'+result[i].approved+'</td>';
+											str+='<td style="border-left:1px solid #ddd !important">'+result[i].approved+'</td>';
+										}else{
+											str+='<td style="border-left:1px solid #ddd !important">-</td>';
+										}
+										if(result[i].revoke !=null && result[i].revoke>0){
+											str+='<td>'+result[i].revoke+'</td>';
 										}else{
 											str+='<td>-</td>';
 										}
@@ -4119,11 +4128,12 @@ function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
 										}else{
 											str+='<td>-</td>';
 										}
-										if(result[i].revoke !=null && result[i].revoke>0){
-											str+='<td>'+result[i].revoke+'</td>';
+										if(totalRejectedCount !=null && totalRejectedCount>0){
+											str+='<td style="border-right:1px solid #ddd !important">'+totalRejectedPerc+'</td>';
 										}else{
-											str+='<td>-</td>';
+											str+='<td style="border-right:1px solid #ddd !important">-</td>';
 										}
+										
 										str+='<td>'+total+'</td>';
 										str+='<td>'+result[i].totalWithInSlaCount+'</td>';
 										str+='<td>'+result[i].totalBeyondSlaCount+'</td>';
