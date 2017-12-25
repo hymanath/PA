@@ -82,7 +82,7 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-sm-12">
-									<h3 class="panel-title f_22">REPRESENTEE DETAILS </h3>
+									<h3 class="panel-title f_22"><span id="petitionViewType"></span> DETAILS </h3>
 									<div class="row m_top20">
 										<div class="col-sm-3">
 											<h6> ENDORSMENT NO </h6>
