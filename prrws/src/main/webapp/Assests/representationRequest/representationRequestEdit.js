@@ -711,8 +711,8 @@ $(document).on("click",".cloned_Element",function(){
 	var estimationAmount= $('#workCost'+typeVal+'').val();
 	if(estimationAmount != null && estimationAmount !='' && estimationAmount.length>0 && parseInt(estimationAmount)>0){
 		if(enteredAmount>=estimationAmount){
-			alert("Total estimation cost reached. Please check once.");
-			return;
+			//alert("Total estimation cost reached. Please check once.");
+			//return;
 		}
 	}
 	if(parseInt(estimationWorksCount)<=parseInt(globalInnerWorksCount)){
@@ -799,7 +799,7 @@ function clondTemplate(blockId,type,counterId,typeVal,counterappendId,isNew){
 										clonedTemplate+='</select><br><span class="workTypeId'+typeVal+''+counterappendId+''+blockId+'"></span>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
-										clonedTemplate+='<label>WORK IN COST  <span class="starColor">*</span></label>';
+										clonedTemplate+='<label>WORK IN COST </label>';
 										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+defaultValue+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls" id="appendWorkCost'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter Work Cost" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"  onkeyUp="checkIsNumber(this.id,this.value);validateAmount(this.value,this.id,\''+typeVal+'\')"><br><span class="appendWorkCost'+typeVal+''+counterappendId+''+blockId+' ErrCls"></span>';
 									clonedTemplate+='</div>';
 									clonedTemplate+='<div class="col-sm-3">';
@@ -911,8 +911,8 @@ $(document).on("click",".cloned_Inner_Element",function(){
 	var estimationAmount= $('#workCost'+typeVal+'').val();
 	if(estimationAmount != null && estimationAmount !='' && estimationAmount.length>0 && parseInt(estimationAmount)>0){
 		if(enteredAmount>=estimationAmount){
-			alert("Total estimation cost reached. Please check once.");
-			return;
+			//alert("Total estimation cost reached. Please check once.");
+			//return;
 		}
 	}
 	
@@ -959,7 +959,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 							clonedInnerTemplate+='</select><br><span class="workTypeInnerId'+typeVal+''+counterId+''+innerWorkCount+'"></span>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
-							clonedInnerTemplate+='<label>WORK IN COST <span class="starColor">*</span></label>';
+							clonedInnerTemplate+='<label>WORK IN COST </label>';
 							clonedInnerTemplate+='<input type="text"  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls" id="appendWorkCostInner'+typeVal+''+counterId+''+innerWorkCount+'" placeholder="Enter Work Cost" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'"  onkeyUp="checkIsNumber(this.id,this.value);;validateAmount(this.value,this.id,\''+typeVal+'\')"><br><span class="  ErrCls appendWorkCostInner'+typeVal+''+counterId+''+innerWorkCount+'"></span>';
 						clonedInnerTemplate+='</div>';
 						clonedInnerTemplate+='<div class="col-sm-3">';
@@ -998,7 +998,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 						clonedInnerTemplate+='</div>';
 						
 						clonedInnerTemplate+='<div class="col-sm-2 mandalInnerCls'+typeVal+''+counterId+''+innerWorkCount+'" style="display:none">';
-							clonedInnerTemplate+='<label>MANDAL/MUNCI. <span class="starColor">*</span></label>';
+							clonedInnerTemplate+='<label>MANDAL/MUNCI./Corp. <span class="starColor">*</span></label>';
 							clonedInnerTemplate+='<select  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls" id="mandalInnerId'+typeVal+''+counterId+''+innerWorkCount+'" attr_counterval="'+counterId+''+innerWorkCount+'" attr_type="'+typeVal+'" attr_type_change="Inner" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'">';
 								clonedInnerTemplate+='<option value="0">Select Mandal</option>';
 							clonedInnerTemplate+='</select><br><span class="mandalInnerId'+typeVal+''+counterId+''+innerWorkCount+'"></span>';
@@ -1681,8 +1681,8 @@ function buildPetitionDetails(result){
 						str+='<input   name="worksList[0].noOfWorks" value="'+result.noOfWorks+'"  type="text" class="form-control m_top5 height45" id="noofWork'+result.representationType+'" placeholder="Enter No Of Work"  onkeyUp="rebuildWorkDetails(this.id,this.value,\'total work \',\''+result.representationType+'\');">';
 				str+='</div>';
 				str+='<div class="col-sm-2">';
-					str+='<label>WORKS IN COST  <span class="starColor">*</span><span id="workCostId'+result.representationType+'"></span></label>';
-					str+='<input type="text"  name="worksList[0].estimateCost" value="'+result.estimateCost+'"  class="form-control m_top5 height45" id="workCost'+result.representationType+'" placeholder="Cost auto calculates "  onkeyUp="checkIsNumber(this.id,this.value);">';
+					str+='<label>WORKS IN COST  <span id="workCostId'+result.representationType+'"></span></label>';
+					str+='<input type="text"  name="worksList[0].estimateCost" readOnly="true" value="'+result.estimateCost+'"  class="form-control m_top5 height45" id="workCost'+result.representationType+'" placeholder="Cost auto calculates "  onkeyUp="checkIsNumber(this.id,this.value);">';
 				str+='</div>';
 		str+='</div>';
 		
@@ -1854,7 +1854,7 @@ function buildPetitionDetails(result){
 															str+='</select><br><span class="workTypeId'+result.representationType+''+i+''+j+'"></span>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
-															str+='<label>WORK IN COST <span class="starColor">*</span></label>';
+															str+='<label>WORK IN COST </label>';
 															str+='<input type="text"  value="'+result.subWorksList[i].subWorksList[j].estimateCost+'" name="worksList['+i+'].subWorksList['+j+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls" id="appendWorkCost'+result.representationType+''+i+''+j+'" placeholder="Enter Work Cost" attr_main_count="'+i+'" attr_inner_count="'+j+'"  onkeyUp="checkIsNumber(this.id,this.value);;validateAmount(this.value,this.id,\''+result.representationType+'\')"><br><span class="  ErrCls appendWorkCost'+result.representationType+''+i+''+j+'"></span>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
@@ -2446,20 +2446,20 @@ function validateAmount(value,fieldId,typeVal){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
 			if(parseInt(value) <=0){
-				$('.'+id+'').html("Invalid estimation cost entered. Please check once.");
-				return;
+				//$('.'+id+'').html("Invalid estimation cost entered. Please check once.");
+				//return;
 			}else{
 				enteredAmount = parseInt(enteredAmount)+parseInt(value);
 			}
 		}else{
-			$('.'+id+'').html("Invalid estimation cost entered. Please check once.");
-				return;
+			//$('.'+id+'').html("Invalid estimation cost entered. Please check once.");
+			//	return;
 		}
 	});
 	
 	if(enteredAmount>estimationAmount){
-		$('.'+fieldId+'').html("Total estimation cost reached. Please check once.");
-		$('#'+fieldId+'').val('');
+		//$('.'+fieldId+'').html("Total estimation cost reached. Please check once.");
+		//$('#'+fieldId+'').val('');
 	}
 }
 
@@ -2844,7 +2844,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		}		
 	}
 	
-	/*var totalRefCount=0;
+	/*
+	var totalRefCount=0;
 	$('#refCandidatesErr').html('');
 	$('.refCandidatesCls').each(function(){
 		var value = $(this).val();
@@ -2860,10 +2861,11 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		else 
 			$('#refCandidatesErr').html('Please add Self member details.');
 		
-	}*/
+	}
+	*/
 	
 	
-	var enteredAmount =parseInt(0.0);
+	var enteredAmount =parseInt(0);
 	$(".amountCls").each(function(){
 		var id = $(this).attr('id');
 		var value = $(this).val();
@@ -2880,13 +2882,13 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	var estimationAmount= $('#workCost'+typeVal+'').val();
 	if(estimationAmount != null && estimationAmount !='' && estimationAmount.length>0 && parseInt(estimationAmount)>0){
 		if((enteredAmount<estimationAmount) || (enteredAmount>estimationAmount)){
-			alert("Work wise total estimation cost not matched. Please check once.");
-			flag = false;
+			//alert("Work wise total estimation cost not matched. Please check once.");
+			//flag = false;
 		}
 	}else{
-		$('#workCost'+typeVal+'').val(enteredAmount);
+		//$('#workCost'+typeVal+'').val(enteredAmount);
 	}
-	
+	$('#workCost'+typeVal+'').val(enteredAmount);
 	completeWorkName = $("#workName"+typeVal).val();
 	noofWorks = $("#noofWork"+typeVal).val();	
 	workCost = $("#workCost"+typeVal).val();
@@ -2895,7 +2897,6 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		$("#completeWorkNameId"+typeVal).html("<h5 style='color:red;'>Please enter work name</h5>");
 		$('#saveButtonId').show();
 		flag = false;
-		//return;
 	}else{
 		$("#completeWorkNameId"+typeVal).html("");
 	}
@@ -2903,11 +2904,10 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		$("#noOfWorksId"+typeVal).html("<h5 style='color:red;'>Please enter no of works</h5>");
 		$('#saveButtonId').show();
 		flag = false;
-		//return;
 	}else{
 		$("#noOfWorksId"+typeVal).html("");
 	}
-	if(workCost == undefined || workCost == "undefined" || workCost === undefined || workCost.trim() == '' || workCost == null){
+	/*if(workCost == undefined || workCost == "undefined" || workCost === undefined || workCost.trim() == '' || workCost == null){
 		
 		$("#workCostId"+typeVal).html("<h5 style='color:red;'>Please enter work cost</h5>");
 		$('#saveButtonId').show();
@@ -2915,7 +2915,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		//return;
 	}else{
 		$("#workCostId"+typeVal).html("");
-	}
+	}*/
 	
 	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
 	if((parseInt(estimationWorksCount)>parseInt(globalInnerWorksCount)) || (parseInt(estimationWorksCount)<parseInt(globalInnerWorksCount))){ 
@@ -2971,12 +2971,12 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			}else{
 				$(".workTypeId"+typeVal+mainCount+innerCount).html("");
 			}			
-			if(appendWorkCost == 0 || appendWorkCost == null || appendWorkCost == ''){
+			/*if(appendWorkCost == 0 || appendWorkCost == null || appendWorkCost == ''){
 				$(".appendWorkCost"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
 				flag = false;
 			}else{
 				$(".appendWorkCost"+typeVal+mainCount+innerCount).html("");
-			}			
+			}*/	
 			if(appendWorkDetailsId == 0 || appendWorkDetailsId == null || appendWorkDetailsId == ''){
 				$(".appendWorkDetailsId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Details</h5>");
 				flag = false;
@@ -3356,12 +3356,11 @@ function getPetitionDesignationList(){
 
 function rebuildWorkDetails(id,value,type,reprType){
 	checkIsNumber(id,value);
+	/*	
 	if(value>0){
+		
 		if(!confirm("Are you sure want to change "+type+" Details ?")){
-			/*if(id.trim() == "total work")
-				$('#'+id+'').val(maxWorksCount);
-			else
-				$('#'+id+'').val(maxCost);*/
+			
 			$('#'+id+'').val('');
 			return;
 		}
@@ -3386,4 +3385,5 @@ function rebuildWorkDetails(id,value,type,reprType){
 		},2000);
 		
 	}
+	*/
 }

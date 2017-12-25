@@ -615,13 +615,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	public String setDataToAttribute(String existing,String newValue){
 		try {
-			if(commonMethodsUtilService.checkStringForNull(existing) != null && commonMethodsUtilService.checkStringForNull(newValue) != null && 
-					!existing.equalsIgnoreCase(newValue) )
+			if(existing == null)
+				return newValue;
+			else if(newValue != null && !newValue.isEmpty())
 				return newValue;
 		} catch (Exception e) {
 			LOG.error("Exception Occured in setDataToAttribute "+e.getMessage());
 		}
-		return null;
+		return existing;
 	}
 	public PmRepresentee saveRepresenteeDetails(PmRequestVO pmRequestVO,String type){
 		PmRepresentee pmRepresentee = null;
