@@ -195,9 +195,9 @@ $(document).bind('keypress', function(event) {
        $('#signinId').trigger('click');
      }  
 }); 
-$(document).click(function() {
+/*$(document).click(function() {
  $(".menu-data-cls").hide();
-});
+});*/
 </script>
 </body>
 </html>

@@ -28,8 +28,15 @@ public class NregsProjectsVO implements Serializable{
 	private String constituency;
 	private String mandal;
 	private String panchayat;
+	private List<NregsProjectsVO> subList1 = new ArrayList<NregsProjectsVO>();
 	
 	
+	public List<NregsProjectsVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<NregsProjectsVO> subList1) {
+		this.subList1 = subList1;
+	}
 	public String getState() {
 		return state;
 	}

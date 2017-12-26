@@ -442,7 +442,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public String convertingInputVOToString(InputVO inputVO){
 		String str = "";
 		try {
-			if(inputVO.getDivType() != null && !inputVO.getDivType().trim().equalsIgnoreCase("MonthWise Expenditure")){
+			//if(inputVO.getDivType() != null && !inputVO.getDivType().trim().equalsIgnoreCase("MonthWise Expenditure")){
 				if(inputVO.getLocationId() != null){
 					if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
 						if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
@@ -454,7 +454,7 @@ public class NREGSTCSService implements INREGSTCSService{
 						}
 					}
 				}
-			}
+			//}
 			
 				
 			str = "{";
@@ -3026,7 +3026,11 @@ public class NREGSTCSService implements INREGSTCSService{
 			}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
 				inputVO.setLocationId(districtDAO.getDistrictIdFromPRDistrictCode(inputVO.getLocationIdStr()));
 			}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
-				inputVO.setLocationId(constituencyDAO.getConstituencyIdFromPRConstituencyId(inputVO.getLocationIdStr()));
+				List<Object[]> lst = constituencyDAO.getConstituencyIdFromPRConstituencyId(inputVO.getLocationIdStr());
+				if(lst != null && !lst.isEmpty()){
+					inputVO.setLocationId(Long.valueOf(lst.get(0)[0] != null ? lst.get(0)[0].toString():"0"));
+					inputVO.setDistrictId(Long.valueOf(lst.get(0)[1] != null ? lst.get(0)[1].toString():"0"));
+				}
 			}
 			
 			List<NregaFAType> typeList = nregaFATypeDAO.getAll();
@@ -3069,6 +3073,20 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			if(locationMap != null)
 				returnList = new ArrayList<NregsProjectsVO>(locationMap.values());
+			
+			if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("district") || inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+					&& inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase("abstract")){
+				if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+					Long districtCount = nregaFAVacantPanchayatDAO.getLocationWiseEmptyVacencyCount("district", inputVO.getDistrictId());
+					NregsProjectsVO vo = new NregsProjectsVO();
+					vo.setCount(districtCount);
+					returnList.get(0).getSubList1().add(vo);
+				}
+				Long stateCount = nregaFAVacantPanchayatDAO.getLocationWiseEmptyVacencyCount("state", 1L);
+				NregsProjectsVO vo = new NregsProjectsVO();
+				vo.setCount(stateCount);
+				returnList.get(0).getSubList1().add(vo);
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseEmptyVacenciesDetails - NREGSTCSService service", e);
