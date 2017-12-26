@@ -1859,7 +1859,7 @@
 									<option value="0">Select Category</option>
 									<option value="1051">Praja sankalpa yatra</option>
 									<option value="1050">Counter on praja sankalpa yatra</option>
-									<option value="1063">KAPU RESERVATIONS - 5%</option>
+									<option value="1063">Kapu reservations - 5%</option>
 								</select>
 							</div>
 						</div>	
