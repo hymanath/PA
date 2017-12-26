@@ -190,7 +190,17 @@
 			</div>
 		</div>
 	</nav>
-	
+	<section class="navbar-section">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-3">
+					Note: Population In Thousands &
+						  Length in KMS
+				</div>
+				
+			</div>
+		</div>
+	</section>
 </header>
 <main>
 	<section>
@@ -198,12 +208,12 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
-						<h4>Works -  STATE LEVEL OVERVIEW</h4>
+						<h4>WORKS -  STATE LEVEL OVERVIEW</h4>
 					</div>
 					<div class="white-block" style="padding:10px;">	
 						<div class="row">
 							<div class="col-sm-5">
-								<hd style="padding:5px"><span class="chartTitleAlign">Works</span></h4><br/>
+								<hd style="padding:5px"><span class="chartTitleAlign">WORKS</span></h4><br/><br/><br/>
 								<div class="chart2" id="enclocationWiseChart" style="height:315px;"></div>
 							</div>
 							<div class="col-sm-7">
