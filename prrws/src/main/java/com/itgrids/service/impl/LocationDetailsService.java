@@ -177,7 +177,7 @@ public class LocationDetailsService implements ILocationDetailsService {
 				for(Object[] param : objects){
 					LocationVO vo = new LocationVO();
 					vo.setLocationId(Long.parseLong(commonMethodsUtilService.getStringValueForObject(param[0])));
-					String locationName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+					String locationName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getCapitalStringValueForObject(param[1]));
 					vo.setLocationName(locationName);
 					finalList.add(vo);
 				}
@@ -211,7 +211,7 @@ public class LocationDetailsService implements ILocationDetailsService {
 					KeyValueVO vo = new KeyValueVO();
 					String idStr="2" +commonMethodsUtilService.getStringValueForObject(objects[0]);
 					vo.setKey(commonMethodsUtilService.getLongValueForString(idStr));
-					vo.setValue(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					vo.setValue(commonMethodsUtilService.getCapitalStringValueForObject(objects[1]));
 					voList.add(vo);
 					tehsilIdsList.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				}
@@ -248,7 +248,7 @@ public class LocationDetailsService implements ILocationDetailsService {
 				KeyValueVO vo = new KeyValueVO();
 				String idStr= "1"+commonMethodsUtilService.getStringValueForObject(param[0]);
 				vo.setKey(commonMethodsUtilService.getLongValueForString(idStr));
-				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]) +" "+commonMethodsUtilService.getStringValueForObject(param[2]));
+				vo.setValue(commonMethodsUtilService.getCapitalStringValueForObject(param[1]) +" "+commonMethodsUtilService.getCapitalStringValueForObject(param[2]));
 				//vo.setElectionType(commonMethodsUtilService.getStringValueForObject(param[2]));
 				voList.add(vo);
 			}
@@ -274,7 +274,7 @@ public class LocationDetailsService implements ILocationDetailsService {
 					KeyValueVO vo = new KeyValueVO();
 					String idStr= "2"+commonMethodsUtilService.getStringValueForObject(param[0]);
 					vo.setKey(commonMethodsUtilService.getLongValueForString(idStr));
-					String panchaytName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+					String panchaytName = commonMethodsUtilService.getCapitalStringValueForObject(commonMethodsUtilService.getCapitalStringValueForObject(param[1]));
 					vo.setValue(panchaytName);
 					voList.add(vo);
 				}
@@ -338,12 +338,7 @@ public class LocationDetailsService implements ILocationDetailsService {
     			else if(searchType.trim().equalsIgnoreCase("refCandidateDesignations"))
     				petitionDetailsObjsList = pmDesignationDAO.getAllReferredCandidateDesignationList();
     			else if(searchType.trim().equalsIgnoreCase("petitionGivenRefCandidateDesignations")){
-    				petitionDetailsObjsList = pmDesignationDAO.getGivenPetitionCandidateDesignationList();
-    				List<Object[]> petitionReprDesignationsList = pmDesignationDAO.getGivenpetitionReprDesignationsList();
-    				if(!commonMethodsUtilService.isListOrSetValid(petitionDetailsObjsList))
-    					petitionDetailsObjsList =new ArrayList<Object[]>();
-    				if(commonMethodsUtilService.isListOrSetValid(petitionReprDesignationsList))
-    					petitionDetailsObjsList.addAll(petitionReprDesignationsList);
+    				;
     			}
     				
     		}
@@ -355,7 +350,7 @@ public class LocationDetailsService implements ILocationDetailsService {
     					KeyValueVO vo = new KeyValueVO();
         				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
         				//String DesigName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
-        				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+        				vo.setValue(param[1] != null ? param[1].toString().trim():"");
         				resultList.add(vo);
         				addedDesignationsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
     				}
@@ -385,7 +380,7 @@ public class LocationDetailsService implements ILocationDetailsService {
     			for(Object[] param: petitionDetailsObjsList){
     				KeyValueVO vo = new KeyValueVO();
     				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
-    				String Cname = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+    				String Cname = commonMethodsUtilService.getCapitalStringValueForObject(commonMethodsUtilService.getCapitalStringValueForObject(param[1]));
     				vo.setValue(Cname);
     				resultList.add(vo);
     			}
@@ -405,7 +400,7 @@ public List<KeyValueVO>  getPmSubjectList(Long deptId){
     			for(Object[] param: petitionDetailsObjsList){
     				KeyValueVO vo = new KeyValueVO();
     				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
-    				String subjectName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+    				String subjectName = commonMethodsUtilService.getStringValueForObject(commonMethodsUtilService.getStringValueForObject(param[1]));
     				vo.setValue(subjectName);
     				resultList.add(vo);
     			}
@@ -431,7 +426,7 @@ public List<KeyValueVO>  getPmSubSubjectList(Long subjectId){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();
 				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
-				String subSubjectName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+				String subSubjectName = commonMethodsUtilService.getStringValueForObject(commonMethodsUtilService.getStringValueForObject(param[1]));
 				vo.setValue(subSubjectName);
 				resultList.add(vo);
 			}
@@ -550,7 +545,7 @@ public List<KeyValueVO>  getPmStatusList(){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();
 				vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
-				vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+				vo.setValue(commonMethodsUtilService.getCapitalStringValueForObject(param[1]));
 				resultList.add(vo);
 			}
 		}
@@ -660,7 +655,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				for(Object[] param : conObjs ){
 					KeyValueVO vo = new KeyValueVO();
 					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
-					String constName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+					String constName = commonMethodsUtilService.getCapitalStringValueForObject(commonMethodsUtilService.getCapitalStringValueForObject(param[1]));
 					vo.setValue(constName);
 					finalList.add(vo);
 				}
@@ -689,7 +684,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				for(Object[] param : conObjs ){
 					KeyValueVO vo = new KeyValueVO();
 					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
-					String mandalName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+					String mandalName = commonMethodsUtilService.getCapitalStringValueForObject(commonMethodsUtilService.getCapitalStringValueForObject(param[1]));
 					vo.setValue(mandalName);
 					finalList.add(vo);
 				}

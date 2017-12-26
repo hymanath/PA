@@ -67,7 +67,7 @@ public class UserServiceImpl implements IUserService {
 		//User user = userDAO.loginAuthentication(userName, password);
 		Object[] userObj = userDAO.getUrlForMatchedCredentials(userName, password);
 		if(userObj != null && userObj.length > 0){
-			String url=commonMethodsUtilService.getStringValueForObject(userObj[0]);
+			String url=userObj[0] != null ? userObj[0].toString():"";
 			userId =commonMethodsUtilService.getLongValueForObject(userObj[1]);
 			if (url != null && url.trim().length() > 0) {
 				userVO.setUrl(url);
