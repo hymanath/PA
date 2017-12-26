@@ -434,10 +434,10 @@ $('#participatedCheckBoxId').change(function(){
 		}
 	});
         if(this.checked) {
-			getCandidateAndPartyWiseNewsChannals(type,0,"y");
+			getCandidateAndPartyWiseNewsChannals(type,categoryId,"y");
             getDayWiseCandidateCoverageTime(type,categoryId,"Y");
         }else{
-			getCandidateAndPartyWiseNewsChannals(type,0,"N");
+			getCandidateAndPartyWiseNewsChannals(type,categoryId,"N");
             getDayWiseCandidateCoverageTime(type,categoryId,"N");
 		}
  });
@@ -451,7 +451,7 @@ $('#participatedCheckBoxId').change(function(){
 		}
 	});
         if(this.checked) {
-			getCandidateAndPartyWiseNewsChannals(type,0,"N");
+			getCandidateAndPartyWiseNewsChannals(type,categoryId,"N");
             getDayWiseCandidateCoverageTime(type,categoryId,"N");
         }else{
 		}
