@@ -35,7 +35,7 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		//8-dCode,9-dname,10-ccode ,11-Cname,12-mCode,13-mname ,14-habcode,15-habname
 		sb.append("select model.rwsWork.workId,model.rwsWork.workName,model.rwsWork.workStatus,model.rwsWork.assetType,model.rwsWork.adminDate,model.rwsWork.groundedDate,model.rwsWork.targetDate,model.rwsWork.completedDate," +
 				" model.districtCode,model.districtName, model.constituencyCode,model.constituencyName,model.mandalCode,model.mandalName,model.habitationCode," +
-				"model.habitationName,model.rwsWork.sanctionedAmount, 01, 'AndraPradesh',model.rwsWork.stipulatedTargetDate from RwsWorkLocation model where model.rwsWork.workStatus != 'Not grounded' ");
+				"model.habitationName,model.rwsWork.sanctionedAmount, 01, 'AndraPradesh',model.rwsWork.stipulatedTargetDate,model.rwsWork.programCode,model.rwsWork.programName from RwsWorkLocation model where model.rwsWork.workStatus != 'Not grounded' ");
 		if(fromDate!= null && toDate!=null){
 			sb.append(" and model.rwsWork.adminDate between :fromDate and :toDate ");
 		}

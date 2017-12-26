@@ -467,22 +467,22 @@ public class PrENCService implements IPrENCService {
 	        					encTargetsVO.setTotPopu(encTargetsVO.getTotPopu()+json.getDouble("TOT_POPU"));
 	        					encTargetsVO.setTotWorks(encTargetsVO.getTotWorks()+ json.getLong("TOT_WORKS") );
 	        					encTargetsVO.setTotLength(encTargetsVO.getTotLength()+json.getDouble("TOT_LENGTH"));
-	        					encTargetsVO.setTotPer(encTargetsVO.getTotPer()+json.getLong("TOT_PER"));
+	        					encTargetsVO.setTotPer(encTargetsVO.getTotPer()+json.getDouble("TOT_PER"));
 	        					
 	        					encTargetsVO.setQ1Achv( encTargetsVO.getQ1Achv()+json.getLong("Q1_ACHV") );
-	        					encTargetsVO.setQ1Per(json.getLong("Q1_PER")+encTargetsVO.getQ1Per());
+	        					encTargetsVO.setQ1Per(json.getDouble("Q1_PER")+encTargetsVO.getQ1Per());
 	        					encTargetsVO.setQ1Target(json.getLong("Q1_TARGET")+encTargetsVO.getQ1Target());
 	        					
 	        					encTargetsVO.setQ2Achv(json.getLong("Q2_ACHV")+encTargetsVO.getQ2Achv());
-	        					encTargetsVO.setQ2Per(json.getLong("Q2_PER")+encTargetsVO.getQ2Per());
+	        					encTargetsVO.setQ2Per(json.getDouble("Q2_PER")+encTargetsVO.getQ2Per());
 	        					encTargetsVO.setQ2Target( json.getLong("Q2_TARGET")+encTargetsVO.getQ2Target());
 	        					
 	        					encTargetsVO.setQ3Achv(json.getLong("Q3_ACHV")+encTargetsVO.getQ3Achv());
-	        					encTargetsVO.setQ3Per(json.getLong("Q3_PER")+encTargetsVO.getQ3Per());
+	        					encTargetsVO.setQ3Per(json.getDouble("Q3_PER")+encTargetsVO.getQ3Per());
 	        					encTargetsVO.setQ3Target(json.getLong("Q3_TARGET")+encTargetsVO.getQ3Target());
 	        					
 	        					encTargetsVO.setQ4Target(json.getLong("Q4_TARGET")+encTargetsVO.getQ4Target());
-	        					encTargetsVO.setQ4Per(json.getLong("Q4_PER")+encTargetsVO.getQ4Per());
+	        					encTargetsVO.setQ4Per(json.getDouble("Q4_PER")+encTargetsVO.getQ4Per());
 	        					encTargetsVO.setQ4Achv(encTargetsVO.getQ4Achv()+json.getLong("Q4_ACHV"));
 	        					
 	        					encTargetsVO.setAgreementAmount(encTargetsVO.getAgreementAmount()+json.getDouble("AGREEMENT_AMOUNT"));
@@ -498,31 +498,39 @@ public class PrENCService implements IPrENCService {
 							        }
 						        	encTargetsVO.setTotAchv(encTargetsVO.getTotAchv()+json.getLong("TOT_ACHV"));
 		        					encTargetsVO.setTotTarget(encTargetsVO.getTotTarget()+json.getLong("TOT_TARGET"));
-		        					encTargetsVO.setTotPopu((double) Math.round(encTargetsVO.getTotPopu()+json.getDouble("TOT_POPU")));
+		        					encTargetsVO.setTotPopu(encTargetsVO.getTotPopu()+json.getDouble("TOT_POPU"));
 		        					encTargetsVO.setTotWorks(encTargetsVO.getTotWorks()+ json.getLong("TOT_WORKS") );
-		        					encTargetsVO.setTotLength((double) Math.round(encTargetsVO.getTotLength()+json.getDouble("TOT_LENGTH")));
-		        					encTargetsVO.setTotPer(encTargetsVO.getTotPer()+json.getLong("TOT_PER"));
+		        					encTargetsVO.setTotLength( encTargetsVO.getTotLength()+json.getDouble("TOT_LENGTH"));
+		        					encTargetsVO.setTotPer(encTargetsVO.getTotPer()+json.getDouble("TOT_PER"));
 		        					
 		        					encTargetsVO.setQ1Achv( encTargetsVO.getQ1Achv()+json.getLong("Q1_ACHV") );
-		        					encTargetsVO.setQ1Per(json.getLong("Q1_PER")+encTargetsVO.getQ1Per());
+		        					encTargetsVO.setQ1Per(json.getDouble("Q1_PER")+encTargetsVO.getQ1Per());
 		        					encTargetsVO.setQ1Target(json.getLong("Q1_TARGET")+encTargetsVO.getQ1Target());
 		        					
 		        					encTargetsVO.setQ2Achv(json.getLong("Q2_ACHV")+encTargetsVO.getQ2Achv());
-		        					encTargetsVO.setQ2Per(json.getLong("Q2_PER")+encTargetsVO.getQ2Per());
+		        					encTargetsVO.setQ2Per(json.getDouble("Q2_PER")+encTargetsVO.getQ2Per());
 		        					encTargetsVO.setQ2Target( json.getLong("Q2_TARGET")+encTargetsVO.getQ2Target());
 		        					
 		        					encTargetsVO.setQ3Achv(json.getLong("Q3_ACHV")+encTargetsVO.getQ3Achv());
-		        					encTargetsVO.setQ3Per(json.getLong("Q3_PER")+encTargetsVO.getQ3Per());
+		        					encTargetsVO.setQ3Per(json.getDouble("Q3_PER")+encTargetsVO.getQ3Per());
 		        					encTargetsVO.setQ3Target(json.getLong("Q3_TARGET")+encTargetsVO.getQ3Target());
 		        					
 		        					encTargetsVO.setQ4Target(json.getLong("Q4_TARGET")+encTargetsVO.getQ4Target());
-		        					encTargetsVO.setQ4Per(json.getLong("Q4_PER")+encTargetsVO.getQ4Per());
+		        					encTargetsVO.setQ4Per(json.getDouble("Q4_PER")+encTargetsVO.getQ4Per());
 		        					encTargetsVO.setQ4Achv(encTargetsVO.getQ4Achv()+json.getLong("Q4_ACHV"));
 		        					
-		        					encTargetsVO.setAgreementAmount((double) Math.round(encTargetsVO.getAgreementAmount()+json.getDouble("AGREEMENT_AMOUNT")));
+		        					encTargetsVO.setAgreementAmount(encTargetsVO.getAgreementAmount()+json.getDouble("AGREEMENT_AMOUNT"));
 							}
 						}
+						for (String name: locationMap.keySet()) {
+							EncTargetsVO vo = locationMap.get(name);
+							if(vo != null){
+								
+							}
+							
+						}
 						finalList.addAll(locationMap.values());
+						
 					}else{
 
 						for (int i = 0; i < array.length(); i++) {
@@ -540,22 +548,22 @@ public class PrENCService implements IPrENCService {
         					encTargetsVO.setTotPopu(encTargetsVO.getTotPopu()+json.getDouble("TOT_POPU"));
         					encTargetsVO.setTotWorks(encTargetsVO.getTotWorks()+ json.getLong("TOT_WORKS") );
         					encTargetsVO.setTotLength(encTargetsVO.getTotLength()+json.getDouble("TOT_LENGTH"));
-        					encTargetsVO.setTotPer(encTargetsVO.getTotPer()+json.getLong("TOT_PER"));
+        					encTargetsVO.setTotPer(encTargetsVO.getTotPer()+json.getDouble("TOT_PER"));
         					
         					encTargetsVO.setQ1Achv( encTargetsVO.getQ1Achv()+json.getLong("Q1_ACHV") );
-        					encTargetsVO.setQ1Per(json.getLong("Q1_PER")+encTargetsVO.getQ1Per());
+        					encTargetsVO.setQ1Per(json.getDouble("Q1_PER")+encTargetsVO.getQ1Per());
         					encTargetsVO.setQ1Target(json.getLong("Q1_TARGET")+encTargetsVO.getQ1Target());
         					
         					encTargetsVO.setQ2Achv(json.getLong("Q2_ACHV")+encTargetsVO.getQ2Achv());
-        					encTargetsVO.setQ2Per(json.getLong("Q2_PER")+encTargetsVO.getQ2Per());
+        					encTargetsVO.setQ2Per(json.getDouble("Q2_PER")+encTargetsVO.getQ2Per());
         					encTargetsVO.setQ2Target( json.getLong("Q2_TARGET")+encTargetsVO.getQ2Target());
         					
         					encTargetsVO.setQ3Achv(json.getLong("Q3_ACHV")+encTargetsVO.getQ3Achv());
-        					encTargetsVO.setQ3Per(json.getLong("Q3_PER")+encTargetsVO.getQ3Per());
+        					encTargetsVO.setQ3Per(json.getDouble("Q3_PER")+encTargetsVO.getQ3Per());
         					encTargetsVO.setQ3Target(json.getLong("Q3_TARGET")+encTargetsVO.getQ3Target());
         					
         					encTargetsVO.setQ4Target(json.getLong("Q4_TARGET")+encTargetsVO.getQ4Target());
-        					encTargetsVO.setQ4Per(json.getLong("Q4_PER")+encTargetsVO.getQ4Per());
+        					encTargetsVO.setQ4Per(json.getDouble("Q4_PER")+encTargetsVO.getQ4Per());
         					encTargetsVO.setQ4Achv(encTargetsVO.getQ4Achv()+json.getLong("Q4_ACHV"));
         					
         					encTargetsVO.setAgreementAmount(encTargetsVO.getAgreementAmount()+json.getDouble("AGREEMENT_AMOUNT"));

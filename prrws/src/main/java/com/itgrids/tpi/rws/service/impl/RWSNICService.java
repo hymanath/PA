@@ -4099,6 +4099,8 @@ public class RWSNICService implements IRWSNICService{
 					 rangeLevelName = "181-365 Days";
 				 } else if(daysDiff > 365L) {
 					 rangeLevelName = "More Than 1 Year";
+				 } else if(daysDiff == 0L && daysDiff <= 0L) {
+					 rangeLevelName = "0 Days";
 				 }
 			 }
 			
@@ -4145,7 +4147,7 @@ public class RWSNICService implements IRWSNICService{
 	
 	private List<IdNameVO> getRequiredTemplate() {
 		List<IdNameVO> resultList = new ArrayList<>(0);
-		String[] templateArr = {"1-30 Days","31-60 Days","61-90 Days","91-180 Days","181-365 Days","More Than 1 Year"};
+		String[] templateArr = {"0 Days","1-30 Days","31-60 Days","61-90 Days","91-180 Days","181-365 Days","More Than 1 Year"};
 		try {
 			IdNameVO cpwsVO = new IdNameVO();
 			cpwsVO.setAssetType("CPWS");
@@ -4722,6 +4724,8 @@ public class RWSNICService implements IRWSNICService{
 					workDetailsVO.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[14]));
 					workDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[15]));
 					workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[16]));
+					workDetailsVO.setProgramCode(commonMethodsUtilService.getStringValueForObject(param[20]));
+					workDetailsVO.setProgramName(commonMethodsUtilService.getStringValueForObject(param[21]));
 					
 					if(commonMethodsUtilService.getStringValueForObject(param[19]) != null && !commonMethodsUtilService.getStringValueForObject(param[19]).isEmpty() ){
 						workDetailsVO.setTargetDate(sdf1.format(sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[19]))));

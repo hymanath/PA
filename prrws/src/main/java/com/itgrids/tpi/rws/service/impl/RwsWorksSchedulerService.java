@@ -13,10 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.itgrids.dao.IEncWorksDAO;
 import com.itgrids.dao.IRwsWorkDAO;
 import com.itgrids.dao.IRwsWorkLocationDAO;
+import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.model.EncWorks;
 import com.itgrids.model.RwsWork;
 import com.itgrids.model.RwsWorkLocation;
 import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
@@ -39,6 +44,13 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 	
 	@Autowired
 	private IRwsWorkLocationDAO rwsWorkLocationDAO;
+	
+	@Autowired
+	private ITehsilDAO tehsilDAO;
+	
+	@Autowired
+	private IEncWorksDAO encWorksDAO;
+
 
 	@Override
 	public List<IdNameVO> getWorksDataInsertion(InputVO inputVO) {
@@ -75,8 +87,12 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 											RwsWork work =rwsWorkDAO.getWorkdetailsByIds(jObj.getString("workId"));
 											if(work != null){
 												if(work.getGroundedDate() == null || work.getCompletedDate() == null ||work.getCommissionedDate() == null || work.getStipulatedTargetDate() ==null){
-													if(work.getGroundedDate() == null && jObj.has("groundingDate") && !jObj.getString("groundingDate").equalsIgnoreCase("--")){
-														work.setGroundedDate(sdf.parse(jObj.has("groundingDate") ? jObj.getString("groundingDate") : null));
+													if(work.getGroundedDate() == null && jObj.has("groundingDate")){
+														 if(!jObj.getString("groundingDate").equalsIgnoreCase("--")){
+															 work.setGroundedDate(sdf.parse(jObj.has("groundingDate") ? jObj.getString("groundingDate") : null));
+														 }else{
+															 work.setGroundedDate(null);
+														 }
 													}
 													if(work.getCompletedDate() == null && jObj.has("completionDate")){
 														work.setCompletedDate(sff.parse(jObj.has("completionDate") ? jObj.getString("completionDate") : null));
@@ -84,8 +100,12 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 													if(work.getCommissionedDate() == null && jObj.has("commssionedDate")){
 														work.setCommissionedDate(sff.parse(jObj.has("commssionedDate") ? jObj.getString("commssionedDate") : null));
 													}
-													if(work.getStipulatedTargetDate() == null && jObj.has("stipulatedDate") && !jObj.getString("stipulatedDate").equalsIgnoreCase("--")){
-														work.setStipulatedTargetDate(sdf.parse(jObj.has("stipulatedDate") ? jObj.getString("stipulatedDate") : null));
+													if(work.getStipulatedTargetDate() == null && jObj.has("stipulatedDate")){
+														if(!jObj.getString("stipulatedDate").equalsIgnoreCase("--")){
+															work.setStipulatedTargetDate(sdf.parse(jObj.has("stipulatedDate") ? jObj.getString("stipulatedDate") : null));
+														}else{
+															work.setStipulatedTargetDate(null);
+														}
 													}
 													if(work.getCommissionedDate() == null && work.getCompletedDate() == null && work.getGroundedDate()!=null ){
 														work.setWorkStatus("Grounded");
@@ -93,6 +113,8 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 														work.setWorkStatus("Commissioned");
 													}else if(work.getCommissionedDate() == null && work.getCompletedDate() != null && work.getGroundedDate()!= null ){
 														work.setWorkStatus("Completed");
+													}else if(work.getCommissionedDate() == null && work.getCompletedDate() == null && work.getGroundedDate() ==null){
+														work.setWorkStatus("Not Grounded");
 													}
 													rwsWorkDAO.save(work);
 												}
@@ -188,37 +210,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 	}
 	
 	public boolean getWorkDetails2() {
-		 try {/*
-				DateFormat sff = new SimpleDateFormat("yyyy-MM-dd");
-			    WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAllWorkAdminDetails");	        
-				String authStringEnc = commonMethodsUtilService.getAuthenticationString("itgrids","Itgrids@123");	        
-				ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class);
-				
-				if(response.getStatus() != 200){
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-		 	    }else{
-		 	    	 String output = response.getEntity(String.class);
-		 	    	 if(output != null && !output.isEmpty()){
-		 	    		JSONArray finalArray = new JSONArray(output);
-		 	    		
-		 	    		for(int i=0;i<finalArray.length();i++){
-		 	    			
-		 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
-		 	    			RwsWork work =rwsWorkDAO.getWorkdetailsByIds(jObj.getString("workId"));
-		 	    			if(jObj.getString("typeOfAssestName").equalsIgnoreCase("PWS") || jObj.getString("typeOfAssestName").equalsIgnoreCase("CPWS")){
-		 	    				
-		 	    				if(work != null) {
-				 	    			
-				 	    			work.setAdminDate(sff.parse(jObj.getString("adminDate")));
-				 	    			
-				 	    			work = rwsWorkDAO.save(work);
-		 	    				}
-		 	    			}
-		 	    		}
-		 	    	 }
-		 	  }  
-				return true;
-		 */
+		 try {
 			 	DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				DateFormat sff = new SimpleDateFormat("yyyy-MM-dd");
 			 	Calendar calendar = Calendar.getInstance();
@@ -290,6 +282,71 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 			LOG.error("Exception Occured in prepareRequiredInputDetails() method, Exception - ",e);
 		}
 		return input;
+	}
+
+	@Override
+	public String getEncworkDataInsertion() {
+		
+		try{
+			DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			List<Object[]> locationData= tehsilDAO.getEncMandals();
+			for (Object[] objects : locationData) {
+				JsonObject object = new JsonObject();
+				JsonArray jsonarray = new JsonArray();
+				object.addProperty("MAND_CODE", commonMethodsUtilService.getLongValueForObject(objects[0]).toString());
+				jsonarray.add(object);
+				WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://predmis.ap.nic.in/RestWS/PredmisRoadService/WorkDetails");	     
+				ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class,jsonarray.toString());
+				
+				if(response.getStatus() != 200){
+			 	   	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	}else{
+			 		String output = response.getEntity(String.class);
+
+					if (output != null && !output.isEmpty()) {
+						JSONArray resultArray= new JSONArray(output);
+						JSONObject Obj = resultArray.getJSONObject(0);
+						JSONArray array=null;
+						array = Obj.has("result") ? Obj.getJSONArray("result"): null;
+						if(array !=null && array.length()> 0){
+							for (int i = 0; i < array.length(); i++) {
+								JSONObject json = array.getJSONObject(i);
+								EncWorks work = new EncWorks();
+								work.setWorkId(json.has("WORK_ID") ? json.getLong("WORK_ID"): 0l);
+								work.setSchemeId(json.has("SCHEME")? json.getLong("SCHEME"):0l);
+								work.setAgreementAmount(json.has("AGREEMENT_AMOUNT")? json.getLong("AGREEMENT_AMOUNT"):0l);
+								work.setTargetDate(json.has("TARGET_DATE")?  sdf.parse(json.getString("TARGET_DATE")):null);
+								work.setDitrictName(json.has("DIST_NAME")? json.getString("DIST_NAME"):"");
+								work.setAgrementDate(json.has("AGREEMENT_DATE")? sdf.parse(json.getString("AGREEMENT_DATE")):null);
+								work.setHabName(json.has("HABS")? json.getString("HABS"):"");
+								work.setAssemblyName(json.has("AC_NAME")? json.getString("AC_NAME"):"");
+								work.setMandalId(json.has("MAND_CODE")? json.getLong("MAND_CODE"):0l);
+								work.setParlimentId(json.has("PC_CODE")? json.getLong("PC_CODE"):0l);
+								work.setParlimentName(json.has("PC_NAME")? json.getString("PC_NAME"):"");
+								work.setAdminSanctionDate(json.has("ADMIN_SANC_DT")? sdf.parse(json.getString("ADMIN_SANC_DT")):null);
+								work.setWorkName(json.has("WORK_NAME")? json.getString("WORK_NAME"):"");
+								//work.setAdmin(json.getString("ADMIN_SANC_AMOUNT"));
+								work.setMandalName(json.has("MAND_NAME")? json.getString("MAND_NAME"):"");
+								work.setTechnicalsancAmount(json.has("TECHSAN_AMOUNT")? json.getLong("TECHSAN_AMOUNT"):0l);
+								work.setSchemeName(json.has("SCHEME_NAME")? json.getString("SCHEME_NAME"):"");
+								work.setDistrictId(json.has("DIST_CODE")? json.getLong( "DIST_CODE"):0l);
+								work.setAssemblyId(json.has("AC_CODE")? json.getLong("AC_CODE"):0l);
+								work.setGroundedDate(json.has("GROUND_DATE")? sdf.parse(json.getString("GROUND_DATE")):null);
+								work.setCompletionDate(json.has("DT_COMPLETED")? sdf.parse(json.getString("DT_COMPLETED")):null);
+								work.setTechSanctionDate(json.has("TECH_SANCTION_DATE")? sdf.parse(json.getString("TECH_SANCTION_DATE")): null);
+								work = encWorksDAO.save(work);
+								LOG.error(work.getEncWorkId());
+							}
+						}
+					}
+			 	}
+			}
+			return "Data inserted SuccessFully";
+		}catch(Exception e){
+			LOG.error("Exception Occured in getEncworkDataInsertion() method, Exception - ",e);
+			return e.getMessage();
+		}
+	
 	}	
 
 }
