@@ -4223,21 +4223,21 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 		
 		str+='<div class="col-sm-2  m_top10">';
 			str+='<div class="white_block_ITC">';
-				str+='<h4 class=""><b>Last Year<br/> Established</b></h4>';
+				str+='<h4 class=""><b>Established In<br/> Last Year</b></h4>';
 				str+='<h4 class="m_top10"><b>'+result.establishedLastYear+'</b></h4>';
 			str+='</div>';
 		str+='</div>';
 		
 		str+='<div class="col-sm-2  m_top10">';
 			str+='<div class="white_block_ITC">';
-				str+='<h4 class=""><b>This Year<br/> Established</b></h4>';
+				str+='<h4 class=""><b>Established In<br/> This Year</b></h4>';
 				str+='<h4 class="m_top10"><b>'+result.establishedThisYear+'</b></h4>';
 			str+='</div>';
 		str+='</div>';
 		
 		str+='<div class="col-sm-2  m_top10">';
 			str+='<div class="white_block_ITC">';
-				str+='<h4 class=""><b>Last 1 Month<br/> Established</b></h4>';
+				str+='<h4 class=""><b>Established In<br/> Last 1 Month</b></h4>';
 				str+='<h4 class="m_top10"><b>'+result.establishedLastOneMonth+'</b></h4>';
 			str+='</div>';
 		str+='</div>';
