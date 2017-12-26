@@ -21,7 +21,7 @@ public class PmRefCandidateDesignation {
 	private Long pmRefCandidateDesignationId;
 	private Long pmRefCandidateId;
 	private Long pmDesginationId;
-	private String is_active;
+	private String isActive;
 	private Date startDate;
 	private Date endDate;
 	private String isDeleted;
@@ -54,11 +54,11 @@ public class PmRefCandidateDesignation {
 		this.pmDesginationId = pmDesginationId;
 	}
 	@Column(name="is_active")
-	public String getIs_active() {
-		return is_active;
+	public String getIsActive() {
+		return isActive;
 	}
-	public void setIs_active(String is_active) {
-		this.is_active = is_active;
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 	@Column(name="start_date")
 	public Date getStartDate() {
