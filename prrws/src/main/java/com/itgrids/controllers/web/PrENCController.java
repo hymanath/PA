@@ -18,6 +18,7 @@ import com.itgrids.dto.EncVO;
 import com.itgrids.dto.EncWorksVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.service.IPrENCService;
+import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
 
 
 @EnableAutoConfiguration
@@ -31,6 +32,9 @@ public class PrENCController {
 
 	@Autowired
 	private IPrENCService prENCService;
+	
+	@Autowired
+	private IRwsWorksSchedulerService rwsWorksSchedulerService;
 	
 	@RequestMapping(value ="/EncDevelopmentDashboard", method = RequestMethod.GET)
     public String getEncDevelopmentDashboard(ModelMap model) {
@@ -86,6 +90,18 @@ public class PrENCController {
 			LOG.error("Exception raised at getEncTargetsAchievement - PrENCController", e);
 		}
 		return returnList;
+	}
+	
+	@PostMapping("/getEncWorksInsertion")
+	public @ResponseBody String  getEncWorksInsertion(){
+		String result = "false";
+		try {
+			result = rwsWorksSchedulerService.getEncworkDataInsertion();
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEncTargetsAchievement - PrENCController", e);
+		}
+		return result;
 	}
 }
 	

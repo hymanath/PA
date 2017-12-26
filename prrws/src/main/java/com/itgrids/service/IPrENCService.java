@@ -16,7 +16,5 @@ public interface IPrENCService {
 	public List<EncWorksVO> getLocationWiseWorksInformation(InputVO inputVO);
 	
 	public List<EncTargetsVO> getEncTargetsAchievement(InputVO inputVO);
-	
-	
 
 }
