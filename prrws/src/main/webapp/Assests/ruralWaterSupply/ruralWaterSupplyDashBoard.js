@@ -4904,15 +4904,12 @@
 		tableView+='</table>';
 		$("#modalSchemsTable").html(tableView);
 		$("#dataTableSchems").dataTable({
-			"paging":   false,
-			"info":     false,
-			"searching": false,
-			"autoWidth": true,
-			"order": [ 0, 'desc' ],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 				"<'row'<'col-sm-12'tr>>" +
 				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+				"order": [ 0, 'desc' ],
+				"iDisplayLength" : 15,
+				"aLengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
 			buttons: [
 				{
 					extend:    'csvHtml5',
