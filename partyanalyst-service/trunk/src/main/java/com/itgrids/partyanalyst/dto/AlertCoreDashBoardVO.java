@@ -28,6 +28,7 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private String category;
 	
 	private String createdDate;
+	private String createdTime;
 	private String updatedDate;
 	private Long statusId;
 	private String status;
@@ -503,6 +504,15 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
+	}
+
+	public String getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(String createdTime) {
+		this.createdTime = createdTime;
 	}	
+	
     	
 }  
