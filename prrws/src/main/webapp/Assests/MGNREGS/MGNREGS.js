@@ -5735,7 +5735,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			}else{
 				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
 			}
-			str+='<small class="text-center">Total Vacencies</small>';
+			str+='<small class="text-center">Total Vacancies</small>';
 			if(result[0].count != null && result[0].count != 0)
 			{
 				str+='<h1 class="text-center" style="font-size:25px">'+result[0].count+'</h1>';
@@ -5757,27 +5757,29 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					str+='</div>';
 				}
 			}
-				
-				/*str+='<div class="col-sm-4 text-center pad_left0">';
-					str+='<label>JA</label>';
-					if(result[0].thisMonth != null && result[0].thisMonth != 0)
-					{
-						str+='<h4>'+result[0].thisMonth+'</h4>';
-					}else{
-						str+='<h4>0</h4>';
-					}
-				str+='</div>';
-				str+='<div class="col-sm-4 text-center pad_left0">';
-					str+='<label>Mate</label>';
-					if(result[0].thisMonth != null && result[0].thisMonth != 0)
-					{
-						str+='<h4>'+result[0].thisMonth+'</h4>';
-					}else{
-						str+='<h4>0</h4>';
-					}
-				str+='</div>';*/
 			str+='</div>';
 		str+='</div>';
+		if(levelId == 3 || levelId == "3"){
+			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+				str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - VACANCIES</small>';
+				str+='<h2 class="text-center">'+result[0].subList1[0].count+'</h2>';
+			str+='</div>';
+		}
+		else if(levelId == 4 || levelId == "4"){
+			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+				str+='<small class="panel-block-white-title text-capitalize text-center">Total Vacancies</small>';
+				str+='<div class="row">';
+					str+='<div class="col-sm-6">';
+						str+='<p>District</p>';
+						str+='<h2 class="text-center">'+result[0].subList1[0].count+'</h2>';
+					str+='</div>';
+					str+='<div class="col-sm-6">';
+						str+='<p>State</p>';
+						str+='<h2 class="text-center">'+result[0].subList1[1].count+'</h2>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		}
 	} 
 	if(result != null && result.length > 0 && type != 'Payments' && type !='Field Man Days' && type != 'FA Vacancies')
 	{
