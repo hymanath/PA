@@ -134,7 +134,7 @@
 		<li expand-icon="debates" right-nav="true">debates</li>
 		<li expand-icon="news" right-nav="true">News - Print Media</li>
 		<li expand-icon="electronic" right-nav="true">News - electronic media</li>
-		<li expand-icon="prajaSankaplaYatra" right-nav="true">Praja Sankapla Yatra</li>
+		<li expand-icon="prajaSankaplaYatra" right-nav="true">Category Wise News</li>
 		<li expand-icon="EMCoverageTime" right-nav="true">EM Coverage Time</li>
 		<li expand-icon="kaizala" right-nav="true">kaizala</li>
 		<li expand-icon="pressmeet" right-nav="true">Press Meet</li>
@@ -1670,7 +1670,7 @@
 								<h4 class="panel-title text-capital" style="font-size:14px;">
 									<div>
 										<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-										<span id="prajaSankalpaYatraDivId">Praja Sankalpam Yatra News-</span> 
+										<span id="prajaSankalpaYatraDivId">Category Wise News-</span> 
 										<small id="prajaHeadDate" class="text-muted"></small>
 									</div>
 								</h4>
@@ -1852,8 +1852,8 @@
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<h5 class="module_OwnerCss">Module Owner : K Rajesh</h5>
 					</div>
-					<div class="row m_top10">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="EMCoverageTime">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock m_top10" expand-block-inner="EMCoverageTime">
 							<div class="col-sm-5">
 								<select class="form-control chosen-select" id="categoryEmId">
 									<option value="0">Select Category</option>
@@ -1873,9 +1873,13 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 dayWiseTimeBlock" >
-							<div id="EMCoverageTimeDayWiseDivId"></div>
-						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="EMCoverageTime" style="display: none;">
+								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right EMCoverageTimeBlocksIcon" title="Click here for more"></i>
+							</div>	
+							<div class="col-md-12 col-xs-12 col-sm-12 moreEMCoverageTimeBlocksDetailed m_top10"  expand-block-more="EMCoverageTime" style="display:none;">
+								<div id="EMCoverageTimeDayWiseDivId"></div>
+							</div>
+							
 					</div>
 				</div>
 			</div>
@@ -5680,8 +5684,6 @@ $("[expand-icon]").click(function(){
 			getChannelWisePartiesAnalysis(globalcategoryId);
 		}else if(blockName == 'kaizala'){
 			getUserTypeWiseKaizalaCommitteeMemberDetailsCnt();
-		}else if(blockName == 'EMCoverageTime'){
-			ggetDayWiseCandidateCoverageTime("candidate",0,'N'); 
 		}
 	}else if(iconClass == 'glyphicon glyphicon-resize-small')
 	{
@@ -6076,6 +6078,7 @@ var globalImages;
 		getBoothCadreEnrolmentYears();
 	});
 	getLoggedInUserStructure();
+	
 	onLoadCalls();
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();

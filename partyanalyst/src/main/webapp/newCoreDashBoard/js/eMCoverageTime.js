@@ -46,17 +46,7 @@ $('#dateRangeEMCoverageTimeId').on('apply.daterangepicker', function(ev, picker)
 	currentToDate = picker.endDate.format('DD-MM-YYYY');
 	$("#EMCoverageTimeHeadDate").html("("+picker.startDate.format("DD/MM/YY")+" to "+picker.endDate.format("DD/MM/YY")+")");
 	onLoadEmCoverageTimeCalls();
-	if($(".EMCoverageTimeIconExpand").find("i").hasClass("glyphicon glyphicon-resize-small" )){
-		$(".dayWiseTimeBlock").show();
-		var categoryId = $("#categoryEmId").val();
-		var type = '';
-		$(".EMCoverageTimeCls").each(function(){
-			if (this.checked) {
-				type = $(this).val();
-			}
-		});
-		//getDayWiseCandidateCoverageTime(type,categoryId,"N"); // Main Block right expand
-	}
+	
 	
 });
 
@@ -77,7 +67,9 @@ function onLoadEmCoverageTimeCalls(){
 	});
 	var categoryId = $("#categoryEmId").val();
 	getCandidateAndPartyWiseNewsChannals(type,categoryId,checkedVal); //Main Block 
-	getDayWiseCandidateCoverageTime(type,categoryId,checkedVal); // Main Block right expand
+	if($(".EMCoverageTimeBlocksIcon").hasClass("expandBlockEm" )){
+		getDayWiseCandidateCoverageTime(type,categoryId,checkedVal);
+	}
 	
 }
 $(document).on("click",".EMCoverageTimeCls",function(){
@@ -97,7 +89,10 @@ $(document).on("click",".EMCoverageTimeCls",function(){
 		}
 	});
 	getCandidateAndPartyWiseNewsChannals(type,categoryId,checkedVal);
-	getDayWiseCandidateCoverageTime(type,categoryId,checkedVal); 
+	if($(".EMCoverageTimeBlocksIcon").hasClass("expandBlockEm" )){
+		getDayWiseCandidateCoverageTime(type,categoryId,checkedVal);
+	}
+	
 });
 $(document).on("click",".EMCoverageTimeIconExpand",function(){
 	var type ='';
@@ -115,13 +110,11 @@ $(document).on("click",".EMCoverageTimeIconExpand",function(){
 		}
 	});
 	var categoryId = $("#categoryEmId").val();
-	if($(this).find("i").hasClass("glyphicon glyphicon-resize-small" )){
-		$(".dayWiseTimeBlock").show();
-		getDayWiseCandidateCoverageTime(type,categoryId,checkedVal); // Main Block right expand
-		getCandidateAndPartyWiseNewsChannals(type,categoryId,checkedVal);
-	}else{
-		$(".dayWiseTimeBlock").hide();
+	getCandidateAndPartyWiseNewsChannals(type,categoryId,checkedVal);
+	if($(".EMCoverageTimeBlocksIcon").hasClass("expandBlockEm" )){
+		getDayWiseCandidateCoverageTime(type,categoryId,checkedVal);
 	}
+	
 });
 $(document).on("change","#categoryEmId",function(){
 	var checkedVal;
@@ -140,7 +133,10 @@ $(document).on("change","#categoryEmId",function(){
 		}
 	});
 	getCandidateAndPartyWiseNewsChannals(type,categoryId,checkedVal);
-	getDayWiseCandidateCoverageTime(type,categoryId,checkedVal); 
+	if($(".EMCoverageTimeBlocksIcon").hasClass("expandBlockEm" )){
+		getDayWiseCandidateCoverageTime(type,categoryId,checkedVal);
+	}
+	
 });
 function getCandidateAndPartyWiseNewsChannals(type,categoryId,isParticipated){
 	$("#EMCoverageTimeSummaryDivId").html(spinner);
@@ -481,4 +477,30 @@ $(document).on("click",".emctClickCls",function(){
 		
 		window.open('showElectronicBulletinsAction.action?organizationId='+candidateId+'&benefitId='+benefitId+'&categoryId='+categoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+channelId+'&type='+type+'&orgType='+participate+'&partyId='+partyId+'&stIdx=0&edIdx=6&callFrom=EMCT');
 		
+});
+$(document).on("click",".EMCoverageTimeBlocksIcon",function(){
+		$(this).addClass("expandBlockEm");
+		$(".moreEMCoverageTimeBlocksDetailed").show(); 
+		var categoryId = $("#categoryEmId").val();
+		var type = '';
+		var checkedVal;
+		$(".EMCoverageTimeCls").each(function(){
+			if (this.checked) {
+				type = $(this).val();
+			}
+		});
+		$(".participatedCheckCls").each(function(){
+			if (this.checked) {
+				checkedVal = "Y";
+			}else{
+				checkedVal = "N";
+			}
+		});
+		getDayWiseCandidateCoverageTime(type,categoryId,checkedVal);
+		 
+});
+$(document).on("click",".expandBlockEm",function(){
+		$(this).removeClass("expandBlockEm");
+		$(".moreEMCoverageTimeBlocksDetailed").hide(); 
+		 
 });
