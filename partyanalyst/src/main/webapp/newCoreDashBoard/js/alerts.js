@@ -544,7 +544,7 @@
 			str+='<tr>';
              str+='<th>Alert Source</th>';
              str+='<th>Title</th>';
-             str+='<th>Created Date</th>';
+             str+='<th>Created Time</th>';
 			 str+='<th>Last Updated Date</th>';
 			 str+='<th>Current Status</th>'	 
 			 str+='<th>LAG Days</th>';
@@ -564,9 +564,9 @@
 				str+='<td class="descAlertCls" style="cursor:pointer;" attr_alert_status="'+result[i].status+'" attr_alert_id="'+result[i].id+'"><strong><u>'+result[i].title+'</u></strong></td>';         
 			}else{
 				str+='<td> - </td>';     
-			}
-			if(result[i].createdDate != null && result[i].createdDate.length > 0){
-				str+='<td>'+result[i].createdDate+'</td>';      
+			} //createdDate
+			if(result[i].createdTime != null && result[i].createdTime.length > 0){
+				str+='<td>'+result[i].createdTime+'</td>';      
 			}else{
 				str+='<td> - </td>';  
 			}
