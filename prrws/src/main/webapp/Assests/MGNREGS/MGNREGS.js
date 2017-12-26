@@ -1353,7 +1353,12 @@ function overviewData(divId,levelId,locationId)
 							}else if(divId == 'GH')
 							{
 								collapse+='<h4 class="panel-title text-capitalize">Greening Of Hillocks overview</h4>';
-							}else{
+							}
+							else if(divId == 'UGDrainage')
+							{
+								collapse+='<h4 class="panel-title text-capitalize">UG Drainage overview</h4>';
+							}
+							else{
 								collapse+='<h4 class="panel-title text-capitalize">'+divId+' overview</h4>';
 							}
 								
@@ -5881,6 +5886,10 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}else if(type == 'NTR Rural House')
 					{
 						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="NTR IHHL">NTR IHHL</h4>';
+					}
+					else if(type == 'UGDrainage')
+					{
+						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="UG Drainage">UG Drainage</h4>';
 					}
 					else if(type == 'Agriculture Activities')
 					{
