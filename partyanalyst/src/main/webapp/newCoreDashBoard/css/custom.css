@@ -831,7 +831,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin: auto;
     width: 100%;
 }
-.moreBlocksIcon, .moreTrainingBlocksIcon, .moreMeetingsBlocksIcon, .moreDebatesBlocksIcon, .morenewsBlocksIcon, .moreTrainingCampBlocksIcon, .moreEventsBlocksIcon, .moreAttBlocksIcon, .moreBlocksCadreIcon, .moreEmnBlocksIcon ,.moreToursBlocksIcon ,.moreNewToursBlocksIcon,.moreMeetingsBlocksIconMulti,.moreCadreInsuranceIcon,.moreNewsPrajaSankalpaBlocksIcon,.morekaizalaBlocksIcon,.moreTrainingCampInfoBlocksIcon{
+.moreBlocksIcon, .moreTrainingBlocksIcon, .moreMeetingsBlocksIcon, .moreDebatesBlocksIcon, .morenewsBlocksIcon, .moreTrainingCampBlocksIcon, .moreEventsBlocksIcon, .moreAttBlocksIcon, .moreBlocksCadreIcon, .moreEmnBlocksIcon ,.moreToursBlocksIcon ,.moreNewToursBlocksIcon,.moreMeetingsBlocksIconMulti,.moreCadreInsuranceIcon,.moreNewsPrajaSankalpaBlocksIcon,.morekaizalaBlocksIcon,.moreTrainingCampInfoBlocksIcon,.EMCoverageTimeBlocksIcon{
     cursor: pointer;
     font-size: 22px;
 }
