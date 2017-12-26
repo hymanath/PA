@@ -19,7 +19,7 @@ function initializeFileUploadMainBlock(typeVal,candidateId) {
                                     itemStr+='<li>{{fi-progressBar}}</li>';
                                 itemStr+='</ul>';
                                 itemStr+='<ul class="list-inline pull-right">';
-                                    itemStr+='<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>';
+                                    itemStr+='<li><span class="tooltipCls" data-toggle="tooltip" data-placement="top" title="Remove Work Document"><a class="icon-jfi-trash jFiler-item-trash-action"></a></span></li>';
                                 itemStr+='</ul>';
                             itemStr+='</div>';
                         itemStr+='</div>';
@@ -43,7 +43,7 @@ function initializeFileUploadMainBlock(typeVal,candidateId) {
 							itemAppendStr+='<li><span class="jFiler-item-others">{{fi-icon}}</span></li>';
 						itemAppendStr+='</ul>';
 						itemAppendStr+='<ul class="list-inline pull-right">';
-							itemAppendStr+='<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>';
+							itemAppendStr+='<li><a class="icon-jfi-trash jFiler-item-trash-action"><i class="tooltipCls" data-toggle="tooltip" data-placement="top" title="Remove Work Document"></i></a></li>';
 						itemAppendStr+='</ul>';
 					itemAppendStr+='</div>';
 				itemAppendStr+='</div>';
@@ -139,6 +139,7 @@ function initializeFileUploadMainBlock(typeVal,candidateId) {
         }
 		
 	});
+	$('.tooltipCls').tooltip();
 	/*var filerKit = $("#filer_input3").prop("jFiler");
 	filerKit.reset();*/
 	}

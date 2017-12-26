@@ -161,7 +161,7 @@
 	  <div class="modal-dialog" role="document" style="width:90%;margin:auto">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close modalCloseCls" data-dismiss="modal" title="Close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" style="font-weight: bold">CANDIDATE SEARCH : </h4> 
 			 </div>
 		  <div class="modal-body">

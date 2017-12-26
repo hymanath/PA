@@ -495,7 +495,7 @@ $(document).on("click",".ccccc",function(){
 	return;
 });
 $(document).on("click",".showRemoveIcon",function(){
-	if(!confirm("Are you sure want to delete this reffaral memeber?"))
+	if(!confirm("Are you sure want to delete this referral memeber?"))
 		return;
 	var typeVal = $(this).attr("attr_type");
 	var candidateId = $(this).attr("attr_candidate_id");
@@ -1396,12 +1396,12 @@ function buildPetitionDetails(result){
 				str+='</div>';
 				*/
 				str+='<div class="col-sm-3">';
-					str+='<h6>NAME</h6>';
+					str+='<h6>NAME<span class="" style="color:red;">*</span></h6>';
 					str+='<input type="text" readOnly="true" name="name" value="'+result.representeeDetailsList[i].name+'" class="form-control m_top10 height45" id="name'+result.representationType+'" placeholder="Enter Name">';
 					str+='<span class="ErrCls" id="nameErr'+result.representationType+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
-					str+='<h6>MOBILE NO</h6>';
+					str+='<h6>MOBILE NO<span class="" style="color:red;">*</span></h6>';
 					str+='<input type="text" name="mobileNO"  maxlength="10" value="'+result.representeeDetailsList[i].mobileNO+'"  class="form-control m_top10 height45" id="mobileNumber'+result.representationType+'" placeholder="Enter Mobile Number" onkeyUp="checkIsNumber(this.id,this.value);">';	
 					str+='<span class="ErrCls" id="mobileNumberErr'+result.representationType+'" ></span>';				
 				str+='</div>';
@@ -1414,7 +1414,7 @@ function buildPetitionDetails(result){
 			str+='</div>';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-3">';	
-					str+='<h6>DISTRICT</h6>';
+					str+='<h6>DISTRICT<span class="" style="color:red;">*</span></h6>';
 					str+='<select   name="addressVO.districtId" class="form-control chosen-select m_top10" id="district'+result.representationType+'">';
 					str+='<option value="0"> Select District </option>';
 						for(var dis in globaldistrictList){
@@ -1428,7 +1428,7 @@ function buildPetitionDetails(result){
 				str+='<span class="ErrCls" id="districtErr'+result.representationType+'"></span>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';	
-					str+='<h6>CONSTITUENCY</h6>';
+					str+='<h6>CONSTITUENCY<span class="" style="color:red;">*</span></h6>';
 					str+='<select  name="addressVO.assemblyId"   class="form-control chosen-select m_top10" id="constituency'+result.representationType+'">';
 					str+='<option value="0"> Select Constituency </option>';
 						for(var c in result.representeeDetailsList[0].addressVO.constituencyList){
@@ -1443,7 +1443,7 @@ function buildPetitionDetails(result){
 					
 				str+='</div>';
 				str+='<div class="col-sm-3">';	
-					str+='<h6>MANDAL/MUNCI.</h6>';
+					str+='<h6>MANDAL/MUNCI<span class="" style="color:red;">*</span></h6>';
 					str+='<select   name="addressVO.tehsilId"   class="form-control chosen-select m_top10" id="mandal'+result.representationType+'">';
 					str+='<option value="0"> Select Mandal/Munci./Corp. </option>';
 						for(var c in result.representeeDetailsList[0].addressVO.mandalsList){
@@ -1458,7 +1458,7 @@ function buildPetitionDetails(result){
 				str+='</div>';
 			
 				str+='<div class="col-sm-3">';	
-					str+='<h6>PANCHAYAT</h6>';
+					str+='<h6>PANCHAYAT<span class="" style="color:red;">*</span></h6>';
 					str+='<select   name="addressVO.panchayatId"  class="form-control chosen-select m_top10" id="panchayat'+result.representationType+'">';
 					str+='<option value="0"> Select Panchayat </option>';
 						for(var c in result.representeeDetailsList[0].addressVO.panchaytsList){
@@ -1474,7 +1474,7 @@ function buildPetitionDetails(result){
 			str+='</div>';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-sm-3">';	
-				str+='<h6>REPRESENTEE DESIGNATION.</h6>';
+				str+='<h6>REPRESENTEE DESIGNATION<span class="" style="color:red;">*</span></h6>';
 				str+='<select   name="representeeDesignationId"  class="form-control chosen-select m_top10" id="designation'+result.representationType+'">';
 				str+='<option value="0"> Select Designation </option>';
 				if(globalDesignationList != null && globalDesignationList.length>0){
