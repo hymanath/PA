@@ -6,7 +6,7 @@ $("header").on("click",".menu-cls",function(e){
 $(document).on("click",function(){
 	$(".menu-data-cls").hide();
 });
-
+$(".tooltipCls").tooltip();
 var alreadyCandidateId=[];
 var searchCandidateIds=[];
 var diffArr=[];
@@ -532,6 +532,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		str+='</div>';
 		
 	$("#"+typeVal+"DetailsDivId").html(str);
+	
 	initializeFileProjDoc(typeVal);
 	buildTemplateWorkDetails(typeVal);
 }
@@ -691,6 +692,8 @@ $(document).on("click",".candidateAddedView",function(){
 	$(".showRemoveIcon").attr("attr_candidateId",candidateId)
 	$("#candidateDetails"+typeVal+"DivId").find(".showRemoveIcon").show();
 	initializeFileUploadMainBlock(typeVal,candidateId);
+	
+
 });
 
 $(document).on("click",".ccccc",function(){
@@ -959,8 +962,8 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 					str+='<div class="bgColorCandidatesView candidateAddedView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidate'+typeVal+''+result[i].referrerCandidateId+'">';
 					
 					str+='<div class="row">';
-					str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
-					str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+					str+='<div class="pull-right showRemoveIcon removeTooltipCls" title="Remove Referral Member" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;" data-toggle="tooltip" data-placement="top"><i class="glyphicon glyphicon-remove"></i></div>';
+					str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span class="tooltipCls" data-toggle="tooltip" data-placement="top" title="Unselected Member"><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
 					
 					if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
 						str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
@@ -1040,6 +1043,9 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 		str+='</table>';
 		str+='</div>';
 	$("#candidateDetailsDivId").html(str);
+	$(".tooltipCls").tooltip();
+	//$(".removeTooltipCls").tooltip();
+	
 	$('#candidatesTab').dataTable({
 		"paging":   true,
 		"info":     false,
@@ -1383,7 +1389,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 	//counterId = 0;
 	var tempcounterId=1;
 	clonedTemplate+='<div class="col-sm-12" cloned_block_'+typeVal+'='+counterappendId+' id="mainWorkDivId'+counterappendId+''+blockId+'">';
-	clonedTemplate+='<div class="pull-right removeWorkCls" attr_id="mainWorkDivId'+counterappendId+''+blockId+'" attr_type="self" attr_candidateid="1"><i class="glyphicon glyphicon-remove"></i></div>';
+	clonedTemplate+='<div class="pull-right removeWorkCls" attr_id="mainWorkDivId'+counterappendId+''+blockId+'" attr_type="self" attr_candidateid="1"><span class="tooltipCls" data-toggle="tooltip" aria-hidden="true" data-placement="right" title="Remove Works"><i class="glyphicon glyphicon-remove" style="cursor:pointer;"></i></span></div>';
 		clonedTemplate+='<div style="border:3px solid #dddddd;padding:10px;">';
 			clonedTemplate+='<div  cloned_block_'+typeVal+'='+counterappendId+'>';
 				//clonedTemplate+='<h3 class="panel-title f_22">WORK TYPE '+counterId+'</h3>';
@@ -1491,6 +1497,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId){
 	clonedTemplate+='</div>';
 	//counterId = tempcounterId;
 	tempcounterId=tempcounterId+1;
+	
 	return clonedTemplate;
 	
 }
@@ -1541,7 +1548,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 	var clonedInnerTemplate='';
 	clonedInnerTemplate+='<div class="m_top10" >';
 		clonedInnerTemplate+='<div class="col-sm-12 m_top10" >';
-		clonedInnerTemplate+='<div class="pull-right removeWorkCls" attr_id="workDivId'+globalWorkTypeCount+''+innerWorkCount+'" attr_type="self" attr_candidateid="1"><i class="glyphicon glyphicon-remove"></i></div>';
+		clonedInnerTemplate+='<div class="pull-right removeWorkCls" attr_id="workDivId'+globalWorkTypeCount+''+innerWorkCount+'" attr_type="self" attr_candidateid="1"><span class="tooltipCls" data-toggle="tooltip" data-placement="top" title="Remove This Work"><i class="glyphicon glyphicon-remove" style="cursor:pointer;"></i></span></div>';
 			clonedInnerTemplate+='<div class="bg_color_view" id="workDivId'+globalWorkTypeCount+''+innerWorkCount+'">';
 				//clonedInnerTemplate+='<h3 class="panel-title f_16 font_weight"> WORK </h3>';
 				clonedInnerTemplate+='<div class="row m_top10" >';
