@@ -220,7 +220,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 	var str='';
 	str+='<div class="col-sm-12">';
 				str+='<div class="dropdown">';
-			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-top:-27px;color: #8341D7;margin-right:60px;" id="surveyDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Survey Details Location Wise">&#9432;</span>';
+			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-top:-27px;color: #8341D7;margin-right:10px;" id="surveyDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Survey Details Location Wise">&#9432;</span>';
 				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar arrow_box_top_led" aria-labelledby="surveyDropdownMenu" style="margin-right: -10px">';
 				str+='<div class="poles_block">';
 					str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
@@ -465,7 +465,7 @@ function buildBasicLedOverviewDetails(result)
 			
 		
 		str+='<div class="dropdown">';
-			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-right:60px;" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
+			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-right:10px;" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Wattage Details">&#9432;</span>';
 				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar arrow_box_top_led" aria-labelledby="dropdownMenu" style="margin-top: 32px;">';
 				str+='<div class="poles_block">';
 				str+='<ul class="nav navbar-nav">';
@@ -2262,4 +2262,4 @@ function buildnewAddedLightsDetails(result){
 	str+='</table>';
 	str+='</div>';
 	$("#newAddedLightsSummary").html(str);
-}
+}s
