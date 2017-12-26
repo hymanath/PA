@@ -74,6 +74,24 @@ public class CommonMethodsUtilService {
 		return null;
 	}
 	
+	public String getCapitalStringValueForObject(Object param)
+	{
+		try {
+			if(param != null && !param.toString().isEmpty())
+			{
+				return toConvertStringToTitleCase(param.toString().trim());
+			}
+			else
+			{
+				return "";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getStringValueForObject() in CommonUtilService class .",e);
+		}
+		return null;
+	}
+	
+	
 	public Long getLongValueForObject(Object param)
 	{
 		try {
