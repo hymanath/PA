@@ -69,4 +69,31 @@ public class NregaFAVacantPanchayatDAO extends GenericDaoHibernate<NregaFAVacant
 		
 		return query.list();
 	}
+	
+	public Long getLocationWiseEmptyVacencyCount(String locationType,Long locationId){
+		/*
+		 * select la.state_id,t.nrega_fa_type_id,t.type,sum(vp.no_of_vacant)
+				from nrega_fa_vacant_panchayat vp,nrega_fa_type t,location_address la
+				where vp.nrega_fa_type_id = t.nrega_fa_type_id
+				and vp.location_address_id = la.location_address_id
+				and is_filled = 'N' and la.state_id = 1
+				group by la.state_id,t.nrega_fa_type_id;
+		 */
+		StringBuilder sb = new StringBuilder();
+		sb.append("select sum(model.noOfVacant)");
+		sb.append(" from NregaFAVacantPanchayat model"
+				+ " where model.isFilled = 'N'");
+		
+		if(locationType != null && locationType.trim().equalsIgnoreCase("state") && locationId != null && locationId > 0L)
+			sb.append(" and model.locationAddress.state.stateId = :locationId");
+		else if(locationType != null && locationType.trim().equalsIgnoreCase("district") && locationId != null && locationId > 0L)
+			sb.append(" and model.locationAddress.district.districtId = :locationId");
+		else if(locationType != null && locationType.trim().equalsIgnoreCase("constituency") && locationId != null && locationId > 0L)
+			sb.append(" and model.locationAddress.constituency.constituencyId = :locationId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("locationId", locationId);
+		
+		return (Long) query.uniqueResult();
+	}
 }
