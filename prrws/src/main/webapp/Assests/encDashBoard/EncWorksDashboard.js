@@ -240,24 +240,29 @@ function buildLocationWiseWorksGraph(result){
 				
 			}, {
 				name: 'Techincal Sancationed',
-				y: result[0].technicallySanctionedCount
+				y: result[0].technicallySanctionedCount,
+				color:'#418CF0	'
 			},{
 				name: 'Entrusted',
 				y: result[0].totalWorksEntrusted,
+				color:'#FFBF00'
 				
 			},{
 				name: 'Grounded',
-				y: result[0].groundedCount
+				y: result[0].groundedCount,
+				color:'#ACFA58'
 			},{
 				name: 'UnderProcess',
-				y: result[0].underProcessCount
+				y: result[0].underProcessCount,
+				color:'#FA5858'
 			},{
-				name:'Conmpleted',
-				y:result[0].completedCount
+				name:'Completed',
+				y:result[0].completedCount,
+				color:'#009999'
 			},{
 				name: 'Not Grounded',
 				y: result[0].notGrounded,
-				color:'red'
+				color:'#DF013A'
 			}]
 		}]
 	});
@@ -426,25 +431,31 @@ function buildGraph(result)	{
 						}else if(blockId == 'mandallevelBlockId'){
 							table+='<th rowspan="2">MANDALS</th>';
 						}
-						table+='<th colspan="4" class="text-center">TOTAL</th>';
-						table+='<th colspan="2" class="text-center">QUERTER 1</th>';
-						table+='<th colspan="2" class="text-center">QUERTER 2</th>';
-						table+='<th colspan="2" class="text-center">QUERTER 3</th>';
-						table+='<th colspan="2" class="text-center">QUERTER 4</th>';
+						table+='<th colspan="6" class="text-center">TOTAL</th>';
+						table+='<th colspan="3" class="text-center">QUERTER 1</th>';
+						table+='<th colspan="3" class="text-center">QUERTER 2</th>';
+						table+='<th colspan="3" class="text-center">QUERTER 3</th>';
+						table+='<th colspan="3" class="text-center">QUERTER 4</th>';
 					table+='</tr>';
 					table+='<tr>';
-						table+='<th>TOTAL POPULATION</th>';
 						table+='<th>TOTAL WORKS</th>';
-						table+='<th>TOTAL LENGTH</th>';
-						table+='<th>TOTAL PERCENTAGE</th>';
 						table+='<th>TARGET</th>';
 						table+='<th>ACHIEVEMENT</th>';
+						table+='<th>%</th>';
+						table+='<th>LENGTH</th>'
+						table+='<th>BENFITED POPULATION</th>';
 						table+='<th>TARGET</th>';
 						table+='<th>ACHIEVEMENT</th>';
+						table+='<th>%</th>';
 						table+='<th>TARGET</th>';
 						table+='<th>ACHIEVEMENT</th>';
+						table+='<th>%</th>';
 						table+='<th>TARGET</th>';
 						table+='<th>ACHIEVEMENT</th>';
+						table+='<th>%</th>';
+						table+='<th>TARGET</th>';
+						table+='<th>ACHIEVEMENT</th>';
+						table+='<th>%</th>';
 					table+='</tr>';
 					
 				table+='</thead>';
@@ -452,18 +463,24 @@ function buildGraph(result)	{
 				for(var i in result){
 					table+='<tr>';
 						table+='<td>'+result[i].locationName+'</td>';
-						table+='<td>'+result[i].totPopu+'</td>';
 						table+='<td>'+result[i].totWorks+'</td>';
-						table+='<td>'+result[i].totLength+'</td>';
-						table+='<td>'+result[i].totPer+'</td>';
+						table+='<td>'+result[i].totTarget+'</td>';
+						table+='<td>'+result[i].totAchv+'</td>';
+						table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].totAchv/result[i].totTarget)*100).toFixed(2)+'%</small></td>';
+						table+='<td>'+parseFloat(result[i].totLength).toFixed(2)+'</td>';
+						table+='<td>'+parseFloat(result[i].totPopu).toFixed(2)+'</td>';
 						table+='<td>'+result[i].q1Target+'</td>';
 						table+='<td>'+result[i].q1Achv+'</td>';
+						table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].q1Achv/result[i].q1Target)*100).toFixed(2)+'%</small></td>';
 						table+='<td>'+result[i].q2Target+'</td>';
 						table+='<td>'+result[i].q2Achv+'</td>';
+						table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].q2Achv/result[i].q2Target)*100).toFixed(2)+'%</small></td>';
 						table+='<td>'+result[i].q3Target+'</td>';
 						table+='<td>'+result[i].q3Achv+'</td>';
+						table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].q3Achv/result[i].q3Target)*100).toFixed(2)+'%</small></td>';
 						table+='<td>'+result[i].q4Target+'</td>';
 						table+='<td>'+result[i].q4Achv+'</td>';
+						table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].q4Achv/result[i].q4Target)*100).toFixed(2)+'%</small></td>';
 						
 					table+='</tr>';
 				}
