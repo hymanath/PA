@@ -1,5 +1,7 @@
 /*swadhin*/
 function initializeFileProjDoc(typeVal) {
+	$(".tooltipCls").tooltip();
+
 	var itemStr = '';
 	var itemAppendStr = '';
 	itemStr+='<li class="jFiler-item">';
@@ -18,7 +20,7 @@ function initializeFileProjDoc(typeVal) {
                                     itemStr+='<li>{{fi-progressBar}}</li>';
                                 itemStr+='</ul>';
                                 itemStr+='<ul class="list-inline pull-right">';
-                                    itemStr+='<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>';
+                                    itemStr+='<li><span class="tooltipCls " data-toggle="tooltip" data-placement="top" title="Remove Work Document" ><a class="icon-jfi-trash jFiler-item-trash-action"></a></span></li>';
                                 itemStr+='</ul>';
                             itemStr+='</div>';
                         itemStr+='</div>';
@@ -138,6 +140,7 @@ function initializeFileProjDoc(typeVal) {
         }
 		
 	});
+	$('.tooltipCls').tooltip();
 	/*var filerKit = $("#filer_input3").prop("jFiler");
 	filerKit.reset();*/
 	}

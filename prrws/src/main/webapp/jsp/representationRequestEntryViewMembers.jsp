@@ -290,7 +290,7 @@
   <div class="modal-dialog" role="document" style="width:90%;margin:auto">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close modalCloseCls" data-dismiss="modal" title="Close"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<div class="col-sm-11">
 			<h4 class="modal-title text-capital" id="representeeDetailsHeadingId" style="text-align:center;font-weight: bold"></h4> 
 		</div>
