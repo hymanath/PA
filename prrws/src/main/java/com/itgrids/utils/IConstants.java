@@ -60,8 +60,8 @@ public interface IConstants {
     public static final String DEFAULT_MAIL_SERVER = "server";
     public static final String EMAIL_USERNAME = "info@itgrids.com";
     public static final String EMAIL_PASSWORD = "itgrids$678";
-    public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/PRRWS/";
-   // public static final String STATIC_CONTENT_FOLDER_URL = "D:/static_content/PRRWS/";
+   // public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/PRRWS/";
+    public static final String STATIC_CONTENT_FOLDER_URL = "D:/static_content/PRRWS/";
     public static final String PETITIONS_FOLDER = "Petition_Documents";
     public static final String SUCCESS = "Success";
     public static final String FAILURE = "Failure";
@@ -70,5 +70,6 @@ public interface IConstants {
     
     public static final Long[] PRESENT_FINANCIAL_YEAR_IDS = {9L,10L,11L,12L};
     public static final Long[] AP_PARLIAMENT_IDS_LIST = {504L,509L,466L,508L,464L,463L,500L,479L,494L,473L,483L,507L,493L,474L,467L,497L,495L,506L,478L,501L,482L,491L,476L,465L,472L};
+    public static final Long[] PETITION_IN_PROGRESS_IDS ={6L,7L};
     
 }
