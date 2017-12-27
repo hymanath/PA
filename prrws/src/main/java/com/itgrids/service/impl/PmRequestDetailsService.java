@@ -32,8 +32,8 @@ import com.itgrids.dao.IPmRepresenteeDAO;
 import com.itgrids.dao.IPmRepresenteeDesignationDAO;
 import com.itgrids.dao.IPmRepresenteeRefDetailsDAO;
 import com.itgrids.dao.IPmRepresenteeRefDocumentDAO;
-import com.itgrids.dao.IPmSubWorkCoveringLetterDAO;
 import com.itgrids.dao.IPmStatusDAO;
+import com.itgrids.dao.IPmSubWorkCoveringLetterDAO;
 import com.itgrids.dao.IPmSubWorkDetailsDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.CadreRegistrationVO;
@@ -1184,7 +1184,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									 boolean isDesignationAdded=false;
 									 if(designationArr != null && designationArr.length>0){
 										 for (String designatinStr : designationArr) {
-											if(!refVO.getDesignation().equalsIgnoreCase(designatinStr))
+											if(refVO.getDesignation().trim().equalsIgnoreCase(designatinStr.trim()) )
 												isDesignationAdded = true;
 										}
 										 if(!isDesignationAdded)
