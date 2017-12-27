@@ -29,6 +29,7 @@ public class RwsWork {
 	private Date completedDate;
 	private Date commissionedDate;
 	private Date stipulatedTargetDate;
+	private String isActive;
 	
 	@Id
 	@Column(name="rws_work_id")
@@ -150,6 +151,13 @@ public class RwsWork {
 	}
 	public void setStipulatedTargetDate(Date stipulatedTargetDate) {
 		this.stipulatedTargetDate = stipulatedTargetDate;
+	}
+	@Column(name="is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 	
 	

@@ -53,8 +53,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 
 
 	@Override
-	public List<IdNameVO> getWorksDataInsertion(InputVO inputVO) {
-		List<IdNameVO> resultList = new ArrayList<>(0);
+	public String getWorksDataInsertion(InputVO inputVO) {
 		try {
 			DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			SimpleDateFormat sf = new SimpleDateFormat("dd-mm-yyyy");
@@ -143,10 +142,12 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 					}
 				}
 			}
+			return "success";
 		}catch(Exception e){
 	 	    	 LOG.error("Exception Occured in getExceededWorkDetailsLocationWise() method, Exception - ",e);
+	 	    	return "failure";
 	 	    }
-		return resultList;
+		
 		
 	}
 
@@ -195,7 +196,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 				 	    			
 				 	    			works.setCompletedDate(null);
 				 	    			works.setCommissionedDate(null);
-				 	    			
+				 	    			works.setIsActive("Y");
 				 	    			works = rwsWorkDAO.save(works);
 		 	    				}
 		 	    			}
@@ -290,6 +291,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 		try{
 			DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			List<Object[]> locationData= tehsilDAO.getEncMandals();
+			List<Long> workIds =encWorksDAO.getAllDistinctWorkIds();
 			for (Object[] objects : locationData) {
 				JsonObject object = new JsonObject();
 				JsonArray jsonarray = new JsonArray();
@@ -311,31 +313,33 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 						if(array !=null && array.length()> 0){
 							for (int i = 0; i < array.length(); i++) {
 								JSONObject json = array.getJSONObject(i);
-								EncWorks work = new EncWorks();
-								work.setWorkId(json.has("WORK_ID") ? json.getLong("WORK_ID"): 0l);
-								work.setSchemeId(json.has("SCHEME")? json.getLong("SCHEME"):0l);
-								work.setAgreementAmount(json.has("AGREEMENT_AMOUNT")? json.getLong("AGREEMENT_AMOUNT"):0l);
-								work.setTargetDate(json.has("TARGET_DATE")?  sdf.parse(json.getString("TARGET_DATE")):null);
-								work.setDitrictName(json.has("DIST_NAME")? json.getString("DIST_NAME"):"");
-								work.setAgrementDate(json.has("AGREEMENT_DATE")? sdf.parse(json.getString("AGREEMENT_DATE")):null);
-								work.setHabName(json.has("HABS")? json.getString("HABS"):"");
-								work.setAssemblyName(json.has("AC_NAME")? json.getString("AC_NAME"):"");
-								work.setMandalId(json.has("MAND_CODE")? json.getLong("MAND_CODE"):0l);
-								work.setParlimentId(json.has("PC_CODE")? json.getLong("PC_CODE"):0l);
-								work.setParlimentName(json.has("PC_NAME")? json.getString("PC_NAME"):"");
-								work.setAdminSanctionDate(json.has("ADMIN_SANC_DT")? sdf.parse(json.getString("ADMIN_SANC_DT")):null);
-								work.setWorkName(json.has("WORK_NAME")? json.getString("WORK_NAME"):"");
-								//work.setAdmin(json.getString("ADMIN_SANC_AMOUNT"));
-								work.setMandalName(json.has("MAND_NAME")? json.getString("MAND_NAME"):"");
-								work.setTechnicalsancAmount(json.has("TECHSAN_AMOUNT")? json.getLong("TECHSAN_AMOUNT"):0l);
-								work.setSchemeName(json.has("SCHEME_NAME")? json.getString("SCHEME_NAME"):"");
-								work.setDistrictId(json.has("DIST_CODE")? json.getLong( "DIST_CODE"):0l);
-								work.setAssemblyId(json.has("AC_CODE")? json.getLong("AC_CODE"):0l);
-								work.setGroundedDate(json.has("GROUND_DATE")? sdf.parse(json.getString("GROUND_DATE")):null);
-								work.setCompletionDate(json.has("DT_COMPLETED")? sdf.parse(json.getString("DT_COMPLETED")):null);
-								work.setTechSanctionDate(json.has("TECH_SANCTION_DATE")? sdf.parse(json.getString("TECH_SANCTION_DATE")): null);
-								work = encWorksDAO.save(work);
-								LOG.error(work.getEncWorkId());
+								if(!workIds.contains(json.getLong("WORK_ID"))) {
+									EncWorks work = new EncWorks();
+									work.setWorkId(json.has("WORK_ID") ? json.getLong("WORK_ID"): 0l);
+									work.setSchemeId(json.has("SCHEME")? json.getLong("SCHEME"):0l);
+									work.setAgreementAmount(json.has("AGREEMENT_AMOUNT")? json.getLong("AGREEMENT_AMOUNT"):0l);
+									work.setTargetDate(json.has("TARGET_DATE")?  sdf.parse(json.getString("TARGET_DATE")):null);
+									work.setDitrictName(json.has("DIST_NAME")? json.getString("DIST_NAME"):"");
+									work.setAgrementDate(json.has("AGREEMENT_DATE")? sdf.parse(json.getString("AGREEMENT_DATE")):null);
+									work.setHabName(json.has("HABS")? json.getString("HABS"):"");
+									work.setAssemblyName(json.has("AC_NAME")? json.getString("AC_NAME"):"");
+									work.setMandalId(json.has("MAND_CODE")? json.getLong("MAND_CODE"):0l);
+									work.setParlimentId(json.has("PC_CODE")? json.getLong("PC_CODE"):0l);
+									work.setParlimentName(json.has("PC_NAME")? json.getString("PC_NAME"):"");
+									work.setAdminSanctionDate(json.has("ADMIN_SANC_DT")? sdf.parse(json.getString("ADMIN_SANC_DT")):null);
+									work.setWorkName(json.has("WORK_NAME")? json.getString("WORK_NAME"):"");
+									//work.setAdmin(json.getString("ADMIN_SANC_AMOUNT"));
+									work.setMandalName(json.has("MAND_NAME")? json.getString("MAND_NAME"):"");
+									work.setTechnicalsancAmount(json.has("TECHSAN_AMOUNT")? json.getLong("TECHSAN_AMOUNT"):0l);
+									work.setSchemeName(json.has("SCHEME_NAME")? json.getString("SCHEME_NAME"):"");
+									work.setDistrictId(json.has("DIST_CODE")? json.getLong( "DIST_CODE"):0l);
+									work.setAssemblyId(json.has("AC_CODE")? json.getLong("AC_CODE"):0l);
+									work.setGroundedDate(json.has("GROUND_DATE")? sdf.parse(json.getString("GROUND_DATE")):null);
+									work.setCompletionDate(json.has("DT_COMPLETED")? sdf.parse(json.getString("DT_COMPLETED")):null);
+									work.setTechSanctionDate(json.has("TECH_SANCTION_DATE")? sdf.parse(json.getString("TECH_SANCTION_DATE")): null);
+									work = encWorksDAO.save(work);
+								}
+								
 							}
 						}
 					}
@@ -347,6 +351,44 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 			return e.getMessage();
 		}
 	
+	}
+
+	@Override
+	public String getWorksDataDeletion() {
+
+		try{
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAllWorkAdminDetails");	        
+			String authStringEnc = commonMethodsUtilService.getAuthenticationString("itgrids","Itgrids@123");	        
+			ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class);
+			if(response.getStatus() != 200){
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	}else{
+		 		 String output = response.getEntity(String.class);
+	 	    	 if(output != null && !output.isEmpty()){
+	 	    		List<String> workIds= new ArrayList<String>();
+	 	    		List<String> workIdsnotAval= new ArrayList<String>();
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		List<String> workData= rwsWorkDAO.getWorkdetailsById();
+	 	    		for (int i = 0; i < finalArray.length(); i++) {
+	 	    			JSONObject obj = finalArray.getJSONObject(i);
+	 	    			workIds.add(obj.getString("workId"));
+	 	    		}
+	 	    		for (String workId : workData) {
+						if(!workIds.contains(workId.trim())){
+							RwsWork work =rwsWorkDAO.getWorkdetailsByIds(workId);
+							work.setIsActive("N");
+							rwsWorkDAO.save(work);
+						}
+					}
+	 	    		
+	 	    	 }
+		 	}
+			return "success";
+		}catch(Exception e){
+			LOG.error("Exception Occured in getEncworkDataInsertion() method, Exception - ",e);
+			return "failue"+e.getMessage();
+		}
+
 	}	
 
 }

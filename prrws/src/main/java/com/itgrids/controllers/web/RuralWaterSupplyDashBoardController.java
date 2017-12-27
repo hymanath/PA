@@ -43,7 +43,7 @@ public class RuralWaterSupplyDashBoardController {
 	@Autowired
 	private IUserService userServiceImpl;
 	@Autowired
-	private IRwsWorksSchedulerService rWSNICService2;
+	private IRwsWorksSchedulerService rwsWorksSchedulerService;
 	
 	@GetMapping("/ruralWaterSupplyDashBoard")
 	public String ruralWaterSupplyDashBoardPage(ModelMap model,HttpSession session){
@@ -511,13 +511,26 @@ public class RuralWaterSupplyDashBoardController {
 	}
 	
 	@PostMapping("/getWorksDataInsertionService")
-	public @ResponseBody List<IdNameVO> getWorksDataInsertionService(@RequestBody InputVO inputVO) {
+	public @ResponseBody String getWorksDataInsertionService(@RequestBody InputVO inputVO) {
 	  try {
-			 return rWSNICService2.getWorksDataInsertion(inputVO);
+		  	String dropResult = null;
+			String result = "success";// rwsWorksSchedulerService.getWorksDataInsertion(inputVO);
+			if(result.toString().equalsIgnoreCase("success")){
+				dropResult = rwsWorksSchedulerService.getWorksDataDeletion();
+				if(dropResult.trim().equalsIgnoreCase("success")){
+					LOG.error("Cron Job For worksRemoved Completed");
+				}else{
+					LOG.error("Cron Job dropResult issue"+dropResult);
+				}
+			}
+				
+				return result.concat("--"+dropResult);
+				
 	  } catch (Exception e) {
 			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
+			return e.getLocalizedMessage();
 	  }
-	 return null;
+	 
 	}
 	
 	@PostMapping("/getExceedWorkDetailsLocationWise2")
@@ -555,7 +568,7 @@ public class RuralWaterSupplyDashBoardController {
 	@PostMapping("/getWorksDataInsertionService2")
 	public @ResponseBody boolean getWorksDataInsertionService2() {
 	  try {
-			 return rWSNICService2.getWorkDetails2();
+			 return rwsWorksSchedulerService.getWorkDetails2();
 	  } catch (Exception e) {
 			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
 			return false;
