@@ -1244,7 +1244,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						 refAddressVO.setStateName(commonMethodsUtilService.getCapitalStringValueForObject(param[21]));
 						 refAddressVO.setDistrictName(commonMethodsUtilService.getCapitalStringValueForObject(param[22]));
 						 refAddressVO.setAssemblyName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getCapitalStringValueForObject(param[23])));
-						 if(commonMethodsUtilService.getLongValueForObject(param[8]) >0L)// muncipality
+						 if(commonMethodsUtilService.getLongValueForObject(param[25]) >0L)// muncipality
 							 refAddressVO.setTehsilName(commonMethodsUtilService.getCapitalStringValueForObject(param[25])+" "+commonMethodsUtilService.getCapitalStringValueForObject(param[26]));
 						 else{
 							 refAddressVO.setTehsilName(commonMethodsUtilService.getCapitalStringValueForObject(param[24]));
