@@ -1145,7 +1145,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 if(!commonMethodsUtilService.isListOrSetValid(natAddressVO.getConstituencyList())){
 						 natAddressVO.getConstituencyList().add(new KeyValueVO(natAddressVO.getAssemblyId(), natAddressVO.getAssemblyName()));
 					 }
-					 refVO.setCandidateAddressVO(natAddressVO);
+					 refVO.setCandidateNativeAddressVO(natAddressVO);
 					 
 					 AddressVO refAddressVO = setAddressDetailsToResultView(pageType,param[16],param[17],param[18],param[19],param[20],param[65]);
 					 refAddressVO.setStateName(commonMethodsUtilService.getCapitalStringValueForObject(param[43]));
@@ -1167,7 +1167,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 if(!commonMethodsUtilService.isListOrSetValid(refAddressVO.getConstituencyList())){
 						 refAddressVO.getConstituencyList().add(new KeyValueVO(refAddressVO.getAssemblyId(), refAddressVO.getAssemblyName()));
 					 }
-					 refVO.setAddressVO(refAddressVO);
+					 refVO.setCandidateAddressVO(refAddressVO);
 					 
 					 if(commonMethodsUtilService.isMapValid(refFilesListMap) && refFilesListMap.get(refVO.getId()) != null && commonMethodsUtilService.isListOrSetValid(refFilesListMap.get(refVO.getId()))){
 						refVO.getFileNamesList().addAll(refFilesListMap.get(refVO.getId()));
@@ -1181,12 +1181,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 if(childReffVO != null){
 								 if(childReffVO.getRefCandidateId() != null && refVO.getRefCandidateId() != null && childReffVO.getRefCandidateId().longValue() == refVO.getRefCandidateId().longValue()){
 									 String[] designationArr = childReffVO.getDesignation().split(",");
-									 
+									 boolean isDesignationAdded=false;
 									 if(designationArr != null && designationArr.length>0){
-										 for (String arr : designationArr) {
-											if(!refVO.getDesignation().equalsIgnoreCase(arr))
-												childReffVO.setDesignation(childReffVO.getDesignation()+", "+refVO.getDesignation());
+										 for (String designatinStr : designationArr) {
+											if(!refVO.getDesignation().equalsIgnoreCase(designatinStr))
+												isDesignationAdded = true;
 										}
+										 if(!isDesignationAdded)
+											 childReffVO.setDesignation(childReffVO.getDesignation()+", "+refVO.getDesignation());
 									 }
 									
 									if(commonMethodsUtilService.isMapValid(refFilesListMap)){

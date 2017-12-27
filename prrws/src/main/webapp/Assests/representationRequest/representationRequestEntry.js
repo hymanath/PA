@@ -1928,6 +1928,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		if(repName == undefined || repName == "undefined" || repName.trim() == '' || repName == null){
 			$('#nameErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  name</h5>");
 			$('#saveButtonId').show();
+			flag = false;
 		}else{
 			$('#nameErr'+typeVal+'').html("");
 		}
@@ -1935,9 +1936,11 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		if(repMobileNo == undefined || repMobileNo == "undefined" || repMobileNo.trim() == '' || repMobileNo == null){
 			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  mobile no.</h5>");
 			$('#saveButtonId').show();
+			flag = false;
 		}else if(parseInt(repMobileNo.trim().length) <10 || parseInt(repMobileNo.trim().length) >10 || parseInt(repMobileNo.trim().length) !=10){
 			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid mobile no.</h5>");
 			$('#saveButtonId').show();
+			flag = false;
 		}else{
 			$('#mobileNumberErr'+typeVal+'').html("");
 		}
@@ -1946,6 +1949,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			 if (!filter.test(repEmail.trim())) {
 				$('#emailIdErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid email address.</h5>");
 				$('#saveButtonId').show();
+				flag = false;
 			 }
 		}else{
 			$('#emailIdErr'+typeVal+'').html("");
@@ -2114,13 +2118,13 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				$(".workTypeId"+typeVal+mainCount+innerCount).html("");
 			}
 			
-			if(appendWorkCost == 0 || appendWorkCost == null || appendWorkCost == ''){
+			/*if(appendWorkCost == 0 || appendWorkCost == null || appendWorkCost == ''){
 				$(".appendWorkCost"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
 				flag = false;
 			}else{
 				$(".appendWorkCost"+typeVal+mainCount+innerCount).html("");
 			}
-			
+			*/
 			if(appendWorkDetailsId == 0 || appendWorkDetailsId == null || appendWorkDetailsId == ''){
 				$(".appendWorkDetailsId"+typeVal+mainCount+innerCount).html("<h5 style='color:red;'>Please Enter Work Details</h5>");
 				flag = false;
@@ -2246,14 +2250,14 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			}else{
 				$(".workTypeId"+typeVal+mainCountIn+innerCountIn).html("");
 			}
-			
+			/*
 			if(appendWorkCostInner == 0 || appendWorkCostInner == null || appendWorkCostInner == ''){
 				$(".appendWorkCostInner"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
 				flag = false;
 			}else{
 				$(".appendWorkCostInner"+typeVal+mainCountIn+innerCountIn).html("");
 			}
-			
+			*/
 			if(appendWorkDetailsInnerId == 0 || appendWorkDetailsInnerId == null || appendWorkDetailsInnerId == ''){
 				$(".appendWorkDetailsInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Enter Work Details</h5>");
 				flag = false;
@@ -2636,11 +2640,15 @@ function getRegistrationPersonDetails(voterId,typeVal){
 			if(result.tdpCadreId != null && result.tdpCadreId !='null' && parseInt(result.tdpCadreId)>0){
 				$("#repTdpCadreId"+typeVal).val(result.tdpCadreId);
 			}
-			if(result.imageBase64String != null && result.imageBase64String.length > 0 && result.imageBase64String !='null'){
-				$("#repImagePathId"+typeVal).val("http://www.mytdp.com/images/cadre_images/"+result.imageBase64String);
+			/*if(result.imageBase64String != null && result.imageBase64String.length > 0 && result.imageBase64String !='null'){
+				$("#repImagePathId"+typeVal).val(+result.imagePath);
 			  }else  if(result.imagePath != null && result.imagePath.length > 0 && result.imagePath !='null'){
 				$("#repImagePathId"+typeVal).val(result.imagePath);
-			  }
+			  }*/
+			if(result.imagePath != null && result.imagePath.length > 0 && result.imagePath !='null'){
+				$("#repImagePathId"+typeVal).val(result.imagePath);
+			}
+			  
 			if(result.districtId != null){
 				getAllDistrictsListInState(result.districtId);
 			}

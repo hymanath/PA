@@ -618,12 +618,18 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 		}
 	str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				str+='<div class="col-sm-6">';
-					str+='<h4>REPRESENTEE DETAILS  <span style="margin-left:20px;">(<b>Endorsement No: </b> '+endorsNo+')</span></h4>';
+					str+='<h4>REPRESENTEE DETAILS  <span style="margin-left:20px;">';
+					if(endorsNo != null && endorsNo.length>0)
+						str+='(<b>Endorsement No: </b> '+endorsNo+')</span></h4>';
 					str+='<div class="block_padding_10 m_top10">';
 						
 						str+='<div class="media">';
 							str+='<div class="media-left" style="text-align:center">';
+							if(representeeList[0].candidatePath != null && representeeList[0].candidatePath.length>0)
+								str+='<img style="width: 60px ! important; height: 60px ! important; margin-top: 6px;" src="'+representeeList[0].candidatePath+'" class="imageCss">';
+							else
 								str+='<i class="fa fa-user-circle fa-5x" aria-hidden="true" style="#EBEBEB"></i>';
+							
 								str+='<div class="bg_light-Color" style="padding:10px;margin-top:5px;">';
 									str+='<p alt="Representation Date">Repr.&nbsp;Date</p>';
 									str+='<p><b>'+result.representationdate+'</b></p>';
@@ -638,9 +644,15 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 									str+='<div class="row" style="margin-top:10px;">';
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>ADDRESS DETAILS:</b></h5>';
+											if(result.representationType =="REPRESENTEE" && result.referDetailsList.length >0){
 												str+='<p>Mandal: '+(representeeList[0].addressVO.tehsilName != ""?representeeList[0].addressVO.tehsilName:" - ")+'</p>';
 												str+='<p>Constituency : '+(representeeList[0].addressVO.assemblyName != ""?representeeList[0].addressVO.assemblyName:" - ")+'</p>';
 												str+='<p>District : '+(representeeList[0].addressVO.districtName != ""?representeeList[0].addressVO.districtName:" - ")+'</p>';
+											}else if(result.representationType =="SELF" && result.referDetailsList.length >0){
+												str+='<p>Mandal: '+(representeeList[0].candidateAddressVO.tehsilName != ""?representeeList[0].candidateAddressVO.tehsilName:" - ")+'</p>';
+												str+='<p>Constituency : '+(representeeList[0].candidateAddressVO.assemblyName != ""?representeeList[0].candidateAddressVO.assemblyName:" - ")+'</p>';
+												str+='<p>District : '+(representeeList[0].candidateAddressVO.districtName != ""?representeeList[0].candidateAddressVO.districtName:" - ")+'</p>';
+											}
 											str+='</div>';
 										str+='<div class="col-sm-12 col-md-6"  style="margin-top:10px;">';
 											str+='<h5><b>CONTACT DETAILS :</b></h5>';
@@ -675,11 +687,18 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								str+='<div class="bg_light-Color" style="padding:10px">';
 									//str+='<p><b>Name</b></p>';
 									str+='<h4><b>'+result.referDetailsList[i].name+'</b></h4>';
-									str+='<span><b>('+result.referDetailsList[i].designation+'), '+result.referDetailsList[i].addressVO.assemblyName+' Constituency, '+result.referDetailsList[i].addressVO.districtName+' District.</b></span>';
+									str+='<span><b>('+result.referDetailsList[i].designation+'),</b>';
+									if(result.referDetailsList[i].candidateAddressVO.assemblyName != null && result.referDetailsList[i].candidateAddressVO.assemblyName.length>0)
+										str+='<h5> Constityency : '+result.referDetailsList[i].candidateAddressVO.assemblyName+' ,</h5> ';
+									if(result.referDetailsList[i].candidateAddressVO.districtName != null && result.referDetailsList[i].candidateAddressVO.districtName.length>0)
+										str+='<h5> District : '+result.referDetailsList[i].candidateAddressVO.districtName+'.</h5></span>';
+									if(result.referDetailsList[i].candidateAddressVO.stateName != null && result.referDetailsList[i].candidateAddressVO.stateName.length>0)
+										str+='<h5> State : '+result.referDetailsList[i].candidateAddressVO.stateName+'.</h5></span>';
+									
 									str+='<div class="row">';
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>Party:</b></h5>';
-											str+='<p>'+result.referDetailsList[i].partyName+' '+result.referDetailsList[i].addressVO.districtName+'</p>';
+											str+='<p>'+result.referDetailsList[i].partyName+' </p>';
 										str+='</div>';
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>CONTACT DETAILS :</b></h5>';
