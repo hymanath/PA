@@ -361,6 +361,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                     	<td>
                         	<i class="glyphicon glyphicon-phone"></i> <span id="mobileNoId"></span> 
 							<i class="glyphicon glyphicon-info-sign" style="cursor:pointer;display:none;" title="Click here to get Mobile details" id="mobileDetailsId"></i><span style="float: right" id="wAppImageId"></span><span style="float: right" id="fbUrlImageId"></span>
+							<button class="btn btn-success btn-xs col-sm-offset-2" id="leaderMainDetailesId">View Detailes</button>
 							
                         	<span class="pull-right" id="emailMainSpanId">
 	                            <i class="glyphicon glyphicon-envelope"></i> <span id="emailSpanId"></span> 
@@ -2286,6 +2287,31 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
     </div>
   </div>
 </div>
+<!-- Model For CadreDetails-->
+<div class="modal fade" id="modelForCadDet">
+  <div class="modal-dialog" style="width:80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">CANDIDATE HEALTH REPORT DETAILS</h4>
+      </div>
+      <div class="modal-body">
+		<div class="row">
+			<div id="candidateReportTabId">
+			</div>
+		</div>
+		<div class="row m_top20">
+			<div id="candidateAttributesId"></div>
+			<div id="bloodSamplesTabId">
+			</div>
+		</div>
+       </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default btn-success btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
@@ -3731,6 +3757,138 @@ $(document).on("click",".surveyQuestionsCls",function(){
 	getSurveyQuestionWithMarksDetailsByTDpCadreId();
 	getSurveyQuestionDetails();
 });
+$(document).on("click","#leaderMainDetailesId",function(){
+	var str;
+	var pstr;	
+ 
+		str="<div class='col-sm-12'>";
+			str+="<table class='table table-bordered' id='dataTableForLedDetTabId'>";
+				str+="<thead>";
+					str+="<tr>";
+						str+="<th>Enrollment Year</th>";
+						str+="<th>Sl.No</th>";
+						str+="<th>Report Date</th>";
+						str+="<th>View Report</th>";
+					str+="</tr>";
+				str+="</thead>";
+				str+="<tbody>";
+					str+="<tr>";
+						str+="<td>2014-2016</td>";
+						str+="<td>01</td>";
+						str+="<td>2016-08-26</td>";
+						str+="<td><span class='fa fa-eye'></span></td>";
+					str+="</tr>";
+				str+="</tbody>";		
+			str+="</table>";
+		str+="</div>";		
+	$("#candidateReportTabId").html(str);
+	$("#dataTableForLedDetTabId").dataTable();
+		pstr="<div class='col-sm-6'>";
+		pstr+='<div class="panel panel-default">';
+			pstr+='<div class="panel-heading">';
+				pstr+='<h3 class="panel-title">Candidate Attributes</h3>';
+			pstr+='</div>';
+			pstr+='<div class="panel-body">';
+				pstr+='<div id="candTabId"></div>';
+			pstr+='</div>';
+		pstr+='</div>';
+		$("#candidateAttributesId").html(pstr);
+		buildingCandiateArticles("candTabId");
+		pstr="<div class='col-sm-6'>";
+			pstr+='<div class="panel panel-default">';
+				pstr+='<div class="panel-heading">';
+					pstr+='<h3 class="panel-title">Blood Samples</h3>';
+				pstr+='</div>';
+				pstr+='<div class="panel-body">';
+					pstr+='<div id="bloodTabId"></div>';
+				pstr+='</div>';
+			pstr+='</div>';
+		pstr+='</div>';
+		$("#bloodSamplesTabId").html(pstr);
+		buildingBloodTable("bloodTabId");
+		$("#modelForCadDet ").modal('show');
+});
+function buildingBloodTable(id)
+{
+	var str;
+			str="<table class='table table-bordered'>";
+				str+="<thead>";
+					str+="<tr>";
+						str+="<th>TOTAL CHOLESTEROL 250</th>";
+						str+="<th>PLATELET COUNT 214000</th>";
+					str+="</tr>";
+					str+="<tr>";
+						str+="<th>TOTAL CHOLESTEROL 250</th>";
+						str+="<th>PLATELET COUNT 214000</th>";
+					str+="</tr>";
+					str+="<tr>";
+						str+="<th>TOTAL CHOLESTEROL 250</th>";
+						str+="<th>PLATELET COUNT 214000</th>";
+					str+="</tr>";
+				str+="</thead>";
+						
+			str+="</table>";
+		$('#'+id).html(str);	
+}
+function buildingCandiateArticles(id)
+{
+	var str;
+			str="<div class='row'>";
+				str+="<div class='col-sm-3'>";
+					str+="<div style='border :1px solid #ddd;padding:10px;font-size:12px;'>";
+						str+="<h4 class='panel-title text-center'>HEIGHT</h4>";
+					str+="</div>";
+					str+="<div style='border :1px solid #ddd;padding:10px;font-size:12px;'>";	
+						str+="<div class='media'>";
+							str+="<div class='media-left'>";
+								str+="<img src='images/Assam/Assam2011exitpolls.png' class='media-object' style='width:30px'>";
+							str+="</div>";
+							str+="<div class='media-body'>";
+								str+="<p>Lorem ipsum...</p>";
+							str+="</div>";
+						str+="</div>";
+					str+="</div>";
+				str+="</div>";
+				str+="<div class='col-sm-3'>";
+					str+="<div style='border :1px solid #ddd;padding:10px;font-size:12px'>";
+						str+="<div class='row col-sm-offset-0'>";
+							str+="<h4 class='panel-title text-center'>WEIGHT</h4>";
+							str+="<div class='media'>";
+								str+="<div class='media-left'>";
+									str+="<img src='images/Assam/Assam2011exitpolls.png' class='media-object' style='width:30px'>";
+								str+="</div>";
+								str+="<div class='media-body'>";
+									str+="<p>Lorem ipsum...</p>";
+								str+="</div>";
+							str+="</div>";
+						str+="</div>";
+					str+="</div>";
+				str+="</div>";
+				str+="<div class='col-sm-3'>";
+					str+="<div style='border :1px solid #ddd;padding:10px;font-size:12px'>";
+						str+="<div class='row'>";
+							str+="<h4 class='panel-title text-center'>BMI</h4>";
+						str+="</div>";
+					str+="</div>";
+				str+="</div>";
+				str+="<div class='col-sm-3'>";
+					str+="<div style='border :1px solid #ddd;padding:10px;font-size:12px'>";
+						str+="<div class='row col-sm-offset-0'>";
+							str+="<h4 class='panel-title text-center'>BP</h4>";
+							str+="<div class='media'>";
+								str+="<div class='media-left'>";
+									str+="<img src='images/Assam/Assam2011exitpolls.png' class='media-object' style='width:30px'>";
+								str+="</div>";
+								str+="<div class='media-body'>";
+									str+="<p>Lorem ipsum...</p>";
+								str+="</div>";
+							str+="</div>";
+						str+="</div>";
+					str+="</div>";
+				str+="</div>";
+			str+="</div>";
+		$('#'+id).html(str);	
+}
 
 </script>
 </body>
