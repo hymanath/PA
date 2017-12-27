@@ -60,7 +60,8 @@ public class Scheduler {
 	//@Scheduled(cron ="0 0/20 * * * ?")
 	public void runTheExceededWorksForEveryOneHour()
 	{
-		
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{
 			LOG.error("Cron Job For worksInsertion Started");
 			
 			InputVO input= new InputVO();
@@ -74,9 +75,19 @@ public class Scheduler {
 			input.setLocationType("state");
 			input.setStatusList(statusList);
 			
-			rwsWorksSchedulerService.getWorksDataInsertion(input);
+			String result = rwsWorksSchedulerService.getWorksDataInsertion(input);
+			if(result.toString().equalsIgnoreCase("success")){
+				String dropResult = rwsWorksSchedulerService.getWorksDataDeletion();
+				if(dropResult.trim().equalsIgnoreCase("success")){
+					LOG.error("Cron Job For worksRemoved Completed");
+				}else{
+					LOG.error("Cron Job dropResult issue"+dropResult);
+				}
+			}
 			LOG.error("Cron Job For worksInsertion Completed");
 		
+		}
+		else 
 			return;
 	}
 	
@@ -89,6 +100,19 @@ public class Scheduler {
 			LOG.error("Cron Job For ITE&C E-Ofc Started");
 			itcDashboardService.savingEofcDataDetails();
 			LOG.error("Cron Job For ITE&C E-Ofc Completed");
+		}
+		else 
+			return;
+	}
+	
+	@Scheduled(cron ="0 0 0/4 * * ?")
+	public void runTheSchedulerForENCEvryTwoHrs()
+	{
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			LOG.error("Cron Job For E&D Started");
+			rwsWorksSchedulerService.getEncworkDataInsertion();
+			LOG.error("Cron Job For E&D Completed");
 		}
 		else 
 			return;
