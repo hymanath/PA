@@ -503,6 +503,7 @@ $(document).on("click",".showRemoveIcon",function(){
 	$(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
 	
 	$(".candidateDetails"+typeVal+"DivId").find("#candidate"+typeVal+candidateId).remove();
+	$(".candidateDetails"+typeVal+"DivId").find(".candidate"+typeVal+candidateId).remove();
 	var itemtoRemove = parseInt(candidateId);
 	alreadyCandidateId.splice($.inArray(itemtoRemove, alreadyCandidateId),1);
 
@@ -725,16 +726,16 @@ $(document).on("click",".cloned_Element",function(){
 	var counterId = $(this).attr("block-clone-counter-"+typeVal+"");
 		counterId = parseInt(counterId) + 1;
 		//if(parseInt(counterappendId)>0)
-			counterappendId = parseInt(counterappendId)+1;
+			counterappendId = parseInt(counterappendId)-1;
 		
 	var blockId = $(this).attr("block-clone-"+typeVal+"");
-
+	globalWorkTypeCount = parseInt(globalWorkTypeCount)+1;
+	globalInnerWorksCount=parseInt(globalInnerWorksCount)+1;
 	$(".appendWorkDetailsDiv"+typeVal+"").append(clondTemplate(blockId,'clone',counterId,typeVal,counterappendId,"No"));
 	$(".chosen-select").chosen({width:'100%'});
 	
 	$("[block-clone-"+typeVal+"="+blockId+"]").attr("block-clone-counter-"+typeVal+"",counterId);
-	globalWorkTypeCount = parseInt(globalWorkTypeCount)+1;
-	globalInnerWorksCount=parseInt(globalInnerWorksCount)+1;
+	
 	
 });
 
@@ -747,7 +748,7 @@ function clondTemplate(blockId,type,counterId,typeVal,counterappendId,isNew){
 	if(isNew =="Yes")
 		clonedTemplate+='<div class="pull-right " attr_inner_works_Count="1" id="manageInnerWorks'+globalWorkTypeCount+'"  attr_id="mainWorkDivId'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_candidateid="1"></div>';
 	else
-		clonedTemplate+='<div class="pull-right removeWorkCls" id="manageInnerWorks'+globalWorkTypeCount+'" attr_inner_works_Count="1" attr_id="mainWorkDivId'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_candidateid="1"><i class="glyphicon glyphicon-remove"></i></div>';
+		clonedTemplate+='<div class="pull-right removeWorkCls" id="manageInnerWorks'+globalWorkTypeCount+'" attr_inner_works_Count="1" attr_id="mainWorkDivId'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_candidateid="1"><i class="glyphicon glyphicon-remove" style="cursor:pointer;" title="Remove Work(s)"></i></div>';
 	
 		clonedTemplate+='<div style="border:3px solid #dddddd;padding:10px;">';
 			clonedTemplate+='<div  cloned_block_'+typeVal+'='+counterappendId+'>';
@@ -945,7 +946,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 	var clonedInnerTemplate='';
 	clonedInnerTemplate+='<div class="m_top10" style="padding: 15px;">';
 		clonedInnerTemplate+='<div class="col-sm-12 m_top10" >';
-		clonedInnerTemplate+='<div class="pull-right  removeInnerWorkCls" id="'+parentRemoveClsId+'" attr_id="workDivId'+counterId+''+innerWorkCount+'" attr_type="self" attr_candidateid="1"><i class="glyphicon glyphicon-remove"></i></div>';
+		clonedInnerTemplate+='<div class="pull-right  removeInnerWorkCls" id="'+parentRemoveClsId+'" attr_id="workDivId'+counterId+''+innerWorkCount+'" attr_type="self" attr_candidateid="1"><i class="glyphicon glyphicon-remove" style="cursor:pointer;" title="Remove this Work" ></i></div>';
 			clonedInnerTemplate+='<div class="bg_color_view row " id="workDivId'+counterId+''+innerWorkCount+'">';
 				//clonedInnerTemplate+='<h3 class="panel-title f_16 font_weight">WORK TYPE 1</h3>';
 				clonedInnerTemplate+='<div class="row m_top10" >';
@@ -1075,9 +1076,9 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 							str+='<div class="bgColorCandidatesView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidate'+typeVal+''+result[i].referrerCandidateId+'">';
 							
 								str+='<div class="row">';
-										str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
+										str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidate_id="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove" style="cursor:pointer;" title="Remove Candidate" ></i></div>';
 										
-										str+='<div class="representation-selected display_block" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+										str+='<div class="representation-selected display_block" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff"   title="Remove Candidate"></i></span></div>';
 										/*/
 										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
@@ -1101,8 +1102,12 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 												str+='<h5 class="m_top5">'+result[i].petitionMemberVO.name+'</h5>';
 												str+='<h5 class="m_top10 font_weight">Designation</h5>';
 												str+='<h5 class="text_bold m_top10">'+result[i].petitionMemberVO.memberType+',</h5>';
-												str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'">'+result[i].candidateAddressVO.assemblyName+'  Constituency,</h5>';
-												str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">'+result[i].candidateAddressVO.districtName+'  District,</h5>';
+												if(result[i].candidateAddressVO.assemblyName != null && result[i].candidateAddressVO.assemblyName.length>0)
+													str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'"> Constituency : '+result[i].candidateAddressVO.assemblyName+'  ,</h5>';
+												if(result[i].candidateAddressVO.districtName != null && result[i].candidateAddressVO.districtName.length>0)
+													str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">District : '+result[i].candidateAddressVO.districtName+'  ,</h5>';
+												if(result[i].candidateAddressVO.stateName != null && result[i].candidateAddressVO.stateName.length>0)
+													str+='<h5 class="m_top5" attr_state_id="'+result[i].candidateAddressVO.districtId+'">State : '+result[i].candidateAddressVO.stateName+'  ,</h5>';
 											str+='</div>';
 									str+='</div>';
 									
@@ -1121,7 +1126,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 											}else{
 												str+='<h5 class="m_top5">Contact No : -</h5>';
 											}
-											str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
+											//str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
 										str+='</div>';
 									str+='</div>';
 									
@@ -1131,13 +1136,13 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 												if(result[i].candidateNativeAddressVO != null){
 													//str+='<h5 class="m_top5">H No :</h5>';
 													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
-														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
+														str+='<h5 class="m_top10">Panchayat : '+result[i].candidateNativeAddressVO.panchayatName+' </h5>';
 													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
-														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+' Mandal/Munci. </h5>';
+														str+='<h5 class="text_bold m_top10"> Mandal/Munci.: '+result[i].candidateNativeAddressVO.tehsilName+' </h5>';
 													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
-														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+														str+='<h5 class="m_top5">District: '+result[i].candidateNativeAddressVO.districtName+' </h5>';
 													if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
-														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+														str+='<h5 class="m_top5"> State :'+result[i].candidateNativeAddressVO.stateName+' </h5>';
 												}else{
 													str+='<h5 class="m_top5">Not Available</h5>';
 												}
@@ -1159,12 +1164,12 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 						if(diffArr[j] == result[i].referrerCandidateId){
 							str+='<tr><td>';
 							str+='<div id="candidatesAppendDiv'+result[i].referrerCandidateId+'" style="position:relative;">';
-							str+='<div class="bgColorCandidatesView candidateAddedView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidate'+typeVal+''+result[i].referrerCandidateId+'">';
+							str+='<div class="bgColorCandidatesView candidateAddedView" class="candidatesAppendDiv'+result[i].referrerCandidateId+'" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidate'+typeVal+''+result[i].referrerCandidateId+'">';
 							
 								str+='<div class="row">';
-									str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
+									str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidate_id="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove Candidate" ></i></div>';
 									
-										str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+										str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff"   title="Remove Candidate"></i></span></div>';
 										
 										/*str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
@@ -1188,8 +1193,12 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 												str+='<h5 class="m_top5">'+result[i].petitionMemberVO.name+'</h5>';
 												str+='<h5 class="m_top10 font_weight">Designation</h5>';
 												str+='<h5 class="text_bold m_top10">'+result[i].petitionMemberVO.memberType+',</h5>';
-												str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'">'+result[i].candidateAddressVO.assemblyName+'  Constituency,</h5>';
-												str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">'+result[i].candidateAddressVO.districtName+'  District,</h5>';
+												if(result[i].candidateAddressVO.assemblyName != null && result[i].candidateAddressVO.assemblyName.length>0)
+													str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'"> Constituency : '+result[i].candidateAddressVO.assemblyName+'  ,</h5>';
+												if(result[i].candidateAddressVO.districtName != null && result[i].candidateAddressVO.districtName.length>0)
+													str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">District : '+result[i].candidateAddressVO.districtName+'  ,</h5>';
+												if(result[i].candidateAddressVO.stateName != null && result[i].candidateAddressVO.stateName.length>0)
+													str+='<h5 class="m_top5" attr_state_id="'+result[i].candidateAddressVO.districtId+'">State : '+result[i].candidateAddressVO.stateName+'  ,</h5>';
 											str+='</div>';
 									str+='</div>';
 									
@@ -1208,7 +1217,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 											}else{
 												str+='<h5 class="m_top5">Contact No : -</h5>';
 											}
-											str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
+											//str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
 										str+='</div>';
 									str+='</div>';
 									
@@ -1218,13 +1227,13 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 										if(result[i].candidateNativeAddressVO != null){
 													//str+='<h5 class="m_top5">H No :</h5>';
 													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
-														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
+														str+='<h5 class="m_top10"> Panchayat : '+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
 													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
-														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+' Mandal/Munci. </h5>';
+														str+='<h5 class="text_bold m_top10"> Mandal/Munci. : '+result[i].candidateNativeAddressVO.tehsilName+'  </h5>';
 													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
-														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+														str+='<h5 class="m_top5">District : '+result[i].candidateNativeAddressVO.districtName+' </h5>';
 													if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
-														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+														str+='<h5 class="m_top5">State : '+result[i].candidateNativeAddressVO.stateName+' </h5>';
 												}else{
 													str+='<h5 class="m_top5">Not Available</h5>';
 												}
@@ -1242,12 +1251,12 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 		}else{
 			for(var i in result){
 				str+='<tr><td>';
-				 str+='<div id="candidatesAppendDiv'+result[i].referrerCandidateId+'" style="position:relative;">';
-					str+='<div class="bgColorCandidatesView candidateAddedView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidate'+typeVal+''+result[i].referrerCandidateId+'">';
+				 str+='<div id="candidatesAppendDiv'+result[i].referrerCandidateId+'"  style="position:relative;">';
+					str+='<div class="bgColorCandidatesView candidateAddedView" class="candidatesAppendDiv'+result[i].referrerCandidateId+'" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidate'+typeVal+''+result[i].referrerCandidateId+'">';
 					
 					str+='<div class="row">';
-					str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
-					str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+					str+='<div class="pull-right showRemoveIcon" attr_type="'+typeVal+'"  attr_candidate_id="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove Candidate"></i></div>';
+					str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff"  title="Remove Candidate"></i></span></div>';
 					if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
 						str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
 							str+='<img src="'+result[i].petitionMemberVO.imagePath+'" class="imageCss"></img>';
@@ -1269,8 +1278,12 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 							str+='<h5 class="m_top5">'+result[i].petitionMemberVO.name+'</h5>';
 							str+='<h5 class="m_top10 font_weight">Designation</h5>';
 							str+='<h5 class="text_bold m_top10">'+result[i].petitionMemberVO.memberType+',</h5>';
-							str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'">'+result[i].candidateAddressVO.assemblyName+'  Constituency,</h5>';
-							str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">'+result[i].candidateAddressVO.districtName+'  District,</h5>';
+							if(result[i].candidateAddressVO.assemblyName != null && result[i].candidateAddressVO.assemblyName.length>0)
+							str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'"> Constituency : '+result[i].candidateAddressVO.assemblyName+'  ,</h5>';
+						if(result[i].candidateAddressVO.districtName != null && result[i].candidateAddressVO.districtName.length>0)
+							str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">District : '+result[i].candidateAddressVO.districtName+'  ,</h5>';
+						if(result[i].candidateAddressVO.stateName != null && result[i].candidateAddressVO.stateName.length>0)
+							str+='<h5 class="m_top5" attr_state_id="'+result[i].candidateAddressVO.stateId+'">State : '+result[i].candidateAddressVO.stateName+'  ,</h5>';
 						str+='</div>';
 					str+='</div>';
 					
@@ -1289,7 +1302,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 							}else{
 								str+='<h5 class="m_top5">Contact No : -</h5>';
 							}
-							str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
+							//str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
 						str+='</div>';
 					str+='</div>';
 					
@@ -1297,19 +1310,18 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 						str+='<div class="nameAddressCss">';
 							str+='<h5 class="font_weight">Address:</h5>';
 					if(result[i].candidateNativeAddressVO != null){
-													//str+='<h5 class="m_top5">H No :</h5>';
-													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
-														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
-													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
-														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+' Mandal/Munci. </h5>';
-													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
-														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
-													if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
-														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
-												}else{
-													str+='<h5 class="m_top5">Not Available</h5>';
-												}
+							//str+='<h5 class="m_top5">H No :</h5>';
+							if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
+								str+='<h5 class="m_top10">Panchayat : '+result[i].candidateNativeAddressVO.panchayatName+' </h5>';
+							if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
+								str+='<h5 class="text_bold m_top10">Mandal/Munci. : '+result[i].candidateNativeAddressVO.tehsilName+'  </h5>';
+							if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
+								str+='<h5 class="m_top5">District : '+result[i].candidateNativeAddressVO.districtName+' </h5>';
+							if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
+								str+='<h5 class="m_top5">State : '+result[i].candidateNativeAddressVO.stateName+' </h5>';
+						}else{
 							str+='<h5 class="m_top5">Not Available</h5>';
+						}
 						str+='</div>';
 					str+='</div>';
 						str+='<div id="fileUpload'+typeVal+''+result[i].referrerCandidateId+'" style="display:none;"></div>';
@@ -1519,7 +1531,7 @@ function buildPetitionDetails(result){
 						}
 						
 							if(result.representationType == "REPRESENTEE" || result.representationType == "REPRESENT"){
-								str+='<div class="pull-right showRemoveIcon" attr_type='+result.representationType+' attr_candidate_id="'+result.referDetailsList[i].refCandidateId+'"><i class="glyphicon glyphicon-remove"></i></div>';
+								str+='<div class="pull-right showRemoveIcon" attr_type='+result.representationType+' attr_candidate_id="'+result.referDetailsList[i].refCandidateId+'"><i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove Candidate"></i></div>';
 							}
 								str+='<div class="col-sm-2">';
 									if(result.referDetailsList[i].candidatePath != null && result.referDetailsList[i].candidatePath.length>0)
@@ -1538,9 +1550,12 @@ function buildPetitionDetails(result){
 										str+='<h5 class="m_top5">'+result.referDetailsList[i].name+'</h5>';
 										str+='<h5 class="m_top10 font_weight">Designation</h5>';
 										str+='<h5 class="text_bold m_top10">'+result.referDetailsList[i].designation+'</h5>';
-									
-										str+='<h5 class="m_top5">'+result.referDetailsList[i].addressVO.assemblyName+' CONSTITUENCY,</h5>';
-										str+='<h5 class="m_top5">'+result.referDetailsList[i].addressVO.districtName+' DISTRICT, '+result.referDetailsList[i].addressVO.stateName+'</h5>';
+										if(result.referDetailsList[i].candidateAddressVO.assemblyName != null && result.referDetailsList[i].candidateAddressVO.assemblyName.length>0)
+											str+='<h5 class="m_top5">'+result.referDetailsList[i].candidateAddressVO.assemblyName+' Constituency,</h5>';
+										if(result.referDetailsList[i].candidateAddressVO.districtName != null && result.referDetailsList[i].candidateAddressVO.districtName.length>0)
+											str+='<h5 class="m_top5">District :'+result.referDetailsList[i].candidateAddressVO.districtName+' , ';
+										if(result.referDetailsList[i].candidateAddressVO.stateName != null && result.referDetailsList[i].candidateAddressVO.stateName.length>0)
+											str+='<h5> State :'+result.referDetailsList[i].candidateAddressVO.stateName+'</h5>';
 									str+='</div>';
 							str+='</div>';
 						
@@ -1557,16 +1572,21 @@ function buildPetitionDetails(result){
 							str+='<div class="col-sm-2">';
 								str+='<div class="nameAddressCss">';
 									str+='<h5 class="font_weight">Address:</h5>';
-									if(result.referDetailsList[i].candidateAddressVO != null && result.referDetailsList[i].candidateAddressVO.stateName != null && result.referDetailsList[i].candidateAddressVO.stateName.length>0){
-										
-										
-										str+='<h5 class="m_top5">CONSTITUENCY  : '+result.referDetailsList[i].candidateAddressVO.assemblyName+' </h5>';
-										str+='<h5 class="m_top5"> DISTRICT  : '+result.referDetailsList[i].candidateAddressVO.districtName+' ,</h5> <h5  class="m_top5"> STATE : '+result.referDetailsList[i].candidateAddressVO.stateName+'</h5>';
-									}else{
-										str+='<h5 class="m_top5">Not Available</h5>';
-									}
+							if(result.referDetailsList[i].candidateNativeAddressVO != null && result.referDetailsList[i].candidateNativeAddressVO.stateName != null && result.referDetailsList[i].candidateNativeAddressVO.stateName.length>0){
+								if(result.referDetailsList[i].candidateNativeAddressVO.panchayatName != null && result.referDetailsList[i].candidateNativeAddressVO.panchayatName.length>0)
+										str+='<h5 class="m_top5">Panchayat  : '+result.referDetailsList[i].candidateNativeAddressVO.panchayatName+' </h5>';
+								if(result.referDetailsList[i].candidateNativeAddressVO.tehsilName != null && result.referDetailsList[i].candidateNativeAddressVO.tehsilName.length>0)
+										str+='<h5 class="m_top5">Mandal/Munci.  : '+result.referDetailsList[i].candidateNativeAddressVO.tehsilName+' </h5>';
+								if(result.referDetailsList[i].candidateNativeAddressVO.assemblyName != null && result.referDetailsList[i].candidateNativeAddressVO.assemblyName.length>0)
+										str+='<h5 class="m_top5">Constituency  : '+result.referDetailsList[i].candidateNativeAddressVO.assemblyName+' </h5>';
+								if(result.referDetailsList[i].candidateNativeAddressVO.districtName != null && result.referDetailsList[i].candidateNativeAddressVO.districtName.length>0)
+										str+='<h5 class="m_top5"> District  : '+result.referDetailsList[i].candidateNativeAddressVO.districtName+' ,</h5> ';
 									
-										
+								if(result.referDetailsList[i].candidateNativeAddressVO.stateName != null && result.referDetailsList[i].candidateNativeAddressVO.stateName.length>0)
+										str+='<h5 class="m_top5"> State : '+result.referDetailsList[i].candidateNativeAddressVO.stateName+'</h5>';
+							}else{
+										str+='<h5 class="m_top5">Not Available</h5>';
+								}		
 									
 								str+='</div>';
 							str+='</div>';
@@ -1607,7 +1627,7 @@ function buildPetitionDetails(result){
 													}else{
 														str+='<div class="viewImageCss">';
 													}
-													str+='<div class="pull-right removeFileCls" attr_id="refDocument'+i+''+j+'" style="margin-right: 15px;cursor:pointer"><i class="glyphicon glyphicon-remove"></i></div>';
+													str+='<div class="pull-right removeFileCls" attr_id="refDocument'+i+''+j+'" style="margin-right: 15px;cursor:pointer"><i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove refer document"></i></div>';
 													if(scanCopyExt =="pdf"){
 														str+='<a class="fancyboxView" href="#inline'+i+''+j+'">';
 															str+='<div class="mouse-over">Expand</div>';
@@ -1730,7 +1750,7 @@ function buildPetitionDetails(result){
 									}else{
 										str+='<div class="viewImageCss m_top20">';
 									}
-									str+='<div class="pull-right removeFileCls" attr_id="workDocument'+i+'" style="margin-right: 15px;cursor:pointer"><i class="glyphicon glyphicon-remove"></i></div>';
+									str+='<div class="pull-right removeFileCls" attr_id="workDocument'+i+'" style="margin-right: 15px;cursor:pointer"><i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove work document"></i></div>';
 									if(scanCopyExt =="pdf"){
 										str+='<a class="fancyboxView" href="#inlineMain'+i+''+j+'">';
 											str+='<div class="mouse-over">Expand</div>';
@@ -1770,7 +1790,7 @@ function buildPetitionDetails(result){
 				str+='<div class="col-sm-12 m_top20 mainWorkDivCls " id="mainWorkDivId'+i+''+globalWorkTypeCount+'">';
 				if(i !=0){
 					str+='<div class="pull-right removeWorkCls"  id="manageInnerWorks'+globalWorkTypeCount+'" attr_inner_works_Count="'+result.subWorksList[i].subWorksList.length+'"  attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'">';
-					str+='<i class="glyphicon glyphicon-remove"></i>';
+					str+='<i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove work(s)"></i>';
 				}else{
 					str+='<div class="pull-right "  id="manageInnerWorks'+globalWorkTypeCount+'" attr_inner_works_Count="'+result.subWorksList[i].subWorksList.length+'"  attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'">';
 				}
@@ -1837,7 +1857,7 @@ function buildPetitionDetails(result){
 										str+='<div class="col-sm-12">';
 										if(j !=0){
 												str+='<div class="pull-right removeInnerWorkCls" id="manageInnerWorks'+globalWorkTypeCount+'" attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1">';
-												str+='<i class="glyphicon glyphicon-remove"></i>';
+												str+='<i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove work"></i>';
 											}else{
 												str+='<div class="pull-right " attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1">';
 											}
@@ -2526,11 +2546,14 @@ function getRegistrationPersonDetails(voterId,typeVal){
 			if(result.tdpCadreId != null && result.tdpCadreId !='null' && parseInt(result.tdpCadreId)>0){
 				$("#repTdpCadreId"+typeVal).val(result.tdpCadreId);
 			}
-			if(result.imageBase64String != null && result.imageBase64String.length > 0 && result.imageBase64String !='null'){
+			/*if(result.imageBase64String != null && result.imageBase64String.length > 0 && result.imageBase64String !='null'){
 				$("#repImagePathId"+typeVal).val("http://www.mytdp.com/images/cadre_images/"+result.imageBase64String);
 			  }else  if(result.imagePath != null && result.imagePath.length > 0 && result.imagePath !='null'){
 				$("#repImagePathId"+typeVal).val(result.imagePath);
-			  }
+			  }*/
+			 if(result.imagePath != null && result.imagePath.length > 0 && result.imagePath !='null'){
+				$("#repImagePathId"+typeVal).val(result.imagePath);
+			}	
 			if(result.districtId != null){
 				getAllDistrictsListInState(result.districtId);
 			}
@@ -2790,15 +2813,18 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		if(repName == undefined || repName == "undefined" || repName.trim() == '' || repName == null){
 			$('#nameErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  name</h5>");
 			$('#saveButtonId').show();
+			flag = false;
 		}else{
 			$('#nameErr'+typeVal+'').html("");
 		}
 		if(repMobileNo == undefined || repMobileNo == "undefined" || repMobileNo.trim() == '' || repMobileNo == null){
 			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  mobile no.</h5>");
 			$('#saveButtonId').show();
+			flag = false;
 		}else if(parseInt(repMobileNo.trim().length) <10 || parseInt(repMobileNo.trim().length) >10 || parseInt(repMobileNo.trim().length) !=10){
 			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid mobile no.</h5>");
 			$('#saveButtonId').show();
+			flag = false;
 		}else{
 			$('#mobileNumberErr'+typeVal+'').html("");
 		}
@@ -2807,6 +2833,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			 if (!filter.test(repEmail.trim())) {
 				$('#emailIdErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid email address.</h5>");
 				$('#saveButtonId').show();
+				flag = false;
 			 }
 		}else{
 			$('#emailIdErr'+typeVal+'').html("");
@@ -2877,7 +2904,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		if(value!= null && value.length>0){
 			if(parseInt(value) <=0){	
 				$('#Err'+id+'').html("Invalid estimation cost entered. Please check once.");			
-				flag = false;
+				
 			}else{
 				enteredAmount = parseInt(enteredAmount)+parseInt(value);
 			}
@@ -3108,14 +3135,14 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			}else{
 				$(".workTypeInnerId"+typeVal+mainCountIn+innerCountIn).html("");
 			}
-			
+			/*
 			if(appendWorkCostInner == 0 || appendWorkCostInner == null || appendWorkCostInner == ''){
 				$(".appendWorkCostInner"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Enter Work Cost</h5>");
 				flag = false;
 			}else{
 				$(".appendWorkCostInner"+typeVal+mainCountIn+innerCountIn).html("");
 			}
-			
+			*/
 			if(appendWorkDetailsInnerId == 0 || appendWorkDetailsInnerId == null || appendWorkDetailsInnerId == ''){
 				$(".appendWorkDetailsInnerId"+typeVal+mainCountIn+innerCountIn).html("<h5 style='color:red;'>Please Enter Work Details</h5>");
 				flag = false;
@@ -3302,7 +3329,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Updation Successfully</h3></center>").fadeOut(4000);
 					  
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 3000)}); 
-						window.location.reload(); 
+						window.close(); 
 						//$(".defaultCheckCls").prop("checked",true)},6000);
 						 
 				  }else{

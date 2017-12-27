@@ -28,6 +28,7 @@ public class PmRequestVO {
 	private Long representeeDesignationId;
 	private AddressVO addressVO;
 	private AddressVO candidateAddressVO;
+	private AddressVO candidateNativeAddressVO ;
 	private List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>(0);
 	private List<PmRequestVO> referList= new ArrayList<PmRequestVO>(0);
 	private List<MultipartFile> fileList = new ArrayList<MultipartFile>(0);
@@ -233,4 +234,11 @@ public class PmRequestVO {
 	public void setExistingPetitionId(Long existingPetitionId) {
 		this.existingPetitionId = existingPetitionId;
 	}
+	public AddressVO getCandidateNativeAddressVO() {
+		return candidateNativeAddressVO;
+	}
+	public void setCandidateNativeAddressVO(AddressVO candidateNativeAddressVO) {
+		this.candidateNativeAddressVO = candidateNativeAddressVO;
+	}
+	
 }
