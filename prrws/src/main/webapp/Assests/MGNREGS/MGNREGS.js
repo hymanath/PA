@@ -2405,7 +2405,8 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 		str1+='</table>';
 	str1+='</div>';
 	if(projectDivId == 'Labour Budget'){
-	str1+='<div id="labourRadioDivId" style="display:none;">';
+	str1+='<div class="row">';
+	str1+='<div class="m_top20 col-sm-5" id="labourRadioDivId" style="display:none;">';
 		str1+='<label class="radio-inline">';
 			str1+='<input name="'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" overview-locationId="'+menuLocationId+'" attr_locationType="'+menuLocationType+'" attr_name="TOT"  type="radio" checked attr_levelId="2" attr_labr_budget_radioBtn="'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'"/> Total';
 		str1+='</label>';
@@ -2415,6 +2416,10 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 		str1+='<label class="radio-inline">';
 			str1+='<input name="'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" overview-locationId="'+menuLocationId+'" attr_locationType="'+menuLocationType+'" attr_name="MAT" type="radio"  attr_levelId="2" attr_labr_budget_radioBtn="'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'"/> Material';
 		str1+='</label>';
+		str1+='</div>';
+	str1+='<div class="expenditure col-sm-7 m_top20">';
+	str1+='<strong>No of Panchayaties Vs Expenditure In Lakhs</strong>';
+	str1+='</div>';
 	str1+='</div>';
 	str1+='<div id="projectExp'+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+'" style="margin-top:10px;"></div>';
 	
@@ -2456,9 +2461,8 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 //LabourBudget Exp Builing --  Nandhini
 function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocationId,radioType){
 	var str='';
-	str+='<p class="text-center expenditure"><strong>No of Panchayaties Vs Expenditure In Lakhs</strong></p>';
 	 str+='<div class="table-responsive">';
-			str+='<table class="table table-striped table-bordered m_top10">';
+			str+='<table class="table table-striped table-bordered">';
 				str+='<tbody>';
 					 str+='<tr>';
 						 str+='<td></td>';

@@ -850,10 +850,13 @@ public class ItcDashboardService implements IItcDashboardService {
 						distVO.setEmployment(list[i].getEMPLOYMENT());
 						distVO.setRealizedEmployment(list[i].getREALIZED_EMPLOYMENT());
 						ItecPromotionDetailsVO greenVO  = new ItecPromotionDetailsVO();
+							greenVO.setCategory("GREEN");
 							distVO.getSubList().add(greenVO);
 						ItecPromotionDetailsVO redVO  = new ItecPromotionDetailsVO();
+							redVO.setCategory("RED");
 							distVO.getSubList().add(redVO);
 						ItecPromotionDetailsVO dropVO  = new ItecPromotionDetailsVO();
+							dropVO.setCategory("DROPPED");
 							distVO.getSubList().add(dropVO);
 						distMap.put(distVO.getDistrict(), distVO);
 					}
@@ -903,7 +906,7 @@ public class ItcDashboardService implements IItcDashboardService {
 						distVO.getSubList().get(2).setRealizedInvestment(dropList[j].getREALIZED_INVESTMENT());
 						distVO.getSubList().get(2).setEmployment(dropList[j].getEMPLOYMENT());
 						distVO.getSubList().get(2).setRealizedEmployment(dropList[j].getREALIZED_EMPLOYMENT());
-						distVO.getSubList().get(2).setCategory("DROPED");
+						distVO.getSubList().get(2).setCategory("DROPPED");
 					}
 				}
 			}

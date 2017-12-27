@@ -80,6 +80,11 @@
 	{
 		margin-top:10px;
 	}
+	.itcdashboard-list , .itcdashboard-list li
+	{
+		display:block;
+		width:100%;
+	}
 }
 @media (min-width: 500px) and (max-width:767px) 
 {
