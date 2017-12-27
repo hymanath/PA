@@ -68,4 +68,6 @@ public interface IItcDashboardService {
 	public IdNameVO savingEofcDataDetails();
 	public List<ItecEOfficeVO> getEOfcDepartOverviewDetailsNew(InputVO inputVO);
 	public List<ItecEOfficeVO> getEofficeDesginationWiseDetailsFrDepartmentNew(InputVO inputVO);
+	public List<ItecEOfficeVO> getEOfcPrAndRdDepartsOverviewDetails(InputVO inputVO);
+	public List<ItecEOfficeVO> getEofficePrAndRdDeptDesginationDetails(InputVO inputVO);
 }

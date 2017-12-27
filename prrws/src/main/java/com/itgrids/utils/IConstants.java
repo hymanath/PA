@@ -71,5 +71,5 @@ public interface IConstants {
     public static final Long[] PRESENT_FINANCIAL_YEAR_IDS = {9L,10L,11L,12L};
     public static final Long[] AP_PARLIAMENT_IDS_LIST = {504L,509L,466L,508L,464L,463L,500L,479L,494L,473L,483L,507L,493L,474L,467L,497L,495L,506L,478L,501L,482L,491L,476L,465L,472L};
     public static final Long[] PETITION_IN_PROGRESS_IDS ={6L,7L};
-    
+    public static final Long[] PR_RD_EOFFICE_DEPT_IDS = {1448L,1466L,1424L,729L,2798L};
 }

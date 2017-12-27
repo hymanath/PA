@@ -9,6 +9,6 @@ import com.itgrids.model.EofficeEmployeeWorkDetails;
 
 public interface IEofficeEmployeeWorkDetailsDAO extends GenericDao<EofficeEmployeeWorkDetails, Long>{
 	
-	public List<Object[]> getEOfcDepartmentCunts(Date fromDate,Date toDate);
+	public List<Object[]> getEOfcDepartmentCunts(Date fromDate,Date toDate,List<Long> deptIds);
 	public Long deleteRecrdsFrmTable();
 }
