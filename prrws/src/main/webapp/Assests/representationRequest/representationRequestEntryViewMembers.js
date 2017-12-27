@@ -500,16 +500,16 @@ function getRepresentativeSearchDetails1(){
 	 var mandalId=$("#mandalCanId").val();
 	 var searchLevelValue = [];
 	 var searchLevelId;
-	 if(districtId > 0){
+	 if(districtId != null && districtId > 0){
 		  searchLevelValue=districtId;
 	  searchLevelId=3;
 	 }
 	 
-if(constituencyId > 0){
+if(constituencyId != null && constituencyId.length > 0){
 	searchLevelId=4;
 	searchLevelValue=constituencyId
 }
-if(mandalId > 0){
+if(mandalId != null && mandalId.length > 0){
 	searchLevelId=5;
 	searchLevelValue=mandalId
 }
