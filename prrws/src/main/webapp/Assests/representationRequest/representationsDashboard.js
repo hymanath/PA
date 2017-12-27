@@ -44,6 +44,7 @@ getCompleteOrStatusOverviewDetails();
 function getCompleteOrStatusOverviewDetails(){
 	$("#completeOverviewId").html(spinner);
 	$("#statusOverviewId").html(spinner);
+	$("#myActionsId").html(spinner);
 var json = {
 		 fromDate :"",
 		 toDate:""
@@ -135,7 +136,7 @@ function buildMyActionsDetails(result){
 										str+='<div class="col-sm-12">';
 										for(var i in result.statusList){
 											if(result.statusList[i].statusType == "UserStatus"){
-											str+='<div class="col-sm-6">';
+											str+='<div class="col-sm-5">';
 												str+='<div class="media">';
 													str+='<div class="media-left">';
 														str+='<img src="Assests/icons/Group 4370.png">';
@@ -145,8 +146,8 @@ function buildMyActionsDetails(result){
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
-											str+='<div class="col-sm-3">';
-												str+='<div class="white-block">';
+											str+='<div class="col-sm-4">';
+												str+='<div class="white-block pad_5">';
 													str+='<div class="media">';
 														str+='<div class="media-left">';
 														str+='<img src="Assests/icons/Group 4377.png">';
@@ -159,7 +160,7 @@ function buildMyActionsDetails(result){
 												str+='</div>';
 											str+='</div>';
 											str+='<div class="col-sm-3">';
-												str+='<div class="white-block">';
+												str+='<div class="white-block pad_5">';
 													str+='<div class="media">';
 														str+='<div class="media-left">';
 															str+='<img src="Assests/icons/Group 4378.png">';
@@ -175,15 +176,17 @@ function buildMyActionsDetails(result){
 										
 									str+='</div>';
 									str+='<div class="row m_top10 ">';
-										str+='<div class="col-sm-12">';
+									
+										str+='<div class="">';
 											str+='<div class="white-block">';
+												str+='<h5 style="background-color:#E2F2F9;" class="grad_bg_orange">Referral wise</h5>';
 												str+='<div class="row pad_10">';
 													str+='<div class="col-sm-12">';
 													for(var j in result.statusList[i].referrerList){
-														str+='<div class="col-sm-2">';
-														str+='	<div class="border_right" style="border-right: 0.5px inset #000;">';
+														str+='<div class="col-sm-2 petition_border">';
+														str+='	<div class="">';
 															str+='<p>'+result.statusList[i].referrerList[j].name.toUpperCase()+'</p>';
-															str+='<h4><span title="Represents">'+result.statusList[i].referrerList[j].totalRepresents+'</span> - <span title="Works">'+result.statusList[i].referrerList[j].noOfWorks+'</span></h4>';
+															str+='<h5><b title="Represents">'+result.statusList[i].referrerList[j].totalRepresents+'</b> - <b title="Works">'+result.statusList[i].referrerList[j].noOfWorks+'</b></h5>';
 														str+='</div>';
 														str+='</div>';
 													}
@@ -191,12 +194,14 @@ function buildMyActionsDetails(result){
 												str+='</div>';
 												
 												str+='<div class="row pad_10">';
+												str+='<div class="border-styling" style="border-top:1px solid #FFBB00"></div>';
+												str+='<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_orange">Subject wise</h5>';
 													str+='<div class="col-sm-12">';
 													for(var j in result.statusList[i].subList){
-														str+='<div class="col-sm-2">';
-														str+='	<div class="border_right" style="border-right: 0.5px inset #000;">';
+														str+='<div class="col-sm-2 petition_border">';
+														str+='	<div class="">';
 															str+='<p>'+result.statusList[i].subList[j].name.toUpperCase()+'</p>';
-															str+='<h4><span title="Represents">'+result.statusList[i].subList[j].totalRepresents+'</span> - <span title="Works">'+result.statusList[i].subList[j].noOfWorks+'</span></h4>';
+															str+='<h5><b title="Represents">'+result.statusList[i].subList[j].totalRepresents+'</b> - <b title="Works">'+result.statusList[i].subList[j].noOfWorks+'</b></h5>';
 														str+='</div>';
 														str+='</div>';
 													}
@@ -204,12 +209,14 @@ function buildMyActionsDetails(result){
 													
 												str+='</div>';
 												str+='<div class="row pad_10">';
+												str+='<div class="border-styling" style="border-top:1px solid #FFBB00"></div>';
+												str+='<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_orange">Department wise</h5>';
 													str+='<div class="col-sm-12">';
 													for(var j in result.statusList[i].deptList){
-														str+='<div class="col-sm-2">';
-														str+='	<div class="border_right" style="border-right: 0.5px inset #000;">';
-															str+='<p>'+result.statusList[i].deptList[j].name.toUpperCase()+'</p>';
-															str+='<h4><span title="Represents">'+result.statusList[i].deptList[j].totalRepresents+'</span> - <span title="Works">'+result.statusList[i].deptList[j].noOfWorks+'</span></h4>';
+														str+='<div class="col-sm-2 petition_border">';
+														str+='	<div class="">';
+															str+='<p style="font-size:11px"><b>'+result.statusList[i].deptList[j].name.toUpperCase()+'</b></p>';
+															str+='<h5><b title="Represents">'+result.statusList[i].deptList[j].totalRepresents+'</b> - <b title="Works">'+result.statusList[i].deptList[j].noOfWorks+'</b></h5>';
 														str+='</div>';
 														str+='</div>';
 													}
@@ -292,7 +299,7 @@ function buildCompleteOrStatusOverviewDetails(result){
 												
 												
 												str+='<div class="row pad_10">';
-												str+='<div class="border-styling"></div>';
+												str+='<div class="border-styling" style="border-top:1px solid #1283C9;"></div>';
 												str+='	<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Subject wise</h5>';
 												str+='	<div class="col-sm-12 m_top5">';
 												//str+='	<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9">Subject wise</h5>';
@@ -309,7 +316,7 @@ function buildCompleteOrStatusOverviewDetails(result){
 													
 												str+='</div>';
 												str+='<div class="row pad_10">';
-												str+='<div class="border-styling"></div>';
+												str+='<div class="border-styling" style="border-top:1px solid #1283C9;"></div>';
 												str+='<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Department wise</h5>';
 												str+='	<div class="col-sm-12 m_top5">';
 												//str+='<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Department wise</h5>';
