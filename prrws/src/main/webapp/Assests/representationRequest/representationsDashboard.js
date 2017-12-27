@@ -42,6 +42,8 @@ function getPmDeptStatusIdsByUserIdsLst(){
 }
 getCompleteOrStatusOverviewDetails();
 function getCompleteOrStatusOverviewDetails(){
+	$("#completeOverviewId").html(spinner);
+	$("#statusOverviewId").html(spinner);
 var json = {
 		 fromDate :"",
 		 toDate:""
@@ -56,7 +58,7 @@ var json = {
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$("#completeOverviewId").html(spinner);
+		//$("#completeOverviewId").html(spinner);
 		$("#statusOverviewId").html(spinner);
 		$("#completeOverviewId").html(spinner);
 			buildMyActionsDetails(result);
@@ -70,38 +72,46 @@ function buildStatusOverviewDetails(result){
 	if(result != null && result.list != null && result.list.length >0){
 	
 		for(var i in result.list){
-		str+='<div class="col-sm-2">';
+		str+='<div class="col-sm-2 status_blocks">';
 										str+='<div class="panel panel-default">';
-											str+='<div class="panel-heading" style="background-color:#FFF8EF">';
+											//str+='<div class="panel-heading" style="background-color:#FFF8EF">';
 											if(result.list[i].id ==1){
+												str+='<div class="panel-heading" style="background-color:#ECEEEF">';
 												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4363.png">';
 											}else if(result.list[i].id ==2){
+												str+='<div class="panel-heading" style="background-color:#FFF8EF">';
+												
 												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4362.png">';
 											}else if(result.list[i].id ==8 ){
+												str+='<div class="panel-heading" style="background-color:#E5F6Ed">';
 												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4364.png">';
 											}else if(result.list[i].id ==4 ){
+												str+='<div class="panel-heading" style="background-color:#FCEDFF">';
 												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4369.png">';
 											}else if(result.list[i].id ==5 ){
+												str+='<div class="panel-heading" style="background-color:#FDE8F5">';
 												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4427.png">';
 											}
 											
-												str+='<b>'+result.list[i].name+'</b></h5>';
+												str+='<b style="padding-left:5px;font-size:13px">'+result.list[i].name+'</b></h5>';
 											
 												
 											str+='</div>';
 											str+='<div class="panel-body">';
-												str+='<div class="col-sm-8">';
+												str+='<div class="row">';
+												str+='<div class="col-sm-8" style="padding-left:5px">';
 													str+='<p>Representations</p>';
 													
 														str+='<h4><b>'+result.list[i].totalRepresents+'</b></h4>';
 													
 												str+='</div>';
-												str+='<div class="col-sm-4">';
+												str+='<div class="col-sm-4" style="padding-left:5px">';
 													str+='<p>Works</p>';
 													
 														str+='<h4><b>'+result.list[i].noOfWorks+'</b></h4>';
 													
 													
+												str+='</div>';
 												str+='</div>';
 												
 											str+='</div>';
@@ -110,7 +120,9 @@ function buildStatusOverviewDetails(result){
 									
 								//str+='</div>';
 									str+='</div>';
+									
 		}
+		
 		$("#statusOverviewId").html(str);
 	}else{
 		$("#statusOverviewId").html("No data available");
@@ -163,7 +175,7 @@ function buildMyActionsDetails(result){
 										
 									str+='</div>';
 									str+='<div class="row m_top10 ">';
-										str+='<div class="">';
+										str+='<div class="col-sm-12">';
 											str+='<div class="white-block">';
 												str+='<div class="row pad_10">';
 													str+='<div class="col-sm-12">';
@@ -220,7 +232,7 @@ function buildCompleteOrStatusOverviewDetails(result){
 	if(result != null){
 	 str+='<div class="row">';
 										str+='<div class="col-sm-12">';
-											str+='<div class="col-sm-6">';
+											str+='<div class="col-sm-5">';
 												str+='<div class="media">';
 													str+='<div class="media-left">';
 														str+='<img src="Assests/icons/Group 4370.png">';
@@ -230,8 +242,8 @@ function buildCompleteOrStatusOverviewDetails(result){
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
-											str+='<div class="col-sm-3">';
-												str+='<div class="white-block">';
+											str+='<div class="col-sm-4">';
+												str+='<div class="white-block pad_5">';
 													str+='<div class="media">';
 														str+='<div class="media-left">';
 															str+='<img src="Assests/icons/Group 4377.png">';
@@ -244,7 +256,7 @@ function buildCompleteOrStatusOverviewDetails(result){
 												str+='</div>';
 											str+='</div>';
 											str+='<div class="col-sm-3">';
-												str+='<div class="white-block">';
+												str+='<div class="white-block pad_5">';
 												str+='	<div class="media">';
 													str+='	<div class="media-left">';
 															str+='<img src="Assests/icons/Group 4378.png">';
@@ -262,14 +274,16 @@ function buildCompleteOrStatusOverviewDetails(result){
 										str+='<div class="">';
 											str+='<div class="white-block">';
 											
-											str+='	<div class="row pad_10">';
-													str+='<div class="col-sm-12">';
-													str+='	<h5 style="background-color:#E2F2F9">Referral wise</h5>';
+											str+='	<div class="row" style="padding:0px 10px 10px 10px">';
+													str+='	<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_lightblue">Referral wise</h5>';
+													str+='<div class="col-sm-12 m_top5">';
+													//str+='	<h5 style="background-color:#E2F2F9" class="grad_bg_lightblue">Referral wise</h5>';
+													str+='<div class="clearfix"></div>'
 													for(var i in result.referrerList){
-													str+='	<div class="col-sm-2">';
-													str+='	<div class="border_right" style="border-right: 0.5px inset #000;">';
+													str+='	<div class="col-sm-2 petition_border">';
+													str+='	<div class="">';
 														str+='	<p attr_id='+result.referrerList[i].id+'>'+result.referrerList[i].name.toUpperCase()+'</p>';
-														str+='	<h4><span title="Represents">'+result.referrerList[i].totalRepresents+'</span> - <span title="Works">'+result.referrerList[i].noOfWorks+'</span></h4>';
+														str+='	<h5><b title="Represents">'+result.referrerList[i].totalRepresents+'</b> - <b title="Works">'+result.referrerList[i].noOfWorks+'</b></h5>';
 														str+='</div>';
 														str+='</div>';
 														}
@@ -278,13 +292,16 @@ function buildCompleteOrStatusOverviewDetails(result){
 												
 												
 												str+='<div class="row pad_10">';
-												str+='	<div class="col-sm-12">';
-												str+='	<h5 style="background-color:#E2F2F9">Subject wise</h5>';
+												str+='<div class="border-styling"></div>';
+												str+='	<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Subject wise</h5>';
+												str+='	<div class="col-sm-12 m_top5">';
+												//str+='	<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9">Subject wise</h5>';
+												str+='<div class="clearfix"></div>';
 												for(var i in result.subList){
-													str+='	<div class="col-sm-2">';
-													str+='	<div class="border_right" style="border-right: 0.5px inset #000;">';
+													str+='	<div class="col-sm-2 petition_border">';
+													str+='	<div class="">';
 														str+='	<p attr_id="'+result.subList[i].id+'">'+result.subList[i].name.toUpperCase()+'</p>';
-														str+='	<h4><span title="Represents">'+result.subList[i].totalRepresents+'</span> - <span title="Works">'+result.subList[i].noOfWorks+'</span></h4>';
+														str+='	<h5><b title="Represents">'+result.subList[i].totalRepresents+'</b> - <b title="Works">'+result.subList[i].noOfWorks+'</b></h5>';
 														str+='</div>';
 														str+='</div>';
 												}
@@ -292,13 +309,16 @@ function buildCompleteOrStatusOverviewDetails(result){
 													
 												str+='</div>';
 												str+='<div class="row pad_10">';
-												str+='	<div class="col-sm-12">';
-												str+='	<h5 style="background-color:#E2F2F9">Department wise</h5>';
+												str+='<div class="border-styling"></div>';
+												str+='<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Department wise</h5>';
+												str+='	<div class="col-sm-12 m_top5">';
+												//str+='<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Department wise</h5>';
+												str+='<div class="clearfix"></div>';
 												for(var i in result.deptList){
-													str+='	<div class="col-sm-2">';
-													str+='	<div class="border_right" style="border-right: 0.5px inset #000;">';
-														str+='	<p attr_id="'+result.deptList[i].id+'">'+result.deptList[i].name.toUpperCase()+'</p>';
-														str+='	<h4><span title="Represents">'+result.deptList[i].totalRepresents+'</span> - <span title="Works">'+result.deptList[i].noOfWorks+'</span></h4>';
+													str+='	<div class="col-sm-2 petition_border">';
+													str+='	<div class="">';
+														str+='	<p attr_id="'+result.deptList[i].id+'" style="font-size:11px"><b>'+result.deptList[i].name.toUpperCase()+'</b></p>';
+														str+='	<h5><b title="Represents">'+result.deptList[i].totalRepresents+'</b> - <b title="Works">'+result.deptList[i].noOfWorks+'</b></h5>';
 														str+='</div>';
 														str+='</div>';
 												}
