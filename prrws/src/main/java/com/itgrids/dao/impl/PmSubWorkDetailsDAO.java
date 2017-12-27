@@ -146,11 +146,14 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		}
 		sb.append("  from PmSubWorkDetails model  ");
 		if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
-			sb.append(" ,PmRepresenteeRefDetails model1 where model1.petition.petitionId=model.petition.petitionId and " +
-					" model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and model1.isDeleted='N' ");
+			sb.append(" ,PmRepresenteeRefDetails model1 where model1.petition.petitionId=model.petition.petitionId and ");
+			//sb.append(" model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and model1.isDeleted='N' and  ");
 		}else{
-			sb.append(" where model.pmSubject.isDeleted='N' and model.pmDepartment.isDeleted='N' ");
+			sb.append(" where ");
 		}
+			
+		//sb.append("  model.pmSubject.isDeleted='N' and model.pmDepartment.isDeleted='N' and ");
+		sb.append("  model.pmSubject.parentPmSubjectId is null ");
 		if(deptIds != null && deptIds.size() >0){
 			 sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
@@ -159,13 +162,13 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		}
 		sb.append(" group by   model.petition.petitionId, model.pmStatus.pmStatusId " );
 		if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
-			sb.append(", model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId ");
+			sb.append(", model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId  order by model1.pmRefCandidateDesignation.pmDesignation.preferrableOrderNO asc ");
 		}/*else if(type != null && (type.equalsIgnoreCase("overallStatus") || type.equalsIgnoreCase("status"))){
 			sb.append(", model.pmStatus.pmStatusId ");
 		}*/else if(type != null && (type.equalsIgnoreCase("statusSubject") || type.equalsIgnoreCase("subject"))){
-			sb.append(", model.pmSubject.pmSubjectId ");
+			sb.append(", model.pmSubject.pmSubjectId  order by model.pmSubject.preferrableOrderNO asc");
 		}else if(type != null && (type.equalsIgnoreCase("statusDept") || type.equalsIgnoreCase("department"))){
-			sb.append(", model.pmDepartment.pmDepartmentId ");
+			sb.append(", model.pmDepartment.pmDepartmentId  order by model.pmDepartment.preferrableOrderNO asc");
 		}
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size() >0){
