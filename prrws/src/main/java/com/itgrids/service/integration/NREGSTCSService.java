@@ -4946,14 +4946,111 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
 	 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")))));
 	 	    				//+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
-	 	    				  
-	 	    				resultList.add(paymentDtlsVO);
+	 	    				  if(!jsonObj.getString("UNIQUEID").equalsIgnoreCase("-"))
+	 	    					  resultList.add(paymentDtlsVO);
 	 	    				  
 	 	    			  }
 	 	    		 }
 	 	    	 }
 	 	    	 
 	 	      }
+	        
+	        if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("district") || inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+					&& inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase("abstract")){
+	        	if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+	        		//district
+		        	inputVO.setLocationType("district");
+		        	inputVO.setSublocationType("district");
+		        	inputVO.setLocationId(inputVO.getDistrictId());
+		        	
+		        	str = convertingInputVOToString(inputVO);
+					
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			        
+			        if (response.getStatus() != 200) {
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      } else {
+			 	    	 String output = response.getEntity(String.class);
+			 	    	 if (output != null && output.length() > 0) {
+			 	    		 JSONArray paymentOverviewDataArr = new JSONArray(output);	 
+			 	    		 if (paymentOverviewDataArr != null && paymentOverviewDataArr.length() > 0) {
+			 	    			  for (int i = 0 ;i < paymentOverviewDataArr.length() ;i++) {
+			 	    				  
+			 	    				 NregaPaymentsVO paymentDtlsVO = new NregaPaymentsVO();
+			 	    				 JSONObject jsonObj = (JSONObject) paymentOverviewDataArr.get(i);
+			 	    				  
+			 	    				paymentDtlsVO.setId(jsonObj.getString("UNIQUEID"));
+			 	    				
+			 	    				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT"))
+			 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT"))
+			 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT"))
+			 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
+			 	    				
+			 	    				paymentDtlsVO.setPendingWage(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))
+			 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))
+			 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))
+			 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT")))));
+			 	    				
+			 	    				paymentDtlsVO.setPendingMaterial(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT"))
+			 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT"))
+			 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT"))
+			 	    				+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
+			 	    				if(!jsonObj.getString("UNIQUEID").equalsIgnoreCase("-"))
+			 	    					resultList.get(0).getSubList().add(paymentDtlsVO);
+			 	    				  
+			 	    			  }
+			 	    		 }
+			 	    	 }
+			 	    	 
+			 	      }
+	        	}
+	        	//state
+	        	inputVO.setLocationType("state");
+	        	inputVO.setSublocationType("state");
+	        	inputVO.setLocationId(1L);
+	        	
+	        	str = convertingInputVOToString(inputVO);
+				
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+		        
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	      } else {
+		 	    	 String output = response.getEntity(String.class);
+		 	    	 if (output != null && output.length() > 0) {
+		 	    		 JSONArray paymentOverviewDataArr = new JSONArray(output);	 
+		 	    		 if (paymentOverviewDataArr != null && paymentOverviewDataArr.length() > 0) {
+		 	    			  for (int i = 0 ;i < paymentOverviewDataArr.length() ;i++) {
+		 	    				  
+		 	    				 NregaPaymentsVO paymentDtlsVO = new NregaPaymentsVO();
+		 	    				 JSONObject jsonObj = (JSONObject) paymentOverviewDataArr.get(i);
+		 	    				  
+		 	    				paymentDtlsVO.setId(jsonObj.getString("UNIQUEID"));
+		 	    				
+		 	    				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
+		 	    				
+		 	    				paymentDtlsVO.setPendingWage(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT")))));
+		 	    				
+		 	    				paymentDtlsVO.setPendingMaterial(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
+		 	    				if(!jsonObj.getString("UNIQUEID").equalsIgnoreCase("-"))
+		 	    					resultList.get(0).getSubList().add(paymentDtlsVO);
+		 	    				  
+		 	    			  }
+		 	    		 }
+		 	    	 }
+		 	    	 
+		 	      }
+	        }
+	        
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNregaPaymentsAbsAndOverviewDtls - NREGSTCSService service", e);
 		}
@@ -5092,7 +5189,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			if(value != null) {
 				returnVal = new BigDecimal(Double.valueOf(value)/10000000.00d).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-				returnVal = returnVal + " CR";
+				returnVal = returnVal + " Cr";
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at cnvrtRupeesIntoCrores - NREGSTCSService service", e);

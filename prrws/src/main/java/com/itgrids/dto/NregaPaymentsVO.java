@@ -103,8 +103,15 @@ public class NregaPaymentsVO implements Serializable{
     private String reprocessPendingWageAmount="0";
     private String reprocessPendingMaterialAmount="0";
     private String totalReprocessPendingAmount="0";
+    private List<NregaPaymentsVO> subList = new ArrayList<NregaPaymentsVO>(0);
     
     
+	public List<NregaPaymentsVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<NregaPaymentsVO> subList) {
+		this.subList = subList;
+	}
 	public String getPendingAtBankQuantity() {
 		return pendingAtBankQuantity;
 	}
