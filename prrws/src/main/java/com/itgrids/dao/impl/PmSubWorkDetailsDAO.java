@@ -189,12 +189,12 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		sb.append("  from PmSubWorkDetails model where  ");
 		
 		//sb.append("  model.pmSubject.isDeleted='N' and model.pmDepartment.isDeleted='N' and model.pmLead.isDeleted='N' and ");
-		//sb.append("  model.pmSubject.parentPmSubjectId is null ");
+		//sb.append("  model.pmSubject.parentPmSubjectId is null and ");
 		if(deptIds != null && deptIds.size() >0){
-			 sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
+			 sb.append("  model.pmDepartment.pmDepartmentId in (:deptIds) and ");
 		}
 		if(startDate != null && endDate != null){
-			 sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
+			 sb.append("  date(model.insertedTime) between :startDate and :endDate "); 
 		}
 		sb.append(" group by   model.petition.petitionId, model.pmStatus.pmStatusId ,model.pmLead.pmLeadId " );
 		
