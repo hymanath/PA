@@ -1559,24 +1559,24 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 						}else if(entry.getKey().longValue() != 2l){
 							returnVO.getList().add(entry.getValue());
-							setOthersDataToLastIndexOfList(entry.getValue().getReferrerList());
-							setOthersDataToLastIndexOfList(entry.getValue().getSubList());
-							setOthersDataToLastIndexOfList(entry.getValue().getDeptList());
+							//setOthersDataToLastIndexOfList(entry.getValue().getReferrerList());
+							//setOthersDataToLastIndexOfList(entry.getValue().getSubList());
+							//setOthersDataToLastIndexOfList(entry.getValue().getDeptList());
 						}
 					}
 				}
 				
 				if(commonMethodsUtilService.isMapValid(inprogreeReferMap)){
 					inProgressVO.getReferrerList().addAll(inprogreeReferMap.values());
-					setOthersDataToLastIndexOfList(inProgressVO.getReferrerList());
+					//setOthersDataToLastIndexOfList(inProgressVO.getReferrerList());
 				}
 				if(commonMethodsUtilService.isMapValid(inprogreeSubjMap)){
 					inProgressVO.getSubList().addAll(inprogreeSubjMap.values());
-					setOthersDataToLastIndexOfList(inProgressVO.getSubList());
+					//setOthersDataToLastIndexOfList(inProgressVO.getSubList());
 				}
 				if(commonMethodsUtilService.isMapValid(inprogreeDeptMap)){
 					inProgressVO.getDeptList().addAll(inprogreeDeptMap.values());
-					setOthersDataToLastIndexOfList(inProgressVO.getDeptList());
+					//setOthersDataToLastIndexOfList(inProgressVO.getDeptList());
 				}
 				returnVO.getList().add(inProgressVO);
 				setOthersDataToLastIndexOfList(returnVO.getReferrerList());

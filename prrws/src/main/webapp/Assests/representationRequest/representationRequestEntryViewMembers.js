@@ -500,7 +500,7 @@ function getRepresentativeSearchDetails1(){
 	 var mandalId=$("#mandalCanId").val();
 	 var searchLevelValue = [];
 	 var searchLevelId;
-	 if(districtId != null && districtId > 0){
+	 if(districtId != null && districtId.length > 0){
 		  searchLevelValue=districtId;
 	  searchLevelId=3;
 	 }
