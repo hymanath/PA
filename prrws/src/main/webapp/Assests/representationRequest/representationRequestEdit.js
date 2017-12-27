@@ -914,7 +914,7 @@ function clondTemplate(blockId,type,counterId,typeVal,counterappendId,isNew){
 				
 					clonedTemplate+='<div class="col-sm-3">';
 							clonedTemplate+='<label>DEPARTMENT <span class="starColor">*</span></label>';
-							clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+defaultValue+'].deptId"  class="form-control chosen-select m_top10 validateCls "  id="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'" onChange=getPetitionSubjectList(this.value,"subjectId'+typeVal+''+counterappendId+'","'+blockId+'","change")>';
+							clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+defaultValue+'].deptId"  class="form-control chosen-select m_top10 validateCls"  id="WorkTypeWiseDepartmentId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'" onChange=getPetitionSubjectList(this.value,"subjectId'+typeVal+''+counterappendId+'","'+blockId+'","change")>';
 							clonedTemplate+='<option value="0"> Select Department </option>';
 							if(globalDepartmentsList != null && globalDepartmentsList.length>0){
 								for(var x in globalDepartmentsList){
@@ -947,7 +947,7 @@ function clondTemplate(blockId,type,counterId,typeVal,counterappendId,isNew){
 							clonedTemplate+='<div class="row m_top10">';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>WORK TYPE <span class="starColor">*</span></label>';
-										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+defaultValue+'].workTypeId"  class="form-control chosen-select m_top10 validateCls" id="workTypeId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
+										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+defaultValue+'].workTypeId"  class="form-control chosen-select m_top10 validateCls newValidateCls" id="workTypeId'+typeVal+''+counterappendId+''+blockId+'" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 										clonedTemplate+='<option value="0"> Select Work Type </option>';
 										for(var w in globalWorkTypeList){
 											clonedTemplate+='<option value='+globalWorkTypeList[w].key+'>'+globalWorkTypeList[w].value+'</option>';
@@ -971,7 +971,7 @@ function clondTemplate(blockId,type,counterId,typeVal,counterappendId,isNew){
 							clonedTemplate+='<div class="row m_top10">';
 									clonedTemplate+='<div class="col-sm-3">';
 										clonedTemplate+='<label>LOCATION LEVEL <span class="starColor">*</span></label>';
-										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+defaultValue+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+' validateCls" id="locationLevelId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
+										clonedTemplate+='<select  name="worksList['+counterappendId+'].subWorksList['+defaultValue+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+typeVal+' validateCls newValidateCls" id="locationLevelId'+typeVal+''+counterappendId+''+blockId+'" attr_counterval="'+counterappendId+''+blockId+'" attr_type="'+typeVal+'" attr_type_change="main" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 											clonedTemplate+='<option value="0">Select Level</option>';
 											clonedTemplate+='<option value="3">District</option>';
 											clonedTemplate+='<option value="4">Constituency</option>';
@@ -1108,7 +1108,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 				clonedInnerTemplate+='<div class="row m_top10" >';
 						clonedInnerTemplate+='<div class="col-sm-3">';
 							clonedInnerTemplate+='<label>WORK TYPE  <span class="starColor">*</span></label>';
-							clonedInnerTemplate+='<select  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].workTypeId"  class="form-control chosen-select m_top10 validateCls validateInnerCls" id="workTypeInnerId'+typeVal+''+counterId+''+innerWorkCount+'" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'">';
+							clonedInnerTemplate+='<select  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].workTypeId"  class="form-control chosen-select m_top10 validateCls validateInnerCls newValidateInnerCls" id="workTypeInnerId'+typeVal+''+counterId+''+innerWorkCount+'" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'">';
 								clonedInnerTemplate+='<option value="0"> Select Work Type </option>';
 										for(var w in globalWorkTypeList){
 											clonedInnerTemplate+='<option value='+globalWorkTypeList[w].key+'>'+globalWorkTypeList[w].value+'</option>';
@@ -2023,7 +2023,7 @@ function buildPetitionDetails(result){
 												str+='<div class="row m_top10">';
 														str+='<div class="col-sm-3">';
 															str+='<label> WORK TYPE <span class="starColor">*</span></label>';
-															str+='<select  name="worksList['+i+'].subWorksList['+j+'].workTypeId"  class="form-control chosen-select m_top10 validateCls" id="workTypeId'+result.representationType+''+i+''+j+'" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+															str+='<select  name="worksList['+i+'].subWorksList['+j+'].workTypeId"  class="form-control chosen-select m_top10 validateCls newValidateCls" id="workTypeId'+result.representationType+''+i+''+j+'" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
 															str+='<option value="0"> Select Work Type </option>';
 																for(var w in globalWorkTypeList){
 																		if(globalWorkTypeList[w].key == result.subWorksList[i].subWorksList[j].workTypeId){
@@ -2050,7 +2050,7 @@ function buildPetitionDetails(result){
 												str+='<div class="row m_top10">';
 														str+='<div class="col-sm-3">';
 															str+='<label>LOCATION LEVEL <span class="starColor">*</span></label>';
-															str+='<select  name="worksList['+i+'].subWorksList['+j+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+result.representationType+' validateCls" id="locationLevelId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+															str+='<select  name="worksList['+i+'].subWorksList['+j+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+result.representationType+' validateCls newValidateCls" id="locationLevelId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
 																str+='<option value="0">Select Level</option>';
 																
 																if(result.subWorksList[i].subWorksList[j].locationScopeId == 3){
@@ -3118,10 +3118,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		flag = false;
 	}
 	
-	
-	
-	
-	$(".validateCls").each(function(){
+	$(".newValidateCls").each(function(){
 		
 		
 		var appendInnerType = $(this).attr("attr_type_change")
@@ -3187,7 +3184,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			}
 			*/
 		}
-		/*if(appendInnerType == "main"){
+		if(appendInnerType == "main"){
 			var mainCountMain = $(this).attr("attr_main_count")
 			var innerCountMain = $(this).attr("attr_inner_count")
 		
@@ -3273,10 +3270,10 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 					$(".panchayatId"+typeVal+mainCount+innerCount).html("");
 				}
 			}
-		}*/
+		}
 	});
 
-	$(".validateInnerCls").each(function(){
+	$(".newValidateInnerCls").each(function(){
 			var mainCountIn = $(this).attr("attr_main_count");
 			var innerCountIn = $(this).attr("attr_inner_count");
 
@@ -3412,6 +3409,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		$('#saveButtonId').show();
 		return;
 	}
+	
+//alert("succuss");
 
 	$('#saveButtonId').hide();	
 	$("#savingDetailsSpinner").html(spinner)
