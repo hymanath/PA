@@ -374,7 +374,7 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 	   var mandalId=$("#mandalCanId").val();
 	    var emialRegExp =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 		var phonePattern= /^\d{10}$/;
-	 if(locationType == null || locationType =='all'){
+	 /*if(locationType == null || locationType =='all'){
 		 $("#locationErrDivlId").html('<h5>Please select location </h5>');
 		 isError=true;
 	 }
@@ -382,7 +382,7 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 		 $("#districtCandErrDiv").html('<h5>Please select district </h5>');
 		 isError=true;
 	 }
-/*	
+	
   if(constituencyId == null || constituencyId ==0){
 		 $("#constituencyCanErrDiv").html('<h5>Please select Constituency </h5>');
 		 isError=true;
@@ -445,9 +445,9 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 	 }
  }
  $(document).on("click","#advanceSearchId",function(){
-  //var isErr= searchValidations();
-  //if(isErr)
- // return;
+  var isErr= searchValidations();
+  if(isErr)
+  return;
 
    getRepresentativeSearchDetails1();
  });
