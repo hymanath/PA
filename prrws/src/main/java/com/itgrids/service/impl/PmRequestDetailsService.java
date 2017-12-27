@@ -1447,16 +1447,23 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			try {
 				KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
 				List<Long> deptIds = deptVO.getDeptIdsList();
+				KeyValueVO userAccesStatusVO = getPmDeptStatusIdsByUserIdsLst(userId);
+				List<Long> statusIds = userAccesStatusVO.getDeptIdsList();
 				Date fromDate = null;
 				Date toDate = null;
-				//List<>
+				
 				Map<Long,RepresenteeViewVO> statuMap = null;
 				List<PmStatus> statusList = pmStatusDAO.getAll();
 				if(commonMethodsUtilService.isListOrSetValid(statusList)){
 					statuMap = new HashMap<Long,RepresenteeViewVO>();
+					
 					for (PmStatus pmStatus : statusList) {
 						if(pmStatus.getPmStatusId().longValue() != 2l){
 							RepresenteeViewVO	statusVO = new RepresenteeViewVO();
+							if(statusIds != null && statusIds.size() >0 && statusIds.contains(pmStatus.getPmStatusId())){
+								statusVO.setStatusType("UserStatus");
+							}
+							
 							statusVO.setId(pmStatus.getPmStatusId());
 							statusVO.setName(pmStatus.getStatus());
 							statuMap.put(statusVO.getId(), statusVO);
@@ -1493,6 +1500,77 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isMapValid(statuMap)){
 					returnVO.getStatusList().addAll(statuMap.values());
 				}
+				
+				List<Long> inProgressStatusIds = new ArrayList<Long>();
+				inProgressStatusIds.add(3l);
+				inProgressStatusIds.add(6l);
+				inProgressStatusIds.add(7l);
+				RepresenteeViewVO inProgressVO = new RepresenteeViewVO();
+				inProgressVO.setId(2l);
+				inProgressVO.setName("In Progress");
+				Map<Long,RepresenteeViewVO> inprogreeReferMap = new HashMap<Long,RepresenteeViewVO>();
+				Map<Long,RepresenteeViewVO> inprogreeSubjMap = new HashMap<Long,RepresenteeViewVO>();
+				Map<Long,RepresenteeViewVO> inprogreeDeptMap = new HashMap<Long,RepresenteeViewVO>();
+				if(commonMethodsUtilService.isMapValid(statuMap)){
+					for(Map.Entry<Long,RepresenteeViewVO> entry :statuMap.entrySet()){
+						if(inProgressStatusIds.contains(entry.getKey())){
+							inProgressVO.setNoOfWorks(inProgressVO.getNoOfWorks()+entry.getValue().getNoOfWorks());
+							inProgressVO.setTotalRepresents(inProgressVO.getTotalRepresents()+entry.getValue().getTotalRepresents());
+							if(entry.getValue().getReferrerList() != null && entry.getValue().getReferrerList().size() >0){
+								for (RepresenteeViewVO refferVO : entry.getValue().getReferrerList()) {
+									RepresenteeViewVO inprogressrefMap = inprogreeReferMap.get(refferVO.getId());
+									if(inprogressrefMap == null){
+										inprogressrefMap = new RepresenteeViewVO();
+										inprogressrefMap.setId(refferVO.getId());
+										inprogressrefMap.setName(refferVO.getName());
+										inprogreeReferMap.put(inprogressrefMap.getId(), inprogressrefMap);
+									}
+									inprogressrefMap.setNoOfWorks(inprogressrefMap.getNoOfWorks()+refferVO.getNoOfWorks());
+									inprogressrefMap.setTotalRepresents(inprogressrefMap.getTotalRepresents()+refferVO.getTotalRepresents());
+								}
+							}
+							if(entry.getValue().getSubList() != null && entry.getValue().getSubList().size() >0){
+								for (RepresenteeViewVO subjVO : entry.getValue().getSubList()) {
+									RepresenteeViewVO inprogressSubMapVO = inprogreeSubjMap.get(subjVO.getId());
+									if(inprogressSubMapVO == null){
+										inprogressSubMapVO = new RepresenteeViewVO();
+										inprogressSubMapVO.setId(subjVO.getId());
+										inprogressSubMapVO.setName(subjVO.getName());
+										inprogreeSubjMap.put(inprogressSubMapVO.getId(), inprogressSubMapVO);
+									}
+									inprogressSubMapVO.setNoOfWorks(inprogressSubMapVO.getNoOfWorks()+subjVO.getNoOfWorks());
+									inprogressSubMapVO.setTotalRepresents(inprogressSubMapVO.getTotalRepresents()+subjVO.getTotalRepresents());
+								}
+							}
+							if(entry.getValue().getReferrerList() != null && entry.getValue().getReferrerList().size() >0){
+								for (RepresenteeViewVO deptVO1 : entry.getValue().getReferrerList()) {
+									RepresenteeViewVO inprogressDeptMapVO = inprogreeDeptMap.get(deptVO1.getId());
+									if(inprogressDeptMapVO == null){
+										inprogressDeptMapVO = new RepresenteeViewVO();
+										inprogressDeptMapVO.setId(deptVO1.getId());
+										inprogressDeptMapVO.setName(deptVO1.getName());
+										inprogreeDeptMap.put(inprogressDeptMapVO.getId(), inprogressDeptMapVO);
+									}
+									inprogressDeptMapVO.setNoOfWorks(inprogressDeptMapVO.getNoOfWorks()+deptVO1.getNoOfWorks());
+									inprogressDeptMapVO.setTotalRepresents(inprogressDeptMapVO.getTotalRepresents()+deptVO1.getTotalRepresents());
+								}
+							}
+						}else{
+							returnVO.getList().add(entry.getValue());
+						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isMapValid(inprogreeReferMap)){
+					inProgressVO.getReferrerList().addAll(inprogreeReferMap.values());
+				}
+				if(commonMethodsUtilService.isMapValid(inprogreeSubjMap)){
+					inProgressVO.getSubList().addAll(inprogreeSubjMap.values());
+				}
+				if(commonMethodsUtilService.isMapValid(inprogreeDeptMap)){
+					inProgressVO.getDeptList().addAll(inprogreeDeptMap.values());
+				}
+				returnVO.getList().add(inProgressVO);
 				/*if(commonMethodsUtilService.isListOrSetValid(objectList)){
 					statuMap = new HashMap<Long,RepresenteeViewVO>();
 					for (Object[] param : objectList) {
@@ -1525,31 +1603,66 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							statuMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusVO);
 						}*/
 						RepresenteeViewVO VO  = null;
+						Long id = commonMethodsUtilService.getLongValueForObject(param[4]);
+						String name = commonMethodsUtilService.getStringValueForObject(param[5]);
 						if(type != null && type.equalsIgnoreCase("statusReferral")){
-							 VO = getMatchVO(returnVO.getReferrerList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							if(id.longValue() != 7l && id.longValue() != 4l && id.longValue() != 2l && id.longValue() != 1l ){
+								id = 0l; 
+								name="OTHERS";
+							}
+							 VO = getMatchVO(returnVO.getReferrerList(),id);
 							 if(VO == null){
 								 VO = new  RepresenteeViewVO();
-								 returnVO.getReferrerList().add(VO);
+								 /*if(id.longValue() == 7l){
+									 returnVO.getReferrerList().add(0, VO);
+								 }else  if(id.longValue() == 2l){
+									 returnVO.getReferrerList().add(1, VO);
+								 }else  if(id.longValue() == 1l){
+									 returnVO.getReferrerList().add(2, VO);
+								 }else  if(id.longValue() == 4l){
+									 returnVO.getReferrerList().add(3, VO);
+								 }else{*/
+									 returnVO.getReferrerList().add(VO);
+								 //}
 							 }
 							 returnVO.setTotalRepresents(returnVO.getTotalRepresents().longValue()+1l);
 							 returnVO.setNoOfWorks(returnVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						}else if(type != null && type.equalsIgnoreCase("statusDept")){
-							 VO = getMatchVO(returnVO.getDeptList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							//if(id.longValue() != 7l || id.longValue() != 4l || id.longValue() != 2l || id.longValue() != 1l ){
+							//	id = 0l; 
+							//}
+							 VO = getMatchVO(returnVO.getDeptList(),id);
 							
 							 if(VO == null){
 								 VO = new  RepresenteeViewVO();
 								 returnVO.getDeptList().add(VO);
 							 }
 						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
-							 VO = getMatchVO(returnVO.getSubList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							if(id.longValue() != 188l && id.longValue() != 20l && id.longValue() != 67l && id.longValue() != 439l && id.longValue() != 447l ){
+								id = 0l; 
+								name="OTHERS";
+							}
+							 VO = getMatchVO(returnVO.getSubList(),id);
 							
 							 if(VO == null){
 								 VO = new  RepresenteeViewVO();
-								 returnVO.getSubList().add(VO);
+								 /*if(id.longValue() == 20l){
+									 returnVO.getReferrerList().add(0, VO);
+								 }else  if(id.longValue() == 67l){
+									 returnVO.getReferrerList().add(1, VO);
+								 }else  if(id.longValue() == 188l){
+									 returnVO.getReferrerList().add(2, VO);
+								 }else  if(id.longValue() == 439l){
+									 returnVO.getReferrerList().add(3, VO);
+								 }else  if(id.longValue() == 447l){
+									 returnVO.getReferrerList().add(4, VO);
+								 }else{*/
+									 returnVO.getSubList().add(VO);
+								 //}
 							 }
 						}
-						 VO.setId(commonMethodsUtilService.getLongValueForObject(param[4]));
-						 VO.setName(commonMethodsUtilService.getCapitalStringValueForObject(param[5]));
+						 VO.setId(id);
+						 VO.setName(name);
 						VO.setTotalRepresents(VO.getTotalRepresents().longValue()+1l);
 						VO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						
@@ -1573,29 +1686,67 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							statuMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusVO);
 						}
 						RepresenteeViewVO VO  = null;
+						Long id = commonMethodsUtilService.getLongValueForObject(param[4]);
+						String name = commonMethodsUtilService.getStringValueForObject(param[5]);
 						if(type != null && type.equalsIgnoreCase("statusReferral")){
-							 VO = getMatchVO(statusVO.getReferrerList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							
+							if(id.longValue() != 7l && id.longValue() != 4l && id.longValue() != 2l && id.longValue() != 1l ){
+								id = 0l; 
+								name="OTHERS";
+							}
+							 VO = getMatchVO(statusVO.getReferrerList(),id);
 							 if(VO == null){
 								 VO = new  RepresenteeViewVO();
-								 statusVO.getReferrerList().add(VO);
+								/* if(id.longValue() == 7l){
+									 statusVO.getReferrerList().add(0, VO);
+								 }else  if(id.longValue() == 2l){
+									 statusVO.getReferrerList().add(1, VO);
+								 }else  if(id.longValue() == 1l){
+									 statusVO.getReferrerList().add(2, VO);
+								 }else  if(id.longValue() == 4l){
+									 statusVO.getReferrerList().add(3, VO);
+								 }else{*/
+									 statusVO.getReferrerList().add(VO);
+								 //}
 							 }
 						}else if(type != null && type.equalsIgnoreCase("statusDept")){
-							 VO = getMatchVO(statusVO.getDeptList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							
+							//if(id.longValue() != 7l || id.longValue() != 4l || id.longValue() != 2l || id.longValue() != 1l ){
+							//	id = 0l; 
+							//}
+							 VO = getMatchVO(statusVO.getDeptList(),id);
 							
 							 if(VO == null){
 								 VO = new  RepresenteeViewVO();
 								 statusVO.getDeptList().add(VO);
 							 }
 						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
-							 VO = getMatchVO(statusVO.getSubList(),commonMethodsUtilService.getLongValueForObject(param[4]));
+							//Long subjId = commonMethodsUtilService.getLongValueForObject(param[4]);
+							if(id.longValue() != 188l && id.longValue() != 20l && id.longValue() != 67l && id.longValue() != 439l && id.longValue() != 447l ){
+								id = 0l; 
+								name="OTHERS";
+							}
+							 VO = getMatchVO(statusVO.getSubList(),id);
 							
 							 if(VO == null){
 								 VO = new  RepresenteeViewVO();
-								 statusVO.getSubList().add(VO);
+								 /*if(id.longValue() == 20l){
+									 statusVO.getReferrerList().add(0, VO);
+								 }else  if(id.longValue() == 67l){
+									 statusVO.getReferrerList().add(1, VO);
+								 }else  if(id.longValue() == 188l){
+									 statusVO.getReferrerList().add(2, VO);
+								 }else  if(id.longValue() == 439l){
+									 statusVO.getReferrerList().add(3, VO);
+								 }else  if(id.longValue() == 447l){
+									 statusVO.getReferrerList().add(4, VO);
+								 }else{*/
+									 statusVO.getSubList().add(VO);
+								 //}
 							 }
 						}
-						 VO.setId(commonMethodsUtilService.getLongValueForObject(param[4]));
-						 VO.setName(commonMethodsUtilService.getCapitalStringValueForObject(param[5]));
+						VO.setId(id);
+						VO.setName(name);
 						VO.setTotalRepresents(VO.getTotalRepresents().longValue()+1l);
 						VO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						

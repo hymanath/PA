@@ -80,8 +80,8 @@
 						
 							<div class="col-sm-6">
 								<h4><img src="Assests/icons/Group 4361.png"><b>Complete Overview</b></h4>
-								<div class="petition_cls m_top10" style="border:1px solid #6DA4D6;background-color:#E2F2F9">
-									<div class="row">
+								<div class="petition_cls m_top10" style="border:1px solid #6DA4D6;background-color:#E2F2F9" id="completeOverviewId">
+									<!-- <div class="row">
 										<div class="col-sm-12">
 											<div class="col-sm-6">
 												<div class="media">
@@ -180,7 +180,7 @@
 												
 											</div>
 										</div>
-									</div>
+									</div> -->
 									
 								</div>
 							</div>
@@ -189,8 +189,8 @@
 							
 							<div class="col-sm-6">
 								<h4><img src="Assests/icons/Group 4375.png" style="height:25px"><b>My Actions</b></h4>
-								<div class="petition_cls m_top10" style="border:1px solid #FFBB00;background-color:#FFF8E5">
-									<div class="row">
+								<div class="petition_cls m_top10" style="border:1px solid #FFBB00;background-color:#FFF8E5" id="myActionsId">
+									<!--<div class="row">
 										<div class="col-sm-12">
 											<div class="col-sm-6">
 												<div class="media">
@@ -290,7 +290,7 @@
 												
 											</div>
 										</div>
-									</div>
+									</div>-->
 									
 								</div>
 							</div>
@@ -309,8 +309,8 @@
 							</div>
 						</div>
 						<div class="row m_top10">
-							<div class="col-sm-12">
-								<div class="col-sm-2">
+							<div class="col-sm-12" id="statusOverviewId">
+								<!--<div class="col-sm-2">
 									<div class="panel panel-default">
 										<div class="panel-heading" style="background-color:#FFF8EF">
 											<h5><img src="Assests/icons/Group 4363.png"><b>Pending Endorsement</b></h5>
@@ -402,7 +402,7 @@
 										</div>
 									</div>
 								</div>
-							
+							-->
 								
 							</div>
 						</div>

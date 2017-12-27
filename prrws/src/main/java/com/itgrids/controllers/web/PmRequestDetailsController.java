@@ -124,20 +124,20 @@ public class PmRequestDetailsController {
 	    @RequestMapping(value ="/getCompleteOrStatusOverviewDetails",method = RequestMethod.POST)
 	    public @ResponseBody RepresenteeViewVO getCompleteOrStatusOverviewDetails(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
 	    	Long userId =null;
-	    	/*HttpSession session=request.getSession();
+	    	HttpSession session=request.getSession();
 			UserVO userVO = (UserVO) session.getAttribute("USER"); 
 			
 			if(userVO != null){
 				userId = userVO.getUserId();
-			}*/
+			}
 	    	return pmRequestDetailsService.getCompleteOrStatusOverviewDetails(userId,inputMap.get("fromDate"),inputMap.get("toDate"));
 	    }
 	    @RequestMapping(value ="/representationsDashboard", method = RequestMethod.GET)
 	    public String representationsDashboard(ModelMap model,HttpServletRequest request) {
-		    /*UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
+		    UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
 			if (uservo==null){
 		      return "petitionsLoginPage";
-		    }*/
+		    }
 			return "representationsDashboard";
 	    }
 	    @RequestMapping(value ="/getDeptIdsListBYUserIdsLst",method = RequestMethod.POST)

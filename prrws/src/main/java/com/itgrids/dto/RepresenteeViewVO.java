@@ -23,8 +23,15 @@ public class RepresenteeViewVO {
 	private List<RepresenteeViewVO> subList = new ArrayList<RepresenteeViewVO>();
 	private List<RepresenteeViewVO> deptList = new ArrayList<RepresenteeViewVO>();
 	private List<RepresenteeViewVO> statusList = new ArrayList<RepresenteeViewVO>();
+	private List<RepresenteeViewVO> list = new ArrayList<RepresenteeViewVO>();
 	
 	
+	public List<RepresenteeViewVO> getList() {
+		return list;
+	}
+	public void setList(List<RepresenteeViewVO> list) {
+		this.list = list;
+	}
 	public List<RepresenteeViewVO> getStatusList() {
 		return statusList;
 	}
