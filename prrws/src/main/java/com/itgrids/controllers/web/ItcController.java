@@ -325,4 +325,16 @@ public class ItcController {
 		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEofficeDesginationWiseDetailsFrDepartmentNew(inputVO);
 		   return returnList;
 	   }
+	   
+	   @RequestMapping(value = "/getEOfcPrAndRdDepartsOverviewDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEOfcPrAndRdDepartsOverviewDetails(@RequestBody InputVO inputVO) {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEOfcPrAndRdDepartsOverviewDetails(inputVO);
+		   return returnList;
+	   }
+	   
+	   @RequestMapping(value = "/getEofficePrAndRdDeptDesginationDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ItecEOfficeVO>  getEofficePrAndRdDeptDesginationDetails(@RequestBody InputVO inputVO) {
+		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEofficePrAndRdDeptDesginationDetails(inputVO);
+		   return returnList;
+	   }
 }
