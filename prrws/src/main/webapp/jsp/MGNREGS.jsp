@@ -257,7 +257,7 @@ var searchParams = new URLSearchParams(window.location.search);
 				<div class="col-sm-10">
 					<ul class="list-inline pull-right">
 						<li><span class="color-label color-label-gold"></span> 100% and above</li>
-						<li><span class="color-label color-label-success"></span> 90% and above</li>
+						<li><span class="color-label color-label-success"></span> 90% and Below 100%</li>
 						<li><span class="color-label color-label-default"></span> 60% to Below 90%</li>
 						<li><span class="color-label color-label-danger"></span> less than 60% &nbsp;&nbsp;&nbsp;</li>
 						<li><button type="button" class="btn btn-primary btn-xs" title="Webservice Details" id="getWebserviceDetailsId">WS</button> </li>
@@ -280,9 +280,9 @@ var searchParams = new URLSearchParams(window.location.search);
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-12 text-right">
+			<!--<div class="col-sm-12 text-right">
 				<p class="text-danger">Note: Amount in lakhs</p>
-			</div>
+			</div>-->
 			<div class="col-sm-12">
 				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 					<div class="panel panel-default panel-black">

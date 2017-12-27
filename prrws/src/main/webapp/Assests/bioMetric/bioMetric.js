@@ -307,7 +307,8 @@ function getDateWiseEmployeeAttendenceDetails(){
 		if(result !=null && result.length>0){
 			 var noOfDays = result.length;
 			  globalDatewiseEmployeeAttendanceArray = result;
-			  $("#daysReportHeadingId").html("LAST "+noOfDays+" DAYS");
+			  $("#daysReportHeadingId").html("THIS MONTH");
+			  //$("#daysReportHeadingId").html("LAST "+noOfDays+" DAYS");
 			  buildDateWiseEmployeeAttendenceDetails(result);
 		} else {
 			$("#lastDaysStatisticsDivId").html("NO DATA AVAILABLE");
