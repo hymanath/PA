@@ -15,6 +15,7 @@ public class PmDesignation {
 	private String designation;
 	private String isDeleted;
 	private Long orderNo;
+	private Long preferrableOrderNO;
 	
 	@Id
 	@Column(name="pm_designation_id")
@@ -46,4 +47,14 @@ public class PmDesignation {
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
+	
+	@Column(name="preferable_order_no")
+	public Long getPreferrableOrderNO() {
+		return preferrableOrderNO;
+	}
+	public void setPreferrableOrderNO(Long preferrableOrderNO) {
+		this.preferrableOrderNO = preferrableOrderNO;
+	}
+	
+	
 }

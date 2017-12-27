@@ -16,7 +16,15 @@ public class PmSubject {
 	private Long parentPmSubjectId;
 	private String isDeleted;
 	private Long orderNo;
+	private Long preferrableOrderNO;
 	
+	@Column(name="preferable_order_no")
+	public Long getPreferrableOrderNO() {
+		return preferrableOrderNO;
+	}
+	public void setPreferrableOrderNO(Long preferrableOrderNO) {
+		this.preferrableOrderNO = preferrableOrderNO;
+	}
 	@Id
 	@Column(name="pm_subject_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
