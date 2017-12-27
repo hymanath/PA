@@ -2598,6 +2598,10 @@ function validateAmount(value,fieldId,typeVal){
 		//$('#Err'+fieldId+'').html("Total estimation cost reached. Please check once.");
 		//$('#'+fieldId+'').val('');
 	}
+	$('#workCost'+typeVal+'').val('');
+	if(parseInt(enteredAmount)>0){
+		$('#workCost'+typeVal+'').val(enteredAmount);
+	}
 }
 
 
