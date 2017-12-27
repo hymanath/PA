@@ -1650,6 +1650,12 @@ function getAllDistrictsListInState(districtId){
 }
 
 $(document).on("change","#districtrepresent",function(){
+ $("#constituencyrepresent").html('<option value="0">Select Constituency</option>');	
+ $("#constituencyrepresent").trigger('chosen:updated');
+ $("#mandalrepresent").html("<option value ='0'>Select Mandal</option>");
+ $("#panchayatrepresent").html("<option value ='0'>Select Panchayat</option>");
+ $("#mandalrepresent").trigger("chosen:updated");
+ $("#panchayatrepresent").trigger("chosen:updated");
 	var levelVal = $(this).val();
 	getConstituencyNamesBiDistrictId(levelVal,""); 
 	
@@ -1688,6 +1694,10 @@ function getConstituencyNamesBiDistrictId(levelVal,constincyId){
 }
 
 $(document).on("change","#constituencyrepresent",function(){
+ $("#mandalrepresent").html("<option value ='0'>Select Mandal</option>");
+ $("#panchayatrepresent").html("<option value ='0'>Select Panchayat</option>");
+ $("#mandalrepresent").trigger("chosen:updated");
+ $("#panchayatrepresent").trigger("chosen:updated");
 	var levelVal = $(this).val();
 	getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,""); 
 	
@@ -1734,6 +1744,8 @@ function getTehsilsAndLocalElectionBodiForConstituencyId(levelVal,mandalId){
 	});	
 }
 $(document).on("change","#mandalrepresent",function(){
+$("#panchayatrepresent").html("<option value ='0'>Select Panchayat</option>");
+$("#panchayatrepresent").trigger("chosen:updated");
 	var levelVal = $(this).val();
 	levelVal=levelVal.toString().substring(1,levelVal.length);
 	getPanchayatsByTehsilId(levelVal,""); 
