@@ -163,7 +163,7 @@ function getPanchayatsExpenditure(radioType)
 
 function buildPanchayatsExpenditure(result){
 	var str='';
-		str+='<h4 class="text-capital font_weight">Panchayaties Vs Expenditure Comments</h4>';
+		str+='<h4 class="text-capital font_weight">Panchayats Vs Expenditure Comments</h4>';
 		str+='<div class="table-responsive m_top20">';
 			str+='<table class="table table_right_css">';
 				str+='<thead>';

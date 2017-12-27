@@ -6040,7 +6040,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    			for(int i=0;i<finalArray.length();i++){
 	 	    				NregsDataVO vo = new NregsDataVO();
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-	 	    				vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUE_ID").toString().trim().length() > 0 ? jObj.getString("UNIQUE_ID") : "1").toString()));
+	 	    				if(jObj.has("UNIQUE_ID"))
+	 	    					vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUE_ID").toString().trim().length() > 0 ? jObj.getString("UNIQUE_ID") : "1").toString()));
+	 	    				else if(jObj.has("UNIQUEID"))
+	 	    					vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUEID").toString().trim().length() > 0 ? jObj.getString("UNIQUEID") : "1").toString()));
 	 	    				vo.setWorkName(jObj.getString("WORK_NAME"));
 	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
 	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
