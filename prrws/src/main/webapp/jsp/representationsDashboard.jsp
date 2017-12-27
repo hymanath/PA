@@ -78,9 +78,9 @@
 					<div class="white-block petition_block">
 						<div class="row">
 						
-							<div class="col-sm-6">
-								<h4><img src="Assests/icons/Group 4361.png"><b>Complete Overview</b></h4>
-								<div class="petition_cls m_top10" style="border:1px solid #6DA4D6;background-color:#E2F2F9" id="completeOverviewId">
+							<div class="col-sm-6" style="">
+								<h4 style="padding-left:5px"><img src="Assests/icons/Group 4361.png"><b style="padding-left:5px">Complete Overview</b></h4>
+								<div class="petition_cls m_top10" style="border:1px solid #6DA4D6;background-color:#E2F2F9;padding-top:10px;margin:10px" id="completeOverviewId">
 									<!-- <div class="row">
 										<div class="col-sm-12">
 											<div class="col-sm-6">
