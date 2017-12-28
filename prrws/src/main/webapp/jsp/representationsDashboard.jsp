@@ -89,7 +89,7 @@
 							<div class="col-sm-6">
 								<h4><img src="Assests/icons/Group 4375.png" style="height:25px"><b>My Actions</b></h4>
 								<div class="petition_cls m_top10" style="border:1px solid #FFBB00;background-color:#FFF8E5" id="myActionsId">
-									</div>
+								</div>
 							</div>
 						
 						
@@ -112,6 +112,195 @@
 						
 					</div>
 				</div>
+				
+				<div class="col-sm-12 m_top20">
+					<div class="white-block" style="padding:10px">
+						<h4><img src="Assests/icons/2000px-Circle-icons-crossroads.svg.png"><b style="padding-left:5px;">Lead wise Overview</b></h4>
+						<div class="row m_top10">
+							<div class="col-sm-3">
+								<div class="panel panel-default">
+									<div class="panel-heading" style="background-color:#D6E8F2">
+										<h5><span class="count_cls">1</span><b>Forwarded for taking further necessary action as per Rules - FFNA</b></h5>
+									</div>
+									<div class="panel-body">
+										<div class="row" style="border-bottom:1px solid grey;padding-bottom:10px">
+											<div class="col-sm-6">
+												<p>Representations</p>
+												<h4><b>187</b></h4>
+											</div>
+											<div class="col-sm-6">
+												<p>Works</p>
+												<h4><b>187</b></h4>
+											</div>
+										</div>
+										<div class="row m_top5">
+											<div class="col-sm-6" style="padding:2px">
+												<div class="well pad_5 m_bottom_0">
+														<div class="row">
+															<div class="col-sm-6"><span>Pending</span><br><b>100</b></div>
+															<div class="col-sm-6"><span>Works</span><br><b>100</b></div>
+														</div>
+														
+												</div>
+											</div>
+											<div class="col-sm-6" style="padding:2px">
+												<div class="well pad_5 m_bottom_0">
+														<div class="row">
+															<div class="col-sm-6"><span>Pending</span><br><b>100</b></div>
+															<div class="col-sm-6"><span>Works</span><br><b>100</b></div>
+														</div>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-sm-12 m_top20">
+					<div class="white-block" style="padding:10px">
+						<div class="row">
+							<div class="col-sm-9"><h4><img src=""><i class="fa fa-info info_icon" aria-hidden="true"></i><b style="padding-left:2px">Status - Officer Wise</b></h4></div>
+							<div class="col-sm-3">
+								<select>
+									<option>All</option>
+								</select>
+							</div>
+							<div class="col-sm-12">
+								<div class="row m_top10">
+									<div class="col-sm-3">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h5><i class="fa fa-user-circle-o" aria-hidden="true"></i> <b>Minister</b></h5>
+											</div>
+											<div class="panel-body">
+												<div class="row" style="border-bottom:1px solid grey;padding-bottom:10px">
+													<div class="col-sm-6">
+														<p>Representations</p>
+														<h4><b>187</b></h4>
+													</div>
+													<div class="col-sm-6">
+														<p>Works</p>
+														<h4><b>187</b></h4>
+													</div>
+												</div>
+												<div class="row m_top5">
+													<div class="col-sm-12" style="padding:2px">
+														<div class="row">
+															<div class="col-sm-6" style="padding-top:5px"><span>Pending</span><b class="pull-right">100</b></div>
+															<div class="col-sm-6">
+																<div class="well pad_5 m_bottom_0">
+																	<span>Works</span><b class="pull-right">100</b>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+							
+							<div class="col-sm-12 m_top10">
+								<div class="officers_block" style="padding:5px 10px">
+									<div class="row">
+										<div class="col-sm-3">
+											<h5><b>Venkateshwar Rao</b></h5>
+											<p style="font-size:13px">Principal Secretary</p>
+										</div>
+										<div class="col-sm-3">
+											<div class="well pad_5 m_bottom_0">
+												<div class="row">
+													<div class="col-sm-4">
+														<p style="font-size:12px">Total Representations</p>
+														<h4><b>390</b></h4>
+													</div>
+													<div class="col-sm-8">
+														<div style="padding:10px;background-color:#DCDCDC">
+															<div class="row">
+																<div class="col-sm-4" style="border-right:1px solid grey">
+																	<p>Works</p>
+																	<h5><b>39,000</b></h5>
+																</div>
+																<div class="col-sm-8">
+																	<p>Estimated Cost</p>
+																	<h5><b>39,000</b></h5>
+																</div>
+															</div>
+														</div>
+													</div>
+													
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<div class="well pad_5 m_bottom_0">
+												<div class="row">
+													<div class="col-sm-4">
+														<p style="font-size:12px">Pending Action Memo</p>
+														<h4><b>390</b></h4>
+													</div>
+													<div class="col-sm-8">
+														<div style="padding:10px;background-color:#DCDCDC">
+															<div class="row">
+																<div class="col-sm-4" style="border-right:1px solid grey">
+																	<p>Works</p>
+																	<h5><b>39,000</b></h5>
+																</div>
+																<div class="col-sm-8">
+																	<p>Estimated Cost</p>
+																	<h5><b>39,000</b></h5>
+																</div>
+															</div>
+														</div>
+													</div>
+													
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<div class="well pad_5 m_bottom_0">
+												<div class="row">
+													<div class="col-sm-4">
+														<p style="font-size:12px">Total Representations</p>
+														<h4><b>390</b></h4>
+													</div>
+													<div class="col-sm-8">
+														<div style="padding:10px;background-color:#DCDCDC">
+															<div class="row">
+																<div class="col-sm-4" style="border-right:1px solid grey">
+																	<p>Works</p>
+																	<h5><b>39,000</b></h5>
+																</div>
+																<div class="col-sm-8">
+																	<p>Estimated Cost</p>
+																	<h5><b>39,000</b></h5>
+																</div>
+															</div>
+														</div>
+													</div>
+													
+												</div>
+											</div>
+										</div>
+										
+										
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						
+						
+					</div>
+				</div>
+				
+				
 				
 			</div>
 		</div>
