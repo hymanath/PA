@@ -405,4 +405,8 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		}				
 		return query.list();
 	}
+	public Date getLatestInsertedTime() {
+		Query query = getSession().createQuery("select  max(model.surveyDate) from LightMonitoring model where model.isDeleted ='N' ");
+		return (Date)query.uniqueResult();
+	}
 }

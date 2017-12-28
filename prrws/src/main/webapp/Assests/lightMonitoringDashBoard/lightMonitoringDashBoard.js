@@ -8,10 +8,11 @@ $("#selectedName").attr("attr_id","0");
 $("#selectedName").attr("attr_levelidvalue","2");
 var vendorArr=['','EESL','NREDCAP'];
 
-//onLoadCalls();
-setTimeout(function(){
+
+onLoadCalls();
+/*setTimeout(function(){
 	callWebService();		
-}, 1000);
+}, 1000);*/
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menu-data-cls").toggle();
@@ -25,7 +26,7 @@ $(document).on('cut copy paste', function (e) {
 function onLoadCalls()
 {
 	$(".chosen-select").chosen();
-	  
+	 getLatestInsertedTime();
 	getLedOverviewForStartedLocationsDetailsCounts();
 	getBasicLedOverviewDetails();
 	getCompanyWiseLightMonitoringDtls();
@@ -2262,4 +2263,26 @@ function buildnewAddedLightsDetails(result){
 	str+='</table>';
 	str+='</div>';
 	$("#newAddedLightsSummary").html(str);
+}
+
+ window.setInterval(function(){
+  getLatestInsertedTime();
+ }, 180000);
+
+//getting latest inserted time
+function getLatestInsertedTime(){
+	$.ajax({                
+		type:'GET',    
+		url: 'getLatestInsertedTime',
+		dataType: 'json',
+		data : JSON.stringify(),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if (result != null ) {
+			$("#lastUpdateTimeId").html(result.message);
+		}
+	});
 }s
