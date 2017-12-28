@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.EncTargetsVO;
 import com.itgrids.dto.EncVO;
 import com.itgrids.dto.EncWorksVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.service.IPrENCService;
 import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
@@ -102,6 +103,18 @@ public class PrENCController {
 			LOG.error("Exception raised at getEncTargetsAchievement - PrENCController", e);
 		}
 		return result;
+	}
+	@PostMapping("/getExceededEncWorks")
+	public @ResponseBody List<IdNameVO>  getExceededEncWorks(@RequestBody InputVO inputVO){
+		List<IdNameVO> returnList = null;
+		try {
+			returnList = prENCService.getExceededEncWorks(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEncTargetsAchievement - PrENCController", e);
+		}
+		return returnList;
+
 	}
 }
 	

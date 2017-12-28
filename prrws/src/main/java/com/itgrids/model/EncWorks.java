@@ -36,6 +36,7 @@ public class EncWorks {
 	private String habName;
 	private Long parlimentId;
 	private String parlimentName;
+	private String workStatus;
 	
 	@Id
 	@Column(name="enc_works_id")
@@ -220,6 +221,13 @@ public class EncWorks {
 	}
 	public void setParlimentName(String parlimentName) {
 		this.parlimentName = parlimentName;
+	}
+	@Column(name="work_status")
+	public String getWorkStatus() {
+		return workStatus;
+	}
+	public void setWorkStatus(String workStatus) {
+		this.workStatus = workStatus;
 	}
 
 	

@@ -1,9 +1,15 @@
 package com.itgrids.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -14,14 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
+import com.itgrids.dao.IEncWorksDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.EncTargetsVO;
 import com.itgrids.dto.EncVO;
 import com.itgrids.dto.EncWorksVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.service.IPrENCService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.DateUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -45,6 +54,9 @@ public class PrENCService implements IPrENCService {
 	
 	@Autowired
 	private CommonMethodsUtilService commonMethodsUtilService;
+
+	@Autowired
+	private IEncWorksDAO encWorksDAO;
 	
 	
 	@Override
@@ -616,4 +628,235 @@ public class PrENCService implements IPrENCService {
 		return finalList;
 	}
 
+	@Override
+	public List<IdNameVO> getExceededEncWorks(InputVO inputVO) {
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			Map<String, IdNameVO> workDetailsMap = new HashMap<String, IdNameVO>();
+			DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			Date fromDate=null, toDate= null;
+			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
+				fromDate = sdf.parse(inputVO.getFromDateStr());
+				toDate= sdf.parse(inputVO.getToDateStr());
+			}
+			List<Object[]> worksdata = null;
+			worksdata = encWorksDAO.getWorksData(fromDate,toDate,"Grounded");
+			List<Object[]> worksdatatemp = encWorksDAO.getWorksData(fromDate,toDate,"completed");
+			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
+				worksdata.addAll(worksdatatemp);
+			}else{
+				worksdata = new ArrayList<Object[]>();
+				worksdata.addAll(worksdatatemp);
+			}
+			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
+			
+			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
+				// 0-workid, 1-workName,2-schemeId,3-schemeName, 4-agrementAmount,5-mandalId,6-mandalName,7-districtId,8-districtName,9-constituencyId,10-constituencyname
+				//11-targetDate,12-status,13-groundedDate/completionDate, 15-no of days
+				for (Object[] param : worksdata) {
+					IdNameVO workDetailsVO = new IdNameVO();
+					workDetailsVO.setWrokIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
+					workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[7]));
+					workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
+					workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[9]));
+					workDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[10]));
+					workDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[5]));
+					workDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[6]));
+					workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[4]));
+					workDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[11]));
+					workDetailsVO.setWorkStatus(commonMethodsUtilService.getStringValueForObject(param[12]));
+					workDetailsVO.setGroundedDate(commonMethodsUtilService.getStringValueForObject(param[13]));
+					
+					if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().equalsIgnoreCase("Grounded")){
+						workDetailsVO.setCompletionDate(currentDate);
+					}else if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().equalsIgnoreCase("completed") && 
+							commonMethodsUtilService.getStringValueForObject(param[14]) != null){
+						workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[14]));
+					}
+					
+					workDetailsVO.setNoOfDays(commonMethodsUtilService.getLongValueForObject(param[15]));
+                    workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
+                    workDetailsMap.put(workDetailsVO.getWrokIdStr(),workDetailsVO);
+				}
+			}
+			Map<String,IdNameVO> resultMap = prepareWrokDtlsLocationWise2(inputVO,workDetailsMap);
+			if (resultMap != null && resultMap.size() > 0 ) {
+				finalList.addAll(new ArrayList<>(resultMap.values()));
+				calculatingPercentage(finalList);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at PrEncService - getEncTargetsAchievement", e);
+		}
+		return finalList;
+	}
+	
+	private String getRangeLevelNameBasedOnDays(Long daysDiff) {
+		String rangeLevelName="";
+		 try {
+			 if (daysDiff != null ) {
+				 if(daysDiff >= 1L && daysDiff <= 30L) {
+					 rangeLevelName = "1-30 Days";
+				 }else if(daysDiff >= 31L && daysDiff <= 60L) {
+					 rangeLevelName = "31-60 Days";
+				 } else if( daysDiff >= 61L && daysDiff <= 90L) {
+					 rangeLevelName = "61-90 Days";
+				 } else if(daysDiff >= 91L && daysDiff <= 180L) {
+					 rangeLevelName = "91-180 Days";
+				 } else if(daysDiff >= 181L && daysDiff <= 365L) {
+					 rangeLevelName = "181-365 Days";
+				 } else if(daysDiff > 365L) {
+					 rangeLevelName = "More Than 1 Year";
+				 } else if(daysDiff <= 0l) {
+					 rangeLevelName = "In Time";
+				 } 
+			 }
+			
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in getRangeLevelNameBasedOnDays() method, Exception - ",e);
+		 }
+		 return rangeLevelName;
+	}
+	
+	private Map<String, IdNameVO> prepareWrokDtlsLocationWise2(InputVO inputVO,Map<String, IdNameVO> workDtlsMap) {
+		Map<String, IdNameVO> locationMap = new HashMap<>();
+		try {
+			if (workDtlsMap != null && workDtlsMap.size() > 0) {
+				for (Entry<String, IdNameVO> entry : workDtlsMap.entrySet()) {
+					String locationIdStr = getLocationIdByLocationType(inputVO.getLocationType(), entry.getValue());
+					IdNameVO locationVO = locationMap.get(locationIdStr);// getting locationId based on location type
+					if (locationVO == null) {
+						locationVO = new IdNameVO();
+						locationVO.setLocationIdStr(locationIdStr);
+						locationVO.setName(getLocationNameByLocationType(inputVO.getLocationType(), entry.getValue()));// getting locationName based on location type
+						locationVO.setCount(0l);
+						locationVO.setSanctionAmount(0l);
+						locationVO.setSubList(getRequiredTemplate());// getting template
+						locationMap.put(locationVO.getLocationIdStr(),locationVO);
+					}
+					for (IdNameVO assetTypeVO : locationVO.getSubList()) {
+
+							IdNameVO matchVO = getMatchedVO(entry.getValue(),assetTypeVO.getName());
+							if (matchVO != null) {
+									assetTypeVO.setCount(assetTypeVO.getCount() + 1);
+									locationVO.setCount(locationVO.getCount()+1);
+									locationVO.setSanctionedAmount(locationVO.getSanctionedAmount()+ matchVO.getSanctionedAmount());
+									assetTypeVO.setSanctionedAmount(assetTypeVO.getSanctionedAmount()+matchVO.getSanctionedAmount());
+									
+			                    	if(matchVO.getWorkStatus().trim().equalsIgnoreCase("Grounded")){
+			                    		assetTypeVO.setOngoingPWSExceededCount(assetTypeVO.getOngoingPWSExceededCount()+1);
+			                    	}else if (matchVO.getWorkStatus().trim().trim().equalsIgnoreCase("completed")){
+			                    		assetTypeVO.setCompletedPWSExceededCount(assetTypeVO.getCompletedPWSExceededCount()+1);
+			                    	}
+							}
+
+					}
+
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in prepareWrokDtlsLocationWise() method, Exception - ",e);
+		}
+		return locationMap;
+	}
+
+	private String getLocationIdByLocationType(String locationType,IdNameVO workDtlsVO) {
+		String locationIdStr="";
+		try {
+			if (locationType != null && locationType.trim().equalsIgnoreCase("state")){
+				locationIdStr="01";
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("district")){
+				locationIdStr = workDtlsVO.getDistrictCode();
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("constituency")){
+				locationIdStr = workDtlsVO.getConstituencyCode();
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("mandal")){
+				locationIdStr = workDtlsVO.getDistrictCode().concat(workDtlsVO.getMandalCode());
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getLocationIdByLocationType() in RWSNICService class",e);
+		}
+		return locationIdStr;
+	}
+	
+	private IdNameVO getMatchedVO(IdNameVO vo,String name){
+		try {
+			if(vo != null){
+				if(vo.getName().equalsIgnoreCase(name)) {
+					return vo;
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getMatchedVO() method, Exception - ",e);
+		}
+		return null;
+	}
+	private String getLocationNameByLocationType(String locationType,IdNameVO workDtlsVO) {
+		String locationIdName="";
+		try {
+			if (locationType != null && locationType.trim().equalsIgnoreCase("state")){
+				locationIdName = "Andhra Pradesh";
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("district")){
+				locationIdName = workDtlsVO.getDistrictName();
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("constituency")){
+				locationIdName = workDtlsVO.getConstituencyName();
+			} else if (locationType != null && locationType.trim().equalsIgnoreCase("mandal")){
+				locationIdName = workDtlsVO.getMandalName();
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getLocationNameByLocationType() in RWSNICService class",e);
+		}
+		return locationIdName;
+	}
+	
+	private List<IdNameVO> getRequiredTemplate() {
+		List<IdNameVO> resultList = new ArrayList<>(0);
+		String[] templateArr = {"In Time","1-30 Days","31-60 Days","61-90 Days","91-180 Days","181-365 Days","More Than 1 Year"};
+		try {
+			for (int i = 0; i < templateArr.length; i++) {
+				IdNameVO subVo = new IdNameVO();
+				subVo.setId((long)i+1L);
+				subVo.setName(templateArr[i]);
+				subVo.setCount(0l);
+				subVo.setSanctionAmount(0l);
+				subVo.setOngoingPWSExceededCount(0l);
+				subVo.setCompletedPWSExceededCount(0l);
+				subVo.setCommissionedPWSExceededCount(0l);
+				resultList.add(subVo);
+		   }
+			
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in getDateInStringFrormat() method, Exception - ",e);
+		}
+		return resultList;
+	}
+	
+	private void calculatingPercentage(List<IdNameVO> resultList) {
+		try {
+			if (resultList.size() > 0) {
+				for (Iterator<IdNameVO> it = resultList.iterator(); it.hasNext();) {
+					IdNameVO vo = it.next();
+					if (vo.getCount() == 0l) {
+						it.remove();
+					} else {
+						if (vo.getSubList() != null && vo.getSubList().size() > 0) {
+							for (IdNameVO assetTypeVO : vo.getSubList()) {
+
+								if (assetTypeVO.getSubList() != null && assetTypeVO.getSubList().size() > 0) {
+									for (IdNameVO rangeVO : assetTypeVO .getSubList()) {
+										rangeVO.setPercentage(commonMethodsUtilService.calculatePercantage(rangeVO.getCount(),assetTypeVO.getCount()));
+									}
+								}
+
+							}
+						}
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception Occured in calculatingPercentage() method, Exception - ",e);
+		}
+	}
+   
 }
