@@ -245,7 +245,7 @@ var searchParams = new URLSearchParams(window.location.search);
 		</section>
 	</div>
 </main>
-<div class="modal fade" id="modalId" tabindex="-1" role="dialog">
+<div class="modal fade" id="modalId" tabindex="-1" role="dialog" style="z-index:9999;">
 	<div class="modal-dialog" role="document" style="width:80%;">
 		<div class="modal-content">
 			<div class="modal-header">
