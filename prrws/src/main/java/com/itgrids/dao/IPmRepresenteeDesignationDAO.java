@@ -11,6 +11,6 @@ public interface IPmRepresenteeDesignationDAO extends GenericDao<PmRepresenteeDe
 	public int inActiveExistingDesignationsByIds(List<Long> pmRepresenteeDesignationIdsList);
 	public List<Object[]> getAllDistrictsByRepresenteeDesignationWise(List<Long> deptIds);
 	public List<Object[]> getDesignationsByRepresenteeDesigtion();
-	public List<Object[]> getAllConstituenciesByRepresenteeDesignationWise(List<Long> districtIds);
+	public List<Object[]> getAllConstituenciesByRepresenteeDesignationWise(List<Long> districtIds,List<Long> deptIds);
 	public List<Object[]> getAllMandalsByRepresenteeDesignationAndconstincy(List<Long> constituencyIds);
 }
