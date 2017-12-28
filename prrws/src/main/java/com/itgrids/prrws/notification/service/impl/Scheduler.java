@@ -29,7 +29,9 @@ public class Scheduler {
     @Autowired
   	private IItcDashboardService itcDashboardService;
 	
-	@Scheduled(cron = "0 30 2,14 * * * ")
+	//@Scheduled(cron = "0 30 2,14 * * * ")
+    //run scheduler every 15 minutes
+	@Scheduled(cron ="0 0/15 * ? * *")
 	public void runTheSchedulerEveryDay()
 	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))

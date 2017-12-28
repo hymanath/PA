@@ -197,18 +197,24 @@
 	<section class="navbar-section">
 		<div class="container-fluid padding_10">
 				<div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
 						<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span><span class="tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-left: 10px" id="statePopupClick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="LED PROGRESS" attr_click="stateclick">&#9432;</span></h4>
 						<div class="multi-level-selection-menu arrow_box_top"></div>
+						
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-4">
+						<ul class="list-inline led-list pull-right">
+							<h4><span>LAST UPDATED</span>:<span style="color:green;" id="lastUpdateTimeId"></span></h4>
+						</ul>
+					</div>
+					<div class="col-sm-4">
 						<ul class="list-inline led-list pull-right">
 							<li><span class="ledColorView"></span>LED WATTAGE</li>
 							<li><span class="nonLedColorView"></span>NON-LED WATTAGE</li>
 						</ul>
 					</div>
 					
-					<div class="col-sm-3">
+					<div class="col-sm-2">
 					<!--<span style="color:green;display:none;font-size:16px;" id="webServiceMessageStatusId">Please wait data is being process from live server,Then page will refresh...</span>-->
                         <ul class="list-inline pull-right sub-menu">
 					        <li class="daterangeViewLiveCls liveDataCls commonViewCls active" style="cursor:pointer;">LIVE</li>

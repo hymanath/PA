@@ -20,4 +20,5 @@ public interface ILightMonitoring {
 	public LightMonitoringVO getCompanyWiseLightMonitoringDtls(String fromDate,String toDate,String locationType,List<Long> locationValues,List<Long> lightVendorIds);
 	public List<LightsVendor> getLightsVendorList();
 	public List<LightMonitoringVO> getTimePeriodWiseLightsDetails(String startDate,String endDate, String locationType, List<Long> locationValues,List<Long> lightMonitoringIds);		
+	public String getLatestInsertedTime();
 }

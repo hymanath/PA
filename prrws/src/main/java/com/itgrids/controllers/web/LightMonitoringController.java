@@ -93,5 +93,12 @@ public class LightMonitoringController {
 	   List<LightMonitoringVO>  voLists=lightMonitoring.getTimePeriodWiseLightsDetails(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationType(),inputVO.getLocationValues(),inputVO.getLightVendorIdList());
        return voLists;
  }
+   @RequestMapping(value ="/getLatestInsertedTime", method = RequestMethod.GET)
+   public @ResponseBody ResultVO getLatestInsertedTime(ModelMap model) {
+	   ResultVO vo = new ResultVO();
+	   vo.setMessage(lightMonitoring.getLatestInsertedTime());
+	  return vo;
+   }
+   
 }
 

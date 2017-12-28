@@ -1149,6 +1149,19 @@ public class LightMonitoringService  implements ILightMonitoring{
 		    }
 		    return d;
 	 }
+	 public String getLatestInsertedTime(){
+		 String latestTime = "";
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm a ");
+		  try {
+			  Date dateTime = lightMonitoringDAO.getLatestInsertedTime();
+			  if (dateTime != null ) {
+				  latestTime = sdf.format(dateTime);
+			  }
+		  } catch (Exception e) {
+			  LOG.error("Exception raised at getLatestInsertedTime - LightMonitoringService service",e);
+		  }
+		  return latestTime;
+	 }
  }
 	
 	        	
