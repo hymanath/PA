@@ -68,4 +68,6 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getConductedCountForDistrict(Long activityScopeId,List<Long> distIds);
 	public List<Object[]> getNotConductedCountForDistrict(Long activityScopeId,List<Long> distIds);
 	public List<Object[]> getNotUpdatedForDistrict(Long activityScopeId,List<Long> distIds);
+	public List<Object[]> getActivityDetailsBasedOnLocation(String groupType,String filterType,List<Long> userAccessLevelValues,Long activityScopeId,Long constituencyId);
+	public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locationType,Long locationId);
 }

@@ -1145,4 +1145,19 @@ public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId){
 		return query.list();
 	
 }
+
+ public List<Object[]> getQuestionAnswerDetails(Long activityLocationInfoId){
+		Query query = getSession().createQuery(" " +
+				" select " +
+				" model.activityQuestionnaireId," +
+				" model.activityOptionId," +
+				" model.optionTxt " +
+				" from ActivityQuestionAnswer model " +
+				" where " +
+				" model.isDeleted = 'N' " +
+				" and model.activityLocationInfoId=:activityLocationInfoId " +
+				" order by model.activityQuestionnaireId,model.activityOptionId ");
+	   query.setParameter("activityLocationInfoId", activityLocationInfoId);
+	   return query.list();
+	}
 }

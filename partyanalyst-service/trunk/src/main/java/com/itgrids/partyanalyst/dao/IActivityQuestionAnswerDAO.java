@@ -27,4 +27,5 @@ public interface IActivityQuestionAnswerDAO extends GenericDao<ActivityQuestionA
 	public List<Object[]> getActivityQuesAndOptionsByDayWise(Long day);
 	public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId);
 	//public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId);
+	public List<Object[]> getQuestionAnswerDetails(Long activityLocationInfoId);
 }

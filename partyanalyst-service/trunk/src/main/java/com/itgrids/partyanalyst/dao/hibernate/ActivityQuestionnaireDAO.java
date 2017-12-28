@@ -3,7 +3,10 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireDAO;
 import com.itgrids.partyanalyst.model.ActivityQuestionnaire;
@@ -115,5 +118,45 @@ public List<Object[]> getQuestionnareDetails(List<Long> questionnairIdsList){
 		query.setParameterList("questionIds", questionIds);
 		
 		return query.list();
+	}
+	public List<Object[]> getActivityQuestionsOptionsDetails(Long activityScopeId) {
+		  StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(" SELECT " +
+		  		" AQ.activity_question_id as activityQuestionId," +
+		  		" AQ.question as question," +
+		  		" AOT.activity_option_type_id as activityOptionTypeId," +
+		  		" AOT.type as type," +
+		  		" AQE.has_remark as hasRemark ," +
+		  		" AO.activity_option_id as activityOptionId ," +
+		  		" AO.option as opt," +
+		  		" AQE.activity_questionnaire_id as activityQuestionnaireId ");
+		  	queryStr.append(" FROM ");
+		  	queryStr.append(" activity_question AQ,activity_option_type AOT,");
+		  	queryStr.append(" activity_scope ACS,");
+		  	queryStr.append(" activity_questionnaire AQE ");
+		  	queryStr.append(" LEFT OUTER JOIN activity_questionnaire_option AQO ON AQE.activity_questionnaire_id = AQO.activity_questionnaire_id ");
+		  	queryStr.append(" LEFT OUTER JOIN activity_option AO ON AQO.activity_option_id = AO.activity_option_id ");
+		  	queryStr.append(" WHERE AQ.activity_question_id = AQE.activity_question_id AND ");
+		  	queryStr.append(" AQE.activity_option_type_id = AOT.activity_option_type_id AND ");
+		  	queryStr.append(" ACS.activity_scope_id = AQE.activity_scope_id AND AQE.is_deleted = 'N' AND ");
+		  	queryStr.append(" AQE.activity_scope_id =:activityScopeId order by AQE.order_no,AQO.order_no ");
+		  	 
+		  	Session session = getSession();
+		    SQLQuery sqlQuery = session.createSQLQuery(queryStr.toString());
+		    
+		     sqlQuery.addScalar("activityQuestionId", Hibernate.LONG);
+		     sqlQuery.addScalar("question", Hibernate.STRING);
+		     sqlQuery.addScalar("activityOptionTypeId", Hibernate.LONG);
+		     sqlQuery.addScalar("type", Hibernate.STRING);
+		     sqlQuery.addScalar("hasRemark", Hibernate.STRING);
+		     sqlQuery.addScalar("activityOptionId", Hibernate.LONG);
+		     sqlQuery.addScalar("opt", Hibernate.STRING);
+		     sqlQuery.addScalar("activityQuestionnaireId",Hibernate.LONG);
+		    
+		     sqlQuery.setParameter("activityScopeId", activityScopeId);
+		  
+		  
+		  return sqlQuery.list();
+		 
 	}
 }
