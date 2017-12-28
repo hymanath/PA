@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 import com.itgrids.partyanalyst.dto.AccommodationVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
+import com.itgrids.partyanalyst.dto.ActivityDetailsVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
@@ -67,11 +68,9 @@ import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
-import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
-import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -109,7 +108,6 @@ import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
-import com.itgrids.partyanalyst.model.TdpCommitteeEnrollment;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
@@ -3538,5 +3536,137 @@ public class WebServiceHandler {
 			LOG.error("Exception Occured in getRegistrationPersonDetails() Method in WebServiceHandler, Exception is ",e);
 			return null;
 		}
+	}
+	@POST
+	@Path("/getActivityDetailsBasedOnLocation")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<ActivityDetailsVO> getActivityDetailsBasedOnLocation(JSONObject jObj){
+		try {
+			JSONArray accessValuesArr = jObj.getJSONArray("locationValues");  
+			List<Long> locationIdList = new ArrayList<Long>();
+			if(accessValuesArr != null && accessValuesArr.length() > 0){
+				for (int i = 0; i < accessValuesArr.length(); i++){
+					locationIdList.add(Long.parseLong(accessValuesArr.getString(i)));          
+				}  
+			}
+			String locationType = jObj.has("locationType") ? jObj.getString("locationType") : null;
+			Long activityScopeId = jObj.has("activityScopeId") ? jObj.getLong("activityScopeId") : null;
+			Long constituencyId  = jObj.has("constituencyId") ? jObj.getLong("constituencyId") : null;
+			return webServiceHandlerService.getActivityDetailsBasedOnLocation(locationType,locationIdList,activityScopeId,constituencyId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityDetailsBasedOnLocation() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/updateActivityInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus updateActivityInfo(JSONObject jObj){
+		try {
+			
+			ActivityDetailsVO tabDetailsVO = null;
+			if (jObj != null && jObj.length() > 0) {
+				tabDetailsVO = new ActivityDetailsVO();
+				tabDetailsVO.setImei(jObj.has("imei") ? jObj.getString("imei") : null);
+				tabDetailsVO.setUniqueKey(jObj.has("uniqueKey") ? jObj.getString("uniqueKey"):null);
+				tabDetailsVO.setLatitude(jObj.has("latitude") ? jObj.getString("latitude"):null);
+				tabDetailsVO.setLongitude(jObj.has("longitude") ? jObj.getString("longitude"):null);
+				tabDetailsVO.setItdpAppUserId(jObj.has("itdpAppUserId") ? jObj.getLong("itdpAppUserId"):null);
+				tabDetailsVO.setSyncSource(jObj.has("syncSource") ? jObj.getString("syncSource"):null);
+				
+				String locationType = jObj.has("locationType") ? jObj.getString("locationType") : null;
+				Long activityScopeId = jObj.has("activityScopeId") ? jObj.getLong("activityScopeId") : null;
+				Long locationValue = jObj.has("locationValue") ? jObj.getLong("locationValue"):null;
+				String conductedDate = jObj.has("conductedDate") ? jObj.getString("conductedDate"):null;
+				String updateStatus = jObj.has("updateStatus") ? jObj.getString("updateStatus") : null;
+				
+				return webServiceHandlerService.updateActivityInfo(tabDetailsVO,locationType,activityScopeId,locationValue,conductedDate,updateStatus);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityDetailsBasedOnLocation() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/getActivityQuestionOptionDtls")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<ActivityDetailsVO> getActivityQuestionOptionDtls(JSONObject jObj){
+		try {
+			Long activityScopeId = jObj.has("activityScopeId") ? jObj.getLong("activityScopeId") : null;
+			Long activiyLocationInfoId = jObj.has("activiyLocationInfoId") ? jObj.getLong("activiyLocationInfoId"):null;
+			return webServiceHandlerService.getActivityQuestionOptionDtls(activityScopeId,activiyLocationInfoId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityQuestionOptionDtls() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/saveActivityAnswerDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus saveActivityAnswerDetails(JSONObject jObj){
+		try {
+			ActivityDetailsVO inputVO = null;
+			if (jObj != null && jObj.length() > 0) {
+				inputVO = new ActivityDetailsVO();
+				inputVO.setImei(jObj.has("imei") ? jObj.getString("imei") : null);
+				inputVO.setUniqueKey(jObj.has("uniqueKey") ? jObj.getString("uniqueKey"):null);
+				inputVO.setLatitude(jObj.has("latitude") ? jObj.getString("latitude"):null);
+				inputVO.setLongitude(jObj.has("longitude") ? jObj.getString("longitude"):null);
+				inputVO.setItdpAppUserId(jObj.has("itdpAppUserId") ? jObj.getLong("itdpAppUserId"):null);
+				inputVO.setSyncSource(jObj.has("syncSource") ? jObj.getString("syncSource"):null);
+				JSONArray finalAnswerArr = jObj.has("answerObjArr") ? jObj.getJSONArray("answerObjArr"):null;
+				if (finalAnswerArr != null && finalAnswerArr.length() > 0) {
+					inputVO.setSubList(new ArrayList<ActivityDetailsVO>());
+					for (int i=0; i<finalAnswerArr.length();i++) {
+						JSONObject answerObj =(JSONObject) finalAnswerArr.get(i);
+						ActivityDetailsVO optionVO = new ActivityDetailsVO();
+						optionVO.setActivityQuestionnaireId(answerObj.has("activityQuestionnaireId") ? answerObj.getLong("activityQuestionnaireId"):null);
+						optionVO.setActivityLocationInfoId(answerObj.has("activityLocationInfoId") ? answerObj.getLong("activityLocationInfoId"):null);
+						optionVO.setOptionId(answerObj.has("activityOptionId") ? answerObj.getLong("activityOptionId"):null);
+						optionVO.setHasRemarks(answerObj.has("optionTxt") ? answerObj.getString("optionTxt"):null);
+						inputVO.getSubList().add(optionVO);
+					}
+				}
+			}
+			return webServiceHandlerService.saveActivityAnswerDetails(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in saveActivityAnswerDetails() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/uploadDocumentImage")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus uploadDocumentImage(JSONObject jObj){
+		try {
+			List<String> documentList = new ArrayList<String>(0);
+			ActivityDetailsVO inputVO = null;
+			if (jObj != null && jObj.length() > 0) {
+				inputVO = new ActivityDetailsVO();
+				inputVO.setImei(jObj.has("imei") ? jObj.getString("imei") : null);
+				inputVO.setUniqueKey(jObj.has("uniqueKey") ? jObj.getString("uniqueKey"):null);
+				inputVO.setLatitude(jObj.has("latitude") ? jObj.getString("latitude"):null);
+				inputVO.setLongitude(jObj.has("longitude") ? jObj.getString("longitude"):null);
+				inputVO.setItdpAppUserId(jObj.has("itdpAppUserId") ? jObj.getLong("itdpAppUserId"):null);
+				inputVO.setSyncSource(jObj.has("syncSource") ? jObj.getString("syncSource"):null);
+				inputVO.setActivityScopeId(jObj.has("activityScopeId") ? jObj.getLong("activityScopeId"):null);
+				inputVO.setActivityLocationInfoId(jObj.has("activityIocationInfoId") ? jObj.getLong("activityIocationInfoId"):null);
+				JSONArray docuemntArr = jObj.has("documentArr") ? jObj.getJSONArray("documentArr") : null;
+				if(docuemntArr != null && docuemntArr.length() > 0){
+					for (int i = 0; i < docuemntArr.length(); i++){
+						documentList.add(docuemntArr.getString(i));          
+					}  
+				}
+			}
+			return webServiceHandlerService.uploadDocumentImage(inputVO,documentList);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in saveActivityAnswerDetails() Method, Exception is ",e);
+		}
+		return null;
 	}
 }
