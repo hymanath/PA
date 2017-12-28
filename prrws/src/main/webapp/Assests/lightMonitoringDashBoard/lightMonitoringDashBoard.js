@@ -2285,4 +2285,4 @@ function getLatestInsertedTime(){
 			$("#lastUpdateTimeId").html(result.message);
 		}
 	});
-}s
+}
