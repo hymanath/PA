@@ -3663,7 +3663,7 @@ $(document).on("change",".conChangeCls",function(){
 	var innerCount=$(this).attr('attr_inner_count');
 	$(".mandalRefreshCls"+outerCount+innerCount).html('<option value="0">Select Mandal/Munci/Corp.. </option>');
 	$(".mandalRefreshCls"+outerCount+innerCount).trigger('chosen:updated');
-	$(".panchayatRefreshCls"+outerCount+innerCount).html('<option value="0">SelectPanchayat </option>');
+	$(".panchayatRefreshCls"+outerCount+innerCount).html('<option value="0">Select Panchayat </option>');
 	$(".panchayatRefreshCls"+outerCount+innerCount).trigger('chosen:updated');
 });
 $(document).on("change",".madalChangeCls",function(){ 
