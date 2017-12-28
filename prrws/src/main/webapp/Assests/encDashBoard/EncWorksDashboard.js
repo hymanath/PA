@@ -11,6 +11,7 @@ function onloadCalls(){
 	levelWiseOverview();
 	getLocationWiseWorksInformation("state","s","graph");
 	getLocationWiseWorkTargetsNacheivements("state","s","graph");
+	getLocationWiseExceededWorkDetails("state","state","graph")
 	
 }
 
@@ -66,27 +67,30 @@ function levelWiseOverview()
 	for(var i in levelWiseOverviewArr)
 	{
 		if(levelWiseOverviewArr[i] == "state"){
-			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','s','table');
-			getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','s','table');
+			//getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','s','table');
+			//getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','s','table');
+			getLocationWiseExceededWorkDetails(levelWiseOverviewArr[i]+'levelBlockId','state','table');
 		}
 		else if(levelWiseOverviewArr[i] == "district"){
-			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','d','table');
-			getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','d','table');
+			//getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','d','table');
+			//getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','d','table');
+			getLocationWiseExceededWorkDetails(levelWiseOverviewArr[i]+'levelBlockId','district','table');
 		}
 		else if(levelWiseOverviewArr[i] == "constituency"){
 			
-			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','a','table');
-			getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','a','table');
+			//getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','a','table');
+			//getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','a','table');
+			getLocationWiseExceededWorkDetails(levelWiseOverviewArr[i]+'levelBlockId','constituency','table');
 		}
 		else if(levelWiseOverviewArr[i] == "mandal"){
-			getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','m','table');
-			getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','m','table');
+			//getLocationWiseWorksInformation(levelWiseOverviewArr[i]+'levelBlockId','m','table');
+			//getLocationWiseWorkTargetsNacheivements(levelWiseOverviewArr[i]+'levelBlockId','m','table');
+			getLocationWiseExceededWorkDetails(levelWiseOverviewArr[i]+'levelBlockId','mandal','table');
 		}
 		
 	}
 	
 }
-
 
 function getLocationWiseWorksInformation(blockId,locationType,type){
 	if(type=='graph'){
@@ -119,7 +123,7 @@ function getLocationWiseWorksInformation(blockId,locationType,type){
 			}
 		});
 }
-/*function locationwiseTableBlocks(result,blockId,locationType){
+function locationwiseTableBlocks(result,blockId,locationType){
 	var table='';
 		table+='<div class="table-responsive">';
 			table+='<table class="table table-bordered m_top10" id="'+blockId+'dataTableId">';
@@ -191,7 +195,7 @@ function getLocationWiseWorksInformation(blockId,locationType,type){
 			]
 		});
 	}
-}*/
+}
 
 function buildLocationWiseWorksGraph(result){
 
@@ -204,9 +208,17 @@ function buildLocationWiseWorksGraph(result){
 		},
 	   
 		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
 			type: 'category'
 		},
 		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			allowDecimals: false,
+			min: 0,
 			title: {
 				text: ''
 			}
@@ -355,7 +367,8 @@ function buildGraph(result)	{
 			},
 			plotOptions: {
 				column: {
-					stacking: 'normal'
+					stacking: 'normal',
+					 pointPadding: 0.2,
 				}
 			},
 			series: [{
@@ -378,9 +391,15 @@ function buildGraph(result)	{
 				text: null
 			},
 			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
 				categories:cateArr
 			},
 			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
 				allowDecimals: false,
 				min: 0,
 				title: {
@@ -397,7 +416,8 @@ function buildGraph(result)	{
 			},
 			plotOptions: {
 				column: {
-					stacking: 'normal'
+					stacking: 'normal',
+					pointPadding: 0.2,
 				}
 			},
 			series: [{
@@ -521,3 +541,183 @@ function buildGraph(result)	{
 		});
 	}
 }
+
+function getLocationWiseExceededWorkDetails(blockId,locationType,type){
+	if(type=='graph'){
+		$("#ExceededWorkDetailsGraph").html(spinner);
+	}else{
+		$("#"+blockId).html(spinner);
+		
+	}
+		var json = {
+			locationType:locationType,
+			frodateStr:"",
+			toDateStr:"",
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getExceededEncWorks',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+		 	if(result !=null && result.length>0){
+				if(type=='graph'){
+					buildGraphforExceededWorks(result)
+				}
+				buildExceededWorksBlocks(result,blockId,locationType);
+			}else{
+				if(type=='graph'){
+					$("#ExceededWorkDetailsGraph").html("NO DATA AVAILABLE");
+				}else{
+					$('#'+blockId).html("NO DATA AVAILABLE");
+				}
+			}
+		});
+}
+function buildGraphforExceededWorks(response){
+	
+	var dataArr = [];
+	var totalCount=0;
+	var statusNamesArr=[];
+	var colors = []
+	for(var i in response){
+	  for(var j in response[i].subList){
+			var tempArr = [];
+			statusNamesArr.push(response[i].subList[j].name);
+			dataArr.push({"y":response[i].subList[j].count,"extra":""+response[i].subList[j].ongoingPWSExceededCount+"-"+response[i].subList[j].completedPWSExceededCount});
+			totalCount=totalCount+response[i].subList[j].count;
+			
+			if(response[i].subList[j].name == "In Time"){
+				colors.push('#14BAAD')
+			}else if(response[i].subList[j].name == "1-30 Days"){
+				colors.push('#FC5049')
+			}else if(response[i].subList[j].name == "31-60 Days"){
+				colors.push('#FC5059')
+			}else if(response[i].subList[j].name == "91-180 Days"){
+				colors.push('#FC5068')
+			}else if(response[i].subList[j].name == "181-365 Days"){
+				colors.push('#FC5079')
+			}else{
+				colors.push('#FFBF14')
+			}
+		}
+	}
+	$("#ExceededWorkDetailsGraph").highcharts({
+		chart: {
+			type: 'column'
+			
+		},
+		title: {
+			text: null
+		},
+		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: statusNamesArr
+		},
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			allowDecimals: false,
+			min: 0,
+			title: {
+				text: null
+			}
+		},
+		tooltip: {
+			formatter: function () {
+				var value = (this.point.extra).split("-");
+				return '<b>' + this.x + '</b><br/>' +
+					'Total : ' + this.y + '<br/>'+
+					//'Total: ' + this.point.stackTotal + '<br/>' +
+					'OnGoingExceededWorks :' +value[0]+ '<br/>' +
+					'CompletedExceededWorks :' +value[1]+ '';
+			}
+		},
+		plotOptions: {
+			column: {
+				stacking: 'normal'
+			}
+		},
+		series: [{
+			name: '',
+			data: dataArr,
+			showInLegend: false,
+		}]
+	});
+}
+ function buildExceededWorksBlocks(result,blockId,locationType){
+	 var table='';
+	 	table+='<div class="table-responsive">';
+			table+='<table class="table table-bordered m_top10" id="'+blockId+'dataTableId1">';
+				table+='<thead>';
+					table+='<tr>';
+						if(blockId == 'statelevelBlockId'){
+							table+='<th>STATE</th>';
+						}else if(blockId == 'districtlevelBlockId'){
+							table+='<th>DISTRICTS</th>';
+						}else if(blockId == 'constituencylevelBlockId'){
+							table+='<th>CONSTITUENCY</th>';
+						}else if(blockId == 'mandallevelBlockId'){
+							table+='<th>MANDALS</th>';
+						}
+						table+='<th>TOTAL WORKS</th>';
+						for(var i in result[0].subList){
+							table+='<th>'+result[0].subList[i].name+'</th>';
+						}
+					table+='</tr>';
+				table+='</thead>';
+				table+='<tbody>';
+					for(var i in result){
+						table+='<tr>';
+							table+='<td>'+result[i].name+'</td>';
+							table+='<td>'+result[i].count+'</td>';
+							for(var j in result[i].subList){		
+								table+='<td>'+result[i].subList[j].count+'</td>';
+							}
+						table+='</tr>';
+					}
+				table+='</tbody>';
+			table+='</table>';
+		table+='</div>';
+		$("#"+blockId).html(table);
+		
+		if(blockId != 'statelevelBlockId'){
+		$("#"+blockId+"dataTableId1").dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [],
+			"order": [ 0, 'asc' ],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			buttons: [
+				{
+					extend		:'csvHtml5',
+					text		:'<i class="fa fa-file-text-o"></i>',
+					titleAttr	: 'CSV',
+					title		:  "ENC WORKS DASHBOARD",
+					filename	:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend		:'pdfHtml5',
+					text		:'<i class="fa fa-file-pdf-o"></i>',
+					titleAttr	:'PDF',
+					title		: "ENC WORKS DASHBOARD",
+					filename	: blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation	: "landscape",
+					pageSize	: 'A3',
+					customize	: function (doc) {
+								doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+								}
+				}
+			]
+		});
+	}
+ }	 
