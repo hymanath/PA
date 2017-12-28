@@ -33,7 +33,7 @@ public class PetitionHistory {
 	private PmSubWorkDetails pmSubWorkDetails;
 	private PmRepresenteeRefDetails pmRepresenteeRefDetails;
 	private PmRepresenteeRefDocument pmRepresenteeRefDocument;
-	private PmDocument pmDocument;
+	//private PmDocument pmDocument;
 	
 	@Id
 	@Column(name="petition_history_id")
@@ -139,12 +139,12 @@ public class PetitionHistory {
 	public void setPmRepresenteeRefDocument(PmRepresenteeRefDocument pmRepresenteeRefDocument) {
 		this.pmRepresenteeRefDocument = pmRepresenteeRefDocument;
 	}
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pm_document_id", insertable = false, updatable = false)
 	public PmDocument getPmDocument() {
 		return pmDocument;
 	}
 	public void setPmDocument(PmDocument pmDocument) {
 		this.pmDocument = pmDocument;
-	}	
+	}	*/
 }
