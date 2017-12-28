@@ -9,9 +9,9 @@ import com.itgrids.dto.ResponseVO;
 
 
 public interface IRepresentationRequestService {
-	public ResponseVO saveRepresentRequestDetails(RepresentationRequestVO dataVO);
+	//public ResponseVO saveRepresentRequestDetails(RepresentationRequestVO dataVO);
 	public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo );
 	public List<RepresentationRequestVO> getRepresentativeSearchWiseDetails(InputVO inputVO);
-	public RepresentationRequestVO getRepresentationRequestDetailsByRepresentationRequestId(Long representationMemberId);
+	//public RepresentationRequestVO getRepresentationRequestDetailsByRepresentationRequestId(Long representationMemberId);
 	public ResponseVO saveRepresentHistoryDetails(PmRequestVO dataVO,Long userId);
 }

@@ -24,7 +24,6 @@ import com.google.common.io.Files;
 import com.itgrids.dao.IDocumentDAO;
 import com.itgrids.dao.ILocationAddressDAO;
 import com.itgrids.dao.IPetitionDAO;
-import com.itgrids.dao.IPetitionStatusDAO;
 import com.itgrids.dao.IPmOfficerUserDAO;
 import com.itgrids.dao.IPmPetitionDocumentDAO;
 import com.itgrids.dao.IPmRefCandidateDAO;
@@ -53,7 +52,6 @@ import com.itgrids.dto.UserVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
 import com.itgrids.model.Petition;
-import com.itgrids.model.PetitionStatus;
 import com.itgrids.model.PmPetitionDocument;
 import com.itgrids.model.PmRefCandidate;
 import com.itgrids.model.PmRefCandidateDesignation;
@@ -116,8 +114,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	@Autowired
 	private IPmRepresenteeRefDocumentDAO pmRepresenteeRefDocumentDAO;
 	
-	@Autowired
-	private IPetitionStatusDAO petitionStatusDAO;
 	@Autowired
 	private IPmOfficerUserDAO pmOfficerUserDAO;
 	
@@ -986,13 +982,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	public List<RepresenteeViewVO> getStatusList(){
 		List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
 		try {
-			List<PetitionStatus> list = petitionStatusDAO.getAll();
+			List<PmStatus> list = pmStatusDAO.getAll();
 			if(commonMethodsUtilService.isListOrSetValid(list)){
-				for (PetitionStatus petitionStatus : list) {
+				for (PmStatus petitionStatus : list) {
 					if(petitionStatus.getIsDeleted().equalsIgnoreCase("N")){
 						RepresenteeViewVO vo = new RepresenteeViewVO();
-						vo.setId(commonMethodsUtilService.getLongValueForObject(petitionStatus.getPetitionStatusId()));
-						vo.setName(commonMethodsUtilService.getCapitalStringValueForObject(petitionStatus.getDescription()));
+						vo.setId(commonMethodsUtilService.getLongValueForObject(petitionStatus.getPmStatusId()));
+						vo.setName(commonMethodsUtilService.getCapitalStringValueForObject(petitionStatus.getStatus()));
 						returnList.add(vo);
 					}
 				}

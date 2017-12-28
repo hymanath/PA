@@ -32,13 +32,6 @@ import com.itgrids.dto.ResponseVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
 import com.itgrids.model.PetitionHistory;
-import com.itgrids.model.PetitionMember;
-import com.itgrids.model.PetitionRefferer;
-import com.itgrids.model.PetitionReffererCandidate;
-import com.itgrids.model.PetitionReffererDocument;
-import com.itgrids.model.PetitionSubWorkLocationDetails;
-import com.itgrids.model.PetitionWorkDetails;
-import com.itgrids.model.PetitionWorkDocument;
 import com.itgrids.service.IRepresentationRequestService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -83,26 +76,26 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 	//@Autowired
 	//private IPetitionWorkDocumentDAO petitionWorkDocumentDAO;
 	
-	public ResponseVO saveRepresentRequestDetails(RepresentationRequestVO dataVO){
+	/*public ResponseVO saveRepresentRequestDetails(RepresentationRequestVO dataVO){
 		ResponseVO responseVO = new ResponseVO();
 		try {
 			
-			/** Start Petition Member Details saving */
+			*//** Start Petition Member Details saving *//*
 			
 				LocationAddress petitionMemberAddress = null;
 				if(dataVO.getCandidateAddressVO() != null)
 					petitionMemberAddress = saveLocationAddress(dataVO.getCandidateAddressVO());
 				PetitionMember petitionMember = savePetitionMember(dataVO);
 				
-				/*if(dataVO.getPetitionMemberVO().getFilesList() != null && dataVO.getPetitionMemberVO().getFilesList().size()>0){
+				if(dataVO.getPetitionMemberVO().getFilesList() != null && dataVO.getPetitionMemberVO().getFilesList().size()>0){
 					for (MultipartFile file : dataVO.getPetitionMemberVO().getFilesList()) {
 						Document petitionMemberDocument = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL,dataVO.getUserId());
 					}
-				}*/
+				}
 				
-			/** End Petition Member Details saving */
+			*//** End Petition Member Details saving *//*
 			
-			/** Start Petition Referrer Details */
+			*//** Start Petition Referrer Details *//*
 				
 				if(petitionMember != null){
 				PetitionRefferer petitionRefferer = savePetitionReferralDetails(petitionMember.getPetitionMemberId(),dataVO.getPetitionMemberVO().getReferrerCandidateIdsList(),dataVO.getUserId());
@@ -114,7 +107,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 				}
 				}
 			
-			/** Start Petition Referrer Details */
+			*//** Start Petition Referrer Details *//*
 				if(petitionMember != null){
 					PetitionWorkDetails petitionWorkDetails = savePetitionWorkDetails(petitionMember.getPetitionMemberId(),dataVO);
 					PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = savePetitionSubWorkDetails(petitionWorkDetails.getPetitionWorkDetailsId(),dataVO);
@@ -133,9 +126,9 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			LOG.error("Exception Occured in RepresentationRequestService "+e.getMessage());
 		}
 		return responseVO;
-	}
+	}*/
 	
-	public PetitionWorkDocument savePetitionWorkDocument(Long petitionWorkDetailsId,Long documentId,Long userId){
+	/*public PetitionWorkDocument savePetitionWorkDocument(Long petitionWorkDetailsId,Long documentId,Long userId){
 		PetitionWorkDocument petitionWorkDocument = null;
 		try {
 			if(documentId != null && documentId.longValue()>0L){
@@ -154,7 +147,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			petitionWorkDocument = null;
 		}
 		return petitionWorkDocument;
-	}
+	}*/
 	
 	public LocationAddress saveLocationAddress(AddressVO addressVO){
 		LocationAddress locationAddress = null;
@@ -193,7 +186,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 	}
 	
 	
-	public PetitionMember savePetitionMember(RepresentationRequestVO petitionMemberVO){
+	/*public PetitionMember savePetitionMember(RepresentationRequestVO petitionMemberVO){
 		PetitionMember petitionMember = null;
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			try {
@@ -246,14 +239,14 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 								if(petitionMemberVO.getPetitionMemberVO().getEndorsmentDate() != null && petitionMemberVO.getPetitionMemberVO().getEndorsmentDate().length()>=10)
 									petitionMember.setEndorsmentDate(format.parse(petitionMemberVO.getPetitionMemberVO().getEndorsmentDate()));
 								
-								/*PetitionReffererCandidate petitionReffererCandidate = petitionReffererCandidateDAO.get(referrerCandidateId);
+								PetitionReffererCandidate petitionReffererCandidate = petitionReffererCandidateDAO.get(referrerCandidateId);
 								if(petitionReffererCandidate != null){
 									petitionMember.setCandidateName(petitionReffererCandidate.getName());
 									petitionMember.setAddressId(petitionReffererCandidate.getAddressId());
 									petitionMember.setMobileNo(petitionReffererCandidate.getMobileNo());
 									petitionMember.setEmailId(petitionReffererCandidate.getEmailId());
 								}
-								*/
+								
 								
 								petitionMember.setPetitionReffererCandidateId(referrerCandidateId);
 								petitionMember.setMemberType(petitionMemberVO.getPetitionMemberVO().getMemberType());
@@ -274,10 +267,10 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 				petitionMember = null;
 			}
 		return petitionMember;
-	}
+	}*/
 	
 	
-	public PetitionSubWorkLocationDetails savePetitionSubWorkDetails(Long petitionWorkDetailsId,RepresentationRequestVO tempDataVO){
+	/*public PetitionSubWorkLocationDetails savePetitionSubWorkDetails(Long petitionWorkDetailsId,RepresentationRequestVO tempDataVO){
 		PetitionSubWorkLocationDetails petitionSubWorkLocationDetails = null;
 		try {
 			if(tempDataVO.getPetitionMemberVO() != null){
@@ -309,9 +302,9 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			 petitionSubWorkLocationDetails = null;
 		}
 		return petitionSubWorkLocationDetails;
-	}
+	}*/
 	
-	public PetitionWorkDetails savePetitionWorkDetails(Long petitionMemberId,RepresentationRequestVO dataVO){
+	/*public PetitionWorkDetails savePetitionWorkDetails(Long petitionMemberId,RepresentationRequestVO dataVO){
 		PetitionWorkDetails petitionWorkDetails = null;
 		try {
 			if(dataVO.getPetitionMemberVO() != null){
@@ -346,10 +339,10 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			 petitionWorkDetails = null;
 		}
 		return petitionWorkDetails;
-	}
+	}*/
 	
 	
-	public PetitionReffererDocument savePetitionReffererDocument(Long petitionReffererId,Long documentId,Long userId){
+	/*public PetitionReffererDocument savePetitionReffererDocument(Long petitionReffererId,Long documentId,Long userId){
 		PetitionReffererDocument petitionReffererDocument = null;
 		try {
 			if(documentId != null && documentId.longValue()>0L){
@@ -367,9 +360,9 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			 petitionReffererDocument = null;
 		}
 		return petitionReffererDocument;
-	}
+	}*/
 	
-	public PetitionRefferer savePetitionReferralDetails(Long petitionMemeberId,List<Long> refferalCandidateIdsList,Long userId){
+	/*public PetitionRefferer savePetitionReferralDetails(Long petitionMemeberId,List<Long> refferalCandidateIdsList,Long userId){
 		PetitionRefferer petitionRefferer = null;
 		try {
 			if(petitionMemeberId != null && petitionMemeberId.longValue()>0L && refferalCandidateIdsList != null && refferalCandidateIdsList.size()>0){
@@ -398,7 +391,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			 petitionRefferer = null;
 		}
 		return petitionRefferer;
-	}
+	}*/
 	
 	
 	public Document saveDocument(MultipartFile file, String destinationPath,Long userId){
@@ -426,7 +419,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 	}
 	
 	//111111
-	public RepresentationRequestVO getRepresentationRequestDetailsByRepresentationRequestId(Long representationMemberId){
+	/*public RepresentationRequestVO getRepresentationRequestDetailsByRepresentationRequestId(Long representationMemberId){
 		RepresentationRequestVO representationRequestVO = null;
 		try {
 			PetitionMember petitionMember = null;//petitionMemberDAO.get(representationMemberId);
@@ -449,9 +442,9 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			  LOG.error("Exception Occured in getRepresentationRequestDetailsByRepresentationRequestId "+e.getMessage());
 		}
 		return representationRequestVO;
-	}
+	}*/
 
-	public void updatePetitionSubWorkDetails(List<PetitionSubWorkLocationDetails> subWorksList,RepresentationRequestVO representationRequestVO){
+	/*public void updatePetitionSubWorkDetails(List<PetitionSubWorkLocationDetails> subWorksList,RepresentationRequestVO representationRequestVO){
 		try {
 			if(commonMethodsUtilService.isListOrSetValid(subWorksList) && representationRequestVO != null){
 				for (PetitionSubWorkLocationDetails subVO : subWorksList) {
@@ -473,7 +466,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		} catch (Exception e) {
 			 LOG.error("Exception Occured in updatePetitionSubWorkDetails "+e.getMessage());
 		}
-	}
+	}*/
 	
 	public void updatePetitionWorkDetails(List<Object[]> workDetailsList,RepresentationRequestVO representationRequestVO ,List<Long> workDetailsIdsList){
 		try {
@@ -535,7 +528,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 		}
 		
 	}
-	public RepresentationRequestVO setMemberDataToResultView(PetitionMember resultPetitionMember){
+	/*public RepresentationRequestVO setMemberDataToResultView(PetitionMember resultPetitionMember){
 		RepresentationRequestVO representationRequestVO = null;
 		try {
 			SimpleDateFormat format  = new SimpleDateFormat("dd-MM-yyyy");
@@ -566,7 +559,7 @@ public class RepresentationRequestService implements IRepresentationRequestServi
 			 representationRequestVO = null;
 		}
 		return representationRequestVO;
-	}
+	}*/
 	
 	
 	public AddressVO setAddressDetailsToResultView(LocationAddress address){
