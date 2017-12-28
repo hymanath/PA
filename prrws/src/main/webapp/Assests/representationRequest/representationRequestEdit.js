@@ -650,6 +650,8 @@ $(document).on("change",".districtLevelChange",function(){
 	var typeVal = $(this).attr("attr_type");
 	var typeChange = $(this).attr("attr_type_change");
 	var locationLevelId = $('#locationLevelId'+typeVal+''+counterId+'').val();
+	if(typeChange == 'Inner')
+		locationLevelId = $('#locationLevelInnerId'+typeVal+''+counterId+'').val();	
 	if(parseInt(levelVal)>0 && parseInt(locationLevelId)>3)
 		getConstituencyNamesByDistrictId(levelVal,counterId,typeVal,typeChange);
 	
@@ -660,6 +662,8 @@ $(document).on("change",".constituencyLevelChange",function(){
 	var typeVal = $(this).attr("attr_type");
 	var typeChange = $(this).attr("attr_type_change");
 	var locationLevelId = $('#locationLevelId'+typeVal+''+counterId+'').val();
+	if(typeChange == 'Inner')
+		locationLevelId = $('#locationLevelInnerId'+typeVal+''+counterId+'').val();	
 	if(parseInt(levelVal)>0 && parseInt(locationLevelId)>4)
 		getTehsilsAndLocalElectionBodyForConstituencyId(levelVal,counterId,typeVal,typeChange);
 	
@@ -671,6 +675,8 @@ $(document).on("change",".mandalLevelChange",function(){
 	var typeVal = $(this).attr("attr_type");
 	var typeChange = $(this).attr("attr_type_change");	
 	var locationLevelId = $('#locationLevelId'+typeVal+''+counterId+'').val();
+	if(typeChange == 'Inner')
+		locationLevelId = $('#locationLevelInnerId'+typeVal+''+counterId+'').val();	
 	if(parseInt(levelVal)>0 && parseInt(locationLevelId)==6)
 		getPanchayats(levelVal,counterId,typeVal,typeChange);
 	
@@ -2419,7 +2425,7 @@ function buildPetitionDetails(result){
 	str+='<div class="row m_top10">';
 		str+='<div class="col-sm-12">';
 				//str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD REFERRAL</button>';
-				str+='<div class="col-sm-12 m_top20"><span id="saveButtonId" class="addLocationCss m_top20 saveRepresentRequestDetails" style="cursor:pointer;background-color:green;" attr_type="'+result.representationType+'">UPDATE DETAILS</span><span id="savingDetailsSpinner"></span><span class="col-sm-offset-4" id="statusMsgAppntReqt"></span></div>';
+				str+='<div class="col-sm-12 m_top20"><span id="saveButtonId" class="addLocationCss m_top20 saveRepresentRequestDetails" style="cursor:pointer;background-color:green;" attr_type="'+result.representationType+'">UPDATE DETAILS</span><span id="savingDetailsSpinner"></span><span class="col-sm-offset-4" id="statusMsgAppntReqt"></span><span class="ErrCls" id="refCandidatesErr"></span></div>';
 		str+='</div>';
 	str+='</div>';
 		
@@ -3039,7 +3045,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		}		
 	}
 	
-	/*
+	
 	var totalRefCount=0;
 	$('#refCandidatesErr').html('');
 	$('.refCandidatesCls').each(function(){
@@ -3051,14 +3057,12 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	
 	if(totalRefCount == undefined || totalRefCount == "undefined" || totalRefCount == null || parseInt(totalRefCount) == 0 ){
 		flag = false;
-		if(typeVal =='represent' || typeVal =='representee')
+		if(typeVal =='REPRESENT' || typeVal =='REPRESENTEE')
 			$('#refCandidatesErr').html('Please add atleast one referral details.');
 		else 
 			$('#refCandidatesErr').html('Please add Self member details.');
 		
 	}
-	*/
-	
 	
 	var enteredAmount =parseInt(0);
 	$(".amountCls").each(function(){
