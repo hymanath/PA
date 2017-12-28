@@ -88,18 +88,26 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 		return query.list();
 	}
 	
-	public List<Object[]> getAllMandalsByRepresenteeDesignationAndconstincy(List<Long> constituencyIds){
+	public List<Object[]> getAllMandalsByRepresenteeDesignationAndconstincy(List<Long> constituencyIds,List<Long> deptIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model.pmRepresentee.userAddress.tehsil.tehsilId ");
-		sb.append( ",model.pmRepresentee.userAddress.tehsil.tehsilName from PmRepresenteeDesignation model "
-				+ "where model.pmRepresentee.isDeleted='N' ");
+		sb.append("select distinct tehsil.tehsilId ");
+		sb.append( ",tehsil.tehsilName, localElectionBody.localElectionBodyId,localElectionBody.name," +
+				"localElectionBody.electionTypeId from PmRepresenteeRefDetails model left join model.pmRepresenteeDesignation.pmRepresentee.userAddress.localElectionBody localElectionBody" +
+				" left join model.pmRepresenteeDesignation.pmRepresentee.userAddress.tehsil  tehsil ,PmSubWorkDetails model1  "
+				+ "where model.pmRepresenteeDesignation.pmRepresentee.isDeleted='N' and  model.isDeleted='N' and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId ");
 		if(constituencyIds != null && constituencyIds.size() > 0L){
-			sb.append("and model.pmRepresentee.userAddress.constituencyId  in (:constituencyIds) ");
+			sb.append("and model.pmRepresenteeDesignation.pmRepresentee.userAddress.constituencyId  in (:constituencyIds) ");
 		}
-		sb.append(" order by model.pmRepresentee.userAddress.tehsil.tehsilName asc ");
+		if(deptIds != null && deptIds.size() >0){
+			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		sb.append(" order by tehsil.tehsilName asc,localElectionBody.name asc ");
 		Query query =getSession().createQuery(sb.toString());
 		if(constituencyIds != null && constituencyIds.size() > 0L){
 			query.setParameterList("constituencyIds", constituencyIds);
+		}
+		if(deptIds != null && deptIds.size() >0){
+			query.setParameterList("deptIds", deptIds);
 		}
 		return query.list();
 	}

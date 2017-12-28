@@ -1,5 +1,8 @@
 package com.itgrids.utils;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.common.collect.ImmutableList;
 
 public interface IConstants {
@@ -70,6 +73,7 @@ public interface IConstants {
     
     public static final Long[] PRESENT_FINANCIAL_YEAR_IDS = {9L,10L,11L,12L};
     public static final Long[] AP_PARLIAMENT_IDS_LIST = {504L,509L,466L,508L,464L,463L,500L,479L,494L,473L,483L,507L,493L,474L,467L,497L,495L,506L,478L,501L,482L,491L,476L,465L,472L};
-    public static final Long[] PETITION_IN_PROGRESS_IDS = {3l,6l,7l};
+    public static final List<Long> PETITION_IN_PROGRESS_IDS =Arrays.asList(3l,6l,7l);
     public static final Long[] PR_RD_EOFFICE_DEPT_IDS = {1448L,1466L,1424L,729L,2798L};
+    public static final List<Long> PETITION_COMPLETED_IDS = Arrays.asList(4l,5l,8l);
 }

@@ -12,7 +12,7 @@ public interface IPmRepresenteeDAO extends GenericDao<PmRepresentee, Long> {
 	
 	public List<Object[]> getAllDistrictsBySearchType(List<Long> deptIds);
 	public List<Object[]> getAlConstituenciesBySearchType(List<Long> districtIds,List<Long> deptIds);
-	public List<Object[]> getAllMandalsBySearchType(List<Long> constituencyIds);
+	public List<Object[]> getAllMandalsBySearchType(List<Long> constituencyIds,List<Long> depts);
 	
 	
 }

@@ -111,8 +111,17 @@ public class PmRequestDetailsController {
 	    	return locationDetailsService.getConstituenciesBySearchTypeAndDistrictId(inputVO.getFilterType(),inputVO.getSearchLvlVals(),deptIds);
 	    }
 	    @RequestMapping(value ="/getMandalsBySearchTypeAndConstituency",method = RequestMethod.POST)
-	    public @ResponseBody List<KeyValueVO> getMandalsBySearchTypeAndConstituency(@RequestBody InputVO inputVO ) {
-	    	return locationDetailsService.getMandalsBySearchTypeAndConstituencyId(inputVO.getFilterType(),inputVO.getSearchLvlVals());
+	    public @ResponseBody List<KeyValueVO> getMandalsBySearchTypeAndConstituency(@RequestBody InputVO inputVO,HttpServletRequest request ) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}
+			List<Long> deptIds = null;
+			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+			 deptIds = deptVO.getDeptIdsList();
+	    	return locationDetailsService.getMandalsBySearchTypeAndConstituencyId(inputVO.getFilterType(),inputVO.getSearchLvlVals(),deptIds);
 	    }
 	    @RequestMapping(value ="/getDesignationsBySearchType",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getDesignationsBySearchType(@RequestBody Map<String,String> inputMap ) {
@@ -170,5 +179,16 @@ public class PmRequestDetailsController {
 				userId = userVO.getUserId();
 			}
 	       return pmRequestDetailsService.getPmDeptStatusIdsByUserIdsLst(userId);
+	    }
+	    @RequestMapping(value ="/getLeadWiseOverviewDetails",method = RequestMethod.POST)
+	    public @ResponseBody List<RepresenteeViewVO> getLeadWiseOverviewDetails(@RequestBody Map<String,String> inputMap,HttpServletRequest request) {
+	    	Long userId =null;
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}
+	       return pmRequestDetailsService.getLeadWiseOverviewDetails(userId,inputMap.get("fromDate"),inputMap.get("toDate"));
 	    }
 }

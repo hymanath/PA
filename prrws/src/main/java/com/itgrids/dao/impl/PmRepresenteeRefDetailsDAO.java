@@ -112,8 +112,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append("  left join locationAddress.state state " +
 					" left join locationAddress.district district " +
 					" left join locationAddress.constituency constituency " +
-					" left join locationAddress.tehsil tehsil " );
-					//" left join locationAddress.localElectionBody localElectionBody " +
+					" left join locationAddress.tehsil tehsil " +
+					" left join locationAddress.localElectionBody localElectionBody " );
 					//" left join locationAddress.panchayat panchayat  ");
 		
 		
@@ -129,9 +129,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				sb.append(" and  constituency.constituencyId in (:searchLevelValues) ");
 			}else if(searchLevelId.longValue() ==5L){
 				sb.append(" and  tehsil.tehsilId in (:searchLevelValues) ");
-			}/*else if(searchLevelId.longValue() ==7L){
-				sb.append(" and  localElectionBody.localElectionBodyId=:searchLevelValue ");
-			}else if(searchLevelId.longValue() ==6L){
+			}else if(searchLevelId.longValue() ==7L){
+				sb.append(" and  localElectionBody.localElectionBodyId in (:searchLevelValues) ");
+			}/*else if(searchLevelId.longValue() ==6L){
 				sb.append(" and  panchayat.panchayatId=:searchLevelValue ");
 			}*/
 		}

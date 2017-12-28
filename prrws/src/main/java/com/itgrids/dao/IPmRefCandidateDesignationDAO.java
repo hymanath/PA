@@ -12,6 +12,6 @@ public interface IPmRefCandidateDesignationDAO extends GenericDao<PmRefCandidate
 
 	public List<Object[]> getAllDistrictsByReferalAndDesignation(List<Long> deptIds);
 	public List<Object[]> getAlConstituenciesByReferalAndDesignationBydistrict(List<Long> districtIds,List<Long> deptIds);
-	public List<Object[]> getAllMandalsByReferalAndDesignationBydistrict(List<Long> constituencyIds);
+	public List<Object[]> getAllMandalsByReferalAndDesignationBydistrict(List<Long> constituencyIds,List<Long> deptIds);
 	public List<Object[]> getDesignationsByReferlDesigtion();
 }

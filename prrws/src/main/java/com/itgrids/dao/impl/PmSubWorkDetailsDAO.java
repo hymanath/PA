@@ -94,18 +94,26 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		}
 		return query.list();
 	}
-	public List<Object[]> getAllMandalsByDistricId(List<Long> constincyIdIds){
+	public List<Object[]> getAllMandalsByDistricId(List<Long> constincyIdIds,List<Long> deptIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model.locationAddress.tehsil.tehsilId");
-		sb.append(",model.locationAddress.tehsil.tehsilName ");
-		sb.append(" from PmSubWorkDetails model where model.isDeleted ='N' ");
+		sb.append("select distinct tehsil.tehsilId");
+		sb.append(",tehsil.tehsilName" +
+				" ,localElectionBody.localElectionBodyId,localElectionBody.name," +
+				"localElectionBody.electionTypeId ");
+		sb.append(" from PmSubWorkDetails model left join model.locationAddress.localElectionBody localElectionBody left join model.locationAddress.tehsil tehsil  where model.isDeleted ='N' ");
 		if(constincyIdIds != null && constincyIdIds.size() >0L ){ 
 			sb.append("and model.locationAddress.constituencyId in (:constincyIdIds) ");
 		}
-		sb.append( "order by model.locationAddress.tehsil.tehsilName asc ");
+		if(deptIds != null && deptIds.size() >0){
+			sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		sb.append( "order by tehsil.tehsilName asc,localElectionBody.name asc ");
 		Query query =getSession().createQuery(sb.toString());
 		if(constincyIdIds != null && constincyIdIds.size() >0L ){ 
 			query.setParameterList("constincyIdIds", constincyIdIds);
+		}
+		if(deptIds != null && deptIds.size() >0){
+			query.setParameterList("deptIds", deptIds);
 		}
 		return query.list();
 	}
@@ -196,12 +204,12 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		sb.append("  from PmSubWorkDetails model where  ");
 		
 		//sb.append("  model.pmSubject.isDeleted='N' and model.pmDepartment.isDeleted='N' and model.pmLead.isDeleted='N' and ");
-		//sb.append("  model.pmSubject.parentPmSubjectId is null and ");
+		//sb.append("  model.pmSubject.parentPmSubjectId is null  ");
 		if(deptIds != null && deptIds.size() >0){
-			 sb.append("  model.pmDepartment.pmDepartmentId in (:deptIds) and ");
+			 sb.append("   model.pmDepartment.pmDepartmentId in (:deptIds)  ");
 		}
 		if(startDate != null && endDate != null){
-			 sb.append("  date(model.insertedTime) between :startDate and :endDate "); 
+			 sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
 		}
 		sb.append(" group by   model.petition.petitionId, model.pmStatus.pmStatusId ,model.pmLead.pmLeadId " );
 		

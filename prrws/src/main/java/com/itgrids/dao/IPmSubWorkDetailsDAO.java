@@ -11,7 +11,7 @@ public interface IPmSubWorkDetailsDAO extends GenericDao<PmSubWorkDetails, Long>
 	public List<Object[]> getPetitionSubWorksDetails(Long petitionId);
 	public List<Object[]> getAllDistricts(List<Long> deptIds);
 	public List<Object[]> getAllConstituenciesByDistricId(List<Long> districtIds,List<Long> deptIds);
-	public List<Object[]> getAllMandalsByDistricId(List<Long> constincyIdId);
+	public List<Object[]> getAllMandalsByDistricId(List<Long> constincyIdId,List<Long> deptIds);
 	public List<Object[]> getDepartmentsByWorks();
 	
 	public List<Long> getPmSubWorkDetailsIds(Long petitionId);

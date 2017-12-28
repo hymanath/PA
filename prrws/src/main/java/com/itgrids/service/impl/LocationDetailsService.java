@@ -665,34 +665,78 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		}
 		return finalList;
 	}
-	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,List<Long> conIds){
+	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,List<Long> conIds,List<Long> deptIds){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> conObjs=null;
 			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("department"))){
-				conObjs=pmSubWorkDetailsDAO.getAllMandalsByDistricId(conIds);
+				conObjs=pmSubWorkDetailsDAO.getAllMandalsByDistricId(conIds,deptIds);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referral")){
-				conObjs=pmRefCandidateDAO.getAllMandalsByReferralAndDistrict(conIds);
+				conObjs=pmRefCandidateDAO.getAllMandalsByReferralAndDistrict(conIds,deptIds);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referrelDesignation")){
-				conObjs=pmRefCandidateDesignationDAO.getAllMandalsByReferalAndDesignationBydistrict(conIds);
+				conObjs=pmRefCandidateDesignationDAO.getAllMandalsByReferalAndDesignationBydistrict(conIds,deptIds);
 			}else if(serchType !=null && (serchType.trim().equalsIgnoreCase("representee") || serchType.trim().equalsIgnoreCase("name") || serchType.trim().equalsIgnoreCase("mobile") || serchType.trim().equalsIgnoreCase("email") || serchType.trim().equalsIgnoreCase("endorsmentNO"))){
-				conObjs=pmRepresenteeDAO.getAllMandalsBySearchType(conIds);
+				conObjs=pmRepresenteeDAO.getAllMandalsBySearchType(conIds,deptIds);
 			}if(serchType !=null && serchType.trim().equalsIgnoreCase("representeeDesignation")){
-				conObjs=pmRepresenteeDesignationDAO.getAllMandalsByRepresenteeDesignationAndconstincy(conIds);
+				conObjs=pmRepresenteeDesignationDAO.getAllMandalsByRepresenteeDesignationAndconstincy(conIds,deptIds);
 			}
 			if(conObjs != null && conObjs.size() >0 ){
 				for(Object[] param : conObjs ){
-					KeyValueVO vo = new KeyValueVO();
-					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
-					String mandalName = commonMethodsUtilService.getCapitalStringValueForObject(commonMethodsUtilService.getCapitalStringValueForObject(param[1]));
-					vo.setValue(mandalName);
-					finalList.add(vo);
+					//KeyValueVO vo = new KeyValueVO();
+					KeyValueVO matchedVO =null;
+					if(commonMethodsUtilService.getLongValueForObject(param[4]) ==0l){
+						matchedVO = getMatchVO(finalList,commonMethodsUtilService.getLongValueForObject(param[0]));
+					}else if(commonMethodsUtilService.getLongValueForObject(param[4]) >0l){
+						 matchedVO = getMatchVO(finalList,commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+					if(matchedVO == null){
+						matchedVO= new KeyValueVO();
+						//matchedVO.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+						String mandalName = "";
+						if(commonMethodsUtilService.getLongValueForObject(param[4]) ==6l || commonMethodsUtilService.getLongValueForObject(param[4]) ==7l){
+							String id="2"+commonMethodsUtilService.getLongValueForObject(param[2]);
+							matchedVO.setKey(Long.valueOf(id));
+							mandalName = commonMethodsUtilService.getCapitalStringValueForObject(commonMethodsUtilService.getCapitalStringValueForObject(param[3]));
+							matchedVO.setValue(mandalName+" Corporation");
+							if(commonMethodsUtilService.getLongValueForObject(param[2]) >0l)
+							finalList.add(matchedVO);
+						}else if(commonMethodsUtilService.getLongValueForObject(param[4]) ==5l ){
+							String id="2"+commonMethodsUtilService.getLongValueForObject(param[2]);
+							matchedVO.setKey(Long.valueOf(id));
+							mandalName = commonMethodsUtilService.getCapitalStringValueForObject(commonMethodsUtilService.getCapitalStringValueForObject(param[3]));
+							matchedVO.setValue(mandalName+" Muncipality");
+							if(commonMethodsUtilService.getLongValueForObject(param[2]) >0l)
+							finalList.add(matchedVO);
+						}else{
+							String id="1"+commonMethodsUtilService.getLongValueForObject(param[0]);
+							matchedVO.setKey(Long.valueOf(id));
+							mandalName = commonMethodsUtilService.getCapitalStringValueForObject(commonMethodsUtilService.getCapitalStringValueForObject(param[1]));
+							matchedVO.setValue(mandalName);
+							if(commonMethodsUtilService.getLongValueForObject(param[0]) >0l)
+							finalList.add(matchedVO);
+						}
+					}
 				}
 			}
 		}catch(Exception e){
 			LOG.error("Exception occured at getConstituenciesBySearchTypeAndDistrictId() in LocationDetailsService class ", e);
 		}
 		return finalList;
+	}
+	private KeyValueVO getMatchVO(List<KeyValueVO> subList,Long id) {
+		 try {
+			  if (subList == null || subList.size() == 0) {
+				  return null;
+			  }
+			  for (KeyValueVO VO : subList) {
+				if (VO.getKey() == id) {
+					return VO;
+				}
+			}
+		} catch (Exception e) {
+			 LOG.error("Exception raised at getMatchVO - PmRequestDetailsService service",e);
+		 }
+		 return null;
 	}
 	public List<KeyValueVO> getDesignationsBySearchType(String searchType){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
