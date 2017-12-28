@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -1932,5 +1933,23 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				LOG.error("Exception raised into PmRequestDetailsService of setLeadStatusTemplate() ",e);
 			}
 			return list;
+		}
+		
+		public String genarateEndorsementNo(String endrsementNo,String userType,List<String> depts,Date date){
+			String outputStr="";
+			if(endrsementNo != null && endrsementNo.trim().length() >0 && userType !=null && userType.trim().length() >0 && depts != null && depts.size() >0 && date !=null ){
+				String yearStr="";
+				String dateStr="";
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+					Calendar cal =Calendar.getInstance();
+					cal.setTime(date);
+					Integer year=cal.get(Calendar.YEAR);
+					yearStr=year.toString();
+				 dateStr=	sdf.format(date);
+				 
+				String deptStr = commonMethodsUtilService.convertStringFromListWithOutDuplicates(depts);
+				outputStr=endrsementNo+"/"+userType+"("+deptStr+")/"+yearStr+"/"+dateStr;
+			}
+			return "Endt NO. "+outputStr;
 		}
 }
