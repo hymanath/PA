@@ -66,18 +66,26 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getAlConstituenciesBySearchType(List<Long> districtIds){
+	public List<Object[]> getAlConstituenciesBySearchType(List<Long> districtIds,List<Long> deptIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model.userAddress.constituency.constituencyId,model.userAddress.constituency.name ");
-		sb.append( " from PmRepresentee model where model.isDeleted='N' ");
+		sb.append("select distinct model.pmRepresentee.userAddress.constituency.constituencyId,model.pmRepresentee.userAddress.constituency.name ");
+		sb.append( " from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where model.pmRepresentee.isDeleted='N' " +
+				" and model.isDeleted='N'and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId ");
 		if(districtIds != null && districtIds.size() >0 ){
-			sb.append("and model.userAddress.districtId in (:districtIds) ");
+			sb.append("and model.pmRepresentee.userAddress.district.districtId in (:districtIds) ");
+		}		
+		if(deptIds != null && deptIds.size() >0 ){
+			sb.append("and model1.pmDepartment.pmDepartmentId in (:deptIds)");
 		}
-		sb.append(" order by model.userAddress.constituency.name asc ");
+		sb.append(" order by model.pmRepresentee.userAddress.constituency.name asc ");
 		Query query =getSession().createQuery(sb.toString());
-		if(districtIds != null && districtIds.size() >0 ){
+		if(deptIds != null && deptIds.size() >0 ){
+			query.setParameterList("deptIds", deptIds);
+		}
+		if(districtIds != null && districtIds.size() >0L){
 			query.setParameterList("districtIds", districtIds);
 		}
+
 		return query.list();
 	}
 	public List<Object[]> getAllMandalsBySearchType(List<Long> constituencyIds){
