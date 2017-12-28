@@ -898,8 +898,49 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				startDate = format.parse(inputVO.getFromDate());
 				endDate = format.parse(inputVO.getToDate());
 			}
+			//List<Long> localElecBodyIds = null;
+			if(inputVO.getSearchLevelId() != null && inputVO.getSearchLevelId() ==5l){
+				if(inputVO.getSearchLvlVals() != null && inputVO.getSearchLvlVals().size() >0){
+					for (Long long1 : inputVO.getSearchLvlVals() ) {
+						if(long1.toString().substring(0, 1).equalsIgnoreCase("2")){
+							if(inputVO.getLocationIds() == null){
+								inputVO.setLocationIds(new ArrayList<Long>());
+							}
+							inputVO.getLocationIds().add(Long.valueOf(long1.toString().substring(1)));
+							//inputVO.getSearchLvlVals().remove(long1);
+						}else if(long1.toString().substring(0, 1).equalsIgnoreCase("1")){
+							//inputVO.getSearchLvlVals().remove(long1);
+							if(inputVO.getLocationValues() == null){
+								inputVO.setLocationValues(new ArrayList<Long>());
+							}
+							inputVO.getLocationValues().add(Long.valueOf(long1.toString().substring(1)));
+						}
+					}
+				}
+			}
+			List<Object[]> searchData = null;
 			Map<Long,RepresenteeViewVO> mapData = new HashMap<Long,RepresenteeViewVO>();
-			List<Object[]> searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
+			if(inputVO.getSearchLevelId() != null && inputVO.getSearchLevelId() ==5l){
+				if(inputVO.getLocationIds() != null && inputVO.getLocationIds().size() >0){
+					searchData = null;
+					inputVO.getSearchLvlVals().clear();
+					inputVO.getSearchLvlVals().addAll(inputVO.getLocationIds());
+					inputVO.setSearchLevelId(7l);
+					searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
+					setSearchDetailsData(searchData,mapData);
+				}
+				if(inputVO.getLocationValues() != null && inputVO.getLocationValues().size() >0){
+					searchData = null;
+					inputVO.getSearchLvlVals().clear();
+					inputVO.getSearchLvlVals().addAll(inputVO.getLocationValues());
+					inputVO.setSearchLevelId(5l);
+					searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
+					setSearchDetailsData(searchData,mapData);
+				}
+				 
+			}else{
+				searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
+			}
 			/*List<Long> statusIds = new ArrayList<Long>();
 			statusIds.add(6l);
 			statusIds.add(7l);
@@ -908,6 +949,79 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			Long minPending = commonMethodsUtilService.getLongValueForObject(inputVO.getStartValue());
 			Long maxPending = commonMethodsUtilService.getLongValueForObject(inputVO.getEndValue());
 			
+			setSearchDetailsData(searchData,mapData);
+			/*if(searchData != null && searchData.size()>0){
+				for (Object[] param : searchData) {
+					//RepresenteeViewVO vo = new RepresenteeViewVO();
+					RepresenteeViewVO vo = mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(vo == null){
+						vo = new RepresenteeViewVO();
+						vo.setDesigName(commonMethodsUtilService.getStringValueForObject(param[7]));
+						vo.getDesigList().add(commonMethodsUtilService.getStringValueForObject(param[7]));
+						//vo.set
+						if(commonMethodsUtilService.getLongValueForObject(param[0]) >0l)
+							mapData.put(commonMethodsUtilService.getLongValueForObject(param[0]), vo);
+					}else{
+						if(vo.getDesigList() != null && vo.getDesigList().size() >0 && !vo.getDesigList().contains(commonMethodsUtilService.getStringValueForObject(param[7]))){
+							String designations = vo.getDesigName().concat(", "+commonMethodsUtilService.getStringValueForObject(param[7]));
+							vo.setDesigName(designations);
+							vo.getDesigList().add(commonMethodsUtilService.getStringValueForObject(param[7]));
+						}
+					}
+					vo.setPetitionId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setEndorsementNO(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(param[2] != null){
+						vo.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+					}
+					vo.setEstimationCost(commonMethodsUtilService.getStringValueForObject(param[3]));
+					vo.setName(commonMethodsUtilService.getCapitalStringValueForObject(param[4]));
+					vo.setReferrerName(commonMethodsUtilService.getCapitalStringValueForObject(param[5]));
+					vo.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[6]));
+					 dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[8]),commonMethodsUtilService.getStringValueForObject(param[9]));
+					commonMethodsUtilService.getLongValueForObject(param[10]);
+					vo.setWorkName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					//RepresenteeViewVO vo =mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(param[8] != null){
+						vo.setRaisedDate(commonMethodsUtilService.getStringValueForObject(param[8]).substring(0, 10));
+					}
+					if(statusId.longValue() != 0l && !statusIds.contains(statusId) && petionPendingDays.longValue()>=minPending.longValue()
+							&& petionPendingDays.longValue() <= maxPending.longValue() && vo != null){
+						vo.setStatusType("pending");
+					}
+				}
+			}
+			*/
+			
+			
+			/*if(searchData != null && searchData.size()>0){
+				for (Object[] param : searchData) {
+					Long petionPendingDays = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[8]),commonMethodsUtilService.getStringValueForObject(param[9]));
+					Long statusId = commonMethodsUtilService.getLongValueForObject(commonMethodsUtilService.getLongValueForObject(param[10]));
+					RepresenteeViewVO vo =mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					
+					if(statusId.longValue() != 0l && !statusIds.contains(statusId) && petionPendingDays.longValue()>=minPending.longValue()
+							&& petionPendingDays.longValue() <= maxPending.longValue() && vo != null){
+						vo.setStatusType("pending");
+					}
+				}
+			}*/
+			
+			for (Map.Entry<Long, RepresenteeViewVO> entry : mapData.entrySet()) {
+				if(minPending.longValue() >0l &&  maxPending.longValue() >0l && entry.getValue().getStatusType().equalsIgnoreCase("pending")){
+					finalList.add(entry.getValue());
+				}else if(minPending.longValue() ==0l || maxPending.longValue() ==0l){
+					finalList.add(entry.getValue());
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in PmRequestDetailsService @ getRepresentativeSearchWiseDetails() "+e.getMessage());
+		}
+		return finalList;
+	}
+	public void setSearchDetailsData(List<Object[]> searchData,Map<Long,RepresenteeViewVO> mapData){
+		try{
 			if(searchData != null && searchData.size()>0){
 				for (Object[] param : searchData) {
 					//RepresenteeViewVO vo = new RepresenteeViewVO();
@@ -949,34 +1063,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 			}
 			
-			
-			
-			/*if(searchData != null && searchData.size()>0){
-				for (Object[] param : searchData) {
-					Long petionPendingDays = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[8]),commonMethodsUtilService.getStringValueForObject(param[9]));
-					Long statusId = commonMethodsUtilService.getLongValueForObject(commonMethodsUtilService.getLongValueForObject(param[10]));
-					RepresenteeViewVO vo =mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-					
-					if(statusId.longValue() != 0l && !statusIds.contains(statusId) && petionPendingDays.longValue()>=minPending.longValue()
-							&& petionPendingDays.longValue() <= maxPending.longValue() && vo != null){
-						vo.setStatusType("pending");
-					}
-				}
-			}*/
-			
-			for (Map.Entry<Long, RepresenteeViewVO> entry : mapData.entrySet()) {
-				if(minPending.longValue() >0l &&  maxPending.longValue() >0l && entry.getValue().getStatusType().equalsIgnoreCase("pending")){
-					finalList.add(entry.getValue());
-				}else if(minPending.longValue() ==0l || maxPending.longValue() ==0l){
-					finalList.add(entry.getValue());
-				}
-			}
-			
 		}catch (Exception e) {
 			e.printStackTrace();
-			LOG.error("Exception Occured in PmRequestDetailsService @ getRepresentativeSearchWiseDetails() "+e.getMessage());
+			LOG.error("Exception Occured in PmRequestDetailsService @ setSearchDetailsData() "+e.getMessage());
 		}
-		return finalList;
 	}
 	@SuppressWarnings("static-access")
 	public List<RepresenteeViewVO> getStatusList(){
@@ -1446,9 +1536,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				List<Long> deptIds = deptVO.getDeptIdsList();
 				KeyValueVO userAccesStatusVO = getPmDeptStatusIdsByUserIdsLst(userId);
 				List<Long> statusIds = userAccesStatusVO.getDeptIdsList();
+				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				Date fromDate = null;
 				Date toDate = null;
 				
+				if(startDate != null && endDate != null && !startDate.isEmpty() && !endDate.isEmpty()){
+					fromDate = format.parse(startDate);
+					toDate = format.parse(endDate);
+				}
 				Map<Long,RepresenteeViewVO> statuMap = null;
 				List<PmStatus> statusList = pmStatusDAO.getAll();
 				if(commonMethodsUtilService.isListOrSetValid(statusList)){
@@ -1503,7 +1598,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					
 				}
 				
-				List<Long> inProgressStatusIds = Arrays.asList(IConstants.PETITION_IN_PROGRESS_IDS);
+				List<Long> inProgressStatusIds = IConstants.PETITION_IN_PROGRESS_IDS;
 				RepresenteeViewVO inProgressVO = statuMap.get(2l);
 				
 				Map<Long,RepresenteeViewVO> inprogreeReferMap = new HashMap<Long,RepresenteeViewVO>();
@@ -1604,13 +1699,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			try {
 				
 				if(commonMethodsUtilService.isListOrSetValid(objectList)){
-					//statuMap = new HashMap<Long,RepresenteeViewVO>();
 					for (Object[] param : objectList) {
-						/*RepresenteeViewVO statusVO = statuMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
-						if(statusVO == null){
-							statusVO = new RepresenteeViewVO();
-							statuMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusVO);
-						}*/
 						RepresenteeViewVO VO  = null;
 						Long id = commonMethodsUtilService.getLongValueForObject(param[4]);
 						String name = commonMethodsUtilService.getStringValueForObject(param[5]);
@@ -1764,4 +1853,84 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return deptVO;
 		}
 		
+		public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate){
+			List<RepresenteeViewVO> leadList = null;
+			try {
+				KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
+				List<Long> deptIds = deptVO.getDeptIdsList();
+				//KeyValueVO userAccesStatusVO = getPmDeptStatusIdsByUserIdsLst(userId);
+				//List<Long> statusIds = userAccesStatusVO.getDeptIdsList();
+				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+				Date fromDate = null;
+				Date toDate = null;
+				
+				if(startDate != null && endDate != null && !startDate.isEmpty() && !endDate.isEmpty()){
+					fromDate = format.parse(startDate);
+					toDate = format.parse(endDate);
+				}
+				List<Long> statusIds = Arrays.asList(1l,2l);
+				Map<Long,RepresenteeViewVO> leadMap = null;
+				List<Object[]> leadObjects = pmSubWorkDetailsDAO.getLeadWiseOverviewDetails(deptIds, fromDate, toDate);
+				if(commonMethodsUtilService.isListOrSetValid(leadObjects)){
+					leadMap = new HashMap<Long,RepresenteeViewVO>();
+					for (Object[] param : leadObjects) {
+						RepresenteeViewVO leadVO = leadMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+						if(leadVO == null){
+							leadVO = new RepresenteeViewVO();
+							leadVO.getStatusList().addAll(setLeadStatusTemplate(statusIds));
+							if(commonMethodsUtilService.getLongValueForObject(param[1])>0l)
+							leadMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), leadVO);
+						}
+						leadVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+						leadVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+						leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						leadVO.setTotalRepresents(leadVO.getTotalRepresents()+1l);
+						if(IConstants.PETITION_COMPLETED_IDS.contains(param[3])){
+							RepresenteeViewVO completedVO = getMatchVO(leadVO.getStatusList(), 2l);
+							if(completedVO != null){
+								completedVO.setName("Completed");
+								completedVO.setNoOfWorks(completedVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+								completedVO.setTotalRepresents(completedVO.getTotalRepresents()+1l);
+							}
+						}else if(IConstants.PETITION_IN_PROGRESS_IDS.contains(param[3])){
+							RepresenteeViewVO inprogressVO = getMatchVO(leadVO.getStatusList(), 1l);
+							if(inprogressVO != null){
+								inprogressVO.setName("Pending");
+								inprogressVO.setNoOfWorks(inprogressVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+								inprogressVO.setTotalRepresents(inprogressVO.getTotalRepresents()+1l);
+							}
+						} 
+						
+					}
+				}
+				
+				if(commonMethodsUtilService.isMapValid(leadMap)){
+					leadList = new ArrayList();
+					leadList.addAll(leadMap.values());
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception raised into PmRequestDetailsService of getLeadWiseOverviewDetails() ",e);
+			}
+			return leadList;
+		}
+		
+		public List<RepresenteeViewVO> setLeadStatusTemplate(List<Long> statusIds){
+			List<RepresenteeViewVO> list = new ArrayList<RepresenteeViewVO>();
+			try {
+				if(commonMethodsUtilService.isListOrSetValid(statusIds)){
+					for (Long long1 : statusIds) {
+						RepresenteeViewVO statusVO = new RepresenteeViewVO();
+						statusVO.setId(long1);
+						statusVO.setWorkName("Work");
+						list.add(statusVO);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception raised into PmRequestDetailsService of setLeadStatusTemplate() ",e);
+			}
+			return list;
+		}
 }

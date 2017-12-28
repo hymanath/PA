@@ -501,15 +501,18 @@ function getRepresentativeSearchDetails1(){
 	 var searchLevelValue = [];
 	 var searchLevelId;
 	 if(districtId != null && districtId.length > 0){
+		 searchLevelValue = [];
 		  searchLevelValue=districtId;
 	  searchLevelId=3;
 	 }
 	 
 if(constituencyId != null && constituencyId.length > 0){
+	searchLevelValue = [];
 	searchLevelId=4;
 	searchLevelValue=constituencyId
 }
 if(mandalId != null && mandalId.length > 0){
+	searchLevelValue = [];
 	searchLevelId=5;
 	searchLevelValue=mandalId
 }

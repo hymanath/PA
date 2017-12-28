@@ -26,7 +26,7 @@ public interface ILocationDetailsService {
 	public List<KeyValueVO> getPmDesignations(String searchType);
 	public List<KeyValueVO> getDistrictBySearchType(String serchType,List<Long> deptIds);
 	public List<KeyValueVO> getConstituenciesBySearchTypeAndDistrictId(String serchType,List<Long> districtIds,List<Long> deptIds);
-	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,List<Long> conIds);
+	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,List<Long> conIds,List<Long> deptIds);
 	public List<KeyValueVO> getDesignationsBySearchType(String searchType);
 	public List<KeyValueVO> getDepartmentsBySearchType(String searchType);
 	

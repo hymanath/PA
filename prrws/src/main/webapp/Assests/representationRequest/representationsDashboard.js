@@ -340,3 +340,25 @@ function buildCompleteOrStatusOverviewDetails(result){
 		$("#completeOverviewId").html("No data available");
 	}
 }
+getLeadWiseOverviewDetails();
+function getLeadWiseOverviewDetails(){
+	$("#completeOverviewId").html(spinner);
+	$("#statusOverviewId").html(spinner);
+	$("#myActionsId").html(spinner);
+var json = {
+		 fromDate :"",
+		 toDate:""
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getLeadWiseOverviewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		
+	});	
+}

@@ -25,5 +25,5 @@ public interface IPmRequestDetailsService {
 	public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate);
 	public KeyValueVO getDeptIdsListBYUserIds(Long userId);
 	public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId);
-	
+	public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate);
 }
