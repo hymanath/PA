@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
+import com.itgrids.partyanalyst.dto.ActivityDetailsVO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityResponseVO;
@@ -80,5 +81,9 @@ public interface IActivityService {
 	public List<ActivityVO> getConstByDistrictId(Long activityScopeId,Long districtId,String fromDate, String toDate);
 	public List<ActivityVO> getMandOrMuncByconstituencyId(Long activityScopeId,Long constituencyId,String fromDate,String toDate);
 	public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId,Long mandalOrMuncId,String fromDate,String toDate);
-	
+	public List<ActivityDetailsVO> getActivityDetailsBasedOnLocation(String locationType,List<Long> locationValues,Long activityScopeId,Long constituencyId);
+	public ResultStatus updateActivityInfo(ActivityDetailsVO inputVO,String locationType, Long activityScopeId,Long locationValue,String conductedDate,String updateStatus);
+	public List<ActivityDetailsVO> getActivityQuestionOptionDtls(Long activityScopeId,Long activiyLocationInfoId);
+	public ResultStatus saveActivityAnswerDetails(ActivityDetailsVO inputVO);
+	public ResultStatus uploadDocumentImage(ActivityDetailsVO inputVO,List<String> docuemntBase64List);
 }

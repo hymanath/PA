@@ -32,6 +32,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long activityDocumentId;
 	
 	private ActivityDocument activityDocument;
 	private User insertedUser;
@@ -105,7 +106,7 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="activity_document_id")
+	@JoinColumn(name="activity_document_id",insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public ActivityDocument getActivityDocument() {
@@ -214,6 +215,14 @@ public class ActivityInfoDocument extends BaseModel implements Serializable{
 	public void setActivityConductedInfo(ActivityConductedInfo activityConductedInfo) {
 		this.activityConductedInfo = activityConductedInfo;
 	}
+	@Column(name = "activity_document_id")
+	public Long getActivityDocumentId() {
+		return activityDocumentId;
+	}
+	public void setActivityDocumentId(Long activityDocumentId) {
+		this.activityDocumentId = activityDocumentId;
+	}
+	
 	
 	
 }

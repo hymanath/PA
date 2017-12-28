@@ -39,11 +39,15 @@ public class ActivityConductedInfo implements java.io.Serializable{
 	private Date plannedDate;
 	private Date conductedDate;
 	private String updatedStatus;
+	private String sourceType;
+	private String tabUpdatedStatus;
+	private Long tabDetailsId;
 	
 	private ActivityScope activityScope;
 	private UserAddress address;
 	private User insertedUser;
 	private User updatedUser;
+	private TabDetails tabDetails;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -198,5 +202,37 @@ public class ActivityConductedInfo implements java.io.Serializable{
 	public void setUpdatedStatus(String updatedStatus) {
 		this.updatedStatus = updatedStatus;
 	}
+	@Column(name = "source_type")
+	public String getSourceType() {
+		return sourceType;
+	}
+	public void setSourceType(String sourceType) {
+		this.sourceType = sourceType;
+	}
+	@Column(name = "tab_updated_status")
+	public String getTabUpdatedStatus() {
+		return tabUpdatedStatus;
+	}
+	public void setTabUpdatedStatus(String tabUpdatedStatus) {
+		this.tabUpdatedStatus = tabUpdatedStatus;
+	}
+	@Column(name = "tab_details_id")
+	public Long getTabDetailsId() {
+		return tabDetailsId;
+	}
+	public void setTabDetailsId(Long tabDetailsId) {
+		this.tabDetailsId = tabDetailsId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "tab_details_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public TabDetails getTabDetails() {
+		return tabDetails;
+	}
+	public void setTabDetails(TabDetails tabDetails) {
+		this.tabDetails = tabDetails;
+	}
+	
 			
 }
