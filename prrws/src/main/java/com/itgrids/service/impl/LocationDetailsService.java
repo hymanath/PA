@@ -636,20 +636,20 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		}
 		return finalList;
 	}
-	public List<KeyValueVO> getConstituenciesBySearchTypeAndDistrictId(String serchType,List<Long> districtIds){
+	public List<KeyValueVO> getConstituenciesBySearchTypeAndDistrictId(String serchType,List<Long> districtIds,List<Long> deptIds){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> conObjs=null;
 			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("department"))){
-				conObjs=pmSubWorkDetailsDAO.getAllConstituenciesByDistricId(districtIds);
+				conObjs=pmSubWorkDetailsDAO.getAllConstituenciesByDistricId(districtIds,deptIds);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referral")){
-				conObjs=pmRefCandidateDAO.getAllConstituenciesByReferralAndDistrict(districtIds);
+				conObjs=pmRefCandidateDAO.getAllConstituenciesByReferralAndDistrict(districtIds,deptIds);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referrelDesignation")){
-				conObjs=pmRefCandidateDesignationDAO.getAlConstituenciesByReferalAndDesignationBydistrict(districtIds);
+				conObjs=pmRefCandidateDesignationDAO.getAlConstituenciesByReferalAndDesignationBydistrict(districtIds,deptIds);
 			}else if(serchType !=null && (serchType.trim().equalsIgnoreCase("representee") || serchType.trim().equalsIgnoreCase("name") || serchType.trim().equalsIgnoreCase("mobile") || serchType.trim().equalsIgnoreCase("email") || serchType.trim().equalsIgnoreCase("endorsmentNO"))){
-				conObjs=pmRepresenteeDAO.getAlConstituenciesBySearchType(districtIds);
+				conObjs=pmRepresenteeDAO.getAlConstituenciesBySearchType(districtIds,deptIds);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("representeeDesignation")){
-				conObjs=pmRepresenteeDesignationDAO.getAllConstituenciesByRepresenteeDesignationWise(districtIds);
+				conObjs=pmRepresenteeDesignationDAO.getAllConstituenciesByRepresenteeDesignationWise(districtIds,deptIds);
 			}
 			if(conObjs != null && conObjs.size() >0 ){
 				for(Object[] param : conObjs ){
