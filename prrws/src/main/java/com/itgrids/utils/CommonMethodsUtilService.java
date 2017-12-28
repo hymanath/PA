@@ -1184,5 +1184,25 @@ public class CommonMethodsUtilService {
 		     return null;
 		    
 		  }
-		
+		/**
+		 * @author  Babu kurakula <href:kondababu.kurakula@itgrids.com >
+		 * @Date 28th DEC,2017
+		 * @description convering list to String with out duplicates
+		 * @param String inputStr
+		 * @return String in Title case formt
+	 */
+		public String convertStringFromListWithOutDuplicates(List<String> list){
+			String output="";
+			if(list != null && list.size() > 0){
+				Set<String> set = new HashSet<String>();
+				for(String dept : list ){
+					set.add(dept.trim().toUpperCase());
+				}
+				for(String str : set){
+					output=str.trim() +","+output;
+				}
+				output=output.substring(0, output.length()-1);
+			}
+			return output;
+		}
 }
