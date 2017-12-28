@@ -72,17 +72,24 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		return query.list();
 	}
 	
-	public List<Object[]> getAllConstituenciesByDistricId(List<Long> districtIds){
+	public List<Object[]> getAllConstituenciesByDistricId(List<Long> districtIds,List<Long> deptIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.locationAddress.constituency.constituencyId");
 		sb.append(",model.locationAddress.constituency.name ");
 		sb.append(" from PmSubWorkDetails model where model.isDeleted ='N' ");
-		if(districtIds != null && districtIds.size() >0 ){ 
-			sb.append("and model.locationAddress.districtId in (:districtIds) ");
+		
+		if(districtIds != null && districtIds.size() >0L ){ 
+			sb.append("and model.locationAddress.district.districtId in (:districtIds) ");
+		}
+		if(deptIds != null && deptIds.size() >0L ){ 
+			sb.append("and model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
 		sb.append( "order by model.locationAddress.constituency.name asc ");
 		Query query =getSession().createQuery(sb.toString());
-		if(districtIds != null && districtIds.size() >0 ){ 
+		if(deptIds != null && deptIds.size() >0L ){ 
+			query.setParameterList("deptIds", deptIds);
+		}
+		if(districtIds != null && districtIds.size() >0L){
 			query.setParameterList("districtIds", districtIds);
 		}
 		return query.list();
