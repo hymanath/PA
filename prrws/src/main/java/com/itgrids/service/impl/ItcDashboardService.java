@@ -970,29 +970,51 @@ public class ItcDashboardService implements IItcDashboardService {
 						categoryNew = "R3";
 					
 					if(inputVO.getReportType() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total") && inputVO.getReportType().trim().equalsIgnoreCase(categoryNew)
-							&& inputVO.getCategory() != null && list[i].getITSECTOR().trim().equalsIgnoreCase(inputVO.getCategory())){
-						ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
-						vo.setSector(list[i].getSECTOR());
-						vo.setDistrict(list[i].getDISTRICT());
-						vo.setNoProjects(list[i].getNO_PROJECTS());
-						vo.setInvestment(list[i].getINVESTMENT());
-						vo.setRealizedInvestment(list[i].getREALIZED_INVESTMENT());
-						vo.setEmployment(list[i].getEMPLOYMENT());
-						vo.setRealizedEmployment(list[i].getREALIZED_EMPLOYMENT());
-						vo.setSourceOfLead(list[i].getSOURCE_OF_LEAD());
-						vo.setCategory(list[i].getCATEGORY());
-						vo.setLineOfActivity(list[i].getLINEOFACTIVITY());
-						vo.setSubSector(list[i].getSUBSECTOR());
-						vo.setItSector(list[i].getITSECTOR());
-						vo.setNameOfCompany(list[i].getNAMEOFTHECOMPANY());
-						vo.setDistrictName(list[i].getDISTRICTNAME());
-						vo.setDeptName(list[i].getDEPTNAME());
+						&& inputVO.getCategory() != null && list[i].getITSECTOR().trim().equalsIgnoreCase(inputVO.getCategory())){
+							ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
+							vo.setSector(list[i].getSECTOR());
+							vo.setDistrict(list[i].getDISTRICT());
+							vo.setNoProjects(list[i].getNO_PROJECTS());
+							vo.setInvestment(list[i].getINVESTMENT());
+							vo.setRealizedInvestment(list[i].getREALIZED_INVESTMENT());
+							vo.setEmployment(list[i].getEMPLOYMENT());
+							vo.setRealizedEmployment(list[i].getREALIZED_EMPLOYMENT());
+							vo.setSourceOfLead(list[i].getSOURCE_OF_LEAD());
+							vo.setCategory(list[i].getCATEGORY());
+							vo.setLineOfActivity(list[i].getLINEOFACTIVITY());
+							vo.setSubSector(list[i].getSUBSECTOR());
+							vo.setItSector(list[i].getITSECTOR());
+							vo.setNameOfCompany(list[i].getNAMEOFTHECOMPANY());
+							vo.setDistrictName(list[i].getDISTRICTNAME());
+							vo.setDeptName(list[i].getDEPTNAME());
+							
+							returnList.add(vo);
+						}else if(inputVO.getReportType() != null && !list[i].getLINEOFACTIVITY().trim().equalsIgnoreCase("Total") && inputVO.getReportType().trim().equalsIgnoreCase(categoryNew)
+								&& inputVO.getCategory() != null && inputVO.getCategory().trim().equalsIgnoreCase("Total")){
+							ItecPromotionDetailsVO vo = new ItecPromotionDetailsVO();
+							vo.setSector(list[i].getSECTOR());
+							vo.setDistrict(list[i].getDISTRICT());
+							vo.setNoProjects(list[i].getNO_PROJECTS());
+							vo.setInvestment(list[i].getINVESTMENT());
+							vo.setRealizedInvestment(list[i].getREALIZED_INVESTMENT());
+							vo.setEmployment(list[i].getEMPLOYMENT());
+							vo.setRealizedEmployment(list[i].getREALIZED_EMPLOYMENT());
+							vo.setSourceOfLead(list[i].getSOURCE_OF_LEAD());
+							vo.setCategory(list[i].getCATEGORY());
+							vo.setLineOfActivity(list[i].getLINEOFACTIVITY());
+							vo.setSubSector(list[i].getSUBSECTOR());
+							vo.setItSector(list[i].getITSECTOR());
+							vo.setNameOfCompany(list[i].getNAMEOFTHECOMPANY());
+							vo.setDistrictName(list[i].getDISTRICTNAME());
+							vo.setDeptName(list[i].getDEPTNAME());
+							
+							returnList.add(vo);
+							
+						}
 						
-						returnList.add(vo);
 					}
 					
 				}
-			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getITSectorSubLeadCategoryWiseDetails - ItcDashboardService service",e);
 		}
@@ -4592,15 +4614,15 @@ public class ItcDashboardService implements IItcDashboardService {
 						String hodName = commonMethodsUtilService.getStringValueForObject(param[13]);
 						if(departmentId != null && departmentId.longValue() == 729L && hodName.trim().equalsIgnoreCase("NARA LOKESH")){
 							hodObj =  param;
-						}else if(departmentId != null && departmentId.longValue() == 729L && hodName.trim().equalsIgnoreCase("DR.K.S.JAWAHAR REDDY")){
+						}else if(departmentId != null && departmentId.longValue() == 729L && hodName.trim().equalsIgnoreCase("DR.K.S.JAWAHAR REDDY, IAS.")){
 							hodObj =  param;
-						}else if(departmentId != null && departmentId.longValue() == 1448L && hodName.trim().equalsIgnoreCase("B. RAMANJANEYULU")){
+						}else if(departmentId != null && departmentId.longValue() == 1448L && hodName.trim().equalsIgnoreCase("B. RAMANJANEYULU, IAS")){
 							hodObj =  param;
-						}else if(departmentId != null && departmentId.longValue() == 1466L && hodName.trim().equalsIgnoreCase("C.V.S.RAMA MURTHY")){
+						}/*else if(departmentId != null && departmentId.longValue() == 1466L && hodName.trim().equalsIgnoreCase("C.V.S.RAMA MURTHY")){
 							hodObj =  param;
-						}else if(departmentId != null && departmentId.longValue() == 1424L && hodName.trim().equalsIgnoreCase("K.K.KISHORE KUMAR")){
+						}*/else if(departmentId != null && departmentId.longValue() == 1424L && hodName.trim().equalsIgnoreCase("K.K.KISHORE KUMAR")){
 							hodObj =  param;
-						}else if(departmentId != null && departmentId.longValue() == 2798L && hodName.trim().equalsIgnoreCase("B. RAMANJANEYULU")){
+						}else if(departmentId != null && departmentId.longValue() == 2798L && hodName.trim().equalsIgnoreCase("B. RAMANJANEYULU, IAS")){
 							hodObj =  param;
 						}
 						if(hodObj != null){
@@ -4851,6 +4873,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		            		  designationVO.setSixteenToThirty(commonMethodsUtilService.getLongValueForObject(param[7]));
 		            		  designationVO.setThirtyoneToSixty(commonMethodsUtilService.getLongValueForObject(param[8]));
 		            		  designationVO.setAboveSixty(commonMethodsUtilService.getLongValueForObject(param[9]));
+		            		  designationVO.setOrgName(commonMethodsUtilService.getStringValueForObject(param[16]));
 		            		  designationVO.setActionFiles(commonMethodsUtilService.getLongValueForObject(param[10])+commonMethodsUtilService.getLongValueForObject(param[11])+commonMethodsUtilService.getLongValueForObject(param[12]));
 		            		  if(designationVO.getCreated() != null && designationVO.getCreated().longValue() > 0L && designationVO.getTotalCount() != null && designationVO.getTotalCount().longValue() > 0L){
 			            		designationVO.setPercentage(new BigDecimal(designationVO.getTotalCount()*100.00/designationVO.getCreated()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());

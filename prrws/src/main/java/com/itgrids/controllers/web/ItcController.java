@@ -41,7 +41,11 @@ public class ItcController {
 	    public String drainsDashboard(ModelMap model) {
 			return "ItcDashboard";
 	    }
-
+		
+		@RequestMapping(value ="/PReOfficeDashboard",method = RequestMethod.GET)
+	    public String prEOffice(ModelMap model) {
+			return "PReOffice";
+	    }
 	   @RequestMapping(value = "/getMeesevaSLAOverviewDtls", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	   public @ResponseBody  List<MeesevaDtlsVO>  getMeesevaSLAOverviewDtls(@RequestBody InputVO inputVO) {
 		   List<MeesevaDtlsVO>  resultList = itcDashboardService.getMeesevaSLAOverviewDtls(inputVO);

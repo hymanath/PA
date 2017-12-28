@@ -52,6 +52,7 @@ public class ItecEOfficeVO {
 	private String thirtyoneToSixtyPerc;
 	private String aboveSixtyPerc;
 	private String lastUpdatedTime;
+	private String orgName;
 	
 	
 	public String getLastUpdatedTime() {
@@ -317,5 +318,11 @@ public class ItecEOfficeVO {
 	}
 	public void setAboveSixtyPerc(String aboveSixtyPerc) {
 		this.aboveSixtyPerc = aboveSixtyPerc;
+	}
+	public String getOrgName() {
+		return orgName;
+	}
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
 	}
 }

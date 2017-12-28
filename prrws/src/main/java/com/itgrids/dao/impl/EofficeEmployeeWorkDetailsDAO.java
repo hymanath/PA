@@ -21,7 +21,7 @@ public class EofficeEmployeeWorkDetailsDAO extends GenericDaoHibernate<EofficeEm
 		StringBuilder sb = new  StringBuilder();
 		sb.append("select model.departmentId,model.departmentName,model.fileCreated,model.fileReceived,model.opBalanceCount,"
 				+ " model.firstCount,model.secondCount,model.thirdCount,model.fourthCount,model.fifthCount,model.filesForwarded,model.filesParked,model.filesClosed,"
-				+ " model.employeeName,model.postName,model.insertedTime"
+				+ " model.employeeName,model.postName,model.insertedTime,model.orgName"
 				+ " from EofficeEmployeeWorkDetails model"
 				+ " where model.isDeleted = 'N'");
 		if(deptIds != null && !deptIds.isEmpty()){
