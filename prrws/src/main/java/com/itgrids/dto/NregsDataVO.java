@@ -168,7 +168,15 @@ public class NregsDataVO implements Serializable{
 	private String last3Months;
 	private String last6Months;
 	private String thisFinYear; 
+	private String type;
 	
+	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public String getWorkName() {
 		return workName;
 	}

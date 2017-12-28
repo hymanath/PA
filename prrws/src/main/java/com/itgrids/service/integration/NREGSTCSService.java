@@ -5252,9 +5252,71 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    			}
 	 	    		}
 	 	    	}
-	 	    	 
-	 	    	  
-	 	      }
+	 	    }
+			
+			if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("district") || inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))){
+	        	if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+	        		//district
+		        	inputVO.setLocationType("district");
+		        	//inputVO.setSublocationType("district");
+		        	inputVO.setLocationId(inputVO.getDistrictId());
+		        	
+		        	str = convertingInputVOToString(inputVO);
+					
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			        
+			        if (response.getStatus() != 200) {
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      } else {
+			 	    	 String output = response.getEntity(String.class);
+			 	    	 if (output != null && output.length() > 0) {
+			 	    		 JSONArray finalArray = new JSONArray(output);	 
+			 	    		 if (finalArray != null && finalArray.length() > 0) {
+			 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+			 	    				  
+			 	    				 NregsProjectsVO vo = new NregsProjectsVO();
+			 	    				 JSONObject jsonObj = (JSONObject) finalArray.get(i);
+			 	    				  
+			 	    				vo.setPercentage(new BigDecimal(jsonObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    				vo.setType("DISTRICT");
+			 	    				voList.get(0).getSubList().add(vo);
+			 	    				  
+			 	    			  }
+			 	    		 }
+			 	    	 }
+			 	    	 
+			 	      }
+	        	}
+	        	//state
+	        	inputVO.setLocationType("state");
+	        	//inputVO.setSublocationType("state");
+	        	inputVO.setLocationIdStr("1");
+	        	
+	        	str = convertingInputVOToString(inputVO);
+				
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+		        
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	      } else {
+		 	    	 String output = response.getEntity(String.class);
+		 	    	 if (output != null && output.length() > 0) {
+		 	    		 JSONArray finalArray = new JSONArray(output);	 
+		 	    		 if (finalArray != null && finalArray.length() > 0) {
+		 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+		 	    				  
+		 	    				 NregsProjectsVO vo = new NregsProjectsVO();
+		 	    				 JSONObject jsonObj = (JSONObject) finalArray.get(i);
+		 	    				  
+		 	    				vo.setPercentage(new BigDecimal(jsonObj.getString("PERC")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				vo.setType("STATE");
+		 	    				voList.get(0).getSubList().add(vo);
+		 	    				  
+		 	    			  }
+		 	    		 }
+		 	    	 }
+		 	      }
+	        }
 	        
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNREGSForestAbstact - NREGSTCSService service", e);
@@ -5998,6 +6060,72 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		}
 	 	    	}
 	 	      }
+	        
+	        if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("district") || inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+					&& inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase("abstract")){
+	        	if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+	        		//district
+		        	inputVO.setLocationType("district");
+		        	inputVO.setSublocationType("district");
+		        	inputVO.setLocationId(inputVO.getDistrictId());
+		        	
+		        	str = convertingInputVOToString(inputVO);
+					
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			        
+			        if (response.getStatus() != 200) {
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      } else {
+			 	    	 String output = response.getEntity(String.class);
+			 	    	 if (output != null && output.length() > 0) {
+			 	    		 JSONArray finalArray = new JSONArray(output);	 
+			 	    		 if (finalArray != null && finalArray.length() > 0) {
+			 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+			 	    				  
+			 	    				 NregsDataVO vo = new NregsDataVO();
+			 	    				 JSONObject jsonObj = (JSONObject) finalArray.get(i);
+			 	    				  
+			 	    				vo.setPercentage(jsonObj.getString("PERCENTAGE"));
+			 	    				vo.setType("DISTRICT");
+			 	    				voList.get(0).getSubList().add(vo);
+			 	    				  
+			 	    			  }
+			 	    		 }
+			 	    	 }
+			 	    	 
+			 	      }
+	        	}
+	        	//state
+	        	inputVO.setLocationType("state");
+	        	inputVO.setSublocationType("state");
+	        	inputVO.setLocationIdStr("1");
+	        	
+	        	str = convertingInputVOToString(inputVO);
+				
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+		        
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	      } else {
+		 	    	 String output = response.getEntity(String.class);
+		 	    	 if (output != null && output.length() > 0) {
+		 	    		 JSONArray finalArray = new JSONArray(output);	 
+		 	    		 if (finalArray != null && finalArray.length() > 0) {
+		 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+		 	    				  
+		 	    				 NregsDataVO vo = new NregsDataVO();
+		 	    				 JSONObject jsonObj = (JSONObject) finalArray.get(i);
+		 	    				  
+		 	    				vo.setPercentage(jsonObj.getString("PERCENTAGE"));
+		 	    				vo.setType("STATE");
+		 	    				voList.get(0).getSubList().add(vo);
+		 	    				  
+		 	    			  }
+		 	    		 }
+		 	    	 }
+		 	      }
+	        }
+	        
 	    } catch (Exception e) {
 			LOG.error("Exception raised at getNregaMCCNewComponetsLevelData - NREGSTCSService service", e);
 		}
@@ -6120,6 +6248,72 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		}
 	 	    	}
 	 	      }
+	        
+	        if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("district") || inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+					&& inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase("abstract")){
+	        	if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+	        		//district
+		        	inputVO.setLocationType("district");
+		        	inputVO.setSublocationType("district");
+		        	inputVO.setLocationId(inputVO.getDistrictId());
+		        	
+		        	str = convertingInputVOToString(inputVO);
+					
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			        
+			        if (response.getStatus() != 200) {
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      } else {
+			 	    	 String output = response.getEntity(String.class);
+			 	    	 if (output != null && output.length() > 0) {
+			 	    		 JSONArray finalArray = new JSONArray(output);	 
+			 	    		 if (finalArray != null && finalArray.length() > 0) {
+			 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+			 	    				  
+			 	    				 NregsDataVO vo = new NregsDataVO();
+			 	    				 JSONObject jsonObj = (JSONObject) finalArray.get(i);
+			 	    				  
+			 	    				vo.setPercentage(jsonObj.getString("PERCENTAGE"));
+			 	    				vo.setType("DISTRICT");
+			 	    				voList.get(0).getSubList().add(vo);
+			 	    				  
+			 	    			  }
+			 	    		 }
+			 	    	 }
+			 	    	 
+			 	      }
+	        	}
+	        	//state
+	        	inputVO.setLocationType("state");
+	        	inputVO.setSublocationType("state");
+	        	inputVO.setLocationIdStr("1");
+	        	
+	        	str = convertingInputVOToString(inputVO);
+				
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+		        
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	      } else {
+		 	    	 String output = response.getEntity(String.class);
+		 	    	 if (output != null && output.length() > 0) {
+		 	    		 JSONArray finalArray = new JSONArray(output);	 
+		 	    		 if (finalArray != null && finalArray.length() > 0) {
+		 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+		 	    				  
+		 	    				 NregsDataVO vo = new NregsDataVO();
+		 	    				 JSONObject jsonObj = (JSONObject) finalArray.get(i);
+		 	    				  
+		 	    				vo.setPercentage(jsonObj.getString("PERCENTAGE"));
+		 	    				vo.setType("STATE");
+		 	    				voList.get(0).getSubList().add(vo);
+		 	    				  
+		 	    			  }
+		 	    		 }
+		 	    	 }
+		 	      }
+	        }
+	        
 	    } catch (Exception e) {
 			LOG.error("Exception raised at getNregaOtherMCCAbstarctData - NREGSTCSService service", e);
 		}
@@ -6387,6 +6581,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 							if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
 								vo.setParameter("Decrement");
+								String[] Arr = vo.getPercentage().split("-");
+								vo.setPercentage(Arr[1]);
 							} else {
 								vo.setParameter("Increment");
 							}
@@ -6395,6 +6591,92 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		}
 	 	    	}
 	 	      }
+	        
+	        if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("district") || inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+					&& inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase("abstract")){
+	        	if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+	        		//district
+		        	inputVO.setLocationType("district");
+		        	inputVO.setSublocationType("district");
+		        	inputVO.setLocationId(inputVO.getDistrictId());
+		        	
+		        	str = convertingInputVOToString(inputVO);
+					
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			        
+			        if (response.getStatus() != 200) {
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      } else {
+			 	    	 String output = response.getEntity(String.class);
+			 	    	 if (output != null && output.length() > 0) {
+			 	    		 JSONArray finalArray = new JSONArray(output);	 
+			 	    		 if (finalArray != null && finalArray.length() > 0) {
+			 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+			 	    				  
+			 	    				 NregsDataVO vo = new NregsDataVO();
+			 	    				 JSONObject jObj = (JSONObject) finalArray.get(i);
+			 	    				  
+			 	    				 vo.setFinAsOfToday(jObj.getString("FIN_AS_OF_TODAY"));
+			 	    				 vo.setLastFinSameDay(jObj.getString("LAST_FIN_SAMEDAY"));
+			 	    				 vo.setType("district");
+			 	    				 vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getFinAsOfToday()) * 100.00)/ Double.valueOf(vo.getLastFinSameDay())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    				 vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    				 if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
+			 	    					 vo.setParameter("Decrement");
+			 	    					String[] Arr = vo.getPercentage().split("-");
+										vo.setPercentage(Arr[1]);
+			 	    				 } else {
+			 	    					 vo.setParameter("Increment");
+			 	    				 }
+			 	    				 returnList.get(0).getSubList().add(vo);
+			 	    				  
+			 	    			  }
+			 	    		 }
+			 	    	 }
+			 	    	 
+			 	      }
+	        	}
+	        	//state
+	        	inputVO.setLocationType("state");
+	        	inputVO.setSublocationType("state");
+	        	inputVO.setLocationIdStr("1");
+	        	
+	        	str = convertingInputVOToString(inputVO);
+				
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+		        
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	      } else {
+		 	    	 String output = response.getEntity(String.class);
+		 	    	 if (output != null && output.length() > 0) {
+		 	    		 JSONArray finalArray = new JSONArray(output);	 
+		 	    		 if (finalArray != null && finalArray.length() > 0) {
+		 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+		 	    				  
+		 	    				 NregsDataVO vo = new NregsDataVO();
+		 	    				 JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				  
+		 	    				 vo.setFinAsOfToday(jObj.getString("FIN_AS_OF_TODAY"));
+		 	    				 vo.setLastFinSameDay(jObj.getString("LAST_FIN_SAMEDAY"));
+		 	    				 vo.setType("state");
+		 	    				 vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getFinAsOfToday()) * 100.00)/ Double.valueOf(vo.getLastFinSameDay())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				 vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				 if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
+		 	    					 vo.setParameter("Decrement");
+		 	    					String[] Arr = vo.getPercentage().split("-");
+									vo.setPercentage(Arr[1]);
+		 	    				 } else {
+		 	    					 vo.setParameter("Increment");
+		 	    				 }
+		 	    				 returnList.get(0).getSubList().add(vo);
+		 	    				  
+		 	    			  }
+		 	    		 }
+		 	    	 }
+		 	      }
+	        }
+	        
 		}catch(Exception e){
 			LOG.error("Exception raised at getManWorkDaysOfNregaMonthWise - NREGSTCSService service", e);
 		}
@@ -6508,6 +6790,96 @@ public class NREGSTCSService implements INREGSTCSService{
 					}
 				}
 			}
+			
+			if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("district") || inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+					&& inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase("abstract")){
+	        	if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+	        		//district
+		        	inputVO.setLocationType("district");
+		        	inputVO.setSublocationType("district");
+		        	inputVO.setLocationId(inputVO.getDistrictId());
+		        	
+		        	str = convertingInputVOToString(inputVO);
+					
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			        
+			        if (response.getStatus() != 200) {
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      } else {
+			 	    	 String output = response.getEntity(String.class);
+			 	    	 if (output != null && output.length() > 0) {
+			 	    		 JSONArray finalArray = new JSONArray(output);	 
+			 	    		 if (finalArray != null && finalArray.length() > 0) {
+			 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+			 	    				  
+			 	    				 NregsDataVO vo = new NregsDataVO();
+			 	    				 JSONObject jObj = (JSONObject) finalArray.get(i);
+			 	    				if (inputVO.getMonthType() != null
+											&& inputVO.getMonthType().trim().equalsIgnoreCase(jObj.getString("MONTH"))) {
+			 	    					vo.setTotal1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1617")));
+				 	    				 vo.setTotal1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1718")));
+				 	    				 vo.setType("district");
+				 	    				 vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00)/ Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    				 vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    				 if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
+				 	    					 vo.setParameter("Decrement");
+				 	    					String[] Arr = vo.getPercentage().split("-");
+				 	    					vo.setPercentage(Arr[1]);
+				 	    				 } else {
+				 	    					 vo.setParameter("Increment");
+				 	    					 vo.setPercentage(vo.getPercentage());
+				 	    				 }
+				 	    				 returnList.get(0).getSubList().add(vo);
+			 	    				}
+			 	    			}
+			 	    		 }
+			 	    	 }
+			 	    	 
+			 	      }
+	        	}
+	        	//state
+	        	inputVO.setLocationType("state");
+	        	inputVO.setSublocationType("state");
+	        	inputVO.setLocationIdStr("1");
+	        	
+	        	str = convertingInputVOToString(inputVO);
+				
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+		        
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	      } else {
+		 	    	 String output = response.getEntity(String.class);
+		 	    	 if (output != null && output.length() > 0) {
+		 	    		 JSONArray finalArray = new JSONArray(output);	 
+		 	    		 if (finalArray != null && finalArray.length() > 0) {
+		 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+		 	    				  
+		 	    				 NregsDataVO vo = new NregsDataVO();
+		 	    				 JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				if (inputVO.getMonthType() != null
+										&& inputVO.getMonthType().trim().equalsIgnoreCase(jObj.getString("MONTH"))) {
+		 	    					vo.setTotal1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1617")));
+			 	    				 vo.setTotal1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1718")));
+			 	    				 vo.setType("state");
+			 	    				 vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00)/ Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    				 vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    				 if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
+			 	    					 vo.setParameter("Decrement");
+			 	    					 String[] Arr = vo.getPercentage().split("-");
+			 	    					 vo.setPercentage(Arr[1]);
+			 	    				 } else {
+			 	    					 vo.setParameter("Increment");
+			 	    					 vo.setPercentage(vo.getPercentage());
+			 	    				 }
+			 	    				 returnList.get(0).getSubList().add(vo);
+		 	    				}
+		 	    			}
+		 	    		 }
+		 	    	 }
+		 	      }
+	        }
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getManWorksExpenditureDetails - NREGSTCSService service", e);
 		}
@@ -6901,6 +7273,72 @@ public class NREGSTCSService implements INREGSTCSService{
 					}
 				}
 			}
+			
+			if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("district") || inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+					&& inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase("abstract")){
+	        	if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+	        		//district
+		        	inputVO.setLocationType("district");
+		        	inputVO.setSublocationType("district");
+		        	inputVO.setLocationId(inputVO.getDistrictId());
+		        	
+		        	str = convertingInputVOToString(inputVO);
+					
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			        
+			        if (response.getStatus() != 200) {
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      } else {
+			 	    	 String output = response.getEntity(String.class);
+			 	    	 if (output != null && output.length() > 0) {
+			 	    		 JSONArray finalArray = new JSONArray(output);	 
+			 	    		 if (finalArray != null && finalArray.length() > 0) {
+			 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+			 	    				  
+			 	    				 NregsDataVO vo = new NregsDataVO();
+			 	    				 JSONObject jObj = (JSONObject) finalArray.get(i);
+			 	    				  
+			 	    				 vo.setType("district");
+			 	    				 vo.setToday(jObj.getString("TODAY"));
+			 	    				 returnList.get(0).getSubList().add(vo);
+			 	    				  
+			 	    			  }
+			 	    		 }
+			 	    	 }
+			 	    	 
+			 	      }
+	        	}
+	        	//state
+	        	inputVO.setLocationType("state");
+	        	inputVO.setSublocationType("state");
+	        	inputVO.setLocationIdStr("1");
+	        	
+	        	str = convertingInputVOToString(inputVO);
+				
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+		        
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	      } else {
+		 	    	 String output = response.getEntity(String.class);
+		 	    	 if (output != null && output.length() > 0) {
+		 	    		 JSONArray finalArray = new JSONArray(output);	 
+		 	    		 if (finalArray != null && finalArray.length() > 0) {
+		 	    			  for (int i = 0 ;i < finalArray.length() ;i++) {
+		 	    				  
+		 	    				 NregsDataVO vo = new NregsDataVO();
+		 	    				 JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				  
+		 	    				 vo.setType("state");
+		 	    				 vo.setToday(jObj.getString("TODAY"));
+		 	    				 returnList.get(0).getSubList().add(vo);
+		 	    				  
+		 	    			  }
+		 	    		 }
+		 	    	 }
+		 	      }
+	        }
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getFieldManDaysWorkDetails - NREGSTCSService service", e);
 		}

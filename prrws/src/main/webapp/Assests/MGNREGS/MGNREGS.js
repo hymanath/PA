@@ -201,20 +201,20 @@ function onLoadCalls()
 				getLocationWiseFAVacencies(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
 			}else if(overViewArr[i] == 'Raising and Maintenance of Block Plantations' || overViewArr[i] == 'Raising and Maintenance of nurseries' || overViewArr[i] == 'Soil and Moisture Conservation Works' || overViewArr[i] == 'Raising and Maintenance of Avenue plantations')
 			{
-				getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
+				getNREGSForestProjectsAbstract(overViewArr[i],locType,locId,'',levelId);
 			}else if(overViewArr[i] == 'Payments')
 			{
 				getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],locType,locId,levelId,'abstract');
 			}else if(overViewArr[i] == 'Greenary works Chettu' || overViewArr[i] == 'Agriculture Related Works' || overViewArr[i] == 'Rural Sanitation Works' || overViewArr[i] == 'Soil Moisture Conservation works Neeru' || overViewArr[i] == 'Works in community lands' || overViewArr[i] == 'IJP PROGRAM WORKS' || overViewArr[i] == 'Institutional Development Works' || overViewArr[i] == 'Road Works' || overViewArr[i] == 'Water Harvesting Structures Neeru' || overViewArr[i] == 'AH-Live Stock Related works'){
-				getNregaOtherMCCAbstarctData(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+				getNregaOtherMCCAbstarctData(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
 			}else if(overViewArr[i] == 'Renovation and Improvements to existing Check Dams Check Wall' || overViewArr[i] == 'Road Formation Upto WBM GR II Including CD works' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || overViewArr[i] == 'Construction Of Animal Hostel' || overViewArr[i] == 'Roads for Unconnected Habitations 2011-12' || overViewArr[i] == 'Construction of New Check Dam' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 250MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || overViewArr[i] == 'Construction of Village Haats Infrastructure fecilities' || overViewArr[i] == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || overViewArr[i] == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || overViewArr[i] == 'Construction of Buildings for women self help group federation' || overViewArr[i] == 'Work Site Facilities' || overViewArr[i] == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || overViewArr[i] == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || overViewArr[i] == 'Production of Grafts in HNTC' || overViewArr[i] == 'Improvements of RYTHU BAZAR' || overViewArr[i] == 'Roads for Unconnected Habitations 2012-13 and afterwards' || overViewArr[i] == 'HNTC Development' || overViewArr[i] == 'New Open Well for Drinking water purpose' || overViewArr[i] == 'Construction of Crematoria Burial Grounds' || overViewArr[i] == 'Repairs to Existing Check Dam' || overViewArr[i] == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || overViewArr[i] == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 500MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || overViewArr[i] == 'Raising of Cashew bag seedlings for 2014-15' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || overViewArr[i] == 'Comprehensive Restoration of minor Irrigation Tank' || overViewArr[i] == "Azolla Production Unit" || overViewArr[i] == "Construction of silopits of 3 MTs capacity" || overViewArr[i] == "Fodder trough for Cattle Cattle drinking water trough" || overViewArr[i] == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || overViewArr[i] == "Raising of Perinnial Fodder" || overViewArr[i] == "Raising of Silvipasture clubbed with subabul plantation"){
-				getNregaCovergancePROtherLevelData(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+				getNregaCovergancePROtherLevelData(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
 			}else if(overViewArr[i] == "Man Days Comparision"){
-					getManWorkDaysOfNrega(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+					getManWorkDaysOfNrega(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
 			}else if(overViewArr[i] == "Expenditure"){
-					getManWorksExpenditureAbstarct(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'',2);
+					getManWorksExpenditureAbstarct(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
 			}else if(overViewArr[i] == 'Field Man Days'){
-				getFieldManDaysWorkDetails(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+				getFieldManDaysWorkDetails(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
 			}
 			else
 			{
@@ -272,14 +272,20 @@ function onLoadCalls()
 			}
 			else  if(overViewArr[i] == 'Raising and Maintenance of Block Plantations' || overViewArr[i] == 'Raising and Maintenance of nurseries' || overViewArr[i] == 'Soil and Moisture Conservation Works' || overViewArr[i] == 'Raising and Maintenance of Avenue plantations')
 			{
-				getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
+				getNREGSForestProjectsAbstract(overViewArr[i],locType,locId,'',levelId);
 			}else if(overViewArr[i] == 'Payments')
 			{
 				getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],locType,locId,levelId,'abstract');
 			}else if(overViewArr[i] == 'Greenary works Chettu' || overViewArr[i] == 'Agriculture Related Works' || overViewArr[i] == 'Rural Sanitation Works' || overViewArr[i] == 'Soil Moisture Conservation works Neeru' || overViewArr[i] == 'Works in community lands' || overViewArr[i] == 'IJP PROGRAM WORKS' || overViewArr[i] == 'Institutional Development Works' || overViewArr[i] == 'Road Works' || overViewArr[i] == 'Water Harvesting Structures Neeru' || overViewArr[i] == 'AH-Live Stock Related works'){
-				getNregaOtherMCCAbstarctData(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+				getNregaOtherMCCAbstarctData(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
 			}else if(overViewArr[i] == 'Renovation and Improvements to existing Check Dams Check Wall' || overViewArr[i] == 'Road Formation Upto WBM GR II Including CD works' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || overViewArr[i] == 'Construction Of Animal Hostel' || overViewArr[i] == 'Roads for Unconnected Habitations 2011-12' || overViewArr[i] == 'Construction of New Check Dam' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 250MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || overViewArr[i] == 'Construction of Village Haats Infrastructure fecilities' || overViewArr[i] == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || overViewArr[i] == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || overViewArr[i] == 'Construction of Buildings for women self help group federation' || overViewArr[i] == 'Work Site Facilities' || overViewArr[i] == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || overViewArr[i] == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || overViewArr[i] == 'Production of Grafts in HNTC' || overViewArr[i] == 'Improvements of RYTHU BAZAR' || overViewArr[i] == 'Roads for Unconnected Habitations 2012-13 and afterwards' || overViewArr[i] == 'HNTC Development' || overViewArr[i] == 'New Open Well for Drinking water purpose' || overViewArr[i] == 'Construction of Crematoria Burial Grounds' || overViewArr[i] == 'Repairs to Existing Check Dam' || overViewArr[i] == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || overViewArr[i] == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 500MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || overViewArr[i] == 'Raising of Cashew bag seedlings for 2014-15' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || overViewArr[i] == 'Comprehensive Restoration of minor Irrigation Tank' || overViewArr[i] == "Azolla Production Unit" || overViewArr[i] == "Construction of silopits of 3 MTs capacity" || overViewArr[i] == "Fodder trough for Cattle Cattle drinking water trough" || overViewArr[i] == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || overViewArr[i] == "Raising of Perinnial Fodder" || overViewArr[i] == "Raising of Silvipasture clubbed with subabul plantation"){
-				getNregaCovergancePROtherLevelData(overViewArr[i],locType,'','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+				getNregaCovergancePROtherLevelData(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+			}else if(overViewArr[i] == "Man Days Comparision"){
+					getManWorkDaysOfNrega(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+			}else if(overViewArr[i] == "Expenditure"){
+					getManWorksExpenditureAbstarct(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+			}else if(overViewArr[i] == 'Field Man Days'){
+				getFieldManDaysWorkDetails(overViewArr[i],locType,'',locType,locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
 			}else
 			{
 				getNREGSAbstractDataByType(overViewArr[i],locType,locId,'',levelId,'dateChange');
@@ -5006,7 +5012,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 	});
 }
 
-//var overViewArr = ['Greenary works Chettu'];
+//var overViewArr = ['Raising and Maintenance of Avenue plantations','Raising and Maintenance of Block Plantations','Raising and Maintenance of nurseries','Soil and Moisture Conservation Works'];
 var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','GH','Solid Waste Management','Burial Ground','Play fields','SMC Trench','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','Payments','Agriculture Activities','Man Days Comparision','Expenditure','Field Man Days','Cattle Ponds','Desilting of Drinking Water Tanks','FAperformance','FA Vacancies','coffee','Comprehensive Restoration of minor Irrigation Tank1','Greenary works Chettu','Agriculture Related Works', 'Rural Sanitation Works','Soil Moisture Conservation works Neeru','Works in community lands','Institutional Development Works','Road Works','Water Harvesting Structures Neeru','IJP PROGRAM WORKS','AH-Live Stock Related works','Comprehensive Restoration of minor Irrigation Tank','CC Roads1','Anganwadi','GP Buildings1','Azolla Production Unit','Construction of silopits of 3 MTs capacity','Fodder trough for Cattle Cattle drinking water trough','Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze','Raising of Perinnial Fodder','Raising of Silvipasture clubbed with subabul plantation','Mandal buildings1','NTR 90 Days','Production of Bricks','NTR Rural House','Mulbery New','Silk worm New','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','OPGK-Perinnials','OPGK-Annuals','Animal Husbandry Others','UGDrainage','Rock Fill Dams','Renovation and Improvements to existing Check Dams Check Wall','Road Formation Upto WBM GR II Including CD works','Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas','Construction Of Animal Hostel','Roads for Unconnected Habitations 2011-12','Construction of New Check Dam','Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality','Construction of Food Grains Storage Structures of 250MT','Formation of Road upto WBM Gr II surface including CD works in Tribal areas','Construction of Village Haats Infrastructure fecilities','Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham','Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT','Construction of Buildings for women self help group federation','Work Site Facilities','Renovation and Improvements to existing Percolation Tank Mini Percolation tank','GP level BNRGSK knowledge resource centre 2012-13 and afterwards','Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality','Production of Grafts in HNTC','Improvements of RYTHU BAZAR','Roads for Unconnected Habitations 2012-13 and afterwards','HNTC Development','New Open Well for Drinking water purpose','Construction of Crematoria Burial Grounds','Repairs to Existing Check Dam','Formation of Road upto Gravel surface including CD works to agriculture fields','Formation of Approach Road upto Gravel surface including CD works to Burial ground','Construction of Food Grains Storage Structures of 500MT','Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas','Raising of Cashew bag seedlings for 2014-15','Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas','Raising and Maintenance of Avenue plantations','Raising and Maintenance of Block Plantations','Raising and Maintenance of nurseries','Soil and Moisture Conservation Works']; 
 
 buildNREGSProjectsOverview(overViewArr,'')
@@ -5032,7 +5038,7 @@ for(var i in overViewArr)
 		getManWorkDaysOfNrega(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
 	}else if(overViewArr[i] == 'Expenditure')
 	{
-		getManWorksExpenditureAbstarct(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'',2);
+		getManWorksExpenditureAbstarct(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
 	}else if(overViewArr[i] == 'Field Man Days'){
 		getFieldManDaysWorkDetails(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
 	}
@@ -5382,11 +5388,14 @@ function getLocationWiseFAVacencies(divIdd,locationTypeNew,theadArr,menuLocation
 function getManWorkDaysOfNrega(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId,mccType,buildType,levelId)
 {
 	$("#"+divIdd).html(spinner);
+	var distrtId = $("#selectedName").attr("attr_distId");
 	var toDateArr = glEndDate.split('-');
 	var json = {
 		month : toDateArr[1],
 		locationType: menuLocationType,
-		locationId : menuLocationId
+		locationId : menuLocationId,
+		sector : buildType,
+		districtId : distrtId
 	}
 	
 	$.ajax({
@@ -5479,13 +5488,15 @@ function getManWorkDaysOfNrega(divIdd,locationTypeNew,theadArr,menuLocationType,
 function getNREGSForestProjectsAbstract(type,locType,locId,blockName,levelId)
 {
 	$("#nregsOverviewBodyId").html(spinner);
+	var districtId = $("#selectedName").attr("attr_distId");
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		type : type,
 		locationType: locType,
-		locationId : locId
+		locationId : locId,
+		districtId : districtId
 	}
 	$.ajax({
 		url: 'getNREGSForestAbstact',
@@ -5752,6 +5763,27 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
+		if(levelId == 3 || levelId == "3"){
+			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+				str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - TODAY</small>';
+				str+='<h2 class="text-center">'+result[0].subList[0].today+'</h2>';
+			str+='</div>';
+		}
+		else if(levelId == 4 || levelId == "4"){
+			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+				str+='<small class="panel-block-white-title text-capitalize text-center">Today</small>';
+				str+='<div class="row">';
+					str+='<div class="col-sm-6">';
+						str+='<p>District</p>';
+						str+='<h2 class="text-center">'+result[0].subList[0].today+'</h2>';
+					str+='</div>';
+					str+='<div class="col-sm-6">';
+						str+='<p>State</p>';
+						str+='<h2 class="text-center">'+result[0].subList[1].today+'</h2>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		}
 	} 
 	if(type == 'FA Vacancies' && result != null)
 	{
@@ -5828,10 +5860,10 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				}
 				else if(type == 'Man Days Comparision' || type == 'Expenditure')
 				{
-					if(result[i].percentage < 0)
+					if(result[i].parameter == 'Decrement')
 					{
 						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-					}else if(result[i].percentage >= 0)
+					}else if(result[i].parameter == 'Increment')
 					{
 						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
 					}else
@@ -5968,10 +6000,10 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					}
 					else if(type == 'Man Days Comparision' || type == 'Expenditure')
 					{
-						if(result[i].percentage < 0)
+						if(result[i].parameter == 'Decrement')
 						{
 							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
-						}else if(result[i].percentage >= 0)
+						}else if(result[i].parameter == 'Increment')
 						{
 							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
 						}else
@@ -6104,7 +6136,14 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 									str+='<p>'+result[i].subList[j].type+'</p>';
 									if(result[i].subList[j].percentage != null && result[i].subList[j].percentage.length > 0)
 									{
-										str+='<h2 class="text-center">'+result[i].subList[j].percentage+'</h2>';
+										if(type == 'Man Days Comparision' || type == 'Expenditure'){
+											if(result[i].subList[j].parameter == 'Decrement')
+												str+='<h2 class="text-center" style="color:red">'+result[i].subList[j].percentage+'</h2>';
+											else if(result[i].subList[j].parameter == 'Increment')
+												str+='<h2 class="text-center" style="color:green">'+result[i].subList[j].percentage+'</h2>';
+										}else{
+											str+='<h2 class="text-center">'+result[i].subList[j].percentage+'</h2>';
+										}
 									}else{
 										str+='<h2 class="text-center">0</h2>';
 									}
@@ -6334,7 +6373,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 						}
 						
-							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
+							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 							str+='<small class="text-center">Achieved</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
@@ -6375,6 +6414,253 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
+						if(levelId == 3 || levelId == "3"){
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+								str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
+								str+='<h2 class="text-center">'+result[0].subList[0].percentage+'</h2>';
+							str+='</div>';
+						}
+					}else{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<h1 class="text-center">0<small>%</small></h1>';
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Target</label>';
+									str+='<h4>0</h4>';
+								str+='</div>';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Completed</label>';
+									str+='<h4>0</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}
+				}
+				else  if(type == 'Raising and Maintenance of Block Plantations' || type == 'Raising and Maintenance of nurseries' || type == 'Soil and Moisture Conservation Works' || type == 'Raising and Maintenance of Avenue plantations')
+				{
+					if(result[i] != null)
+					{
+						if(result[i].percentage >= 100){
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+						}else{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}
+						
+							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+							str+='<small class="text-center">Achieved</small>';
+							if(result[i].percentage != null && result[i].percentage.length > 0)
+							{
+								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+							}else{
+								str+='<h1 class="text-center">0<small>%</small>';
+							}
+							
+							if(result[i].percentage >= 100){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+							}else{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}	
+						
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Target</label>';
+									if(result[i].target != null && result[i].target > 0)
+									{
+										str+='<h4>'+result[0].target+'</h4>';
+									}else{
+										str+='<h4>0</h4>';
+									}
+									
+								str+='</div>';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Completed</label>';
+									if(result[i].completed != null && result[i].completed > 0)
+									{
+										str+='<h4>'+result[i].completed+'</h4>';
+									}else{
+										str+='<h4>0</h4>';
+									}
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						if(levelId == 3 || levelId == "3"){
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+								str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
+								str+='<h2 class="text-center">'+result[0].subList[0].percentage+'</h2>';
+							str+='</div>';
+						}
+					}else{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<h1 class="text-center">0<small>%</small></h1>';
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Target</label>';
+									str+='<h4>0</h4>';
+								str+='</div>';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Completed</label>';
+									str+='<h4>0</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}
+				}
+				else if(type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == "Azolla Production Unit" || type == "Construction of silopits of 3 MTs capacity" || type == "Fodder trough for Cattle Cattle drinking water trough" || type == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || type == "Raising of Perinnial Fodder" || type == "Raising of Silvipasture clubbed with subabul plantation"){
+					if(result[i] != null)
+					{
+						if(result[i].percentage >= 100){
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+						}else{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}
+						
+							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+							str+='<small class="text-center">Achieved</small>';
+							if(result[i].percentage != null && result[i].percentage.length > 0)
+							{
+								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+							}else{
+								str+='<h1 class="text-center">0<small>%</small>';
+							}
+							
+							if(result[i].percentage >= 100){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+							}else{
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}	
+						
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 text-center">';
+								if(type == "Azolla Production Unit" || type == "Construction of silopits of 3 MTs capacity" || type == "Fodder trough for Cattle Cattle drinking water trough" || type == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || type == "Raising of Perinnial Fodder" || type == "Raising of Silvipasture clubbed with subabul plantation")
+									str+='<label>Target</label>';
+								else
+									str+='<label>Sanctioned</label>';
+									if(result[i].target != null && result[i].target > 0)
+									{
+										str+='<h4>'+result[0].target+'</h4>';
+									}else{
+										str+='<h4>0</h4>';
+									}
+									
+								str+='</div>';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Completed</label>';
+									if(result[i].completed != null && result[i].completed > 0)
+									{
+										str+='<h4>'+result[i].completed+'</h4>';
+									}else{
+										str+='<h4>0</h4>';
+									}
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						if(levelId == 3 || levelId == "3"){
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+								str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
+								str+='<h2 class="text-center">'+result[0].subList[0].percentage+'</h2>';
+							str+='</div>';
+						}
+					}else{
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<h1 class="text-center">0<small>%</small></h1>';
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Target</label>';
+									str+='<h4>0</h4>';
+								str+='</div>';
+								str+='<div class="col-sm-6 text-center">';
+									str+='<label>Completed</label>';
+									str+='<h4>0</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}
+				}
+				else if(type == 'Man Days Comparision' || type == 'Expenditure'){
+					if(result[i] != null)
+					{
+						if(result[i].parameter == 'Decrement'){
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}else if(result[i].parameter == 'Increment'){
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						}else{
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						}
+						
+							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+							str+='<small class="text-center">Increment/Decrement (%)</small>';
+							
+							if(type == 'Man Days Comparision'){
+								str+='<h1 class="text-center"><span class="tooltipMans" data-toggle="tooltip" data-placement="top" title="Man Days Comparision b/n last Financial Year And This Financial Year">'+result[i].percentage+'</span><small>%</small>';
+							}else if(type == 'Expenditure'){
+								str+='<h1 class="text-center"><span class="tooltipMans"  data-toggle="tooltip" data-placement="top" title="Expenditure Comparision b/n last Month  This Year And Last Financial Year">'+result[i].percentage+'</span><small>%</small>';
+							}
+							
+							if(result[i].parameter == 'Decrement'){
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							}else if(result[i].parameter == 'Increment'){
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							}
+						
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 text-center">';
+								if(type == 'Man Days Comparision'){
+									str+='<label>Last Fin Same Day</label>';
+								} else if(type == 'Expenditure'){
+									str+='<label>Last Fin Last&nbsp;Mnth</label>';
+								} 
+								
+								if(type == 'Man Days Comparision'){
+									str+='<h4>'+result[0].lastFinSameDay+'</h4>';
+								} else if(type == 'Expenditure'){
+									str+='<h4>'+result[0].total1617+'</h4>';
+								}
+									
+								str+='</div>';
+								str+='<div class="col-sm-6 text-center">';
+									if(type == 'Man Days Comparision'){
+										str+='<label>Fin As Of Today</label>';
+									} else if(type == 'Expenditure'){
+										str+='<label>This Fin Last&nbsp;Mnth</label>';
+									}
+									
+									if(type == 'Man Days Comparision'){
+										str+='<h4>'+result[0].finAsOfToday+'</h4>';
+									}else if(type == 'Expenditure'){
+										str+='<h4>'+result[0].total1718+'</h4>';
+									}
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						if(levelId == 3 || levelId == "3"){
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+								//str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - Increment/Decrement (%)</small>';
+								if(result[0].subList[0].parameter == 'Decrement'){
+									str+='<small class="panel-block-white-title text-capitalize text-center" style="color:red">STATE LEVEL - Increment/Decrement (%)</small>';
+									str+='<h2 class="text-center" style="color:red">'+result[0].subList[0].percentage+'</h2>';
+								}else if(result[0].subList[0].parameter == 'Increment'){
+									str+='<small class="panel-block-white-title text-capitalize text-center" style="color:green">STATE LEVEL - Increment/Decrement (%)</small>';
+									str+='<h2 class="text-center" style="color:green">'+result[0].subList[0].percentage+'</h2>';
+								}
+								//str+='<h2 class="text-center">'+result[0].subList[0].percentage+'</h2>';
+							str+='</div>';
+						}
 					}else{
 						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
 							str+='<h1 class="text-center">0<small>%</small></h1>';
@@ -6440,20 +6726,28 @@ $(document).on("click",".menuDataCollapse",function(){
 				{
 					getLocationWiseFAVacencies(overViewArr[i],'district','','district',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
 				}
-				/*else if(overViewArr[i] == 'Rock Fill Dams' || overViewArr[i] == 'Raising and Maintenance of Nursery' || overViewArr[i] == 'Desilting of Perculation Tanks and Check Dams' || overViewArr[i] == 'Mini Percolation Tanks' || overViewArr[i] == 'Continuous Contour Trenches' || overViewArr[i] == 'Check Dams')
+				else  if(overViewArr[i] == 'Raising and Maintenance of Block Plantations' || overViewArr[i] == 'Raising and Maintenance of nurseries' || overViewArr[i] == 'Soil and Moisture Conservation Works' || overViewArr[i] == 'Raising and Maintenance of Avenue plantations')
 				{
-					getNREGSForestProjectsAbstract(overViewArr[i],'state',"0",'',2);
-				}*/else if(overViewArr[i] == 'Payments')
+					getNREGSForestProjectsAbstract(overViewArr[i],'district',locId,'',levelId);
+				}else if(overViewArr[i] == 'Payments')
 				{
 					getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'district',locId,levelId,'abstract');
 				}
 				else if(overViewArr[i] == 'Greenary works Chettu' || overViewArr[i] == 'Agriculture Related Works' || overViewArr[i] == 'Rural Sanitation Works' || overViewArr[i] == 'Soil Moisture Conservation works Neeru' || overViewArr[i] == 'Works in community lands' || overViewArr[i] == 'IJP PROGRAM WORKS' || overViewArr[i] == 'Institutional Development Works' || overViewArr[i] == 'Road Works' || overViewArr[i] == 'Water Harvesting Structures Neeru' || overViewArr[i] == 'AH-Live Stock Related works'){
 					getNregaOtherMCCAbstarctData(overViewArr[i],'district','','district',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
-				}else
-					{
-						getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId,'onLoad');
-					}
 				}
+				else if(overViewArr[i] == 'Renovation and Improvements to existing Check Dams Check Wall' || overViewArr[i] == 'Road Formation Upto WBM GR II Including CD works' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || overViewArr[i] == 'Construction Of Animal Hostel' || overViewArr[i] == 'Roads for Unconnected Habitations 2011-12' || overViewArr[i] == 'Construction of New Check Dam' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 250MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || overViewArr[i] == 'Construction of Village Haats Infrastructure fecilities' || overViewArr[i] == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || overViewArr[i] == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || overViewArr[i] == 'Construction of Buildings for women self help group federation' || overViewArr[i] == 'Work Site Facilities' || overViewArr[i] == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || overViewArr[i] == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || overViewArr[i] == 'Production of Grafts in HNTC' || overViewArr[i] == 'Improvements of RYTHU BAZAR' || overViewArr[i] == 'Roads for Unconnected Habitations 2012-13 and afterwards' || overViewArr[i] == 'HNTC Development' || overViewArr[i] == 'New Open Well for Drinking water purpose' || overViewArr[i] == 'Construction of Crematoria Burial Grounds' || overViewArr[i] == 'Repairs to Existing Check Dam' || overViewArr[i] == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || overViewArr[i] == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 500MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || overViewArr[i] == 'Raising of Cashew bag seedlings for 2014-15' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || overViewArr[i] == 'Comprehensive Restoration of minor Irrigation Tank' || overViewArr[i] == "Azolla Production Unit" || overViewArr[i] == "Construction of silopits of 3 MTs capacity" || overViewArr[i] == "Fodder trough for Cattle Cattle drinking water trough" || overViewArr[i] == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || overViewArr[i] == "Raising of Perinnial Fodder" || overViewArr[i] == "Raising of Silvipasture clubbed with subabul plantation"){
+					getNregaCovergancePROtherLevelData(overViewArr[i],'district','','district',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else if(overViewArr[i] == "Man Days Comparision"){
+					getManWorkDaysOfNrega(overViewArr[i],'district','','district',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else if(overViewArr[i] == "Expenditure"){
+					getManWorksExpenditureAbstarct(overViewArr[i],'district','','district',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else if(overViewArr[i] == 'Field Man Days'){
+					getFieldManDaysWorkDetails(overViewArr[i],'district','','district',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else{
+					getNREGSAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId,'onLoad');
+				}
+			}
 			
 		}else if(levelId == 4)
 		{
@@ -6466,11 +6760,22 @@ $(document).on("click",".menuDataCollapse",function(){
 				}else if(overViewArr[i] == 'FA Vacancies')
 				{
 					getLocationWiseFAVacencies(overViewArr[i],'constituency','','constituency',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else  if(overViewArr[i] == 'Raising and Maintenance of Block Plantations' || overViewArr[i] == 'Raising and Maintenance of nurseries' || overViewArr[i] == 'Soil and Moisture Conservation Works' || overViewArr[i] == 'Raising and Maintenance of Avenue plantations')
+				{
+					getNREGSForestProjectsAbstract(overViewArr[i],'constituency',locId,'',levelId);
 				}else if(overViewArr[i] == 'Payments')
 				{
 					getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'constituency',locId,levelId,'abstract');
 				}else if(overViewArr[i] == 'Greenary works Chettu' || overViewArr[i] == 'Agriculture Related Works' || overViewArr[i] == 'Rural Sanitation Works' || overViewArr[i] == 'Soil Moisture Conservation works Neeru' || overViewArr[i] == 'Works in community lands' || overViewArr[i] == 'IJP PROGRAM WORKS' || overViewArr[i] == 'Institutional Development Works' || overViewArr[i] == 'Road Works' || overViewArr[i] == 'Water Harvesting Structures Neeru' || overViewArr[i] == 'AH-Live Stock Related works'){
 					getNregaOtherMCCAbstarctData(overViewArr[i],'constituency','','constituency',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else if(overViewArr[i] == 'Renovation and Improvements to existing Check Dams Check Wall' || overViewArr[i] == 'Road Formation Upto WBM GR II Including CD works' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || overViewArr[i] == 'Construction Of Animal Hostel' || overViewArr[i] == 'Roads for Unconnected Habitations 2011-12' || overViewArr[i] == 'Construction of New Check Dam' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 250MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || overViewArr[i] == 'Construction of Village Haats Infrastructure fecilities' || overViewArr[i] == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || overViewArr[i] == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || overViewArr[i] == 'Construction of Buildings for women self help group federation' || overViewArr[i] == 'Work Site Facilities' || overViewArr[i] == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || overViewArr[i] == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || overViewArr[i] == 'Production of Grafts in HNTC' || overViewArr[i] == 'Improvements of RYTHU BAZAR' || overViewArr[i] == 'Roads for Unconnected Habitations 2012-13 and afterwards' || overViewArr[i] == 'HNTC Development' || overViewArr[i] == 'New Open Well for Drinking water purpose' || overViewArr[i] == 'Construction of Crematoria Burial Grounds' || overViewArr[i] == 'Repairs to Existing Check Dam' || overViewArr[i] == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || overViewArr[i] == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 500MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || overViewArr[i] == 'Raising of Cashew bag seedlings for 2014-15' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || overViewArr[i] == 'Comprehensive Restoration of minor Irrigation Tank' || overViewArr[i] == "Azolla Production Unit" || overViewArr[i] == "Construction of silopits of 3 MTs capacity" || overViewArr[i] == "Fodder trough for Cattle Cattle drinking water trough" || overViewArr[i] == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || overViewArr[i] == "Raising of Perinnial Fodder" || overViewArr[i] == "Raising of Silvipasture clubbed with subabul plantation"){
+					getNregaCovergancePROtherLevelData(overViewArr[i],'constituency','','constituency',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else if(overViewArr[i] == "Man Days Comparision"){
+					getManWorkDaysOfNrega(overViewArr[i],'constituency','','constituency',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else if(overViewArr[i] == "Expenditure"){
+						getManWorksExpenditureAbstarct(overViewArr[i],'constituency','','constituency',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else if(overViewArr[i] == 'Field Man Days'){
+					getFieldManDaysWorkDetails(overViewArr[i],'constituency','','constituency',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
 				}else{
 					getNREGSAbstractDataByTypeFrConstituency(overViewArr[i],'constituency',locId,districtId,'',levelId);
 				}
@@ -6495,8 +6800,15 @@ $(document).on("click",".menuDataCollapse",function(){
 					getNregaPaymentsAbsAndOverviewDtls(overViewArr[i],'state',locId,levelId,'abstract');
 				}else if(overViewArr[i] == 'Greenary works Chettu' || overViewArr[i] == 'Agriculture Related Works' || overViewArr[i] == 'Rural Sanitation Works' || overViewArr[i] == 'Soil Moisture Conservation works Neeru' || overViewArr[i] == 'Works in community lands' || overViewArr[i] == 'IJP PROGRAM WORKS' || overViewArr[i] == 'Institutional Development Works' || overViewArr[i] == 'Road Works' || overViewArr[i] == 'Water Harvesting Structures Neeru' || overViewArr[i] == 'AH-Live Stock Related works'){
 					getNregaOtherMCCAbstarctData(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',levelId);
-				}else
-				{
+				}else if(overViewArr[i] == 'Renovation and Improvements to existing Check Dams Check Wall' || overViewArr[i] == 'Road Formation Upto WBM GR II Including CD works' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || overViewArr[i] == 'Construction Of Animal Hostel' || overViewArr[i] == 'Roads for Unconnected Habitations 2011-12' || overViewArr[i] == 'Construction of New Check Dam' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 250MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || overViewArr[i] == 'Construction of Village Haats Infrastructure fecilities' || overViewArr[i] == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || overViewArr[i] == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || overViewArr[i] == 'Construction of Buildings for women self help group federation' || overViewArr[i] == 'Work Site Facilities' || overViewArr[i] == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || overViewArr[i] == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || overViewArr[i] == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || overViewArr[i] == 'Production of Grafts in HNTC' || overViewArr[i] == 'Improvements of RYTHU BAZAR' || overViewArr[i] == 'Roads for Unconnected Habitations 2012-13 and afterwards' || overViewArr[i] == 'HNTC Development' || overViewArr[i] == 'New Open Well for Drinking water purpose' || overViewArr[i] == 'Construction of Crematoria Burial Grounds' || overViewArr[i] == 'Repairs to Existing Check Dam' || overViewArr[i] == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || overViewArr[i] == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || overViewArr[i] == 'Construction of Food Grains Storage Structures of 500MT' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || overViewArr[i] == 'Raising of Cashew bag seedlings for 2014-15' || overViewArr[i] == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || overViewArr[i] == 'Comprehensive Restoration of minor Irrigation Tank' || overViewArr[i] == "Azolla Production Unit" || overViewArr[i] == "Construction of silopits of 3 MTs capacity" || overViewArr[i] == "Fodder trough for Cattle Cattle drinking water trough" || overViewArr[i] == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || overViewArr[i] == "Raising of Perinnial Fodder" || overViewArr[i] == "Raising of Silvipasture clubbed with subabul plantation"){
+					getNregaCovergancePROtherLevelData(overViewArr[i],'state','','state','-1',overViewArr[i],'',overViewArr[i],'Abstract',2);
+				}else if(overViewArr[i] == "Man Days Comparision"){
+					getManWorkDaysOfNrega(overViewArr[i],'state','','state',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else if(overViewArr[i] == "Expenditure"){
+						getManWorksExpenditureAbstarct(overViewArr[i],'state','','state',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else if(overViewArr[i] == 'Field Man Days'){
+					getFieldManDaysWorkDetails(overViewArr[i],'state','','state',locId,overViewArr[i],'',overViewArr[i],'Abstract',levelId);
+				}else{
 					getNREGSAbstractDataByType(overViewArr[i],'state',locId,blockName,levelId,'onLoad');
 				}
 			}
@@ -7663,7 +7975,8 @@ function getNregaCovergancePROtherLevelData(divIdd,locationTypeNew,theadArr,menu
 		groupName : mccType,
 		locationId : menuLocationId,
 		sublocationType : locationTypeNew,
-		districtId:districtId
+		districtId:districtId,
+		sector : buildType
 	}
 	
 	$.ajax({
@@ -7818,7 +8131,8 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 		groupName : projectDivId,
 		locationType: locType,
 		sublocaType: locType,
-		locationId : menuLocationId
+		locationId : menuLocationId,
+		districtId : districtId
 	}
 	
 	$.ajax({
@@ -7926,7 +8240,7 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 function getNregaOtherMCCAbstarctData(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId,mccType,buildType,levelId)
 {
 	$("#"+divIdd).html(spinner);
-	
+	var distrtId = $("#selectedName").attr("attr_distid");
 	var json = {
 		year : "2017",
 		fromDate : glStartDate,
@@ -7935,7 +8249,8 @@ function getNregaOtherMCCAbstarctData(divIdd,locationTypeNew,theadArr,menuLocati
 		groupName : mccType,
 		locationId : menuLocationId,
 		sublocationType : locationTypeNew,
-		districtId:districtId
+		districtId:distrtId,
+		sector : buildType
 	}
 	
 	$.ajax({
@@ -8167,6 +8482,7 @@ $(document).on("click",".closeShowPdfCls1",function(){
 function getManWorksExpenditureAbstarct(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId,mccType,buildType,levelId)
 {
 	$("#"+divIdd).html(spinner);
+	var distrtId = $("#selectedName").attr("attr_distId");
 	var month;
 	var lastMonthDate = moment().subtract(29,'days').format('YYYY-MM')
 	var toDateArr = lastMonthDate.split("-");
@@ -8198,8 +8514,9 @@ function getManWorksExpenditureAbstarct(divIdd,locationTypeNew,theadArr,menuLoca
 	var json = {
 		locationType: menuLocationType,
 		locationId : menuLocationId,
-		monthType : month
-		
+		monthType : month,
+		sector : buildType,
+		districtId : distrtId
 	}
 	
 	$.ajax({
@@ -8486,9 +8803,12 @@ function buildtheadManDaysExpenditure(){
 
 function getFieldManDaysWorkDetails(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId,mccType,buildType,levelId)
 {
+	var distrtId = $("#selectedName").attr("attr_distId");
 	var json = {
 		locationType: menuLocationType,
-		locationId : menuLocationId
+		locationId : menuLocationId,
+		sector : buildType,
+		districtId : distrtId
 	}
 	
 	$.ajax({
