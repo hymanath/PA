@@ -727,7 +727,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								pmRepresentee.setTdpCadreId(pmRefCandidate.getTdpCadreId());
 								pmRepresentee.setIsDeleted("N");
 								pmRepresentee.setPmRefCandidateId(pmRequestVO.getRefCandidateId());
-								pmRepresentee.setAddressId(pmRefCandidate.getAddressId());
+								pmRepresentee.setAddressId(pmRefCandidate.getNativeAddressId());// here we are mantaining candidate native address
 								pmRepresentee.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 								pmRepresentee.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								pmRepresentee.setInsertedUserId(pmRequestVO.getUserId());
