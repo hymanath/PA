@@ -46,6 +46,7 @@ public class ActivityQuestionAnswer extends BaseModel implements Serializable{
 	private Long activityDaywiseQuestionnaireId;
 	private Date activityDate ;
 	private Long day;
+	private String sourceType;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -215,6 +216,14 @@ public class ActivityQuestionAnswer extends BaseModel implements Serializable{
 	public void setDay(Long day) {
 		this.day = day;
 	}
+	@Column(name = "source_type")
+	public String getSourceType() {
+		return sourceType;
+	}
+	public void setSourceType(String sourceType) {
+		this.sourceType = sourceType;
+	}
+	
 	
 	
 }

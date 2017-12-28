@@ -30,6 +30,7 @@ public class TabDetails extends BaseModel implements Serializable{
 	private String syncSource;
 	private Long insertedBy;
 	private Long tabPrimaryKey;
+	private Long itdpAppUserId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -128,4 +129,12 @@ public class TabDetails extends BaseModel implements Serializable{
 	public void setTabPrimaryKey(Long tabPrimaryKey) {
 		this.tabPrimaryKey = tabPrimaryKey;
 	}
+	@Column(name = "itdp_app_user_id")
+	public Long getItdpAppUserId() {
+		return itdpAppUserId;
+	}
+	public void setItdpAppUserId(Long itdpAppUserId) {
+		this.itdpAppUserId = itdpAppUserId;
+	}
+	
 }

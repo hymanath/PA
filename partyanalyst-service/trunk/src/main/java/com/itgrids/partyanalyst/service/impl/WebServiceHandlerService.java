@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.dto.AccessLocationVO;
 import com.itgrids.partyanalyst.dto.AccommodationVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
+import com.itgrids.partyanalyst.dto.ActivityDetailsVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
@@ -5680,5 +5681,45 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			}
 			return null;
 	 }
-	 
+	 //JANMABHOOMI API
+	 public List<ActivityDetailsVO> getActivityDetailsBasedOnLocation(String locationType,List<Long> locationValues,Long activityScopeId,Long constituencyId){
+			try{
+				return activityService.getActivityDetailsBasedOnLocation(locationType,locationValues,activityScopeId,constituencyId);
+			}catch (Exception e) {
+				log.error("Exception raised at getActivityDetailsBasedOnLocation method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public ResultStatus updateActivityInfo(ActivityDetailsVO tabDetaislVO,String locationType, Long activityScopeId,Long locationValue, String conductedDate,String updateStatus){
+			try{
+				return activityService.updateActivityInfo(tabDetaislVO,locationType, activityScopeId, locationValue, conductedDate, updateStatus);
+			}catch (Exception e) {
+				log.error("Exception raised at updateActivityInfo method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public List<ActivityDetailsVO> getActivityQuestionOptionDtls(Long activityScopeId,Long activiyLocationInfoId){
+			try{
+				return activityService.getActivityQuestionOptionDtls(activityScopeId,activiyLocationInfoId);
+			}catch (Exception e) {
+				log.error("Exception raised at getActivityQuestionOptionDtls method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public ResultStatus saveActivityAnswerDetails(ActivityDetailsVO inputVO){
+			try{
+				return activityService.saveActivityAnswerDetails(inputVO);
+			}catch (Exception e) {
+				log.error("Exception raised at saveActivityAnswerDetails method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
+	 public ResultStatus uploadDocumentImage(ActivityDetailsVO inputVO,List<String> docuemntBase64List){
+			try{
+				return activityService.uploadDocumentImage(inputVO,docuemntBase64List);
+			}catch (Exception e) {
+				log.error("Exception raised at uploadDocumentImage method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
 }

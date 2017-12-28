@@ -7,6 +7,7 @@ import org.codehaus.jettison.json.JSONObject;
 import com.itgrids.partyanalyst.dto.AccommodationVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
+import com.itgrids.partyanalyst.dto.ActivityDetailsVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
@@ -295,4 +296,9 @@ public interface IWebServiceHandlerService {
     public MomDetailsVO getMomCompletedDetails(Long partyMeetingMOMId);
     public MomDashbaordOverViewDtlsVO getMomDashboardOverviewDtls(Long userAccessLevel,List<Long> accessValues,String monthYear);
     public List<MomDetailsVO> getMomDetailsBySelectedType(Long userAccessLevel,List<Long> accessValues,String monthYear,String type);
+    public List<ActivityDetailsVO> getActivityDetailsBasedOnLocation(String locationType,List<Long> locationValues,Long activityScopeId,Long constituencyId);
+    public ResultStatus updateActivityInfo(ActivityDetailsVO inputVO,String locationType, Long activityScopeId,Long locationValue, String conductedDate,String updateStatus);
+    public List<ActivityDetailsVO> getActivityQuestionOptionDtls(Long activityScopeId,Long activityLocationInfoIf);
+    public ResultStatus saveActivityAnswerDetails(ActivityDetailsVO inputVO);
+    public ResultStatus uploadDocumentImage(ActivityDetailsVO inputVO,List<String> docuemntBase64List);
 }

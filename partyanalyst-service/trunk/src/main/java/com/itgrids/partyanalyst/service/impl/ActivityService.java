@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -77,6 +78,7 @@ import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityDaywiseQuestionnaireDAO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
+import com.itgrids.partyanalyst.dto.ActivityDetailsVO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityLocationVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
@@ -6450,4 +6452,403 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 	}
 	return returnList;
 }
+	/**
+	* @param  String locationType
+	* @param  List<Long> locationValues
+	* @param  Long activityId
+	* @return List<ActivityDetailsVO>
+	* @author Santosh Kumar Verma
+	* @Description :This Service is used to get activities details based on location. 
+	* @since 26-DECEMBER-2017
+	*/
+	 public List<ActivityDetailsVO> getActivityDetailsBasedOnLocation(String locationType,List<Long> locationValues,Long activityScopeId,Long constituencyId) {
+		  List<ActivityDetailsVO> finalList = new ArrayList<ActivityDetailsVO>(0);
+		  try {
+			  
+			 // List<Object[]> activityDtlsObjList1 = activityConductedInfoDAO.getActivityDetailsBasedOnLocation(getGroupType(locationType), locationType, locationValues, activityScopeId);
+			  List<Object[]> activityDtlsObjList = activityLocationInfoDAO.getActivityDetailsBasedOnLocation(getGroupType(locationType), locationType, locationValues, activityScopeId,constituencyId);
+			  finalList = getActivityDetails(activityDtlsObjList);
+		  } catch (Exception e) {
+			  LOG.error("Exception Occured in getActivityDetailsBasedOnLocation() method, Exception - ",e);
+		  }
+		  return finalList;
+	 }
+
+	public List<ActivityDetailsVO> getActivityDetails(List<Object[]> objList) {
+		List<ActivityDetailsVO> finalList = new ArrayList<ActivityDetailsVO>(0);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					ActivityDetailsVO activityDtlsVO = new ActivityDetailsVO();
+					activityDtlsVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					activityDtlsVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					if (param[2] != null && param[2].toString().trim().length() > 0) {
+						activityDtlsVO.setConductedDate(sdf.format(param[2]));
+					}
+					if (param[3] != null && param[3].toString().trim().length() > 0) {
+						activityDtlsVO.setPlannedDate(sdf.format(param[3]));
+					}
+					activityDtlsVO.setActivityScopeId(commonMethodsUtilService.getLongValueForObject(param[4]));
+					activityDtlsVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[5]));
+					activityDtlsVO.setActivityLocationInfoId(commonMethodsUtilService.getLongValueForObject(param[6]));
+					finalList.add(activityDtlsVO);
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityDetails() method, Exception - ",e);
+		}
+		return finalList;
+	}
+  public String getGroupType(String locationType) {
+	 String groupType = " ";
+	  try {
+		   if (locationType != null ) {
+			    if(locationType.equalsIgnoreCase("mandal")) {
+				   groupType = "village";
+			   } else if(locationType.equalsIgnoreCase("village")) {
+				   groupType = "village";
+			   } else if(locationType.equalsIgnoreCase("munciplity")) {
+				   groupType = "ward";
+			   } else if(locationType.equalsIgnoreCase("ward")) {
+				   groupType = "ward";
+			   }
+		   }
+		  
+	  } catch (Exception e) {
+		  LOG.error("Exception occured at getGroupType() in ActivityService class ",e);
+	  }
+	  return groupType;
+  }
+	 /**
+	 * @param  String locationType
+	 * @param  Long activityScopeId
+	 * @param  Long locationValue
+	 * @param  String conductedDate
+	 * @param  String updateStatus
+	 * @param  Long activityId
+	 * @return String
+	 * @author Santosh Kumar Verma
+	 * @Description :This Service is used update activity info. 
+	 * @since 27-DECEMBER-2017
+	 */
+  public ResultStatus updateActivityInfo(final ActivityDetailsVO tabDetailsVO,final String locationType,final Long activityScopeId,final Long locationValue,final String conductedDate,final String updateStatus) {
+		ResultStatus resultVO = new ResultStatus();
+		try {
+			LOG.info("Entered into saveActivityAnswerDetails in ActivityService class");
+			if (tabDetailsVO != null) {
+				resultVO = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						ResultStatus resultVO = new ResultStatus();
+						
+						String stts = saveTabDetails(tabDetailsVO);// saving tabDetails
+						
+						if (stts.equalsIgnoreCase("fail")) {
+							throw new ArithmeticException();
+						}
+						
+						//List<Long> activityConductedInfoId = activityConductedInfoDAO.getActivityConductedInfoId(activityScopeId, locationType,locationValue);
+						List<Long> activityLocationInfoId = activityLocationInfoDAO.getActivityConductedInfoId(activityScopeId, locationType,locationValue);
+
+						SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+						Long activityLocationId = 0l;
+						if (activityLocationInfoId != null && activityLocationInfoId.size() > 0) {
+							activityLocationId = activityLocationInfoId.get(0);
+							ActivityLocationInfo model = activityLocationInfoDAO.get(activityLocationId);
+							if (conductedDate != null && conductedDate.trim().length() > 0) {
+								try {
+									model.setConductedDate(sdf.parse(conductedDate));
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
+							}
+							if (updateStatus != null && updateStatus.trim().length() > 0) {
+								model.setTabUpdatedStatus(updateStatus);
+							}
+							model.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							model.setTabDetailsId((tabDetailsVO.getTabDetailsId() != null && tabDetailsVO.getTabDetailsId() > 0) ? tabDetailsVO.getTabDetailsId():null);
+							model.setSourceType("TAB");
+							activityLocationInfoDAO.save(model);
+						}
+						
+						resultVO.setResultCode(1);
+						resultVO.setMessage("success");
+						return resultVO;
+					}
+				});
+			}
+		} catch (Exception e) {
+			resultVO.setResultCode(2);
+			resultVO.setExceptionMsg(e.getLocalizedMessage());
+			resultVO.setMessage("fail");
+			LOG.error("Exception occurred at saveActivityAnswerDetails() of PartyMeetingMOMService class ",e);
+		}
+		return resultVO;
+	}
+     /**
+	 * @param  Long activityScopeId
+	 * @return List<ActivityDetailsVO>
+	 * @author Santosh Kumar Verma
+	 * @Description :This Service is used to get activity question by activityScopeId. 
+	 * @since 27-DECEMBER-2017
+	 */
+	public List<ActivityDetailsVO> getActivityQuestionOptionDtls(Long activityScopeId,Long activityLocationInfoId) {
+		 List<ActivityDetailsVO> finalList = new ArrayList<ActivityDetailsVO>(0);
+		 try {
+			 Map<Long,List<ActivityDetailsVO>> answerMap = null;
+			 List<Object[]> questionObjDtlsLst = activityQuestionnaireDAO.getActivityQuestionsOptionsDetails(activityScopeId);
+			 List<Object[]> answerObjLst = activityQuestionAnswerDAO.getQuestionAnswerDetails(activityLocationInfoId);
+			 if (activityLocationInfoId != null && activityLocationInfoId.longValue() > 0 ) {
+				 answerMap = getQuestionAnswerDtls(answerObjLst);
+			 }
+			 Map<Long,ActivityDetailsVO> questionMap = getQuestionDetails(questionObjDtlsLst,answerMap);
+			 finalList.addAll(questionMap.values());
+		 } catch (Exception e) {
+			 LOG.error("Exception occured at getActivityQuestionOptionDtls() in ActivityService class ",e);
+		 }
+		 return finalList;
+	}
+
+	public Map<Long, List<ActivityDetailsVO>> getQuestionAnswerDtls(List<Object[]> objList) {
+		Map<Long, List<ActivityDetailsVO>> questionAnswerMap = new HashMap<Long, List<ActivityDetailsVO>>(0);
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					List<ActivityDetailsVO> optionList = questionAnswerMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if (optionList == null) {
+						optionList = new ArrayList<ActivityDetailsVO>();
+						questionAnswerMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), optionList);
+					}
+					ActivityDetailsVO optionVO = new ActivityDetailsVO();
+					optionVO.setAnswerOptionId(commonMethodsUtilService.getLongValueForObject(param[1]));
+					optionVO.setAnswerText(commonMethodsUtilService.getStringValueForObject(param[2]));
+					optionList.add(optionVO);
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception occured at getQuestionAnswerDtls() in ActivityService class ",e);
+		}
+		return questionAnswerMap;
+	}
+	public Map<Long, ActivityDetailsVO> getQuestionDetails(List<Object[]> objList,Map<Long,List<ActivityDetailsVO>> answerMap) {
+		Map<Long, ActivityDetailsVO> questionMap = new LinkedHashMap<Long, ActivityDetailsVO>(0);
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					if (!questionMap.containsKey(commonMethodsUtilService.getLongValueForObject(param[0]))) {
+						ActivityDetailsVO questionVO = new ActivityDetailsVO();
+						questionVO.setQuestionId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						questionVO.setQuestion(commonMethodsUtilService.getStringValueForObject(param[1]));
+						questionVO.setOptionTypeId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						questionVO.setOptionType(commonMethodsUtilService.getStringValueForObject(param[3]));
+						questionVO.setHasRemarks(commonMethodsUtilService.getStringValueForObject(param[4]));
+						questionVO.setActivityQuestionnaireId(commonMethodsUtilService.getLongValueForObject(param[7]));
+						questionVO.setOptionList(new ArrayList<ActivityOptionVO>(0));
+						if (answerMap != null && answerMap.size() > 0 ) {
+							questionVO.setSubList(answerMap.get(questionVO.getActivityQuestionnaireId()));//setting answer
+						}
+						questionMap.put(questionVO.getQuestionId(), questionVO);
+					}
+					ActivityDetailsVO questionVO = questionMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					ActivityOptionVO optionVO = new ActivityOptionVO();
+					optionVO.setOptionId(commonMethodsUtilService.getLongValueForObject(param[5]));
+					optionVO.setOption(commonMethodsUtilService.getStringValueForObject(param[6]));
+					questionVO.getOptionList().add(optionVO);
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception occured at getQuestionDetails() in ActivityService class ",e);
+		}
+		return questionMap;
+	}
+	 /**
+	   * @param ActivityDetailsVO inputVO
+	   * @return ResultStatus
+	   * @author Santosh Kumar Verma
+	   * @Description :This Service is used to saving activity answer details. 
+	   * @since 27-DECEMBER-2017
+	   */
+	public ResultStatus saveActivityAnswerDetails(final ActivityDetailsVO inputVO) {
+		ResultStatus resultVO = new ResultStatus();
+		try {
+			LOG.info("Entered into saveActivityAnswerDetails in ActivityService class");
+			if (inputVO != null) {
+				resultVO = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						ResultStatus resultVO = new ResultStatus();
+
+						String stts = saveTabDetails(inputVO);// saving tabDetails
+						if (stts.equalsIgnoreCase("fail")) {
+							throw new ArithmeticException();
+						}
+						if (inputVO.getSubList() != null && inputVO.getSubList().size() > 0) {//saving question answer
+							for (ActivityDetailsVO optionVO : inputVO.getSubList()) {
+								ActivityQuestionAnswer model = new ActivityQuestionAnswer();
+								model.setActivityQuestionnaireId((optionVO.getActivityQuestionnaireId() != null && optionVO.getActivityQuestionnaireId() > 0) ? optionVO.getActivityQuestionnaireId() : null);
+								model.setActivityLocationInfoId((optionVO.getActivityLocationInfoId() != null && optionVO.getActivityLocationInfoId() > 0) ? optionVO.getActivityLocationInfoId() : null);
+								model.setActivityOptionId((optionVO.getOptionId() != null && optionVO.getOptionId() > 0) ? optionVO.getOptionId() : null);
+								if (optionVO.getHasRemarks() != null && optionVO.getHasRemarks().length() > 0) {
+									model.setOptionTxt(optionVO.getHasRemarks());
+								}
+								model.setSourceType("TAB");
+								model.setIsDeleted("N");
+								model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								model.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								model.setTabDetailsId((inputVO.getTabDetailsId() != null && inputVO.getTabDetailsId() > 0) ? inputVO.getTabDetailsId() : null);
+								activityQuestionAnswerDAO.save(model);
+							}
+
+						}
+						resultVO.setResultCode(1);
+						resultVO.setMessage("success");
+						return resultVO;
+					}
+				});
+			}
+		} catch (Exception e) {
+			resultVO.setResultCode(2);
+			resultVO.setExceptionMsg(e.getLocalizedMessage());
+			resultVO.setMessage("fail");
+			LOG.error("Exception occurred at saveActivityAnswerDetails() of PartyMeetingMOMService class ",e);
+		}
+		return resultVO;
+	}
+	private String saveTabDetails(ActivityDetailsVO inputVO) {
+		String status = "";
+		try {
+			TabDetails model = new TabDetails();
+			model.setImei(inputVO.getImei());
+			model.setLatitude(inputVO.getLatitude());
+			model.setLongitude(inputVO.getLongitude());
+			model.setUniqueKey(inputVO.getUniqueKey());
+			model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			model.setSyncSource(inputVO.getSyncSource());
+			model.setItdpAppUserId(inputVO.getItdpAppUserId());
+			model = tabDetailsDAO.save(model);
+			inputVO.setTabDetailsId(model.getTabDetailsId());
+			status = "success";
+		} catch (Exception e) {
+			status = "fail";
+			LOG.error("Exception occured at saveTabDetails() in ActivityService class ",e);
+		}
+		return status;
+	}
+	  /**
+	   * @param ActivityDetailsVO inputVO
+	   * @return ResultStatus
+	   * @author Santosh Kumar Verma
+	   * @Description :This Service is used to saving docuemnt details. 
+	   * @since 28-DECEMBER-2017
+	   */
+	
+	public ResultStatus uploadDocumentImage(final ActivityDetailsVO inputVO,final List<String> docuemntBase64List) {
+		ResultStatus resultVO = new ResultStatus();
+		try {
+			LOG.info("Entered into saveActivityAnswerDetails in ActivityService class");
+			if (inputVO != null) {
+				resultVO = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						ResultStatus resultVO = new ResultStatus();
+						ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
+						
+						String stts = saveTabDetails(inputVO);// saving tabDetails
+						
+						if (stts.equalsIgnoreCase("fail")) {
+							throw new ArithmeticException();
+						}
+						
+						 Calendar calendar = Calendar.getInstance();
+						 calendar.setTime(new Date());
+						 int year = calendar.get(Calendar.YEAR);
+						 int month = calendar.get(Calendar.MONTH);
+						 int day = calendar.get(Calendar.DAY_OF_MONTH);
+						 int temp = month+1;
+						 
+						if (docuemntBase64List != null && docuemntBase64List.size() > 0) {
+							// Folder Creation
+							String folderName = folderCreation();
+
+							for (String base64Str : docuemntBase64List) {
+								String randomNumberStr = "0";
+								while (randomNumberStr.length() < 10) {
+									int randomNumber = Math.abs(new Random().nextInt());
+									if (String.valueOf(randomNumber).length() > 10){
+										randomNumberStr = String.valueOf(randomNumber).substring(0, 10);
+									} else {
+										randomNumberStr = String.valueOf(randomNumber);
+									}
+								}
+
+								StringBuilder pathBuilder = new StringBuilder();
+								StringBuilder documentName = new StringBuilder();
+								pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumberStr).append(".").append("jpg");
+								 documentName.append(randomNumberStr).append(".").append("jpg");
+								String destPath = folderName + "/" + randomNumberStr + ".jpg";
+								if (base64Str != null && base64Str.trim().length() > 0) {
+									inputVO.setImageBase64String(base64Str.replace("_", "/"));
+									inputVO.setImageBase64String(base64Str.replace("-", "+"));
+									boolean imageStatus = imageAndStringConverter.convertBase64StringToImage(inputVO.getImageBase64String(), destPath);
+									if (imageStatus) {
+										// model.setImageBase64Str(base64Str);
+									} else {
+										resultVO.setResultCode(2);
+										resultVO.setMessage("fail");
+									}
+								}
+								
+								ActivityDocument model = new ActivityDocument();
+								model.setActivityScopeId((inputVO.getActivityScopeId() != null && inputVO.getActivityScopeId() > 0) ? inputVO.getActivityScopeId() : null);
+								model.setDocumentName(documentName.toString());
+								model.setPath(pathBuilder.toString());
+								model.setTabDetailsId((inputVO.getTabDetailsId() != null && inputVO.getTabDetailsId() > 0) ? inputVO.getTabDetailsId() : null);
+								model.setActivityDate(dateUtilService.getCurrentDateAndTime());
+								model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								model.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								model = activityDocumentDAO.save(model);
+								
+								String sttus = saveActivityInfoDocumentDlts(model.getActivityDocumentId(), inputVO.getActivityLocationInfoId());//saving Activity Document info details
+								 if (sttus.equalsIgnoreCase("fail")) {
+									  throw new ArithmeticException();
+								 }
+							}
+						}
+						resultVO.setResultCode(1);
+						resultVO.setMessage("success");
+						return resultVO;
+					}
+				});
+			}
+		} catch (Exception e) {
+			resultVO.setResultCode(2);
+			resultVO.setExceptionMsg(e.getLocalizedMessage());
+			resultVO.setMessage("fail");
+			LOG.error("Exception occurred at saveActivityAnswerDetails() of ActivityService class ",e);
+		}
+		return resultVO;
+	}
+	public String saveActivityInfoDocumentDlts(Long activityDocumentId,Long activityLocationInfoId) {
+		 String status="";
+		 try {
+			  ActivityInfoDocument model = new ActivityInfoDocument();
+			  ActivityLocationInfo activityLocationInfo = activityLocationInfoDAO.get(activityLocationInfoId);
+			  model.setActivityDocumentId((activityDocumentId != null && activityDocumentId > 0 ) ? activityDocumentId:null);
+			  model.setActivityAddressId(activityLocationInfo.getAddress().getUserAddressId());
+			  model.setLocationScopeId(activityLocationInfo.getLocationLevel());
+			  model.setLocationValueAddress(activityLocationInfo.getLocationValue());
+			  model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			  model.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			  model.setInsertType("TAB");
+			  model.setIsDeleted("N");
+			  model.setActivityLocationInfoId((activityLocationInfoId != null && activityLocationInfoId > 0 ) ? activityLocationInfoId:null);
+			  activityInfoDocumentDAO.save(model);
+			  status = "success";
+		 } catch (Exception e) {
+			 status = "fail";
+			 LOG.error("Exception occurred at saveActivityInfoDocumentDlts() of ActivityService class ",e);
+		 }
+		 return status;
+	}
 }
