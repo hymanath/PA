@@ -36,20 +36,29 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 		}
 		return query.list();
 	}
-	public List<Object[]> getAllConstituenciesByReferralAndDistrict(List<Long> districtIds){
+	public List<Object[]> getAllConstituenciesByReferralAndDistrict(List<Long> districtIds,  List<Long> deptIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model.address.constituency.constituencyId ");
-		sb.append( ",model.address.constituency.name from PmRefCandidate model where model.isDeleted ='N' ");
+		sb.append("select distinct model.pmRefCandidate.address.constituency.constituencyId ");
+		sb.append( ",model.pmRefCandidate.address.constituency.name from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where " +
+				"model.pmRefCandidate.isDeleted='N' and model1.isDeleted='N'and  model.petition.petitionId = model1.petition.petitionId ");
 		if(districtIds != null && districtIds.size() > 0){
-			sb.append("and model.address.districtId in (:districtIds) ");
+			sb.append("and model.pmRefCandidate.address.district.districtId in (:districtIds) ");
 		}
-		sb.append(" order by model.address.constituency.name asc");
+		
+		if(deptIds != null && deptIds.size() > 0){
+			sb.append("and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		sb.append(" order by model.pmRefCandidate.address.constituency.name asc");
 		Query query =getSession().createQuery(sb.toString());
-		if(districtIds != null && districtIds.size() > 0){
+		if(deptIds != null && deptIds.size() > 0){
+			query.setParameterList("deptIds", deptIds);
+		}
+		if(districtIds != null && districtIds.size() >0L){
 			query.setParameterList("districtIds", districtIds);
 		}
+
 		return query.list();
-	}//
+	}
 	
 	public List<Object[]> getAllMandalsByReferralAndDistrict(List<Long> constituencyIds){
 		StringBuilder sb = new StringBuilder();
