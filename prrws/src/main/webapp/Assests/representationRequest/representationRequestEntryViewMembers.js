@@ -518,9 +518,32 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
 	$("#selBoxId").html('<option value="0">Select Constituency</option>');
 	$("#selBoxId").trigger('chosen:updated');
 	$("#"+selBoxId).html("");
+	var desigIds= [];
+ var deptIds = [];
+ var desigType='';
+ 
+ var desig=$("#designationsId").val();//
+ if(desig != null || desig !=0){
+ desigIds = desig;
+ var filterType=$("#locationSelId").val();
+ if(filterType == 'referrelDesignation'){
+ desigType="referral";
+ }else if(filterType == 'representeeDesignation'){
+ desigType="representee";
+ }
+ }
+ var depts =$("#departmentId").val();
+ if(depts != null || depts !=0){
+ deptIds=depts;
+ }
  var json = {
 		 filterType :searchType,
-		 searchLvlVals: distictId
+		 searchLvlVals: distictId,
+		 fromDate :startDate,
+		 toDate : endDate,
+		 deptIdsList:deptIds,
+		 designationIds:desigIds,
+		 type:desigType
 		}           
 	$.ajax({              
 		type:'POST',    

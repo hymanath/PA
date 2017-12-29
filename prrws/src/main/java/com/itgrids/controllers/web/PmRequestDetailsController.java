@@ -110,9 +110,13 @@ public class PmRequestDetailsController {
 				userId = userVO.getUserId();
 			}
 			List<Long> deptIds = null;
+			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+				 deptIds= inputVO.getDeptIdsList();
+			}else if(inputVO.getDesignationIds()==null){
 			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
 			deptIds = deptVO.getDeptIdsList();
-	    	return locationDetailsService.getConstituenciesBySearchTypeAndDistrictId(inputVO.getFilterType(),inputVO.getSearchLvlVals(),deptIds);
+			}
+	    	return locationDetailsService.getConstituenciesBySearchTypeAndDistrictId(inputVO, inputVO.getSearchLvlVals(),deptIds,inputVO.getDesignationIds(),inputVO.getType());
 	    }
 	    @RequestMapping(value ="/getMandalsBySearchTypeAndConstituency",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getMandalsBySearchTypeAndConstituency(@RequestBody InputVO inputVO,HttpServletRequest request ) {

@@ -9,6 +9,6 @@ import com.itgrids.model.PmRefCandidate;
 
 public interface IPmRefCandidateDAO extends GenericDao<PmRefCandidate, Long> {
 	public List<Object[]> getAllDistrictsByReferral(Date fromDate,Date toDate,List<Long> deptIds,List<Long> desigIds,String desigType);
-	public List<Object[]> getAllConstituenciesByReferralAndDistrict(List<Long> districtIds,List<Long> deptIds);
+	public List<Object[]> getAllConstituenciesByReferralAndDistrict(Date fromDate,Date toDate,List<Long> districtIds,  List<Long> deptIds,List<Long> pmDesignationIds,String type);
 	public List<Object[]> getAllMandalsByReferralAndDistrict(List<Long> constituencyIds,List<Long> deptIds,Date fromDate,Date toDate,List<Long> desigIds,String desigType);
 }
