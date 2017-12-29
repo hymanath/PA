@@ -5395,7 +5395,8 @@ function getManWorkDaysOfNrega(divIdd,locationTypeNew,theadArr,menuLocationType,
 		locationType: menuLocationType,
 		locationId : menuLocationId,
 		sector : buildType,
-		districtId : distrtId
+		districtId : distrtId,
+		sublocationType : locationTypeNew
 	}
 	
 	$.ajax({
@@ -8808,7 +8809,9 @@ function getFieldManDaysWorkDetails(divIdd,locationTypeNew,theadArr,menuLocation
 		locationType: menuLocationType,
 		locationId : menuLocationId,
 		sector : buildType,
-		districtId : distrtId
+		districtId : distrtId,
+		sublocationType : locationTypeNew
+		
 	}
 	
 	$.ajax({
