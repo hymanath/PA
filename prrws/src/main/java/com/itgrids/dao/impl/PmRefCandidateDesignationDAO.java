@@ -124,7 +124,7 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		}
 		return query.list();
 	}
-	public List<Object[]> getAlConstituenciesByReferalAndDesignationBydistrict(List<Long> districtIds,List<Long> deptIds){
+	public List<Object[]> getAlConstituenciesByReferalAndDesignationBydistrict(Date fromDate,Date toDate,List<Long> districtIds,  List<Long> deptIds,List<Long> pmDesignationIds,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRefCandidateDesignation.pmRefCandidate.address.constituency.constituencyId ");
 		sb.append( ",model.pmRefCandidate.address.constituency.name from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where model.pmRefCandidateDesignation.isDeleted='N' " +
@@ -135,6 +135,15 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		if(deptIds != null && deptIds.size() > 0){
 			sb.append("and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and (date(model1.insertedTime) between :fromDate and :toDate ) ");
+		}
+		if(type != null  && type.equalsIgnoreCase("referral") && pmDesignationIds !=null && pmDesignationIds.size()>0){
+			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in(:pmDesignationIds) ");
+		}
+	   else if (type != null  && type.equalsIgnoreCase("representee") && pmDesignationIds !=null && pmDesignationIds.size()>0){
+		sb.append(" and model.pmRepresenteeDesignation.pmDesignation.pmDesignationId in(:pmDesignationIds) ");
+	    }
 		sb.append(" order by model.pmRefCandidateDesignation.pmRefCandidate.address.constituency.name asc ");
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size() > 0){
@@ -142,6 +151,13 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		}
 		if(districtIds != null && districtIds.size() >0L){
 			query.setParameterList("districtIds", districtIds);
+		}
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(pmDesignationIds != null && pmDesignationIds.size() >0L){
+			query.setParameterList("pmDesignationIds", pmDesignationIds);
 		}
 		return query.list();
 	}

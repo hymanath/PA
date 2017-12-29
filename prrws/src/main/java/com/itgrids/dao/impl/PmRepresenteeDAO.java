@@ -82,7 +82,7 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getAlConstituenciesBySearchType(List<Long> districtIds,List<Long> deptIds){
+	public List<Object[]> getAlConstituenciesBySearchType(Date fromDate,Date toDate,List<Long> districtIds,  List<Long> deptIds,List<Long> pmDesignationIds,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRepresentee.userAddress.constituency.constituencyId,model.pmRepresentee.userAddress.constituency.name ");
 		sb.append( " from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where model.pmRepresentee.isDeleted='N' " +
@@ -93,6 +93,15 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		if(deptIds != null && deptIds.size() >0 ){
 			sb.append("and model1.pmDepartment.pmDepartmentId in (:deptIds)");
 		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and (date(model1.insertedTime) between :fromDate and :toDate ) ");
+		}
+		if(type != null  && type.equalsIgnoreCase("referral") && pmDesignationIds !=null && pmDesignationIds.size()>0){
+			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in(:pmDesignationIds) ");
+		}
+	   else if (type != null  && type.equalsIgnoreCase("representee") && pmDesignationIds !=null && pmDesignationIds.size()>0){
+		sb.append(" and model.pmRepresenteeDesignation.pmDesignation.pmDesignationId in(:pmDesignationIds) ");
+	    }
 		sb.append(" order by model.pmRepresentee.userAddress.constituency.name asc ");
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size() >0 ){
@@ -101,7 +110,13 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		if(districtIds != null && districtIds.size() >0L){
 			query.setParameterList("districtIds", districtIds);
 		}
-
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(pmDesignationIds != null && pmDesignationIds.size() >0L){
+			query.setParameterList("pmDesignationIds", pmDesignationIds);
+		}
 		return query.list();
 	}
 	public List<Object[]> getAllMandalsBySearchType(List<Long> constituencyIds,List<Long> deptIds,Date fromDate,Date toDate,List<Long> desigIds,String desigType){

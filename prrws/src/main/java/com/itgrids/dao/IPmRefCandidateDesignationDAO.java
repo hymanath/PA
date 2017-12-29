@@ -12,7 +12,7 @@ public interface IPmRefCandidateDesignationDAO extends GenericDao<PmRefCandidate
 	public List<Object[]> getCandidatseDetailsByDesignationAndLocation(Long designationId,Long locationLevelId,Long locationValue);
 
 	public List<Object[]> getAllDistrictsByReferalAndDesignation(Date fromDate,Date toDate,List<Long> deptIds,List<Long> desigIds,String desigType);
-	public List<Object[]> getAlConstituenciesByReferalAndDesignationBydistrict(List<Long> districtIds,List<Long> deptIds);
+	public List<Object[]> getAlConstituenciesByReferalAndDesignationBydistrict(Date fromDate,Date toDate,List<Long> districtIds,  List<Long> deptIds,List<Long> pmDesignationIds,String type);
 	public List<Object[]> getAllMandalsByReferalAndDesignationBydistrict(List<Long> constituencyIds,List<Long> deptIds,Date fromDate,Date toDate,List<Long> desigIds,String desigType);
 	public List<Object[]> getDesignationsByReferlDesigtion(Date fromDate,Date toDate,List<Long> deptIds);
 }

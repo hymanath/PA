@@ -50,7 +50,7 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 		}
 		return query.list();
 	}
-	public List<Object[]> getAllConstituenciesByReferralAndDistrict(List<Long> districtIds,  List<Long> deptIds){
+	public List<Object[]> getAllConstituenciesByReferralAndDistrict(Date fromDate,Date toDate,List<Long> districtIds,  List<Long> deptIds,List<Long> pmDesignationIds,String type) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRefCandidate.address.constituency.constituencyId ");
 		sb.append( ",model.pmRefCandidate.address.constituency.name from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where " +
@@ -62,6 +62,18 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 		if(deptIds != null && deptIds.size() > 0){
 			sb.append("and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model1.insertedTime) between :fromDate and :toDate ");
+		}
+		
+		if(type != null  && type.equalsIgnoreCase("referral") && pmDesignationIds !=null && pmDesignationIds.size()>0){
+				sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in(:pmDesignationIds) ");
+			}
+		else if (type != null  && type.equalsIgnoreCase("representee") && pmDesignationIds !=null && pmDesignationIds.size()>0){
+			sb.append(" and model.pmRepresenteeDesignation.pmDesignation.pmDesignationId in(:pmDesignationIds) ");
+		}
+	
+		
 		sb.append(" order by model.pmRefCandidate.address.constituency.name asc");
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size() > 0){
@@ -70,6 +82,14 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 		if(districtIds != null && districtIds.size() >0L){
 			query.setParameterList("districtIds", districtIds);
 		}
+		if(pmDesignationIds != null && pmDesignationIds.size() >0L){
+			query.setParameterList("pmDesignationIds", pmDesignationIds);
+		}
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+
 
 		return query.list();
 	}
