@@ -1,5 +1,6 @@
 package com.itgrids.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -10,7 +11,7 @@ public interface IPmRefCandidateDesignationDAO extends GenericDao<PmRefCandidate
 	public List<PmRefCandidateDesignation> getPmRepresenteeDesignationByPmRefCandidateId(Long pmRefCandidateId);
 	public List<Object[]> getCandidatseDetailsByDesignationAndLocation(Long designationId,Long locationLevelId,Long locationValue);
 
-	public List<Object[]> getAllDistrictsByReferalAndDesignation(List<Long> deptIds);
+	public List<Object[]> getAllDistrictsByReferalAndDesignation(Date fromDate,Date toDate,List<Long> deptIds);
 	public List<Object[]> getAlConstituenciesByReferalAndDesignationBydistrict(List<Long> districtIds,List<Long> deptIds);
 	public List<Object[]> getAllMandalsByReferalAndDesignationBydistrict(List<Long> constituencyIds,List<Long> deptIds);
 	public List<Object[]> getDesignationsByReferlDesigtion();

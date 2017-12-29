@@ -1,5 +1,6 @@
 package com.itgrids.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -19,13 +20,16 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 		super(PmRefCandidate.class);
 		
 	}
-	public List<Object[]> getAllDistrictsByReferral(List<Long> deptIds){
+	public List<Object[]> getAllDistrictsByReferral(Date fromDate,Date toDate,List<Long> deptIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRefCandidate.address.district.districtId ");
 		sb.append( ",model.pmRefCandidate.address.district.districtName from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where " +
 				"model.pmRefCandidate.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId ");
 		if(deptIds != null && deptIds.size()>0){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and (date(model1.insertedTime) between :fromDate and :toDate ) ");
 		}
 		sb.append(" order by model.pmRefCandidate.address.district.districtName asc");
 		Query query =getSession().createQuery(sb.toString());

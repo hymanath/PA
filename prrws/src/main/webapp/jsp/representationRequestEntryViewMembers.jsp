@@ -105,14 +105,28 @@
 												<input class="searchCls m_top0"  type="radio" name="optradio" value="advanceBtnId" >ADVANCED SEARCH 
 											</label>
 										</div>  -->
-										<div class="col-sm-3 pull-right">	
-											<div class="input-group inline-block">
-												<span class="input-group-addon">
-													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-												</span>
-												<input type="text"  class="form-control" id="dateRangePicker"/>
-											</div>
+										<div class ="row">
+												    <div class=" col-sm-3 col-sm-offset3" id="advancedSearchButtonDivId">
+					                                  <label class="text-capitalize">
+						                              <span class="btn btn-success btn-xs " style="margin-left: 594px;"><input type="checkbox"  id="advanceSearchBtnId">Advanced Search</input></span>
+					                                 </label>
+					                               </div>
+													<div class="col-sm-3 col-sm-offset-3" id="statusDiv">
+														 
+															<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT STATUS "  id="statusId" style="margin-top: -26px;left: 389px;"  multiple >
+																<!--<option value="0">Select Status</option>-->
+															</select>
+													</div>	
+													<div class="col-sm-3">	
+														<div class="input-group inline-block" style=" border-top-width: 24px;">
+															<span class="input-group-addon">
+																<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
+															</span>
+															<input type="text"  class="form-control" id="dateRangePicker"/>
+														</div>
+													</div>	
 										</div>
+										
 										<div class="col-sm-12 m_top20" style="border:1px solid lightgrey;padding-top:10px;padding-bottom:10px">
 										<div class="error_colorCls" id="errMsgId"></div>
 											<div class="col-sm-3" id="locationDivlId">	
@@ -136,7 +150,7 @@
 										<span id="parametersList" style="display:none;">
 											<div class="col-sm-3" id="designationDiv" style="display:none;">
 												<label> DESIGNATION </label>
-												<select class="form-control chosen-select"  data-placeholder="SELECT DESIGNATION "  id="designationsId" multiple>
+												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT DESIGNATION "  id="designationsId" multiple>
 													<!--<option value="0">Select Designation</option>-->
 												</select>
 												<div class="error_colorCls" id="designationErrDiv"></div>
@@ -150,51 +164,47 @@
 											</div>	
 											<div class="col-sm-3" id="nameDivid" style="display:none;">
 											<label> NAME </label>
-												<input type="text" class="form-control clearCls" style="text-align:center;height:40px" onkeyUp="clearData()" id="nameId" placeholder="Please enter Name">
+												<input type="text" class="form-control clearCls" style="height:40px" onkeyUp="clearData()" id="nameId" placeholder="Please enter Name">
 												<div class="error_colorCls" id="nameErrDivId"></div>
 											</div>	
-											<div class="col-sm-3" id="mobileDivid" style="display:none;">
+											<div class="col-sm-2" id="mobileDivid" style="display:none;">
 											<label>MOBILE NO </label>
-												<input type="text" class="form-control  clearCls " style="text-align:center;height:40px"  onkeyUp="clearData()" id="mobileId" placeholder="Please enter mobile number">
+												<input type="text" class="form-control  clearCls " style="height:40px"  onkeyUp="clearData()" id="mobileId" placeholder="Please enter mobile number">
 												<div class="error_colorCls" id="mobileErrDivId"></div>
 											</div>	
 											<div class="col-sm-3" id="emailDivid"  onkeyUp="clearData()" style="display:none;">
 											<label> EMAIL-ID</label>
-												<input type="text" class="form-control  clearCls" style="text-align:center;height:40px" id="emailId" placeholder="Please enter email">
+												<input type="text" class="form-control  clearCls" style="height:40px" id="emailId" placeholder="Please enter email">
 												<div class="error_colorCls" id="emailErrDivId"></div>
 											</div>	
 											<div class="col-sm-3" id="endorsmentNoDivid" style="display:none;">
 											<label> ENDORSMENT NO </label>
-												<input type="text"  onkeyUp="clearData()" class="form-control  clearCls" style="text-align:center;height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
+												<input type="text"  onkeyUp="clearData()" class="form-control  clearCls" style="height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
 												<div class="error_colorCls" id="endorsmentNoErrDivId"></div>
 											</div>
-											<div class="col-sm-3" id="districtCandDiv">
+											<div class="col-sm-12" id="districtConsMandDivId">
+											<div class="col-sm-4" id="districtCandDiv">
 												<label>DISTRICT</label>
 												<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId" multiple>
 													<!--<option value="0">All</option>-->
 												</select>
 												<div class="error_colorCls" id="districtCandErrDiv"></div>
 											</div>
-											<div class="col-sm-3" id="constituencyCanDiv">
+											<div class="col-sm-4" id="constituencyCanDiv">
 											<label>CONSTITUENCY</label>
 												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT CONSTITUENCY "  id="constituencyCanId" multiple>
 													<!--<option value="0">All</option>-->
 												</select>
 												<div class="error_colorCls" id="constituencyCanErrDiv"></div>
 											</div>
-											<div class="col-sm-3" id="mandalCanDiv">
+											<div class="col-sm-4" id="mandalCanDiv">
 											<label>MANDAL</label>
 												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT MANDAL "  id="mandalCanId" multiple>
 													<!--<option value="0">All</option>-->
 												</select>
 												<div class="error_colorCls" id="mandalCanErrDiv"></div>
 											</div>
-											<div class="col-sm-3" id="statusDiv">
-											<label>STATUS</label>
-												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT STATUS "  id="statusId" multiple>
-													<option value="0">Select Status</option>
-												</select>
-											</div>	
+											</div>
 											</span>
 										</div>
 										

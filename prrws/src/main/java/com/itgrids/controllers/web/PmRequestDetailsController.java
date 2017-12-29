@@ -85,7 +85,7 @@ public class PmRequestDetailsController {
 	       return locationDetailsService.getPmDesignations(inputMap.get("searchType"));
 	    }
 	    @RequestMapping(value ="/getDistrictBySearchType",method = RequestMethod.POST)
-	    public @ResponseBody List<KeyValueVO> getDistrictBySearchType(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
+	    public @ResponseBody List<KeyValueVO> getDistrictBySearchType(@RequestBody InputVO inputVO ,HttpServletRequest request) {
 	    	HttpSession session=request.getSession();
 			UserVO userVO = (UserVO) session.getAttribute("USER"); 
 			Long userId =null;
@@ -95,7 +95,7 @@ public class PmRequestDetailsController {
 			List<Long> deptIds = null;
 			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
 			deptIds = deptVO.getDeptIdsList();
-	    	return locationDetailsService.getDistrictBySearchType(inputMap.get("searchType"),deptIds);
+	    	return locationDetailsService.getDistrictBySearchType(inputVO,deptIds);
 	    }
 	    @RequestMapping(value ="/getConstituenciesBySearchTypeAndDistrict",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getConstituenciesBySearchTypeAndDistrict(@RequestBody InputVO inputVO,HttpServletRequest request ) {
