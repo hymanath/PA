@@ -86,4 +86,5 @@ public interface IActivityService {
 	public List<ActivityDetailsVO> getActivityQuestionOptionDtls(Long activityScopeId,Long activiyLocationInfoId);
 	public ResultStatus saveActivityAnswerDetails(ActivityDetailsVO inputVO);
 	public ResultStatus uploadDocumentImage(ActivityDetailsVO inputVO,List<String> docuemntBase64List);
+	public List<ActivityDetailsVO> getDocumentDtlsByLocation(Long activityScopeId, Long activityLocationInfoId);
 }

@@ -31,9 +31,13 @@ public class ActivityDetailsVO {
     private Long itdpAppUserId;
     private String syncSource;
     private String imageBase64String;
-	
+	private Long id;
+	private String appVersion;
+	private String isMandatory;
+    
 	private List<ActivityOptionVO> optionList;
 	private List<ActivityDetailsVO> subList;
+	
 	
 	public Long getLocationId() {
 		return locationId;
@@ -192,6 +196,25 @@ public class ActivityDetailsVO {
 	public void setImageBase64String(String imageBase64String) {
 		this.imageBase64String = imageBase64String;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getAppVersion() {
+		return appVersion;
+	}
+	public void setAppVersion(String appVersion) {
+		this.appVersion = appVersion;
+	}
+	public String getIsMandatory() {
+		return isMandatory;
+	}
+	public void setIsMandatory(String isMandatory) {
+		this.isMandatory = isMandatory;
+	}
+	
 	
 	
 }

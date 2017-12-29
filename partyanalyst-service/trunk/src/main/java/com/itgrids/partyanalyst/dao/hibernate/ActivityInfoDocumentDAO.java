@@ -1554,5 +1554,17 @@ public List<Object[]> getWardNamesLocationsInfocoveredLocationsByScopeId(Long ac
 			} 
 			return query.list();
 		}
+	public List<Object[]> getDocuemntDtlsByLocation(Long activityScopeId,Long activityLocationInfoId) {
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append("select " +
+		 		" model.activityDocument.activityDocumentId,model.activityDocument.path  " +
+		 		" from ActivityInfoDocument model where model.isDeleted='N' " +
+		 		" and model.activityLocationInfoId=:activityLocationInfoId " +
+		 		" and model.activityDocument.activityScopeId=:activityScopeId");
+		 Query query = getSession().createQuery(queryStr.toString());
+		 query.setParameter("activityLocationInfoId", activityLocationInfoId);
+		 query.setParameter("activityScopeId", activityScopeId);
+		 return query.list();
+	}
 }
 

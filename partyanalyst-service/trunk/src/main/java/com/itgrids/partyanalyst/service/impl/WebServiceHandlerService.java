@@ -5722,4 +5722,12 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			}
 			return null;
 	 }
+	 public List<ActivityDetailsVO> getDocumentDtlsByLocation(Long activityScopeId, Long activityLocationInfoId){
+			try{
+				return activityService.getDocumentDtlsByLocation(activityScopeId,activityLocationInfoId);
+			}catch (Exception e) {
+				log.error("Exception raised at getDocumentDtlsByLocation method in WebServiceHandlerService Class", e);
+			}
+			return null;
+	 }
 }
