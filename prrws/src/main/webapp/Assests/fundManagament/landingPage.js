@@ -1722,7 +1722,9 @@ function getManWorkDaysOfNrega()
 	var toDateArr = startDate.split('/');
 	var json = {
 		month : toDateArr[1],
-		locationType: "state"
+		locationType: "state",
+		locationId : "-1",
+		sublocationType : "state"
 	}
 	
 	$.ajax({
@@ -2118,7 +2120,9 @@ $(document).on("click",".saveBlockListCls",function(){
 function getFieldManDaysWorkDetails(){
 	 $(".FieldManDaysAllCls").html(spinner); 
 	var json = {
-		locationType: "state"
+		locationType: "state",
+		locationId : "-1",
+		sublocationType : "state"
 	}
 	
 	$.ajax({
