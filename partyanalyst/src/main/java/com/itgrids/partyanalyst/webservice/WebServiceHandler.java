@@ -3575,6 +3575,7 @@ public class WebServiceHandler {
 				tabDetailsVO.setLongitude(jObj.has("longitude") ? jObj.getString("longitude"):null);
 				tabDetailsVO.setItdpAppUserId(jObj.has("itdpAppUserId") ? jObj.getLong("itdpAppUserId"):null);
 				tabDetailsVO.setSyncSource(jObj.has("syncSource") ? jObj.getString("syncSource"):null);
+				tabDetailsVO.setAppVersion(jObj.has("appVersion") ? jObj.getString("appVersion") : null);
 				
 				String locationType = jObj.has("locationType") ? jObj.getString("locationType") : null;
 				Long activityScopeId = jObj.has("activityScopeId") ? jObj.getLong("activityScopeId") : null;
@@ -3618,6 +3619,7 @@ public class WebServiceHandler {
 				inputVO.setLongitude(jObj.has("longitude") ? jObj.getString("longitude"):null);
 				inputVO.setItdpAppUserId(jObj.has("itdpAppUserId") ? jObj.getLong("itdpAppUserId"):null);
 				inputVO.setSyncSource(jObj.has("syncSource") ? jObj.getString("syncSource"):null);
+				inputVO.setAppVersion(jObj.has("appVersion") ? jObj.getString("appVersion") : null);
 				JSONArray finalAnswerArr = jObj.has("answerObjArr") ? jObj.getJSONArray("answerObjArr"):null;
 				if (finalAnswerArr != null && finalAnswerArr.length() > 0) {
 					inputVO.setSubList(new ArrayList<ActivityDetailsVO>());
@@ -3655,6 +3657,7 @@ public class WebServiceHandler {
 				inputVO.setItdpAppUserId(jObj.has("itdpAppUserId") ? jObj.getLong("itdpAppUserId"):null);
 				inputVO.setSyncSource(jObj.has("syncSource") ? jObj.getString("syncSource"):null);
 				inputVO.setActivityScopeId(jObj.has("activityScopeId") ? jObj.getLong("activityScopeId"):null);
+				inputVO.setAppVersion(jObj.has("appVersion") ? jObj.getString("appVersion") : null);
 				inputVO.setActivityLocationInfoId(jObj.has("activityIocationInfoId") ? jObj.getLong("activityIocationInfoId"):null);
 				JSONArray docuemntArr = jObj.has("documentArr") ? jObj.getJSONArray("documentArr") : null;
 				if(docuemntArr != null && docuemntArr.length() > 0){
@@ -3666,6 +3669,20 @@ public class WebServiceHandler {
 			return webServiceHandlerService.uploadDocumentImage(inputVO,documentList);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in saveActivityAnswerDetails() Method, Exception is ",e);
+		}
+		return null;
+	}
+	@POST
+	@Path("/getDocumentDtlsByLocation")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<ActivityDetailsVO> getDocumentDtlsByLocation(JSONObject jObj){
+		try {
+			Long activityScopeId = jObj.has("activityScopeId") ? jObj.getLong("activityScopeId") : null;
+			Long activiyLocationInfoId = jObj.has("activityLocationInfoId") ? jObj.getLong("activityLocationInfoId"):null;
+			return webServiceHandlerService.getDocumentDtlsByLocation(activityScopeId,activiyLocationInfoId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getDocumentDtlsByLocation() Method, Exception is ",e);
 		}
 		return null;
 	}
