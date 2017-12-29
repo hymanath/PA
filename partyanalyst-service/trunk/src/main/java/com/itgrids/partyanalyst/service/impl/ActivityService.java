@@ -6816,7 +6816,7 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 								 if (sttus.equalsIgnoreCase("fail")) {
 									  throw new ArithmeticException();
 								 }
-								resultVO.setFilePath(model.getPath());//setting file path as response
+								resultVO.setfPath(model.getPath());//setting file path as response
 							}
 						}
 						resultVO.setResultCode(1);
