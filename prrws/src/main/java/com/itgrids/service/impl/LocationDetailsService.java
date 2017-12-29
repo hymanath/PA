@@ -1,9 +1,11 @@
 package com.itgrids.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -33,6 +35,7 @@ import com.itgrids.dao.IPmSubjectDAO;
 import com.itgrids.dao.IPmWorkTypeDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dao.IWorkMainCategoryDAO;
+import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
@@ -605,22 +608,29 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 	return finalList;
 }
 
-	public List<KeyValueVO> getDistrictBySearchType(String serchType,List<Long> deptIds){
+	public List<KeyValueVO> getDistrictBySearchType(InputVO  inputVO,List<Long> deptIds){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
+			Date fromDateStr = null;
+			Date toDateStr = null;
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			List<Object[]> districtObjs=null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null && inputVO.getFromDate().length() > 0 && inputVO.getToDate().length() > 0){
+				fromDateStr = dateFormat.parse(inputVO.getFromDate());
+				toDateStr = dateFormat.parse(inputVO.getToDate());
+			}
 			/*KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
 			List<Long> deptIds = deptVO.getDeptIdsList();*/
-			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("department"))){
-				districtObjs=pmSubWorkDetailsDAO.getAllDistricts(deptIds);
-			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referral")){
-				districtObjs=pmRefCandidateDAO.getAllDistrictsByReferral(deptIds);
-			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referrelDesignation")){
-				districtObjs=pmRefCandidateDesignationDAO.getAllDistrictsByReferalAndDesignation(deptIds);
-			}else if(serchType !=null && (serchType.trim().equalsIgnoreCase("representee") || serchType.trim().equalsIgnoreCase("name") || serchType.trim().equalsIgnoreCase("mobile") || serchType.trim().equalsIgnoreCase("email") || serchType.trim().equalsIgnoreCase("endorsmentNO"))){
-				districtObjs=pmRepresenteeDAO.getAllDistrictsBySearchType(deptIds);
-			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("representeeDesignation")){
-				districtObjs=pmRepresenteeDesignationDAO.getAllDistrictsByRepresenteeDesignationWise(deptIds);
+			if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("work") || inputVO.getFilterType().trim().equalsIgnoreCase("department"))){
+				districtObjs=pmSubWorkDetailsDAO.getAllDistricts(fromDateStr,toDateStr,deptIds);
+			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referral")){
+				districtObjs=pmRefCandidateDAO.getAllDistrictsByReferral(fromDateStr,toDateStr,deptIds);
+			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referrelDesignation")){
+				districtObjs=pmRefCandidateDesignationDAO.getAllDistrictsByReferalAndDesignation(fromDateStr,toDateStr,deptIds);
+			}else if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("representee") || inputVO.getFilterType().trim().equalsIgnoreCase("name") || inputVO.getFilterType().trim().equalsIgnoreCase("mobile") || inputVO.getFilterType().trim().equalsIgnoreCase("email") || inputVO.getFilterType().trim().equalsIgnoreCase("endorsmentNO"))){
+				districtObjs=pmRepresenteeDAO.getAllDistrictsBySearchType(fromDateStr,toDateStr,deptIds);
+			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("representeeDesignation")){
+				districtObjs=pmRepresenteeDesignationDAO.getAllDistrictsByRepresenteeDesignationWise(fromDateStr,toDateStr,deptIds);
 			}
 			if(districtObjs != null && districtObjs.size() >0 ){
 				for(Object[] param : districtObjs ){
