@@ -579,14 +579,14 @@ $(document).ready(function(){
 								getEMMDetailedGovtProblemsDetailedOverviewBulletins(num);
 							}else if(callFrom == "prajaSankalpa"){
 								if(globaltype == "mainBlock"){
-									getChannelWisePartiesAnalysisInfoForClick(0);
+									getChannelWisePartiesAnalysisInfoForClick(num);
 								}else if(globaltype == "partyWiseCnt"){
-									getChannelWisePartiesAnalysisForClick(0);
+									getChannelWisePartiesAnalysisForClick(num);
 								}else if(globaltype == "distWiseCnt"){
-									getDistrictWisePartyViewForElectrronicMediaInfoForClik(0);
+									getDistrictWisePartyViewForElectrronicMediaInfoForClik(num);
 								}
 							}else if(callFrom == "EMCT"){
-								getCoverageTimeOfTvNewsBulletinPointClick(0);
+								getCoverageTimeOfTvNewsBulletinPointClick(num);
 							}
 					}					
 				});
@@ -777,7 +777,7 @@ $(document).ready(function(){
   	$.ajax({
   		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfoForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
 		
-		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfoForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfoForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
   	}).then(function(result){
   		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('');
   		var countByDate = 0;
@@ -789,7 +789,7 @@ $(document).ready(function(){
   	$.ajax({
   		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfoForClik/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
 		
-		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfoForClik/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfoForClik/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
   	}).then(function(result){
   		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('');
   		var countByDate = 0;
@@ -801,7 +801,7 @@ $(document).ready(function(){
   	$.ajax({
   		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
 		
-		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryIdP+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsChannelIds+"/"+globalUserAccessLevelId+"/"+globalLevelValue
   	}).then(function(result){
   		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('');
   		var countByDate = 0;
