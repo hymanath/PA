@@ -198,17 +198,16 @@
 			var pcCount = 0;
 			for(var i in response){
 				for(var j in response[i].statusList){
-					if(response[i].statusList[j].status != "NC"){
-						if(response[i].statusList[j].status == "PC1" || response[i].statusList[j].status == "PC2" || response[i].statusList[j].status == "PC3" || response[i].statusList[j].status == "PC4"){
-							pcCount = pcCount+parseInt(response[i].statusList[j].count);
-							totalCount =totalCount+parseInt(response[i].statusList[j].count);
-						}else{
-							var tempArr = [];
-							response[i].statusList[j].status == "NSS" ? statusNamesArr.push("QA"):statusNamesArr.push(response[i].statusList[j].status);
-							tempArr.push(parseInt(response[i].statusList[j].count));
-							dataArr.push(tempArr);
-							totalCount =totalCount+parseInt(response[i].statusList[j].count);
-						}
+					
+					if(response[i].statusList[j].status == "PC1" || response[i].statusList[j].status == "PC2" || response[i].statusList[j].status == "PC3" || response[i].statusList[j].status == "PC4"){
+						pcCount = pcCount+parseInt(response[i].statusList[j].count);
+						totalCount =totalCount+parseInt(response[i].statusList[j].count);
+					}else{
+						var tempArr = [];
+						response[i].statusList[j].status == "NSS" ? statusNamesArr.push("QA"):statusNamesArr.push(response[i].statusList[j].status);
+						tempArr.push(parseInt(response[i].statusList[j].count));
+						dataArr.push(tempArr);
+						totalCount =totalCount+parseInt(response[i].statusList[j].count);
 					}
 				}
 				var pcArr = [];
@@ -285,6 +284,7 @@
 				}
 			}];
 			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
+			$("#totalCountId").html(totalCount);
 		}
 		
 		function buildChartForHabitationCoverageStatus(response){
@@ -294,11 +294,11 @@
 			var colors = []
 			for(var i in response){
 			  for(var j in response[i].statusList){
-					if(response[i].statusList[j].status != "NC"){
 						var tempArr = [];
 						statusNamesArr.push(response[i].statusList[j].status);
-						tempArr.push(parseInt(response[i].statusList[j].count));
-						dataArr.push(tempArr);
+						//tempArr.push(parseInt(response[i].statusList[j].count));
+						//dataArr.push(tempArr);
+						dataArr.push({"y":parseInt(response[i].statusList[j].count),"extra":""+response[i].statusList[j].percentage});
 						totalCount=totalCount+parseInt(response[i].statusList[j].count);
 						
 						if(response[i].statusList[j].status == "FC"){
@@ -308,7 +308,6 @@
 						}else{
 							colors.push('#FFBF14')
 						}
-					}
 				}
 			}
 			var id = 'habitation';
@@ -346,9 +345,9 @@
 			var tooltip = {
 				useHTML:true,
 				formatter: function () {
-					var pcnt = (this.y / totalCount) * 100;
+					var pcnt = this.point.extra;
 					return '<b>' + this.x + '</b><br/>' +
-						this.y+"-"+((Highcharts.numberFormat(pcnt)))+'%';
+						this.y+"-"+pcnt+'%';
 				}
 			};
 
@@ -361,8 +360,8 @@
 					color: '#000',
 					align: 'canter',
 					formatter: function() {
-							var pcnt = (this.y / totalCount) * 100;
-							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+							var pcnt = this.point.extra;;
+							return '<span>'+this.y+'<br>('+pcnt+'%)</span>';
 					} 
 				}
 			}];
@@ -1337,12 +1336,12 @@
 				var targetPopulationArrOne = []; */
 
 				stressedArr.push("Habitations");						
-				achievedHabitationArr.push({"y":result[0].achivedPopulation,"extra":result[0].percentageOne.toFixed(1)});
-				targetHabitationArr.push({"y":result[0].targetPopulation,"extra":result[0].achivedHabPerc.toFixed(1)});
+				achievedHabitationArr.push({"y":result[0].achived,"extra":result[0].percentageOne.toFixed(1)});
+				targetHabitationArr.push({"y":result[0].target,"extra":result[0].achivedHabPerc.toFixed(1)});
 				
 				stressedArr.push("Population");						
-				achievedHabitationArr.push({"y":result[0].achived,"extra":result[0].targetPopPerc.toFixed(1)});
-				targetHabitationArr.push({"y":result[0].target,"extra":result[0].achivedPopPerc.toFixed(1)});
+				achievedHabitationArr.push({"y":result[0].achivedPopulation,"extra":result[0].targetPopPerc.toFixed(1)});
+				targetHabitationArr.push({"y":result[0].targetPopulation,"extra":result[0].achivedPopPerc.toFixed(1)});
 								
 				
 				$("#planOfAction").highcharts({
@@ -1394,7 +1393,7 @@
 									if(this.y == 0){
 										return null;
 									}else{
-										return '<span>'+this.y+'<br>('+(this.point.extra)+'%)</span>';
+										return '<span>'+this.y;
 									}
 									
 								}
@@ -2164,11 +2163,9 @@
 								if(GLtbodyArr[0] !=null && GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
 									for(var j in GLtbodyArr[0].statusList){
 										if(divId[k].id=="habitation"){
-											if(GLtbodyArr[0].statusList[j].status != 'NC'){
-												tableView+='<th>'+GLtbodyArr[0].statusList[j].status+'</th>';
-												tableView+='<th>%</th>';
-												
-											}
+											tableView+='<th>'+GLtbodyArr[0].statusList[j].status+'</th>';
+											tableView+='<th>%</th>';	
+											
 										}
 									}
 								}
@@ -2255,17 +2252,17 @@
 									
 									if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
 										for(var j in GLtbodyArr[i].statusList){
-										if(GLtbodyArr[i].statusList[j].status != 'NC'){
-												if(GLtbodyArr[i].statusList[j].count !=null && GLtbodyArr[i].statusList[j].count>0){
-													tableView+='<td class="hablitationClickView" attr_location_name="'+GLtbodyArr[i].locationName+'" attr_status="'+GLtbodyArr[i].statusList[j].status+'" attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].statusList[j].count+'</td>';
-													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+'</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-													tableView+='<td> - </td>';
-												}
-												totalCount += GLtbodyArr[i].statusList[j].count;
-											}
+										
+										if(GLtbodyArr[i].statusList[j].count !=null && GLtbodyArr[i].statusList[j].count>0){
+											tableView+='<td class="hablitationClickView" attr_location_name="'+GLtbodyArr[i].locationName+'" attr_status="'+GLtbodyArr[i].statusList[j].status+'" attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].statusList[j].count+'</td>';
+											tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+'</small></td>';
+										}else{
+											tableView+='<td> - </td>';
+											tableView+='<td> - </td>';
 										}
+										totalCount += GLtbodyArr[i].statusList[j].count;
+									}
+										
 									}
 									tableView+='<td>'+totalCount+'</td>';
 									tableView+='</tr>';
