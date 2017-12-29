@@ -465,7 +465,6 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 		toDate = dateStr[1];
 	}
 	
-alert(dateRangeStr);
 	$("#"+selBoxId).html("");
 	$("#"+selBoxId).trigger('chosen:updated');
  var json = {
