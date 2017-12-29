@@ -112,11 +112,8 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		}
 		sb.append(" order by model.pmRefCandidateDesignation.pmRefCandidate.address.district.districtName asc");
 		Query query =getSession().createQuery(sb.toString());
-		if(deptIds != null && deptIds.size()>0){
-			query.setParameterList("deptIds", deptIds);
-		}
 		if(desigIds != null && desigIds.size() >0){
-			query.setParameterList("deptIds", desigIds);
+			query.setParameterList("desigIds", desigIds);
 		}
 		if(deptIds != null && deptIds.size()>0){
 			query.setParameterList("deptIds", deptIds);
