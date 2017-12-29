@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.IEncWorksDAO;
@@ -32,6 +34,7 @@ import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 @Service
 @Transactional
@@ -67,8 +70,17 @@ public class PrENCService implements IPrENCService {
 			if(inputVO.getLocationType().trim().equalsIgnoreCase("S")){
 				inputVO.setLocationType("D");
 			}
+			
+			JsonObject object = new JsonObject();
+			JsonArray jsonarray = new JsonArray();
+			object.addProperty("UNIT_TYPE", "L");
+			object.addProperty("UNIT_ID", "-1");
+			jsonarray.add(object);
+			
 			Map<String, Map<Long, EncVO>> locationTypeMap = new HashMap<String, Map<Long, EncVO>>();
-			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/wbsMinisterRoadMinMaxMv",null);
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://predmis.ap.nic.in/RestWS/PredmisRoadService/wbsMinisterRoadMinMaxMv");	     
+			ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class,jsonarray.toString());
+			//ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/wbsMinisterRoadMinMaxMv",null);
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			} else {
@@ -205,7 +217,15 @@ public class PrENCService implements IPrENCService {
 			if(inputVO.getLocationType().trim().equalsIgnoreCase("S")){
 				inputVO.setLocationType("D");
 			}
-			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/wbsMinisterRoadMinMaxMv",null);
+			JsonObject object = new JsonObject();
+			JsonArray jsonarray = new JsonArray();
+			object.addProperty("UNIT_TYPE", "L");
+			object.addProperty("UNIT_ID", "-1");
+			jsonarray.add(object);
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://predmis.ap.nic.in/RestWS/PredmisRoadService/wbsMinisterRoadMinMaxMv");	     
+			ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class,jsonarray.toString());
+
+			//ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/wbsMinisterRoadMinMaxMv",null);
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			} else {
