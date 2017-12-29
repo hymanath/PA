@@ -455,7 +455,16 @@ $(document).on("change","#constituencyCanId",function(){
 	var consituencyId=$(this).val();
 	getMandalsBySearchTypeAndConstituency(searchType,consituencyId,'mandalCanId');
 });
-
+$(document).on("change","#designationsId",function(){
+	var searchType=$("#locationSelId").val();
+	var dateRangeStr =$("#dateRangePicker").val();
+	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
+});
+$(document).on("change","#departmentId",function(){
+	var searchType=$("#locationSelId").val();
+	var dateRangeStr =$("#dateRangePicker").val();
+	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
+});
 function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 	
 	$("#"+selBoxId).html("");
