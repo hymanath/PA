@@ -40,7 +40,7 @@ public class PmTracking {
 	 private PmStatus pmStatus;
 	 private PmDepartmentDesignation pmDepartmentDesignation;
 	 
-	 private PmTrackingAction PpTrackingAction;
+	 private PmTrackingAction PmTrackingAction;
 	 private PmPetitionDocument pmPetitionDocument;
 	 private PmDepartmentDesignationOfficer pmDepartmentDesignationOfficer;
 	 
@@ -158,11 +158,11 @@ public class PmTracking {
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pm_tracking_action_id", insertable = false, updatable = false)
-	public PmTrackingAction getPpTrackingAction() {
-		return PpTrackingAction;
+	public PmTrackingAction getPmTrackingAction() {
+		return PmTrackingAction;
 	}
-	public void setPpTrackingAction(PmTrackingAction ppTrackingAction) {
-		PpTrackingAction = ppTrackingAction;
+	public void setPmTrackingAction(PmTrackingAction pmTrackingAction) {
+		PmTrackingAction = pmTrackingAction;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pm_petition_document_id", insertable = false, updatable = false)
