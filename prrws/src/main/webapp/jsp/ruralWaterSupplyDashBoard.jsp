@@ -135,17 +135,15 @@
 													</a>
 												</div>
 											</div>-->
-										</div>
-										<div class="row">
-  											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="solidWasteManagementDashboard">
 														<h3>SWM</h3>
-                           								 <p>Solid Waste Management</p>
+	                          								 <p>Solid Waste Management</p>
 													</a>
 												</div>
 											</div>
- 										</div>
+										</div>
 									</div>
 								</div>
 								<div class="col-sm-12 m_top10">
@@ -230,7 +228,7 @@
 				<div class="row">
 					<div class="col-sm-4" style="padding-right: 5px;">
 						<div class="white-block">
-							<h5 style="padding:5px"><span class="chartTitleAlign">Habitation Coverage Status</span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
+							<h5 style="padding:5px"><span class="chartTitleAlign">Habitation Coverage Status -</span><span id="totalCountId"> </span><!--<p class="pull-right" style="margin-right: 20px;"><span class="roundClr" style="background-color:#14BAAD"></span>&nbsp;&nbsp;&nbsp;<span>2014-2015</span></p>--></h5>
 							<div class="chart" id="habitation"></div>
 						</div>
 					</div>
