@@ -129,7 +129,8 @@ public List<Object[]> getQuestionnareDetails(List<Long> questionnairIdsList){
 		  		" AQE.has_remark as hasRemark ," +
 		  		" AO.activity_option_id as activityOptionId ," +
 		  		" AO.option as opt," +
-		  		" AQE.activity_questionnaire_id as activityQuestionnaireId ");
+		  		" AQE.activity_questionnaire_id as activityQuestionnaireId," +
+		  		" AQE.is_mandatory as isMandatory ");
 		  	queryStr.append(" FROM ");
 		  	queryStr.append(" activity_question AQ,activity_option_type AOT,");
 		  	queryStr.append(" activity_scope ACS,");
@@ -152,6 +153,7 @@ public List<Object[]> getQuestionnareDetails(List<Long> questionnairIdsList){
 		     sqlQuery.addScalar("activityOptionId", Hibernate.LONG);
 		     sqlQuery.addScalar("opt", Hibernate.STRING);
 		     sqlQuery.addScalar("activityQuestionnaireId",Hibernate.LONG);
+		     sqlQuery.addScalar("isMandatory",Hibernate.STRING);
 		    
 		     sqlQuery.setParameter("activityScopeId", activityScopeId);
 		  

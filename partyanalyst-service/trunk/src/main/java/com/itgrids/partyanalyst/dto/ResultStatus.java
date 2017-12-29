@@ -28,6 +28,7 @@ public class ResultStatus implements Serializable{
     private Long tabPrimaryKey;
     private String uniqueKey;
     private Long serverPrimaryKey;
+    private String filePath;
     
     
     public Long getServerPrimaryKey() {
@@ -103,6 +104,13 @@ public class ResultStatus implements Serializable{
 	public void setResultState(Long resultState) {
 		this.resultState = resultState;
 	}
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+	
     
     
 }

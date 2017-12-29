@@ -31,6 +31,7 @@ public class TabDetails extends BaseModel implements Serializable{
 	private Long insertedBy;
 	private Long tabPrimaryKey;
 	private Long itdpAppUserId;
+	private String appVersion;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -136,5 +137,13 @@ public class TabDetails extends BaseModel implements Serializable{
 	public void setItdpAppUserId(Long itdpAppUserId) {
 		this.itdpAppUserId = itdpAppUserId;
 	}
+	@Column(name = "app_version")
+	public String getAppVersion() {
+		return appVersion;
+	}
+	public void setAppVersion(String appVersion) {
+		this.appVersion = appVersion;
+	}
+	
 	
 }

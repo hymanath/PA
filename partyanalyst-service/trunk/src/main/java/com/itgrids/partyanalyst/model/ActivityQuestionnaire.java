@@ -37,6 +37,7 @@ public class ActivityQuestionnaire extends BaseModel implements Serializable{
 	private Date insertedTime;
 	private Date updatedTime;
 	private String hasRemark;
+	private String isMandatory;
 	
 	private ActivityScope activityScope;
 	private ActivityQuestion activityQuestion;
@@ -210,6 +211,13 @@ public class ActivityQuestionnaire extends BaseModel implements Serializable{
 	}
 	public void setRespondentType(RespondentType respondentType) {
 		this.respondentType = respondentType;
+	}
+	@Column(name = "is_mandatory")
+	public String getIsMandatory() {
+		return isMandatory;
+	}
+	public void setIsMandatory(String isMandatory) {
+		this.isMandatory = isMandatory;
 	}
 	
 	

@@ -301,4 +301,5 @@ public interface IWebServiceHandlerService {
     public List<ActivityDetailsVO> getActivityQuestionOptionDtls(Long activityScopeId,Long activityLocationInfoIf);
     public ResultStatus saveActivityAnswerDetails(ActivityDetailsVO inputVO);
     public ResultStatus uploadDocumentImage(ActivityDetailsVO inputVO,List<String> docuemntBase64List);
+    public List<ActivityDetailsVO> getDocumentDtlsByLocation(Long activityScopeId, Long activityLocationInfoId);
 }

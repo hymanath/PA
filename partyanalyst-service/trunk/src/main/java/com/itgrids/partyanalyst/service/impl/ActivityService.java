@@ -6645,6 +6645,7 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 						questionVO.setOptionType(commonMethodsUtilService.getStringValueForObject(param[3]));
 						questionVO.setHasRemarks(commonMethodsUtilService.getStringValueForObject(param[4]));
 						questionVO.setActivityQuestionnaireId(commonMethodsUtilService.getLongValueForObject(param[7]));
+						questionVO.setIsMandatory(commonMethodsUtilService.getStringValueForObject(param[8]));
 						questionVO.setOptionList(new ArrayList<ActivityOptionVO>(0));
 						if (answerMap != null && answerMap.size() > 0 ) {
 							questionVO.setSubList(answerMap.get(questionVO.getActivityQuestionnaireId()));//setting answer
@@ -6727,6 +6728,7 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 			model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			model.setSyncSource(inputVO.getSyncSource());
 			model.setItdpAppUserId(inputVO.getItdpAppUserId());
+			model.setAppVersion(inputVO.getAppVersion());
 			model = tabDetailsDAO.save(model);
 			inputVO.setTabDetailsId(model.getTabDetailsId());
 			status = "success";
@@ -6796,6 +6798,7 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 									} else {
 										resultVO.setResultCode(2);
 										resultVO.setMessage("fail");
+										resultVO.setUniqueKey(inputVO.getUniqueKey());
 									}
 								}
 								
@@ -6813,10 +6816,12 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 								 if (sttus.equalsIgnoreCase("fail")) {
 									  throw new ArithmeticException();
 								 }
+								resultVO.setFilePath(model.getPath());//setting file path as response
 							}
 						}
 						resultVO.setResultCode(1);
 						resultVO.setMessage("success");
+						resultVO.setUniqueKey(inputVO.getUniqueKey());
 						return resultVO;
 					}
 				});
@@ -6825,6 +6830,7 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 			resultVO.setResultCode(2);
 			resultVO.setExceptionMsg(e.getLocalizedMessage());
 			resultVO.setMessage("fail");
+			resultVO.setUniqueKey(inputVO.getUniqueKey());
 			LOG.error("Exception occurred at saveActivityAnswerDetails() of ActivityService class ",e);
 		}
 		return resultVO;
@@ -6850,5 +6856,30 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 			 LOG.error("Exception occurred at saveActivityInfoDocumentDlts() of ActivityService class ",e);
 		 }
 		 return status;
+	}
+	  /**
+	   * @param Long activityScopeId
+	   * @param Long activityLocationInfoId
+	   * @return List<ActivityDetailsVO>
+	   * @author Santosh Kumar Verma
+	   * @Description :This Service is used to saving docuemnt details. 
+	   * @since 29-DECEMBER-2017
+	   */
+	public List<ActivityDetailsVO> getDocumentDtlsByLocation(Long activityScopeId, Long activityLocationInfoId) {
+		List<ActivityDetailsVO> documentList = new ArrayList<ActivityDetailsVO>(0);
+		try {
+			List<Object[]> docObjList = activityInfoDocumentDAO.getDocuemntDtlsByLocation(activityScopeId,activityLocationInfoId);
+			if (docObjList != null && docObjList.size() > 0) {
+				for (Object[] param : docObjList) {
+					ActivityDetailsVO documentVO = new ActivityDetailsVO();
+					documentVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					documentVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					documentList.add(documentVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getDocumentDtlsByLocation() of ActivityService class ",e);
+		}
+		return documentList;
 	}
 }
