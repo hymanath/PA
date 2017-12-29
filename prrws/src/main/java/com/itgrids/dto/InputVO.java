@@ -110,6 +110,7 @@ public class InputVO implements Serializable {
 	private String monthType;
 	private Long pageId;
 	private String pType;
+	private List<Long>designationIds;
 	
 	public Long getPageId() {
 		return pageId;
@@ -704,4 +705,11 @@ public class InputVO implements Serializable {
 	public void setpType(String pType) {
 		this.pType = pType;
 	}
+	public List<Long> getDesignationIds() {
+		return designationIds;
+	}
+	public void setDesignationIds(List<Long> designationIds) {
+		this.designationIds = designationIds;
+	}
+	
 }
