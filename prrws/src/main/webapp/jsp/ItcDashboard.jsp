@@ -113,14 +113,14 @@ var searchParams = new URLSearchParams(window.location.search);
 													</a>
 												</div>
 											</div>
-											<!-- <div class="col-sm-6 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#2C546C">
-													<a href="#">
+													<a href="EncDevelopmentDashboard">
 														<h3>ENC</h3>
 														<p>Engineering Dept</p>
 													</a>
 												</div>
-											</div>-->
+											</div>
 											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#512507">
 													<a href="getdailySpikeReport">
@@ -153,17 +153,15 @@ var searchParams = new URLSearchParams(window.location.search);
 													</a>
 												</div>
 											</div>-->
-										</div>
-										<div class="row">
-  											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="solidWasteManagementDashboard">
 														<h3>SWM</h3>
-                           								 <p>Solid Waste Management</p>
+	                          							<p>Solid Waste Management</p>
 													</a>
 												</div>
-											</div>
- 										</div>
+	 										</div>
+										</div>
 									</div>
 								</div>
 								<div class="col-sm-12 m_top10">

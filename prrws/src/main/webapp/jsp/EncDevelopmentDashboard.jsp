@@ -138,9 +138,7 @@
 													</a>
 												</div>
 											</div>-->
-										</div>
-										<div class="row">
-  											<div class="col-sm-12 m_top10">
+											<div class="col-sm-12 m_top10">
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="solidWasteManagementDashboard">
 														<h3>SWM</h3>
@@ -148,7 +146,7 @@
 													</a>
 												</div>
 											</div>
- 										</div>
+										</div>
 									</div>
 								</div>
 								<div class="col-sm-12 m_top10">
