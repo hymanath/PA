@@ -237,6 +237,9 @@ public class RWSNICService implements IRWSNICService{
 		StatusVO nssVO = new StatusVO();
 		nssVO.setStatus("NSS");
 		tempList.add(5,nssVO);
+		StatusVO ncVO = new StatusVO();
+		ncVO.setStatus("NC");
+		tempList.add(5,ncVO);
 		return tempList;
 	}
 	
@@ -4066,7 +4069,7 @@ public class RWSNICService implements IRWSNICService{
 											}
 										}
 										// calculating noOfDays between two difference date
-										workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus()));
+										workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus(),"",""));
                                         workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
                                         workDetailsMap.put(workDetailsVO.getWrokIdStr(),workDetailsVO);
 									}
@@ -4099,7 +4102,7 @@ public class RWSNICService implements IRWSNICService{
 					 rangeLevelName = "181-365 Days";
 				 } else if(daysDiff > 365L) {
 					 rangeLevelName = "More Than 1 Year";
-				 } else if(daysDiff == 0L && daysDiff <= 0L) {
+				 } else if(daysDiff <= 0L) {
 					 rangeLevelName = "0 Days";
 				 }
 			 }
@@ -4109,17 +4112,22 @@ public class RWSNICService implements IRWSNICService{
 		 }
 		 return rangeLevelName;
 	}
-	private Long getNoOfDaysDifference(String completionDate,String targetDate,String workStatus) {
+	private Long getNoOfDaysDifference(String completionDate,String targetDate,String workStatus,String type,String durationtype) {
 		Long diffDays = null;
 		 try {
 		     if (completionDate != null && completionDate.trim().length() > 0 && targetDate != null && targetDate.trim().length() > 0) {
 		    	 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		    	  Long completionDateTimeInMiliSecond =  sdf.parse(completionDate).getTime();
 					 Long targetDateTimeInMiliSecond =  sdf.parse(targetDate).getTime();
-					 if (completionDateTimeInMiliSecond >= targetDateTimeInMiliSecond) {
+					 if(type.equalsIgnoreCase("onClick") && !durationtype.equalsIgnoreCase("0 Days")){
+						 if (completionDateTimeInMiliSecond >= targetDateTimeInMiliSecond) {
+							 Long  diffTime = completionDateTimeInMiliSecond-targetDateTimeInMiliSecond;
+							 diffDays = TimeUnit.MILLISECONDS.toDays(diffTime);
+						 }
+					 }else{
 						 Long  diffTime = completionDateTimeInMiliSecond-targetDateTimeInMiliSecond;
-							  diffDays = TimeUnit.MILLISECONDS.toDays(diffTime);
-					 } 
+						 diffDays = TimeUnit.MILLISECONDS.toDays(diffTime);
+					 }
 		     }
 		   
 		 } catch (Exception e) {
@@ -4654,7 +4662,7 @@ public class RWSNICService implements IRWSNICService{
 							}
 						}
 					}
-					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus()));
+					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus(),"",""));
                     workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
                     workDetailsMap.put(workDetailsVO.getWrokIdStr(),workDetailsVO);
 				
@@ -4742,7 +4750,7 @@ public class RWSNICService implements IRWSNICService{
 						
 					}
 					// calculating noOfDays between two difference date
-					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus()));
+					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus(),"onClick",inputVO.getExceededDuration()));
                     workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
                     if(inputVO.getExceededDuration().isEmpty() || inputVO.getExceededDuration().length() <= 0){
                     	if(workDetailsVO.getName()!=null && !workDetailsVO.getName().isEmpty() && workDetailsVO.getName().length()>0){
