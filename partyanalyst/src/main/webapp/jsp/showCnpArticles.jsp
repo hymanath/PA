@@ -81,11 +81,11 @@ var globaltype = "${param.type}";
 			getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(0);
 		}else if(globalCallFrom == "prajaSankalpa"){
 			if(globaltype == "OverAllprintMedia"){
-				getEditionTypeWisePartiesAnalysisForClick(0)
+				getEditionTypeWisePartiesAnalysisForClick(0);
 			}else if(globaltype == "PartyprintMedia"){
-				getPublicationWisePartiesAnalysisForClick(0)
+				getPublicationWisePartiesAnalysisForClick(0);
 			}else if(globaltype == "PublicationprintMedia"){
-				getDistrictWisePartyOverViewForClick(0)
+				getDistrictWisePartyOverViewForClick(0);
 			}
 		}
 			
@@ -588,11 +588,11 @@ var globaltype = "${param.type}";
 							getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(num);
 						}else if(globalCallFrom == "prajaSankalpa"){
 							if(globaltype == "OverAllprintMedia"){
-								getEditionTypeWisePartiesAnalysisForClick(num)
+								getEditionTypeWisePartiesAnalysisForClick(num);
 							}else if(globaltype == "PartyprintMedia"){
-								getPublicationWisePartiesAnalysisForClick(num)
+								getPublicationWisePartiesAnalysisForClick(num);
 							}else if(globaltype == "PublicationprintMedia"){
-								getDistrictWisePartyOverViewForClick(num)
+								getDistrictWisePartyOverViewForClick(num);
 							}
 						}
 							
@@ -1126,9 +1126,9 @@ var globaltype = "${param.type}";
 function getEditionTypeWisePartiesAnalysisForClick(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
+		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
 		
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
@@ -1138,9 +1138,9 @@ function getEditionTypeWisePartiesAnalysisForClick(globalstartIndex){
 function getPublicationWisePartiesAnalysisForClick(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
+		url: wurl+"/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
 		
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
@@ -1150,9 +1150,9 @@ function getPublicationWisePartiesAnalysisForClick(globalstartIndex){
 function getDistrictWisePartyOverViewForClick(globalstartIndex){
 	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
+		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
 		
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
 	}).then(function(result){
 		$("#articlesDivId").html('');
 		var countByDate = 0;
