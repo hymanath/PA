@@ -97,7 +97,7 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRefCandidateDesignation.pmRefCandidate.address.district.districtId ");
 		sb.append( ",model.pmRefCandidateDesignation.pmRefCandidate.address.district.districtName from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where model.pmRefCandidateDesignation.isDeleted='N' " +
-				"and model.isDeleted='N'  and model.pmRefCandidateDesignation.isDeleted='N' model.petition.petitionId = model1.petition.petitionId ");
+				"and model.isDeleted='N'  and model.pmRefCandidateDesignation.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId ");
 		if(deptIds != null && deptIds.size()>0){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
