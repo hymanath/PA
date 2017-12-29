@@ -50,8 +50,16 @@ function levelWiseOverview()
 				
 				
 					collapse+='<div class="panel-body">';
-						
 						collapse+='<div class="row">';
+							collapse+='<div class="col-sm-12">';
+								collapse+='<ul class="list-inline switch-btn workWiseDetailsCls">';
+									collapse+='<li class="active" attr_type="exceed" attr_location_type="'+levelWiseOverviewArr[i]+'">Exceed Works</li>';
+									collapse+='<li attr_type="works" attr_location_type="'+levelWiseOverviewArr[i]+'">Work Details</li>';
+									collapse+='<li attr_type="targets" attr_location_type="'+levelWiseOverviewArr[i]+'">Target&Achivements</li>';
+								collapse+='</ul>';
+							collapse+='</div>';
+						collapse+='</div>';
+						collapse+='<div class="row m_top20">';
 							collapse+='<div class="col-sm-12">';
 								collapse+='<div id="'+levelWiseOverviewArr[i]+'levelBlockId"></div>';
 							collapse+='</div>';
@@ -116,7 +124,7 @@ function getLocationWiseWorksInformation(blockId,locationType,type){
 				if(type=='graph'){
 					buildLocationWiseWorksGraph(result)
 				}
-				//locationwiseTableBlocks(result,blockId,locationType);
+				locationwiseTableBlocks(result,blockId,locationType);
 			}else{
 				
 				$('#'+blockId).html("NO DATA AVAILABLE");
@@ -721,3 +729,53 @@ function buildGraphforExceededWorks(response){
 		});
 	}
  }	 
+
+$(document).on("click",".workWiseDetailsCls li",function(e){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	var type = $(this).attr("attr_type");
+	var locationType = $(this).attr("attr_location_type")
+	if(type == "works"){
+		if(locationType == "state"){
+			getLocationWiseWorksInformation(locationType+'levelBlockId','s','table');
+		}
+		else if(locationType == "district"){
+			getLocationWiseWorksInformation(locationType+'levelBlockId','d','table');
+			
+		}
+		else if(locationType == "constituency"){
+			getLocationWiseWorksInformation(locationType+'levelBlockId','a','table');
+		}
+		else if(locationType == "mandal"){
+			getLocationWiseWorksInformation(locationType+'levelBlockId','m','table');
+		}
+	}else if(type == "exceed"){
+		if(locationType == "state"){
+			getLocationWiseExceededWorkDetails(locationType+'levelBlockId','state','table');
+		}
+		else if(locationType == "district"){
+			getLocationWiseExceededWorkDetails(locationType+'levelBlockId','district','table');
+		}
+		else if(locationType == "constituency"){
+			
+			getLocationWiseExceededWorkDetails(locationType+'levelBlockId','constituency','table');
+		}
+		else if(locationType == "mandal"){
+			getLocationWiseExceededWorkDetails(locationType+'levelBlockId','mandal','table');
+		}
+	}else if(type == "targets"){
+		if(locationType == "state"){
+			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','s','table');
+		}
+		else if(v == "district"){
+			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','d','table');
+		}
+		else if(locationType == "constituency"){
+			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','a','table');
+		}
+		else if(locationType == "mandal"){
+			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','m','table');
+			
+		}
+	}
+});
