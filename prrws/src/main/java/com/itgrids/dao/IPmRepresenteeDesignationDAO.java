@@ -10,8 +10,8 @@ import com.itgrids.model.PmRepresenteeDesignation;
 public interface IPmRepresenteeDesignationDAO extends GenericDao<PmRepresenteeDesignation, Long> {
 	public List<PmRepresenteeDesignation> getPmRepresenteeDesignationByRepresenteeId(Long representeeId);
 	public int inActiveExistingDesignationsByIds(List<Long> pmRepresenteeDesignationIdsList);
-	public List<Object[]> getAllDistrictsByRepresenteeDesignationWise(Date fromDate,Date toDate,List<Long> deptIds);
-	public List<Object[]> getDesignationsByRepresenteeDesigtion();
+	public List<Object[]> getAllDistrictsByRepresenteeDesignationWise(Date fromDate,Date toDate,List<Long> deptIds,List<Long> desigIds,String desigType);
+	public List<Object[]> getDesignationsByRepresenteeDesigtion(List<Long> deptIds,Date fromDate ,Date toDate);
 	public List<Object[]> getAllConstituenciesByRepresenteeDesignationWise(List<Long> districtIds,List<Long> deptIds);
-	public List<Object[]> getAllMandalsByRepresenteeDesignationAndconstincy(List<Long> constituencyIds,List<Long> deptIds);
+	public List<Object[]> getAllMandalsByRepresenteeDesignationAndconstincy(List<Long> constituencyIds,List<Long> deptIds,Date fromDate,Date toDate,List<Long> desigIds,String desigType);
 }

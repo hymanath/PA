@@ -93,8 +93,12 @@ public class PmRequestDetailsController {
 				userId = userVO.getUserId();
 			}
 			List<Long> deptIds = null;
-			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
-			deptIds = deptVO.getDeptIdsList();
+			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+				deptIds= inputVO.getDeptIdsList();
+			}else{
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				deptIds = deptVO.getDeptIdsList();
+			}
 	    	return locationDetailsService.getDistrictBySearchType(inputVO,deptIds);
 	    }
 	    @RequestMapping(value ="/getConstituenciesBySearchTypeAndDistrict",method = RequestMethod.POST)
@@ -119,17 +123,39 @@ public class PmRequestDetailsController {
 				userId = userVO.getUserId();
 			}
 			List<Long> deptIds = null;
-			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
-			 deptIds = deptVO.getDeptIdsList();
-	    	return locationDetailsService.getMandalsBySearchTypeAndConstituencyId(inputVO.getFilterType(),inputVO.getSearchLvlVals(),deptIds);
+			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+				deptIds= inputVO.getDeptIdsList();
+			}else{
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				deptIds = deptVO.getDeptIdsList();
+			}
+	    	return locationDetailsService.getMandalsBySearchTypeAndConstituencyId(inputVO.getFilterType(),inputVO.getSearchLvlVals(),deptIds,inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDesignationIds(),inputVO.getpType());
 	    }
 	    @RequestMapping(value ="/getDesignationsBySearchType",method = RequestMethod.POST)
-	    public @ResponseBody List<KeyValueVO> getDesignationsBySearchType(@RequestBody Map<String,String> inputMap ) {
-	       return locationDetailsService.getDesignationsBySearchType(inputMap.get("searchType"));
+	    public @ResponseBody List<KeyValueVO> getDesignationsBySearchType(@RequestBody Map<String,String> inputMap,HttpServletRequest request ) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}
+			List<Long> deptIds = null;
+			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+			 deptIds = deptVO.getDeptIdsList();
+	    	return locationDetailsService.getDesignationsBySearchType(inputMap.get("searchType"),inputMap.get("fromDate"),inputMap.get("toDate"),deptIds);
 	    }
 	    @RequestMapping(value ="/getDepartmentsBySearchType",method = RequestMethod.POST)
-	    public @ResponseBody List<KeyValueVO> getDepartmentsBySearchType(@RequestBody Map<String,String> inputMap ) {
-	       return locationDetailsService.getDepartmentsBySearchType(inputMap.get("searchType"));
+	    public @ResponseBody List<KeyValueVO> getDepartmentsBySearchType(@RequestBody Map<String,String> inputMap,HttpServletRequest request ) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}
+			List<Long> deptIds = null;
+			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+			 deptIds = deptVO.getDeptIdsList();
+	    	return locationDetailsService.getDepartmentsBySearchType(inputMap.get("searchType"),inputMap.get("fromDate"),inputMap.get("toDate"),deptIds);
 	    }
 	    @RequestMapping(value ="/getStatusList",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresenteeViewVO> getStatusList() {
