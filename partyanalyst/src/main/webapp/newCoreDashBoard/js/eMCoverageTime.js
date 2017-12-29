@@ -214,22 +214,22 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 					str+='<td>Grand Total</td>';
 					if(result[i].coreDashBoardVOList != null && result[i].coreDashBoardVOList.length > 0){
 						for(var j in result[i].coreDashBoardVOList){
-				if(result[i].coreDashBoardVOList[j].organization == "NARA CHANDRABABU NAIDU" || result[i].coreDashBoardVOList[j].organization == "TDP"){
+				if(result[i].coreDashBoardVOList[j].organization == "NCBN" || result[i].coreDashBoardVOList[j].organization == "TDP"){
 					str+='<td>'+result[i].coreDashBoardVOList[j].totalPostive+'</td>';
 					str+='<td>'+((result[i].coreDashBoardVOList[j].totalPositivePerc/totalPer)*100).toFixed(1)+'</td>';
 					str+='<td>'+result[i].coreDashBoardVOList[j].totalNegative+'</td>';
 					str+='<td>'+((result[i].coreDashBoardVOList[j].totalNegativePerc/totalPer)*100).toFixed(1)+'</td>';
-				}else if(result[i].coreDashBoardVOList[j].organization == "JAGAN MOHAN REDDY" || result[i].coreDashBoardVOList[j].organization == "YSRC"){
+				}else if(result[i].coreDashBoardVOList[j].organization == "YSJ" || result[i].coreDashBoardVOList[j].organization == "YSRC"){
 					str+='<td>'+result[i].coreDashBoardVOList[j].totalPostive+'</td>';
 					str+='<td>'+((result[i].coreDashBoardVOList[j].totalPositivePerc/totalPer)*100).toFixed(1)+'</td>';
 					str+='<td>'+result[i].coreDashBoardVOList[j].totalNegative+'</td>';
 					str+='<td>'+((result[i].coreDashBoardVOList[j].totalNegativePerc/totalPer)*100).toFixed(1)+'</td>';
-				}else if(result[i].coreDashBoardVOList[j].organization == "NARA LOKESH" || result[i].coreDashBoardVOList[j].organization == "INC" ){
+				}else if(result[i].coreDashBoardVOList[j].organization == "LN" || result[i].coreDashBoardVOList[j].organization == "INC" ){
 					str+='<td>'+result[i].coreDashBoardVOList[j].totalPostive+'</td>';
 					str+='<td>'+((result[i].coreDashBoardVOList[j].totalPositivePerc/totalPer)*100).toFixed(1)+'</td>';
 					str+='<td>'+result[i].coreDashBoardVOList[j].totalNegative+'</td>';
 					str+='<td>'+((result[i].coreDashBoardVOList[j].totalNegativePerc/totalPer)*100).toFixed(1)+'</td>';
-				}else if(result[i].coreDashBoardVOList[j].organization == "PAWAN KALYAN" || result[i].coreDashBoardVOList[j].organization == "BJP"){
+				}else if(result[i].coreDashBoardVOList[j].organization == "PK" || result[i].coreDashBoardVOList[j].organization == "BJP"){
 					str+='<td>'+result[i].coreDashBoardVOList[j].totalPostive+'</td>';
 					str+='<td>'+((result[i].coreDashBoardVOList[j].totalPositivePerc/totalPer)*100).toFixed(1)+'</td>';
 					str+='<td>'+result[i].coreDashBoardVOList[j].totalNegative+'</td>';
