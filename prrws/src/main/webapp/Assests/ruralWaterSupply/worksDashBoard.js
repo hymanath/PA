@@ -2107,7 +2107,7 @@ function getOnClickExceedWorkDetails(assetType,locationType,exceededDuration,loc
 		}
 	}).done(function(result){
 	 	if(result !=null && result.length>0){
-			buildOnclickWorkSchemsExccedDetails(result);
+			buildOnclickWorkSchemsExccedDetails(result,exceededDuration);
 		}else{
 			
 			$("#modalSchemsExceedTable").html('No Data Available');
@@ -2115,7 +2115,7 @@ function getOnClickExceedWorkDetails(assetType,locationType,exceededDuration,loc
 	});
 }
 
-function buildOnclickWorkSchemsExccedDetails(result){
+function buildOnclickWorkSchemsExccedDetails(result,exceededDuration){
 	var tableView='';
 	tableView+='<div class="table-responsive">';
 	tableView+='<table class="table table-bordered" id="dataTableSchems1">';
@@ -2132,7 +2132,10 @@ function buildOnclickWorkSchemsExccedDetails(result){
 				tableView+='<th>GROUNDED DATE</th>';
 				tableView+='<th>TARGET DATE</th>';
 				tableView+='<th>COMPLETION DATE</th>';
-				tableView+='<th class="text-capital">Exceeded Days</th>';
+				if(exceededDuration !=='0 Days'){
+					tableView+='<th class="text-capital">Exceeded Days</th>';
+				}	
+				
 				tableView+='<th class="text-capital">Work Status</th>';
 			tableView+='</tr>';
 			
@@ -2158,7 +2161,9 @@ function buildOnclickWorkSchemsExccedDetails(result){
 					if(typeof result[i].noOfDays === undefined || typeof result[i].noOfDays == "undefined" || result[i].noOfDays == null || result[i].noOfDays == 0){
 						tableView+='<td> - </td>';
 					}else{
-						tableView+='<td>'+result[i].noOfDays+'</td>';
+						if(exceededDuration !=='0 Days'){
+							tableView+='<td>'+result[i].noOfDays+'</td>';
+						}
 					}
 					tableView+='<td>'+result[i].workStatus+'</td>';
 				tableView+='</tr>';
