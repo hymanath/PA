@@ -457,20 +457,34 @@ $(document).on("change","#constituencyCanId",function(){
 });
 
 function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
-	var fromDate= "";
-	var toDate = "";
-	if(dateRangeStr != null && dateRangeStr.length >0){
-		var dateStr = dateRangeStr.split("-");
-	    fromDate = dateStr[0];
-		toDate = dateStr[1];
-	}
 	
 	$("#"+selBoxId).html("");
 	$("#"+selBoxId).trigger('chosen:updated');
+	var desigIds= [];
+	var deptIds = [];
+	var desigType='';
+	
+	  var desig=$("#designationsId").val();//
+	  if(desig != null || desig !=0){
+			desigIds =  desig;
+		var filterType=$("#locationSelId").val();
+		if(filterType == 'referrelDesignation'){
+			desigType="referral";
+		}else if(filterType == 'representeeDesignation'){
+			desigType="representee";
+		}
+	  }
+	var depts =$("#departmentId").val();
+	if(depts != null || depts !=0){
+		deptIds=depts;
+	}
  var json = {
 		 filterType :searchType,
-		 fromDate :fromDate,
-		 toDate : toDate
+		 fromDate :startDate,
+		 toDate : endDate,
+		 deptIdsList:deptIds,
+		 designationIds:desigIds,
+		 pType:desigType
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -521,9 +535,32 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
 function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId){
 	$("#"+selBoxId).html("<option value='0'>Select Mandal</option>");
 	$("#"+selBoxId).trigger('chosen:updated');
+	var desigIds= [];
+	var deptIds = [];
+	var desigType='';
+	
+	  var desig=$("#designationsId").val();//
+	  if(desig != null || desig !=0){
+			desigIds =  desig;
+		var filterType=$("#locationSelId").val();
+		if(filterType == 'referrelDesignation'){
+			desigType="referral";
+		}else if(filterType == 'representeeDesignation'){
+			desigType="representee";
+		}
+	  }
+	var depts =$("#departmentId").val();
+	if(depts != null || depts !=0){
+		deptIds=depts;
+	}
  var json = {
 		 filterType :searchType,
-		 searchLvlVals: consituencyId
+		 searchLvlVals: consituencyId,
+		 fromDate :startDate,
+		 toDate : endDate,
+		 deptIdsList:deptIds,
+		 designationIds:desigIds,
+		 pType:desigType
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -549,7 +586,9 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 function getDesignationsBySearchType(searchType,selBoxId){
 	
  var json = {
-		 searchType :searchType
+		 searchType :searchType,
+		 fromDate :startDate,
+		 toDate : endDate
 		}            
 	$.ajax({              
 		type:'POST',    
@@ -574,7 +613,9 @@ function getDesignationsBySearchType(searchType,selBoxId){
 
 function getDepartmentsBySearchType(searchType,selBoxId){
  var json = {
-		 searchType :searchType
+		 searchType :searchType,
+		 fromDate :startDate,
+		 toDate : endDate
 		}           
 	$.ajax({              
 		type:'POST',    
