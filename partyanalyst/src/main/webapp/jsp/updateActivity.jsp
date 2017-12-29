@@ -675,6 +675,85 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!-- /.modal for updateactivitymodel user -->
+	<div class="modal fade" id="updateactivitymodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content" style="border-radius:0px;">
+			<div class="modal-header" style="background-color:#ddd;">
+				<div class="row">
+					<div class="col-sm-12">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<h4 class="panel-title">GANNAVARAM</h4>
+					</div>
+				</div>
+				<div class="row m_top20">
+					<div class="col-sm-6">
+						<p>Estimated Date<span> 19-12-2015</span></p>
+					</div>
+					<div class="col-sm-6 ">
+						<div class="pull-right">
+							<p>Conducted Date<span> 26-12-2017</span></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		  <div class="modal-body">
+			<div class="row">
+				<div class="col-sm-12">
+					<h4 class="panel-title" style="color:#00B17D;font-size:14px;"><span>00</span> Janmaboomi Conducted Time ?</h4>
+					<ul class="list-group m_top20">
+						<li class="list-group-item"><input type="text" class="form-control" /></li>
+					</ul> 
+				</div>
+				<div class="col-sm-12 m_top20">
+					<h4 class="panel-title" style="color:#00B17D;font-size:14px;"><span>01</span> Who Are Participated In Janmaboomi ?</h4>
+					<ul class="list-group m_top20">
+						<li class="list-group-item">
+							<input type="checkbox" />
+							<label>MLA</label>
+						</li>
+						<li class="list-group-item">
+							<input type="checkbox" />
+							<label>ZPTC</label>
+						</li>
+						<li class="list-group-item">
+							<input type="checkbox" />
+							<label>MPTC</label>
+						</li>
+						<li class="list-group-item">
+							<input type="checkbox" />
+							<label>MRO</label>
+						</li>
+					</ul>
+				</div>	
+				<div class="col-sm-12 m_top20">
+					<h4 class="panel-title" style="color:#00B17D;font-size:14px;"><span>01</span> Gramhasaba Prior Intimation Given By Panchayats Or Not ?</h4>
+					<ul class="list-group m_top20">
+						<li class="list-group-item">
+							<input type="radio" name="gpp"/>
+							<label>YES</label>
+						</li>
+						<li class="list-group-item">
+							<input type="radio" name="gpp" />
+							<label>NO</label>
+						</li>
+						
+					</ul>
+				</div>			
+				
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button"  class="btn btn-custom btn-success">Save</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+<!-- /.modal -->
 <input type="hidden" id="hiddenActivityScopeId"></input>
 <input type="hidden" id="hiddenActivityLevelId"></input>
 <input type="hidden" id="hiddenCheckBxVal"></input>
@@ -3055,19 +3134,19 @@ function getLocationWiseDetailsForActivity(roundId)
 						//str+='<th>CONSTITUENCY</th>';
 						//str+='<th style="background-color:#00B17D; color:#fff;" > <input type="checkbox" class="allcheckBoxCls" name="activityVO.isChecked"/> Select All </th>';
 						if(activityLevelId == 2)
-							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION </th>';
 						else if(activityLevelId == 1){	
 							//str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
 							str+='<th style="background-color:#00B17D; color:#fff;">PANCHAYAT/ WARD</th>';
 						}
 						else if(activityLevelId == 5)
-							str+='<th style="background-color:#00B17D; color:#fff;">CONSTITUENCY</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">CONSTITUENCY </th>';
 						else if(activityLevelId == 4)
-							str+='<th style="background-color:#00B17D; color:#fff;">STATE</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">STATE </th>';
 						else if(activityLevelId == 3)
-							str+='<th style="background-color:#00B17D; color:#fff;">DISTRICT</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">DISTRICT </th>';
 						
-						str+='<th style="background-color:#00B17D; color:#fff;"> STATUS</th>';
+						str+='<th style="background-color:#00B17D; color:#fff;"> STATUS </th>';
 							
 						if(dataArr == null || dataArr == "" || typeof(dataArr) == "undefined"){
 							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
@@ -3100,22 +3179,22 @@ function getLocationWiseDetailsForActivity(roundId)
 							//str+='<td><input type="checkbox" id="check'+result[i].activityLocatInfoId+'" class="checkBoxCls" attr_no="'+i+'" value="'+result[i].activityLocatInfoId+'" name="activityVO.activityVoList['+i+'].isChecked"/></td>';
 							str+='<input type="hidden" id="chckBxIdVal'+i+'" value="'+result[i].activityLocatInfoId+'" name="activityVO.activityVoList['+i+'].activityLocationInfoId"/>';
 							if(activityLevelId == 5){
-								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+'</td>';
+								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;"></span></td>';
 								locationName = result[i].constituencyName+" Assembly Constituency ";
 							}
 							else if(activityLevelId == 1){
 									//str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+'</td>';
-									str+='<td id='+result[i].villageId+'>'+result[i].villageName+'</td>';
+									str+='<td id='+result[i].villageId+'>'+result[i].villageName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;"></span></td>';
 									
 										locationName = result[i].villageName+" Village / Ward  ";
 										
 							}
 							else if(activityLevelId == 2){
-									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+'</td>';
+									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;"></span></td>';
 										locationName = result[i].mandalName+" Mandal/Munci./Corp. ";
 										
 							}else if(activityLevelId == 3){
-								str+='<td id='+result[i].districtId+'>'+result[i].districtName+'</td>';
+								str+='<td id='+result[i].districtId+'>'+result[i].districtName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;"></span></td>';
 								locationName = result[i].mandalName+" District  ";
 							}
 							
@@ -3524,6 +3603,10 @@ $(document).on("change","#attributeTypeList",function(){
 	  var id=$(this).attr('attr_id');
 	   $('#date'+id+'').val('');
   });
+  $(document).on("click",".activityLevelIdCls",function(){
+	  $('#updateactivitymodel').modal('show');
+  });
+  
 </script>
 </body>
 </html>
