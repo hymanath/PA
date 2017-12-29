@@ -5,9 +5,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.itgrids.dao.IPmTrackingActionDAO;
 import com.itgrids.model.PmTrackingAction;
 @Repository
-public class PmTrackingActionDAO extends GenericDaoHibernate<PmTrackingAction, Long> {
+public class PmTrackingActionDAO extends GenericDaoHibernate<PmTrackingAction, Long> implements IPmTrackingActionDAO{
 	@Autowired
 	SessionFactory sessionFactory;
 	public PmTrackingActionDAO() {
