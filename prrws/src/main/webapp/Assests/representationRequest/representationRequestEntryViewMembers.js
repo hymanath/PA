@@ -206,6 +206,7 @@ $(document).on("change","#locationSelId",function(){
 	$('.clearCls').val('');
 	$("#departMentsDiv").hide();
 	$("#designationDiv").hide()//inputSearchDivid
+	//$("#referralNameDiv").hide()//inputSearchDivid
 	$("#nameDivid").hide();
 	$("#mobileDivid").hide();
 	$("#emailDivid").hide();
@@ -297,6 +298,7 @@ $(document).on("change","#locationSelId",function(){
 		$('#advanceSearchBtnId').prop("checked",false);
 		  getDesignationsBySearchType(searchType,"designationsId");
 		$("#designationDiv").show();
+		//$("#referralNameDiv").show();
 		$("#districtConsMandDivId").hide();
 		$("#advancedSearchButtonDivId").show();
 		$("input[type='checkbox']").prop({disabled: false});
@@ -712,6 +714,13 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 			 isError=true;
 			}
 	}
+	/* if($("#referralNameDiv").is(':visible')){
+		  var referralNameId=$("#referralNameId").val();
+		  if(referralNameId == null || referralNameId ==0){
+			 $("#referralNameErrDiv").html('<h5>Please select designation </h5>');
+			 isError=true;
+			}
+	} */
 	if($("#departMentsDiv").is(':visible')){
 		  var deptId=$("#departmentId").val();
 		  if(deptId == null || deptId ==0){

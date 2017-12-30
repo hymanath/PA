@@ -86,199 +86,129 @@
 								<h4 class="panel-title f_22" style="font-weight:normal !important;">VIEW PETITION DETAILS</h4>
 							</div>
 								<div class="panel-body">								
-									<div class="row">
-										<div class="col-sm-12">
-									<!--	<div class="col-sm-9">	
-											<label class="radio-inline ">
-												<input  class="searchCls m_top0" type="radio" name="optradio" value="designation" checked> <span title="Refferer / Representee Designation wise"> REF./REPR. DESIGNATION WISE</span>
-											</label>											
-											<label class="radio-inline">
-												<input  class="searchCls m_top0" type="radio" name="optradio" value="department" >DEPARTMENT WISE
-											</label>
-											<label class="radio-inline ">
-												<input class="searchCls m_top0" type="radio" name="optradio" value="refLocation" >REFFERRE LOCATION WISE
-											</label>
-											<label class="radio-inline ">
-												<input class="searchCls m_top0"  type="radio" name="optradio" value="workLocation" >WORK LOCATION WISE
-											</label>
-											<label class="radio-inline ">
-												<input class="searchCls m_top0"  type="radio" name="optradio" value="advanceBtnId" >ADVANCED SEARCH 
-											</label>
-										</div>  -->
-										<div class ="row">
-												    <div class=" col-sm-3 col-sm-offset3" id="advancedSearchButtonDivId">
-					                                  <label class="text-capitalize">
-						                              <span class="btn btn-success btn-xs " style="margin-left: 594px;"><input type="checkbox"  id="advanceSearchBtnId">Advanced Search</input></span>
-					                                 </label>
-					                               </div>
-													<div class="col-sm-3 col-sm-offset-3" id="statusDiv">
-														 
-															<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT STATUS "  id="statusId" style="margin-top: -26px;left: 389px;"  multiple >
-																<!--<option value="0">Select Status</option>-->
-															</select>
-													</div>	
-													<div class="col-sm-3">	
-														<div class="input-group inline-block" style=" border-top-width: 24px;">
-															<span class="input-group-addon">
-																<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
-															</span>
-															<input type="text"  class="form-control" id="dateRangePicker"/>
-														</div>
-													</div>	
-										</div>
-										
-										<div class="col-sm-12 m_top20" style="border:1px solid lightgrey;padding-top:10px;padding-bottom:10px">
-										<div class="error_colorCls" id="errMsgId"></div>
-											<div class="col-sm-3" id="locationDivlId">	
-												<label> Search By</label>
-												<select class="form-control chosen-select clearDataCls" id="locationSelId" >
-													<option value="all">All</option>
-													<option value="work"> Work Location wise</option>
-													<option value="representee"> Representee Location wise </option>
-													<option value="referral"> Referral Location wise</option>
-													<option value="referrelDesignation"> Referral Designation wise </option>
-													<option value="representeeDesignation"> Representee Designation wise </option>
-													<option value="department">Department wise </option>
-													<option value="name"> Name</option>
-													<option value="mobile"> Mobile No</option>
-													<option value="email"> Email</option>
-													<option value="endorsmentNO"> Endorsment No </option>
-																
-												</select>
-												<div class="error_colorCls" id="locationErrDivlId"></div>
+										<div class="row">
+											<div class="col-sm-3 pull-right">	
+												<div class="input-group inline-block" >
+													<span class="input-group-addon">
+														<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
+													</span>
+													<input type="text"  class="form-control" id="dateRangePicker"/>
+												</div>
 											</div>
-										<span id="parametersList" style="display:none;">
-											<div class="col-sm-3" id="designationDiv" style="display:none;">
-												<label> DESIGNATION </label>
-												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT DESIGNATION "  id="designationsId" multiple>
-													<!--<option value="0">Select Designation</option>-->
-												</select>
-												<div class="error_colorCls" id="designationErrDiv"></div>
-											</div>
-											<div class="col-sm-3" id="departMentsDiv" style="display:none;">
-											<label> DEPARTMENT</label>
-												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT DEPARTMENT "  id="departmentId" multiple>
-													<!--<option value="0">Select Department</option>-->
-												</select>
-												<div class="error_colorCls" id="departMentsErrDiv"></div>
-											</div>	
-											<div class="col-sm-3" id="nameDivid" style="display:none;">
-											<label> NAME </label>
-												<input type="text" class="form-control clearCls" style="height:40px" onkeyUp="clearData()" id="nameId" placeholder="Please enter Name">
-												<div class="error_colorCls" id="nameErrDivId"></div>
-											</div>	
-											<div class="col-sm-2" id="mobileDivid" style="display:none;">
-											<label>MOBILE NO </label>
-												<input type="text" class="form-control  clearCls " style="height:40px"  onkeyUp="clearData()" id="mobileId" placeholder="Please enter mobile number">
-												<div class="error_colorCls" id="mobileErrDivId"></div>
-											</div>	
-											<div class="col-sm-3" id="emailDivid"  onkeyUp="clearData()" style="display:none;">
-											<label> EMAIL-ID</label>
-												<input type="text" class="form-control  clearCls" style="height:40px" id="emailId" placeholder="Please enter email">
-												<div class="error_colorCls" id="emailErrDivId"></div>
-											</div>	
-											<div class="col-sm-3" id="endorsmentNoDivid" style="display:none;">
-											<label> ENDORSMENT NO </label>
-												<input type="text"  onkeyUp="clearData()" class="form-control  clearCls" style="height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
-												<div class="error_colorCls" id="endorsmentNoErrDivId"></div>
-											</div>
-											<div class="col-sm-12" id="districtConsMandDivId">
-											<div class="col-sm-4" id="districtCandDiv">
-												<label>DISTRICT</label>
-												<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId" multiple>
-													<!--<option value="0">All</option>-->
-												</select>
-												<div class="error_colorCls" id="districtCandErrDiv"></div>
-											</div>
-											<div class="col-sm-4" id="constituencyCanDiv">
-											<label>CONSTITUENCY</label>
-												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT CONSTITUENCY "  id="constituencyCanId" multiple>
-													<!--<option value="0">All</option>-->
-												</select>
-												<div class="error_colorCls" id="constituencyCanErrDiv"></div>
-											</div>
-											<div class="col-sm-4" id="mandalCanDiv">
-											<label>MANDAL</label>
-												<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT MANDAL "  id="mandalCanId" multiple>
-													<!--<option value="0">All</option>-->
-												</select>
-												<div class="error_colorCls" id="mandalCanErrDiv"></div>
-											</div>
-											</div>
-											</span>
-										</div>
-										
-										</div>
-									</div>
-									<!--<div class="m_top20" id="normalSearchDivId"  >
-										<div class="row m_top20">
-												
-										</div>	
-										<div class="row m_top20">
 											
+											<div class="col-sm-3 pull-right" id="statusDiv">
+												 
+													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT STATUS "  id="statusId"  multiple >
+														<!--<option value="0">Select Status</option>-->
+													</select>
+											</div>	
+											
+											<div class="col-sm-2 pull-right" id="advancedSearchButtonDivId">
+											  <label class="text-capitalize">
+											  <span class="btn btn-success btn-md"><input type="checkbox"  id="advanceSearchBtnId">Advanced Search</input></span>
+											 </label>
+										   </div>
 										</div>
-							    	</div>-->
-									<!--<div class="row m_top20" id="advancedSearchDivId" style="display:none;">
-										<div class="col-sm-6">	
-											<div style="border:1px solid #ddd;padding:10px;box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);">
-												<h4 class="font_weight f_18">ADVANCED SEARCH WISE : </h4>
-												<div class="m_top10">
-													<label class="radio-inline m_top5">
-														<input type="radio"  class="advancedSrchCls"  name="optradio1" value="name" checked> NAME
-													</label>
-													<label class="radio-inline m_top5">
-														<input type="radio" class="advancedSrchCls"  name="optradio1" value="mobileNo"> MOBILE NO
-													</label>
-													<label class="radio-inline m_top5">
-														<input type="radio" class="advancedSrchCls"  name="optradio1" value="refCode"> ENDORSMENT ID
-													</label>
-													<label class="radio-inline m_top5">
-														<input type="radio" class="advancedSrchCls"  name="optradio1" value="emailId"> EMAIL-ID
-													</label>
+										<div  style="border:1px solid lightgrey;padding-top:10px;padding-bottom:10px">
+											<div class="row">
+											<div class="col-sm-12">
+											<div class="error_colorCls" id="errMsgId"></div>
+												<div class="col-sm-3" id="locationDivlId">	
+													<label> Search By</label>
+													<select class="form-control chosen-select clearDataCls" id="locationSelId" >
+														<option value="all">All</option>
+														<option value="work"> Work Location wise</option>
+														<option value="representee"> Representee Location wise </option>
+														<option value="referral"> Referral Location wise</option>
+														<option value="referrelDesignation"> Referral Designation wise </option>
+														<option value="representeeDesignation"> Representee Designation wise </option>
+														<option value="department">Department wise </option>
+														<option value="name"> Name</option>
+														<option value="mobile"> Mobile No</option>
+														<option value="email"> Email</option>
+														<option value="endorsmentNO"> Endorsment No </option>
+																	
+													</select>
+													<div class="error_colorCls" id="locationErrDivlId"></div>
 												</div>
-												<div class="row m_top10">
-													<div class="col-sm-12">
-														<input type="text" class="form-control" style="text-align:center;height:55px" id="advancedSearchVal">
-													</div>
+											<span id="parametersList" style="display:none;">
+												<div class="col-sm-3" id="designationDiv" style="display:none;">
+													<label> DESIGNATION </label>
+													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT DESIGNATION "  id="designationsId" multiple>
+														<!--<option value="0">Select Designation</option>-->
+													</select>
+													<div class="error_colorCls" id="designationErrDiv"></div>
+												</div>
+												<div class="col-sm-3" id="referralNameDiv" style="display:none;">
+												<label> REFERRAL NAME</label>
+													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT REFERRAL"  id="referralNameId" multiple>
+														<!--<option value="0">Select Department</option>-->
+													</select>
+													<div class="error_colorCls" id="referralNameErrDiv"></div>
+												</div>
+												<div class="col-sm-3" id="departMentsDiv" style="display:none;">
+												<label> DEPARTMENT</label>
+													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT DEPARTMENT "  id="departmentId" multiple>
+														<!--<option value="0">Select Department</option>-->
+													</select>
+													<div class="error_colorCls" id="departMentsErrDiv"></div>
+												</div>	
+												<div class="col-sm-3" id="nameDivid" style="display:none;">
+												<label> NAME </label>
+													<input type="text" class="form-control clearCls" style="height:40px" onkeyUp="clearData()" id="nameId" placeholder="Please enter Name">
+													<div class="error_colorCls" id="nameErrDivId"></div>
+												</div>	
+												<div class="col-sm-2" id="mobileDivid" style="display:none;">
+												<label>MOBILE NO </label>
+													<input type="text" class="form-control  clearCls " style="height:40px"  onkeyUp="clearData()" id="mobileId" placeholder="Please enter mobile number">
+													<div class="error_colorCls" id="mobileErrDivId"></div>
+												</div>	
+												<div class="col-sm-3" id="emailDivid"  onkeyUp="clearData()" style="display:none;">
+												<label> EMAIL-ID</label>
+													<input type="text" class="form-control  clearCls" style="height:40px" id="emailId" placeholder="Please enter email">
+													<div class="error_colorCls" id="emailErrDivId"></div>
+												</div>	
+												<div class="col-sm-3" id="endorsmentNoDivid" style="display:none;">
+												<label> ENDORSMENT NO </label>
+													<input type="text"  onkeyUp="clearData()" class="form-control  clearCls" style="height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
+													<div class="error_colorCls" id="endorsmentNoErrDivId"></div>
 												</div>
 											</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-12" id="districtConsMandDivId" style="display:none;">
+												<div class="col-sm-4" id="districtCandDiv">
+													<label>DISTRICT</label>
+													<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId" multiple>
+														<!--<option value="0">All</option>-->
+													</select>
+													<div class="error_colorCls" id="districtCandErrDiv"></div>
+												</div>
+												<div class="col-sm-4" id="constituencyCanDiv">
+												<label>CONSTITUENCY</label>
+													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT CONSTITUENCY "  id="constituencyCanId" multiple>
+														<!--<option value="0">All</option>-->
+													</select>
+													<div class="error_colorCls" id="constituencyCanErrDiv"></div>
+												</div>
+												<div class="col-sm-4" id="mandalCanDiv">
+												<label>MANDAL</label>
+													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT MANDAL "  id="mandalCanId" multiple>
+														<!--<option value="0">All</option>-->
+													</select>
+													<div class="error_colorCls" id="mandalCanErrDiv"></div>
+												</div>
+												</div>
+												</span>
+											</div>
+											</div>
+										
 										</div>
 									</div>
 									<div class="row m_top10">
-										<div class="col-sm-4">
-											<div class="noofWorksSlider" style="border:1px solid lightgrey;padding:10px;">
-												<h5><b>No.Of Works</b></h5>
-												<p class="m_top10">
-													<b class="font_12 cntLeft">0</b><input class="col-sm-12" id="noofWorksSlider" data-slider-id='noofWorksSlider' type="text" data-slider-min="0" data-slider-max="150" data-slider-step="0.5" data-slider-value="0"/><b class="pull-right font_12 cntright">150</b>
-												</p>
-												
-											</div>
-										</div>
-										<div class="col-sm-4">
-											<div class="noofWorksSlider" style="border:1px solid lightgrey;padding:10px">
-												<h5><b>Estimated Amount</b></h5>
-												<p class="m_top10">
-												 <b class="font_12 cntLeft">1 Cr</b><input id="estimatedAmountSlider" type="text" class="span2" value="" data-slider-min="1" data-slider-max="150" data-slider-step="0.5" data-slider-value="[35,130]"/> <b class="pull-right font_12 cntright">150 Cr</b>
-												</p>
-												 
-												
-											</div>
-										</div>
-										<div class="col-sm-4">
-											<div class="noofWorksSlider" style="border:1px solid lightgrey;padding:10px">
-												<h5><b>Pending Days</b></h5>
-												<p class="m_top10">
-													<b class="font_12 cntLeft">0</b><input id="pendingDaysSlider" data-slider-id='pendingDaysSlider' type="text" data-slider-min="0" data-slider-max="150" data-slider-step="0.5" data-slider-value="0"/><b class="pull-right font_12 cntright">150</b>
-												</p>
-												
-												
-											</div>
-										</div>
-									</div>-->
-									<div class="row m_top10">
-										<div class="col-sm-12">						
+										<div class="col-sm-12">
 											<button type ="button" class="btn btn-lg btn-success" id="advanceSearchId" style="cursor: pointer; font-weight: bold; border-radius: 0px;">SEARCH</button>
-										</div> 
+										</div>
 									</div>
 									
 									
