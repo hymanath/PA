@@ -830,7 +830,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	    	//  0 petitonrefCndidateId ,1 name,2 designation ,3 stateId,4 stateName
 	    	// 5 districtId 6 district name 7 constincuyId,8 constincyName, 9 tehsilId,10 teshilName
 	    	// 11 panchayId,12 panchaytname,13 mobilNo,14 emailId,14 desigantionId
-	    	List<Object[]> referalObjs = pmRefCandidateDesignationDAO.getCandidatseDetailsByDesignationAndLocation(dataVo.getDeptId(),dataVo.getLocationLevelId(),dataVo.getLocationValue(),referralCanIds);
+	    	List<Object[]> referalObjs = pmRefCandidateDesignationDAO.getCandidatseDetailsByDesignationAndLocation(dataVo.getDeptId(),dataVo.getLocationLevelId(),dataVo.getLocationValue(),referralCanIds,dataVo.getDesignationIds());
 	    	if(referalObjs != null && referalObjs.size() > 0){
 	    		for( Object[] param : referalObjs ){
 	    			RepresentationRequestVO mainV0 = new RepresentationRequestVO();
