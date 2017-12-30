@@ -196,7 +196,7 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 			query.setParameter("toDate", toDate);
 		}
 		if(desigIds != null && desigIds.size() >0){
-			query.setParameterList("deptIds", desigIds);
+			query.setParameterList("desigIds", desigIds);
 		}
 		return query.list();
 	}
