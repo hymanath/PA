@@ -149,6 +149,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:filterValue) ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("representeeDesignation") && filterValue != null && !filterValue.isEmpty()){
 			sb.append(" and model.pmRepresenteeDesignation.pmDesignation.pmDesignationId in (:filterValue) ");
+		}else if(filterType != null && filterType.equalsIgnoreCase("referralName") && filterValue != null && !filterValue.isEmpty()){
+			sb.append(" and model.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId in (:filterValue) ");
 		}
 		if(inputVO.getFromRange() != null && inputVO.getToRange() != null){
 			sb.append(" and model.petition.noOfWorks between :fromNoOfWorks and :toNoOfWorks " );
@@ -167,7 +169,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			query.setParameterList("searchLevelValues", searchLevelValues);
 		}
 		if(filterType != null && !filterType.equalsIgnoreCase("name") && !filterType.equalsIgnoreCase("email") && filterValue != null && !filterValue.isEmpty()
-				&& (filterType.equalsIgnoreCase("mobile") || filterType.equalsIgnoreCase("endorsmentNO") )){
+				  && (filterType.equalsIgnoreCase("mobile") || filterType.equalsIgnoreCase("endorsmentNO") )){
 			query.setParameter("filterValue", filterValue);
 		}else if(filterValue != null && !filterValue.isEmpty() && !filterType.equalsIgnoreCase("name") && !filterType.equalsIgnoreCase("email")){
 			String[] strArr = filterValue.split(",");
@@ -219,5 +221,19 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		Query query=getSession().createQuery(sb.toString());
 		query.setParameter("petitionId", petitionId);
 		return (Long) query.uniqueResult();
+	}
+	
+	public List<Long> getPmReferralCandidateIdsByDesigIds(List<Long> desigIds){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select distinct model.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId from PmRepresenteeRefDetails model where model.isDeleted ='N' ");
+		if(desigIds!=null && desigIds.size() >0){
+			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:desigIds) ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(desigIds!=null && desigIds.size() >0){
+			query.setParameterList("desigIds", desigIds);
+		}
+		return query.list();
 	}
 }

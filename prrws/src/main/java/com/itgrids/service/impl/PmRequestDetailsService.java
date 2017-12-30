@@ -822,10 +822,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo){
 	    List<RepresentationRequestVO> returnList = new ArrayList<RepresentationRequestVO>();
 	    try {
+	    	
+	    	List<Long> referralCanIds = null;
+	    	if(dataVo.getReprType() != null && dataVo.getReprType().equalsIgnoreCase("referralView")){
+	    		referralCanIds = pmRepresenteeRefDetailsDAO.getPmReferralCandidateIdsByDesigIds(dataVo.getDesignationIds());
+	    	}
 	    	//  0 petitonrefCndidateId ,1 name,2 designation ,3 stateId,4 stateName
 	    	// 5 districtId 6 district name 7 constincuyId,8 constincyName, 9 tehsilId,10 teshilName
 	    	// 11 panchayId,12 panchaytname,13 mobilNo,14 emailId,14 desigantionId
-	    	List<Object[]> referalObjs = pmRefCandidateDesignationDAO.getCandidatseDetailsByDesignationAndLocation(dataVo.getDeptId(),dataVo.getLocationLevelId(),dataVo.getLocationValue());
+	    	List<Object[]> referalObjs = pmRefCandidateDesignationDAO.getCandidatseDetailsByDesignationAndLocation(dataVo.getDeptId(),dataVo.getLocationLevelId(),dataVo.getLocationValue(),referralCanIds);
 	    	if(referalObjs != null && referalObjs.size() > 0){
 	    		for( Object[] param : referalObjs ){
 	    			RepresentationRequestVO mainV0 = new RepresentationRequestVO();
@@ -857,7 +862,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	    			addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[16]));
 	    			addressVO.setParliamentName(commonMethodsUtilService.getCapitalStringValueForObject(param[17]));
 	    			
-	    			if(dataVo.getLocationLevelId().longValue() ==10L){
+	    			if(dataVo.getLocationLevelId()!= null && dataVo.getLocationLevelId().longValue() ==10L){
 	    				addressVO.setAssemblyId(addressVO.getParliamentId());
 		    			addressVO.setAssemblyName(addressVO.getParliamentName());
 	    			}

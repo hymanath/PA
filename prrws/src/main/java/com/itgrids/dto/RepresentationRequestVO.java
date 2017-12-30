@@ -65,6 +65,17 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private Long petitionGrantId;
 	private Long petitionStatusId;
 	private String remarks;
+	private List<Long> designationIds = null;
+	
+	
+	public List<Long> getDesignationIds() {
+		return designationIds;
+	}
+
+	public void setDesignationIds(List<Long> designationIds) {
+		this.designationIds = designationIds;
+	}
+
 	public String getReprType() {
 		return reprType;
 	}

@@ -206,7 +206,7 @@ $(document).on("change","#locationSelId",function(){
 	$('.clearCls').val('');
 	$("#departMentsDiv").hide();
 	$("#designationDiv").hide()//inputSearchDivid
-	//$("#referralNameDiv").hide()//inputSearchDivid
+	$("#referralNameDiv").hide()//inputSearchDivid
 	$("#nameDivid").hide();
 	$("#mobileDivid").hide();
 	$("#emailDivid").hide();
@@ -298,7 +298,8 @@ $(document).on("change","#locationSelId",function(){
 		$('#advanceSearchBtnId').prop("checked",false);
 		  getDesignationsBySearchType(searchType,"designationsId");
 		$("#designationDiv").show();
-		//$("#referralNameDiv").show();
+		if(searchType == 'referrelDesignation')
+		$("#referralNameDiv").show();
 		$("#districtConsMandDivId").hide();
 		$("#advancedSearchButtonDivId").show();
 		$("input[type='checkbox']").prop({disabled: false});
@@ -461,6 +462,13 @@ $(document).on("change","#designationsId",function(){
 	var searchType=$("#locationSelId").val();
 	var dateRangeStr =$("#dateRangePicker").val();
 	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
+	var desigIds= [];
+	var desig = $(this).val();
+	if(desig != null || desig !=0){
+			desigIds =  desig;
+			getPetitionReferredMemberDetails(desigIds);
+	}
+	
 });
 $(document).on("change","#departmentId",function(){
 	var searchType=$("#locationSelId").val();
@@ -797,6 +805,16 @@ function getRepresentativeSearchDetails1(){
 			 return;
 			}
 	}
+	if(filterType == 'referrelDesignation'){
+	 var refrName=$("#referralNameId").val();	
+	 if(refrName != null && refrName != 0){
+		 filterValue='';
+		 filterType = "referralName";
+		 for(var i in refrName){
+			filterValue = filterValue+refrName[i]+",";
+		}
+	 }
+	}
    }else if(filterType == 'department'){
 	    var depts =$("#departmentId").val();
 		for(var i in depts){
@@ -817,6 +835,7 @@ function getRepresentativeSearchDetails1(){
    }else if(filterType == 'endorsmentNO'){
 	    filterValue=$("#endorsmentNoId").val();
    }
+   
 	var districtId=$("#districtCandId").val();
 	 var constituencyId=$("#constituencyCanId").val();
 	 var mandalId=$("#mandalCanId").val();
@@ -1238,4 +1257,30 @@ $(document).on("click",".docsViewCls",function(){
 
 function openDoc(docmnt){
 	 window.open(docmnt);
+}
+
+function getPetitionReferredMemberDetails(desigIds){
+     var json = {
+		 designationIds:desigIds,
+		 reprType :"referralView"
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionReferredMemberDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		$("#referralNameId").empty();
+		if(result !=null && result.length >0){
+			//$("#"+selBoxId).html("<option value='0'>Select Designation</option>");
+			for(var i in result){
+				$("#referralNameId").append("<option value='"+result[i].petitionMemberVO.id+"'>"+result[i].petitionMemberVO.name+"-"+result[i].petitionMemberVO.memberType+"-"+result[i].candidateAddressVO.assemblyName+"</option>");
+			}
+		}
+		$("#referralNameId").trigger('chosen:updated');
+	});	
 }
