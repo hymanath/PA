@@ -103,11 +103,11 @@
 													</select>
 											</div>	
 											
-											<div class="col-sm-2 pull-right" id="advancedSearchButtonDivId">
+											<!--<div class="col-sm-2 pull-right" id="advancedSearchButtonDivId">
 											  <label class="text-capitalize">
 											  <span class="btn btn-success btn-md"><input type="checkbox"  id="advanceSearchBtnId">Advanced Search</input></span>
 											 </label>
-										   </div>
+										   </div>-->
 										</div>
 										<div  style="border:1px solid lightgrey;padding-top:10px;padding-bottom:10px">
 											<div class="row">
@@ -173,7 +173,12 @@
 													<input type="text"  onkeyUp="clearData()" class="form-control  clearCls" style="height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
 													<div class="error_colorCls" id="endorsmentNoErrDivId"></div>
 												</div>
-											</div>
+												<div class="col-sm-2 pull-right" id="advancedSearchButtonDivId">
+												  <label class="text-capitalize">
+												  <span class="btn btn-success btn-md"><input type="checkbox"  id="advanceSearchBtnId">Advanced Search</input></span>
+												 </label>
+												</div>
+										   </div>
 											</div>
 											<div class="row">
 												<div class="col-sm-12 m_top10" id="districtConsMandDivId" style="display:none;">
@@ -207,7 +212,7 @@
 									</div>
 									<div class="row m_top10">
 										<div class="col-sm-12">
-											<button type ="button" class="btn btn-lg btn-success" id="advanceSearchId" style="cursor: pointer; font-weight: bold; border-radius: 0px;">SEARCH</button>
+											<button type ="button" class="btn btn-lg btn-success pull-right" id="advanceSearchId" style="cursor: pointer; font-weight: bold; border-radius: 0px;">SEARCH</button>
 										</div>
 									</div>
 									
