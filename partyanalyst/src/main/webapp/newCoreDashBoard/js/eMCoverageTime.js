@@ -206,47 +206,58 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 					}
 				str+='</tr>';			
 			}
-			/*for(var i in result){
-				//var perc = ((pEarned/pPos) * 100).toFixed(3);
-				var totalPer = result.length*100;
+			str+='</tbody>';
+			for(var i in result){
+				var channalId=0;
 				if(i== 0){
 				str+='<tr>';
 					str+='<td>Grand Total</td>';
 					if(result[i].coreDashBoardVOList != null && result[i].coreDashBoardVOList.length > 0){
 						for(var j in result[i].coreDashBoardVOList){
-				if(result[i].coreDashBoardVOList[j].organization == "NCBN" || result[i].coreDashBoardVOList[j].organization == "TDP"){
-					str+='<td>'+result[i].coreDashBoardVOList[j].totalPostive+'</td>';
-					str+='<td>'+((result[i].coreDashBoardVOList[j].totalPositivePerc/totalPer)*100).toFixed(1)+'</td>';
-					str+='<td>'+result[i].coreDashBoardVOList[j].totalNegative+'</td>';
-					str+='<td>'+((result[i].coreDashBoardVOList[j].totalNegativePerc/totalPer)*100).toFixed(1)+'</td>';
-				}else if(result[i].coreDashBoardVOList[j].organization == "YSJ" || result[i].coreDashBoardVOList[j].organization == "YSRC"){
-					str+='<td>'+result[i].coreDashBoardVOList[j].totalPostive+'</td>';
-					str+='<td>'+((result[i].coreDashBoardVOList[j].totalPositivePerc/totalPer)*100).toFixed(1)+'</td>';
-					str+='<td>'+result[i].coreDashBoardVOList[j].totalNegative+'</td>';
-					str+='<td>'+((result[i].coreDashBoardVOList[j].totalNegativePerc/totalPer)*100).toFixed(1)+'</td>';
-				}else if(result[i].coreDashBoardVOList[j].organization == "LN" || result[i].coreDashBoardVOList[j].organization == "INC" ){
-					str+='<td>'+result[i].coreDashBoardVOList[j].totalPostive+'</td>';
-					str+='<td>'+((result[i].coreDashBoardVOList[j].totalPositivePerc/totalPer)*100).toFixed(1)+'</td>';
-					str+='<td>'+result[i].coreDashBoardVOList[j].totalNegative+'</td>';
-					str+='<td>'+((result[i].coreDashBoardVOList[j].totalNegativePerc/totalPer)*100).toFixed(1)+'</td>';
-				}else if(result[i].coreDashBoardVOList[j].organization == "PK" || result[i].coreDashBoardVOList[j].organization == "BJP"){
-					str+='<td>'+result[i].coreDashBoardVOList[j].totalPostive+'</td>';
-					str+='<td>'+((result[i].coreDashBoardVOList[j].totalPositivePerc/totalPer)*100).toFixed(1)+'</td>';
-					str+='<td>'+result[i].coreDashBoardVOList[j].totalNegative+'</td>';
-					str+='<td>'+((result[i].coreDashBoardVOList[j].totalNegativePerc/totalPer)*100).toFixed(1)+'</td>';
-				} 
-					 
-			   }
+							var totalCount=result[i].coreDashBoardVOList[j].totalPostive+result[i].coreDashBoardVOList[j].totalNegative;
+					if(result[i].coreDashBoardVOList[j].totalPostive !=null && result[i].coreDashBoardVOList[j].totalPostive>0){
+						str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].totalPostive+'</a></td>';
+						//str+='<td>'+result[i].coreDashBoardVOList[j].totalPostive+'</td>';
+					}else{
+						str+='<td> -</td>';
+					}
+					if(totalCount !=null && totalCount>0){
+						str+='<td>'+((result[i].coreDashBoardVOList[j].totalPostive/totalCount)*100).toFixed(1)+'</td>';
+					}else{
+						str+='<td> -</td>';
+					}
+					if(result[i].coreDashBoardVOList[j].totalNegative !=null && result[i].coreDashBoardVOList[j].totalNegative>0){
+						str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].totalNegative+'</a></td>';
+						//str+='<td>'+result[i].coreDashBoardVOList[j].totalNegative+'</td>';
+					}else{
+						str+='<td> -</td>';
+					}
+					if(totalCount !=null && totalCount>0){
+						str+='<td>'+((result[i].coreDashBoardVOList[j].totalNegative/totalCount)*100).toFixed(1)+'</td>';
+					}else{
+						str+='<td> -</td>';
+					}
+				 
+			    }
 					}
 				str+='</tr>';
 				}
-			}*/
-		str+='</tbody>';
+			}
+		
 	str+='</table>';
 	str+='</div>';
 	
 	$("#EMCoverageTimeSummaryDivId").html(str);
-	$("#dataTableCanAndPartyWiseNewsChannel").dataTable({searching: false, paging: false});
+	$("#dataTableCanAndPartyWiseNewsChannel").dataTable({
+		"iDisplayLength": 10,
+		 "aaSorting": [[ 0, "desc" ]], 
+		"aLengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
+		/* "scrollX":        true,
+		"scrollCollapse": true,
+		"fixedColumns":   {
+			"leftColumns": 1,
+		} */
+	});
 }
 
 function getDayWiseCandidateCoverageTime(type,categoryId,isParticipated){
