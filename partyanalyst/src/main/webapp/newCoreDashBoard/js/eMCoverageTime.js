@@ -206,7 +206,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 					}
 				str+='</tr>';			
 			}
-			for(var i in result){
+			/*for(var i in result){
 				//var perc = ((pEarned/pPos) * 100).toFixed(3);
 				var totalPer = result.length*100;
 				if(i== 0){
@@ -240,7 +240,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 					}
 				str+='</tr>';
 				}
-			}
+			}*/
 		str+='</tbody>';
 	str+='</table>';
 	str+='</div>';
