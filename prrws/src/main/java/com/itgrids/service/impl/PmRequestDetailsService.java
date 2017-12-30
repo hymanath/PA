@@ -1957,4 +1957,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return "Endt NO. "+outputStr;
 		}
+		public ResultStatus updatePetitionsStatusDetails(Long userId,List<Long> petitionIdsList, List<Long> subWorkIdsList,String remark,Long statusId){
+			return null;
+		}
 }

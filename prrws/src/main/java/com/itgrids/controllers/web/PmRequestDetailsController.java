@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
+import com.itgrids.dto.PetitionTrackingVO;
 import com.itgrids.dto.PmRequestEditVO;
 import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.RepresenteeViewVO;
 import com.itgrids.dto.ResponseVO;
+import com.itgrids.dto.ResultStatus;
 import com.itgrids.dto.UserVO;
 import com.itgrids.service.ILocationDetailsService;
 import com.itgrids.service.IPmRequestDetailsService;
@@ -220,5 +222,20 @@ public class PmRequestDetailsController {
 				userId = userVO.getUserId();
 			}
 	       return pmRequestDetailsService.getLeadWiseOverviewDetails(userId,inputMap.get("fromDate"),inputMap.get("toDate"));
+	    }
+	    
+	    @RequestMapping(value ="/updatePetitionStatusDetails",method = RequestMethod.POST)
+	    public @ResponseBody ResultStatus updatePetitionsStatusDetails(@RequestBody PetitionTrackingVO inputVO,HttpServletRequest request) {
+	    Long userId =null;
+	    HttpSession session=request.getSession();
+	    UserVO userVO = (UserVO) session.getAttribute("USER"); 
+	    
+	    if(userVO != null){
+	    userId = userVO.getUserId();
+	    }else{
+	    return null;
+	    }
+	   
+	    return pmRequestDetailsService.updatePetitionsStatusDetails(userId,inputVO.getPetitionIdsList(),inputVO.getSubworkIdsList(),inputVO.getRemarks(),inputVO.getStatusId());
 	    }
 }

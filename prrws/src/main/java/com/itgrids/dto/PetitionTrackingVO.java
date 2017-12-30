@@ -1,5 +1,7 @@
 package com.itgrids.dto;
 
+import java.util.ArrayList;
+import java.util.List;
 public class PetitionTrackingVO implements java.io.Serializable{
 
 	/**
@@ -14,6 +16,9 @@ public class PetitionTrackingVO implements java.io.Serializable{
 	private Long documentId;
 	private Long pmDeptDesignationOfficerId;
 	private Long userId;
+	private Long statusId;
+    private List<Long> petitionIdsList = new ArrayList<Long>();
+    private List<Long> subworkIdsList = new ArrayList<Long>();
 		
 	public Long getPetitionId() {
 		return petitionId;
@@ -63,6 +68,22 @@ public class PetitionTrackingVO implements java.io.Serializable{
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
-	
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public List<Long> getPetitionIdsList() {
+		return petitionIdsList;
+	}
+	public void setPetitionIdsList(List<Long> petitionIdsList) {
+		this.petitionIdsList = petitionIdsList;
+	}
+	public List<Long> getSubworkIdsList() {
+		return subworkIdsList;
+	}
+	public void setSubworkIdsList(List<Long> subworkIdsList) {
+		this.subworkIdsList = subworkIdsList;
+	}
 }
