@@ -943,7 +943,7 @@ function getITSectorCategoryWiseDetails(type,typeOfBlock){
 						}
 						str+='<div class="row m_top10">';
 							str+='<div class="col-sm-4">';
-								str+='<h4 class="overview-click" style="cursor:pointer;" attr_type="'+type+'">'+result[i].noProjects+'</h4>';
+								str+='<h4 class="overview-click" style="cursor:pointer;color:rgb(51, 122, 183);" attr_type="'+type+'">'+result[i].noProjects+'</h4>';
 								str+='<p><small>INDUSTRIES</small></p>';
 							str+='</div>';
 							str+='<div class="col-sm-4">';
@@ -1047,7 +1047,7 @@ function getITSectorLeadCategoryWiseDetails(type,sector){
 				}
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-4">';
-						str+='<h4 class="overview-click" attr_category="'+result[i].category+'" style="cursor:pointer;" attr_type="'+type+'">'+result[i].categoryCount+'</h4>';
+						str+='<h4 class="overview-click" attr_category="'+result[i].category+'" style="cursor:pointer;color:rgb(51, 122, 183);"  attr_type="'+type+'">'+result[i].categoryCount+'</h4>';
 						str+='<p><small>INDUSTRIES</small></p>';
 					str+='</div>';
 					str+='<div class="col-sm-4">';
@@ -1223,7 +1223,7 @@ function getITDistrictWiseDetails(type,category,divType){
 										{
 											str+='<td class="dropedCls'+type+'" style="display:none;">-</td>';
 										}else{
-											str+='<td class="dropedCls'+type+' sectorWiseCuntCls" style="display:none;cursor:pointer;"  attr_block_name="'+type+'" attr_category="'+result[i].subList[j].category+'" attr_district="'+result[i].district+'">'+result[i].subList[j].noProjects+'</td>';
+											str+='<td class="dropedCls'+type+' sectorWiseCuntCls" style="cursor:pointer;display:none;color:rgb(51, 122, 183);"  attr_block_name="'+type+'" attr_category="'+result[i].subList[j].category+'" attr_district="'+result[i].district+'">'+result[i].subList[j].noProjects+'</td>';
 										}
 										
 										if(result[i].subList[j].investment == 'undefined' || result[i].subList[j].investment === undefined)
@@ -1244,7 +1244,7 @@ function getITDistrictWiseDetails(type,category,divType){
 										{
 											str+='<td>-</td>';
 										}else{
-											str+='<td class="sectorWiseCuntCls" attr_block_name="'+type+'" attr_category="'+result[i].subList[j].category+'" attr_district="'+result[i].district+'" style="cursor:pointer;">'+result[i].subList[j].noProjects+'</td>';
+											str+='<td class="sectorWiseCuntCls" attr_block_name="'+type+'" attr_category="'+result[i].subList[j].category+'" attr_district="'+result[i].district+'" style="cursor:pointer;color:rgb(51, 122, 183);">'+result[i].subList[j].noProjects+'</td>';
 										}
 										if(result[i].subList[j].category != null && result[i].subList[j].category == 'GREEN'){
 											str+='<td>-</td>';
@@ -3293,7 +3293,11 @@ for(var i in daysArr){
 					}
 				},
 			tooltip: {
-				pointFormat: 'Pendency:<b>{point.y}</b>'
+				 positioner: function () {
+					return { x: 20, y: 50 };
+				},
+				backgroundColor:'#fff',
+				pointFormat: '<span style="background-color:#fff">Pendency:<b>{point.y}</b></span>'
 			},
 			series: [{
 				name: 'Pendency',
@@ -4134,7 +4138,35 @@ function buildMeesevaSLADepartmentDetails(result,divId,blockId){
 	str+='</div>';
 	
 	$("#meesevaSlaDepartmentWise"+divId+blockId).html(str);
-	$("#departmentWiseMeesavaSla").dataTable();
+	$("#departmentWiseMeesavaSla").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+				title:	   divId,
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+			}/*, 
+			{
+				//extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o" attr_id="departmentWiseMeesavaSla"></i>',
+				titleAttr: 'PDF',
+				//title:	   divId,
+				//filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				//orientation: "landscape",
+				//pageSize:'A3',
+				//customize: function (doc) {
+				//	doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				//}
+			} */
+		]
+	});
 }
 function getMeesevaSLAServiceWiseDetails(divId,blockId){
 	$("#meesevaSlaServiceWise"+divId+blockId).html(spinner);
@@ -4248,7 +4280,35 @@ function buildMeesevaSLAServiceWiseDetails(result,divId,blockId){
 	str+='</div>';
 	
 	$("#meesevaSlaServiceWise"+divId+blockId).html(str);
-	$("#serviceWiseMeesavaSla").dataTable();
+	$("#serviceWiseMeesavaSla").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+				title:	   divId,
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+			}/* ,
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF',
+				title:	   divId,
+				filename:  divId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				orientation: "landscape",
+				pageSize:'A3',
+				customize: function (doc) {
+					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				}
+			} */
+		]
+	});
 }
 
 function getMeesevaKPIOverViewDetails(type,divId,blockId){
@@ -4405,7 +4465,7 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 				str+='<div class="panel panel-default panel-black">';
 						str+='<div class="panel-heading" role="tab" id="headingNewOnlinServiceKPI">';
 							str+='<a role="button" class="panelCollapseIcon NewOnlinServiceKPICollapsed collapsed"  data-toggle="collapse" data-parent="#accordionNewOnlinServiceKPI" href="#collapseNewOnlinServiceKPI" aria-expanded="true" aria-controls="collapseNewOnlinServiceKPI">';
-								str+='<h4 class="panel-title">NEW ONLINE SERVICES</h4>';
+								str+='<h4 class="panel-title">NEW SERVICES</h4>';
 							str+='</a>';
 						str+='</div>';
 					str+='<div id="collapseNewOnlinServiceKPI" class="panel-collapse collapse newOnlinServiceKPICollapsedIN" role="tabpanel" aria-labelledby="headingNewOnlinServiceKPI">';
@@ -5130,7 +5190,7 @@ function buildMeesevaKPINewOnlineServiceOverviewCount(result){
 	globalNewOnlServ2016 = result.onLineServices2016;
 	globalNewOnlServ2017 = result.onLineServices2017;
 	var str='';
-		str+='<h4 class="text-center"><b style="font-size: 20px !important;">New Online Services - '+result.onLineServicesCount+'</b></h4>';
+		str+='<h4 class="text-center"><b style="font-size: 20px !important;">New Services - '+result.onLineServicesCount+'</b></h4>';
 		str+='<div class="row m_top10">';
 			str+='<div class="col-sm-3 m_top10">';
 				str+='<div style="border-right:1px solid #000;text-align:center;">';
@@ -5227,4 +5287,3 @@ $(document).on("click","#droppedForCheckId",function(){
 	else
 		$('.dropedCls'+divType).hide();	
 });
- 
