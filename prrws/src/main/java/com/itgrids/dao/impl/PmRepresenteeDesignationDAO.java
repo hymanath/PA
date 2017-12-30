@@ -64,7 +64,7 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 			query.setParameterList("deptIds", deptIds);
 		}
 		if(desigIds != null && desigIds.size() >0){
-			query.setParameterList("deptIds", desigIds);
+			query.setParameterList("desigIds", desigIds);
 		}
 		if(fromDate != null && toDate != null){
 			query.setParameter("fromDate", fromDate);
@@ -168,7 +168,7 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 			query.setParameter("toDate", toDate);
 		}
 		if(desigIds != null && desigIds.size() >0){
-			query.setParameterList("deptIds", desigIds);
+			query.setParameterList("desigIds", desigIds);
 		}
 		return query.list();
 	}
