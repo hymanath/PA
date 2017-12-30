@@ -343,8 +343,8 @@ function buildCompleteOrStatusOverviewDetails(result){
 getLeadWiseOverviewDetails();
 function getLeadWiseOverviewDetails(){
 	$("#completeOverviewId").html(spinner);
-	$("#statusOverviewId").html(spinner);
-	$("#myActionsId").html(spinner);
+	//$("#leadWiseOverviewId").html(spinner);
+    $("#myActionsId").html(spinner);
 var json = {
 		 fromDate :"",
 		 toDate:""
@@ -360,5 +360,72 @@ var json = {
 		}
 	}).done(function(result){
 		
+		/* if(result!= null){
+			buildLeadWiseOverviewDetails(result);
+		}
+		else{
+			$("#leadWiseOverviewId").html("No data available");
+		} */
 	});	
 }
+
+function buildLeadWiseOverviewDetails(result){
+	var str='';
+	var count=0;
+	//str+='<div class="row">';
+	for(var i in result){
+		count++;
+		str+='<div class="col-sm-3">';
+			str+='<div class="panel panel-default">';
+				str+='<div class="panel-heading" style="background-color:#D6E8F2">';
+					if(result[i].name.length > 28)
+					{
+						str+='<h5><span class="count_cls">'+count+'</span><b class="tooltipCls" title="'+result[i].name+'">'+result[i].name.substring(0,26)+'..</b></h5>';
+						
+					}else{
+						str+='<h5><span class="count_cls">'+count+'</span><b  class="tooltipCls" >'+result[i].name+'</b></h5>';
+						}
+					
+				str+='</div>';
+				str+='<div class="panel-body">';
+				
+					str+='<div class="row m_top5">';
+						str+='<div class="col-sm-6">';
+								str+='<p>Representations</p>';
+								str+='<h4><b>'+result[i].totalRepresents+'</b></h4>';
+							str+='</div>';
+							str+='<div class="col-sm-6">';
+								str+='<p>Works</p>';
+								str+='<h4><b>'+result[i].noOfWorks+'</b></h4>';
+							str+='</div>';
+					str+='</div>';
+					str+='<div class="row m_top5">';
+						for(var j in result[i].statusList){
+							str+='<div class="col-sm-6" style="padding:2px">';
+								str+='<div class="well pad_5 m_bottom_0">';
+									str+='<div class="row">';
+										if(result[i].statusList[j].id == 1){
+											str+='<div class="col-sm-6"><span>Pending</span><br><b>'+result[i].statusList[j].totalRepresents+'</b></div>';
+										}else if(result[i].statusList[j].id == 2){
+											str+='<div class="col-sm-6"><span>Completed</span><br><b>'+result[i].statusList[j].totalRepresents+'</b></div>';
+										}
+										//str+='<div class="col-sm-6"><span>Pending</span><br><b>'+result[i].statusList[j].totalRepresents+'</b></div>';
+										str+='<div class="col-sm-6"><span>Works</span><br><b>'+result[i].statusList[j].noOfWorks+'</b></div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						}
+					str+='</div>';
+					
+                str+='</div>';
+				
+			str+='</div>';
+		str+='</div>';
+
+	}
+	//str+='</div>';
+	$("#leadWiseOverviewId").html(str);
+	$(".tooltipCls").tooltip();
+}
+
+
