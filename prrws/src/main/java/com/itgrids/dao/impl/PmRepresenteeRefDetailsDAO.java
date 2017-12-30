@@ -97,7 +97,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		
 		if(filterType != null && (filterType.equalsIgnoreCase("work") || filterType.equalsIgnoreCase("department") )){
 			sb.append(" left join model1.locationAddress locationAddress " );
-		}else if(filterType != null && filterType.equalsIgnoreCase("referrelDesignation") ){
+		}else if(filterType != null && (filterType.equalsIgnoreCase("referrelDesignation") || filterType.equalsIgnoreCase("referralName"))){
 			sb.append(" left join model.pmRefCandidateDesignation.pmRefCandidate.address locationAddress " );
 		}else if(filterType != null && filterType.equalsIgnoreCase("representeeDesignation") ){
 			sb.append(" left join model.pmRepresenteeDesignation.pmRepresentee.userAddress locationAddress " );

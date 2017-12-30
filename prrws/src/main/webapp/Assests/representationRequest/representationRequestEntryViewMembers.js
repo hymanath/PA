@@ -202,6 +202,8 @@ if($('#advanceSearchBtnId').prop( "checked")){
 }
 $("#advancedSearchButtonDivId").show();
 $(document).on("change","#locationSelId",function(){
+	$("#referralNameId").html('<option value="0">Select Referral Name</option>');
+	$("#referralNameId").trigger('chosen:updated');
 	$("#errMsgId").html("");
 	$('.clearCls').val('');
 	$("#departMentsDiv").hide();
@@ -281,7 +283,6 @@ $(document).on("change","#locationSelId",function(){
 			
 	}else if(searchType == 'referrelDesignation' || searchType == 'representeeDesignation'){
 	
-	
 	$("#districtCandId").html('<option value="0">Select District</option>');
 	$("#districtCandId").trigger('chosen:updated');
 	
@@ -294,23 +295,40 @@ $(document).on("change","#locationSelId",function(){
 			$("#mobileId").val(' ');
 			$("#emailId").val(' ');
 			$("#endorsmentNoId").val(' ');
-			
-		$('#advanceSearchBtnId').prop("checked",false);
-		  getDesignationsBySearchType(searchType,"designationsId");
-		$("#designationDiv").show();
-		if(searchType == 'referrelDesignation')
-		$("#referralNameDiv").show();
-		$("#districtConsMandDivId").hide();
-		$("#advancedSearchButtonDivId").show();
-		$("input[type='checkbox']").prop({disabled: false});
-		 $('input[type="checkbox"]').click(function(){
+			if(searchType == 'referrelDesignation'){
+		//if($('#advanceSearchBtnId').prop( "checked")){
+				$("input[type='checkbox']").prop({disabled: true});
+			//}
+			//$("input[type='checkbox']").prop({disabled: false});
+		/*  $('input[type="checkbox"]').click(function(){
            if($(this).prop("checked") == true){
 		   $("#districtConsMandDivId").show();
 	    }else if($(this).prop("checked") == false){
 			 $("#districtConsMandDivId").hide();
 		} 
 			 
-		 });
+		 }); */
+			}else{
+				if($('#advanceSearchBtnId').prop( "checked")){
+				$("input[type='checkbox']").prop({disabled: true});
+			}
+			$("input[type='checkbox']").prop({disabled: false});
+		  $('input[type="checkbox"]').click(function(){
+           if($(this).prop("checked") == true){
+		   $("#districtConsMandDivId").show();
+	    }else if($(this).prop("checked") == false){
+			 $("#districtConsMandDivId").hide();
+		} 
+			 
+		 }); 
+			}
+		  getDesignationsBySearchType(searchType,"designationsId");
+		$("#designationDiv").show();
+		if(searchType == 'referrelDesignation')
+		$("#referralNameDiv").show();
+		$("#districtConsMandDivId").hide();
+		$("#advancedSearchButtonDivId").show();
+		
 	}else if(searchType == 'department'){
 	$("#districtCandId").html('<option value="0">Select District</option>');
 	$("#districtCandId").trigger('chosen:updated');
@@ -459,6 +477,8 @@ $(document).on("change","#constituencyCanId",function(){
 	getMandalsBySearchTypeAndConstituency(searchType,consituencyId,'mandalCanId');
 });
 $(document).on("change","#designationsId",function(){
+	$("#referralNameId").html('<option value="0">Select Referral Name</option>');
+	$("#referralNameId").trigger('chosen:updated');
 	var searchType=$("#locationSelId").val();
 	var dateRangeStr =$("#dateRangePicker").val();
 	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
@@ -626,7 +646,8 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 }
 
 function getDesignationsBySearchType(searchType,selBoxId){
-	
+	$("#referralNameId").html('<option value="0">Select Referral Name</option>');
+	$("#referralNameId").trigger('chosen:updated');
  var json = {
 		 searchType :searchType,
 		 fromDate :startDate,
@@ -1278,7 +1299,7 @@ function getPetitionReferredMemberDetails(desigIds){
 		if(result !=null && result.length >0){
 			//$("#"+selBoxId).html("<option value='0'>Select Designation</option>");
 			for(var i in result){
-				$("#referralNameId").append("<option value='"+result[i].petitionMemberVO.id+"'>"+result[i].petitionMemberVO.name+"-"+result[i].petitionMemberVO.memberType+"-"+result[i].candidateAddressVO.assemblyName+"</option>");
+				$("#referralNameId").append("<option value='"+result[i].referrerCandidateId+"'>"+result[i].petitionMemberVO.name+"-"+result[i].petitionMemberVO.memberType+"-"+result[i].candidateAddressVO.assemblyName+"</option>");
 			}
 		}
 		$("#referralNameId").trigger('chosen:updated');

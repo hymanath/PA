@@ -29,7 +29,7 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 	}
 	
 	
-	public List<Object[]> getCandidatseDetailsByDesignationAndLocation(Long designationId,Long locationLevelId,Long locationValue,List<Long> referralCanIds){
+	public List<Object[]> getCandidatseDetailsByDesignationAndLocation(Long designationId,Long locationLevelId,Long locationValue,List<Long> referralCanIds,List<Long> desiIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.pmRefCandidateId,model.pmRefCandidate.name,model.pmDesignation.designation ");//0,1,2
 		sb.append(",state.stateId,state.stateName ");//3,4
@@ -85,6 +85,10 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		}else if(locationLevelId != null && locationLevelId.longValue() == 10L && locationValue != null && locationValue.longValue() > 0){
 			sb.append(" and model.pmRefCandidate.address.parliamentId = :locationValue ");
 		}
+		
+		if(desiIds != null && desiIds.size() >0){
+			sb.append(" and model.pmDesignation.pmDesignationId in (:desiIds) ");
+		}
 		Query query = getSession().createQuery(sb.toString());
 		if(designationId != null && designationId.longValue() > 0L){
 			query.setParameter("designationId", designationId);
@@ -96,6 +100,9 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		}
 		if(referralCanIds != null && referralCanIds.size() >0){
 			query.setParameterList("referralCanIds", referralCanIds);
+		}
+		if(desiIds != null && desiIds.size() >0){
+			query.setParameterList("desiIds", desiIds);
 		}
 	return query.list();
 	}
