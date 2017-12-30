@@ -112,11 +112,12 @@
 						
 					</div>
 				</div>
-				
-				<div class="col-sm-12 m_top20">
+			
+				 <div class="col-sm-12 m_top20">
 					<div class="white-block" style="padding:10px">
 						<h4><img src="Assests/icons/2000px-Circle-icons-crossroads.svg.png"><b style="padding-left:5px;">Lead wise Overview</b></h4>
-						<div class="row m_top10">
+						<div class="row m_top10" style="height:375px;overflow-y:">
+						<div id ="leadWiseOverviewId">						
 							<div class="col-sm-3">
 								<div class="panel panel-default">
 									<div class="panel-heading" style="background-color:#D6E8F2">
@@ -140,7 +141,6 @@
 															<div class="col-sm-6"><span>Pending</span><br><b>100</b></div>
 															<div class="col-sm-6"><span>Works</span><br><b>100</b></div>
 														</div>
-														
 												</div>
 											</div>
 											<div class="col-sm-6" style="padding:2px">
@@ -159,7 +159,7 @@
 						</div>
 					</div>
 				</div>
-				
+				</div>
 				<div class="col-sm-12 m_top20">
 					<div class="white-block" style="padding:10px">
 						<div class="row">
