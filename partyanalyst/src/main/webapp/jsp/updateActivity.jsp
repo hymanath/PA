@@ -3179,22 +3179,22 @@ function getLocationWiseDetailsForActivity(roundId)
 							//str+='<td><input type="checkbox" id="check'+result[i].activityLocatInfoId+'" class="checkBoxCls" attr_no="'+i+'" value="'+result[i].activityLocatInfoId+'" name="activityVO.activityVoList['+i+'].isChecked"/></td>';
 							str+='<input type="hidden" id="chckBxIdVal'+i+'" value="'+result[i].activityLocatInfoId+'" name="activityVO.activityVoList['+i+'].activityLocationInfoId"/>';
 							if(activityLevelId == 5){
-								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;"></span></td>';
+								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;display:none;"></span></td>';
 								locationName = result[i].constituencyName+" Assembly Constituency ";
 							}
 							else if(activityLevelId == 1){
 									//str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+'</td>';
-									str+='<td id='+result[i].villageId+'>'+result[i].villageName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;"></span></td>';
+									str+='<td id='+result[i].villageId+'>'+result[i].villageName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer; display:none;"></span></td>';
 									
 										locationName = result[i].villageName+" Village / Ward  ";
 										
 							}
 							else if(activityLevelId == 2){
-									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;"></span></td>';
+									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;display:none;"></span></td>';
 										locationName = result[i].mandalName+" Mandal/Munci./Corp. ";
 										
 							}else if(activityLevelId == 3){
-								str+='<td id='+result[i].districtId+'>'+result[i].districtName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;"></span></td>';
+								str+='<td id='+result[i].districtId+'>'+result[i].districtName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;display:none;"></span></td>';
 								locationName = result[i].mandalName+" District  ";
 							}
 							
