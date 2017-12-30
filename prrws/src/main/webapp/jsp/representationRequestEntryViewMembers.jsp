@@ -176,7 +176,7 @@
 											</div>
 											</div>
 											<div class="row">
-												<div class="col-sm-12" id="districtConsMandDivId" style="display:none;">
+												<div class="col-sm-12 m_top10" id="districtConsMandDivId" style="display:none;">
 												<div class="col-sm-4" id="districtCandDiv">
 													<label>DISTRICT</label>
 													<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId" multiple>
