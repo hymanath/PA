@@ -11,6 +11,7 @@ import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
 import com.itgrids.dto.RepresenteeViewVO;
 import com.itgrids.dto.ResponseVO;
+import com.itgrids.dto.ResultStatus;
 import com.itgrids.dto.UserVO;
 
 public interface IPmRequestDetailsService {
@@ -26,4 +27,5 @@ public interface IPmRequestDetailsService {
 	public KeyValueVO getDeptIdsListBYUserIds(Long userId);
 	public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId);
 	public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate);
+	public ResultStatus updatePetitionsStatusDetails(Long userId,List<Long> petitionIdsList, List<Long> subWorkIdsList,String remark,Long statusId);
 }

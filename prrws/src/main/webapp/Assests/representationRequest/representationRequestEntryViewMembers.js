@@ -1305,3 +1305,31 @@ function getPetitionReferredMemberDetails(desigIds){
 		$("#referralNameId").trigger('chosen:updated');
 	});	
 }
+function updatePetitionStatusDetails(){
+	 
+	   var petitionIdsList = [1,2,3,4];
+	   var subWorkIdsList = [1,2,3,4];
+	   var json = {
+		   statusId : 1,
+	       remarks:"",
+		   petitionIdsList:petitionIdsList,
+		   subWorkIdsList:subWorkIdsList
+	    };
+	  $.ajax({              
+	    type:'POST',    
+	    url: 'updatePetitionStatusDetails',
+	    dataType: 'json',
+	    data : JSON.stringify(json),
+	    beforeSend :   function(xhr){
+	      xhr.setRequestHeader("Accept", "application/json");
+	      xhr.setRequestHeader("Content-Type", "application/json");
+	    }
+	  }).done(function(result){
+	    console.log(result);
+		if(result != null){
+			
+		}else{
+			
+		}
+	  });
+	}
