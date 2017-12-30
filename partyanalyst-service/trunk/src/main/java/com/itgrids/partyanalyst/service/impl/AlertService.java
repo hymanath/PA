@@ -5955,7 +5955,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  public void setAlertDtls(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs, List<Object[]> alertList){
 		try{
 			SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a ");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a ");
 			Date today = dateUtilService.getCurrentDateAndTime();
 			String td = myFormat.format(today);
 			Long dist = 0l;
@@ -5967,7 +5967,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
 					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if (param[1] != null && param[1].toString().length() > 0) {
-						alertCoreDashBoardVO.setCreatedTime(sdf.format(param[1]));
+						//String dateStr = param[1].toString().substring(0, 19);
+						//Date date = sdf.parse(dateStr);
+						alertCoreDashBoardVO.setCreatedTime(param[1].toString().substring(0, 19));
 					}
 					alertCoreDashBoardVO.setCreatedDate(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10));
 					alertCoreDashBoardVO.setUpdatedDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
