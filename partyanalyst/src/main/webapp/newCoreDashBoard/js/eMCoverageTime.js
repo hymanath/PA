@@ -214,26 +214,24 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 					str+='<td>Grand Total</td>';
 					if(result[i].coreDashBoardVOList != null && result[i].coreDashBoardVOList.length > 0){
 						for(var j in result[i].coreDashBoardVOList){
-							var totalCount=result[i].coreDashBoardVOList[j].totalPostive+result[i].coreDashBoardVOList[j].totalNegative;
+							var totalCount = result[i].tdpCount;
 					if(result[i].coreDashBoardVOList[j].totalPostive !=null && result[i].coreDashBoardVOList[j].totalPostive>0){
 						str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].totalPostive+'</a></td>';
-						//str+='<td>'+result[i].coreDashBoardVOList[j].totalPostive+'</td>';
 					}else{
 						str+='<td> -</td>';
 					}
 					if(totalCount !=null && totalCount>0){
-						str+='<td>'+((result[i].coreDashBoardVOList[j].totalPostive/totalCount)*100).toFixed(1)+'</td>';
+						str+='<td class="text-success" >'+((result[i].coreDashBoardVOList[j].totalPostive/totalCount)*100).toFixed(1)+'</td>';
 					}else{
 						str+='<td> -</td>';
 					}
 					if(result[i].coreDashBoardVOList[j].totalNegative !=null && result[i].coreDashBoardVOList[j].totalNegative>0){
 						str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;">'+result[i].coreDashBoardVOList[j].totalNegative+'</a></td>';
-						//str+='<td>'+result[i].coreDashBoardVOList[j].totalNegative+'</td>';
 					}else{
 						str+='<td> -</td>';
 					}
 					if(totalCount !=null && totalCount>0){
-						str+='<td>'+((result[i].coreDashBoardVOList[j].totalNegative/totalCount)*100).toFixed(1)+'</td>';
+						str+='<td class="text-danger" >'+((result[i].coreDashBoardVOList[j].totalNegative/totalCount)*100).toFixed(1)+'</td>';
 					}else{
 						str+='<td> -</td>';
 					}
