@@ -287,7 +287,7 @@ function getMediaProgramsOnParty(locationLevelIdGlb,locationValueArrGlb)
 	$("#electronicMediaChannelCountId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetails/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetails/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N"
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetails/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N"
 	}).then(function(result){
 		getpartyWiseChannelCounts(result);
 	});
@@ -313,8 +313,14 @@ function getpartyWiseChannelCounts(result){
 						str+='<h4><a attr_orgId='+result[0].organizationId+' attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="N" attr_searchType="category">'+result[0].categoryCount+'</a></h4>';
 					}
 					
-					str+='<h5	 class="text-capitalize m_top20">total time</h5>';
-					str+='<h4>'+result[0].description != ""?result[0].description:"00:00"+'</h4>';
+					str+='<h5 class="text-capitalize m_top20">total time</h5>';
+					//str+='<h4>'+result[0].description != ""?result[0].description:"00:00"+'</h4>';
+					if(result[0].description !=""){
+						 str+='<h4><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" PrimeTime :'+result[0].overalIsPrimedescription+'\n NonPrimeTime:'+result[0].overalIsNotPrimedescription+'">'+result[0].description+'</span></h4>';
+					}else{
+						 str+='<h4>00:00</h4>';
+					}
+					
 				str+='</td>';
 				for(var j in result[0].tvNewsDetailsVOList)
 				{
@@ -341,7 +347,7 @@ function getpartyWiseChannelCounts(result){
 						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
 						//str+='<h4>'+result[0].tvNewsDetailsVOList[j].description+'</h4>';
 						if(result[0].tvNewsDetailsVOList[j].description!= ""){
-							str+='<h4>'+result[0].tvNewsDetailsVOList[j].description+'</h4>';
+							str+='<h4><span data-placement="top" class="emToolTipCls"  style="cursor: pointer;" title="PrimeTime :'+result[0].tvNewsDetailsVOList[j].isPrimedescription+'\n NonPrimeTIME:'+result[0].tvNewsDetailsVOList[j].isNotPrimedescription+'">'+result[0].tvNewsDetailsVOList[j].description+'</span></h4>';
 						}else{
 							str+='<h4>00:00</h4>';
 						}
@@ -372,7 +378,13 @@ function getpartyWiseChannelCounts(result){
 							str+='<h4><a attr_orgId='+result[i].organizationId+' attr_categoryId="1,2" attr_benefitId="1,2" attr_orgtype="N" attr_searchType="category">'+result[i].categoryCount+'</a></h4>';
 						}
 						str+='<h5 class="text-capitalize m_top20">total time</h5>';
-						str+='<h4>'+result[i].description != ""?result[i].description:"00:00"+'</h4>';
+						if(result[i].description != ""){
+						str+='<h4><span data-placement="top" class="emToolTipCls" style="cursor: pointer;" title=" PrimeTime :'+result[i].overalIsPrimedescription+'\n NonPrimeTime:'+result[i].overalIsNotPrimedescription+'">'+result[i].description+'</span></h4>';
+						}else{
+							str+='<h4>00:00</h4>';
+						}
+						//str+='<h4>'+result[i].description != ""?result[i].description:"00:00"+'</h4>';
+						
 					str+='</td>';
 					for(var j in result[i].tvNewsDetailsVOList)
 					{
@@ -394,7 +406,12 @@ function getpartyWiseChannelCounts(result){
 								}
 							}
 							str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
-							str+='<h4>'+result[i].tvNewsDetailsVOList[j].description != ""?result[i].tvNewsDetailsVOList[j].description:"00:00"+'</h4>';
+							//str+='<h4>'+result[i].tvNewsDetailsVOList[j].description != ""?result[i].tvNewsDetailsVOList[j].description:"00:00"+'</h4>';
+							if(result[i].tvNewsDetailsVOList[j].isNotPrimedescription != ""){
+							 str+='<h4><span data-placement="top" class="emToolTipCls"  style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList[j].isPrimedescription+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList[j].isNotPrimedescription+'">'+result[i].tvNewsDetailsVOList[j].description+'</span></h4>';
+							}else{
+							 str+='<h4>00:00</h4>';
+						    }
 							
 							
 						str+='</td>';
@@ -425,7 +442,12 @@ function getpartyWiseChannelCounts(result){
 					}
 					
 					str+='<h5 class="text-capitalize m_top20">total time</h5>';
-					str+='<h4>'+result[EmnG].description != ""?result[EmnG].description:"00:00"+'</h4>';
+					//str+='<h4>'+result[EmnG].description != ""?result[EmnG].description:"00:00"+'</h4>';
+					if(result[EmnG].description != " "){
+					 str+='<h4><span data-placement="top"  style="cursor: pointer;" class="emToolTipCls" title=" PrimeTime :'+result[EmnG].overalIsPrimedescription+'\n NonPrimeTime:'+result[EmnG].overalIsNotPrimedescription+'">'+result[EmnG].description+'</span></h4>';
+					}else{
+					 str+='<h4>00:00</h4>';
+					}
 				str+='</td>';
 				for(var j in result[EmnG].tvNewsDetailsVOList)
 				{
@@ -447,7 +469,8 @@ function getpartyWiseChannelCounts(result){
 						}
 						
 						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
-						str+='<h4>'+result[EmnG].tvNewsDetailsVOList[j].description+'</h4>';
+						//str+='<h4>'+result[EmnG].tvNewsDetailsVOList[j].description+'</h4>';
+						str+='<h4><span data-placement="top" class="emToolTipCls" style="cursor: pointer;" title=" PrimeTime :'+result[EmnG].tvNewsDetailsVOList[j].isPrimedescription+'\n NonPrimeTime:'+result[EmnG].tvNewsDetailsVOList[j].isNotPrimedescription+'">'+result[EmnG].tvNewsDetailsVOList[j].description+'</span></h4>';
 					str+='</td>';
 				}
 			str+='</tr>';
@@ -461,6 +484,8 @@ function getpartyWiseChannelCounts(result){
 		str+='<h4 class="panel-title m_top10">NO DATA AVAILABLE</h4>';
 	}
 	$("#electronicMediaChannelCountId").html(str);
+	$(".emToolTipCls").tooltip();
+	$(".emToolTipCls2").tooltip();
 	//$("#electronicMediaChannelCountId").mCustomScrollbar({setHeight:'345spx'});
 }
 function getEMMDetailedPartyDistrictWiseProgramsOverview(channelArr,type)
@@ -624,7 +649,7 @@ function getEMMDetailedPartyMediaProgramsOnPartyProgramsWise(searchType,type)
 	{
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyMediaProgramsOnPartyProgramsWise/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/"+searchType+""
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyMediaProgramsOnPartyProgramsWise/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/"+searchType+""
+			//url: "http://localhost:8086/CommunityNewsPortal/webservice/getEMMDetailedPartyMediaProgramsOnPartyProgramsWise/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/"+searchType+""
 		}).then(function(result){
 			buildEmmDetailedPartyMediaProgramsOnParty(result);
 		});
@@ -1941,7 +1966,7 @@ function getEMMDetailedPartyStateWiseProgramsOverview()
 	$("#stateWiseProgramsOvrViewEMN").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyStateWiseProgramsOverview/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/party"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyStateWiseProgramsOverview/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/party"
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getEMMDetailedPartyStateWiseProgramsOverview/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/party"
 	}).then(function(result){
 		buildEMMDetailedPartyStateWiseProgramsOverview(result)
 	});
@@ -1969,9 +1994,11 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 					str+='</div>';
 					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<p class="text-muted">Positive Time</p>';
-						str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+						//str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+						str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].positiveIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-success">'+result[i].positiveTimePerc+'%</small></h4>';
 						str+='<p class="text-muted">Negative Time</p>';
-						str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+						//str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+						str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].negativeIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-success">'+result[i].negativeTimePerc+'%</small></h4>';
 					str+='</div>';
 				str+='</div>';
 				var newsChannelCatArr = []
@@ -1986,9 +2013,11 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 						str+='</div>';
 						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 							str+='<p class="text-muted">Positive Time</p>';
-							str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+							//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+							str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
 							str+='<p class="text-muted">Negative Time</p>';
-							str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+							//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+							str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
 						str+='</div>';
 					str+='</div>';
 					newsChannelCatArr.push(result[i].tvNewsDetailsVOList[j].categoryName.split(" ")[1]);
@@ -2026,9 +2055,11 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
-									str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></p>';
+									//str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></p>';
+									str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList1[k].positiveIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList1[k].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></h4>';
 									str+='<p class="text-muted">Negative Time</p>';
-									str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></p>';
+									//str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></p>';
+									str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList1[k].negativeIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList1[k].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -2045,9 +2076,12 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 									str+='</div>';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></p>';
+										//str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></p>';
+										str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></h4>';
 										str+='<p class="text-muted">Negative Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></p>';
+										//str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></p>';
+										
+										str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></h4>';
 										
 									str+='</div>';
 								str+='</div>';
@@ -2063,6 +2097,7 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 	}
 	
 	$("#stateWiseProgramsOvrViewEMN").html(str);
+	$(".emToolTipCls4").tooltip();
 	var graphIdMainA = 0;
 	var graphIdMain = 0;
 	
@@ -2432,11 +2467,12 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 
 function comparisonPartyRankWiseDetailsOfChannel()
 {
+
 	$("#partyRankWiseDetailsOfChannel").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/channel"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/channel"
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/channel"
 	}).then(function(result){
 		buildComparisonPartyRankWiseDetailsOfChannel(result)
 	});
@@ -2465,7 +2501,8 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 											str+='<a style="cursor:pointer;" class="compPartyFstBlkCls" attr_channel_id="'+result[i].tvNewsDetailsVOList[0].organizationId+'" attr_category_id="1,2">'+result[i].categoryCount+'</a>';
 										str+='</td>';
 										str+='<td><p class="text-muted">Total Time</p>';
-											str+=''+result[i].totalCoveredTime+'';
+											//str+=''+result[i].totalCoveredTime+'';
+									str+='<span data-placement="top" class="emToolTipCls5" style="cursor: pointer;" title=" PrimeTime :'+result[i].overalIsPrimedescription+'\n NonPrimeTime:'+result[i].overalIsNotPrimedescription+'">'+result[i].totalCoveredTime+'</span>';
 										str+='</td>';
 									str+='</tr>';
 								str+='</table>';
@@ -2482,9 +2519,11 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 							str+='</div>';
 							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 								str+='<p class="text-muted">Positive Time</p>';
-								str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+								//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls5" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
 								str+='<p class="text-muted">Negative Time</p>';
-								str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls5" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
+								//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
 							str+='</div>';
 						}
 					str+='</div>';
@@ -2494,6 +2533,7 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 	}
 	str+='</ul>';
 	$("#partyRankWiseDetailsOfChannel").html(str);
+	$(".emToolTipCls5").tooltip();
 	$("#partyRankWiseDetailsOfChannel li:first-child").trigger("click");
 	$(".NewsSlickPanelSliderEmn").slick({
 	 slide: 'li',
@@ -2625,7 +2665,7 @@ function comparisonPartyRankWiseDetailsOfChannelSub(channelIdArr,channelName)
 	
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/party"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/party"
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/"+partyIdsGlob+"/N/party"
 	}).then(function(result){
 		buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName,channelId)
 	});
@@ -2655,9 +2695,11 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName,chan
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
-									str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+									//str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+									str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="PrimeTime :'+result[i].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-danger">'+result[i].positiveTimePerc+'%</small></h5>';
 									str+='<p class="text-muted m_top10">Negative Time</p>';
-									str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+									//str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+									str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="PrimeTime :'+result[i].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-danger">'+result[i].negativeTimePerc+'%</small></h5>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -2674,9 +2716,11 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName,chan
 									str+='</div>';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+										//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+										str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h5>';
 										str+='<p class="text-muted m_top10">Negative Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+										//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+										str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h5>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -2689,6 +2733,7 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName,chan
 		str+='</div>';
 	str+='</div>';
 	$("#partyRankWiseDetailsOfChannelSub").html(str);
+	$(".emToolTipClsforParty").tooltip();
 	var graphId = 0;
 	var totGraphId = 0;
 	for(var i in result)
@@ -2961,10 +3006,10 @@ function buildEMMComparisonPartyDistrictWiseProgramsOverview(result)
 function comparisonGovtRankWiseDetailsOfChannel()
 {
 	$("#govtRankWiseDetailsOfChannel").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	
+
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/ /Y/channel"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/ /Y/channel"
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/ /Y/channel"
 	}).then(function(result){
 		buildComparisonGovtRankWiseDetailsOfChannel(result)
 	});
@@ -2993,7 +3038,8 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 											str+='<a style="cursor:pointer;" class="compGovtFstBlkCls" attr_category_id="1,2" attr_channel_id="'+result[i].tvNewsDetailsVOList[0].organizationId+'">'+result[i].categoryCount+'</a>';
 										str+='</td>';
 										str+='<td><p class="text-muted">Total Time</p>';
-											str+=''+result[i].totalCoveredTime+'';
+											//str+=''+result[i].totalCoveredTime+'';
+											str+='<span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="TIME :'+result[i].overalIsPrimedescription+'\n primeTIME:'+result[i].overalIsNotPrimedescription+'">'+result[i].totalCoveredTime+'</span>';
 										str+='</td>';
 									str+='</tr>';
 								str+='</table>';
@@ -3010,9 +3056,11 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 							str+='</div>';
 							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 								str+='<p class="text-muted">Positive Time</p>';
-								str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+								//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
 								str+='<p class="text-muted">Negative Time</p>';
-								str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+								//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
 							str+='</div>';
 						}
 					str+='</div>';
@@ -3022,6 +3070,7 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 	}
 	str+='</ul>';
 	$("#govtRankWiseDetailsOfChannel").html(str);
+	$(".emToolTipCls9").tooltip();
 	$("#govtRankWiseDetailsOfChannel li:first-child").trigger("click")
 	$(".NewsSlickPanelSliderGovtEmn").slick({
 	 slide: 'li',
@@ -3152,7 +3201,7 @@ function comparisonGovtRankWiseDetailsOfChannelSub(channelIdArr,channelName)
 	
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/ /Y/party"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/ /Y/party"
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getComparisonPartyRankWiseDetailsOfChannel/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+channelIdArr+"/"+impactScopeIds+"/ /Y/party"
 	}).then(function(result){
 		buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName,channelIdArr[0])
 	});
@@ -3182,9 +3231,11 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName,chann
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
-									str+='<p>'+result[i].positiveCoveredTime+'<small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+									//str+='<p>'+result[i].positiveCoveredTime+'<small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" PrimeTime :'+result[i].positiveIsPrimeCoveredTime+',NonPrimeTime :'+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-success">'+result[i].positiveTimePerc+'%</small></h4>';
 									str+='<p class="text-muted m_top10">Negative Time</p>';
-									str+='<p>'+result[i].negativeCoveredTime+'<small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+									//str+='<p>'+result[i].negativeCoveredTime+'<small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" PrimeTime :'+result[i].negativeIsPrimeCoveredTime+',NonPrimeTime :'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-success">'+result[i].negativeTimePerc+'%</small></h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -3201,9 +3252,11 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName,chann
 									str+='</div>';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+										//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+',NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
 										str+='<p class="text-muted m_top10">Negative Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+										//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+',NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -3216,6 +3269,7 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName,chann
 		str+='</div>';
 	str+='</div>';
 	$("#govtRankWiseDetailsOfChannelSub").html(str);
+	$("#emToolTipClsforGov").tooltip();
 	var graphId = 0;
 	var totGraphId = 0;
 	for(var i in result)
@@ -3660,7 +3714,7 @@ function getEMMDetailedGovtStateWiseProgramsOverview()
 	$("#stateWiseProgramsOvrViewGovtEMN").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getEMMDetailedPartyStateWiseProgramsOverview/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/ /Y/party"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEMMDetailedPartyStateWiseProgramsOverview/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/ /Y/party"
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getEMMDetailedPartyStateWiseProgramsOverview/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/ /Y/party"
 	}).then(function(result){
 		buildEMMDetailedGovtStateWiseProgramsOverview(result)
 	});
@@ -3688,9 +3742,11 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 					str+='</div>';
 					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<p class="text-muted">Positive Time</p>';
-						str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+						//str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
+						str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].positiveIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-success">'+result[i].positiveTimePerc+'%</small></h4>';
 						str+='<p class="text-muted">Negative Time</p>';
-						str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+						//str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
+						str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].negativeIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-danger">'+result[i].negativeTimePerc+'%</small></h4>';
 					str+='</div>';
 				str+='</div>';
 				var newsChannelCatArr = []
@@ -3705,9 +3761,12 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 						str+='</div>';
 						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 							str+='<p class="text-muted">Positive Time</p>';
-							str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+							//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
+							str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n  NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
 							str+='<p class="text-muted">Negative Time</p>';
-							str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+							//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
+							str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
+							//str+='<p class="text-muted">Negative Time</p>';
 						str+='</div>';
 					str+='</div>';
 					newsChannelCatArr.push(result[i].tvNewsDetailsVOList[j].categoryName.split(" ")[1]);
@@ -3741,9 +3800,12 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 								str+='</div>';
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
-									str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'<small class="text-success"> '+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></p>';
+									//str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'<small class="text-success"> '+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></p>';
+									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></h4>';
+									
 									str+='<p class="text-muted">Negative Time</p>';
-									str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'<small class="text-danger"> '+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></p>';
+									//str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'<small class="text-danger"> '+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></p>';
+									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -3760,9 +3822,11 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 									str+='</div>';
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></p>';
+										//str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></p>';
+										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></h4>';
 										str+='<p class="text-muted">Negative Time</p>';
-										str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></p>';
+										//str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></p>';
+										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -3777,6 +3841,7 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 	}
 	
 	$("#stateWiseProgramsOvrViewGovtEMN").html(str);
+	$(".emToolTipCls9").tooltip();
 	var graphIdMainA = 0;
 	var graphIdMain = 0;
 	
