@@ -14,10 +14,11 @@ import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.quartz.Job;
 
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
+import com.itgrids.partyanalyst.dto.ActivityDetailsVO;
+import com.itgrids.partyanalyst.dto.ActivityReqAttributesVO;
 import com.itgrids.partyanalyst.dto.ActivityResponseVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -33,7 +34,6 @@ import com.itgrids.partyanalyst.service.IActivityAttendanceService;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.IMobileService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -80,6 +80,10 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private ResultStatus result;
 	private List<ActivityVO> activityVOList;
 	private String activityLevelTextId;	
+	private List<ActivityDetailsVO> resultList;
+	private List<ActivityReqAttributesVO> attributeList;
+	private String successMsg;
+	private List<ActivityDetailsVO> activiyDetailsVOList = new ArrayList<ActivityDetailsVO>();
 	
 	public String getActivityLevelTextId() {
 		return activityLevelTextId;
@@ -280,6 +284,31 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	}
 	public void setActivityVOList(List<ActivityVO> activityVOList) {
 		this.activityVOList = activityVOList;
+	}
+	public List<ActivityDetailsVO> getResultList() {
+		return resultList;
+	}
+	public void setResultList(List<ActivityDetailsVO> resultList) {
+		this.resultList = resultList;
+	}
+	
+	public List<ActivityReqAttributesVO> getAttributeList() {
+		return attributeList;
+	}
+	public void setAttributeList(List<ActivityReqAttributesVO> attributeList) {
+		this.attributeList = attributeList;
+	}
+    public List<ActivityDetailsVO> getActiviyDetailsVOList() {
+		return activiyDetailsVOList;
+	}
+	public void setActiviyDetailsVOList(List<ActivityDetailsVO> activiyDetailsVOList) {
+		this.activiyDetailsVOList = activiyDetailsVOList;
+	}
+	public String getSuccessMsg() {
+		return successMsg;
+	}
+	public void setSuccessMsg(String successMsg) {
+		this.successMsg = successMsg;
 	}
 	public String execute()
 	{
@@ -1247,4 +1276,41 @@ public String getCommentDetails(){
 	 }
 	 return Action.SUCCESS;
  }
+  public String getQuestionByAcivityScope(){
+		try{
+		
+			jObj = new JSONObject(getTask());
+			resultList =activityService.getActivityDayWiseAndNormalQuestionOptionDtls(jObj.getLong("activityScopeId"), jObj.getLong("activityLocationInfoId"),jObj.getString("activityDate"));
+		}catch (Exception e) {
+			LOG.error("Exception raised at getQuestionByAcivityScope()", e);
+		}
+		return Action.SUCCESS;
+	}
+  public String getActivityAttribute(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			attributeList = activityService.getActivityAttribute(jObj.getLong("activityScopeId"));
+		}catch (Exception e) {
+			LOG.error("Exception raised at getActivityAttribute()", e);
+		}
+		return Action.SUCCESS;
+	}
+  public String saveActivityAnswerDetails(){
+		try { 
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if (regVO != null ) {
+				resultStatus = activityService.saveActivityAnswerDetailsByWeb(activiyDetailsVOList,regVO.getRegistrationID());
+				if (resultStatus != null ){
+					successMsg = resultStatus.getMessage();
+				}
+			}
+			
+		 } catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised at saveActivityAnswerDetails", e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }

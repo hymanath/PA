@@ -3406,6 +3406,8 @@
 		<property name="callStatusDAO" ref="callStatusDAO" />
 		<property name="cadreCallingFeedbackDAO" ref="cadreCallingFeedbackDAO" />
 		<property name="activityConductedInfoDAO" ref="activityConductedInfoDAO" />
+		<property name="activityRequiredAttributeDAO" ref="activityRequiredAttributeDAO" />
+		
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
