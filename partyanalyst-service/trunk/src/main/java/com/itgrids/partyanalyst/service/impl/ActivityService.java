@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
@@ -38,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireOptionDAO;
+import com.itgrids.partyanalyst.dao.IActivityRequiredAttributeDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
 import com.itgrids.partyanalyst.dao.IActivityStatusQuestionnaireDAO;
@@ -197,6 +199,7 @@ public class ActivityService implements IActivityService{
 	private ICallStatusDAO callStatusDAO;
 	private ICadreCallingFeedbackDAO cadreCallingFeedbackDAO;
 	private IActivityConductedInfoDAO activityConductedInfoDAO;
+	private IActivityRequiredAttributeDAO activityRequiredAttributeDAO;
 	
 	
 	public ICallStatusDAO getCallStatusDAO() {
@@ -580,6 +583,13 @@ public class ActivityService implements IActivityService{
 	}
 	public void setActivityConductedInfoDAO(IActivityConductedInfoDAO activityConductedInfoDAO) {
 		this.activityConductedInfoDAO = activityConductedInfoDAO;
+	}
+	public IActivityRequiredAttributeDAO getActivityRequiredAttributeDAO() {
+		return activityRequiredAttributeDAO;
+	}
+	public void setActivityRequiredAttributeDAO(
+			IActivityRequiredAttributeDAO activityRequiredAttributeDAO) {
+		this.activityRequiredAttributeDAO = activityRequiredAttributeDAO;
 	}
 	public LocationWiseBoothDetailsVO getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
 			 String searchStartDateStr,String searchEndDateStr)
@@ -6490,7 +6500,12 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 						activityDtlsVO.setPlannedDate(sdf.format(param[3]));
 					}
 					activityDtlsVO.setActivityScopeId(commonMethodsUtilService.getLongValueForObject(param[4]));
-					activityDtlsVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[5]));
+					if (commonMethodsUtilService.getStringValueForObject(param[5]) != null && commonMethodsUtilService.getStringValueForObject(param[5]).equalsIgnoreCase("Y")){
+						activityDtlsVO.setStatus("UPDATED");
+					} else {
+						activityDtlsVO.setStatus("NOT UPDATED");
+					}
+					
 					activityDtlsVO.setActivityLocationInfoId(commonMethodsUtilService.getLongValueForObject(param[6]));
 					finalList.add(activityDtlsVO);
 				}
@@ -6602,7 +6617,7 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 			 if (activityLocationInfoId != null && activityLocationInfoId.longValue() > 0 ) {
 				 answerMap = getQuestionAnswerDtls(answerObjLst);
 			 }
-			 Map<Long,ActivityDetailsVO> questionMap = getQuestionDetails(questionObjDtlsLst,answerMap);
+			 Map<Long,ActivityDetailsVO> questionMap = getQuestionDetails(questionObjDtlsLst,answerMap,"NORMALQUESTION");
 			 finalList.addAll(questionMap.values());
 		 } catch (Exception e) {
 			 LOG.error("Exception occured at getActivityQuestionOptionDtls() in ActivityService class ",e);
@@ -6610,6 +6625,49 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 		 return finalList;
 	}
 
+	/**
+	 * @param  Long activityScopeId
+	 * @return List<ActivityDetailsVO>
+	 * @author Santosh Kumar Verma
+	 * @Description :This Service is used to get activity question by activityScopeId. 
+	 * @since 27-DECEMBER-2017
+	 */
+	public List<ActivityDetailsVO> getActivityDayWiseAndNormalQuestionOptionDtls(Long activityScopeId,Long activityLocationInfoId,String activityDate) {
+		 List<ActivityDetailsVO> finalList = new ArrayList<ActivityDetailsVO>(0);
+		 try {
+			 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			 Map<Long,List<ActivityDetailsVO>> answerMap = null;
+			 List<Object[]> questionObjDtlsLst = activityQuestionnaireDAO.getActivityQuestionsOptionsDetails(activityScopeId);
+			 List<Object[]> answerObjLst = activityQuestionAnswerDAO.getQuestionAnswerDetails(activityLocationInfoId);
+			 
+			 if (activityDate != null && activityDate.length() > 0) { //day wise question adding if exist
+				 List<Object[]> dayWiseQuesObjList = activityQuestionnaireDAO.getActivityQuestionsOptionsDetailsDayWise(activityScopeId, sdf.parse(activityDate));
+				 List<Object[]> dayWiseAnswerList = activityQuestionAnswerDAO.getDayWiseQuestionAnswerDetails(activityLocationInfoId, sdf.parse(activityDate));
+				 if (activityLocationInfoId != null && activityLocationInfoId.longValue() > 0 ) {
+					 answerMap = getQuestionAnswerDtls(dayWiseAnswerList);
+				 }
+				 Map<Long,ActivityDetailsVO> questionMap = getQuestionDetails(dayWiseQuesObjList,answerMap,"DAYWISEQUESTION");
+				 finalList.addAll(questionMap.values());
+			 }
+			
+			 //Normal question adding 
+			 if (activityLocationInfoId != null && activityLocationInfoId.longValue() > 0 ) {
+				 answerMap = getQuestionAnswerDtls(answerObjLst);
+			 }
+			 Map<Long,ActivityDetailsVO> questionMap = getQuestionDetails(questionObjDtlsLst,answerMap,"NORMALQUESTION");
+			 finalList.addAll(questionMap.values());
+			 //setting activity startDate and endDate
+			   Object[] obj = activityScopeDAO.getDatesForActivityScopeId(activityScopeId);
+				if(obj != null && obj.length > 0){
+					finalList.get(0).setActivityStarteDate(sdf.format(obj[0]));
+					finalList.get(0).setActivityEndDate(sdf.format(obj[1]));
+				}
+			 
+		 } catch (Exception e) {
+			 LOG.error("Exception occured at getActivityQuestionOptionDtls() in ActivityService class ",e);
+		 }
+		 return finalList;
+	}
 	public Map<Long, List<ActivityDetailsVO>> getQuestionAnswerDtls(List<Object[]> objList) {
 		Map<Long, List<ActivityDetailsVO>> questionAnswerMap = new HashMap<Long, List<ActivityDetailsVO>>(0);
 		try {
@@ -6623,6 +6681,9 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 					ActivityDetailsVO optionVO = new ActivityDetailsVO();
 					optionVO.setAnswerOptionId(commonMethodsUtilService.getLongValueForObject(param[1]));
 					optionVO.setAnswerText(commonMethodsUtilService.getStringValueForObject(param[2]));
+					if (commonMethodsUtilService.getLongValueForObject(param[3]) != null && commonMethodsUtilService.getLongValueForObject(param[3]) > 0l) {
+						optionVO.setAnswerText(commonMethodsUtilService.getStringValueForObject(param[3]));
+					}
 					optionList.add(optionVO);
 				}
 			}
@@ -6632,7 +6693,7 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 		}
 		return questionAnswerMap;
 	}
-	public Map<Long, ActivityDetailsVO> getQuestionDetails(List<Object[]> objList,Map<Long,List<ActivityDetailsVO>> answerMap) {
+	public Map<Long, ActivityDetailsVO> getQuestionDetails(List<Object[]> objList,Map<Long,List<ActivityDetailsVO>> answerMap,String questionType) {
 		Map<Long, ActivityDetailsVO> questionMap = new LinkedHashMap<Long, ActivityDetailsVO>(0);
 		try {
 			if (objList != null && objList.size() > 0) {
@@ -6646,6 +6707,11 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 						questionVO.setHasRemarks(commonMethodsUtilService.getStringValueForObject(param[4]));
 						questionVO.setActivityQuestionnaireId(commonMethodsUtilService.getLongValueForObject(param[7]));
 						questionVO.setIsMandatory(commonMethodsUtilService.getStringValueForObject(param[8]));
+						if (questionType.equalsIgnoreCase("DAYWISEQUESTION")) {
+							questionVO.setQuestionType("DAYWISEQUESTION");
+							questionVO.setActivityDate(commonMethodsUtilService.getStringValueForObject(param[9]));
+							questionVO.setActivityDaywiseQuestionnaireId(commonMethodsUtilService.getLongValueForObject(param[10]));
+						}
 						questionVO.setOptionList(new ArrayList<ActivityOptionVO>(0));
 						if (answerMap != null && answerMap.size() > 0 ) {
 							questionVO.setSubList(answerMap.get(questionVO.getActivityQuestionnaireId()));//setting answer
@@ -6881,5 +6947,113 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 			LOG.error("Exception occured at getDocumentDtlsByLocation() of ActivityService class ",e);
 		}
 		return documentList;
+	}
+	public List<ActivityReqAttributesVO> getActivityAttribute(Long activityScopeId) {
+		  List<ActivityReqAttributesVO> resultList = new ArrayList<ActivityReqAttributesVO>();
+		 try {
+			 List<Long> objList = activityRequiredAttributeDAO.getActivityScopeAttribue(activityScopeId);
+			 if (objList != null && objList.size() > 0) {
+				 for (Long attributeId : objList) {
+					 ActivityReqAttributesVO attributeVO = new ActivityReqAttributesVO();
+					 attributeVO.setActivityScopeId(activityScopeId);
+					 attributeVO.setReqAttributeId(commonMethodsUtilService.getLongValueForObject(attributeId));
+					 resultList.add(attributeVO);
+				}
+			 }
+		 } catch (Exception e) {
+			 LOG.error("Exception occured at getDocumentDtlsByLocation() of ActivityService class ",e);
+		 }
+		 return resultList;
+	} 
+	 /**
+	   * @param ActivityDetailsVO inputVO
+	   * @return ResultStatus
+	   * @author Santosh Kumar Verma
+	   * @Description :This Service is used to saving activity answer details. 
+	   * @since 27-DECEMBER-2017
+	   */
+	public ResultStatus saveActivityAnswerDetailsByWeb(final List<ActivityDetailsVO> inputVOList,final Long loginUserId) {
+		ResultStatus resultVO = new ResultStatus();
+		try {
+			LOG.info("Entered into saveActivityAnswerDetails in ActivityService class");
+			if (inputVOList != null && inputVOList.size() > 0) {
+				resultVO = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						ResultStatus resultVO = new ResultStatus();
+						 Long activityLocationId = inputVOList.get(0).getActivityLocationInfoId();
+						 List<Long> answerIds = null;
+						 if (activityLocationId != null && activityLocationId.longValue() > 0) { // check answer is already submitted
+							 answerIds = activityQuestionAnswerDAO.checkIsAnswerIsSubmitted(activityLocationId);	 
+						 }
+						 
+                         for(ActivityDetailsVO questionVO:inputVOList) {
+                        	 if (questionVO.getSubList() != null && questionVO.getSubList().size() > 0) {//saving question answer
+     							for (ActivityDetailsVO optionVO : questionVO.getSubList()) {
+     								
+     								if (optionVO != null ) {
+     									//in the case of selectbox and checkbox if optionId is zero then we are not saving
+     									if (questionVO.getOptionTypeId() != null && questionVO.getOptionTypeId().longValue() == 1l || questionVO.getOptionTypeId() != null && questionVO.getOptionTypeId().longValue()==2l || questionVO.getOptionTypeId() != null && questionVO.getOptionTypeId().longValue()==5) {
+     										if (optionVO.getOptionId() == null || optionVO.getOptionId().longValue() == 0l) {
+     											continue;
+     										}
+     									}
+     									ActivityQuestionAnswer model = new ActivityQuestionAnswer();
+     									
+     									if (answerIds != null && answerIds.size() > 0) {//updating isDeleted Y if already submitted
+     										 if (questionVO.getOptionTypeId() != null && questionVO.getOptionTypeId().longValue() == 1l || questionVO.getOptionTypeId() != null && questionVO.getOptionTypeId().longValue()==5) {
+     											if (questionVO.getActivityQuestionnaireId() != null && questionVO.getActivityQuestionnaireId().longValue() > 0 && questionVO.getActivityLocationInfoId() != null && questionVO.getActivityLocationInfoId().longValue() > 0) {
+         											Long updateCount = activityQuestionAnswerDAO.updateAnswerDlts(questionVO.getActivityLocationInfoId(), questionVO.getActivityQuestionnaireId(), null);
+         										}
+     										} else {
+     											if (questionVO.getActivityQuestionnaireId() != null && questionVO.getActivityQuestionnaireId().longValue() > 0 && questionVO.getActivityLocationInfoId() != null && questionVO.getActivityLocationInfoId().longValue() > 0) {
+         											Long updateCount = activityQuestionAnswerDAO.updateAnswerDlts(questionVO.getActivityLocationInfoId(), questionVO.getActivityQuestionnaireId(), optionVO.getOptionId());
+         										}
+     										}
+     										
+     									}
+     									model.setActivityQuestionnaireId((questionVO.getActivityQuestionnaireId() != null && questionVO.getActivityQuestionnaireId() > 0) ? questionVO.getActivityQuestionnaireId() : null);
+         								model.setActivityLocationInfoId((questionVO.getActivityLocationInfoId() != null && questionVO.getActivityLocationInfoId() > 0) ? questionVO.getActivityLocationInfoId() : null);
+         								model.setActivityDaywiseQuestionnaireId((questionVO.getActivityDaywiseQuestionnaireId() != null && questionVO.getActivityDaywiseQuestionnaireId() > 0) ? questionVO.getActivityDaywiseQuestionnaireId() : null);
+         								model.setActivityOptionId((optionVO.getOptionId() != null && optionVO.getOptionId() > 0) ? optionVO.getOptionId() : null);
+         								
+         								if (questionVO.getOptionTypeId() != null && questionVO.getOptionTypeId()==4l)//count Description
+         								{
+         									if (optionVO.getHasRemarks() != null && optionVO.getHasRemarks().length() > 0) {
+         										if (StringUtils.isNumeric(optionVO.getHasRemarks())) {
+         											model.setCount(Long.valueOf(optionVO.getHasRemarks()));
+         										}
+             								}
+         									
+         								} else { // Text Description
+         									if (optionVO.getHasRemarks() != null && optionVO.getHasRemarks().length() > 0) {
+             									model.setOptionTxt(optionVO.getHasRemarks());
+             								}
+         								}
+         								model.setSourceType("WEB");
+         								model.setIsDeleted("N");
+         								model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+         								model.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+         								model.setInsertedBy((loginUserId != null && loginUserId > 0) ? loginUserId:null);
+         								model.setUpdatedBy((loginUserId != null && loginUserId > 0) ? loginUserId:null);
+         								activityQuestionAnswerDAO.save(model);
+     								}
+     							}
+
+     						}
+                         }
+						
+						resultVO.setResultCode(1);
+						resultVO.setMessage("success");
+						return resultVO;
+					}
+				});
+			}
+		} catch (Exception e) {
+			resultVO.setResultCode(2);
+			resultVO.setExceptionMsg(e.getLocalizedMessage());
+			resultVO.setMessage("fail");
+			LOG.error("Exception occurred at saveActivityAnswerDetails() of PartyMeetingMOMService class ",e);
+		}
+		return resultVO;
 	}
 }

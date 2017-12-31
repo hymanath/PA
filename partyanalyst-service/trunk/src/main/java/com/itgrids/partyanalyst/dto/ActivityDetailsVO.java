@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityDetailsVO {
@@ -12,6 +13,10 @@ public class ActivityDetailsVO {
 	private String status;
 	private Long activityLocationInfoId;
 	private Long activityQuestionnaireId;
+	private Long activityDaywiseQuestionnaireId;
+	private String activityStarteDate;
+	private String activityEndDate;
+	private String conductedStatus;
 	
 	private Long questionId;
 	private String question;
@@ -34,9 +39,11 @@ public class ActivityDetailsVO {
 	private Long id;
 	private String appVersion;
 	private String isMandatory;
+	private String questionType;
+	private String activityDate;
     
 	private List<ActivityOptionVO> optionList;
-	private List<ActivityDetailsVO> subList;
+	private List<ActivityDetailsVO> subList = new ArrayList<ActivityDetailsVO>();
 	
 	
 	public Long getLocationId() {
@@ -214,6 +221,44 @@ public class ActivityDetailsVO {
 	public void setIsMandatory(String isMandatory) {
 		this.isMandatory = isMandatory;
 	}
+	public Long getActivityDaywiseQuestionnaireId() {
+		return activityDaywiseQuestionnaireId;
+	}
+	public void setActivityDaywiseQuestionnaireId(
+			Long activityDaywiseQuestionnaireId) {
+		this.activityDaywiseQuestionnaireId = activityDaywiseQuestionnaireId;
+	}
+	public String getQuestionType() {
+		return questionType;
+	}
+	public void setQuestionType(String questionType) {
+		this.questionType = questionType;
+	}
+	public String getActivityDate() {
+		return activityDate;
+	}
+	public void setActivityDate(String activityDate) {
+		this.activityDate = activityDate;
+	}
+	public String getActivityStarteDate() {
+		return activityStarteDate;
+	}
+	public void setActivityStarteDate(String activityStarteDate) {
+		this.activityStarteDate = activityStarteDate;
+	}
+	public String getActivityEndDate() {
+		return activityEndDate;
+	}
+	public void setActivityEndDate(String activityEndDate) {
+		this.activityEndDate = activityEndDate;
+	}
+	public String getConductedStatus() {
+		return conductedStatus;
+	}
+	public void setConductedStatus(String conductedStatus) {
+		this.conductedStatus = conductedStatus;
+	}
+	
 	
 	
 	

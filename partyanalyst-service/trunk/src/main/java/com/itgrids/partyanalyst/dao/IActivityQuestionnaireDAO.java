@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -20,4 +21,5 @@ public interface IActivityQuestionnaireDAO extends GenericDao<ActivityQuestionna
 	public List<Object[]> getActivityQuestionOptionTypeList(List<Long> questionIds);
 	public List<Object[]> getQuestionIdsByActivityId(Long activityId);
 	public List<Object[]> getActivityQuestionsOptionsDetails(Long activityScopeId);
+	public List<Object[]> getActivityQuestionsOptionsDetailsDayWise(Long activityScopeId,Date activityDate);
 }
