@@ -27,6 +27,7 @@ public class ActivityDetailsVO {
 	private Long tabDetailsId;
 	private Long answerOptionId;
 	private String answerText;
+	private String locationType;
 	
 	
     private String imei;
@@ -257,6 +258,12 @@ public class ActivityDetailsVO {
 	}
 	public void setConductedStatus(String conductedStatus) {
 		this.conductedStatus = conductedStatus;
+	}
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
 	}
 	
 	

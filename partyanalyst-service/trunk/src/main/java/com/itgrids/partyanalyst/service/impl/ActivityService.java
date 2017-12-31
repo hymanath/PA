@@ -6477,14 +6477,14 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 			  
 			 // List<Object[]> activityDtlsObjList1 = activityConductedInfoDAO.getActivityDetailsBasedOnLocation(getGroupType(locationType), locationType, locationValues, activityScopeId);
 			  List<Object[]> activityDtlsObjList = activityLocationInfoDAO.getActivityDetailsBasedOnLocation(getGroupType(locationType), locationType, locationValues, activityScopeId,constituencyId);
-			  finalList = getActivityDetails(activityDtlsObjList);
+			  finalList = getActivityDetails(activityDtlsObjList,getGroupType(locationType));
 		  } catch (Exception e) {
 			  LOG.error("Exception Occured in getActivityDetailsBasedOnLocation() method, Exception - ",e);
 		  }
 		  return finalList;
 	 }
 
-	public List<ActivityDetailsVO> getActivityDetails(List<Object[]> objList) {
+	public List<ActivityDetailsVO> getActivityDetails(List<Object[]> objList,String locationType) {
 		List<ActivityDetailsVO> finalList = new ArrayList<ActivityDetailsVO>(0);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		try {
@@ -6505,7 +6505,7 @@ public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId
 					} else {
 						activityDtlsVO.setStatus("NOT UPDATED");
 					}
-					
+					activityDtlsVO.setLocationType(locationType);
 					activityDtlsVO.setActivityLocationInfoId(commonMethodsUtilService.getLongValueForObject(param[6]));
 					finalList.add(activityDtlsVO);
 				}
