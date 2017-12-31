@@ -18666,5 +18666,20 @@
 			<param name="root">debateReportList</param>
 		</result>
 	 </action>
+	  <action name="getQuestionByAcivityScopeAction" class="activityAction" method="getQuestionByAcivityScope">
+        <result type="json" name="success">
+		  <param name="root">resultList</param>
+		</result>
+    </action>
+    <action name="getActivityAttributeAction" class="activityAction" method="getActivityAttribute">
+        <result type="json" name="success">
+		  <param name="root">attributeList</param>
+		</result>
+    </action>
+    <action name="saveActivityAnswerDetailsAction" class="activityAction" method="saveActivityAnswerDetails">  
+		<result type="json" name="success">
+   			<param name="root">successMsg</param>        
+   		</result>
+	</action>
  </package>
 </struts>

@@ -676,83 +676,32 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- /.modal for updateactivitymodel user -->
-	<div class="modal fade" id="updateactivitymodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content" style="border-radius:0px;">
-			<div class="modal-header" style="background-color:#ddd;">
-				<div class="row">
-					<div class="col-sm-12">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-12">
-						<h4 class="panel-title">GANNAVARAM</h4>
-					</div>
-				</div>
-				<div class="row m_top20">
-					<div class="col-sm-6">
-						<p>Estimated Date<span> 19-12-2015</span></p>
-					</div>
-					<div class="col-sm-6 ">
-						<div class="pull-right">
-							<p>Conducted Date<span> 26-12-2017</span></p>
-						</div>
-					</div>
-				</div>
-			</div>
-		  <div class="modal-body">
-			<div class="row">
-				<div class="col-sm-12">
-					<h4 class="panel-title" style="color:#00B17D;font-size:14px;"><span>00</span> Janmaboomi Conducted Time ?</h4>
-					<ul class="list-group m_top20">
-						<li class="list-group-item"><input type="text" class="form-control" /></li>
-					</ul> 
-				</div>
-				<div class="col-sm-12 m_top20">
-					<h4 class="panel-title" style="color:#00B17D;font-size:14px;"><span>01</span> Who Are Participated In Janmaboomi ?</h4>
-					<ul class="list-group m_top20">
-						<li class="list-group-item">
-							<input type="checkbox" />
-							<label>MLA</label>
-						</li>
-						<li class="list-group-item">
-							<input type="checkbox" />
-							<label>ZPTC</label>
-						</li>
-						<li class="list-group-item">
-							<input type="checkbox" />
-							<label>MPTC</label>
-						</li>
-						<li class="list-group-item">
-							<input type="checkbox" />
-							<label>MRO</label>
-						</li>
-					</ul>
-				</div>	
-				<div class="col-sm-12 m_top20">
-					<h4 class="panel-title" style="color:#00B17D;font-size:14px;"><span>01</span> Gramhasaba Prior Intimation Given By Panchayats Or Not ?</h4>
-					<ul class="list-group m_top20">
-						<li class="list-group-item">
-							<input type="radio" name="gpp"/>
-							<label>YES</label>
-						</li>
-						<li class="list-group-item">
-							<input type="radio" name="gpp" />
-							<label>NO</label>
-						</li>
-						
-					</ul>
-				</div>			
-				
-			</div>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button"  class="btn btn-custom btn-success">Save</button>
-		  </div>
-		</div>
+	
+	
+<div class="modal fade" id="updateactivitymodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabelId">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+    <div class="modal-content customModal">
+      <div class="modal-header">
+	   <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4>Activity Question Details - <span id="jbModalHeaderDivId"></span></h4><br>-->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="text-capital" id="activityHeadingId">Activity Question Details</h4><br>
+		 <div id="jbModalHeaderDivId"></div>
+      </div>
+      <div class="modal-body" style="padding:0px 15px;">
+		 <div class="row">
+			<div id="jbAnswerQuestionDivId"></div>
+		 </div>
+      </div>
+	  <div class="modal-footer">
+	        <span style="margin-right:50px" id="statusSpandId" style="display:none;"> </span>
+			<button type="button" id="saveJbAnswerDtlsDivId"  class="btn btn-custom btn-success">Save</button>
 	  </div>
-	</div>
+    </div>
+  </div>
+</div>
+	
+	
 <!-- /.modal -->
 <input type="hidden" id="hiddenActivityScopeId"></input>
 <input type="hidden" id="hiddenActivityLevelId"></input>
@@ -770,6 +719,7 @@
 <script src="js/cadre_response.js/cadre_response.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="js/Activities/activitiesImages.js" type="text/javascript"></script>
+<script src="js/Activities/activityQuestionnaire.js" type="text/javascript"></script>
 
 
 <script>
@@ -2836,7 +2786,6 @@ $(document).on("click",".updateDateDetls",function(){
 			{
 				
 				for(var i in result){
-					console.log(result[i].id);
 					$('#questionsId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 				}
 					
@@ -2977,6 +2926,7 @@ var attributesArr=[];
 function getLocationWiseDetailsForActivity(roundId)
 {
 	assemblyConsWiseActivitiesCount();
+	getActivityAttribute();
 	
 	 $('#conductedDateId,#conductedStatus').css("border-color","grey");
 	$("#chCkBxErrMsgId").html('');
@@ -3179,22 +3129,22 @@ function getLocationWiseDetailsForActivity(roundId)
 							//str+='<td><input type="checkbox" id="check'+result[i].activityLocatInfoId+'" class="checkBoxCls" attr_no="'+i+'" value="'+result[i].activityLocatInfoId+'" name="activityVO.activityVoList['+i+'].isChecked"/></td>';
 							str+='<input type="hidden" id="chckBxIdVal'+i+'" value="'+result[i].activityLocatInfoId+'" name="activityVO.activityVoList['+i+'].activityLocationInfoId"/>';
 							if(activityLevelId == 5){
-								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;display:none;"></span></td>';
+								str+='<td id='+result[i].constituencyId+'>'+result[i].constituencyName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" attr_activity_location_info_id='+result[i].activityLocatInfoId+' title="get question details" style="cursor:pointer;"></span></td>';
 								locationName = result[i].constituencyName+" Assembly Constituency ";
 							}
 							else if(activityLevelId == 1){
 									//str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+'</td>';
-									str+='<td id='+result[i].villageId+'>'+result[i].villageName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer; display:none;"></span></td>';
+									str+='<td id='+result[i].villageId+'>'+result[i].villageName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" attr_activity_location_info_id='+result[i].activityLocatInfoId+' title="get question details" style="cursor:pointer;"></span></td>';
 									
 										locationName = result[i].villageName+" Village / Ward  ";
 										
 							}
 							else if(activityLevelId == 2){
-									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;display:none;"></span></td>';
+									str+='<td id='+result[i].mandalId+'>'+result[i].mandalName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" attr_activity_location_info_id='+result[i].activityLocatInfoId+' title="get question details" style="cursor:pointer;"></span></td>';
 										locationName = result[i].mandalName+" Mandal/Munci./Corp. ";
 										
 							}else if(activityLevelId == 3){
-								str+='<td id='+result[i].districtId+'>'+result[i].districtName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" style="cursor:pointer;display:none;"></span></td>';
+								str+='<td id='+result[i].districtId+'>'+result[i].districtName+' <span class="glyphicon glyphicon-eye-open pull-right activityLevelIdCls" attr_activity_location_info_id='+result[i].activityLocatInfoId+' title="get question details" style="cursor:pointer;"></span></td>';
 								locationName = result[i].mandalName+" District  ";
 							}
 							
@@ -3605,6 +3555,9 @@ $(document).on("change","#attributeTypeList",function(){
   });
   $(document).on("click",".activityLevelIdCls",function(){
 	  $('#updateactivitymodel').modal('show');
+	  var activityLocationInfoId = $(this).attr("attr_activity_location_info_id");
+	  var activityName = $("#ActivityList option:selected").text();
+	  getQuestionByAcivityScope(activityLocationInfoId,activityName);
   });
   
 </script>
