@@ -1,12 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
-
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
-
-
 
 import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
@@ -1151,7 +1149,8 @@ public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId){
 				" select " +
 				" model.activityQuestionnaireId," +
 				" model.activityOptionId," +
-				" model.optionTxt " +
+				" model.optionTxt," +
+				" model.count " +
 				" from ActivityQuestionAnswer model " +
 				" where " +
 				" model.isDeleted = 'N' " +
@@ -1160,4 +1159,46 @@ public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId){
 	   query.setParameter("activityLocationInfoId", activityLocationInfoId);
 	   return query.list();
 	}
+ public List<Object[]> getDayWiseQuestionAnswerDetails(Long activityLocationInfoId,Date activityDate){
+		Query query = getSession().createQuery(" " +
+				" select " +
+				" model.activityQuestionnaireId," +
+				" model.activityOptionId," +
+				" model.optionTxt," +
+				" model.count " +
+				" from ActivityQuestionAnswer model " +
+				" where " +
+				" model.isDeleted = 'N' and model.activityDaywiseQuestionnaire.isDeleted='true' " +
+				" and date(model.activityDaywiseQuestionnaire.activityDate)=:activityDate " +
+				" and model.activityLocationInfoId=:activityLocationInfoId " +
+				" order by model.activityQuestionnaireId,model.activityOptionId ");
+	   query.setParameter("activityLocationInfoId", activityLocationInfoId);
+	   query.setParameter("activityDate", activityDate);
+	   return query.list();
+	}
+    public Long updateAnswerDlts(Long activityLocationInfoId,Long activityQuestionnaireId,Long activityOptionId) {
+		StringBuilder sb = new StringBuilder();
+		 sb.append(" update ActivityQuestionAnswer model set model.isDeleted='Y'  " +
+				  "  where model.activityLocationInfoId =:activityLocationInfoId " +
+				  "  and model.activityQuestionnaireId =:activityQuestionnaireId " );
+				  if (activityOptionId != null && activityOptionId.longValue() > 0) {
+					  sb.append(" and model.activityOptionId=:activityOptionId ");
+				  }
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("activityLocationInfoId", activityLocationInfoId);
+		query.setParameter("activityQuestionnaireId", activityQuestionnaireId);
+		if (activityOptionId != null && activityOptionId.longValue() > 0) {
+			query.setParameter("activityOptionId", activityOptionId);
+		}
+		return (long) query.executeUpdate();
+    }
+    public List<Long> checkIsAnswerIsSubmitted(Long activityLocationInfoId) {
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select  model.activityQuestionAnswerId from ActivityQuestionAnswer " +
+		 		   " model where model.isDeleted='N' " +
+		 		   " and model.activityLocationInfoId =:activityLocationInfoId ");
+		 Query query = getSession().createQuery(sb.toString());
+		 query.setParameter("activityLocationInfoId", activityLocationInfoId);
+		 return query.list();
+    }
 }

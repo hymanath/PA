@@ -3292,7 +3292,7 @@ public List<Object[]> getActivityDetailsBasedOnLocation(String groupType,String 
 	   queryStr.append(" model.conductedDate," +
 	   		           " model.plannedDate," +
 	   		           " model.activityScope.activityScopeId," +
-	   		           " model.updatedStatus," +
+	   		           " model.tabUpdatedStatus," +
 	   		           " model.activityLocationInfoId ");
 			
 	   queryStr.append(" from ActivityLocationInfo model ");

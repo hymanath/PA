@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityDetailsVO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
+import com.itgrids.partyanalyst.dto.ActivityReqAttributesVO;
 import com.itgrids.partyanalyst.dto.ActivityResponseVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
@@ -87,4 +88,7 @@ public interface IActivityService {
 	public ResultStatus saveActivityAnswerDetails(ActivityDetailsVO inputVO);
 	public ResultStatus uploadDocumentImage(ActivityDetailsVO inputVO,List<String> docuemntBase64List);
 	public List<ActivityDetailsVO> getDocumentDtlsByLocation(Long activityScopeId, Long activityLocationInfoId);
+	public List<ActivityReqAttributesVO> getActivityAttribute(Long activityScopeId);
+	public ResultStatus saveActivityAnswerDetailsByWeb(final List<ActivityDetailsVO> inputVOList,final Long loginUserId);
+	public List<ActivityDetailsVO> getActivityDayWiseAndNormalQuestionOptionDtls(Long activityScopeId,Long activityLocationInfoId,String activityDate);
 }
