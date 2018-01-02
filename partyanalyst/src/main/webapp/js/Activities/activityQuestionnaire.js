@@ -69,7 +69,7 @@ function getQuestionByAcivityScope(activityLocationInfoId,activityName)
 				headingStr+='</div>';
 				headingStr+='<div class="row m_top20">';
 					headingStr+='<div class="col-sm-6">';
-						headingStr+='<p><b>ACTIVITY (StartDate - EndDate)</b>&nbsp:&nbsp&nbsp<span>'+jsonObj.activityStarteDate+"-"+jsonObj.activityEndDate+'</span></p>';
+						headingStr+='<p><b>ACTIVITY (StartDate - EndDate)</b>&nbsp:&nbsp&nbsp<span>'+jsonObj.activityStarteDate+" to "+jsonObj.activityEndDate+'</span></p>';
 					headingStr+='</div>';
 					/* headingStr+='<div class="col-sm-6 ">';
 						headingStr+='<div class="pull-right">';
