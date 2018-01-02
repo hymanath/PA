@@ -2864,6 +2864,13 @@
 										 <div id="eventsDistWiseCohort1"></div>
 										<div id="eventsDistWiseCohort2"></div>
 									</div>
+								</div>								
+								<div class="panel panel-default panelNew m_top20">
+									<div class="row" id="accordion">
+										<div class="col-sm-12">
+											<div id="levelWiseOverviewId"></div>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" expand-block-more="events" style="display:none" id="evntCmpBLockId">
