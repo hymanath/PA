@@ -34,7 +34,8 @@ public class PmSubWorkDetails {
 	private Long pmStatusId;
 	private String coveringLetterPath;
 	private Long pmWorkTypeId;
-    	 
+	private Long workEndorsmentNo;
+	
 	private PmWorkType pmWorkType;
     private User insertedUser;
 	private User updatedUser;
@@ -53,6 +54,7 @@ public class PmSubWorkDetails {
 	private LocationAddress locationAddress;
 	private Long insertedUserId;
 	private Long updatedUserId;
+	private Date endorsmentDate;
 	
 	@Id
 	@Column(name="pm_sub_work_details_id")
@@ -318,6 +320,20 @@ public class PmSubWorkDetails {
 	}
 	public void setUpdatedUserId(Long updatedUserId) {
 		this.updatedUserId = updatedUserId;
+	}
+	@Column(name="work_endorsment_no")
+	public Long getWorkEndorsmentNo() {
+		return workEndorsmentNo;
+	}
+	public void setWorkEndorsmentNo(Long workEndorsmentNo) {
+		this.workEndorsmentNo = workEndorsmentNo;
+	}
+	@Column(name="endorsment_date")
+	public Date getEndorsmentDate() {
+		return endorsmentDate;
+	}
+	public void setEndorsmentDate(Date endorsmentDate) {
+		this.endorsmentDate = endorsmentDate;
 	}
 	
 }
