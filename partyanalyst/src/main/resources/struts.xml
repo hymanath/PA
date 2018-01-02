@@ -18666,6 +18666,11 @@
 			<param name="root">debateReportList</param>
 		</result>
 	 </action>
+	 <action name="getLocationWiseJBDataAction" class="coreDashboardAction" method="activitiesLocationWiseData">
+		<result type="json" name="success">
+				<param name="root">jbDataList</param>
+		</result>
+	</action>
 	  <action name="getQuestionByAcivityScopeAction" class="activityAction" method="getQuestionByAcivityScope">
         <result type="json" name="success">
 		  <param name="root">resultList</param>
