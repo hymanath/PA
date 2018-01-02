@@ -3922,6 +3922,8 @@
 	 <property name="tehsilDAO" ref="tehsilDAO"/>
 	 <property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
 	 <property name="panchayatDAO" ref="panchayatDAO"/>
+	 <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO"/>
+	 <property name="activityQuestionnaireDAO" ref="activityQuestionnaireDAO"/>
 	</bean>
 	<bean name="attendanceCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.AttendanceCoreDashBoardService">
 		<property name="departmentDAO" ref="departmentDAO" />
