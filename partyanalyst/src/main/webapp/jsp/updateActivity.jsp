@@ -2926,7 +2926,6 @@ var attributesArr=[];
 function getLocationWiseDetailsForActivity(roundId)
 {
 	assemblyConsWiseActivitiesCount();
-	getActivityAttribute();
 	
 	 $('#conductedDateId,#conductedStatus').css("border-color","grey");
 	$("#chCkBxErrMsgId").html('');
@@ -3349,6 +3348,7 @@ function getLocationWiseDetailsForActivity(roundId)
 					$("#constncyId").html(''+$("#constiList option:selected").text()+' constituency ');
 					$('#headingId').html(' '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
 					
+					 getActivityAttribute();//gettting activity attribute to show and hide question info popup
 			 });
 	}
 
