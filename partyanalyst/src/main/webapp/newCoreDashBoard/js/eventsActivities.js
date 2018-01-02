@@ -1854,14 +1854,14 @@ function buildActivityCounts(result,divId,activityName,activityId)
 		var notUpdatedCount = parseInt(totalCount)-parseInt(updatedCount);
 		
 		
-		str+='<div class="m_top20">';
+		str+='<div class="panel-heading m_top20 ">';
 			str+='<h5 class="text-capital">'+result[i].name+' <span class="activitesExpandIcon" attr_search_type="scopeId" attr_level_id="'+result[i].id+'"  attr_activity_name='+activityName+' attr_id="'+activityId+'"><i class="glyphicon glyphicon-fullscreen"></i> </span></h5>';
-			str+='<table class="table bg_ED tablePaddingSyle">';
+			str+='<table class="table bg_ED tablePaddingSyle table-bordered">';
 				str+='<tbody>';
 					str+='<tr>';
 						
 						if(result[i].isCsd != null && result[i].isCsd.length>0 && parseInt(result[i].isCsd)>0){
-							str+='<td>';
+							str+='<td rowspan="2">';
 						}else{
 							str+='<td rowspan="2">';
 						}
@@ -2394,7 +2394,7 @@ $(document).on("click",".acitivitiesMoreExpand",function(){
 		  $(".moreActivitiesBlocks").toggle();
 		    stateWiseCohort(activityId); //srujana
 			districtWiseCohort(activityId);
-			levelWiseSBData(activityId);//sanjeev
+			//levelWiseSBData(activityId);//sanjeev
 			//activitiesQuestions(activityId);
 				$(".detailedBlockEvents,.activeUlCls").show();
 			   $(".detailedEvent").addClass("active")	
@@ -2507,19 +2507,23 @@ function buildActivityEventdata(result,locationId){
 					tableView+='<th rowspan="2">Conducted</th>';
 					tableView+='<th rowspan="2">%</th>';
 					for(var i in result[0].questionList){
-						
-						tableView+='<th colspan="'+result[0].questionList[i].optionList.length+'">'+result[0].questionList[i].questionName+'</th>';
-						if(result[0].questionList[i].optionList.length ==2){
-							tableView+='<th rowspan="2">%</th>';
+						if(result[0].questionList[i].optionList.length==2){
+							tableView+='<th rowspan ="2">'+result[0].questionList[i].questionName+'</th>';
+							tableView+='<th rowspan ="2">%</th>';
+						}else if (result[0].questionList[i].optionList.length==1){
+							tableView+='<th rowspan ="2">'+result[0].questionList[i].questionName+'</th>';
+						}else{
+							tableView+='<th colspan="'+result[0].questionList[i].optionList.length+'">'+result[0].questionList[i].questionName+'</th>';
 						}
+						
 					}
-					
 				tableView+='</tr>';
 				tableView+='<tr>';
 				for(var i in result[0].questionList){
-					for(var j in result[0].questionList[i].optionList){
-						
-						tableView+='<th>'+result[0].questionList[i].optionList[j].optionName+'</th>';
+					if(result[0].questionList[i].optionList.length !=2 && result[0].questionList[i].optionList.length !=1){
+						for(var j in result[0].questionList[i].optionList){
+							tableView+='<th>'+result[0].questionList[i].optionList[j].optionName+'</th>';
+						}
 					}
 					//tableView+='<th></th>';
 				}
@@ -2535,24 +2539,28 @@ function buildActivityEventdata(result,locationId){
 					for(var j in result[i].questionList){
 						var total = 0;
 						var yesCount=0;
-						for(var k in result[i].questionList[j].optionList){
-							tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
-							if(result[i].questionList[j].optionList[k].optionId==1){
-								yesCount=result[i].questionList[j].optionList[k].count;
-							}
-							total =total+result[i].questionList[j].optionList[k].count
-						}
-						if(result[i].questionList[j].optionList.length ==2){
-							if(total ==0){
-								tableView+='<td>-</td>';
+						 for(var k in result[i].questionList[j].optionList){
+							total =result[i].questionList[j].optionList[k].count+total;
+							if(result[i].questionList[j].optionList.length==2){
+								if(result[i].questionList[j].optionList[k].optionId ==1){
+									tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
+									yesCount=result[i].questionList[j].optionList[k].count;
+									if(result[i].questionList[j].optionList[k].percentage !==null){
+										tableView+='<td>'+result[i].questionList[j].optionList[k].percentage+'%</td>';
+									}else{
+									tableView+='<td>-</td>';
+									}
+								}
+							}else if (result[i].questionList[j].optionList.length==1){
+								tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
 							}else{
-								tableView+='<td>'+parseFloat((yesCount/total)*100).toFixed(2)+'</td>';
+								tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
 							}
 						}
+						
 					}
 					tableView+='</tr>';
 				}
-			
 			tableView+='</tbody>';
 		tableView+='</table>';
 	tableView+='</div>';
