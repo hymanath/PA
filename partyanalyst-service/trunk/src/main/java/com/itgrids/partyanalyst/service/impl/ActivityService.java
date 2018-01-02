@@ -3075,7 +3075,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				}
 			}
 		    
-		    activityInfoDocument.setActivityDocument(activityDocument);
+		    activityInfoDocument.setActivityDocumentId(activityDocument.getActivityDocumentId());
 		    activityInfoDocument.setInsertedBy(eventFileUploadVO.getUserId());
 		    activityInfoDocument.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
 			
@@ -3105,7 +3105,8 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		    else
 		    {
 		    	ActivityScope activityScope = activityScopeDAO.get(eventFileUploadVO.getActivityScopeId());
-				List<Date> betweenDatesList = null;
+
+		    	List<Date> betweenDatesList = null;
 				Date startDate = activityScope.getStartDate();
 				Date activitDate = activityDocument.getActivityDate();
 		    	try {
