@@ -19,10 +19,10 @@ function getActivityAttribute()
 						 }
 					  }
 				  }
-				  if (flag=="false") {
-					$(".activityLevelIdCls").hide();
-				  } else {
+				  if (flag=="true") {
 					$(".activityLevelIdCls").show();
+				  } else {
+					$(".activityLevelIdCls").hide();
 				  }
 			 });
 }
