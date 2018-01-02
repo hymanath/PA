@@ -111,7 +111,7 @@ public class ActivityConductedInfoDAO extends GenericDaoHibernate<ActivityConduc
 			else if(type.equalsIgnoreCase("no"))
 				queryStr.append(" and ((model.infoCellCount is null and model.ivrStatus ='N') or  (model.infoCellCount is null and model.ivrStatus is null ) )   ");
 			else if(type.equalsIgnoreCase("maybe"))
-				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus ='N' ) ) ");
+				queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus ='N' ) OR (model.infoCellCount is null and model.ivrStatus ='Y' ) ) ");
 		}
 		if(userAccessLevelId != null && userAccessLevelId.longValue() >0l){
 		 	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -637,9 +637,9 @@ public List<Object[]> activitiesDistrictWiseCohort(List<Long> activityIdsLst,Dat
 	    				" ( model.infoCellCount is null and model.ivrStatus is null )  ) ");
 	    	}
 	    	else if(type.equalsIgnoreCase("maybe")){
-	    		queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus='N' ) ) ");
+	    		queryStr.append(" and ( (model.infoCellCount is not null and model.ivrStatus='N' ) OR (model.infoCellCount is null and model.ivrStatus ='Y' ) ) ");
 	    	}
-	      }
+	      } 
 	      else{
 	    	  queryStr.append(" and ( model.infoCellCount is not null or model.ivrStatus='Y') ");
 	      }
