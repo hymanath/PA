@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dto.CoreDashboardInsuranceVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
+import com.itgrids.partyanalyst.dto.EventLocationVO;
 import com.itgrids.partyanalyst.dto.HolidayListVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -190,6 +191,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<TabLoginAuthVO> tabDetails;
 	private String tabUserDetails;
 	private ResultStatus 						partyMeetingStatus;
+	
 	/**
 	 * Ending Payment Gateway required parameters
 	 * 
@@ -208,6 +210,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<KaizalaDashboardVO> kaizalaDashboardList;
 	private List<KeyValueVO> keyValueVOList;
 	private KaizalaDashboardVO kaizalaDashboardVO;
+	private List<EventLocationVO> jbDataList;
 	
 	//setters And Getters
 	
@@ -1032,6 +1035,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setKeyValueVOList(List<KeyValueVO> keyValueVOList) {
 		this.keyValueVOList = keyValueVOList;
+	}
+	
+	public List<EventLocationVO> getJbDataList() {
+		return jbDataList;
+	}
+
+	public void setJbDataList(List<EventLocationVO> jbDataList) {
+		this.jbDataList = jbDataList;
 	}
 
 	//business methods
@@ -5539,4 +5550,20 @@ public String getTrainingQuizDetails(){
 	 }
 	 return Action.SUCCESS;
  }
+public String activitiesLocationWiseData(){
+	try {
+		LOG.info("Entered into activitiesDistrictWiseCohort()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		Long locationScopeId = jObj.getLong("locationScopeId");
+		Long activityId= jObj.getLong("activityId");
+		jbDataList = coreDashboardEventsActivitiesService.activitiesLocationWiseData(fromDate, toDate,locationScopeId,activityId);
+	} catch (Exception e) {
+		LOG.error("Exception raised at activitiesDistrictWiseCohort() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+	
+}
+
 }
