@@ -142,7 +142,7 @@ public List<Object[]> getQuestionnareDetails(List<Long> questionnairIdsList){
 		  	queryStr.append(" AQE.activity_option_type_id = AOT.activity_option_type_id AND ");
 		  	queryStr.append(" ACS.activity_scope_id = AQE.activity_scope_id AND AQE.is_deleted = 'N' AND ");
 		  	queryStr.append(" AQE.activity_scope_id =:activityScopeId and AQE.question_type != 'DAYWISE QUESTION'" +
-		  			        " order by AQE.order_no,AQO.order_no ");
+  			        " order by AQE.order_no,AQO.order_no ");
 		  	 
 		  	Session session = getSession();
 		    SQLQuery sqlQuery = session.createSQLQuery(queryStr.toString());

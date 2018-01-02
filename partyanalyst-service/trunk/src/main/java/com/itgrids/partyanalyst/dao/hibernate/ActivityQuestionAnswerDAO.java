@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
@@ -1159,6 +1160,72 @@ public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId){
 	   query.setParameter("activityLocationInfoId", activityLocationInfoId);
 	   return query.list();
 	}
+
+@Override
+public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locationScopeId,String locationType) {
+	//0-qid,1-question,3-optionId,4-optionType,5-optionName 6-optionId,7-count,8-locationId
+	StringBuilder sb = new StringBuilder();
+	sb.append("select AQS.activity_question_id as questionId,AQS.question as question, AOT.activity_option_type_id as optionTypeId, AOT.type as optionType," +
+			" AO.option as optionname,AO.activity_option_id as optionId ");
+	
+	if(locationType != null && locationType.equalsIgnoreCase("village")){
+		sb.append(" ,COUNT(DISTINCT ua.panchayat_id) as count ");
+	}else{
+		sb.append(" ,COUNT(DISTINCT ua.ward) as count ");
+	}
+	
+	if(locationScopeId !=null && locationScopeId > 0l ){
+		if(locationScopeId ==3l){
+			sb.append(" ,ua.district_id as locationId ");
+		}else if(locationScopeId ==4l){
+			sb.append(" ,ua.constituency_id as locationId ");
+		}else if(locationScopeId ==10l){
+			sb.append(" ,parliament_constituency_id as locationId ");
+		}
+	}
+	sb.append(" from activity_question_answer AQA, activity_location_info ALI,user_address ua,activity_questionnaire AQ,activity_question AQS," +
+			" activity_option_type AOT, activity_option AO ");
+	
+	sb.append(" WHERE ALI.activity_location_info_id = AQA.activity_location_info_id " +
+			" AND ua.user_address_id = ALI.address_id " +
+			" AND AQ.activity_questionnaire_id = AQA.activity_questionnaire_id " +
+			" AND AQS.activity_question_id = AQ.activity_question_id " +
+			" AND AOT.activity_option_type_id = AQ.activity_option_type_id " +
+			" AND AO.activity_option_id = AQA.activity_option_id ");
+	
+	if(locationScopeId !=null && locationScopeId > 0l ){
+		if (locationScopeId == 3l || locationScopeId == 4l) {
+			sb.append(" AND ua.district_id BETWEEN 11 AND 23 ");
+		} else {
+			sb.append(" and ua.state_id =1");
+		}
+	}
+	if(activityScopeId != null && activityScopeId >0){
+		sb.append(" and AQ.activity_scope_id =:activityScopeId ");
+	}
+	sb.append(" GROUP BY AQA.activity_questionnaire_id, AQA.activity_option_id ");
+	
+	if(locationScopeId !=null && locationScopeId > 0l ){
+		if(locationScopeId ==3l){
+			sb.append(" ,ua.district_id ");
+		}else if(locationScopeId ==4l){
+			sb.append(" ,ua.constituency_id ");
+		}else if(locationScopeId ==10l){
+			sb.append(" ,parliament_constituency_id");
+		}
+	}
+	Query query = getSession().createSQLQuery(sb.toString()).addScalar("questionId",Hibernate.LONG)
+			.addScalar("question",Hibernate.STRING)
+			.addScalar("optionTypeId",Hibernate.LONG)
+			.addScalar("optionType",Hibernate.STRING)
+			.addScalar("optionname",Hibernate.STRING)
+			.addScalar("optionId",Hibernate.LONG)
+			.addScalar("count",Hibernate.LONG)
+			.addScalar("locationId",Hibernate.LONG);
+	
+	query.setParameter("activityScopeId", activityScopeId);
+	return query.list();
+}
  public List<Object[]> getDayWiseQuestionAnswerDetails(Long activityLocationInfoId,Date activityDate){
 		Query query = getSession().createQuery(" " +
 				" select " +

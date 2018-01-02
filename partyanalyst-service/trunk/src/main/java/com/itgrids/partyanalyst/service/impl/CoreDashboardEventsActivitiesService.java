@@ -19,6 +19,8 @@ import com.itgrids.partyanalyst.dao.IActivityConductedInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
+import com.itgrids.partyanalyst.dao.IActivityQuestionnaireDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -32,6 +34,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
+import com.itgrids.partyanalyst.dto.EventLocationVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardEventsActivitiesService;
@@ -61,6 +64,8 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	 private ITehsilDAO tehsilDAO;
 	 private ILocalElectionBodyDAO localElectionBodyDAO;
 	 private IPanchayatDAO panchayatDAO;
+	 private IActivityQuestionAnswerDAO activityQuestionAnswerDAO;
+	private IActivityQuestionnaireDAO activityQuestionnaireDAO;
 	 
 	 
 	public IStateDAO getStateDAO() {
@@ -145,6 +150,22 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	}
 	public void setActivityScopeDAO(IActivityScopeDAO activityScopeDAO) {
 		this.activityScopeDAO = activityScopeDAO;
+	}
+	
+	public IActivityQuestionAnswerDAO getActivityQuestionAnswerDAO() {
+		return activityQuestionAnswerDAO;
+	}
+	public void setActivityQuestionAnswerDAO(
+			IActivityQuestionAnswerDAO activityQuestionAnswerDAO) {
+		this.activityQuestionAnswerDAO = activityQuestionAnswerDAO;
+	}
+	
+	public IActivityQuestionnaireDAO getActivityQuestionnaireDAO() {
+		return activityQuestionnaireDAO;
+	}
+	public void setActivityQuestionnaireDAO(
+			IActivityQuestionnaireDAO activityQuestionnaireDAO) {
+		this.activityQuestionnaireDAO = activityQuestionnaireDAO;
 	}
 	/**
 	* @param  Long activityMemberId
@@ -2175,6 +2196,167 @@ public static Comparator<UserTypeVO> eventConductedCuntDesc = new Comparator<Use
 		 return cunt1.compareTo(cunt2);
 		}
 	};
+
+@Override
+public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String toDate,Long locationScopeId,Long activityId) {
+	
+	List<EventLocationVO> finalList = new ArrayList<EventLocationVO>();
+	try{
+		Map<Long,EventLocationVO> locationMap = new HashMap<Long,EventLocationVO>();
+		List<Object[]> activityScopeList= activityScopeDAO.getActivityScopeIdByActivityAndLevelId(activityId);
+		// 0-total,1-conduct,2-locationUId,3-locationName
+		Long activityScopeId=0l;
+		for (Object[] objects : activityScopeList) {
+			activityScopeId = commonMethodsUtilService.getLongValueForObject(objects[0]);
+		}
+		List<Object[]> questionList =activityQuestionnaireDAO.getActivityQuestionsOptionsDetails(activityScopeId);
+		 //0-qId,1-question,2-optionTypId,3-type,4-hasremark 5-activityOptionId,6-opt 7-qusnaryId,8-mandatry
+		Map<Long, EventLocationVO> questionaryMap = new HashMap<Long, EventLocationVO>();
+		for (Object[] objects : questionList) {
+			EventLocationVO questioNVo =questionaryMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+			if(questioNVo == null){
+				questioNVo = new EventLocationVO();
+				EventLocationVO optionVo = new EventLocationVO();
+				questioNVo.setQuestionId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				questioNVo.setQuestionName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				questioNVo.setOptionId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				questioNVo.setOptionType(commonMethodsUtilService.getStringValueForObject(objects[3]));
+				optionVo.setOptionId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+				optionVo.setOptionName(commonMethodsUtilService.getStringValueForObject(objects[6]));
+				questioNVo.getOptionList().add(optionVo);
+				questionaryMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), questioNVo);
+			}else{
+				EventLocationVO optionVo = new EventLocationVO();
+				optionVo.setOptionId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+				optionVo.setOptionName(commonMethodsUtilService.getStringValueForObject(objects[6]));
+				questioNVo.getOptionList().add(optionVo);
+			}
+			
+		}
+		
+		//totalCount
+		List<Object[]> VillageList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"village","total");
+		List<Object[]> wardList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"ward","total");
+		if(commonMethodsUtilService.isListOrSetValid(VillageList)){
+			VillageList.addAll(wardList);
+		}
+		//conduct
+		List<Object[]> VillageConductedList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"village","conduct");
+		List<Object[]> wardCounduectedList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"ward","conduct");
+		
+		if(commonMethodsUtilService.isListOrSetValid(VillageConductedList)){
+			VillageConductedList.addAll(wardCounduectedList);
+		}if(commonMethodsUtilService.isListOrSetValid(VillageList)){
+			VillageList.addAll(VillageConductedList);
+		}
+		
+		for (Object[] objects : VillageList) {
+			EventLocationVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
+			if(locationVo == null){
+				locationVo = new EventLocationVO();
+				locationVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+				locationVo.setTotalCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				locationVo.setConductedCount(commonMethodsUtilService.getLongValueForObject(objects[1]));
+				locationVo.getQuestionList().addAll(getQuestionTemplate(questionaryMap));//getting template
+				locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]), locationVo);
+			}else{
+				locationVo.setTotalCount(commonMethodsUtilService.getLongValueForObject(objects[0])+locationVo.getTotalCount());
+				locationVo.setConductedCount(commonMethodsUtilService.getLongValueForObject(objects[1])+locationVo.getConductedCount());
+			}
+			
+		}
+		
+		List<Object[]> wardanswerList = activityQuestionAnswerDAO.getCountanswereddetails(activityScopeId, locationScopeId,"ward");
+		List<Object[]> vilageanswerList = activityQuestionAnswerDAO.getCountanswereddetails(activityScopeId, locationScopeId,"village");
+		if(commonMethodsUtilService.isListOrSetValid(wardanswerList)){
+			wardanswerList.addAll(vilageanswerList);
+		}
+		
+		//0-qid,1-question,2-optionTypeId,3-optionType,4-optionName 5-optionId,6-count,7-locationId
+		for (Object[] param : wardanswerList) {
+			EventLocationVO Vo = locationMap.get(commonMethodsUtilService.getLongValueForObject(param[7]));
+			if(Vo != null){
+					if(Vo.getQuestionList() !=null && Vo.getQuestionList().size() >0){
+						EventLocationVO mathedVo = getMatchedVo(Vo.getQuestionList(),commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(mathedVo != null){
+							if(mathedVo.getOptionList() != null && mathedVo.getOptionList().size() >0){
+								EventLocationVO mathedOptionVo = getMatchedOPtonVo(mathedVo.getOptionList(),commonMethodsUtilService.getLongValueForObject(param[5]));
+								if(mathedOptionVo !=null){
+									mathedOptionVo.setCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+								}
+							}
+						}
+					}
+				}
+		}
+		for (Long lcoationId : locationMap.keySet()) {
+			EventLocationVO vo=  locationMap.get(lcoationId);
+			if(vo != null && vo.getTotalCount()>0 ){
+				vo.setPercentage((double) ((vo.getConductedCount()/vo.getTotalCount())*100));
+				finalList.add(vo);
+			}
+		}
+		
+	}catch(Exception e){
+		 LOG.error("Error occured at activitiesLocationWiseData() in setAttendedDataToMap class",e); 
+	}
+	return finalList;
+}
+  public List<EventLocationVO> getQuestionTemplate(Map<Long,EventLocationVO> questionMap) {
+	  List<EventLocationVO> questionList = new ArrayList<EventLocationVO>();
+		try {
+			for (Entry<Long, EventLocationVO> questionEntry : questionMap.entrySet()) {
+				EventLocationVO questioNVo = new EventLocationVO();
+				questioNVo.setQuestionId(questionEntry.getValue().getQuestionId());
+				questioNVo.setQuestionName(questionEntry.getValue().getQuestionName());
+				questioNVo.setOptionId(questionEntry.getValue().getOptionId());
+				questioNVo.setOptionType(questionEntry.getValue().getOptionType());
+				if (questionEntry.getValue().getOptionList() != null) {
+					for (EventLocationVO optionVo1 : questionEntry.getValue().getOptionList()) {
+						EventLocationVO optionVo = new EventLocationVO();
+						optionVo.setOptionId(optionVo1.getOptionId());
+						optionVo.setOptionName(optionVo1.getOptionName());
+						questioNVo.getOptionList().add(optionVo);
+					}
+				}
+				questionList.add(questioNVo);
+			}
+		} catch (Exception e) {
+		   LOG.error("Error occured at getQuestionTemplate() in setAttendedDataToMap class",e); 
+	   }
+	   return questionList;
+  }
+
+	private EventLocationVO getMatchedOPtonVo(List<EventLocationVO> optionList, Long optionId) {
+		try {
+			if (optionList == null || optionList.size() == 0 || optionId == null)
+				return null;
+			for (EventLocationVO vo : optionList) {
+				if (vo.getOptionId().longValue() == optionId.longValue())
+					return vo;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	public EventLocationVO getMatchedVo(List<EventLocationVO> returnList,Long id){
+		try {
+			if (returnList == null || returnList.size() == 0 || id == null)
+				return null;
+			for (EventLocationVO vo : returnList) {
+				if (vo.getQuestionId().longValue() == id.longValue())
+					return vo;
+			}
+		}
+	  catch(Exception e)
+	  {
+	    e.printStackTrace();
+	  }
+	  return null;
+	}
 }
 
 
