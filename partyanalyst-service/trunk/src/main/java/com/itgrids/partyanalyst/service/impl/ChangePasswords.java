@@ -16,7 +16,7 @@ public class ChangePasswords {
 	{
 		Map<String,String> pwdMap = new HashMap<String, String>(0);
 		
-		BufferedReader br = new BufferedReader(new FileReader("E:\\pwdChange.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("D:\\Users\\pwdChange.txt"));
 		String str = null;
 		int i = 0;
 		while ((str = br.readLine()) != null)
@@ -39,7 +39,7 @@ public class ChangePasswords {
 		try{
 			System.out.println("---------------------");
 			MD5Encrypt encrypt = new MD5Encrypt();
-			BufferedWriter outWriter = new BufferedWriter(new FileWriter("D:\\pwdChanged.txt")); 
+			BufferedWriter outWriter = new BufferedWriter(new FileWriter("D:\\Users\\pwdChanged.txt")); 
 					
 			for(Map.Entry<String,String> entry : pwdMap.entrySet())
 			{
