@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
+import com.itgrids.partyanalyst.dto.EventLocationVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 
@@ -21,4 +22,6 @@ public interface ICoreDashboardEventsActivitiesService {
     public List<PartyMeetingVO> getLocationWiseSelectedChildMembersForMultiLocationMeetings(Long locationLevelId,List<Long> locationValues,Long stateId,
  			Long partyMeetingMainTypeId,Long partyMeetingLevelId,Long meetingGrpId,String fromDateStr,String toDateStr);
     public List<Long> getPartyMeetingLevelIdsByAccessLevel(Long accessLevelId,List<Long> levelValues,Long stateId,Long partyMeetingMainTypeId,Long meetingGrpId,String fromDateStr,String toDateStr);
-}
+    
+    public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String toDate,Long locationScopeId,Long activityScopeId);
+} 
