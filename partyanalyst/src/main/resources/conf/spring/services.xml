@@ -4607,4 +4607,7 @@
     		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 			<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/>
     	</bean>
+    	
+    	 <bean name="zohoWebServiceHandlerService" class="com.itgrids.partyanalyst.service.impl.ZohoWebServiceHandlerService" >
+    	 </bean>
 </beans>			
