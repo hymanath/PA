@@ -1163,17 +1163,17 @@ public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId){
 
 @Override
 public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locationScopeId,String locationType) {
-	//0-qid,1-question,3-optionId,4-optionType,5-optionName 6-optionId,7-count,8-locationId
+	//0-qid,1-question,3-optionId,4-optionType,5-optionName 6-optionId,7-count, 8-memcount,9-locationId
 	StringBuilder sb = new StringBuilder();
 	sb.append("select AQS.activity_question_id as questionId,AQS.question as question, AOT.activity_option_type_id as optionTypeId, AOT.type as optionType," +
 			" AO.option as optionname,AO.activity_option_id as optionId ");
 	
 	if(locationType != null && locationType.equalsIgnoreCase("village")){
-		sb.append(" ,COUNT(DISTINCT ua.panchayat_id) as count ");
+		sb.append(" ,COUNT(DISTINCT ua.panchayat_id) as locationcount ");
 	}else{
-		sb.append(" ,COUNT(DISTINCT ua.ward) as count ");
+		sb.append(" ,COUNT(DISTINCT ua.ward) as locationcount ");
 	}
-	
+	sb.append( " ,sum(AQA.count) as memberCount ");
 	if(locationScopeId !=null && locationScopeId > 0l ){
 		if(locationScopeId ==3l){
 			sb.append(" ,ua.district_id as locationId ");
@@ -1183,21 +1183,23 @@ public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locatio
 			sb.append(" ,parliament_constituency_id as locationId ");
 		}
 	}
-	sb.append(" from activity_question_answer AQA, activity_location_info ALI,user_address ua,activity_questionnaire AQ,activity_question AQS," +
-			" activity_option_type AOT, activity_option AO ");
+	sb.append(" from activity_question_answer AQA left Join activity_option AO on AO.activity_option_id = AQA.activity_option_id," +
+			" activity_location_info ALI,user_address ua,activity_questionnaire AQ,activity_question AQS," +
+			" activity_option_type AOT");
 	
 	sb.append(" WHERE ALI.activity_location_info_id = AQA.activity_location_info_id " +
 			" AND ua.user_address_id = ALI.address_id " +
 			" AND AQ.activity_questionnaire_id = AQA.activity_questionnaire_id " +
 			" AND AQS.activity_question_id = AQ.activity_question_id " +
 			" AND AOT.activity_option_type_id = AQ.activity_option_type_id " +
-			" AND AO.activity_option_id = AQA.activity_option_id ");
+			" AND AQA.is_deleted = 'N'  AND ALI.conducted_date is not null " +
+			" AND ALI.updated_status ='UPDATED' ");
 	
 	if(locationScopeId !=null && locationScopeId > 0l ){
 		if (locationScopeId == 3l || locationScopeId == 4l) {
 			sb.append(" AND ua.district_id BETWEEN 11 AND 23 ");
 		} else {
-			sb.append(" and ua.state_id =1");
+			sb.append(" AND ua.state_id =1");
 		}
 	}
 	if(activityScopeId != null && activityScopeId >0){
@@ -1220,7 +1222,8 @@ public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locatio
 			.addScalar("optionType",Hibernate.STRING)
 			.addScalar("optionname",Hibernate.STRING)
 			.addScalar("optionId",Hibernate.LONG)
-			.addScalar("count",Hibernate.LONG)
+			.addScalar("locationcount",Hibernate.LONG)
+			.addScalar("memberCount",Hibernate.LONG)
 			.addScalar("locationId",Hibernate.LONG);
 	
 	query.setParameter("activityScopeId", activityScopeId);
