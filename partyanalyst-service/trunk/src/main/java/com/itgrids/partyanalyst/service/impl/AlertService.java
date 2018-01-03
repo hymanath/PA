@@ -979,13 +979,13 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 	return list;
 }
 
-public String createAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles)
+ public String createAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles)
 	{
 	String resultStatus = (String) transactionTemplate
-			.execute(new TransactionCallback() {
-				public Object doInTransaction(TransactionStatus status) {
+		.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
 					String rs = new String();
-					try {
+				try {
 				 DateUtilService date = new DateUtilService();
 				 Alert alert = new Alert();
 				 
@@ -1115,18 +1115,18 @@ public String createAlert(final AlertVO inputVO,final Long userId, final Map<Fil
 				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
 				 
 				 saveAlertTrackingDetails(alertTrackingVO)	;	
-					}
-					catch (Exception ex) {
-						 rs = "fail";
-						
-						return rs;
-					}
-						return rs;
 				}
+				catch (Exception ex) {
+					 rs = "fail";
+					
+					return rs;
+				}
+						return rs;
+			}
 
-			});
+		});
 	return resultStatus;
-}
+ }
 public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap){
 	
 	try{
