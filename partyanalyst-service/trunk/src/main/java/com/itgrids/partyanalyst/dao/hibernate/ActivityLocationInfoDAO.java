@@ -3387,7 +3387,8 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 			if(locationScopeId ==3l){
 				sb.append(" ,model.address.district.districtId, model.address.district.districtName ");
 			}else if(locationScopeId ==4l){
-				sb.append(" ,model.address.constituency.constituencyId, model.address.constituency.name ");
+				sb.append(" ,model.address.constituency.constituencyId, model.address.constituency.name, model.address.constituency.district.districtId," +
+						"model.address.constituency.district.districtName ");
 			}else if(locationScopeId ==10l){
 				sb.append(" ,model.address.parliamentConstituency.constituencyId, model.address.parliamentConstituency.name ");
 			}
