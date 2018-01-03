@@ -160,7 +160,7 @@
 			$('#dateRangeIdForAlert').data('daterangepicker').setEndDate(moment());
 			customStartDateAlert = moment().format("DD/MM/YYYY")
 			customEndDateAlert = moment().format("DD/MM/YYYY")
-			$("#alertDateHeadingId").html("TODAY"+"("+moment().format("DD/MM/YYYY")+"-"+moment().format("DD/MM/YYYY")+" )");
+			$("#alertDateHeadingId").html("TODAY"+"("+moment().format("DD/MM/YYYY")+" )");
 		}else if(type == "currentMonth"){
 			$('#dateRangeIdForAlert').data('daterangepicker').setStartDate(moment().startOf("month"));
 			$('#dateRangeIdForAlert').data('daterangepicker').setEndDate(moment().endOf("month"));
@@ -219,7 +219,7 @@
 	})
 	
 	var dates= $("#dateRangeIdForAlert").val();
-	$("#alertDateHeadingId").html(" Today("+dates+")");
+	$("#alertDateHeadingId").html("TODAY"+"("+moment().format("DD/MM/YYYY")+" )");
 	var singleBlockDateStart = moment().startOf('month').format('MMM YY');
 	var singleBlockDateEnd = moment().format('MMM YY');
 	$('#dateRangeIdForAlert').on('apply.daterangepicker', function(ev, picker) {
@@ -3109,10 +3109,10 @@ function getTotalArticledetails(articleId){
 					str+='<td colspan="2" onclick ="getEditioDtls(1,0);arrowPositionMove(overAllPartyArrowPostion);" id="overAllPartyArrowPostion" class="alertOverViewDetailsCls alertsArrow" attr_alert_type_id="1" attr_edition_type_id="0">';
 					str+='<div class="alertInnerArrow alertsArrow" >';
 					if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
-						str+='<h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'&nbsp<small>('+partyAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(1,'+result.overAllVO.partyAlertCnt+',\'PARTY ALERTS\');" attr_alert_type_name="PARTY ALERTS" attr_alert_count="'+result.overAllVO.partyAlertCnt+'" attr_alert_type="1" ></i>';
+						str+='<h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(1,'+result.overAllVO.partyAlertCnt+',\'PARTY ALERTS\');" attr_alert_type_name="PARTY ALERTS" attr_alert_count="'+result.overAllVO.partyAlertCnt+'" attr_alert_type="1" ></i>';
 						str+='</h3>';
 					}else{
-						str+='<h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'&nbsp<small>('+partyAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(1,'+result.overAllVO.partyAlertCnt+',\'PARTY ALERTS\');" attr_alert_type_name="PARTY ALERTS" attr_alert_count="'+result.overAllVO.partyAlertCnt+'" attr_alert_type="1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i>';
+						str+='<h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(1,'+result.overAllVO.partyAlertCnt+',\'PARTY ALERTS\');" attr_alert_type_name="PARTY ALERTS" attr_alert_count="'+result.overAllVO.partyAlertCnt+'" attr_alert_type="1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i>';
 						str+='</h3>';
 					}
 					

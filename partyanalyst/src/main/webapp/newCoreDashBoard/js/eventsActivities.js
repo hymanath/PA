@@ -1761,7 +1761,7 @@ $(document).on("click",".btnCustomCreateEvents",function(){
 /* Activities Functionality Start */
 var  globalActivityIdsList =[];
 function getActivitiesDetails(){
-	$("#activityEventsListNew").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$("#activityEventsListNew,#janmabhoomiEventDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 var dates = $('#dateRangeIdForEvents').val();
 	  var dateArray = dates.split("-");
 	  var fromDateStr=dateArray[0];
@@ -1778,6 +1778,7 @@ function getActivitiesDetails(){
 	 url: "getActivityDetailsAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
+		$("#activityEventsListNew,#janmabhoomiEventDivId").html('');
 		if(result != null && result.length > 0)
 			buildActivityEventBasicCntDtlsNew(result);
 	});
@@ -1785,6 +1786,7 @@ function getActivitiesDetails(){
 function buildActivityEventBasicCntDtlsNew(result)
 {	
 	var str='';
+	var str1='';
 	var activityIdsString='';
     str+='<div class="row">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -1792,7 +1794,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 				str+='<div class="panel-group panelBlockCollapse" id="accordionAct" role="tablist" aria-multiselectable="true" style="margin-top: 10px;">';				
 				for(var i in result)
 				{
-					if(result[i].id != "36" || result[i].id != 36){
+					if((result[i].id != "36" || result[i].id != 36) && (result[i].id != "37" || result[i].id != 37)){
 						 if(i== 0){
 						activityIdsString = result[i].id;	
 						}else{
@@ -1812,7 +1814,21 @@ function buildActivityEventBasicCntDtlsNew(result)
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-					}		
+					}else if(result[i].id == "37" || result[i].id == 37){
+						str1+='<div class="panel panel-default panelNewEvents">';
+						str1+='<div class="panel-heading" role="tab">';
+							str1+='<h4 class="panel-title">'+result[i].name+'';
+								str1+='<span class="activitesExpandIcon" attr_search_type="singleActivity"  attr_level_id="0" attr_activity_name="\''+result[i].name+'\'" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center" style="padding-top: 2px;padding-bottom: 2px;padding-left: 3px;padding-right: 4px;"></i></span>';
+								str1+='<a role="button" style="display:inline-block;float:right"	class="panelBlockCollapseIcon collapsed activitiesClass" attr_activity_name="\''+result[i].name+'\'" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneActJ'+i+'" aria-expanded="true" aria-controls="collapseOneActJ'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
+							str1+='</h4>';
+						str1+='</div>';
+								str1+='<div id="collapseOneActJ'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneActJ'+i+'">';
+									str1+='<div class="panel-body">';
+										str1+='<div id="activityBodyId'+i+'"></div>';
+									str1+='</div>';
+								str1+='</div>';
+					str1+='</div>';
+				}		
 				 
 				}
 				
@@ -1821,6 +1837,8 @@ function buildActivityEventBasicCntDtlsNew(result)
 		str+='</div>';
 	str+='</div>';
 	$("#activityEventsListNew").html(str);
+	$("#janmabhoomiEventDivId").html(str1);
+	
 	
 	$(".overAllActivityCls").attr("attr_id",activityIdsString);
 	$(".overAllActivityCls").attr("attr_level_id",0);
@@ -1857,9 +1875,10 @@ function buildActivityCounts(result,divId,activityName,activityId)
 		var updatedCount = parseInt(result[i].yesCount)+parseInt(result[i].noCount)+parseInt(result[i].mayBecount);
 		var notUpdatedCount = parseInt(totalCount)-parseInt(updatedCount);
 		
-		
-		str+='<div class="panel-heading m_top20 ">';
-			str+='<h5 class="text-capital">'+result[i].name+' <span class="activitesExpandIcon" attr_search_type="scopeId" attr_level_id="'+result[i].id+'"  attr_activity_name='+activityName+' attr_id="'+activityId+'"><i class="glyphicon glyphicon-fullscreen"></i> </span></h5>';
+		str+='<div class="row">';
+			str+='<h5 class="text-capital">'+result[i].name+' <span class="activitesExpandIcon" attr_search_type="scopeId" attr_level_id="'+result[i].id+'"  attr_activity_name='+activityName+' attr_id="'+activityId+'" style="padding-top: 2px;padding-bottom: 2px;padding-left: 5px;padding-right: 4px;"><i class="glyphicon glyphicon-fullscreen"></i> </span></h5>';
+		str+='</div>';
+		str+='<div class="row m_top10">';
 			str+='</div><br>';
 			
 			str+='<div>';
@@ -1875,8 +1894,9 @@ function buildActivityCounts(result,divId,activityName,activityId)
 							
 						
 							str+='<p class="text-muted text-capital">total</p>';
-							str+='<h5>'+result[i].apTotal+'</h5>';
+							str+='<h5 style="margin-top:25px !important;">'+result[i].apTotal+'</h5>';
 						str+='</td>';
+						
 						str+='<td>';
 							str+='<p class="text-muted text-capital">YES</p>';
 							/*if(result[i].yesCount != null && result[i].yesCount>0)
@@ -1884,6 +1904,7 @@ function buildActivityCounts(result,divId,activityName,activityId)
 							else*/
 								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top" title="Both Info Cell and IVR status updated as conducted " >'+result[i].yesCount+' </h5>';
 						str+='</td>';
+						
 						str+='<td>';
 							str+='<p class="text-muted text-capital">No</p>';
 							/*if(result[i].noCount != null && result[i].noCount>0)
@@ -1891,6 +1912,7 @@ function buildActivityCounts(result,divId,activityName,activityId)
 							else*/
 								str+='<h5 class="activityCountCls" attr_actvty_scope_id="'+result[i].tdpcadreId+'"  data-toggle="tooltip" data-placement="top"  title="Both Info Cell and IVR status updated as Not conducted " >'+result[i].noCount+' </h5>';
 						str+='</td>';
+						
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Maybe</p>';
 							/*if(result[i].mayBecount != null && result[i].mayBecount >0 )
@@ -1898,9 +1920,11 @@ function buildActivityCounts(result,divId,activityName,activityId)
 							else*/
 								str+='<h5 class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'"  data-toggle="tooltip" data-placement="top"  title=" One of the Info Cell and IVR updated as not conducted " >'+result[i].mayBecount+' </h5>';
 						str+='</td>';
-/* 						str+='<td>';
+						
+						//str+='<td>';
 							//str+='<button type="button" class="btn btn-success text-capital getImageCls">get Images</button>';
-						str+='</td>'; */
+						//str+='</td>';
+						
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Not Updated </p>';
 							//console.log(notUpdatedCount);
@@ -1909,6 +1933,7 @@ function buildActivityCounts(result,divId,activityName,activityId)
 							else*/
 								str+='<h5 class=""  data-toggle="tooltip" data-placement="top"  attr_activity_scopeid="'+result[i].tdpcadreId+'" title=" No data available from Both Info Cell and IVR " >'+notUpdatedCount+' </h5>';
 						str+='</td>';
+						
 					str+='</tr>';
 					
 					str+='<tr>';
@@ -1947,9 +1972,9 @@ function buildActivityCounts(result,divId,activityName,activityId)
 							else
 								str+='<h5 style="cursor:pointer;" class="" attr_actvty_scope_id="'+result[i].tdpcadreId+'" data-toggle="tooltip" data-placement="top"  >'+result[i].inviteeAttendeeCnt+' <small><span class="text-success">'+result[i].actualMobNumber+'%</span></small></h5>';
 						str+='</td>';
-						/* str+='<td>';
+						//str+='<td>';
 							//str+='<button type="button" class="btn btn-success text-capital getImageCls">get Images</button>';
-						str+='</td>'; */
+						//str+='</td>';
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Images Covered</p>';
 							if(result[i].totalImages != null && result[i].totalImages>0)

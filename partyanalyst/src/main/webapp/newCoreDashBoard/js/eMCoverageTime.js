@@ -316,35 +316,35 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 					}
 				str+='</tr>';			
 			}
-			str+='</tbody>';
+			//str+='<tfoot>';
 			for(var i in result){
 				var channalId=0;
 				if(i== 0){
-				str+='<tr>';
-					str+='<td>Grand Total</td>';
+				str+='<tr class="no-sort">';
+					str+='<td class="">Grand Total</td>';
 					if(result[i].coreDashBoardVOList != null && result[i].coreDashBoardVOList.length > 0){
 						for(var j in result[i].coreDashBoardVOList){
 							var totalCount = result[i].tdpCount;
 							/* str+='<h4><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" PrimeTime :'+result[i].coreDashBoardVOList[j].totalNegativePrimeCount+'\n NonPrimeTime:'+result[i].coreDashBoardVOList[j].totalNegativeNonPrimeCount+'">'+result[i].coreDashBoardVOList[j].totalNegative+'</span></h4>'; */
 					if(result[i].coreDashBoardVOList[j].totalPostive !=null && result[i].coreDashBoardVOList[j].totalPostive>0){
-						str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].totalPostivePrimeCount+'\n Non Prime Time : '+result[i].coreDashBoardVOList[j].totalPositiveNonPrimeCount+'">'+result[i].coreDashBoardVOList[j].totalPostive+'</span></a></td>';
+						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].totalPostivePrimeCount+'\n Non Prime Time : '+result[i].coreDashBoardVOList[j].totalPositiveNonPrimeCount+'">'+result[i].coreDashBoardVOList[j].totalPostive+'</span></a></td>';
 					}else{
-						str+='<td> -</td>';
+						str+='<td class=""> -</td>';
 					}
 					if(totalCount !=null && totalCount>0){
 						str+='<td class="text-success" >'+((result[i].coreDashBoardVOList[j].totalPostive/totalCount)*100).toFixed(1)+'</td>';
 					}else{
-						str+='<td> -</td>';
+						str+='<td class=""> -</td>';
 					}
 					if(result[i].coreDashBoardVOList[j].totalNegative !=null && result[i].coreDashBoardVOList[j].totalNegative>0){
-						str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].totalNegativePrimeCount+'\n Non Prime Time : '+result[i].coreDashBoardVOList[j].totalNegativeNonPrimeCount+'">'+result[i].coreDashBoardVOList[j].totalNegative+'</span></a></td>';
+						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].totalNegativePrimeCount+'\n Non Prime Time : '+result[i].coreDashBoardVOList[j].totalNegativeNonPrimeCount+'">'+result[i].coreDashBoardVOList[j].totalNegative+'</span></a></td>';
 					}else{
-						str+='<td> -</td>';
+						str+='<td class=""> -</td>';
 					}
 					if(totalCount !=null && totalCount>0){
 						str+='<td class="text-danger" >'+((result[i].coreDashBoardVOList[j].totalNegative/totalCount)*100).toFixed(1)+'</td>';
 					}else{
-						str+='<td> -</td>';
+						str+='<td class=""> -</td>';
 					}
 				 
 			    }
@@ -352,21 +352,26 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 				str+='</tr>';
 				}
 			}
-		
+	//str+='</tfoot>';		
+	str+='</tbody>';	
 	str+='</table>';
 	str+='</div>';
 	
 	$("#EMCoverageTimeSummaryDivId").html(str);
+	
 	$("#dataTableCanAndPartyWiseNewsChannel").dataTable({
+		
+		 "aaSorting": [], 
 		"iDisplayLength": 10,
-		 "aaSorting": [[ 0, "desc" ]], 
+		// "aaSorting": false, 
 		"aLengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
-		/* "scrollX":        true,
+		"scrollX":        true,
 		"scrollCollapse": true,
 		"fixedColumns":   {
 			"leftColumns": 1,
-		} */
+		} 
 	});
+	
 }
 
 function getDayWiseCandidateCoverageTime(type,categoryId,isParticipated,channelIds){
@@ -379,7 +384,7 @@ function getDayWiseCandidateCoverageTime(type,categoryId,isParticipated,channelI
 		}
 	}); 
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDate+"/"+currentToDate+"/"+isParticipated+"/"+channelIds
+		url: wurl+"/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDate+"/"+currentToDate+"/"+isParticipated+"/"+channelIds
 		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDate+"/"+currentToDate+"/"+isParticipated+"/"+channelIds
 	}).then(function(result){
 		if(result != null && result.length > 0){
