@@ -1162,17 +1162,11 @@ public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId){
 	}
 
 @Override
-public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locationScopeId,String locationType) {
+public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locationScopeId) {
 	//0-qid,1-question,3-optionId,4-optionType,5-optionName 6-optionId,7-count, 8-memcount,9-locationId
 	StringBuilder sb = new StringBuilder();
 	sb.append("select AQS.activity_question_id as questionId,AQS.question as question, AOT.activity_option_type_id as optionTypeId, AOT.type as optionType," +
-			" AO.option as optionname,AO.activity_option_id as optionId ");
-	
-	if(locationType != null && locationType.equalsIgnoreCase("village")){
-		sb.append(" ,COUNT(DISTINCT ua.panchayat_id) as locationcount ");
-	}else{
-		sb.append(" ,COUNT(DISTINCT ua.ward) as locationcount ");
-	}
+			" AO.option as optionname,AO.activity_option_id as optionId,count(DISTINCT ALI.activity_location_info_id) as locationcount ");
 	sb.append( " ,sum(AQA.count) as memberCount ");
 	if(locationScopeId !=null && locationScopeId > 0l ){
 		if(locationScopeId ==3l){
@@ -1196,8 +1190,8 @@ public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locatio
 			" AND ALI.updated_status ='UPDATED' ");
 	
 	if(locationScopeId !=null && locationScopeId > 0l ){
-		if (locationScopeId == 3l || locationScopeId == 4l) {
-			sb.append(" AND ua.district_id BETWEEN 11 AND 23 ");
+		if (locationScopeId == 3l|| locationScopeId == 4l ) {
+			sb.append(" AND ua.district_id >10 ");
 		} else {
 			sb.append(" AND ua.state_id =1");
 		}

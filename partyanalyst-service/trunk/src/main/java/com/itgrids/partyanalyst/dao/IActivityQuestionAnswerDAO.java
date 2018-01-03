@@ -29,7 +29,7 @@ public interface IActivityQuestionAnswerDAO extends GenericDao<ActivityQuestionA
 	public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId);
 	//public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId);
 	public List<Object[]> getQuestionAnswerDetails(Long activityLocationInfoId);
-	public List<Object[]> getCountanswereddetails(Long activityScopeId, Long scopeId,String locationType);
+	public List<Object[]> getCountanswereddetails(Long activityScopeId, Long scopeId);
 	public List<Object[]> getDayWiseQuestionAnswerDetails(Long activityLocationInfoId,Date activityDate);
 	public List<Long> checkIsAnswerIsSubmitted(Long activityLocationInfoId);
 	public Long updateAnswerDlts(Long activityLocationInfoId,Long activityQuestionnaireId,Long activityOptionId);

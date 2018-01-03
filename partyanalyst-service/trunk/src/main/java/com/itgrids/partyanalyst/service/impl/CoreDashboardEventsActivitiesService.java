@@ -2235,18 +2235,13 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 		}
 		
 		//totalCount
-		List<Object[]> VillageList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"village","total");
-		List<Object[]> wardList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"ward","total");
-		if(commonMethodsUtilService.isListOrSetValid(VillageList)){
-			VillageList.addAll(wardList);
-		}
-		//conduct
-		List<Object[]> VillageConductedList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"village","conduct");
-		List<Object[]> wardCounduectedList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"ward","conduct");
+		List<Object[]> VillageList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"total");
 		
-		if(commonMethodsUtilService.isListOrSetValid(VillageConductedList)){
-			VillageConductedList.addAll(wardCounduectedList);
-		}if(commonMethodsUtilService.isListOrSetValid(VillageList)){
+		//conduct
+		List<Object[]> VillageConductedList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"conduct");
+		
+		
+		if(commonMethodsUtilService.isListOrSetValid(VillageList)){
 			VillageList.addAll(VillageConductedList);
 		}
 		
@@ -2258,13 +2253,10 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 				locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
 				locationVo.setTotalCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				locationVo.setConductedCount(commonMethodsUtilService.getLongValueForObject(objects[1]));
-				if(locationScopeId == 4l || locationScopeId == 5l){
+				if(locationScopeId == 4l){
 					locationVo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects[4]));
 					locationVo.setDistrictName(commonMethodsUtilService.getStringValueForObject(objects[5]));
-					if(locationScopeId == 5l){
-					locationVo.setParlimentId(commonMethodsUtilService.getLongValueForObject(objects[6]));
-					locationVo.setParliamentName(commonMethodsUtilService.getStringValueForObject(objects[7]));
-					}
+					
 				}
 				locationVo.getQuestionList().addAll(getQuestionTemplate(questionaryMap));//getting template
 				locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]), locationVo);
@@ -2275,14 +2267,10 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 			
 		}
 		
-		List<Object[]> wardanswerList = activityQuestionAnswerDAO.getCountanswereddetails(activityScopeId, locationScopeId,"ward");
-		List<Object[]> vilageanswerList = activityQuestionAnswerDAO.getCountanswereddetails(activityScopeId, locationScopeId,"village");
-		if(commonMethodsUtilService.isListOrSetValid(wardanswerList)){
-			wardanswerList.addAll(vilageanswerList);
-		}
+		List<Object[]> vilageanswerList = activityQuestionAnswerDAO.getCountanswereddetails(activityScopeId, locationScopeId);
 		
 		//0-qid,1-question,2-optionId,3-optionType,4-optionName 5-optionId,6-count, 7-memcount,8-locationId
-		for (Object[] param : wardanswerList) {
+		for (Object[] param : vilageanswerList) {
 			EventLocationVO Vo = locationMap.get(commonMethodsUtilService.getLongValueForObject(param[8]));
 			if(Vo != null){
 					if(Vo.getQuestionList() !=null && Vo.getQuestionList().size() >0){
@@ -2302,10 +2290,65 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 					}
 				}
 		}
-		for (Long lcoationId : locationMap.keySet()) {
+		List<Object[]> ivrstatusData= activityLocationInfoDAO.getIvrStatusForLocation(activityScopeId,locationScopeId);
+		//0-count,1-status,2-question 3-qid,4-locationId
+		for (Object[] objects : ivrstatusData) {
+			EventLocationVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[4]));
+			if(locationVo != null){
+				EventLocationVO mathedQuestionVo = getMatchedVo(locationVo.getQuestionList(),commonMethodsUtilService.getLongValueForObject(objects[3]));
+				if(mathedQuestionVo != null){
+					if(mathedQuestionVo.getOptionList() != null && mathedQuestionVo.getOptionList().size() >0){
+						Long option =null;
+						if(commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase("Y")){
+							option=1l;
+						}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase("N")){
+							option =2l;
+						}
+						EventLocationVO mathedOptionVo = getMatchedOPtonVo(mathedQuestionVo.getOptionList(),option);
+						if(mathedOptionVo !=null){
+							mathedOptionVo.setCount(mathedOptionVo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+						}
+					}
+				}else{
+					mathedQuestionVo = new EventLocationVO();
+					EventLocationVO optionVo1 =new EventLocationVO();
+					EventLocationVO optionVo2 =new EventLocationVO();
+					mathedQuestionVo.setQuestionId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+					mathedQuestionVo.setQuestionName(commonMethodsUtilService.getStringValueForObject(objects[2]));
+					optionVo1.setOptionId(1l);
+					optionVo1.setOptionName("Yes");
+					optionVo2.setOptionId(2l);
+					optionVo2.setOptionName("No");
+					if(commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase("Y")){
+						optionVo1.setCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase("N")){
+						optionVo2.setCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					}
+					mathedQuestionVo.getOptionList().add(optionVo1);
+					mathedQuestionVo.getOptionList().add(optionVo2);
+					locationVo.getQuestionList().add(mathedQuestionVo);
+				}
+			}
+		}
+ 		for (Long lcoationId : locationMap.keySet()) {
 			EventLocationVO vo=  locationMap.get(lcoationId);
 			if(vo != null && vo.getTotalCount()>0 ){
 				vo.setPercentage((double) ((vo.getConductedCount()/vo.getTotalCount())*100));
+				for (EventLocationVO questionVO : vo.getQuestionList()) {
+					if(questionVO.getQuestionName().trim().contains("Average Public Attended?")){
+						for (EventLocationVO optionVo : questionVO.getOptionList()) {
+							if(vo.getConductedCount() !=null && vo.getConductedCount()>0){
+								optionVo.setPercentage((double) (optionVo.getCount()/vo.getConductedCount()));
+							}
+						}
+					}else if(questionVO.getQuestionName().trim().contains("Average Gramma Sabha Conducted Time (Duration)?")){
+						for (EventLocationVO optionVo : questionVO.getOptionList()) {
+							if(vo.getConductedCount() !=null && vo.getConductedCount()>0){
+								optionVo.setPercentage((double) (optionVo.getCount()/(60*vo.getConductedCount())));
+							}
+						}
+					}
+				}
 				finalList.add(vo);
 			}
 		}
