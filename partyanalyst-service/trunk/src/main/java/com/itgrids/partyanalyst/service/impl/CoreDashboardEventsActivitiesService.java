@@ -2273,9 +2273,9 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 			wardanswerList.addAll(vilageanswerList);
 		}
 		
-		//0-qid,1-question,2-optionTypeId,3-optionType,4-optionName 5-optionId,6-count,7-locationId
+		//0-qid,1-question,2-optionId,3-optionType,4-optionName 5-optionId,6-count, 7-memcount,8-locationId
 		for (Object[] param : wardanswerList) {
-			EventLocationVO Vo = locationMap.get(commonMethodsUtilService.getLongValueForObject(param[7]));
+			EventLocationVO Vo = locationMap.get(commonMethodsUtilService.getLongValueForObject(param[8]));
 			if(Vo != null){
 					if(Vo.getQuestionList() !=null && Vo.getQuestionList().size() >0){
 						EventLocationVO mathedVo = getMatchedVo(Vo.getQuestionList(),commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -2283,7 +2283,11 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 							if(mathedVo.getOptionList() != null && mathedVo.getOptionList().size() >0){
 								EventLocationVO mathedOptionVo = getMatchedOPtonVo(mathedVo.getOptionList(),commonMethodsUtilService.getLongValueForObject(param[5]));
 								if(mathedOptionVo !=null){
-									mathedOptionVo.setCount(commonMethodsUtilService.getLongValueForObject(param[6]));
+									if(mathedOptionVo.getOptionId().longValue() == 0l && mathedVo.getOptionId()==4l ){
+										mathedOptionVo.setCount(mathedOptionVo.getCount()+commonMethodsUtilService.getLongValueForObject(param[7]));
+									}else{
+										mathedOptionVo.setCount(mathedOptionVo.getCount()+commonMethodsUtilService.getLongValueForObject(param[6]));
+									}
 								}
 							}
 						}
@@ -2313,10 +2317,10 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 				questioNVo.setOptionId(questionEntry.getValue().getOptionId());
 				questioNVo.setOptionType(questionEntry.getValue().getOptionType());
 				if (questionEntry.getValue().getOptionList() != null) {
-					for (EventLocationVO optionVo1 : questionEntry.getValue().getOptionList()) {
+					for (EventLocationVO VO : questionEntry.getValue().getOptionList()) {
 						EventLocationVO optionVo = new EventLocationVO();
-						optionVo.setOptionId(optionVo1.getOptionId());
-						optionVo.setOptionName(optionVo1.getOptionName());
+						optionVo.setOptionId(VO.getOptionId());
+						optionVo.setOptionName(VO.getOptionName());
 						questioNVo.getOptionList().add(optionVo);
 					}
 				}
