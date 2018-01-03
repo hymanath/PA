@@ -6433,8 +6433,15 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setLastFin(jObj.getString("LAST_FIN"));
 	 	    				vo.setLastFinSameDay(jObj.getString("LAST_FIN_SAMEDAY"));
 	 	    				vo.setFrom2014(jObj.getString("FROM_2014"));
-	 	    				vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getFinAsOfToday())*100.00)/Double.valueOf(vo.getLastFinSameDay())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage())-Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				if(vo.getFinAsOfToday() != null && Double.valueOf(vo.getFinAsOfToday()) >0 && vo.getLastFinSameDay() != null && Double.valueOf(vo.getLastFinSameDay()) > 0){
+	 	    					vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getFinAsOfToday()) * 100.00)/ Double.valueOf(vo.getLastFinSameDay())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				}else{
+	 	    					vo.setAchivementPercentage("0.00");
+	 	    				}
+	 	    				if(vo.getAchivementPercentage() != null && Double.valueOf(vo.getAchivementPercentage()) > 0)
+	 	    					vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage())-Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				else
+	 	    					vo.setPercentage("0.00");
 	 	    				returnList.add(vo);
 	 	    			}
 	 	    		}
@@ -6582,9 +6589,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				}else{
 	 	    					vo.setAchivementPercentage("0.00");
 	 	    				}
-	 	    				
-							vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-							if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
+	 	    				if(vo.getAchivementPercentage() != null && Double.valueOf(vo.getAchivementPercentage()) > 0)
+	 	    					vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				else
+	 	    					vo.setPercentage("0.00");
+	 	    				if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
 								vo.setParameter("Decrement");
 								String[] Arr = vo.getPercentage().split("-");
 								vo.setPercentage(Arr[1]);
