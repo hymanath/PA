@@ -215,8 +215,8 @@
 											<button type ="button" class="btn btn-lg btn-success pull-right" id="advanceSearchId" style="cursor: pointer; font-weight: bold; border-radius: 0px;">SEARCH</button>
 										</div>
 									</div>
-									
-									
+									<div class="row" id="summaryId">
+									</div>
 									<div class="row m_top10">
 										<div class="col-sm-12">
 											<div id="representationRequestEntryTable"></div>
