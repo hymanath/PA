@@ -316,7 +316,7 @@ function getpartyWiseChannelCounts(result){
 					str+='<h5 class="text-capitalize m_top20">total time</h5>';
 					//str+='<h4>'+result[0].description != ""?result[0].description:"00:00"+'</h4>';
 					if(result[0].description !=""){
-						 str+='<h4><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" PrimeTime :'+result[0].overalIsPrimedescription+'\n NonPrimeTime:'+result[0].overalIsNotPrimedescription+'">'+result[0].description+'</span></h4>';
+						 str+='<h4><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime&nbsp;Time:'+result[0].overalIsPrimedescription+'\n Non&nbsp;Prime&nbsp;Time:'+result[0].overalIsNotPrimedescription+'">'+result[0].description+'</span></h4>';
 					}else{
 						 str+='<h4>00:00</h4>';
 					}
@@ -347,7 +347,7 @@ function getpartyWiseChannelCounts(result){
 						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
 						//str+='<h4>'+result[0].tvNewsDetailsVOList[j].description+'</h4>';
 						if(result[0].tvNewsDetailsVOList[j].description!= ""){
-							str+='<h4><span data-placement="top" class="emToolTipCls"  style="cursor: pointer;" title="PrimeTime :'+result[0].tvNewsDetailsVOList[j].isPrimedescription+'\n NonPrimeTIME:'+result[0].tvNewsDetailsVOList[j].isNotPrimedescription+'">'+result[0].tvNewsDetailsVOList[j].description+'</span></h4>';
+							str+='<h4><span data-placement="top" class="emToolTipCls"  style="cursor: pointer;" title="Prime&nbsp;Time : '+result[0].tvNewsDetailsVOList[j].isPrimedescription+' \n Non&nbsp;Prime&nbsp;Time:'+result[0].tvNewsDetailsVOList[j].isNotPrimedescription+'">'+result[0].tvNewsDetailsVOList[j].description+'</span></h4>';
 						}else{
 							str+='<h4>00:00</h4>';
 						}
@@ -379,7 +379,7 @@ function getpartyWiseChannelCounts(result){
 						}
 						str+='<h5 class="text-capitalize m_top20">total time</h5>';
 						if(result[i].description != ""){
-						str+='<h4><span data-placement="top" class="emToolTipCls" style="cursor: pointer;" title=" PrimeTime :'+result[i].overalIsPrimedescription+'\n NonPrimeTime:'+result[i].overalIsNotPrimedescription+'">'+result[i].description+'</span></h4>';
+						str+='<h4><span data-placement="top" class="emToolTipCls" style="cursor: pointer;" title=" Prime&nbsp;Time : '+result[i].overalIsPrimedescription+' \n  Non&nbsp;Prime&nbsp;Time: '+result[i].overalIsNotPrimedescription+'">'+result[i].description+'</span></h4>';
 						}else{
 							str+='<h4>00:00</h4>';
 						}
@@ -408,7 +408,7 @@ function getpartyWiseChannelCounts(result){
 							str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
 							//str+='<h4>'+result[i].tvNewsDetailsVOList[j].description != ""?result[i].tvNewsDetailsVOList[j].description:"00:00"+'</h4>';
 							if(result[i].tvNewsDetailsVOList[j].isNotPrimedescription != ""){
-							 str+='<h4><span data-placement="top" class="emToolTipCls"  style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList[j].isPrimedescription+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList[j].isNotPrimedescription+'">'+result[i].tvNewsDetailsVOList[j].description+'</span></h4>';
+							 str+='<h4><span data-placement="top" class="emToolTipCls"  style="cursor: pointer;" title=" Prime&nbsp;Time : '+result[i].tvNewsDetailsVOList[j].isPrimedescription+' \n  Non&nbsp;Prime&nbsp;Time: '+result[i].tvNewsDetailsVOList[j].isNotPrimedescription+'">'+result[i].tvNewsDetailsVOList[j].description+'</span></h4>';
 							}else{
 							 str+='<h4>00:00</h4>';
 						    }
@@ -444,7 +444,7 @@ function getpartyWiseChannelCounts(result){
 					str+='<h5 class="text-capitalize m_top20">total time</h5>';
 					//str+='<h4>'+result[EmnG].description != ""?result[EmnG].description:"00:00"+'</h4>';
 					if(result[EmnG].description != " "){
-					 str+='<h4><span data-placement="top"  style="cursor: pointer;" class="emToolTipCls" title=" PrimeTime :'+result[EmnG].overalIsPrimedescription+'\n NonPrimeTime:'+result[EmnG].overalIsNotPrimedescription+'">'+result[EmnG].description+'</span></h4>';
+					 str+='<h4><span data-placement="top"  style="cursor: pointer;" class="emToolTipCls" title=" Prime&nbsp;Time : '+result[EmnG].overalIsPrimedescription+'\n  Non&nbsp;Prime&nbsp;Time:'+result[EmnG].overalIsNotPrimedescription+'">'+result[EmnG].description+'</span></h4>';
 					}else{
 					 str+='<h4>00:00</h4>';
 					}
@@ -470,7 +470,7 @@ function getpartyWiseChannelCounts(result){
 						
 						str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
 						//str+='<h4>'+result[EmnG].tvNewsDetailsVOList[j].description+'</h4>';
-						str+='<h4><span data-placement="top" class="emToolTipCls" style="cursor: pointer;" title=" PrimeTime :'+result[EmnG].tvNewsDetailsVOList[j].isPrimedescription+'\n NonPrimeTime:'+result[EmnG].tvNewsDetailsVOList[j].isNotPrimedescription+'">'+result[EmnG].tvNewsDetailsVOList[j].description+'</span></h4>';
+						str+='<h4><span data-placement="top" class="emToolTipCls" style="cursor: pointer;" title=" Prime&nbsp;Time : '+result[EmnG].tvNewsDetailsVOList[j].isPrimedescription+'\n  Non&nbsp;Prime&nbsp;Time: '+result[EmnG].tvNewsDetailsVOList[j].isNotPrimedescription+'">'+result[EmnG].tvNewsDetailsVOList[j].description+'</span></h4>';
 					str+='</td>';
 				}
 			str+='</tr>';
@@ -486,6 +486,7 @@ function getpartyWiseChannelCounts(result){
 	$("#electronicMediaChannelCountId").html(str);
 	$(".emToolTipCls").tooltip();
 	$(".emToolTipCls2").tooltip();
+	//$(".emTotalToolTipCls").tooltip();
 	//$("#electronicMediaChannelCountId").mCustomScrollbar({setHeight:'345spx'});
 }
 function getEMMDetailedPartyDistrictWiseProgramsOverview(channelArr,type)
@@ -1425,7 +1426,7 @@ function getProblemsDetailedOverView()
 	$("#stateWiseEMNRelatedToProblem").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getProblemsDetailedOverView/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/ /Y/"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getProblemsDetailedOverView/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/ /Y/"
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getProblemsDetailedOverView/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/ /Y/"
 	}).then(function(result){
 		buildProblemsDetailedOverView(result);
 		buildDistrictWiseEMNRelatedToProblem(result);
@@ -1745,7 +1746,12 @@ function buildProblemsDetailedOverView(result)
 							str+='<h5 class="text-capitalize">Total</h5>';
 							str+='<h4>'+result.tvNewsDetailsVOList[0].categoryCount != ""?'<a style="cursor:pointer"><span class="showStateWiseBulletinDetails" attr_catIdStr = "1,2"  attr_newsprogramname="Total">'+result.tvNewsDetailsVOList[0].categoryCount+'</span></a>':"00:00"+'</h4>';
 							str+='<h5 class="text-capitalize m_top20">Total Time</h5>';
-							str+='<h4>'+result.tvNewsDetailsVOList[0].description != ""?result.tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
+							if(result.tvNewsDetailsVOList[0].description != ""){
+							  //str+='<h4>'+result.tvNewsDetailsVOList[0].description != ""?result.tvNewsDetailsVOList[0].description:"00:00"+'</h4>';
+							  str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" Prime Time : '+result.tvNewsDetailsVOList[0].overalIsPrimedescription+'\n Non Prime Time : '+result.tvNewsDetailsVOList[0].overalIsNotPrimedescription+'">'+result.tvNewsDetailsVOList[0].description+'</span></h4>';
+							}else{
+								str+='<h4>00:00</h4>';
+							}
 						str+='</td>';
 							for(var i in result.tvNewsDetailsVOList[0].tvNewsDetailsVOList)
 							{
@@ -1760,7 +1766,8 @@ function buildProblemsDetailedOverView(result)
 									//str+='<h5 class="text-capitalize m_top20">'+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].title+'</h5>';
 									str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
 									if(result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].description != ""){
-										str+='<h4>'+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].description+'</h4>';
+										//str+='<h4>'+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].description+'</h4>';
+										str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" Prime Time : '+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].isPrimedescription+'\n Non Prime Time : '+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].isNotPrimedescription+'">'+result.tvNewsDetailsVOList[0].tvNewsDetailsVOList[i].description+'</span></h4>';
 									}else{
 										str+='<h4>00:00</h4>';
 									}
@@ -1995,10 +2002,10 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<p class="text-muted">Positive Time</p>';
 						//str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
-						str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].positiveIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-success">'+result[i].positiveTimePerc+'%</small></h4>';
+						str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" Prime Time : '+result[i].positiveIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-success">'+result[i].positiveTimePerc+'%</small></h4>';
 						str+='<p class="text-muted">Negative Time</p>';
 						//str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
-						str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].negativeIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-success">'+result[i].negativeTimePerc+'%</small></h4>';
+						str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" Prime Time : '+result[i].negativeIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-success">'+result[i].negativeTimePerc+'%</small></h4>';
 					str+='</div>';
 				str+='</div>';
 				var newsChannelCatArr = []
@@ -2014,10 +2021,10 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 							str+='<p class="text-muted">Positive Time</p>';
 							//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
-							str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
+							str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" Prime Time : '+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
 							str+='<p class="text-muted">Negative Time</p>';
 							//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
-							str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
+							str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" Prime Time : '+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
 						str+='</div>';
 					str+='</div>';
 					newsChannelCatArr.push(result[i].tvNewsDetailsVOList[j].categoryName.split(" ")[1]);
@@ -2056,10 +2063,10 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
 									//str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></p>';
-									str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList1[k].positiveIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList1[k].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></h4>';
+									str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" Prime Time :'+result[i].tvNewsDetailsVOList1[k].positiveIsPrimeCoveredTime+'\n Non Prime Time:'+result[i].tvNewsDetailsVOList1[k].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></h4>';
 									str+='<p class="text-muted">Negative Time</p>';
 									//str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></p>';
-									str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList1[k].negativeIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList1[k].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></h4>';
+									str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" Prime Time : '+result[i].tvNewsDetailsVOList1[k].negativeIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList1[k].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -2077,11 +2084,11 @@ function buildEMMDetailedPartyStateWiseProgramsOverview(result)
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
 										//str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></p>';
-										str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></h4>';
+										str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" Prime Time : '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></h4>';
 										str+='<p class="text-muted">Negative Time</p>';
 										//str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></p>';
 										
-										str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" PrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></h4>';
+										str+='<h4><span data-placement="top" class="emToolTipCls4" style="cursor: pointer;" title=" Prime Time : '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></h4>';
 										
 									str+='</div>';
 								str+='</div>';
@@ -2502,7 +2509,7 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 										str+='</td>';
 										str+='<td><p class="text-muted">Total Time</p>';
 											//str+=''+result[i].totalCoveredTime+'';
-									str+='<span data-placement="top" class="emToolTipCls5" style="cursor: pointer;" title=" PrimeTime :'+result[i].overalIsPrimedescription+'\n NonPrimeTime:'+result[i].overalIsNotPrimedescription+'">'+result[i].totalCoveredTime+'</span>';
+									str+='<span data-placement="top" class="emToolTipCls5" style="cursor: pointer;" title=" Prime Time :'+result[i].overalIsPrimedescription+'\n Non Prime Time:'+result[i].overalIsNotPrimedescription+'">'+result[i].totalCoveredTime+'</span>';
 										str+='</td>';
 									str+='</tr>';
 								str+='</table>';
@@ -2520,9 +2527,9 @@ function buildComparisonPartyRankWiseDetailsOfChannel(result)
 							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 								str+='<p class="text-muted">Positive Time</p>';
 								//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
-								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls5" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
+								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls5" title="Prime Time :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n Non Prime Time :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
 								str+='<p class="text-muted">Negative Time</p>';
-								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls5" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
+								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls5" title="Prime Time :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n Non Prime Time :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
 								//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
 							str+='</div>';
 						}
@@ -2696,10 +2703,10 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName,chan
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
 									//str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
-									str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="PrimeTime :'+result[i].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-danger">'+result[i].positiveTimePerc+'%</small></h5>';
+									str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="Prime Time : '+result[i].positiveIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-danger">'+result[i].positiveTimePerc+'%</small></h5>';
 									str+='<p class="text-muted m_top10">Negative Time</p>';
 									//str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
-									str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="PrimeTime :'+result[i].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-danger">'+result[i].negativeTimePerc+'%</small></h5>';
+									str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="Prime Time : '+result[i].negativeIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-danger">'+result[i].negativeTimePerc+'%</small></h5>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -2717,10 +2724,10 @@ function buildComparisonPartyRankWiseDetailsOfChannelSub(result,channelName,chan
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
 										//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
-										str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h5>';
+										str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="Prime Time : '+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h5>';
 										str+='<p class="text-muted m_top10">Negative Time</p>';
 										//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
-										str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h5>';
+										str+='<h5><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforParty" title="Prime Time : '+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h5>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -3039,7 +3046,7 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 										str+='</td>';
 										str+='<td><p class="text-muted">Total Time</p>';
 											//str+=''+result[i].totalCoveredTime+'';
-											str+='<span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="TIME :'+result[i].overalIsPrimedescription+'\n primeTIME:'+result[i].overalIsNotPrimedescription+'">'+result[i].totalCoveredTime+'</span>';
+											str+='<span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="Prime Time :'+result[i].overalIsPrimedescription+'\n Non Prime TIME:'+result[i].overalIsNotPrimedescription+'">'+result[i].totalCoveredTime+'</span>';
 										str+='</td>';
 									str+='</tr>';
 								str+='</table>';
@@ -3057,10 +3064,10 @@ function buildComparisonGovtRankWiseDetailsOfChannel(result)
 							str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 								str+='<p class="text-muted">Positive Time</p>';
 								//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
-								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
+								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="Prime Time : '+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
 								str+='<p class="text-muted">Negative Time</p>';
 								//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
-								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
+								str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="Prime Time :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n Non Prime Time :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-success">&nbsp;&nbsp;&nbsp;'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
 							str+='</div>';
 						}
 					str+='</div>';
@@ -3232,10 +3239,10 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName,chann
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
 									//str+='<p>'+result[i].positiveCoveredTime+'<small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
-									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" PrimeTime :'+result[i].positiveIsPrimeCoveredTime+',NonPrimeTime :'+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-success">'+result[i].positiveTimePerc+'%</small></h4>';
+									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" Prime Time : '+result[i].positiveIsPrimeCoveredTime+',Non Prime Time : '+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-success">'+result[i].positiveTimePerc+'%</small></h4>';
 									str+='<p class="text-muted m_top10">Negative Time</p>';
 									//str+='<p>'+result[i].negativeCoveredTime+'<small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
-									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" PrimeTime :'+result[i].negativeIsPrimeCoveredTime+',NonPrimeTime :'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-success">'+result[i].negativeTimePerc+'%</small></h4>';
+									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" Prime Time : '+result[i].negativeIsPrimeCoveredTime+',Non Prime Time : '+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-success">'+result[i].negativeTimePerc+'%</small></h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -3253,10 +3260,10 @@ function buildComparisonGovtRankWiseDetailsOfChannelSub(result,channelName,chann
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
 										//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'<small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
-										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+',NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
+										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" Prime Time : '+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+',Non Prime Time : '+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
 										str+='<p class="text-muted m_top10">Negative Time</p>';
 										//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'<small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
-										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+',NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
+										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipClsforGov" title=" Prime Time : '+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+',Non Prime Time : '+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-success">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -3743,10 +3750,10 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 					str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 						str+='<p class="text-muted">Positive Time</p>';
 						//str+='<p>'+result[i].positiveCoveredTime+' <small class="text-success">'+result[i].positiveTimePerc+'%</small></p>';
-						str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].positiveIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-success">'+result[i].positiveTimePerc+'%</small></h4>';
+						str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="Prime Time : '+result[i].positiveIsPrimeCoveredTime+'\n Non Prime Time:'+result[i].positiveIsNotPrimeCoveredTime+'">'+result[i].positiveCoveredTime+'</span><small class="text-success">'+result[i].positiveTimePerc+'%</small></h4>';
 						str+='<p class="text-muted">Negative Time</p>';
 						//str+='<p>'+result[i].negativeCoveredTime+' <small class="text-danger">'+result[i].negativeTimePerc+'%</small></p>';
-						str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].negativeIsPrimeCoveredTime+'\n NonPrimeTime:'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-danger">'+result[i].negativeTimePerc+'%</small></h4>';
+						str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title=" Prime Time : '+result[i].negativeIsPrimeCoveredTime+'\n Non Prime Time: '+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].negativeCoveredTime+'</span><small class="text-danger">'+result[i].negativeTimePerc+'%</small></h4>';
 					str+='</div>';
 				str+='</div>';
 				var newsChannelCatArr = []
@@ -3762,10 +3769,10 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 						str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 							str+='<p class="text-muted">Positive Time</p>';
 							//str+='<p>'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></p>';
-							str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n  NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
+							str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="Prime Time : '+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n  Non Prime Time : '+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].positiveTimePerc+'%</small></h4>';
 							str+='<p class="text-muted">Negative Time</p>';
 							//str+='<p>'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></p>';
-							str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
+							str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="Prime Time : '+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList[j].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList[j].negativeTimePerc+'%</small></h4>';
 							//str+='<p class="text-muted">Negative Time</p>';
 						str+='</div>';
 					str+='</div>';
@@ -3801,11 +3808,11 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 								str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 									str+='<p class="text-muted">Positive Time</p>';
 									//str+='<p>'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'<small class="text-success"> '+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></p>';
-									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></h4>';
+									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="Prime Time : '+result[i].tvNewsDetailsVOList1[k].positiveIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList1[k].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].positiveTimePerc+'%</small></h4>';
 									
 									str+='<p class="text-muted">Negative Time</p>';
 									//str+='<p>'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'<small class="text-danger"> '+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></p>';
-									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></h4>';
+									str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="Prime Time : '+result[i].tvNewsDetailsVOList1[k].negativeIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList1[k].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].negativeTimePerc+'%</small></h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -3823,10 +3830,10 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 									str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 										str+='<p class="text-muted">Positive Time</p>';
 										//str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+' <small class="text-success">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></p>';
-										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></h4>';
+										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="Prime Time : '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].positiveTimePerc+'%</small></h4>';
 										str+='<p class="text-muted">Negative Time</p>';
 										//str+='<p>'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+' <small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></p>';
-										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="PrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsPrimeCoveredTime+'\n NonPrimeTime :'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></h4>';
+										str+='<h4><span data-placement="top" style="cursor: pointer;" class="emToolTipCls9" title="Prime Time : '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsPrimeCoveredTime+'\n Non Prime Time : '+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeIsNotPrimeCoveredTime+'">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeCoveredTime+'</span><small class="text-danger">'+result[i].tvNewsDetailsVOList1[k].tvNewsDetailsVOList[l].negativeTimePerc+'%</small></h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';

@@ -53,7 +53,17 @@
 .customModal{
 	background-color:#fff;
 }
-
+.DTFC_LeftBodyWrapper
+{
+	top:-13px !important;
+}
+.DTFC_LeftBodyWrapper tr td
+{
+	background-color:#fff;
+}
+.DTFC_LeftBodyLiner{
+	overflow-y:hidden;
+}
 </style>
 </head>
 <body>  
@@ -1859,7 +1869,21 @@
 											</div>
 										</div>
 									</div>
+									<div class="row m_top10">
+							  <div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+								<div class="tab-content navTabsSettingsContent">
+									<div role="tabpanel" class="tab-pane active" id="coveragesEmn">
+										<div class="">
+											<ul class="settingsUlEmn1" id="emnNewsChannelsUlId1"></ul>
+										</div>
+									</div>
 								</div>
+							</div>
+							</div>
+							<div class="col-md-4">
+								<button type="button" class="btn btn-success filtersSubmitDivIdEmn1" style="display: none;" >Get Details</button>
+							</div>
+							</div>
 						</div>     
 					</div>
 				</div>
@@ -1870,8 +1894,9 @@
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock m_top10" expand-block-inner="EMCoverageTime">
 							<div class="col-sm-5">
+								<label>Select Category</label>
 								<select class="form-control chosen-select" id="categoryEmId">
-									<option value="0">Select Category</option>
+									<option value="0">All</option>
 									<option value="1109">JANMABOOMI - MAA URU 2018</option>
 									<option value="1115">COMMON PEOPLE VS GOVT-JB 2018</option>
 									<option value="1116">COMMON PEOPLE VS TDP-JB 2018</option>
@@ -5573,6 +5598,7 @@
 <script src="coreApi/Plugins/DataTable/pdf.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
@@ -6177,6 +6203,7 @@ var globalImages;
      	/*Electronic Media Calls*/
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
+		getAllTvChannels1();
 		getRescentNewsBulletinTime();
 		/* Alert Default Call */
 		//getAlertOverviewDetails();  
