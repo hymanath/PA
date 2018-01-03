@@ -61,6 +61,9 @@ $('#dateRangePressmeetId').on('apply.daterangepicker', function(ev, picker) {
   toDate = picker.endDate.format('DD-MM-YYYY');
 	preemeeetOnloadCalls();
 });
+$(document).on("click",".pressMeetIconRefresh",function(){
+	preemeeetOnloadCalls();
+});
 function preemeeetOnloadCalls(){
 		getPartyWiseThenCandidateWisePerformance();
 		getPrintMediaOverAllPartyWiseCounts();

@@ -10,6 +10,19 @@ var globalProgarmId=[];
 	getTrainingCampBasicDetailsCntOverview();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
 });
+$(document).on("click",".trainingIconRefresh",function(){
+	getTrainingCampBasicDetailsCntOverview();
+	getUserTypeWiseTotalEligibleAndAttendedCnt();
+	var enrollmentYearId=$("#tdpTriningYearId").val();
+	if(enrollmentYearId == 4){
+		$("#campWiseTrainingId").show();
+		$("#specialProgramLeaderId").show();
+		getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
+	}else{
+		  $("#campWiseTrainingId").hide(); 
+		  $("#specialProgramLeaderId").hide();
+	}
+});
 $("#tdpTriningYearId").on('change', function() {
 	//stateLevelCampDetails();
 	getTrainingCampBasicDetailsCntOverview();

@@ -656,7 +656,9 @@
 							<span class="trainingIconExpand pull-right" expand-icon="training">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							
+							<span class="trainingIconRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</span>
 							<span class="input-group pull-right dateRangePickerClsForTraining hide" expand-block-date="training" style="display:none;">
 								<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
 								<span class="input-group-addon">
@@ -1391,10 +1393,10 @@
 				<div class="panel-heading">
 					<div class="row">
 						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="electronic">
-							<h4 class="panel-title text-capital" style="width: 470px;">
+							<h5 class="panel-title text-capital" style="width: 470px;">
 								<img src="newCoreDashBoard/img/electronicMediaIcon.png" class="iconClass">
-								electronic media news <br/><small id="emnHeadDate" class="text-muted" style="margin-left:40px;">TODAY (28-10-2016)</small>
-							</h4>    
+								electronic media news-<small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
+							</h5>    
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12 m_XsTop10" expand-block-heading1="electronic">
 							<span class="emnSetIcon pull-right">
@@ -1677,11 +1679,11 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="prajaSankaplaYatra">
-								<h4 class="panel-title text-capital" style="font-size:14px;">
+								<h4 class="panel-title text-capital">
 									<div>
 										<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 										<span id="prajaSankalpaYatraDivId">Category Wise News-</span> 
-										<small id="prajaHeadDate" class="text-muted"></small>
+										<small id="prajaHeadDate" class="text-muted" style="color:#3F3733"></small>
 									</div>
 								</h4>
 							</div>
@@ -1819,7 +1821,7 @@
 								<div>
 									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 									<span id="EMCoverageTimeDivId">Electronic Media Coverage Time - </span> 
-									<small id="EMCoverageTimeHeadDate" class="text-muted"></small>
+									<small id="EMCoverageTimeHeadDate" class="text-muted" style="color:#3F3733"></small>
 								</div>
 							</h4>
 						</div>
@@ -2216,6 +2218,9 @@
 						   </h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="pressmeet">
+							<span class="pressMeetIconRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+							</span> 
 						   <span class="pressmeetIconExpand pull-right" expand-icon="pressmeet">
 						   <i class="glyphicon glyphicon-fullscreen"></i>
 						   </span>
@@ -2775,6 +2780,7 @@
 								<h4><span class="headingColor text-capital">events</span>
 								<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
 								<div id="mainEventsList" class="m_top20"></div>
+								<div id="janmabhoomiEventDivId" class=""></div>
 								<h4 style="margin-top:20px !important;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span>
 									<span class="pull-right activitiesCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
 								</h4>
@@ -3307,7 +3313,7 @@
 						<div class="col-md-8 col-sm-8 col-xs-12">  
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
-								Booth committees - <small class="text-muted boothCommitteesDate">OVERALL (TILL NOW)</small>
+								seve mitra - <small class="text-muted boothCommitteesDate">OVERALL (TILL NOW)</small>
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-12">
@@ -4428,6 +4434,9 @@
 							<span class="attendanceSetIcon pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
+							<span class="attendanceIconRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+							</span> 
 							<span class="notesIconattendance pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForAttendance(7);"></i>
 							</span>
@@ -5598,7 +5607,6 @@
 <script src="coreApi/Plugins/DataTable/pdf.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
-<script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
@@ -5608,6 +5616,7 @@
 <script src="newCoreDashBoard/Plugins/Rating/bootstrap-rating.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/debates.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newsCoreDashBoard.js" type="text/javascript"></script>

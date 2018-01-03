@@ -51,7 +51,28 @@ function getOverAllCommitteeWiseMembersCounts(){
 }
 function buildOverAllCommitteeWiseMembersCounts(result){
 	var str='';
-	
+	var overAllTrainedCount = result.committeeNoSmartPhone+result.cadreNoSmartPhoneCount+result.publicNoSmartPhoneCount+result.overAllInstalledCount;
+	str+'<div class="row">';
+	str+='<h4 class="text-capitalize m_top10"><b>OVERALL INSTALLATIONS</b></h4>';
+		str+='<div class="m_top5">';
+		  str+='<div class="table-responsive">';
+				str+='<table class="table tableTraining bg_ED">';
+					str+='<tbody>';
+						str+='<tr>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">total Installation</p>';
+								str+='<h4>'+result.overAllInstalledCount+'</h4>';
+							str+='</td>';
+							str+='<td>';
+								str+='<p class="text-muted text-capitalize">Total Trained</p>';
+								str+='<h4>'+overAllTrainedCount+'</h4>';
+							str+='</td>';
+						str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';  
+		str+='</div>';
+		
 	str+'<div class="row">';
 	str+='<h4 class="text-capitalize m_top10"><b>TOTAL INSTALLATIONS</b></h4>';
 		str+='<div class="m_top5">';
