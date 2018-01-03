@@ -20,6 +20,13 @@ public class EventLocationVO {
 	private Long count=0l;
 	private List<EventLocationVO> questionList= new ArrayList<EventLocationVO>();
 	private List<EventLocationVO> optionList= new ArrayList<EventLocationVO>();
+	
+	private Long districtId;
+	private Long parlimentId;
+	private String districtName;
+	private String parliamentName;
+	
+	
 	public Long getLocationId() {
 		return locationId;
 	}
@@ -97,6 +104,30 @@ public class EventLocationVO {
 	}
 	public void setOptionType(String optionType) {
 		this.optionType = optionType;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getParlimentId() {
+		return parlimentId;
+	}
+	public void setParlimentId(Long parlimentId) {
+		this.parlimentId = parlimentId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getParliamentName() {
+		return parliamentName;
+	}
+	public void setParliamentName(String parliamentName) {
+		this.parliamentName = parliamentName;
 	}
 	
 	

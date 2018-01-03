@@ -2258,6 +2258,14 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 				locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
 				locationVo.setTotalCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				locationVo.setConductedCount(commonMethodsUtilService.getLongValueForObject(objects[1]));
+				if(locationScopeId == 4l || locationScopeId == 5l){
+					locationVo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+					locationVo.setDistrictName(commonMethodsUtilService.getStringValueForObject(objects[5]));
+					if(locationScopeId == 5l){
+					locationVo.setParlimentId(commonMethodsUtilService.getLongValueForObject(objects[6]));
+					locationVo.setParliamentName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+					}
+				}
 				locationVo.getQuestionList().addAll(getQuestionTemplate(questionaryMap));//getting template
 				locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]), locationVo);
 			}else{
