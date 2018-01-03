@@ -28,4 +28,5 @@ public interface IPmRequestDetailsService {
 	public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId);
 	public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate);
 	public ResultStatus updatePetitionsStatusDetails(Long userId,List<Long> petitionIdsList, List<Long> subWorkIdsList,String remark,Long statusId);
+	public ResultStatus generateCoveringLetterForPetition(InputVO inputVO);
 }

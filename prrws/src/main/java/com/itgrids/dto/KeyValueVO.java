@@ -8,7 +8,22 @@ public class KeyValueVO {
 	private String value;
 	private String electionType;
 	private List<Long> deptIdsList = new ArrayList<Long>();
+	private String designation;
+	private Long designationId;
 	
+	
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
 	public KeyValueVO(){}
 	public KeyValueVO(Long key,String value){
 		this.key = key;

@@ -1,5 +1,6 @@
 package com.itgrids.controllers.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -237,5 +238,26 @@ public class PmRequestDetailsController {
 	    }
 	   
 	    return pmRequestDetailsService.updatePetitionsStatusDetails(userId,inputVO.getPetitionIdsList(),inputVO.getSubworkIdsList(),inputVO.getRemarks(),inputVO.getStatusId());
+	    }
+	    @RequestMapping(value ="/generateCoveringLetterForPetition",method = RequestMethod.POST)
+	    public @ResponseBody ResultStatus generateCoveringLetterForPetition(@RequestBody InputVO inputVO,HttpServletRequest request ) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}
+			List<Long> deptIds = null;
+			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+			// deptIds = deptVO.getDeptIdsList();
+			if(deptVO != null){
+			 inputVO.setDeptIdsList(deptVO.getDeptIdsList());
+			 inputVO.setDisplayType(deptVO.getDesignation());
+			 if(inputVO.getDesignationIds() == null){
+				 inputVO.setDesignationIds(new ArrayList<Long>());
+			 }
+			 inputVO.getDesignationIds().add(deptVO.getDesignationId());
+			}
+	    	return pmRequestDetailsService.generateCoveringLetterForPetition(inputVO);
 	    }
 }

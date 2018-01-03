@@ -9,6 +9,6 @@ import com.itgrids.model.PmOfficerUser;
 public interface IPmOfficerUserDAO extends GenericDao<PmOfficerUser, Long> {
 
 	public Object[] getPmOffceUserDetails(Long userId);
-	public List<Long> getPmDeptIdByUserId(Long userId);
+	public List<Object[]> getPmDeptIdByUserId(Long userId);
 	public List<Long> getPmDeptStatusIdByUserIdsLst(Long userId);
 }
