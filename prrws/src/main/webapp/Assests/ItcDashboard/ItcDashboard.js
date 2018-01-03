@@ -4523,7 +4523,7 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 				str+='<div class="panel panel-default panel-black">';
 						str+='<div class="panel-heading" role="tab" id="headingNewOnlinServiceKPI">';
 							str+='<a role="button" class="panelCollapseIcon NewOnlinServiceKPICollapsed collapsed"  data-toggle="collapse" data-parent="#accordionNewOnlinServiceKPI" href="#collapseNewOnlinServiceKPI" aria-expanded="true" aria-controls="collapseNewOnlinServiceKPI">';
-								str+='<h4 class="panel-title">NEW SERVICES</h4>';
+								str+='<h4 class="panel-title">KIOSK-Meeseva Centers</h4>';
 							str+='</a>';
 						str+='</div>';
 					str+='<div id="collapseNewOnlinServiceKPI" class="panel-collapse collapse newOnlinServiceKPICollapsedIN" role="tabpanel" aria-labelledby="headingNewOnlinServiceKPI">';
@@ -5248,7 +5248,7 @@ function buildMeesevaKPINewOnlineServiceOverviewCount(result){
 	globalNewOnlServ2016 = result.onLineServices2016;
 	globalNewOnlServ2017 = result.onLineServices2017;
 	var str='';
-		str+='<h4 class="text-center"><b style="font-size: 20px !important;">New Services - '+result.onLineServicesCount+'</b></h4>';
+		str+='<h4 class="text-center"><b style="font-size: 20px !important;">KIOSK-Meeseva Centers - '+result.onLineServicesCount+'</b></h4>';
 		str+='<div class="row m_top10">';
 			str+='<div class="col-sm-3 m_top10">';
 				str+='<div style="border-right:1px solid #000;text-align:center;">';
