@@ -33,9 +33,36 @@ public class NregsOverviewVO implements Serializable{
 	private Long villagesInGreen;
 	private Long totalVillages;
 	private String totalBudget1;
-	  
+	private Long districtsInGold;
+	private Long constituenciesInGold;
+	private Long mandalsInGold;
+	private Long villagesInGold;
 	
 	
+	public Long getDistrictsInGold() {
+		return districtsInGold;
+	}
+	public void setDistrictsInGold(Long districtsInGold) {
+		this.districtsInGold = districtsInGold;
+	}
+	public Long getConstituenciesInGold() {
+		return constituenciesInGold;
+	}
+	public void setConstituenciesInGold(Long constituenciesInGold) {
+		this.constituenciesInGold = constituenciesInGold;
+	}
+	public Long getMandalsInGold() {
+		return mandalsInGold;
+	}
+	public void setMandalsInGold(Long mandalsInGold) {
+		this.mandalsInGold = mandalsInGold;
+	}
+	public Long getVillagesInGold() {
+		return villagesInGold;
+	}
+	public void setVillagesInGold(Long villagesInGold) {
+		this.villagesInGold = villagesInGold;
+	}
 	public String getTotalBudget1() {
 		return totalBudget1;
 	}

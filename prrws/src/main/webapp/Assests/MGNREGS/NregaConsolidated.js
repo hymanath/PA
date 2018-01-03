@@ -17,9 +17,9 @@ $('#dateRangePickerMGNF').on('dp.change', function(e){
 	if(levelId == 4)
 	{
 		projectDataConsolidated(levelId,locId,districtId);
-	}else{
+	}/* else{
 		projectDataConsolidated(levelId,locId,'');
-	}
+	} */
 	
 });
 $('#dateRangePickerMGNT').on('dp.change', function(e){ 
@@ -31,9 +31,9 @@ $('#dateRangePickerMGNT').on('dp.change', function(e){
 	if(levelId == 4)
 	{
 		projectDataConsolidated(levelId,locId,districtId);
-	}else{
+	}/* else{
 		projectDataConsolidated(levelId,locId,'');
-	}
+	} */
 });
 $(document).on('cut copy paste', function (e) {
 	e.preventDefault();
@@ -430,7 +430,7 @@ function projectDataConsolidated(levelId,locId,districtId)
 		districtId = $("#selectedName").attr("attr_distId");
 	}
 	getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,divId,districtId,'completed');
-	
+	onloadCallsBuilding();
 }
 $(document).on("click","[consolidated-view]",function(){
 	var searchType = $(this).attr("consolidated-view");

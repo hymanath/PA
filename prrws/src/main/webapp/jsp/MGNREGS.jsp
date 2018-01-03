@@ -434,13 +434,13 @@ var searchParams = new URLSearchParams(window.location.search);
 <script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="http://cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js"></script>
 <script type="text/javascript" src="http://cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js"></script>
-<script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 <script src="Assests/MGNREGS/NregaConsolidated.js" type="text/javascript"></script>
+<script src="Assests/MGNREGS/MGNREGS.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 $(".menu-top-selection-icon").tooltip();
 onLoadCallsConsolidated();
-onLoadCalls();
+//onLoadCalls();
 $(document).on("click","#viewSwitchBtn li",function(){
 	$("[overview-state],[overview-district]").removeClass("active");
 	$(this).addClass("active");
