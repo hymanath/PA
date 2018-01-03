@@ -286,6 +286,64 @@ function departmentBlockWiseDetails(divId)
 							{
 								collapse+='<div class="row">';
 									collapse+='<div class="col-sm-12">';
+										collapse+='<iframe class="embed-responsive-item" width="100%" height="780px" allowfullscreen="true" allowtransparency="true" style="background:#FFFFFF;" src="https://app.powerbi.com/view?r=eyJrIjoiNzgxZTkxMDctNjI2My00YTk3LTg4ZTctMWM1YTZjNzQyNTNiIiwidCI6ImQzMjExYjNlLWJjMjYtNDlmYS1hMzAzLTYzMjEyMGFiNTQ1OSIsImMiOjEwfQ%3D%3D"></iframe>';
+									collapse+='</div>';
+								collapse+='</div>';	
+								
+								collapse+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+								  collapse+='<div class="panel panel-default panel-black">';
+									collapse+='<div class="panel-heading" role="tab" id="headingOne">';
+									  collapse+='<h4 class="panel-title">';
+										collapse+='<a class="panelCollapseIcon collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" attr_type="frame2">';
+										 collapse+='<h4>Company Investment & Employeement Details</h4>';
+										collapse+='</a>';
+									  collapse+='</h4>';
+									collapse+='</div>';
+									collapse+='<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">';
+									  collapse+='<div class="panel-body">';
+										collapse+='<div class="row">';
+											collapse+='<div id="frame2DivID"></div>';
+											
+										collapse+='</div>';
+									  collapse+='</div>';
+									collapse+='</div>';
+								 collapse+='</div>';
+								  collapse+='<div class="panel panel-default panel-black">';
+									collapse+='<div class="panel-heading" role="tab" id="headingTwo">';
+									 collapse+='<h4 class="panel-title">';
+										collapse+='<a class="collapsed panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" attr_type="frame3">';
+										  collapse+='<h4>Company Employee Duration Details</h4>';
+										collapse+='</a>';
+									  collapse+='</h4>';
+									collapse+='</div>';
+									collapse+='<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">';
+									  collapse+='<div class="panel-body">';
+										collapse+='<div class="row">';
+											collapse+='<div id="frame3DivID"></div>';
+										collapse+='</div>';
+									  collapse+='</div>';
+									collapse+='</div>';
+								  collapse+='</div>';
+								 collapse+='<div class="panel panel-default panel-black">';
+									collapse+='<div class="panel-heading" role="tab" id="headingThree">';
+									  collapse+='<h4 class="panel-title">';
+										collapse+='<a class="collapsed panelCollapseIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" attr_type="frame4">';
+										   collapse+='<h4 class="panel-tit1e">Information Lead Details</h4>';
+										collapse+='</a>';
+									  collapse+='</h4>';
+									collapse+='</div>';
+									collapse+='<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">';
+									  collapse+='<div class="panel-body">';
+										collapse+='<div class="row">';
+											collapse+='<div id="frame4DivID"></div>';
+										collapse+='</div>';
+									  collapse+='</div>';
+									collapse+='</div>';
+								  collapse+='</div>';
+								collapse+='</div>';
+								
+								/* collapse+='<div class="row">';
+									collapse+='<div class="col-sm-12">';
 										collapse+='<div class="row">';
 											collapse+='<div class="col-sm-7">';
 												collapse+='<h4>INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION OVERVIEW</h4>';
@@ -338,7 +396,7 @@ function departmentBlockWiseDetails(divId)
 											
 										collapse+='</div>';
 									collapse+='</div>';
-								collapse+='</div>';
+								collapse+='</div>'; */
 							}
 							if(divId == "cMeoDB")
 							{
@@ -5286,4 +5344,14 @@ $(document).on("click","#droppedForCheckId",function(){
 		$('.dropedCls'+divType).show();
 	else
 		$('.dropedCls'+divType).hide();	
+});
+$(document).on("click",".panelCollapseIcon",function(){
+	var frameType = $(this).attr("attr_type");
+	if(frameType == "frame2"){
+		$("#frame2DivID").html('<iframe  width="100%" height="780px" allowfullscreen="true" allowtransparency="true" style="background:#FFFFFF;" src="https://app.powerbi.com/view?r=eyJrIjoiOGU3OWJlZTAtZDE1My00YjJkLWE4MzQtZjE0NWFlMmI3YWU0IiwidCI6ImQzMjExYjNlLWJjMjYtNDlmYS1hMzAzLTYzMjEyMGFiNTQ1OSIsImMiOjEwfQ%3D%3D"></iframe>')
+	}else if(frameType == "frame3"){
+		$("#frame3DivID").html('<iframe  width="100%" height="780px" allowfullscreen="true" allowtransparency="true" style="background:#FFFFFF;" src="https://app.powerbi.com/view?r=eyJrIjoiNTZlMzJiMDQtN2EwZi00OGNhLTg0YzItZTQ5OGI1ZGJmMDhjIiwidCI6ImQzMjExYjNlLWJjMjYtNDlmYS1hMzAzLTYzMjEyMGFiNTQ1OSIsImMiOjEwfQ%3D%3D"></iframe>');
+	}else if(frameType == "frame4"){
+		$("#frame4DivID").html('<iframe  width="100%" height="780px" allowfullscreen="true" allowtransparency="true" style="background: #FFFFFF;" src="https://app.powerbi.com/view?r=eyJrIjoiNjJjM2VjMzQtOGQ5ZC00YjE1LTliOGYtY2IyMjNjNzgwMmM4IiwidCI6ImQzMjExYjNlLWJjMjYtNDlmYS1hMzAzLTYzMjEyMGFiNTQ1OSIsImMiOjEwfQ%3D%3D"></iframe>');
+	}
 });
