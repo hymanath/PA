@@ -88,11 +88,13 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		Long searchLevelId = inputVO.getSearchLevelId();
 		List<Long> searchLevelValues = inputVO.getSearchLvlVals();
 		String filterType = inputVO.getFilterType();
-		sb.append(" select model.petition.petitionId,model.petition.endorsmentNo,model.petition.endorsmentDate," +
-				" model.petition.estimationCost,model.pmRepresentee.name,model.pmRefCandidate.name," +
-				"model.petition.noOfWorks,model2.pmDesignation.designation," +
-				" model.petition.insertedTime,model1.updatedTime,model1.pmStatus.pmStatusId" +
-				",model.petition.workName from PmRepresenteeRefDetails as model,PmSubWorkDetails as model1" +
+		sb.append(" select model.petition.petitionId,model.petition.endorsmentNo,model.petition.endorsmentDate," +//0,1,2
+				" model.petition.estimationCost,model.pmRepresentee.name,model.pmRefCandidate.name," +//3,4,5
+				"model.petition.noOfWorks,model2.pmDesignation.designation," +//6,7
+				" model.petition.insertedTime,model1.updatedTime,model1.pmStatus.pmStatusId" +//8,9,10
+				",model.petition.workName,model1.costEstimation,model1.grievanceDescrption,model1.workEndorsmentNo,model1.pmSubWorkDetailsId " +//11,12,13,14,15
+				" ,model1.pmStatus.status,model1.endorsmentDate " +//16,17
+				"from PmRepresenteeRefDetails as model,PmSubWorkDetails as model1" +
 				",PmRefCandidateDesignation model2 ");
 		
 		if(filterType != null && (filterType.equalsIgnoreCase("work") || filterType.equalsIgnoreCase("department") )){

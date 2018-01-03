@@ -44,7 +44,7 @@ function locationLevelRefresh(){
 	$("#mobileId").val(' ');
 	$("#emailId").val(' ');
 	$("#endorsmentNoId").val(' ');
-	
+	$("#summaryId").html("");
 	$("#representationRequestEntryTable").html('');
 	hideAndShowSelectBox();
 }
@@ -104,8 +104,10 @@ $(document).on("click",".advancedSrchCls",function(){
 
 $(document).on("change",".clearDataCls",function(){
 	$("#representationRequestEntryTable").html('');
+	$("#summaryId").html("");
 });
 function clearData(){
+	$("#summaryId").html("");
 	$("#representationRequestEntryTable").html('');
 }
 
@@ -122,18 +124,20 @@ function representationRequestEntryTable(result){
 				str+='<th>Referrer&nbsp;Name</th>';
 				str+='<th>Referrer&nbsp;Designation</th>';				
 				str+='<th style="min-width:200px !important;">Work Name</th>';
-				str+='<th>No&nbsp;of&nbsp;Works</th>';
+				//str+='<th>No&nbsp;of&nbsp;Works</th>';
 				str+='<th>Estimation Cost</th>';
+				str+='<th>Status</th>';
 				str+='<th>Action</th>';
 			str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
 			for(var i in result){
+				for(var j in result[i].subList){
 			var endorsmentNo='';
 			str+='<tr>';
-				if (result[i].endorsementNO != null && typeof(result[i].endorsementNO) != "undefined"){
-					str+='<td>'+result[i].endorsementNO+'</td>';
-					endorsmentNo=result[i].endorsementNO;
+				if (result[i].subList[j].endorsementNO != null && result[i].subList[j].endorsementNO != 0){
+					str+='<td>'+result[i].subList[j].endorsementNO+'</td>';
+					endorsmentNo=result[i].subList[j].endorsementNO;
 				}else
 					str+='<td> - </td>';
 				if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
@@ -141,8 +145,8 @@ function representationRequestEntryTable(result){
 				else
 					str+='<td> - </td>';
 				
-				if (result[i].endorsmentDate != null && typeof(result[i].endorsmentDate) != "undefined")
-					str+='<td>'+result[i].endorsmentDate+'</td>';
+				if (result[i].subList[j].endorsmentDate != null && typeof(result[i].subList[j].endorsmentDate) != "undefined")
+					str+='<td>'+result[i].subList[j].endorsmentDate+'</td>';
 				else
 					str+='<td> - </td>';
 				if (result[i].name != null && typeof(result[i].name) != "undefined")
@@ -158,26 +162,30 @@ function representationRequestEntryTable(result){
 					str+='<td>'+result[i].desigName+'</td>';
 				else
 					str+='<td> - </td>';
-				if (result[i].workName != null && typeof(result[i].workName) != "undefined")
-					str+='<td>'+result[i].workName+'</td>';
+				if (result[i].subList[j].workName != null && result[i].subList[j].workName != "")
+					str+='<td>'+result[i].subList[j].workName+'</td>';
 				else
 					str+='<td> - </td>';
-				if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
+				/* if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
 					str+='<td>'+result[i].noOfWorks+'</td>';
 				else
-					str+='<td> - </td>';
-				if (result[i].estimationCost != "" && typeof(result[i].estimationCost) != "undefined")
-					str+='<td>'+result[i].estimationCost+'</td>';
+					str+='<td> - </td>'; */
+				if (result[i].subList[j].estimationCost != "" && result[i].subList[j].estimationCost != "0")
+					str+='<td>'+result[i].subList[j].estimationCost+'</td>';
 				else
 					str+='<td>-</td>';
-				
-				str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
+				if (result[i].subList[j].statusType != "" && typeof(result[i].subList[j].statusType) != "undefined")
+					str+='<td>'+result[i].subList[j].statusType+'</td>';
+				else
+					str+='<td>-</td>';
+				str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" attr_sub_work_id="'+result[i].subList[j].id+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
 				
 				//if(endorsmentNo != null && endorsmentNo != 'undefined' &&  (parseInt(endorsmentNo) ==0 || endorsmentNo=='') )
 					str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
 				
 				str+='</td>';
 			str+='</tr>';
+			}
 			}
 		str+='</tbody>';
 	str+='</table>';
@@ -909,12 +917,42 @@ var json = {
       xhr.setRequestHeader("Content-Type", "application/json");
     }
   }).done(function(result){
+	  $("#summaryId").html('');
     if(result != null && result.length>0){
+		buildSummeryDetails(result);
       representationRequestEntryTable(result);
     }else{
       $("#representationRequestEntryTable").html("NO DATA AVAILABLE");
     }
   }); 
+}
+function buildSummeryDetails(result){
+	var str=""; 
+	str+='<div class="col-sm-8" style="background-color:#B2B2B2;>';
+	str+='<lable style="background-color:#344650; color:#fff; font-size:25px;"><h4>Status Summery Details</h4></lable>';
+		str+='<table class="table" style="border: 1px solid #DDDDDD;">';
+			str+='<thead>';
+					str+='<tr>';
+					for(var i in result[0].statusList){
+						str+='<th style="border: 1px solid #DDDDDD">'+result[0].statusList[i].name+'</th>';
+					}
+					str+='</tr>';
+			str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';
+					for(var i in result[0].statusList){
+						if(result[0].statusList[i].petitionIds.length >0){
+							str+='<td><span title="Representation">'+result[0].statusList[i].petitionIds.length+'</span>-<span title="Work">'+result[0].statusList[i].subWorkIds.length+'</span></td>';
+						}else{
+							str+='<td data-toggle="tooltip" title="representations">-</td>';
+						}
+					}
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+	str+='</div>';
+	
+	$("#summaryId").html(str);
 }
 getStatusList();
 function getStatusList(){

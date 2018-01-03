@@ -1,7 +1,9 @@
 package com.itgrids.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RepresenteeViewVO {
 
@@ -24,8 +26,29 @@ public class RepresenteeViewVO {
 	private List<RepresenteeViewVO> deptList = new ArrayList<RepresenteeViewVO>();
 	private List<RepresenteeViewVO> statusList = new ArrayList<RepresenteeViewVO>();
 	private List<RepresenteeViewVO> list = new ArrayList<RepresenteeViewVO>();
+	private Long statusId;
+	private Set<Long> petitionIds = new HashSet<Long>();
+	private Set<Long> subWorkIds = new HashSet<Long>();
 	
 	
+	public Set<Long> getPetitionIds() {
+		return petitionIds;
+	}
+	public void setPetitionIds(Set<Long> petitionIds) {
+		this.petitionIds = petitionIds;
+	}
+	public Set<Long> getSubWorkIds() {
+		return subWorkIds;
+	}
+	public void setSubWorkIds(Set<Long> subWorkIds) {
+		this.subWorkIds = subWorkIds;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
 	public List<RepresenteeViewVO> getList() {
 		return list;
 	}
