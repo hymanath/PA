@@ -3171,8 +3171,9 @@ public class ItcDashboardService implements IItcDashboardService {
 		try{
 			
 			GetMeeSevaAppDeptWiseServiceDetailsResponseGetMeeSevaAppDeptWiseServiceDetailsResult  mobileAppDeptList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceDetails(inputVO.getGroupName(),Integer.valueOf(inputVO.getYear()));
-			org.json.JSONObject list = XML.toJSONObject(String.valueOf(mobileAppDeptList.get_any()[1].getChildren().get(0)));
-			 if(list != null){
+			//org.json.JSONObject list = XML.toJSONObject(String.valueOf(mobileAppDeptList.get_any()[1].getChildren() != null ? mobileAppDeptList.get_any()[1].getChildren().get(0) : null));
+			 if(mobileAppDeptList.get_any()[1].getChildren() != null){
+				 org.json.JSONObject list = XML.toJSONObject(String.valueOf(mobileAppDeptList.get_any()[1].getChildren().get(0)));
 				 Object object = list.getJSONObject("NewDataSet").get("Table");
 				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
 				    {
@@ -3326,11 +3327,13 @@ public class ItcDashboardService implements IItcDashboardService {
 			
 			 org.json.JSONObject list = null;
 			 GetMeeSevaAppDeptWiseServiceAbstractResponseGetMeeSevaAppDeptWiseServiceAbstractResult  mobileAppList = null;
-
+			 String childrenValue = null;
 			 //2014
 			 mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
-			 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
-			 if(list != null){
+			// childrenValue = String.valueOf(mobileAppList.get_any()[1].getChildren());
+			// list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren()));
+			 if(mobileAppList.get_any()[1].getChildren() != null){
+				 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
 				 Object object = list.getJSONObject("NewDataSet").get("Table");
 				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
 				    {
@@ -3347,8 +3350,9 @@ public class ItcDashboardService implements IItcDashboardService {
 			 //2015
 			 inputVO.setYear("2015");
 			 mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
-			 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
-			 if(list != null){
+			// childrenValue = String.valueOf(mobileAppList.get_any()[1].getChildren());
+			 if(mobileAppList.get_any()[1].getChildren() != null){
+				 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
 				 Object object = list.getJSONObject("NewDataSet").get("Table");
 				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
 				    {
@@ -3365,8 +3369,10 @@ public class ItcDashboardService implements IItcDashboardService {
 			//2016
 			 inputVO.setYear("2016");
 			 mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
-			 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
-			 if(list != null){
+			// childrenValue = String.valueOf(mobileAppList.get_any()[1].getChildren());
+			 if(mobileAppList.get_any()[1].getChildren() != null){
+				 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
+				// list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
 				 Object object = list.getJSONObject("NewDataSet").get("Table");
 				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
 				    {
@@ -3383,8 +3389,9 @@ public class ItcDashboardService implements IItcDashboardService {
 			//2017
 			 inputVO.setYear("2017");
 			 mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
-			 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
-			 if(list != null){
+			// childrenValue = String.valueOf(mobileAppList.get_any()[1].getChildren());
+			 if(mobileAppList.get_any()[1].getChildren() != null){
+				 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
 				 Object object = list.getJSONObject("NewDataSet").get("Table");
 				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
 				    {
@@ -3568,12 +3575,14 @@ public class ItcDashboardService implements IItcDashboardService {
 		try{
 			GetMeeSevaAppDeptWiseServiceAbstractResponseGetMeeSevaAppDeptWiseServiceAbstractResult  mobileAppList = null;
 			org.json.JSONObject list = null;
+			String childrenValue = null;
 			Map<String,MeesevaKPIDtlsVO> deptMap = new HashMap<String,MeesevaKPIDtlsVO>();
 			
 			//2014
 			mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
-			list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
-			 if(list != null){
+			//childrenValue = String.valueOf(mobileAppList.get_any()[1].getChildren());
+			if(mobileAppList.get_any()[1].getChildren() != null){
+				 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
 				 Object object = list.getJSONObject("NewDataSet").get("Table");
 				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
 				    {
@@ -3596,8 +3605,9 @@ public class ItcDashboardService implements IItcDashboardService {
 			//2015
 			inputVO.setYear("2015");
 			mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
-			list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
-			 if(list != null){
+			//childrenValue = String.valueOf(mobileAppList.get_any()[1].getChildren());
+			 if(mobileAppList.get_any()[1].getChildren() != null){
+				 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
 				 Object object = list.getJSONObject("NewDataSet").get("Table");
 				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
 				    {
@@ -3630,8 +3640,9 @@ public class ItcDashboardService implements IItcDashboardService {
 			 //2016
 			inputVO.setYear("2016");
 			mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
-			list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
-			 if(list != null){
+			//childrenValue = String.valueOf(mobileAppList.get_any()[1].getChildren());
+			 if(mobileAppList.get_any()[1].getChildren() != null){
+				 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
 				 Object object = list.getJSONObject("NewDataSet").get("Table");
 				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
 				    {
@@ -3664,8 +3675,9 @@ public class ItcDashboardService implements IItcDashboardService {
 			 //2017
 			inputVO.setYear("2017");
 			mobileAppList = new MeeSevaAppWebServiceSoapProxy().getMeeSevaAppDeptWiseServiceAbstract(Integer.valueOf(inputVO.getYear()));
-			list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
-			 if(list != null){
+			//childrenValue = String.valueOf(mobileAppList.get_any()[1].getChildren());
+			 if(mobileAppList.get_any()[1].getChildren() != null){
+				 list = XML.toJSONObject(String.valueOf(mobileAppList.get_any()[1].getChildren().get(0)));
 				 Object object = list.getJSONObject("NewDataSet").get("Table");
 				 if (object instanceof org.json.JSONArray)//Passing previous year data will be array
 				    {
