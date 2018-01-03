@@ -113,82 +113,92 @@ function clearData(){
 
 function representationRequestEntryTable(result){
 	var str='';
-	str+='<div class="table-responsive">';
-	str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
-		str+='<thead>';
-			str+='<tr>';
-				str+='<th>Entd&nbsp;ID</th>';
-				str+='<th>RAISED&nbsp;DATE</th>';
-				str+='<th>Entd&nbsp;Date</th>';
-				str+='<th>Representee&nbsp;Name</th>';
-				str+='<th>Referrer&nbsp;Name</th>';
-				str+='<th>Referrer&nbsp;Designation</th>';				
-				str+='<th style="min-width:200px !important;">Work Name</th>';
-				//str+='<th>No&nbsp;of&nbsp;Works</th>';
-				str+='<th>Estimation Cost</th>';
-				str+='<th>Status</th>';
-				str+='<th>Action</th>';
-			str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-			for(var i in result){
-				for(var j in result[i].subList){
-			var endorsmentNo='';
-			str+='<tr>';
-				if (result[i].subList[j].endorsementNO != null && result[i].subList[j].endorsementNO != 0){
-					str+='<td>'+result[i].subList[j].endorsementNO+'</td>';
-					endorsmentNo=result[i].subList[j].endorsementNO;
-				}else
-					str+='<td> - </td>';
-				if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
-					str+='<td>'+result[i].raisedDate+'</td>';
-				else
-					str+='<td> - </td>';
-				
-				if (result[i].subList[j].endorsmentDate != null && result[i].subList[j].endorsmentDate != "")
-					str+='<td>'+result[i].subList[j].endorsmentDate+'</td>';
-				else
-					str+='<td> - </td>';
-				if (result[i].name != null && typeof(result[i].name) != "undefined")
-					str+='<td>'+result[i].name+'</td>';
-				else
-					str+='<td> - </td>';
-				
-				if (result[i].referrerName != null && typeof(result[i].referrerName) != "undefined")
-					str+='<td>'+result[i].referrerName+'</td>';
-				else
-					str+='<td> - </td>';
-				if (result[i].desigName != null && typeof(result[i].desigName) != "undefined")
-					str+='<td>'+result[i].desigName+'</td>';
-				else
-					str+='<td> - </td>';
-				if (result[i].subList[j].workName != null && result[i].subList[j].workName != "")
-					str+='<td>'+result[i].subList[j].workName+'</td>';
-				else
-					str+='<td> - </td>';
-				/* if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
-					str+='<td>'+result[i].noOfWorks+'</td>';
-				else
-					str+='<td> - </td>'; */
-				if (result[i].subList[j].estimationCost != "" && result[i].subList[j].estimationCost != "0")
-					str+='<td>'+result[i].subList[j].estimationCost+'</td>';
-				else
-					str+='<td>-</td>';
-				if (result[i].subList[j].statusType != "" && typeof(result[i].subList[j].statusType) != "undefined")
-					str+='<td>'+result[i].subList[j].statusType+'</td>';
-				else
-					str+='<td>-</td>';
-				str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" attr_sub_work_id="'+result[i].subList[j].id+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
-				
-				//if(endorsmentNo != null && endorsmentNo != 'undefined' &&  (parseInt(endorsmentNo) ==0 || endorsmentNo=='') )
-					str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
-				
-				str+='</td>';
-			str+='</tr>';
-			}
-			}
-		str+='</tbody>';
-	str+='</table>';
+	str+='<div class="panel panel-default" style="margin-top:-8px;">';
+		str+='<div class="panel-heading" style="background-color:#344650; color:#fff;" data-toggle="collapse">';
+			str+='<h4 class="panel-title">';
+			str+='<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">SUBWORK PETITION DETAILS </a></h4>';
+		str+='</div>';
+		str+='<div id="collapseTwo" class="panel-collapse collapse in">';
+		str+='<div class="panel-body">';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>Entd&nbsp;ID</th>';
+						str+='<th>RAISED&nbsp;DATE</th>';
+						str+='<th>Entd&nbsp;Date</th>';
+						str+='<th>Representee&nbsp;Name</th>';
+						str+='<th>Referrer&nbsp;Name</th>';
+						str+='<th>Referrer&nbsp;Designation</th>';				
+						str+='<th style="min-width:200px !important;">Work Name</th>';
+						//str+='<th>No&nbsp;of&nbsp;Works</th>';
+						str+='<th>Estimation Cost</th>';
+						str+='<th>Status</th>';
+						str+='<th>Action</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result){
+						for(var j in result[i].subList){
+					var endorsmentNo='';
+					str+='<tr>';
+						if (result[i].subList[j].endorsementNO != null && result[i].subList[j].endorsementNO != 0){
+							str+='<td>'+result[i].subList[j].endorsementNO+'</td>';
+							endorsmentNo=result[i].subList[j].endorsementNO;
+						}else
+							str+='<td> - </td>';
+						if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
+							str+='<td>'+result[i].raisedDate+'</td>';
+						else
+							str+='<td> - </td>';
+						
+						if (result[i].subList[j].endorsmentDate != null && result[i].subList[j].endorsmentDate != "")
+							str+='<td>'+result[i].subList[j].endorsmentDate+'</td>';
+						else
+							str+='<td> - </td>';
+						if (result[i].name != null && typeof(result[i].name) != "undefined")
+							str+='<td>'+result[i].name+'</td>';
+						else
+							str+='<td> - </td>';
+						
+						if (result[i].referrerName != null && typeof(result[i].referrerName) != "undefined")
+							str+='<td>'+result[i].referrerName+'</td>';
+						else
+							str+='<td> - </td>';
+						if (result[i].desigName != null && typeof(result[i].desigName) != "undefined")
+							str+='<td>'+result[i].desigName+'</td>';
+						else
+							str+='<td> - </td>';
+						if (result[i].subList[j].workName != null && result[i].subList[j].workName != "")
+							str+='<td>'+result[i].subList[j].workName+'</td>';
+						else
+							str+='<td> - </td>';
+						/* if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
+							str+='<td>'+result[i].noOfWorks+'</td>';
+						else
+							str+='<td> - </td>'; */
+						if (result[i].subList[j].estimationCost != "" && result[i].subList[j].estimationCost != "0")
+							str+='<td>'+result[i].subList[j].estimationCost+'</td>';
+						else
+							str+='<td>-</td>';
+						if (result[i].subList[j].statusType != "" && typeof(result[i].subList[j].statusType) != "undefined")
+							str+='<td>'+result[i].subList[j].statusType+'</td>';
+						else
+							str+='<td>-</td>';
+						str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" attr_sub_work_id="'+result[i].subList[j].id+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
+						
+						//if(endorsmentNo != null && endorsmentNo != 'undefined' &&  (parseInt(endorsmentNo) ==0 || endorsmentNo=='') )
+							str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
+						
+						str+='</td>';
+					str+='</tr>';
+					}
+					}
+				str+='</tbody>';
+			str+='</table>';
+			str+='</div>';
+			str+='</div>';
+		str+='</div>';	
 	str+='</div>';
 	$("#representationRequestEntryTable").html(str);
 	$(".tooltipCls").tooltip();
@@ -927,31 +937,38 @@ var json = {
   }); 
 }
 function buildSummeryDetails(result){
+
 	var str=""; 
-	str+='<div class="col-sm-8" style="background-color:#B2B2B2;>';
-	str+='<lable style="background-color:#344650; color:#fff; font-size:25px;"><h4>Status Summery Details</h4></lable>';
-		str+='<table class="table" style="border: 1px solid #DDDDDD;">';
-			str+='<thead>';
-					str+='<tr>';
-					for(var i in result[0].statusList){
-						str+='<th style="border: 1px solid #DDDDDD">'+result[0].statusList[i].name+'</th>';
-					}
-					str+='</tr>';
-			str+='</thead>';
-				str+='<tbody>';
-					str+='<tr>';
-					for(var i in result[0].statusList){
-						if(result[0].statusList[i].petitionIds.length >0){
-							str+='<td><span title="Representation">'+result[0].statusList[i].petitionIds.length+'</span>-<span title="Work">'+result[0].statusList[i].subWorkIds.length+'</span></td>';
-						}else{
-							str+='<td data-toggle="tooltip" title="representations">-</td>';
-						}
-					}
-					str+='</tr>';
-				str+='</tbody>';
-			str+='</table>';
+	str+='<div class="panel panel-default" style="margin:15px;">';
+		str+='<div class="panel-heading" style="background-color:#344650; color:#fff;">';
+			str+='<h4 class="panel-title"> STATUS SUMMERY DETAILS </h4>';
+		str+='</div>';
+		str+='<div class="panel-body">';
+			str+='<div class="col-sm-12">';
+				str+='<div class="table-responsive">';
+					str+='<table class="table" style="border: 1px solid lightgreen; text-align:center;">';
+						str+='<thead>';
+							str+='<tr>';
+							for(var i in result[0].statusList){
+								str+='<th style="background-color:#B3B3B3; border:1px solid #DDDDDD; font-size:12px;">'+result[0].statusList[i].name.toUpperCase()+'</th>';
+							}
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+							str+='<tr>';
+							for(var i in result[0].statusList){
+								if(result[0].statusList[i].petitionIds.length >0){
+									str+='<td style="border:1px solid #DDDDDD;"><span title="Total Representations">'+result[0].statusList[i].petitionIds.length+'</span>/<span title="Total Works">'+result[0].statusList[i].subWorkIds.length+'</span></td>';
+								}else{
+									str+='<td data-toggle="tooltip" title="representations"  style="border:1px solid #DDDDDD;">-</td>';
+								}
+							}
+							str+='</tr>';
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';	
+			str+='</div>';	
 	str+='</div>';
-	
 	$("#summaryId").html(str);
 }
 getStatusList();
