@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -21,7 +23,6 @@ import com.itgrids.dao.INregaComponentServiceDAO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.NregaConsolidatedDataVO;
 import com.itgrids.dto.NregaConsolidatedInputVO;
-import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSConsolidatedService;
@@ -72,6 +73,14 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 		return returnList;
 	}
 	
+	class Task implements Callable<String> {
+	    @Override
+	    public String call() throws Exception {
+	        Thread.sleep(6000); // Just to demo a long running task of 15 seconds.
+	        return "Ready!";
+	    }
+	}
+	
 	/*
 	 * Date : 21/07/2017
 	 * Author :Sravanth
@@ -99,7 +108,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 				
 				List<ClientResponse> responseList = new ArrayList<ClientResponse>();
 				if(urlsList != null && !urlsList.isEmpty()){
-					ExecutorService executor = Executors.newFixedThreadPool(30);
+					ExecutorService executor = Executors.newFixedThreadPool(100);
+					//Future<String> future = executor.submit(new Task());
 					for (NregaConsolidatedInputVO urlvo : urlsList) {
 						if(urlvo.getId() != null && (urlvo.getId().longValue() == 43l || urlvo.getId().longValue() == 44l 
 								|| urlvo.getId().longValue() == 45l || urlvo.getId().longValue() == 46l || urlvo.getId().longValue() == 47l 
@@ -132,11 +142,19 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 							Runnable worker = new NREGSCumulativeThread(urlvo.getUrl(),responseList,str);
 							executor.execute(worker);
 						}
+						System.out.println(urlvo.getId());
 					}	 
 					executor.shutdown();
-					while (!executor.isTerminated()) {
-							
+					System.out.println(executor.isTerminated());
+					if(executor.awaitTermination(30, TimeUnit.SECONDS)) {
+						System.out.println("task completed");
+						System.out.println("Finished all threadssss"+responseList);
+					}else{
+						System.out.println("Executor is shutdown now");
 					}
+					/*while (!executor.isTerminated()) {
+							
+					}*/
 						System.out.println("Finished all threads"+responseList);
 
 				}

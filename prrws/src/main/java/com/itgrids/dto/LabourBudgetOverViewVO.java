@@ -24,21 +24,49 @@ public class LabourBudgetOverViewVO implements Serializable{
 	private Long districtsInRed;
 	private Long districtsInOrange;
 	private Long districtsInGreen;
+	private Long districtsInGold;
 	private Long totalConstituencies;
 	private Long constituenciesInRed;
 	private Long constituenciesInOrange;
 	private Long constituenciesInGreen;
+	private Long constituenciesInGold;
 	private Long totalMandals;
 	private Long mandalsInRed;
 	private Long mandalsInOrange;
 	private Long mandalsInGreen;
+	private Long mandalsInGold;
 	private Long totalVillages;
 	private Long villagesInRed;
 	private Long villagesInOrange;
 	private Long villagesInGreen;
+	private Long villagesInGold;
 	private String achievementPerc;
 	
 	
+	public Long getDistrictsInGold() {
+		return districtsInGold;
+	}
+	public void setDistrictsInGold(Long districtsInGold) {
+		this.districtsInGold = districtsInGold;
+	}
+	public Long getConstituenciesInGold() {
+		return constituenciesInGold;
+	}
+	public void setConstituenciesInGold(Long constituenciesInGold) {
+		this.constituenciesInGold = constituenciesInGold;
+	}
+	public Long getMandalsInGold() {
+		return mandalsInGold;
+	}
+	public void setMandalsInGold(Long mandalsInGold) {
+		this.mandalsInGold = mandalsInGold;
+	}
+	public Long getVillagesInGold() {
+		return villagesInGold;
+	}
+	public void setVillagesInGold(Long villagesInGold) {
+		this.villagesInGold = villagesInGold;
+	}
 	public String getAchievementPerc() {
 		return achievementPerc;
 	}

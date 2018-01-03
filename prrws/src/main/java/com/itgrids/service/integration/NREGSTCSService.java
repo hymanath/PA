@@ -193,18 +193,22 @@ public class NREGSTCSService implements INREGSTCSService{
     				returnvo.setDistrictsInRed(jObj.getLong("DISTRICTSINRED"));
     				returnvo.setDistrictsInOrange(jObj.getLong("DISTRICTSINORANGE"));
     				returnvo.setDistrictsInGreen(jObj.getLong("DISTRICTSINGREEN"));
+    				returnvo.setDistrictsInGold(jObj.getLong("DISTRICTSINGOLD"));
     				returnvo.setTotalConstituencies(jObj.getLong("TOTALCONSTITUENCIES"));
     				returnvo.setConstituenciesInRed(jObj.getLong("CONSTITUENCIESINRED"));
     				returnvo.setConstituenciesInOrange(jObj.getLong("CONSTITUENCIESINORANGE"));
     				returnvo.setConstituenciesInGreen(jObj.getLong("CONSTITUENCIESINGREEN"));
+    				returnvo.setConstituenciesInGold(jObj.getLong("CONSTITUENCIESINGOLD"));
     				returnvo.setTotalMandals(jObj.getLong("TOTALMANDALS"));
     				returnvo.setMandalsInRed(jObj.getLong("MANDALSINRED"));
     				returnvo.setMandalsInOrange(jObj.getLong("MANDALSINORANGE"));
     				returnvo.setMandalsInGreen(jObj.getLong("MANDALSINGREEN"));
+    				returnvo.setMandalsInGold(jObj.getLong("MANDALSINGOLD"));
     				returnvo.setTotalVillages(jObj.getLong("TOTALVILLAGES"));
     				returnvo.setVillagesInRed(jObj.getLong("VILLAGESINRED"));
     				returnvo.setVillagesInOrange(jObj.getLong("VILLAGESINORANGE"));
     				returnvo.setVillagesInGreen(jObj.getLong("VILLAGESINGREEN"));
+    				returnvo.setVillagesInGold(jObj.getLong("VILLAGESINGOLD"));
     				//returnvo.setLeader(jObj.getString("LEADER"));
     				//returnvo.setLagger(jObj.getString("LAGGER"));
     			}
@@ -402,6 +406,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
 	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
 	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
+	 	    				if(Obj.has("DISTRICTSINGOLD")){
+	 	    					finalVO.setDistrictsInGold(Obj.getLong("DISTRICTSINGOLD"));
+	 	    					finalVO.setConstituenciesInGold(Obj.getLong("CONSTITUENCIESINGOLD"));
+	 	    					finalVO.setMandalsInGold(Obj.getLong("MANDALSINGOLD"));
+	 	    					finalVO.setVillagesInGold(Obj.getLong("VILLAGESINGOLD"));
+	 	    				}
 	 	    			/*}else{
 	 	    				finalVO.setAveragePerDistrict(new BigDecimal(Obj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				finalVO.setAveragePerConstituency(new BigDecimal(Obj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
