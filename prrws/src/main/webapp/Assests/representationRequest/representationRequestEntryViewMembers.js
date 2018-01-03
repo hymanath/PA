@@ -145,7 +145,7 @@ function representationRequestEntryTable(result){
 				else
 					str+='<td> - </td>';
 				
-				if (result[i].subList[j].endorsmentDate != null && typeof(result[i].subList[j].endorsmentDate) != "undefined")
+				if (result[i].subList[j].endorsmentDate != null && result[i].subList[j].endorsmentDate != "")
 					str+='<td>'+result[i].subList[j].endorsmentDate+'</td>';
 				else
 					str+='<td> - </td>';
