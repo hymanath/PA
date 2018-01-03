@@ -427,5 +427,26 @@ function buildLeadWiseOverviewDetails(result){
 	$("#leadWiseOverviewId").html(str);
 	$(".tooltipCls").tooltip();
 }
-
+//generateCoveringLetterForPetition();
+function generateCoveringLetterForPetition(){
+ var  schemeIdsListArr =[1,9397];
+var json = {
+   sourceId :1,
+   schemeIdsList:schemeIdsListArr,
+   leadName:"10",
+   groupName:"3" ,
+	endValue:"5"
+  }           
+ $.ajax({              
+  type:'POST',    
+  url: 'generateCoveringLetterForPetition',
+  dataType: 'json',
+  data : JSON.stringify(json),
+  beforeSend :   function(xhr){
+   xhr.setRequestHeader("Accept", "application/json");
+   xhr.setRequestHeader("Content-Type", "application/json");
+  }
+ }).done(function(result){
+ }); 
+}
 

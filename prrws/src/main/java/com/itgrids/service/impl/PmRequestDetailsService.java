@@ -25,6 +25,8 @@ import com.google.common.io.Files;
 import com.itgrids.dao.IDocumentDAO;
 import com.itgrids.dao.ILocationAddressDAO;
 import com.itgrids.dao.IPetitionDAO;
+import com.itgrids.dao.IPmBriefLeadDAO;
+import com.itgrids.dao.IPmGrantDAO;
 import com.itgrids.dao.IPmOfficerUserDAO;
 import com.itgrids.dao.IPmPetitionDocumentDAO;
 import com.itgrids.dao.IPmRefCandidateDAO;
@@ -33,6 +35,7 @@ import com.itgrids.dao.IPmRepresenteeDAO;
 import com.itgrids.dao.IPmRepresenteeDesignationDAO;
 import com.itgrids.dao.IPmRepresenteeRefDetailsDAO;
 import com.itgrids.dao.IPmRepresenteeRefDocumentDAO;
+import com.itgrids.dao.IPmRequiredLettersImagesDAO;
 import com.itgrids.dao.IPmStatusDAO;
 import com.itgrids.dao.IPmSubWorkCoveringLetterDAO;
 import com.itgrids.dao.IPmSubWorkDetailsDAO;
@@ -53,6 +56,8 @@ import com.itgrids.dto.UserVO;
 import com.itgrids.model.Document;
 import com.itgrids.model.LocationAddress;
 import com.itgrids.model.Petition;
+import com.itgrids.model.PmBriefLead;
+import com.itgrids.model.PmGrant;
 import com.itgrids.model.PmPetitionDocument;
 import com.itgrids.model.PmRefCandidate;
 import com.itgrids.model.PmRefCandidateDesignation;
@@ -67,6 +72,7 @@ import com.itgrids.service.IPmRequestDetailsService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
+import com.itgrids.utils.ITextCoveringLetterGeneration;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
@@ -125,6 +131,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	@Autowired
 	private IPmSubWorkCoveringLetterDAO pmSubWorkCoveringLetterDAO;
+	
+	@Autowired
+	private IPmBriefLeadDAO pmBriefLeadDAO;
+	@Autowired
+	private IPmGrantDAO pmGrantDAO;
+	@Autowired
+	private IPmRequiredLettersImagesDAO pmRequiredLettersImagesDAO;
 	
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO){
 		ResponseVO responseVO = new ResponseVO();
@@ -1817,9 +1830,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			KeyValueVO deptVO = new KeyValueVO();
 			try{
 				LOG.info("entered into PmRequestDetailsService  of getDeptIdsListBYUserIds");
-				List<Long> deptIdsObjLst = pmOfficerUserDAO.getPmDeptIdByUserId(userId);
+				List<Object[]> deptIdsObjLst = pmOfficerUserDAO.getPmDeptIdByUserId(userId);
 				if(deptIdsObjLst != null && deptIdsObjLst.size() >0){
-					deptVO.setDeptIdsList(deptIdsObjLst);
+					for (Object[] objects : deptIdsObjLst) {
+						deptVO.getDeptIdsList().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						deptVO.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[2]));
+						deptVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(objects[1]));
+					}
 				}
 			}catch(Exception e){
 				LOG.error("Exception raised into PmRequestDetailsService of getDeptIdsListBYUserIds() ",e);
@@ -1941,5 +1958,33 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 		public ResultStatus updatePetitionsStatusDetails(Long userId,List<Long> petitionIdsList, List<Long> subWorkIdsList,String remark,Long statusId){
 			return null;
+		}
+		
+		public ResultStatus generateCoveringLetterForPetition(InputVO inputVO){
+			ResultStatus resultStatus = new ResultStatus();
+			try {
+				List<String> deptIds = null;
+				if(commonMethodsUtilService.isListOrSetValid(inputVO.getDeptIdsList())){
+					deptIds = new ArrayList<String>();
+					for (Long deptId : inputVO.getDeptIdsList()) {
+						deptIds.add(deptId.toString());
+					}
+				}
+				PmBriefLead briefLead = pmBriefLeadDAO.get(Long.valueOf(inputVO.getLeadName()));
+				inputVO.setLeadName(briefLead.getBriefLead());
+				
+				PmGrant pmGrant = pmGrantDAO.get(Long.valueOf(inputVO.getGroupName()));
+				inputVO.setGroupName(pmGrant.getPmGrantName());//grantType
+				List<Object[]> coveringLetrImages = pmRequiredLettersImagesDAO.getDesignationWiseImages(inputVO.getDesignationIds(), inputVO.getType());
+				
+				inputVO.setAssetTypeList(deptIds);//deptIds
+				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getAssetTypeList(),dateUtilService.getCurrentDateAndTime());
+				inputVO.setCategory(endorseStr);
+				String filePath = ITextCoveringLetterGeneration.generateCOVERINGLETTER(inputVO,coveringLetrImages);
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception raised into PmRequestDetailsService of generateCoveringLetterForPetition() ",e);
+			}
+			return resultStatus;
 		}
 }
