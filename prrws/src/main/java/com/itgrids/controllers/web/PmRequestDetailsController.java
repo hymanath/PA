@@ -328,7 +328,7 @@ public class PmRequestDetailsController {
 	    }
 	    
 	    @RequestMapping(value ="/getLoginUserAccessSubDeptDesignationDetail",method = RequestMethod.POST)
-	    public @ResponseBody List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(@RequestBody KeyValueVO inputVO,HttpServletRequest request ){
+	    public @ResponseBody List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(@RequestBody PetitionTrackingVO  dataVo,HttpServletRequest request ){
 		    Long userId =null;
 		    HttpSession session=request.getSession();
 		    UserVO userVO = (UserVO) session.getAttribute("USER"); 
@@ -338,7 +338,7 @@ public class PmRequestDetailsController {
 		    }else{
 		    	return null;
 		    }
-		    return pmRequestDetailsService.getLoginUserAccessSubDeptDesignationDetail(inputVO.getDeptIdsList(),userId);
+		    return pmRequestDetailsService.getLoginUserAccessSubDeptDesignationDetail(dataVo.getDeptIdsList(),userId);
 	    }
 	    
 	    @RequestMapping(value ="/getDeptDesignationOfficerDetail",method = RequestMethod.POST)
