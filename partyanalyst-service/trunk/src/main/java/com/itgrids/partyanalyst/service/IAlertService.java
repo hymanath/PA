@@ -43,7 +43,7 @@ public interface IAlertService {
 	public List<IdNameVO> getMemberTypesList();
 	public List<AlertDataVO> getAlertAssignedCandidates(Long alertId);
 	public String deleteAlertAssignedCandidates(Long alertId,Long tdpCadreId);
-	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId,Long involvedCandidateId,Long impactId);
+	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId,Long involvedCandidateId,Long impactId,String verificationUserType);
 	public String  setArticleDetailsIntoAlert(ActionableVO actionableVO);
 	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId);     
 	public List<AlertVO> getTotalAlertGroupByStatusThenCategory(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId);
@@ -77,9 +77,9 @@ public interface IAlertService {
     public String saveClarificationRequiredStatus(Long userId,String status,Long alertId,String remarks);
     public String removeAlertComment(Long commentId);
     public String removeAlertDocument(Long documentId);
-    public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDate,String toDate,Long alertTypeId);
+    public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDate,String toDate,Long alertTypeId,Long userId,String verificationUserType);
     public List<AlertDataVO> getLocationLevelAlertClarificationData(Long userId,AlertInputVO vo);
-    public String updateVerificationStatus(final Long alertId ,final String comments,final Long actionTypeStatusId,final Long userId, final Map<File,String> mapFiles);
+    public String updateVerificationStatus(final Long alertId ,final String comments,final Long actionTypeStatusId,final Long userId,final Long assignedUserId, final Map<File,String> mapFiles);
     public AlertVerificationVO getAlertVerificationDtls(Long alertId);
     public List<AlertDataVO> getAllAlertsWithoutFilter(Long userId,AlertInputVO inputVO);
     public List<KeyValueVO> getDocumentsForAlert(Long alertId);
@@ -171,4 +171,5 @@ public interface IAlertService {
     public AlertOverviewVO getAlertCntInRequiredFormatToExportToExcel(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType);
     public ResultStatus getSmsTdpCadreDetails();
     public List<AlertOverviewVO> getTdpCadreEnrollementYearIds();
+    public List<AlertOverviewVO> getAlertVerificationUsers(Long verificationUserTypeId);
 }

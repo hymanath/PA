@@ -26,6 +26,7 @@ public class AlertVerificationUserTypeUser extends BaseModel implements Serializ
          private Long alertVerificationUserTypeUserId;
          private Long userId;
          private Long alertVerificationUserTypeId;
+         private String displayName;
          
          private User user;
          private AlertVerificationUserType alertVerificationUserType;
@@ -75,6 +76,13 @@ public class AlertVerificationUserTypeUser extends BaseModel implements Serializ
 				AlertVerificationUserType alertVerificationUserType) {
 			this.alertVerificationUserType = alertVerificationUserType;
 		}
-         
+		@Column(name = "display_name")
+		public String getDisplayName() {
+			return displayName;
+		}
+		public void setDisplayName(String displayName) {
+			this.displayName = displayName;
+		}
+        
          
 }

@@ -241,7 +241,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		return query.list();
 	}
 	//hiii 
-	public List<Object[]> getLocationWiseFilterAlertData(List<Long> sourceIds,Date fromDate,Date toDate,LocationVO inputVO,Long assignedCadreId,Date fromDate2,Date toDate2,Long involvedCadreId,Long impactId,List<Long> consIds)
+	public List<Object[]> getLocationWiseFilterAlertData(List<Long> sourceIds,Date fromDate,Date toDate,LocationVO inputVO,Long assignedCadreId,Date fromDate2,Date toDate2,Long involvedCadreId,Long impactId,List<Long> consIds,Long assignedUserId,String verificationUserType)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select " +
@@ -321,10 +321,21 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 			if(assignedCadreId != null && assignedCadreId > 0L && involvedCadreId != null && involvedCadreId > 0L){
 				str.append(" ,AlertCandidate model3 ");
 			}
+			if(inputVO.getTask().equalsIgnoreCase("verification")){
+				if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) {
+					str.append(",AlertVerificationUser AVU ");
+		        }
+			}
 			str.append(" where model2.alertType.alertTypeId = model.alertType.alertTypeId " +
 					   " and model2.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
 			if(inputVO.getTask().equalsIgnoreCase("verification")){//yet to implement
 				str.append(" and model.isDeleted ='N' and alertAssigned.isDeleted='N' and verificationStatus.alert.alertId = alertAssigned.alert.alertId and alertAssigned.tdpCadre.tdpCadreId =:assignedCadreId ");
+			
+			 if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) {
+				str.append(" and AVU.alertId=model.alertId and AVU.isDeleted='N' ");
+				str.append(" and AVU.verificationUserId=:assignedUserId ");
+			 }
+			
 			}else{
 				if(!(assignedCadreId != null && assignedCadreId > 0L)){
 					str.append(" and model.isDeleted ='N' and model1.tdpCadre.tdpCadreId =:involvedCadreId ");
@@ -368,10 +379,20 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 			str.append(" left join model.alertCategory alertCategory ");
 			str.append(" left join model.alertSeverity alertSeverity");
 			str.append(" left join model.alertType alertType,AlertDepartmentStatus model2 ");
+			if(inputVO.getTask().equalsIgnoreCase("verification")){
+				if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) {
+					str.append(",AlertVerificationUser AVU ");
+		        }
+			}
 			str.append(" where model2.alertType.alertTypeId = model.alertType.alertTypeId " +
 					  "  and model2.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
 			str.append(" and model.isDeleted ='N' ");
-			
+			if(inputVO.getTask().equalsIgnoreCase("verification")){
+				 if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) {
+					 str.append(" and AVU.alertId=model.alertId and AVU.isDeleted='N' ");
+					 str.append(" and AVU.verificationUserId=:assignedUserId ");
+				 }
+			}
 				
 		}
 		if(consIds != null && consIds.size() >0l){
@@ -504,6 +525,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements IAlert
 		}
 		if(consIds != null && consIds.size() >0l){
 			query.setParameterList("consIds", consIds);
+		}
+		if(inputVO.getTask().equalsIgnoreCase("verification")){ 
+			if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) { 
+				query.setParameter("assignedUserId", assignedUserId);
+			}
 		}
 		return query.list();
 	}

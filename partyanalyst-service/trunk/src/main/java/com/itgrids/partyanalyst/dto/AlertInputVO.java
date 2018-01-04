@@ -16,6 +16,7 @@ public class AlertInputVO {
 	private String fromDate2;
 	private String toDate2;
 	private String searchType;
+	private String verificationUserType;
 	public Long getAlertTypeId() {
 		return alertTypeId;
 	}
@@ -105,6 +106,12 @@ public class AlertInputVO {
 	}
 	public void setSearchType(String searchType) {
 		this.searchType = searchType;
+	}
+	public String getVerificationUserType() {
+		return verificationUserType;
+	}
+	public void setVerificationUserType(String verificationUserType) {
+		this.verificationUserType = verificationUserType;
 	}
 	
 

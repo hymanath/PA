@@ -70,6 +70,7 @@ import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertUserDAO;
+import com.itgrids.partyanalyst.dao.IAlertVerificationUserDAO;
 import com.itgrids.partyanalyst.dao.IAlertVerificationUserTypeUserDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -171,6 +172,7 @@ import com.itgrids.partyanalyst.model.AlertIssueType;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.AlertTrackingDocuments;
+import com.itgrids.partyanalyst.model.AlertVerificationUser;
 import com.itgrids.partyanalyst.model.ClarificationRequired;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.GovtDepartment;
@@ -292,6 +294,7 @@ private IGovtSmsActionTypeDAO govtSmsActionTypeDAO;
 private IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO;
 private IGovtProposalPropertyCategoryDAO govtProposalPropertyCategoryDAO;
 private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
+private IAlertVerificationUserDAO alertVerificationUserDAO;
 
 private SmsCountrySmsService smsCountrySmsService;
 
@@ -950,6 +953,10 @@ public void setGovtProposalPropertyCategoryDAO(IGovtProposalPropertyCategoryDAO 
 public void setTdpCommitteeEnrollmentDAO(
 		ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
 	this.tdpCommitteeEnrollmentDAO = tdpCommitteeEnrollmentDAO;
+}
+public void setAlertVerificationUserDAO(
+		IAlertVerificationUserDAO alertVerificationUserDAO) {
+	this.alertVerificationUserDAO = alertVerificationUserDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -1726,7 +1733,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 	}
 	
-	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId,Long involvedCandidateId, Long impactId)
+	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId,Long involvedCandidateId, Long impactId,String verificationUserType)
 	{
 		List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
 		 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
@@ -1767,9 +1774,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			
 			if(inputVO.getSearchType() != null && inputVO.getSearchType().trim().equalsIgnoreCase("areaAlerts")){
-				 list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,null,fromDate2,toDate2,null,impactId,consIds);//done
+				 list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,null,fromDate2,toDate2,null,impactId,consIds,userId,null);//done
 			}else{
-				 list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId,fromDate2,toDate2,involvedCandidateId,impactId,null);//done
+				 list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId,fromDate2,toDate2,involvedCandidateId,impactId,null,userId,verificationUserType);//done
 			}
 			
 			 
@@ -7054,7 +7061,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   	 * (non-Javadoc)
   	 * @see com.itgrids.partyanalyst.service.IAlertService#getStatusAndCategoryWiseAlertsCount(java.lang.Long, java.lang.String, java.lang.String, java.lang.Long)
   	 */
-  	public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDateStr,String toDateStr,Long alertTypeId){
+  	public List<ClarificationDetailsCountVO> getStatusAndCategoryWiseAlertsCount(Long stateId,String fromDateStr,String toDateStr,Long alertTypeId,Long userId,String verificationUserType){
   		List<AlertVO> voList = new ArrayList<AlertVO>(0);
   		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
   		
@@ -7121,7 +7128,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			}  
 			
-			List<Object[]> alertCntList = verificationStatusDAO.getStatusWiseAlertCount(stateId, fromDate, toDate, alertTypeId);
+			List<Object[]> alertCntList = verificationStatusDAO.getStatusWiseAlertCount(stateId, fromDate, toDate, alertTypeId,userId,verificationUserType);
 			
 			List<ClarificationDetailsCountVO> actionTypeStatusListFinal = null;
 			List<ClarificationDetailsCountVO> categoryList = null;
@@ -7297,7 +7304,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   					fromDate2 = sdf.parse(inputVO.getFromDate2());
   					toDate2 = sdf.parse(inputVO.getToDate2());  
   				}
-  				 List<Object[]> list = verificationStatusDAO.getAllAlerts(userTypeIds,inputVO,fromDate,toDate,fromDate2,toDate2);//done
+  				 List<Object[]> list = verificationStatusDAO.getAllAlerts(userTypeIds,inputVO,fromDate,toDate,fromDate2,toDate2,userId,inputVO.getVerificationUserType());//done
   				 setAlertLocationWiseData(list,returnList,new HashMap<Long,String>(),"verification");
   			}
   			catch(Exception e)
@@ -7347,7 +7354,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   	 * Author:Santosh
   	 * Description:This service is used to save and update Alert Verification Details.
   	 */
-  	public String updateVerificationStatus(final Long alertId ,final String comments,final Long actionTypeStatusId,final Long userId, final Map<File,String> mapFiles)
+  	public String updateVerificationStatus(final Long alertId ,final String comments,final Long actionTypeStatusId,final Long userId,final Long verificationUserId, final Map<File,String> mapFiles)
   	{
   	String resultStatus = (String) transactionTemplate
   			.execute(new TransactionCallback() {
@@ -7371,7 +7378,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				if(actionTypeStatusId.longValue() > 0 && !actionTypeStatusId.equals(statusId)){
 					 verificationStatusDAO.updateStatusForOldAlert(userId, alertId, date.getCurrentDateAndTime());	
 				}
-			
+				 /* in first time if alert is required for verification then we are assigned to specific info cell user 
+				 *  and saving their details.later only conversion will continue until verification done */
+				if (actionTypeStatusId == 0l) { 
+					String sttus = saveAlertVerificationAssignedUserDetails(verificationUserId, alertId, userId);
+					if (sttus.equals("fail")) {
+						throw new ArithmeticException();
+					}
+				 }
+				
 				if(flag){
 					 VerificationStatus verificationStatus = new VerificationStatus();
 	  				 
@@ -7452,7 +7467,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   		  				 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
   		  				 
   		  					if(fileCpyStts.equalsIgnoreCase("error")){
-  		  						LOG.error(" Exception Raise in copying file in ToursService ");
+  		  						LOG.error(" Exception Raise in copying file in AlertService ");
   		  						throw new ArithmeticException();
   		  					}
   		  					
@@ -7480,6 +7495,26 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
   				}
   		});
   	return resultStatus;
+  	}
+  	public String saveAlertVerificationAssignedUserDetails(Long verificationUserId,Long alertId,Long assignedUserId) {
+  		String status = ""; 
+  		try {
+  			 if (assignedUserId != null && assignedUserId > 0l) {
+  				 AlertVerificationUser model = new AlertVerificationUser();
+  				  model.setAlertId((alertId != null && alertId.longValue() > 0l ) ? alertId:null);
+  				  model.setVerificationUserId((verificationUserId != null && verificationUserId.longValue() > 0l) ? verificationUserId:null);
+  				  model.setAssignedUserId((assignedUserId != null && assignedUserId.longValue() > 0) ? assignedUserId:null);
+  				  model.setAssignedTime(new DateUtilService().getCurrentDateAndTime());
+  				  model.setIsDeleted("N");
+  				  alertVerificationUserDAO.save(model);
+  				  status = "success"; 
+  			 }
+  			 
+  		 } catch (Exception e) {
+  			status = "fail"; 
+  			LOG.error("Error occured at saveAlertVerificationAssignedUserDetails() in AlertService",e);
+  		 }
+  		return status;
   	}
   public AlertVerificationVO getAlertVerificationDtls(Long alertId){
 	    AlertVerificationVO resultVO = new AlertVerificationVO();
@@ -16109,5 +16144,22 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			LOG.error("Error occured getTdpCadreEnrollementYearIds() method of AlertService{}");
 		}
 		return  enrollementIdList;
+	}
+	public List<AlertOverviewVO> getAlertVerificationUsers(Long verificationUserTypeId) {
+		List<AlertOverviewVO> finalUserList = new ArrayList<AlertOverviewVO>(0);
+		 try {
+			 List<Object[]> usersObjList = alertVerificationUserTypeUserDAO.getAlertVerificationUserByUserType(verificationUserTypeId);
+			   if (usersObjList != null && usersObjList.size() > 0 ) {
+				   for (Object[] param : usersObjList) {
+					AlertOverviewVO userVO = new AlertOverviewVO();
+					 userVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 userVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 finalUserList.add(userVO);
+				}
+			   }
+		 } catch (Exception e) {
+			 LOG.error("Error occured getAlertVerificationUsers() method of AlertService{}");
+		 }
+		 return finalUserList;
 	}
 }
