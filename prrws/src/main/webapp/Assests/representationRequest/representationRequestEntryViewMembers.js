@@ -1357,13 +1357,13 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								
 								if(accessStatusList[s].key == 1){
 									if(!isAllEndorsed)
-										str+='<button class="statusCls endorseCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" attr_type="endosePopup" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
+										str+='<button class="statusCls endorseCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="endosePopup" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
 								}
 								if(accessStatusList[s].key == 5){
-										str+='<button class="statusCls btn btn-danger" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" attr_type="notPossiblePopup" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
+										str+='<button class="statusCls btn btn-danger" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="notPossiblePopup" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
 								}
 								if(accessStatusList[s].key == 3){
-										str+='<button class="statusCls btn btn-info" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+										str+='<button class="statusCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
 								}
 								if(accessStatusList[s].key == 4){
 										str+='<button class="statusCls btn btn-warning" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
@@ -1426,7 +1426,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 							else
 								str+='<span class="pull-right" > <b style="color:#000"> STATUS:</b><b>'+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';*/
 							
-							if(result.subWorksList[j].subWorksList[k].leadName != null && result.subWorksList[j].subWorksList[k].leadName.length>0)
+							if(result.subWorksList[j].subWorksList[k].leadName == null || result.subWorksList[j].subWorksList[k].leadName.length ==0)
 								str+=' <span class=""  style="margin-bottom:10px;margin-left: 320px"> <button class="btn btn-info selectedCls" attr_work_id="'+result.subWorksList[j].subWorksList[k].workId+'"  isSeleted="false" attr_dept_id="'+result.subWorksList[j].subWorksList[k].deptName+'" attr_worksId="'+result.subWorksList[j].subWorksList[k].workId+'"  > SELECT </button> </span> ';
 							
 							str+='</h5>';
