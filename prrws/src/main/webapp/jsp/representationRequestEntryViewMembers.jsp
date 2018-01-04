@@ -320,8 +320,8 @@
 		<div class="row">
 			<div class="col-sm-4">
 				<label>Assign To</label>
-				<select class="form-control chosen-select" id="assignToId" name="deptDesigId">
-					<option value="52">Select Assign To</option>
+				<select class="form-control chosen-select popUpChangesCls" id="assignToId" name="deptDesigId">
+					<option value="0">Select Assign To</option>
 				</select>
 			</div>
 			<div class="col-sm-4">
@@ -337,6 +337,7 @@
 				<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO" name="endorsementNO"> 
 			</div>
 			<div class="col-sm-8">
+			<label>Remarks</label>
 			<label>Remark</label>
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
