@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -9938,4 +9937,22 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		return (Long)query.uniqueResult();
 		   
 	   }
+	   
+	   public List<Object[]> getMobileNoOfMembership(String membershipId){
+			
+			Query query = getSession().createSQLQuery(" select distinct TC.tdp_cadre_id as tdpCadreId,TC.mobile_no as mobileNo from tdp_cadre_enrollment_year TCEY,tdp_cadre TC " +
+				" where TC.tdp_cadre_id = TCEY.tdp_cadre_id "+
+				" and TC.is_deleted='N' and TC.enrollment_year ='2014' "+
+				" and TCEY.enrollment_year_id = :enrollementYearId and TCEY.is_deleted ='N' " +
+					" and TC.membership_id =:membershipNo ")
+					.addScalar("tdpCadreId",Hibernate.LONG)
+					.addScalar("mobileNo",Hibernate.STRING);
+			
+			query.setParameter("membershipNo", membershipId);
+			query.setParameter("enrollementYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+			
+			return query.list();
+			
+		}
+
 }
