@@ -3233,6 +3233,10 @@ function buildTrainingCampBatchCenterWiseDetails(result){
 	str+='<div class="panel-group trainingCenterPanel m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
 	if(result.trainingProgramList != null && result.trainingProgramList.length> 0){		
 		for(var i in result.trainingProgramList){
+			
+			if(result.trainingProgramList[i].name == null || result.trainingProgramList[i].name =='TS TRAINING CENTER')
+				continue;
+			
 			str+='<div class="panel panel-default">';
 			str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingTrainingBatch'+i+'">';
 			if(i == 0){
