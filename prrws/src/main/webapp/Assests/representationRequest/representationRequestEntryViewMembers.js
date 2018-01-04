@@ -134,8 +134,8 @@ $(document).on("click",".selectedCls",function(){
 		if(worksId == 0){	
 			$(".selectedCls").each(function(){
 				$(".selectedCls").attr('isSeleted','true');
-				$(".selectedCls").addClass("btn-success");
 				$(".selectedCls").removeClass("btn-info");
+				$(".selectedCls").addClass("btn-success");
 			});
 		}else{
 			$(this).attr('isSeleted','true');
@@ -157,8 +157,8 @@ $(document).on("click",".selectedCls",function(){
 					var innerWorkId=$(this).attr('attr_worksId');
 					if(innerWorkId == 0){
 						$(this).attr('isSeleted','true');
-						$(this).addClass("btn-success");
 						$(this).removeClass("btn-info");
+						$(this).addClass("btn-success");
 					}
 				});
 			
@@ -1341,14 +1341,20 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 					
 					if(accessStatusList != null && accessStatusList.length>0){
 							str+='<div class="row ">';
-							str+='<div class="col-sm-6  m_top10">';
-							str+='</div>';
-							str+='<div class="col-sm-2 m_top10 ">';
-							
+							str+='<div class="col-sm-3 m_top10 ">';
 								str+='<button class="btn btn-info selectedCls" isSeleted="false" attr_worksId="0" attr_dept_id="0" style="margin-bottom:10px;" > SELECT ALL  </button>';
 							str+='</div>';
 							for(var s in accessStatusList){
-								str+='<div class="col-sm-2 m_top10 ">';
+								if(s==3 || s==6|| s==9){
+									str+='<div class="row ">';
+									str+='<div class="col-sm-3 m_top10 ">';
+									str+='</div>';
+							
+									str+='<div class="col-sm-3 m_top10 ">';
+								}else{
+									str+='<div class="col-sm-3 m_top10 ">';
+								}
+								
 								if(accessStatusList[s].key == 1){
 									if(!isAllEndorsed)
 										str+='<button class="statusCls endorseCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" attr_type="endosePopup" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
@@ -1356,6 +1362,19 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								if(accessStatusList[s].key == 5){
 										str+='<button class="statusCls btn btn-danger" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" attr_type="notPossiblePopup" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
 								}
+								if(accessStatusList[s].key == 3){
+										str+='<button class="statusCls btn btn-info" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+								}
+								if(accessStatusList[s].key == 4){
+										str+='<button class="statusCls btn btn-warning" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+								}
+								if(accessStatusList[s].key == 6){
+										str+='<button class="statusCls btn btn-primary" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD ACTION MEMO </button>';
+								}
+								if(accessStatusList[s].key == 7){
+										str+='<button class="statusCls btn btn-primary" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD DETAILED REPORT </button>';
+								}
+								
 								str+='</div>';
 							}
 							str+='</div>';
@@ -1407,7 +1426,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 							else
 								str+='<span class="pull-right" > <b style="color:#000"> STATUS:</b><b>'+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';*/
 							
-							//if(leadName == null || leadName.length ==0)
+							if(result.subWorksList[j].subWorksList[k].leadName != null && result.subWorksList[j].subWorksList[k].leadName.length>0)
 								str+=' <span class=""  style="margin-bottom:10px;margin-left: 320px"> <button class="btn btn-info selectedCls" attr_work_id="'+result.subWorksList[j].subWorksList[k].workId+'"  isSeleted="false" attr_dept_id="'+result.subWorksList[j].subWorksList[k].deptName+'" attr_worksId="'+result.subWorksList[j].subWorksList[k].workId+'"  > SELECT </button> </span> ';
 							
 							str+='</h5>';
