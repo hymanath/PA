@@ -2566,9 +2566,9 @@ function buildActivityEventdata(result,locationId){
 							tableView+='<th>%</th>';
 						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId == 23){
 							tableView+='<th>Yes Count</th>';
-							tableView+='<th>%</th>';
+							//tableView+='<th>%</th>';
 							tableView+='<th>No Count</th>';
-							tableView+='<th>%</th>';
+							//tableView+='<th>%</th>';
 						}
 						if(result[0].questionList[i].optionList.length !=2 && result[0].questionList[i].optionList.length !=1){
 							for(var j in result[0].questionList[i].optionList){
@@ -2603,11 +2603,11 @@ function buildActivityEventdata(result,locationId){
 								}
 							}else if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId == 23){
 								tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';yesCount=result[i].questionList[j].optionList[k].count;
-								if(result[i].conductedCount !==null && result[i].conductedCount !=0 ){
+							/* 	if(result[i].conductedCount !==null && result[i].conductedCount !=0 ){
 									tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].conductedCount)*100).toFixed(2)+'%</td>';
 								}else{
 								tableView+='<td>-</td>';
-								}
+								} */
 							}else if (result[i].questionList[j].optionList.length==1){
 								if(result[i].questionList[j].questionId !=21){
 									tableView+='<td>'+result[i].questionList[j].optionList[k].percentage+'</td>';
