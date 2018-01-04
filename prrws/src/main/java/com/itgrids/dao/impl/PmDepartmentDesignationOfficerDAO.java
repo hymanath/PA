@@ -25,7 +25,7 @@ public class PmDepartmentDesignationOfficerDAO extends GenericDaoHibernate<PmDep
 	public List<Object[]> getDeptDesignationOfficerDetailsByDeptDesignation(Long deptDesignationId){
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.pmDepartmentDesignationOfficerId, model.pmOfficer.name, model.pmOfficer.mobileNo from PmDepartmentDesignationOfficer model where model.pmDepartmentDesignationId =:deptDesignationId and " +
-				" model.isActive ='Y' and model.pmOfficer.isActive ='Y' order by  ");
+				" model.isActive ='Y' and model.pmOfficer.isActive ='Y' order by model.pmDepartmentDesignationId  ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("deptDesignationId", deptDesignationId);
 		return query.list();

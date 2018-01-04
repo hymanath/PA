@@ -24,11 +24,18 @@ public class PmDepartmentDesignationHierarchyDAO extends GenericDaoHibernate<PmD
 	public List<Object[]> getSubDesignationDetailsForParentDeptDesignations(List<Long> deptDesignationIdsList){
 		if(deptDesignationIdsList != null && deptDesignationIdsList.size()>0){
 			StringBuilder str = new StringBuilder();
+		
+			str.append(" select distinct model.subPmDepartmentDesignation.pmDepartmentDesignationId,"
+					  + " model.subPmDepartmentDesignation.pmOfficerDesignation.designation" +
+					"  from PmDepartmentDesignationHierarchy model " );
+			if(deptDesignationIdsList != null && deptDesignationIdsList.size() >0){
+				str.append(" where model.pmDepartmentDesignationId in (:deptDesignationIdsList) ");
+			}
+			str.append(" and model.isActive='Y' and  model.subPmDepartmentDesignation.isDeleted='N' ");
 			Query query = getSession().createQuery(str.toString());
-			str.append(" select distinct model.subPmDepartmentDesignation.pmDepartmentDesignationId,model.subPmDepartmentDesignation.pmOfficerDesignation.designation" +
-					"  from PmDepartmentDesignationHierarchy model where model.pmDepartmentDesignationId in (:deptDesignationIdsList) and model.isActive='Y' and " +
-					" model.subPmDepartmentDesignation.isDeleted='N' ");
-			query.setParameterList("deptDesignationIdsList", deptDesignationIdsList);
+			if(deptDesignationIdsList != null && deptDesignationIdsList.size() >0){
+				query.setParameterList("deptDesignationIdsList", deptDesignationIdsList);
+			}
 			return query.list();
 		}
 		return  null;

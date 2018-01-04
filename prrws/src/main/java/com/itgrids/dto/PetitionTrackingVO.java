@@ -19,6 +19,7 @@ public class PetitionTrackingVO implements java.io.Serializable{
 	private Long statusId;
     private List<Long> petitionIdsList = new ArrayList<Long>();
     private List<Long> subworkIdsList = new ArrayList<Long>();
+    private List<Long> deptIdsList = new ArrayList<Long>();
 		
 	public Long getPetitionId() {
 		return petitionId;
@@ -86,4 +87,11 @@ public class PetitionTrackingVO implements java.io.Serializable{
 	public void setSubworkIdsList(List<Long> subworkIdsList) {
 		this.subworkIdsList = subworkIdsList;
 	}
+	public List<Long> getDeptIdsList() {
+		return deptIdsList;
+	}
+	public void setDeptIdsList(List<Long> deptIdsList) {
+		this.deptIdsList = deptIdsList;
+	}
+	
 }
