@@ -288,6 +288,7 @@
       <div class="modal-header">
 			<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	  </div>
+	  <form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
       <div class="modal-body">
         <div class="row">
 			<div class="col-sm-4">
@@ -303,40 +304,41 @@
 		<div class="row">
 			<div class="col-sm-4">
 				<label>Lead</label>
-				<select class="form-control chosen-select" id="leadId">
-					<option value="0">Select Lead</option>
+				<select class="form-control chosen-select" id="leadId" name="leadId">
+					<option value="1">Select Lead</option>
 				</select>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-4">
 				<label>Grant Under</label>
-				<select class="form-control chosen-select" id="grantId">
-					<option value="0">Select Grant Under</option>
+				<select class="form-control chosen-select" id="grantId" name="grantId">
+					<option value="1">Select Grant Under</option>
 				</select>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-4">
 				<label>Assign To</label>
-				<select class="form-control chosen-select" id="assignToId">
-					<option value="0">Select Assign To</option>
+				<select class="form-control chosen-select" id="assignToId" name="deptDesigId">
+					<option value="52">Select Assign To</option>
 				</select>
 			</div>
 			<div class="col-sm-4">
 				<label>Officer Name</label>
-				<select class="form-control chosen-select" id="officerId">
-					<option value="0">Select Officer Name</option>
+				<select class="form-control chosen-select" id="officerId" name="deptDesigOffcrId">
+					<option value="268">Select Officer Name</option>
 				</select>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-4">
 				<label>Endorsment NO</label>
-				<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO">
+				<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO" name="endorsementNO"> 
 			</div>
 			<div class="col-sm-8">
-				<textarea class="form-control" rows="3" id="remarksId"></textarea>
+			<label>Remark</label>
+				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 		</div>
 		<div class="row m_top10">
@@ -346,10 +348,11 @@
 			</div>
 		</div>	
       </div>
+	 
       <div class="modal-footer">
-        <button type="button" class="btn btn-default modalCloseCls closeSecondModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()"data-dismiss="modal">Forward >></button>
       </div>
-  
+   </form>
   </div>
 </div>
 </div>

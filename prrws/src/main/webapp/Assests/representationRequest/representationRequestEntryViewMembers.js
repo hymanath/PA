@@ -104,6 +104,7 @@ $(document).on("click",".advancedSrchCls",function(){
 });
 
 $(document).on("click",".selectedCls",function(){
+	selectedWorkIdsArr=[];
 	var isSelected=$(this).attr('isSeleted');
 	var worksId=$(this).attr('attr_worksId');
 	if(isSelected =='true'){
@@ -112,7 +113,7 @@ $(document).on("click",".selectedCls",function(){
 				$(".selectedCls").attr('isSeleted','false');
 				$(".selectedCls").removeClass("btn-success");
 				$(".selectedCls").addClass("btn-info");
-			});
+			}); 
 		}else{
 			$(this).attr('isSeleted','false');
 			$(this).removeClass("btn-success");
@@ -163,6 +164,15 @@ $(document).on("click",".selectedCls",function(){
 			}
 		}
 	}
+	
+	$(".selectedCls").each(function(){
+		var innerWorkId=$(this).attr('attr_worksId');
+		var isSelected=$(this).attr('isSeleted');
+		if(innerWorkId > 0 && isSelected=='true'){
+			selectedWorkIdsArr.push(innerWorkId);
+		}
+	});
+	//alert(selectedWorkIdsArr);
 });
 
 $(document).on("change",".clearDataCls",function(){
@@ -187,57 +197,55 @@ function representationRequestEntryTable(result){
 			str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
 				str+='<thead>';
 					str+='<tr>';
-						str+='<th>REPRESENTATION&nbsp;DATE</th>';
-						str+='<th>ENDORSMENT&nbsp;NO</th>';
-						str+='<th>ENDORSMENT&nbsp;DATE</th>';
-						str+='<th>REPRESENTEE&nbsp;NAME</th>';
-						str+='<th>REFERRER&nbsp;NAME</th>';
-						str+='<th>REFERRER&nbsp;DESIGNATION</th>';				
-						str+='<th style="min-width:200px !important;">WORK NAME</th>';
+						str+='<th>Entd&nbsp;ID</th>';
+						str+='<th>RAISED&nbsp;DATE</th>';
+						str+='<th>Entd&nbsp;Date</th>';
+						str+='<th>Representee&nbsp;Name</th>';
+						str+='<th>Referrer&nbsp;Name</th>';
+						str+='<th>Referrer&nbsp;Designation</th>';				
+						str+='<th style="min-width:200px !important;">Work Name</th>';
 						//str+='<th>No&nbsp;of&nbsp;Works</th>';
-						str+='<th>WORK IN COST </th>';
-						str+='<th>STATUS</th>';
-						str+='<th>ACTION</th>';
+						str+='<th>Estimation Cost</th>';
+						str+='<th>Status</th>';
+						str+='<th>Action</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
 					for(var i in result){
 						for(var j in result[i].subList){
-						var endorsmentNo='';
-						str+='<tr>';
-						if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
-							str+='<td style="text-align:center;">'+result[i].raisedDate+'</td>';
-						else
-							str+='<td style="text-align:center;"> - </td>';
-						
+					var endorsmentNo='';
+					str+='<tr>';
 						if (result[i].subList[j].endorsementNO != null && result[i].subList[j].endorsementNO != 0){
-							str+='<td style="text-align:center;">'+result[i].subList[j].endorsementNO+'</td>';
+							str+='<td>'+result[i].subList[j].endorsementNO+'</td>';
 							endorsmentNo=result[i].subList[j].endorsementNO;
 						}else
-							str+='<td style="text-align:center;"> - </td>';
-						
+							str+='<td> - </td>';
+						if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
+							str+='<td>'+result[i].raisedDate+'</td>';
+						else
+							str+='<td> - </td>';
 						
 						if (result[i].subList[j].endorsmentDate != null && result[i].subList[j].endorsmentDate != "")
-							str+='<td style="text-align:center;">'+result[i].subList[j].endorsmentDate+'</td>';
+							str+='<td>'+result[i].subList[j].endorsmentDate+'</td>';
 						else
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td> - </td>';
 						if (result[i].name != null && typeof(result[i].name) != "undefined")
 							str+='<td>'+result[i].name+'</td>';
 						else
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td> - </td>';
 						
 						if (result[i].referrerName != null && typeof(result[i].referrerName) != "undefined")
 							str+='<td>'+result[i].referrerName+'</td>';
 						else
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td> - </td>';
 						if (result[i].desigName != null && typeof(result[i].desigName) != "undefined")
 							str+='<td>'+result[i].desigName+'</td>';
 						else
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td> - </td>';
 						if (result[i].subList[j].workName != null && result[i].subList[j].workName != "")
 							str+='<td>'+result[i].subList[j].workName+'</td>';
 						else
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td> - </td>';
 						/* if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
 							str+='<td>'+result[i].noOfWorks+'</td>';
 						else
@@ -249,9 +257,8 @@ function representationRequestEntryTable(result){
 						if (result[i].subList[j].statusType != "" && typeof(result[i].subList[j].statusType) != "undefined")
 							str+='<td>'+result[i].subList[j].statusType+'</td>';
 						else
-							str+='<td style="text-align:center;">-</td>';
-						
-							str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" attr_sub_work_id="'+result[i].subList[j].id+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
+							str+='<td>-</td>';
+						str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" attr_sub_work_id="'+result[i].subList[j].id+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
 						
 						//if(endorsmentNo != null && endorsmentNo != 'undefined' &&  (parseInt(endorsmentNo) ==0 || endorsmentNo=='') )
 							str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
@@ -1087,15 +1094,17 @@ function getPetitionDetails(petitionId,endorsNo){
 var referralDocs = [];
 var workDocs = [];
 var coveringDocs=[];
+var petitionId ='';
 function setPmRepresenteeDataToResultView(result,endorsNo){
 	var str="";
+	petitionId =''
 	referralDocs = [];
 	workDocs = [];
 	//str+='';
 	//$("#representeeViewId").html(spinner);
 	if(result != null && (result.referDetailsList.length >0 || result.representeeDetailsList.length >0)){
 		
-		
+		petitionId =result.petitionId;
 		var representeeList = [];
 		if(result.representationType =="SELF" && result.referDetailsList.length >0){
 			representeeList = result.referDetailsList;
@@ -1314,7 +1323,6 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 				
 				}
 				var isAllEndorsed=true;
-				var accessStatusList = [];
 				for(var j in result.subWorksList){	
 					for(var k in result.subWorksList[j].subWorksList){
 						workIdsArr.push(result.subWorksList[j].subWorksList[k].workId);
@@ -1325,7 +1333,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 					}
 				}
 				if(result.statusList != null && result.statusList.length>0){
-					accessStatusList = result.statusList[0].subList;
+					var accessStatusList = result.statusList[0].subList;
 					str+='<div class="col-sm-12 m_top20 pull-right" style="border-bottom:5px solid #EBEBEB;border-top:5px solid #EBEBEB;">';
 					
 					if(accessStatusList != null && accessStatusList.length>0){
@@ -1340,10 +1348,10 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								str+='<div class="col-sm-2 m_top10 ">';
 								if(accessStatusList[s].key == 1){
 									if(!isAllEndorsed)
-										str+='<button class="statusCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" attr_type="endosePopup"> ENDORSE </button>';
+										str+='<button class="statusCls endorseCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" attr_type="endosePopup" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
 								}
 								if(accessStatusList[s].key == 5){
-										str+='<button class="statusCls btn btn-danger" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" attr_type="notPossiblePopup"> NOT POSSIBLE </button>';
+										str+='<button class="statusCls btn btn-danger" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" attr_type="notPossiblePopup" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
 								}
 								str+='</div>';
 							}
@@ -1396,7 +1404,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 							else
 								str+='<span class="pull-right" > <b style="color:#000"> STATUS:</b><b>'+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';*/
 							
-							if(accessStatusList != null && accessStatusList.length>0)
+							//if(leadName == null || leadName.length ==0)
 								str+=' <span class=""  style="margin-bottom:10px;margin-left: 320px"> <button class="btn btn-info selectedCls" attr_work_id="'+result.subWorksList[j].subWorksList[k].workId+'"  isSeleted="false" attr_worksId="'+result.subWorksList[j].subWorksList[k].workId+'"  > SELECT </button> </span> ';
 							
 							str+='</h5>';
@@ -1552,7 +1560,115 @@ function updatePetitionStatusDetails(){
 		}
 	  });
 	}
-$(document).on("click",".statusCls",function(){
+$(document).on("click",".endorseCls",function(){
 	$("#endorseMentModalDivId").modal("show");
 	 initializeSingleUploadDocument("uploadEndorsementDocId");
  });
+ $(document).on("click",".closeSecondModal",function(){
+    setTimeout(function(){
+      $("body").addClass("modal-open")
+    },1000);
+  });
+ function endorsingSubWorksAndAssigningToOfficer(){
+	   var formData = new FormData();
+	   $('#endorsingSubWorksId input').each(
+		  function(){			  
+			var input = $(this);
+			var text =input.attr('type');
+			var id = input.attr('id');
+			//debugger;
+			if (typeof id !== typeof undefined && id !== false) {
+				if(text=='text' || text=='hidden'){
+					var name = $('#'+id+'').attr('name');
+					formData.append(name, $('#'+id+'').val());
+				}else if(text=='radio'){
+					if($('#'+id+'').is(':checked')){
+						var name = $('#'+id+'').attr('name');
+						formData.append(name, $('#'+id+'').val());
+					}
+				}else if(text=='file'){
+					alert("enter")
+					if(this.files !=null && this.files.length>0){
+						alert("if")
+							for(var i = 0; i < this.files.length; i++){
+								alert(this.files[i])
+								formData.append("filesList["+i+"]", this.files[i]);
+						}
+					}
+				}
+			}			
+		}
+	);
+	
+	$('#endorsingSubWorksId textarea').each(
+		  function(){			  
+			var input = $(this);
+				var id = input.attr('id');
+				if (typeof id !== typeof undefined && id !== false) {
+				var name = $('#'+id+'').attr('name');
+				formData.append(name, $('#'+id+'').val());
+			}
+		}
+	);
+	
+	$('#endorsingSubWorksId select').each(
+		  function(){			  
+				var input = $(this);
+				var id = input.attr('id');
+				if (typeof id !== typeof undefined && id !== false) {
+					var name = $('#'+id+'').attr('name');
+					formData.append(name, $('#'+id+'').val());
+			}
+		}
+	);
+	if(selectedWorkIdsArr !=null && selectedWorkIdsArr.length>0){
+							for(var i = 0; i < selectedWorkIdsArr.length; i++){
+								formData.append("statusType", "COVERING LETTER");
+								formData.append("workIds["+i+"]", selectedWorkIdsArr[i]);
+						}
+	}
+	formData.append("petitionId", petitionId);
+	
+$.ajax({
+			url: $("#endorsingSubWorksId").attr("action"),
+			data: formData,
+			type: "POST",               
+			processData: false,
+			contentType: false,
+			success: function(result) {
+				$("#savingDetailsSpinner").html('')
+				/* if(result!=null){
+				  if(result.responseCode == "0"){
+					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
+					  
+						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); 
+						window.location.reload(); 
+						$(".defaultCheckCls").prop("checked",true)},6000);
+						 
+				  }else{
+					  $('#saveButtonId').show();
+					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
+					  setTimeout(function () {
+						 
+						}, 500);
+						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
+				  }
+				}else{
+					  $('#saveButtonId').show();
+					setTimeout(function () {
+						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
+						}, 500);
+						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
+				 } */
+				 
+				
+			},
+			error: function(request,error) { 
+				$("#savingDetailsSpinner").html('');
+				//console.log(request);
+				//console.log(error);
+				alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
+				$('#saveButtonId').show();				
+			}
+     });
+ }	 
