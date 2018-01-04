@@ -2212,6 +2212,7 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 		List<Object[]> questionList =activityQuestionnaireDAO.getActivityQuestionsOptionsDetails(activityScopeId);
 		 //0-qId,1-question,2-optionTypId,3-type,4-hasremark 5-activityOptionId,6-opt 7-qusnaryId,8-mandatry
 		Map<Long, EventLocationVO> questionaryMap = new HashMap<Long, EventLocationVO>();
+		
 		for (Object[] objects : questionList) {
 			EventLocationVO questioNVo =questionaryMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
 			if(questioNVo == null){
@@ -2307,6 +2308,7 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 						EventLocationVO mathedOptionVo = getMatchedOPtonVo(mathedQuestionVo.getOptionList(),option);
 						if(mathedOptionVo !=null){
 							mathedOptionVo.setCount(mathedOptionVo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+							mathedQuestionVo.setCount(mathedQuestionVo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
 						}
 					}
 				}else{
@@ -2361,6 +2363,21 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
   public List<EventLocationVO> getQuestionTemplate(Map<Long,EventLocationVO> questionMap) {
 	  List<EventLocationVO> questionList = new ArrayList<EventLocationVO>();
 		try {
+			
+			EventLocationVO mathedQuestionVo = new EventLocationVO();
+			EventLocationVO optionVo1 =new EventLocationVO();
+			EventLocationVO optionVo2 =new EventLocationVO();
+			mathedQuestionVo.setQuestionId(23l);
+			mathedQuestionVo.setQuestionName("IVR Call Status (Conducted or Not)?");
+			optionVo1.setOptionId(1l);
+			optionVo1.setOptionName("Yes");
+			optionVo2.setOptionId(2l);
+			optionVo2.setOptionName("No");
+			
+			mathedQuestionVo.getOptionList().add(optionVo1);
+			mathedQuestionVo.getOptionList().add(optionVo2);
+			questionList.add(mathedQuestionVo);
+			
 			for (Entry<Long, EventLocationVO> questionEntry : questionMap.entrySet()) {
 				EventLocationVO questioNVo = new EventLocationVO();
 				questioNVo.setQuestionId(questionEntry.getValue().getQuestionId());
