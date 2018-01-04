@@ -295,19 +295,20 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 						for(var j in result[i].coreDashBoardVOList){
 							
 							if(result[i].coreDashBoardVOList[j].positiveCountMain != null && result[i].coreDashBoardVOList[j].positiveCountMain>0){
-								str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].positivePrimeCount+'\n Non Prime Time: '+result[i].coreDashBoardVOList[j].positiveNonPrimeCount+'">'+result[i].coreDashBoardVOList[j].positiveCountMain+'</span></a></td>';
+								str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].positiveIsPrimeCoveredTime+'\n Non Prime Time: '+result[i].coreDashBoardVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].coreDashBoardVOList[j].isPrimedescription+'</span></a></td>';
 							
 							   str+='<td class="text-success">'+result[i].coreDashBoardVOList[j].positivePerc+'</td>';
 							}else{
-								str+='<td>'+result[i].coreDashBoardVOList[j].positiveCountMain+'</td>';
+								str+='<td>00:00</td>';
 							
 							str+='<td class="text-success">'+result[i].coreDashBoardVOList[j].positivePerc+'</td>';
 							}
 							if(result[i].coreDashBoardVOList[j].negativCountMain != null && result[i].coreDashBoardVOList[j].negativCountMain >0){
-								str+='<td><a class="emctClickCls" attr_benefit_id="2" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].negativePrimeCount+'\n Non Prime Time : '+result[i].coreDashBoardVOList[j].negativeNonPrimeCount+'">'+result[i].coreDashBoardVOList[j].negativCountMain+'</span></a></td>';
+								str+='<td><a class="emctClickCls" attr_benefit_id="2" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].negativeIsPrimeCoveredTime+'\n Non Prime Time :'+result[i].coreDashBoardVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].coreDashBoardVOList[j].isNotPrimedescription+'</span></a></td>';
 							str+='<td class="text-danger">'+result[i].coreDashBoardVOList[j].negativePerc+'</td>';
 							}else{
-								str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>';
+								//str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>';
+								str+='<td>00:00</td>';
 							str+='<td class="text-danger">'+result[i].coreDashBoardVOList[j].negativePerc+'</td>';
 							}
 						
@@ -325,9 +326,8 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 					if(result[i].coreDashBoardVOList != null && result[i].coreDashBoardVOList.length > 0){
 						for(var j in result[i].coreDashBoardVOList){
 							var totalCount = result[i].tdpCount;
-							/* str+='<h4><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" PrimeTime :'+result[i].coreDashBoardVOList[j].totalNegativePrimeCount+'\n NonPrimeTime:'+result[i].coreDashBoardVOList[j].totalNegativeNonPrimeCount+'">'+result[i].coreDashBoardVOList[j].totalNegative+'</span></h4>'; */
 					if(result[i].coreDashBoardVOList[j].totalPostive !=null && result[i].coreDashBoardVOList[j].totalPostive>0){
-						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].totalPostivePrimeCount+'\n Non Prime Time : '+result[i].coreDashBoardVOList[j].totalPositiveNonPrimeCount+'">'+result[i].coreDashBoardVOList[j].totalPostive+'</span></a></td>';
+						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].totalIsPrimePositiveCoveredTime+'\n Non Prime Time : '+result[i].coreDashBoardVOList[j].totalIsNotPrimePositiveCoveredTime+'">'+result[i].coreDashBoardVOList[j].overalIsPrimedescription+'</span></a></td>';
 					}else{
 						str+='<td class=""> -</td>';
 					}
@@ -337,7 +337,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 						str+='<td class=""> -</td>';
 					}
 					if(result[i].coreDashBoardVOList[j].totalNegative !=null && result[i].coreDashBoardVOList[j].totalNegative>0){
-						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].totalNegativePrimeCount+'\n Non Prime Time : '+result[i].coreDashBoardVOList[j].totalNegativeNonPrimeCount+'">'+result[i].coreDashBoardVOList[j].totalNegative+'</span></a></td>';
+						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime Time : '+result[i].coreDashBoardVOList[j].totalIsPrimeNegativeCoveredTime+'\n Non Prime Time : '+result[i].coreDashBoardVOList[j].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].coreDashBoardVOList[j].overalIsNotPrimedescription+'</span></a></td>';
 					}else{
 						str+='<td class=""> -</td>';
 					}
@@ -428,10 +428,10 @@ function buildDayWiseCandidateCoverageTime(result){
 								
 								for(var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
 								dateNames.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].organization)
-								positivePercArray.push({"y":result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positiveCountMain,"extra":"Prime - "+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positivePrimeCount+", Non Prime- "+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positiveNonPrimeCount});
-								negativePercArray.push({"y":result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain,"extra":"Prime -"+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativePrimeCount+", Non Prime- "+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativeNonPrimeCount});
 								//positivePercArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positiveCountMain)
 								//negativePercArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain)
+								 positivePercArray.push({"y":result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positiveCountMain,"extra":"Prime - "+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positivePrimeCount+", Non Prime- "+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positiveNonPrimeCount});
+								 negativePercArray.push({"y":result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain,"extra":"Prime -"+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativePrimeCount+", Non Prime- "+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativeNonPrimeCount});
 								}
 							}
 							
