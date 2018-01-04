@@ -32,4 +32,5 @@ public interface IPmRequestDetailsService {
 	public List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(List<Long> deptIdsList , Long userId);
 	public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId , Long userId);
 	public ResultStatus generateCoveringLetterForPetition(InputVO inputVO);
+	public ResultStatus endorsingSubWorksAndAssigningToOfficer(RepresenteeViewVO inputVO);
 }

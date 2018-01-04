@@ -375,4 +375,16 @@ public class PmRequestDetailsController {
 			}
 	    	return pmRequestDetailsService.generateCoveringLetterForPetition(inputVO);
 	    }
+	    
+	    @RequestMapping(value ="/endorsingSubWorksAndAssigningToOfficer",method = RequestMethod.POST)
+	    public @ResponseBody ResultStatus endorsingSubWorksAndAssigningToOfficer(@RequestBody RepresenteeViewVO inputVO,HttpServletRequest request ) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}
+			inputVO.setId(userId);
+	    	return pmRequestDetailsService.endorsingSubWorksAndAssigningToOfficer(inputVO);
+	    }
 }

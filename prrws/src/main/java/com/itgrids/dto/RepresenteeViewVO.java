@@ -5,11 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class RepresenteeViewVO {
 
 	private Long id;
 	private String name;
-	private Long endorsementNO;
+	private String endorsementNO;
 	private Long petitionId;
 	private String endorsmentDate;
 	private String referrerName;
@@ -29,8 +31,38 @@ public class RepresenteeViewVO {
 	private Long statusId;
 	private Set<Long> petitionIds = new HashSet<Long>();
 	private Set<Long> subWorkIds = new HashSet<Long>();
+	private List<MultipartFile> filesList  = new ArrayList<MultipartFile>();
+	private Long leadId;
+	private Long grantId;
+	private Long deptDesigId;
+	private Long deptDesigOffcrId;
+	private String remark;
 	
 	
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	public Long getLeadId() {
+		return leadId;
+	}
+	public void setLeadId(Long leadId) {
+		this.leadId = leadId;
+	}
+	public Long getGrantId() {
+		return grantId;
+	}
+	public void setGrantId(Long grantId) {
+		this.grantId = grantId;
+	}
+	public List<MultipartFile> getFilesList() {
+		return filesList;
+	}
+	public void setFilesList(List<MultipartFile> filesList) {
+		this.filesList = filesList;
+	}
 	public Set<Long> getPetitionIds() {
 		return petitionIds;
 	}
@@ -122,10 +154,10 @@ public class RepresenteeViewVO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Long getEndorsementNO() {
+	public String getEndorsementNO() {
 		return endorsementNO;
 	}
-	public void setEndorsementNO(Long endorsementNO) {
+	public void setEndorsementNO(String endorsementNO) {
 		this.endorsementNO = endorsementNO;
 	}
 	public String getEndorsmentDate() {
@@ -163,6 +195,18 @@ public class RepresenteeViewVO {
 	}
 	public void setEstimationCost(String estimationCost) {
 		this.estimationCost = estimationCost;
+	}
+	public Long getDeptDesigId() {
+		return deptDesigId;
+	}
+	public void setDeptDesigId(Long deptDesigId) {
+		this.deptDesigId = deptDesigId;
+	}
+	public Long getDeptDesigOffcrId() {
+		return deptDesigOffcrId;
+	}
+	public void setDeptDesigOffcrId(Long deptDesigOffcrId) {
+		this.deptDesigOffcrId = deptDesigOffcrId;
 	}
 	
 	
