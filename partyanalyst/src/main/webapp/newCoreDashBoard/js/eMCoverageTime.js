@@ -295,7 +295,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 						for(var j in result[i].coreDashBoardVOList){
 							
 							if(result[i].coreDashBoardVOList[j].positiveCountMain != null && result[i].coreDashBoardVOList[j].positiveCountMain>0){
-								str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="right" class="emToolTipCls2"  style="cursor: pointer;" title="Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].positiveIsPrimeCoveredTime+' Non&nbsp;Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].coreDashBoardVOList[j].isPrimedescription+'</span></a></td>';
+								str+='<td><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="right" class="emToolTipCls2"  data-toogle="tooltip" style="cursor: pointer;" title="Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].positiveIsPrimeCoveredTime+' Non&nbsp;Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].positiveIsNotPrimeCoveredTime+'">'+result[i].coreDashBoardVOList[j].isPrimedescription+'</span></a></td>';
 							
 							   str+='<td class="text-success">'+result[i].coreDashBoardVOList[j].positivePerc+'</td>';
 							}else{
@@ -304,7 +304,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 							str+='<td class="text-success">'+result[i].coreDashBoardVOList[j].positivePerc+'</td>';
 							}
 							if(result[i].coreDashBoardVOList[j].negativCountMain != null && result[i].coreDashBoardVOList[j].negativCountMain >0){
-								str+='<td><a class="emctClickCls" attr_benefit_id="2" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="right" class="emToolTipCls2"  style="cursor: pointer;" title="Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].negativeIsPrimeCoveredTime+' Non&nbsp;Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].coreDashBoardVOList[j].isNotPrimedescription+'</span></a></td>';
+								str+='<td><a class="emctClickCls" attr_benefit_id="2" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+result[i].organizationId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="right" class="emToolTipCls2"  data-toogle="tooltip" style="cursor: pointer;" title="Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].negativeIsPrimeCoveredTime+' Non&nbsp;Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].negativeIsNotPrimeCoveredTime+'">'+result[i].coreDashBoardVOList[j].isNotPrimedescription+'</span></a></td>';
 							str+='<td class="text-danger">'+result[i].coreDashBoardVOList[j].negativePerc+'</td>';
 							}else{
 								//str+='<td>'+result[i].coreDashBoardVOList[j].negativCountMain+'</td>';
@@ -327,7 +327,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 						for(var j in result[i].coreDashBoardVOList){
 							var totalCount = result[i].tdpCount;
 					if(result[i].coreDashBoardVOList[j].totalPostive !=null && result[i].coreDashBoardVOList[j].totalPostive>0){
-						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="right" class="emToolTipCls2"  style="cursor: pointer;" title="Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsPrimePositiveCoveredTime+' Non&nbsp;Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsNotPrimePositiveCoveredTime+'">'+result[i].coreDashBoardVOList[j].overalIsPrimedescription+'</span></a></td>';
+						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="right" class="emToolTipCls2"  data-toogle="tooltip" style="cursor: pointer;" title="Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsPrimePositiveCoveredTime+' Non&nbsp;Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsNotPrimePositiveCoveredTime+'">'+result[i].coreDashBoardVOList[j].overalIsPrimedescription+'</span></a></td>';
 					}else{
 						str+='<td class=""> -</td>';
 					}
@@ -337,7 +337,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 						str+='<td class=""> -</td>';
 					}
 					if(result[i].coreDashBoardVOList[j].totalNegative !=null && result[i].coreDashBoardVOList[j].totalNegative>0){
-						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="right" class="emToolTipCls2"  style="cursor: pointer;" title="Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsPrimeNegativeCoveredTime+' Non&nbsp;Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].coreDashBoardVOList[j].overalIsNotPrimedescription+'</span></a></td>';
+						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="right" class="emToolTipCls2"  data-toogle="tooltip" style="cursor: pointer;" title="Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsPrimeNegativeCoveredTime+' Non&nbsp;Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].coreDashBoardVOList[j].overalIsNotPrimedescription+'</span></a></td>';
 					}else{
 						str+='<td class=""> -</td>';
 					}
@@ -358,7 +358,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 	str+='</div>';
 	
 	$("#EMCoverageTimeSummaryDivId").html(str);
-	
+	$(".emToolTipCls2").tooltip();
 	$("#dataTableCanAndPartyWiseNewsChannel").dataTable({
 		
 		 "aaSorting": [], 
