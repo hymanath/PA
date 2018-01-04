@@ -1110,17 +1110,28 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	public List<RepresenteeViewVO> getStatusList(){
 		List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
 		try {
-			List<PmStatus> list = pmStatusDAO.getAll();
-			if(commonMethodsUtilService.isListOrSetValid(list)){
-				for (PmStatus petitionStatus : list) {
-					if(petitionStatus.getIsDeleted().equalsIgnoreCase("N") && petitionStatus.getPmStatusId() != 2l){
+			
+			//List<PmStatus> list = pmStatusDAO.getAll();
+			 List<Object[]> statusList = pmStatusDAO.getPmStatusList();
+			 Map<Long,KeyValueVO> statusMap = new LinkedHashMap<Long,KeyValueVO>();
+			 if(commonMethodsUtilService.isListOrSetValid(statusList)){
+				for (Object[] param : statusList) {
+					statusMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1])));
+				} 
+			 }
+			 
+			if(commonMethodsUtilService.isMapValid(statusMap)){
+				for (Long statusId : statusMap.keySet()) {
+					KeyValueVO vo1 = statusMap.get(statusId);
+					if(vo1 != null){
 						RepresenteeViewVO vo = new RepresenteeViewVO();
-						vo.setId(commonMethodsUtilService.getLongValueForObject(petitionStatus.getPmStatusId()));
-						vo.setName(commonMethodsUtilService.getCapitalStringValueForObject(petitionStatus.getStatus()));
+						vo.setId(vo1.getKey());
+						vo.setName(vo1.getValue());
 						returnList.add(vo);
 					}
 				}
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception Occured in PmRequestDetailsService @ getStatusList() "+e.getMessage());
@@ -1747,17 +1758,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				Map<Long,RepresenteeViewVO> statuMap = null;
 				List<PmStatus> statusList = pmStatusDAO.getAll();
 				if(commonMethodsUtilService.isListOrSetValid(statusList)){
-					statuMap = new HashMap<Long,RepresenteeViewVO>();
+					statuMap = new LinkedHashMap<Long,RepresenteeViewVO>();
 					
 					for (PmStatus pmStatus : statusList) {
-						RepresenteeViewVO	statusVO = new RepresenteeViewVO();
+						//if(pmStatus.getIsDeleted().equalsIgnoreCase("N") && pmStatus.getPmStatusId() != 2l){
+							RepresenteeViewVO	statusVO = new RepresenteeViewVO();
 							if(statusIds != null && statusIds.size() >0 && statusIds.contains(pmStatus.getPmStatusId())){
 								statusVO.setStatusType("UserStatus");
 							}
-							
 							statusVO.setId(pmStatus.getPmStatusId());
 							statusVO.setName(pmStatus.getStatus());
 							statuMap.put(statusVO.getId(), statusVO);
+						//}
 					}
 				}
 				List<Object[]> objectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"");

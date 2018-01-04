@@ -187,55 +187,57 @@ function representationRequestEntryTable(result){
 			str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
 				str+='<thead>';
 					str+='<tr>';
-						str+='<th>Entd&nbsp;ID</th>';
-						str+='<th>RAISED&nbsp;DATE</th>';
-						str+='<th>Entd&nbsp;Date</th>';
-						str+='<th>Representee&nbsp;Name</th>';
-						str+='<th>Referrer&nbsp;Name</th>';
-						str+='<th>Referrer&nbsp;Designation</th>';				
-						str+='<th style="min-width:200px !important;">Work Name</th>';
+						str+='<th>REPRESENTATION&nbsp;DATE</th>';
+						str+='<th>ENDORSMENT&nbsp;NO</th>';
+						str+='<th>ENDORSMENT&nbsp;DATE</th>';
+						str+='<th>REPRESENTEE&nbsp;NAME</th>';
+						str+='<th>REFERRER&nbsp;NAME</th>';
+						str+='<th>REFERRER&nbsp;DESIGNATION</th>';				
+						str+='<th style="min-width:200px !important;">WORK NAME</th>';
 						//str+='<th>No&nbsp;of&nbsp;Works</th>';
-						str+='<th>Estimation Cost</th>';
-						str+='<th>Status</th>';
-						str+='<th>Action</th>';
+						str+='<th>WORK IN COST </th>';
+						str+='<th>STATUS</th>';
+						str+='<th>ACTION</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
 					for(var i in result){
 						for(var j in result[i].subList){
-					var endorsmentNo='';
-					str+='<tr>';
+						var endorsmentNo='';
+						str+='<tr>';
+						if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
+							str+='<td style="text-align:center;">'+result[i].raisedDate+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						
 						if (result[i].subList[j].endorsementNO != null && result[i].subList[j].endorsementNO != 0){
-							str+='<td>'+result[i].subList[j].endorsementNO+'</td>';
+							str+='<td style="text-align:center;">'+result[i].subList[j].endorsementNO+'</td>';
 							endorsmentNo=result[i].subList[j].endorsementNO;
 						}else
-							str+='<td> - </td>';
-						if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
-							str+='<td>'+result[i].raisedDate+'</td>';
-						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
+						
 						
 						if (result[i].subList[j].endorsmentDate != null && result[i].subList[j].endorsmentDate != "")
-							str+='<td>'+result[i].subList[j].endorsmentDate+'</td>';
+							str+='<td style="text-align:center;">'+result[i].subList[j].endorsmentDate+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
 						if (result[i].name != null && typeof(result[i].name) != "undefined")
 							str+='<td>'+result[i].name+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
 						
 						if (result[i].referrerName != null && typeof(result[i].referrerName) != "undefined")
 							str+='<td>'+result[i].referrerName+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
 						if (result[i].desigName != null && typeof(result[i].desigName) != "undefined")
 							str+='<td>'+result[i].desigName+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
 						if (result[i].subList[j].workName != null && result[i].subList[j].workName != "")
 							str+='<td>'+result[i].subList[j].workName+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
 						/* if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
 							str+='<td>'+result[i].noOfWorks+'</td>';
 						else
@@ -247,8 +249,9 @@ function representationRequestEntryTable(result){
 						if (result[i].subList[j].statusType != "" && typeof(result[i].subList[j].statusType) != "undefined")
 							str+='<td>'+result[i].subList[j].statusType+'</td>';
 						else
-							str+='<td>-</td>';
-						str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" attr_sub_work_id="'+result[i].subList[j].id+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
+							str+='<td style="text-align:center;">-</td>';
+						
+							str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" attr_sub_work_id="'+result[i].subList[j].id+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
 						
 						//if(endorsmentNo != null && endorsmentNo != 'undefined' &&  (parseInt(endorsmentNo) ==0 || endorsmentNo=='') )
 							str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
@@ -1311,6 +1314,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 				
 				}
 				var isAllEndorsed=true;
+				var accessStatusList = [];
 				for(var j in result.subWorksList){	
 					for(var k in result.subWorksList[j].subWorksList){
 						workIdsArr.push(result.subWorksList[j].subWorksList[k].workId);
@@ -1321,7 +1325,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 					}
 				}
 				if(result.statusList != null && result.statusList.length>0){
-					var accessStatusList = result.statusList[0].subList;
+					accessStatusList = result.statusList[0].subList;
 					str+='<div class="col-sm-12 m_top20 pull-right" style="border-bottom:5px solid #EBEBEB;border-top:5px solid #EBEBEB;">';
 					
 					if(accessStatusList != null && accessStatusList.length>0){
@@ -1392,7 +1396,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 							else
 								str+='<span class="pull-right" > <b style="color:#000"> STATUS:</b><b>'+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';*/
 							
-							//if(leadName == null || leadName.length ==0)
+							if(accessStatusList != null && accessStatusList.length>0)
 								str+=' <span class=""  style="margin-bottom:10px;margin-left: 320px"> <button class="btn btn-info selectedCls" attr_work_id="'+result.subWorksList[j].subWorksList[k].workId+'"  isSeleted="false" attr_worksId="'+result.subWorksList[j].subWorksList[k].workId+'"  > SELECT </button> </span> ';
 							
 							str+='</h5>';
