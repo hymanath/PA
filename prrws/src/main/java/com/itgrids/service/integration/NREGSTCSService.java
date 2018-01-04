@@ -864,12 +864,14 @@ public class NREGSTCSService implements INREGSTCSService{
 						}
 						
 		    				if(vo != null){
-			    				if(Double.valueOf(percValue)  < 50){
+			    				if(Double.valueOf(percValue)  < 60){
 		    						vo.setConstiInRed(vo.getConstiInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
+		    					}else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90){
 		    						vo.setConstiInOrange(vo.getConstiInOrange()+1l);
-	    						}else if(Double.valueOf(percValue)  >=80){
+	    						}else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100){
 		    						vo.setConstiInGreen(vo.getConstiInGreen()+1l);
+		    					}else if(Double.valueOf(percValue)  >=100){
+		    						vo.setConstiInGold(vo.getConstiInGold()+1);
 		    					}
 			    				vo.setTotal(vo.getTotal()+1l);
 			    				vo.setDistrict(distrName);
@@ -1372,6 +1374,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    		 for (NregsDataVO nregsDataVO : list) {
 		 	    			 NregsDataVO filterVo = new NregsDataVO();
 		 	    			 filterVo.setPercentage(nregsDataVO.getPercentage());
+		 	    			distConstMap.put(nregsDataVO.getDistrict(),filterVo);
 						}
 		 	    	 }
 		 	    	List<NregsDataVO> disConslist = null;
@@ -1699,12 +1702,14 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						} 
 		    				if(vo != null) {
-			    				if(Double.valueOf(percValue)  < 50){
+			    				if(Double.valueOf(percValue)  < 60){
 		    						vo.setMandalsInRed(vo.getMandalsInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
+		    					}else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90){
 		    						vo.setMandalsInOrange(vo.getMandalsInOrange()+1l);
-	    						}else if(Double.valueOf(percValue)  >=80){
+	    						}else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100){
 		    						vo.setMandalsInGreen(vo.getMandalsInGreen()+1l);
+		    					}else if(Double.valueOf(percValue)  >=100){
+		    						vo.setMandalsInGold(vo.getMandalsInGold()+1l);
 		    					}
 			    				vo.setTotal(vo.getTotal()+1l);
 			    				vo.setDistrict(distrName);
@@ -1771,12 +1776,14 @@ public class NREGSTCSService implements INREGSTCSService{
 						} 
 		    				if(vo != null)
 		    				{
-			    				if(Double.valueOf(percValue)  < 50){
+			    				if(Double.valueOf(percValue)  < 60){
 		    						vo.setMandalsInRed(vo.getMandalsInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
+		    					}else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90){
 		    						vo.setMandalsInOrange(vo.getMandalsInOrange()+1l);
-	    						}else if(Double.valueOf(percValue)  >=80){
+	    						}else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100){
 		    						vo.setMandalsInGreen(vo.getMandalsInGreen()+1l);
+		    					}else if(Double.valueOf(percValue)  >=100){
+		    						vo.setMandalsInGold(vo.getMandalsInGold()+1l);
 		    					}
 			    				vo.setTotal(vo.getTotal()+1l);
 			    				vo.setDistrict(constName);
@@ -1811,11 +1818,13 @@ public class NREGSTCSService implements INREGSTCSService{
 		if(returnList != null && !returnList.isEmpty()){
     		for (NregsDataVO nregsDataVO : returnList) {
 			if(type != null && !type.trim().equalsIgnoreCase("total")){
-				if(type.trim().equalsIgnoreCase("red") && Double.valueOf(nregsDataVO.getPercentage()) < 50)
+				if(type.trim().equalsIgnoreCase("red") && Double.valueOf(nregsDataVO.getPercentage()) < 60)
 					filterList.add(nregsDataVO);
-				else if(type.trim().equalsIgnoreCase("orange") && Double.valueOf(nregsDataVO.getPercentage()) <80 && Double.valueOf(nregsDataVO.getPercentage()) >=50)
+				else if(type.trim().equalsIgnoreCase("orange") && Double.valueOf(nregsDataVO.getPercentage()) <90 && Double.valueOf(nregsDataVO.getPercentage()) >=60)
 					filterList.add(nregsDataVO);
-				else if(type.trim().equalsIgnoreCase("green") && Double.valueOf(nregsDataVO.getPercentage()) >= 80)
+				else if(type.trim().equalsIgnoreCase("green") && Double.valueOf(nregsDataVO.getPercentage()) <100 && Double.valueOf(nregsDataVO.getPercentage()) >=90)
+					filterList.add(nregsDataVO);
+				else if(type.trim().equalsIgnoreCase("gold") && Double.valueOf(nregsDataVO.getPercentage()) >=100)
 					filterList.add(nregsDataVO);
 				}
 		     }
@@ -2007,12 +2016,14 @@ public class NREGSTCSService implements INREGSTCSService{
 							percValue = new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString(); 
 						} 
 		    				if(vo != null) {
-			    				if(Double.valueOf(percValue)  < 50){
+			    				if(Double.valueOf(percValue)  < 60){
 		    						vo.setVillagesInRed(vo.getVillagesInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
+		    					}else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90){
 		    						vo.setVillagesInOrange(vo.getVillagesInOrange()+1l);
-	    						}else if(Double.valueOf(percValue)  >=80){
+	    						}else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100){
 		    						vo.setVillagesInGreen(vo.getVillagesInGreen()+1l);
+		    					}else if(Double.valueOf(percValue)  >=100){
+		    						vo.setVillagesInGold(vo.getVillagesInGold()+1l);
 		    					}
 			    				vo.setTotal(vo.getTotal()+1l);
 			    				vo.setDistrict(distrName);
@@ -2079,12 +2090,14 @@ public class NREGSTCSService implements INREGSTCSService{
 						} 
 		    				if(vo != null)
 		    				{
-			    				if(Double.valueOf(percValue)  < 50){
+			    				if(Double.valueOf(percValue)  < 60){
 		    						vo.setVillagesInRed(vo.getVillagesInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
+		    					}else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90){
 		    						vo.setVillagesInOrange(vo.getVillagesInOrange()+1l);
-	    						}else if(Double.valueOf(percValue)  >=80){
+	    						}else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100){
 		    						vo.setVillagesInGreen(vo.getVillagesInGreen()+1l);
+		    					}else if(Double.valueOf(percValue)  >=100){
+		    						vo.setVillagesInGold(vo.getVillagesInGold()+1l);
 		    					}
 			    				vo.setTotal(vo.getTotal()+1l);
 			    				vo.setDistrict(constName);
@@ -2147,12 +2160,14 @@ public class NREGSTCSService implements INREGSTCSService{
 						} 
 		    				if(vo != null)
 		    				{
-			    				if(Double.valueOf(percValue)  < 50){
+			    				if(Double.valueOf(percValue)  < 60){
 		    						vo.setVillagesInRed(vo.getVillagesInRed()+1l);
-		    					}else if(Double.valueOf(percValue)  >=50 && Double.valueOf(percValue) <80){
+		    					}else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90){
 		    						vo.setVillagesInOrange(vo.getVillagesInOrange()+1l);
-	    						}else if(Double.valueOf(percValue)  >=80){
+	    						}else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100){
 		    						vo.setVillagesInGreen(vo.getVillagesInGreen()+1l);
+		    					}else if(Double.valueOf(percValue)  >=100){
+		    						vo.setVillagesInGold(vo.getVillagesInGold()+1l);
 		    					}
 			    				vo.setTotal(vo.getTotal()+1l);
 			    				vo.setDistrict(mandalName);
