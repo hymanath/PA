@@ -37,8 +37,15 @@ public class RepresenteeViewVO {
 	private Long deptDesigId;
 	private Long deptDesigOffcrId;
 	private String remark;
+	private List<Long> workIds = new ArrayList<Long>();
 	
 	
+	public List<Long> getWorkIds() {
+		return workIds;
+	}
+	public void setWorkIds(List<Long> workIds) {
+		this.workIds = workIds;
+	}
 	public String getRemark() {
 		return remark;
 	}

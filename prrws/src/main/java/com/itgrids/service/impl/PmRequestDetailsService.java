@@ -2384,8 +2384,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		public ResultStatus endorsingSubWorksAndAssigningToOfficer(RepresenteeViewVO inputVO){
 			ResultStatus resultStatus = new ResultStatus();
 			try {
-				if(commonMethodsUtilService.isListOrSetValid(inputVO.getSubWorkIds())){
-					for (Long subWorkId : inputVO.getSubWorkIds()) {
+				if(commonMethodsUtilService.isListOrSetValid(inputVO.getWorkIds())){
+					for (Long subWorkId : inputVO.getWorkIds()) {
 						PmSubWorkDetails pmSubWorkDetails = pmSubWorkDetailsDAO.get(subWorkId);
 						if(pmSubWorkDetails != null){
 							pmSubWorkDetails.setPmLeadId(inputVO.getLeadId());
@@ -2428,7 +2428,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					for (MultipartFile file : inputVO.getFilesList()) {
 						Document petitionCoverLetter = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,inputVO.getId());
 						if(petitionCoverLetter != null)
-							resultStatus =saveCoveringLetterDocument(inputVO.getRemark(),inputVO.getSubWorkIds(),petitionCoverLetter.getDocumentId(),inputVO.getId(), inputVO.getEndorsementNO(),inputVO.getPetitionId(),inputVO.getStatusType());
+							resultStatus =saveCoveringLetterDocument(inputVO.getRemark(),inputVO.getWorkIds(),petitionCoverLetter.getDocumentId(),inputVO.getId(), inputVO.getEndorsementNO(),inputVO.getPetitionId(),inputVO.getStatusType());
 					}
 				}
 				
@@ -2440,7 +2440,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return resultStatus;
 		}
-		public ResultStatus saveCoveringLetterDocument(String remarks,Set<Long> subWorkIds,Long documentId,Long userId,String endorsmentNo,Long petitonId,String reportType){
+		public ResultStatus saveCoveringLetterDocument(String remarks,List<Long> subWorkIds,Long documentId,Long userId,String endorsmentNo,Long petitonId,String reportType){
 			ResultStatus status=new ResultStatus();
 			try {
 				if(documentId != null && documentId.longValue()>0L && commonMethodsUtilService.isListOrSetValid(subWorkIds)){
