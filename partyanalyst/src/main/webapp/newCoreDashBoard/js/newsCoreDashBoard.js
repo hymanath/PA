@@ -467,11 +467,11 @@
 					str+='<tr>';
 						str+='<td>';
 							str+='<p class="text-capital responsiveFont">Main Edition</p>';
-							str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="872">'+((result[0].positiveCountMain)+(result[0].negativCountMain))+'<small>('+result[0].totalCount+')</small></a></p>';
+							str+='<p><a class="newsBasicCountDetailsDiv cursorPo" data-toggle="tooltip" data-placement="bottom" title="'+result[0].mainArticlePerc+'" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="872">'+((result[0].positiveCountMain)+(result[0].negativCountMain))+'<small>('+result[0].totalCount+')</small></a></p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-							str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="872">'+result[0].positiveCountMain+'</a></span>';
+							str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[0].mainPositiveArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="872">'+result[0].positiveCountMain+'</a></span>';
 							if(result[0].totalCount > 0){
 								str+='<small id="" class="text-success"> '+((result[0].positiveCountMain*100)/((result[0].positiveCountMain)+(result[0].negativCountMain))).toFixed(2)+' %</small>';
 							}else{
@@ -480,7 +480,7 @@
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-							str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="872">'+result[0].negativCountMain+'</a></span>';
+							str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[0].mainNegativeArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="872">'+result[0].negativCountMain+'</a></span>';
 							if(result[0].totalCount > 0){
 								str+='<small id="" class="text-danger"> '+((result[0].negativCountMain*100)/((result[0].positiveCountMain)+(result[0].negativCountMain))).toFixed(2)+' %</small>';
 							}else{
@@ -496,11 +496,11 @@
 					str+='<tr>';
 						str+='<td>';
 							str+='<p class="text-capital">Dist edition</p>';
-							str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="872">'+((result[0].positiveCountDist)+(result[0].negativCountDist))+'<small>('+result[0].count+')</small></a></p>';
+							str+='<p><a data-toggle="tooltip" data-placement="bottom" title="'+result[0].distArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="872">'+((result[0].positiveCountDist)+(result[0].negativCountDist))+'<small>('+result[0].count+')</small></a></p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted">Positive</p>';
-							str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="872">'+result[0].positiveCountDist+'</a></span>';
+							str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[0].distPositiveArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="872">'+result[0].positiveCountDist+'</a></span>';
 							if(result[0].count > 0){
 								str+='<small class="text-success" id=""> '+((result[0].positiveCountDist*100)/((result[0].positiveCountDist)+(result[0].negativCountDist))).toFixed(2)+' %</small>';
 							}else{
@@ -509,7 +509,7 @@
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted">Negative</p>';
-							str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="872">'+result[0].negativCountDist+'</a></span>';
+							str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[0].distNegativeArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="872">'+result[0].negativCountDist+'</a></span>';
 							if(result[0].count > 0){
 								str+='<small class="text-danger" id=""> '+((result[0].negativCountDist*100)/((result[0].positiveCountDist)+(result[0].negativCountDist))).toFixed(2)+' %</small>';
 							}else{
@@ -566,10 +566,10 @@
 						if(result[i].organization !="GOVT" || result[i].organization !=""){
 							str+='<tr>';
 							str+='<td>';
-								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+((result[i].positiveCountMain)+(result[i].negativCountMain))+'<small>('+result[i].totalCount+')</small></a></span>';
+								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a data-toggle="tooltip" data-placement="bottom" title="'+result[i].mainArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+((result[i].positiveCountMain)+(result[i].negativCountMain))+'<small>('+result[i].totalCount+')</small></a></span>';
 							str+='</td>';
 							str+='<td>';
-								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountMain+'</a></span>';
+								str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[i].mainPositiveArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountMain+'</a></span>';
 								if(result[i].totalCount > 0){
 									str+='<small class="text-success"> '+((result[i].positiveCountMain*100)/((result[i].positiveCountMain)+(result[i].negativCountMain))).toFixed(2)+' %</small>';
 								}else{
@@ -577,7 +577,7 @@
 								}
 							str+='</td>';
 							str+='<td>';
-								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].negativCountMain+'</a></span>';
+								str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[i].mainNegativeArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].negativCountMain+'</a></span>';
 								if(result[i].totalCount > 0){
 									str+='<small class="text-danger"> '+((result[i].negativCountMain*100)/((result[i].positiveCountMain)+(result[i].negativCountMain))).toFixed(2)+' %</small>';
 								}else{
@@ -620,10 +620,10 @@
 						if(result[i].organization !="GOVT" || result[i].organization !=""){
 							str+='<tr>';
 								str+='<td>';
-									str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+((result[i].positiveCountDist)+(result[i].negativCountDist))+'<small>('+result[i].count+')</small></a></span>';
+									str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span><a data-toggle="tooltip" data-placement="bottom" title="'+result[i].distArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+((result[i].positiveCountDist)+(result[i].negativCountDist))+'<small>('+result[i].count+')</small></a></span>';
 								str+='</td>';
 								str+='<td>';
-									str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountDist+'</a></span>';
+									str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[i].distPositiveArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountDist+'</a></span>';
 									if(result[i].count > 0){
 										str+='<small class="text-success"> '+((result[i].positiveCountDist*100)/((result[i].positiveCountDist)+(result[i].negativCountDist))).toFixed(2)+' %</small>';
 									}else{
@@ -631,7 +631,7 @@
 									}
 								str+='</td>';
 								str+='<td>';
-									str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].negativCountDist+'</a></span>';
+									str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[i].distNegativeArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "N" attr_partyids="'+result[i].organizationId+'">'+result[i].negativCountDist+'</a></span>';
 									if(result[i].count > 0){
 										str+='<small class="text-danger" id=""> '+((result[i].negativCountDist*100)/((result[i].positiveCountDist)+(result[i].negativCountDist))).toFixed(2)+' %</small>';
 									}else{
@@ -655,11 +655,11 @@
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital">Main Edition</p>';
-								str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "Y" attr_partyids=" ">'+((result[t].positiveCountMain)+(result[t].negativCountMain))+'<small>('+result[t].totalCount+')</small></a></p>';
+								str+='<p><a data-toggle="tooltip" data-placement="bottom" title="'+result[t].mainArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = "Y" attr_partyids=" ">'+((result[t].positiveCountMain)+(result[t].negativCountMain))+'<small>('+result[t].totalCount+')</small></a></p>';
 								str+='</td>';
 								str+='<td>';
 								str+='<p class="text-capital text-muted">Positive</p>';
-								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].positiveCountMain+'</a></span>';
+								str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[t].mainPositiveArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].positiveCountMain+'</a></span>';
 									if(result[t].totalCount>0){
 										str+='<small class="text-success" id=""> '+((result[t].positiveCountMain*100)/((result[t].positiveCountMain)+(result[t].negativCountMain))).toFixed(2)+' %</small>';
 									}else{
@@ -668,7 +668,7 @@
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Negative</p>';
-								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].negativCountMain+'</a></span>';
+								str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[t].mainNegativeArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].negativCountMain+'</a></span>';
 								if(result[t].totalCount>0){
 									str+='<small class="text-danger" id=""> '+((result[t].negativCountMain*100)/((result[t].positiveCountMain)+(result[t].negativCountMain))).toFixed(2)+'  %</small>';
 								}else{
@@ -683,11 +683,11 @@
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital">Dist Edition</p>';
-								str+='<p><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "Y" attr_partyids=" ">'+((result[t].positiveCountDist)+(result[t].negativCountDist))+'<small>('+result[t].count+')</sma;;></a></p>';
+								str+='<p><a data-toggle="tooltip" data-placement="bottom" title="'+result[t].distArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = "Y" attr_partyids=" ">'+((result[t].positiveCountDist)+(result[t].negativCountDist))+'<small>('+result[t].count+')</sma;;></a></p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">positive</p>';
-								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].positiveCountDist+'</a></span>';
+								str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[t].distPositiveArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].positiveCountDist+'</a></span>';
 								if(result[t].count > 0){
 									str+='<small class="text-success" id=""> '+((result[t].positiveCountDist*100)/((result[t].positiveCountDist)+(result[t].negativCountDist))).toFixed(2)+' %</small>';
 								}else{
@@ -696,7 +696,7 @@
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">negative</p>';
-								str+='<span><a class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].negativCountDist+'</a></span>';
+								str+='<span><a data-toggle="tooltip" data-placement="bottom" title="'+result[t].distNegativeArticlePerc+'" class="newsBasicCountDetailsDiv cursorPo" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = "Y" attr_partyids=" ">'+result[t].negativCountDist+'</a></span>';
 								if(result[t].count > 0){
 									str+='<small class="text-danger" id=""> '+((result[t].negativCountDist*100)/((result[t].positiveCountDist)+(result[t].negativCountDist))).toFixed(2)+' %</small>';
 								}else{
