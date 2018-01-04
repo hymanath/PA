@@ -1,6 +1,7 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var workIdsArr=[];
 var selectedWorkIdsArr=[];
+var selectedDeptIdsArr=[];
 var startDate = moment().subtract(7,"year").format("DD-MM-YYYY");
 var endDate = moment().add(38,"year").format("DD-MM-YYYY");
 //getting Dynamic Browser URL
@@ -167,12 +168,14 @@ $(document).on("click",".selectedCls",function(){
 	
 	$(".selectedCls").each(function(){
 		var innerWorkId=$(this).attr('attr_worksId');
-		var isSelected=$(this).attr('isSeleted');
-		if(innerWorkId > 0 && isSelected=='true'){
-			selectedWorkIdsArr.push(innerWorkId);
+		var workId=$(this).attr('attr_worksId');
+		var deptId=$(this).attr('attr_worksId');
+		var isseleted=$(this).attr('isSeleted');
+		if(innerWorkId > 0 && isseleted=='true'){
+			selectedWorkIdsArr.push(workId);
+			selectedDeptIdsArr.push(deptId);
 		}
 	});
-	//alert(selectedWorkIdsArr);
 });
 
 $(document).on("change",".clearDataCls",function(){
@@ -1342,7 +1345,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 							str+='</div>';
 							str+='<div class="col-sm-2 m_top10 ">';
 							
-								str+='<button class="btn btn-info selectedCls" isSeleted="false" attr_worksId="0"  style="margin-bottom:10px;" > SELECT ALL  </button>';
+								str+='<button class="btn btn-info selectedCls" isSeleted="false" attr_worksId="0" attr_dept_id="0" style="margin-bottom:10px;" > SELECT ALL  </button>';
 							str+='</div>';
 							for(var s in accessStatusList){
 								str+='<div class="col-sm-2 m_top10 ">';
@@ -1405,7 +1408,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								str+='<span class="pull-right" > <b style="color:#000"> STATUS:</b><b>'+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';*/
 							
 							//if(leadName == null || leadName.length ==0)
-								str+=' <span class=""  style="margin-bottom:10px;margin-left: 320px"> <button class="btn btn-info selectedCls" attr_work_id="'+result.subWorksList[j].subWorksList[k].workId+'"  isSeleted="false" attr_worksId="'+result.subWorksList[j].subWorksList[k].workId+'"  > SELECT </button> </span> ';
+								str+=' <span class=""  style="margin-bottom:10px;margin-left: 320px"> <button class="btn btn-info selectedCls" attr_work_id="'+result.subWorksList[j].subWorksList[k].workId+'"  isSeleted="false" attr_dept_id="'+result.subWorksList[j].subWorksList[k].deptName+'" attr_worksId="'+result.subWorksList[j].subWorksList[k].workId+'"  > SELECT </button> </span> ';
 							
 							str+='</h5>';
 							str+='<div class=" block_padding_3 m_top10">';
@@ -1563,7 +1566,12 @@ function updatePetitionStatusDetails(){
 $(document).on("click",".endorseCls",function(){
 	$("#endorseMentModalDivId").modal("show");
 	 initializeSingleUploadDocument("uploadEndorsementDocId");
+	  getPmBriefLeadList();
+	  getPmGrantList();
+	  getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr);
+	
  });
+ 
  $(document).on("click",".closeSecondModal",function(){
     setTimeout(function(){
       $("body").addClass("modal-open")
@@ -1668,4 +1676,117 @@ $.ajax({
 				$('#saveButtonId').show();				
 			}
      });
- }	 
+ }	
+ 
+ function getPmBriefLeadList(){
+	 $("#leadId").html('');
+	 $("#leadId").html('<option value="0">Select Brief Lead</option>');
+   var json = {
+      
+    };
+  $.ajax({              
+    type:'POST',    
+    url: 'getPmBriefLeadList',
+    dataType: 'json',
+    data : JSON.stringify(json),
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){
+	  if(result !=null && result.length>0){
+			 $("#leadId").html('<option value="0">Select Brief Lead</option>');
+			for(var i in result){
+				$("#leadId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#leadId").trigger('chosen:updated');
+	});	 
+}
+
+function getPmGrantList(){
+	 $("#grantId").html('');
+	 $("#grantId").html('<option value="0">Select Grant Under</option>');
+   var json = {
+      
+    };
+  $.ajax({              
+    type:'POST',    
+    url: 'getPmGrantList',
+    dataType: 'json',
+    data : JSON.stringify(json),
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){
+	  if(result !=null && result.length>0){
+			 $("#grantId").html('<option value="0">Select Grant Under</option>');
+			for(var i in result){
+				$("#grantId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#grantId").trigger('chosen:updated');
+	});	 
+}
+
+function getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr){
+	 $("#assignToId").html('');
+	 $("#assignToId").html('<option value="0">Select Assign To</option>');
+	
+ var json = {
+	 
+	 deptIdsList : selectedDeptIdsArr
+	}           
+$.ajax({              
+	type:'POST',    
+	url: 'getLoginUserAccessSubDeptDesignationDetail',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
+	}
+}).done(function(result){
+	if(result !=null && result.length>0){
+		$("#assignToId").html('<option value ="0">Select Assign To</option>');
+		for(var i in result){
+				$("#assignToId").append('<option value ="'+result[i].key+'">'+result[i].value+'</option>');
+		}
+	}
+	$("#assignToId").trigger('chosen:updated');
+});	
+}
+
+$(document).on('change','.popUpChangesCls',function(){
+	var onChangeValue = $(this).val();
+	getDeptDesignationOfficerDetail(onChangeValue)
+})
+
+function getDeptDesignationOfficerDetail(onChangeValue){
+	$("#officerId").html('');
+	$("#officerId").html('<option value ="0">Select Officer Name</option>');
+	var deptDesignationId = onChangeValue;
+ var json = {
+	 
+	deptDesignationId : deptDesignationId
+	}           
+$.ajax({              
+	type:'POST',    
+	url: 'getDeptDesignationOfficerDetail',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
+	}
+}).done(function(result){
+	if(result != null && result.length >0){
+		$("#officerId").html('<option value ="0">Select Officer Name</option>');
+		for(var i in result){
+			$("#officerId").append('<option value ="'+result[i].id+'">'+result[i].value+'</option>');
+		}
+	}
+	$("#officerId").trigger('chosen:updated');
+});	
+}
