@@ -19,7 +19,7 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 	public VerificationStatusDAO() {
 		super(VerificationStatus.class);
 	}
-	public List<Object[]> getStatusWiseAlertCount(Long stateId,Date fromDate,Date toDate,Long alertTypeId){
+	public List<Object[]> getStatusWiseAlertCount(Long stateId,Date fromDate,Date toDate,Long alertTypeId,Long assignedUserId,String verificationUserType){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
 						" model1.actionTypeStatus.actionType.actionTypeId, " +
@@ -29,10 +29,19 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 						" model1.alert.alertCategory.alertCategoryId, " +
 						" model1.alert.alertCategory.category, " +
 						" count(distinct model1.alert.alertId) " +
-						" from VerificationStatus model1 " +
-						" where " +
-						" model1.isDeleted = 'N' and model1.alert.isDeleted = 'N' " +
-						" and model1.actionTypeStatus.actionType.actionTypeId in ("+IConstants.ALERT_ACTION_TYPE_ID+") ");
+						" from VerificationStatus model1 ");
+		if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) {
+					   queryStr.append(",AlertVerificationUser model2 ");
+		}
+		queryStr.append(" where model1.isDeleted = 'N' and model1.alert.isDeleted = 'N' " +
+						" and model1.actionTypeStatus.actionType.actionTypeId in ("+IConstants.ALERT_ACTION_TYPE_ID+")" );
+		
+		 if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) {
+			 queryStr.append(" and model2.alertId=model1.alertId and model2.isDeleted='N' ");
+			 queryStr.append(" and model2.verificationUserId=:assignedUserId ");
+		 }
+		
+						
 		if(stateId != null && stateId.longValue() > 0){
 			queryStr.append(" and model1.alert.userAddress.state.stateId = :stateId ");
 		}
@@ -57,9 +66,13 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		if(stateId != null && stateId.longValue() > 0){
 			query.setParameter("stateId", stateId);
 		}
+		if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) { 
+			query.setParameter("assignedUserId", assignedUserId);
+		}
+		
 		return query.list();
 	}
-	public List<Object[]> getAllAlerts(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,Date fromDate2,Date toDate2){
+	public List<Object[]> getAllAlerts(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,Date fromDate2,Date toDate2,Long assignedUserId,String verificationUserType){
 		StringBuilder str = new StringBuilder();
 		str.append(" select " +
 				   " model.alertId ," +//0
@@ -115,12 +128,19 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		str.append(" left join model.userAddress.state state ");
 		str.append(" left join model.userAddress.ward ward ");
 		str.append(" left join model.alertCategory alertCategory ");
-		str.append(" left join model.alertType  alertType,AlertDepartmentStatus model1 " +
-				   " where model1.alertType.alertTypeId = model.alertType.alertTypeId " +
-				   " and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
+		str.append(" left join model.alertType  alertType,AlertDepartmentStatus model1"); 
+		if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) {
+			 str.append(",AlertVerificationUser model2 ");
+		}
+		 str.append(" where model1.alertType.alertTypeId = model.alertType.alertTypeId " +
+	      " and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId ");
 		
-		str.append(" and model.isDeleted ='N' and vs.isDeleted='N' ");
+		 if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) {
+			 str.append(" and model2.alertId=vs.alertId and model2.isDeleted='N' ");
+			 str.append(" and model2.verificationUserId=:assignedUserId ");
+		 }
 		
+		str.append(" and model.isDeleted ='N' and vs.isDeleted='N'  ");
 		if(inputVO.getAlertImpactScopeId() != null && inputVO.getAlertImpactScopeId() > 0l){
 			str.append(" and model.impactScopeId=:impactScopeId ");
 		}
@@ -174,6 +194,9 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		if(fromDate2 != null && toDate2 != null){ 
 			query.setDate("fromDate2", fromDate2);
 			query.setDate("toDate2", toDate2);
+		}
+		if (verificationUserType != null && verificationUserType.equalsIgnoreCase("infoCellCommittee")) { 
+			query.setParameter("assignedUserId", assignedUserId);	
 		}
 		return query.list();
 	}
