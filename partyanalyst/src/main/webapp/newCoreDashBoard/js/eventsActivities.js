@@ -2536,19 +2536,19 @@ function buildActivityEventdata(result,locationId){
 					}else if(locationId == 'parliament'){
 						tableView+='<th rowspan =2>Parliment Constituency</th>';
 					}
-					tableView+='<th rowspan ="2">Total Panchayaths/Wards</th>';
-					tableView+='<th colspan="2">Conducted</th>';
+					tableView+='<th rowspan ="2">Total Panchayaths/ Wards</th>';
+					tableView+='<th colspan="2">Info Cell Conducted</th>';
 					//tableView+='<th rowspan="2">Conducted%</th>';
 					for(var i in result[0].questionList){
 						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23){
 							tableView+='<th colspan="2">'+result[0].questionList[i].questionName+'</th>';
 						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId == 23){
-							tableView+='<th colspan="4">'+result[0].questionList[i].questionName+'</th>';
+							tableView+='<th colspan="5">'+result[0].questionList[i].questionName+'</th>';
 						}else if (result[0].questionList[i].optionList.length==1){
 							if(result[0].questionList[i].questionId != 21){
 								tableView+='<th rowspan ="2">'+result[0].questionList[i].questionName+'</th>';
 							}else{
-								tableView+='<th rowspan ="2">'+result[0].questionList[i].questionName+'-(Hours)</th>';
+								tableView+='<th rowspan ="2">'+result[0].questionList[i].questionName+'-(Minutes)</th>';
 							}
 						}else{
 							tableView+='<th colspan="'+result[0].questionList[i].optionList.length+'">'+result[0].questionList[i].questionName+'</th>';
@@ -2557,7 +2557,7 @@ function buildActivityEventdata(result,locationId){
 					}
 				tableView+='</tr>';
 				tableView+='<tr>';
-					tableView+='<th>Conducted</th>';
+					tableView+='<th>Total Count</th>';
 					tableView+='<th>%</th>';
 				for(var i in result[0].questionList){
 						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23){
@@ -2565,10 +2565,11 @@ function buildActivityEventdata(result,locationId){
 							tableView+='<th>Yes Count</th>';
 							tableView+='<th>%</th>';
 						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId == 23){
+							tableView+='<th>Total Count</th>';
 							tableView+='<th>Yes Count</th>';
-							//tableView+='<th>%</th>';
+							tableView+='<th>%</th>';
 							tableView+='<th>No Count</th>';
-							//tableView+='<th>%</th>';
+							tableView+='<th>%</th>';
 						}
 						if(result[0].questionList[i].optionList.length !=2 && result[0].questionList[i].optionList.length !=1){
 							for(var j in result[0].questionList[i].optionList){
@@ -2591,6 +2592,9 @@ function buildActivityEventdata(result,locationId){
 					tableView+='<td>'+result[i].conductedCount+'</td>';
 					tableView+='<td>'+parseFloat((result[i].conductedCount/result[i].totalCount)*100).toFixed(2)+'%</td>';
 					for(var j in result[i].questionList){
+						if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId == 23){
+							tableView+='<td>'+result[i].questionList[j].count+'</td>';
+						}
 						 for(var k in result[i].questionList[j].optionList){
 							if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId != 23){
 								if(result[i].questionList[j].optionList[k].optionId ==1){
@@ -2602,17 +2606,17 @@ function buildActivityEventdata(result,locationId){
 									}
 								}
 							}else if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId == 23){
-								tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';yesCount=result[i].questionList[j].optionList[k].count;
-							/* 	if(result[i].conductedCount !==null && result[i].conductedCount !=0 ){
-									tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].conductedCount)*100).toFixed(2)+'%</td>';
+								tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
+							 	if(result[i].conductedCount !==null && result[i].conductedCount !=0 ){
+									tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].questionList[j].count)*100).toFixed(2)+'%</td>';
 								}else{
 								tableView+='<td>-</td>';
-								} */
+								} 
 							}else if (result[i].questionList[j].optionList.length==1){
 								if(result[i].questionList[j].questionId !=21){
 									tableView+='<td>'+result[i].questionList[j].optionList[k].percentage+'</td>';
 								}else{
-									tableView+='<td>'+parseFloat(result[i].questionList[j].optionList[k].count/(60*result[i].conductedCount)).toFixed(2)+'</td>';
+									tableView+='<td>'+parseInt(result[i].questionList[j].optionList[k].count/(result[i].conductedCount))+'</td>';
 								}
 								
 							}else{
