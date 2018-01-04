@@ -1587,11 +1587,8 @@ $(document).on("click",".endorseCls",function(){
 						formData.append(name, $('#'+id+'').val());
 					}
 				}else if(text=='file'){
-					alert("enter")
 					if(this.files !=null && this.files.length>0){
-						alert("if")
-							for(var i = 0; i < this.files.length; i++){
-								alert(this.files[i])
+						for(var i = 0; i < this.files.length; i++){
 								formData.append("filesList["+i+"]", this.files[i]);
 						}
 					}
