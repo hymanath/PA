@@ -1,5 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-
+var workIdsArr=[];
+var selectedWorkIdsArr=[];
 var startDate = moment().subtract(7,"year").format("DD-MM-YYYY");
 var endDate = moment().add(38,"year").format("DD-MM-YYYY");
 //getting Dynamic Browser URL
@@ -100,6 +101,68 @@ $(".chosen-select").chosen();
 
 $(document).on("click",".advancedSrchCls",function(){
 	$("#advancedSearchVal").val('');
+});
+
+$(document).on("click",".selectedCls",function(){
+	var isSelected=$(this).attr('isSeleted');
+	var worksId=$(this).attr('attr_worksId');
+	if(isSelected =='true'){
+		if(worksId == 0){	
+			$(".selectedCls").each(function(){
+				$(".selectedCls").attr('isSeleted','false');
+				$(".selectedCls").removeClass("btn-success");
+				$(".selectedCls").addClass("btn-info");
+			});
+		}else{
+			$(this).attr('isSeleted','false');
+			$(this).removeClass("btn-success");
+			$(this).addClass("btn-info");
+			
+			$(".selectedCls").each(function(){
+				var innerIsSelected=$(this).attr('isSeleted');
+				var innerWorkId=$(this).attr('attr_worksId');
+				if(innerIsSelected =='true' && innerWorkId == 0){
+					$(this).attr('isSeleted','false');
+					$(this).removeClass("btn-success");
+					$(this).addClass("btn-info");
+				}
+			});
+		}
+	}else if(isSelected =='false'){
+		if(worksId == 0){	
+			$(".selectedCls").each(function(){
+				$(".selectedCls").attr('isSeleted','true');
+				$(".selectedCls").addClass("btn-success");
+				$(".selectedCls").removeClass("btn-info");
+			});
+		}else{
+			$(this).attr('isSeleted','true');
+			$(this).addClass("btn-success");
+			$(this).removeClass("btn-info");
+			
+			var totalWorks =0;
+			$(".selectedCls").each(function(){
+				var innerIsSelected=$(this).attr('isSeleted');
+				var innerWorkId=$(this).attr('attr_worksId');
+				if(innerIsSelected =='true' && innerWorkId > 0){
+					totalWorks=totalWorks+1;
+				}
+			});
+			
+			
+			if(totalWorks == workIdsArr.length){
+				$(".selectedCls").each(function(){
+					var innerWorkId=$(this).attr('attr_worksId');
+					if(innerWorkId == 0){
+						$(this).attr('isSeleted','true');
+						$(this).addClass("btn-success");
+						$(this).removeClass("btn-info");
+					}
+				});
+			
+			}
+		}
+	}
 });
 
 $(document).on("change",".clearDataCls",function(){
@@ -1247,7 +1310,43 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 				str+='</div>';
 				
 				}
-				
+				var isAllEndorsed=true;
+				for(var j in result.subWorksList){	
+					for(var k in result.subWorksList[j].subWorksList){
+						workIdsArr.push(result.subWorksList[j].subWorksList[k].workId);
+						var leadName = result.subWorksList[j].subWorksList[k].leadName;
+						if(leadName == null || leadName.length ==0){
+							isAllEndorsed=false;
+						}
+					}
+				}
+				if(result.statusList != null && result.statusList.length>0){
+					var accessStatusList = result.statusList[0].subList;
+					str+='<div class="col-sm-12 m_top20 pull-right" style="border-bottom:5px solid #EBEBEB;border-top:5px solid #EBEBEB;">';
+					
+					if(accessStatusList != null && accessStatusList.length>0){
+							str+='<div class="row ">';
+							str+='<div class="col-sm-6  m_top10">';
+							str+='</div>';
+							str+='<div class="col-sm-2 m_top10 ">';
+							
+								str+='<button class="btn btn-info selectedCls" isSeleted="false" attr_worksId="0"  style="margin-bottom:10px;" > SELECT ALL  </button>';
+							str+='</div>';
+							for(var s in accessStatusList){
+								str+='<div class="col-sm-2 m_top10 ">';
+								if(accessStatusList[s].key == 1){
+									if(!isAllEndorsed)
+										str+='<button class="statusCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" > ENDORSE </button>';
+								}
+								if(accessStatusList[s].key == 5){
+										str+='<button class="statusCls btn btn-danger" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" > NOT POSSIBLE </button>';
+								}
+								str+='</div>';
+							}
+							str+='</div>';
+					}
+					str+='</div>';
+				}
 				
 				str+='<div class="col-sm-12 m_top20">';
 				var workCount = 0;
@@ -1255,6 +1354,8 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 				for(var j in result.subWorksList){
 					
 				for(var k in result.subWorksList[j].subWorksList){
+					var leadName = result.subWorksList[j].subWorksList[k].leadName;
+					
 					workCount = workCount+1;
 					
 						str+='<div class="col-sm-6 m_top10">';
@@ -1284,13 +1385,16 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 						
 						str+='<div class="col-sm-6 m_top10">';
 							str+='<h5><b>WORK DESCRIPTION</b> ';
-							if(result.subWorksList[j].subWorksList[k].statusId == 1)
+							/*if(result.subWorksList[j].subWorksList[k].statusId == 1)
 								str+=' <span class="pull-right" style="color:orange" > <b style="color:#000"> STATUS: </b><b> '+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';
 							else if(result.subWorksList[j].subWorksList[k].statusId == 8 )
 								str+=' <span class="pull-right" style="color:green;" > <b style="color:#000"> STATUS: </b><b> '+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';
 							else
-								str+='<span class="pull-right" > <b style="color:#000"> STATUS:</b><b>'+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';
-							//str+='<button class="btn pull-right">Select</button>
+								str+='<span class="pull-right" > <b style="color:#000"> STATUS:</b><b>'+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';*/
+							
+							//if(leadName == null || leadName.length ==0)
+								str+=' <span class=""  style="margin-bottom:10px;margin-left: 320px"> <button class="btn btn-info selectedCls" attr_work_id="'+result.subWorksList[j].subWorksList[k].workId+'"  isSeleted="false" attr_worksId="'+result.subWorksList[j].subWorksList[k].workId+'"  > SELECT </button> </span> ';
+							
 							str+='</h5>';
 							str+='<div class=" block_padding_3 m_top10">';
 								str+='<p style="font-size:12px;border: 1px solid lightgray; width: 570px;height: 150px;padding: 10px;">'+result.subWorksList[j].subWorksList[k].workName+'</p>';
