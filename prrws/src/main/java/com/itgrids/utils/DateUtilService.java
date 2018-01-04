@@ -158,7 +158,9 @@ public class DateUtilService {
 	}
 
 	public Long noOfDayBetweenDates(String startDate, String endDate) {
-
+		if(startDate == null || endDate == null || endDate.isEmpty() || startDate.isEmpty() ||  startDate.length()>10 || endDate.length()>10)
+			return 1L;
+		
 		SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Long diff = 0l;
 		Long noOfDays = 0l;

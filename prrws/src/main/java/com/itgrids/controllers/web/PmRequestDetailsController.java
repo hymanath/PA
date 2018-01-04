@@ -64,11 +64,29 @@ public class PmRequestDetailsController {
 	   		}
 	    }
 		@RequestMapping(value ="/setPmRepresenteeDataToResultView",method = RequestMethod.POST)
-		 public @ResponseBody PmRequestEditVO setPmRepresenteeDataToResultView(@RequestBody Map<String,String> inputMap ) {
-	    	 return pmRequestDetailsService.setPmRepresenteeDataToResultView(Long.valueOf(inputMap.get("petitionId")),String.valueOf(inputMap.get("pageType")));
+		 public @ResponseBody PmRequestEditVO setPmRepresenteeDataToResultView(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
+		    	Long userId =null;
+		    	HttpSession session=request.getSession();
+				UserVO userVO = (UserVO) session.getAttribute("USER"); 
+				
+				if(userVO != null){
+					userId = userVO.getUserId();
+				}else{
+					return null;
+				}
+	    	 return pmRequestDetailsService.setPmRepresenteeDataToResultView(Long.valueOf(inputMap.get("petitionId")),String.valueOf(inputMap.get("pageType")),userId);
 	    }
 	   	@RequestMapping(value ="/getPetitionReferredMemberDetails",method = RequestMethod.POST)
-	    public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ) {
+	    public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ,HttpServletRequest request) {
+	    	Long userId =null;
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
 	    	 return pmRequestDetailsService.getPetitionReferredMemberDetails(dataVo);
 	    }
 	   @RequestMapping(value ="/representationRequestEntryViewMembers", method = RequestMethod.GET)
@@ -80,11 +98,29 @@ public class PmRequestDetailsController {
 			return "representationRequestEntryViewMembers";
 	    }
 	   @RequestMapping(value ="/getRepresentativeSearchWiseDetails",method = RequestMethod.POST)
-	    public @ResponseBody List<RepresenteeViewVO> getRepresentativeSearchWiseDetails(@RequestBody InputVO dataVo) {
+	    public @ResponseBody List<RepresenteeViewVO> getRepresentativeSearchWiseDetails(@RequestBody InputVO dataVo,HttpServletRequest request) {
+	    	Long userId =null;
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
 	    	 return pmRequestDetailsService.getRepresentativeSearchWiseDetails(dataVo);
 	    }
 	   @RequestMapping(value ="/getPetitionDesignationList",method = RequestMethod.POST)
-	    public @ResponseBody List<KeyValueVO> getPetitionDesignationList(@RequestBody Map<String,String> inputMap ) {
+	    public @ResponseBody List<KeyValueVO> getPetitionDesignationList(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
+	    	Long userId =null;
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
 	       return locationDetailsService.getPmDesignations(inputMap.get("searchType"));
 	    }
 	    @RequestMapping(value ="/getDistrictBySearchType",method = RequestMethod.POST)
@@ -94,6 +130,8 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
+			}else{
+				return null;
 			}
 			List<Long> deptIds = null;
 			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
@@ -111,6 +149,8 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
+			}else{
+				return null;
 			}
 			List<Long> deptIds = null;
 			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
@@ -128,6 +168,8 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
+			}else{
+				return null;
 			}
 			List<Long> deptIds = null;
 			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
@@ -145,6 +187,8 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
+			}else{
+				return null;
 			}
 			List<Long> deptIds = null;
 			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
@@ -158,6 +202,8 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
+			}else{
+				return null;
 			}
 			List<Long> deptIds = null;
 			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
@@ -165,11 +211,29 @@ public class PmRequestDetailsController {
 	    	return locationDetailsService.getDepartmentsBySearchType(inputMap.get("searchType"),inputMap.get("fromDate"),inputMap.get("toDate"),deptIds);
 	    }
 	    @RequestMapping(value ="/getStatusList",method = RequestMethod.POST)
-	    public @ResponseBody List<RepresenteeViewVO> getStatusList() {
+	    public @ResponseBody List<RepresenteeViewVO> getStatusList(HttpServletRequest request) {
+	    	Long userId =null;
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
 	       return pmRequestDetailsService.getStatusList();
 	    }
 	    @RequestMapping(value ="/getRegistrationPersonDetails",method = RequestMethod.POST)
-	    public @ResponseBody CadreRegistrationVO getRegistrationPersonDetails(@RequestBody Map<String,String> inputMap ) {
+	    public @ResponseBody CadreRegistrationVO getRegistrationPersonDetails(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
+	    	Long userId =null;
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
 	       return pmRequestDetailsService.getRegistrationPersonDetails(inputMap);
 	    }
 	    @RequestMapping(value ="/getCompleteOrStatusOverviewDetails",method = RequestMethod.POST)
@@ -180,6 +244,8 @@ public class PmRequestDetailsController {
 			
 			if(userVO != null){
 				userId = userVO.getUserId();
+			}else{
+				return null;
 			}
 	    	return pmRequestDetailsService.getCompleteOrStatusOverviewDetails(userId,inputMap.get("fromDate"),inputMap.get("toDate"));
 	    }
@@ -199,6 +265,8 @@ public class PmRequestDetailsController {
 			
 			if(userVO != null){
 				userId = userVO.getUserId();
+			}else{
+				return null;
 			}
 	       return pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
 	    }
@@ -210,9 +278,27 @@ public class PmRequestDetailsController {
 			
 			if(userVO != null){
 				userId = userVO.getUserId();
+			}else{
+				return null;
 			}
 	       return pmRequestDetailsService.getPmDeptStatusIdsByUserIdsLst(userId);
 	    }
+	    
+
+	    @RequestMapping(value ="/updatePititionStatusDetails",method = RequestMethod.POST)
+	    public @ResponseBody ResultStatus updatePetitionsStatusDetails(@RequestBody Map<String,String> inputMap,HttpServletRequest request) {
+	    	Long userId =null;
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
+	       return pmRequestDetailsService.updatePetitionsStatusDetails(userId,inputMap.get("petitionIdsList"),inputMap.get("remark"),Long.valueOf(inputMap.get("statusId")));
+	    }
+	    
 	    @RequestMapping(value ="/getLeadWiseOverviewDetails",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresenteeViewVO> getLeadWiseOverviewDetails(@RequestBody Map<String,String> inputMap,HttpServletRequest request) {
 	    	Long userId =null;
@@ -221,6 +307,8 @@ public class PmRequestDetailsController {
 			
 			if(userVO != null){
 				userId = userVO.getUserId();
+			}else{
+				return null;
 			}
 	       return pmRequestDetailsService.getLeadWiseOverviewDetails(userId,inputMap.get("fromDate"),inputMap.get("toDate"));
 	    }
@@ -234,10 +322,37 @@ public class PmRequestDetailsController {
 	    if(userVO != null){
 	    userId = userVO.getUserId();
 	    }else{
-	    return null;
+	    	return null;
 	    }
-	   
-	    return pmRequestDetailsService.updatePetitionsStatusDetails(userId,inputVO.getPetitionIdsList(),inputVO.getSubworkIdsList(),inputVO.getRemarks(),inputVO.getStatusId());
+	    	return pmRequestDetailsService.updatePetitionsStatusDetails(userId,inputVO.getPetitionIdsList(),inputVO.getSubworkIdsList(),inputVO.getRemarks(),inputVO.getStatusId());
+	    }
+	    
+	    @RequestMapping(value ="/getLoginUserAccessSubDeptDesignationDetail",method = RequestMethod.POST)
+	    public @ResponseBody List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(@RequestBody KeyValueVO inputVO,HttpServletRequest request ){
+		    Long userId =null;
+		    HttpSession session=request.getSession();
+		    UserVO userVO = (UserVO) session.getAttribute("USER"); 
+		    
+		    if(userVO != null){
+		    userId = userVO.getUserId();
+		    }else{
+		    	return null;
+		    }
+		    return pmRequestDetailsService.getLoginUserAccessSubDeptDesignationDetail(inputVO.getDeptIdsList(),userId);
+	    }
+	    
+	    @RequestMapping(value ="/getDeptDesignationOfficerDetail",method = RequestMethod.POST)
+	    public @ResponseBody List<KeyValueVO> getDeptDesignationOfficerDetail(@RequestBody Map<String,String> inputMap,HttpServletRequest request ){
+		    Long userId =null;
+		    HttpSession session=request.getSession();
+		    UserVO userVO = (UserVO) session.getAttribute("USER"); 
+		    
+		    if(userVO != null){
+		    userId = userVO.getUserId();
+		    }else{
+		    	return null;
+		    }
+		    return pmRequestDetailsService.getDeptDesignationOfficerDetail(Long.valueOf(inputMap.get("deptDesignationId")) , userId);
 	    }
 	    @RequestMapping(value ="/generateCoveringLetterForPetition",method = RequestMethod.POST)
 	    public @ResponseBody ResultStatus generateCoveringLetterForPetition(@RequestBody InputVO inputVO,HttpServletRequest request ) {

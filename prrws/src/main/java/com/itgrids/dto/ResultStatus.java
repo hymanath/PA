@@ -29,6 +29,11 @@ public class ResultStatus implements Serializable{
     private String uniqueKey;
     private Long serverPrimaryKey;
     
+    public ResultStatus(){}
+    public ResultStatus(int resultCode,String message){
+    	this.resultCode = resultCode;
+    	this.message = message;
+    }
     
     public Long getServerPrimaryKey() {
 		return serverPrimaryKey;

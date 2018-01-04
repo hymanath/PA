@@ -24,7 +24,7 @@ public class PmTracking {
 	private Long pmStatusId;
 	private Long pmDepartmentDesignationId;
 	private Long pmTrackingActionId;
-	private Long pmPetitionDocumentId;
+	private Long documentId;
 	private Long pmDepartmentDesignationOfficerId;
 	private Long insertedUserId;
 	private Long updateUserId;
@@ -41,7 +41,7 @@ public class PmTracking {
 	 private PmDepartmentDesignation pmDepartmentDesignation;
 	 
 	 private PmTrackingAction PmTrackingAction;
-	 private PmPetitionDocument pmPetitionDocument;
+	 private Document document;
 	 private PmDepartmentDesignationOfficer pmDepartmentDesignationOfficer;
 	 
 	@Id
@@ -88,13 +88,7 @@ public class PmTracking {
 	public void setPmTrackingActionId(Long pmTrackingActionId) {
 		this.pmTrackingActionId = pmTrackingActionId;
 	}
-	@Column(name="pm_petition_document_id")
-	public Long getPmPetitionDocumentId() {
-		return pmPetitionDocumentId;
-	}
-	public void setPmPetitionDocumentId(Long pmPetitionDocumentId) {
-		this.pmPetitionDocumentId = pmPetitionDocumentId;
-	}
+	
 	@Column(name="pm_dept_designation_officer_id")
 	public Long getPmDepartmentDesignationOfficerId() {
 		return pmDepartmentDesignationOfficerId;
@@ -164,14 +158,7 @@ public class PmTracking {
 	public void setPmTrackingAction(PmTrackingAction pmTrackingAction) {
 		PmTrackingAction = pmTrackingAction;
 	}
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "pm_petition_document_id", insertable = false, updatable = false)
-	public PmPetitionDocument getPmPetitionDocument() {
-		return pmPetitionDocument;
-	}
-	public void setPmPetitionDocument(PmPetitionDocument pmPetitionDocument) {
-		this.pmPetitionDocument = pmPetitionDocument;
-	}
+
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pm_dept_designation_officer_id", insertable = false, updatable = false)
 	public PmDepartmentDesignationOfficer getPmDepartmentDesignationOfficer() {
@@ -209,6 +196,24 @@ public class PmTracking {
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	
+	@Column(name="document_id")
+	public Long getDocumentId() {
+		return documentId;
+	}
+	
+	public void setDocumentId(Long documentId) {
+		this.documentId = documentId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "document_id", insertable = false, updatable = false)
+	public Document getDocument() {
+		return document;
+	}
+	public void setDocument(Document document) {
+		this.document = document;
 	}
 	
 }

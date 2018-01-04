@@ -1,5 +1,7 @@
 package com.itgrids.dao.impl;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,5 +17,9 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 	SessionFactory sessionFactory;
 	PmTrackingDAO(){
 		super(PmTracking.class);
+	}
+	
+	public List<Object[]> getPetitionTrackingHistoryDetails(Long petitionId,List<Long> subWorksList){
+		return null;
 	}
 }

@@ -6,12 +6,13 @@ import java.util.List;
 public class KeyValueVO {
 	private Long key;
 	private String value;
+	private Long count=0L;
 	private String electionType;
-	private List<Long> deptIdsList = new ArrayList<Long>();
+	private List<Long> deptIdsList = new ArrayList<Long>(0);
 	private String designation;
 	private Long designationId;
-	
-	
+	private List<KeyValueVO> subList = new ArrayList<KeyValueVO>(0);
+			
 	public String getDesignation() {
 		return designation;
 	}
@@ -29,7 +30,24 @@ public class KeyValueVO {
 		this.key = key;
 		this.value = value;
 	}
+	public KeyValueVO(Long key,String value,Long count){
+		this.key = key;
+		this.value = value;
+		this.count = count;
+	}
 	
+	public List<KeyValueVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<KeyValueVO> subList) {
+		this.subList = subList;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
 	public Long getKey() {
 		return key;
 	}

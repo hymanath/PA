@@ -21,7 +21,7 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 		super(PmOfficerUser.class);
 	}
 	
-	public Object[] getPmOffceUserDetails(Long userId){
+	public List<Object[]> getPmOffceUserDetails(Long userId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.pmDepartmentDesignation.pmDepartment.pmDepartmentId,");// 0-deptId
 		sb.append(" model.pmDepartmentDesignation.pmDepartment.department,");//1-deptName
@@ -34,7 +34,7 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 				+ " model.userId=:userId " );
 		Query query = getSession().createQuery(sb.toString());//
 		query.setParameter("userId", userId);
-		return (Object[]) query.uniqueResult();
+		return query.list();
 	}
 	public List<Object[]> getPmDeptIdByUserId(Long userId){
 		StringBuilder sb = new StringBuilder();
@@ -52,34 +52,32 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 		
 	}
 	
-	public List<Long> getPmDeptStatusIdByUserId(Long userId){
-		StringBuilder sb = new StringBuilder();
-		sb.append(" select distinct dept.pmDepartmentId from PmOfficerUser model "
-				  + " left outer join model.pmDepartmentDesignation.pmDepartment dept ");
-				if(userId != null && userId.longValue() >0l){
-					sb.append(" where model.userId =:userId " );
-				}
-				sb.append(" and model.pmDepartmentDesignation.isDeleted = 'N'");
-				sb.append(" and model.pmDepartmentDesignation.pmDepartment.isDeleted = 'N'");
-				
-		Query query = getSession().createQuery(sb.toString());
-		if(userId != null && userId.longValue() >0l){
-			query.setParameter("userId", userId);
-		}	
-		return query.list();
-		
-	}
-	
 	public List<Long> getPmDeptStatusIdByUserIdsLst(Long userId){
 
+		if(userId != null && userId.longValue()>0L){
+			StringBuilder sb = new StringBuilder();
+			sb.append("select distinct model1.pmStatusId  from PmOfficerUser model,PmDepartmentDesignationStatus model1 "
+					+ " where model.pmDepartmentDesignationId =  model1.pmDepartmentDesignationId ");
+					if(userId != null && userId.longValue() >0l){
+						sb.append(" and model.userId =:userId");
+					}
+					sb.append(" and model.isActive ='Y'");
+			Query query = getSession().createQuery(sb.toString());
+			if(userId != null && userId.longValue() >0l){
+				query.setParameter("userId", userId);
+			}	
+			return query.list();
+		}
+		return null;
+	}
+	
+	public List<Long> getPmDeptDesignationIdByUserId(Long userId){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model1.pmStatusId  from PmOfficerUser model,PmDepartmentDesignationStatus model1 "
-				+ " where model.pmDepartmentDesignationId =  model1.pmDepartmentDesignationId ");
-				if(userId != null && userId.longValue() >0l){
-					sb.append(" and model.userId =:userId");
-				}
-				sb.append(" and model.isActive ='Y'");
-		Query query = getSession().createQuery(sb.toString());
+		sb.append(" select distinct dept.pmDepartmentDesignationId from PmOfficerUser model where model.userId =:userId " 
+				  +"  and model.pmDepartmentDesignation.isDeleted = 'N'"
+				  + " and model.pmDepartmentDesignation.pmDepartment.isDeleted = 'N'");
+		
+		Query query = getSession().createQuery(sb.toString());//
 		if(userId != null && userId.longValue() >0l){
 			query.setParameter("userId", userId);
 		}	
