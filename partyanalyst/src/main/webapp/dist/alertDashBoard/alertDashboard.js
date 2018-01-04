@@ -697,7 +697,9 @@ function getAlertStatusCommentsTrackingDetails()
 					actionTypeStatusId : 0,            
 					task : "",  
 					fromDate2 : "",
-					toDate2 : ""
+					toDate2 : "",
+					radioVal : '',
+					verificationUserType :"programCommittee"
 			}
 			$.ajax({      
 				type:'GET',
@@ -779,7 +781,10 @@ function getAlertStatusCommentsTrackingDetails()
 					actionTypeStatusId:actionTypeStatusId,        
 					task : "verification",
 					fromDate2 : fromDat2,
-					toDate2 : toDat2
+					toDate2 : toDat2,
+					radioVal : '',
+					verificationUserType :"programCommittee"
+					
 				}
 			$.ajax({
 				type:'GET',
@@ -854,7 +859,9 @@ function getAlertStatusCommentsTrackingDetails()
 					actionTypeStatusId:actionTypeStatusId,        
 					task : "verification",
 					fromDate2 : fromDat2,
-					toDate2 : toDat2
+					toDate2 : toDat2,
+					radioVal : '',
+					verificationUserType :"programCommittee"
 				}
 			$.ajax({
 				type:'GET',
@@ -920,7 +927,10 @@ function getAlertStatusCommentsTrackingDetails()
 					actionTypeStatusId : 0,              
 					task : "",
 					fromDate2 : "",
-					toDate2 : ""   
+					toDate2 : "" ,
+					radioVal : '',
+					verificationUserType :"programCommittee"
+					
 			}
 			$.ajax({
 				type:'GET',       

@@ -4247,5 +4247,8 @@
 	 <bean id="momAppUserAccessDAO" class="com.itgrids.partyanalyst.dao.hibernate.MomAppUserAccessDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	  <bean id="alertVerificationUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertVerificationUserDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	 
 </beans>		

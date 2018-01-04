@@ -3705,7 +3705,8 @@
         <property name="alertDepartmentCommentNewDAO" ref="alertDepartmentCommentNewDAO"></property>
         <property name="govtProposalPropertyCategoryDAO" ref="govtProposalPropertyCategoryDAO"></property>		
         <property name="smsCountrySmsService" ref="smsCountrySmsService"></property>
-        <property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO"></property>		
+        <property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO"></property>
+        <property name="alertVerificationUserDAO" ref="alertVerificationUserDAO"></property>		
 	</bean>            
 	<!-- Debate End -->
 	

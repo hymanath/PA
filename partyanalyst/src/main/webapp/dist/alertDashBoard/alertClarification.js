@@ -1,5 +1,6 @@
      getAlertVerificationStatus();
-	function getAlertVerificationStatus(){
+	 getAlertVerificationUsers();
+	 function getAlertVerificationStatus(){
 		var jsObj={
 			actionTypeId:1
 		  }
@@ -17,6 +18,27 @@
 					$("#verificationStatusSlctBxId").html(str);
 				 } 
 				 getAlertVerificationDetails();
+		  }); 
+	 }
+	 
+	function getAlertVerificationUsers(){
+		var jsObj={
+			verificationUserTypeId:2
+		  }
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAlertVerificationUsersAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+			 if(result != null && result.length > 0){
+					 var str='';
+					 str+='<option value="0">Select Verification Assigned User</option>';
+					 for(var i in result){
+					   str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+					 }
+					$("#verificationUserSeletBoxId").html(str);
+				 } 
 		  }); 
 	 }
 
@@ -95,11 +117,22 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 	});
 	$(document).on("click","#updateVerificationStatusBtnId",function(){
 		$("#alertIdForClarification").val(alertId);
+		
+		/* Validation Start */
 		var commment = $(".commentCls").val();
 		 if(commment != null && commment.trim().length == 0){
 		     alert("Please Enter Comments");
              return;			 
 		 }
+		 var assignedUserId = $("#verificationUserSeletBoxId").val();
+		 var statusId = $("#clarificationStatusId").val();
+		 if (statusId == 0) {
+			  if (assignedUserId == 0) {
+				     alert("Please Select Verification Assigned User.");
+                      return;	 
+			  }
+		 }
+		 /*Validation End */
 		 $("#updateVerificationStatusBtnId").attr('disabled','disabled');
 	 	var uploadHandler = {
 				upload: function(o) {
@@ -223,6 +256,8 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 				 for(var i=0;i<entitleArrs.length;i++){
 						if(entitleArrs[i].trim()=="ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT"){ // info cell user
 						
+							$("#verificationUserSeletBoxId").hide();
+							
 							var statusId = $("#clarificationStatusId").val();
 							if(statusId > 0){
 								$(".hideUpdateBlockCls").show();
@@ -244,12 +279,14 @@ $(document).on("click","#isClarificationRequiredChckBxId",function(){
 						$(".hideVarificationStatusCls").show();
 						if(statusId > 0){
 							$("#alertStatusHeadingId").show();	
+							$("#verificationUserSeletBoxId").hide();	
 							$(".hideUpdateBlockCls").show();
 							$("#verificationCreationHeadingId").hide();
 							if(statusId == 2){
 							 $(".notificationHeadingCls").show();	
 							}
 						}else{
+							$("#verificationUserSeletBoxId").show();
 						   $("#verificationCreationHeadingId").show();		
 						   $("#alertStatusHeadingId").hide();
 						}
