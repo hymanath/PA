@@ -53,7 +53,7 @@ function buildOverAllCommitteeWiseMembersCounts(result){
 	var str='';
 	var overAllTrainedCount = result.committeeNoSmartPhone+result.cadreNoSmartPhoneCount+result.publicNoSmartPhoneCount+result.overAllInstalledCount;
 	str+'<div class="row">';
-	str+='<h4 class="text-capitalize m_top10"><b>OVERALL INSTALLATIONS</b></h4>';
+	str+='<h4 class="text-capitalize m_top10"><b>Summary</b></h4>';
 		str+='<div class="m_top5">';
 		  str+='<div class="table-responsive">';
 				str+='<table class="table tableTraining bg_ED">';

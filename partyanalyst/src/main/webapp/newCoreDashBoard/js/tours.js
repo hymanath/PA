@@ -4,8 +4,8 @@
   var globalStateIdForTour=1; //for 
  var globalFormTourDate;
  var glovalToTourDate;
-var customStartToursDate = moment().subtract(1,'month').startOf("month").format('DD/MM/YYYY')
-var customEndToursDate = moment().subtract(1,'month').endOf("month").format('DD/MM/YYYY');
+var customStartToursDate = moment().startOf('month').format('DD/MM/YYYY')
+var customEndToursDate = moment().format('DD/MM/YYYY');
 	function globalToursCalls(type)
 	{
 		 if (type == "selectedDate") {
@@ -77,7 +77,7 @@ var customEndToursDate = moment().subtract(1,'month').endOf("month").format('DD/
 			globalFormTourDate = datesArr[0]; 
 			glovalToTourDate = datesArr[1]; 
 		}
-      $("#toursNewHeadingId").html("Last Month( "+dates+" )");
+      $("#toursNewHeadingId").html("THIS Month( "+globalFormTourDate+" To "+glovalToTourDate+")");
       $('#tourNewDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 	   var dates= $("#tourNewDateRangePickerId").val();
 	   $("#toursNewHeadingId").html(picker.chosenLabel+" ( "+dates+" )");

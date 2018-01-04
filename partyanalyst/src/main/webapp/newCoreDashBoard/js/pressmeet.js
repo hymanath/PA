@@ -8,7 +8,7 @@ wurl = url.substr(0,(url.indexOf(".in")+3));
 var performanceResult = '';
 var fromDate = moment().startOf('month').format("DD-MM-YYYY");
 var toDate = moment().endOf('month').format("DD-MM-YYYY");
-$("#pressMeetHeadDate").html("THIS MONTH("+fromDate+"-"+toDate+")");
+$("#pressMeetHeadDate").html("THIS MONTH ("+moment().startOf('month').format("DD/MM/YYYY")+" To "+moment().endOf('month').format("DD/MM/YYYY")+")");
 function globalPressMeetMediaCalls(type)
 {
 	if(type == "default"){
@@ -16,19 +16,19 @@ function globalPressMeetMediaCalls(type)
 		$('#dateRangePressmeetId').data('daterangepicker').setEndDate(moment());
 		fromDate = moment().startOf('month').format("DD-MM-YYYY")
 		toDate = moment().endOf('month').format("DD-MM-YYYY")
-		$("#pressMeetHeadDate").html("THIS MONTHa"+" ( "+fromDate+"-"+toDate+" )");
+		$("#pressMeetHeadDate").html("THIS MONTH("+moment().startOf('month').format("DD/MM/YYYY")+" To "+moment().endOf('month').format("DD/MM/YYYY")+")");
 	}else if(type == "currentMonth"){
 		$('#dateRangePressmeetId').data('daterangepicker').setStartDate(moment().startOf("month"));
 		$('#dateRangePressmeetId').data('daterangepicker').setEndDate(moment().endOf("month"));
 		fromDate = moment().startOf("month").format("DD-MM-YYYY")
 		toDate = moment().endOf("month").format("DD-MM-YYYY")
-		$("#pressMeetHeadDate").html("THIS MONTHq"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+"-"+moment().endOf("month").format("DD-MM-YYYY")+" )");
+		$("#pressMeetHeadDate").html("THIS MONTH("+moment().startOf('month').format("DD/MM/YYYY")+" To "+moment().endOf('month').format("DD/MM/YYYY")+")");
 	}else if(type == "lastMonth"){
 		$('#dateRangePressmeetId').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
 		$('#dateRangePressmeetId').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
 		fromDate = moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")
 		toDate = moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")
-		$("#pressMeetHeadDate").html("LAST MONTHs"+" ( "+moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")+"-"+moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")+" )");
+		$("#pressMeetHeadDate").html("LAST MONTHs"+" ( "+moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY")+"-"+moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY")+" )");
 	}
 	$("#dateRangePressmeetId").val(fromDate+" - "+toDate);
 	preemeeetOnloadCalls();

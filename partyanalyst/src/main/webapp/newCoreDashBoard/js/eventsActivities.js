@@ -1819,7 +1819,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 						str1+='<div class="panel-heading" role="tab">';
 							str1+='<h4 class="panel-title">'+result[i].name+'';
 								str1+='<span class="activitesExpandIcon" attr_search_type="singleActivity"  attr_level_id="0" attr_activity_name="\''+result[i].name+'\'" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center" style="padding-top: 2px;padding-bottom: 2px;padding-left: 3px;padding-right: 4px;"></i></span>';
-								str1+='<a role="button" style="display:inline-block;float:right"	class="panelBlockCollapseIcon collapsed activitiesClass" attr_activity_name="\''+result[i].name+'\'" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneActJ'+i+'" aria-expanded="true" aria-controls="collapseOneActJ'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
+								str1+='<a role="button" style="display:inline-block;float:right"	class="panelBlockCollapseIcon collapsed activitiesClass triggerJanmabhoomiCls" attr_activity_name="\''+result[i].name+'\'" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneActJ'+i+'" aria-expanded="true" aria-controls="collapseOneActJ'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
 							str1+='</h4>';
 						str1+='</div>';
 								str1+='<div id="collapseOneActJ'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneActJ'+i+'">';
@@ -1838,7 +1838,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 	str+='</div>';
 	$("#activityEventsListNew").html(str);
 	$("#janmabhoomiEventDivId").html(str1);
-	
+	$(".triggerJanmabhoomiCls").trigger("click");
 	
 	$(".overAllActivityCls").attr("attr_id",activityIdsString);
 	$(".overAllActivityCls").attr("attr_level_id",0);
@@ -1875,14 +1875,12 @@ function buildActivityCounts(result,divId,activityName,activityId)
 		var updatedCount = parseInt(result[i].yesCount)+parseInt(result[i].noCount)+parseInt(result[i].mayBecount);
 		var notUpdatedCount = parseInt(totalCount)-parseInt(updatedCount);
 		
-		str+='<div class="row">';
+		
 			str+='<h5 class="text-capital">'+result[i].name+' <span class="activitesExpandIcon" attr_search_type="scopeId" attr_level_id="'+result[i].id+'"  attr_activity_name='+activityName+' attr_id="'+activityId+'" style="padding-top: 2px;padding-bottom: 2px;padding-left: 5px;padding-right: 4px;"><i class="glyphicon glyphicon-fullscreen"></i> </span></h5>';
-		str+='</div>';
-		str+='<div class="row m_top10">';
-			str+='</div><br>';
+		
+		
 			
-			str+='<div>';
-			str+='<table class="table bg_ED tablePaddingSyle table-bordered">';
+			str+='<table class="table bg_ED tablePaddingSyle table-bordered m_top10">';
 				str+='<tbody>';
 					str+='<tr>';
 						
@@ -1993,7 +1991,7 @@ function buildActivityCounts(result,divId,activityName,activityId)
 					str+='</tr>';
 				str+='</tbody>';
 			str+='</table>';
-		str+='</div>';
+		
 	}
 	
 	$("#"+divId).html(str);

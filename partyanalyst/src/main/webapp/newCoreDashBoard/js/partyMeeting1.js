@@ -513,10 +513,11 @@ var globalStateId=1;
 			getDistWiseMeetingDtlsForDiffLevelOfMeetings(locLevelId,partyMeetingGroupId,sessionId,num);
 		});
 	}
-	$("#dateRangeIdForMeetings").daterangepicker({
+	
+	$("#dateRangeIdForMeetings").daterangepicker({//
 		opens: 'left',
-		 startDate: moment().subtract(1, 'month').startOf('month'),
-         endDate: moment().subtract(1, 'month').endOf('month'),
+		 startDate: customStartDateMeetings,
+         endDate: customEndDateMeetings,
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
@@ -531,7 +532,8 @@ var globalStateId=1;
 		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	});
-	
+	var datesPM = $("#dateRangeIdForMeetings").val();
+	 $("#dateMeetingHeadingId").html("THIS Month("+customStartDateMeetings+" To "+customEndDateMeetings+")");
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
 	  
 		customStartDateMeetings = picker.startDate.format('DD/MM/YYYY');
