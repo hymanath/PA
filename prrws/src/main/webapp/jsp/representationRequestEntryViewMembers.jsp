@@ -286,8 +286,11 @@
   <div class="modal-dialog" role="document" style="width:60%;margin:auto">
     <div class="modal-content">
       <div class="modal-header">
-		<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<div class="row">
+			<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	  </div>
+	  <form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
+      <div class="modal-body">
+        <div class="row totalHideShowCls">
 			<div class="col-sm-4">
 				<h4>Total Works <span id="totalWorksId">-0</span></h4>
 			</div>
@@ -302,7 +305,7 @@
 	  <form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
       <div class="modal-body">
         
-		<div class="row">
+		<div class="row" id="leadDivId">
 			<div class="col-sm-4">
 				<label>Lead</label>
 				<select class="form-control chosen-select" id="leadId" name="leadId">
@@ -310,7 +313,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" id="grantDivId">
 			<div class="col-sm-4">
 				<label>Grant Under</label>
 				<select class="form-control chosen-select" id="grantId" name="grantId">
@@ -318,7 +321,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" id="assignOfficerDivId">
 			<div class="col-sm-4">
 				<label>Assign To</label>
 				<select class="form-control chosen-select popUpChangesCls" id="assignToId" name="deptDesigId">
@@ -333,16 +336,21 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-4" id="endorsementDivId">
 				<label>Endorsment NO</label>
 				<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO" name="endorsementNO"> 
 			</div>
-			<div class="col-sm-8">
-			<label>Remarks</label>
+			<div class="col-sm-8" id="remarksDivId">
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 		</div>
-		<div class="row m_top10">
+			<div class="row" id="commentsDivId">
+			<div class="col-sm-8" >
+			<label>Comment</label>
+			<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
+			</div>
+			</div>
+		<div class="row m_top10" id="fileUploadingDivId">
 			<div class="col-sm-12">
 					<h4 class="panel-title f_18"> UPLOAD COVERING LETTER </h4>
 					<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>

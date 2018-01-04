@@ -1358,23 +1358,23 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								
 								if(accessStatusList[s].key == 1){
 									if(!isAllEndorsed)
-										str+='<button class="statusCls endorseCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="endosePopup" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
+										str+='<button class="statusCls endorseCls modelEndoreCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="endosePopup" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
 									str+='<div id="endorseErrMsgId" style="color:red;"></div>';
 								}
 								if(accessStatusList[s].key == 5){
-										str+='<button class="statusCls btn btn-danger" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="notPossiblePopup" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
+										str+='<button class="statusCls btn btn-danger modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="notPossiblePopup" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
 								}
 								if(accessStatusList[s].key == 3){
-										str+='<button class="statusCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+										str+='<button class="statusCls btn btn-success modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
 								}
 								if(accessStatusList[s].key == 4){
-										str+='<button class="statusCls btn btn-warning" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+										str+='<button class="statusCls btn btn-warning modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
 								}
 								if(accessStatusList[s].key == 6){
-										str+='<button class="statusCls btn btn-primary" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD ACTION MEMO </button>';
+										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD ACTION MEMO </button>';
 								}
 								if(accessStatusList[s].key == 7){
-										str+='<button class="statusCls btn btn-primary" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD DETAILED REPORT </button>';
+										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD DETAILED REPORT </button>';
 								}
 								
 								str+='</div>';
@@ -1831,3 +1831,34 @@ $.ajax({
 	$("#officerId").trigger('chosen:updated');
 });	
 }
+
+$(document).on('click','.modelEndoreCls',function(){
+	var statusId = $(this).attr("attr_statusId");
+	if(statusId == 1){
+		$("#endorseMentModalDivId").modal('show');
+		$("#commentsDivId").hide();
+	}else if(statusId == 6 || statusId == 7){
+		
+	$("#endorseMentModalDivId").modal('show');
+		$("#remarksDivId").show();
+		$("#fileUploadingDivId").show();
+		$(".totalHideShowCls").hide();
+		$("#leadDivId").hide();
+		$("#grantDivId").hide();
+		$("#assignOfficerDivId").hide();
+		$("#commentsDivId").hide();
+		$("#endorsementDivId").hide();
+		
+	}else if(statusId == 3 || statusId == 4 || statusId == 5){
+		$("#endorseMentModalDivId").modal('show');
+		$(".totalHideShowCls").hide();
+		$("#commentsDivId").show();
+		$("#remarksDivId").hide();
+		$("#fileUploadingDivId").hide();
+		$("#leadDivId").hide();
+		$("#grantDivId").hide();
+		$("#assignOfficerDivId").hide();
+		$("#endorsementDivId").hide();
+	}
+	
+})
