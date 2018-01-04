@@ -1538,8 +1538,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(userAccessStatusVO != null && commonMethodsUtilService.isListOrSetValid(userAccessStatusVO.getDeptIdsList())){
 					KeyValueVO pendingVO = statusMap.get(1L);//pending endorsment 
 					if(pendingVO != null){
-						for (Long statusId : userAccessStatusVO.getDeptIdsList()) {
-							if(statusMap.get(statusId) != null)
+						for (Long statusId : statusMap.keySet()) {
+							if(userAccessStatusVO.getDeptIdsList().contains(statusId))
 								pendingVO.getSubList().add(new KeyValueVO(statusId, statusMap.get(statusId).getValue()));
 						}
 					}

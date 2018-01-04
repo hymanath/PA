@@ -361,7 +361,9 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
-			}
+			}else{
+		    	return null;
+		    }
 			List<Long> deptIds = null;
 			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
 			// deptIds = deptVO.getDeptIdsList();
@@ -383,7 +385,9 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
-			}
+			}else{
+		    	return null;
+		    }
 			inputVO.setId(userId);
 	    	return pmRequestDetailsService.endorsingSubWorksAndAssigningToOfficer(inputVO);
 	    }
