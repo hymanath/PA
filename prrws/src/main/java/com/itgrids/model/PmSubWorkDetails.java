@@ -34,7 +34,7 @@ public class PmSubWorkDetails {
 	private Long pmStatusId;
 	private String coveringLetterPath;
 	private Long pmWorkTypeId;
-	private Long workEndorsmentNo;
+	private String workEndorsmentNo;
 	
 	private PmWorkType pmWorkType;
     private User insertedUser;
@@ -322,10 +322,10 @@ public class PmSubWorkDetails {
 		this.updatedUserId = updatedUserId;
 	}
 	@Column(name="work_endorsment_no")
-	public Long getWorkEndorsmentNo() {
+	public String getWorkEndorsmentNo() {
 		return workEndorsmentNo;
 	}
-	public void setWorkEndorsmentNo(Long workEndorsmentNo) {
+	public void setWorkEndorsmentNo(String workEndorsmentNo) {
 		this.workEndorsmentNo = workEndorsmentNo;
 	}
 	@Column(name="endorsment_date")

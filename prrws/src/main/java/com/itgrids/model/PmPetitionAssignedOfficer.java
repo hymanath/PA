@@ -24,6 +24,7 @@ public class PmPetitionAssignedOfficer {
 	private Long  pmDepartmentDesignationId;
 	private Long  pmDepartmentDesignationOfficerId;
 	private String isDeleted;
+	private String remarks;
 	private Long insertedUserId;
 	private Long updatedUserId;
 	private Date insertedTime;
@@ -156,5 +157,13 @@ public class PmPetitionAssignedOfficer {
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
 	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	
+	
 	
 }
