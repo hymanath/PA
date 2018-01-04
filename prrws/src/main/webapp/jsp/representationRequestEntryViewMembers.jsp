@@ -13,6 +13,10 @@
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
+<!-- for file uploader -->
+<link href="Assests/Plugins/dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
+<link href="Assests/Plugins/dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />  
+<!-- for file uploader -->
 <link rel="stylesheet" type="text/css" href="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.css" media="screen" />
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <!--<link href="Assests/Plugins/sliderbar/bootstrap-slider.css" rel="stylesheet" type="text/css"/>-->
@@ -278,7 +282,77 @@
   </div>
 </div>
 </div>
-
+<div class="modal fade" id="endorseMentModalDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:60%;margin:auto">
+    <div class="modal-content">
+      <div class="modal-header">
+			<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	  </div>
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-sm-4">
+				<h4>Total Works - 20</h4>
+			</div>
+			<div class="col-sm-4">
+				<h4>Selected Works - 20</h4>
+			</div>
+			<div class="col-sm-4">
+				<h4>Not Selected Works - 20</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<label>Lead</label>
+				<select class="form-control chosen-select" id="leadId">
+					<option value="0">Select Lead</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<label>Grant Under</label>
+				<select class="form-control chosen-select" id="grantId">
+					<option value="0">Select Grant Under</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<label>Assign To</label>
+				<select class="form-control chosen-select" id="assignToId">
+					<option value="0">Select Assign To</option>
+				</select>
+			</div>
+			<div class="col-sm-4">
+				<label>Officer Name</label>
+				<select class="form-control chosen-select" id="officerId">
+					<option value="0">Select Officer Name</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<label>Endorsment NO</label>
+				<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO">
+			</div>
+			<div class="col-sm-8">
+				<textarea class="form-control" rows="3" id="remarksId"></textarea>
+			</div>
+		</div>
+		<div class="row m_top10">
+			<div class="col-sm-12">
+					<h4 class="panel-title f_18"> UPLOAD DOCUMENTS </h4>
+					<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>
+			</div>
+		</div>	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default modalCloseCls closeSecondModal" data-dismiss="modal">Close</button>
+      </div>
+  
+  </div>
+</div>
+</div>
 
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
@@ -301,6 +375,8 @@
 <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js" type="text/javascript"></script>
 <!-- for file uploader -->
 <script type="text/javascript" src="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.js"></script>
+<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/jquery.filer.min.js"></script>
+<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/singleFileuploadDocuments.js"></script>
 <script src="Assests/representationRequest/representationRequestEntryViewMembers.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).on("click",".closeSecondModal",function(){

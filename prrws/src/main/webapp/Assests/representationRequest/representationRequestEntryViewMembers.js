@@ -1336,10 +1336,10 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								str+='<div class="col-sm-2 m_top10 ">';
 								if(accessStatusList[s].key == 1){
 									if(!isAllEndorsed)
-										str+='<button class="statusCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" > ENDORSE </button>';
+										str+='<button class="statusCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" attr_type="endosePopup"> ENDORSE </button>';
 								}
 								if(accessStatusList[s].key == 5){
-										str+='<button class="statusCls btn btn-danger" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" > NOT POSSIBLE </button>';
+										str+='<button class="statusCls btn btn-danger" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;" attr_type="notPossiblePopup"> NOT POSSIBLE </button>';
 								}
 								str+='</div>';
 							}
@@ -1548,3 +1548,7 @@ function updatePetitionStatusDetails(){
 		}
 	  });
 	}
+$(document).on("click",".statusCls",function(){
+	$("#endorseMentModalDivId").modal("show");
+	 initializeSingleUploadDocument("uploadEndorsementDocId");
+ });
