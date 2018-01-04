@@ -1,6 +1,5 @@
 /*swadhin*/
 function initializeSingleUploadDocument(id) {
-	alert(id)
 	//alert(candidateId)
 	var itemStr = '';
 	itemStr+='<li class="jFiler-item"><span class="jFiler-item-others">{{fi-name}}</span> <span class="tooltipCls" data-toggle="tooltip" data-placement="top" title="Remove Work Document"><a class="icon-jfi-trash jFiler-item-trash-action"></a></span></li>';
