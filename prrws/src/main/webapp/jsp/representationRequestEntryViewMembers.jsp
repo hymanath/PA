@@ -344,7 +344,7 @@
 		</div>
 		<div class="row m_top10">
 			<div class="col-sm-12">
-					<h4 class="panel-title f_18"> UPLOAD DOCUMENTS </h4>
+					<h4 class="panel-title f_18"> UPLOAD COVERING LETTER </h4>
 					<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>
 			</div>
 		</div>	
