@@ -3225,3 +3225,10 @@ background-color:#FFE08E !important;
     width: 25px;
 	background-color:#ddd;
 }
+.paddingBg{
+	padding:3px;
+	background-color:#ddd;
+}
+.activeBgcolor{
+	background-color:#ddd;
+}

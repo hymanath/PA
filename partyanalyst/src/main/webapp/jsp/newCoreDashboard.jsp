@@ -2449,7 +2449,7 @@
 							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="meetings">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
-									meetings - <small class="text-muted" id="dateMeetingHeadingId">Last Month</small>
+									meetings - <small class="text-muted" id="dateMeetingHeadingId"></small>
 								</h4>
 							</div>
 							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="meetings">
@@ -3313,7 +3313,7 @@
 						<div class="col-md-8 col-sm-8 col-xs-12">  
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
-								seve mitra - <small class="text-muted boothCommitteesDate">OVERALL (TILL NOW)</small>
+								seva mitra - <small class="text-muted boothCommitteesDate">OVERALL (TILL NOW)</small>
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-12">
