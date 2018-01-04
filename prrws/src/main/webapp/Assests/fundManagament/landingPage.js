@@ -1673,20 +1673,20 @@ function spikeData(ajaxresp)
 	str+='<div class="row" >';
 		str+='<div class="col-sm-12 text-right">';
 		if(ajaxresp.weekType == "Decrement"){
-			str+='<h5 style="margin-top: 0px"><span class="m_top5" style="font-size:13px;">PREV/THIS&nbsp;WEEK - </span> <b>'+ajaxresp.previousWeekCount+'/'+ajaxresp.thisWeekCount+'&nbsp;'+ajaxresp.weekPerc+'%</b><span><i class="fa fa-arrow-down text-success" aria-hidden="true"></i></span>';
+			str+='<h5 style="margin-top: 0px"><span class="m_top5" style="font-size:13px;">PREV/LAST&nbsp;7 DAYS - </span> <b>'+ajaxresp.previousWeekCount+'/'+ajaxresp.thisWeekCount+'&nbsp;'+ajaxresp.weekPerc+'%</b><span><i class="fa fa-arrow-down text-success" aria-hidden="true"></i></span>';
 			str+='</h5>';
 		}else{
-			str+='<h5 style="margin-top: 0px;"><span class="m_top5" style="font-size:13px;">PREV/THIS&nbsp;WEEK - </span> <b>'+ajaxresp.previousWeekCount+'/'+ajaxresp.thisWeekCount+'&nbsp;'+ajaxresp.weekPerc+'%</b><span><i class="fa fa-arrow-up text-danger" aria-hidden="true"></i></span>';
+			str+='<h5 style="margin-top: 0px;"><span class="m_top5" style="font-size:13px;">PREV/LAST&nbsp;7 DAYS - </span> <b>'+ajaxresp.previousWeekCount+'/'+ajaxresp.thisWeekCount+'&nbsp;'+ajaxresp.weekPerc+'%</b><span><i class="fa fa-arrow-up text-danger" aria-hidden="true"></i></span>';
 			str+='</h5>';
 		}
 			
 		str+='</div>';
 		str+='<div class="col-sm-12 text-right m_top10">';
 		if(ajaxresp.monthType == "Decrement"){
-			str+='<h5 class="" style="margin-top: 0px;margin-bottom: 10px;"><span class="m_top5" style="font-size:13px;">PREV/THIS&nbsp;MONTH - </span><b>'+ajaxresp.previousMonthCount+'/'+ajaxresp.thisMonthCount+'&nbsp;'+ajaxresp.mnthPerc+'%</b><span><i class="fa fa-arrow-down text-success" aria-hidden="true"></i></span>';
+			str+='<h5 class="" style="margin-top: 0px;margin-bottom: 10px;"><span class="m_top5" style="font-size:13px;">PREV/LAST&nbsp;30 DAYS - </span><b>'+ajaxresp.previousMonthCount+'/'+ajaxresp.thisMonthCount+'&nbsp;'+ajaxresp.mnthPerc+'%</b><span><i class="fa fa-arrow-down text-success" aria-hidden="true"></i></span>';
 			str+='</h5>';
 		}else{
-			str+='<h5 class="" style="margin-top: 0px; margin-bottom: 10px;"><span class="m_top5" style="font-size:13px;">PREV/THIS&nbsp;MONTH - </span><b>'+ajaxresp.previousMonthCount+'/'+ajaxresp.thisMonthCount+'&nbsp;'+ajaxresp.mnthPerc+'%</b><span><i class="fa fa-arrow-up text-danger" aria-hidden="true"></i></span>';
+			str+='<h5 class="" style="margin-top: 0px; margin-bottom: 10px;"><span class="m_top5" style="font-size:13px;">PREV/LAST&nbsp;30 DAYS - </span><b>'+ajaxresp.previousMonthCount+'/'+ajaxresp.thisMonthCount+'&nbsp;'+ajaxresp.mnthPerc+'%</b><span><i class="fa fa-arrow-up text-danger" aria-hidden="true"></i></span>';
 			str+='</h5>';
 		}
 			

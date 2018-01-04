@@ -35,6 +35,9 @@ public class NregsDataVO implements Serializable{
 	private Long villagesInRed = 0l;
 	private Long villagesInOrange = 0l;
 	private Long VillagesInGreen = 0l;
+	private Long constiInGold = 0l;
+	private Long mandalsInGold = 0l;
+	private Long VillagesInGold = 0l;
 	
 	private List<NregsDataVO> distConsCuntList = new ArrayList<NregsDataVO>(0);
 	private List<NregsDataVO> distMandalCuntList = new ArrayList<NregsDataVO>(0);
@@ -1052,6 +1055,24 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setThisFinYear(String thisFinYear) {
 		this.thisFinYear = thisFinYear;
+	}
+	public Long getConstiInGold() {
+		return constiInGold;
+	}
+	public void setConstiInGold(Long constiInGold) {
+		this.constiInGold = constiInGold;
+	}
+	public Long getMandalsInGold() {
+		return mandalsInGold;
+	}
+	public void setMandalsInGold(Long mandalsInGold) {
+		this.mandalsInGold = mandalsInGold;
+	}
+	public Long getVillagesInGold() {
+		return VillagesInGold;
+	}
+	public void setVillagesInGold(Long villagesInGold) {
+		VillagesInGold = villagesInGold;
 	}
 	
 	

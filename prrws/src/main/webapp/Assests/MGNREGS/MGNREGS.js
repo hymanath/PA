@@ -331,8 +331,10 @@ var $windowWidth = $(window).width();
 		}
 		getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,menuLocationId,'Timely Payment',programType)
 	}); 
+	var globalTimelyPaymentType;
 	$(document).on('click','.timelyPaymentOverviewCls', function(){
 		var programType = $(this).attr("attr_type");
+		globalTimelyPaymentType = programType;
 		var levelId = $(this).attr("levelId");
 		var menuLocationId = '';
 		var menuLocationType = '';
@@ -2407,7 +2409,34 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 							}
 						str1+='</div>';	
 					str1+='</td>';
-					str1+='<td>';
+					if(globalDivName != null && globalDivName == "Mandal buildings1"){
+						str1+='<td>';
+						str1+='<div class="col-sm-12">';
+							str1+='<h4><strong>Total Villages : '+result.totalVillages+'</strong></h4>';
+						str1+='</div>';
+						str1+='<div class="col-sm-12 m_top10">';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="red">Villages in Red : '+result.villagesInRed+'</p>';
+							str1+='</div>';
+							str1+=' <div class="media">';
+							   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="orange">Villages in Orange : '+result.villagesInOrange+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
+							str1+='</div>';
+							if(typeof(result.villagesInGold) != "undefined"){
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+										str1+='<p class="media-body" attr_locationType="panchayat" attr_type="gold">Villages in Gold : '+result.villagesInGold+'</p>';
+								str1+='</div>';
+							}
+						str1+='</div>';	
+					str1+='</td>';
+					}else{
+						str1+='<td>';
 						str1+='<div class="col-sm-12">';
 							str1+='<h4><strong>Total Villages : '+result.totalVillages+'</strong></h4>';
 						str1+='</div>';
@@ -2444,6 +2473,8 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 							}
 						str1+='</div>';	
 					str1+='</td>';
+					}
+					
 				str1+='</tr>';
 			str1+='</tbody>';
 		str1+='</table>';
@@ -3490,6 +3521,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 								str+='<th style="color:red;">Constituencies In Red </th>';
 								str+='<th style="color:orange;">Constituencies In Orange </th>';
 								str+='<th style="color:green;">Constituencies In Green </th>';
+								str+='<th style="color:gold;">Constituencies In Gold </th>';
 								str+='<th>Total </th>';
 							str+='</tr>';
 						str+='</thead>';
@@ -3497,17 +3529,20 @@ function buildDistrictsPopupDetails(result,dataArr){
 						var redTotalCons = 0;
 						var orangeTotalCons = 0;
 						var greenTotalCons = 0;
+						var goldTotalCons = 0;
 						var totalConsiCons = 0;
 							for(var i in result.distConsCuntList){
 								redTotalCons = redTotalCons+result.distConsCuntList[i].constiInRed;
 								orangeTotalCons = orangeTotalCons+result.distConsCuntList[i].constiInOrange;
 								greenTotalCons = greenTotalCons+result.distConsCuntList[i].constiInGreen;
+								goldTotalCons = goldTotalCons+result.distConsCuntList[i].constiInGold;
 								totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
 								str+='<tr>';
 									str+='<td>'+result.distConsCuntList[i].district+'</td>';
 									str+='<td style="color:red;">'+result.distConsCuntList[i].constiInRed+'</td>';
 									str+='<td style="color:orange;">'+result.distConsCuntList[i].constiInOrange+'</td>';
 									str+='<td style="color:green;">'+result.distConsCuntList[i].constiInGreen+'</td>';
+									str+='<td style="color:gold;">'+result.distConsCuntList[i].constiInGold+'</td>';
 									str+='<td>'+result.distConsCuntList[i].total+'</td>';
 								str+='</tr>';	
 							}
@@ -3516,6 +3551,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 								str+='<td>'+redTotalCons+'</td>';
 								str+='<td>'+orangeTotalCons+'</td>';
 								str+='<td>'+greenTotalCons+'</td>';
+								str+='<td>'+goldTotalCons+'</td>';
 								str+='<td>'+totalConsiCons+'</td>';
 							str+='</tr>';
 						str+='</tbody>';
@@ -3642,6 +3678,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 								str+='<th style="color:red;">Mandals In Red </th>';
 								str+='<th style="color:orange;">Mandals In Orange </th>';
 								str+='<th style="color:green;">Mandals In Green </th>';
+								str+='<th style="color:gold;">Mandals In Gold </th>';
 								str+='<th>Total </th>';
 							str+='</tr>';
 						str+='</thead>';
@@ -3649,17 +3686,20 @@ function buildDistrictsPopupDetails(result,dataArr){
 						redTotalCons = 0;
 						orangeTotalCons = 0;
 						greenTotalCons = 0;
+						goldTotalCons = 0;
 						totalConsiCons = 0;
 							for(var i in result.distMandalCuntList){
 								redTotalCons = redTotalCons+result.distMandalCuntList[i].mandalsInRed;
 								orangeTotalCons = orangeTotalCons+result.distMandalCuntList[i].mandalsInOrange;
 								greenTotalCons = greenTotalCons+result.distMandalCuntList[i].mandalsInGreen;
+								goldTotalCons = goldTotalCons+result.distMandalCuntList[i].mandalsInGold;
 								totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
 								str+='<tr>';
 									str+='<td>'+result.distMandalCuntList[i].district+'</td>';
 									str+='<td style="color:red;">'+result.distMandalCuntList[i].mandalsInRed+'</td>';
 									str+='<td style="color:orange;">'+result.distMandalCuntList[i].mandalsInOrange+'</td>';
 									str+='<td style="color:green;">'+result.distMandalCuntList[i].mandalsInGreen+'</td>';
+									str+='<td style="color:green;">'+result.distMandalCuntList[i].mandalsInGold+'</td>';
 									str+='<td>'+result.distMandalCuntList[i].total+'</td>';
 								str+='</tr>';	
 							}
@@ -3668,6 +3708,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 								str+='<td>'+redTotalCons+'</td>';
 								str+='<td>'+orangeTotalCons+'</td>';
 								str+='<td>'+greenTotalCons+'</td>';
+								str+='<td>'+goldTotalCons+'</td>';
 								str+='<td>'+totalConsiCons+'</td>';
 							str+='</tr>';
 						str+='</tbody>';
@@ -3691,6 +3732,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 								str+='<th style="color:red;">Villages In Red </th>';
 								str+='<th style="color:orange;">Villages In Orange </th>';
 								str+='<th style="color:green;">Villages In Green </th>';
+								str+='<th style="color:gold;">Villages In Gold </th>';
 								str+='<th>Total </th>';
 							str+='</tr>';
 						str+='</thead>';
@@ -3698,17 +3740,20 @@ function buildDistrictsPopupDetails(result,dataArr){
 						redTotalCons = 0;
 						orangeTotalCons = 0;
 						greenTotalCons = 0;
+						goldTotalCons = 0;
 						totalConsiCons = 0;
 							for(var i in result.distMandalList){
 								redTotalCons = redTotalCons+result.distMandalList[i].villagesInRed;
 								orangeTotalCons = orangeTotalCons+result.distMandalList[i].villagesInOrange;
 								greenTotalCons = greenTotalCons+result.distMandalList[i].villagesInGreen;
+								goldTotalCons = goldTotalCons+result.distMandalList[i].villagesInGold;
 								totalConsiCons =redTotalCons+ orangeTotalCons+greenTotalCons;
 								str+='<tr>';
 									str+='<td>'+result.distMandalList[i].district+'</td>';
 									str+='<td style="color:red;">'+result.distMandalList[i].villagesInRed+'</td>';
 									str+='<td style="color:orange;">'+result.distMandalList[i].villagesInOrange+'</td>';
 									str+='<td style="color:green;">'+result.distMandalList[i].villagesInGreen+'</td>';
+									str+='<td style="color:green;">'+result.distMandalList[i].villagesInGold+'</td>';
 									str+='<td>'+result.distMandalList[i].total+'</td>';
 								str+='</tr>';	
 							}
@@ -3717,6 +3762,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 								str+='<td>'+redTotalCons+'</td>';
 								str+='<td>'+orangeTotalCons+'</td>';
 								str+='<td>'+greenTotalCons+'</td>';
+								str+='<td>'+goldTotalCons+'</td>';
 								str+='<td>'+totalConsiCons+'</td>';
 							str+='</tr>';
 						str+='</tbody>';
@@ -3778,6 +3824,9 @@ function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,m
 {
 	$("#nregsConsitenBodyId").html(spinner);
 	var districtId = $("#selectedName").attr("attr_distId");
+	if(typeof globalTimelyPaymentType === undefined  || typeof globalTimelyPaymentType == "undefined"){
+		globalTimelyPaymentType = "-1";
+	}
 	if(globalDivName == 'FAperformance'){
 		var json = {
 			year : "2017",
@@ -3802,6 +3851,19 @@ function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,m
 			sublocaType : locationType,
 			districtId:districtId,
 			program : "-1"
+		}
+	}else if(globalDivName == 'Timely Payment'){
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			locationType: menuLocationType,
+			divType : globalDivName,
+			type  : type,
+			locationId : menuLocationId,
+			sublocaType : locationType,
+			districtId : districtId,
+			program: globalTimelyPaymentType
 		}
 	}else{
 		var json = {
@@ -3892,6 +3954,13 @@ function buildPopupOverviewBlock(result,menuLocationType,menuLocationId){
 								else
 									str1+='<p class="media-body" attr_location="district" attr_type="green">Districts in Green : '+result.districtsInGreen+'</p>';
 							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+								if(result.districtsInGold != null && result.districtsInGold > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="district" attr_type="gold">Districts in Gold : '+result.districtsInGold+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="district" attr_type="green">Districts in Gold : '+result.districtsInGold+'</p>';
+							str1+='</div>';
 						str1+='</div>';
 					str1+='</td>';
 					str1+='<td>';
@@ -3919,6 +3988,13 @@ function buildPopupOverviewBlock(result,menuLocationType,menuLocationId){
 									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="constituency" attr_type="green">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
 								else
 									str1+='<p class="media-body" attr_location="constituency" attr_type="green">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+								if(result.constituenciesInGold != null && result.constituenciesInGold > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="constituency" attr_type="gold">Constituencies in Gold : '+result.constituenciesInGold+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="constituency" attr_type="green">Constituencies in Gold : '+result.constituenciesInGold+'</p>';
 							str1+='</div>';
 						str1+='</div>';	
 					str1+='</td>';
@@ -3948,9 +4024,41 @@ function buildPopupOverviewBlock(result,menuLocationType,menuLocationId){
 								else
 									str1+='<p class="media-body" attr_location="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
 							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+								if(result.mandalsInGold != null && result.mandalsInGold > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="mandal" attr_type="gold">Mandals in Gold : '+result.mandalsInGold+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="mandal" attr_type="green">Mandals in Gold : '+result.mandalsInGold+'</p>';
+							str1+='</div>';
 						str1+='</div>';	
 					str1+='</td>';
-					str1+='<td>';
+					if(globalDivName != null && globalDivName == "Mandal buildings1"){
+						str1+='<td>';
+						str1+='<div class="col-sm-9">';
+							str1+='<div class="media">';
+								str1+='<h4>Total Villages : '+result.totalVillages+'</h4>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+									str1+='<p class="media-body" attr_location="panchayat" attr_type="red">Villages in Red : '+result.villagesInRed+'</p>';
+							str1+='</div>';
+							str1+=' <div class="media">';
+							   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+								str1+='<p class="media-body " attr_location="panchayat" attr_type="orange">Villages in Orange : '+result.villagesInOrange+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+									str1+='<p class="media-body" attr_location="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
+							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+									str1+='<p class="media-body" attr_location="panchayat" attr_type="green">Villages in Gold : '+result.villagesInGold+'</p>';
+							str1+='</div>';
+						str1+='</div>';	
+					str1+='</td>';
+					}else{
+						str1+='<td>';
 						str1+='<div class="col-sm-9">';
 							str1+='<div class="media">';
 								str1+='<h4>Total Villages : '+result.totalVillages+'</h4>';
@@ -3976,8 +4084,17 @@ function buildPopupOverviewBlock(result,menuLocationType,menuLocationId){
 								else
 									str1+='<p class="media-body" attr_location="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
 							str1+='</div>';
+							str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+								if(result.villagesInGold != null && result.villagesInGold > 0)
+									str1+='<p class="media-body detailsCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_location="panchayat" attr_type="gold">Villages in Gold : '+result.villagesInGold+'</p>';
+								else
+									str1+='<p class="media-body" attr_location="panchayat" attr_type="green">Villages in Gold : '+result.villagesInGold+'</p>';
+							str1+='</div>';
 						str1+='</div>';	
 					str1+='</td>';
+					}
+					
 				str1+='</tr>';
 			str1+='</tbody>';
 		str1+='</table>';
@@ -4551,6 +4668,9 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 {
 	var districtId = $("#selectedName").attr("attr_distId");
 	$("#nregsOverviewBodyId").html(spinner);
+	if(typeof globalTimelyPaymentType === undefined  || typeof globalTimelyPaymentType == "undefined"){
+		globalTimelyPaymentType = "-1";
+	}
 	if(globalDivName == 'FAperformance')
 	{
 		var json = {
@@ -4571,7 +4691,7 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 			locationType : menuLocationType,
 			locationId : menuLocationId,
 			districtId:districtId,
-			program : "-1"
+			program : globalTimelyPaymentType
 		}
 	}else{
 		var json = {
