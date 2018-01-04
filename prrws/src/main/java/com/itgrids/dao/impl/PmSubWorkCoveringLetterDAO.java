@@ -28,4 +28,19 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 		Query query = getSession().createQuery(str.toString());
 		return query.list();				
 	}
+	
+	public List<Object[]> getSubWorkWiseRequiredDocumentsDetailsByPetitionId(Long petiotionId){
+		if(petiotionId != null){
+			StringBuilder str = new StringBuilder();
+			str.append(" select model.pmSubWorkDetailsId,model.reportType, model.document.path,model.documentId, model.petitionId from PmSubWorkCoveringLetter model where model.petitionId=:petiotionId " +
+					" and model.isDeleted ='N' ");
+			Query query = getSession().createQuery(str.toString());
+			if(petiotionId.longValue()>0L)
+				query.setParameter("petiotionId", petiotionId);
+			return query.list();
+		}
+		return null;			
+	}
+	
+	
 }

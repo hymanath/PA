@@ -46,6 +46,14 @@ public class PmRequestVO {
 	private String endorsmentNo;
 	private String endorsmentDate;
 	private String repImagePath; 
+	private String remarks;
+	
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
 	public List<KeyValueVO> getFileNamesList() {
 		return fileNamesList;
 	}

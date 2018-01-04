@@ -23,7 +23,7 @@ public class PmStatusDAO extends GenericDaoHibernate<PmStatus, Long> implements 
 	}
 
 	public List<Object[]> getPmStatusList(){
-		Query qry = getSession().createQuery(" select model.pmStatusId,model.status from PmStatus model where model.isDeleted = 'N' order by model.orderNo ");
+		Query qry = getSession().createQuery(" select distinct model.pmStatusId,model.status from PmStatus model where model.isDeleted = 'N' order by model.orderNo ");
 		return qry.list();
 	}
 

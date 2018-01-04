@@ -19,11 +19,13 @@ public class PmSubWorkCoveringLetter implements Serializable {
 	
 	private Long PmSubWorkCoveringLetterId;
 	private String endorsmentNo;
+	private Long petitionId;
 	private Long pmSubWorkDetailsId;
 	private Long documentId;
 	private String isDeleted;
-	
+	private String reportType;
 	private PmSubWorkDetails pmSubWorkDetails;
+	private Petition petition;
 	private Document document;
 	
 	@Id
@@ -81,5 +83,29 @@ public class PmSubWorkCoveringLetter implements Serializable {
 		this.isDeleted = isDeleted;
 	}
 	
-
+	@Column(name="report_type")
+	public String getReportType() {
+		return reportType;
+	}
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
+	}
+	
+	@Column(name="petition_id")
+	public Long getPetitionId() {
+		return petitionId;
+	}
+	public void setPetitionId(Long petitionId) {
+		this.petitionId = petitionId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "petition_id", insertable = false, updatable = false)
+	public Petition getPetition() {
+		return petition;
+	}
+	public void setPetition(Petition petition) {
+		this.petition = petition;
+	}
+	
 }

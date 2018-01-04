@@ -21,7 +21,29 @@ public class PmRequestEditVO {
 	private List<PmRequestVO> representeeDetailsList = new ArrayList<PmRequestVO>(0);	
 	private List<PmRequestVO> referDetailsList = new ArrayList<PmRequestVO>(0);
 	private List<PetitionsWorksVO> subWorksList = new ArrayList<PetitionsWorksVO>();
+	private List<PetitionFileVO> reportTypeFilesList = new ArrayList<PetitionFileVO>(0);
+	private List<KeyValueVO> statusList = new ArrayList<KeyValueVO>(0);
+	private List<KeyValueVO> deptList = new ArrayList<KeyValueVO>(0);
 	
+	public List<KeyValueVO> getDeptList() {
+		return deptList;
+	}
+	public void setDeptList(List<KeyValueVO> deptList) {
+		this.deptList = deptList;
+	}
+	public List<KeyValueVO> getStatusList() {
+		return statusList;
+	}
+	public void setStatusList(List<KeyValueVO> statusList) {
+		this.statusList = statusList;
+	}
+	
+	public List<PetitionFileVO> getReportTypeFilesList() {
+		return reportTypeFilesList;
+	}
+	public void setReportTypeFilesList(List<PetitionFileVO> reportTypeFilesList) {
+		this.reportTypeFilesList = reportTypeFilesList;
+	}
 	public List<KeyValueVO> getCoveringLetterPathsList() {
 		return coveringLetterPathsList;
 	}

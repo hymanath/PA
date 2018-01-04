@@ -997,7 +997,7 @@ function getStatusList(){
 function getPetitionDetails(petitionId,endorsNo){
 	$("#representeeViewId").html(spinner);
    var json = {
-       petitionId:petitionId,
+       petitionId:petitionId,//38,//100031
 	   pageType:"viewPage"
     };
   $.ajax({              
@@ -1039,8 +1039,13 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 	str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				str+='<div class="col-sm-6">';
 					str+='<h4>REPRESENTEE DETAILS  <span style="margin-left:20px;">';
-					if(endorsNo != null && endorsNo.length>0)
+					/*if(endorsNo != null && endorsNo.length>0)
 						str+='(<b>Endorsement No: </b> '+endorsNo+')</span></h4>';
+					*/
+					
+					if(result.representationdate != null && result.representationdate.length>0)
+						str+='<b>REPRESENTATION DATE : </b> '+result.representationdate+'</span></h4>';
+					
 					str+='<div class="block_padding_10 m_top10">';
 						
 						str+='<div class="media">';
@@ -1050,36 +1055,50 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 							else
 								str+='<i class="fa fa-user-circle fa-5x" aria-hidden="true" style="#EBEBEB"></i>';
 							
+							/*
 								str+='<div class="bg_light-Color" style="padding:10px;margin-top:5px;">';
 									str+='<p alt="Representation Date">Repr.&nbsp;Date</p>';
 									str+='<p><b>'+result.representationdate+'</b></p>';
 								str+='</div>';
+							*/
+							
 							str+='</div>';
 							str+='<div class="media-body">';
 								str+='<div class="bg_light-Color" style="padding:10px">';
 									//str+='<p><b>Name</b></p>';
 									str+='<h4><b>'+representeeList[0].name+'</b></h4>';
-									if(representeeList[0].tdpCadreId != null)
-									str+='<span><b style="color:orange;">TDP CADRE</b></span>';
+									if(representeeList[0].tdpCadreId != null){
+										if(representeeList[0].designation != null && representeeList[0].designation !='')
+											str+='<span><b>('+representeeList[0].designation+'),</b>';
+										else
+											str+='<span><b style="color:orange;">TDP CADRE</b></span>';
+									}
+										
 									str+='<div class="row" style="margin-top:10px;">';
 										str+='<div class="col-sm-12 col-md-6">';
-											str+='<h5><b>ADDRESS DETAILS:</b></h5>';
+											str+='<h5><b> NATIVE ADDRESS : </b></h5>';
 											if(result.representationType =="REPRESENTEE" && result.referDetailsList.length >0){
 												str+='<p>Mandal: '+(representeeList[0].addressVO.tehsilName != ""?representeeList[0].addressVO.tehsilName:" - ")+'</p>';
 												str+='<p>Constituency : '+(representeeList[0].addressVO.assemblyName != ""?representeeList[0].addressVO.assemblyName:" - ")+'</p>';
 												str+='<p>District : '+(representeeList[0].addressVO.districtName != ""?representeeList[0].addressVO.districtName:" - ")+'</p>';
 											}else if(result.representationType =="SELF" && result.referDetailsList.length >0){
-												str+='<p>Mandal: '+(representeeList[0].candidateAddressVO.tehsilName != ""?representeeList[0].candidateAddressVO.tehsilName:" - ")+'</p>';
-												str+='<p>Constituency : '+(representeeList[0].candidateAddressVO.assemblyName != ""?representeeList[0].candidateAddressVO.assemblyName:" - ")+'</p>';
-												str+='<p>District : '+(representeeList[0].candidateAddressVO.districtName != ""?representeeList[0].candidateAddressVO.districtName:" - ")+'</p>';
+												str+='<p>Mandal: '+(representeeList[0].candidateNativeAddressVO.tehsilName != ""?representeeList[0].candidateNativeAddressVO.tehsilName:" - ")+'</p>';
+												str+='<p>Constituency : '+(representeeList[0].candidateNativeAddressVO.assemblyName != ""?representeeList[0].candidateNativeAddressVO.assemblyName:" - ")+'</p>';
+												str+='<p>District : '+(representeeList[0].candidateNativeAddressVO.districtName != ""?representeeList[0].candidateNativeAddressVO.districtName:" - ")+'</p>';
 											}
 											str+='</div>';
-										str+='<div class="col-sm-12 col-md-6"  style="margin-top:10px;">';
-											str+='<h5><b>CONTACT DETAILS :</b></h5>';
-												str+='<p>Email id : '+(representeeList[0].email != ""?representeeList[0].email:" - ")+'</p>';
-												str+='<p>Contact No : '+(representeeList[0].mobileNO != ""?representeeList[0].mobileNO:" - ")+'</p>';
-											str+='<p>Voter Card No : '+(representeeList[0].voterCardNo != "" && representeeList[0].voterCardNo != undefined?representeeList[0].voterCardNo:" - ")+'</p>';
-										str+='</div>';
+											if(representeeList[0].email != "" || representeeList[0].mobileNO != "" || representeeList[0].voterCardNo != "" || representeeList[0].voterCardNo != undefined ){
+												str+='<div class="col-sm-12 col-md-6"  style="margin-top:10px;">';
+													str+='<h5><b>CONTACT DETAILS :</b></h5>';
+														if(representeeList[0].email != "")
+															str+='<p>Email id : '+(representeeList[0].email != ""?representeeList[0].email:" - ")+'</p>';
+														if(representeeList[0].mobileNO != "")
+															str+='<p>Contact No : '+(representeeList[0].mobileNO != ""?representeeList[0].mobileNO:" - ")+'</p>';
+														if(representeeList[0].voterCardNo != "" && representeeList[0].voterCardNo != undefined)
+															str+='<p>Voter Card No : '+(representeeList[0].voterCardNo != "" && representeeList[0].voterCardNo != undefined?representeeList[0].voterCardNo:" - ")+'</p>';
+												str+='</div>';
+											}
+											
 									str+='</div>';
 									
 								str+='</div>';
@@ -1088,11 +1107,12 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 					str+='</div>';
 					coveringDocs = result.coveringLetterPathsList;
 					//ara
-					str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="covering" style="cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW COVERING LETTER </p></div>';
+					if(coveringDocs != null && coveringDocs.length>0)
+						;//str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="covering" style="cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW COVERING LETTER </p></div>';
 					
 				str+='</div>';
 				str+='<div class="col-sm-6 ">';
-					str+='<h4>REFERRED DETAILS </h4>';
+					str+='<h4> REFERRED MEMBERS DETAILS </h4>';
 					str+='<div class="block_padding_10 m_top10">';
 						for(var i in result.referDetailsList){
 						str+='<div class="media">';
@@ -1100,14 +1120,21 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								//str+='<img class="media-object thumbnail" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;" src="http://mytdp.com/'+result.referDetailsList.candidatePath+'"></img>';								
 							//str+='</div>';
 							str+='<div class="media-left" >';
-												str+='<img style="width: 60px ! important; height: 60px ! important; margin-top: 6px;" src="'+result.referDetailsList[i].candidatePath+'" class="imageCss"></img>';
-												str+='<span style="position: relative; top: -62px; left: 39px;"><img src="Assests/images/TDP.PNG" style="width: 20px;" class="smallerImg"></img></span>';
-										str+='</div>';
+								if(result.referDetailsList[i].candidatePath != null && result.referDetailsList[i].candidatePath.length>0){
+										str+='<img style="width: 60px ! important; height: 60px ! important; margin-top: 6px;" src="'+result.referDetailsList[i].candidatePath+'" class="imageCss"></img>';
+								}else{
+										str+='<i class="fa fa-user-circle fa-5x" aria-hidden="true" style="#EBEBEB"></i>';
+										str+='<span style="position: relative; top: -62px; left: 39px;">';
+										if(result.referDetailsList[i].partyName != null && result.referDetailsList[i].partyName =='TDP')
+											str+='<img src="Assests/images/TDP.PNG" style="width: 20px;" class="smallerImg"></img></span>';
+								}
+							str+='</div>';
 							str+='<div class="media-body">';
 								str+='<div class="bg_light-Color" style="padding:10px">';
 									//str+='<p><b>Name</b></p>';
 									str+='<h4><b>'+result.referDetailsList[i].name+'</b></h4>';
 									str+='<span><b>('+result.referDetailsList[i].designation+'),</b>';
+									str+='<h5><b> PUBLIC REPRESENTATIVE ADDRESS : </b></h5>';
 									if(result.referDetailsList[i].candidateAddressVO.assemblyName != null && result.referDetailsList[i].candidateAddressVO.assemblyName.length>0)
 										str+='<h5> Constityency : '+result.referDetailsList[i].candidateAddressVO.assemblyName+' ,</h5> ';
 									if(result.referDetailsList[i].candidateAddressVO.districtName != null && result.referDetailsList[i].candidateAddressVO.districtName.length>0)
@@ -1117,8 +1144,8 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 									
 									str+='<div class="row">';
 										str+='<div class="col-sm-12 col-md-6">';
-											str+='<h5><b>Party:</b></h5>';
-											str+='<p>'+result.referDetailsList[i].partyName+' </p>';
+											str+='<h5><b>Party:</b>';
+											str+=''+result.referDetailsList[i].partyName+' </h5>';
 										str+='</div>';
 										str+='<div class="col-sm-12 col-md-6">';
 											str+='<h5><b>CONTACT DETAILS :</b></h5>';
@@ -1182,7 +1209,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 				str+='</div>';
 				if(result.fileList.length >0){
 				str+='<div class="col-sm-2 m_top20">';
-					str+='<h5><b>PROJECT DOCUMENTS</b></h5>';
+					str+='<h5><b>OTHER DOCUMENTS</b></h5>';
 					workDocs = result.fileList;
 						str+='<div style=""><p class="viewDivId pull-right docsViewCls" attr_docs="workDocs" style="cursor:pointer;margin-right: 30px;margin-top: 10px;"><i class="fa fa-file-text" aria-hidden="true"></i> VIEW DOCUMENT</p></div>';
 				str+='</div>';
@@ -1199,6 +1226,29 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 						str+='<td><button class="btn btn-danger">Reject</button></td>'; */
 					str+='</table>';
 				str+='</div>';
+				
+				if(result.statusList != null && result.statusList.length>0){
+					str+='<div class="col-sm-12 m_top20" style="border-bottom:5px solid #EBEBEB;border-top:5px solid #EBEBEB;">';
+					str+='<table class="table table-condensed table-bordered  m_top20" style="margin-bottom:20px;">';
+						str+='<thead>';
+						for(var s in result.statusList){
+							str+='<th  style="text-align:center">'+result.statusList[s].value.toUpperCase()+'</th>';
+						}						
+						str+='</thead>';
+						str+='<tbody>';
+						for(var s in result.statusList){
+							if(result.statusList[s].count == 0)
+								str+='<td  style="text-align:center"> - </td>';
+							else
+								str+='<td  style="text-align:center">'+result.statusList[s].count+'</td>';
+						}						
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
+				
+				}
+				
+				
 				str+='<div class="col-sm-12 m_top20">';
 				var workCount = 0;
 				str+='<div class="row">';
@@ -1212,7 +1262,8 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 							str+='<div class="bg_light-Color block_padding_10 m_top10">';
 								str+='<table class="table table-bordered">';
 									str+='<tr>';
-										str+='<td><b>WORK TYPE </b></br><b>'+result.subWorksList[j].subWorksList[k].workType+'</b>(status:'+result.subWorksList[j].subWorksList[k].status+')</td>';
+										str+='<td><b> WORK TYPE </b></br><b>'+result.subWorksList[j].subWorksList[k].workType+'</b> </td>';
+										//str+='(status:'+result.subWorksList[j].subWorksList[k].status+')';
 										str+='<td colspan="2">';
 											str+='<p><b>LOCATION</b></p>';
 											str+='<span style="display:inline-block;padding:10px"><b>District</b></br>'+result.subWorksList[j].subWorksList[k].addressVO.districtName+'</span>';
@@ -1226,7 +1277,6 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 										str+='<td><b>SUBJECT: </b>'+result.subWorksList[j].subWorksList[k].subject+'</td>';
 										str+='<td><b>SUB-SUBJECT:  </b>'+result.subWorksList[j].subWorksList[k].subSubject+'</td>';
 										str+='<td><b>DEPARTMENT : </b>'+result.subWorksList[j].subWorksList[k].deptName+'</td>';
-										
 									str+='</tr>';
 								str+='</table>';
 							str+='</div>';
@@ -1234,6 +1284,12 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 						
 						str+='<div class="col-sm-6 m_top10">';
 							str+='<h5><b>WORK DESCRIPTION</b> ';
+							if(result.subWorksList[j].subWorksList[k].statusId == 1)
+								str+=' <span class="pull-right" style="color:orange" > <b style="color:#000"> STATUS: </b><b> '+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';
+							else if(result.subWorksList[j].subWorksList[k].statusId == 8 )
+								str+=' <span class="pull-right" style="color:green;" > <b style="color:#000"> STATUS: </b><b> '+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';
+							else
+								str+='<span class="pull-right" > <b style="color:#000"> STATUS:</b><b>'+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';
 							//str+='<button class="btn pull-right">Select</button>
 							str+='</h5>';
 							str+='<div class=" block_padding_3 m_top10">';

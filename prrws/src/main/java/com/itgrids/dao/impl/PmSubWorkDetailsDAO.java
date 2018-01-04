@@ -32,6 +32,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				//"'','','','','','','',''"+
 				" pmLead.leadName,pmBriefLead.briefLead,pmGrant.pmGrantName,pmStatus.status,pmDepartment.department,pmWorkType.workType, pmSubject.subject,pmSubSubject.subject " +//27,28,29,30,31,32,33,34
 				" ,model.uiBuildSeriesNo,panchayat.panchayatId,panchayat.panchayatName " +//35,36,37
+				" ,model.workEndorsmentNo, model.endorsmentDate " +//38,39
 				" from PmSubWorkDetails model " +
 				" left join model.locationAddress address" +
 				" left join address.state state " +
@@ -286,4 +287,31 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		return query.list();
 	}
 	
+	public List<Long> getPetitionsSubWorksIdsList(List<Long>  petitionIdsList){
+		if(petitionIdsList != null && petitionIdsList.size()>0){
+			Query query = getSession().createQuery(" select distinct model.pmSubWorkDetailsId from PmSubWorkDetails model where model.petitionId in (:petitionIdsList) and model.isDeleted='N' ");
+			query.setParameterList("petitionIdsList", petitionIdsList);
+			return query.list();
+		}
+		return null;
+	}
+	
+	public List<Object[]> getPetitionsDetailedSubWorksIdsList(List<Long>  petitionIdsList){
+		if(petitionIdsList != null && petitionIdsList.size()>0){
+			Query query = getSession().createQuery(" select distinct model.petitionId , model.pmSubWorkDetailsId ,model.pmStatusId model.pmSubWorkDetailsId model.pmStatusId from PmSubWorkDetails model where model.petitionId in (:petitionIdsList) and model.isDeleted='N' ");
+			query.setParameterList("petitionIdsList", petitionIdsList);
+			return query.list();
+		}
+		return null;
+	}
+	
+	public int updatePetitionSubWorkStatusdetails(List<Long>  petitionIdsList,Date updatedDate,Long updatedUserId,Long pmStatusId){
+		if(petitionIdsList != null && petitionIdsList.size()>0){
+			Query query = getSession().createQuery(" update PmSubWorkDetails model set model.pmStatusId=:pmStatusId, " +
+					" model.updatedTime =:updatedTime,model.updatedUserId = :updatedUserId where model.petitionId in (:petitionIdsList) and model.isDeleted='N' ");
+			query.setParameterList("petitionIdsList", petitionIdsList);
+			return query.executeUpdate();
+		}
+		return 0;
+	}
 }

@@ -39,6 +39,7 @@ public class PetitionsWorksVO {
 	private List<MultipartFile> fileList = new ArrayList<MultipartFile>();
 	private List<KeyValueVO> subjectsList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> subSubjectsList = new ArrayList<KeyValueVO>(0);
+	private List<PetitionFileVO> reportTypeFilesList = new ArrayList<PetitionFileVO>(0);
 	private Long workTypeId;
 	private String workType;
 	private String status;
@@ -289,5 +290,11 @@ public class PetitionsWorksVO {
 	}
 	public void setSubSubjectsList(List<KeyValueVO> subSubjectsList) {
 		this.subSubjectsList = subSubjectsList;
+	}
+	public List<PetitionFileVO> getReportTypeFilesList() {
+		return reportTypeFilesList;
+	}
+	public void setReportTypeFilesList(List<PetitionFileVO> reportTypeFilesList) {
+		this.reportTypeFilesList = reportTypeFilesList;
 	}
 }

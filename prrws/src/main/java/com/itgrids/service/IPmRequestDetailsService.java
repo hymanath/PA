@@ -18,7 +18,7 @@ public interface IPmRequestDetailsService {
 	public List<RepresenteeViewVO> getRepresentativeSearchWiseDetails(InputVO inputVO);
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO);
 	public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo);
-	public PmRequestEditVO setPmRepresenteeDataToResultView(Long petitionId,String pageType);
+	public PmRequestEditVO setPmRepresenteeDataToResultView(Long petitionId,String pageType,Long userId);
 	public List<RepresenteeViewVO> getStatusList();
 	public UserVO getPmOffceUserDetails(Long userId, UserVO userVO);
 	
@@ -26,7 +26,10 @@ public interface IPmRequestDetailsService {
 	public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate);
 	public KeyValueVO getDeptIdsListBYUserIds(Long userId);
 	public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId);
+	public ResultStatus updatePetitionsStatusDetails(Long userId,String petitionIdsArr, String remark, Long statusId);
 	public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate);
 	public ResultStatus updatePetitionsStatusDetails(Long userId,List<Long> petitionIdsList, List<Long> subWorkIdsList,String remark,Long statusId);
+	public List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(List<Long> deptIdsList , Long userId);
+	public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId , Long userId);
 	public ResultStatus generateCoveringLetterForPetition(InputVO inputVO);
 }
