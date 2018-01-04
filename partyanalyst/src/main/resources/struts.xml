@@ -18686,5 +18686,10 @@
    			<param name="root">successMsg</param>        
    		</result>
 	</action>
+	<action name="getAlertVerificationUsersAction" class="createAlertAction" method="getAlertVerificationUsers">
+	  <result type="json" name="success">
+		    <param name="root">resultList</param>
+		</result>
+	</action>
  </package>
 </struts>

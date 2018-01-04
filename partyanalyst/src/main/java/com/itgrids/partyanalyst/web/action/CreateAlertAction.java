@@ -99,6 +99,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private AlertCoreDashBoardVO alertCoreDashBoardVO;
 	private IAlertManagementSystemService alertManagementSystemService;
 	private Long tdpCadreId;
+	private Long alertVerificationAssignedUserId;
 	
 	
 	
@@ -460,6 +461,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public void setLoginService(ILoginService loginService) {
 		this.loginService = loginService;
 	}
+	public Long getAlertVerificationAssignedUserId() {
+		return alertVerificationAssignedUserId;
+	}
+
+	public void setAlertVerificationAssignedUserId(
+			Long alertVerificationAssignedUserId) {
+		this.alertVerificationAssignedUserId = alertVerificationAssignedUserId;
+	}
 
 	public String execute()	{
 		session = request.getSession();
@@ -600,7 +609,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setFromDate2(jObj.getString("fromDate2"));
 			inputVO.setToDate2(jObj.getString("toDate2"));
 			inputVO.setSearchType(jObj.getString("radioVal"));
-			alertDataList = alertService.getLocationWiseFilterAlertData(regVo.getRegistrationID(),inputVO,jObj.getLong("assignedCadreId"),jObj.getLong("involvedCadreId"),jObj.getLong("impactId"));
+			alertDataList = alertService.getLocationWiseFilterAlertData(regVo.getRegistrationID(),inputVO,jObj.getLong("assignedCadreId"),jObj.getLong("involvedCadreId"),jObj.getLong("impactId"),jObj.getString("verificationUserType"));
 			
 		}
 		catch (Exception e) {
@@ -1563,7 +1572,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			if(regVo != null)
-				clarificationDetailsCountVOList =  alertService.getStatusAndCategoryWiseAlertsCount(jObj.getLong("stateId"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("alertTypeId"));
+				clarificationDetailsCountVOList =  alertService.getStatusAndCategoryWiseAlertsCount(jObj.getLong("stateId"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("alertTypeId"),regVo.getRegistrationID(),jObj.getString("verificationUserType"));
 				
 		} catch (Exception e) {  
 			LOG.error("Excpetion raised at getStatusAndCategoryWiseAlertsCount",e);
@@ -1679,9 +1688,12 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setStatusId(jObj.getLong("statusId"));
 			inputVO.setFromDate2(jObj.getString("fromDate2"));
 			inputVO.setToDate2(jObj.getString("toDate2"));
+			inputVO.setVerificationUserType(jObj.getString("verificationUserType"));
+			if (regVo != null ){
+				alertDataList = alertService.getAllAlertsWithoutFilter(regVo.getRegistrationID(),inputVO);	
+			}
 			
 			
-			alertDataList = alertService.getAllAlertsWithoutFilter(regVo.getRegistrationID(),inputVO);
 		} catch (Exception e) {
 			LOG.error("Excpetion raised at getLocationLevelAlertClarificationData",e);
 		}
@@ -1712,7 +1724,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 							}
 						}
 					}
-					status = alertService.updateVerificationStatus(alertId,clarificationComments,clarificationStatusId,userId,mapfiles);
+					status = alertService.updateVerificationStatus(alertId,clarificationComments,clarificationStatusId,userId,alertVerificationAssignedUserId,mapfiles);
 					inputStream = new StringBufferInputStream(status);
 			 }else{
 				 inputStream = new StringBufferInputStream("login failed");
@@ -3360,6 +3372,16 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getCheckUsrNamesAvailabilitys() Method of loginAction, Exception is - ",e);
 			
+		}
+		return Action.SUCCESS;
+	}
+	public String getAlertVerificationUsers(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long verificationUserTypeId = jObj.getLong("verificationUserTypeId");
+			resultList = alertService.getAlertVerificationUsers(verificationUserTypeId);	
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getAlertVerificationUsers",e);	
 		}
 		return Action.SUCCESS;
 	}

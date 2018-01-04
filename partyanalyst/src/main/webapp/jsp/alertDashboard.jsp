@@ -1226,7 +1226,8 @@ function getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentTo
 		stateId : globalStateId,     
 		fromDate : frmDate,      
 		toDate : toDt,
-		alertTypeId : alertTypeId  
+		alertTypeId : alertTypeId,
+        verificationUserType :"programCommittee"		
 	}
 	$.ajax({
 		type : 'POST',      
@@ -1333,7 +1334,8 @@ function getAllAlertsWithoutFilter(alertTpeId,alertCategoryId,actionTypeId,actio
 			impactScopeId:impactScopeId,
 			statusId : statusId,
 			fromDate2 : fromDat2,
-			toDate2 : toDat2     
+			toDate2 : toDat2,
+			verificationUserType :"programCommittee"			
 		}
 		$.ajax({  
 			type:'GET',            

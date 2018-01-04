@@ -695,7 +695,8 @@ function getAlertAssignedCandidate()
 			stateId : stateId,     
 			fromDate : fromDate,      
 			toDate : toDate,
-			alertTypeId : alertTypeId
+			alertTypeId : alertTypeId,
+			verificationUserType :"infoCellCommittee"
 		}
 		$.ajax({
 			type : 'POST',      
@@ -976,7 +977,9 @@ function getAllAlertsWithoutFilter(alertTpeId,alertCategoryId,actionTypeId,actio
 			impactScopeId:impactScopeId,
 			statusId : 0,
 			fromDate2 : "",  
-			toDate2 : ""    
+			toDate2 : "",
+			verificationUserType :"infoCellCommittee"
+			
 		}
 		$.ajax({  
 			type:'GET',          
@@ -1068,11 +1071,16 @@ function getLocationFilterAlertData()
 			fromDate:fromDate,
 			toDate:toDate,
 			assignedCadreId:assignedCadreId,    
+			involvedCadreId:0, 
+			impactId:0,   
 			categoryId:alertCategoryId,
 			actionTypeStatusId:actionTypeStatusId,        
 			task : "verification",
 			fromDate2 : "",
-			toDate2 : ""
+			toDate2 : "",
+			radioVal : '',
+			verificationUserType :"infoCellCommittee"
+
 		}
 	$.ajax({
 		type:'GET',

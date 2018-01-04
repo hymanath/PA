@@ -477,6 +477,7 @@
 														<label class="verificationStatusCls" style="display:none;">Verification Status</label>
 														<select id="verificationStatusSlctBxId" style="display:none;" class="form-control verificationStatusCls">
 														</select>
+														<select id="verificationUserSeletBoxId" style="display:none;" name="alertVerificationAssignedUserId" class="form-control m_top20"></select>
 														<button class="btn btn-success m_top20 text-capital " type="button" id="updateVerificationStatusBtnId"><h4>update verification status</h4></button>
 													</div>
 													  <div class="col-md-12 col-xs-12 col-sm-12 m_top10 notificationHeadingCls"  style="display:none;">
