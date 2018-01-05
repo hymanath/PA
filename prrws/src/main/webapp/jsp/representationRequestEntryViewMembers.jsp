@@ -341,6 +341,7 @@
 			<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 			</div>
+			<input type="hidden" class="form-control" id="nextStatusId"  name="statusId">	
 		<!--<div class="row m_top10" id="fileUploadingDivId">
 			<div class="col-sm-12">
 				<h4 class="panel-title f_18"> UPLOAD COVERING LETTER </h4>
@@ -359,7 +360,7 @@
       </div>
 	 
       <div class="modal-footer">
-        <button type="button" class="btn btn-success btn-lg" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()"data-dismiss="modal">FORWARD &raquo;</button>
+        <button type="button" class="btn btn-success btn-lg" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()">FORWARD &raquo;</button>
       </div>
    </form>
   </div>

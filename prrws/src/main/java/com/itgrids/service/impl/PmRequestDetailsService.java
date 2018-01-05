@@ -636,7 +636,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(fileExtensionStr.equalsIgnoreCase(".PNG") || fileExtensionStr.equalsIgnoreCase(".PDF") || fileExtensionStr.equalsIgnoreCase(".JPG") 
 						|| fileExtensionStr.equalsIgnoreCase(".JPEG") || fileExtensionStr.equalsIgnoreCase(".BMP") || fileExtensionStr.equalsIgnoreCase(".TIFF") ){
 					String fileName = datePath+"_"+Math.abs(new Random().nextInt())+fileExtensionStr;
-					String fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+"/"+fileName;
+					//String fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+"/"+fileName;
+					String fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+fileName;
 					
 					byte[] fileData = file.getBytes();
 					
@@ -2394,6 +2395,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmSubWorkDetails.setEndorsmentDate(dateUtilService.getCurrentDateInDateFormat());
 							pmSubWorkDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							pmSubWorkDetails.setUpdatedUserId(inputVO.getId());
+							pmSubWorkDetails.setPmStatusId(inputVO.getStatusId());
 							pmSubWorkDetailsDAO.save(pmSubWorkDetails);
 						}
 						
@@ -2413,7 +2415,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}
 						
 						PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
-						pmTrackingVO.setPmStatusId(6L);// PENDING ACTION MEMO 
+						pmTrackingVO.setPmStatusId(inputVO.getStatusId());// PENDING ACTION MEMO 
 						pmTrackingVO.setUserId(inputVO.getId());
 						pmTrackingVO.setPetitionId(inputVO.getPetitionId());
 						pmTrackingVO.setRemarks(inputVO.getRemark());
