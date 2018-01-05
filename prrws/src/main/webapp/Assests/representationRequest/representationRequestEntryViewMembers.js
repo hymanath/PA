@@ -2,6 +2,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 var workIdsArr=[];
 var selectedWorkIdsArr=[];
 var selectedDeptIdsArr=[];
+var colorCode=["","#FF5733","","#01B0B6","#0701B6","#C70039","#B6B001","#B6B001","#17B601"];
 var startDate = moment().subtract(7,"year").format("DD-MM-YYYY");
 var endDate = moment().add(38,"year").format("DD-MM-YYYY");
 //getting Dynamic Browser URL
@@ -64,6 +65,7 @@ $("#dateRangePicker").daterangepicker({
 	opens:'left',
 	startDate: startDate,
 	endDate: endDate,
+	maxDate:moment(),
 	locale: {
         format: "DD-MM-YYYY",
 	},
@@ -1314,7 +1316,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 					str+='<table class="table table-condensed table-bordered  m_top20" style="margin-bottom:20px;">';
 						str+='<thead>';
 						for(var s in result.statusList){
-							str+='<th  style="text-align:center">'+result.statusList[s].value.toUpperCase()+'</th>';
+							str+='<th  style="text-align:center;color:'+colorCode[result.statusList[s].key]+';">'+result.statusList[s].value.toUpperCase()+'</th>';
 						}						
 						str+='</thead>';
 						str+='<tbody>';
@@ -1346,7 +1348,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 					if(accessStatusList != null && accessStatusList.length>0){
 							str+='<div class="row ">';
 							str+='<div class="col-sm-3 m_top10 ">';
-								str+='<button class="btn btn-info selectedCls" isSeleted="false" attr_worksId="0" attr_dept_id="0" style="margin-bottom:10px;" > SELECT ALL  </button>';
+								str+='<button class="btn btn-info modelEndoreCls" attr_statusId="0" style="margin-bottom:10px;" > UPDATE PRESENT STATUS  </button>';
 							str+='</div>';
 							for(var s in accessStatusList){
 								if(s==3 || s==6|| s==9){
@@ -1361,23 +1363,23 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								
 								if(accessStatusList[s].key == 1){
 									if(!isAllEndorsed)
-										str+='<button class="statusCls endorseCls modelEndoreCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_next_status_id="6" attr_type="endosePopup" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
+										str+='<button class="statusCls endorseCls modelEndoreCls btn " attr_statusId="'+accessStatusList[s].key+'"  style="color:'+colorCode[accessStatusList[s].key]+';margin-bottom:10px;width: 200px;margin-left: -9px;" attr_next_status_id="6" attr_type="endosePopup" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
 									str+='<div id="endorseErrMsgId" style="color:red;"></div>';
 								}
 								if(accessStatusList[s].key == 5){
-										str+='<button class="statusCls btn btn-danger modelEndoreCls" attr_next_status_id="5" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="notPossiblePopup" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
+										str+='<button class="statusCls btn modelEndoreCls" attr_next_status_id="5" attr_statusId="'+accessStatusList[s].key+'"  style="color:'+colorCode[accessStatusList[s].key]+';margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="notPossiblePopup" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
 								}
 								if(accessStatusList[s].key == 3){
-										str+='<button class="statusCls btn btn-success modelEndoreCls" attr_next_status_id="8" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+										str+='<button class="statusCls btn  modelEndoreCls" attr_next_status_id="8" attr_statusId="'+accessStatusList[s].key+'"  style="color:'+colorCode[accessStatusList[s].key]+';margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
 								}
 								if(accessStatusList[s].key == 4){
-										str+='<button class="statusCls btn btn-warning modelEndoreCls" attr_next_status_id="4" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+										str+='<button class="statusCls btn modelEndoreCls" attr_next_status_id="4" attr_statusId="'+accessStatusList[s].key+'"  style="color:'+colorCode[accessStatusList[s].key]+';margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
 								}
 								if(accessStatusList[s].key == 6){
-										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_next_status_id="7" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD ACTION MEMO </button>';
+										str+='<button class="statusCls btn  modelEndoreCls" attr_next_status_id="7" attr_statusId="'+accessStatusList[s].key+'"  style="color:'+colorCode[accessStatusList[s].key]+';margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD ACTION MEMO </button>';
 								}
 								if(accessStatusList[s].key == 7){
-										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_next_status_id="3" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD DETAILED REPORT </button>';
+										str+='<button class="statusCls btn  modelEndoreCls" attr_next_status_id="3" attr_statusId="'+accessStatusList[s].key+'"  style="color:'+colorCode[accessStatusList[s].key]+';margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD DETAILED REPORT </button>';
 								}
 								
 								str+='</div>';
@@ -1387,18 +1389,23 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 					str+='</div>';
 				}
 				
+				
 				str+='<div class="col-sm-12 m_top20">';
+
+				str+='<div class="col-sm-12  ">';
+						str+='<button class="btn btn-info selectedCls pull-right" isSeleted="false" attr_worksId="0" attr_dept_id="0" style="margin-bottom:10px;" > SELECT ALL  </button>';
+					str+='</div>';
+
 				var workCount = 0;
 				str+='<div class="row">';
 				for(var j in result.subWorksList){
-					
 				for(var k in result.subWorksList[j].subWorksList){
 					var leadName = result.subWorksList[j].subWorksList[k].leadName;
 					
 					workCount = workCount+1;
 					
 						str+='<div class="col-sm-6 m_top10">';
-							str+='<h5><b>WORK NO '+workCount+'</b></h5>';
+							str+='<h5><b>WORK NO '+workCount+'</b> <b class="pull-right" >STATUS: <span  style="color:'+colorCode[result.subWorksList[j].subWorksList[k].statusId]+';"> '+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'</span></b></h5>';
 							str+='<div class="bg_light-Color block_padding_10 m_top10">';
 								str+='<table class="table table-bordered">';
 									str+='<tr>';
@@ -1432,7 +1439,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								str+='<span class="pull-right" > <b style="color:#000"> STATUS:</b><b>'+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';*/
 							
 							if(result.subWorksList[j].subWorksList[k].leadName == null || result.subWorksList[j].subWorksList[k].leadName.length ==0)
-								str+=' <span class=""  style="margin-bottom:10px;margin-left: 320px"> <button class="btn btn-info selectedCls" attr_work_id="'+result.subWorksList[j].subWorksList[k].workId+'"  isSeleted="false" attr_dept_id="'+result.subWorksList[j].subWorksList[k].deptName+'" attr_worksId="'+result.subWorksList[j].subWorksList[k].workId+'"  > SELECT </button> </span> ';
+								str+=' <span class="pull-right"  style=""> <button class="btn btn-info selectedCls" attr_work_id="'+result.subWorksList[j].subWorksList[k].workId+'"  isSeleted="false" attr_dept_id="'+result.subWorksList[j].subWorksList[k].deptName+'" attr_worksId="'+result.subWorksList[j].subWorksList[k].workId+'"  > SELECT </button> </span> ';
 							
 							str+='</h5>';
 							str+='<div class=" block_padding_3 m_top10">';
@@ -1917,13 +1924,26 @@ $.ajax({
 
 $(document).on('click','.modelEndoreCls',function(){
 	var statusId = $(this).attr("attr_statusId");
-	var nextStatusId = $(this).attr("attr_next_status_id");
 	$("#nextStatusId").val(nextStatusId);
 	$("#totalWorksId").html(workIdsArr.length);
 	$("#selectdWorksId").html(selectedWorkIdsArr.length);
 	var nonSelected = workIdsArr.length-selectedWorkIdsArr.length;
 	$("#notSeleWorksId").html(nonSelected);
 	
+	if(statusId == 0){
+		$("#endorseMentModalDivId").modal("show");
+		$("#fileUploadDiv").hide();
+		$("#remarksDivId").show();
+		$("#fileUploadingDivId").hide();
+		$("#leadDivId").hide();
+		$("#grantDivId").hide();
+		$("#assignOfficerDivId").hide();
+		$("#assignDesignationDivId").hide();
+		$("#endorsementDivId").hide();
+		return;
+	}
+
+	var nextStatusId = $(this).attr("attr_next_status_id");
 	$("#endorseErrMsgId").html("");
 	$("#officerId").html('');
 	$("#officerId").html('<option value ="0">Select Officer Name</option>');
