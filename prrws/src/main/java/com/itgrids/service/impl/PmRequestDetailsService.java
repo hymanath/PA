@@ -2430,7 +2430,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					for (MultipartFile file : inputVO.getFilesList()) {
 						Document petitionCoverLetter = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,inputVO.getId());
 						if(petitionCoverLetter != null)
-							resultStatus =saveCoveringLetterDocument(inputVO.getRemark(),inputVO.getWorkIds(),petitionCoverLetter.getDocumentId(),inputVO.getId(), inputVO.getEndorsementNO(),inputVO.getPetitionId(),inputVO.getStatusType());
+							resultStatus =saveCoveringLetterDocument(inputVO.getRemark(),inputVO.getWorkIds(),petitionCoverLetter.getDocumentId(),inputVO.getId(), inputVO.getEndorsementNO(),inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId());
 					}
 				}
 				
@@ -2442,7 +2442,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return resultStatus;
 		}
-		public ResultStatus saveCoveringLetterDocument(String remarks,List<Long> subWorkIds,Long documentId,Long userId,String endorsmentNo,Long petitonId,String reportType){
+		public ResultStatus saveCoveringLetterDocument(String remarks,List<Long> subWorkIds,Long documentId,Long userId,String endorsmentNo,Long petitonId,String reportType,Long statusId){
 			ResultStatus status=new ResultStatus();
 			try {
 				if(documentId != null && documentId.longValue()>0L && commonMethodsUtilService.isListOrSetValid(subWorkIds)){
@@ -2459,7 +2459,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmSubWorkCoveringLetter = pmSubWorkCoveringLetterDAO.save(pmSubWorkCoveringLetter);
 						
 						PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
-						pmTrackingVO.setPmStatusId(6L);// PENDING ACTION MEMO 
+						pmTrackingVO.setPmStatusId(statusId);// PENDING ACTION MEMO 
 						pmTrackingVO.setUserId(userId);
 						pmTrackingVO.setPetitionId(petitonId);
 						pmTrackingVO.setRemarks(remarks);
