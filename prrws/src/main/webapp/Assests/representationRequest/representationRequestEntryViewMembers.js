@@ -192,7 +192,7 @@ function representationRequestEntryTable(result){
 	str+='<div class="panel panel-default" style="margin-top:-8px;">';
 		str+='<div class="panel-heading" style="background-color:#344650; color:#fff;" data-toggle="collapse">';
 			str+='<h4 class="panel-title">';
-			str+='<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">SUBWORK PETITION DETAILS </a></h4>';
+			str+='<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"> REPRESENTATIONS DETAILS </a></h4>';
 		str+='</div>';
 		str+='<div id="collapseTwo" class="panel-collapse collapse in">';
 		str+='<div class="panel-body">';
@@ -200,17 +200,17 @@ function representationRequestEntryTable(result){
 			str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
 				str+='<thead>';
 					str+='<tr>';
-						str+='<th>Entd&nbsp;ID</th>';
-						str+='<th>RAISED&nbsp;DATE</th>';
-						str+='<th>Entd&nbsp;Date</th>';
-						str+='<th>Representee&nbsp;Name</th>';
-						str+='<th>Referrer&nbsp;Name</th>';
-						str+='<th>Referrer&nbsp;Designation</th>';				
-						str+='<th style="min-width:200px !important;">Work Name</th>';
+						str+='<th title="Representation Date" >REPR.&nbsp;DATE</th>';
+						str+='<th title="Endorsment No" >ENDORS&nbsp;NO</th>';
+						str+='<th title="Endorsment Date" >ENDORS&nbsp;DATE</th>';
+						str+='<th title="Representee Name" >REPRESENTEE&nbsp;NAME</th>';
+						str+='<th title="Referrer Name" >REF.&nbsp;NAME</th>';
+						str+='<th title="Referreer Designation" >REF.&nbsp;DESIGNATION</th>';				
+						str+='<th style="min-width:200px !important;"  title="Work Description" >WORK&nbsp;DESC.</th>';
 						//str+='<th>No&nbsp;of&nbsp;Works</th>';
-						str+='<th>Estimation Cost</th>';
-						str+='<th>Status</th>';
-						str+='<th>Action</th>';
+						str+='<th>BUDGET</th>';
+						str+='<th>STATUS</th>';
+						str+='<th>ACTION</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -218,49 +218,50 @@ function representationRequestEntryTable(result){
 						for(var j in result[i].subList){
 					var endorsmentNo='';
 					str+='<tr>';
+						if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
+							str+='<td style="text-align:center;">'+result[i].raisedDate+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
 						if (result[i].subList[j].endorsementNO != null && result[i].subList[j].endorsementNO != 0){
-							str+='<td>'+result[i].subList[j].endorsementNO+'</td>';
+							str+='<td style="text-align:center;">'+result[i].subList[j].endorsementNO+'</td>';
 							endorsmentNo=result[i].subList[j].endorsementNO;
 						}else
-							str+='<td> - </td>';
-						if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
-							str+='<td>'+result[i].raisedDate+'</td>';
-						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
+						
 						
 						if (result[i].subList[j].endorsmentDate != null && result[i].subList[j].endorsmentDate != "")
-							str+='<td>'+result[i].subList[j].endorsmentDate+'</td>';
+							str+='<td style="text-align:center;">'+result[i].subList[j].endorsmentDate+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
 						if (result[i].name != null && typeof(result[i].name) != "undefined")
-							str+='<td>'+result[i].name+'</td>';
+							str+='<td style="text-align:center;">'+result[i].name+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
 						
 						if (result[i].referrerName != null && typeof(result[i].referrerName) != "undefined")
-							str+='<td>'+result[i].referrerName+'</td>';
+							str+='<td style="text-align:center;">'+result[i].referrerName+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
 						if (result[i].desigName != null && typeof(result[i].desigName) != "undefined")
-							str+='<td>'+result[i].desigName+'</td>';
+							str+='<td style="text-align:center;">'+result[i].desigName+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
 						if (result[i].subList[j].workName != null && result[i].subList[j].workName != "")
 							str+='<td>'+result[i].subList[j].workName+'</td>';
 						else
-							str+='<td> - </td>';
+							str+='<td style="text-align:center;"> - </td>';
 						/* if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
 							str+='<td>'+result[i].noOfWorks+'</td>';
 						else
 							str+='<td> - </td>'; */
 						if (result[i].subList[j].estimationCost != "" && result[i].subList[j].estimationCost != "0")
-							str+='<td>'+result[i].subList[j].estimationCost+'</td>';
+							str+='<td style="text-align:center;">'+result[i].subList[j].estimationCost+'</td>';
 						else
-							str+='<td>-</td>';
+							str+='<td style="text-align:center;">-</td>';
 						if (result[i].subList[j].statusType != "" && typeof(result[i].subList[j].statusType) != "undefined")
-							str+='<td>'+result[i].subList[j].statusType+'</td>';
+							str+='<td style="text-align:center;">'+result[i].subList[j].statusType+'</td>';
 						else
-							str+='<td>-</td>';
+							str+='<td style="text-align:center;">-</td>';
 						str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" attr_sub_work_id="'+result[i].subList[j].id+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
 						
 						//if(endorsmentNo != null && endorsmentNo != 'undefined' &&  (parseInt(endorsmentNo) ==0 || endorsmentNo=='') )
@@ -1017,7 +1018,7 @@ function buildSummeryDetails(result){
 	var str=""; 
 	str+='<div class="panel panel-default" style="margin:15px;">';
 		str+='<div class="panel-heading" style="background-color:#344650; color:#fff;">';
-			str+='<h4 class="panel-title"> STATUS SUMMERY DETAILS </h4>';
+			str+='<h4 class="panel-title"> STATUS OVERVIEW </h4>';
 		str+='</div>';
 		str+='<div class="panel-body">';
 			str+='<div class="col-sm-12">';
@@ -1360,23 +1361,23 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								
 								if(accessStatusList[s].key == 1){
 									if(!isAllEndorsed)
-										str+='<button class="statusCls endorseCls modelEndoreCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="endosePopup" attr_next_status_id="6" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
+										str+='<button class="statusCls endorseCls modelEndoreCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="endosePopup" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
 									str+='<div id="endorseErrMsgId" style="color:red;"></div>';
 								}
 								if(accessStatusList[s].key == 5){
-										str+='<button class="statusCls btn btn-danger modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="notPossiblePopup"  attr_next_status_id="5" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
+										str+='<button class="statusCls btn btn-danger modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="notPossiblePopup" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
 								}
 								if(accessStatusList[s].key == 3){
-										str+='<button class="statusCls btn btn-success modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_next_status_id="8" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+										str+='<button class="statusCls btn btn-success modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
 								}
 								if(accessStatusList[s].key == 4){
-										str+='<button class="statusCls btn btn-warning modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_next_status_id="4" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+										str+='<button class="statusCls btn btn-warning modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
 								}
 								if(accessStatusList[s].key == 6){
-										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_next_status_id="7" attr_type="notPossiblePopup"> UPLOAD ACTION MEMO </button>';
+										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD ACTION MEMO </button>';
 								}
 								if(accessStatusList[s].key == 7){
-										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_next_status_id="3" attr_type="notPossiblePopup"> UPLOAD DETAILED REPORT </button>';
+										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD DETAILED REPORT </button>';
 								}
 								
 								str+='</div>';
@@ -1642,13 +1643,7 @@ $(document).on("click",".closeSecondModal",function(){
 	);
 	if(selectedWorkIdsArr !=null && selectedWorkIdsArr.length>0){
 							for(var i = 0; i < selectedWorkIdsArr.length; i++){
-								if($("#nextStatusId").val()==6){
-									formData.append("statusType", "COVERING LETTER");
-								}else if($("#nextStatusId").val()==7){
-									formData.append("statusType", "ACTION COPY");
-								}else if($("#nextStatusId").val()==3){
-									formData.append("statusType", "DETAILED REPORT");
-								}
+								formData.append("statusType", "COVERING LETTER");
 								formData.append("workIds["+i+"]", selectedWorkIdsArr[i]);
 						}
 	}
@@ -1700,7 +1695,7 @@ $.ajax({
  
  function getPmBriefLeadList(){
 	 $("#leadId").html('');
-	 $("#leadId").html('<option value="0">Select Brief Lead</option>');
+	 $("#leadId").html('<option value="0"> SELECT LEAD </option>');
    var json = {
       
     };
@@ -1715,7 +1710,7 @@ $.ajax({
     }
   }).done(function(result){
 	  if(result !=null && result.length>0){
-			 $("#leadId").html('<option value="0">Select Brief Lead</option>');
+			 $("#leadId").html('<option value="0">SELECT LEAD</option>');
 			for(var i in result){
 				$("#leadId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
@@ -1726,7 +1721,7 @@ $.ajax({
 
 function getPmGrantList(){
 	 $("#grantId").html('');
-	 $("#grantId").html('<option value="0">Select Grant Under</option>');
+	 $("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
    var json = {
       
     };
@@ -1741,7 +1736,7 @@ function getPmGrantList(){
     }
   }).done(function(result){
 	  if(result !=null && result.length>0){
-			 $("#grantId").html('<option value="0">Select Grant Under</option>');
+			 $("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
 			for(var i in result){
 				$("#grantId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
@@ -1752,7 +1747,7 @@ function getPmGrantList(){
 
 function getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr){
 	 $("#assignToId").html('');
-	 $("#assignToId").html('<option value="0">Select Assign To</option>');
+	 $("#assignToId").html('<option value="0">SELECT DESIGNATION </option>');
 	
  var json = {
 	 
@@ -1769,7 +1764,7 @@ $.ajax({
 	}
 }).done(function(result){
 	if(result !=null && result.length>0){
-		$("#assignToId").html('<option value ="0">Select Assign To</option>');
+		$("#assignToId").html('<option value ="0">SELECT DESIGNATION </option>');
 		for(var i in result){
 				$("#assignToId").append('<option value ="'+result[i].key+'">'+result[i].value+'</option>');
 		}
@@ -1785,7 +1780,7 @@ $(document).on('change','.popUpChangesCls',function(){
 
 function getDeptDesignationOfficerDetail(onChangeValue){
 	$("#officerId").html('');
-	$("#officerId").html('<option value ="0">Select Officer Name</option>');
+	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
 	var deptDesignationId = onChangeValue;
  var json = {
 	deptDesignationId : deptDesignationId
@@ -1801,7 +1796,7 @@ $.ajax({
 	}
 }).done(function(result){
 	if(result != null && result.length >0){
-		$("#officerId").html('<option value ="0">Select Officer Name</option>');
+		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
 		for(var i in result){
 			$("#officerId").append('<option value ="'+result[i].key+'">'+result[i].value+'</option>');
 		}
@@ -1813,27 +1808,36 @@ $.ajax({
 
 $(document).on('click','.modelEndoreCls',function(){
 	var statusId = $(this).attr("attr_statusId");
-	var nextStatusId = $(this).attr("attr_next_status_id");
-$("#nextStatusId").val(nextStatusId);
-	$("#endorseErrMsgId").html("");
-	$("#totalWorksId").text(0);
-	$("#selectdWorksId").text(0);
-	$("#notSeleWorksId").text(0);
+
+	$("#totalWorksId").html(workIdsArr.length);
+	$("#selectdWorksId").html(selectedWorkIdsArr.length);
+	var nonSelected = workIdsArr.length-selectedWorkIdsArr.length;
+	$("#notSeleWorksId").html(nonSelected);
 	
+	$("#endorseErrMsgId").html("");
 	$("#officerId").html('');
 	$("#officerId").html('<option value ="0">Select Officer Name</option>');
-	$("#remarksId").text("");
+	$("#remarksId").html("");
 	$("#endorsmentNo").val('');
+	$("#uploadFile").html('');
 	if(selectedWorkIdsArr.length>0){
-		
 		$("#endorseMentModalDivId").modal("show");
-		$("#totalWorksId").text(workIdsArr.length);
-		$("#selectdWorksId").text(selectedWorkIdsArr.length);
-		var nonSelected = workIdsArr.length-selectedWorkIdsArr.length;
-		$("#notSeleWorksId").text(nonSelected);
-		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
-		initializeSingleUploadDocument("uploadEndorsementDocId");
 		if(statusId == 1){
+
+			$("#remarksDivId").show();
+			$("#fileUploadingDivId").show();
+			$("#leadDivId").show();
+			$("#grantDivId").show();
+			$("#assignOfficerDivId").show();
+			$("#assignDesignationDivId").show();
+			$("#fileUploadDiv").show();
+
+			$("#leadId").html('<option value ="0">SELECT LEAD </option>');
+			$("#grantId").html('<option value ="0">SELECT UNDER GRANT</option>');
+			$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
+			$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+			$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+			initializeSingleUploadDocument("uploadEndorsementDocId");
 			getPmBriefLeadList();
 			getPmGrantList();
 			getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr);
@@ -1841,19 +1845,22 @@ $("#nextStatusId").val(nextStatusId);
 		else if(statusId == 6 || statusId == 7){
 			$("#remarksDivId").show();
 			$("#fileUploadingDivId").show();
-			$(".totalHideShowCls").hide();
 			$("#leadDivId").hide();
 			$("#grantDivId").hide();
 			$("#assignOfficerDivId").hide();
+			$("#assignDesignationDivId").hide();
 			$("#endorsementDivId").hide();
+			$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 			initializeSingleUploadDocument("uploadEndorsementDocId");
+			$("#fileUploadDiv").show();
 		}else if(statusId == 3 || statusId == 4 || statusId == 5){
-			$(".totalHideShowCls").hide();
+			$("#fileUploadDiv").hide();
 			$("#remarksDivId").show();
 			$("#fileUploadingDivId").hide();
 			$("#leadDivId").hide();
 			$("#grantDivId").hide();
 			$("#assignOfficerDivId").hide();
+			$("#assignDesignationDivId").hide();
 			$("#endorsementDivId").hide();
 		}
 
@@ -1862,32 +1869,3 @@ $("#nextStatusId").val(nextStatusId);
 		return;
 	}
 })
-
-
-/*
-$(document).on("click",".endorseCls",function(){
-	$("#endorseErrMsgId").html("");
-	$("#totalWorksId").text(0);
-	$("#selectdWorksId").text(0);
-	$("#notSeleWorksId").text(0);
-	
-	$("#officerId").html('');
-	$("#officerId").html('<option value ="0">Select Officer Name</option>');
-	$("#remarksId").text("");
-	$("#endorsmentNo").val('');
-	if(selectedWorkIdsArr.length>0){
-			$("#endorseMentModalDivId").modal("show");
-			 initializeSingleUploadDocument("uploadEndorsementDocId");
-			 $("#totalWorksId").text(workIdsArr.length);
-			 $("#selectdWorksId").text(selectedWorkIdsArr.length);
-			 var nonSelected = workIdsArr.length-selectedWorkIdsArr.length;
-			 $("#notSeleWorksId").text(nonSelected);
-			 getPmBriefLeadList();
-			 getPmGrantList();
-			 getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr);
-	}else{
-		alert(" Please select atleast one work. ");
-		return;
-	}
-});
-*/
