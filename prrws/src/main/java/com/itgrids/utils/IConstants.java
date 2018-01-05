@@ -16,6 +16,7 @@ public interface IConstants {
     public static final String TIME_ZONE_INDIA = "Asia/Calcutta";
     public static final String DATE_PATTERN = "dd/MM/yyyy";
     public static final String DATE_PATTERN_WITH_SECONDS = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
     
     public static final Long COUNTRY_LEVEL_SCOPE_ID = 1L;
     public static final Long STATE_LEVEL_SCOPE_ID = 2L;
