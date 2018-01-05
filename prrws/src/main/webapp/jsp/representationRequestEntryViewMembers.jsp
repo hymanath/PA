@@ -305,7 +305,7 @@
 	  </div>
 	  <form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
       <div class="modal-body">
-	    <div class="row ">
+	    <div class="row " id="endorsementDivId">
 			<div class="col-sm-8">
 			 <label>ENDORSMENT NO<span style="color:red;">*</span><span id="endorsementNoErr"></span></label>
 			<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO" name="endorsementNO"/>
