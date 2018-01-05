@@ -466,7 +466,7 @@ var $windowWidth = $(window).width();
 					theadArr = [levelType,'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 				
 				if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (levelType == "state" || levelType == "district"))
-					theadArr = [levelType,'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+					theadArr = [levelType,'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','sanctioned Percentage','Achivement Percentage'];
 				
 				if(globalDivName == 'Anganwadi')
 				{
@@ -1156,7 +1156,7 @@ function projectData(divId,levelId,locationId)
 				theadArr = [dataArr[i],'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
 			
 			if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (dataArr[i] == "state" || dataArr[i] == "district"))
-				theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+				theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','sanctioned Percentage','Achivement Percentage'];
 			if(divId == 'Farm Ponds' || divId == 'IHHL' || divId == 'Vermi Compost' || divId == 'Burial Ground' || divId == 'Solid Waste Management' || divId == 'Play fields' || divId == 'NTR 90 Days' || divId == 'Production of Bricks')
 			{
 				if(dataArr[i] == "state" || dataArr[i] == "district")

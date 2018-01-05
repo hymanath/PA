@@ -257,7 +257,7 @@ function buildLabourBudgetPanExpData(result){
 								if(result[i].status != null){
 								str+='<td>'+result[i].status+'</td>';
 								}else{
-									str+='<td>-</td>';
+									str+='<td>Not Updated</td>';
 								}	
 								if(result[i].comments != null){
 								str+='<td>'+result[i].comments+'</td>';
