@@ -1624,12 +1624,11 @@ $(document).on("click",".closeSecondModal",function(){
 	 var officerIdValue = $("#officerId").val();
 	 var remarksId =$("#remarksId").val();
 	 //var fileUploadId = $("#uploadFile").val();
-	
-	 
+	/*
+	 $('#endorsementNoErr').html('');
 	 if(endorsementId == 0 || endorsementId == '' || endorsementId == null || endorsementId.trim().length == 0){
 		 errorEndsmentStr += "<p style='color:red'>Endosment no is required</p>"; 
-	 }
-	 
+	 }	 
 	 if(leadIdValue == null || leadIdValue ==0){
 		errorLeadStr += "<p style='color:red'>Please select brief lead</p>"; 
 	 }
@@ -1644,18 +1643,12 @@ $(document).on("click",".closeSecondModal",function(){
 	 } 
 	 if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
 		 errRemarksStr += "<p style='color:red'>Comment is required</p>"; 
-	 }
+	 }*/
 	 /*if(fileUploadId == 0 || fileUploadId == '' || fileUploadId == null || fileUploadId.trim().length == 0){
 		// errFileUploadStr += "<p style='color:red'>Please file is required</p>"; 
 	 }
 	*/
-	if(errorEndsmentStr.length >0)
-	{
-		$('#endorsementNoErr').html(errorEndsmentStr);
-		return ;
-	}else{
-		$('#endorsementNoErr').html('');
-	}
+	/*
 	if(errorLeadStr.length >0)
 	{
 		$('#leadIdErr').html(errorLeadStr);
@@ -1693,7 +1686,7 @@ $(document).on("click",".closeSecondModal",function(){
 	}else{
 		$('#remarkIdErr').html('');
 	}
-	
+	*/
 	/*if(errFileUploadStr.length >0)
 	{
 		$('#fileUploadIdErr').html(errFileUploadStr);
