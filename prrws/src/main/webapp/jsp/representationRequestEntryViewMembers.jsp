@@ -344,12 +344,7 @@
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 		</div>
-			<div class="row" id="commentsDivId">
-			<div class="col-sm-8" >
-			<label>Comment</label>
-			<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
-			</div>
-			</div>
+			
 		<div class="row m_top10" id="fileUploadingDivId">
 			<div class="col-sm-12">
 					<h4 class="panel-title f_18"> UPLOAD COVERING LETTER </h4>
