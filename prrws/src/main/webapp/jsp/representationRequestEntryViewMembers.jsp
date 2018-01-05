@@ -305,19 +305,21 @@
 	  </div>
 	  <form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
       <div class="modal-body">
-		<div class="col-sm-12" id="endorsementDivId">
-			<label>ENDORSMENT NO</label>
-			<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO" name="endorsementNO">	
-		</div>
+	    <div class="row ">
+			<div class="col-sm-8">
+			 <label>ENDORSMENT NO<span style="color:red;">*</span><span id="endorsementNoErr"></span></label>
+			<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO" name="endorsementNO"/>
+			</div>
+        </div>		
 		<div class="row m_top10">
 			<div class="col-sm-6" id="leadDivId">
-				<label>LEAD</label>
+				<label>LEAD<span style="color:red;">*</span><span id="leadIdErr"></span></label>
 				<select class="form-control chosen-select" id="leadId" name="leadId">
 					<option value="1">SELECT LEAD</option>
 				</select>
 			</div>
 			<div class="col-sm-6" id="grantDivId">
-				<label>GRANT UNDER</label>
+				<label>GRANT UNDER<span  style="color:red;">*</span><span id="grantIdErr"></span></label>
 				<select class="form-control chosen-select" id="grantId" name="grantId">
 					<option value="1">SELECT GRANT UNDER</option>
 				</select>
@@ -325,7 +327,7 @@
 		</div>
 		<div class="row m_top10" id ="assignDesignationDivId">
 			<div class="col-sm-12" id="leadDivId">
-				<label>ASSIGN TO</label>
+				<label>ASSIGN TO<span style="color:red;">*</span><span id="assignToIdErr"></span></label>
 				<select class="form-control chosen-select popUpChangesCls" id="assignToId" name="deptDesigId">
 					<option value="0">SELECT DESIGNATION</option>
 				</select>
@@ -333,19 +335,19 @@
 		</div>
 		<div class="row m_top10"  id ="assignOfficerDivId">
 			<div class="col-sm-12" id="leadDivId">	
-				<label>OFFICER NAME</label>
+				<label>OFFICER NAME<span style="color:red;">*</span><span id="officerIdErr"></span></label>
 				<select class="form-control chosen-select" id="officerId" name="deptDesigOffcrId">
 					<option value="268">SELECT OFFICER NAME</option>
 				</select>
 			</div>
 		</div>
 
-		<div class="row" id="commentsDivId">
+  <div class="row" id="commentsDivId">
 			<div class="col-sm-8" >
-			<label>COMMENT</label>
+			<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
 			<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
-			</div>
+		</div>
 		<!--<div class="row m_top10" id="fileUploadingDivId">
 			<div class="col-sm-12">
 				<h4 class="panel-title f_18"> UPLOAD COVERING LETTER </h4>
@@ -357,14 +359,16 @@
 			-->
 		<div class="row m_top10" id="fileUploadDiv">
 			<div class="col-sm-12">
-					<h4 class="panel-title f_18"> UPLOAD COVERING LETTER </h4>
+					<h4 class="panel-title f_18"> UPLOAD COVERING LETTER <span id="fileUploadIdErr"></h4>
 					<span id="uploadFile"></span>
 			</div>
 		</div>	
+		
+		<button type="button" class="btn btn-success btn-lg pull-right" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" >FORWARD &raquo;</button>
       </div>
-	 
+	  
       <div class="modal-footer">
-        <button type="button" class="btn btn-success btn-lg" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()"data-dismiss="modal">FORWARD &raquo;</button>
+		<!-- <button type="button" class="btn pull-right"  data-dismiss="modal">close &raquo;</button> -->
       </div>
    </form>
   </div>
