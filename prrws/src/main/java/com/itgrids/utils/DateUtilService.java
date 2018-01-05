@@ -89,6 +89,16 @@ public class DateUtilService {
 		}
 	}
 
+	public Date getCurrentDateInDateFormat() {
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_FORMAT);
+		try {
+			return sdf.parse(getCurrentDateAndTimeInStringFormat());
+		} catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getCurrentDateInStringFormat() " + " check for log details");
+			return getCurrentDateAndTime();
+		}
+	}
+	
 	public String getYesterdayDateString() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();

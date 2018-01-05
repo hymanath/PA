@@ -2391,7 +2391,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmSubWorkDetails.setPmLeadId(inputVO.getLeadId());
 							pmSubWorkDetails.setPmGrantId(inputVO.getGrantId());
 							pmSubWorkDetails.setWorkEndorsmentNo(inputVO.getEndorsementNO());
-							pmSubWorkDetails.setEndorsmentDate(dateUtilService.getCurrentDateAndTime());
+							pmSubWorkDetails.setEndorsmentDate(dateUtilService.getCurrentDateInDateFormat());
 							pmSubWorkDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							pmSubWorkDetails.setUpdatedUserId(inputVO.getId());
 							pmSubWorkDetailsDAO.save(pmSubWorkDetails);

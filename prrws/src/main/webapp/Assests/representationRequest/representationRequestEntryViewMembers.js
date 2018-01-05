@@ -1584,36 +1584,6 @@ function updatePetitionStatusDetails(){
 		}
 	  });
 	}
-$(document).on("click",".endorseCls",function(){
-	$("#endorseErrMsgId").html("");
-	$("#totalWorksId").text(0);
-	$("#selectdWorksId").text(0);
-	$("#notSeleWorksId").text(0);
-	/* $("#assignToId").html('');
-	 $("#assignToId").html('<option value="0">Select Assign To</option>'); 
-	 $("#leadId").html('');
-	 $("#leadId").html('<option value="0">Select Brief Lead</option>');
-	  $("#grantId").html('');
-	 $("#grantId").html('<option value="0">Select Grant Under</option>'); */
-	 $("#officerId").html('');
-	$("#officerId").html('<option value ="0">Select Officer Name</option>');
-	$("#remarksId").text("");
-	$("#endorsmentNo").val('');
-	if(selectedWorkIdsArr.length>0){
-			$("#endorseMentModalDivId").modal("show");
-			 initializeSingleUploadDocument("uploadEndorsementDocId");
-			 $("#totalWorksId").text(workIdsArr.length);
-			 $("#selectdWorksId").text(selectedWorkIdsArr.length);
-			 var nonSelected = workIdsArr.length-selectedWorkIdsArr.length;
-			 $("#notSeleWorksId").text(nonSelected);
-			 getPmBriefLeadList();
-			 getPmGrantList();
-			 getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr);
-	}else{
-		alert("Please select atleast one work");
-	}
-});
- 
  $(document).on("click",".closeSecondModal",function(){
     setTimeout(function(){
       $("body").addClass("modal-open")
@@ -1832,33 +1802,83 @@ $.ajax({
 });	
 }
 
+
 $(document).on('click','.modelEndoreCls',function(){
 	var statusId = $(this).attr("attr_statusId");
-	if(statusId == 1){
-		$("#endorseMentModalDivId").modal('show');
-		$("#commentsDivId").hide();
-	}else if(statusId == 6 || statusId == 7){
-		
-	$("#endorseMentModalDivId").modal('show');
-		$("#remarksDivId").show();
-		$("#fileUploadingDivId").show();
-		$(".totalHideShowCls").hide();
-		$("#leadDivId").hide();
-		$("#grantDivId").hide();
-		$("#assignOfficerDivId").hide();
-		$("#commentsDivId").hide();
-		$("#endorsementDivId").hide();
-		
-	}else if(statusId == 3 || statusId == 4 || statusId == 5){
-		$("#endorseMentModalDivId").modal('show');
-		$(".totalHideShowCls").hide();
-		$("#commentsDivId").show();
-		$("#remarksDivId").hide();
-		$("#fileUploadingDivId").hide();
-		$("#leadDivId").hide();
-		$("#grantDivId").hide();
-		$("#assignOfficerDivId").hide();
-		$("#endorsementDivId").hide();
-	}
+
+	$("#endorseErrMsgId").html("");
+	$("#totalWorksId").text(0);
+	$("#selectdWorksId").text(0);
+	$("#notSeleWorksId").text(0);
 	
+	$("#officerId").html('');
+	$("#officerId").html('<option value ="0">Select Officer Name</option>');
+	$("#remarksId").text("");
+	$("#endorsmentNo").val('');
+	if(selectedWorkIdsArr.length>0){
+		
+		$("#endorseMentModalDivId").modal("show");
+		$("#totalWorksId").text(workIdsArr.length);
+		$("#selectdWorksId").text(selectedWorkIdsArr.length);
+		var nonSelected = workIdsArr.length-selectedWorkIdsArr.length;
+		$("#notSeleWorksId").text(nonSelected);
+
+		if(statusId == 1){
+			getPmBriefLeadList();
+			getPmGrantList();
+			getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr);
+			initializeSingleUploadDocument("uploadEndorsementDocId");
+		}
+		else if(statusId == 6 || statusId == 7){
+			$("#remarksDivId").show();
+			$("#fileUploadingDivId").show();
+			$(".totalHideShowCls").hide();
+			$("#leadDivId").hide();
+			$("#grantDivId").hide();
+			$("#assignOfficerDivId").hide();
+			$("#endorsementDivId").hide();
+			initializeSingleUploadDocument("uploadEndorsementDocId");
+		}else if(statusId == 3 || statusId == 4 || statusId == 5){
+			$(".totalHideShowCls").hide();
+			$("#remarksDivId").show();
+			$("#fileUploadingDivId").hide();
+			$("#leadDivId").hide();
+			$("#grantDivId").hide();
+			$("#assignOfficerDivId").hide();
+			$("#endorsementDivId").hide();
+		}
+
+	}else{
+		alert(" Please select atleast one work. ");
+		return;
+	}
 })
+
+
+/*
+$(document).on("click",".endorseCls",function(){
+	$("#endorseErrMsgId").html("");
+	$("#totalWorksId").text(0);
+	$("#selectdWorksId").text(0);
+	$("#notSeleWorksId").text(0);
+	
+	$("#officerId").html('');
+	$("#officerId").html('<option value ="0">Select Officer Name</option>');
+	$("#remarksId").text("");
+	$("#endorsmentNo").val('');
+	if(selectedWorkIdsArr.length>0){
+			$("#endorseMentModalDivId").modal("show");
+			 initializeSingleUploadDocument("uploadEndorsementDocId");
+			 $("#totalWorksId").text(workIdsArr.length);
+			 $("#selectdWorksId").text(selectedWorkIdsArr.length);
+			 var nonSelected = workIdsArr.length-selectedWorkIdsArr.length;
+			 $("#notSeleWorksId").text(nonSelected);
+			 getPmBriefLeadList();
+			 getPmGrantList();
+			 getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr);
+	}else{
+		alert(" Please select atleast one work. ");
+		return;
+	}
+});
+*/
