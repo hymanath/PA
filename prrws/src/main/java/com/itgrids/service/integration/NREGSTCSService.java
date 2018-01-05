@@ -4264,7 +4264,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("SMC Trench") || inputVO.getType().toString().trim().equalsIgnoreCase("Imp to CD")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("MPT_PT") || inputVO.getType().toString().trim().equalsIgnoreCase("GC Works")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CD_CW")
-	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Check Dam") || inputVO.getType().toString().trim().equalsIgnoreCase("Rock fill dams"))
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Check Dam") || inputVO.getType().toString().trim().equalsIgnoreCase("Rock fill dams")
+	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("CC Roads1"))
 	 	    					vo.setPercentage(jObj.getString("PERC"));
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")
 	 	    						|| inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")
