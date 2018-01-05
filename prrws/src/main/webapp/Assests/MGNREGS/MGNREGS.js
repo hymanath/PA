@@ -5838,7 +5838,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			str+='<small class="text-center">Total Pending</small>';
 			if(result[0].totalPendinAmount != null && result[0].totalPendinAmount.length > 0)
 			{
-				str+='<h1 class="text-center" style="font-size:25px"><i class="fa fa-inr"></i> '+result[0].totalPendinAmount+'</h1>';
+				str+='<h1 class="text-center" style="font-size:34px"><i class="fa fa-inr"></i> '+result[0].totalPendinAmount+'</h1>';
 			}else{
 				str+='<h1 class="text-center">0</h1>';
 			}
@@ -5899,7 +5899,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			str+='<small class="text-center">Today</small>';
 			if(result[0].today != null && result[0].today != 0)
 			{
-				str+='<h1 class="text-center" style="font-size:25px">'+result[0].today+'</h1>';
+				str+='<h1 class="text-center" style="font-size:45px">'+result[0].today+'</h1>';
 			}else{
 				str+='<h1 class="text-center">0</h1>';
 			}
@@ -5959,7 +5959,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			str+='<small class="text-center">Total Vacancies</small>';
 			if(result[0].count != null && result[0].count != 0)
 			{
-				str+='<h1 class="text-center" style="font-size:25px">'+result[0].count+'</h1>';
+				str+='<h1 class="text-center" style="font-size:35px">'+result[0].count+'</h1>';
 			}else{
 				str+='<h1 class="text-center">0</h1>';
 			}
