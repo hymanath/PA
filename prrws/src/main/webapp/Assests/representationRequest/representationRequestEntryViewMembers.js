@@ -1360,23 +1360,23 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								
 								if(accessStatusList[s].key == 1){
 									if(!isAllEndorsed)
-										str+='<button class="statusCls endorseCls modelEndoreCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="endosePopup" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
+										str+='<button class="statusCls endorseCls modelEndoreCls btn btn-success" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="endosePopup" attr_next_status_id="6" attr_petition_id="'+result.petitionId+'"> ENDORSE </button>';
 									str+='<div id="endorseErrMsgId" style="color:red;"></div>';
 								}
 								if(accessStatusList[s].key == 5){
-										str+='<button class="statusCls btn btn-danger modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="notPossiblePopup" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
+										str+='<button class="statusCls btn btn-danger modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;width: 200px;margin-left: -9px;" attr_type="notPossiblePopup"  attr_next_status_id="5" attr_petition_id="'+result.petitionId+'"> NOT POSSIBLE </button>';
 								}
 								if(accessStatusList[s].key == 3){
-										str+='<button class="statusCls btn btn-success modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+										str+='<button class="statusCls btn btn-success modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_next_status_id="8" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
 								}
 								if(accessStatusList[s].key == 4){
-										str+='<button class="statusCls btn btn-warning modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
+										str+='<button class="statusCls btn btn-warning modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_next_status_id="4" attr_type="notPossiblePopup"> '+accessStatusList[s].value.toUpperCase()+' </button>';
 								}
 								if(accessStatusList[s].key == 6){
-										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD ACTION MEMO </button>';
+										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_next_status_id="7" attr_type="notPossiblePopup"> UPLOAD ACTION MEMO </button>';
 								}
 								if(accessStatusList[s].key == 7){
-										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_type="notPossiblePopup"> UPLOAD DETAILED REPORT </button>';
+										str+='<button class="statusCls btn btn-primary modelEndoreCls" attr_statusId="'+accessStatusList[s].key+'"  style="margin-bottom:10px;;width: 200px" attr_next_status_id="3" attr_type="notPossiblePopup"> UPLOAD DETAILED REPORT </button>';
 								}
 								
 								str+='</div>';
@@ -1642,7 +1642,13 @@ $(document).on("click",".closeSecondModal",function(){
 	);
 	if(selectedWorkIdsArr !=null && selectedWorkIdsArr.length>0){
 							for(var i = 0; i < selectedWorkIdsArr.length; i++){
-								formData.append("statusType", "COVERING LETTER");
+								if($("#nextStatusId").val()==6){
+									formData.append("statusType", "COVERING LETTER");
+								}else if($("#nextStatusId").val()==7){
+									formData.append("statusType", "ACTION COPY");
+								}else if($("#nextStatusId").val()==3){
+									formData.append("statusType", "DETAILED REPORT");
+								}
 								formData.append("workIds["+i+"]", selectedWorkIdsArr[i]);
 						}
 	}
@@ -1807,7 +1813,8 @@ $.ajax({
 
 $(document).on('click','.modelEndoreCls',function(){
 	var statusId = $(this).attr("attr_statusId");
-
+	var nextStatusId = $(this).attr("attr_next_status_id");
+$("#nextStatusId").val(nextStatusId);
 	$("#endorseErrMsgId").html("");
 	$("#totalWorksId").text(0);
 	$("#selectdWorksId").text(0);
