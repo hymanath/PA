@@ -1348,7 +1348,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 					if(accessStatusList != null && accessStatusList.length>0){
 							str+='<div class="row ">';
 							str+='<div class="col-sm-3 m_top10 ">';
-								str+='<button class="btn btn-info modelEndoreCls" attr_statusId="0" style="margin-bottom:10px;" > UPDATE PRESENT STATUS  </button>';
+								str+='<button class="btn btn-info modelEndoreCls" attr_statusId="0" attr_next_status_id="0" style="margin-bottom:10px;" > UPDATE PRESENT STATUS  </button>';
 							str+='</div>';
 							for(var s in accessStatusList){
 								if(s==3 || s==6|| s==9){
@@ -1917,6 +1917,7 @@ $.ajax({
 
 $(document).on('click','.modelEndoreCls',function(){
 	var statusId = $(this).attr("attr_statusId");
+	var nextStatusId = $(this).attr("attr_next_status_id");
 	$("#nextStatusId").val(nextStatusId);
 	$("#totalWorksId").html(workIdsArr.length);
 	$("#selectdWorksId").html(selectedWorkIdsArr.length);
@@ -1936,7 +1937,7 @@ $(document).on('click','.modelEndoreCls',function(){
 		return;
 	}
 
-	var nextStatusId = $(this).attr("attr_next_status_id");
+	
 	$("#endorseErrMsgId").html("");
 	$("#officerId").html('');
 	$("#officerId").html('<option value ="0">Select Officer Name</option>');

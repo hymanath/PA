@@ -2367,10 +2367,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					List<Object[]> deptDesignationOfficerDetails = pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptDesignation(deptDesignationId);
 					if(commonMethodsUtilService.isListOrSetValid(deptDesignationOfficerDetails)){
 						for (Object[] param : deptDesignationOfficerDetails) {
-							if(!commonMethodsUtilService.getStringValueForObject(param[1]).isEmpty())
-								returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])+" - "+commonMethodsUtilService.getStringValueForObject(param[2])));
-							else
-								returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])+""+commonMethodsUtilService.getStringValueForObject(param[2])));
+							Long pmDepartmentDesignationOfficerId = commonMethodsUtilService.getLongValueForObject(param[0]);
+							String officerName = commonMethodsUtilService.getStringValueForObject(param[1]);
+							String mobileNo = commonMethodsUtilService.getStringValueForObject(param[2]);
+							String dept =  commonMethodsUtilService.getStringValueForObject(param[3]);
+							String designation = commonMethodsUtilService.getStringValueForObject(param[4]);
+							
+							String finalName = dept+"   "+designation+"   "+officerName+"   "+mobileNo;
+							if(mobileNo.isEmpty())
+								finalName = dept+"   "+designation+"   "+officerName;
+							if(officerName.equalsIgnoreCase(designation))
+								finalName = dept+"   "+officerName+"   "+mobileNo;
+							returnList.add(new KeyValueVO(pmDepartmentDesignationOfficerId,finalName));
 						}
 					}
 				}
@@ -2388,31 +2396,38 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isListOrSetValid(inputVO.getWorkIds())){
 					for (Long subWorkId : inputVO.getWorkIds()) {
 						PmSubWorkDetails pmSubWorkDetails = pmSubWorkDetailsDAO.get(subWorkId);
-						if(pmSubWorkDetails != null){
-							pmSubWorkDetails.setPmLeadId(inputVO.getLeadId());
-							pmSubWorkDetails.setPmGrantId(inputVO.getGrantId());
-							pmSubWorkDetails.setWorkEndorsmentNo(inputVO.getEndorsementNO());
-							pmSubWorkDetails.setEndorsmentDate(dateUtilService.getCurrentDateInDateFormat());
-							pmSubWorkDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							pmSubWorkDetails.setUpdatedUserId(inputVO.getId());
-							pmSubWorkDetails.setPmStatusId(inputVO.getStatusId());
-							pmSubWorkDetailsDAO.save(pmSubWorkDetails);
+						if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L){
+							if(pmSubWorkDetails != null){
+								if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && (inputVO.getStatusId().longValue() == 6L) ){
+									pmSubWorkDetails.setPmLeadId(inputVO.getLeadId());
+									pmSubWorkDetails.setPmGrantId(inputVO.getGrantId());
+									pmSubWorkDetails.setWorkEndorsmentNo(inputVO.getEndorsementNO());
+								}
+								
+								pmSubWorkDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								pmSubWorkDetails.setUpdatedUserId(inputVO.getId());
+								pmSubWorkDetails.setPmStatusId(inputVO.getStatusId());
+								pmSubWorkDetailsDAO.save(pmSubWorkDetails);
+							}
+							
+							if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && (inputVO.getStatusId().longValue() == 6L || inputVO.getStatusId().longValue() == 7L) ){
+								if(inputVO.getDeptDesigOffcrId() != null ){
+									PmPetitionAssignedOfficer pmPetitionAssignedOfficer = new PmPetitionAssignedOfficer();
+									pmPetitionAssignedOfficer.setPetitionId(inputVO.getPetitionId());
+									pmPetitionAssignedOfficer.setPmSubWorkDetailsId(subWorkId);
+									pmPetitionAssignedOfficer.setPmDepartmentDesignationId(inputVO.getDeptDesigId());
+									pmPetitionAssignedOfficer.setPmDepartmentDesignationOfficerId(inputVO.getDeptDesigOffcrId());
+									pmPetitionAssignedOfficer.setRemarks(inputVO.getRemark());
+									pmPetitionAssignedOfficer.setIsDeleted("N");
+									pmPetitionAssignedOfficer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									pmPetitionAssignedOfficer.setInsertedUserId(inputVO.getId());
+									pmPetitionAssignedOfficer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									pmPetitionAssignedOfficer.setUpdatedUserId(inputVO.getId());
+									pmPetitionAssignedOfficer = pmPetitionAssignedOfficerDAO.save(pmPetitionAssignedOfficer);
+								}
+							}
 						}
 						
-						if(inputVO.getDeptDesigOffcrId() != null ){
-							PmPetitionAssignedOfficer pmPetitionAssignedOfficer = new PmPetitionAssignedOfficer();
-							pmPetitionAssignedOfficer.setPetitionId(inputVO.getPetitionId());
-							pmPetitionAssignedOfficer.setPmSubWorkDetailsId(subWorkId);
-							pmPetitionAssignedOfficer.setPmDepartmentDesignationId(inputVO.getDeptDesigId());
-							pmPetitionAssignedOfficer.setPmDepartmentDesignationOfficerId(inputVO.getDeptDesigOffcrId());
-							pmPetitionAssignedOfficer.setRemarks(inputVO.getRemark());
-							pmPetitionAssignedOfficer.setIsDeleted("N");
-							pmPetitionAssignedOfficer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							pmPetitionAssignedOfficer.setInsertedUserId(inputVO.getId());
-							pmPetitionAssignedOfficer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							pmPetitionAssignedOfficer.setUpdatedUserId(inputVO.getId());
-							pmPetitionAssignedOfficer = pmPetitionAssignedOfficerDAO.save(pmPetitionAssignedOfficer);
-						}
 						
 						PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
 						pmTrackingVO.setPmStatusId(inputVO.getStatusId());// PENDING ACTION MEMO 
