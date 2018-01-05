@@ -1100,6 +1100,8 @@ var workDocs = [];
 var coveringDocs=[];
 var petitionId ='';
 function setPmRepresenteeDataToResultView(result,endorsNo){
+	selectedWorkIdsArr=[];
+	workIdsArr=[];
 	var str="";
 	petitionId =''
 	referralDocs = [];
@@ -1584,7 +1586,7 @@ function updatePetitionStatusDetails(){
 		}
 	  });
 	}
- $(document).on("click",".closeSecondModal",function(){
+$(document).on("click",".closeSecondModal",function(){
     setTimeout(function(){
       $("body").addClass("modal-open")
     },1000);
@@ -1822,12 +1824,12 @@ $(document).on('click','.modelEndoreCls',function(){
 		$("#selectdWorksId").text(selectedWorkIdsArr.length);
 		var nonSelected = workIdsArr.length-selectedWorkIdsArr.length;
 		$("#notSeleWorksId").text(nonSelected);
-
+		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+		initializeSingleUploadDocument("uploadEndorsementDocId");
 		if(statusId == 1){
 			getPmBriefLeadList();
 			getPmGrantList();
 			getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr);
-			initializeSingleUploadDocument("uploadEndorsementDocId");
 		}
 		else if(statusId == 6 || statusId == 7){
 			$("#remarksDivId").show();
