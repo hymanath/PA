@@ -340,6 +340,7 @@ $(document).on("change","#locationSelId",function(){
    $('#advanceSearchBtnId').prop("checked",false); 
 	var searchType=$(this).val();
 	var dateRangeStr =$("#dateRangePicker").val();
+	 getStatusList(statusId);
 	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
 	if(searchType == 'all'){
 		//$('#parametersList').hide();
@@ -419,7 +420,7 @@ $(document).on("change","#locationSelId",function(){
 			 
 		 }); 
 			}
-		  getDesignationsBySearchType(searchType,"designationsId");
+		  getDesignationsBySearchType(searchType,"designationsId",desigId,0);
 		$("#designationDiv").show();
 		if(searchType == 'referrelDesignation')
 		$("#referralNameDiv").show();
@@ -441,7 +442,7 @@ $(document).on("change","#locationSelId",function(){
 			$("#endorsmentNoId").val(' ');
 	
 	   $('#advanceSearchBtnId').prop("checked",false);
-	getDepartmentsBySearchType(searchType,"departmentId");
+	getDepartmentsBySearchType(searchType,"departmentId",deptId,statusId);
 		$("#departMentsDiv").show();
 		$("#districtConsMandDivId").hide();
 		$("#advancedSearchButtonDivId").show();
@@ -742,13 +743,15 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 	});	
 }
 
-function getDesignationsBySearchType(searchType,selBoxId){
+function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 	$("#referralNameId").html('<option value="0">Select Referral Name</option>');
 	$("#referralNameId").trigger('chosen:updated');
  var json = {
 		 searchType :searchType,
 		 fromDate :startDate,
-		 toDate : endDate
+		 toDate : endDate,
+		 desigId:desigId,
+		 statusId :statusId
 		}            
 	$.ajax({              
 		type:'POST',    
@@ -764,18 +767,28 @@ function getDesignationsBySearchType(searchType,selBoxId){
 		if(result !=null && result.length >0){
 			//$("#"+selBoxId).html("<option value='0'>Select Designation</option>");
 			for(var i in result){
-				$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
+				if(desigId >0 && desigId == result[i].key){
+					$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
+				}else {
+					$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
+				}
 			}
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
+		if(desigId >0){
+		getPetitionReferredMemberDetails([desigId]);
+		}
 	});	
 }
 
-function getDepartmentsBySearchType(searchType,selBoxId){
+function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
+	
  var json = {
 		 searchType :searchType,
 		 fromDate :startDate,
-		 toDate : endDate
+		 toDate : endDate,
+		 deptId:deptId,
+		 statusId:statusId
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -791,7 +804,11 @@ function getDepartmentsBySearchType(searchType,selBoxId){
 		if(result !=null && result.length >0){
 			//$("#"+selBoxId).html("<option value='0'>Select Department</option>");
 			for(var i in result){
-				$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
+				if(deptId != null && deptId==result[i].key){
+					$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
+				}else{
+					$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+				}
 			}
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
@@ -1050,13 +1067,16 @@ function buildSummeryDetails(result){
 	str+='</div>';
 	$("#summaryId").html(str);
 }
-getStatusList();
-function getStatusList(){
-	
+
+function getStatusList(statusId){
+	var json = {
+		statusId :statusId
+	}
   $.ajax({                
     type:'POST',    
     url: 'getStatusList',
     dataType: 'json',
+	data : JSON.stringify(json),
     beforeSend :   function(xhr){
       xhr.setRequestHeader("Accept", "application/json");
       xhr.setRequestHeader("Content-Type", "application/json");
@@ -1066,7 +1086,12 @@ function getStatusList(){
 		if(result !=null && result.length >0){
 			//$("#statusId").html("<option value='0'>All</option>");
 			for(var i in result){
-				$("#statusId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+				if(statusId >0 && statusId==result[i].id){
+					$("#statusId").append("<option value='"+result[i].id+"' selected>"+result[i].name+"</option>");
+				}else{
+					$("#statusId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+				}
+				
 			}
 		}
 		$("#statusId").trigger('chosen:updated');
@@ -1348,7 +1373,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 					if(accessStatusList != null && accessStatusList.length>0){
 							str+='<div class="row ">';
 							str+='<div class="col-sm-3 m_top10 ">';
-								str+='<button class="btn btn-info modelEndoreCls" attr_statusId="0" attr_next_status_id="0" style="margin-bottom:10px;" > UPDATE PRESENT STATUS  </button>';
+								str+='<button class="btn btn-info modelEndoreCls" attr_statusId="0" style="margin-bottom:10px;" > UPDATE PRESENT STATUS  </button>';
 							str+='</div>';
 							for(var s in accessStatusList){
 								if(s==3 || s==6|| s==9){
@@ -1918,7 +1943,6 @@ $.ajax({
 
 $(document).on('click','.modelEndoreCls',function(){
 	var statusId = $(this).attr("attr_statusId");
-	var nextStatusId = $(this).attr("attr_next_status_id");
 	//alert(nextStatusId)
 	$("#nextStatusId").val(nextStatusId);
 	$("#totalWorksId").html(workIdsArr.length);
@@ -1939,7 +1963,7 @@ $(document).on('click','.modelEndoreCls',function(){
 		return;
 	}
 
-	
+	var nextStatusId = $(this).attr("attr_next_status_id");
 	$("#endorseErrMsgId").html("");
 	$("#officerId").html('');
 	$("#officerId").html('<option value ="0">Select Officer Name</option>');
@@ -1994,4 +2018,26 @@ $(document).on('click','.modelEndoreCls',function(){
 		alert(" Please select atleast one work. ");
 		return;
 	}
-})
+});
+
+function onLoadClickDataDetails(){
+	if(searchBy == 'referral'){
+		$("#locationSelId").html('');
+		$("#locationSelId").html('<option value="referrelDesignation"> Referral Designation wise </option>');
+		$("#locationSelId").trigger('chosen:updated');
+	}else if(searchBy == 'department'){
+		$("#locationSelId").html('');
+		$("#locationSelId").html('<option value="department">Department wise </option>');
+		$("#locationSelId").trigger('chosen:updated');
+	}
+	/* if(desigId != ''){
+		getDesignationsBySearchType('referrelDesignation',"designationsId",desigId,statusId);
+	} */
+	/* if(statusId != ''){
+		
+	} */
+	/* if(deptId != ''){
+	getDepartmentsBySearchType('department',"departmentId",deptId);
+	} */
+	$( "#locationSelId" ).trigger( "change" );
+}

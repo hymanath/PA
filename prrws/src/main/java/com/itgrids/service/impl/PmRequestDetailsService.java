@@ -951,7 +951,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			Date startDate = null;
 			Date endDate = null;
-			
+			KeyValueVO deptVO = getDeptIdsListBYUserIds(inputVO.getLocationId());
+			inputVO.setDeptIdsList(deptVO.getDeptIdsList());
 			if(inputVO.getFromDate() != null && inputVO.getToDate() != null && !inputVO.getFromDate().isEmpty() && !inputVO.getToDate().isEmpty()){
 				startDate = format.parse(inputVO.getFromDate());
 				endDate = format.parse(inputVO.getToDate());
@@ -1014,7 +1015,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 			}
 			if(commonMethodsUtilService.isListOrSetValid(finalList)){
-				finalList.get(0).getStatusList().addAll(getStatusList());
+				finalList.get(0).getStatusList().addAll(getStatusList(null));
 				setStatusSummeryDetails(searchData,finalList.get(0).getStatusList());
 			}
 		}catch (Exception e) {
@@ -1108,12 +1109,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	
 	@SuppressWarnings("static-access")
-	public List<RepresenteeViewVO> getStatusList(){
+	public List<RepresenteeViewVO> getStatusList(Long statId){
 		List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
 		try {
 			
 			//List<PmStatus> list = pmStatusDAO.getAll();
-			 List<Object[]> statusList = pmStatusDAO.getPmStatusList();
+			 List<Object[]> statusList = pmStatusDAO.getPmStatusList(statId);
 			 Map<Long,KeyValueVO> statusMap = new LinkedHashMap<Long,KeyValueVO>();
 			 if(commonMethodsUtilService.isListOrSetValid(statusList)){
 				for (Object[] param : statusList) {
@@ -1540,7 +1541,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 if(commonMethodsUtilService.isMapValid(petitionRequiredFilesMap) && petitionRequiredFilesMap.get(0L) != null)
 				 petitionVO.getReportTypeFilesList().addAll(petitionRequiredFilesMap.get(0L));
 			 
-			 List<Object[]> statusList = pmStatusDAO.getPmStatusList();
+			 List<Object[]> statusList = pmStatusDAO.getPmStatusList(null);
 			 Map<Long,KeyValueVO> statusMap = new LinkedHashMap<Long,KeyValueVO>();
 			 if(commonMethodsUtilService.isListOrSetValid(statusList)){
 				for (Object[] param : statusList) {

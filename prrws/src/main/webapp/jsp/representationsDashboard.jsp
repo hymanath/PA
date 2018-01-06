@@ -112,7 +112,7 @@
 						
 					</div>
 				</div>
-			
+			<!--
 				 <div class="col-sm-12 m_top20">
 					<div class="white-block" style="padding:10px">
 						<h4><img src="Assests/icons/2000px-Circle-icons-crossroads.svg.png"><b style="padding-left:5px;">Lead wise Overview</b></h4>
@@ -299,7 +299,7 @@
 						
 					</div>
 				</div>
-				
+				-->
 				
 				
 			</div>
@@ -338,7 +338,8 @@ $(document).on("click",".closeSecondModal",function(){
     },1000);
   });
 var windowUrl = window.location.href;
-var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationRequestEntryViewMembers")));
+var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationsDashboard")));
+//wurl = wurl.replace("/PartyAnalyst","");
 
 </script>
 </body>

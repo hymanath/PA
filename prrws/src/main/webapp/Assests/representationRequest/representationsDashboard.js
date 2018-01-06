@@ -154,7 +154,7 @@ function buildMyActionsDetails(result){
 														str+='</div>';
 														str+='<div class="media-body">';
 															str+='<p>Representations</p>';
-															str+='<h4><b>'+result.statusList[i].totalRepresents+'</b></h4>';
+															str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].totalRepresents+'</a></h4>';
 														str+='</div>';
 													str+='</div>';
 												str+='</div>';
@@ -167,7 +167,7 @@ function buildMyActionsDetails(result){
 														str+='</div>';
 														str+='<div class="media-body">';
 															str+='<p>Works</p>';
-															str+='<h4><b>'+result.statusList[i].noOfWorks+'</b></h4>';
+															str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].noOfWorks+'</a></h4>';
 														str+='</div>';
 													str+='</div>';
 												str+='</div>';
@@ -186,7 +186,7 @@ function buildMyActionsDetails(result){
 														str+='<div class="col-sm-2 petition_border">';
 														str+='	<div class="">';
 															str+='<p>'+result.statusList[i].referrerList[j].name.toUpperCase()+'</p>';
-															str+='<h5><b title="Represents">'+result.statusList[i].referrerList[j].totalRepresents+'</b> - <b title="Works">'+result.statusList[i].referrerList[j].noOfWorks+'</b></h5>';
+															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].referrerList[j].totalRepresents+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].referrerList[j].noOfWorks+'</a></h5>';
 														str+='</div>';
 														str+='</div>';
 													}
@@ -216,7 +216,7 @@ function buildMyActionsDetails(result){
 														str+='<div class="col-sm-2 petition_border">';
 														str+='	<div class="">';
 															str+='<p style="font-size:11px"><b>'+result.statusList[i].deptList[j].name.toUpperCase()+'</b></p>';
-															str+='<h5><b title="Represents">'+result.statusList[i].deptList[j].totalRepresents+'</b> - <b title="Works">'+result.statusList[i].deptList[j].noOfWorks+'</b></h5>';
+															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].totalRepresents+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].noOfWorks+'</a></h5>';
 														str+='</div>';
 														str+='</div>';
 													}
