@@ -1192,9 +1192,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					if(i == 0){
 						 returnVO.setPetitionId(petitionId);
 						 returnVO.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[27]));
-						 if(!commonMethodsUtilService.getStringValueForObject(param[26]).isEmpty())
+						 returnVO.setEstimateCost("");
+						 if(!commonMethodsUtilService.getStringValueForObject(param[26]).isEmpty()){
 							 returnVO.setEstimateCost(String.valueOf(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))));
-						 returnVO.setEndorsmentNo(commonMethodsUtilService.getStringValueForObject(param[22]));
+							 if(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))>0L)
+								 returnVO.setEstimateCost(commonMethodsUtilService.calculateAmountInWords(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))));
+						 }
+						 //returnVO.setEndorsmentNo(commonMethodsUtilService.getStringValueForObject(param[22]));
+						 returnVO.setEndorsmentNo("");
 						 if(commonMethodsUtilService.getStringValueForObject(param[24]).length()>10)
 							 returnVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[24]).substring(0, 10));
 						 else
@@ -1367,7 +1372,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					vo.setPetitionId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					vo.setWorkId(commonMethodsUtilService.getLongValueForObject(param[17]));
 					vo.setEndorsmentNo(commonMethodsUtilService.getStringValueForObject(param[38]));
-					vo.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[39]));
+					
+					if(commonMethodsUtilService.getStringValueForObject(param[39]).length()>10)
+						vo.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[39]).substring(0, 10));
+					 else
+						 vo.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[39]));
+					
 					vo.setWorkName(commonMethodsUtilService.getStringValueForObject(param[2]));
 					vo.setWorkTypeId(commonMethodsUtilService.getLongValueForObject(param[11]));
 					vo.setGrievanceDescription(commonMethodsUtilService.getStringValueForObject(param[2]));
@@ -1377,9 +1387,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					vo.setBriefLeadId(commonMethodsUtilService.getLongValueForObject(param[7]));
 					vo.setDeptId(commonMethodsUtilService.getLongValueForObject(param[10]));
 					vo.seteOfficeId(commonMethodsUtilService.getStringValueForObject(param[3]));
-					if(param[1] != null)
+					if(param[1] != null){
 						vo.setEstimateCost(String.valueOf(new Double(commonMethodsUtilService.getDoubleValueForObject(param[1])).longValue()));
-					else
+						if(!commonMethodsUtilService.getStringValueForObject(param[1]).isEmpty() && Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[1]))>0L)
+							 vo.setEstimateCost(commonMethodsUtilService.calculateAmountInWords(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[1]))));
+					}else
 						vo.setEstimateCost("");
 					vo.setLocationScopeId(commonMethodsUtilService.getLongValueForObject(param[19]));
 					vo.setLocationValue(commonMethodsUtilService.getLongValueForObject(param[20]));
@@ -1567,6 +1579,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								}
 								KeyValueVO deptVO=departmentsMap.get(worksVO.getDeptId());
 								deptVO.setCount(deptVO.getCount()+1L);
+								if(!worksVO.getEndorsmentNo().isEmpty())
+									deptVO.setTotalCount(deptVO.getTotalCount()+1L);
 								
 								if(statusMap.get(worksVO.getStatusId()) == null){
 									statusMap.put(worksVO.getStatusId(), new KeyValueVO(worksVO.getStatusId(), worksVO.getStatus()));
@@ -1592,7 +1606,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 							
 							PetitionsWorksVO vo = new PetitionsWorksVO();
-							if(pageType != null)
+							vo.setEndorsmentNo(worksVO.getEndorsmentNo());
+							vo.setEndorsmentDate(worksVO.getEndorsmentDate());
+							vo.setNoOfWorks(Long.valueOf(String.valueOf(workTypeVOList.size())));
+							
+							if(pageType != null && !seriesNo.isEmpty())
 								vo.setUiSeriesNo(Long.valueOf(seriesNo));
 							else
 								vo.setEndorsmentNo(seriesNo);
@@ -1604,18 +1622,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							vo.setSubSubjectId(worksVO.getSubSubjectId());
 							vo.setSubSubject(worksVO.getSubSubject());
 							vo.getSubWorksList().addAll(workTypeVOList);
-							if(commonMethodsUtilService.isMapValid(statusMap)){
-								petitionVO.getStatusList().addAll(statusMap.values());
-							}
-							if(commonMethodsUtilService.isMapValid(departmentsMap)){
-								petitionVO.getDeptList().addAll(departmentsMap.values());
-							}
 							petitionVO.getSubWorksList().add(vo);
 						}
 					}
 				}
 				
-				String endorsmentNo ="";
+				/*String endorsmentNo ="";
 				if(petitionVO != null && petitionVO.getEndorsmentNo() != null && !petitionVO.getEndorsmentNo().isEmpty())
 					endorsmentNo=petitionVO.getEndorsmentNo();
 				
@@ -1629,9 +1641,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						petitionVO.getCoveringLetterPathsList().addAll(coveringLetterPathsList);
 					}
 				}
+				*/
+			if(petitionVO != null){
+				if(commonMethodsUtilService.isMapValid(statusMap)){
+					petitionVO.getStatusList().addAll(statusMap.values());
+				}
+				if(commonMethodsUtilService.isMapValid(departmentsMap)){
+					petitionVO.getDeptList().addAll(departmentsMap.values());
+				}
 				
-			if(petitionVO != null)
 				return petitionVO;
+			}
 		} catch (Exception e) {
 			 LOG.error("Exception Occured in PmRequestDetailsService @ setPmRepresenteeDataToResultView "+e.getMessage());
 		}
