@@ -442,4 +442,64 @@ public class SmsCountrySmsService implements ISmsService {
 		}
 	}
 	
+	public ResultStatus sendOTPSmsFromAdminForZohoUser(String message, boolean isEnglish,String... phoneNumbers)
+	  {
+	    ResultStatus resultStatus = new ResultStatus();
+	    try
+	    {
+	      HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+	      client.getHttpConnectionManager().getParams().setConnectionTimeout(
+	          Integer.parseInt("30000"));
+
+	      StringBuilder sb = new StringBuilder();
+	      for (int i = 0; i < phoneNumbers.length; i++) {
+	        if(phoneNumbers[i].toString().trim().length()>0)
+	        {
+	          sb.append("91");
+	          sb.append(phoneNumbers[i]);
+	          if (i < (phoneNumbers.length-1))
+	            sb.append(",");
+	        }
+	      }
+	      
+	      //PostMethod post = new PostMethod("http://sms.partyanalyst.com/WebserviceSMS.aspx");
+	      PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+	      
+	      post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+	      post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+	      
+	      
+	      //post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
+	        post.addParameter("mobilenumber", sb.toString());
+	      post.addParameter("message", message);
+	      post.addParameter("mtype", isEnglish ? "N" : "OL");
+	      post.addParameter("DR", "Y");
+	      
+	      try 
+	      {
+	        int statusCode = client.executeMethod(post);
+	        
+	        if (statusCode != HttpStatus.SC_OK) {
+	          log.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+	        }
+	        else
+	          resultStatus.setResultCode(0);
+
+	      }catch (Exception e) {
+	          log.error(e);
+	          resultStatus.setResultCode(1);
+	          resultStatus.setExceptionEncountered(e);
+	      } finally {
+	          post.releaseConnection();
+	      }
+	      
+	      return resultStatus;
+	    }catch (Exception e) {
+	      log.error("Exception Occured in sendOTPSmsFromAdminForZohoUser() method SMSCountrySmsService Class - "+e);
+	      resultStatus.setResultCode(1);
+	      resultStatus.setExceptionEncountered(e);
+	      return resultStatus;
+	    }
+	  }
+	
 }
