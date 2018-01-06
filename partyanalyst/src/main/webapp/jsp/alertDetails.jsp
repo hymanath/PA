@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+		pageEncoding="utf-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -452,8 +452,15 @@
 											</div>
 										<form id="updateVerificationStatusFormAction" name="updateVerificationStatusFormAction">
 											<div class="hideUpdateBlockCls" style="display:none;">
-											   <p style="font-weight:bold;font-size:15px;color: #3e3e3e;" class="text-capitalize m_top20 panelTitleFont">Add Comments&nbsp<span style="color:red;">*</span></p>
-											   <textarea class="form-control commentCls" name="clarificationComments" placeholder="Few Lines About  Explanatory"></textarea>
+											    	<label><b>Add Comments</b>&nbsp<span style="color:red;">*: </label><span class="text-danger"></span>
+													 <label class="radio-inline">
+														<input value="te" name="languageType" checked onclick="languageChangeHandler1();" type="radio">Telugu
+													</label>
+													<label class="radio-inline">
+														<input value="en" name="languageType"  onclick="languageChangeHandler1();" type="radio">English
+													</label>
+											  <!-- <p style="font-weight:bold;font-size:15px;color: #3e3e3e;" class="text-capitalize m_top20 panelTitleFont">Add Comments&nbsp<span style="color:red;">*</span></p>-->
+											   <textarea class="form-control commentCls" id="clarificationCommentsEntryId" name="clarificationComments" placeholder="Few Lines About  Explanatory"></textarea>
 												<div class="row">
 													<div class="col-md-3 col-xs-12 col-sm-6">
 														<p style="font-weight:bold;font-size:15px;color: #3e3e3e;" class="text-capitalize m_top20 panelTitleFont">Add Attachments&nbsp&nbsp</p>
@@ -982,6 +989,38 @@ function buildAlertAssignedCandidateData(result)
 		}
     }
  google.setOnLoadCallback(onLoad);
+ 
+ /* Language Conversion for alert verification Start */
+    var control1;
+	var lang1;
+  function initializeLanguageConversionForVerificationComment() {
+	   lang1 = $("input[name=languageType]:checked").val();
+		var options = {
+			sourceLanguage:google.elements.transliteration.LanguageCode.ENGLISH,
+			destinationLanguage:[''+lang1+''],
+			shortcutKey: 'alt+t',
+			transliterationEnabled: true
+		};
+		// Create an instance on TransliterationControl with the required
+		// options.
+		control1 = new google.elements.transliteration.TransliterationControl(options);
+
+		if ($('#clarificationCommentsEntryId').length){
+			control1.makeTransliteratable(['clarificationCommentsEntryId']);
+		}
+	}
+	function languageChangeHandler1() {
+	    var langType = $("input[name=languageType]:checked").val();
+		if(langType =="en"){
+			control1.disableTransliteration();
+		}else{
+			control1.enableTransliteration();
+			control1.setLanguagePair(google.elements.transliteration.LanguageCode.ENGLISH,langType);
+		}
+    }
+  	 google.setOnLoadCallback(initializeLanguageConversionForVerificationComment);
+	 /* Language Conversion for alert verification End */
+
  </script>
 </body>
 </html>
