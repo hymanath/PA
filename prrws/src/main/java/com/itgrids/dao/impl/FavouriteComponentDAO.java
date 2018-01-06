@@ -39,8 +39,8 @@ public class FavouriteComponentDAO extends GenericDaoHibernate<FavouriteComponen
 		  if (inputVO.getComponentNameList() != null && inputVO.getComponentNameList().size() > 0) {
 			  quBuilder.append(" and model.name in (:componentNames)");
 		  }
-		  //quBuilder.append(" order by model.orderNo ");
-		  quBuilder.append(" order by model.pageId asc");
+		  quBuilder.append(" order by model.orderNo ");
+		  //quBuilder.append(" order by model.pageId asc");
 		  Query query = getSession().createQuery(quBuilder.toString());
 		  if (inputVO.getComponentNameList() != null && inputVO.getComponentNameList().size() > 0) {
 			   query.setParameterList("componentNames", inputVO.getComponentNameList());
