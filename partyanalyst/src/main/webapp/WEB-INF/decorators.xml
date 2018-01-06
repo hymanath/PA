@@ -759,6 +759,7 @@
 		<pattern>/areaWiseInsuranceViewAction*</pattern>
 		<pattern>/areaWiseNtrTrustViewAction*</pattern>
 		<pattern>/boothCommitteeDetailsAction*</pattern>
+		<pattern>/myCoreDashb0ardAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">
