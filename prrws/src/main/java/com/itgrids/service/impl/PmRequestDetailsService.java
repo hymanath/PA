@@ -1357,8 +1357,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		return returnVO;
 	}
 	
-	public Map<Long,List<PetitionsWorksVO>> getPetitionsSubWorksDetails(Long petitionId,String pageType){
-		Map<Long,List<PetitionsWorksVO>> petitionSubWorksMap = new LinkedHashMap<Long,List<PetitionsWorksVO>>(0);
+	public Map<String,List<PetitionsWorksVO>> getPetitionsSubWorksDetails(Long petitionId,String pageType){
+		Map<String,List<PetitionsWorksVO>> petitionSubWorksMap = new LinkedHashMap<String,List<PetitionsWorksVO>>(0);
 		try {
 			List<Object[]> subWorksList = pmSubWorkDetailsDAO.getPetitionSubWorksDetails(petitionId);
 			if(commonMethodsUtilService.isListOrSetValid(subWorksList)){
@@ -1417,7 +1417,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 }
 					 vo.setAddressVO(refAddressVO);
 					 
-					 Long seriesNo = commonMethodsUtilService.getLongValueForObject(param[35]);
+					 String seriesNo = commonMethodsUtilService.getStringValueForObject(param[35]);
+					 if(pageType == null){
+						 seriesNo = (vo.getEndorsmentNo() == null || vo.getEndorsmentNo().isEmpty())?"0":vo.getEndorsmentNo();
+					 }
 					 List<PetitionsWorksVO> worksList = new LinkedList<PetitionsWorksVO>();
 					 if(petitionSubWorksMap.get(seriesNo) != null){
 						 worksList=petitionSubWorksMap.get(seriesNo);
@@ -1518,7 +1521,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 Map<Long,KeyValueVO> petitionFilesListMap = getPmPetitionDocumentsByPetition(petitionId);
 			 Map<Long,List<KeyValueVO>> refFilesListMap =getPmRepresenteeRefDocumentsByPetition(petitionId);
 			 PmRequestEditVO petitionVO = getPetitionBasicDetails(petitionId,pageType,petitionFilesListMap,refFilesListMap);
-			 Map<Long,List<PetitionsWorksVO>> petitionSubWorksMap = getPetitionsSubWorksDetails(petitionId,pageType);
+			 Map<String,List<PetitionsWorksVO>> petitionSubWorksMap = getPetitionsSubWorksDetails(petitionId,pageType);
 			 Map<Long,List<PetitionFileVO>> petitionRequiredFilesMap =  getPetitionsRequiredFilesMap(petitionId);
 			 
 			// Covering letter /Detailed report/action copy /all petition wise documents
@@ -1549,7 +1552,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			
 			 Map<Long,KeyValueVO> departmentsMap = new TreeMap<Long,KeyValueVO>();
 				if(commonMethodsUtilService.isMapValid(petitionSubWorksMap)){
-					for (Long seriesNo : petitionSubWorksMap.keySet()) {
+					for (String seriesNo : petitionSubWorksMap.keySet()) {
 						List<PetitionsWorksVO> workTypeVOList = petitionSubWorksMap.get(seriesNo);
 						if(commonMethodsUtilService.isListOrSetValid(workTypeVOList)){
 							for (PetitionsWorksVO worksVO : workTypeVOList) {
@@ -1589,7 +1592,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 							
 							PetitionsWorksVO vo = new PetitionsWorksVO();
-							vo.setUiSeriesNo(seriesNo);
+							if(pageType != null)
+								vo.setUiSeriesNo(Long.valueOf(seriesNo));
+							else
+								vo.setEndorsmentNo(seriesNo);
+							
 							vo.setDeptId(worksVO.getDeptId());
 							vo.setDeptName(worksVO.getDeptName());
 							vo.setSubjectId(worksVO.getSubjectId());
