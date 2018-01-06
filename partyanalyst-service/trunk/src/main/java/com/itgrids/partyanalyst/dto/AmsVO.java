@@ -61,9 +61,16 @@ public class AmsVO implements Serializable {
 	private String dueDate;
 	private Long severityId;
 	private List<AmsTrackingVO> subList1 = new ArrayList<AmsTrackingVO>(0);
-	private List<AlertVO> rejinderDocList = new ArrayList<AlertVO>(0);
+	private List<AlertVO> rejinderDocList = new ArrayList<AlertVO>(0);	
+	private String otp;
 	
 	
+	public String getOtp() {
+		return otp;
+	}
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
 	public List<AmsAppVO> getStatusComplteInfoLst() {
 		return statusComplteInfoLst;
 	}
