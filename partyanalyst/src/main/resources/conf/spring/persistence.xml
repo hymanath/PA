@@ -1354,6 +1354,7 @@
 						 <value>com.itgrids.partyanalyst.model.MomPriority</value>
 						 <value>com.itgrids.partyanalyst.model.TdpCommitteeLevelHierarchy</value>
 						 <value>com.itgrids.partyanalyst.model.AlertVerificationUser</value>
+						 <value>com.itgrids.partyanalyst.model.OtpDetails</value>
 						 
 						 
 				  </list>
