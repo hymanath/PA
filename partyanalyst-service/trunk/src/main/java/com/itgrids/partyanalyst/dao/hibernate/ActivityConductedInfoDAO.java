@@ -1373,6 +1373,10 @@ public List<Object[]> getActivityLocationDetails(Long userAccessLevelId,Long use
 			   queryStr.append(" and model.address.tehsil.tehsilId = :userAccessLevelValues");  
 		}else if(locationType != null && locationType.equalsIgnoreCase("Panchayat")){
 			   queryStr.append(" and model.address.panchayat.panchayatId = :userAccessLevelValues");  
+		}else if(locationType != null && locationType.equalsIgnoreCase("Muncipality")){
+			   queryStr.append(" and leb.localElectionBodyId = :userAccessLevelValues");  
+		}else if(locationType != null && locationType.equalsIgnoreCase("ward")){
+			   queryStr.append(" and w.constituencyId = :userAccessLevelValues");  
 		}
 	}
 	
@@ -1387,8 +1391,10 @@ public List<Object[]> getActivityLocationDetails(Long userAccessLevelId,Long use
 			" and model.activityScope.isDeleted = 'N' ");*/
 	Query sqlQuery = getSession().createQuery(queryStr.toString());
 		sqlQuery.setParameter("activityScopeId", activityScopeId);
-	if(userAccessLevelValues != null && userAccessLevelValues.longValue() > 0)
+	if(userAccessLevelValues != null && userAccessLevelValues.longValue() > 0) {
 		sqlQuery.setParameter("userAccessLevelValues", userAccessLevelValues);
+	}
+		
 	return sqlQuery.list();
 }
 public ActivityConductedInfo isAlreadyAvailableLocationDtls(Long locationInfoId){
