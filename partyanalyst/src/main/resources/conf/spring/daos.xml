@@ -4137,7 +4137,7 @@
 	 </bean>
 	<bean id="kaizalaActionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaActionTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
-	 </bean>
+     </bean>
     <bean id="kaizalaLocationAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.KaizalaLocationAddressDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
@@ -4250,5 +4250,9 @@
 	  <bean id="alertVerificationUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertVerificationUserDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 
+	 <bean name="otpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.OtpDetailsDAO" >
+	 <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 	 
 </beans>		

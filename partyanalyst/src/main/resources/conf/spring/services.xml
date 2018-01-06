@@ -4609,6 +4609,17 @@
 			<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/>
     	</bean>
     	
-    	 <bean name="zohoWebServiceHandlerService" class="com.itgrids.partyanalyst.service.impl.ZohoWebServiceHandlerService" >
+    	 <bean name="zohoAlertService" class="com.itgrids.partyanalyst.service.impl.ZohoAlertService" >
+    		 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+    		 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
+    		 <property name="dateUtilService" ref="dateUtilService" />
+    		 <property name="otpDetailsDAO" ref="otpDetailsDAO" />
+    		 <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
     	 </bean>
+    	 
+    	 <bean name="zohoWebServiceHandlerService" class="com.itgrids.partyanalyst.service.impl.ZohoWebServiceHandlerService" >
+    	 <property name="zohoAlertService" ref="zohoAlertService" />
+    	 </bean>
+    	 
+    	
 </beans>			
