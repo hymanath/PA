@@ -2070,8 +2070,17 @@ $(document).on("click",".candiateCls",function(){
             keyboard: false,
             backdrop: 'static'
         });
-		var fromDateSlider = fromDate.split("/")
-		var toDateSlider = toDate.split("/")
+		
+		var dates=$("#toursDateRangePickerNew").val();    
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var fromDateSlider = fromDateStr.split("/")
+		var toDateSlider = toDateStr.split("/")
 		/*var fM = moment().month(fD).format("M");
 		var tM = moment().month(tD).format("M");
 		var MM = ((fM) - (tM));
@@ -2098,8 +2107,6 @@ $(document).on("click",".candiateCls",function(){
 			  }
 			}]
 		  });
-		//var selectedDate = $("#toursNewHeadingId").html();
-		//&nbsp&nbsp<small style='color:green;'>"+selectedDate+"</small>&nbsp<small>DETAILS</small>
 		$("#nameOfMemberHeadingId").html('');
 		$("#nameOfMemberHeadingId").html("<h4 class='modal-title text-capital'>"+candiateName+" - <small style='color:#4A5863'>"+designationName+"</small></h4>");
 		$("#tourIndividualDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -2107,8 +2114,8 @@ $(document).on("click",".candiateCls",function(){
 		$("#monthWiseComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj ={ 
 					 candiateId : candiateId,
-					 fromDate :fromDate ,
-					 toDate : toDate
+					 fromDate :fromDateStr ,
+					 toDate : toDateStr
 				  }
 		$.ajax({
 			type : 'POST',
@@ -2116,6 +2123,9 @@ $(document).on("click",".candiateCls",function(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#tourIndividualDetailsBlock").html('');
+			$("#tourIndividualDetailsTableBlock").html('');
+			$("#monthWiseComplainceDivId").html(' ');
 			buildIndividualPersonTourDetails(result);
 		});
 	}
