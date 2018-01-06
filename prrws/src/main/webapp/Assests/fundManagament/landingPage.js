@@ -38,7 +38,7 @@ if(windowWidth <500){
 /* $(document).on('cut copy paste', function (e) {
 	e.preventDefault();
 }); */
-getAllConvergenceTypesConsolidated();//mgnrega components
+//getAllConvergenceTypesConsolidated();//mgnrega components
 
 var favouritesArr = []
 var globalComponentNameArr =[];
@@ -87,7 +87,7 @@ function buildFavouriteComponentsResult(result) {
 			}else if (result[i].name == "Mandal Buildings") {
 				compnentName = "Mandal buildings1";
 			}
-			if (compnentName != null && compnentName!="PRIS" && compnentName!="DRAINS" && compnentName!="LED MONITORING" && compnentName!="FUND MANAGMENT SYSTEM" && compnentName!="ENGINEERING DEPARTMENT" && compnentName!="PANACHAYATI RAJ EXPENDITURE" &&  compnentName!="SPIKE ANALYSIS" && compnentName!="MGNREGS" && compnentName!="RURAL DEVELOPMENT" && compnentName!="RURAL WATER SUPPLY" && compnentName!="ITEC" && compnentName!="SWATCH BHARATH IHHL" && compnentName!="SWATCH BHARATH PAYMENTS") {
+			if (compnentName != null && compnentName!="PRIS" && compnentName!="DRAINS" && compnentName!="LED MONITORING" && compnentName!="FUND MANAGMENT SYSTEM" && compnentName!="ENGINEERING DEPARTMENT" && compnentName!="PANACHAYATI RAJ EXPENDITURE" &&  compnentName!="SPIKE ANALYSIS" && compnentName!="MGNREGS" && compnentName!="RURAL DEVELOPMENT" && compnentName!="RURAL WATER SUPPLY" && compnentName!="ITEC" && compnentName!="SWATCH BHARATH IHHL" && compnentName!="SWATCH BHARATH PAYMENTS" && compnentName!="PR eOffice") {
 			   globalComponentNameArr.push(compnentName);
 			}
 			
@@ -1974,8 +1974,19 @@ function buildPageWiseComponents(result,pageId){
 									str+='<p class="">'+blockHeadingObject[result[i].subList[j].name]+'</p>';
 								str+='</div>';
 								str+='<div class="block-footer">';
+								if(result[i].subList[j].name == 'MGNREGS'){
+									str+='<div class="menu-top-selection" style="float:left">';
+										str+='<i class="fa fa-star menu-top-selection-icon"></i>';
+										str+='<div class="arrow_box_top">';
+											str+='<div class="row">';
+												str+='<div id="navTabsMenuSelectionId"></div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								}else{
 									str+='<i class="fa fa-star starcolorChange '+result[i].subList[j].name.replace(/\s+/g, '')+'Color" title="click to add as favourite component."  attr_url="'+result[i].subList[j].url+'" attr_full_block_name="'+result[i].subList[j].name+'" attr_color_name="gray" attr_block_name="'+result[i].subList[j].name.replace(/\s+/g, '')+'" aria-hidden="true" attr_page_id="'+pageId+'"></i>';
-									str+='<a class="pull-right" href="'+result[i].subList[j].url+'" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
+								}
+								str+='<a class="pull-right" href="'+result[i].subList[j].url+'" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -1986,6 +1997,8 @@ function buildPageWiseComponents(result,pageId){
 		str+='</section>';
 	}
 	$("#blockWiseComponentDivId"+pageId).html(str);
+	if(pageId == 6)
+		getAllConvergenceTypesConsolidated();//mgnrega components
 }
 $(document).on("click",".editBlockListCls",function(){
 	var blockName = $(this).attr("attr_name")
