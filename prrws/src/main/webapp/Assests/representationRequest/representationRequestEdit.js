@@ -25,15 +25,23 @@ var maxWorksCount =0;
 var maxCost =0;
 var coveringDocs=[];
 
+$("#representationDate").daterangepicker({
+	singleDatePicker: true,
+	maxDate:new Date(),
+	locale: {
+	  format: 'DD-MM-YYYY'
+	},
+	
+});
+$('#representationDate').on('apply.daterangepicker', function(ev, picker) {
+});
+
 
 getSubjectPetitionsDepartmentList("onload");
-
 getWorkTypeList("","","","","onload");
 getAllDistrictsInState("","","","onload");
 getPetitionDesignationLst('REPRESENTEE');
 //District Build
-
-
 function getAllDistrictsInState(typeVal,counterId,typeChange,type){
 	//alert(typeChange)
 	var searchType="all";
@@ -549,29 +557,44 @@ $(document).on("change",".locationLevelChange",function(){
 	var counterId = $(this).attr("attr_counterval");
 	var typeVal = $(this).attr("attr_type");
 	var changeType = $(this).attr("attr_type_change");	
+	var workId = $(this).attr("attr_work_id");
 	if(changeType == "main"){
-		$("#districtId"+typeVal+counterId).html('<option value="0"> Select District </option>');
-		$("#constituencyId"+typeVal+counterId).html('<option value="0"> Select constituency</option>');
-		$("#mandalId"+typeVal+counterId).html('<option value="0"> Select Mandal/Munci/Corp.</option>');
-		$("#panchayatId"+typeVal+counterId).html('<option value="0"> Select Panchayat</option>');
+		if(workId != null && workId != undefined && workId != 'undefined')
+			;
+		else{
+			$("#districtId"+typeVal+counterId).html('<option value="0"> Select District </option>');
+			$("#constituencyId"+typeVal+counterId).html('<option value="0"> Select constituency</option>');
+			$("#mandalId"+typeVal+counterId).html('<option value="0"> Select Mandal/Munci/Corp.</option>');
+			$("#panchayatId"+typeVal+counterId).html('<option value="0"> Select Panchayat</option>');
+		}
 	}else{
-		$("#districtInnerId"+typeVal+counterId).html('<option value="0"> Select District </option>');
-		$("#constituencyInnerId"+typeVal+counterId).html('<option value="0"> Select constituency</option>');
-		$("#mandalInnerId"+typeVal+counterId).html('<option value="0"> Select Mandal/Munci/Corp.</option>');
-		$("#panchayatInnerId"+typeVal+counterId).html('<option value="0"> Select Panchayat</option>');
+		if(workId != null && workId != undefined && workId != 'undefined')
+			;
+		else{
+			$("#districtInnerId"+typeVal+counterId).html('<option value="0"> Select District </option>');
+			$("#constituencyInnerId"+typeVal+counterId).html('<option value="0"> Select constituency</option>');
+			$("#mandalInnerId"+typeVal+counterId).html('<option value="0"> Select Mandal/Munci/Corp.</option>');
+			$("#panchayatInnerId"+typeVal+counterId).html('<option value="0"> Select Panchayat</option>');
+		}
 	}
 	
 	if(levelVal == 3){
 		if(changeType == "main"){
 			$("#districtId"+typeVal+counterId).trigger("chosen:updated");
-			getAllDistrictsInState(typeVal,counterId,changeType);
+			if(workId != null && workId != undefined && workId != 'undefined')
+				;
+			else
+				getAllDistrictsInState(typeVal,counterId,changeType);
 			$(".districtCls"+typeVal+counterId).show();
 			$(".constituencyCls"+typeVal+counterId).hide();
 			$(".mandalCls"+typeVal+counterId).hide();
 			$(".panchayatCls"+typeVal+counterId).hide();
 		}else{
 			$("#districtInnerId"+typeVal+counterId).trigger("chosen:updated");
-			getAllDistrictsInState(typeVal,counterId,changeType);
+			if(workId != null && workId != undefined && workId != 'undefined')
+				;
+			else
+				getAllDistrictsInState(typeVal,counterId,changeType);
 			$(".districtInnerCls"+typeVal+counterId).show();
 			$(".constituencyInnerCls"+typeVal+counterId).hide();
 			$(".mandalInnerCls"+typeVal+counterId).hide();
@@ -581,7 +604,10 @@ $(document).on("change",".locationLevelChange",function(){
 	}else if(levelVal == 4){
 		if(changeType == "main"){
 			 $("#districtId"+typeVal+counterId).trigger("chosen:updated");
-			 getAllDistrictsInState(typeVal,counterId,changeType);
+			 if(workId != null && workId != undefined && workId != 'undefined')
+				 ;
+		 	else
+				 getAllDistrictsInState(typeVal,counterId,changeType);
 			  $("#constituencyId"+typeVal+counterId).trigger("chosen:updated");
 			  $(".districtCls"+typeVal+counterId).show();
 			  $(".constituencyCls"+typeVal+counterId).show();
@@ -589,7 +615,10 @@ $(document).on("change",".locationLevelChange",function(){
 			  $(".panchayatCls"+typeVal+counterId).hide();
 		}else{
 			$("#districtInnerId"+typeVal+counterId).trigger("chosen:updated");
-			getAllDistrictsInState(typeVal,counterId,changeType);
+			if(workId != null && workId != undefined && workId != 'undefined')
+				;
+			else
+				getAllDistrictsInState(typeVal,counterId,changeType);
 			 $("#constituencyInnerId"+typeVal+counterId).trigger("chosen:updated");
 			 $(".districtInnerCls"+typeVal+counterId).show();
 			 $(".constituencyInnerCls"+typeVal+counterId).show();
@@ -600,7 +629,10 @@ $(document).on("change",".locationLevelChange",function(){
 	}else if(levelVal == 5){
 		if(changeType == "main"){
 			$("#districtId"+typeVal+counterId).trigger("chosen:updated");
-			getAllDistrictsInState(typeVal,counterId,changeType);
+			if(workId != null && workId != undefined && workId != 'undefined')
+				;
+			else
+				getAllDistrictsInState(typeVal,counterId,changeType);
 			$("#constituencyId"+typeVal+counterId).trigger("chosen:updated");
 			$("#mandalId"+typeVal+counterId).trigger("chosen:updated");
 			$(".districtCls"+typeVal+counterId).show();
@@ -609,7 +641,10 @@ $(document).on("change",".locationLevelChange",function(){
 			$(".panchayatCls"+typeVal+counterId).hide();
 		}else{
 			$("#districtInnerId"+typeVal+counterId).trigger("chosen:updated");
-			getAllDistrictsInState(typeVal,counterId,changeType);
+			if(workId != null && workId != undefined && workId != 'undefined')
+				;
+			else
+				getAllDistrictsInState(typeVal,counterId,changeType);
 			$("#constituencyInnerId"+typeVal+counterId).trigger("chosen:updated");
 			$("#mandalInnerId"+typeVal+counterId).trigger("chosen:updated");
 			$(".districtInnerCls"+typeVal+counterId).show();
@@ -621,7 +656,10 @@ $(document).on("change",".locationLevelChange",function(){
 	}else if(levelVal == 6){
 			if(changeType == "main"){
 			$("#districtId"+typeVal+counterId).trigger("chosen:updated");
-			getAllDistrictsInState(typeVal,counterId,changeType);
+			if(workId != null && workId != undefined && workId != 'undefined')
+				;
+			else
+				getAllDistrictsInState(typeVal,counterId,changeType);
 			$("#constituencyId"+typeVal+counterId).trigger("chosen:updated");
 			$("#mandalId"+typeVal+counterId).trigger("chosen:updated");
 			$(".districtCls"+typeVal+counterId).show();
@@ -630,7 +668,10 @@ $(document).on("change",".locationLevelChange",function(){
 			$(".panchayatCls"+typeVal+counterId).show();
 			}else{
 			$("#districtInnerId"+typeVal+counterId).trigger("chosen:updated");
-			getAllDistrictsInState(typeVal,counterId,changeType);
+			if(workId != null && workId != undefined && workId != 'undefined')
+				;
+			else
+				getAllDistrictsInState(typeVal,counterId,changeType);
 			$("#constituencyInnerId"+typeVal+counterId).trigger("chosen:updated");
 			$("#mandalInnerId"+typeVal+counterId).trigger("chosen:updated");
 			$("#panchayatInnerId"+typeVal+counterId).trigger("chosen:updated");
@@ -874,8 +915,8 @@ $(document).on("click",".cloned_Element",function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
 			if(parseInt(value) <=0){	
-				alert("Invalid estimation cost entered. Please check once.");
-				return;
+				//alert("Invalid estimation cost entered. Please check once.");
+				//return;
 			}else{
 				enteredAmount = parseInt(enteredAmount)+parseInt(value);
 			}
@@ -1074,8 +1115,8 @@ $(document).on("click",".cloned_Inner_Element",function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
 			if(parseInt(value) <=0){	
-				alert("Invalid estimation cost entered. Please check once.");
-				return;
+				//alert("Invalid estimation cost entered. Please check once.");
+				//return;
 			}else{
 				enteredAmount = parseInt(enteredAmount)+parseInt(value);
 			}
@@ -2067,7 +2108,7 @@ function buildPetitionDetails(result){
 												str+='<div class="row m_top10">';
 														str+='<div class="col-sm-3">';
 															str+='<label>LOCATION LEVEL <span class="starColor">*</span></label>';
-															str+='<select  name="worksList['+i+'].subWorksList['+j+'].locationScopeId" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+result.representationType+' validateCls newValidateCls locationLevelReFreshCls'+i+'" id="locationLevelId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+															str+='<select  name="worksList['+i+'].subWorksList['+j+'].locationScopeId" attr_work_id="'+result.subWorksList[i].subWorksList[j].workId+'" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+result.representationType+' validateCls newValidateCls locationLevelReFreshCls'+i+'" id="locationLevelId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
 																str+='<option value="0">Select Level</option>';
 																
 																if(result.subWorksList[i].subWorksList[j].locationScopeId == 3){
@@ -3086,8 +3127,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		var value = $(this).val();
 		if(value!= null && value.length>0){
 			if(parseInt(value) <=0){	
-				$('#Err'+id+'').html("Invalid estimation cost entered. Please check once.");			
-				
+				$('#Err'+id+'').html("Invalid estimation cost entered. Please check once.");
 			}else{
 				enteredAmount = parseInt(enteredAmount)+parseInt(value);
 			}
@@ -3429,9 +3469,9 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		$('#saveButtonId').show();
 		return;
 	}
-	
-//alert("succuss");
-
+	$('#saveButtonId').show();
+alert("succuss");
+return;
 	$('#saveButtonId').hide();	
 	$("#savingDetailsSpinner").html(spinner)
 	

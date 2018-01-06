@@ -1438,7 +1438,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 							else
 								str+='<span class="pull-right" > <b style="color:#000"> STATUS:</b><b>'+result.subWorksList[j].subWorksList[k].status.toUpperCase()+'  </b> </span> ';*/
 							
-							if(result.subWorksList[j].subWorksList[k].leadName == null || result.subWorksList[j].subWorksList[k].leadName.length ==0)
+							//if(result.subWorksList[j].subWorksList[k].leadName == null || result.subWorksList[j].subWorksList[k].leadName.length ==0)
 								str+=' <span class="pull-right"  style=""> <button class="btn btn-info selectedCls" attr_work_id="'+result.subWorksList[j].subWorksList[k].workId+'"  isSeleted="false" attr_dept_id="'+result.subWorksList[j].subWorksList[k].deptName+'" attr_worksId="'+result.subWorksList[j].subWorksList[k].workId+'"  > SELECT </button> </span> ';
 							
 							str+='</h5>';
@@ -1765,7 +1765,8 @@ $.ajax({
 			processData: false,
 			contentType: false,
 			success: function(result) {
-				$("#savingDetailsSpinner").html('')
+				$("#savingDetailsSpinner").html('');
+				
 				/* if(result!=null){
 				  if(result.responseCode == "0"){
 					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
@@ -1918,6 +1919,7 @@ $.ajax({
 $(document).on('click','.modelEndoreCls',function(){
 	var statusId = $(this).attr("attr_statusId");
 	var nextStatusId = $(this).attr("attr_next_status_id");
+	//alert(nextStatusId)
 	$("#nextStatusId").val(nextStatusId);
 	$("#totalWorksId").html(workIdsArr.length);
 	$("#selectdWorksId").html(selectedWorkIdsArr.length);
