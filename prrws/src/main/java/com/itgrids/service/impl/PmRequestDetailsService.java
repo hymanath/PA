@@ -1001,7 +1001,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				setSearchDetailsData(searchData,mapData);
 			}
 			
-			
 			Long minPending = commonMethodsUtilService.getLongValueForObject(inputVO.getStartValue());
 			Long maxPending = commonMethodsUtilService.getLongValueForObject(inputVO.getEndValue());
 			
@@ -1096,7 +1095,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					subWorkVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[16]));
 					subWorkVO.setEndorsementNO(commonMethodsUtilService.getStringValueForObject(param[14]));
 					subWorkVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[10]));
-					subWorkVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[17]));
+					if(param[17] != null)
+						subWorkVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[17]).substring(0, 10));
 				}
 			}
 			
@@ -2413,17 +2413,20 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && (inputVO.getStatusId().longValue() == 6L || inputVO.getStatusId().longValue() == 7L) ){
 								if(inputVO.getDeptDesigOffcrId() != null ){
 									PmPetitionAssignedOfficer pmPetitionAssignedOfficer = new PmPetitionAssignedOfficer();
-									pmPetitionAssignedOfficer.setPetitionId(inputVO.getPetitionId());
-									pmPetitionAssignedOfficer.setPmSubWorkDetailsId(subWorkId);
-									pmPetitionAssignedOfficer.setPmDepartmentDesignationId(inputVO.getDeptDesigId());
-									pmPetitionAssignedOfficer.setPmDepartmentDesignationOfficerId(inputVO.getDeptDesigOffcrId());
-									pmPetitionAssignedOfficer.setRemarks(inputVO.getRemark());
-									pmPetitionAssignedOfficer.setIsDeleted("N");
-									pmPetitionAssignedOfficer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-									pmPetitionAssignedOfficer.setInsertedUserId(inputVO.getId());
-									pmPetitionAssignedOfficer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-									pmPetitionAssignedOfficer.setUpdatedUserId(inputVO.getId());
-									pmPetitionAssignedOfficer = pmPetitionAssignedOfficerDAO.save(pmPetitionAssignedOfficer);
+									if(commonMethodsUtilService.getLongValueForObject(inputVO.getPetitionId()) >0l && commonMethodsUtilService.getLongValueForObject(inputVO.getDeptDesigOffcrId()) >0l){
+										pmPetitionAssignedOfficer.setPetitionId(inputVO.getPetitionId());
+										pmPetitionAssignedOfficer.setPmSubWorkDetailsId(subWorkId);
+										pmPetitionAssignedOfficer.setPmDepartmentDesignationId(inputVO.getDeptDesigId());
+										pmPetitionAssignedOfficer.setPmDepartmentDesignationOfficerId(inputVO.getDeptDesigOffcrId());
+										pmPetitionAssignedOfficer.setRemarks(inputVO.getRemark());
+										pmPetitionAssignedOfficer.setIsDeleted("N");
+										pmPetitionAssignedOfficer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										pmPetitionAssignedOfficer.setInsertedUserId(inputVO.getId());
+										pmPetitionAssignedOfficer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										pmPetitionAssignedOfficer.setUpdatedUserId(inputVO.getId());
+										pmPetitionAssignedOfficer = pmPetitionAssignedOfficerDAO.save(pmPetitionAssignedOfficer);
+									}
+									
 								}
 							}
 						}
