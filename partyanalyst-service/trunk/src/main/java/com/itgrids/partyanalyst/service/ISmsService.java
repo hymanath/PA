@@ -15,4 +15,5 @@ public interface ISmsService {
 	
 	public ResultStatus sendSmsFromAdmin(String message, boolean isEnglish,String... phoneNumbers);
 	public ResultStatus sendOTPSmsFromAdmin(String message, boolean isEnglish,String... phoneNumbers);
+	public ResultStatus sendOTPSmsFromAdminForZohoUser(String message, boolean isEnglish,String... phoneNumbers);
 }
