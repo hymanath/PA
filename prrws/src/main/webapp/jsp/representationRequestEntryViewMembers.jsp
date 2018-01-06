@@ -341,7 +341,7 @@
 				</select>
 			</div>
 		</div>
-
+		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
   <div class="row" id="commentsDivId">
 			<div class="col-sm-8" >
 			<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
