@@ -214,7 +214,7 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		return query.list();
 	}
 	
-	public List<Object[]> getDesignationsByReferlDesigtion(Date fromDate,Date toDate,List<Long> deptIds){
+	public List<Object[]> getDesignationsByReferlDesigtion(Date fromDate,Date toDate,List<Long> deptIds,Long desigId,Long statusId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRefCandidateDesignation.pmDesignation.pmDesignationId,model.pmRefCandidateDesignation.pmDesignation.designation "
 				+ "from PmRepresenteeRefDetails model ,PmSubWorkDetails model1  where model.isDeleted='N'  and model.pmRefCandidateDesignation.isDeleted='N' and " +
@@ -225,7 +225,12 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		if(fromDate != null && toDate != null){
 			sb.append(" and date(model1.insertedTime) between :fromDate and :toDate "); 
 		}
-		
+		if(desigId != null && desigId.longValue() >0){
+			sb.append(" and  model.pmRefCandidateDesignation.pmDesignation.pmDesignationId = :desigId ");
+		}
+		if(statusId != null && statusId.longValue() >0l){
+			sb.append(" and model1.pmStatus.pmStatusId = :statusId ");
+		}
 				sb.append(" order by model.pmRefCandidateDesignation.pmDesignation.designation asc " );
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size() >0){
@@ -234,6 +239,12 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		if(fromDate != null && toDate != null){
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
+		}
+		if(desigId != null && desigId.longValue() >0){
+			query.setParameter("desigId", desigId);
+		}
+		if(statusId != null && statusId.longValue() >0l){
+			query.setParameter("statusId", statusId);
 		}
 		return query.list();
 	}

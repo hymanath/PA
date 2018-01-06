@@ -543,7 +543,7 @@ public List<KeyValueVO>  getPmStatusList(){
 	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
 	    try{
 		LOG.info("Entered into LocationDetailsService of getPmStatusList ");
-		List<Object[]> petitionDetailsObjsList = pmStatusDAO.getPmStatusList();
+		List<Object[]> petitionDetailsObjsList = pmStatusDAO.getPmStatusList(null);
 		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();
@@ -763,7 +763,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		 }
 		 return null;
 	}
-	public List<KeyValueVO> getDesignationsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds){
+	public List<KeyValueVO> getDesignationsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,Long desigId,Long statusId){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> desiObjs=null;
@@ -776,9 +776,9 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			}
 			
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("referrelDesignation")){
-				desiObjs=pmRefCandidateDesignationDAO.getDesignationsByReferlDesigtion(startDate,endDate,deptIds);
+				desiObjs=pmRefCandidateDesignationDAO.getDesignationsByReferlDesigtion(startDate,endDate,deptIds,desigId,statusId);
 			}else if(searchType !=null && searchType.trim().equalsIgnoreCase("representeeDesignation")){
-				desiObjs=pmRepresenteeDesignationDAO.getDesignationsByRepresenteeDesigtion(deptIds,startDate,endDate);
+				desiObjs=pmRepresenteeDesignationDAO.getDesignationsByRepresenteeDesigtion(deptIds,startDate,endDate,desigId,statusId);
 			}
 			if(desiObjs != null && desiObjs.size() > 0){
 				for(Object[] param : desiObjs ){
@@ -795,7 +795,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		}
 		return finalList;
 	}
-	public List<KeyValueVO> getDepartmentsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds){
+	public List<KeyValueVO> getDepartmentsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,Long statusId){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> deptObjs=null;
@@ -807,7 +807,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				endDate = format.parse(toDate);
 			}
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("department")){
-				deptObjs=pmSubWorkDetailsDAO.getDepartmentsByWorks(deptIds,startDate,endDate);
+				deptObjs=pmSubWorkDetailsDAO.getDepartmentsByWorks(deptIds,startDate,endDate,statusId);
 			}
 			if(deptObjs != null && deptObjs.size() > 0){
 				for(Object[] param : deptObjs ){

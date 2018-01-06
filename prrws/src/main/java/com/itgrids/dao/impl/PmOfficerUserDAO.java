@@ -57,7 +57,7 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 		if(userId != null && userId.longValue()>0L){
 			StringBuilder sb = new StringBuilder();
 			sb.append("select distinct model1.pmStatusId  from PmOfficerUser model,PmDepartmentDesignationStatus model1 "
-					+ " where model.pmDepartmentDesignationId =  model1.pmDepartmentDesignationId ");
+					+ " where model.pmDepartmentDesignationId =  model1.pmDepartmentDesignationId and model1.priority=1 ");
 					if(userId != null && userId.longValue() >0l){
 						sb.append(" and model.userId =:userId");
 					}

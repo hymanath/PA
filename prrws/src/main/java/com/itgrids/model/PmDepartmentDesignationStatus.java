@@ -18,6 +18,7 @@ public class PmDepartmentDesignationStatus {
 	private Long pmDepartmentDesignationStatusId;
 	private Long pmDepartmentDesignationId;
 	private Long pmStatusId;
+	private Long priority;
 	private PmDepartmentDesignation pmDepartmentDesignation;
 	private PmStatus  pmStatus;
 	
@@ -61,5 +62,14 @@ public class PmDepartmentDesignationStatus {
 	public void setPmStatus(PmStatus pmStatus) {
 		this.pmStatus = pmStatus;
 	}
+	@Column(name="priority")
+	public Long getPriority() {
+		return priority;
+	}
+	public void setPriority(Long priority) {
+		this.priority = priority;
+	}
+	
+	
 	
 }

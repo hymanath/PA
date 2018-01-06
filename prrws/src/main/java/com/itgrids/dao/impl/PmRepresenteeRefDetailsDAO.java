@@ -119,9 +119,10 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 					//" left join locationAddress.panchayat panchayat  ");
 		
 		
-		sb.append(" where  model.pmRepresentee.isDeleted = 'N' and model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
-				" and  model.pmRefCandidateDesignation.isDeleted = 'N' and model.pmRefCandidate.isDeleted = 'N' and model.pmRepresentee.isDeleted = 'N'  ");
+		sb.append(" where   model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
+				" and  model.pmRefCandidateDesignation.isDeleted = 'N' and model.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and model.pmRefCandidate.isDeleted = 'N' and model.pmRepresentee.isDeleted = 'N'  ");
 		sb.append(" and model2.pmRefCandidateId=model.pmRefCandidateId   "); 
+		sb.append("  and model1.pmSubject.parentPmSubjectId is null ");
 		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValues != null && searchLevelValues.size()>0){
 			if(searchLevelId.longValue() ==2L){
 				sb.append(" and  state.stateId in (:searchLevelValues) ");
@@ -153,6 +154,10 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and model.pmRepresenteeDesignation.pmDesignation.pmDesignationId in (:filterValue) ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("referralName") && filterValue != null && !filterValue.isEmpty()){
 			sb.append(" and model.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId in (:filterValue) ");
+		}
+		
+		if(filterType != null && !filterType.equalsIgnoreCase("department")){
+			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
 		if(inputVO.getFromRange() != null && inputVO.getToRange() != null){
 			sb.append(" and model.petition.noOfWorks between :fromNoOfWorks and :toNoOfWorks " );
@@ -198,6 +203,10 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(inputVO.getStatusIds() != null && inputVO.getStatusIds().size()>0){
 			query.setParameterList("statusIds", inputVO.getStatusIds());
 		}
+		if(filterType != null && !filterType.equalsIgnoreCase("department")){
+			query.setParameterList("deptIds", inputVO.getDeptIdsList());
+		}
+		
 		return query.list();
 	}
 	public List<Long> getPmRepresenteeRefDetailsIds(Long petitionId){

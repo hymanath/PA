@@ -405,6 +405,25 @@ $(document).on("click",".closeSecondModal",function(){
       $("body").addClass("modal-open")
     },1000);
   });
+ 
+  var searchBy= '${param.searchBy}';
+  var desigId= '${param.desigId}';
+  var statusId= '${param.statusId}';
+  var deptId ='${param.deptId}';
+ 
+    if(deptId ==''){
+	deptId=0;
+	}
+	if(desigId ==''){
+	desigId=0;
+	}
+	if(statusId ==''){
+	statusId=0;
+	}
+	
+  if(searchBy != ''){
+	  onLoadClickDataDetails();
+	}
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationRequestEntryViewMembers")));
 //wurl = wurl.replace("/PRRWS-1.0","");
