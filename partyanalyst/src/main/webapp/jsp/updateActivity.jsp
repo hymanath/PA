@@ -1026,9 +1026,10 @@ function getMunciMandalsList(constituencyId)
 }
 
 function getPanchayatWardByMandal(mandalId){
-	
+
 		     $('#villageWardsList').find('option').remove();
 			 $('#villageWardsList').append('<option value="0"> Select Mandal/Town/Division</option>');	
+			 
 			var jsObj={
 				mandalId:mandalId,
 				constituencyId : $("#constiList").val()
@@ -1045,7 +1046,7 @@ function getPanchayatWardByMandal(mandalId){
 					$("#procesingImg5").hide();
 					for(var i in result)
 						$('#villageWardsList').append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
-				}
+				}	
 		});	
 			
 	}
@@ -1693,6 +1694,12 @@ $(document).on("click","#hideAsmblyData",function(){
           str+='</thead>';
         str+='<tbody>';
           for(var i in result){
+			  
+			  var flag = getMatchedLocationId(result[i].id);
+			   if (flag == "false"){
+				   continue;
+			   }
+			  
             str+='<tr class="text_center">';
               
                 str+='<td >'+result[i].name+'</td>';
@@ -1743,6 +1750,17 @@ $(document).on("click","#hideAsmblyData",function(){
 			getQuestionnaire(locationValue,questionId,optionId,subQustionDivId,serialNoTypeId,0);
 		
 	});
+  
+     function getMatchedLocationId(locationId) {
+		 var flag = "false";
+		 for(var i in globalUserAccessLocationObjArr) {
+			 if (globalUserAccessLocationObjArr[i].id == locationId){
+				 flag="true";
+				 return flag;
+			 } 
+		 }
+		 return flag;
+	 }
   
 	
 	$(document).on("click","#updateQBtnId",function(){
@@ -2841,6 +2859,7 @@ $(document).on("change","#ActivityList",function(){
 	}
 });
 
+var globalUserAccessLocationObjArr;
 function getConstitiensList(){ 	
 	$('#constiList').find('option').remove();
 	$('#constiList').append('<option value="0">Select Constituency</option>');
@@ -2861,6 +2880,7 @@ function getConstitiensList(){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
+			   globalUserAccessLocationObjArr = result;
 			   if(result != null && result.length >0)
 			{
 				$("#procesingImg3").hide();
@@ -2903,6 +2923,14 @@ $(document).on("change","#mandalsList",function(){
 	var mandalId = $(this).val();
 	var activityScopeId = $("#ActivityList").val();
 	
+		var locationType="";
+		 if (mandalId != null ) {
+			  if (mandalId.charAt(0)==2) {
+				  locationType = "panchayat";
+			  } else if (mandalId.charAt(0)==1) {
+				  locationType = "ward";
+			  }
+		 }
 	var jsObj={	
 			mandalId:mandalId,
 			activityScopeId : activityScopeId
@@ -2914,10 +2942,13 @@ $(document).on("change","#mandalsList",function(){
 			data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
 			   if(result != null && result.length >0)
-			{
-				for(var i in result)
-				$('#villageWardsList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
-		}
+				{
+					for(var i in result) 
+					$('#villageWardsList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }
+			   /*adding locationtype because in this dropdown in the case of mandal selection panchayat ,in the case of muncipality 
+				 ward will build */
+				 $("#villageWardsList").attr("attr_location_type",locationType);
 		   });
 });
 
@@ -2970,6 +3001,7 @@ function getLocationWiseDetailsForActivity(roundId)
 		$('#resultsDiv').show();
 			var searchBy="panchayat";
 			var locationId = $('#villageWardsList').val();	
+			var locationType =  $("#villageWardsList").attr("attr_location_type");
 			if(locationId == 0)
 			{
 				locationId = $('#mandalsList').val();
@@ -2988,10 +3020,10 @@ function getLocationWiseDetailsForActivity(roundId)
 					searchBy = "Muncipality";
 				}
 				
-			}else if (locationId.charAt(0)==2){
-				searchBy = "ward";
+			}else{
+				/* if (locationId.charAt(0)==2){ */
+				searchBy = locationType;
 			}
-			
 			var value = "all";
 			if($("#all").is(':checked'))
 			{
