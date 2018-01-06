@@ -5266,6 +5266,12 @@
 						<div id="tourIndividualDetailsTableBlock" class="m_top20"></div>
 					</div>
 				</div>
+				<div class="row m_top20 designationBlockcls" style="display:none;">
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+					      <h4 class="text-capital"><span class="headingColor" style="margin-left: 20px;background-color: rgb(74, 88, 99);color:rgb(25, 255, 0);font-size:18px;padding:3px 7px;">Deisgnation wise Tour Complaince Summary Report<span></h4>
+						<div id="tourMemberDesignationWiseDtlsDivId" class="m_top20"></div>
+					</div>
+				</div>
 			  </div>
 			  <div class="modal-footer">     
 				<button type="button" class="btn btn-default tourIndividualCls" class="close" data-dismiss="modal">Close</button>
