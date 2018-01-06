@@ -30,4 +30,6 @@ public interface ICoreDashboardToursService {
 	//Candidate wise
 	public ToursOverviewDtlsvO getCandiateWiseTourSubmittedDetails(Long stateId, String fromDateStr, String toDateStr,Long activityMemberId, Long userTypeId);
 	public List<ToursOverviewDtlsvO> getCandaiteDetailsByType(Long stateId, String fromDateStr, String toDateStr,Long activityMemberId, Long userTypeId,String type);
+	//individual candidate designation wise tour overview details
+	public ToursBasicVO getIndividualCandidateDesignationWiseTourComplainceDetails(String fromDateStr, String toDateStr,final Long selfAppraisalCandidateId, String isCandidate,String filterType);
 }

@@ -20,8 +20,8 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 	
 	 public List<Object[]> getCategoryWiseTourSubmittedLeader(String type,List<Long> monthYearIds,Set<Long> candiateIds){
 		 
-		 StringBuilder queryStr = new StringBuilder();
-		 queryStr.append(" select " +
+		   StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select " +
 		     " model.selfAppraisalDesignation.selfAppraisalDesignationId," +
 			 " model.selfAppraisalDesignation.designation," );
 		   if(type.equalsIgnoreCase("tourType")){
@@ -38,24 +38,24 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
            }
 		   if(candiateIds != null && candiateIds.size() > 0){
 				  queryStr.append(" and model.selfAppraisalCandidateId in (:candiateIds)"); 
-			}
+		  }
 		   queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId");
 	      if(type.equalsIgnoreCase("tourType")){
 			 queryStr.append(",model.tourTypeId");
 		  }else{
 			  queryStr.append(",model.selfAppraisalTourCategoryId"); 
 		  }
-		   queryStr.append(" order by model.selfAppraisalDesignation.selfAppraisalDesignationId");
+		  queryStr.append(" order by model.selfAppraisalDesignation.selfAppraisalDesignationId");
 		  Query query = getSession().createQuery(queryStr.toString());
-		  	if(monthYearIds != null && monthYearIds.size() > 0 ){
+		  if(monthYearIds != null && monthYearIds.size() > 0 ){
 			  query.setParameterList("monthYearIds", monthYearIds);
-		    }
+		  }
 		  if(candiateIds != null && candiateIds.size() > 0){
 			 query.setParameterList("candiateIds", candiateIds);
 		  }
 		  return query.list();
- }
-	  //this dao is used both place coreDashboard and constituency page
+    }
+	  //this DAO is used both place coreDashboard and constituency page
 	  public List<Object[]> getToursSubmittedLeaderCntDesignationBy(List<Long> monthYearIds,Set<Long> candiateIds){
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append(" select " +
@@ -234,8 +234,8 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select "
 				+ " model.selfAppraisalDesignation.selfAppraisalDesignationId," +// 0
-				" model.selfAppraisalDesignation.designation," + // 1
-				" model.selfAppraisalCandidateId,");// 2
+				 "  model.selfAppraisalDesignation.designation," + // 1
+				 "  model.selfAppraisalCandidateId,");// 2
 		if (type.equalsIgnoreCase("tourCategory")) {
 			queryStr.append(" model.selfAppraisalTourCategoryId,");// 3
 		} else if (type.equalsIgnoreCase("tourType")) {

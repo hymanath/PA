@@ -1766,7 +1766,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	
    /*New Tours Service Based on New Screen Change */
   /*
-   * Author : Santosh
+   * Author : Santosh Kumar Verma
    */
   
   public List<Date> getDates(String startDateString,String endDateString,SimpleDateFormat sdf){
@@ -1803,7 +1803,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
    * @param Long activityMemberId
    * @param Long userTypeId
    * @return ToursBasicVO
-   * @author Santosh 
+   * @author Santosh Kumar Verma 
    * @Description :This Service Method is used to get tour basic overview details designation wise. 
    *  @since 1-AUGUST-2016
    */
@@ -2086,6 +2086,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				      if(candiateVO == null){
 				    	  candiateVO = new ToursBasicVO(); 
 				    	  candiateVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));//candidate Id
+				    	  candiateVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[0]));//candidate designation
+				    	  candiateVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));//candidate designationId
 				    	  if(designationMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
 				    		  candiateVO.setSubList3(getCategoryList(designationMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).getSubList3()));  
 				    	  }
@@ -2147,7 +2149,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				 }
 			 }
 		 }catch(Exception e){
-			 LOG.error("Exception Occured in getCategoryList() in ToursService  : ",e);	 
+			 LOG.error("Exception Occured at getCategoryList() in ToursService  : ",e);	 
 		 }
 		 return categoryList;
 	 }
@@ -2384,7 +2386,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
   * @param Long activityMemberId
   * @param Long userTypeId
   * @return List<List<ToursBasicVO>>
-  * @author Santosh 
+  * @author Santosh Kumar Verma 
   * @Description :This Service Method is used to get tour leader over all complaince details designation wise. 
   *  @since 3-AUGUST-2016
   */
@@ -2589,7 +2591,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
   * @param Long activityMemberId
   * @param Long userTypeId
   * @return List<ToursBasicVO>
-  * @author Santosh 
+  * @author Santosh Kumar Verma 
   * @Description :This Service Method is used to get average tour performance details designation wise. 
   *  @since 3-AUGUST-2016
   */
@@ -2936,7 +2938,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
   * @param List<Long> designationIds
   * @param String filterType
   * @return List<ToursBasicVO>
-  * @author Santosh 
+  * @author Santosh Kumar Verma 
   * @Description :This Service Method is used to get designation wise member details based on click and selection. 
   *  @since 6-AUGUST-2016
   */
@@ -3160,7 +3162,6 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
   * @param String toDateStr
   * @param selfAppraisalCandidateId
   * @return ToursBasicVO
-  * @author Santosh 
   * @Description :This Service Method is used to get candidate wise complete details like monthWise Complaince,Category Wise Summary Complaince ratio and every month wise tour submitted details. 
   *  @since 10-AUGUST-2016
   */
@@ -3525,7 +3526,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 						    if(monthVO != null){
 						    if(tourDaysCntPerMonth >= monthVO.getTargetDays()){
 						    	
-						    	monthVO.setComplainceDays(tourDaysCntPerMonth);
+						       monthVO.setComplainceDays(tourDaysCntPerMonth);
 							   Double complaincePer = calculatePercantage(monthVO.getComplainceDays(),monthVO.getTargetDays());
 							 if(complaincePer > 100d){
 								 monthVO.setComplaincePer(100d);
@@ -3802,7 +3803,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	   * @param Long activityMemberId
 	   * @param Long userTypeId
 	   * @return ToursOverviewDtlsvO
-	   * @author Santosh 
+	   * @author Santosh Kumar Verma
 	   * @Description :this service is used to get unique candidate wise tour submitted overview details. 
 	   *  @since 23-NOVEMBER-2017
 	   */
@@ -3824,10 +3825,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				}
 			}
-			// Get month year in string format based on fromDate and toDate
-			List<String> monthYear = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
-			// Get month year id based on month year
-			List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
+			 //getting MonthYearIds
+			 List<Long> monthyearIds =  getMonthYearIds(fromDate, toDate);
+			
 			List<Object[]> totalUniquesMemberDtls = selfAppraisalCandidateLocationNewDAO.getUniqueCandiateBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId,userTypeId);
 			resultVO.setTotalCandiateCount(Long.valueOf(getTourMemberTdpCadreIdSet(totalUniquesMemberDtls).size()));
 			List<Object[]> totalTourSubmittedUniquesMemberDtls = selfAppraisalCandidateDetailsNewDAO.getUniqueTourSubmittedCandiate(getTourMemberTdpCadreIdSet(totalUniquesMemberDtls),monthyearIds);
@@ -3862,7 +3862,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	   * @param Long activityMemberId
 	   * @param Long userTypeId
 	   * @return ToursOverviewDtlsvO
-	   * @author Santosh 
+	   * @author Santosh Kumar Verma 
 	   * @Description :this service is used to get member details. 
 	   * @since 23-NOVEMBER-2017
 	   */
@@ -3884,10 +3884,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 					locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				}
 			}
-			// Get month year in string format based on fromDate and toDate
-			List<String> monthYear = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
-			// Get month year id based on month year
-			List<Long> monthyearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
+		    //getting MonthYearIds
+			List<Long> monthyearIds =  getMonthYearIds(fromDate, toDate);
 			
 			List<Object[]> memberDesignationsObjList = selfAppraisalCandidateDAO.getTourMemberDetails();
 			Map<Long,String> memberDesignationMap = getTourMemberDesignationMap(memberDesignationsObjList);
@@ -3947,4 +3945,144 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 		}
 		return memberDesignationMap;
 	}
+	 /**
+	   * @param String fromDateStr
+	   * @param String toDateStr
+	   * @param Long selfAppraisalCandidateId
+	   * @param String isCandidate
+	   * @param String filterType
+	   * @return ToursBasicVO
+	   * @author Santosh Kumar Verma
+	   * @Description :this service is used to get designation wise tour complaince report for individual member. 
+	   * @since 6-JANUARY-2018
+	   */
+	public ToursBasicVO getIndividualCandidateDesignationWiseTourComplainceDetails(String fromDateStr, String toDateStr,final Long selfAppraisalCandidateId, String isCandidate,String filterType) {
+		ToursBasicVO resultVO = new ToursBasicVO();
+		Set<Long> candidateIds = new HashSet<Long>(0);
+		List<Long> designationIds = new ArrayList<Long>(0);
+		Map<Long, Map<String, List<ToursBasicVO>>> designationWiseTargetMap = new HashMap<Long, Map<String, List<ToursBasicVO>>>(0);
+		Map<String, String> categoryIdNameMap = new HashMap<String, String>(0);
+		Date fromDate = null;
+		Date toDate = null;
+		try {
+			List<Date> datesList = getDates(fromDateStr, toDateStr,new SimpleDateFormat("dd/MM/yyyy"));
+			fromDate = datesList.get(0);
+			toDate = datesList.get(1);
+
+			// getting MonthYearIds
+			List<Long> monthyearIds = getMonthYearIds(fromDate, toDate);
+
+			Long tdpCadreId = 0l;
+			String candidateName = "";
+			if (isCandidate != null && isCandidate.equalsIgnoreCase("true")) {
+				tdpCadreId = selfAppraisalCandidateDAO.getTdpCadreId(selfAppraisalCandidateId);
+			} else {
+				tdpCadreId = selfAppraisalCandidateId;
+			}
+
+			List<Object[]> objList = selfAppraisalCandidateDAO.getAllDesignationDetatilsByTdpCadreId(tdpCadreId);
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					designationIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					candidateIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					candidateName = commonMethodsUtilService.getStringValueForObject(param[2]);
+				}
+			}
+			if (monthyearIds != null && monthyearIds.size() > 0) {
+				List<Object[]> rtrnobjCtgryWseTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds, "tourCategory",designationIds);
+				setDesignationWiseTarget(rtrnobjCtgryWseTargetLst,designationWiseTargetMap, categoryIdNameMap,"tourCategory");
+				List<Object[]> rtrnobjGovtTargetLst = selfAppraisalDesignationTargetDAO.getCategoryWiseTargetCnt(monthyearIds, "tourType",designationIds);
+				setDesignationWiseTarget(rtrnobjGovtTargetLst,designationWiseTargetMap, categoryIdNameMap, "tourType");
+			}
+			//getting designation wise target details
+			Map<Long, ToursBasicVO> designationMap = getDesignationMap(objList,designationWiseTargetMap, categoryIdNameMap);
+			// Getting category wise tour Complaince days
+			Map<Long, Map<Long, ToursBasicVO>> candiateDtlsMap = new HashMap<Long, Map<Long, ToursBasicVO>>(0);
+			if (filterType != null && filterType.equalsIgnoreCase("submittedCandidate")) {
+				if (monthyearIds != null && monthyearIds.size() > 0) {
+					List<Object[]> rtrnCategoryWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds,"tourCategory", null, candidateIds);
+					prepareCandiateWiseDtlsToCalculateComplainceCandiate(rtrnCategoryWiseComplainceOblLst, candiateDtlsMap,designationMap, "tourCategory");
+					List<Object[]> rtrnGovtWorkWiseComplainceOblLst = selfAppraisalCandidateDetailsNewDAO.getLeaderComplainceCntCategoryWise(monthyearIds,"tourType", null, candidateIds);
+					prepareCandiateWiseDtlsToCalculateComplainceCandiate(rtrnGovtWorkWiseComplainceOblLst, candiateDtlsMap,designationMap, "tourType");
+				}	
+			}else {
+				List<Object[]> candidateDtlsObjList = selfAppraisalCandidateLocationNewDAO.getCandidateDesignationDetails(tdpCadreId);
+				getNotSubmittedTourCandidateDetails(candidateDtlsObjList, candiateDtlsMap,designationMap);
+			}
+			// Calculating category percentage
+			calculateCategoryWiseComplaince(candiateDtlsMap);
+			// Calculating OverAll percentage
+			calculatteOverAllPercentage(candiateDtlsMap);
+			resultVO.setName(candidateName);
+			if (candiateDtlsMap != null) {
+				for (Entry<Long, Map<Long, ToursBasicVO>> designationEntry : candiateDtlsMap.entrySet()) {
+					resultVO.getSubList().addAll(designationEntry.getValue().values());
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception occured at getIndividualCandidateDesignationWiseTourComplainceDetails() in CoreDashboardToursService class",e);
+		}
+		return resultVO;
+	}
+	public void getNotSubmittedTourCandidateDetails(List<Object[]> rtrnObjList,Map<Long,Map<Long,ToursBasicVO>> candiateDtlsMap,Map<Long,ToursBasicVO> designationMap){
+		  try{
+			  if(rtrnObjList !=null && rtrnObjList.size() > 0){
+				  for(Object[] param:rtrnObjList){
+					  Map<Long,ToursBasicVO> candiateMap = candiateDtlsMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					   if(candiateMap == null){
+						   candiateMap = new HashMap<Long, ToursBasicVO>();  
+						   candiateDtlsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), candiateMap);
+					   }
+					      ToursBasicVO candiateVO = candiateMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+					      if(candiateVO == null){
+					    	  candiateVO = new ToursBasicVO(); 
+					    	  candiateVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));//candidate Id
+					    	  candiateVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[0]));//candidate designation
+					    	  candiateVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[1]));//candidate designationId
+					    	  if(designationMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
+					    		  candiateVO.setSubList3(getCategoryList(designationMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).getSubList3()));  
+					    	  }
+					    	  candiateMap.put(candiateVO.getId(), candiateVO);
+					      }
+					       
+				    }
+				}
+		  }catch(Exception e){
+			  LOG.error("Exception Occured in getNotSubmittedTourCandidateDetails() in CoreDashboardToursService  : ",e);  
+		  }
+	  }
+	public List<Long> getMonthYearIds(Date fromDate,Date toDate) {
+		List<Long> monthYearIds = new ArrayList<Long>(0);
+		 try {
+			  //Get month year in string format based on fromDate and toDate
+			   List<String> monthYear = selfAppraisalToursMonthDAO.getMonthAndYear(fromDate, toDate);
+				 //Get month year ids based on month year 
+			     monthYearIds = selfAppraisalToursMonthDAO.getMonthYearByTourMonths(monthYear);
+		 } catch (Exception e) {
+			 LOG.error("Exception occured at getMonthYearIds() in CoreDashboardToursService class",e);
+		 }
+		 return monthYearIds;
+	}
+	public Map<Long,ToursBasicVO> getDesignationMap(List<Object[]> objLst,Map<Long,Map<String,List<ToursBasicVO>>> designationWiseTargetMap,Map<String,String> categoryIdNameMap){
+		Map<Long,ToursBasicVO> designationMap = new HashMap<Long, ToursBasicVO>(0); 
+		try{
+			 if(objLst != null && objLst.size() > 0){
+				 for(Object[] param:objLst){
+					 ToursBasicVO designationVO = new ToursBasicVO();
+					 designationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 designationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 //setting designation wise target
+					 List<ToursBasicVO> categoryList = setRequiredTargetDesignationWise(designationVO.getId(),designationWiseTargetMap,categoryIdNameMap);
+					 if(categoryList != null && categoryList.size() > 0){
+						 designationVO.setSubList3(new ArrayList<ToursBasicVO>(categoryList));
+					 }
+					 designationMap.put(designationVO.getId(), designationVO);
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in setDesignationWiseLeaders() in CoreDashboardToursService  : ",e);	 
+		 }
+		return designationMap;
+	 }
 }

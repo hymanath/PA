@@ -320,4 +320,25 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 	     	}
 	    	 return query.list();
   }
+	  public List<Object[]> getCandidateDesignationDetails(Long tdpCadreId){
+		   StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select  " +
+		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +//0
+		   				" SACL.selfAppraisalCandidate.selfAppraisalDesignation.designation," +//1
+		   				" SACL.selfAppraisalCandidate.selfAppraisalCandidateId "+
+		   		   		" from " +
+				   		" SelfAppraisalCandidateLocationNew SACL " +
+				   		" where " +
+				   		" SACL.selfAppraisalCandidate.isActive = 'Y' and SACL.isDeleted='N' and " +  
+				   		" SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and " +
+				   		" SACL.selfAppraisalCandidate.tdpCadre.tdpCadreId=:tdpCadreId ");
+		   
+		   queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," +
+		   				  " SACL.selfAppraisalCandidate.selfAppraisalCandidateId ");   
+		   queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
+		   Query query = getSession().createQuery(queryStr.toString());	
+		   query.setParameter("tdpCadreId", tdpCadreId);
+		   return query.list();  
+	   }
+      
 }
