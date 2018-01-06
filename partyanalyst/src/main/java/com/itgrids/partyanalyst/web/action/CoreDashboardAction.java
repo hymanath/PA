@@ -1097,7 +1097,43 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String sessionCheckingForMyCoreDashBoard(){
+		try {
+			
+			final HttpSession session = request.getSession();
+			
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			Long registrationId = null;
+			/*if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}*/
+			
+			if(user != null && user.getRegistrationID() != null){
+				registrationId = user.getRegistrationID();
+			}
+			else
+				registrationId = 1L;
+			
+			userDataVO = coreDashboardService.getUserBasicDetails(registrationId);
+			List<Long> diptIdList = attendanceCoreDashBoardService.getDeptIds();
+			userDataVO.setDeptIdList(diptIdList);
+			List<UserDataVO> committeeDataVOList = coreDashboardMainService.getbasicCommitteeDetails();
+			if(committeeDataVOList!=null && committeeDataVOList.size()>0){
+				userDataVO.setSubList(committeeDataVOList);
+			}
+			 List<AlertOverviewVO> resultList = alertService.getAlertStatus(1l);
+			 List<AlertOverviewVO> enrollementList = alertService.getTdpCadreEnrollementYearIds();
+			 if(resultList != null && resultList.size() > 0){
+				 alertOverviewVO.getSubList().addAll(resultList);	 
+			 }
+			 if (enrollementList != null && enrollementList.size() > 0) {
+				 alertOverviewVO.setEnrollementIdList(enrollementList);
+			 }
+		}catch(Exception e) {
+			LOG.error("Exception raised at execute() in CoreDashBoard Action class", e);
+		}
+		return Action.SUCCESS;
+	}
 	public String newCoreDashboardPage(){
 		try {
 			
@@ -5565,5 +5601,19 @@ public String activitiesLocationWiseData(){
 	return Action.SUCCESS;
 	
 }
-
+public String getIndividualCandidateDesignationWiseTourComplainceDetails(){
+	try {
+		LOG.info("Entered into getToursBasicOverviewDtls()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long selfAppraisalCandidateId = jObj.getLong("selfAppraisalCandidateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		String isCandidate = jObj.getString("isCandidate");
+		String filterType = jObj.getString("filterType");
+		toursBasicVO = coreDashboardToursService.getIndividualCandidateDesignationWiseTourComplainceDetails(fromDate,toDate,selfAppraisalCandidateId,isCandidate,filterType);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getIndividualCandidateDesignationWiseTourComplainceDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }

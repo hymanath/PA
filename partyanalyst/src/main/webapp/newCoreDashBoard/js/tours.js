@@ -4,8 +4,8 @@
   var globalStateIdForTour=1; //for 
  var globalFormTourDate;
  var glovalToTourDate;
-var customStartToursDate = moment().startOf('month').format('DD/MM/YYYY')
-var customEndToursDate = moment().format('DD/MM/YYYY');
+var customStartToursDate = moment().subtract(1,'month').startOf("month").format('DD/MM/YYYY')
+var customEndToursDate = moment().subtract(1,'month').endOf("month").format('DD/MM/YYYY');
 	function globalToursCalls(type)
 	{
 		 if (type == "selectedDate") {
@@ -77,7 +77,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			globalFormTourDate = datesArr[0]; 
 			glovalToTourDate = datesArr[1]; 
 		}
-      $("#toursNewHeadingId").html("THIS Month( "+globalFormTourDate+" To "+glovalToTourDate+")");
+      $("#toursNewHeadingId").html("Last Month( "+dates+" )");
       $('#tourNewDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 	   var dates= $("#tourNewDateRangePickerId").val();
 	   $("#toursNewHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
@@ -521,8 +521,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
     var globalUserTypeWiseTourComplainceRslt;  
 	function getDesignationWiseMembersDtls()
 	{  
-		 
-		$(".tourNewComplainceFilterCls li").removeClass("active");
+    	$(".tourNewComplainceFilterCls li").removeClass("active");
 		$(".tourNewComplainceFilterCls li:first-child").addClass("active");
 
  		$("#buildgDesignationWiseToursTopFiveComplainceDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -1226,7 +1225,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 								//str+='<td></td>';
 										for(var j in result[i].subList3){
 											str+='<tr>';
-												str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls text-capital" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'"><a>'+result[i].subList3[j].name+'</a></td>';
+												str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="direct" class="candiateCls text-capital" attr_filter_type="submitted" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'"><a>'+result[i].subList3[j].name+'</a></td>';
 												str+='<td class="text-center">'+result[i].subList3[j].complaincePer+'%</td>';
 
 												   for(var k in result[i].subList3[j].subList3){
@@ -1518,6 +1517,10 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 		var topFivecandidateName = temp[1];
 		var topFivedesignationName = temp[2];
 	     $("#subMitBtn").attr("attr_candidate_id",candiateId);
+		 $("#subMitBtn").attr("attr_filter_type","submitted");
+		 
+		 //getting designation wise tour detail of individual candidate 
+		 getIndividualCandidateDesignationWiseTourComplainceDetails(candiateId,globalFormTourDate,glovalToTourDate,true,"submitted");
 		 
 		$("#tourIndividualPerformanceDivId").modal({
             show: true,
@@ -1676,14 +1679,14 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.length > 0){
-				buildTourMemberDetails(result);
+				buildTourMemberDetails(result,filterType);
 			}else{
 			 $("#tourDetailsDivId").html("NO DATA AVAILABLE.");	
 			}
 		});
 	}
 	
-function buildTourMemberDetails(result){
+function buildTourMemberDetails(result,filterType){
     
     if(result != null && result.length > 0){
       var str1='';
@@ -1765,7 +1768,7 @@ function buildTourMemberDetails(result){
                 //str+='<td></td>';
                     for(var j in result[i].subList3){
                       str+='<tr>';
-                        str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="subLevel" class="candiateCls text-capital" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'"><a>'+result[i].subList3[j].name+'</a></td>';//santosh
+                        str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="subLevel" attr_filter_type="'+filterType+'" class="candiateCls text-capital" attr_candiate_id="'+result[i].subList3[j].id+'" attr_candiate_name="'+result[i].subList3[j].name+'" attr_designation_name="'+result[i].subList3[j].designation+'"><a>'+result[i].subList3[j].name+'</a></td>';//santosh
                         str+='<td class="text-center">'+result[i].subList3[j].complaincePer+'%</td>';
 
 							for(var k in result[i].subList3[j].subList3){
@@ -1881,10 +1884,14 @@ $(document).on("click",".candiateCls",function(){
 	var designationName = $(this).attr("attr_designation_name");
 	var candiateName = $(this).attr("attr_candiate_name");
 	var selectedLevel = $(this).attr("attr_type");
+	var filterType = $(this).attr("attr_filter_type");
+	$("#subMitBtn").attr("attr_filter_type",filterType);
 	$(".tourIndividualCls").attr("attr_type",selectedLevel);
 	//var selectedDate = globalFormTourDate.split("/");
 	$("#dateRangeSliderYear").val(0);
    getCandiateWiseTourDetails(candiateId,designationName,candiateName);
+   //getting designation wise tour detail.
+	getIndividualCandidateDesignationWiseTourComplainceDetails(candiateId,globalFormTourDate,glovalToTourDate,true,filterType);
 });
 
 function getCandiateWiseTourDetails(candiateId,designationName,candiateName)
@@ -2454,6 +2461,7 @@ $(document).on("change","#dateRangeSliderYear",function(){
 
 $(document).on("click","#subMitBtn",function(){
 	var candiateId = $(this).attr("attr_candidate_id");
+	var filterType = $(this).attr("attr_filter_type");
 	var fromDateDate = $(".ui-rangeSlider-leftLabel").find(".ui-rangeSlider-label-value").html(); 
 	var toDateDate = $(".ui-rangeSlider-rightLabel").find(".ui-rangeSlider-label-value").html(); 
 	var frmDateInRequiredFormat;
@@ -2467,6 +2475,8 @@ $(document).on("click","#subMitBtn",function(){
 		toDateInRequiredFormat =toDateArr[2].trim()+"/"+toDateArr[1].trim()+"/"+toDateArr[0].trim();
 	}
 	getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat);
+	//getting designation wise tour detail.
+	getIndividualCandidateDesignationWiseTourComplainceDetails(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat,true,filterType);
 }); 
 
 function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat,toDateInRequiredFormat){
@@ -2492,7 +2502,7 @@ function getIndividualRslBasedOnDateSelection(candiateId,frmDateInRequiredFormat
 		});
 }
 
-/* Tdp Cadre wise unique member detail */
+/* Tdp Cadre wise unique member detail functionality start */
 
 function getCandiateWiseTourSubmittedDetails()
 	{    
@@ -2606,8 +2616,8 @@ function getCandiateWiseTourSubmittedDetails()
 				str+='<thead>';
 					str+='<tr>';
 						str+='<th>Candiate Name</th>';
-						str+='<th>Mobile Number</th>';
-						str+='<th>MemberShip No</th>';
+						//str+='<th>Mobile Number</th>';
+						//str+='<th>MemberShip No</th>';
 						str+='<th>Designation</th>';
 					str+='</tr>';
 				str+='</thead>';
@@ -2619,7 +2629,7 @@ function getCandiateWiseTourSubmittedDetails()
 							} else {
 								str+='<td>-</td>';
 							}
-							if (result[i].moblieNo != null ) {
+							/* if (result[i].moblieNo != null ) {
 							str+='<td>'+result[i].moblieNo+'</td>';	
 							} else {
 								str+='<td>-</td>';
@@ -2628,7 +2638,7 @@ function getCandiateWiseTourSubmittedDetails()
 							str+='<td>'+result[i].memberShipNo+'</td>';	
 							} else {
 								str+='<td>-</td>';
-							}
+							} */
 							if (result[i].designation != null ) {
 								if (result[i].designation.length > 15) {
 									str+='<td class="tourDesigtooltipCls" data-container="body" title="'+result[i].designation.substring(1,result[i].designation.length)+'" style="cursor:pointer;">'+result[i].designation.substring(1,15)+"..."+'</td>';
@@ -2650,4 +2660,209 @@ function getCandiateWiseTourSubmittedDetails()
 	   });
 	   $(".tourDesigtooltipCls").tooltip();
 	}
+	/* Tdp Cadre wise unique member detail functionality end */
+   
+   
+   /*Getting designation wise individual candidate tour details */
+    function getIndividualCandidateDesignationWiseTourComplainceDetails(selfAppraisalCandidateId,fromDate,toDate,isCandidate,filterType)
+	{    
+	   $("#tourMemberDesignationWiseDtlsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>'); 
+		if(globalUserTypeId == 7 || globalUserTypeId==8 || globalUserTypeId==9)
+		{ 
+			$("#tourMemberDesignationWiseDtlsDivId").html('');
+			 return;
+		}
+		var type ='';
+		if (filterType != null && filterType == "notSubmitteed") {
+			type = "notSubmitted";
+		} else {
+			type = "submittedCandidate";
+		}
+		var jsObj = { 
+					 selfAppraisalCandidateId : selfAppraisalCandidateId,
+					 isCandidate : isCandidate,
+					 fromDate : fromDate,
+					 toDate : toDate,
+					 filterType:type
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getIndividualCandidateDesignationWiseTourComplainceDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   if (result != null ) {
+			   buildDesignationWiseTourComplainceDtls(result,selfAppraisalCandidateId);
+		   } else {
+			    $("#tourMemberDesignationWiseDtlsDivId").html('NO DATA AVAILABLE');
+		   }
+		});
+	}
+	
+	function buildDesignationWiseTourComplainceDtls(result,selfAppraisalCandidateId){
+		
+		if (result.subList != null && result.subList.length > 1) {
+			$(".designationBlockcls").show();
+		} else {
+			$(".designationBlockcls").hide();
+			return;
+		}
+      var str1='';
+	   for(var i in result.subList){
+		  if (result.subList[i].id == selfAppraisalCandidateId){
+			  continue;
+		  }
+      str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
+        str1+='<div class="panel panel-default panelNew">';
+          str1+='<div class="panel-heading">';
+            str1+='<div class="row">';
+              str1+='<div class="col-md-8 col-xs-12 col-sm-6">';
+                str1+='<h4 class="panel-title"><span class="headingColor text-capital">'+result.subList[i].designation+'&nbsp&nbspTours Submitted Report</span></h4>';
+              str1+='</div>';
+			 
+          str1+='</div>';
+          str1+='<div class="panel-body">';
+            str1+='<div class="row">';
+			  str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
+              str1+='<div id="memberDesignation'+i+'"></div>';
+			   str1+='</div>';
+            str1+='</div>';
+          str1+='</div>';
+        str1+='</div>';
+      str1+='</div>';
+      str1+='</div>';
+      }
+      $("#tourMemberDesignationWiseDtlsDivId").html(str1);
+    
+      for(var i in result.subList){
+		  if (result.subList[i].id == selfAppraisalCandidateId){
+			  continue;
+		  }
+				var str='';
+				var length = result.subList
+				if($(window).width() < 800)
+				{
+					str+='<div class="table-responsive">';
+				}
+				
+				  str+='<table class="table table-bordered borderedWeight" id="designationDataTabelId'+i+'">';
+				  str+='<thead class="bg_D8">';
+					str+='<tr>';
+						var maxLengthForSpan = 0;
+							if(result.subList[i].subList3 != null && result.subList[i].subList3.length > 0){
+							  maxLengthForSpan = result.subList[i].subList3.length;
+							 }
+						str+='<th colspan="'+(maxLengthForSpan+1)+'" rowspan="1" class="text-capital text-center" style="vertical-align: middle;">Complaince RATIO</th>';
+						
+						for(var k in result.subList[i].subList3){
+						   str+='<th colspan="2" rowspan="1" class="text-capital text-center" style="vertical-align: middle;">'+result.subList[i].subList3[k].name+'</th>';
+						}
+					  
+					  str+='</tr>';
+					  str+='<tr>';
+						
+						str+='<th class="text-capital text-center" style="vertical-align: middle;">over all</th>';
+							for(var k in result.subList[i].subList3){
+							  str+='<th class="text-capital text-center" style="vertical-align: middle;">'+result.subList[i].subList3[k].name+'</th>';
+							}
+						for(var k in result.subList[i].subList3){
+							str+='<th class="text-capital text-center" style="vertical-align: middle;">Target</th>';
+							str+='<th class="text-capital text-center" style="vertical-align: middle;">Toured</th>';
+						}
+					  str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+							  str+='<tr>';
+								/* str+='<td style="cursor:pointer;color:rgb(51, 122, 183)" attr_type="subLevel" class="candiateCls text-capital" attr_candiate_id="'+result.subList[i].id+'" attr_candiate_name="'+result.subList[i].name+'" attr_designation_name="'+result.subList[i].designation+'"><a>'+result.subList[i].designation+'</a></td>'; */
+								str+='<td class="text-center">'+result.subList[i].complaincePer+'%</td>';
+
+							 	for(var k in result.subList[i].subList3){
+									 str+='<td class="text-center">'+result.subList[i].subList3[k].complaincePer+'%';
+								}								
+							  for(var k in result.subList[i].subList3){
+								var monthList = result.subList[i].subList3[k].monthList;
+								str+='<td class="text-center">'+result.subList[i].subList3[k].targetDays+'</td>';
+								str+='<td class="text-center">'+result.subList[i].subList3[k].complainceDays+'';
+										str+='<div class="dropup">';
+										str+='<span class="pull-right dropdown-toggle" style="font-weight: 600; cursor: pointer;font-size: 16px; margin-top: -21px;" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9432;</span>';
+										str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar3" aria-labelledby="dropdownMenu2" style="padding:10px;">';
+											str+='<table class="table table-bordered scrollApplyDiv3">';
+											str+='<thead>';
+											str+='<th>Month</th>';
+											str+='<th>Target</th>';
+											str+='<th>Tour</th>';
+											str+='<th>Complaince</th>';
+											str+='</thead>';
+											str+='<tbody>';
+													 if(monthList != null && monthList.length > 0){
+														 for(var l in monthList){
+															str+='<tr>';
+															if(monthList[l].name != null && monthList[l].name.length > 0){
+															str+='<td style="border-top:none !important">'+monthList[l].name+'</td>';	
+															}else{
+															str+='<td style="border-top:none !important"> - </td>';	
+															}
+															str+='<td class="text-center;">'+monthList[l].targetDays+'</td>';
+															if(monthList[l].complainceDays > 0){
+															str+='<td class="text-center;">'+monthList[l].complainceDays+'</td>';	
+															}else{
+															str+='<td> - </td>';	
+															}
+															if(monthList[l].complainceDays == 0){
+															str+='<td>-</td>';	
+															}else if(monthList[l].complainceDays>=monthList[l].targetDays){
+															str+='<td><i style="padding:2px 3px;border-radius:50%;background-color:#3DBC93;color:#fff;margin-left:7px;" class="glyphicon glyphicon-ok"></i></small>&nbsp&nbspYES<small></td>';		
+															}else if(monthList[l].complainceDays<monthList[l].targetDays){
+															 str+='<td><i style="padding:2px 3px;border-radius:50%;background-color:#E35B69;color:#fff;margin-left:7px;" class="glyphicon glyphicon-remove"></i></small>&nbsp&nbspNO<small></td>';			
+															}
+														   str+='</tr>'; 
+														 }
+													 }
+											str+='</tbody>';
+											str+='</table>';
+										str+='</div>';
+									str+='</div>';
+								str+='</td>';
+							  }
+							  str+='</tr>';
+							//}
+						  
+						str+='</tbody>';
+						
+				  str+='</table>';
+					  if($(window).width() < 800)
+					{
+						str+='</div>';
+					 }
+				$("#memberDesignation"+i).html(str);
+				/* $("#designationDataTabelId"+i+"").dataTable({
+					"aaSorting": [],
+					"iDisplayLength" : 10	
+				 });
+				$("#designationDataTabelId"+i+"").removeClass("dataTable"); */
+				
+				if($(window).width() < 800)
+					{
+						$(".scrollApplyDiv3").each(function(){
+							var scrollengthDiv = $(this).find("tr").length;
+							if(scrollengthDiv >= 3){
+								$(".verticalScrollBar3").mCustomScrollbar({setHeight:'150px'})
+							}else{
+								$(".verticalScrollBar3").css("height","auto");
+							}
+						}); 
+					}else{
+						$(".scrollApplyDiv3").each(function(){
+							var scrollengthDiv = $(this).find("tr").length;
+							if(scrollengthDiv >= 5){
+								$(".verticalScrollBar3").mCustomScrollbar({setHeight:'240px'})
+							}else{
+								$(".verticalScrollBar3").css("height","auto");
+							}
+						}); 
+					}
+				  
+		}
+  }
+	
 	
