@@ -15,16 +15,16 @@ public class PmRequestVO {
 	private Long existingPetitionId;
 	private Long id;
 	private Long representeeId;
-	private String name;
-	private String mobileNO;
-	private String email;
-	private String voterCardNo;
-	private String adharCardNo;
+	private String name="";
+	private String mobileNO="";
+	private String email="";
+	private String voterCardNo="";
+	private String adharCardNo="";
 	private Long AadharCardNo;
 	private Long tdpCadreId;
 	private Long designationId;
-	private String representationType;
-	private String representationdate;
+	private String representationType="";
+	private String representationdate="";
 	private Long representeeDesignationId;
 	private AddressVO addressVO;
 	private AddressVO candidateAddressVO;
@@ -35,18 +35,18 @@ public class PmRequestVO {
 	private List<KeyValueVO> fileNamesList = new ArrayList<KeyValueVO>();
 	
 	private Long refCandidateId;
-	private String startDate;
-	private String endDate;
+	private String startDate="";
+	private String endDate="";
 	private Long userId;
 	
 	private Long partyId;
-	private String partyName;
-	private String candidatePath;
-	private String designation;
-	private String endorsmentNo;
-	private String endorsmentDate;
-	private String repImagePath; 
-	private String remarks;
+	private String partyName="";
+	private String candidatePath="";
+	private String designation="";
+	private String endorsmentNo="";
+	private String endorsmentDate="";
+	private String repImagePath=""; 
+	private String remarks="";
 	
 	public String getRemarks() {
 		return remarks;

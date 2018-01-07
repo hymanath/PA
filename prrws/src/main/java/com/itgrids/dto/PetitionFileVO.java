@@ -3,20 +3,23 @@ package com.itgrids.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author sys
- *
- */
 public class PetitionFileVO implements java.io.Serializable{
 
 	private Long id;
 	private String key;
+	private String path;
 	private String value;
 	private List<PetitionFileVO> filesList = new ArrayList<PetitionFileVO>(0);
 	
 	public PetitionFileVO(){}
 	public PetitionFileVO(Long id,String value){
 		this.id= id;
+		this.value = value;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
 		this.value = value;
 	}
 	public PetitionFileVO(String key,String value){
@@ -29,11 +32,11 @@ public class PetitionFileVO implements java.io.Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getValue() {
-		return value;
+	public String getPath() {
+		return path;
 	}
-	public void setValue(String value) {
-		this.value = value;
+	public void setPath(String path) {
+		this.path = path;
 	}
 	public List<PetitionFileVO> getFilesList() {
 		return filesList;

@@ -920,13 +920,13 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 	getRepresentativeSearchDetails1();
  });
 
-$(document).on("click",".viewBtnCls",function(){
+/* $(document).on("click",".viewBtnCls",function(){
 	var petionId = $(this).attr("attr_petiotion_id");
 	var endorsNo = $(this).attr("attr_enrorsNo");
 	$("#representeeViewId").html("");
 	$("#representeeDetailsModelDivId").modal("show");
    getPetitionDetails(petionId,endorsNo);
- });
+ }); */
 function getRepresentativeSearchDetails1(){
 	$("#errMsgId").html("");
  
@@ -1101,7 +1101,7 @@ function getStatusList(statusId){
   }); 
 }
 //getPetitionDetails(1778,'');
-function getPetitionDetails(petitionId,endorsNo){
+function getPetitionDetailsDummy(petitionId,endorsNo){
 	$("#representeeViewId").html(spinner);
 	selectedWorkIdsArr=[];
    var json = {
@@ -1509,7 +1509,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 	function setDefaultImage(img){
 			  img.src = "http://www.mytdp.com/images/User.png";
 	}
-$(document).on("click",".docsViewCls",function(){
+/* $(document).on("click",".docsViewCls",function(){
 	$("#docsModalDivId").modal("show");
 	var docsList = [];
 	var str="";
@@ -1563,7 +1563,7 @@ $(document).on("click",".docsViewCls",function(){
 
 		$("#docsViewModalId").html(str);
 		$(".fancyboxView").fancybox();
-});
+}); */
 
 function openDoc(docmnt){
 	 window.open(docmnt);
@@ -1627,209 +1627,7 @@ $(document).on("click",".closeSecondModal",function(){
       $("body").addClass("modal-open")
     },1000);
   });
- function endorsingSubWorksAndAssigningToOfficer(){
-	
-	 $('#errorEndsmentStr').html('');
-	 $('#leadIdErr').html('');
-	 $('#grantIdErr').html('');
-	 $('#assignToIdErr').html('');
-	 $('#officerIdErr').html('');
-	 $('#remarkIdErr').html('');
-	 $('#fileUploadIdErr').html('');
-	
-	 var errorEndsmentStr = '';
-	 var errorLeadStr = '';
-	 var errorGrantStr = '';
-	 var errorAssignToStr = '';
-	 var errorOfficerStr = '';
-	 var errRemarksStr = '';
-	 //var errFileUploadStr = '';
-	 
-	 var endorsementId =$("#endorsmentNo").val();
-	 var leadIdValue = $("#leadId").val();
-	 var grantIdValue = $("#grantId").val();
-	 var assignToIdValue = $("#assignToId").val();
-	 var officerIdValue = $("#officerId").val();
-	 var remarksId =$("#remarksId").val();
-	 //var fileUploadId = $("#uploadFile").val();
-	/*
-	 $('#endorsementNoErr').html('');
-	 if(endorsementId == 0 || endorsementId == '' || endorsementId == null || endorsementId.trim().length == 0){
-		 errorEndsmentStr += "<p style='color:red'>Endosment no is required</p>"; 
-	 }	 
-	 if(leadIdValue == null || leadIdValue ==0){
-		errorLeadStr += "<p style='color:red'>Please select brief lead</p>"; 
-	 }
-	 if(grantIdValue == null || grantIdValue ==0){
-		errorGrantStr += "<p style='color:red'>Please select grant</p>"; 
-	 }
-	  if(assignToIdValue == null || assignToIdValue == 0){
-		errorAssignToStr += "<p style='color:red'>Please select assign to</p>"; 
-	 }
-	 if(officerIdValue == null || officerIdValue == 0){
-		errorOfficerStr += "<p style='color:red'>Please select officer name</p>"; 
-	 } 
-	 if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
-		 errRemarksStr += "<p style='color:red'>Comment is required</p>"; 
-	 }*/
-	 /*if(fileUploadId == 0 || fileUploadId == '' || fileUploadId == null || fileUploadId.trim().length == 0){
-		// errFileUploadStr += "<p style='color:red'>Please file is required</p>"; 
-	 }
-	*/
-	/*
-	if(errorLeadStr.length >0)
-	{
-		$('#leadIdErr').html(errorLeadStr);
-		return ;
-	}else{
-		$('#leadIdErr').html('');
-	}
-	if(errorGrantStr.length >0)
-	{
-		$('#grantIdErr').html(errorGrantStr);
-		return ;
-	}else{
-		$('#grantIdErr').html('');
-	}
-	
-	if(errorAssignToStr.length >0)
-	{
-		$('#assignToIdErr').html(errorAssignToStr);
-		return ;
-	}else{
-		$('#assignToIdErr').html('');
-	}
-	if(errorOfficerStr.length >0)
-	{
-		$('#officerIdErr').html(errorOfficerStr);
-		return ;
-	}else{
-		$('#officerIdErr').html('');
-	}
-	
-	if(errRemarksStr.length >0)
-	{
-		$('#remarkIdErr').html(errRemarksStr);
-		return ;
-	}else{
-		$('#remarkIdErr').html('');
-	}
-	*/
-	/*if(errFileUploadStr.length >0)
-	{
-		$('#fileUploadIdErr').html(errFileUploadStr);
-		return ;
-	}else{
-		$('#fileUploadIdErr').html('');
-	}
-	*/
-	
-	   var formData = new FormData();
-	   $('#endorsingSubWorksId input').each(
-		  function(){			  
-			var input = $(this);
-			var text =input.attr('type');
-			var id = input.attr('id');
-			//debugger;
-			if (typeof id !== typeof undefined && id !== false) {
-				if(text=='text' || text=='hidden'){
-					var name = $('#'+id+'').attr('name');
-					formData.append(name, $('#'+id+'').val());
-				}else if(text=='radio'){
-					if($('#'+id+'').is(':checked')){
-						var name = $('#'+id+'').attr('name');
-						formData.append(name, $('#'+id+'').val());
-					}
-				}else if(text=='file'){
-					if(this.files !=null && this.files.length>0){
-						for(var i = 0; i < this.files.length; i++){
-								formData.append("filesList["+i+"]", this.files[i]);
-						}
-					}
-				}
-			}			
-		}
-	);
-	
-	$('#endorsingSubWorksId textarea').each(
-		  function(){			  
-			var input = $(this);
-				var id = input.attr('id');
-				if (typeof id !== typeof undefined && id !== false) {
-				var name = $('#'+id+'').attr('name');
-				formData.append(name, $('#'+id+'').val());
-			}
-		}
-	);
-	
-	$('#endorsingSubWorksId select').each(
-		  function(){			  
-				var input = $(this);
-				var id = input.attr('id');
-				if (typeof id !== typeof undefined && id !== false) {
-					var name = $('#'+id+'').attr('name');
-					formData.append(name, $('#'+id+'').val());
-			}
-		}
-	);
-	if(selectedWorkIdsArr !=null && selectedWorkIdsArr.length>0){
-							for(var i = 0; i < selectedWorkIdsArr.length; i++){
-								if($("#nextStatusId").val()==6){
-									formData.append("statusType", "COVERING LETTER");
-								}else if($("#nextStatusId").val()==7){
-									formData.append("statusType", "ACTION COPY");
-								}else if($("#nextStatusId").val()==3){
-									formData.append("statusType", "DETAILED REPORT");
-								}
-								formData.append("workIds["+i+"]", selectedWorkIdsArr[i]);
-						}
-	}
-	formData.append("petitionId", petitionId);
-	
-$.ajax({
-			url: $("#endorsingSubWorksId").attr("action"),
-			data: formData,
-			type: "POST",               
-			processData: false,
-			contentType: false,
-			success: function(result) {
-				$("#savingDetailsSpinner").html('');
-				
-				/* if(result!=null){
-				  if(result.responseCode == "0"){
-					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
-					  
-						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); 
-						window.location.reload(); 
-						$(".defaultCheckCls").prop("checked",true)},6000);
-						 
-				  }else{
-					  $('#saveButtonId').show();
-					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
-					  setTimeout(function () {
-						 
-						}, 500);
-						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
-				  }
-				}else{
-					  $('#saveButtonId').show();
-					setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
-						}, 500);
-						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
-				 } */
-				 
-				
-			},
-			error: function(request,error) { 
-				$("#savingDetailsSpinner").html('');
-				//console.log(request);
-				//console.log(error);
-				alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
-				$('#saveButtonId').show();				
-			}
-     });
- }	
+ 
  
  function getPmBriefLeadList(){
 	 $("#leadId").html('');
