@@ -5,12 +5,12 @@ import java.util.List;
 
 public class KeyValueVO {
 	private Long key;
-	private String value;
+	private String value="";
 	private Long count=0L;
 	private Long totalCount=0L;
-	private String electionType;
+	private String electionType="";
 	private List<Long> deptIdsList = new ArrayList<Long>(0);
-	private String designation;
+	private String designation="";
 	private Long designationId;
 	private List<KeyValueVO> subList = new ArrayList<KeyValueVO>(0);
 			

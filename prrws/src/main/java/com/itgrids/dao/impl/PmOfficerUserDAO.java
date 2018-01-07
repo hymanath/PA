@@ -52,16 +52,20 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 		
 	}
 	
-	public List<Long> getPmDeptStatusIdByUserIdsLst(Long userId){
+	public List<Long> getPmDeptStatusIdByUserIdsLst(Long userId,String isDashboard){
 
 		if(userId != null && userId.longValue()>0L){
 			StringBuilder sb = new StringBuilder();
 			sb.append("select distinct model1.pmStatusId  from PmOfficerUser model,PmDepartmentDesignationStatus model1 "
-					+ " where model.pmDepartmentDesignationId =  model1.pmDepartmentDesignationId and model1.priority=1 ");
+					+ " where model.pmDepartmentDesignationId =  model1.pmDepartmentDesignationId ");
 					if(userId != null && userId.longValue() >0l){
 						sb.append(" and model.userId =:userId");
 					}
 					sb.append(" and model.isActive ='Y'");
+					
+				if(isDashboard != null && isDashboard.equalsIgnoreCase("true"))
+					sb.append("  and model1.priority=1 ");
+				
 			Query query = getSession().createQuery(sb.toString());
 			if(userId != null && userId.longValue() >0l){
 				query.setParameter("userId", userId);

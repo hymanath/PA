@@ -25,7 +25,7 @@ public interface IPmRequestDetailsService {
 	public CadreRegistrationVO getRegistrationPersonDetails(Map<String,String> inputMap);
 	public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate);
 	public KeyValueVO getDeptIdsListBYUserIds(Long userId);
-	public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId);
+	public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId,String isDashboard);
 	public ResultStatus updatePetitionsStatusDetails(Long userId,String petitionIdsArr, String remark, Long statusId);
 	public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate);
 	public ResultStatus updatePetitionsStatusDetails(Long userId,List<Long> petitionIdsList, List<Long> subWorkIdsList,String remark,Long statusId);

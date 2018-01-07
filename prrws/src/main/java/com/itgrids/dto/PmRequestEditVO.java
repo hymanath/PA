@@ -6,16 +6,16 @@ import java.util.List;
 public class PmRequestEditVO {
 
 	private Long petitionId;
-	private String endorsmentNo;
-	private String endorsmentDate;
-	private String representationType;
-	private String representationdate;
+	private String endorsmentNo="";
+	private String endorsmentDate="";
+	private String representationType="";
+	private String representationdate="";
 	private Long workId;
-	private String workName;
+	private String workName="";
 	private Long noOfWorks;
-	private String estimateCost;
-	private String estimateCostStr;
-	private String grievanceDescription;
+	private String estimateCost="";
+	private String estimateCostStr="";
+	private String grievanceDescription="";
 	
 	private List<KeyValueVO> coveringLetterPathsList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> fileList = new ArrayList<KeyValueVO>();

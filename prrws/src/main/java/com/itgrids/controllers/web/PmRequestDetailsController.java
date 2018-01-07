@@ -297,7 +297,7 @@ public class PmRequestDetailsController {
 			}else{
 				return null;
 			}
-	       return pmRequestDetailsService.getPmDeptStatusIdsByUserIdsLst(userId);
+	       return pmRequestDetailsService.getPmDeptStatusIdsByUserIdsLst(userId,"true");
 	    }
 	    
 

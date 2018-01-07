@@ -1599,7 +1599,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 
 			 if(pageType == null){
 				//user access status details
-				KeyValueVO userAccessStatusVO = getPmDeptStatusIdsByUserIdsLst(userId);
+				KeyValueVO userAccessStatusVO = getPmDeptStatusIdsByUserIdsLst(userId,"false");
 				if(userAccessStatusVO != null && commonMethodsUtilService.isListOrSetValid(userAccessStatusVO.getDeptIdsList())){
 					KeyValueVO pendingVO = statusMap.get(1L);//pending endorsment 
 					if(pendingVO != null){
@@ -1678,7 +1678,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							vo.setEndorsmentDate(worksVO.getEndorsmentDate());
 							vo.setNoOfWorks(Long.valueOf(String.valueOf(workTypeVOList.size())));
 							vo.setReportTypeFilesList(globalFilesList);
-							
 							if(pageType != null && !seriesNo.isEmpty())
 								vo.setUiSeriesNo(Long.valueOf(seriesNo));
 							else
@@ -1842,7 +1841,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			try {
 				KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
 				List<Long> deptIds = deptVO.getDeptIdsList();
-				KeyValueVO userAccesStatusVO = getPmDeptStatusIdsByUserIdsLst(userId);
+				KeyValueVO userAccesStatusVO = getPmDeptStatusIdsByUserIdsLst(userId,"true");
 				List<Long> statusIds = userAccesStatusVO.getDeptIdsList();
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				Date fromDate = null;
@@ -2152,11 +2151,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return deptVO;
 		}
 		
-		public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId){
+		public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId,String isDashboard){
 			KeyValueVO deptVO = new KeyValueVO();
 			try{
 				LOG.info("entered into PmRequestDetailsService  of getPmDeptStatusIdsByUserIds");
-				List<Long> deptIdsObjLst = pmOfficerUserDAO.getPmDeptStatusIdByUserIdsLst(userId);
+				List<Long> deptIdsObjLst = pmOfficerUserDAO.getPmDeptStatusIdByUserIdsLst(userId,isDashboard);
 				if(deptIdsObjLst != null && deptIdsObjLst.size() >0){
 					deptVO.setDeptIdsList(deptIdsObjLst);
 				}
@@ -2437,7 +2436,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 		
 		public List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(List<Long> deptIdsList , Long userId){
-			 List<KeyValueVO>  returnList = new ArrayList<>();
+			 List<KeyValueVO>  returnList = new ArrayList<KeyValueVO>();
 			try {
 				List<Long> deptDesignationIdsList = pmOfficerUserDAO.getPmDeptDesignationIdByUserId(userId);
 				if(commonMethodsUtilService.isListOrSetValid(deptDesignationIdsList)){
@@ -2457,7 +2456,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 		
 		public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId , Long userId){
-			 List<KeyValueVO>  returnList = new ArrayList<>();
+			 List<KeyValueVO>  returnList = new ArrayList<KeyValueVO>();
 			try {
 				if(deptDesignationId != null && deptDesignationId.longValue()>0L){
 					List<Object[]> deptDesignationOfficerDetails = pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptDesignation(deptDesignationId);
