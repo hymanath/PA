@@ -5,6 +5,7 @@ var detailedReportDoc=[];
 var globalStatusArr=[];
 var selectdWorksArr=[];
 var departmentSelectArr=[];
+var mainWorkCoveringDocuments=[];
 $(document).on("click",".viewBtnCls",function(){
 	var petionId = $(this).attr("attr_petiotion_id");
 	var endorsNo = $(this).attr("attr_enrorsNo");
@@ -86,6 +87,8 @@ function buildPetitionDetailsView(result){
 											str+='<h5 class="font_weight m_top5">'+result.representeeDetailsList[i].name+'</h5>';
 											if(result.representeeDetailsList[i].tdpCadreId !=null && result.representeeDetailsList[i].tdpCadreId>0){
 												str+='<h5 class="font_weight f_12 m_top10">TDP Cadre</h5>';
+											}else{
+												str+='<h5 class="font_weight f_12 m_top20"></h5>';
 											}
 											//str+='<h5 class="font_weight f_10">'+result.referDetailsList[i].+'</h5>';
 										str+='</div>';
@@ -107,6 +110,7 @@ function buildPetitionDetailsView(result){
 										str+='<div class="pad_light_yash_bg">';
 											str+='<p>Address Details:</p>';
 											str+='<div class="row m_top5">';
+											if((result.representeeDetailsList[i].addressVO.panchayatName !=null && result.representeeDetailsList[i].addressVO.panchayatName.length>0) && (result.representeeDetailsList[i].addressVO.tehsilName !=null && result.representeeDetailsList[i].addressVO.tehsilName.length>0)){
 												str+='<div class="col-sm-7">';
 													if(result.representeeDetailsList[i].addressVO.panchayatName !=null && result.representeeDetailsList[i].addressVO.panchayatName.length>0){
 														str+='<p>Village:<b class="margin_left">'+result.representeeDetailsList[i].addressVO.panchayatName+'</b></p>';
@@ -116,15 +120,17 @@ function buildPetitionDetailsView(result){
 													}
 													
 												str+='</div>';
-												str+='<div class="col-sm-4">';
-														if(result.representeeDetailsList[i].addressVO.assemblyName !=null && result.representeeDetailsList[i].addressVO.assemblyName.length>0){
-															str+='<p>Constituency:<b class="margin_left">'+result.representeeDetailsList[i].addressVO.assemblyName+'</b></p>';
-														}
-														if(result.representeeDetailsList[i].addressVO.districtName !=null && result.representeeDetailsList[i].addressVO.districtName.length>0){
-															str+='<p>District:<b class="margin_left">'+result.representeeDetailsList[i].addressVO.districtName+'</b></p>';
-														}
-													
-												str+='</div>';
+											}
+												
+											str+='<div class="col-sm-4">';
+													if(result.representeeDetailsList[i].addressVO.assemblyName !=null && result.representeeDetailsList[i].addressVO.assemblyName.length>0){
+														str+='<p>Constituency:<b class="margin_left">'+result.representeeDetailsList[i].addressVO.assemblyName+'</b></p>';
+													}
+													if(result.representeeDetailsList[i].addressVO.districtName !=null && result.representeeDetailsList[i].addressVO.districtName.length>0){
+														str+='<p>District:<b class="margin_left">'+result.representeeDetailsList[i].addressVO.districtName+'</b></p>';
+													}
+												
+											str+='</div>';
 											str+='</div>';
 											
 										str+='</div>';
@@ -157,26 +163,49 @@ function buildPetitionDetailsView(result){
 											}else{
 												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss" style="width:120px;height:120px;"></img>';
 											}
+											if(result.referDetailsList[i].fileNamesList !=null && result.referDetailsList[i].fileNamesList.length>0){
+												str+='<h5 class="view_referral_Doc docsViewCls m_top10 f_10" attr_docs="referral" attr_candidate_id="'+result.referDetailsList[i].id+'" style="cursor:pointer;padding:10px;">REFERRAL LETTER </h5>';
+												candidateReferralDoc = result.referDetailsList[i].fileNamesList;
+											}else{
+												str+='<h5 class="view_referral_Doc_empty m_top10 f_10" style="cursor:no-drop;padding:10px;">REFERRAL LETTER </h5>';
+												
+											}
 											
-											str+='<h5 class="view_referral_Doc docsViewCls m_top10 f_10" attr_docs="referral" attr_candidate_id="'+result.referDetailsList[i].id+'" style="cursor:pointer;padding:10px;">REFERRAL LETTER </h5>';
 										str+='</div>';
 										str+='<div class="col-sm-9">';
 											str+='<div class="pad_light_yash_bg">';
 												str+='<h5>Name:</h5>';
-												str+='<h4 class="font_weight m_top5">'+result.referDetailsList[i].name+'</h4>';
+												if(result.referDetailsList[i].name !=null && result.referDetailsList[i].name.trim().length>0){
+													str+='<h4 class="font_weight m_top5">'+result.referDetailsList[i].name+'</h4>';
+												}else{
+													str+='<h4 class="font_weight m_top5"> - </h4>';
+												}
+												
 												str+='<h5 class="font_weight m_top5">('+result.referDetailsList[i].designation+'),'+result.referDetailsList[i].candidateAddressVO.assemblyName+','+result.referDetailsList[i].candidateAddressVO.districtName+'</h5>';
-												candidateReferralDoc = result.referDetailsList[i].fileNamesList;
+												
 											str+='</div>';
 											str+='<div class="pad_light_yash_bg m_top10">';
 												str+='<div class="row m_top5">';
 													str+='<div class="col-sm-6">';
 														str+='<h5>Party:</h5>';
-														str+='<h5 class="font_weight m_top10">'+result.referDetailsList[i].partyName+'</h5>';
+														if(result.referDetailsList[i].partyName !=null && result.referDetailsList[i].partyName.trim().length>0){
+															str+='<h5 class="font_weight m_top10">'+result.referDetailsList[i].partyName+'</h5>';
+														}else{
+															str+='<h5 class="font_weight m_top10"> - </h5>';
+														}
+														
 													str+='</div>';
 													str+='<div class="col-sm-6">';
 														str+='<h5>Contact Details:</h5>';
-														str+='<h5 class="m_top5 font_weight">Email Id:<b class="margin_left">'+result.referDetailsList[i].email+'</b></h5>';
-														str+='<h5 class="font_weight">Contact No:<b class="margin_left">'+result.referDetailsList[i].mobileNO+'</b></h5>';
+														if(result.referDetailsList[i].email !=null && result.referDetailsList[i].email.trim().length>0){
+															str+='<h5 class="m_top5 font_weight">Email Id:<b class="margin_left">'+result.referDetailsList[i].email+'</b></h5>';
+														}
+														if(result.referDetailsList[i].mobileNO !=null && result.referDetailsList[i].mobileNO>0){
+															str+='<h5 class="font_weight">Contact No:<b class="margin_left">'+result.referDetailsList[i].mobileNO+'</b></h5>';
+														}else{
+															str+='<h5 class="font_weight">Contact No:<b class="margin_left"> - </b></h5>';
+														}
+														
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
@@ -200,7 +229,17 @@ function buildPetitionDetailsView(result){
 								str+='<div class="row">';
 									str+='<div class="col-sm-7 border_right_yash">';
 										str+='<h5>Name of the Work</h5>';
-										str+='<h5 class="font_weight  m_top10">'+result.workName+'</h5>';
+										if(result.workName !=null && result.workName.trim().length>0){
+											if(result.workName !=null && result.workName.length>120){
+												str+='<h5 class="font_weight  m_top10" data-toggle="tooltip" title="'+result.workName+'" class="tooltipCls">'+result.workName.substring(0,120)+'...</h5>';
+											}else{
+												str+='<h5 class="font_weight  m_top10">'+result.workName+'</h5>';
+											}
+											
+										}else{
+											str+='<h5 class="font_weight  m_top10"> - </h5>';
+										}
+										
 									str+='</div>';
 									str+='<div class="col-sm-2 border_right_yash">';
 										str+='<div style="padding:5px;background-color:#D1AB66;">';
@@ -211,7 +250,12 @@ function buildPetitionDetailsView(result){
 									str+='<div class="col-sm-3">';
 										str+='<div style="padding:5px;background-color:#D1AB66;">';
 											str+='<h5>Work&nbsp;Cost&nbsp;(Est.&nbsp;Cost&nbsp;in&nbsp;Lakh)</h5>';
-											str+='<h4 class="font_weight m_top10">'+result.estimateCostStr+'</h4>';
+											if(result.estimateCostStr !=null && result.estimateCostStr>0){
+												str+='<h4 class="font_weight m_top10">'+result.estimateCostStr+'</h4>';
+											}else{
+												str+='<h4 class="font_weight m_top10">0</h4>';
+											}
+											
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
@@ -219,8 +263,14 @@ function buildPetitionDetailsView(result){
 					str+='</div>';
 					str+='<div class="col-sm-2">';
 						str+='<h5>DOCUMENTS</h5>';
-						str+='<div class="view_referral_Doc docsViewCls m_top15 text-center" attr_docs="fileList" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i><br/> <h5 class="m_top10">VIEW DOCUMENTS</h5></div>';
-						projectDocuments = result.fileList;
+						if(result.fileList !=null && result.fileList.length>0){
+							str+='<div class="view_referral_Doc docsViewCls m_top15 text-center" attr_docs="fileList" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i><br/> <h5 class="m_top10">VIEW DOCUMENTS</h5></div>';
+							projectDocuments = result.fileList;
+						}else{
+							str+='<div class="view_referral_Doc_empty m_top15 text-center" attr_docs="fileList" style="cursor:no-drop;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i><br/> <h5 class="m_top10">VIEW DOCUMENTS</h5></div>';
+							
+						}
+						
 					str+='</div>';
 				str+='</div>';
 				
@@ -286,6 +336,7 @@ function buildPetitionDetailsView(result){
 							str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
 						}
 						  str+='<div class="panel-body" style="background-color: #F7F7F7;">';
+						  if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
 									str+='<div class="row">';
 										str+='<div class="col-sm-9">';
 											str+='<div class="pad_white_bg border_yash">';
@@ -306,8 +357,22 @@ function buildPetitionDetailsView(result){
 											str+='</div>';
 										str+='</div>';
 										str+='<div class="col-sm-3">';
+										for(var k in result.subWorksList[i].reportTypeFilesList){
+											if(result.subWorksList[i].reportTypeFilesList[k].key == "COVERING LETTER"){
+												if(result.subWorksList[i].reportTypeFilesList[k].filesList !=null && result.subWorksList[i].reportTypeFilesList[k].filesList.length>0){
+													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
+													
+													mainWorkCoveringDocuments.push(result.subWorksList[i].reportTypeFilesList[k].filesList[0]);
+												}else{
+													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
+												}
+											}
+											
+										}
+											
 										str+='</div>';
 									str+='</div>';
+								}
 									//row closed
 									var workCount = 0;
 								str+='<div class="row m_top10">';
@@ -336,6 +401,38 @@ function buildPetitionDetailsView(result){
 															str+='</h5>';
 														str+='</div>';
 													str+='</div>';
+												}else if(result.subWorksList[i].subWorksList[j].status == "Pending Endorsement"){
+													str+='<div class="row">';
+														str+='<div class="col-sm-5">';
+															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
+														str+='</div>';
+														str+='<div class="col-sm-4">';
+															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>Pending</span>';
+														str+='</div>';
+														str+='<div class="col-sm-3">';
+															str+='<h5 class="pull-right">';
+															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="inlineCheckbox1" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'">';
+															str+='</label>';
+															str+='</h5>';
+														str+='</div>';
+													str+='</div>';
+												}else if(result.subWorksList[i].subWorksList[j].status == "Pending Final Approval" || result.subWorksList[i].subWorksList[j].status == "Pending - Action Memo" || result.subWorksList[i].subWorksList[j].status == "Pending - Detailed Report"){
+													str+='<div class="row">';
+														str+='<div class="col-sm-5">';
+															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
+														str+='</div>';
+														str+='<div class="col-sm-4">';
+															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>In Progress</span>';
+														str+='</div>';
+														str+='<div class="col-sm-3">';
+															str+='<h5 class="pull-right">';
+															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="inlineCheckbox1" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'">';
+															str+='</label>';
+															str+='</h5>';
+														str+='</div>';
+													str+='</div>';
 												}else{
 													str+='<div class="row">';
 														str+='<div class="col-sm-5">';
@@ -353,6 +450,7 @@ function buildPetitionDetailsView(result){
 														str+='</div>';
 													str+='</div>';
 												}
+												
 												
 											 str+='</div>';
 											 str+='<div class="panel-body">';
@@ -390,8 +488,8 @@ function buildPetitionDetailsView(result){
 																
 																str+='<div class="m_top15 margin_bottom">';
 																	str+='<h5 class="">Est Budget</h5>';
-																	if(result.subWorksList[i].subWorksList[j].estimateCost !=null && result.subWorksList[i].subWorksList[j].estimateCost>0){
-																		str+='<h5 class="font_weight m_top5"><i class="fa fa-inr" aria-hidden="true" style="color:green;"></i> '+result.subWorksList[i].subWorksList[j].estimateCost+'</h5>';
+																	if(result.subWorksList[i].subWorksList[j].estimateCostStr !=null && result.subWorksList[i].subWorksList[j].estimateCostStr>0){
+																		str+='<h5 class="font_weight m_top5"><i class="fa fa-inr" aria-hidden="true" style="color:green;"></i> '+result.subWorksList[i].subWorksList[j].estimateCostStr+'</h5>';
 																	}else{
 																		str+='<h5 class="font_weight m_top5"> - </h5>';
 																	}
@@ -404,30 +502,27 @@ function buildPetitionDetailsView(result){
 																	str+='<div class="row">';
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">Subject</h5>';
-																			if(result.subWorksList[i].subWorksList[j].subject ==null || result.subWorksList[i].subWorksList[j].subject== 0 ||  result.subWorksList[i].subWorksList[j].subject== ''){
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
-																			}else{
+																			if(result.subWorksList[i].subWorksList[j].subject !=null && result.subWorksList[i].subWorksList[j].subject.trim().length>0){
 																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].subject+'</h5>';
-																				
+																			}else{
+																				str+='<h5 class="font_weight m_top5"> - </h5>';
 																			}
 																			 
 																		str+='</div>';
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">Sub-Subject</h5>';
-																			if(result.subWorksList[i].subWorksList[j].subSubject ==null || result.subWorksList[i].subWorksList[j].subSubject==0 || result.subWorksList[i].subWorksList[j].subSubject == ''){
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
-																				
-																			}else{
+																			if(result.subWorksList[i].subWorksList[j].subSubject !=null && result.subWorksList[i].subWorksList[j].subSubject.trim().length>0){
 																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].subSubject+'</h5>';
+																			}else{
+																				str+='<h5 class="font_weight m_top5"> - </h5>';
 																			}
 																		str+='</div>';
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">Department</h5>';
-																			if(result.subWorksList[i].subWorksList[j].deptName ==null || result.subWorksList[i].subWorksList[j].deptName==0 || result.subWorksList[i].subWorksList[j].deptName == ''){
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
-																				
-																			}else{
+																			if(result.subWorksList[i].subWorksList[j].deptName != null && result.subWorksList[i].subWorksList[j].deptName.trim().length>0){
 																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].deptName+'</h5>';
+																			}else{
+																				str+='<h5 class="font_weight m_top5"> - </h5>';
 																			}
 																		str+='</div>';
 																	str+='</div>';
@@ -436,10 +531,10 @@ function buildPetitionDetailsView(result){
 																str+='<div class="pad_light_yash_bg m_top10">';
 																	str+='<div class="row">';
 																		str+='<div class="col-sm-12">';
-																			if(result.subWorksList[i].subWorksList[j].leadName ==null || result.subWorksList[i].subWorksList[j].leadName == 0 || result.subWorksList[i].subWorksList[j].leadName== ''){
-																				str+='<h5 class="">Lead:  - </h5>';
-																			}else{
+																			if(result.subWorksList[i].subWorksList[j].leadName != null && result.subWorksList[i].subWorksList[j].leadName.trim().length>0){
 																				str+='<h5 class="">Lead: <span class="font_weight f_12">'+result.subWorksList[i].subWorksList[j].leadName+'</span></h5>';
+																			}else{
+																				str+='<h5 class="">Lead:  - </h5>';
 																			}
 																			
 																			
@@ -451,27 +546,26 @@ function buildPetitionDetailsView(result){
 																	str+='<div class="row">';
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">District</h5>'
-																			if(result.subWorksList[i].subWorksList[j].districtName ==null || result.subWorksList[i].subWorksList[j].districtName==0 || result.subWorksList[i].subWorksList[j].districtName == ''){
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
-																			}else{
+																			if(result.subWorksList[i].subWorksList[j].addressVO.districtName != null && result.subWorksList[i].subWorksList[j].addressVO.districtName.trim().length>0){
 																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].addressVO.districtName+'</h5>';
-																				
+																			}else{
+																				str+='<h5 class="font_weight m_top5"> - </h5>';
 																			}
 																		str+='</div>';
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">Constituency</h5>'
-																			if(result.subWorksList[i].subWorksList[j].assemblyName ==null || result.subWorksList[i].subWorksList[j].assemblyName==0 || result.subWorksList[i].subWorksList[j].assemblyName == ''){
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
-																			}else{
+																			if(result.subWorksList[i].subWorksList[j].addressVO.assemblyName != null && result.subWorksList[i].subWorksList[j].addressVO.assemblyName.trim().length>0){
 																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].addressVO.assemblyName+'</h5>';
+																			}else{
+																				str+='<h5 class="font_weight m_top5"> - </h5>';
 																			}
 																		str+='</div>';
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">Mandal</h5>'
-																			if(result.subWorksList[i].subWorksList[j].tehsilName ==null || result.subWorksList[i].subWorksList[j].tehsilName==0 || result.subWorksList[i].subWorksList[j].tehsilName == ''){
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
-																			}else{
+																			if(result.subWorksList[i].subWorksList[j].addressVO.tehsilName !=null && result.subWorksList[i].subWorksList[j].addressVO.tehsilName.trim().length>0){
 																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].addressVO.tehsilName+'</h5>';
+																			}else{
+																				str+='<h5 class="font_weight m_top5"> - </h5>';
 																			}
 																		str+='</div>';
 																	str+='</div>';
@@ -481,10 +575,15 @@ function buildPetitionDetailsView(result){
 																	str+='<div class="row">';
 																		str+='<div class="col-sm-12">';
 																			str+='<h5 class="">WORK DISCRIPTION</h5>'
-																			if(result.subWorksList[i].subWorksList[j].workName ==null || result.subWorksList[i].subWorksList[j].workName == 0 || result.subWorksList[i].subWorksList[j].workName == ''){
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
+																			if(result.subWorksList[i].subWorksList[j].workName != null && result.subWorksList[i].subWorksList[j].workName.trim().length>0){
+																				if(result.subWorksList[i].subWorksList[j].workName !=null && result.subWorksList[i].subWorksList[j].workName.length>80){
+																					str+='<h5 class="font_weight m_top5" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].workName+'" class="tooltipCls">'+result.subWorksList[i].subWorksList[j].workName.substring(0,80)+'...</h5>';
+																				}else{
+																					str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].workName+'</h5>';
+																				}
+																				
 																			}else{
-																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].workName+'</h5>';
+																				str+='<h5 class="font_weight m_top5"> - </h5>';
 																			}
 																		str+='</div>';
 																	str+='</div>';
@@ -495,23 +594,37 @@ function buildPetitionDetailsView(result){
 														
 													str+='</div>';
 													//row closed
-													for(var k in result.subWorksList[i].subWorksList[j].reportTypeFilesList){
-														if(result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].key == "DETAILED REPORT"){
-															detailedReportDoc=result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList;
-														}else if(result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].key == "COVERING LETTER"){
-															coveringLetterDoc=result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList;
-														}
-													}
 													str+='<div class="pad_light_yash_bg m_top10">';
 														str+='<div class="row">';
+													for(var k in result.subWorksList[i].subWorksList[j].reportTypeFilesList){
+														if(result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].key == "DETAILED REPORT"){
 															str+='<div class="col-sm-4">';
-																str+='<h5 class="view_referral_Doc docsViewCls f_11" attr_docs="covering" style="cursor:pointer;">VIEW&nbsp;COVERING&nbsp;LETTER</h5>';
+																if(result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList !=null && result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList.length>0){
+																	str+='<h5 class="view_referral_Doc docsViewCls f_11" attr_docs="detailed" style="cursor:pointer;">VIEW&nbsp;DETAILED&nbsp;REPORT</h5>';
+																	detailedReportDoc=result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList;
+																}else{
+																	str+='<h5 class="view_referral_Doc_empty f_11" attr_docs="detailed" style="cursor:no-drop;">VIEW&nbsp;DETAILED&nbsp;REPORT</h5>';
+																}
+																
 															str+='</div>';
+															
+														}else if(result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].key == "COVERING LETTER"){
 															str+='<div class="col-sm-4">';
-																str+='<h5 class="view_referral_Doc docsViewCls f_11" attr_docs="detailed" style="cursor:pointer;">VIEW&nbsp;DETAILED&nbsp;REPORT</h5>';
+																if(result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList !=null && result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList.length>0){
+																	str+='<h5 class="view_referral_Doc docsViewCls f_11" attr_docs="covering" style="cursor:pointer;">VIEW&nbsp;COVERING&nbsp;LETTER</h5>';
+																	coveringLetterDoc=result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList;
+																}else{
+																	str+='<h5 class="view_referral_Doc_empty f_11" attr_docs="covering" style="cursor:no-drop;">VIEW&nbsp;COVERING&nbsp;LETTER</h5>';
+																}
+																
+																
+																
 															str+='</div>';
-														str+='</div>';
+															
+														}
+													}
 													str+='</div>';
+												str+='</div>';
 													
 											  str+='</div>';
 											str+='</div>';
@@ -534,6 +647,7 @@ function buildPetitionDetailsView(result){
 		str+='</div>';
 			
 	$("#representeeViewId").html(str);
+	$(".tooltipCls").tooltip();
 }
 $(document).on("click",".updateStatusChangeCls",function(){
 	var totalWorks = $(this).attr("attr_total_works");
@@ -651,6 +765,7 @@ $(document).on("click",".docsViewCls",function(){
 	$("#docsModalDivId").modal("show");
 	var docsList = [];
 	var str="";
+	
 	if($(this).attr("attr_docs") == "referral"){
 		$("#viewDocumentHeading").html("Referral Documents")
 		 docsList = candidateReferralDoc;
@@ -663,12 +778,14 @@ $(document).on("click",".docsViewCls",function(){
 	}else if($(this).attr("attr_docs") == "detailed"){
 		$("#viewDocumentHeading").html("Detailed Reports")
 		 docsList = detailedReportDoc;
+	}else if($(this).attr("attr_docs") == "mainWorkCovering"){
+		$("#viewDocumentHeading").html("Detailed Reports")
+		 docsList = mainWorkCoveringDocuments;
 	}
-	console.log(docsList)
+	
 	if(docsList != null && docsList.length >0){
 			for(var j in docsList){
 				var scanCopySpl = docsList[j].value.split("."); 
-				
 				var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
 					str+='<div class="col-sm-6">';
 						
