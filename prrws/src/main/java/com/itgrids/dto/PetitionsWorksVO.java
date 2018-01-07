@@ -31,6 +31,7 @@ public class PetitionsWorksVO {
 	private Long grantId;
 	private String grantName;
 	private String estimateCost;
+	private String estimateCostStr;
 	private String eOfficeId;
 	private String remarks;
 	private String isPreviousPetition;
@@ -296,5 +297,11 @@ public class PetitionsWorksVO {
 	}
 	public void setReportTypeFilesList(List<PetitionFileVO> reportTypeFilesList) {
 		this.reportTypeFilesList = reportTypeFilesList;
+	}
+	public String getEstimateCostStr() {
+		return estimateCostStr;
+	}
+	public void setEstimateCostStr(String estimateCostStr) {
+		this.estimateCostStr = estimateCostStr;
 	}
 }

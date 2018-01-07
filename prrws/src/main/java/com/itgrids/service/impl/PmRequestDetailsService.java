@@ -44,6 +44,7 @@ import com.itgrids.dao.IPmRequiredLettersImagesDAO;
 import com.itgrids.dao.IPmStatusDAO;
 import com.itgrids.dao.IPmSubWorkCoveringLetterDAO;
 import com.itgrids.dao.IPmSubWorkDetailsDAO;
+import com.itgrids.dao.IPmTrackingActionDAO;
 import com.itgrids.dao.IPmTrackingDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.CadreRegistrationVO;
@@ -161,13 +162,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	@Autowired
 	private IPmPetitionAssignedOfficerDAO pmPetitionAssignedOfficerDAO;
 	
+	@Autowired
+	private IPmTrackingActionDAO pmTrackingActionDAO;
+	
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO){
 		ResponseVO responseVO = new ResponseVO();
 		try {
 			PmRepresentee pmRepresentee =  null;
 			String insertionType = "new";
 			if(pmRequestVO.getRemarks() == null || pmRequestVO.getRemarks().isEmpty())
-				pmRequestVO.setRemarks(" NEW PETITION CREATED. ");
+				pmRequestVO.setRemarks(pmTrackingActionDAO.get(1L).getActionName());
 			if(pmRequestVO.getExistingPetitionId() != null && pmRequestVO.getExistingPetitionId().longValue()>0L){
 				insertionType = "update";
 				Long representeeId = pmRepresenteeRefDetailsDAO.getRepresenteeDetailsByPetitonId(pmRequestVO.getExistingPetitionId());
@@ -188,7 +192,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					Petition petition = savePetitionWorkDetails(pmRepresentee.getPmRepresenteeId(),pmRequestVO,insertionType);
 					if(petition == null)
 						throw new Exception("Petition details not saved successfully.");
-					
 					savePetitionReferralDetails(pmRepresentee.getPmRepresenteeId(),petition.getPetitionId(),pmRequestVO);
 				}
 			responseVO.setResponseCode("0");
@@ -448,7 +451,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		try {
 			if(commonMethodsUtilService.isListOrSetValid(subWorksList)){
 				for (PetitionsWorksVO dataVO : subWorksList) {
-					if(dataVO != null && dataVO.getWorkTypeId() != null && dataVO.getWorkTypeId().longValue()>0L){
+					if((dataVO != null && dataVO.getWorkTypeId() != null && dataVO.getWorkTypeId().longValue()>0L) || 
+							(dataVO.getEstimateCost() != null && !dataVO.getEstimateCost().isEmpty()) || 
+							(dataVO.getLocationScopeId() != null && dataVO.getLocationScopeId().longValue()>0L) || 
+							(dataVO.geteOfficeId() != null && !dataVO.geteOfficeId().isEmpty()) || 
+							(dataVO.getAddressVO().getDistrictId() != null && dataVO.getAddressVO().getDistrictId().longValue() >0L) ||
+							(dataVO.getGrievanceDescription() != null && !dataVO.getGrievanceDescription().isEmpty()))
+					{
+						PmSubWorkDetails pmSubWorkDetails = null;
+						if(dataVO.getWorkId() != null && dataVO.getWorkId().longValue()>0L)
+							pmSubWorkDetails = pmSubWorkDetailsDAO.get(dataVO.getWorkId());
+						
 						PmSubWorkDetails petitionSubWorkLocationDetails = new PmSubWorkDetails();
 						petitionSubWorkLocationDetails.setPetitionId(petitonId);						
 						petitionSubWorkLocationDetails.setGrievanceDescrption(dataVO.getGrievanceDescription());
@@ -475,25 +488,29 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 						}
 						
-						
 						LocationAddress address = saveLocationAddress(dataVO.getAddressVO());
 						if(address != null && address.getLocationAddressId() != null && address.getLocationAddressId().longValue()>0L)
 							petitionSubWorkLocationDetails.setAddressId(address.getLocationAddressId());
 						
 						petitionSubWorkLocationDetails.setPmWorkTypeId(dataVO.getWorkTypeId());
-						petitionSubWorkLocationDetails.setPmLeadId(dataVO.getLeadId());
-						petitionSubWorkLocationDetails.setPmBriefLeadId(dataVO.getBriefLeadId());
-						petitionSubWorkLocationDetails.setPmGrantId(dataVO.getGrantId());
-						petitionSubWorkLocationDetails.setPmStatusId(1L);// endorsement pending
-						petitionSubWorkLocationDetails.setCoveringLetterPath(null);
 						petitionSubWorkLocationDetails.setIsDeleted("N");
-						petitionSubWorkLocationDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-						petitionSubWorkLocationDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-						petitionSubWorkLocationDetails.setInsertedUserId(userId);
-						petitionSubWorkLocationDetails.setUpdatedUserId(userId);
+						
+						if((insertionType != null && insertionType.trim().equalsIgnoreCase("new")) || pmSubWorkDetails==null){
+							petitionSubWorkLocationDetails.setPmStatusId(1L);// endorsement pending
+							petitionSubWorkLocationDetails.setCoveringLetterPath(null);
+							petitionSubWorkLocationDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							petitionSubWorkLocationDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							petitionSubWorkLocationDetails.setInsertedUserId(userId);
+							petitionSubWorkLocationDetails.setUpdatedUserId(userId);
+						}else{
+							petitionSubWorkLocationDetails.setWorkEndorsmentNo(pmSubWorkDetails.getWorkEndorsmentNo());
+							petitionSubWorkLocationDetails.setEndorsmentDate(pmSubWorkDetails.getEndorsmentDate());
+							petitionSubWorkLocationDetails.setUpdatedUserId(userId);
+							petitionSubWorkLocationDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						}
+						
 						petitionSubWorkLocationDetails = pmSubWorkDetailsDAO.save(petitionSubWorkLocationDetails);
 						noOfWorksCount=noOfWorksCount+1;
-						
 						
 						PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
 						pmTrackingVO.setPmStatusId(1L);
@@ -529,16 +546,25 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					for (PetitionsWorksVO dataVO : pmRequestVO.getWorksList()) {
 						if(dataVO != null){
 							if(i==0){
+								
+								PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
+								pmTrackingVO.setPmStatusId(1L);
+								pmTrackingVO.setUserId(pmRequestVO.getUserId());
+								pmTrackingVO.setRemarks(pmRequestVO.getRemarks());
+								
 								petition = new Petition();
 								if(pmRequestVO.getExistingPetitionId() != null && pmRequestVO.getExistingPetitionId().longValue() >0L){
 									petition = pititionDAO.get(pmRequestVO.getExistingPetitionId());
+									pmTrackingVO.setPmTrackingActionId(5L);//EDIT/UPDATED  PETITION
 								}else{
 									petition.setEndorsmentDate(null);
 									petition.setEndorsmentNo(null);
+									petition.setPmStatusId(1L);// Pending Endorsment
 									petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate()));
 									petition.setRepresenteeType(pmRequestVO.getRepresentationType());
 									petition.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 									petition.setInsertedUserId(pmRequestVO.getUserId());
+									pmTrackingVO.setPmTrackingActionId(1L);//CREATE A PETITION
 								}
 								
 								if(dataVO.getEstimateCost() != null)
@@ -548,10 +574,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								petition.setIsDeleted("N");
 								petition.setIsPreviousPetition(dataVO.getIsPreviousPetition());
 								petition.setGrievanceDescription(dataVO.getGrievanceDescription());
-								petition.setPmStatusId(1L);//pending endorsment
 								petition.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								petition.setUpdatedUserId(pmRequestVO.getUserId());
 								petition = pititionDAO.save(petition);
+								
+								pmTrackingVO.setPetitionId(petition.getPetitionId());
+								updatePetitionTracking(pmTrackingVO);
+								
 							}
 							i=i+1;
 							if(petition != null && petition.getPetitionId() != null && petition.getPetitionId().longValue()>0L && commonMethodsUtilService.isListOrSetValid(dataVO.getSubWorksList())){
@@ -616,6 +645,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				petitionWorkDocument.setIsDeleted("N");
 				petitionWorkDocument = pmPetitionDocumentDAO.save(petitionWorkDocument);
 			}
+			
+			PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
+			pmTrackingVO.setPmStatusId(1L);
+			pmTrackingVO.setUserId(userId);
+			pmTrackingVO.setPetitionId(petitionId);
+			pmTrackingVO.setRemarks("UPLOADED WORK RELATED DOCUMENTS");
+			pmTrackingVO.setPmTrackingActionId(4L);// UPLOAD  A FILE
+			updatePetitionTracking(pmTrackingVO);
+			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in PmRequestDetailsService @ savePetitionReffererDocument() "+e.getMessage());
 			petitionWorkDocument = null;
@@ -1197,7 +1235,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						 if(!commonMethodsUtilService.getStringValueForObject(param[26]).isEmpty()){
 							 returnVO.setEstimateCost(String.valueOf(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))));
 							 if(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))>0L)
-								 returnVO.setEstimateCost(commonMethodsUtilService.calculateAmountInWords(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))));
+								 returnVO.setEstimateCostStr(commonMethodsUtilService.calculateAmountInWords(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[26]))));
 						 }
 						 //returnVO.setEndorsmentNo(commonMethodsUtilService.getStringValueForObject(param[22]));
 						 returnVO.setEndorsmentNo("");
@@ -1391,7 +1429,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					if(param[1] != null){
 						vo.setEstimateCost(String.valueOf(new Double(commonMethodsUtilService.getDoubleValueForObject(param[1])).longValue()));
 						if(!commonMethodsUtilService.getStringValueForObject(param[1]).isEmpty() && Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[1]))>0L)
-							 vo.setEstimateCost(commonMethodsUtilService.calculateAmountInWords(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[1]))));
+							 vo.setEstimateCostStr(commonMethodsUtilService.calculateAmountInWords(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[1]))));
 					}else
 						vo.setEstimateCost("");
 					vo.setLocationScopeId(commonMethodsUtilService.getLongValueForObject(param[19]));
@@ -1566,13 +1604,24 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 Map<Long,KeyValueVO> departmentsMap = new TreeMap<Long,KeyValueVO>();
 				if(commonMethodsUtilService.isMapValid(petitionSubWorksMap)){
 					for (String seriesNo : petitionSubWorksMap.keySet()) {
+						List<PetitionFileVO> globalFilesList = new ArrayList<PetitionFileVO>(0);
+						
 						List<PetitionsWorksVO> workTypeVOList = petitionSubWorksMap.get(seriesNo);
 						if(commonMethodsUtilService.isListOrSetValid(workTypeVOList)){
 							for (PetitionsWorksVO worksVO : workTypeVOList) {
 								
 								List<PetitionFileVO> filesList = petitionRequiredFilesMap.get(worksVO.getWorkId());
 									if(commonMethodsUtilService.isListOrSetValid(filesList)){
-										worksVO.getReportTypeFilesList().addAll(filesList);
+										if(workTypeVOList.size()>1){
+											for (PetitionFileVO vo : filesList) {
+												if(!commonMethodsUtilService.isListOrSetValid(globalFilesList) && vo.getKey() != null && vo.getKey().equalsIgnoreCase("COVERING LETTER"))
+													globalFilesList.add(vo);
+												else
+													worksVO.getReportTypeFilesList().add(vo);
+											}
+										}else{
+											worksVO.getReportTypeFilesList().addAll(filesList);
+										}
 									}
 								
 								if(departmentsMap.get(worksVO.getDeptId()) == null){
