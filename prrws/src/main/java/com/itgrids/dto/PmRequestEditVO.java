@@ -14,6 +14,7 @@ public class PmRequestEditVO {
 	private String workName;
 	private Long noOfWorks;
 	private String estimateCost;
+	private String estimateCostStr;
 	private String grievanceDescription;
 	
 	private List<KeyValueVO> coveringLetterPathsList = new ArrayList<KeyValueVO>(0);
@@ -133,5 +134,11 @@ public class PmRequestEditVO {
 	}
 	public void setReferDetailsList(List<PmRequestVO> referDetailsList) {
 		this.referDetailsList = referDetailsList;
+	}
+	public String getEstimateCostStr() {
+		return estimateCostStr;
+	}
+	public void setEstimateCostStr(String estimateCostStr) {
+		this.estimateCostStr = estimateCostStr;
 	}
 }

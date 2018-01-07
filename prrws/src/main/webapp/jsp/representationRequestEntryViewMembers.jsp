@@ -118,7 +118,7 @@
 											<div class="col-sm-12">
 											<div class="error_colorCls" id="errMsgId"></div>
 												<div class="col-sm-3" id="locationDivlId">	
-													<label> Search By</label>
+													<label> SEARCH BY</label>
 													<select class="form-control chosen-select clearDataCls" id="locationSelId" >
 														<option value="all">All</option>
 														<option value="work"> Work Location wise</option>
@@ -164,7 +164,7 @@
 												</div>	
 												<div class="col-sm-2" id="mobileDivid" style="display:none;">
 												<label>MOBILE NO </label>
-													<input type="text" class="form-control  clearCls " style="height:40px"  onkeyUp="clearData()" id="mobileId" placeholder="Please enter mobile number">
+													<input type="text" class="form-control  clearCls " style="height:40px"  onkeyUp="clearData();checkIsNumber(this.id,this.value);" maxLength="10" id="mobileId" placeholder="Please enter mobile number">
 													<div class="error_colorCls" id="mobileErrDivId"></div>
 												</div>	
 												<div class="col-sm-3" id="emailDivid"  onkeyUp="clearData()" style="display:none;">
@@ -174,7 +174,7 @@
 												</div>	
 												<div class="col-sm-3" id="endorsmentNoDivid" style="display:none;">
 												<label> ENDORSMENT NO </label>
-													<input type="text"  onkeyUp="clearData()" class="form-control  clearCls" style="height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
+													<input type="text"  onkeyUp="clearData();checkIsNumber(this.id,this.value);" class="form-control  clearCls" style="height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
 													<div class="error_colorCls" id="endorsmentNoErrDivId"></div>
 												</div>
 												<div class="col-sm-2 pull-right" id="advancedSearchButtonDivId">

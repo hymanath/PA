@@ -876,6 +876,9 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 		  if(nameVal == null || nameVal.trim().length ==0 ){
 			 $("#nameErrDivId").html('<h5>Please enter name </h5>');
 			 isError=true;
+			}else if(nameVal.trim().length<4){
+			 $("#nameErrDivId").html('<h5>Please enter atleast 3 charactor  </h5>');
+			 isError=true;
 			}
 	}
 	if($("#mobileDivid").is(':visible')){
@@ -906,15 +909,15 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 			}
 	}
 	 if(isError){
-		 return true;
+		 return false;
 	 }
+	
  }
  $(document).on("click","#advanceSearchId",function(){
   var isErr= searchValidations();
-  if(isErr)
-  return;
-
-   getRepresentativeSearchDetails1();
+	if(isErr)
+		return;
+	getRepresentativeSearchDetails1();
  });
 
 $(document).on("click",".viewBtnCls",function(){
@@ -2040,4 +2043,10 @@ function onLoadClickDataDetails(){
 	getDepartmentsBySearchType('department',"departmentId",deptId);
 	} */
 	$( "#locationSelId" ).trigger( "change" );
+}
+
+function checkIsNumber(id,value){
+	 if(isNaN(value)){
+		$('#'+id+'').val('');
+	 }
 }
