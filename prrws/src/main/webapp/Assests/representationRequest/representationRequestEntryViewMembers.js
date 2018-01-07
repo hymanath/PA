@@ -3,8 +3,8 @@ var workIdsArr=[];
 var selectedWorkIdsArr=[];
 var selectedDeptIdsArr=[];
 var colorCode=["","#FF5733","","#01B0B6","#0701B6","#C70039","#B6B001","#B6B001","#17B601"];
-var startDate = moment().subtract(7,"year").format("DD-MM-YYYY");
-var endDate = moment().add(38,"year").format("DD-MM-YYYY");
+var currentFromDate=moment().subtract(7,"year").format("DD-MM-YYYY");
+var currentToDate=moment().add(38,"year").format("DD-MM-YYYY");
 //getting Dynamic Browser URL
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/cadreDetailsAction")));
@@ -62,40 +62,42 @@ function hideAndShowSelectBox(){
 	$("#endorsmentNoDivid").hide();	
 }
 $("#dateRangePicker").daterangepicker({
-	opens:'left',
-	startDate: startDate,
-	endDate: endDate,
-	maxDate:moment(),
-	locale: {
-        format: "DD-MM-YYYY",
-	},
-	ranges: {
-	   'Today': [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-	   'All'	: [moment().subtract(7, 'year').startOf('year'), moment().add(38, 'year').endOf('year')],
-
-	}
- 
-});
-var dateRange=startDate+" - "+endDate
-var inputDateRangVal=$("#dateRangePicker").val();
-if(dateRange == inputDateRangVal){
-	$("#dateRangePicker").val("All");
-}
-$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
-	startDate = picker.startDate.format("DD-MM-YYYY");
-	endDate = picker.endDate.format("DD-MM-YYYY");
-	 if(picker.chosenLabel == 'All')
-    {
-      $("#dateRangePicker").val('All');
-    }
-	locationLevelRefresh();
+		opens: 'left',
+		startDate: currentFromDate,
+		endDate: currentToDate,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		},
+		ranges: {
+		   'All':[moment().subtract(7,"year").format("DD-MM-YYYY"), moment().add(38,"year").format("DD-MM-YYYY")],
+		   'Today' : [moment(), moment()],
+		   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   
+		}
+	});
 	
-});
+	var dates= $("#dateRangePicker").val();
+	var pickerDates = currentFromDate+' - '+currentToDate
+	if(dates == pickerDates)
+	{
+		$("#dateRangePicker").val('All');
+	}
+
+	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+		currentFromDate = picker.startDate.format('DD-MM-YYYY');
+		currentToDate = picker.endDate.format('DD-MM-YYYY');
+		if(picker.chosenLabel == 'All')
+		{
+			$("#dateRangePicker").val('All');
+		}
+		locationLevelRefresh();
+	});
+
 $(".chosen-select").chosen();
 
 /* $(document).on('cut copy paste', function (e) {
@@ -617,8 +619,8 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 	}
  var json = {
 		 filterType :searchType,
-		 fromDate :startDate,
-		 toDate : endDate,
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
 		 deptIdsList:deptIds,
 		 designationIds:desigIds,
 		 pType:desigType
@@ -667,8 +669,8 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
  var json = {
 		 filterType :searchType,
 		 searchLvlVals: distictId,
-		 fromDate :startDate,
-		 toDate : endDate,
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
 		 deptIdsList:deptIds,
 		 designationIds:desigIds,
 		 type:desigType
@@ -716,8 +718,8 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
  var json = {
 		 filterType :searchType,
 		 searchLvlVals: consituencyId,
-		 fromDate :startDate,
-		 toDate : endDate,
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
 		 deptIdsList:deptIds,
 		 designationIds:desigIds,
 		 pType:desigType
@@ -748,8 +750,8 @@ function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 	$("#referralNameId").trigger('chosen:updated');
  var json = {
 		 searchType :searchType,
-		 fromDate :startDate,
-		 toDate : endDate,
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
 		 desigId:desigId,
 		 statusId :statusId
 		}            
@@ -785,8 +787,8 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 	
  var json = {
 		 searchType :searchType,
-		 fromDate :startDate,
-		 toDate : endDate,
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
 		 deptId:deptId,
 		 statusId:statusId
 		}           
@@ -1005,8 +1007,8 @@ var json = {
     filterValue:filterValue,
     searchLevelId:searchLevelId,
     searchLvlVals:searchLevelValue,
-    fromDate:startDate,
-    toDate:endDate,
+    fromDate :currentFromDate,
+	toDate : currentToDate,
    // fromRange:0,
    // toRange:0,
    // minVal:0,

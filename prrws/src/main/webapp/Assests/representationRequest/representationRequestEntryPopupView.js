@@ -74,7 +74,7 @@ function buildPetitionDetailsView(result){
 								str+='<div class="row">';
 								
 									str+='<div class="col-sm-1">';
-										if(result.representeeDetailsList[i].candidatePath != null && result.representeeDetailsList[i].candidatePath>0){
+										if(result.representeeDetailsList[i].candidatePath != null && result.representeeDetailsList[i].candidatePath.trim().length>0){
 											str+='<img src="'+result.representeeDetailsList[i].candidatePath+'" class="imageCssPopUp"></img>';
 										}else{
 											str+='<img src="http://www.mytdp.com/images/User.png" class="imageCssPopUp"></img>';
@@ -95,7 +95,7 @@ function buildPetitionDetailsView(result){
 									str+='<div class="col-sm-3">';
 										str+='<div class="pad_light_yash_bg">';
 											str+='<p>Contact Details:</p>';
-											if(result.representeeDetailsList[i].email !=null && result.representeeDetailsList[i].email.length>0){
+											if(result.representeeDetailsList[i].email !=null && result.representeeDetailsList[i].email.trim().length>0){
 												str+='<p class="m_top5">Email Id:<b class="margin_left">'+result.representeeDetailsList[i].email+'</b></p>';
 											}
 											if(result.representeeDetailsList[i].mobileNO !=null && result.representeeDetailsList[i].mobileNO>0){
@@ -109,12 +109,12 @@ function buildPetitionDetailsView(result){
 										str+='<div class="pad_light_yash_bg">';
 											str+='<p>Address Details:</p>';
 											str+='<div class="row m_top5">';
-											if((result.representeeDetailsList[i].addressVO.panchayatName !=null && result.representeeDetailsList[i].addressVO.panchayatName.length>0) && (result.representeeDetailsList[i].addressVO.tehsilName !=null && result.representeeDetailsList[i].addressVO.tehsilName.length>0)){
+											if((result.representeeDetailsList[i].addressVO.panchayatName !=null && result.representeeDetailsList[i].addressVO.panchayatName.trim().length>0) && (result.representeeDetailsList[i].addressVO.tehsilName !=null && result.representeeDetailsList[i].addressVO.tehsilName.trim().length>0)){
 												str+='<div class="col-sm-7">';
-													if(result.representeeDetailsList[i].addressVO.panchayatName !=null && result.representeeDetailsList[i].addressVO.panchayatName.length>0){
+													if(result.representeeDetailsList[i].addressVO.panchayatName !=null && result.representeeDetailsList[i].addressVO.panchayatName.trim().length>0){
 														str+='<p>Village:<b class="margin_left">'+result.representeeDetailsList[i].addressVO.panchayatName+'</b></p>';
 													}
-													if(result.representeeDetailsList[i].addressVO.tehsilName !=null && result.representeeDetailsList[i].addressVO.tehsilName.length>0){
+													if(result.representeeDetailsList[i].addressVO.tehsilName !=null && result.representeeDetailsList[i].addressVO.tehsilName.trim().length>0){
 														str+='<p>Mandal:<b class="margin_left">'+result.representeeDetailsList[i].addressVO.tehsilName+'</b></p>';
 													}
 													
@@ -122,10 +122,10 @@ function buildPetitionDetailsView(result){
 											}
 												
 											str+='<div class="col-sm-4">';
-													if(result.representeeDetailsList[i].addressVO.assemblyName !=null && result.representeeDetailsList[i].addressVO.assemblyName.length>0){
+													if(result.representeeDetailsList[i].addressVO.assemblyName !=null && result.representeeDetailsList[i].addressVO.assemblyName.trim().length>0){
 														str+='<p>Constituency:<b class="margin_left">'+result.representeeDetailsList[i].addressVO.assemblyName+'</b></p>';
 													}
-													if(result.representeeDetailsList[i].addressVO.districtName !=null && result.representeeDetailsList[i].addressVO.districtName.length>0){
+													if(result.representeeDetailsList[i].addressVO.districtName !=null && result.representeeDetailsList[i].addressVO.districtName.trim().length>0){
 														str+='<p>District:<b class="margin_left">'+result.representeeDetailsList[i].addressVO.districtName+'</b></p>';
 													}
 												
@@ -359,11 +359,11 @@ function buildPetitionDetailsView(result){
 										for(var k in result.subWorksList[i].reportTypeFilesList){
 											if(result.subWorksList[i].reportTypeFilesList[k].key == "COVERING LETTER"){
 												if(result.subWorksList[i].reportTypeFilesList[k].filesList !=null && result.subWorksList[i].reportTypeFilesList[k].filesList.length>0){
-													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
+													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
 													
 													mainWorkCoveringDocuments.push(result.subWorksList[i].reportTypeFilesList[k].filesList[0]);
 												}else{
-													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
+													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
 												}
 											}
 											
@@ -395,10 +395,10 @@ function buildPetitionDetailsView(result){
 											  str+='<div class="panel-heading">';
 												if(result.subWorksList[i].subWorksList[j].status == "Completed"){
 													str+='<div class="row">';
-														str+='<div class="col-sm-5">';
+														str+='<div class="col-sm-3">';
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
 														str+='</div>';
-														str+='<div class="col-sm-4">';
+														str+='<div class="col-sm-6">';
 															str+='<span class="pull-right completed_color"><i class="fa fa-check round_status_completed" aria-hidden="true"></i> Completed</span>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
@@ -411,10 +411,10 @@ function buildPetitionDetailsView(result){
 													str+='</div>';
 												}else if(result.subWorksList[i].subWorksList[j].status == "Pending Endorsement"){
 													str+='<div class="row">';
-														str+='<div class="col-sm-5">';
+														str+='<div class="col-sm-3">';
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
 														str+='</div>';
-														str+='<div class="col-sm-4">';
+														str+='<div class="col-sm-6">';
 															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>Pending Endorsement</span>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
@@ -427,10 +427,10 @@ function buildPetitionDetailsView(result){
 													str+='</div>';
 												}else if(result.subWorksList[i].subWorksList[j].status == "Pending Final Approval" || result.subWorksList[i].subWorksList[j].status == "Pending - Action Memo" || result.subWorksList[i].subWorksList[j].status == "Pending - Detailed Report"){
 													str+='<div class="row">';
-														str+='<div class="col-sm-5">';
+														str+='<div class="col-sm-3">';
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
 														str+='</div>';
-														str+='<div class="col-sm-4">';
+														str+='<div class="col-sm-6">';
 															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>'+result.subWorksList[i].subWorksList[j].status+'</span>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
@@ -443,10 +443,10 @@ function buildPetitionDetailsView(result){
 													str+='</div>';
 												}else{
 													str+='<div class="row">';
-														str+='<div class="col-sm-5">';
+														str+='<div class="col-sm-3">';
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
 														str+='</div>';
-														str+='<div class="col-sm-4">';
+														str+='<div class="col-sm-6">';
 															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>'+result.subWorksList[i].subWorksList[j].status+'</span>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
@@ -669,6 +669,12 @@ $(document).on("click",".updateStatusChangeCls",function(){
 			departmentSelectArr.push($(this).attr("attr_department_id"));
 		}
 	});
+	
+	if(selectdWorksArr.length == 0){
+		alert("Please select atleast one work to update.");
+		return ;
+	}
+	$('#endorsWorksId').html("Save Details");
 	var notSeleWorks = totalWorks - selectdWorksArr.length;
 	
 	$("#statusChangeId").html('');
@@ -996,16 +1002,19 @@ function endorsingSubWorksAndAssigningToOfficer(){
 		}
 	);
 	if(selectdWorksArr !=null && selectdWorksArr.length>0){
-							for(var i = 0; i < selectdWorksArr.length; i++){
-								if($("#nextStatusId").val()==6){
-									formData.append("statusType", "COVERING LETTER");
-								}else if($("#nextStatusId").val()==7){
-									formData.append("statusType", "ACTION COPY");
-								}else if($("#nextStatusId").val()==3){
-									formData.append("statusType", "DETAILED REPORT");
-								}
-								formData.append("workIds["+i+"]", selectdWorksArr[i]);
-						}
+			for(var i = 0; i < selectdWorksArr.length; i++){
+				formData.append("workIds["+i+"]", selectdWorksArr[i]);
+				if($("#nextStatusId").val()==6){
+					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
+						formData.append("statusType", "COVERING LETTER");
+				}else if($("#nextStatusId").val()==7){
+					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
+						formData.append("statusType", "ACTION COPY");
+				}else if($("#nextStatusId").val()==3){
+					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
+						formData.append("statusType", "DETAILED REPORT");
+				}
+		}
 	}
 	//formData.append("petitionId", petitionId);
 $.ajax({
@@ -1036,7 +1045,7 @@ $.ajax({
 				//console.log(request);
 				//console.log(error);
 				alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
-				$('#saveButtonId').show();				
+				$('#endorsWorksId').show();				
 			}
      });
  }	
