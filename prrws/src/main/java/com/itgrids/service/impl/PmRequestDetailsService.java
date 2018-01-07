@@ -1561,7 +1561,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		return petitionRequiredFilesMap;
 	}
 	
-	
+	public List<PetitionFileVO> getRequiredFilesTypeTemplate(){
+		List<PetitionFileVO> globalFilesList = new ArrayList<PetitionFileVO>(0);
+		try {
+			globalFilesList.add(new PetitionFileVO("COVERING LETTER",null));
+			globalFilesList.add(new PetitionFileVO("ACTION COPY",null));
+			globalFilesList.add(new PetitionFileVO("DETAILED REPORT",null));
+		} catch (Exception e) {
+			LOG.error("Exception Occured in PmRequestDetailsService @ getPetitionsRequiredFilesMap "+e.getMessage());
+		}
+		return globalFilesList;
+	}
 	 @SuppressWarnings("static-access")
 	public PmRequestEditVO setPmRepresenteeDataToResultView(Long petitionId,String pageType,Long userId){
 		 PmRequestEditVO returnVO = null;
@@ -1604,24 +1614,32 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 Map<Long,KeyValueVO> departmentsMap = new TreeMap<Long,KeyValueVO>();
 				if(commonMethodsUtilService.isMapValid(petitionSubWorksMap)){
 					for (String seriesNo : petitionSubWorksMap.keySet()) {
-						List<PetitionFileVO> globalFilesList = new ArrayList<PetitionFileVO>(0);
+						List<PetitionFileVO> globalFilesList = getRequiredFilesTypeTemplate();
 						
 						List<PetitionsWorksVO> workTypeVOList = petitionSubWorksMap.get(seriesNo);
 						if(commonMethodsUtilService.isListOrSetValid(workTypeVOList)){
 							for (PetitionsWorksVO worksVO : workTypeVOList) {
+								worksVO.setReportTypeFilesList(getRequiredFilesTypeTemplate());
 								
 								List<PetitionFileVO> filesList = petitionRequiredFilesMap.get(worksVO.getWorkId());
 									if(commonMethodsUtilService.isListOrSetValid(filesList)){
-										if(workTypeVOList.size()>1){
+										//if(workTypeVOList.size()>1){
 											for (PetitionFileVO vo : filesList) {
-												if(!commonMethodsUtilService.isListOrSetValid(globalFilesList) && vo.getKey() != null && vo.getKey().equalsIgnoreCase("COVERING LETTER"))
-													globalFilesList.add(vo);
-												else
-													worksVO.getReportTypeFilesList().add(vo);
+												if(vo.getKey() != null && vo.getKey().equalsIgnoreCase("COVERING LETTER")){
+													for (PetitionFileVO fileTypeVO : globalFilesList) {
+														if(fileTypeVO.getKey().equalsIgnoreCase(vo.getKey()))
+															fileTypeVO.getFilesList().addAll(vo.getFilesList());
+													}
+												}else{
+													for (PetitionFileVO fileTypeVO : worksVO.getReportTypeFilesList()) {
+														if(!fileTypeVO.getKey().equalsIgnoreCase("COVERING LETTER")){
+															if(fileTypeVO.getKey().equalsIgnoreCase(vo.getKey()))
+																fileTypeVO.getFilesList().addAll(vo.getFilesList());
+														}
+													}
+												}
 											}
-										}else{
-											worksVO.getReportTypeFilesList().addAll(filesList);
-										}
+										//}
 									}
 								
 								if(departmentsMap.get(worksVO.getDeptId()) == null){
@@ -1659,6 +1677,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							vo.setEndorsmentNo(worksVO.getEndorsmentNo());
 							vo.setEndorsmentDate(worksVO.getEndorsmentDate());
 							vo.setNoOfWorks(Long.valueOf(String.valueOf(workTypeVOList.size())));
+							vo.setReportTypeFilesList(globalFilesList);
 							
 							if(pageType != null && !seriesNo.isEmpty())
 								vo.setUiSeriesNo(Long.valueOf(seriesNo));

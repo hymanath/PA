@@ -19,6 +19,10 @@ public class PetitionFileVO implements java.io.Serializable{
 		this.id= id;
 		this.value = value;
 	}
+	public PetitionFileVO(String key,String value){
+		this.key= key;
+		this.value = value;
+	}
 	public Long getId() {
 		return id;
 	}
