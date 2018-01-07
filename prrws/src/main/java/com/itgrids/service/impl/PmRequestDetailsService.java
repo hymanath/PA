@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -2521,9 +2522,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		
 		public ResultStatus endorsingSubWorksAndAssigningToOfficer(RepresenteeViewVO inputVO){
 			ResultStatus resultStatus = new ResultStatus();
-			try {
-				if(commonMethodsUtilService.isListOrSetValid(inputVO.getWorkIds())){
-					for (Long subWorkId : inputVO.getWorkIds()) {
+			try {Set<Long> workIds = new HashSet<Long>(inputVO.getWorkIds());
+				if(commonMethodsUtilService.isListOrSetValid(workIds)){
+					for (Long subWorkId : workIds) {
 						PmSubWorkDetails pmSubWorkDetails = pmSubWorkDetailsDAO.get(subWorkId);
 						if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L){
 							if(pmSubWorkDetails != null){
@@ -2531,6 +2532,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									pmSubWorkDetails.setPmLeadId(inputVO.getLeadId());
 									pmSubWorkDetails.setPmGrantId(inputVO.getGrantId());
 									pmSubWorkDetails.setWorkEndorsmentNo(inputVO.getEndorsementNO());
+									pmSubWorkDetails.setEndorsmentDate(dateUtilService.getCurrentDateAndTime());
 								}
 								
 								pmSubWorkDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -2609,7 +2611,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmTrackingVO.setPmStatusId(statusId);// PENDING ACTION MEMO 
 						pmTrackingVO.setUserId(userId);
 						pmTrackingVO.setPetitionId(petitonId);
-						pmTrackingVO.setRemarks(remarks);
+						pmTrackingVO.setRemarks("UPLOADED DOCUMENT(S)");
 						pmTrackingVO.setPmTrackingActionId(4L);//FILE UPLOAD
 						pmTrackingVO.setDocumentId(documentId);
 						pmTrackingVO.setPmSubWorkDetailsId(subWorkId);
