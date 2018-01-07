@@ -507,10 +507,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						if(dataVO.getEstimateCost() != null && !dataVO.getEstimateCost().isEmpty())
 							petitionSubWorkLocationDetails.setCostEstimation(Long.valueOf(dataVO.getEstimateCost()));
 						
-						petitionSubWorkLocationDetails.setPmDepartmentId(mainDataVO.getDeptId());
-						petitionSubWorkLocationDetails.setPmSubjectId(mainDataVO.getSubjectId());
-						petitionSubWorkLocationDetails.setPmSubSubjectId(mainDataVO.getSubSubjectId());
-						petitionSubWorkLocationDetails.setLocationScopeId(dataVO.getLocationScopeId());
+						if(mainDataVO.getDeptId() != null && mainDataVO.getDeptId().longValue()>0L)
+							petitionSubWorkLocationDetails.setPmDepartmentId(mainDataVO.getDeptId());
+						if(mainDataVO.getDeptId() != null && mainDataVO.getDeptId().longValue()>0L)
+							petitionSubWorkLocationDetails.setPmSubjectId(mainDataVO.getDeptId());
+						if(mainDataVO.getSubSubjectId() != null && mainDataVO.getSubSubjectId().longValue()>0L)
+							petitionSubWorkLocationDetails.setPmSubSubjectId(mainDataVO.getSubSubjectId());
+						if(mainDataVO.getLocationScopeId() != null && mainDataVO.getLocationScopeId().longValue()>0L)
+							petitionSubWorkLocationDetails.setLocationScopeId(dataVO.getLocationScopeId());
+						
 						petitionSubWorkLocationDetails.seteOfficeId(dataVO.geteOfficeId());
 						petitionSubWorkLocationDetails.setUiBuildSeriesNo(String.valueOf(uiBuildSeriesNo));
 						
@@ -620,7 +625,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								petition.setIsPreviousPetition(dataVO.getIsPreviousPetition());
 								petition.setGrievanceDescription(dataVO.getGrievanceDescription());
 								petition.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-								petition.setUpdatedUserId(pmRequestVO.getUserId());
+								if(pmRequestVO.getUserId() != null && pmRequestVO.getUserId().longValue()>0L)
+									petition.setUpdatedUserId(pmRequestVO.getUserId());
 								petition = pititionDAO.save(petition);
 								
 								pmTrackingVO.setPetitionId(petition.getPetitionId());
