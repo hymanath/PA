@@ -292,15 +292,17 @@
 	  </div>
 	<form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
 	  <div class="modal-body">
-	   <div class="row">
-			<div class="col-sm-4">
-				<h5>TOTAL WORKS : <span id="totalWorksId">0</span></h5>
-			</div>
-			<div class="col-sm-4">
-				<h5>SELECTED  WORKS : <span id="selectdWorksId">0</span></h5>
-			</div>
-			<div class="col-sm-4">
-				<h5>NOT SELECTED WORKS : <span id="notSeleWorksId">0</span></h5>
+	   <div class="pad_light_yash_bg border_yash border_radius_5">
+			<div class="row">
+				<div class="col-sm-4">
+					<h5>TOTAL WORKS : <span id="totalWorksId" class="font_weight">0</span></h5>
+				</div>
+				<div class="col-sm-4">
+					<h5>SELECTED  WORKS : <span id="selectdWorksId" class="font_weight">0</span></h5>
+				</div>
+				<div class="col-sm-4">
+					<h5>NOT SELECTED WORKS : <span id="notSeleWorksId" class="font_weight">0</span></h5>
+				</div>
 			</div>
 		</div>
 		<div class="row m_top10">
@@ -348,14 +350,14 @@
 		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
 		<input type="hidden" class="form-control" id="petitionId"  name="petitionId"/>
 		<div class="row m_top10" id="commentsDivId" style="display:none;">
-			<div class="col-sm-6">
+			<div class="col-sm-8">
 				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 		</div>
-		<div class="row m_top10" id="fileUploadDiv" style="display:none;">
+		<div class="row m_top20" id="fileUploadDiv" style="display:none;">
 			<div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
-				<h5 class="panel-title"> UPLOAD COVERING LETTER <span id="fileUploadIdErr"></h5>
+				<h5 class="panel-title"> UPLOAD <span id="letterNameId"></span> LETTER <span id="fileUploadIdErr"></h5>
 				<span id="uploadFile"></span>
 			</div>
 		</div>
