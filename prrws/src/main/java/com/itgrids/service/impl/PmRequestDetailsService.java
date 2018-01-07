@@ -557,7 +557,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							petitionSubWorkLocationDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							petitionSubWorkLocationDetails.setInsertedUserId(pmSubWorkDetails.getInsertedUserId());
 							petitionSubWorkLocationDetails.setUpdatedUserId(userId);
-						}
+						} 
 						
 						petitionSubWorkLocationDetails = pmSubWorkDetailsDAO.save(petitionSubWorkLocationDetails);
 						noOfWorksCount=noOfWorksCount+1;
