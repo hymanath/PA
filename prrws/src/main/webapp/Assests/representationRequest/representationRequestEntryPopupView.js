@@ -230,7 +230,7 @@ function buildPetitionDetailsView(result){
 										str+='<h5>Name of the Work</h5>';
 										if(result.workName !=null && result.workName.trim().length>0){
 											if(result.workName !=null && result.workName.length>120){
-												str+='<h5 class="font_weight  m_top10" data-toggle="tooltip" title="'+result.workName+'" class="tooltipCls">'+result.workName.substring(0,120)+'...</h5>';
+												str+='<h5 class="font_weight tooltipCls m_top10" data-toggle="tooltip" title="'+result.workName+'">'+result.workName.substring(0,120)+'...</h5>';
 											}else{
 												str+='<h5 class="font_weight  m_top10">'+result.workName+'</h5>';
 											}
@@ -373,6 +373,15 @@ function buildPetitionDetailsView(result){
 									str+='</div>';
 								}
 									//row closed
+									str+='<div class="row m_top10">';
+									str+='<div class="col-sm-12">';
+										str+='<h5 class="pull-right">';
+										str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+											str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+										str+='</label>';
+										str+='</h5>';
+									str+='</div>';
+									str+='</div>';
 									var workCount = 0;
 								str+='<div class="row m_top10">';
 									for(var j in result.subWorksList[i].subWorksList){
@@ -395,7 +404,7 @@ function buildPetitionDetailsView(result){
 														str+='<div class="col-sm-3">';
 															str+='<h5 class="pull-right">';
 															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="inlineCheckbox1" value="'+result.subWorksList[j].workId+'" class="workStatusUpdateCls" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'">';
+																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
 															str+='</label>';
 															str+='</h5>';
 														str+='</div>';
@@ -406,12 +415,12 @@ function buildPetitionDetailsView(result){
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
 														str+='</div>';
 														str+='<div class="col-sm-4">';
-															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>Pending</span>';
+															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>Pending Endorsement</span>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
 															str+='<h5 class="pull-right">';
 															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="inlineCheckbox1" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'">';
+																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
 															str+='</label>';
 															str+='</h5>';
 														str+='</div>';
@@ -422,12 +431,12 @@ function buildPetitionDetailsView(result){
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
 														str+='</div>';
 														str+='<div class="col-sm-4">';
-															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>In Progress</span>';
+															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>'+result.subWorksList[i].subWorksList[j].status+'</span>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
 															str+='<h5 class="pull-right">';
 															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="inlineCheckbox1" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'">';
+																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
 															str+='</label>';
 															str+='</h5>';
 														str+='</div>';
@@ -438,12 +447,12 @@ function buildPetitionDetailsView(result){
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
 														str+='</div>';
 														str+='<div class="col-sm-4">';
-															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>In Progress</span>';
+															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>'+result.subWorksList[i].subWorksList[j].status+'</span>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
 															str+='<h5 class="pull-right">';
 															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="inlineCheckbox1" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'">';
+																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
 															str+='</label>';
 															str+='</h5>';
 														str+='</div>';
@@ -458,9 +467,9 @@ function buildPetitionDetailsView(result){
 																str+='<div class="m_top10">';
 																	str+='<h5 class="">Work Type</h5>';
 																	if(result.subWorksList[i].subWorksList[j].workType !=null && result.subWorksList[i].subWorksList[j].workType.trim().length>0){
-																		str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].workType+'</h5>';
+																		str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].subWorksList[j].workType+'</h5>';
 																	}else{
-																		str+='<h5 class="font_weight m_top5"> - </h5>';
+																		str+='<h5 class="font_weight m_top10"> - </h5>';
 																	}
 																	
 																str+='</div>';
@@ -468,9 +477,9 @@ function buildPetitionDetailsView(result){
 																str+='<div class="m_top15">';
 																	str+='<h5 class="">Brief Lead</h5>';
 																	if(result.subWorksList[i].subWorksList[j].briefLeadName !=null && result.subWorksList[i].subWorksList[j].briefLeadName.trim().length>0){
-																		str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].briefLeadName+'</h5>';
+																		str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].subWorksList[j].briefLeadName+'</h5>';
 																	}else{
-																		str+='<h5 class="font_weight m_top5"> - </h5>';
+																		str+='<h5 class="font_weight m_top10"> - </h5>';
 																	}
 																	
 																str+='</div>';
@@ -478,9 +487,9 @@ function buildPetitionDetailsView(result){
 																str+='<div class="m_top15">';
 																	str+='<h5 class="">Grant Under</h5>';
 																	if(result.subWorksList[i].subWorksList[j].grantName !=null && result.subWorksList[i].subWorksList[j].grantName.trim().length>0){
-																		str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].grantName+'</h5>';
+																		str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].subWorksList[j].grantName+'</h5>';
 																	}else{
-																		str+='<h5 class="font_weight m_top5"> - </h5>';
+																		str+='<h5 class="font_weight m_top10"> - </h5>';
 																	}
 																	
 																str+='</div>';
@@ -488,16 +497,16 @@ function buildPetitionDetailsView(result){
 																str+='<div class="m_top15 margin_bottom">';
 																	str+='<h5 class="">Est Budget</h5>';
 																	if(result.subWorksList[i].subWorksList[j].estimateCostStr !=null && result.subWorksList[i].subWorksList[j].estimateCostStr>0){
-																		str+='<h5 class="font_weight m_top5"><i class="fa fa-inr" aria-hidden="true" style="color:green;"></i> '+result.subWorksList[i].subWorksList[j].estimateCostStr+'</h5>';
+																		str+='<h5 class="font_weight m_top10"><i class="fa fa-inr" aria-hidden="true" style="color:green;"></i> '+result.subWorksList[i].subWorksList[j].estimateCostStr+'</h5>';
 																	}else{
-																		str+='<h5 class="font_weight m_top5"> - </h5>';
+																		str+='<h5 class="font_weight m_top10"> - </h5>';
 																	}
 																	
 																str+='</div>';
 															str+='</div>';
 															str+='<div class="col-sm-9">';
 																
-																str+='<div class="pad_light_yash_bg">';
+																str+='<div class="pad_light_yash_bg border_yash border_radius_5">';
 																	str+='<div class="row">';
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">Subject</h5>';
@@ -527,11 +536,16 @@ function buildPetitionDetailsView(result){
 																	str+='</div>';
 																str+='</div>';
 																
-																str+='<div class="pad_light_yash_bg m_top10">';
+																str+='<div class="pad_light_yash_bg m_top10 border_yash border_radius_5">';
 																	str+='<div class="row">';
 																		str+='<div class="col-sm-12">';
 																			if(result.subWorksList[i].subWorksList[j].leadName != null && result.subWorksList[i].subWorksList[j].leadName.trim().length>0){
-																				str+='<h5 class="">Lead: <span class="font_weight f_12">'+result.subWorksList[i].subWorksList[j].leadName+'</span></h5>';
+																				if(result.subWorksList[i].subWorksList[j].leadName !=null && result.subWorksList[i].subWorksList[j].leadName.length>35){
+																					str+='<h5 class="">Lead: <span class="font_weight f_12 tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].leadName+'">'+result.subWorksList[i].subWorksList[j].leadName+'</span></h5>';
+																				}else{
+																					str+='<h5 class="">Lead: <span class="font_weight f_12">'+result.subWorksList[i].subWorksList[j].leadName+'</span></h5>';
+																				}
+																				
 																			}else{
 																				str+='<h5 class="">Lead:  - </h5>';
 																			}
@@ -541,7 +555,7 @@ function buildPetitionDetailsView(result){
 																	str+='</div>';
 																str+='</div>';
 																
-																str+='<div class="pad_light_yash_bg m_top10">';
+																str+='<div class="pad_light_yash_bg m_top10 border_yash border_radius_5">';
 																	str+='<div class="row">';
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">District</h5>'
@@ -570,13 +584,13 @@ function buildPetitionDetailsView(result){
 																	str+='</div>';
 																str+='</div>';
 																
-																str+='<div class="pad_light_yash_bg m_top20">';
+																str+='<div class="pad_light_yash_bg m_top20 border_yash border_radius_5">';
 																	str+='<div class="row">';
 																		str+='<div class="col-sm-12">';
 																			str+='<h5 class="">WORK DISCRIPTION</h5>'
 																			if(result.subWorksList[i].subWorksList[j].workName != null && result.subWorksList[i].subWorksList[j].workName.trim().length>0){
 																				if(result.subWorksList[i].subWorksList[j].workName !=null && result.subWorksList[i].subWorksList[j].workName.length>80){
-																					str+='<h5 class="font_weight m_top5" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].workName+'" class="tooltipCls">'+result.subWorksList[i].subWorksList[j].workName.substring(0,80)+'...</h5>';
+																					str+='<h5 class="font_weight m_top5 tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].workName+'">'+result.subWorksList[i].subWorksList[j].workName.substring(0,80)+'...</h5>';
 																				}else{
 																					str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].workName+'</h5>';
 																				}
@@ -593,7 +607,7 @@ function buildPetitionDetailsView(result){
 														
 													str+='</div>';
 													//row closed
-													str+='<div class="pad_light_yash_bg m_top10">';
+													str+='<div class="pad_light_yash_bg m_top10 border_yash border_radius_5">';
 														str+='<div class="row">';
 													for(var k in result.subWorksList[i].subWorksList[j].reportTypeFilesList){
 														if(result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].key == "DETAILED REPORT"){
@@ -676,8 +690,16 @@ $(document).on("click",".updateStatusChangeCls",function(){
 			else if(globalStatusArr[i].key == 4)
 				nextStatusId=4;
 			else if(globalStatusArr[i].key == 5)
-				nextStatusId=5;			
-			$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+' </option>');
+				nextStatusId=5;	
+			if(enrorsNo !=null && enrorsNo>0){
+				if(globalStatusArr[i].key !=1){
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+' </option>');
+				}
+				
+			}else{
+				$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+' </option>');
+			}	
+			
 		}
 	}
 	$("#statusChangeId").chosen();
@@ -1021,3 +1043,12 @@ $.ajax({
 			}
      });
  }	
+ 
+ $(document).on("click",".workStatusSelectedAllCls",function(){
+	var endorsNo = $(this).attr("attr_enrorsNo");
+	if($(this).is(":checked")){
+		$(".checkbox"+endorsNo).prop("checked",true);
+	}else{
+		$(".checkbox"+endorsNo).prop("checked",false);
+	}
+ });
