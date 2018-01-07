@@ -16,7 +16,7 @@ $(document).on("click",".viewBtnCls",function(){
  
  function getPetitionDetails(petitionId,endorsNo){
 	$("#representeeViewId").html(spinner);
-	
+	$('#petitionId').val(petitionId);
    var json = {
        petitionId:petitionId,//38,//100031
 	   pageType:"viewPage"
@@ -40,7 +40,6 @@ $(document).on("click",".viewBtnCls",function(){
 }
 
 function buildPetitionDetailsView(result){
-	
 	var str='';
 	str+='<div class="pad_pink_bg">';
 		str+='<div class="row">';
@@ -652,7 +651,7 @@ function buildPetitionDetailsView(result){
 $(document).on("click",".updateStatusChangeCls",function(){
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
-	
+	selectdWorksArr=[];
 	$(".workStatusUpdateCls").each(function(){
 		if($(this).is(":checked")){
 			selectdWorksArr.push($(this).val());
@@ -663,7 +662,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	
 	$("#statusChangeId").html('');
 	if(globalStatusArr !=null && globalStatusArr.length>0){
-		 $("#statusChangeId").append('<option value="0">Select Status</option>');
+		 $("#statusChangeId").append('<option value="0" attr_next_status_id="0" >Select Status</option>');
 		for(var i in globalStatusArr){
 			var nextStatusId=6;
 			if(globalStatusArr[i].key == 1)
@@ -695,11 +694,11 @@ $(document).on("click",".updateStatusChangeCls",function(){
 $(document).on("change","#statusChangeId",function(){
 	var statusId = $(this).val();
 	var nextStatusId = $('option:selected', this).attr('attr_next_status_id') ;
+	$('#nextStatusId').val(0);
 	if(nextStatusId != null && nextStatusId>0)
 		$('#nextStatusId').val(nextStatusId);
-	else
-		alert("Some thing . Please page refresh once and try again.");
 	if(statusId == 1){
+		$("#endorsementDivId").show();
 		$("#commentsDivId").show();
 		$("#fileUploadingDivId").show();
 		$("#leadDivId").show();
@@ -921,7 +920,8 @@ function endorsingSubWorksAndAssigningToOfficer(){
 		$('#fileUploadIdErr').html('');
 	}
 	*/
-	
+	   $('#endorsWorksId').hide();
+	   var endorsementNO="";
 	   var formData = new FormData();
 	   $('#endorsingSubWorksId input').each(
 		  function(){			  
@@ -933,6 +933,12 @@ function endorsingSubWorksAndAssigningToOfficer(){
 				if(text=='text' || text=='hidden'){
 					var name = $('#'+id+'').attr('name');
 					formData.append(name, $('#'+id+'').val());
+					
+					if(name=="petitionId")
+						petitionId = $('#'+id+'').val();
+					else if(name=="endorsementNO")
+						endorsementNO = $('#'+id+'').val();
+						
 				}else if(text=='radio'){
 					if($('#'+id+'').is(':checked')){
 						var name = $('#'+id+'').attr('name');
@@ -982,8 +988,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 								formData.append("workIds["+i+"]", selectdWorksArr[i]);
 						}
 	}
-	formData.append("petitionId", petitionId);
-	
+	//formData.append("petitionId", petitionId);
 $.ajax({
 			url: $("#endorsingSubWorksId").attr("action"),
 			data: formData,
@@ -993,31 +998,19 @@ $.ajax({
 			success: function(result) {
 				$("#savingDetailsSpinner").html('');
 				
-				/* if(result!=null){
-				  if(result.responseCode == "0"){
-					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
-					  
-						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); 
-						window.location.reload(); 
-						$(".defaultCheckCls").prop("checked",true)},6000);
-						 
-				  }else{
-					  $('#saveButtonId').show();
-					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
-					  setTimeout(function () {
-						 
-						}, 500);
-						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
-				  }
-				}else{
-					  $('#saveButtonId').show();
-					setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
-						}, 500);
-						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
-				 } */
-				 
-				
+					if(result!=null){
+					  if(result.exceptionMsg == "SUCCESS"){
+						  alert("Work(s) details updated successfully");
+						  $("#endorseMentModalDivId").modal("hide");
+						  $("#representeeDetailsModelDivId").modal("hide");
+						  getPetitionDetails(petitionId,endorsementNO);
+						 // $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
+					  }else{
+						  $('#endorsWorksId').show();
+					  }
+					}else{
+					 $('#endorsWorksId').show();
+					}
 			},
 			error: function(request,error) { 
 				$("#savingDetailsSpinner").html('');

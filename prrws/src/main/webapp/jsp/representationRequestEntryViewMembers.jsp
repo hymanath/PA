@@ -346,6 +346,7 @@
 			</div>
 		</div>
 		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
+		<input type="hidden" class="form-control" id="petitionId"  name="petitionId"/>
 		<div class="row m_top10" id="commentsDivId" style="display:none;">
 			<div class="col-sm-6">
 				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
