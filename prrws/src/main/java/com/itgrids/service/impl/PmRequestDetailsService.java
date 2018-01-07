@@ -168,6 +168,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO){
 		ResponseVO responseVO = new ResponseVO();
 		try {
+			Map<String,List<Long>> existingDetailsMap = null;
 			PmRepresentee pmRepresentee =  null;
 			String insertionType = "new";
 			if(pmRequestVO.getRemarks() == null || pmRequestVO.getRemarks().isEmpty())
@@ -177,7 +178,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				Long representeeId = pmRepresenteeRefDetailsDAO.getRepresenteeDetailsByPetitonId(pmRequestVO.getExistingPetitionId());
 				if(representeeId != null && representeeId.longValue()>0L){
 					pmRepresentee = pmRepresenteeDAO.get(representeeId);
-					updatePetitionSubWorksAndDocumentDetails(pmRequestVO.getExistingPetitionId(),pmRequestVO.getUserId());
+					existingDetailsMap = getToupdatePetitionSubWorksAndDocumentExistingRecordDetails(pmRequestVO.getExistingPetitionId());
 					pmRequestVO.setRepresenteeId(representeeId);
 				}
 				pmRepresentee = saveRepresenteeDetails(pmRequestVO,insertionType);
@@ -193,7 +194,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					if(petition == null)
 						throw new Exception("Petition details not saved successfully.");
 					savePetitionReferralDetails(pmRepresentee.getPmRepresenteeId(),petition.getPetitionId(),pmRequestVO);
+				}else{
+					throw new Exception("Representee or Referrer details not saved successfully.");
 				}
+				
+			if(insertionType.trim().equalsIgnoreCase("update") && commonMethodsUtilService.isMapValid(existingDetailsMap))	
+				updatePetitionSubWorksAndDocumentDetails(existingDetailsMap,pmRequestVO.getUserId());
+			
 			responseVO.setResponseCode("0");
 			responseVO.setMessage(IConstants.SUCCESS);
 		} catch (Exception e) {
@@ -205,24 +212,51 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	}
 	
 	@SuppressWarnings("static-access")
-	public ResultStatus updatePetitionSubWorksAndDocumentDetails(Long petitionId,Long userId){
+	public Map<String,List<Long>> getToupdatePetitionSubWorksAndDocumentExistingRecordDetails(Long petitionId){
+		Map<String,List<Long>> existingDetailsMap = new LinkedHashMap<String,List<Long>>();
+		try{
+			List<Long> petitionDocumentIds =  pmPetitionDocumentDAO.getPmPetitionDocumentIds(petitionId);
+			if(commonMethodsUtilService.isListOrSetValid(petitionDocumentIds))
+				existingDetailsMap.put("petitionDocumentIds", petitionDocumentIds);
+			
+			List<Long> subWorkIds = pmSubWorkDetailsDAO.getPmSubWorkDetailsIds(petitionId);
+			if(commonMethodsUtilService.isListOrSetValid(subWorkIds))
+				existingDetailsMap.put("subWorkIds", subWorkIds);
+			
+			List<Long> pmRepresenteeRefDetailsIds =	pmRepresenteeRefDetailsDAO.getPmRepresenteeRefDetailsIds(petitionId);
+			if(commonMethodsUtilService.isListOrSetValid(pmRepresenteeRefDetailsIds))
+				existingDetailsMap.put("pmRepresenteeRefDetailsIds", pmRepresenteeRefDetailsIds);
+			
+			List<Long> representeeRefDocumentIds = pmRepresenteeRefDocumentDAO.getPmRepresenteeRefDocumentIds(pmRepresenteeRefDetailsIds);
+			if(commonMethodsUtilService.isListOrSetValid(representeeRefDocumentIds))
+				existingDetailsMap.put("representeeRefDocumentIds", representeeRefDocumentIds);
+			
+		}catch(Exception e){
+			existingDetailsMap =null;
+			LOG.error("Exception Occured in getToupdatePetitionSubWorksAndDocumentExistingRecordDetails in PmRequestDetailsService",e);
+		}
+		return existingDetailsMap;
+	}
+	
+	@SuppressWarnings("static-access")
+	public ResultStatus updatePetitionSubWorksAndDocumentDetails(Map<String,List<Long>> existingDetailsMap,Long userId){
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			Date currentTime=dateUtilService.getCurrentDateAndTime();
 			
-			List<Long> petitionDocumentIds =  pmPetitionDocumentDAO.getPmPetitionDocumentIds(petitionId);
+			List<Long> petitionDocumentIds =  existingDetailsMap.get("petitionDocumentIds");
 			if(commonMethodsUtilService.isListOrSetValid(petitionDocumentIds))
 			    pmPetitionDocumentDAO.updatePmpetitionDocuments(petitionDocumentIds,userId);
 			
-			List<Long> subWorkIds = pmSubWorkDetailsDAO.getPmSubWorkDetailsIds(petitionId);
+			List<Long> subWorkIds = existingDetailsMap.get("subWorkIds");
 			if(commonMethodsUtilService.isListOrSetValid(subWorkIds))
 				pmSubWorkDetailsDAO.updatePmsubWorkDetails(subWorkIds, currentTime, userId);
 			
-			List<Long> pmRepresenteeRefDetailsIds =	pmRepresenteeRefDetailsDAO.getPmRepresenteeRefDetailsIds(petitionId);
+			List<Long> pmRepresenteeRefDetailsIds =	existingDetailsMap.get("pmRepresenteeRefDetailsIds");
 			if(commonMethodsUtilService.isListOrSetValid(pmRepresenteeRefDetailsIds))
 				pmRepresenteeRefDetailsDAO.updatePmRepresenteRefDetails(pmRepresenteeRefDetailsIds,currentTime,userId);
 			
-			List<Long> representeeRefDocumentIds = pmRepresenteeRefDocumentDAO.getPmRepresenteeRefDocumentIds(pmRepresenteeRefDetailsIds);
+			List<Long> representeeRefDocumentIds = existingDetailsMap.get("representeeRefDocumentIds");
 			if(commonMethodsUtilService.isListOrSetValid(representeeRefDocumentIds))
 				pmRepresenteeRefDocumentDAO.updatePmPmRepresenteeRefDocumens(representeeRefDocumentIds, currentTime, userId);
 			
