@@ -484,7 +484,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	}
 	
 	@SuppressWarnings("static-access")
-	public Long savePetitionSubWorkDetails(Long petitonId,PetitionsWorksVO mainDataVO,List<PetitionsWorksVO> subWorksList,int uiBuildSeriesNo,Long userId,String insertionType,String remarks){
+	public Long savePetitionSubWorkDetails(Long petitonId,PetitionsWorksVO mainDataVO,List<PetitionsWorksVO> subWorksList,int uiBuildSeriesNo,Long userId,String insertionType,PmRequestVO pmRequestVO){
 		Long noOfWorksCount = 0L;
 		try {
 			if(commonMethodsUtilService.isListOrSetValid(subWorksList)){
@@ -509,8 +509,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						
 						if(mainDataVO.getDeptId() != null && mainDataVO.getDeptId().longValue()>0L)
 							petitionSubWorkLocationDetails.setPmDepartmentId(mainDataVO.getDeptId());
-						if(mainDataVO.getDeptId() != null && mainDataVO.getDeptId().longValue()>0L)
-							petitionSubWorkLocationDetails.setPmSubjectId(mainDataVO.getDeptId());
+						if(mainDataVO.getSubjectId() != null && mainDataVO.getSubjectId().longValue()>0L)
+							petitionSubWorkLocationDetails.setPmSubjectId(mainDataVO.getSubjectId());
 						if(mainDataVO.getSubSubjectId() != null && mainDataVO.getSubSubjectId().longValue()>0L)
 							petitionSubWorkLocationDetails.setPmSubSubjectId(mainDataVO.getSubSubjectId());
 						if(mainDataVO.getLocationScopeId() != null && mainDataVO.getLocationScopeId().longValue()>0L)
@@ -566,7 +566,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmTrackingVO.setPmStatusId(1L);
 						pmTrackingVO.setUserId(userId);
 						pmTrackingVO.setPetitionId(petitonId);
-						pmTrackingVO.setRemarks(remarks);
+						pmTrackingVO.setRemarks(pmRequestVO.getRemarks());
 						if(insertionType != null && insertionType.trim().equalsIgnoreCase("new"))
 							pmTrackingVO.setPmTrackingActionId(1L);//CREATE A PETITION
 						else
@@ -605,6 +605,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								petition = new Petition();
 								if(pmRequestVO.getExistingPetitionId() != null && pmRequestVO.getExistingPetitionId().longValue() >0L){
 									petition = pititionDAO.get(pmRequestVO.getExistingPetitionId());
+									petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate()));
 									pmTrackingVO.setPmTrackingActionId(5L);//EDIT/UPDATED  PETITION
 								}else{
 									petition.setEndorsmentDate(null);
@@ -635,7 +636,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 							i=i+1;
 							if(petition != null && petition.getPetitionId() != null && petition.getPetitionId().longValue()>0L && commonMethodsUtilService.isListOrSetValid(dataVO.getSubWorksList())){
-								Long tempsubmittedWorksCount = savePetitionSubWorkDetails(petition.getPetitionId(),dataVO.getSubWorksList().get(0),dataVO.getSubWorksList(),i,pmRequestVO.getUserId(),insertionType,pmRequestVO.getRemarks());
+								Long tempsubmittedWorksCount = savePetitionSubWorkDetails(petition.getPetitionId(),dataVO.getSubWorksList().get(0),dataVO.getSubWorksList(),i,pmRequestVO.getUserId(),insertionType,pmRequestVO);
 								if(tempsubmittedWorksCount == null)
 									throw new Exception(" Sub works are not saved successfully.");
 								submittedWorksCount = submittedWorksCount+tempsubmittedWorksCount;
