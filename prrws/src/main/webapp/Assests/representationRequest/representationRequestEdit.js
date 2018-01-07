@@ -2078,6 +2078,7 @@ function buildPetitionDetails(result){
 											str+='</div>';
 											str+='<div class="bg_color_view">';
 												//str+='<h3 class="panel-title f_16 font_weight">WORK 1</h3>';
+												str+='<input type="hidden" id="workIdDetails'+result.representationType+''+i+''+j+'" name="worksList['+i+'].subWorksList['+j+'].workId" value="'+result.subWorksList[i].subWorksList[j].workId+'" />';
 												str+='<div class="row m_top10">';
 														str+='<div class="col-sm-3">';
 															str+='<label> WORK TYPE <span class="starColor">*</span></label>';
@@ -3467,11 +3468,9 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
  	
 	if(flag == false){
 		$('#saveButtonId').show();
-		return;
+		//return;
 	}
-	$('#saveButtonId').show();
-alert("succuss");
-return;
+	
 	$('#saveButtonId').hide();	
 	$("#savingDetailsSpinner").html(spinner)
 	

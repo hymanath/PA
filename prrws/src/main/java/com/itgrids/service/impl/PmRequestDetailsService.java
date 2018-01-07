@@ -172,10 +172,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			Map<String,List<Long>> existingDetailsMap = null;
 			PmRepresentee pmRepresentee =  null;
 			String insertionType = "new";
-			if(pmRequestVO.getRemarks() == null || pmRequestVO.getRemarks().isEmpty())
-				pmRequestVO.setRemarks(pmTrackingActionDAO.get(1L).getActionName());
 			if(pmRequestVO.getExistingPetitionId() != null && pmRequestVO.getExistingPetitionId().longValue()>0L){
 				insertionType = "update";
+				pmRequestVO.setRemarks(pmTrackingActionDAO.get(5L).getActionName());// EDIT OR UPDATE PETITIONS
 				Long representeeId = pmRepresenteeRefDetailsDAO.getRepresenteeDetailsByPetitonId(pmRequestVO.getExistingPetitionId());
 				if(representeeId != null && representeeId.longValue()>0L){
 					pmRepresentee = pmRepresenteeDAO.get(representeeId);
@@ -189,6 +188,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					pmRepresentee = saveRepresenteeDetails(pmRequestVO,insertionType);
 				/** End Petition Member Details saving */
 			}
+			
+			if(pmRequestVO.getRemarks() == null || pmRequestVO.getRemarks().isEmpty())
+				pmRequestVO.setRemarks(pmTrackingActionDAO.get(1L).getActionName());
+			
 			/** Start Petition Referrer Details */
 				if(pmRepresentee != null){
 					Petition petition = savePetitionWorkDetails(pmRepresentee.getPmRepresenteeId(),pmRequestVO,insertionType);
@@ -540,8 +543,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}else{
 							petitionSubWorkLocationDetails.setWorkEndorsmentNo(pmSubWorkDetails.getWorkEndorsmentNo());
 							petitionSubWorkLocationDetails.setEndorsmentDate(pmSubWorkDetails.getEndorsmentDate());
-							petitionSubWorkLocationDetails.setUpdatedUserId(userId);
+							petitionSubWorkLocationDetails.setPmStatusId(pmSubWorkDetails.getPmStatusId());// endorsement pending
+							petitionSubWorkLocationDetails.setPmLeadId(pmSubWorkDetails.getPmLeadId());
+							petitionSubWorkLocationDetails.setPmGrantId(pmSubWorkDetails.getPmGrantId());
+							petitionSubWorkLocationDetails.setPmBriefLeadId(pmSubWorkDetails.getPmBriefLeadId());
+							petitionSubWorkLocationDetails.setCoveringLetterPath(pmSubWorkDetails.getCoveringLetterPath());
+							petitionSubWorkLocationDetails.setInsertedTime(pmSubWorkDetails.getInsertedTime());
 							petitionSubWorkLocationDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							petitionSubWorkLocationDetails.setInsertedUserId(pmSubWorkDetails.getInsertedUserId());
+							petitionSubWorkLocationDetails.setUpdatedUserId(userId);
 						}
 						
 						petitionSubWorkLocationDetails = pmSubWorkDetailsDAO.save(petitionSubWorkLocationDetails);
@@ -599,7 +609,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									petition.setRepresenteeType(pmRequestVO.getRepresentationType());
 									petition.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 									petition.setInsertedUserId(pmRequestVO.getUserId());
-									pmTrackingVO.setPmTrackingActionId(1L);//CREATE A PETITION
+									pmTrackingVO.setPmTrackingActionId(1L);//CREATE A PETITION 
 								}
 								
 								if(dataVO.getEstimateCost() != null)

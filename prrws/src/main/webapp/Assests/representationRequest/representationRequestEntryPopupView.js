@@ -621,17 +621,14 @@ function buildPetitionDetailsView(result){
 																
 															str+='</div>';
 															
-														}else if(result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].key == "COVERING LETTER"){
+														}else if(result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].key == "ACTION COPY"){
 															str+='<div class="col-sm-4">';
 																if(result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList !=null && result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList.length>0){
-																	str+='<h5 class="view_referral_Doc docsViewCls f_11" attr_docs="covering" style="cursor:pointer;">VIEW&nbsp;COVERING&nbsp;LETTER</h5>';
+																	str+='<h5 class="view_referral_Doc docsViewCls f_11" attr_docs="covering" style="cursor:pointer;">VIEW&nbsp;ACTION&nbsp;COPY</h5>';
 																	coveringLetterDoc=result.subWorksList[i].subWorksList[j].reportTypeFilesList[k].filesList;
 																}else{
-																	str+='<h5 class="view_referral_Doc_empty f_11" attr_docs="covering" style="cursor:no-drop;">VIEW&nbsp;COVERING&nbsp;LETTER</h5>';
+																	str+='<h5 class="view_referral_Doc_empty f_11" attr_docs="covering" style="cursor:no-drop;">VIEW&nbsp;ACTION&nbsp;COPY</h5>';
 																}
-																
-																
-																
 															str+='</div>';
 															
 														}
@@ -647,7 +644,7 @@ function buildPetitionDetailsView(result){
 								str+='</div>';
 								str+='<div class="row m_top10">';
 									str+='<div class="col-sm-12">';
-										str+='<button type="button" class="btn btn-primary btn-sm pull-right updateStatusChangeCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">Small button</button>';
+										str+='<button type="button" class="btn btn-primary btn-sm pull-right updateStatusChangeCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
 									str+='</div>';
 								str+='</div>';
 						  str+='</div>';

@@ -533,7 +533,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		str+='</div>';
 		str+='<div class="row m_top10">';
 			str+='<div class="col-sm-12">';
-					str+='<h4 class="panel-title f_18"> UPLOAD WORK DOCUMENTS </h4>';
+					str+='<h4 class="panel-title f_18"> UPLOAD OTHER RELATED DOCUMENTS </h4>';
 					str+='<input type="file"  attr_name="worksList[0]" name="" attr_image_tyep="projImage"  id="projectDocUpload'+typeVal+'" multiple="multiple" class="m_top20"/>';
 			str+='</div>';
 		str+='</div>';	
