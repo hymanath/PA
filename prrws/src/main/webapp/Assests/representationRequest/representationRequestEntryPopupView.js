@@ -386,7 +386,7 @@ function buildPetitionDetailsView(result){
 								str+='<div class="row m_top10">';
 									for(var j in result.subWorksList[i].subWorksList){
 										workCount = workCount+1;
-										str+='<div class="col-sm-6">';
+										str+='<div class="col-sm-6 m_top10">';
 												if(result.subWorksList[i].subWorksList[j].status == "Completed"){
 													str+='<div class="panel panel-default panel-completed">';
 												}else{
@@ -467,7 +467,12 @@ function buildPetitionDetailsView(result){
 																str+='<div class="m_top10">';
 																	str+='<h5 class="">Work Type</h5>';
 																	if(result.subWorksList[i].subWorksList[j].workType !=null && result.subWorksList[i].subWorksList[j].workType.trim().length>0){
-																		str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].subWorksList[j].workType+'</h5>';
+																		if(result.subWorksList[i].subWorksList[j].workType !=null && result.subWorksList[i].subWorksList[j].workType.length>15){
+																			str+='<h5 class="font_weight m_top10 tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].workType+'">'+result.subWorksList[i].subWorksList[j].workType.substring(0,15)+'...</h5>';
+																		}else{
+																			str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].subWorksList[j].workType+'</h5>';
+																		}
+																		
 																	}else{
 																		str+='<h5 class="font_weight m_top10"> - </h5>';
 																	}
@@ -477,7 +482,12 @@ function buildPetitionDetailsView(result){
 																str+='<div class="m_top15">';
 																	str+='<h5 class="">Brief Lead</h5>';
 																	if(result.subWorksList[i].subWorksList[j].briefLeadName !=null && result.subWorksList[i].subWorksList[j].briefLeadName.trim().length>0){
-																		str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].subWorksList[j].briefLeadName+'</h5>';
+																		if(result.subWorksList[i].subWorksList[j].briefLeadName !=null && result.subWorksList[i].subWorksList[j].briefLeadName.length>15){
+																			str+='<h5 class="font_weight m_top10 tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].briefLeadName+'">'+result.subWorksList[i].subWorksList[j].briefLeadName.substring(0,15)+'...</h5>';
+																		}else{
+																			str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].subWorksList[j].briefLeadName+'</h5>';
+																		}
+																		
 																	}else{
 																		str+='<h5 class="font_weight m_top10"> - </h5>';
 																	}
@@ -487,7 +497,12 @@ function buildPetitionDetailsView(result){
 																str+='<div class="m_top15">';
 																	str+='<h5 class="">Grant Under</h5>';
 																	if(result.subWorksList[i].subWorksList[j].grantName !=null && result.subWorksList[i].subWorksList[j].grantName.trim().length>0){
-																		str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].subWorksList[j].grantName+'</h5>';
+																		if(result.subWorksList[i].subWorksList[j].grantName !=null && result.subWorksList[i].subWorksList[j].grantName.length>15){
+																			str+='<h5 class="font_weight m_top10 tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].grantName+'">'+result.subWorksList[i].subWorksList[j].grantName.substring(0,15)+'...</h5>';
+																		}else{
+																			str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].subWorksList[j].grantName+'</h5>';
+																		}
+																		
 																	}else{
 																		str+='<h5 class="font_weight m_top10"> - </h5>';
 																	}
@@ -511,7 +526,12 @@ function buildPetitionDetailsView(result){
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">Subject</h5>';
 																			if(result.subWorksList[i].subWorksList[j].subject !=null && result.subWorksList[i].subWorksList[j].subject.trim().length>0){
-																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].subject+'</h5>';
+																				if(result.subWorksList[i].subWorksList[j].subject !=null && result.subWorksList[i].subWorksList[j].subject.length>10){
+																					str+='<h5 class="font_weight m_top5 tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].subject+'">'+result.subWorksList[i].subWorksList[j].subject.substring(0,10)+'...</h5>';
+																				}else{
+																					str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].subject+'</h5>';
+																				}
+																				
 																			}else{
 																				str+='<h5 class="font_weight m_top5"> - </h5>';
 																			}
@@ -520,7 +540,12 @@ function buildPetitionDetailsView(result){
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">Sub-Subject</h5>';
 																			if(result.subWorksList[i].subWorksList[j].subSubject !=null && result.subWorksList[i].subWorksList[j].subSubject.trim().length>0){
-																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].subSubject+'</h5>';
+																				if(result.subWorksList[i].subWorksList[j].subSubject !=null && result.subWorksList[i].subWorksList[j].subSubject.length>10){
+																					str+='<h5 class="font_weight m_top5 tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].subSubject+'">'+result.subWorksList[i].subWorksList[j].subSubject.substring(0,10)+'...</h5>';
+																				}else{
+																					str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].subSubject+'</h5>';
+																				}
+																				
 																			}else{
 																				str+='<h5 class="font_weight m_top5"> - </h5>';
 																			}
@@ -528,7 +553,12 @@ function buildPetitionDetailsView(result){
 																		str+='<div class="col-sm-4">';
 																			str+='<h5 class="">Department</h5>';
 																			if(result.subWorksList[i].subWorksList[j].deptName != null && result.subWorksList[i].subWorksList[j].deptName.trim().length>0){
-																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].deptName+'</h5>';
+																				if(result.subWorksList[i].subWorksList[j].deptName !=null && result.subWorksList[i].subWorksList[j].deptName>10){
+																					str+='<h5 class="font_weight m_top5 tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].deptName+'">'+result.subWorksList[i].subWorksList[j].deptName.substring(0,10)+'...</h5>';
+																				}else{
+																					str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].deptName+'</h5>';
+																				}
+																				
 																			}else{
 																				str+='<h5 class="font_weight m_top5"> - </h5>';
 																			}
@@ -557,30 +587,32 @@ function buildPetitionDetailsView(result){
 																
 																str+='<div class="pad_light_yash_bg m_top10 border_yash border_radius_5">';
 																	str+='<div class="row">';
-																		str+='<div class="col-sm-4">';
-																			str+='<h5 class="">District</h5>'
+																		str+='<div class="col-sm-12">';
+																			str+='<h5>';
 																			if(result.subWorksList[i].subWorksList[j].addressVO.districtName != null && result.subWorksList[i].subWorksList[j].addressVO.districtName.trim().length>0){
-																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].addressVO.districtName+'</h5>';
+																				str+='<span class="m_top5" style="margin-left: 5px;">D: <b>'+result.subWorksList[i].subWorksList[j].addressVO.districtName+'</b>,</span>';
 																			}else{
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
+																					//str+='<span class="m_top5"> D: -, </span>';
 																			}
-																		str+='</div>';
-																		str+='<div class="col-sm-4">';
-																			str+='<h5 class="">Constituency</h5>'
 																			if(result.subWorksList[i].subWorksList[j].addressVO.assemblyName != null && result.subWorksList[i].subWorksList[j].addressVO.assemblyName.trim().length>0){
-																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].addressVO.assemblyName+'</h5>';
+																				str+='<span class="m_top5" style="margin-left: 5px;">C: <b>'+result.subWorksList[i].subWorksList[j].addressVO.assemblyName+'</b>,</span>';
 																			}else{
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
+																				//str+='<span class="m_top5">C: - ,</span>';
 																			}
-																		str+='</div>';
-																		str+='<div class="col-sm-4">';
-																			str+='<h5 class="">Mandal</h5>'
+																			
 																			if(result.subWorksList[i].subWorksList[j].addressVO.tehsilName !=null && result.subWorksList[i].subWorksList[j].addressVO.tehsilName.trim().length>0){
-																				str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].addressVO.tehsilName+'</h5>';
+																				str+='<span class="m_top5" style="margin-left: 5px;">M: <b>'+result.subWorksList[i].subWorksList[j].addressVO.tehsilName+'</b>,</h5>';
 																			}else{
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
+																				//str+='<span class="m_top5">M: - ,</span>';
 																			}
+																			if(result.subWorksList[i].subWorksList[j].addressVO.panchayatName !=null && result.subWorksList[i].subWorksList[j].addressVO.panchayatName.trim().length>0){
+																				str+='<span class="m_top5" style="margin-left: 5px;">P: <b>'+result.subWorksList[i].subWorksList[j].addressVO.panchayatName+'</b>,</h5>';
+																			}else{
+																				//str+='<span class="m_top5">P: - ,</span>';
+																			}
+																			str+='</h5>';
 																		str+='</div>';
+																		
 																	str+='</div>';
 																str+='</div>';
 																
@@ -592,11 +624,11 @@ function buildPetitionDetailsView(result){
 																				if(result.subWorksList[i].subWorksList[j].workName !=null && result.subWorksList[i].subWorksList[j].workName.length>80){
 																					str+='<h5 class="font_weight m_top5 tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].workName+'">'+result.subWorksList[i].subWorksList[j].workName.substring(0,80)+'...</h5>';
 																				}else{
-																					str+='<h5 class="font_weight m_top5">'+result.subWorksList[i].subWorksList[j].workName+'</h5>';
+																					str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].subWorksList[j].workName+'</h5>';
 																				}
 																				
 																			}else{
-																				str+='<h5 class="font_weight m_top5"> - </h5>';
+																				str+='<h5 class="font_weight m_top10"> - </h5>';
 																			}
 																		str+='</div>';
 																	str+='</div>';
@@ -662,6 +694,26 @@ function buildPetitionDetailsView(result){
 $(document).on("click",".updateStatusChangeCls",function(){
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
+	$("#fileUploadDiv").hide();
+	$("#commentsDivId").hide();
+	$("#leadDivId").hide();
+	$("#grantDivId").hide();
+	$("#assignOfficerDivId").hide();
+	$("#assignDesignationDivId").hide();
+	$("#endorsementDivId").hide();
+	
+	$("#endorsmentNo").val('');
+	$("#remarksId").val('');
+	$("#leadId").html('');
+	$("#leadId").html('<option value="0"> SELECT LEAD </option>');
+	$("#leadId").trigger("chosen:updated");
+	$("#grantId").html('');
+	$("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
+	$("#grantId").trigger("chosen:updated");
+    $("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
+	$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+	$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');	
+	
 	selectdWorksArr=[];
 	$(".workStatusUpdateCls").each(function(){
 		if($(this).is(":checked")){
@@ -723,9 +775,9 @@ $(document).on("change","#statusChangeId",function(){
 	if(nextStatusId != null && nextStatusId>0)
 		$('#nextStatusId').val(nextStatusId);
 	if(statusId == 1){
+		$("#letterNameId").html("COVERING");
 		$("#endorsementDivId").show();
 		$("#commentsDivId").show();
-		$("#fileUploadingDivId").show();
 		$("#leadDivId").show();
 		$("#grantDivId").show();
 		$("#assignOfficerDivId").show();
@@ -738,8 +790,8 @@ $(document).on("change","#statusChangeId",function(){
 		getPmGrantList();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 6){
+		$("#letterNameId").html("ACTION COPY");
 		$("#commentsDivId").show();
-		$("#fileUploadingDivId").show();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").show();
@@ -751,9 +803,9 @@ $(document).on("change","#statusChangeId",function(){
 		$("#fileUploadDiv").show();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 7){
+		$("#letterNameId").html("DETAILED REPORT");
 		$("#fileUploadDiv").show();
 		$("#commentsDivId").show();
-		$("#fileUploadingDivId").hide();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
@@ -763,9 +815,9 @@ $(document).on("change","#statusChangeId",function(){
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
 	}else if(statusId == 3 || statusId == 4 || statusId == 5){
+		$("#letterNameId").html("");
 		$("#fileUploadDiv").hide();
 		$("#commentsDivId").show();
-		$("#fileUploadingDivId").hide();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
@@ -774,14 +826,25 @@ $(document).on("change","#statusChangeId",function(){
 		$("#buttonNameId").html("Save Details")
 	}
 	else if(statusId == 0){
+		$("#letterNameId").html("");
 		$("#fileUploadDiv").hide();
-		$("#remarksDivId").hide();
-		$("#fileUploadingDivId").hide();
+		$("#commentsDivId").hide();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
 		$("#assignDesignationDivId").hide();
 		$("#endorsementDivId").hide();
+		$("#endorsmentNo").val('');
+		$("#remarksId").val('');
+		$("#leadId").html('');
+		$("#leadId").html('<option value="0"> SELECT LEAD </option>');
+		$("#leadId").trigger("chosen:updated");
+		$("#grantId").html('');
+		$("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
+		$("#grantId").trigger("chosen:updated");
+		$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
+		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');	
 		return;
 	}
 });	
