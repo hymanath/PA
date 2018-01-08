@@ -1482,8 +1482,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setEstimateCost(String.valueOf(new Double(commonMethodsUtilService.getDoubleValueForObject(param[1])).longValue()));
 						if(!commonMethodsUtilService.getStringValueForObject(param[1]).isEmpty() && Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[1]))>0L)
 							 vo.setEstimateCostStr(commonMethodsUtilService.calculateAmountInWords(Long.valueOf(commonMethodsUtilService.getStringValueForObject(param[1]))));
-					}else
+					}else{
 						vo.setEstimateCost("");
+						vo.setEstimateCostStr("");
+					}
 					vo.setLocationScopeId(commonMethodsUtilService.getLongValueForObject(param[19]));
 					vo.setLocationValue(commonMethodsUtilService.getLongValueForObject(param[20]));
 					vo.setGrantId(commonMethodsUtilService.getLongValueForObject(param[8]));
@@ -2495,7 +2497,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					List<Object[]> childDeptDesignationsList = pmDepartmentDesignationHierarchyDAO.getSubDesignationDetailsForParentDeptDesignations(deptDesignationIdsList);
 					if(commonMethodsUtilService.isListOrSetValid(childDeptDesignationsList)){
 						for (Object[] param : childDeptDesignationsList) {
-							returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])));
+							returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])+" - "+commonMethodsUtilService.getStringValueForObject(param[2])));
 						}
 					}
 				}

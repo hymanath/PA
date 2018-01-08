@@ -1825,9 +1825,9 @@ function buildPetitionDetails(result){
 						if(isFileAvailable){
 							str+='<div class="alreadyUploadFilesCss">';
 							if(result.representationType == "self" || result.representationType == "SELF")
-								str+='<h4>ALREADY UPLOADED DOCUMENTS BY : <b> '+result.referDetailsList[i].name+' </b></h4>';
+								str+='<h4> SELF REFERRAL DOCUMENTS BY : <b> '+result.referDetailsList[i].name+' </b></h4>';
 							else
-								str+='<h4>ALREADY REFFERED DOCUMENTS BY : <b> '+result.referDetailsList[i].name+' </b></h4>';
+								str+='<h4> REFERRAL DOCUMENTS BY : <b> '+result.referDetailsList[i].name+' </b></h4>';
 							
 								str+='<div class="row">';
 									for(var j in result.referDetailsList[i].fileNamesList){
@@ -1948,7 +1948,7 @@ function buildPetitionDetails(result){
 			
 			if(isWorkFileAvailable){
 				str+='<div class="alreadyUploadFilesCss">';
-					str+='<h4>ALREADY UPLOADED WORK DOCUMENTS : </h4>';
+					str+='<h4> OTHER WORK RELATED DOCUMENTS : </h4>';
 					str+='<div class="row">';
 						for(var i in result.fileList){
 							
