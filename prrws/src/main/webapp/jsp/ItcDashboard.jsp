@@ -157,13 +157,12 @@ var searchParams = new URLSearchParams(window.location.search);
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="solidWasteManagementDashboard">
 														<h3>SWM</h3>
-	                          							<p>Solid Waste Management</p>
+                           								 <p>Solid Waste Management</p>
 													</a>
 												</div>
-	 										</div>
+											</div>
 										</div>
 									</div>
-								</div>
 								<div class="col-sm-12 m_top10">
 									<div class="menu-heading-block">
 										<h4>RURAL DEVELOPMENT</h4>

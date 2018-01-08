@@ -98,7 +98,7 @@
 													</a>
 												</div>
 											</div>
-											 <div class="col-sm-6 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#2C546C">
 													<a href="EncDevelopmentDashboard">
 														<h3>ENC</h3>
@@ -138,7 +138,7 @@
 													</a>
 												</div>
 											</div>-->
-											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="solidWasteManagementDashboard">
 														<h3>SWM</h3>
@@ -148,7 +148,6 @@
 											</div>
 										</div>
 									</div>
-								</div>
 								<div class="col-sm-12 m_top10">
 									<div class="menu-heading-block">
 										<h4>RURAL DEVELOPMENT</h4>
