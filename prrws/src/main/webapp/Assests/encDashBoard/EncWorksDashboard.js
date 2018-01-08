@@ -146,25 +146,39 @@ function locationwiseTableBlocks(result,blockId,locationType){
 					}else if(blockId == 'mandallevelBlockId'){
 						table+='<th>MANDALS</th>';
 					}
-					table+='<th>ADMIN SANCTIONED</th>';
-					table+='<th>TECHNICALLY SANCTIONED</th>';
-					table+='<th>ENTRUSTED</th>';
-					table+='<th>UNDER PROCESS</th>';
-					table+='<th>GROUNDED</th>';
-					table+='<th>COMPLETED</th>';
-					table+='<th>NOT GROUNDED</th>';
+									
+					table+='<th style="background-color:#def2f7">ADMIN SANCTIONED</th>';
+					table+='<th style="background-color:#def2f7">TECHNICALLY SANCTIONED</th>';
+					table+='<th style="background-color:#def2f7">%</th>';
+					table+='<th style="background-color:#def2f7">ENTRUSTED</th>';
+					table+='<th style="background-color:#def2f7">%</th>';
+					table+='<th style="background-color:#f9e3f0">GROUNDED</th>';
+					table+='<th style="background-color:#f9e3f0">%</th>';
+					table+='<th style="background-color:#f9e3f0">UNDER PROCESS</th>';
+					table+='<th style="background-color:#f9e3f0">%</th>';
+					table+='<th style="background-color:#f9e3f0">COMPLETED</th>';
+					table+='<th style="background-color:#f9e3f0">%</th>';
+					table+='<th style="background-color:#f9e3f0">NOT GROUNDED</th>';
+					table+='<th style="background-color:#f9e3f0">%</th>';
+					
 				table+='</thead>';
 				table+='<tbody>';
 				for(var i in result){
 					table+='<tr>';
-						table+='<td>'+result[i].locationName+'</td>';
-						table+='<td>'+result[i].adminSanctionCount+'</td>';
-						table+='<td>'+result[i].technicallySanctionedCount+'</td>';
-						table+='<td>'+result[i].totalWorksEntrusted+'</td>';
-						table+='<td>'+result[i].underProcessCount+'</td>';
-						table+='<td>'+result[i].groundedCount+'</td>';
-						table+='<td>'+result[i].completedCount+'</td>';
-						table+='<td>'+result[i].notGrounded+'</td>';
+						table+='<td style="background-color:#fff">'+result[i].locationName+'</td>';
+						table+='<td style="background-color:#def2f7">'+result[i].adminSanctionCount+'</td>';
+						table+='<td style="background-color:#def2f7">'+result[i].technicallySanctionedCount+'</td>';
+						table+='<td style="background-color:#def2f7">'+parseFloat((result[i].technicallySanctionedCount/result[i].adminSanctionCount)*100).toFixed(2)+'</td>';
+						table+='<td style="background-color:#def2f7">'+result[i].totalWorksEntrusted+'</td>';
+						table+='<td style="background-color:#def2f7">'+parseFloat((result[i].totalWorksEntrusted/result[i].adminSanctionCount)*100).toFixed(2)+'</td>';
+						table+='<td style="background-color:#f9e3f0">'+result[i].groundedCount+'</td>';
+						table+='<td style="background-color:#f9e3f0">'+parseFloat((result[i].groundedCount/result[i].totalWorksEntrusted)*100).toFixed(2)+'</td>';
+						table+='<td style="background-color:#f9e3f0">'+result[i].underProcessCount+'</td>';
+						table+='<td style="background-color:#f9e3f0">'+parseFloat((result[i].underProcessCount/result[i].groundedCount)*100).toFixed(2)+'</td>';
+						table+='<td style="background-color:#f9e3f0">'+result[i].completedCount+'</td>';
+						table+='<td style="background-color:#f9e3f0">'+parseFloat((result[i].completedCount/result[i].groundedCount)*100).toFixed(2)+'</td>';
+						table+='<td style="background-color:#f9e3f0">'+result[i].notGrounded+'</td>';
+						table+='<td style="background-color:#f9e3f0">'+parseFloat((result[i].notGrounded/result[i].totalWorksEntrusted)*100).toFixed(2)+'</td>';
 					table+='</tr>';
 				}
 				table+='</tbody>';
@@ -767,7 +781,7 @@ $(document).on("click",".workWiseDetailsCls li",function(e){
 		if(locationType == "state"){
 			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','s','table');
 		}
-		else if(locationType == "district"){
+		else if(v == "district"){
 			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','d','table');
 		}
 		else if(locationType == "constituency"){
