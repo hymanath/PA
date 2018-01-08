@@ -584,7 +584,7 @@ function refreshEm(){
 			checkedVal = "N";
 		}
 	});
-	$(".newsChannelSelectAllClsEmn").prop('checked', true);
+	//$(".newsChannelSelectAllClsEmn").prop('checked', true);
 	var channelIds=[0];
 	$(".newsChannelSelectAllClsEmn").each(function(){
 		
