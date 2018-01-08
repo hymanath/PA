@@ -41,9 +41,9 @@
         'This Year': [moment().startOf('Year'), moment()]
     }
   });
-	 $(document).on('cut copy paste', function (e) {
+	/* $(document).on('cut copy paste', function (e) {
 		e.preventDefault();
-	});
+	});*/
 	var dates= $("#dateRangePickerAUM").val();
     var pickerDates = glStartDate+' - '+glEndDate
 	  if(dates == pickerDates)

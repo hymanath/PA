@@ -17,9 +17,9 @@ $("header").on("click",".menu-cls",function(e){
 $(document).on("click",function(){
 	$(".menu-data-cls").hide();
 });
-$(document).on('cut copy paste', function (e) {
+/*$(document).on('cut copy paste', function (e) {
 	e.preventDefault();
-});
+});*/
 $(document).on("click","#promotionsBlockSwitch li",function(){	
 	$("#promotionsBlockSwitch li").removeClass("active");
 	$(this).addClass("active");
