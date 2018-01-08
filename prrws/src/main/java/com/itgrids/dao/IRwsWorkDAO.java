@@ -16,6 +16,8 @@ public interface IRwsWorkDAO extends GenericDao<RwsWork, Long>{
 	public RwsWork getWorkdetailsByIds(String workId);
 
 	public List<RwsWork> getWorksbyWorkIdList(List<String> workIds);
+
+	public List<Object[]> getnotGroundedWorkList(Date fromDate, Date toDate, String assetType, String locationType, String locationIdStr, String districtId);
 	
 
 }

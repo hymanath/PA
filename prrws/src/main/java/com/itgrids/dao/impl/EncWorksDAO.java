@@ -34,7 +34,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		sb.append("select model.workId,model.workName,model.schemeId, model.schemeName,model.agreementAmount,model.mandalId,model.mandalName,model.districtId," +
 				" model.ditrictName,model.assemblyId,model.assemblyName,model.targetDate, model.workStatus");
 		if(status.equalsIgnoreCase("Grounded")){
-			sb.append(" ,model.groundedDate,model.completionDate,datediff(model.targetDate,model.groundedDate)");
+			sb.append(" ,model.groundedDate,model.completionDate,datediff(model.targetDate,current_date())");
 		}else if(status.equalsIgnoreCase("Completed")){
 			sb.append(" ,model.groundedDate,model.completionDate,datediff(model.targetDate,model.completionDate)");
 		}

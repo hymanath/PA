@@ -425,6 +425,11 @@ public class RWSNICService implements IRWSNICService{
 		List<BasicVO> finalList = new ArrayList<BasicVO>();
 		try {
 			
+			if((VO.getFromDateStr() ==null || VO.getFromDateStr().trim().length() == 0) && (VO.getToDateStr() ==null || VO.getToDateStr().trim().length() == 0)){
+				Long year =Long.valueOf(VO.getYear());
+				VO.setFromDateStr("01-04-"+year);
+				VO.setToDateStr("01-04-"+(year+1));
+			}
 			if(VO!= null){
 				VO = setFilterVal(VO);
 			}
@@ -467,12 +472,12 @@ public class RWSNICService implements IRWSNICService{
 				 	    				Vo.setWorkComissionedCount(jObj.getLong("workComissionedCount"));
 				 	    				Vo.setWorkCompletedCount(jObj.getLong("workCompletedCount"));
 				 	    				Vo.setWorkNotGroundedCount(jObj.getLong("workNotGroundedCount"));
-				 	    				Vo.setCount(Vo.getWorkOngoingCount()+Vo.getWorkComissionedCount()+Vo.getWorkCompletedCount()+Vo.getWorkNotGroundedCount());
-				 	    				if(Vo.getCount() > 0l){
-				 	    					Vo.setPercentageOne((Vo.getWorkOngoingCount()*100.00)/Vo.getCount());
-					 	    				Vo.setPercentageTwo((Vo.getWorkComissionedCount()*100.00)/Vo.getCount());
-					 	    				Vo.setPercentageThree((Vo.getWorkCompletedCount()*100.00)/Vo.getCount());
-					 	    				Vo.setPercentageFour((Vo.getWorkNotGroundedCount()*100.00)/Vo.getCount());
+				 	    				Vo.setWorkGroundedCount(Vo.getWorkOngoingCount()-Vo.getWorkNotGroundedCount());
+				 	    				if(Vo.getWorkOngoingCount() > 0l){
+				 	    					Vo.setPercentageOne((Vo.getWorkGroundedCount()*100.00)/Vo.getWorkOngoingCount());
+					 	    				Vo.setPercentageTwo((Vo.getWorkComissionedCount()*100.00)/Vo.getWorkOngoingCount());
+					 	    				Vo.setPercentageThree((Vo.getWorkCompletedCount()*100.00)/Vo.getWorkOngoingCount());
+					 	    				Vo.setPercentageFour((Vo.getWorkNotGroundedCount()*100.00)/Vo.getWorkOngoingCount());
 				 	    				}
 		 	   							
 				 	    				mainVO.getBasicList().add(Vo);
@@ -3698,7 +3703,6 @@ public class RWSNICService implements IRWSNICService{
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 		 	    	if(finalArray!=null && finalArray.length()>0){
-		 	    		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		 	    		Calendar completedCal = Calendar.getInstance();
 		 	    		Calendar targetCal = Calendar.getInstance();
 		 	    		Map<Long,IdNameVO> assesetWorkMap = getAllAdminWorksDetails();
@@ -4069,7 +4073,7 @@ public class RWSNICService implements IRWSNICService{
 											}
 										}
 										// calculating noOfDays between two difference date
-										workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus(),"",""));
+										workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus(),"","",""));
                                         workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
                                         workDetailsMap.put(workDetailsVO.getWrokIdStr(),workDetailsVO);
 									}
@@ -4103,7 +4107,7 @@ public class RWSNICService implements IRWSNICService{
 				 } else if(daysDiff > 365L) {
 					 rangeLevelName = "More Than 1 Year";
 				 } else if(daysDiff <= 0L) {
-					 rangeLevelName = "0 Days";
+					 rangeLevelName = "In Time";
 				 }
 			 }
 			
@@ -4112,14 +4116,14 @@ public class RWSNICService implements IRWSNICService{
 		 }
 		 return rangeLevelName;
 	}
-	private Long getNoOfDaysDifference(String completionDate,String targetDate,String workStatus,String type,String durationtype) {
+	private Long getNoOfDaysDifference(String completionDate,String targetDate,String workStatus,String type,String durationtype, String countType) {
 		Long diffDays = null;
 		 try {
 		     if (completionDate != null && completionDate.trim().length() > 0 && targetDate != null && targetDate.trim().length() > 0) {
 		    	 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		    	  Long completionDateTimeInMiliSecond =  sdf.parse(completionDate).getTime();
 					 Long targetDateTimeInMiliSecond =  sdf.parse(targetDate).getTime();
-					 if(type.equalsIgnoreCase("onClick") && !durationtype.equalsIgnoreCase("0 Days")){
+					 if(countType.equalsIgnoreCase("allWorks") && !durationtype.equalsIgnoreCase("In Time")){
 						 if (completionDateTimeInMiliSecond >= targetDateTimeInMiliSecond) {
 							 Long  diffTime = completionDateTimeInMiliSecond-targetDateTimeInMiliSecond;
 							 diffDays = TimeUnit.MILLISECONDS.toDays(diffTime);
@@ -4155,7 +4159,7 @@ public class RWSNICService implements IRWSNICService{
 	
 	private List<IdNameVO> getRequiredTemplate() {
 		List<IdNameVO> resultList = new ArrayList<>(0);
-		String[] templateArr = {"0 Days","1-30 Days","31-60 Days","61-90 Days","91-180 Days","181-365 Days","More Than 1 Year"};
+		String[] templateArr = {"In Time","1-30 Days","31-60 Days","61-90 Days","91-180 Days","181-365 Days","More Than 1 Year"};
 		try {
 			IdNameVO cpwsVO = new IdNameVO();
 			cpwsVO.setAssetType("CPWS");
@@ -4197,7 +4201,8 @@ public class RWSNICService implements IRWSNICService{
 		}
 		return resultList;
 	}
-   private List<InputVO> getRequiredParamer(InputVO inputVO) {
+   @SuppressWarnings("unused")
+private List<InputVO> getRequiredParamer(InputVO inputVO) {
 		List<InputVO> parameterList = new ArrayList<>(0);
 		try {
 			if (inputVO.getAssetTypeList() != null && inputVO.getAssetTypeList().size() > 0 ) {
@@ -4230,7 +4235,6 @@ public class RWSNICService implements IRWSNICService{
 	}		
 				
 	public List<IdNameVO> getWebserviceDetails() {
-		SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
 		List<IdNameVO> finalvoList = new ArrayList<>();
 		try{
 		      //getting input url list
@@ -4662,7 +4666,7 @@ public class RWSNICService implements IRWSNICService{
 							}
 						}
 					}
-					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus(),"",""));
+					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus(),"","",""));
                     workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
                     workDetailsMap.put(workDetailsVO.getWrokIdStr(),workDetailsVO);
 				
@@ -4681,7 +4685,7 @@ public class RWSNICService implements IRWSNICService{
 
 	@SuppressWarnings("static-access")
 	@Override
-	public List<IdNameVO> getOnClickExceedWorkDetails(InputVO inputVO) {
+	public List<IdNameVO> getOnClickExceedWorkDetails(InputVO inputVO,String type) {
 		
 		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
 		try{
@@ -4698,16 +4702,7 @@ public class RWSNICService implements IRWSNICService{
 				fromDate = sdf.parse("01-04-"+inputVO.getYear());
 				fromDate = sdf.parse("01-04-"+toYear);
 			}
-			if(inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("mandal")){
-				String formatted = String.format("%04d", inputVO.getLocationValue());
-				inputVO.setLocationIdStr(formatted.substring(2,4));
-				inputVO.setDistrictValue(formatted.substring(0,2));
-			}else if(inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("district")){
-				String formatted = String.format("%02d", inputVO.getLocationValue());
-				inputVO.setLocationIdStr(formatted);
-			}else{
-				inputVO.setLocationIdStr(inputVO.getLocationValue().toString());
-			}
+			
 			List<Object[]> worksdata =  rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getStatus(),inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationIdStr(),inputVO.getDistrictValue());
 			
 			List<IdNameVO> workList = new ArrayList<IdNameVO>();
@@ -4750,7 +4745,7 @@ public class RWSNICService implements IRWSNICService{
 						
 					}
 					// calculating noOfDays between two difference date
-					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus(),"onClick",inputVO.getExceededDuration()));
+					workDetailsVO.setNoOfDays(getNoOfDaysDifference(workDetailsVO.getCompletionDate(),workDetailsVO.getTargetDate(),workDetailsVO.getWorkStatus(),"onClick",inputVO.getExceededDuration(),type));
                     workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
                     if(inputVO.getExceededDuration().isEmpty() || inputVO.getExceededDuration().length() <= 0){
                     	if(workDetailsVO.getName()!=null && !workDetailsVO.getName().isEmpty() && workDetailsVO.getName().length()>0){
@@ -4775,10 +4770,16 @@ public class RWSNICService implements IRWSNICService{
 		return finalList;
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public List<WorksVO> getSchemeWiseWorkDetails2(InputVO VO) {
 		List<WorksVO> finalList = new ArrayList<WorksVO>();
 		try {
+			if((VO.getFromDateStr() ==null || VO.getFromDateStr().trim().length() == 0) && (VO.getToDateStr() ==null || VO.getToDateStr().trim().length() == 0)){
+				Long year =Long.valueOf(VO.getYear());
+				VO.setFromDateStr("01-04-"+year);
+				VO.setToDateStr("01-04-"+(year+1));
+			}
 			if (VO != null) {
 				VO = setFilterVal(VO);
 			}
@@ -4845,7 +4846,7 @@ public class RWSNICService implements IRWSNICService{
 			List<IdNameVO> exceedeData = null;
 				VO.setLocationValue(1l);
 				VO.setExceededDuration("");
-				exceedeData = getOnClickExceedWorkDetails(VO);
+				exceedeData = getOnClickExceedWorkDetails(VO,"allWorks");
 			
 			if (commonMethodsUtilService.isListOrSetValid(exceedeData)) {
 				for (IdNameVO idNameVO : exceedeData) {
@@ -4901,6 +4902,121 @@ public class RWSNICService implements IRWSNICService{
 			LOG.error("Exception raised at getSchemeWiseWorkDetails - RuralWaterSupplyDashBoardService service",e);
 		}
 
+		return finalList;
+	}
+
+	@Override
+	public List<IdNameVO> getNotGroundedWorkDetailsLocationWise(InputVO inputVO) {
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			
+			Map<String, IdNameVO> workDetailsMap = new HashMap<String, IdNameVO>();
+			Date fromDate=null, toDate= null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			
+			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
+				fromDate = sdf.parse(inputVO.getFromDateStr());
+				toDate= sdf.parse(inputVO.getToDateStr());
+			}else{
+				Long toYear = Long.valueOf(inputVO.getYear());
+				fromDate = sdf.parse("01-04-"+inputVO.getYear());
+				fromDate = sdf.parse("01-04-"+toYear);
+			}
+			
+			List<Object[]> notGroundedWorkList = rwsWorkDAO.getnotGroundedWorkList(fromDate,toDate,"","","","");
+			for (Object[] param : notGroundedWorkList) {
+
+				//0-workId,1-workName,2-workStatus,3-assesttype,4-admindate,5-diff,6-dcode, 7-dname,8-ccode,9-cname,10-mcode,
+				//11-mname,12-hcode,13-hname,14-sancAmnt,15-sid,16-sname,17-prgcode,18-prgName
+				IdNameVO workDetailsVO = new IdNameVO();
+				workDetailsVO.setWrokIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+				workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				workDetailsVO.setWorkStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
+				workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
+				workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[6]));
+				workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[7]));
+				workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[8]));
+				workDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[9]));
+				workDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[10]));
+				workDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[11]));
+				workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[14]));
+				workDetailsVO.setNoOfDays(commonMethodsUtilService.getLongValueForObject(param[5]));
+                workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
+                
+                workDetailsMap.put(workDetailsVO.getWrokIdStr(),workDetailsVO);
+				
+			}
+			Map<String,IdNameVO> resultMap = prepareWrokDtlsLocationWise2(inputVO,workDetailsMap);
+			if (resultMap != null && resultMap.size() > 0 ) {
+				finalList.addAll(new ArrayList<>(resultMap.values()));
+				calculatingPercentage(finalList);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getNotGroundedWorkDetailsLocationWise - RuralWaterSupplyDashBoardService service",e);
+		}
+		return finalList;
+	}
+	@SuppressWarnings("static-access")
+	@Override
+	public List<IdNameVO> getOnClickNotGroundedWorkDetails(InputVO inputVO,String type) {
+		
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			Date fromDate=null, toDate= null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			
+			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
+				fromDate = sdf.parse(inputVO.getFromDateStr());
+				toDate= sdf.parse(inputVO.getToDateStr());
+			}else{
+				Long toYear = Long.valueOf(inputVO.getYear());
+				fromDate = sdf.parse("01-04-"+inputVO.getYear());
+				fromDate = sdf.parse("01-04-"+toYear);
+			}
+			//List<Object[]> notGroundedWorkList = rwsWorkDAO.getnotGroundedWorkList(fromDate,toDate);
+			List<Object[]> worksdata =  rwsWorkDAO.getnotGroundedWorkList(fromDate,toDate,inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationIdStr(),inputVO.getDistrictValue());
+			
+			List<IdNameVO> workList = new ArrayList<IdNameVO>();
+			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
+				for (Object[] param : worksdata) {
+					IdNameVO workDetailsVO = new IdNameVO();
+					workDetailsVO.setWrokIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					workDetailsVO.setWorkStatus(commonMethodsUtilService.getStringValueForObject(param[2]));
+					workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
+					workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[6]));
+					workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[8]));
+					workDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[9]));
+					workDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[10]));
+					workDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[14]));
+					workDetailsVO.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[12]));
+					workDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[13]));
+					workDetailsVO.setProgramCode(commonMethodsUtilService.getStringValueForObject(param[17]));
+					workDetailsVO.setProgramName(commonMethodsUtilService.getStringValueForObject(param[18]));
+					workDetailsVO.setNoOfDays(commonMethodsUtilService.getLongValueForObject(param[5]));
+	                workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
+                    if(inputVO.getExceededDuration().isEmpty() || inputVO.getExceededDuration().length() <= 0){
+                    	if(workDetailsVO.getName()!=null && !workDetailsVO.getName().isEmpty() && workDetailsVO.getName().length()>0){
+                    		finalList.add(workDetailsVO);
+                    	}
+                    }else{
+                    	workList.add(workDetailsVO);
+                    }
+				}
+			}
+			
+			if (commonMethodsUtilService.isListOrSetValid(workList)) {
+				for (IdNameVO VO : workList) {
+					if(VO.getName().equalsIgnoreCase(inputVO.getExceededDuration())){
+						finalList.add(VO);
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("exception occured in getExceededWorkDetailsLocationWise2() method",e);	
+		}
 		return finalList;
 	}
 

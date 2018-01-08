@@ -15,7 +15,7 @@ public class BasicVO {
 	 private Long workComissionedCount=0l ;
 	 private Long workCompletedCount=0l;
 	 private Long workNotGroundedCount=0l;
-	 
+	 private Long workGroundedCount=0l;
 	 private Long groundedPWSExceededCount =0l;
 	 private Long completedPWSExceededCount=0l;
 	 private Long commissionedPWSExceededCount=0l;
@@ -242,6 +242,12 @@ public class BasicVO {
 	}
 	public void setCommissionedCPWSExceededCount(Long commissionedCPWSExceededCount) {
 		this.commissionedCPWSExceededCount = commissionedCPWSExceededCount;
+	}
+	public Long getWorkGroundedCount() {
+		return workGroundedCount;
+	}
+	public void setWorkGroundedCount(Long workGroundedCount) {
+		this.workGroundedCount = workGroundedCount;
 	}
 	
 
