@@ -27,6 +27,7 @@
 		responsiveTabs();
 		//getExceededTargetWorksDetails();
 		getExceedWorkDetailsLocationWise("",'state',"","","","","","onGoing");
+		getNotGroundedWorkDetailsLocationWise("graph",'state',"","","","","","not grounded");
 	}
 	function getSelectedType(){
 		for(var i in levelNamesArr){
@@ -472,38 +473,7 @@ function tabBlocks(blockId,blockName){
 		}else{
 			tabBlock+='<div id="collapse'+blockId+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+blockId+'">';
 		}
-		
-			tabBlock+='<div class="row">';
-				tabBlock+='<div class="col-sm-12 overViewCls">';
-					tabBlock+='<div>';
-						
-						tabBlock+='<ul class="nav nav-tabs nav-tabs-custom custom_value'+blockName+'" role="tablist">';
-							for(var i in blocksArr)
-							{
-								if(i == 5)
-								{
-									if(blocksArr[i].id == "jalavani"){
-										tabBlock+='<li class="active" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+'><span>'+blocksArr[i].name+'</span></a></li>';
-									}else{
-										tabBlock+='<li class="active" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
-									}
-									
-								}else{
-									if(blocksArr[i].id == "jalavani"){
-										tabBlock+='<li tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><span>'+blocksArr[i].name+'</span></a></li>';
-									}else{
-										tabBlock+='<li tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+'><a href="#'+blockId+''+blocksArr[i].id+'" aria-controls="'+blockId+'habitation" role="tab" data-toggle="tab" tab_id="'+blockId+''+blocksArr[i].id+'" attr_block_name='+blockName+' attr_block_id='+blockId+' style="padding: 15px;"><img src="Assests/icons/'+blocksArr[i].img+'"/><span style="margin-left:5px;">'+blocksArr[i].name+'</span></a></li>';
-									}
-									
-								}
-								
-							}
-						tabBlock+='</ul>';
-					tabBlock+='</div>';
-				tabBlock+='</div>';
-			tabBlock+='</div>';
-		
-				var statusType='';
+		var statusType='';
 				$('.exceedWorkTypeCls').each(function(i, obj){
 					 if($(this).is(':checked')){
 						statusType = $(this).val();
@@ -518,8 +488,9 @@ function tabBlocks(blockId,blockName){
 			tabBlock+='<div class="row">';
 				tabBlock+='<div class="col-sm-8">';
 					tabBlock+='<ul class="switch-btn-New" role="tabCummulative" attr_level_type="'+blockName+'">';
-						tabBlock+='<li attr_type="completeOverview">Complete Overview</li>';
+						tabBlock+='<li attr_type="completeOverview">Complete Works Overview</li>';
 						tabBlock+='<li class="active ActiveStateCls" attr_type="exceededOverview">Exceeded Target Works Details - <span class="headingExceedId"></span></li>';
+						tabBlock+='<li attr_type="notGroundedoverView">NotGrounded Works Overview</li>';
 					tabBlock+='</ul>';
 				tabBlock+='</div>';
 				tabBlock+='<div class="col-sm-4">';
@@ -531,12 +502,6 @@ function tabBlocks(blockId,blockName){
 				tabBlock+='</div>';
 			tabBlock+='</div>';
 			
-			
-			/* //if(attr_type=='exceededOverview'){
-				tabBlock+='<div class="col-sm-2" style="left: 80px; margin-left: 1000px; margin-right: -1500px;">';
-				tabBlock+='<input value="true" type="checkbox" name="allianceParty" id="allaincePartiFieldId" class="alliancePartyCls" attr_type="partyTrends"/><span class="f-12">WITH AMOUNT</span>';
-				tabBlock+='</div>';
-			}	 */		
 			tabBlock+='<select class="form-control" role="tabListMobile">';
 				for(var i in blocksArr)
 				{
@@ -560,40 +525,19 @@ function tabBlocks(blockId,blockName){
 				{
 					if(i == 5)
 					{
-						
-						 if(blocksArr[i].id == "jalavani"){
-							 tabBlock+='<div >';
-								 tabBlock+='<div role="tabpanel" class="tab-pane active" id="alertStatus'+blockName+'"></div>';
-								 tabBlock+='<div role="tabpanel" class="tab-pane active" id="drinking'+blockName+'"></div>';
-							 tabBlock+='</div>';
-						 }else{
-							 tabBlock+='<div role="tabpanel" class="tab-pane active m_top10" id="'+blockId+''+blocksArr[i].id+'"></div>';
-						 }
+						tabBlock+='<div role="tabpanel" class="tab-pane active m_top10" id="'+blockId+''+blocksArr[i].id+'"></div>';
+					
 					}else{
-						 if(blocksArr[i].id == "jalavani"){
-							tabBlock+='<div >';
-								tabBlock+='<div  role="tabpanel" class="tab-pane" id="alertStatus'+blockName+'"></div>';
-								tabBlock+='<div  role="tabpanel" class="tab-pane" id="drinking'+blockName+'"></div>';
-							tabBlock+='</div>';
-						}else{
-							tabBlock+='<div role="tabpanel" class="tab-pane m_top10" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
-						} 
+						tabBlock+='<div role="tabpanel" class="tab-pane m_top10" id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].id+'</div>';
 					}
-				}
+				} 
 			tabBlock+='</div>';
 		tabBlock+='</div>';
 	tabBlock+='</div>';
 	tabBlock+='</div>';
 	$("#"+blockId).html(tabBlock);
 	$(".overViewCls").hide();
-	// for(var i in blocksArr)
-	// {
-		// if(blocksArr[i].id == "schemeId"){
-			//getSchemeWiseWorkDetails('table',blockName,blocksArr,"","","","completeOverview");
-			// getExceedWorkDetailsLocationWise('table',blockName,blocksArr,"","","","exceededOverview","")
-			// $("#stateBlockIdschemeId").html(spinner);
-		// }
-	// }
+	
 	if(blockId == 'constituencyBlockId'){
 		selectBox('distVal'+blockId+'');
 		selectBox('constVal'+blockId+'');
@@ -657,7 +601,7 @@ $(window,document).on('resize', function(){
 							if(GLtbodyArr[0] !=null && GLtbodyArr[0].basicList !=null && GLtbodyArr[0].basicList.length>0){
 								for(var j in GLtbodyArr[0].basicList){
 										if(GLtbodyArr[0].basicList[j].assetType == 'PWS' || GLtbodyArr[0].basicList[j].assetType == "CPWS"){
-											tableView+='<th colspan="8">'+GLtbodyArr[0].basicList[j].assetType+'</th>';
+											tableView+='<th colspan="9">'+GLtbodyArr[0].basicList[j].assetType+'</th>';
 										}
 									
 								}
@@ -665,6 +609,7 @@ $(window,document).on('resize', function(){
 							tableView+='</tr>';
 							tableView+='<tr>';
 								tableView+='<th>OnGoing</th>';
+								tableView+='<th>Grounded</th>';
 								tableView+='<th>%</th>';
 								tableView+='<th>Not Grounded</th>';
 								tableView+='<th>%</th>';
@@ -672,6 +617,7 @@ $(window,document).on('resize', function(){
 								tableView+='<th>%</th>';
 								tableView+='<th>Commissioned</th>';
 								tableView+='<th>%</th>';
+								tableView+='<th>OnGoing</th>';
 								tableView+='<th>OnGoing</th>';
 								tableView+='<th>%</th>';
 								tableView+='<th>Not Grounded</th>';
@@ -681,7 +627,7 @@ $(window,document).on('resize', function(){
 								tableView+='<th>Commissioned</th>';
 								tableView+='<th>%</th>';
 							tableView+='</tr>'
-						}else{
+						}else if(blockType != "completeOverview"){
 							var totalCPWSCount=0;
 							var totalPWSCount=0;
 							var length = (GLtbodyArr[0].subList[0].subList.length+1)*2;
@@ -795,6 +741,11 @@ $(window,document).on('resize', function(){
 												}else{
 													tableView+='<td> - </td>';
 												}
+												if(GLtbodyArr[i].basicList[j].workGroundedCount !=null && GLtbodyArr[i].basicList[j].workGroundedCount>0){
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].basicList[j].workGroundedCount+'" attr_type = "ongoing" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workGroundedCount+'</td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
 												if(GLtbodyArr[i].basicList[j].percentageOne !=null && GLtbodyArr[i].basicList[j].percentageOne>0){
 													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageOne.toFixed(1)+'</small></td>';
 												}else{
@@ -834,7 +785,7 @@ $(window,document).on('resize', function(){
 										}
 									}
 									tableView+='</tr>';
-								}else{
+								}else if(blockType == "exceededOverview"){
 									tableView+='<tr>';
 										tableView+='<td>'+GLtbodyArr[i].name+'</td>';
 										for(var j in GLtbodyArr[i].subList){
@@ -885,6 +836,58 @@ $(window,document).on('resize', function(){
 											}
 										}
 									tableView+='</tr>';
+								}else if(blockType == "notGroundedoverView"){
+									tableView+='<tr>';
+										tableView+='<td>'+GLtbodyArr[i].name+'</td>';
+										for(var j in GLtbodyArr[i].subList){
+											var cpwsPerc =0;
+											var pswsPerc=0;
+											if(GLtbodyArr[i].subList[j].assetType == "CPWS"){
+												cpwsPerc = (GLtbodyArr[i].subList[j].count/totalCPWSCount*100).toFixed(2);
+												if(GLtbodyArr[i].subList[j].count !=null && GLtbodyArr[i].subList[j].count>0){
+													tableView+='<td><span  class="schemsClickView"  attr_status="CPWS" attr_location_type="'+locationType+'" attr_filter_value="" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].count+'" attr_type = "NotGroundedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].count+'</span><br/></td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
+												
+											}else{
+												
+												pswsPerc = (GLtbodyArr[i].subList[j].count/totalPWSCount*100).toFixed(2);
+												if(GLtbodyArr[i].subList[j].count !=null && GLtbodyArr[i].subList[j].count>0){
+													tableView+='<td><span  class="schemsClickView"  attr_status="PWS" attr_location_type="'+locationType+'" attr_filter_value="" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].count+'" attr_type = "NotGroundedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].count+'</span><br/></td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
+												
+											}
+											if(GLtbodyArr[i].subList[j].sanctionedAmount !=null && GLtbodyArr[i].subList[j].sanctionedAmount>0){
+												tableView+='<td><span class="colspanLenInc'+locationType+'">'+GLtbodyArr[i].subList[j].sanctionedAmount+'<span>';
+												tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></td>';
+
+											}else{
+												tableView+='<td><span class="colspanLenInc'+locationType+'"></span> - <span class="colspanLen" style="display:none"> - </span></td>';
+											}
+										
+											for(var k in GLtbodyArr[i].subList[j].subList){
+												
+												if(GLtbodyArr[i].subList[j].subList[k].count !=null && GLtbodyArr[i].subList[j].subList[k].count>0){
+													tableView+='<td><span  class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'" attr_location_type="'+locationType+'" attr_filter_value="'+GLtbodyArr[i].subList[j].subList[k].name+'" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].subList[k].count+'" attr_type = "NotGroundedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].subList[k].count+'</span><br/> <small style="color:green;">'+GLtbodyArr[i].subList[j].subList[k].percentage+' %</small></td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
+												
+												if(GLtbodyArr[i].subList[j].subList[k].sanctionedAmount !=null && GLtbodyArr[i].subList[j].subList[k].sanctionedAmount>0){
+													tableView+='<td><span class="colspanLenInc'+locationType+'">'+GLtbodyArr[i].subList[j].subList[k].sanctionedAmount+'';
+													tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </td>';
+												}else{
+													tableView+='<td><span class="colspanLenInc'+locationType+'"> - </span><span class="colspanLen" style="display:none"> - </span> - </td>';
+												}
+												
+												
+											}
+										}
+									tableView+='</tr>';
+								
 								}
 								
 							}
@@ -971,7 +974,6 @@ $(window,document).on('resize', function(){
 		$("#stateBlockIdhabitation").html('');
 		$("#stateBlockIdperformance").html('');
 		$("#alertStatusstate").html('');
-		$("#drinkingstate").html('');
 		$("#stateBlockIdassestsId").html('');
 		$("#stateBlockIdschemeId").html('');
 		$("#stateBlockIdwaterSourceId").html('');
@@ -980,7 +982,6 @@ $(window,document).on('resize', function(){
 		$("#districtBlockIdhabitation").html('');
 		$("#districtBlockIdperformance").html('');
 		$("#alertStatusdistrict").html('');
-		$("#drinkingdistrict").html('');
 		$("#districtBlockIdassestsId").html('');
 		$("#districtBlockIdschemeId").html('');
 		$("#districtBlockIdwaterSourceId").html('');
@@ -989,7 +990,6 @@ $(window,document).on('resize', function(){
 		$("#constituencyBlockIdhabitation").html('');
 		$("#constituencyBlockIdperformance").html('');
 		$("#alertStatusconstituency").html('');
-		$("#drinkingconstituency").html('');
 		$("#constituencyBlockIdassestsId").html('');
 		$("#constituencyBlockIdschemeId").html('');
 		$("#constituencyBlockIdwaterSourceId").html('');
@@ -1001,7 +1001,6 @@ $(window,document).on('resize', function(){
 		$("#mandalBlockIdhabitation").html('');
 		$("#mandalBlockIdperformance").html('');
 		$("#alertStatusmandal").html('');
-		$("#drinkingmandal").html('');
 		$("#mandalBlockIdassestsId").html('');
 		$("#mandalBlockIdschemeId").html('');
 		$("#mandalBlockIdwaterSourceId").html('');
@@ -1500,6 +1499,11 @@ $(document).on("click",".schemsClickView",function(){
 		$("#modalSchemsTable").html('');
 		$("#modalHabliHeadingId").html("<h4 class='text-capital'>"+locationName+"&nbsp;&nbsp;"+locationType+"&nbsp;&nbsp;"+status+"&nbsp;"+"("+locationValue+")&nbsp;&nbsp;Overview</h4>");
 		getOnClickExceedWorkDetails(status,locationType,locationValue,districtVal);
+	}else if(workStatus == "NotGroundedSchemes"){
+		$("#modalHablitationDivId").modal('show');
+		$("#modalSchemsTable").html('');
+		$("#modalHabliHeadingId").html("<h4 class='text-capital'>"+locationName+"&nbsp;&nbsp;"+locationType+"&nbsp;&nbsp;"+status+"&nbsp;"+"("+locationValue+")&nbsp;&nbsp;Overview</h4>");
+		getOnClickNotGroubnWorkDetails(status,locationType,locationValue,districtVal);
 	}else{
 		$("#modalHablitationDivId").modal('show');
 		$("#modalSchemsExceedTable").html('');
@@ -1810,25 +1814,6 @@ function builOverViewBlock(result,divId){
 	}
 }
 
-/* function getExceededTargetWorksDetails(){
-	$("#ExceededTargetDetails,#ExceededTargetDetailsTotal").html(spinner);
-	var json = {
-		
-	}
-	$.ajax({                
-		type:'POST',    
-		url: 'getExceededTargetWorksDetails',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		console.log(result);
-		//return buildGraph(result);
-	});
-} */
 function buildGraph(result)
 {
 	var colorsArr=['#EE6CA9','#C61379'];
@@ -1983,15 +1968,19 @@ $(document).on("click","[role='tabCummulative'] li",function(){
 if(blockName == "state"){
 	if(blockType == "completeOverview"){
 		getSchemeWiseWorkDetails('table','state',blocksArr,"","","",blockType);
-	}else{// here using global globalStateLevelExceededTargetWorks arr no need sent ajax call in state level table building we have responce object onLoad
+	}else if(blockType == "exceededOverview"){// here using global globalStateLevelExceededTargetWorks arr no need sent ajax call in state level table building we have responce object onLoad
 		buildTableForHabitationCoverage(globalStateLevelExceededTargetWorks,'state',blocksArr,'habitations',blockType);
+	}else if(blockType == "notGroundedoverView"){
+		getNotGroundedWorkDetailsLocationWise('table','state',blocksArr,"","","",blockType);
 	}
 	
 }else if(blockName == "district"){
 	if(blockType == "completeOverview"){
 		getSchemeWiseWorkDetails('table','district',blocksArr,"","","",blockType);
-	}else{
+	}else if(blockType == "exceededOverview"){
 		getExceedWorkDetailsLocationWise('table','district',blocksArr,"","","",blockType,statusType)
+	}else if(blockType == "notGroundedoverView"){
+		getNotGroundedWorkDetailsLocationWise('table','district',blocksArr,"","","",blockType);
 	}
 	
 }else if(blockName == "constituency"){
@@ -1999,10 +1988,14 @@ if(blockName == "state"){
 		$("#distValconstituencyBlockId").show();
 		$("#constValconstituencyBlockId").show();
 		getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","",blockType);
-	}else{
+	}else if(blockType == "exceededOverview"){
 		$("#distValconstituencyBlockId").hide();
 		$("#constValconstituencyBlockId").hide();
 		getExceedWorkDetailsLocationWise('table','constituency',blocksArr,"","","",blockType,statusType)
+	}else if(blockType == "notGroundedoverView"){
+		$("#distValconstituencyBlockId").hide();
+		$("#constValconstituencyBlockId").hide();
+		getNotGroundedWorkDetailsLocationWise('table','constituency',blocksArr,"","","",blockType);
 	}
 	
 }else if(blockName == "mandal"){
@@ -2011,22 +2004,28 @@ if(blockName == "state"){
 		$("#constValmandalBlockId").show();
 		$("#mandalValmandalBlockId").show();
 		getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","",blockType);	
-	}else{
+	}else if(blockType == "exceededOverview"){
 		$("#distValmandalBlockId").hide();
 		$("#constValmandalBlockId").hide();
 		$("#mandalValmandalBlockId").hide();
 		getExceedWorkDetailsLocationWise('table','mandal',blocksArr,"","","",blockType)
-		}
+	}else if(blockType == "notGroundedoverView"){
+		$("#distValmandalBlockId").hide();
+		$("#constValmandalBlockId").hide();
+		$("#mandalValmandalBlockId").hide();
+		getNotGroundedWorkDetailsLocationWise('table','mandal',blocksArr,"","","",blockType);
+	}
 		
 	}
 });
 function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,filterValue,districtValue,blockType,statusType){
-		if(locationType == 'state'){
+	if(locationType == 'state'){
 		$("#ExceededTargetDetailsTotal").html(spinner);
 		$("#ExceededTargetDetails").html(spinner);
-	}
-	for(var k in divId){
-		$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+	}else{
+		for(var k in divId){
+			$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+		}
 	}
 	var yearVal="";
 	var financialVal =$("#financialYearId").val();
@@ -2202,9 +2201,9 @@ function buildOnclickWorkSchemsExccedDetails(result,exceededDuration){
 		]
 	});
 }
-/*$(document).on('cut copy paste', function (e) {
+$(document).on('cut copy paste', function (e) {
 	e.preventDefault();
-});*/
+});
 
 //radio button 
 $(document).on("click",".exceedWorkTypeCls",function(e){
@@ -2238,3 +2237,310 @@ $(document).on("click",".checkboxTypeCls",function(e){
 		}
 	}
 });
+
+function getNotGroundedWorkDetailsLocationWise(type,locationType,divId,filterType,filterValue,districtValue,blockType){
+	if(type == 'graph'){
+		$("#ExceededNotGroundedTotal").html(spinner);
+		$("#NotGroundedTargetDetails").html(spinner);
+	}else{
+		for(var k in divId){
+			$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
+		}
+	}
+	
+	var yearVal="";
+	var financialVal =$("#financialYearId").val();
+	if(financialVal != 0){
+		 yearVal=financialVal;
+	}
+			
+ 	var json = {
+			year:yearVal,
+			fromDateStr:glStartDate,
+			toDateStr:glEndDate,
+			districtValue:"",
+			filterType:"",
+			filterValue:"",
+			locationType:locationType, 
+			
+			}
+	
+	$.ajax({                
+		type:'POST',    
+		url: 'getNotGroundedWorkDetailsLocationWise',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(ajaxresp){
+		
+	 	if(ajaxresp !=null && ajaxresp.length>0){
+			if(type=='graph'){
+				buildnotGroundedGraph(ajaxresp);
+			}else{
+				buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',blockType);
+			}
+		}else{
+			$("#ExceededNotGroundedTotal,#NotGroundedTargetDetails").html("No Data Available");
+			//$("#"+locationType+"BlockId").html("No Data Available");
+			for(var k in divId){
+				$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
+			}
+		}
+	});
+}
+
+function buildnotGroundedGraph(result)
+{
+	var colorsArr=['#EE6CA9','#C61379'];
+	var cateArr = [];
+	var pwsArr = [];
+	var cpwsArr = [];
+	var totalWorksPWS = 0;
+	var OnGoingExceededWorks =[];
+	var CompletedExceededWorks =[];
+	var CommissionedExceededWorks =[];
+	var totalWorksCPWS = 0;
+	var totalAmountPWS = 0;
+	var totalAmountCPWS = 0;
+	
+	var OnGoingExceededWorks='';
+	var CompletedExceededWorks='';
+	var CommissionedExceededWorks='';
+	
+	for(var i in result[0].subList)
+	{
+		
+		
+		if(result[0].subList[i].assetType == 'PWS'){
+			totalWorksPWS = totalWorksPWS + result[0].subList[i].count;
+			
+		}else if(result[0].subList[i].assetType == 'CPWS'){
+			totalWorksCPWS = totalWorksCPWS + result[0].subList[i].count;
+			
+		}
+		
+		for( var j in result[0].subList[i].subList){
+			cateArr.push(result[0].subList[i].subList[j].name);
+			if(result[0].subList[i].assetType == 'PWS'){
+				pwsArr.push({"y":result[0].subList[i].subList[j].count,"extra":""+result[0].subList[i].subList[j].ongoingPWSExceededCount+"-"+result[0].subList[i].subList[j].completedPWSExceededCount+"-"+result[0].subList[i].subList[j].commissionedPWSExceededCount});
+			}else if(result[0].subList[i].assetType == 'CPWS'){
+				cpwsArr.push({"y":result[0].subList[i].subList[j].count,"extra":""+result[0].subList[i].subList[j].ongoingPWSExceededCount+"-"+result[0].subList[i].subList[j].completedPWSExceededCount+"-"+result[0].subList[i].subList[j].commissionedPWSExceededCount});
+			}
+		}
+	}
+	$("#ExceededNotGroundedTotal").highcharts({
+		chart: {
+			type: 'column'
+			
+		},
+		title: {
+			text: null
+		},
+		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories:["Total"]
+		},
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			allowDecimals: false,
+			min: 0,
+			title: {
+				text: null
+			}
+		},
+		tooltip: {
+			formatter: function () {
+				return '<b>' + this.x + '</b><br/>' +
+					this.series.name + ': ' + this.y + '<br/>'
+					//+'Total: ' + this.point.stackTotal;
+			}
+		},
+		plotOptions: {
+			column: {
+				stacking: 'normal'
+			}
+		},
+		series: [{
+			name: 'PWS',
+			data: [totalWorksPWS],
+			stack: 'PWS',
+			color:'#EE6CA9'
+		}, {
+			name: 'CPWS',
+			data: [totalWorksCPWS],
+			stack: 'CPWS',
+			color:'#C61379'
+		}]
+	});
+	$("#NotGroundedTargetDetails").highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: null
+		},
+		xAxis: {
+			categories:cateArr
+		},
+		yAxis: {
+			allowDecimals: false,
+			min: 0,
+			title: {
+				text: null
+			}
+		},
+		tooltip: {
+			formatter: function () {
+				var value = (this.point.extra).split("-");
+				return '<b>' + this.x + '</b><br/>' +
+					this.series.name + ': ' + this.y + '<br/>' ;
+			}
+		},
+		plotOptions: {
+			column: {
+				stacking: 'normal'
+			}
+		},
+		series: [{
+			name: 'PWS',
+			data: pwsArr,
+			stack: 'PWS',
+			color:'#EE6CA9'
+		}, {
+			name: 'CPWS',
+			data: cpwsArr,
+			stack: 'CPWS',
+			color:'#C61379'
+			}]
+		});
+	
+}
+
+function getOnClickNotGroubnWorkDetails(assetType,locationType,exceededDuration,locationValue,statusType){
+	$("#modalSchemsExceedTable").html(spinner);
+	$('.exceedWorkTypeCls').each(function(i, obj){
+		 if($(this).is(':checked')){
+			statusType = $(this).val();
+		 }
+	});
+	var yearVal="";
+	var financialVal =$("#financialYearId").val();
+	if(financialVal != 0){
+		 yearVal=financialVal;
+	}
+ 	var json = {
+			"assetType":assetType,
+			"fromDateStr":glStartDate,
+			"toDateStr":glEndDate,
+			"locationType":locationType,
+			"exceededDuration":exceededDuration,
+			"locationValue":locationValue,
+			 "status" : statusType,
+			 "year": yearVal
+			 
+			}
+	
+	$.ajax({                
+		type:'POST',    
+		url: 'getOnClickNotGroundedWorkDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+	 	if(result !=null && result.length>0){
+			buildOnClickNotGroubnWorkDetails(result,exceededDuration);
+		}else{
+			
+			$("#modalSchemsExceedTable").html('No Data Available');
+		}
+	});
+}
+
+function buildOnClickNotGroubnWorkDetails(result,exceededDuration){
+	var tableView='';
+	tableView+='<div class="table-responsive">';
+	tableView+='<table class="table table-bordered" id="dataTableSchems1">';
+		tableView+='<thead>';
+		tableView+='<tr>';
+				tableView+='<th class="text-capital">Work CODE</th>';
+				tableView+='<th class="text-capital">Work NAME</th>';
+				tableView+='<th>PROGRAM NAME</th>';
+				tableView+='<th>DISTRICT</th>';
+				tableView+='<th>CONSTITUENCY</th>';
+				tableView+='<th>MANDAL</th>';
+				tableView+='<th>HABITATIONS NAME</th>';
+				tableView+='<th>SANCTIONED AMOUNT</th>';
+				if(exceededDuration !=='0 Days'){
+					tableView+='<th class="text-capital">Exceeded Days</th>';
+				}	
+				
+				tableView+='<th class="text-capital">Work Status</th>';
+			tableView+='</tr>';
+			
+		tableView+='</thead>';
+		tableView+='<tbody>';
+		for(var i in result){
+			tableView+='<tr>';
+					tableView+='<td>'+result[i].wrokIdStr+'</td>';
+					tableView+='<td>'+result[i].wrokName+'</td>';
+					tableView+='<td>'+result[i].programName+'</td>';
+					tableView+='<td>'+result[i].districtName+'</td>';
+					tableView+='<td>'+result[i].constituencyName+'</td>';
+					tableView+='<td>'+result[i].mandalName+'</td>';
+					tableView+='<td>'+result[i].habitationName+'</td>';
+					tableView+='<td>'+result[i].sanctionedAmount+'</td>';
+					
+					if(typeof result[i].noOfDays === undefined || typeof result[i].noOfDays == "undefined" || result[i].noOfDays == null || result[i].noOfDays == 0){
+						tableView+='<td> - </td>';
+					}else{
+						if(exceededDuration !=='0 Days'){
+							tableView+='<td>'+result[i].noOfDays+'</td>';
+						}
+					}
+					tableView+='<td>'+result[i].workStatus+'</td>';
+				tableView+='</tr>';
+		}
+		tableView+='</tbody>';
+	tableView+='</table>';
+	tableView+='</div>';
+	$("#modalSchemsExceedTable").html(tableView);
+	$("#dataTableSchems1").dataTable({
+		"order": [ 0, 'desc' ],
+		"iDisplayLength" : 15,
+		"aLengthMenu": [[15, 30, 50, -1], [15,30,50, "All"]],
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+				title:	   'Rural Water Supply',
+				filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      '<i class="fa fa-file-pdf-o"></i>',
+				titleAttr: 'PDF',
+				title:	   'Rural Water Supply',
+				filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				orientation: "landscape",
+				pageSize:'A3',
+				customize: function (doc) {
+					doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+				}
+			}
+		]
+	});
+}

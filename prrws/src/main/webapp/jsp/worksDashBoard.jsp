@@ -219,60 +219,101 @@
 <main>
 	<section>
 		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
-						<h4>Works -  STATE LEVEL OVERVIEW</h4>
-					</div>
-					<div class="white-block" style="padding:10px;">	
-						<div class="row">
-							<div class="col-sm-6">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Works&nbsp;&nbsp;-&nbsp;&nbsp;PWS</span></h5>
-								<div class="chart2" id="habitationWorksPWS" style="height:315px;"></div>
-							</div>
-							<div class="col-sm-6">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Works&nbsp;&nbsp;-&nbsp;&nbsp;CPWS</span></h5>
-								<div class="chart2" id="habitationWorksCPWS" style="height:315px;"></div>
-							</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
+							<h4>Works -  STATE LEVEL OVERVIEW</h4>
 						</div>
-						<div id="graphTable" style="display:none;"></div>
-						<div id="graphTable2" style="display:none;"></div>
-					</div>
-				</div>
-				<div class="col-sm-12 m_top20">
-					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
-						<div class="row">
-							<div class="col-sm-3">
-								<h4>Exceeded Target Works Details</h4>
-							</div>
-							<div class="col-sm-9">
-								<div class="pull-right">
-									<label class="radio-inline m_top5">
-										<input type="radio" class="exceedWorkTypeCls"  name="optradio1" value="ongoing"checked> OnGoing Exceeded Works
-									</label>
-									<label class="radio-inline m_top5">
-										<input type="radio"  class="exceedWorkTypeCls"  name="optradio1" value="" > All Exceeded Works
-									</label>
-																	
+						<div class="white-block" style="padding:10px;">	
+							<div class="row">
+								<div class="col-sm-6">
+									<h5 style="padding:5px"><span class="chartTitleAlign">Works&nbsp;&nbsp;-&nbsp;&nbsp;PWS</span></h5>
+									<div class="chart2" id="habitationWorksPWS" style="height:315px;"></div>
+								</div>
+								<div class="col-sm-6">
+									<h5 style="padding:5px"><span class="chartTitleAlign">Works&nbsp;&nbsp;-&nbsp;&nbsp;CPWS</span></h5>
+									<div class="chart2" id="habitationWorksCPWS" style="height:315px;"></div>
 								</div>
 							</div>
-						</div>
-						
-					</div>
-					<div class="white-block" style="padding:10px;">
-						
-						<div class="row">
-							<div class="col-sm-3">
-								<div id="ExceededTargetDetailsTotal"></div>
-							</div>
-							<div class="col-sm-9">
-								<div id="ExceededTargetDetails"></div>
-							</div>
+							<div id="graphTable" style="display:none;"></div>
+							<div id="graphTable2" style="display:none;"></div>
 						</div>
 					</div>
 				</div>
+				<div class="row m_top10">
+					<div class="col-sm-12">
+						<div class="panel-group" id="accordionON">
+						  <div class="panel panel-default panel-black">
+							<div class="panel-heading" id="headingON">
+								<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordionON" href="#collapseON" aria-expanded="true" aria-controls="collapseON">
+									<div class="row">
+										<div class="col-sm-3">
+											<h4 class="panel-title text-capital">Target Exceeded Works Details</h4>
+										</div>
+									</div>
+								</a>	
+							</div>
+							<div id="collapseON" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingON">
+								
+								<div class="panel-body">
+								
+									<div class="white-block" style="padding:10px;">
+										<div class="row">
+											<div class="col-sm-4 pull-right">
+												<div class="">
+													<label class="radio-inline m_top5">
+														<input type="radio" class="exceedWorkTypeCls"  name="optradio1" value="ongoing"checked> OnGoing Exceeded Works
+													</label>
+													<label class="radio-inline m_top5">
+														<input type="radio"  class="exceedWorkTypeCls"  name="optradio1" value="" > All Exceeded Works
+													</label>
+																					
+												</div>
+											</div>	
+										</div><br/><br/>
+										<div class="row">
+											<div class="col-sm-3">
+												<div id="ExceededTargetDetailsTotal"></div>
+											</div>
+											<div class="col-sm-9">
+												<div id="ExceededTargetDetails"></div>
+											</div>
+										</div>
+									</div>
+							  </div>
+							</div>
+						  </div>
+					  </div>
+				  </div>
+			  </div>
+			  <div class="row m_top10">
+				<div class="col-sm-12">
+					  <div class="panel-group" id="accordionEX1">
+						  <div class="panel panel-default panel-black">
+							<div class="panel-heading" id="headingEX1">
+								<a role="button" class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordionEX1" href="#collapseEX1" aria-expanded="true" aria-controls="collapseEX1">
+									<h4 class="panel-title text-capital">Not Grounded Work Details</h4>
+								</a>	
+							</div>
+							<div id="collapseEX1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
+							  <div class="panel-body">
+									<div class="white-block" style="padding:10px;">
+										<div class="row">
+											<div class="col-sm-3">
+												<div id="ExceededNotGroundedTotal"></div>
+											</div>
+											<div class="col-sm-9">
+												<div id="NotGroundedTargetDetails"></div>
+											</div>
+										</div>
+									</div>
+							  </div>
+							</div>
+						  </div>
+					  </div>
+				  </div>
+			  </div>
 			</div>
-		</div>
 	</section>
 	<section>
 		<div class="container-fluid m_top20">
