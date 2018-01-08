@@ -139,7 +139,7 @@
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="solidWasteManagementDashboard">
 														<h3>SWM</h3>
-	                          								 <p>Solid Waste Management</p>
+                           								 <p>Solid Waste Management</p>
 													</a>
 												</div>
 											</div>
