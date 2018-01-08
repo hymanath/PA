@@ -20,9 +20,9 @@ $("header").on("click",".menu-cls",function(e){
 $(document).on("click",function(){
 	$(".menu-data-cls").hide();
 });
-$(document).on('cut copy paste', function (e) {
+/*$(document).on('cut copy paste', function (e) {
 	e.preventDefault();
-});
+});*/
 function onLoadCalls()
 {
 	$(".chosen-select").chosen();

@@ -38,9 +38,9 @@ var $windowWidth = $(window).width();
 			}
 		});
 	} */
-	$(document).on('cut copy paste', function (e) {
+	/*$(document).on('cut copy paste', function (e) {
 		e.preventDefault();
-	});
+	});*/
 	$(document).on('click','[collapse-overview]', function(){
 		var type = $(this).attr("collapse-overview");
 		if($(this).html() == '+')

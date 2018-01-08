@@ -2202,9 +2202,9 @@ function buildOnclickWorkSchemsExccedDetails(result,exceededDuration){
 		]
 	});
 }
-$(document).on('cut copy paste', function (e) {
+/*$(document).on('cut copy paste', function (e) {
 	e.preventDefault();
-});
+});*/
 
 //radio button 
 $(document).on("click",".exceedWorkTypeCls",function(e){
