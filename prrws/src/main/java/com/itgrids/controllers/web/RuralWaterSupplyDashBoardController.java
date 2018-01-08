@@ -514,7 +514,7 @@ public class RuralWaterSupplyDashBoardController {
 	public @ResponseBody String getWorksDataInsertionService(@RequestBody InputVO inputVO) {
 	  try {
 		  	String dropResult = null;
-			String result = "success";// rwsWorksSchedulerService.getWorksDataInsertion(inputVO);
+			String result = rwsWorksSchedulerService.getWorksDataInsertion(inputVO);
 			if(result.toString().equalsIgnoreCase("success")){
 				dropResult = rwsWorksSchedulerService.getWorksDataDeletion();
 				if(dropResult.trim().equalsIgnoreCase("success")){
@@ -546,7 +546,7 @@ public class RuralWaterSupplyDashBoardController {
 	@PostMapping("/getOnClickExceedWorkDetails")
 	public @ResponseBody List<IdNameVO> getOnClickExceedWorkDetails(@RequestBody InputVO inputVO) {
 	  try {
-			 return rWSNICService.getOnClickExceedWorkDetails(inputVO);
+			 return rWSNICService.getOnClickExceedWorkDetails(inputVO,"");
 	  } catch (Exception e) {
 			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
 	  }
