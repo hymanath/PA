@@ -68,6 +68,9 @@
 									<div class="col-sm-6">
 										<h4 class=""><a href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
 									</div>
+									<div class="col-sm-6">
+										<h4 class=""><a href="representationsDashboard">DASHBOARD</a></h4>
+									</div>
 								</div>
 							</div>
 							<div class="row">
