@@ -546,7 +546,7 @@ public class RuralWaterSupplyDashBoardController {
 	@PostMapping("/getOnClickExceedWorkDetails")
 	public @ResponseBody List<IdNameVO> getOnClickExceedWorkDetails(@RequestBody InputVO inputVO) {
 	  try {
-			 return rWSNICService.getOnClickExceedWorkDetails(inputVO,"");
+			 return rWSNICService.getOnClickExceedWorkDetails(inputVO);
 	  } catch (Exception e) {
 			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
 	  }
