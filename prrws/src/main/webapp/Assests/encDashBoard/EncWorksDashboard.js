@@ -767,7 +767,7 @@ $(document).on("click",".workWiseDetailsCls li",function(e){
 		if(locationType == "state"){
 			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','s','table');
 		}
-		else if(v == "district"){
+		else if(locationType == "district"){
 			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','d','table');
 		}
 		else if(locationType == "constituency"){
