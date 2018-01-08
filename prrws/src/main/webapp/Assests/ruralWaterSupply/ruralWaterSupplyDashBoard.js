@@ -29,9 +29,9 @@
 		var levelWiseSBArr = ['state','district','constituencies','mandal','panchayat'];
 		//var overViewArr = ['IHHL'];
 		getAllFiniancialYears();
-		$(document).on('cut copy paste', function (e) {
+		/*$(document).on('cut copy paste', function (e) {
 			e.preventDefault();
-		});
+		});*/
 		function onloadCalls(){
 			getHabitationCoverageByStatusByLocationType('state','','graph',"","","");
 			getLabTestDetails();

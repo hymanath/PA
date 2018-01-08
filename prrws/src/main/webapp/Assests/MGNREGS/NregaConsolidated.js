@@ -35,9 +35,9 @@ $('#dateRangePickerMGNT').on('dp.change', function(e){
 		projectDataConsolidated(levelId,locId,'');
 	} */
 });
-$(document).on('cut copy paste', function (e) {
+/*$(document).on('cut copy paste', function (e) {
 	e.preventDefault();
-});
+});*/
 
 function onLoadCallsConsolidated()
 {
