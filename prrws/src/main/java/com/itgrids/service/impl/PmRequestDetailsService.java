@@ -2149,7 +2149,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								 statusVO.getDeptList().add(VO);
 							 }
 						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
-							if(id.longValue() != 188l && id.longValue() != 20l && id.longValue() != 67l && id.longValue() != 439l && id.longValue() != 447l ){
+							if(id.longValue() != 8l && id.longValue() != 16l && id.longValue() != 17l && id.longValue() != 20l  ){
 								id = 0l; 
 								name="OTHERS";
 							}

@@ -97,7 +97,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				"from PmRepresenteeRefDetails as model,PmSubWorkDetails as model1" +
 				",PmRefCandidateDesignation model2 ");
 		
-		if(filterType != null && (filterType.equalsIgnoreCase("work") || filterType.equalsIgnoreCase("department") )){
+		if(filterType != null && (filterType.equalsIgnoreCase("work") || filterType.equalsIgnoreCase("department") || filterType.equalsIgnoreCase("subject"))){
 			sb.append(" left join model1.locationAddress locationAddress " );
 		}else if(filterType != null && (filterType.equalsIgnoreCase("referrelDesignation") || filterType.equalsIgnoreCase("referralName"))){
 			sb.append(" left join model.pmRefCandidateDesignation.pmRefCandidate.address locationAddress " );
@@ -121,7 +121,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		
 		sb.append(" where   model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
 				" and  model.pmRefCandidateDesignation.isDeleted = 'N' and model.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and model.pmRefCandidate.isDeleted = 'N' and model.pmRepresentee.isDeleted = 'N'  ");
-		sb.append(" and model2.pmRefCandidateId=model.pmRefCandidateId   "); 
+		sb.append(" and model2.pmRefCandidateId=model.pmRefCandidateId  and model1.pmSubject.isDeleted = 'N' "); 
 		sb.append("  and model1.pmSubject.parentPmSubjectId is null and model1.pmDepartment.isDeleted='N' ");
 		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValues != null && searchLevelValues.size()>0){
 			if(searchLevelId.longValue() ==2L){
@@ -148,6 +148,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and model1.workEndorsmentNo =:filterValue ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("department") && filterValue != null && !filterValue.isEmpty()){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:filterValue) ");
+		}else if(filterType != null && filterType.equalsIgnoreCase("subject") && filterValue != null && !filterValue.isEmpty()){
+			sb.append(" and model1.pmSubject.pmSubjectId in (:filterValue) ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("referrelDesignation") && filterValue != null && !filterValue.isEmpty()){
 			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:filterValue) ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("representeeDesignation") && filterValue != null && !filterValue.isEmpty()){
@@ -156,7 +158,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and model.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId in (:filterValue) ");
 		}
 		
-		if(filterType != null && !filterType.equalsIgnoreCase("department")){
+		if(filterType != null && !filterType.equalsIgnoreCase("department") && inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size()>0){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
 		if(inputVO.getFromRange() != null && inputVO.getToRange() != null){
@@ -166,7 +168,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and model.petition.estimationCost between :minEstimationCost and :maxEstimationCost " );
 		}
 		if(fromDate != null && toDate != null){
-			sb.append(" and date(model.petition.insertedTime) between :fromDate and :toDate " );
+			sb.append(" and (date(model.petition.insertedTime) between :fromDate and :toDate) " );
 		}
 		if(inputVO.getStatusIds() != null && inputVO.getStatusIds().size()>0){
 			sb.append(" and model1.pmStatus.pmStatusId in (:statusIds) ");
@@ -203,7 +205,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(inputVO.getStatusIds() != null && inputVO.getStatusIds().size()>0){
 			query.setParameterList("statusIds", inputVO.getStatusIds());
 		}
-		if(filterType != null && !filterType.equalsIgnoreCase("department")){
+		if(filterType != null && !filterType.equalsIgnoreCase("department") && inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size()>0){
 			query.setParameterList("deptIds", inputVO.getDeptIdsList());
 		}
 		

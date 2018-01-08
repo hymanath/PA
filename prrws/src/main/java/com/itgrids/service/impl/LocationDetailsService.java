@@ -621,8 +621,8 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			}
 			/*KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
 			List<Long> deptIds = deptVO.getDeptIdsList();*/
-			if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("work") || inputVO.getFilterType().trim().equalsIgnoreCase("department"))){
-				districtObjs=pmSubWorkDetailsDAO.getAllDistricts(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType());
+			if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("work") || inputVO.getFilterType().trim().equalsIgnoreCase("department") || inputVO.getFilterType().trim().equalsIgnoreCase("subject"))){
+				districtObjs=pmSubWorkDetailsDAO.getAllDistricts(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getSubProgramIdsList());
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referral")){
 				districtObjs=pmRefCandidateDAO.getAllDistrictsByReferral(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType());
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referrelDesignation")){
@@ -808,6 +808,35 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			}
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("department")){
 				deptObjs=pmSubWorkDetailsDAO.getDepartmentsByWorks(deptIds,startDate,endDate,statusId);
+			}
+			if(deptObjs != null && deptObjs.size() > 0){
+				for(Object[] param : deptObjs ){
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+					//String deptName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+					vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception occured at getDepartmentsBySearchType() in LocationDetailsService class ", e);
+		}
+		return finalList;
+	}
+	
+	public List<KeyValueVO> getSubjectsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,Long statusId,String subjectId){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try{
+			List<Object[]> deptObjs=null;
+			Date startDate = null;
+			Date endDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			if(startDate != null && endDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
+				startDate = format.parse(fromDate);
+				endDate = format.parse(toDate);
+			}
+			if(searchType !=null && searchType.trim().equalsIgnoreCase("subject")){
+				deptObjs=pmSubWorkDetailsDAO.getSubjectsForSearchPage(deptIds,startDate,endDate,statusId,Long.valueOf(subjectId));
 			}
 			if(deptObjs != null && deptObjs.size() > 0){
 				for(Object[] param : deptObjs ){

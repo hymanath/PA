@@ -62,14 +62,18 @@
 						<div class="arrow_box_top">
 							<div class="row">
 								<div style="padding:10px;">
-									<div class="col-sm-6">
-										<h4><a href="representationRequestEntry">ADD PETITION</a></h4>
+									<div class="col-sm-5">
+										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;"><a href="representationRequestEntry" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">ADD PETITION</a></h4>
 									</div>
 									<div class="col-sm-6">
-										<h4 class=""><a href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
+										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;" ><a href="representationRequestEntryViewMembers" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">VIEW PETITION</a></h4>
 									</div>
-									<div class="col-sm-6">
-										<h4 class=""><a href="representationsDashboard">DASHBOARD</a></h4>
+								</div>
+							</div>
+							<div class="row">
+								<div style="padding:10px;">
+								<div class="col-sm-5">
+										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;"><a href="representationsDashboard" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">DASHBOARD</a></h4>
 									</div>
 								</div>
 							</div>
@@ -136,6 +140,7 @@
 														<option value="referrelDesignation"> Referral Designation wise </option>
 														<option value="representeeDesignation"> Representee Designation wise </option>
 														<option value="department">Department wise </option>
+														<option value="subject"> Subject wise</option>
 														<option value="name"> Name</option>
 														<option value="mobile"> Mobile No</option>
 														<option value="email"> Email</option>
@@ -165,7 +170,14 @@
 														<!--<option value="0">Select Department</option>-->
 													</select>
 													<div class="error_colorCls" id="departMentsErrDiv"></div>
-												</div>	
+												</div>
+												<div class="col-sm-3" id="subjectDivId" style="display:none;">
+												<label> SUBJECT</label>
+													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT SUBJECT "  id="subjectId" multiple>
+														<!--<option value="0">Select Department</option>-->
+													</select>
+													<div class="error_colorCls" id="subJErrMsg"></div>
+												</div>													
 												<div class="col-sm-3" id="nameDivid" style="display:none;">
 												<label> NAME </label>
 													<input type="text" class="form-control clearCls" style="height:40px" onkeyUp="clearData()" id="nameId" placeholder="Please enter Name">
@@ -418,7 +430,7 @@ $(document).on("click",".closeSecondModal",function(){
   var desigId= '${param.desigId}';
   var statusId= '${param.statusId}';
   var deptId ='${param.deptId}';
- 
+ var subjId = '${param.subjId}';
     if(deptId ==''){
 	deptId=0;
 	}
@@ -428,7 +440,9 @@ $(document).on("click",".closeSecondModal",function(){
 	if(statusId ==''){
 	statusId=0;
 	}
-	
+	if(subjId ==''){
+	subjId=0;
+	}
   if(searchBy != ''){
 	  onLoadClickDataDetails();
 	}
