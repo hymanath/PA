@@ -14,9 +14,9 @@
 		var levelNamesArr=[{name:'state',id:'2'},{name:'district',id:'3'},{name:'constituency',id:'4'},{name:'mandal',id:'5'}];
 		var levelWiseSBArr = ['state','district','constituencies','mandal','panchayat'];
 		getAllFiniancialYears();
-		$(document).on('cut copy paste', function (e) {
+		/*$(document).on('cut copy paste', function (e) {
 			e.preventDefault();
-		});
+		});*/
 		function onloadCalls(){
 			getHabitationCoverageByStatusByLocationType('state','','graph',"","","");
 			//getLabTestDetails();
