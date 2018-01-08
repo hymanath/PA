@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -349,7 +351,7 @@
 		</div>
 		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
 		<input type="hidden" class="form-control" id="petitionId"  name="petitionId"/>
-		<div class="row m_top10" id="commentsDivId" style="display:none;">
+		<div class="row m_top10" id="commentsDivId">
 			<div class="col-sm-8">
 				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
@@ -397,6 +399,11 @@
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/singleFileuploadDocuments.js"></script>
 <script src="Assests/representationRequest/representationRequestEntryViewMembers.js" type="text/javascript"></script>
 <script src="Assests/representationRequest/representationRequestEntryPopupView.js" type="text/javascript"></script>
+<script>
+</script>
+<script>
+var userId = '${sessionScope.USER.userId}';
+</script>
 <script type="text/javascript">
 $(document).on("click",".closeSecondModal",function(){
     setTimeout(function(){

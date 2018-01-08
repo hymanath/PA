@@ -695,7 +695,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
 	$("#fileUploadDiv").hide();
-	$("#commentsDivId").hide();
+	$("#commentsDivId").show();
 	$("#leadDivId").hide();
 	$("#grantDivId").hide();
 	$("#assignOfficerDivId").hide();
@@ -828,7 +828,7 @@ $(document).on("change","#statusChangeId",function(){
 	else if(statusId == 0){
 		$("#letterNameId").html("");
 		$("#fileUploadDiv").hide();
-		$("#commentsDivId").hide();
+		$("#commentsDivId").show();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
@@ -1093,7 +1093,6 @@ $.ajax({
 					  if(result.exceptionMsg == "SUCCESS"){
 						  alert("Work(s) details updated successfully");
 						  $("#endorseMentModalDivId").modal("hide");
-						  $("#representeeDetailsModelDivId").modal("hide");
 						  getPetitionDetails(petitionId,endorsementNO);
 						 // $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
 					  }else{

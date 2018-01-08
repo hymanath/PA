@@ -9,7 +9,7 @@ var currentToDate=moment().add(38,"year").format("DD-MM-YYYY");
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/cadreDetailsAction")));
 wurl = wurl.replace("/PartyAnalyst","");
-
+getStatusList(0);
 
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
@@ -266,10 +266,14 @@ function representationRequestEntryTable(result){
 							str+='<td style="text-align:center;">'+result[i].subList[j].statusType+'</td>';
 						else
 							str+='<td style="text-align:center;">-</td>';
-						str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" attr_sub_work_id="'+result[i].subList[j].id+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
-						
-						//if(endorsmentNo != null && endorsmentNo != 'undefined' &&  (parseInt(endorsmentNo) ==0 || endorsmentNo=='') )
+							str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'" attr_sub_work_id="'+result[i].subList[j].id+'" style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
+							//24 - userId - admin_user
+						if(userId == 24){
 							str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
+						}else{
+							if(result[i].subList[j].statusType == 'Pending Endorsement' || result[i].subList[j].statusId == 1) 
+								str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
+						}
 						
 						str+='</td>';
 					str+='</tr>';
@@ -342,7 +346,7 @@ $(document).on("change","#locationSelId",function(){
    $('#advanceSearchBtnId').prop("checked",false); 
 	var searchType=$(this).val();
 	var dateRangeStr =$("#dateRangePicker").val();
-	 getStatusList(statusId);
+	//getStatusList(statusId);
 	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
 	if(searchType == 'all'){
 		//$('#parametersList').hide();
