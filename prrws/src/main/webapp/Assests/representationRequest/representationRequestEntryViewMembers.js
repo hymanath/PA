@@ -9,7 +9,6 @@ var currentToDate=moment().add(38,"year").format("DD-MM-YYYY");
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/cadreDetailsAction")));
 wurl = wurl.replace("/PartyAnalyst","");
-getStatusList(0);
 
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
@@ -346,7 +345,7 @@ $(document).on("change","#locationSelId",function(){
    $('#advanceSearchBtnId').prop("checked",false); 
 	var searchType=$(this).val();
 	var dateRangeStr =$("#dateRangePicker").val();
-	//getStatusList(statusId);
+	getStatusList(statusId);
 	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
 	if(searchType == 'all'){
 		//$('#parametersList').hide();
@@ -784,6 +783,9 @@ function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 		if(desigId >0){
 		getPetitionReferredMemberDetails([desigId]);
 		}
+		if(searchBy == 'referral' && desigId >0){
+			getRepresentativeSearchDetails1();
+		}
 	});	
 }
 
@@ -818,6 +820,9 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 			}
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
+		if(searchBy == 'department' && deptId >0){
+			getRepresentativeSearchDetails1();
+		}
 	});	
 }
  function searchValidations(){
@@ -1104,6 +1109,9 @@ function getStatusList(statusId){
 			}
 		}
 		$("#statusId").trigger('chosen:updated');
+		if(searchBy == 'total' && statusId >0){
+			getRepresentativeSearchDetails1();
+		}
   }); 
 }
 //getPetitionDetails(1778,'');
@@ -1837,15 +1845,6 @@ function onLoadClickDataDetails(){
 		$("#locationSelId").html('<option value="department">Department wise </option>');
 		$("#locationSelId").trigger('chosen:updated');
 	}
-	/* if(desigId != ''){
-		getDesignationsBySearchType('referrelDesignation',"designationsId",desigId,statusId);
-	} */
-	/* if(statusId != ''){
-		
-	} */
-	/* if(deptId != ''){
-	getDepartmentsBySearchType('department',"departmentId",deptId);
-	} */
 	$( "#locationSelId" ).trigger( "change" );
 }
 

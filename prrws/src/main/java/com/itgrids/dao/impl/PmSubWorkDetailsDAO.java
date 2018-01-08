@@ -217,7 +217,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 
 	public List<Object[]> getCompleteOrStatusOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate,String type){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select count(model.pmSubWorkDetailsId),model.petition.petitionId, model.pmStatus.pmStatusId,model.pmStatus.status ");
+		sb.append(" select count(distinct model.pmSubWorkDetailsId),model.petition.petitionId, model.pmStatus.pmStatusId,model.pmStatus.status ");
 		
 		if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
 			sb.append(", model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId,model1.pmRefCandidateDesignation.pmDesignation.designation  ");
@@ -232,7 +232,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
 			sb.append(" ,PmRepresenteeRefDetails model1,PmRefCandidateDesignation model2 where model1.petition.petitionId=model.petition.petitionId and ");
 			sb.append(" model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and  model1.pmRefCandidateDesignation.isDeleted = 'N' and model1.isDeleted='N' and model1.pmRepresentee.isDeleted = 'N'  " +
-					" and model1.pmRefCandidate.isDeleted = 'N' and model2.pmRefCandidateId=model1.pmRefCandidateId and  ");
+					" and model1.pmRefCandidate.isDeleted = 'N' and model2.pmRefCandidateId=model1.pmRefCandidateId and model.isDeleted='N' and  ");
 		//}else{
 		//	sb.append(" where ");
 		//}
