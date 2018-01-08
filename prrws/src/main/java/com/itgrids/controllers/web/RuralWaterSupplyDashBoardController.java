@@ -546,7 +546,7 @@ public class RuralWaterSupplyDashBoardController {
 	@PostMapping("/getOnClickExceedWorkDetails")
 	public @ResponseBody List<IdNameVO> getOnClickExceedWorkDetails(@RequestBody InputVO inputVO) {
 	  try {
-			 return rWSNICService.getOnClickExceedWorkDetails(inputVO);
+			 return rWSNICService.getOnClickExceedWorkDetails(inputVO,"");
 	  } catch (Exception e) {
 			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
 	  }
@@ -574,5 +574,24 @@ public class RuralWaterSupplyDashBoardController {
 			return false;
 	  }
 	 
+	}
+	@PostMapping("/getNotGroundedWorkDetailsLocationWise")
+	public @ResponseBody List<IdNameVO> getNotGroundedWorkDetailsLocationWise(@RequestBody InputVO inputVO) {
+	  try {
+			 return rWSNICService.getNotGroundedWorkDetailsLocationWise(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
+	  }
+	 return null;
+	}
+	
+	@PostMapping("/getOnClickNotGroundedWorkDetails")
+	public @ResponseBody List<IdNameVO> getOnClickNotGroundedWorkDetails(@RequestBody InputVO inputVO) {
+	  try {
+			 return rWSNICService.getOnClickNotGroundedWorkDetails(inputVO,"");
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
+	  }
+	 return null;
 	}
 }
