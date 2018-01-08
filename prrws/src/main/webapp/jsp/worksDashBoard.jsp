@@ -248,7 +248,7 @@
 								<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordionON" href="#collapseON" aria-expanded="true" aria-controls="collapseON">
 									<div class="row">
 										<div class="col-sm-3">
-											<h4 class="panel-title text-capital">Target Exceeded Works Details</h4>
+											<h4 class="panel-title text-capital">Exceeded Works Details</h4>
 										</div>
 									</div>
 								</a>	
