@@ -64,6 +64,8 @@ public interface IRWSNICService {
 	public List<IdNameVO> getWebserviceDetails();
 	public List<IdNameVO> getExceededWorkDetailsLocationWise(InputVO inputVO);
 	public List<IdNameVO> getExceededWorkDetailsLocationWise2(InputVO inputVO);
-	public List<IdNameVO> getOnClickExceedWorkDetails(InputVO inputVO);
+	public List<IdNameVO> getOnClickExceedWorkDetails(InputVO inputVO, String type);
 	public List<WorksVO> getSchemeWiseWorkDetails2(InputVO VO);
+	public List<IdNameVO> getNotGroundedWorkDetailsLocationWise(InputVO inputVO);
+	public List<IdNameVO> getOnClickNotGroundedWorkDetails(InputVO inputVO, String type);
 }
