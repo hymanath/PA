@@ -1,4 +1,11 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
 getDeptIdsListBYUserIdsLst();
 function getDeptIdsListBYUserIdsLst(){
 	$("#designationrepresent").html('');
@@ -186,7 +193,7 @@ function buildMyActionsDetails(result){
 														str+='<div class="col-sm-2 petition_border">';
 														str+='	<div class="">';
 															str+='<p>'+result.statusList[i].referrerList[j].name.toUpperCase()+'</p>';
-															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].referrerList[j].totalRepresents+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].referrerList[j].noOfWorks+'</a></h5>';
+															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].totalRepresents+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].noOfWorks+'</a></h5>';
 														str+='</div>';
 														str+='</div>';
 													}
@@ -201,7 +208,7 @@ function buildMyActionsDetails(result){
 														str+='<div class="col-sm-2 petition_border">';
 														str+='	<div class="">';
 															str+='<p>'+result.statusList[i].subList[j].name.toUpperCase()+'</p>';
-															str+='<h5><b title="Represents">'+result.statusList[i].subList[j].totalRepresents+'</b> - <b title="Works">'+result.statusList[i].subList[j].noOfWorks+'</b></h5>';
+															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].totalRepresents+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&desigId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].noOfWorks+'</a></h5>';
 														str+='</div>';
 														str+='</div>';
 													}

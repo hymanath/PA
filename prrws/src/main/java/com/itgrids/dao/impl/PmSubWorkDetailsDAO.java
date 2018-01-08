@@ -57,7 +57,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	}
 	
 	
-	public List<Object[]> getAllDistricts(Date fromDate,Date toDate,List<Long> deptIds,List<Long> desigIds,String desigType){
+	public List<Object[]> getAllDistricts(Date fromDate,Date toDate,List<Long> deptIds,List<Long> desigIds,String desigType,List<Long> subjtIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.locationAddress.district.districtId");
 		sb.append(",model.locationAddress.district.districtName ");
@@ -68,6 +68,9 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		}
 		if(fromDate != null && toDate != null){
 			sb.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");
+		}
+		if(subjtIds != null && subjtIds.size() >0){
+			sb.append(" and model.pmSubject.pmSubjectId in (:subjtIds) ");
 		}
 		if(desigIds != null && desigIds.size() >0 && desigType != null && desigType.equalsIgnoreCase("referral")){
 			sb.append(" and model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:desigIds) ");
@@ -85,6 +88,10 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(fromDate != null && toDate != null){
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
+		}
+		
+		if(subjtIds != null && subjtIds.size() >0){
+			query.setParameterList("subjtIds", subjtIds);
 		}
 		return query.list();
 	}
@@ -322,5 +329,41 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			return query.executeUpdate();
 		}
 		return 0;
+	}
+	
+	public List<Object[]> getSubjectsForSearchPage(List<Long> deptIds,Date fromDate,Date toDate,Long statusId,Long subjectId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.pmSubject.pmSubjectId,model.pmSubject.subject "
+				+ "from PmSubWorkDetails model where model.isDeleted='N' and model.pmSubject.isDeleted='N' " +
+				" and model.pmSubject.parentPmSubjectId is null ");
+		if(deptIds != null && deptIds.size()>0){
+			sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model.insertedTime) between :fromDate and :toDate "); 
+		}
+		if(statusId != null && statusId.longValue() >0l){
+			sb.append(" and model.pmStatus.pmStatusId = :statusId ");
+		}
+		
+		if(subjectId != null && subjectId.longValue()>0l){
+			sb.append(" and model.pmSubject.pmSubjectId = :subjectId ");
+		}
+		sb.append( "order by model.pmSubject.orderNo asc ");
+		Query query =getSession().createQuery(sb.toString());
+		if(deptIds != null && deptIds.size()>0){
+			query.setParameterList("deptIds", deptIds);
+		}
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		if(statusId != null && statusId.longValue() >0l){
+			query.setParameter("statusId", statusId);
+		}
+		if(subjectId != null && subjectId.longValue()>0l){
+			query.setParameter("subjectId", subjectId);
+		}
+		return query.list();
 	}
 }

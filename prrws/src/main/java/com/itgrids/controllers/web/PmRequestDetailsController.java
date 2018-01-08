@@ -225,6 +225,24 @@ public class PmRequestDetailsController {
 			Long statusId = Long.valueOf(inputMap.get("statusId"));
 	    	return locationDetailsService.getDepartmentsBySearchType(inputMap.get("searchType"),inputMap.get("fromDate"),inputMap.get("toDate"),deptIds,statusId);
 	    }
+	    
+	    @RequestMapping(value ="/getSubjectsBySearchType",method = RequestMethod.POST)
+	    public @ResponseBody List<KeyValueVO> getSubjectsBySearchType(@RequestBody Map<String,String> inputMap,HttpServletRequest request ) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
+			List<Long> deptIds = null;
+			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+			deptIds = deptVO.getDeptIdsList();
+			
+			Long statusId = Long.valueOf(inputMap.get("statusId"));
+	    	return locationDetailsService.getSubjectsBySearchType(inputMap.get("searchType"),inputMap.get("fromDate"),inputMap.get("toDate"),deptIds,statusId,inputMap.get("subjectId"));
+	    }
 	    @RequestMapping(value ="/getStatusList",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresenteeViewVO> getStatusList(@RequestBody Map<String,String> inputMap,HttpServletRequest request) {
 	    	Long userId =null;
