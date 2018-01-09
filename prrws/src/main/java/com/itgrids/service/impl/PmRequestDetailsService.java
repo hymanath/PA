@@ -2859,4 +2859,132 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return status;
 		}
+		
+		public RepresenteeViewVO getReferralWiseOverviewDetails(InputVO inputVO){
+			RepresenteeViewVO returnVO = new RepresenteeViewVO();
+			try {
+				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+				Date startDate = null;
+				Date endDate = null;
+				KeyValueVO deptVO = getDeptIdsListBYUserIds(inputVO.getLocationId());
+				inputVO.setDeptIdsList(deptVO.getDeptIdsList());
+				if(inputVO.getFromDate() != null && inputVO.getToDate() != null && !inputVO.getFromDate().isEmpty() && !inputVO.getToDate().isEmpty()){
+					startDate = format.parse(inputVO.getFromDate());
+					endDate = format.parse(inputVO.getToDate());
+				}
+				List<Object[]> referralList = pmSubWorkDetailsDAO.getReferralWiseOverviewDetails(inputVO,startDate,endDate);
+				if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
+					setReferralDesignationsDetails(referralList,returnVO.getReferrerList());
+				}else{
+					setDesignationWiseCount(referralList,returnVO.getSubList());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in PmRequestDetailsService @ getReferralWiseOverviewDetails() "+e.getMessage());
+			}
+			return returnVO;
+		}
+		public void setDesignationWiseCount(List<Object[]> list,List<RepresenteeViewVO> returnList){
+			try{
+				
+				Map<Long,RepresenteeViewVO> map = new HashMap<Long,RepresenteeViewVO>();
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					for (Object[] objects : list) {
+						Long id = commonMethodsUtilService.getLongValueForObject(objects[4]);
+						String name =  commonMethodsUtilService.getStringValueForObject(objects[5]);
+						if(id.longValue() != 1l && id.longValue() != 2l && id.longValue() != 7l){
+							id= 0l;
+							name = "Others";
+						}
+						RepresenteeViewVO refDesigCan = map.get(id);
+						if(refDesigCan == null){
+							refDesigCan = new RepresenteeViewVO();
+							refDesigCan.setDeptDesigId(id);
+							refDesigCan.setDesigName(name);
+							map.put(id, refDesigCan);
+						}
+						refDesigCan.setNoOfWorks(refDesigCan.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+						refDesigCan.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
+					}
+				}
+				if(commonMethodsUtilService.isMapValid(map)){
+					returnList.addAll(map.values());
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in PmRequestDetailsService @ setDesignationWiseCount() "+e.getMessage());
+			}
+		}
+		public List<RepresenteeViewVO> setStatusList(List<Long> statusIds){
+			List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
+			try {
+				RepresenteeViewVO vo = new RepresenteeViewVO();
+				vo.setId(1l);
+				vo.setName("Pending");
+				RepresenteeViewVO vo1 = new RepresenteeViewVO();
+				vo1.setId(2l);
+				vo1.setName("Rejected");
+				RepresenteeViewVO vo2 = new RepresenteeViewVO();
+				vo2.setId(3l);
+				vo2.setName("Completed");
+				returnList.add(vo);
+				returnList.add(vo1);
+				returnList.add(vo2);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in PmRequestDetailsService @ setStatusList() "+e.getMessage());
+			}
+			return returnList;
+		}
+		public void setReferralDesignationsDetails(List<Object[]> list,List<RepresenteeViewVO> returnList){
+			try{
+				List<Long> pendingIds = new ArrayList<Long>();
+				List<Long> completedIds = new ArrayList<Long>();
+				pendingIds.add(1l);
+				pendingIds.add(3l);
+				pendingIds.add(6l);
+				pendingIds.add(7l);
+				
+				completedIds.add(4l);
+				completedIds.add(8l);
+				Map<Long,RepresenteeViewVO> map = new HashMap<Long,RepresenteeViewVO>();
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					for (Object[] objects : list) {
+						RepresenteeViewVO refDesigCan = map.get(commonMethodsUtilService.getLongValueForObject(objects[6]));
+						if(refDesigCan == null){
+							refDesigCan = new RepresenteeViewVO();
+							refDesigCan.setStatusList(setStatusList(null));
+							refDesigCan.setId(commonMethodsUtilService.getLongValueForObject(objects[6]));
+							refDesigCan.setReferrerName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+							refDesigCan.setDeptDesigId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							refDesigCan.setDesigName(commonMethodsUtilService.getStringValueForObject(objects[5]));
+							refDesigCan.setName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+							map.put(commonMethodsUtilService.getLongValueForObject(objects[6]), refDesigCan);
+						}
+						refDesigCan.setNoOfWorks(refDesigCan.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+						refDesigCan.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
+						Long statusId = commonMethodsUtilService.getLongValueForObject(objects[2]);
+						if(pendingIds.contains(statusId)){
+							statusId=1l;
+						}else if(completedIds.contains(statusId)){
+							statusId=3l;
+						}else if(statusId.longValue() == 5l){
+							statusId=2l;
+						} 
+						RepresenteeViewVO statusVO = getMatchVO(refDesigCan.getStatusList(),statusId);
+						if(statusVO != null){
+							statusVO.setNoOfWorks(statusVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+							statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
+						}
+					}
+				}
+				if(commonMethodsUtilService.isMapValid(map)){
+					returnList.addAll(map.values());
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in PmRequestDetailsService @ setReferralDesignationsDetails() "+e.getMessage());
+			}
+		}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.dto.InputVO;
 import com.itgrids.model.PmSubWorkDetails;
 
 public interface IPmSubWorkDetailsDAO extends GenericDao<PmSubWorkDetails, Long> {
@@ -22,4 +23,6 @@ public interface IPmSubWorkDetailsDAO extends GenericDao<PmSubWorkDetails, Long>
 	public int updatePetitionSubWorkStatusdetails(List<Long>  petitionIdsList,Date updatedDate,Long updatedUserId,Long pmStatusId);
 	public List<Object[]> getPetitionsDetailedSubWorksIdsList(List<Long>  petitionIdsList);
 	public List<Object[]> getSubjectsForSearchPage(List<Long> deptIds,Date fromDate,Date toDate,Long statusId,Long subjectId);
+	public List<Object[]> getReferralWiseOverviewDetails(InputVO inputVO,Date startDate,Date endDate);
+	
 }

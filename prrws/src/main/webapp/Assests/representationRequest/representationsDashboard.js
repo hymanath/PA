@@ -456,4 +456,22 @@ var json = {
  }).done(function(result){
  }); 
 }
+//getReferralWiseOverviewDetails();
+function getReferralWiseOverviewDetails(){
+	var json = {
+			designationIds:[1]	  
+	  };
+	$.ajax({              
+		type:'POST',    
+		url: 'getReferralWiseOverviewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		
+	});	
 
+}

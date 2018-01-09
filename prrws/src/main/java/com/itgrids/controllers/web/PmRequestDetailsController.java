@@ -425,4 +425,19 @@ public class PmRequestDetailsController {
 			inputVO.setId(userId);
 	    	return pmRequestDetailsService.endorsingSubWorksAndAssigningToOfficer(inputVO);
 	    }
+	    
+	    @RequestMapping(value ="/getReferralWiseOverviewDetails",method = RequestMethod.POST)
+	    public @ResponseBody RepresenteeViewVO getReferralWiseOverviewDetails(@RequestBody InputVO inputVO ,HttpServletRequest request) {
+	    	Long userId =null;
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
+				userId = userVO.getUserId();
+				inputVO.setLocationId(userId);
+			}else{
+				return null;
+			}
+	    	return pmRequestDetailsService.getReferralWiseOverviewDetails(inputVO);
+	    }
 }
