@@ -1,5 +1,5 @@
-	var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
-	var glEndDate = moment().add(10, 'years').endOf('year').format("DD/MM/YYYY");
+	var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY");
+	var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	$("#dateRangePickerNA").daterangepicker({
 				opens: 'left',
@@ -46,6 +46,7 @@
 			}
 			onloadcalls();
 		});
+		onloadcalls();
 	function onloadcalls()
 	{
 		getPrintMediaCountsDetailsInfo(glStartDate,glEndDate);
@@ -294,11 +295,10 @@
 			},
 			legend: {
 				align: 'center',
-				x: -1,
+				x: 0,
 				verticalAlign: 'bottom',
-				y: -1,
+				y: 0,
 				
-				floating: true,
 				backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
 				borderColor: '#CCC',
 				borderWidth: 1,
@@ -351,7 +351,7 @@
 		});
 	}
 	function getDistrictWiseTotalOverViewInfo(currentFromDate,currentToDate)
-	{
+	{ 
 		$("#distWiseTotOveColChartId").html(spinner);
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getNewsBulletinPointBasicDetails/"+locationLevelIdGlb+"/"+locationValueArrGlb+"/"+currentFromDateEmn+"/"+currentToDateEmn+"/"+newsChannelsIdsGlbl+"/"+impactScopeIds+"/"+partyIdsGlob+"/N"
