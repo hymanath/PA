@@ -281,12 +281,12 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	public List<Object[]> getLeadWiseOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.pmSubWorkDetailsId),model.pmLead.pmLeadId,model.pmLead.leadName, model.pmStatus.pmStatusId,model.pmStatus.status ");
-		sb.append("  from PmSubWorkDetails model where  ");
+		sb.append("  from PmSubWorkDetails model where model.isDeleted='N' ");
 		
 		//sb.append("  model.pmSubject.isDeleted='N' and model.pmDepartment.isDeleted='N' and model.pmLead.isDeleted='N' and ");
 		//sb.append("  model.pmSubject.parentPmSubjectId is null  ");
 		if(deptIds != null && deptIds.size() >0){
-			 sb.append("   model.pmDepartment.pmDepartmentId in (:deptIds)  ");
+			 sb.append("  and model.pmDepartment.pmDepartmentId in (:deptIds)  ");
 		}
 		if(startDate != null && endDate != null){
 			 sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
