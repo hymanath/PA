@@ -31,7 +31,7 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayat Raj & RD & RWS</h4>
+					<h4 class="text-capital">Panchayat Raj, RD & RWS</h4>
 					<p>Rural Water Supply - AP</p>
 				</div>
 				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
@@ -98,7 +98,7 @@
 													</a>
 												</div>
 											</div>
-												<div class="col-sm-6 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#2C546C">
 													<a href="EncDevelopmentDashboard">
 														<h3>ENC</h3>
@@ -138,8 +138,7 @@
 													</a>
 												</div>
 											</div>-->
-										</div>
-										<div class="col-sm-6 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="solidWasteManagementDashboard">
 														<h3>SWM</h3>
@@ -149,7 +148,6 @@
 											</div>
 										</div>
 									</div>
-								</div>
 								<div class="col-sm-12 m_top10">
 									<div class="menu-heading-block">
 										<h4>RURAL DEVELOPMENT</h4>
@@ -170,6 +168,7 @@
 													</a>
 												</div>
 											</div>
+											
 										</div>
 									</div>
 								</div>
@@ -185,7 +184,6 @@
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 	</nav>
@@ -293,7 +291,7 @@
 						  <div class="panel-group" id="accordionEX1">
 							  <div class="panel panel-default panel-black">
 								<div class="panel-heading" id="headingEX1">
-									<a role="button" class="panelCollapseIcon collapsed" data-toggle="collapse" data-parent="#accordionEX1" href="#collapseEX1" aria-expanded="true" aria-controls="collapseEX1">
+									<a role="button" class="panelCollapseIcon collapsed collapseClick" data-toggle="collapse" data-parent="#accordionEX1" href="#collapseEX1" aria-expanded="true" aria-controls="collapseEX1">
 										<h4 class="panel-title text-capital">Not Grounded Work Details</h4>
 									</a>	
 								</div>
