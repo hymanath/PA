@@ -621,7 +621,7 @@ $(window,document).on('resize', function(){
 								tableView+='<th>Commissioned</th>';
 								tableView+='<th>%</th>';
 								tableView+='<th>OnGoing</th>';
-								tableView+='<th>OnGoing</th>';
+								tableView+='<th>Grounded</th>';
 								tableView+='<th>%</th>';
 								tableView+='<th>Not Grounded</th>';
 								tableView+='<th>%</th>';
@@ -2547,3 +2547,6 @@ function buildOnClickNotGroubnWorkDetails(result,exceededDuration){
 		]
 	});
 }
+$(".collapseClick").click(function(){
+		getNotGroundedWorkDetailsLocationWise("graph",'state',"","","","","","not grounded");
+});
