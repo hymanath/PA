@@ -24,6 +24,9 @@ var globalInnerWorksCount =0;
 var maxWorksCount =0;
 var maxCost =0;
 var coveringDocs=[];
+var globalStatusArr=[];
+var selectdWorksArr=[];
+var departmentSelectArr=[];
 
 $("#representationDate").daterangepicker({
 	singleDatePicker: true,
@@ -1997,474 +2000,551 @@ function buildPetitionDetails(result){
 	
 	//work Details
 	str+='<div class="row" id="workDetailsDiv">';
+	for(var i in result.statusList){
+		globalStatusArr=result.statusList;
+	}
 	var addWorkTypeCountMain=0;
 	var innerWorkTypeCount=0;
 		for(var i in result.subWorksList){
-			
-				str+='<div class="col-sm-12 m_top20 mainWorkDivCls " id="mainWorkDivId'+i+''+globalWorkTypeCount+'">';
-				if(i !=0){
-					str+='<div class="pull-right removeWorkCls"  id="manageInnerWorks'+globalWorkTypeCount+'" attr_inner_works_Count="'+result.subWorksList[i].subWorksList.length+'"  attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'">';
-					str+='<i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove work(s)"></i>';
-				}else{
-					str+='<div class="pull-right "  id="manageInnerWorks'+globalWorkTypeCount+'" attr_inner_works_Count="'+result.subWorksList[i].subWorksList.length+'"  attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'">';
-				}
+			str+='<div class="col-sm-12">';
+			str+='<div class="panel-group" id="accordion'+i+'">';
+				str+='<div class="panel panel-default panel-blue">';
+					str+='<div class="panel-heading" id="heading'+i+'" style="padding:10px;">';
+						if(i==0){
+							str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+						}else{
+							str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+						}
+						
+						if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
+							str+='<h4 class="panel-title text-capital">Endorsed - '+result.subWorksList[i].endorsmentNo+'</h4>';
+						}else{
+							str+='<h4 class="panel-title text-capital">Pending Endorsed</h4>';
+						}
+						str+='</a>';
+					 str+='</h4>';
 					str+='</div>';
-					
-					str+='<div style="border:3px solid #dddddd;padding:10px;">';
-						str+='<div>';
-							str+='<h3 class="panel-title f_22"></h3>';
-							
-							str+='<div class="row m_top10" >';
-								str+='<div class="col-sm-3">';
-										str+='<label>DEPARTMENT : <span class="starColor">*</span></label>';
-										str+='<select  name="worksList['+i+'].subWorksList['+globalWorkTypeCount+'].deptId"  class="form-control chosen-select m_top10 validateCls OnchangeDeptCls"  id="WorkTypeWiseDepartmentId'+result.representationType+''+i+''+globalWorkTypeCount+'" attr_main_count="'+i+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox" onChange=getPetitionSubjectList(this.value,"subjectId'+result.representationType+''+i+'","'+globalWorkTypeCount+'","change")>';
-										str+='<option value="0"> Select Department </option>';
-											for(var d in globalDepartmentsList){
-												if(globalDepartmentsList[d].key == result.subWorksList[i].deptId){
-													str+='<option value='+globalDepartmentsList[d].key+' selected>'+globalDepartmentsList[d].value+'</option>';
-												}else{
-													str+='<option value='+globalDepartmentsList[d].key+'>'+globalDepartmentsList[d].value+'</option>';
-												}
-											}
-										str+='</select><br><span class="WorkTypeWiseDepartmentId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span>';
-									str+='</div>';
-								
-								str+='<div class="col-sm-3">';
-									str+='<label>SUBJECT <span class="starColor">*</span></label>';
-									str+='<select  name="worksList['+i+'].subWorksList['+globalWorkTypeCount+'].subjectId"  class="form-control chosen-select m_top10 validateCls subjctOnchangeCls"  id="subjectId'+result.representationType+''+i+''+globalWorkTypeCount+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+result.representationType+''+i+'","'+globalWorkTypeCount+'","change") attr_main_count="'+i+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox">';
-									str+='<option value="0"> Select Subject </option>';
-											for(var sd in result.subWorksList[i].subWorksList[0].subjectsList){
-												if(result.subWorksList[i].subWorksList[0].subjectsList[sd].key == result.subWorksList[i].subjectId){
-													str+='<option value='+result.subWorksList[i].subWorksList[0].subjectsList[sd].key+' selected>'+result.subWorksList[i].subWorksList[0].subjectsList[sd].value+'</option>';
-												}else{
-													str+='<option value='+result.subWorksList[i].subWorksList[0].subjectsList[sd].key+'>'+result.subWorksList[i].subWorksList[0].subjectsList[sd].value+'</option>';
-												}
-											}
-												
-											
-									str+='</select><br><span class="subjectId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span>';
-								str+='</div>';
-								
-								str+='<div class="col-sm-3">';
-									str+='<label>SUB-SUBJECT <span class="starColor">*</span><span class="subSubjectId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span></label>';
-									str+='<select  name="worksList['+i+'].subWorksList['+globalWorkTypeCount+'].subSubjectId"  class="form-control chosen-select m_top10 validateCls subSubjectReFreshCls'+i+' subSubjctOnchangeCls"  id="subSubjectId'+result.representationType+''+i+''+globalWorkTypeCount+'" attr_main_count="'+i+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox">';
-									str+='<option value="0"> Select Sub Subject </option>';
-										for(var sd in result.subWorksList[i].subWorksList[0].subSubjectsList){
-												if(result.subWorksList[i].subWorksList[0].subSubjectsList[sd].key == result.subWorksList[i].subSubjectId){
-													str+='<option value='+result.subWorksList[i].subWorksList[0].subSubjectsList[sd].key+' selected>'+result.subWorksList[i].subWorksList[0].subSubjectsList[sd].value+'</option>';
-												}else{
-													str+='<option value='+result.subWorksList[i].subWorksList[0].subSubjectsList[sd].key+'>'+result.subWorksList[i].subWorksList[0].subSubjectsList[sd].value+'</option>';
-												}
-											}
-									str+='</select>';
-								str+='</div>';
-											
-							str+='</div>';
-							
-							//add work individual append
-							
-							for(var j in result.subWorksList[i].subWorksList){
-								globalInnerWorksCount = parseInt(globalInnerWorksCount)+1;
-								str+='<div class="row">';
-								
-								str+='<div class="m_top10" id="workDivId'+i+''+j+'">';
-										str+='<div class="col-sm-12">';
-										if(j !=0){
-												str+='<div class="pull-right removeInnerWorkCls" id="manageInnerWorks'+globalWorkTypeCount+'" attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1">';
-												str+='<i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove work"></i>';
-											}else{
-												str+='<div class="pull-right " attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1">';
-											}
-											str+='</div>';
-											str+='<div class="bg_color_view">';
-												//str+='<h3 class="panel-title f_16 font_weight">WORK 1</h3>';
-												str+='<input type="hidden" id="workIdDetails'+result.representationType+''+i+''+j+'" name="worksList['+i+'].subWorksList['+j+'].workId" value="'+result.subWorksList[i].subWorksList[j].workId+'" />';
-												str+='<div class="row m_top10">';
-														str+='<div class="col-sm-3">';
-															str+='<label> WORK TYPE <span class="starColor">*</span></label>';
-															str+='<select  name="worksList['+i+'].subWorksList['+j+'].workTypeId"  class="form-control chosen-select m_top10 validateCls newValidateCls workTypeReFreshCls'+i+'" id="workTypeId'+result.representationType+''+i+''+j+'" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-															str+='<option value="0"> Select Work Type </option>';
-																for(var w in globalWorkTypeList){
-																		if(globalWorkTypeList[w].key == result.subWorksList[i].subWorksList[j].workTypeId){
-																			str+='<option value='+globalWorkTypeList[w].key+' selected>'+globalWorkTypeList[w].value+'</option>';
-																		}else{
-																			str+='<option value='+globalWorkTypeList[w].key+'>'+globalWorkTypeList[w].value+'</option>';
-																		}
-																	}
-															str+='</select><br><span class="workTypeId'+result.representationType+''+i+''+j+'"></span>';
-														str+='</div>';
-														str+='<div class="col-sm-3">';
-															str+='<label>WORK IN COST </label>';
-															str+='<input type="text"  value="'+result.subWorksList[i].subWorksList[j].estimateCost+'" name="worksList['+i+'].subWorksList['+j+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls workCostReFreshCls'+i+'" id="appendWorkCost'+result.representationType+''+i+''+j+'" placeholder="Enter Work Cost" attr_main_count="'+i+'" attr_inner_count="'+j+'"  onkeyUp="checkIsNumber(this.id,this.value);;validateAmount(this.value,this.id,\''+result.representationType+'\')"><br><span class="  ErrCls appendWorkCost'+result.representationType+''+i+''+j+'"></span>';
-														str+='</div>';
-														str+='<div class="col-sm-3">';
-															str+='<label>WORK DETAILS <span class="starColor">*</span></label>';
-															str+='<input type="text"  value="'+result.subWorksList[i].subWorksList[j].workName+'"  name="worksList['+i+'].subWorksList['+j+'].grievanceDescription" class="form-control m_top5 height45 validateCls workDetailsReFreshCls'+i+'" id="appendWorkDetailsId'+result.representationType+''+i+''+j+'" placeholder="Enter" attr_main_count="'+i+'" attr_inner_count="'+j+'"><br><span class=" ErrCls appendWorkDetailsId'+result.representationType+''+i+''+j+'"></span>';
-														str+='</div>';
-														str+='<div class="col-sm-3">';
-															str+='<label>eOFFICE-ID </label>';
-															str+='<input type="text"  value="'+result.subWorksList[i].subWorksList[j].eOfficeId+'" name="worksList['+i+'].subWorksList['+j+'].eOfficeId" class="form-control m_top5 height45 validateCls officerIdReFreshCls'+i+'" id="appendEofficeId'+result.representationType+''+i+''+j+'" placeholder="Enter" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-														str+='</div>';
-												str+='</div>';
-												str+='<div class="row m_top10">';
-														str+='<div class="col-sm-3">';
-															str+='<label>LOCATION LEVEL <span class="starColor">*</span></label>';
-															str+='<select  name="worksList['+i+'].subWorksList['+j+'].locationScopeId" attr_work_id="'+result.subWorksList[i].subWorksList[j].workId+'" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+result.representationType+' validateCls newValidateCls locationLevelReFreshCls'+i+'" id="locationLevelId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0">Select Level</option>';
-																
-																if(result.subWorksList[i].subWorksList[j].locationScopeId == 3){
-																	str+='<option value="3" selected>District</option>';
-																	str+='<option value="4">Constituency</option>';
-																	str+='<option value="5">Mandal/Munci./Corp.</option>';
-																	str+='<option value="6">Panchayat</option>';
-																}else if(result.subWorksList[i].subWorksList[j].locationScopeId == 4){
-																	str+='<option value="3">District</option>';
-																	str+='<option value="4" selected>Constituency</option>';
-																	str+='<option value="5">Mandal/Munci./Corp.</option>';
-																	str+='<option value="6">Panchayat</option>';
-																}else if(result.subWorksList[i].subWorksList[j].locationScopeId == 5){
-																	str+='<option value="3">District</option>';
-																	str+='<option value="4">Constituency</option>';
-																	str+='<option value="5" selected>Mandal/Munci./Corp.</option>';
-																	str+='<option value="6">Panchayat</option>';
-																}else if(result.subWorksList[i].subWorksList[j].locationScopeId == 6){
-																	str+='<option value="3" >District</option>';
-																	str+='<option value="4">Constituency</option>';
-																	str+='<option value="5">Mandal/Munci./Corp.</option>';
-																	str+='<option value="6" selected >Panchayat</option>';
-																}else{
-																	str+='<option value="3">District</option>';
-																	str+='<option value="4">Constituency</option>';
-																	str+='<option value="5">Mandal/Munci./Corp.</option>';
-																	str+='<option value="6">Panchayat</option>';
-																}
-															str+='</select> <br><span class="locationLevelId'+result.representationType+''+i+''+j+'"></span>';
-														str+='</div>';
-														
-														if(result.subWorksList[i].subWorksList[j].locationScopeId == 3){
-																str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
-																str+='<label>DISTRICT <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls districtRefreshCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select District </option>';
-																	for(var dis in globaldistrictList){
-																		if(globaldistrictList[dis].id == result.subWorksList[i].subWorksList[j].addressVO.districtId){
-																			str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
-																		}else{
-																			str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
-																		}
-																	}
-																		
-																	str+='</select><br><span class="districtId'+result.representationType+''+i+''+j+'"></span>';
-																str+='</div>';
-																
-																str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" style="display:none;">';
-																str+='<label>CONSTITUENCY <span class="starColor">*</span></label>';
-																str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls conChangeCls conRefreshCls'+i+''+j+'" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Constituency </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.constituencyList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key == result.subWorksList[i].subWorksList[j].addressVO.assemblyId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="constituencyId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'" style="display:none;">';
-																str+='<label>MANDAL/MUNCI./CORP. <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls mandalRefreshCls'+i+''+j+' madalChangeCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Mandal/Munci/Corp </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 panchayatCls'+result.representationType+''+i+''+j+'" style="display:none;">';
-																str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls panchayatRefreshCls'+i+''+j+'" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Panchayat </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="panchayatId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-														}else if (result.subWorksList[i].subWorksList[j].locationScopeId == 4){
-															str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
-																str+='<label>DISTRICT <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls districtRefreshCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select District </option>';
-																	for(var dis in globaldistrictList){
-																		if(globaldistrictList[dis].id == result.subWorksList[i].subWorksList[j].addressVO.districtId){
-																			str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
-																		}else{
-																			str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
-																		}
-																	}
-																		
-																	str+='</select><br><span class="districtId'+result.representationType+''+i+''+j+'"></span>';
-																str+='</div>';
-																
-																str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" >';
-																str+='<label>CONSTITUENCY <span class="starColor">*</span></label>';
-																str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls conChangeCls conRefreshCls'+i+''+j+'" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Constituency </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.constituencyList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key == result.subWorksList[i].subWorksList[j].addressVO.assemblyId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="constituencyId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'" style="display:none;">';
-																str+='<label>MANDAL/MUNCI./CORP. <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls mandalRefreshCls'+i+''+j+' madalChangeCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Mandal/Munci/Corp </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 panchayatCls'+result.representationType+''+i+''+j+'" style="display:none;">';
-																str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls panchayatRefreshCls'+i+''+j+'" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Panchayat </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="panchayatId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-														}else if(result.subWorksList[i].subWorksList[j].locationScopeId == 5){
-															str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
-																str+='<label>DISTRICT <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls districtRefreshCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select District </option>';
-																	for(var dis in globaldistrictList){
-																		if(globaldistrictList[dis].id == result.subWorksList[i].subWorksList[j].addressVO.districtId){
-																			str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
-																		}else{
-																			str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
-																		}
-																	}
-																		
-																	str+='</select><br><span class="districtId'+result.representationType+''+i+''+j+'"></span>';
-																str+='</div>';
-																
-																str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" >';
-																str+='<label>CONSTITUENCY <span class="starColor">*</span></label>';
-																str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls conChangeCls conRefreshCls'+i+''+j+'" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Constituency </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.constituencyList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key == result.subWorksList[i].subWorksList[j].addressVO.assemblyId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="constituencyId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'">';
-																str+='<label>MANDAL/MUNCI./CORP. <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls mandalRefreshCls'+i+''+j+' madalChangeCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Mandal/Munci/Corp </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 panchayatCls'+result.representationType+''+i+''+j+'" style="display:none;">';
-																str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls panchayatRefreshCls'+i+''+j+'" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Panchayat </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="panchayatId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-														}else if(result.subWorksList[i].subWorksList[j].locationScopeId == 6){
-															str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
-																str+='<label>DISTRICT <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls districtRefreshCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select District </option>';
-																	for(var dis in globaldistrictList){
-																		if(globaldistrictList[dis].id == result.subWorksList[i].subWorksList[j].addressVO.districtId){
-																			str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
-																		}else{
-																			str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
-																		}
-																	}
-																		
-																	str+='</select><br><span class="districtId'+result.representationType+''+i+''+j+'"></span>';
-																str+='</div>';
-																
-																str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" >';
-																str+='<label>CONSTITUENCY <span class="starColor">*</span></label>';
-																str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls conChangeCls conRefreshCls'+i+''+j+'" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Constituency </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.constituencyList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key == result.subWorksList[i].subWorksList[j].addressVO.assemblyId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="constituencyId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'">';
-																str+='<label>MANDAL/MUNCI./CORP. <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls mandalRefreshCls'+i+''+j+' madalChangeCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Mandal/Munci/Corp </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 panchayatCls'+result.representationType+''+i+''+j+'">';
-																str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls panchayatRefreshCls'+i+''+j+'" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Panchayat </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.panchaytsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.panchayatId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.panchaytsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="panchayatId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-														}else {
-															str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
-																str+='<label>DISTRICT <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls districtRefreshCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select District </option>';
-																	for(var dis in globaldistrictList){
-																		if(globaldistrictList[dis].id == result.subWorksList[i].subWorksList[j].addressVO.districtId){
-																			str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
-																		}else{
-																			str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
-																		}
-																	}
-																		
-																	str+='</select><br><span class="districtId'+result.representationType+''+i+''+j+'"></span>';
-																str+='</div>';
-																
-																str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" >';
-																str+='<label>CONSTITUENCY <span class="starColor">*</span></label>';
-																str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls conRefreshCls'+i+''+j+' conChangeCls" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Constituency </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.constituencyList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key == result.subWorksList[i].subWorksList[j].addressVO.assemblyId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="constituencyId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'">';
-																str+='<label>MANDAL/MUNCI./CORP. <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls mandalRefreshCls'+i+''+j+' madalChangeCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Mandal/Munci/Corp </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-															
-															str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'">';
-																str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
-																str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls panchayatRefreshCls'+i+''+j+'" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
-																str+='<option value="0" > Select Panchayat </option>';
-																	for(var c in result.subWorksList[i].subWorksList[j].addressVO.mandalsList){
-																		if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == result.subWorksList[i].subWorksList[j].addressVO.tehsilId){
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}else{
-																			str+='<option value="'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key+'">'+result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
-																		}
-																	}
-																	
-																str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
-															str+='</div>';
-														}
-															
-												str+='</div>';
-											str+='</div>';
-										str+='</div>';
-										innerWorkTypeCount=result.subWorksList[i].subWorksList.length;
-										
-									str+='</div>';	
-									str+='</div>';	
+					if(i==0){
+						str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+					}else{
+						str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
+					}
+					  str+='<div class="panel-body" style="background-color: #F7F7F7;">';
+							str+='<div class="m_top20 mainWorkDivCls " id="mainWorkDivId'+i+''+globalWorkTypeCount+'">';
+								for(var k in result.subWorksList[i].subWorksList){
+									var departmentWiseSubWorks = result.subWorksList[i].subWorksList
+									
+									if(k !=0){
+										str+='<div class="pull-right removeWorkCls"  id="manageInnerWorks'+globalWorkTypeCount+'" attr_inner_works_Count="'+departmentWiseSubWorks[k].length+'"  attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'">';
+										str+='<i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove work(s)"></i>';
+									}else{
+										str+='<div class="pull-right "  id="manageInnerWorks'+globalWorkTypeCount+'" attr_inner_works_Count="'+departmentWiseSubWorks[k].subWorksList.length+'"  attr_id="mainWorkDivId'+i+''+globalWorkTypeCount+'" attr_type="self'+result.representationType+'">';
 									}
-								str+='<div class="appendInnerBlocks'+result.representationType+''+i+''+innerWorkTypeCount+'"></div>';	
-								str+='<div class="row">';	
-								str+='<div class="col-sm-12">';
-									str+='<div class="pull-right">';
-										str+='<span class="addLocationCss m_top10 pull-right cloned_Inner_Element" style="cursor:pointer;" attr_type="'+result.representationType+'" attr_counterval="'+i+'" main_work_count="0" inner_work_count="'+innerWorkTypeCount+'" attr_id="manageInnerWorks'+globalWorkTypeCount+'">ADD WORK </span>';
+										str+='</div>';
+										
+										str+='<div style="border:3px solid #dddddd;padding:10px;background-color:#fff;">';
+											str+='<div>';
+												str+='<h3 class="panel-title f_22"></h3>';
+													
+												str+='<div class="row m_top10" >';
+													str+='<div class="col-sm-3">';
+															str+='<label>DEPARTMENT : <span class="starColor">*</span></label>';
+															str+='<select  name="worksList['+i+'].subWorksList['+globalWorkTypeCount+'].deptId"  class="form-control chosen-select m_top10 validateCls OnchangeDeptCls"  id="WorkTypeWiseDepartmentId'+result.representationType+''+i+''+globalWorkTypeCount+'" attr_main_count="'+i+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox" onChange=getPetitionSubjectList(this.value,"subjectId'+result.representationType+''+i+'","'+globalWorkTypeCount+'","change")>';
+															str+='<option value="0"> Select Department </option>';
+																for(var d in globalDepartmentsList){
+																	if(globalDepartmentsList[d].key == departmentWiseSubWorks[k].deptId){
+																		str+='<option value='+globalDepartmentsList[d].key+' selected>'+globalDepartmentsList[d].value+'</option>';
+																	}else{
+																		str+='<option value='+globalDepartmentsList[d].key+'>'+globalDepartmentsList[d].value+'</option>';
+																	}
+																}
+															str+='</select><br><span class="WorkTypeWiseDepartmentId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span>';
+														str+='</div>';
+													
+													str+='<div class="col-sm-3">';
+														str+='<label>SUBJECT <span class="starColor">*</span></label>';
+														str+='<select  name="worksList['+i+'].subWorksList['+globalWorkTypeCount+'].subjectId"  class="form-control chosen-select m_top10 validateCls subjctOnchangeCls"  id="subjectId'+result.representationType+''+i+''+globalWorkTypeCount+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+result.representationType+''+i+'","'+globalWorkTypeCount+'","change") attr_main_count="'+i+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox">';
+														str+='<option value="0"> Select Subject </option>';
+																for(var sd in departmentWiseSubWorks[k].subWorksList[0].subjectsList){
+																	if(departmentWiseSubWorks[k].subWorksList[0].subjectsList[sd].key == departmentWiseSubWorks[k].subjectId){
+																		str+='<option value='+departmentWiseSubWorks[k].subWorksList[0].subjectsList[sd].key+' selected>'+departmentWiseSubWorks[k].subWorksList[0].subjectsList[sd].value+'</option>';
+																	}else{
+																		str+='<option value='+departmentWiseSubWorks[k].subWorksList[0].subjectsList[sd].key+'>'+departmentWiseSubWorks[k].subWorksList[0].subjectsList[sd].value+'</option>';
+																	}
+																}
+																	
+																
+														str+='</select><br><span class="subjectId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span>';
+													str+='</div>';
+													
+													str+='<div class="col-sm-3">';
+														str+='<label>SUB-SUBJECT <span class="starColor">*</span><span class="subSubjectId'+result.representationType+''+i+''+globalWorkTypeCount+'"></span></label>';
+														str+='<select  name="worksList['+i+'].subWorksList['+globalWorkTypeCount+'].subSubjectId"  class="form-control chosen-select m_top10 validateCls subSubjectReFreshCls'+i+' subSubjctOnchangeCls"  id="subSubjectId'+result.representationType+''+i+''+globalWorkTypeCount+'" attr_main_count="'+i+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox">';
+														str+='<option value="0"> Select Sub Subject </option>';
+															for(var sd in departmentWiseSubWorks[k].subWorksList[0].subSubjectsList){
+																	if(departmentWiseSubWorks[k].subWorksList[0].subSubjectsList[sd].key == departmentWiseSubWorks[k].subSubjectId){
+																		str+='<option value='+departmentWiseSubWorks[k].subWorksList[0].subSubjectsList[sd].key+' selected>'+departmentWiseSubWorks[k].subWorksList[0].subSubjectsList[sd].value+'</option>';
+																	}else{
+																		str+='<option value='+departmentWiseSubWorks[k].subWorksList[0].subSubjectsList[sd].key+'>'+departmentWiseSubWorks[k].subWorksList[0].subSubjectsList[sd].value+'</option>';
+																	}
+																}
+														str+='</select>';
+													str+='</div>';
+													str+='<div class="col-sm-3">';
+														str+='<h5 class="pull-right">';
+															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+															str+='</label>';
+															str+='</h5>';
+													str+='</div>';
+												str+='</div>';
+												
+												//add work individual append
+												
+												for(var j in departmentWiseSubWorks[k].subWorksList){
+													globalInnerWorksCount = parseInt(globalInnerWorksCount)+1;
+														
+													str+='<div class="row">';
+													
+													str+='<div class="m_top10" id="workDivId'+i+''+j+'">';
+															str+='<div class="col-sm-12">';
+															if(j !=0){
+																	str+='<h5 class="pull-right">';
+																	
+																	str+='<span style="margin-right: 5px;">';
+																		str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																			str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span>'; 
+																			if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
+																				str+='<input type="checkbox" id="" value="'+departmentWiseSubWorks[k].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+departmentWiseSubWorks[k].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+																			}else{
+																				str+='<input type="checkbox" id="" value="'+departmentWiseSubWorks[k].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: -14px;margin-left: 56px;" attr_department_id="'+departmentWiseSubWorks[k].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+																			}	
+																			
+																		str+='</label>';
+																	str+='</span>';
+																	str+='<span class="removeInnerWorkCls" id="manageInnerWorks'+globalWorkTypeCount+'" attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1" style="background-color:#ccc;padding:4px;top:2px;position:relative;">';
+																	str+='<i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove work"></i></span>';
+																	str+='</h5>';
+																}else{
+																	str+='<h5 class="pull-right">';
+																	str+='<span  attr_id="workDivId'+i+''+j+'" attr_type="self" attr_candidateid="1"></span>';
+																	str+='<span>';
+																		str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																			str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span>'; 
+																			if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
+																				str+='<input type="checkbox" id="" value="'+departmentWiseSubWorks[k].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+departmentWiseSubWorks[k].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+																			}else{
+																				str+='<input type="checkbox" id="" value="'+departmentWiseSubWorks[k].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: -14px;margin-left: 56px;" attr_department_id="'+departmentWiseSubWorks[k].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+																			}	
+																			
+																		str+='</label>';
+																	str+='</span>';
+																	str+='</h5>';
+																}
+																
+																str+='<div class="bg_color_view">';
+																	
+																	//str+='<h3 class="panel-title f_16 font_weight">WORK 1</h3>';
+																	str+='<input type="hidden" id="workIdDetails'+result.representationType+''+i+''+j+'" name="worksList['+i+'].subWorksList['+j+'].workId" value="'+departmentWiseSubWorks[k].subWorksList[j].workId+'" />';
+																	str+='<div class="row m_top10">';
+																			str+='<div class="col-sm-3">';
+																				str+='<label> WORK TYPE <span class="starColor">*</span></label>';
+																				str+='<select  name="worksList['+i+'].subWorksList['+j+'].workTypeId"  class="form-control chosen-select m_top10 validateCls newValidateCls workTypeReFreshCls'+i+'" id="workTypeId'+result.representationType+''+i+''+j+'" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																				str+='<option value="0"> Select Work Type </option>';
+																					for(var w in globalWorkTypeList){
+																							if(globalWorkTypeList[w].key == departmentWiseSubWorks[k].subWorksList[j].workTypeId){
+																								str+='<option value='+globalWorkTypeList[w].key+' selected>'+globalWorkTypeList[w].value+'</option>';
+																							}else{
+																								str+='<option value='+globalWorkTypeList[w].key+'>'+globalWorkTypeList[w].value+'</option>';
+																							}
+																						}
+																				str+='</select><br><span class="workTypeId'+result.representationType+''+i+''+j+'"></span>';
+																			str+='</div>';
+																			str+='<div class="col-sm-3">';
+																				str+='<label>WORK IN COST </label>';
+																				str+='<input type="text"  value="'+departmentWiseSubWorks[k].subWorksList[j].estimateCost+'" name="worksList['+i+'].subWorksList['+j+'].estimateCost" class="form-control m_top5 height45 validateCls amountCls workCostReFreshCls'+i+'" id="appendWorkCost'+result.representationType+''+i+''+j+'" placeholder="Enter Work Cost" attr_main_count="'+i+'" attr_inner_count="'+j+'"  onkeyUp="checkIsNumber(this.id,this.value);;validateAmount(this.value,this.id,\''+result.representationType+'\')"><br><span class="  ErrCls appendWorkCost'+result.representationType+''+i+''+j+'"></span>';
+																			str+='</div>';
+																			str+='<div class="col-sm-3">';
+																				str+='<label>WORK DETAILS <span class="starColor">*</span></label>';
+																				str+='<input type="text"  value="'+departmentWiseSubWorks[k].subWorksList[j].workName+'"  name="worksList['+i+'].subWorksList['+j+'].grievanceDescription" class="form-control m_top5 height45 validateCls workDetailsReFreshCls'+i+'" id="appendWorkDetailsId'+result.representationType+''+i+''+j+'" placeholder="Enter" attr_main_count="'+i+'" attr_inner_count="'+j+'"><br><span class=" ErrCls appendWorkDetailsId'+result.representationType+''+i+''+j+'"></span>';
+																			str+='</div>';
+																			str+='<div class="col-sm-3">';
+																				str+='<label>eOFFICE-ID </label>';
+																				str+='<input type="text"  value="'+departmentWiseSubWorks[k].subWorksList[j].eOfficeId+'" name="worksList['+i+'].subWorksList['+j+'].eOfficeId" class="form-control m_top5 height45 validateCls officerIdReFreshCls'+i+'" id="appendEofficeId'+result.representationType+''+i+''+j+'" placeholder="Enter" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																			str+='</div>';
+																	str+='</div>';
+																	str+='<div class="row m_top10">';
+																			str+='<div class="col-sm-3">';
+																				str+='<label>LOCATION LEVEL <span class="starColor">*</span></label>';
+																				str+='<select  name="worksList['+i+'].subWorksList['+j+'].locationScopeId" attr_work_id="'+departmentWiseSubWorks[k].subWorksList[j].workId+'" class="form-control chosen-select m_top10 locationLevelChange locationLevelValidCls'+result.representationType+' validateCls newValidateCls locationLevelReFreshCls'+i+'" id="locationLevelId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0">Select Level</option>';
+																					
+																					if(departmentWiseSubWorks[k].subWorksList[j].locationScopeId == 3){
+																						str+='<option value="3" selected>District</option>';
+																						str+='<option value="4">Constituency</option>';
+																						str+='<option value="5">Mandal/Munci./Corp.</option>';
+																						str+='<option value="6">Panchayat</option>';
+																					}else if(departmentWiseSubWorks[k].subWorksList[j].locationScopeId == 4){
+																						str+='<option value="3">District</option>';
+																						str+='<option value="4" selected>Constituency</option>';
+																						str+='<option value="5">Mandal/Munci./Corp.</option>';
+																						str+='<option value="6">Panchayat</option>';
+																					}else if(departmentWiseSubWorks[k].subWorksList[j].locationScopeId == 5){
+																						str+='<option value="3">District</option>';
+																						str+='<option value="4">Constituency</option>';
+																						str+='<option value="5" selected>Mandal/Munci./Corp.</option>';
+																						str+='<option value="6">Panchayat</option>';
+																					}else if(departmentWiseSubWorks[k].subWorksList[j].locationScopeId == 6){
+																						str+='<option value="3" >District</option>';
+																						str+='<option value="4">Constituency</option>';
+																						str+='<option value="5">Mandal/Munci./Corp.</option>';
+																						str+='<option value="6" selected >Panchayat</option>';
+																					}else{
+																						str+='<option value="3">District</option>';
+																						str+='<option value="4">Constituency</option>';
+																						str+='<option value="5">Mandal/Munci./Corp.</option>';
+																						str+='<option value="6">Panchayat</option>';
+																					}
+																				str+='</select> <br><span class="locationLevelId'+result.representationType+''+i+''+j+'"></span>';
+																			str+='</div>';
+																			
+																			if(departmentWiseSubWorks[k].subWorksList[j].locationScopeId == 3){
+																					str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
+																					str+='<label>DISTRICT <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls districtRefreshCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select District </option>';
+																						for(var dis in globaldistrictList){
+																							if(globaldistrictList[dis].id == departmentWiseSubWorks[k].subWorksList[j].addressVO.districtId){
+																								str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
+																							}else{
+																								str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
+																							}
+																						}
+																							
+																						str+='</select><br><span class="districtId'+result.representationType+''+i+''+j+'"></span>';
+																					str+='</div>';
+																					
+																					str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" style="display:none;">';
+																					str+='<label>CONSTITUENCY <span class="starColor">*</span></label>';
+																					str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls conChangeCls conRefreshCls'+i+''+j+'" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Constituency </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.assemblyId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="constituencyId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																				
+																				str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'" style="display:none;">';
+																					str+='<label>MANDAL/MUNCI./CORP. <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls mandalRefreshCls'+i+''+j+' madalChangeCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Mandal/Munci/Corp </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.tehsilId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																				
+																				str+='<div class="col-sm-2 panchayatCls'+result.representationType+''+i+''+j+'" style="display:none;">';
+																					str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls panchayatRefreshCls'+i+''+j+'" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Panchayat </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.tehsilId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="panchayatId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																			}else if (departmentWiseSubWorks[k].subWorksList[j].locationScopeId == 4){
+																				str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
+																					str+='<label>DISTRICT <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls districtRefreshCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select District </option>';
+																						for(var dis in globaldistrictList){
+																							if(globaldistrictList[dis].id == departmentWiseSubWorks[k].subWorksList[j].addressVO.districtId){
+																								str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
+																							}else{
+																								str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
+																							}
+																						}
+																							
+																						str+='</select><br><span class="districtId'+result.representationType+''+i+''+j+'"></span>';
+																					str+='</div>';
+																					
+																					str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" >';
+																					str+='<label>CONSTITUENCY <span class="starColor">*</span></label>';
+																					str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls conChangeCls conRefreshCls'+i+''+j+'" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Constituency </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.assemblyId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="constituencyId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																				
+																				str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'" style="display:none;">';
+																					str+='<label>MANDAL/MUNCI./CORP. <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls mandalRefreshCls'+i+''+j+' madalChangeCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Mandal/Munci/Corp </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.tehsilId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																				
+																				str+='<div class="col-sm-2 panchayatCls'+result.representationType+''+i+''+j+'" style="display:none;">';
+																					str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls panchayatRefreshCls'+i+''+j+'" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Panchayat </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.tehsilId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="panchayatId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																			}else if(departmentWiseSubWorks[k].subWorksList[j].locationScopeId == 5){
+																				str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
+																					str+='<label>DISTRICT <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls districtRefreshCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select District </option>';
+																						for(var dis in globaldistrictList){
+																							if(globaldistrictList[dis].id == departmentWiseSubWorks[k].subWorksList[j].addressVO.districtId){
+																								str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
+																							}else{
+																								str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
+																							}
+																						}
+																							
+																						str+='</select><br><span class="districtId'+result.representationType+''+i+''+j+'"></span>';
+																					str+='</div>';
+																					
+																					str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" >';
+																					str+='<label>CONSTITUENCY <span class="starColor">*</span></label>';
+																					str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls conChangeCls conRefreshCls'+i+''+j+'" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Constituency </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.assemblyId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="constituencyId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																				
+																				str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'">';
+																					str+='<label>MANDAL/MUNCI./CORP. <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls mandalRefreshCls'+i+''+j+' madalChangeCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Mandal/Munci/Corp </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.tehsilId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																				
+																				str+='<div class="col-sm-2 panchayatCls'+result.representationType+''+i+''+j+'" style="display:none;">';
+																					str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls panchayatRefreshCls'+i+''+j+'" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Panchayat </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.tehsilId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="panchayatId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																			}else if(departmentWiseSubWorks[k].subWorksList[j].locationScopeId == 6){
+																				str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
+																					str+='<label>DISTRICT <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls districtRefreshCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select District </option>';
+																						for(var dis in globaldistrictList){
+																							if(globaldistrictList[dis].id == departmentWiseSubWorks[k].subWorksList[j].addressVO.districtId){
+																								str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
+																							}else{
+																								str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
+																							}
+																						}
+																							
+																						str+='</select><br><span class="districtId'+result.representationType+''+i+''+j+'"></span>';
+																					str+='</div>';
+																					
+																					str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" >';
+																					str+='<label>CONSTITUENCY <span class="starColor">*</span></label>';
+																					str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls conChangeCls conRefreshCls'+i+''+j+'" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Constituency </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.assemblyId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="constituencyId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																				
+																				str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'">';
+																					str+='<label>MANDAL/MUNCI./CORP. <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls mandalRefreshCls'+i+''+j+' madalChangeCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Mandal/Munci/Corp </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.tehsilId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																				
+																				str+='<div class="col-sm-2 panchayatCls'+result.representationType+''+i+''+j+'">';
+																					str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.panchayatId"  class="form-control chosen-select m_top10  validateCls panchayatRefreshCls'+i+''+j+'" id="panchayatId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Panchayat </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.panchaytsList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.panchaytsList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.panchayatId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.panchaytsList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.panchaytsList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.panchaytsList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.panchaytsList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="panchayatId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																			}else {
+																				str+='<div class="col-sm-2 districtCls'+result.representationType+''+i+''+j+'" >';
+																					str+='<label>DISTRICT <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.districtId"  class="form-control chosen-select m_top10 districtLevelChange validateCls districtRefreshCls" id="districtId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select District </option>';
+																						for(var dis in globaldistrictList){
+																							if(globaldistrictList[dis].id == departmentWiseSubWorks[k].subWorksList[j].addressVO.districtId){
+																								str+='<option value="'+globaldistrictList[dis].id+'" selected>'+globaldistrictList[dis].name+'</option>';
+																							}else{
+																								str+='<option value="'+globaldistrictList[dis].id+'">'+globaldistrictList[dis].name+'</option>';
+																							}
+																						}
+																							
+																						str+='</select><br><span class="districtId'+result.representationType+''+i+''+j+'"></span>';
+																					str+='</div>';
+																					
+																					str+='<div class="col-sm-2 constituencyCls'+result.representationType+''+i+''+j+'" >';
+																					str+='<label>CONSTITUENCY <span class="starColor">*</span></label>';
+																					str+='<select   name="worksList['+i+'].subWorksList['+j+'].addressVO.assemblyId"  class="form-control chosen-select m_top10 constituencyLevelChange validateCls conRefreshCls'+i+''+j+' conChangeCls" id="constituencyId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Constituency </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.assemblyId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.constituencyList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="constituencyId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																				
+																				str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'">';
+																					str+='<label>MANDAL/MUNCI./CORP. <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls mandalRefreshCls'+i+''+j+' madalChangeCls" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Mandal/Munci/Corp </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList){
+																							if(departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.tehsilId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																				
+																				str+='<div class="col-sm-2 mandalCls'+result.representationType+''+i+''+j+'">';
+																					str+='<label>PANCHAYAT <span class="starColor">*</span></label>';
+																					str+='<select  name="worksList['+i+'].subWorksList['+j+'].addressVO.tehsilId"  class="form-control chosen-select m_top10 mandalLevelChange validateCls panchayatRefreshCls'+i+''+j+'" id="mandalId'+result.representationType+''+i+''+j+'" attr_counterval="'+i+''+j+'" attr_type="'+result.representationType+'" attr_type_change="main" attr_main_count="'+i+'" attr_inner_count="'+j+'">';
+																					str+='<option value="0" > Select Panchayat </option>';
+																						for(var c in departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList){
+																							if(result.subWorksList[i].subWorksList[j].addressVO.mandalsList[c].key == departmentWiseSubWorks[k].subWorksList[j].addressVO.tehsilId){
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'" selected>'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}else{
+																								str+='<option value="'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].key+'">'+departmentWiseSubWorks[k].subWorksList[j].addressVO.mandalsList[c].value+'</option>';
+																							}
+																						}
+																						
+																					str+='</select><br><span class="mandalId'+result.representationType+''+i+''+j+'"></span>';
+																				str+='</div>';
+																			}
+																				
+																	str+='</div>';
+																str+='</div>';
+															str+='</div>';
+															innerWorkTypeCount=departmentWiseSubWorks[k].subWorksList.length;
+															
+														str+='</div>';	
+														str+='</div>';	
+														}
+													str+='<div class="appendInnerBlocks'+result.representationType+''+i+''+innerWorkTypeCount+'"></div>';	
+													str+='<div class="row">';	
+													str+='<div class="col-sm-12">';
+														str+='<div class="pull-right">';
+															str+='<span class="addLocationCss m_top10 pull-right cloned_Inner_Element" style="cursor:pointer;" attr_type="'+result.representationType+'" attr_counterval="'+i+'" main_work_count="0" inner_work_count="'+innerWorkTypeCount+'" attr_id="manageInnerWorks'+globalWorkTypeCount+'">ADD WORK </span>';
+															
+															str+='<span class="addLocationCss m_top10 pull-right updateStatusChangeCls" style="cursor:pointer;margin-right: 5px;" attr_total_works="'+departmentWiseSubWorks[k].subWorksList.length+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">UPDATE STATUS </span>';
+															
+														str+='</div>';
+													str+='</div>';
+												str+='</div>';
+												//append add work individual End
+										str+='</div>';
 									str+='</div>';
+								
+								
+								addWorkTypeCountMain=departmentWiseSubWorks.length+1;
+							}
 								str+='</div>';
-							str+='</div>';
-							//append add work individual End
-					str+='</div>';
+					  str+='</div>';
+					str+='</div>';					 
 				str+='</div>';
 			str+='</div>';
+			str+='</div>';
 			
-			addWorkTypeCountMain=result.subWorksList.length+1;
+			
+			
 		}	
 		str+='</div>';
 		
@@ -3468,7 +3548,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
  	
 	if(flag == false){
 		$('#saveButtonId').show();
-		//return;
+		return;
 	}
 	
 	$('#saveButtonId').hide();	
@@ -3735,3 +3815,286 @@ $(document).on("change",".madalChangeCls",function(){
 	$(".panchayatRefreshCls"+outerCount+innerCount).html('<option value="0">Select Panchayat </option>');
 	$(".panchayatRefreshCls"+outerCount+innerCount).trigger('chosen:updated');
 });
+ $(document).on("click",".workStatusSelectedAllCls",function(){
+	var endorsNo = $(this).attr("attr_enrorsNo");
+	if($(this).is(":checked")){
+		$(".checkbox"+endorsNo).prop("checked",true);
+	}else{
+		$(".checkbox"+endorsNo).prop("checked",false);
+	}
+ });
+ $(document).on("click",".updateStatusChangeCls",function(){
+	var totalWorks = $(this).attr("attr_total_works");
+	var enrorsNo = $(this).attr("attr_enrorsNo");
+	$("#fileUploadDiv").hide();
+	$("#commentsDivId").show();
+	$("#leadDivId").hide();
+	$("#grantDivId").hide();
+	$("#assignOfficerDivId").hide();
+	$("#assignDesignationDivId").hide();
+	$("#endorsementDivId").hide();
+	
+	$("#endorsmentNo").val('');
+	$("#remarksId").val('');
+	$("#leadId").html('');
+	$("#leadId").html('<option value="0"> SELECT LEAD </option>');
+	$("#leadId").trigger("chosen:updated");
+	$("#grantId").html('');
+	$("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
+	$("#grantId").trigger("chosen:updated");
+    $("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
+	$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+	$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');	
+	
+	selectdWorksArr=[];
+	$(".workStatusUpdateCls").each(function(){
+		if($(this).is(":checked")){
+			selectdWorksArr.push($(this).val());
+			departmentSelectArr.push($(this).attr("attr_department_id"));
+		}
+	});
+	
+	if(selectdWorksArr.length == 0){
+		alert("Please select atleast one work to update.");
+		return ;
+	}
+	$('#endorsWorksId').html("Save Details");
+	var notSeleWorks = totalWorks - selectdWorksArr.length;
+	
+	$("#statusChangeId").html('');
+	if(globalStatusArr !=null && globalStatusArr.length>0){
+		 $("#statusChangeId").append('<option value="0" attr_next_status_id="0" >Select Status</option>');
+		for(var i in globalStatusArr){
+			var nextStatusId=6;
+			if(globalStatusArr[i].key == 1)
+				nextStatusId=6;
+			else if(globalStatusArr[i].key == 6)
+				nextStatusId=7;
+			else if(globalStatusArr[i].key == 7)
+				nextStatusId=3;
+			else if(globalStatusArr[i].key == 3)
+				nextStatusId=8;
+			else if(globalStatusArr[i].key == 4)
+				nextStatusId=4;
+			else if(globalStatusArr[i].key == 5)
+				nextStatusId=5;	
+			if(enrorsNo !=null && enrorsNo>0){
+				if(globalStatusArr[i].key !=1){
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+' </option>');
+				}
+				
+			}else{
+				$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+' </option>');
+			}	
+			
+		}
+	}
+	$("#statusChangeId").chosen();
+	$("#statusChangeId").trigger('chosen:updated');
+	
+	$("#endorseMentModalDivId").modal("show");
+	$("#endorseMentHeadingId").html("Endorsed No - "+enrorsNo+"")
+	
+	$("#totalWorksId").html(totalWorks)
+	$("#selectdWorksId").html(selectdWorksArr.length)
+	$("#notSeleWorksId").html(notSeleWorks)
+	
+});	
+$(document).on("change","#statusChangeId",function(){
+	var statusId = $(this).val();
+	var nextStatusId = $('option:selected', this).attr('attr_next_status_id') ;
+	$('#nextStatusId').val(0);
+	if(nextStatusId != null && nextStatusId>0)
+		$('#nextStatusId').val(nextStatusId);
+	if(statusId == 1){
+		$("#letterNameId").html("COVERING");
+		$("#endorsementDivId").show();
+		$("#commentsDivId").show();
+		$("#leadDivId").show();
+		$("#grantDivId").show();
+		$("#assignOfficerDivId").show();
+		$("#assignDesignationDivId").show();
+		$("#fileUploadDiv").show();
+		$("#buttonNameId").html("Forward")
+		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+		initializeSingleUploadDocument("uploadEndorsementDocId");
+		getPmBriefLeadList();
+		getPmGrantList();
+		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+	}else if(statusId == 6){
+		$("#remarksId").val('');
+		$("#letterNameId").html("ACTION COPY");
+		$("#commentsDivId").show();
+		$("#leadDivId").hide();
+		$("#grantDivId").hide();
+		$("#assignOfficerDivId").show();
+		$("#assignDesignationDivId").show();
+		$("#endorsementDivId").hide();
+		$("#buttonNameId").html("Forward")
+		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+		initializeSingleUploadDocument("uploadEndorsementDocId");
+		$("#fileUploadDiv").show();
+		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+	}else if(statusId == 7){
+		$("#remarkIdErr").html('');
+		$("#remarksId").val('');
+		$("#letterNameId").html("DETAILED REPORT");
+		$("#fileUploadDiv").show();
+		$("#commentsDivId").show();
+		$("#leadDivId").hide();
+		$("#grantDivId").hide();
+		$("#assignOfficerDivId").hide();
+		$("#assignDesignationDivId").hide();
+		$("#endorsementDivId").hide();
+		$("#buttonNameId").html("Save Details")
+		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+		initializeSingleUploadDocument("uploadEndorsementDocId");
+	}else if(statusId == 3 || statusId == 4 || statusId == 5){
+		$("#remarkIdErr").html('');
+		$("#remarksId").val('')
+		$("#letterNameId").html("");
+		$("#fileUploadDiv").hide();
+		$("#commentsDivId").show();
+		$("#leadDivId").hide();
+		$("#grantDivId").hide();
+		$("#assignOfficerDivId").hide();
+		$("#assignDesignationDivId").hide();
+		$("#endorsementDivId").hide();
+		$("#buttonNameId").html("Save Details")
+	}
+	else if(statusId == 0){
+		$("#letterNameId").html("");
+		$("#fileUploadDiv").hide();
+		$("#commentsDivId").show();
+		$("#leadDivId").hide();
+		$("#grantDivId").hide();
+		$("#assignOfficerDivId").hide();
+		$("#assignDesignationDivId").hide();
+		$("#endorsementDivId").hide();
+		$("#endorsmentNo").val('');
+		$("#remarksId").val('');
+		$("#leadId").html('');
+		$("#leadId").html('<option value="0"> SELECT LEAD </option>');
+		$("#leadId").trigger("chosen:updated");
+		$("#grantId").html('');
+		$("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
+		$("#grantId").trigger("chosen:updated");
+		$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
+		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');	
+		return;
+	}
+});	
+
+
+function getPmBriefLeadList(){
+	 $("#leadId").html('');
+	 $("#leadId").html('<option value="0"> SELECT LEAD </option>');
+   var json = {
+      
+    };
+  $.ajax({              
+    type:'POST',    
+    url: 'getPmBriefLeadList',
+    dataType: 'json',
+    data : JSON.stringify(json),
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){
+	  if(result !=null && result.length>0){
+			 $("#leadId").html('<option value="0">SELECT LEAD</option>');
+			for(var i in result){
+				$("#leadId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#leadId").trigger('chosen:updated');
+	});	 
+}
+
+function getPmGrantList(){
+	 $("#grantId").html('');
+	 $("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
+   var json = {
+      
+    };
+  $.ajax({              
+    type:'POST',    
+    url: 'getPmGrantList',
+    dataType: 'json',
+    data : JSON.stringify(json),
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){
+	  if(result !=null && result.length>0){
+			 $("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
+			for(var i in result){
+				$("#grantId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#grantId").trigger('chosen:updated');
+	});	 
+}
+
+function getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr){
+	 $("#assignToId").html('');
+	 $("#assignToId").html('<option value="0">SELECT DESIGNATION </option>');
+	
+ var json = {
+	 
+	 deptIdsList : selectedDeptIdsArr
+	}           
+$.ajax({              
+	type:'POST',    
+	url: 'getLoginUserAccessSubDeptDesignationDetail',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
+	}
+}).done(function(result){
+	if(result !=null && result.length>0){
+		$("#assignToId").html('<option value ="0">SELECT DESIGNATION </option>');
+		for(var i in result){
+				$("#assignToId").append('<option value ="'+result[i].key+'">'+result[i].value+'</option>');
+		}
+	}
+	$("#assignToId").trigger('chosen:updated');
+});	
+}
+
+$(document).on('change','.popUpChangesCls',function(){
+	var onChangeValue = $(this).val();
+	getDeptDesignationOfficerDetail(onChangeValue)
+})
+
+function getDeptDesignationOfficerDetail(onChangeValue){
+	$("#officerId").html('');
+	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+	var deptDesignationId = onChangeValue;
+ var json = {
+	deptDesignationId : deptDesignationId
+	}           
+$.ajax({              
+	type:'POST',    
+	url: 'getDeptDesignationOfficerDetail',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
+	}
+}).done(function(result){
+	if(result != null && result.length >0){
+		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+		for(var i in result){
+			$("#officerId").append('<option value ="'+result[i].key+'">'+result[i].value+'</option>');
+		}
+	}
+	$("#officerId").trigger('chosen:updated');
+});	
+}

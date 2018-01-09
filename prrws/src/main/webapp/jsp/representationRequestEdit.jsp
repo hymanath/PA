@@ -200,6 +200,98 @@
 	  </div>
 	</div>
 </div>
+<div class="modal fade" id="endorseMentModalDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:60%;margin:auto">
+    <div class="modal-content">
+      <div class="modal-header">
+		<div class="row">
+			<div class="col-sm-12">
+				<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-capital" id="endorseMentHeadingId"></h4> 
+			</div>
+		</div>		
+	  </div>
+	<form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
+	  <div class="modal-body">
+	   <div class="pad_light_yash_bg border_yash border_radius_5">
+			<div class="row">
+				<div class="col-sm-4">
+					<h5>TOTAL WORKS : <span id="totalWorksId" class="font_weight">0</span></h5>
+				</div>
+				<div class="col-sm-4">
+					<h5>SELECTED  WORKS : <span id="selectdWorksId" class="font_weight">0</span></h5>
+				</div>
+				<div class="col-sm-4">
+					<h5>NOT SELECTED WORKS : <span id="notSeleWorksId" class="font_weight">0</span></h5>
+				</div>
+			</div>
+		</div>
+		<div class="row m_top10">
+			<div class="col-sm-4">
+				<label>Select Status</label>
+				<select class="form-control chosen-select" id="statusChangeId">
+					<option value="0">Select Status</option>
+				</select>
+			</div>
+		</div>
+		 <div class="row m_top10" id="endorsementDivId" style="display:none;">
+			<div class="col-sm-8">
+				<label>ENDORSMENT NO<span style="color:red;">*</span><span id="endorsementNoErr"></span></label>
+				<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO" name="endorsementNO"/>
+			</div>
+        </div>	
+		<div class="row m_top10">
+			<div class="col-sm-4" id="leadDivId" style="display:none;">
+				<label>LEAD<span style="color:red;">*</span><span id="leadIdErr"></span></label>
+				<select class="form-control chosen-select" id="leadId" name="leadId">
+					<option value="1">SELECT LEAD</option>
+				</select>
+			</div>
+			<div class="col-sm-4" id="grantDivId" style="display:none;">
+				<label>GRANT UNDER<span  style="color:red;">*</span><span id="grantIdErr"></span></label>
+				<select class="form-control chosen-select" id="grantId" name="grantId">
+					<option value="1">SELECT GRANT UNDER</option>
+				</select>
+			</div>
+		</div>
+		<div class="row m_top10">
+			<div class="col-sm-4" id ="assignDesignationDivId" style="display:none;">
+				<label>ASSIGN TO<span style="color:red;">*</span><span id="assignToIdErr"></span></label>
+				<select class="form-control chosen-select popUpChangesCls" id="assignToId" name="deptDesigId">
+					<option value="0">SELECT DESIGNATION</option>
+				</select>
+			</div>
+			<div class="col-sm-4" id ="assignOfficerDivId" style="display:none;">
+				<label>OFFICER NAME<span style="color:red;">*</span><span id="officerIdErr"></span></label>
+				<select class="form-control chosen-select" id="officerId" name="deptDesigOffcrId">
+					<option value="0">SELECT OFFICER NAME</option>
+				</select>
+			</div>
+		</div>
+		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
+		<input type="hidden" class="form-control" id="petitionId"  name="petitionId"/>
+		<div class="row m_top10" id="commentsDivId">
+			<div class="col-sm-8">
+				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
+				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
+			</div>
+		</div>
+		<div class="row m_top20" id="fileUploadDiv" style="display:none;">
+			<div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
+				<h5 class="panel-title"> UPLOAD <span id="letterNameId"></span> LETTER <span id="fileUploadIdErr"></h5>
+				<span id="uploadFile"></span>
+			</div>
+		</div>
+	  </div>
+	  <div class="modal-footer">
+		 <button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-success pull-right" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" ><span id="buttonNameId"></span></button>
+	  </div>
+	</form>
+  </div>
+</div>
+</div>
+
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
@@ -217,7 +309,8 @@
 <!-- for file uploader  -->              
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/jquery.filer.min.js"></script>
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/editUploadFile.js?v=1.0.5"></script>                
-<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/editUploadFile2.js?v=1.0.5"></script>                
+<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/editUploadFile2.js?v=1.0.5"></script>   
+<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/singleFileuploadDocuments.js"></script>             
 <!-- for file uploader -->
 <script type="text/javascript" src="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.js"></script>
 <script src="Assests/representationRequest/representationRequestEdit.js" type="text/javascript"></script>

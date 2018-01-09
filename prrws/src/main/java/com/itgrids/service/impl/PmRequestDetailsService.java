@@ -1798,10 +1798,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isMapValid(endorsementDeptWorksMap)){
 					for (String endNo : endorsementDeptWorksMap.keySet()) {
 						Map<Long,Map<Long,Map<Long,List<PetitionsWorksVO>>>> deptWorksMap = endorsementDeptWorksMap.get(endNo);
-						PetitionsWorksVO vo = new PetitionsWorksVO();
+						PetitionsWorksVO endorsVO = new PetitionsWorksVO();
 						if(commonMethodsUtilService.isMapValid(deptWorksMap)){
 							for (Long deptId : deptWorksMap.keySet()) {
 								Map<Long,Map<Long,List<PetitionsWorksVO>>> subjectsMap  = deptWorksMap.get(deptId);
+								PetitionsWorksVO vo = new PetitionsWorksVO();
 								if(commonMethodsUtilService.isMapValid(subjectsMap)){
 									for (Long subId : subjectsMap.keySet()) {
 										Map<Long,List<PetitionsWorksVO>> subSubjectsMap =subjectsMap.get(subId);
@@ -1813,6 +1814,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 													if(worksVO != null){
 														vo.setEndorsmentNo(worksVO.getEndorsmentNo());
 														vo.setEndorsmentDate(worksVO.getEndorsmentDate());
+														
+														endorsVO.setEndorsmentNo(worksVO.getEndorsmentNo());
+														endorsVO.setEndorsmentDate(worksVO.getEndorsmentDate());
 														//vo.setNoOfWorks(Long.valueOf(String.valueOf(workTypeVOList.size())));
 														//vo.setReportTypeFilesList(globalFilesList);
 														///if(pageType != null && !seriesNo.isEmpty())
@@ -1826,6 +1830,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 														vo.setSubSubjectId(worksVO.getSubSubjectId());
 														vo.setSubSubject(worksVO.getSubSubject());
 														vo.getSubWorksList().addAll(worksList);
+														endorsVO.getSubWorksList().add(vo);
 													}
 												}
 											}
@@ -1834,7 +1839,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								}
 							}
 						}
-						petitionVO.getSubWorksList().add(vo);
+						petitionVO.getSubWorksList().add(endorsVO);
 					}
 				}
 				
