@@ -1,4 +1,9 @@
-	var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY");
+var url = window.location.href;
+var wurl = url.substr(0,(url.indexOf(".com")+4));
+if(wurl.length == 3)
+	wurl = url.substr(0,(url.indexOf(".in")+3));
+
+var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY");
 	var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	
@@ -30,8 +35,8 @@
 		}
 	});
 	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
-		startDate = picker.startDate.format("DD-MM-YYYY");
-		endDate = picker.endDate.format("DD-MM-YYYY");
+		glStartDate = picker.startDate.format("DD-MM-YYYY");
+		glEndDate = picker.endDate.format("DD-MM-YYYY");
 		onLoadCalls();
 	});
 	
@@ -64,7 +69,7 @@
 			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
 		}).then(function(result){
 				if(result !=null){
-					buildOverAllPrintMediaDetails(result,"ElectronicMedia","overAllElectronicMediaDivId","overAll",0);
+					buildOverAllPrintMediaDetails(result,"ElectronicMedia","overAllElectronicMediaDivId","overAllEle",0);
 				}else{
 					$("#overAllElectronicMediaDivId").html("No Data Available");
 				}
@@ -140,12 +145,18 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 	var totalNegCount=0;
 	var totalPosPerc=0;
 	var totalNegperc=0;
+	var overAllcategoryTime=0;
+	var overAllcategoryPosTime=0;
+	var overAllcategoryNegTime=0;
 	for(var i in result){
 		totalCount = totalCount+result[i].count;
 		totalPosCount = totalPosCount+result[i].positiveCountMain;
 		totalNegCount = totalNegCount+result[i].negativCountMain;
 		totalPosPerc = (totalPosCount/totalCount*100).toFixed(0);
 		totalNegperc = (totalNegCount/totalCount*100).toFixed(0);
+		overAllcategoryTime=result[i].positiveIsPrimeCoveredTime;
+		overAllcategoryPosTime=result[i].totalIsPrimePositiveCoveredTime;
+		overAllcategoryNegTime=result[i].totalIsPrimeNegativeCoveredTime;
 	}
 	
 	str+='<div class="row m_top10">';
@@ -165,11 +176,48 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 						str+='<div class="row">';
 							str+='<div class="col-sm-6">';
 								str+='<h5 class="font_weight">Positive</h5>';
-								str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
+								if(departmentType == "overAllEle"){
+									 if(typeval == "ElectronicMedia"){
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isPrimedescription+'</h5>';
+									}
+								}else if(departmentType == "overAll"){
+									if(typeval == "PrintMedia"){
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
+									}
+								}else if(departmentType == "departmentEle"){
+									if(typeval == "ElectronicMediadepartment"+departmentId+""){
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isPrimedescription+'</h5>';
+									}
+								}else if(departmentType == "department"){
+									if(typeval == "PrintMediadepartment"+departmentId+""){
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
+									}
+								} 
+								
 							str+='</div>';
 							str+='<div class="col-sm-6">';
 								str+='<h5 class="font_weight">Negative</h5>';
-								str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
+								if(departmentType == "overAllEle"){
+									 if(typeval == "ElectronicMedia"){
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isNotPrimedescription+'</h5>';
+									}
+								}else if(departmentType == "overAll"){
+									if(typeval == "PrintMedia"){
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
+									}
+								}else if(departmentType == "departmentEle"){
+									if(typeval == "ElectronicMediadepartment"+departmentId+""){
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isNotPrimedescription+'</h5>';
+									}
+								}else if(departmentType == "department"){
+									if(typeval == "PrintMediadepartment"+departmentId+""){
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
+									}
+								} 
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -181,13 +229,13 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 	
 	
 	
-	
 	totalArr.push(parseInt(totalCount));
 	positivePercArr.push(parseInt(totalPosCount));
 	negativePercArr.push(parseInt(totalNegCount));
 	dataArr.push(totalArr);
 	dataArr.push(positivePercArr);
 	dataArr.push(negativePercArr);
+	
 	
 	var colors = ['#343B54','#63C563','#EB2F2F']
 	var id = 'overAll'+typeval+'GraphDivId'+departmentId+'';
@@ -250,38 +298,41 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 		var negativCountPerc = result[i].negativePerc;
 		var totalCount=result[i].positiveCountMain+result[i].negativCountMain;
 		var headingCountPrint='';
-		if(departmentType == "overAll"){
-			if(typeval == "PrintMedia"){
-				if(result[i].organization == "Main"){
-					headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalPosPerc+'%)</b></h5>';
-				}else if(result[i].organization == "District"){
-					headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalNegperc+'%)</b></h5>';
+			if(departmentType == "overAllEle"){
+				 if(typeval == "ElectronicMedia"){
+					if(result[i].organization == "News Bulletin"){
+						headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+totalPosPerc+'%)<br>('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
+					}else if(result[i].organization == "News Program"){
+						headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+totalNegperc+'%)<br>('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
+					}
 				}
-			}else if(typeval == "ElectronicMedia"){
-				if(result[i].organization == "News Bulletin"){
-					headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+totalPosPerc+'%)</b></h5>';
-				}else if(result[i].organization == "News Program"){
-					headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+totalNegperc+'%)</b></h5>';
-				}
-			}
-		}else{
-			if(typeval == "PrintMediadepartment"+departmentId+""){
-				if(result[i].organization == "Main"){
-					headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalPosPerc+'%)</b></h5>';
-				}else if(result[i].organization == "District"){
-					headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalNegperc+'%)</b></h5>';
-				}
-			}else if(typeval == "ElectronicMediadepartment"+departmentId+""){
-				if(result[i].organization == "News Bulletin"){
-					headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+totalPosPerc+'%)</b></h5>';
-				}else if(result[i].organization == "News Program"){
-					headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+totalNegperc+'%)</b></h5>';
+			}else if(departmentType == "overAll"){
+				if(typeval == "PrintMedia"){
+					if(result[i].organization == "Main"){
+						headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalPosPerc+'%)</b></h5>';
+					}else if(result[i].organization == "District"){
+						headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalNegperc+'%)</b></h5>';
+					}
 				}
 			}
-		}
-		
-		
-		
+			
+			else if(departmentType == "departmentEle"){
+				if(typeval == "ElectronicMediadepartment"+departmentId+""){
+					if(result[i].organization == "News Bulletin"){
+						headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+totalPosPerc+'%)<br>('+result[i].positiveIsNotPrimeCoveredTime+')</b></h5>';
+					}else if(result[i].organization == "News Program"){
+						headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+totalNegperc+'%)<br>('+result[i].positiveIsNotPrimeCoveredTime+')</b></h5>';
+					}
+				}
+			}else if(departmentType == "department"){
+				if(typeval == "PrintMediadepartment"+departmentId+""){
+					if(result[i].organization == "Main"){
+						headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalPosPerc+'%)</b></h5>';
+					}else if(result[i].organization == "District"){
+						headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalNegperc+'%)</b></h5>';
+					}
+				}
+			} 
 		var id = 'overAll'+typeval+'MainDistEditionDivId'+i+departmentId;
 		var type = {
 			type: 'pie',
@@ -312,7 +363,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 		}; 
 		var plotOptions ={
 			pie: {
-				innerSize: 80,
+				innerSize: 60,
 				depth: 40,
 				dataLabels: {
 					enabled: false,
@@ -495,7 +546,7 @@ function buildDepartmentWiSeBlockDetails(result){
 								collapse+='<div class="row m_top20">';
 									collapse+='<div class="col-sm-9">';
 										collapse+='<h5 class="font_weight text-capital">District wise Overview</h5>';
-										collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:250px;width:100%"></div>';
+										collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:330px;width:100%"></div>';
 									collapse+='</div>';
 									collapse+='<div class="col-sm-3">';
 										collapse+='<h5 class="font_weight text-capital">Analysis of Action Immediately</h5>';
@@ -555,7 +606,7 @@ function buildactionWiseAnalysisDetails(result,divId,departmentId){
 		$("#totalCountAnalysisId"+departmentId).html(totalCount);
 		var colorObj={"Without Money":"#E4D254","<10L":"#8D4653",">10L":"#F15C81","State Wide Issue":"#8085E9"}
 		
-		str+='<li class="m_top10"><span class="square_csss" style="background-color:'+colorObj[result[i].organization]+'"></span>'+result[i].organization+'<span class="pull-right">'+result[i].count+'</span></li>';
+		str+='<li class="m_top10"><span class="square_csss" style="background-color:'+colorObj[result[i].organization]+'"></span>'+result[i].organization+'<span class="pull-right">'+result[i].count+' - <span style="color:green">'+result[i].positivePerc+'%</span></span></li>';
 		
 		$("#problemWise"+departmentId).html(str);					
 		var subArr = [];
