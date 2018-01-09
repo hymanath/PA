@@ -139,7 +139,7 @@ function getEditionTypeWisePartiesAnalysis(categoryId){
 	$("#overAllPrintMediaNewsDivId").html(spinner);
 	$.ajax({	
 		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 	}).then(function(result){
 		if(result !=null){
 			mainNewsBlockPraja(result);
@@ -154,7 +154,7 @@ function getChannelWisePartiesAnalysis(categoryId){
 	$("#overAllElectronicMediaNewsDivId").html(spinner);
 	$.ajax({	
 		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
 	}).then(function(result){
 		if(result !=null){
 			getpartyWiseChannelCountsPraja(result)
@@ -291,6 +291,71 @@ function getpartyWiseChannelCountsPraja(result){
 								
 								str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
 								str+='<h4>'+result.idNameVoList1[i].negativeDesc != ""?result.idNameVoList1[i].negativeDesc:"00:00"+'</h4>';
+								
+							str+='</td>';
+					str+='</tr>';
+				str+='</table>';
+				
+				str+='</div>';
+			}
+		}else{
+			str+='<h4 class="panel-title m_top10">No Data Available</h4>';
+		}
+		//str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Other Parties</span></h4>';
+		str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="government icon" class="newsIcon"/>Government</span></h4>';
+		if(result.idNameVoList2 !=null && result.idNameVoList2.length>0){
+			for(var i in result.idNameVoList2)
+			{
+				newsBulletinCount = result.idNameVoList2[i].posCount+result.idNameVoList2[i].negCount
+				//str+='<h4 class="panel-title m_top10">'+result.idNameVoList2[i].name+'</h4>';
+				var partyId=0;
+				str+='<div class="table-responsive m_XsTop10">';
+				str+='<table class="table tableEMN m_top10">';
+					str+='<tr>';
+							str+='<td>';
+								str+='<h5 class="text-capitalize">News Bulletin</h5>';
+								
+								if(newsBulletinCount !=null && newsBulletinCount>0){
+									str+='<h4 class="EMnCls" attr_benefitId="0" attr_party="'+partyId+'" attr_category_id="'+globalcategoryId+'" attr_edition="0" style="cursor:pointer;"><a>'+newsBulletinCount+'</a></h4>';
+								}else{
+									str+='<h4>0</h4>';
+								}
+								
+								
+								str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
+								str+='<h4>'+result.idNameVoList2[i].description != ""?result.idNameVoList2[i].description:"00:00"+'</h4>';
+								
+							str+='</td>';
+							
+							str+='<td>';
+								str+='<h5 class="text-capitalize">positive</h5>';
+								
+								if(result.idNameVoList2[i].posCount !=null && result.idNameVoList2[i].posCount>0){
+									str+='<h4 class="EMnCls" attr_benefitId="1" attr_party="'+partyId+'" attr_category_id="'+globalcategoryId+'" attr_edition="0" style="cursor:pointer;"><a>'+result.idNameVoList2[i].posCount+'</a></h4>';
+									str+='<small id="" class="text-success"> '+result.idNameVoList2[i].posPercent+' %</small>';
+								}else{
+									str+='<h4>0</h4>';
+								}
+								
+								
+								str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
+								str+='<h4>'+result.idNameVoList2[i].postiveDesc != ""?result.idNameVoList2[i].postiveDesc:"00:00"+'</h4>';
+								
+							str+='</td>';
+							
+							str+='<td>';
+								str+='<h5 class="text-capitalize">negative</h5>';
+								
+								if(result.idNameVoList2[i].negCount !=null && result.idNameVoList2[i].negCount>0){
+									str+='<h4 class="EMnCls" attr_benefitId="2" attr_party="'+partyId+'" attr_category_id="'+globalcategoryId+'" attr_edition="0" style="cursor:pointer;"><a>'+result.idNameVoList2[i].negCount+'</a></h4>';
+									str+='<small id="" class="text-success"> '+result.idNameVoList2[i].negPercent+' %</small>';
+								}else{
+									str+='<h4>0</h4>';
+								}
+								
+								
+								str+='<h5 class="text-capitalize m_top20">Covered Time</h5>';
+								str+='<h4>'+result.idNameVoList2[i].negativeDesc != ""?result.idNameVoList2[i].negativeDesc:"00:00"+'</h4>';
 								
 							str+='</td>';
 					str+='</tr>';
@@ -520,7 +585,114 @@ function mainNewsBlockPraja(result){
 							
 						str+='</table>';
 					str+='</div>';
-					
+					str+='</div>';
+			/*Government*/
+		     str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="government icon" class="newsIcon"/>Government</span></h4>';
+			str+='<div class="row">';
+				var partyId=0;
+					str+='<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">';
+						str+='<table class="table table-condensed tableNews ">';
+						
+							str+='<tr class="bg_ED">';
+								str+='<td>';
+									str+='<p class="text-capital">Main&nbsp;Edition</p>';
+								str+='</td>';
+								str+='<td>';
+									str+='<p class="text-capital text-muted">Positive</p>';
+								str+='</td>';
+								str+='<td>';
+									str+='<p class="text-capital text-muted">Negative</p>';
+								str+='</td>';
+							str+='</tr>';
+							if(result.coreDashBoardVOList2 !=null && result.coreDashBoardVOList2.length>0){
+								for(var i in result.coreDashBoardVOList2){
+									str+='<tr>';
+										str+='<td>';
+										if(result.coreDashBoardVOList2[i].count != null && result.coreDashBoardVOList2[i].count >0){
+											str+='<span><a class="partyMainEditionCls" attr_editiontype="1" attr_benefitid ="0" attr_partyids="'+partyId+'"  attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList2[i].count+'</a></span>';
+										}else{
+											str+='<span> - </span>';
+										}
+											
+										str+='</td>';
+										str+='<td>';
+										if(result.coreDashBoardVOList2[i].positiveCountMain != null && result.coreDashBoardVOList2[i].positiveCountMain>0){
+											str+='<span><a class="partyMainEditionCls" attr_editiontype="1"  attr_benefitid ="1" attr_partyids="'+partyId+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList2[i].positiveCountMain+'</a></span>';
+											str+='<small class="text-success"> '+result.coreDashBoardVOList2[i].positivePerc+' %</small>';
+										}else{
+											str+='<span> - </span>';
+										}
+										str+='</td>';
+										str+='<td>';
+										if(result.coreDashBoardVOList2[i].negativCountMain != null && result.coreDashBoardVOList2[i].negativCountMain >0){
+											str+='<span><a class="partyMainEditionCls" attr_editiontype="1" attr_benefitid ="2" attr_partyids="'+partyId+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList2[i].negativCountMain+'</a></span>';
+											str+='<small class="text-danger" id=""> '+result.coreDashBoardVOList2[i].negativePerc+' %</small>';
+										}else{
+											str+='<span> - </span>';
+										}
+										str+='</td>';
+									str+='</tr>';
+								}
+							}else{
+								str+='<tr>';
+									str+='<td> No Data Available';
+									str+='</td>';
+								str+='</tr>';
+							}
+							
+							
+						str+='</table>';
+					str+='</div>';
+					str+='<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">';
+						str+='<table class="table table-condensed tableNews ">';
+						
+							str+='<tr class="bg_ED">';
+								str+='<td>';
+								
+									str+='<p class="text-capital">Dist&nbsp;Edition</p>';
+									
+								str+='</td>';
+								str+='<td>';
+									str+='<p class="text-capital text-muted">Positive</p>';
+									
+								str+='</td>';
+								str+='<td>';
+									str+='<p class="text-capital text-muted">Negative</p>';
+									
+								str+='</td>';
+							str+='</tr>';
+							if(result.coreDashBoardVOList2 !=null && result.coreDashBoardVOList2.length>0){
+								for(var i in result.coreDashBoardVOList2){
+									str+='<tr>';
+										str+='<td>';
+										if(result.coreDashBoardVOList2[i].totalCount != null && result.coreDashBoardVOList2[i].totalCount>0){
+											str+='<span><a class="partyMainEditionCls" attr_editiontype="2"  attr_benefitid ="0" attr_partyids="'+partyId+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList2[i].totalCount+'</a></span>';
+										}	
+										str+='</td>';
+										str+='<td>';
+										if(result.coreDashBoardVOList2[i].positiveCountDist != null && result.coreDashBoardVOList2[i].positiveCountDist>0){
+											str+='<span><a class="partyMainEditionCls" attr_editiontype="2"  attr_benefitid ="1" attr_partyids="'+partyId+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList2[i].positiveCountDist+'</a></span>';
+											str+='<small class="text-success"> '+result.coreDashBoardVOList2[i].positiveDistPerc+' %</small>';
+										}
+										str+='</td>';
+										str+='<td>';
+										if(result.coreDashBoardVOList2[i].negativCountDist != null && result.coreDashBoardVOList2[i].negativCountDist>0){
+											str+='<span><a class="partyMainEditionCls" attr_editiontype="2"  attr_benefitid ="2" attr_partyids="'+partyId+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+result.coreDashBoardVOList2[i].negativCountDist+'</a></span>';
+											str+='<small class="text-danger" id=""> '+result.coreDashBoardVOList2[i].negativeDistPerc+' %</small>';
+										}	
+										str+='</td>';
+									str+='</tr>';
+								}
+							}else{
+								str+='<tr>';
+									str+='<td> No Data Available';
+									str+='</td>';
+								str+='</tr>';
+							}
+							
+							
+						str+='</table>';
+					str+='</div>';
 			str+='</div>';
 		$("#overAllPrintMediaNewsDivId").html(str);
 	}
