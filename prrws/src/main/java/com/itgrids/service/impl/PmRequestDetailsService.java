@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2995,4 +2996,91 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				LOG.error("Exception Occured in PmRequestDetailsService @ setReferralDesignationsDetails() "+e.getMessage());
 			}
 		}
+		
+		/**
+		 * @author krishna
+		 * @param Long petitionId 
+		 * @param List<Long> petitionIdsList 
+		 * @description {This service is used to history overview details.}
+		 * @return List<PetitionHistoryVO>
+		 * @Date 09-01-2018
+		 */
+		public List<PetitionHistoryVO> getPetitionTrackingHistoryDetails(PetitionTrackingVO dataVO){
+			 List<PetitionHistoryVO> petitionHistoryVOLst  = new ArrayList<PetitionHistoryVO>() ;
+			 Map<String,Map<String,PetitionHistoryVO>> dateHistoryMap = new HashMap<String,Map<String,PetitionHistoryVO>>();
+			 Map<String,PetitionHistoryVO> subInnerMap = null;
+			  
+			 try {
+			 List<Object[]> historyDtlsList = null;
+			 if(!commonMethodsUtilService.isListOrSetValid(dataVO.getSubworkIdsList()))
+			 historyDtlsList = pmTrackingDAO.getPetitionTrackingHistoryDetails(dataVO.getPetitionId(),null);
+			 else if(commonMethodsUtilService.isListOrSetValid(dataVO.getSubworkIdsList()))
+			 historyDtlsList =pmTrackingDAO.getPetitionTrackingHistoryDetails(null,dataVO.getSubworkIdsList());
+			 if(commonMethodsUtilService.isListOrSetValid(historyDtlsList)){
+			 for (Object[] param : historyDtlsList) {
+				 
+				 String historyDateTime = commonMethodsUtilService.getStringValueForObject(param[22]);
+				 
+				 String date = historyDateTime.substring(0,10).toString();
+				 String time = historyDateTime.substring(11, 17).toString();
+				 
+				  subInnerMap = dateHistoryMap.get(date);
+				 if(subInnerMap == null)         
+						 subInnerMap = new HashMap<String,PetitionHistoryVO>();
+						 
+						 dateHistoryMap.put(date, subInnerMap);
+						 PetitionHistoryVO timeInnerVO = subInnerMap.get(time);
+						 if(timeInnerVO == null){
+							 timeInnerVO = new PetitionHistoryVO();
+							 timeInnerVO.setTimeStr(time);
+							 timeInnerVO.setPmTrackingId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							 timeInnerVO.setPetitionId(commonMethodsUtilService.getLongValueForObject(param[1]));
+							 timeInnerVO.setPmSubWorkDetailsId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							 timeInnerVO.setTrackingActionId(commonMethodsUtilService.getLongValueForObject(param[3]));
+							 timeInnerVO.setActionName(commonMethodsUtilService.getStringValueForObject(param[4]));
+							 timeInnerVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[5]));
+							 timeInnerVO.setStautus(commonMethodsUtilService.getStringValueForObject(param[6]));
+							 timeInnerVO.setRemarks(commonMethodsUtilService.getStringValueForObject(param[7]));
+							 timeInnerVO.setDocumentId(commonMethodsUtilService.getLongValueForObject(param[8]));
+							 timeInnerVO.setPath(commonMethodsUtilService.getStringValueForObject(param[9]));
+							 timeInnerVO.setPmDeptDesgOfficerId(commonMethodsUtilService.getLongValueForObject(param[10]));
+							 timeInnerVO.setPmDeptDesgId(commonMethodsUtilService.getLongValueForObject(param[11]));
+							 timeInnerVO.setPmDepartmentId(commonMethodsUtilService.getLongValueForObject(param[12]));
+							 timeInnerVO.setPmDepartment(commonMethodsUtilService.getStringValueForObject(param[13]));
+							 timeInnerVO.setPmOfficerId(commonMethodsUtilService.getLongValueForObject(param[14]));
+							 timeInnerVO.setPmOfficerName(commonMethodsUtilService.getStringValueForObject(param[15]));
+							 timeInnerVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[16]));
+							 subInnerMap.put(timeInnerVO.getTimeStr(), timeInnerVO);
+						 }
+				         
+			    }
+			 }
+			 
+			 //while iterating
+			 if(dateHistoryMap != null && dateHistoryMap.size() >0){
+				 
+				 for(Map.Entry<String, Map<String,PetitionHistoryVO>> entrySet : dateHistoryMap.entrySet()){
+					 PetitionHistoryVO vo = new PetitionHistoryVO();
+					 vo.setDatestr(entrySet.getKey());
+					 Map<String,PetitionHistoryVO> subMap = entrySet.getValue();
+					 if(subMap != null && subMap.size() >0){
+						 List<PetitionHistoryVO> timeList = new ArrayList<PetitionHistoryVO>();
+						 for(Map.Entry<String, PetitionHistoryVO> subEntrySet : subMap.entrySet()){
+							if(subEntrySet != null){
+								PetitionHistoryVO PetitionHistoryVO = subEntrySet.getValue();
+								   timeList.add(PetitionHistoryVO);
+							}
+						 }
+						 vo.setSubList1(timeList);
+						 
+					 }
+					 petitionHistoryVOLst.add(vo);
+			     }
+			   }
+			 
+			 }catch (Exception e) {
+			 LOG.error("Exception raised into PmRequestDetailsService of getPetitionTrackingDetails() ",e);
+			 }
+			    return petitionHistoryVOLst;
+			 }
 }

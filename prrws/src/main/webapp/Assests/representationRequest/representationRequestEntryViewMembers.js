@@ -1970,3 +1970,23 @@ function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 		} 
 	});	
 }
+getPetitionTrackingHistoryDetails();
+function getPetitionTrackingHistoryDetails(){
+ var subworkIdsList = [1,2,3];
+ var json = {
+ petitionId : 1,
+ subworkIdsList : subworkIdsList
+ } 
+$.ajax({ 
+ type:'POST', 
+ url: 'getPetitionTrackingHistoryDetails',
+ dataType: 'json',
+ data : JSON.stringify(json),
+ beforeSend : function(xhr){
+ xhr.setRequestHeader("Accept", "application/json");
+ xhr.setRequestHeader("Content-Type", "application/json");
+ }
+}).done(function(result){
+ 
+}); 
+}

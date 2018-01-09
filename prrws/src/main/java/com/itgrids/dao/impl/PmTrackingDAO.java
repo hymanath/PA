@@ -7,7 +7,7 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
+import org.hibernate.Query;
 import com.itgrids.dao.IPmTrackingDAO;
 import com.itgrids.model.PmTracking;
 import com.sun.org.apache.bcel.internal.generic.Select;
@@ -22,8 +22,55 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 	}
 	
 	public List<Object[]> getPetitionTrackingHistoryDetails(Long petitionId,List<Long> subWorksList){
-		return null;
-	}
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select model.pmTrackingId,petition.petitionId,"//0 ==> pmTrackingId,1==>petitionId
+				+ " pmSubWorkDetails.pmSubWorkDetailsId, " //2 ==> pmSubWorkDetailsId
+				+ " pmTrackingAction.pmTrackingActionId,pmTrackingAction.actionName," //3 ==>pmTrackingActionId, 4 ==> actionName
+				+ " pmStatus.pmStatusId,pmStatus.status,model.remarks, " // ==>
+				+ " document.documentId,document.path, "
+				+ " pmDepartmentDesignationOfficer.pmDepartmentDesignationOfficerId,"
+				+ " pmDepartmentDesignation.pmDepartmentDesignationId, pmDepartment.pmDepartmentId,pmDepartment.department,"
+				+ " pmOfficer.pmOfficerId,pmOfficer.name,pmOfficer.mobileNo,"
+				+ " pmDeptDesignation.pmDepartmentDesignationId,"
+				+ " pmDept.pmDepartmentId,pmDept.department,"
+				+ " insertedUser.userId,"
+				+ " updatedUser.userId,"
+				+ " model.insertedTime " // 22 ==> insertedTime
+				+ " from PmTracking model "
+				+ " left join model.petition petition "
+				+ " left join model.pmSubWorkDetails pmSubWorkDetails "
+				+ " left join model.pmTrackingAction pmTrackingAction "
+				+ " left join model.pmStatus pmStatus "
+				+ " left join model.document document "
+				+ " left join model.pmDepartmentDesignationOfficer pmDepartmentDesignationOfficer "
+				//+ " left join model.pmDepartmentDesignationOfficer.pmDepartmentDesignation pmDepartmentDesignation "
+				//+ " left join model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmDepartment pmDepartment "
+				+ " left join pmDepartmentDesignationOfficer.pmDepartmentDesignation pmDepartmentDesignation "
+				+ " left join pmDepartmentDesignation.pmDepartment pmDepartment "
+				+ " left join model.pmDepartmentDesignationOfficer.pmOfficer pmOfficer "
+				+ " left join model.pmDepartmentDesignation pmDeptDesignation "
+				+ " left join model.pmDepartmentDesignation.pmDepartment pmDept "
+				+ " left join model.insertedUser insertedUser "
+				+ " left join model.updatedUser updatedUser where " );
+				
+		   
+		if((petitionId != null && petitionId.longValue() >0l) && (subWorksList == null || subWorksList.size() == 0)){
+			sb.append(" petition.petitionId = :petitionId and  (pmSubWorkDetails.pmSubWorkDetailsId is null) ");
+		}else if(subWorksList != null && subWorksList.size() > 0){
+			sb.append(" pmSubWorkDetails.pmSubWorkDetailsId in(:subWorksList)");
+		}
+		
+		sb.append(" order by date(model.insertedUser) " );
+		 Query query = getSession().createQuery(sb.toString());
+		 if(petitionId != null && petitionId.longValue() >0l){
+			 query.setParameter("petitionId", petitionId);
+		 }
+		 if(subWorksList != null && subWorksList.size() > 0){
+			 query.setParameterList("subWorksList", subWorksList);
+		 }
+		 return query.list();
+		 }
 	
 	public List<Object[]> getLatestTrackingDetails(Long petitionId,List<Long> subWorksList){
 		StringBuilder str = new StringBuilder();
