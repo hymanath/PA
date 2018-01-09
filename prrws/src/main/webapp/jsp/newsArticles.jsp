@@ -174,6 +174,14 @@
 										</a>
 									</div>
 								</div>
+								<div class="col-sm-12 m_top10">
+									<div class="menu-block" style="background-color:#989820">
+										<a href="newsArticles">
+											<h3>News Articles</h3>
+											<p>Dashboard</p>
+										</a>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
