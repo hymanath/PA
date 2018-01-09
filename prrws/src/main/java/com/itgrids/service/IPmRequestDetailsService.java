@@ -6,6 +6,8 @@ import java.util.Map;
 import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
+import com.itgrids.dto.PetitionHistoryVO;
+import com.itgrids.dto.PetitionTrackingVO;
 import com.itgrids.dto.PmRequestEditVO;
 import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
@@ -34,4 +36,5 @@ public interface IPmRequestDetailsService {
 	public ResultStatus generateCoveringLetterForPetition(InputVO inputVO);
 	public ResultStatus endorsingSubWorksAndAssigningToOfficer(RepresenteeViewVO inputVO);
 	public RepresenteeViewVO getReferralWiseOverviewDetails(InputVO inputVO);
+	public List<PetitionHistoryVO> getPetitionTrackingHistoryDetails(PetitionTrackingVO dataVO);
 }
