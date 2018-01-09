@@ -5,6 +5,13 @@
 	var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY");
 	var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+	$("header").on("click",".menu-cls",function(e){
+		e.stopPropagation();
+		$(".menu-data-cls").toggle();
+	});
+	$(document).on("click",function(){
+		$(".menu-data-cls").hide();
+	});
 	$("#dateRangePickerNA").daterangepicker({
 				opens: 'left',
 				startDate: glStartDate,
@@ -336,7 +343,7 @@
 		$("#printMediaBlockId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"
-			//url: "http://localhost:9652/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"
+			//url: "http://192.168.11.107:9652/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"
 		}).then(function(result){
 			$("#printMediaBlockId").html('');
 			buildPrintMediaCountsDetailsInfoData(result,"printMediaColumnChartId","printMediaBlockId","print");
@@ -348,7 +355,7 @@
 		$("#electronicMediaBlockId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/ge/getDepartMentWiseAllNewsBulletinsAndPrograms/"+currentFromDate+"/"+currentToDate+"/All"
-			//url: "http://localhost:9652/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+currentFromDate+"/"+currentToDate+"/All"
+			//url: "http://192.168.11.107:9652/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+currentFromDate+"/"+currentToDate+"/All"
 		}).then(function(result){
 			$("#electronicMediaBlockId").html('');
 			buildElectronicMediaCountsDetailsInfoData(result,"electronicMediaColumnChartId","electronicMediaBlockId","electronic");
@@ -359,7 +366,7 @@
 		$("#distWiseTotOveColChartId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+currentFromDate+"/"+currentToDate+"/"
-			//url: "http://localhost:9652/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+currentFromDate+"/"+currentToDate+"/"
+			//url: "http://192.168.11.107:9652/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+currentFromDate+"/"+currentToDate+"/"
 		}).then(function(result){
 			buildDistrictWiseTotalOverViewInfoData(result);
 		});
