@@ -2,11 +2,13 @@ package com.itgrids.partyanalyst.service;
 
 import org.codehaus.jettison.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ResultStatus;
+
 public interface IZohoWebServiceHandlerService {
 
 	public String getMobileNoByMemberShip(String memberShipId);
 //	public ResultStatus sendOTPAtLoginTime(String message, boolean isEnglish, String... phoneNumbers);
-	public String mobileOtpVerification(JSONObject jObj);
+	public JSONObject mobileOtpVerification(JSONObject jObj);
 	
 	public String testMethod();
 }

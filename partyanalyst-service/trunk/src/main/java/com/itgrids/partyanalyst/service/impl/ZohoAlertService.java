@@ -189,9 +189,8 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	
 	
 	
-	public String checkOTPDetails(JSONObject jobj){
-		String status = null;
-		ResultStatus resultStatus = new ResultStatus();
+	public JSONObject checkOTPDetails(JSONObject jobj){
+		JSONObject jwt =  new JSONObject();
 		try {
 			Date currentTime = dateUtilService.getCurrentDateAndTime();
 
@@ -217,25 +216,30 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 						otpVerification.setIsValid('N');
 						otpVerification.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						otpVerification = otpDetailsDAO.save(otpVerification);
-						
-						return 	generateJwt(jobj.getString("memberShipId"));
+						jwt.put("jwt", generateJwt(jobj.getString("memberShipId")));
+						jwt.put("status", "success");
+						return 	jwt;
 					}
 					else{
-						return "failure";
+						jwt.put("jwt", "");
+						jwt.put("status", "failed");
 					}
 		    	 }
 				 else{
-					return "failure";
+					 jwt = new JSONObject();
+					 jwt.put("jwt", "");
+					 jwt.put("status", "failed");
 				 }
 			}
-			else
-				status = "failure";
+			else{
+				jwt.put("jwt", "");
+			    jwt.put("status", "failed");
+			}
 			
 		} catch (Exception e) {
-			status = "failure";
 			LOG.error("Exception Occured in checkOTPDetails() in ZohoAlertService class.",e);
 		}
-		return status;
+		return jwt;
 	}
 	
 	

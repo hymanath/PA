@@ -48,7 +48,7 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 
 
 	@Override
-	public String mobileOtpVerification(JSONObject jobj) {
+	public JSONObject mobileOtpVerification(JSONObject jobj) {
 		try {
 			return zohoAlertService.checkOTPDetails(jobj);
 		} catch (Exception e) {
