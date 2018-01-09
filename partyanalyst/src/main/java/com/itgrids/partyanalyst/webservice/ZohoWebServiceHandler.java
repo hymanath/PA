@@ -13,6 +13,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IZohoWebServiceHandlerService;
 
 @Component
@@ -49,7 +50,7 @@ public class ZohoWebServiceHandler {
 	@Path("/userAuthenticator")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String otpVerification(JSONObject jObj){
+	public JSONObject otpVerification(JSONObject jObj){
 		try {
 			return zohoWebServiceHandlerService.mobileOtpVerification(jObj);
 		} catch (Exception e) {
