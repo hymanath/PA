@@ -11036,4 +11036,21 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			return query.list();
 		}
 	 	
+	 	public void flushAndclearSession(){
+			getSession().flush();
+			getSession().clear();
+		}
+	 	
+	 	public int updateZohoAlertDetails(String ticketId,Long alertId){
+	 		
+	 		Query query = getSession().createQuery(" update Alert model set model.zohoTicketId =:ticketId,model.updatedTime=:updatedTime where " +
+					"  model.alertId =:alertId ");
+			
+	 		query.setParameter("ticketId", ticketId);
+			query.setParameter("alertId", alertId);
+			query.setParameter("updatedTime", new DateUtilService().getCurrentDateAndTime());
+			
+			return query.executeUpdate();
+	 	}
+	 	
 }

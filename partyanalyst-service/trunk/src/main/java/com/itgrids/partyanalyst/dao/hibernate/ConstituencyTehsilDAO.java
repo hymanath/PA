@@ -10,6 +10,7 @@ import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.IConstituencyTehsilDAO;
 import com.itgrids.partyanalyst.model.ConstituencyTehsil;
+import com.itgrids.partyanalyst.model.Tehsil;
 
 public class ConstituencyTehsilDAO extends GenericDaoHibernate<ConstituencyTehsil, Long> implements IConstituencyTehsilDAO{
 
@@ -68,6 +69,19 @@ public class ConstituencyTehsilDAO extends GenericDaoHibernate<ConstituencyTehsi
 		 	sqlQuery.setParameterList("mandalIds", mandalIds);	
 		 }
 		 return sqlQuery.list();
+	}
+	
+	public List<Tehsil> getTehsilInfoOfConstuencyByTehsilName(Long constituencyId,String tehsilName){
+		
+		Query query = getSession().createQuery(" select distinct model.tehsil from ConstituencyTehsil model where model.isDeleted='N' " +
+				" and model.constituency.constituencyId=:constituencyId" +
+				" and model.tehsil.tehsilName =:tehsilName ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("tehsilName", tehsilName);
+		
+		return query.list();
+		
 	}
 	   
 	   

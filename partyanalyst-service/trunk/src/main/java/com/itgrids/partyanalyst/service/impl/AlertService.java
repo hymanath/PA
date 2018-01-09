@@ -187,6 +187,7 @@ import com.itgrids.partyanalyst.model.VerificationComments;
 import com.itgrids.partyanalyst.model.VerificationConversation;
 import com.itgrids.partyanalyst.model.VerificationDocuments;
 import com.itgrids.partyanalyst.model.VerificationStatus;
+import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -297,7 +298,13 @@ private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
 private IAlertVerificationUserDAO alertVerificationUserDAO;
 
 private SmsCountrySmsService smsCountrySmsService;
+private IAlertCreationAPIService alertCreationAPIService;
 
+
+public void setAlertCreationAPIService(
+		IAlertCreationAPIService alertCreationAPIService) {
+	this.alertCreationAPIService = alertCreationAPIService;
+}
 
 public void setSmsCountrySmsService(SmsCountrySmsService smsCountrySmsService) {
 	this.smsCountrySmsService = smsCountrySmsService;
@@ -1122,18 +1129,37 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
 				 
 				 saveAlertTrackingDetails(alertTrackingVO)	;	
+				 
+				 rs = rs +" "+alert.getAlertId();
+				 
 				}
 				catch (Exception ex) {
-					 rs = "fail";
-					
+					rs="failure";
+					LOG.error("Exception Occured in saveApplicationDocuments() in AlertService Class ", ex);					
 					return rs;
 				}
 						return rs;
 			}
 
 		});
-	return resultStatus;
+	
+	// Zoho Related WebService Calls
+	
+	alertDAO.flushAndclearSession();
+	
+	if(resultStatus !=null && resultStatus.split(" ")[0].equalsIgnoreCase("success") ){
+		try {
+			//alertCreationAPIService.sendApiDetailsOfAlertToZoho(Long.parseLong(resultStatus.split(" ")[1]),IConstants.ZOHO_ADMIN_CONTACTID,IConstants.ZOHO_ADMIN_DEPTID);
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in sendApiDetailsOfAlertToZoho() in AlertService Class ", e);
+		 }		
+	}
+	
+	String newResultStatus=resultStatus.split(" ")[0];
+	
+	return newResultStatus;
  }
+ 
 public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap){
 	
 	try{
@@ -1193,7 +1219,7 @@ public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> 
 				
 		 }
 	}catch(Exception e){
-		LOG.error("Exception Occured in saveApplicationDocuments() in ToursService", e);
+		LOG.error("Exception Occured in saveApplicationDocuments() in AlertService Class ", e);
 		return "faliure";
 	}
 	return "success";
@@ -3429,6 +3455,18 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				
 				if(deptMap !=null && deptMap.size()>0 )
 					updateGovtDepartment(deptMap,globalAlert);
+				
+				alertDAO.flushAndclearSession();
+				
+				// Zoho Related WebService Calls
+				
+				 if(inputVO.getType() !=null && inputVO.getType().equalsIgnoreCase("save")){
+						try {
+							//alertCreationAPIService.sendApiDetailsOfAlertToZoho(globalAlert.getAlertId(),IConstants.ZOHO_ADMIN_CONTACTID,IConstants.ZOHO_ADMIN_DEPTID);
+						 } catch (Exception e) {
+							 LOG.error("Exception Occured in sendApiDetailsOfAlertToZoho() in AlertService Class ", e);
+						 }		
+				 }
 				
 				
 			}
