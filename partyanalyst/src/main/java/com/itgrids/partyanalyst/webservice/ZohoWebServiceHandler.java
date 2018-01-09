@@ -9,11 +9,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.itgrids.partyanalyst.dto.AmsVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IZohoWebServiceHandlerService;
 
 @Component
@@ -47,12 +46,12 @@ public class ZohoWebServiceHandler {
 	}
 	
 	@POST 
-	@Path("/otpVerification")
+	@Path("/userAuthenticator")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ResultStatus otpVerification(AmsVO vo){
+	public String otpVerification(JSONObject jObj){
 		try {
-			return zohoWebServiceHandlerService.mobileOtpVerification(vo);
+			return zohoWebServiceHandlerService.mobileOtpVerification(jObj);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getMobileNoByMemberShipId() Method in ZohoWebServiceHandler ",e);
 		}
