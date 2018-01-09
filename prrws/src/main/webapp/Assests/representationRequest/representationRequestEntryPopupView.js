@@ -6,6 +6,7 @@ var globalStatusArr=[];
 var selectdWorksArr=[];
 var departmentSelectArr=[];
 var mainWorkCoveringDocuments=[];
+var historyLetterArr=[]
 $(document).on("click",".viewBtnCls",function(){
 	var petionId = $(this).attr("attr_petiotion_id");
 	var endorsNo = $(this).attr("attr_enrorsNo");
@@ -43,7 +44,7 @@ function buildPetitionDetailsView(result){
 	var str='';
 	str+='<div class="pad_pink_bg">';
 		str+='<div class="row">';
-			str+='<div class="col-sm-6">';
+			str+='<div class="col-sm-4">';
 				str+='<h4 class="text-capital m_top10">PETITION STATUS & DETAILS</h4>';
 			str+='</div>';
 			str+='<div class="col-sm-2 border_left_yash border_right_yash">';
@@ -54,9 +55,12 @@ function buildPetitionDetailsView(result){
 				str+='<p>Petition ID</p>';
 				str+='<h5 class="font_weight">'+result.petitionId+'</h5>';
 			str+='</div>';
-			str+='<div class="col-sm-2">';
+			str+='<div class="col-sm-2 border_right_yash">';
 				str+='<p>Representation Date</p>';
 				str+='<h5 class="font_weight">'+result.representationdate+'</h5>';
+			str+='</div>';
+			str+='<div class="col-sm-2">';
+				str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>In Progress</span>';
 			str+='</div>';
 			
 		str+='</div>';
@@ -292,10 +296,18 @@ function buildPetitionDetailsView(result){
 										
 										statusList = statusList+1;
 										str+='<div class="col-sm-3 m_top5">';
-											str+='<div style="padding:5px;background-color:#F5F5F5;">';
-												str+='<h5><span class="rankingColor"><span style="top: -3px;position: relative;font-size: 12px;">'+statusList+'</span></span>'+result.statusList[i].value+'</h5>';
-												str+='<h4 class="font_weight m_top10">'+result.statusList[i].count+'</h4>';
+											if(result.statusList[i].count !=null && result.statusList[i].count>0){
+												str+='<div style="padding:5px;background-color:#ccc;border:1px solid #d1ab66;">';
+													str+='<h5><span class="rankingColor"><span style="top: -3px;position: relative;font-size: 12px;">'+statusList+'</span></span>'+result.statusList[i].value+'</h5>';
+													str+='<h4 class="font_weight m_top10">'+result.statusList[i].count+'</h4>';
 											str+='</div>';
+											}else{
+												str+='<div style="padding:5px;background-color:#F5F5F5;border:1px solid #d1ab66;">';
+													str+='<h5><span class="rankingColor"><span style="top: -3px;position: relative;font-size: 12px;">'+statusList+'</span></span>'+result.statusList[i].value+'</h5>';
+													str+='<h4 class="font_weight m_top10">'+result.statusList[i].count+'</h4>';
+											str+='</div>';
+											}
+											
 										str+='</div>';
 									}
 									
@@ -667,7 +679,44 @@ function buildPetitionDetailsView(result){
 													}
 													str+='</div>';
 												str+='</div>';
+												for(var h in result.subWorksList[i].subWorksList[j].historyList){
+													str+='<div class="row">';
+														str+='<div class="col-sm-12">';
+															str+='<h5 class="text-capital font_weight">Latest History</h5>';
+															str+='<div class="row">';
+																str+='<div class="col-sm-6">';
+																	str+='<h5>Time : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].timeStr+'</b></h5>';
+																str+='</div>';
+																str+='<div class="col-sm-6">';
+																	str+='<h5>User : '+result.subWorksList[i].subWorksList[j].historyList[h].userName+'<b></b></h5>';
+																str+='</div>';
+															str+='</div>';
+															str+='<div class="row">';
+																str+='<div class="col-sm-12">';
+																	if(result.subWorksList[i].subWorksList[j].historyList[h].remarks !=null && result.subWorksList[i].subWorksList[j].historyList[h].remarks.length>20){
+																		str+='<h5 class="tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].historyList[h].remarks+'">Remarks : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].remarks.substring(0,20)+'...</b></h5>';
+																	}else{
+																		str+='<h5>Remarks : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].remarks+'</b></h5>';
+																	}
+																	
+																str+='</div>';
+																str+='</div>';
+																str+='<div class="row">';
+																str+='<div class="col-sm-6">';
+																	if(result.subWorksList[i].subWorksList[j].historyList[h].filesList !=null && result.subWorksList[i].subWorksList[j].historyList[h].filesList.length>0){
+																		//historyLetterArr=result.subWorksList[i].subWorksList[j].historyList[h].filesList;
+																		historyLetterArr=[];
+																		str+='<h5 class="docsViewCls" attr_docs="historyLetter"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i>files</h5>';
+																	}
+																	
+																str+='</div>';
+															str+='</div>';
+															
+														str+='</div>';
+													str+='</div>';
+												}
 													
+												
 											  str+='</div>';
 											str+='</div>';
 										str+='</div>';
@@ -894,6 +943,9 @@ $(document).on("click",".docsViewCls",function(){
 	}else if($(this).attr("attr_docs") == "mainWorkCovering"){
 		$("#viewDocumentHeading").html("Detailed Reports")
 		 docsList = mainWorkCoveringDocuments;
+	}else if($(this).attr("attr_docs") == "historyLetter"){
+		$("#viewDocumentHeading").html("Uploaded Documents")
+		 docsList = historyLetterArr;
 	}
 	
 	if(docsList != null && docsList.length >0){
