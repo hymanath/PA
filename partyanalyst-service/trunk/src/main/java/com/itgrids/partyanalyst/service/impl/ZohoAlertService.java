@@ -1,15 +1,19 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.crypto.spec.SecretKeySpec;
+
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
-import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.OtpDetails;
 import com.itgrids.partyanalyst.service.ISmsService;
@@ -17,6 +21,10 @@ import com.itgrids.partyanalyst.service.IZohoAlertService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
+
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 public class ZohoAlertService implements IZohoAlertService {
 	private static final Logger LOG = Logger.getLogger(ZohoAlertService.class);
@@ -181,14 +189,14 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	
 	
 	
-	public ResultStatus checkOTPDetails(AmsVO vo){
+	public String checkOTPDetails(JSONObject jobj){
 		String status = null;
 		ResultStatus resultStatus = new ResultStatus();
 		try {
 			Date currentTime = dateUtilService.getCurrentDateAndTime();
 
 			//Long tabDetsId = tabUserOtpDetailsDAO.checkOTPDetails(tabDetailsVO.getOtpNo(), tabDetailsVO.getReferenceNo(), tabDetailsVO.getMobileNo(), tabDetailsVO.getTabUserInfoId(), tabDetailsVO.getUserId(), currentTime);
-			List<Object[]> otpDetails = otpDetailsDAO.checkOTPDetails(vo.getOtp(), vo.getMembershipNo(), currentTime);
+			List<Object[]> otpDetails = otpDetailsDAO.checkOTPDetails(jobj.getString("otp"), jobj.getString("memberShipId"), currentTime);
 			if(otpDetails != null && otpDetails.size()>0)
 			{
 				Object[] obj = otpDetails.get(otpDetails.size()-1);
@@ -210,23 +218,14 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 						otpVerification.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						otpVerification = otpDetailsDAO.save(otpVerification);
 						
-						/*TabUserInfo tabUserInfo = tabUserInfoDAO.get(tabDetailsVO.getTabUserInfoId());
-						if(tabUserInfo != null){
-							tabUserInfo.setIsOtpVerified("Y");
-							tabUserInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							tabUserInfo = tabUserInfoDAO.save(tabUserInfo);
-						}	*/					
-						resultStatus.setMessage("Otp Verification Successfully");
-						resultStatus.setResultCode(200);
+						return 	generateJwt(jobj.getString("memberShipId"));
 					}
 					else{
-						resultStatus.setMessage("Invalid Otp Details");
-						resultStatus.setResultCode(400);
+						return "failure";
 					}
 		    	 }
 				 else{
-					 resultStatus.setMessage("Otp Expaired");
-					resultStatus.setResultCode(400);
+					return "failure";
 				 }
 			}
 			else
@@ -236,6 +235,28 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 			status = "failure";
 			LOG.error("Exception Occured in checkOTPDetails() in ZohoAlertService class.",e);
 		}
-		return resultStatus;
+		return status;
 	}
+	
+	
+	public static String generateJwt(String userToken) throws UnsupportedEncodingException{
+	      String secretKey = "dEkQ7T0NGxWZXSrfXka5jRIJr5nA0LTMqfBAbs9g";
+	      long notBeforeMillis = System.currentTimeMillis();
+	      long notAfterMillis = notBeforeMillis + 300000;
+
+	      SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
+	      byte[] apiKeySecretBytes = secretKey.getBytes();
+	      Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+
+	      JwtBuilder builder = Jwts.builder().signWith(signatureAlgorithm, signingKey);
+
+	      String jwt = builder.claim("email_verified", true)
+	                                  .claim("not_after", notAfterMillis)
+	                                  .claim("not_before", notBeforeMillis)
+	                                  .claim("email", "").compact();
+	      return jwt;
+	}
+
+
 }

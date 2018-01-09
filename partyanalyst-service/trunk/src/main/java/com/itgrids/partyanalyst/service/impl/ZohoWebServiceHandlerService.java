@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -47,25 +48,12 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 
 
 	@Override
-	public ResultStatus mobileOtpVerification(AmsVO vo) {
+	public String mobileOtpVerification(JSONObject jobj) {
 		try {
-			return zohoAlertService.checkOTPDetails(vo);
+			return zohoAlertService.checkOTPDetails(jobj);
 		} catch (Exception e) {
 			LOG.error("Exception raised at mobileOtpVerification method in ZohoWebServiceHandlerService Class", e);
 		}
 		return null;
 	}
-
-
-
-
-	/*@Override
-	public ResultStatus sendOTPAtLoginTime(String message, boolean isEnglish, String... phoneNumbers) {
-		try {
-			return zohoAlertService.sendOtp(message, isEnglish, phoneNumbers);
-		} catch (Exception e) {
-			LOG.error("Exception raised at sendOTPAtLoginTime method in ZohoWebServiceHandlerService Class", e);
-		}
-		return null;
-	}*/
 }
