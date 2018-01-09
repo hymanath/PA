@@ -3406,3 +3406,38 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 .border_radius_5{
 	border-radius:5px;
 }
+.panel-white
+{
+	border-radius:0px;
+	.panel-heading{
+		background-color:@white_color;
+		color:@black_color;
+		border-radius:0px;
+		.panel-title
+		{
+			color:@black_color !important;
+			font-weight:600;
+		}
+	}
+}
+.panelCollapseIconChangePE
+{
+	&:before {
+		font-family:'Glyphicons Halflings';
+		content:"\2212";
+		float: right;
+		font-size:10px;
+		font-weight:400 !important;
+		margin-left:-4px;
+		color:@black_color;
+		border:1px solid @black_color;
+		padding:2px 4px;
+		.rounded-corners(4px);
+	}
+}
+.panelCollapseIconChangePE.collapsed
+{
+	&:before {
+		content:"\002b";
+	}
+}
