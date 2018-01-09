@@ -1539,6 +1539,10 @@ public class RWSNICService implements IRWSNICService{
 	public List<RwsClickVO> getOnclickWorkDetails(InputVO vo){
 		List<RwsClickVO> finalList = new ArrayList<RwsClickVO>();
 		try {
+			String workStatus=vo.getWorkStatus();
+			if(vo.getWorkStatus().trim().equalsIgnoreCase("grounded")){
+				vo.setWorkStatus("onGoing");
+			}
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
 			List<String> workIds = new ArrayList<String>();
@@ -1599,8 +1603,13 @@ public class RWSNICService implements IRWSNICService{
 		 	    				subVo.setWorkId(jobj.getString("workId"));
 		 	    				workIds.add(jobj.getString("workId"));
 		 	    				//subVo.setSourceCount(jobj.getString("sourceCount"));
-		 	    				
-		 	    				finalList.add(subVo);
+		 	    				if(workStatus.trim().equalsIgnoreCase("grounded")){
+		 	    					if(jobj.has("groundingDate") && jobj.getString("groundingDate")!=null && !jobj.getString("groundingDate").equalsIgnoreCase("--")){
+		 	    						finalList.add(subVo);
+		 	    					}
+		 	    				}else{
+		 	    					finalList.add(subVo);
+		 	    				}
 		 	    			}
 		 	    		}
 						
