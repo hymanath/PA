@@ -308,6 +308,7 @@ $('#advanceSearchBtnId').prop("checked",true);
 if($('#advanceSearchBtnId').prop( "checked")){
 	$("input[type='checkbox']").prop({disabled: true});
 }
+getStatusList(0);
 $("#advancedSearchButtonDivId").show();
 $(document).on("change","#locationSelId",function(){
 	$("#referralNameId").html('<option value="0">Select Referral Name</option>');

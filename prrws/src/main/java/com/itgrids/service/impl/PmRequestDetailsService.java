@@ -2873,11 +2873,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					endDate = format.parse(inputVO.getToDate());
 				}
 				List<Object[]> referralList = pmSubWorkDetailsDAO.getReferralWiseOverviewDetails(inputVO,startDate,endDate);
-				if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
+				//if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
 					setReferralDesignationsDetails(referralList,returnVO.getReferrerList());
-				}else{
+				//}else{
 					setDesignationWiseCount(referralList,returnVO.getSubList());
-				}
+				//}
 			} catch (Exception e) {
 				e.printStackTrace();
 				LOG.error("Exception Occured in PmRequestDetailsService @ getReferralWiseOverviewDetails() "+e.getMessage());
@@ -2903,6 +2903,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							refDesigCan.setDesigName(name);
 							map.put(id, refDesigCan);
 						}
+						refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[6]));
 						refDesigCan.setNoOfWorks(refDesigCan.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
 						refDesigCan.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
 					}
@@ -2976,6 +2977,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						if(statusVO != null){
 							statusVO.setNoOfWorks(statusVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
 							statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
+						if(statusId.longValue() == 3l){
+							Long estimationCost = commonMethodsUtilService.getLongValueForObject(objects[8]);
+							Long totalCost = Long.valueOf(statusVO.getEstimationCost())+estimationCost;
+							statusVO.setEstimationCost(totalCost.toString());
+						}
 						}
 					}
 				}
