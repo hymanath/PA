@@ -6,16 +6,45 @@ import java.util.List;
 public class PetitionHistoryVO implements java.io.Serializable{
 
 	private Long id;
+	private Long workId;
 	private String name;
 	private String endorsmentNo;
 	private String datestr;
 	private String timeStr;
 	private Long statusId;
-	private String stauts;
+	private String stautus;
 	private String remarks;
 	private List<KeyValueVO> filesList = new ArrayList<KeyValueVO>(0);
 	private String userName;
+	private String designation;
 	private String officerName;
+	private String actionName;
+	private String path;
+	
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	public Long getWorkId() {
+		return workId;
+	}
+	public void setWorkId(Long workId) {
+		this.workId = workId;
+	}
+	public String getActionName() {
+		return actionName;
+	}
+	public void setActionName(String actionName) {
+		this.actionName = actionName;
+	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -52,11 +81,11 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	public void setStatusId(Long statusId) {
 		this.statusId = statusId;
 	}
-	public String getStauts() {
-		return stauts;
+	public String getStautus() {
+		return stautus;
 	}
-	public void setStauts(String stauts) {
-		this.stauts = stauts;
+	public void setStautus(String stautus) {
+		this.stautus = stautus;
 	}
 	public List<KeyValueVO> getFilesList() {
 		return filesList;

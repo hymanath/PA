@@ -49,7 +49,14 @@ public class PetitionsWorksVO {
 	private Long locationScopeId;
 	private Long locationValue;
 	private Long uiSeriesNo;
+	private List<PetitionHistoryVO> historyList = new ArrayList<PetitionHistoryVO>(0);
 	
+	public List<PetitionHistoryVO> getHistoryList() {
+		return historyList;
+	}
+	public void setHistoryList(List<PetitionHistoryVO> historyList) {
+		this.historyList = historyList;
+	}
 	public Long getUiSeriesNo() {
 		return uiSeriesNo;
 	}

@@ -53,6 +53,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.PetitionFileVO;
+import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.PetitionTrackingVO;
 import com.itgrids.dto.PetitionsWorksVO;
@@ -1486,8 +1487,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		SimpleDateFormat dmyFormat = new SimpleDateFormat("dd-MM-yyyy");
 		try {
 			List<Object[]> subWorksList = pmSubWorkDetailsDAO.getPetitionSubWorksDetails(petitionId);
+			List<Long> workIdsList = new ArrayList<Long>(0);
 			if(commonMethodsUtilService.isListOrSetValid(subWorksList)){
 				for (Object[] param : subWorksList) {
+					workIdsList.add(commonMethodsUtilService.getLongValueForObject(param[17]));
 					PetitionsWorksVO vo = new PetitionsWorksVO();
 					vo.setPetitionId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					vo.setWorkId(commonMethodsUtilService.getLongValueForObject(param[17]));
@@ -1581,6 +1584,60 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 worksList.add(vo);
 					 petitionSubWorksMap.put(seriesNo, worksList);
 				}
+				
+				Map<Long,List<PetitionHistoryVO>> historyMap = new HashMap<Long,List<PetitionHistoryVO>>();
+				
+				if(commonMethodsUtilService.isListOrSetValid(workIdsList)){
+					List<Object[]> historyList = pmTrackingDAO.getLatestTrackingDetails(petitionId,workIdsList);
+					if(commonMethodsUtilService.isListOrSetValid(historyList)){
+						for (Object[] param : historyList) {
+							Long petitinId =commonMethodsUtilService.getLongValueForObject(param[0]);
+							Long workId=commonMethodsUtilService.getLongValueForObject(param[1]);
+							String actionName =commonMethodsUtilService.getStringValueForObject(param[2]);
+							String path=commonMethodsUtilService.getStringValueForObject(param[3]);
+							String remarks=commonMethodsUtilService.getStringValueForObject(param[4]);
+							String timeStr=commonMethodsUtilService.getStringValueForObject(param[5]);
+							String userName =commonMethodsUtilService.getStringValueForObject(param[6]);
+							String stautus=commonMethodsUtilService.getStringValueForObject(param[7]);
+							String officerName=commonMethodsUtilService.getStringValueForObject(param[8]);
+							String mobileNo=commonMethodsUtilService.getStringValueForObject(param[9]);
+							String designation=commonMethodsUtilService.getStringValueForObject(param[10]);
+							
+							List<PetitionHistoryVO> historyWorkList = new LinkedList<PetitionHistoryVO>();
+							if(historyMap.get(workId) != null){
+								historyWorkList = historyMap.get(workId);
+							}
+							PetitionHistoryVO historyVO = new PetitionHistoryVO();
+							historyVO.setId(petitinId);
+							historyVO.setWorkId(workId);
+							historyVO.setActionName(actionName);
+							historyVO.setPath(path);
+							historyVO.setRemarks(remarks);
+							historyVO.setTimeStr(timeStr);
+							historyVO.setUserName(userName);
+							historyVO.setStautus(stautus);
+							historyVO.setOfficerName(officerName);
+							historyVO.setDesignation(designation);
+							if(historyVO.getOfficerName() ==null || historyVO.getOfficerName().isEmpty())
+								historyVO.setOfficerName(mobileNo);
+							historyWorkList.add(historyVO);
+							historyMap.put(workId, historyWorkList);
+						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isMapValid(petitionSubWorksMap)){
+					for (String endorsNo : petitionSubWorksMap.keySet()) {
+						List<PetitionsWorksVO> worksList = petitionSubWorksMap.get(endorsNo);
+						if(commonMethodsUtilService.isListOrSetValid(worksList)){
+							for (PetitionsWorksVO workVO : worksList) {
+								if(historyMap.get(workVO.getWorkId()) != null){
+									workVO.getHistoryList().addAll(historyMap.get(workVO.getWorkId()));
+								}
+							}
+						}
+					}
+				}
 			}
 		} catch (Exception e) {
 			LOG.error("Exception Occured in PmRequestDetailsService @ getPetitionsSubWorksDetails "+e.getMessage());
@@ -1589,6 +1646,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	}
 	
 	
+	public Map<Long,PetitionHistoryVO> getPetitionWorksHistoryDetails(){
+		Map<Long,PetitionHistoryVO> historyMap = new HashMap<Long, PetitionHistoryVO>(0);
+		try {
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in PmRequestDetailsService @ getPetitionWorksHistoryDetails "+e.getMessage());
+		}
+		return historyMap;
+	}
 	@SuppressWarnings("static-access")
 	public  Map<Long,List<PetitionFileVO>> getPetitionsRequiredFilesMap(Long petitionId){
 		 Map<Long,List<PetitionFileVO>> petitionRequiredFilesMap = new HashMap<Long,List<PetitionFileVO>>(0);
@@ -1697,6 +1763,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 }
 			 Map<String,Map<Long,Map<Long,Map<Long,List<PetitionsWorksVO>>>>> endorsementDeptWorksMap = new LinkedHashMap<String,Map<Long,Map<Long,Map<Long,List<PetitionsWorksVO>>>>>();
 			 Map<Long,KeyValueVO> departmentsMap = new TreeMap<Long,KeyValueVO>();
+			 PetitionsWorksVO pendignEndorsVO = null;
 				if(commonMethodsUtilService.isMapValid(petitionSubWorksMap)){
 					for (String seriesNo : petitionSubWorksMap.keySet()) {
 						List<PetitionFileVO> globalFilesList = getRequiredFilesTypeTemplate();
@@ -1815,13 +1882,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								vo.setSubSubjectId(worksVO.getSubSubjectId());
 								vo.setSubSubject(worksVO.getSubSubject());
 								vo.getSubWorksList().addAll(workTypeVOList);
-								petitionVO.getSubWorksList().add(vo);
+								
+								if(!vo.getEndorsmentNo().isEmpty() && !vo.getEndorsmentNo().trim().equalsIgnoreCase("0"))
+									petitionVO.getSubWorksList().add(vo);
+								else
+									pendignEndorsVO = vo;
 							}
 							
 						}
 					}
 				}
-				PetitionsWorksVO pendignEndorsVO = null;
+				
 				if(commonMethodsUtilService.isMapValid(endorsementDeptWorksMap)){
 					for (String endNo : endorsementDeptWorksMap.keySet()) {
 						Map<Long,Map<Long,Map<Long,List<PetitionsWorksVO>>>> deptWorksMap = endorsementDeptWorksMap.get(endNo);
