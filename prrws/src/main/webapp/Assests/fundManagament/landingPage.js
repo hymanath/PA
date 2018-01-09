@@ -16,7 +16,7 @@ var blockClassObject = {
 }
 
 var blockHeadingObject = {
-"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"ACHIEVEMENT","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery New':"ACHIEVED",'Silk worm New':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"NOTIFIED & IN PROGRESS",'ASSETS':"COMPLETED & CLOSED","WATER SOURCE":"TOTAL","WORKS":"COMPLETED","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA-SLA KPI":"Beyond SLA/etaal - KPI","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CHLORINATION":"","coffee":"COFFEE","Raising and Maintenance of Nursery":"Raising and Maintenance of Nursery","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and CheckDams","Mini Percolation Tanks":"Mini Percolation Tanks","Continuous Contour Trenches":"Continuous Contour Trenches","Greenary works Chettu":"Greenary works Chettu","Agriculture Related Works":"Agriculture Related Works","Rural Sanitation Works":"Rural Sanitation Works","Soil Moisture Conservation works Neeru":"Soil Moisture Conservation works Neeru","Works in community lands":"Works in community lands","OTHERS":"OTHERS","Institutional Development Works":"Institutional Development Works","Road Works":"Road Works","Water Harvesting Structures Neeru":"Water Harvesting Structures Neeru","Fisheries work":"Fisheries work","AH-Live Stock Related works":"AH-Live Stock Related works",
+"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"No.of Habitations Covered","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery New':"ACHIEVED",'Silk worm New':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"",'ASSETS':"RWS ASSETS","WATER SOURCE":"TOTAL","WORKS":"COMPLETED","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA-SLA KPI":"Beyond SLA/etaal - KPI","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CHLORINATION":"","coffee":"COFFEE","Raising and Maintenance of Nursery":"Raising and Maintenance of Nursery","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and CheckDams","Mini Percolation Tanks":"Mini Percolation Tanks","Continuous Contour Trenches":"Continuous Contour Trenches","Greenary works Chettu":"Greenary works Chettu","Agriculture Related Works":"Agriculture Related Works","Rural Sanitation Works":"Rural Sanitation Works","Soil Moisture Conservation works Neeru":"Soil Moisture Conservation works Neeru","Works in community lands":"Works in community lands","OTHERS":"OTHERS","Institutional Development Works":"Institutional Development Works","Road Works":"Road Works","Water Harvesting Structures Neeru":"Water Harvesting Structures Neeru","Fisheries work":"Fisheries work","AH-Live Stock Related works":"AH-Live Stock Related works",
 "Renovation and Improvements to existing Check Dams Check Wall":"ACHIEVED","Road Formation Upto WBM GR II Including CD works":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas":"ACHIEVED","Construction Of Animal Hostel":"ACHIEVED","Roads for Unconnected Habitations 2011-12":"ACHIEVED","Construction of New Check Dam":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality":"ACHIEVED","Construction of Food Grains Storage Structures of 250MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works in Tribal areas":"ACHIEVED","Construction of Village Haats Infrastructure fecilities":"ACHIEVED","Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham":"ACHIEVED","Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank":"ACHIEVED","Construction of Buildings for women self help group federation":"ACHIEVED","Work Site Facilities":"ACHIEVED","Renovation and Improvements to existing Percolation Tank  Mini Percolation tank":"ACHIEVED","GP level BNRGSK knowledge resource centre 2012-13 and afterwards":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality":"ACHIEVED","Production of Grafts in HNTC":"ACHIEVED","Improvements of RYTHU BAZAR":"ACHIEVED","Roads for Unconnected Habitations 2012-13 and afterwards":"ACHIEVED","HNTC Development":"ACHIEVED","New Open Well for Drinking water purpose":"ACHIEVED","Construction of Crematoria Burial Grounds":"ACHIEVED","Repairs to Existing Check Dam":"ACHIEVED","Formation of Road upto Gravel surface including CD works to agriculture fields":"ACHIEVED","Formation of Approach Road upto Gravel surface including CD works to Burial ground":"ACHIEVED","Construction of Food Grains Storage Structures of 500MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas":"ACHIEVED","Raising of Cashew bag seedlings for 2014-15":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas":"ACHIEVED","NTR Rural House":"NTR Rural House","Cattle Ponds":"Cattle Ponds","Desilting of Drinking Water Tanks":"Desilting of Drinking Water Tanks","Animal Husbandry Others":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank1":"ACHIEVED","Avenue Plantation":"ACHIEVED","Forest Others":"ACHIEVED","Scooping and Dibbling of seed":"ACHIEVED","IJP PROGRAM WORKS":"ACHIEVED",
 "Azolla Production Unit":"ACHIEVED","Construction of silopits of 3 MTs capacity":"ACHIEVED","Fodder trough for Cattle Cattle drinking water trough":"ACHIEVED","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"ACHIEVED","Raising of Perinnial Fodder":"ACHIEVED","Raising of Silvipasture clubbed with subabul plantation":"ACHIEVED","Raising and Maintenance of Avenue plantations":"ACHIEVED","Raising and Maintenance of Block Plantations":"ACHIEVED","Raising and Maintenance of nurseries":"ACHIEVED","Soil and Moisture Conservation Works":"ACHIEVED","CM EODB":"Total/Approved","BIOMETRIC DASHBOARD":"TotalEmployee/Present","Man Days Comparision":"","AC WORKS":"RURAL CONSTITUENCIES","Expenditure":"","Field Man Days":"Today","KEY PERFORMANCE":"PERCENTAGE","FA Vacancies":"Total Vacancies","Solid Waste Management":"","PR eOffice":"TOTAL PENDENCY","Enc Works":"Techincal Sancationed / Completed","Enc Roads":"Total Road Length"
 }
@@ -567,10 +567,10 @@ function getHabitationCoverageByStatusByState()
 	 $(".RURALWATERSUPPLYAllCls").html(spinner);
 	 var fullyCoveredHabitationPer=0;
 			var json = {
-				fromDateStr:"01-01-1977",
-				toDateStr:gblEndDate,
+				fromDateStr:'01-04-2017',//"01-01-1977",
+				toDateStr:'01-04-2018',//gblEndDate,
 				locationType:"state",
-				year:gblEndDate.split("-")[2],
+				year:"2017",//gblEndDate.split("-")[2],
 				filterType:"",
 				filterValue:"",
 				districtValue:"",
@@ -586,17 +586,19 @@ function getHabitationCoverageByStatusByState()
 					xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success: function(response){
-					$(".RURALWATERSUPPLYAllCls").html("0"+"%");
+					$(".RURALWATERSUPPLYAllCls").html("0");
 					if(response !=null && response.length>0){
-						for(var i in response){
+						//alert(response[0].totalCount)
+						$(".RURALWATERSUPPLYAllCls").html(response[0].totalCount);
+						/* for(var i in response){
 						  for(var j in response[i].statusList){
 							if(response[i].statusList[j].status == "FC"){
 								fullyCoveredHabitationPer = response[i].statusList[j].percentage;
 							}
 						 }
-						}
+						} */
 				     }
-					 $(".RURALWATERSUPPLYAllCls").html(fullyCoveredHabitationPer+"%");
+					 
 				}
 			});
 }
@@ -1206,6 +1208,7 @@ function getLocationWiseAlertStatusCounts()
 		},
 		success: function(ajaxresp){
 			var notifiedAct = 0;
+			var inProgressAct = 0;
 			for(var i in ajaxresp)
 			{
 				for(var j in ajaxresp[i].statusList)
@@ -1213,11 +1216,11 @@ function getLocationWiseAlertStatusCounts()
 					if(ajaxresp[i].statusList[j].id==2){
 						notifiedAct = notifiedAct + ajaxresp[i].statusList[j].count;
 					}else if(ajaxresp[i].statusList[j].id==3){
-						notifiedAct = notifiedAct + ajaxresp[i].statusList[j].count;
+						inProgressAct = inProgressAct + ajaxresp[i].statusList[j].count;
 					}
 				}
 			}
-			$(".JALAVANIAllCls").html(notifiedAct);
+			$(".JALAVANIAllCls").html(jalavaniData(notifiedAct,inProgressAct));
 		}
 	});
 }
@@ -1225,8 +1228,8 @@ function getAssetInfoBetweenDates()
 {
 	$(".ASSETSAllCls").html(spinner);
 	var json = {
-		fromDateStr:'01-01-1977',
-		toDateStr:moment().format("DD-MM-YYYY"),
+		fromDateStr:'01-01-1978',//'01-01-1977',
+		toDateStr:'31-12-2028',//moment().format("DD-MM-YYYY"),
 		year:2017,
 		filterType:'',
 		filterValue:'',
@@ -2296,4 +2299,20 @@ function getStateWiseRoadsInformation(){
 			$(".EncRoadsAllCls").html(''+result.totalRoadsLength+'');
 		}
 	});
+}
+
+function jalavaniData(notifiedValue,inProgressValue)
+{
+	var str='';
+	str+='<div class="row" >';
+		str+='<div class="col-sm-12 text-right">';
+			str+='<h5 style="margin-top: 0px;"><span class="m_top5" style="font-size:15px;">NOTIFIED - </span><b>'+notifiedValue+'</b></h5>';
+			//str+='</h5>';
+				
+		str+='</div>';
+		str+='<div class="col-sm-12 text-right m_top10">';
+			str+='<h5 style="margin-top: 0px;"><span class="m_top5" style="font-size:15px;">IN&nbsp;PROGRESS - </span><b>'+inProgressValue+'</b></h5>';
+		str+='</div>';
+	str+='</div>';		
+	return str;
 }
