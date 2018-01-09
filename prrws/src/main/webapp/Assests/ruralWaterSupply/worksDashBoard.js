@@ -473,7 +473,10 @@ function tabBlocks(blockId,blockName){
 		}else{
 			tabBlock+='<div id="collapse'+blockId+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+blockId+'">';
 		}
-		var statusType='';
+		
+			
+		
+				var statusType='';
 				$('.exceedWorkTypeCls').each(function(i, obj){
 					 if($(this).is(':checked')){
 						statusType = $(this).val();
@@ -742,7 +745,7 @@ $(window,document).on('resize', function(){
 													tableView+='<td> - </td>';
 												}
 												if(GLtbodyArr[i].basicList[j].workGroundedCount !=null && GLtbodyArr[i].basicList[j].workGroundedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].basicList[j].workGroundedCount+'" attr_type = "ongoing" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workGroundedCount+'</td>';
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].basicList[j].workGroundedCount+'" attr_type = "grounded" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workGroundedCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
