@@ -456,10 +456,10 @@ var json = {
  }).done(function(result){
  }); 
 }
-//getReferralWiseOverviewDetails();
+getReferralWiseOverviewDetails();
 function getReferralWiseOverviewDetails(){
 	var json = {
-			designationIds:[1]	  
+			designationIds:[]	  
 	  };
 	$.ajax({              
 		type:'POST',    
