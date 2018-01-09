@@ -39,7 +39,8 @@ public class Petition {
 	private Date updatedTime;
 	
 	private PmStatus pmStatus;
-
+	private String isOldData;
+	
 	@Id
 	@Column(name="petition_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -182,6 +183,14 @@ public class Petition {
 	}
 	public void setUpdatedUserId(Long updatedUserId) {
 		this.updatedUserId = updatedUserId;
+	}
+	
+	@Column(name="is_old_data")
+	public String getIsOldData() {
+		return isOldData;
+	}
+	public void setIsOldData(String isOldData) {
+		this.isOldData = isOldData;
 	}
 	
 

@@ -6,17 +6,17 @@ import java.util.List;
 public class PmRequestEditVO {
 
 	private Long petitionId;
-	private String endorsmentNo="";
-	private String endorsmentDate="";
-	private String representationType="";
-	private String representationdate="";
+	private String endorsmentNo;
+	private String endorsmentDate;
+	private String representationType;
+	private String representationdate;
 	private Long workId;
-	private String workName="";
+	private String workName;
 	private Long noOfWorks;
-	private String estimateCost="";
-	private String estimateCostStr="";
-	private String grievanceDescription="";
-	
+	private String estimateCost;
+	private String estimateCostStr;
+	private String grievanceDescription;
+	private String isOldData;
 	private List<KeyValueVO> coveringLetterPathsList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> fileList = new ArrayList<KeyValueVO>();
 	private List<PmRequestVO> representeeDetailsList = new ArrayList<PmRequestVO>(0);	
@@ -140,5 +140,11 @@ public class PmRequestEditVO {
 	}
 	public void setEstimateCostStr(String estimateCostStr) {
 		this.estimateCostStr = estimateCostStr;
+	}
+	public String getIsOldData() {
+		return isOldData;
+	}
+	public void setIsOldData(String isOldData) {
+		this.isOldData = isOldData;
 	}
 }

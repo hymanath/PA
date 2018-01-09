@@ -28,7 +28,7 @@ var globalStatusArr=[];
 var selectdWorksArr=[];
 var departmentSelectArr=[];
 
-$("#representationDate").daterangepicker({
+$("#representationDate,#endorsmentDate").daterangepicker({
 	singleDatePicker: true,
 	maxDate:new Date(),
 	locale: {
@@ -36,7 +36,7 @@ $("#representationDate").daterangepicker({
 	},
 	
 });
-$('#representationDate').on('apply.daterangepicker', function(ev, picker) {
+$('#representationDate,#endorsmentDate').on('apply.daterangepicker', function(ev, picker) {
 });
 
 
@@ -1567,6 +1567,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 }
 function getPetitionDetails(){
 	//$("#"+result.representationType+"DetailsDivId").html(str);
+	$('#representationDate,#endorsmentDate').val('');
    var json = {
        petitionId:petitionId,//	"1872",
        pageType:"editPage"
@@ -1951,7 +1952,7 @@ function buildPetitionDetails(result){
 			
 			if(isWorkFileAvailable){
 				str+='<div class="alreadyUploadFilesCss">';
-					str+='<h4> OTHER WORK RELATED DOCUMENTS : </h4>';
+					str+='<h4> PETITION DOCUMENTS : </h4>';
 					str+='<div class="row">';
 						for(var i in result.fileList){
 							
@@ -2522,7 +2523,7 @@ function buildPetitionDetails(result){
 													str+='<div class="row">';	
 													str+='<div class="col-sm-12">';
 														str+='<div class="pull-right">';
-															str+='<span class="addLocationCss m_top10 pull-right cloned_Inner_Element" style="cursor:pointer;" attr_type="'+result.representationType+'" attr_counterval="'+i+'" main_work_count="0" inner_work_count="'+innerWorkTypeCount+'" attr_id="manageInnerWorks'+globalWorkTypeCount+'">ADD WORK </span>';
+															//str+='<span class="addLocationCss m_top10 pull-right cloned_Inner_Element" style="cursor:pointer;" attr_type="'+result.representationType+'" attr_counterval="'+i+'" main_work_count="0" inner_work_count="'+innerWorkTypeCount+'" attr_id="manageInnerWorks'+globalWorkTypeCount+'">ADD WORK </span>';
 															
 															str+='<span class="addLocationCss m_top10 pull-right updateStatusChangeCls" style="cursor:pointer;margin-right: 5px;" attr_total_works="'+departmentWiseSubWorks[k].subWorksList.length+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">UPDATE STATUS </span>';
 															
@@ -2737,7 +2738,7 @@ function getParliamentIdsByConstituencyList(){
 
 
 function getPetitionDesignationLst(typeVal){
-
+$('#representationDate,#endorsmentDate').val('');
 	  var json = {
 		   searchType:"all"// all/refCandidateDesignations/petitionGivenRefCandidateDesignations
 	  };
@@ -3880,11 +3881,32 @@ $(document).on("change",".madalChangeCls",function(){
 				nextStatusId=5;	
 			if(enrorsNo !=null && enrorsNo>0){
 				if(globalStatusArr[i].key !=1){
-					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+' </option>');
+					if(globalStatusArr[i].key == 6)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD ACTION COPY</option>');
+					else if(globalStatusArr[i].key == 7)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD DETAILED REPORT </option>');
+					else if(globalStatusArr[i].key == 3)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> FINAL APPROVAL </option>');
+					else if(globalStatusArr[i].key == 4)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> LOOK FOR NEXT YEAR </option>');
+					else if(globalStatusArr[i].key == 5)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> NOT POSSIBLE </option>');
+					
 				}
-				
 			}else{
-				$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+' </option>');
+				if(globalStatusArr[i].key == 1)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> ENDORSE PETITION </option>');
+				else if(globalStatusArr[i].key == 6)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD ACTION COPY</option>');
+				else if(globalStatusArr[i].key == 7)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD DETAILED REPORT </option>');
+				else if(globalStatusArr[i].key == 3)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> FINAL APPROVAL </option>');
+				else if(globalStatusArr[i].key == 4)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> LOOK FOR NEXT YEAR </option>');
+				else if(globalStatusArr[i].key == 5)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> NOT POSSIBLE </option>');
+				
 			}	
 			
 		}
@@ -4098,3 +4120,179 @@ $.ajax({
 	$("#officerId").trigger('chosen:updated');
 });	
 }
+
+
+function endorsingSubWorksAndAssigningToOfficer(){
+
+	var flag =false;
+	 
+	 $('#assignToIdErr').html('');
+	 $('#officerIdErr').html('');
+	 $('#remarkIdErr').html('');
+	 
+	  var errorAssignToStr = '';
+	  var errorOfficerStr = '';
+	  var errRemarksStr = '';
+	  var errStatusIdStr  = '';
+	  
+	 var statusId = $("#statusChangeId").val();
+	
+	 if(statusId == 6){
+		 var assignToIdValue = $("#assignToId").val();
+         var officerIdValue = $("#officerId").val();
+	     var remarksId =$("#remarksId").val();
+		 
+		 if(assignToIdValue == null || assignToIdValue==0){
+			errorAssignToStr += "<p style='color:red'>Please select assign to</p>"; 
+		 }
+		 if(officerIdValue == null || officerIdValue==0){
+			 errorOfficerStr += "<p style='color:red'>Please select officer name</p>"; 
+		 }
+		if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
+			  errRemarksStr += "<p style='color:red'>Comment is required</p>"; 
+		 }
+		 
+	}else if(statusId == 7 || statusId == 3  || statusId == 4  || statusId == 5){
+		  var remarksId =$("#remarksId").val();
+		 if( remarksId == null || remarksId.trim().length == 0){
+			 errRemarksStr += "<p style='color:red'>Comment is required</p>";
+		 }
+	}
+	
+	if(errStatusIdStr.length >0)
+	{
+		$('#statusIdErrStr').html(errStatusIdStr);
+		falg = true ;
+	}else{
+		$('#statusIdErrStr').html('');
+	}
+	if(errorAssignToStr.length >0)
+	{
+		$('#assignToIdErr').html(errorAssignToStr);
+		falg = true ;
+	}else{
+		$('#assignToIdErr').html('');
+	}
+	if(errorOfficerStr.length >0)
+	{
+		$('#officerIdErr').html(errorOfficerStr);
+		falg = true ;
+	}else{
+		$('#officerIdErr').html('');
+	}
+	
+	if(errRemarksStr.length >0)
+	{
+		$('#remarkIdErr').html(errRemarksStr);
+		falg = true ;
+	}else{
+		$('#remarkIdErr').html('');
+	}
+	
+	if(flag==true)
+		return;
+	
+	   //$('#endorsWorksId').hide();
+	   var endorsementNO="";
+	   var formData = new FormData();
+	   $('#endorsingSubWorksId input').each(
+		  function(){			  
+			var input = $(this);
+			var text =input.attr('type');
+			var id = input.attr('id');
+			//debugger;
+			if (typeof id !== typeof undefined && id !== false) {
+				if(text=='text' || text=='hidden'){
+					var name = $('#'+id+'').attr('name');
+					formData.append(name, $('#'+id+'').val());
+					
+					if(name=="petitionId")
+						petitionId = $('#'+id+'').val();
+					else if(name=="endorsementNO")
+						endorsementNO = $('#'+id+'').val();
+						
+				}else if(text=='radio'){
+					if($('#'+id+'').is(':checked')){
+						var name = $('#'+id+'').attr('name');
+						formData.append(name, $('#'+id+'').val());
+					}
+				}else if(text=='file'){
+					if(this.files !=null && this.files.length>0){
+						for(var i = 0; i < this.files.length; i++){
+								formData.append("filesList["+i+"]", this.files[i]);
+						}
+					}
+				}
+			}			
+		}
+	);
+	
+	$('#endorsingSubWorksId textarea').each(
+		  function(){			  
+			var input = $(this);
+				var id = input.attr('id');
+				if (typeof id !== typeof undefined && id !== false) {
+				var name = $('#'+id+'').attr('name');
+				formData.append(name, $('#'+id+'').val());
+			}
+		}
+	);
+	
+	$('#endorsingSubWorksId select').each(
+		  function(){			  
+				var input = $(this);
+				var id = input.attr('id');
+				if (typeof id !== typeof undefined && id !== false) {
+					var name = $('#'+id+'').attr('name');
+					formData.append(name, $('#'+id+'').val());
+			}
+		}
+	);
+	if(selectdWorksArr !=null && selectdWorksArr.length>0){
+			for(var i = 0; i < selectdWorksArr.length; i++){
+				formData.append("workIds["+i+"]", selectdWorksArr[i]);
+				if($("#nextStatusId").val()==6){
+					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
+						formData.append("statusType", "COVERING LETTER");
+				}else if($("#nextStatusId").val()==7){
+					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
+						formData.append("statusType", "ACTION COPY");
+				}else if($("#nextStatusId").val()==3){
+					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
+						formData.append("statusType", "DETAILED REPORT");
+				}
+		}
+	}
+	//formData.append("petitionId", petitionId);
+$.ajax({
+			url: $("#endorsingSubWorksId").attr("action"),
+			data: formData,
+			type: "POST",               
+			processData: false,
+			contentType: false,
+			success: function(result) {
+				$("#savingDetailsSpinner").html('');
+				
+					if(result!=null){
+					  if(result.exceptionMsg == "SUCCESS"){
+						  alert("Work(s) details updated successfully");
+						  $("#endorseMentModalDivId").modal("hide");
+							window.location.reload(); 
+						 // $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
+					  }else{
+						  $('#endorsWorksId').show();
+					  }
+					}else{
+					 $('#endorsWorksId').show();
+					}
+			},
+			error: function(request,error) { 
+				$("#savingDetailsSpinner").html('');
+				//console.log(request);
+				//console.log(error);
+				alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
+				$('#endorsWorksId').show();				
+			}
+     });
+ }	
+ 

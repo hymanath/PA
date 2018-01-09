@@ -261,7 +261,7 @@ function buildPetitionDetailsView(result){
 							str+='</div>';
 					str+='</div>';
 					str+='<div class="col-sm-2">';
-						str+='<h5>DOCUMENTS</h5>';
+						str+='<h5> PETITION DOCUMENTS </h5>';
 						if(result.fileList !=null && result.fileList.length>0){
 							str+='<div class="view_referral_Doc docsViewCls m_top15 text-center" attr_docs="fileList" style="cursor:pointer;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i><br/> <h5 class="m_top10">VIEW DOCUMENTS</h5></div>';
 							projectDocuments = result.fileList;
@@ -512,7 +512,7 @@ function buildPetitionDetailsView(result){
 																str+='<div class="m_top15 margin_bottom">';
 																	str+='<h5 class="">Est Budget</h5>';
 																	if(result.subWorksList[i].subWorksList[j].estimateCostStr !=null && result.subWorksList[i].subWorksList[j].estimateCostStr>0){
-																		str+='<h5 class="font_weight m_top10"><i class="fa fa-inr" aria-hidden="true" style="color:green;"></i> '+result.subWorksList[i].subWorksList[j].estimateCostStr+'</h5>';
+																		str+='<h5 class="font_weight m_top10"><i class="fa fa-inr" aria-hidden="true" style="color:green;"></i> '+result.subWorksList[i].subWorksList[j].estimateCostStr+' Lakhs</h5>';
 																	}else{
 																		str+='<h5 class="font_weight m_top10"> - </h5>';
 																	}
@@ -748,11 +748,32 @@ $(document).on("click",".updateStatusChangeCls",function(){
 				nextStatusId=5;	
 			if(enrorsNo !=null && enrorsNo>0){
 				if(globalStatusArr[i].key !=1){
-					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+' </option>');
+					if(globalStatusArr[i].key == 6)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD ACTION COPY</option>');
+					else if(globalStatusArr[i].key == 7)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD DETAILED REPORT </option>');
+					else if(globalStatusArr[i].key == 3)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> FINAL APPROVAL </option>');
+					else if(globalStatusArr[i].key == 4)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> LOOK FOR NEXT YEAR </option>');
+					else if(globalStatusArr[i].key == 5)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> NOT POSSIBLE </option>');
+					
 				}
-				
 			}else{
-				$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+' </option>');
+				if(globalStatusArr[i].key == 1)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> ENDORSE PETITION </option>');
+				else if(globalStatusArr[i].key == 6)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD ACTION COPY</option>');
+				else if(globalStatusArr[i].key == 7)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD DETAILED REPORT </option>');
+				else if(globalStatusArr[i].key == 3)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> FINAL APPROVAL </option>');
+				else if(globalStatusArr[i].key == 4)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> LOOK FOR NEXT YEAR </option>');
+				else if(globalStatusArr[i].key == 5)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> NOT POSSIBLE </option>');
+				
 			}	
 			
 		}
@@ -1102,6 +1123,6 @@ $.ajax({
  $(document).bind('keypress', function(event) {
  var keyCode = (event.keyCode ? event.keyCode : event.which); 
  if(keyCode == 13){
- $('#advanceSearchId').trigger('click');
+	$('#advanceSearchId').trigger('click');
  } 
 });

@@ -87,7 +87,7 @@
 										<div class="col-sm-3">
 											<h6> ENDORSMENT NO </h6>
 											<div class=" inline-block m_top10">
-												<input type="text" name="endorsmentNo" readOnly="true" class="form-control" id="endorsmentNo"/>
+												<input type="text" name="endorsmentNo" class="form-control" id="endorsmentNo"/>
 											</div>
 										</div>
 										<div class="col-sm-3">
@@ -96,7 +96,7 @@
 												<span class="input-group-addon">
 													<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 												</span>
-												<input type="text" name="endorsmentDate" readOnly="true"  class="form-control" id="endorsmentDate"/>
+												<input type="text" name="endorsmentDate"  readOnly="true"   class="form-control" id="endorsmentDate"/>
 											</div>
 										</div>
 										<div class="col-sm-3">
@@ -237,7 +237,7 @@
 		 <div class="row m_top10" id="endorsementDivId" style="display:none;">
 			<div class="col-sm-8">
 				<label>ENDORSMENT NO<span style="color:red;">*</span><span id="endorsementNoErr"></span></label>
-				<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO" name="endorsementNO"/>
+				<input type="text" class="form-control" id="workEndorsmentNo" placeholder="Endorsment NO" name="endorsementNO"/>
 			</div>
         </div>	
 		<div class="row m_top10">
@@ -248,7 +248,7 @@
 				</select>
 			</div>
 			<div class="col-sm-4" id="grantDivId" style="display:none;">
-				<label>GRANT UNDER<span  style="color:red;">*</span><span id="grantIdErr"></span></label>
+				<label>GRANT UNDER<span  style="color:red;"></span><span id="grantIdErr"></span></label>
 				<select class="form-control chosen-select" id="grantId" name="grantId">
 					<option value="1">SELECT GRANT UNDER</option>
 				</select>
