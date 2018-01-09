@@ -1,26 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ page import = "java.io.*,java.util.*" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!doctype html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NEWS ARTICLES</title>
-<link href="Assests/css/bootstrap.css" type="text/css" rel="stylesheet"/>
-<link href="Assests/css/custom.less" type="text/less" rel="stylesheet"/>
-<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-<link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
-<link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
+<link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
-<link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
-<link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
-<script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
+<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
+<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<script src="https://use.fontawesome.com/e94c241642.js"></script>
+<style>
+</style>
 </head>
 <body>
-<header>
+<header style="box-shadow: 0px 3px 1px 0px rgba(0, 0, 0, 0.3);">
 	<nav>
 		<div class="container-fluid">
 			<div class="row">
@@ -28,10 +23,11 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayat Raj & RD & RWS</h4>
-					<p>Fund Management System - AP</p>
+					<h4 class="text-capital">Panchayat Raj, RD & RWS</h4>
+					<p>News Articles</p>
 				</div>
-				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
+				
+				<div class="col-sm-3 col-xs-12 pull-right">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
@@ -95,14 +91,14 @@
 													</a>
 												</div>
 											</div>
-											<!-- <div class="col-sm-6 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#2C546C">
-													<a href="#">
+													<a href="EncDevelopmentDashboard">
 														<h3>ENC</h3>
 														<p>Engineering Dept</p>
 													</a>
 												</div>
-											</div>-->
+											</div>
 											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#512507">
 													<a href="getdailySpikeReport">
@@ -135,9 +131,7 @@
 													</a>
 												</div>
 											</div>-->
-										</div>
-										<div class="row">
-  											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#ff5e1c">
 													<a href="solidWasteManagementDashboard">
 														<h3>SWM</h3>
@@ -145,7 +139,7 @@
 													</a>
 												</div>
 											</div>
- 										</div>
+										</div>
 									</div>
 								</div>
 								<div class="col-sm-12 m_top10">
@@ -168,6 +162,7 @@
 													</a>
 												</div>
 											</div>
+											
 										</div>
 									</div>
 								</div>
@@ -183,97 +178,57 @@
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 	</nav>
-	<section>
+	<section class="navbar-section">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-12">
-					<ul class="list-inline navbar-header-custom">
-						<li style="position:relative;top:-13px;cursor: pointer;">
-							<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;">Andhra Pradesh </span></h4>
-							<div class="multi-level-selection-menu arrow_box_top"></div>
-						</li>
-						<li>
-							<div class="input-group">
-								<span class="input-group-addon">
-									<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-								</span>
-								<input type="text" class="form-control" id="dateRangePickerNA"/>
-							</div>
-						</li>
-					</ul>
-					
+				<div class="col-sm-3 pull-right">
+					<div class="input-group pull-right">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</span>
+						<input type="text" class="form-control" id="dateRangePickerAUM" style="width: 200px;"/>
+					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 </header>
-<body>
-	<div class="container-fluid m_top10">
-		<div class="row">
-			<div class="col-sm-6">
-				<div class="block" style="background-color:#FFF;border:1px solid #333;padding:5px;">
-					<div class="row">
-						<div class="col-sm-12">
-							<h4 class="panel-title">Print Media</h4>
-						</div>
-						<div class="col-sm-3" style="margin-right:25px;">
-							<div id="printMediaColumnChartId" style="width:180px;height:300px;"></div>
-						</div>
-						<div id="printMediaBlockId"></div>
-					</div>
-				</div>
+<main style="margin-top:5px;background-color:#fff;padding-bottom:20px;">
+<div class="container-fluid">
+	<div class="row m_top20">
+		<div class="col-sm-6">
+			<div class="white_block">
+				<h4 class="font_weight">Print Media</h4>
+				<div id="overAllPrintMediaDivId"></div>
 			</div>
-			<div class="col-sm-6">
-				<div class="block" style="background-color:#FFF;border:1px solid #333;padding:5px;">
-					<div class="row">
-						<div class="col-sm-12">
-							<h4 class="panel-title">Electronic Media</h4>
-						</div>
-						<div class="col-sm-3" style="margin-right:25px;">
-							<div id="electronicMediaColumnChartId" style="width:180px;height:300px;"></div>
-						</div>
-						<div id="electronicMediaBlockId"></div>
-					</div>
-				</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="white_block">
+				<h4 class="font_weight">Electronic Media</h4>
+				<div id="overAllElectronicMediaDivId"></div>
 			</div>
-		</div>	
-		<div class="row m_top10">
-			<div class="col-sm-12">
-				<div class="block" style="background-color:#FFF;border:1px solid #333;padding:5px;">
-					<div class="row">
-						<div class="col-sm-12">
-							<h4 class="panel-title">District wise Total Overview</h4>
-						</div>
-						<div class="col-sm-12">
-							<div id="distWiseTotOveColChartId"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>	
+		</div>
 	</div>
+	<div class="row m_top20">
+		<div class="col-sm-12">
+			<div class="white_block">
+				<h4 class="font_weight">District wise Total Overview</h4>
+				<div id="overAllDistrictWiseDivId" class="m_top10" style="height:250px;"></div>
+			</div>
+		</div>
+	</div>
+	<div id="departmentWiseDetailsDivId"></div>
+</div>
+</main>
 </body>
-<script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>        
-<script type="text/javascript" src="Assests/js/bootstrap.js"></script>
-<script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
-<script src="Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
-<script src="Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
-<script src="Assests/Plugins/DataTable/pdf.js" type="text/javascript"></script>
-<script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
-<script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
-<script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
+<script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
+<script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script> 
-<script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
-<script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
+<script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/js/newsArticles.js"></script>
-<!--Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations-->
 </body>
 </html>
