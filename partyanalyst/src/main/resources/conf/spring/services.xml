@@ -3707,6 +3707,7 @@
         <property name="smsCountrySmsService" ref="smsCountrySmsService"></property>
         <property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO"></property>
         <property name="alertVerificationUserDAO" ref="alertVerificationUserDAO"></property>		
+        <property name="alertCreationAPIService" ref="alertCreationAPIService"></property>
 	</bean>            
 	<!-- Debate End -->
 	
@@ -4621,5 +4622,24 @@
     	 <property name="zohoAlertService" ref="zohoAlertService" />
     	 </bean>
     	 
-    	
+    	 <bean name="alertCreationAPIService" class="com.itgrids.partyanalyst.service.impl.AlertCreationAPIService">
+    	 	<property name="transactionTemplate" ref="transactionTemplate"></property>
+    	 	<property name="alertDAO" ref="alertDAO"></property>
+    	 	<property name="stateDAO" ref="stateDAO"></property>
+    	 	<property name="districtDAO" ref="districtDAO"></property>
+    	 	<property name="tehsilDAO" ref="tehsilDAO"></property>
+    	 	<property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>
+    	 	<property name="constituencyDAO" ref="constituencyDAO"></property>
+    	 	<property name="panchayatDAO" ref="panchayatDAO"></property>
+    	 	
+    	 	<property name="alertSeverityDAO" ref="alertSeverityDAO"></property>
+    	 	<property name="alertTypeDAO" ref="alertTypeDAO"></property>
+    	 	<property name="regionScopesDAO" ref="regionScopesDAO"></property>
+    	 	<property name="userAddressDAO" ref="userAddressDAO"></property>
+    	 	<property name="alertImpactDAO" ref="alertImpactDAO"></property>
+    	 	<property name="constituencyTehsilDAO" ref="constituencyTehsilDAO"></property>
+    	 	<property name="alertSourceDAO" ref="alertSourceDAO"></property>
+    	 	    	 	
+    	 	
+    	 </bean>
 </beans>			
