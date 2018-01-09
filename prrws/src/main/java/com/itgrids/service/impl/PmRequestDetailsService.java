@@ -2878,6 +2878,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				//}else{
 					setDesignationWiseCount(referralList,returnVO.getSubList());
 				//}
+					
+					setOthersDataToLastIndexOfList(returnVO.getSubList());
 			} catch (Exception e) {
 				e.printStackTrace();
 				LOG.error("Exception Occured in PmRequestDetailsService @ getReferralWiseOverviewDetails() "+e.getMessage());
