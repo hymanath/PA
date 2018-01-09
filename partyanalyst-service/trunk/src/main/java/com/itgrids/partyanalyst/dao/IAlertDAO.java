@@ -195,4 +195,6 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Alert> getAlertDetailsOfNewstypeNew(Long alertCategoryType);
 	public List<Object[]> getAlertCategaryAndImpactLevelWiseDetailsOverView(Date fromDate , Date toDate,List<Long> locationValues,List<Long> alertTypeIds,Long locationTypeId,String year,String type,
  			List<Long> alertCategeryIdsList,List<Long> statusIdsList,List<Long> impactIdsList,String otherCategory);
+	public void flushAndclearSession();
+	public int updateZohoAlertDetails(String ticketId,Long alertId);
 }

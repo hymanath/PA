@@ -29,4 +29,11 @@ public class AlertTypeDAO extends GenericDaoHibernate<AlertType, Long>
 		query.setParameter("alertTypeId", IConstants.GOVT_CORE_DASHBOARD_ALERT_TYPE_ID);
 		return query.list();
 	}
+	public List<Long> getIdOfName(String type){
+   		Query query = getSession().createQuery(" select " +
+   				" model.alertTypeId " +
+   				" from AlertType model where model.alertType=:type");
+   		query.setParameter("type", type);
+   		return query.list();
+     }
 }

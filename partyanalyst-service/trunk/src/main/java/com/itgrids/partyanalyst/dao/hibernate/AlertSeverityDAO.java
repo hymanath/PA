@@ -28,5 +28,13 @@ public class AlertSeverityDAO extends GenericDaoHibernate<AlertSeverity, Long>
    				" from AlertSeverity model ");
    		return query.list();
      }
+	public List<Long> getIdOfName(String seviority){
+   		Query query = getSession().createQuery(" select " +
+   				" model.alertSeverityId " +
+   				" from AlertSeverity model where model.severity=:seviority");
+   		query.setParameter("seviority", seviority);
+   		return query.list();
+     }
+	
 
 }

@@ -2300,6 +2300,37 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 	 return query.list();
 	}
 	
+	public List<Constituency> getConstituencyInfo(Long districtId,String constituencyName)
+	{
+		StringBuilder sb = new StringBuilder();		
+		
+		sb.append(" select distinct model from Constituency model" +
+				  " where  model.district.districtId= :districtId" +
+				  " and model.electionScope.electionScopeId = 2 " +
+				  " and model.name =:constituencyName " +
+				  " order by model.name desc ");
+		
+	Query query = getSession().createQuery(sb.toString());
+		query.setParameter("districtId", districtId);
+		query.setParameter("constituencyName", constituencyName);
+	 return query.list();
+	}
+	public List<Constituency> getWardInfoOfLocalBody(Long localBodyId,String wardName)
+	{
+		StringBuilder sb = new StringBuilder();		
+		
+		sb.append(" select distinct model from Constituency model" +
+				  " where  model.localElectionBody.localElectionBodyId= :localBodyId" +
+				  " and model.name =:wardName " +
+				  " order by model.name desc ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("localBodyId", localBodyId);
+		query.setParameter("wardName", wardName);
+		
+	 return query.list();
+	 
+	}
 }
 
 	

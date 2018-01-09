@@ -1,10 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import java.util.List;
 
-import com.itgrids.partyanalyst.dao.IAbusedCommentsDAO;
+import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
+
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceDAO;
-import com.itgrids.partyanalyst.model.AbusedComments;
 import com.itgrids.partyanalyst.model.AlertSource;
 
 public class AlertSourceDAO extends GenericDaoHibernate<AlertSource, Long>
@@ -12,6 +13,12 @@ public class AlertSourceDAO extends GenericDaoHibernate<AlertSource, Long>
 
 	public AlertSourceDAO() {
 		super(AlertSource.class);
+	}
+	
+	public List<Long> getIdOfName(String source){
+		Query query = getSession().createQuery(" select model.alertSourceId from AlertSource model where model.source =:source ");
+		query.setParameter("source", source);
+		return query.list();
 	}
 
 }

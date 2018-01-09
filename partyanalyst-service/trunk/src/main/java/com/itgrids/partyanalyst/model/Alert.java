@@ -100,6 +100,9 @@ public class Alert extends BaseModel implements Serializable {
 	private SpecialGrievanceType specialGrievanceType;
 	private GeneralGrievanceType generalGrievanceType;
 	
+	private String zohoTicketId;
+	private String apiType;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "alert_id", unique = true, nullable = false)
@@ -735,4 +738,22 @@ public class Alert extends BaseModel implements Serializable {
 	public void setGeneralGrievanceType(GeneralGrievanceType generalGrievanceType) {
 		this.generalGrievanceType = generalGrievanceType;
 	}
+	@Column(name = "zoho_ticket_id")
+	public String getZohoTicketId() {
+		return zohoTicketId;
+	}
+
+	public void setZohoTicketId(String zohoTicketId) {
+		this.zohoTicketId = zohoTicketId;
+	}
+	@Column(name = "api_type")
+	public String getApiType() {
+		return apiType;
+	}
+
+	public void setApiType(String apiType) {
+		this.apiType = apiType;
+	}
+	
+	
 }

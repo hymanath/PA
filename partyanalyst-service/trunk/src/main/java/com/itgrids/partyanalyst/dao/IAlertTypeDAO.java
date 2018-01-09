@@ -11,4 +11,5 @@ public interface IAlertTypeDAO extends GenericDao<AlertType, Long> {
 	
 	public List<Object[]> getAlertType();
 	public List<Object[]> getAlertTypeForOrganization();
+	public List<Long> getIdOfName(String type);
 }
