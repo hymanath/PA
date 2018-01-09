@@ -12,9 +12,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class NewsArticlesController {
 	 
 private static final Logger LOG = Logger.getLogger(NewsArticlesController.class);
-@RequestMapping(value ="/newsArticles",method = RequestMethod.GET)
-public String newsArticles() {
-   return "newsArticles";
-}
-
+	@RequestMapping(value ="/newsArticles",method = RequestMethod.GET)
+	public String newsArticles() {
+	   return "newsArticles";
+	}
+	@RequestMapping(value ="/showCnpArticles",method = RequestMethod.GET)
+	public String showCnpArticles() {
+	   return "showCnpArticles";
+	}
+	@RequestMapping(value ="/electronicMediaBulletinsCD",method = RequestMethod.GET)
+	public String electronicMediaBulletinsCD() {
+	   return "electronicMediaBulletinsCD";
+	}
 }
