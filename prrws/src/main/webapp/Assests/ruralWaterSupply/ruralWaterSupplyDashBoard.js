@@ -2204,7 +2204,7 @@
 								if(GLtbodyArr[0] !=null && GLtbodyArr[0].basicList !=null && GLtbodyArr[0].basicList.length>0){
 									for(var j in GLtbodyArr[0].basicList){
 											if(GLtbodyArr[0].basicList[j].assetType == 'PWS' || GLtbodyArr[0].basicList[j].assetType == "CPWS"){
-												tableView+='<th colspan="8">'+GLtbodyArr[0].basicList[j].assetType+'</th>';
+												tableView+='<th colspan="9">'+GLtbodyArr[0].basicList[j].assetType+'</th>';
 											}
 										
 									}
@@ -2212,6 +2212,7 @@
 								tableView+='</tr>';
 								tableView+='<tr>';
 									tableView+='<th>OnGoing</th>';
+									tableView+='<th>Grounded</th>';
 									tableView+='<th>%</th>';
 									tableView+='<th>Not Grounded</th>';
 									tableView+='<th>%</th>';
@@ -2220,6 +2221,7 @@
 									tableView+='<th>Commissioned</th>';
 									tableView+='<th>%</th>';
 									tableView+='<th>OnGoing</th>';
+									tableView+='<th>Grounded</th>';
 									tableView+='<th>%</th>';
 									tableView+='<th>Not Grounded</th>';
 									tableView+='<th>%</th>';
@@ -2342,6 +2344,11 @@
 												
 												if(GLtbodyArr[i].basicList[j].workOngoingCount !=null && GLtbodyArr[i].basicList[j].workOngoingCount>0){
 													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "ongoing" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workOngoingCount+'</td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
+												if(GLtbodyArr[i].basicList[j].workGroundedCount !=null && GLtbodyArr[i].basicList[j].workGroundedCount>0){
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].basicList[j].workGroundedCount+'" attr_type = "grounded" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workGroundedCount+'</td>';
 												}else{
 													tableView+='<td> - </td>';
 												}
