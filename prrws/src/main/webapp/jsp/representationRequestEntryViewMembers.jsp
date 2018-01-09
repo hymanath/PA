@@ -344,7 +344,7 @@
 				</select>
 			</div>
 			<div class="col-sm-4" id="grantDivId" style="display:none;">
-				<label>GRANT UNDER<span  style="color:red;">*</span><span id="grantIdErr"></span></label>
+				<label>GRANT UNDER<span  style="color:red;"></span><span id="grantIdErr"></span></label>
 				<select class="form-control chosen-select" id="grantId" name="grantId">
 					<option value="1">SELECT GRANT UNDER</option>
 				</select>

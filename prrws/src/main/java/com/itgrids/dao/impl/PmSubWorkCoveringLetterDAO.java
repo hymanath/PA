@@ -24,7 +24,7 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 
 	public List<String> getCoveringLetterDetailsByEndorsmentNo(String endorsmenNo){
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.document.path from PmSubWorkCoveringLetter model where model.endorsmentNo ='"+endorsmenNo+"'");
+		str.append("select distinct model.document.path from PmSubWorkCoveringLetter model where model.endorsmentNo ='"+endorsmenNo+"'  and model.isDeleted ='N' ");
 		Query query = getSession().createQuery(str.toString());
 		return query.list();				
 	}
