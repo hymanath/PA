@@ -1,12 +1,11 @@
 package com.itgrids.partyanalyst.service;
 
-import com.itgrids.partyanalyst.dto.AmsVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
+import org.codehaus.jettison.json.JSONObject;
 
 public interface IZohoAlertService {
 	
 	public String getMobileNoByMemberShip(String memberShipId);
 	public String sendOtp(String phoneNumber,Long cadreId,String membershipId);
-	public ResultStatus checkOTPDetails(AmsVO vo);
+	public String checkOTPDetails(JSONObject jObj);
 
 }
