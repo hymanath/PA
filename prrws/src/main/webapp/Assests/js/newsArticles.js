@@ -451,11 +451,12 @@ function buildOverAllDistrictWiseDetails(result,divId){
 function buildDepartmentWiSeBlockDetails(result){
 	
 	var collapse='';
-	collapse+='<div class="row m_top20">';
+	
+	for(var i in result){
+		collapse+='<div class="row m_top20">';
 		collapse+='<div class="col-sm-12">';
 			collapse+='<div class="white_block">';
-	for(var i in result){
-				collapse+='<div class="panel-group" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
+				/* collapse+='<div class="panel-group" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
 					collapse+='<div class="panel panel-default panel-white">';
 						collapse+='<div class="panel-heading" role="tab" id="heading'+i+'">';
 							if(i == 0)
@@ -475,36 +476,47 @@ function buildDepartmentWiSeBlockDetails(result){
 							collapse+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
 						}
 						
-							collapse+='<div class="panel-body">';
-							for(var j in result[i].coreDashBoardVOList){
-								collapse+='<div class="row">';
+							collapse+='<div class="panel-body">'; */
+							collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
+							
+								collapse+='<div class="row m_top10">';
 									collapse+='<div class="col-sm-6">';
 										collapse+='<div class="pad_light_yash_bg border_yash">';
-											collapse+='<div id="printMedia'+result[i].organizationId+'"></div>';
+											collapse+='<div id="printMedia'+result[i].organizationId+'" style="width:100%"></div>';
 										collapse+='</div>';
 									collapse+='</div>';
 									collapse+='<div class="col-sm-6">';
 										collapse+='<div class="pad_light_yash_bg border_yash">';
-											collapse+='<div id="electronicMedia'+result[i].organizationId+'"></div>';
+											collapse+='<div id="electronicMedia'+result[i].organizationId+'" style="width:100%"></div>';
 										collapse+='</div>';
 									collapse+='</div>';
 								collapse+='</div>';
 								
 								collapse+='<div class="row m_top20">';
-									collapse+='<h4 class="font_weight">District wise Overview</h4>';
-									collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:250px;"></div>';
+									collapse+='<div class="col-sm-9">';
+										collapse+='<h5 class="font_weight text-capital">District wise Overview</h5>';
+										collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:250px;width:100%"></div>';
+									collapse+='</div>';
+									collapse+='<div class="col-sm-3">';
+										collapse+='<h5 class="font_weight text-capital">Analysis of Action Immediately</h5>';
+										collapse+='<h5 class="m_top10 font_weight">Total Count - <span id="totalCountAnalysisId'+result[i].organizationId+'" class=""></span></h5>';
+										collapse+='<div id="actionWiseAnalysis'+result[i].organizationId+'" class="" style="height:180px;width:100%"></div>';
+										
+										collapse+='<ul class="list-inline col-sm-8">';
+											collapse+='<div id="problemWise'+result[i].organizationId+'"></div>';
+										collapse+='</li>';
+									collapse+='</div>';
 								collapse+='</div>';
-							}	
 								
-							collapse+='</div>';
+						/* 	//collapse+='</div>';
 						collapse+='</div>';
 					collapse+='</div>';
+				collapse+='</div>'; */
 				collapse+='</div>';
-				
-		}
-			collapse+='</div>';
 		collapse+='</div>';
 	collapse+='</div>';
+		}
+			
 	$("#departmentWiseDetailsDivId").html(collapse);
 	for(var i in result){
 		for(var j in result[i].coreDashBoardVOList1){
@@ -521,7 +533,81 @@ function buildDepartmentWiSeBlockDetails(result){
 			buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'ElectronicMediadepartment'+result[i].organizationId+'','electronicMedia'+result[i].organizationId+'',"departmentEle",result[i].organizationId)
 			
 		}
+		for(var j in result[i].coreDashBoardVOList2){
+			//ActionWiseCall
+			buildactionWiseAnalysisDetails(result[i].coreDashBoardVOList2[j].coreDashBoardVOList,"actionWiseAnalysis"+result[i].organizationId+"",result[i].organizationId)
+			
+		}
+	}
+}
+function buildactionWiseAnalysisDetails(result,divId,departmentId){
+	var withOutAmoneyArr=[];
+	var below10LakhsArr=[];
+	var above10Lakhs=[];
+	var stateWIdeIssueArr=[];
+	
+	var mainArr = [];
+	var str='';
+	
+	for(var i in result){
+		var totalCount=0;
+		totalCount=totalCount+result[i].count;
+		$("#totalCountAnalysisId"+departmentId).html(totalCount);
+		var colorObj={"Without Money":"#E4D254","<10L":"#8D4653",">10L":"#F15C81","State Wide Issue":"#8085E9"}
+		
+		str+='<li class="m_top10"><span class="square_csss" style="background-color:'+colorObj[result[i].organization]+'"></span>'+result[i].organization+'<span class="pull-right">'+result[i].count+'</span></li>';
+		
+		$("#problemWise"+departmentId).html(str);					
+		var subArr = [];
+		subArr={name:result[i].organization,y:result[i].positivePerc};
+		mainArr.push(subArr);			
 	}
 	
-	
+		$('#actionWiseAnalysis'+departmentId).highcharts({
+			colors:['#E4D254','#8D4653','#F15C81','#8085E9'],
+			chart: {
+				type: 'pie',
+				backgroundColor: 'transparent',
+				options3d: {
+					enabled: false,
+					alpha: 45
+				}
+			},	
+			title: {
+				text: null
+			},
+			subtitle: {
+				text: ''
+			},
+			tooltip :{
+				useHTML: true,
+				backgroundColor: '#FCFFC5', 
+				formatter: function() {
+					return "<b style='color:"+this.point.color+"'>"+this.point.name+" -<br/>("+(this.y)+"%)</b>";
+				}  
+			},
+			plotOptions: {	
+				pie: {
+					innerSize: 80,
+					depth: 40,
+					dataLabels: {
+						enabled: false,
+						formatter: function() {
+							return (this.y) + ' %';
+						},
+						distance: -10,
+						color:'#333'
+					},
+					showInLegend: false
+				},
+			},
+			legend:{
+				enabled:false
+			},
+			series:[{
+				name : 'Count',
+				colorByPoint: true,
+				data: mainArr
+			}]
+		});
 }
