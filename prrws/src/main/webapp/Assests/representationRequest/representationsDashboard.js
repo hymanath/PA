@@ -534,9 +534,9 @@ function buildDesignationsWiseInformation(result){
 	
 	var str='';
 	str+='<div class="scrollCls">';
-	str+='<div class="col-sm-12" id="status">';
+	
 			for(var i in result.referrerList){
-			
+							str+='<div class="col-sm-12" id="status">';
 								str+='<div class="col-sm-2">';
 									str+='<h5><b>'+result.referrerList[i].referrerName+'</b><h5><p>'+result.referrerList[i].desigName+'</p>';
 								str+='</div>';
@@ -551,7 +551,7 @@ function buildDesignationsWiseInformation(result){
 									str+='</div>';
 									for(var j in result.referrerList[i].statusList){
 									str+='<div class="col-sm-3">';
-										str+='<div class="col-sm-8" style="background-color:#F3F3F3; padding:6px;">';
+										str+='<div class="col-sm-8" style="background-color:#F3F3F3;">';
 											str+='<h6>'+result.referrerList[i].statusList[j].name+' Representations</h6><b>'+result.referrerList[i].statusList[j].petitionIds.length+'</b>';
 										str+='</div>';
 										str+='<div class="col-sm-4 pad_bag">';
@@ -571,9 +571,9 @@ function buildDesignationsWiseInformation(result){
 										str+='</div>';
 									}
 								}
-							
+							str+='</div>';
 			}
-	str+='</div>';
+	
 	str+='</div>';
 		$("#desigWiseCandidatesView").html(str);
 $(".scrollCls").mCustomScrollbar({setHeight:'600px'})
