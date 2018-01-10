@@ -81,8 +81,7 @@
 				<div class="col-sm-12">
 					<div class="white-block petition_block">
 						<div class="row">
-						
-							<div class="col-sm-6">
+						<div class="col-sm-6">
 								<h4><img src="Assests/icons/Group 4361.png"><b>Complete Overview</b></h4>
 								<div class="petition_cls m_top10" style="border:1px solid #6DA4D6;background-color:#E2F2F9" id="completeOverviewId">
 									</div>
@@ -95,7 +94,6 @@
 						</div>
 					</div>
 				</div>
-				
 				<div class="col-sm-12 m_top20">
 					<div class="white-block">
 						<div class="media">
@@ -120,13 +118,36 @@
 					</div>
 				</div>
 				</div>-->
+				<div class="col-sm-12 m_top20">
+				<div class="white-block petition_block bor_c2">
+					<div class="row">
+						<div class="col-sm-3">
+							<img src="Assests/icons/group.PNG" style="float:left;"><h4 style="padding-top:18px;"><b>Referral wise Overview</b></h4>
+						</div>
+						<div class="col-sm-2 pull-right">
+							<select class="form-control">
+								<option>All</option>
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+							</select>
+						</div>	
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12">			
+			<div class="white-block petition_block bor_c2">
 				<div class="row" id="desigWiseCountId">
-						</div>
-						<div class="row" style="padding:5px 5px;" id="desigWiseCandidatesView">
-						</div>
-			
-				 
-				<!--<div class="col-sm-12 m_top20">
+				</div>
+			</div>
+			</div>
+			<div class="col-sm-12">
+				<div class="white-block petition_block bor_c2">
+					<div class="row" style="padding:5px 5px;" id="desigWiseCandidatesView">
+					</div>
+				</div>
+			</div>
+			<!--<div class="col-sm-12 m_top20">
 					<div class="white-block" style="padding:10px">
 						<div class="row">
 							<div class="col-sm-9"><h4><img src=""><i class="fa fa-info info_icon" aria-hidden="true"></i><b style="padding-left:2px">Status - Officer Wise</b></h4></div>
