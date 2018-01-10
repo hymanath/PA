@@ -176,7 +176,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		return query.list();
 	}
 	
-	public List<Object[]> getDepartmentsByWorks(List<Long> deptIds,Date fromDate,Date toDate,Long statusId){
+	public List<Object[]> getDepartmentsByWorks(List<Long> deptIds,Date fromDate,Date toDate,List<Long> statusIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmDepartment.pmDepartmentId,model.pmDepartment.department "
 				+ "from PmSubWorkDetails model where model.isDeleted='N' and model.pmDepartment.isDeleted='N' ");
@@ -186,8 +186,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(fromDate != null && toDate != null){
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate "); 
 		}
-		if(statusId != null && statusId.longValue() >0l){
-			sb.append(" and model.pmStatus.pmStatusId = :statusId ");
+		if(statusIds != null && statusIds.size() >0){
+			sb.append(" and model.pmStatus.pmStatusId in (:statusId) ");
 		}
 		sb.append( "order by model.pmDepartment.orderNo asc ");
 		Query query =getSession().createQuery(sb.toString());
@@ -198,8 +198,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
 		}
-		if(statusId != null && statusId.longValue() >0l){
-			query.setParameter("statusId", statusId);
+		if(statusIds != null && statusIds.size() >0){
+			query.setParameterList("statusIds", statusIds);
 		}
 		return query.list();
 	}
@@ -332,7 +332,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		return 0;
 	}
 	
-	public List<Object[]> getSubjectsForSearchPage(List<Long> deptIds,Date fromDate,Date toDate,Long statusId,Long subjectId){
+	public List<Object[]> getSubjectsForSearchPage(List<Long> deptIds,Date fromDate,Date toDate,List<Long> statusIds,Long subjectId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmSubject.pmSubjectId,model.pmSubject.subject "
 				+ "from PmSubWorkDetails model where model.isDeleted='N' and model.pmSubject.isDeleted='N' " +
@@ -343,8 +343,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(fromDate != null && toDate != null){
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate "); 
 		}
-		if(statusId != null && statusId.longValue() >0l){
-			sb.append(" and model.pmStatus.pmStatusId = :statusId ");
+		if(statusIds != null && statusIds.size() >0){
+			sb.append(" and model.pmStatus.pmStatusId in (:statusIds) ");
 		}
 		
 		if(subjectId != null && subjectId.longValue()>0l){
@@ -359,8 +359,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
 		}
-		if(statusId != null && statusId.longValue() >0l){
-			query.setParameter("statusId", statusId);
+		if(statusIds != null && statusIds.size() >0){
+			query.setParameterList("statusIds", statusIds);
 		}
 		if(subjectId != null && subjectId.longValue()>0l){
 			query.setParameter("subjectId", subjectId);

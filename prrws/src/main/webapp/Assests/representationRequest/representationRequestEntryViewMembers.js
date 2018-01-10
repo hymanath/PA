@@ -434,7 +434,7 @@ $(document).on("change","#locationSelId",function(){
 			 
 		 }); 
 			}
-		  getDesignationsBySearchType(searchType,"designationsId",desigId,0);
+		  getDesignationsBySearchType(searchType,"designationsId",desigId,statusId);
 		$("#designationDiv").show();
 		if(searchType == 'referrelDesignation')
 		$("#referralNameDiv").show();
@@ -627,7 +627,7 @@ $(document).on("change","#designationsId",function(){
 	var desig = $(this).val();
 	if(desig != null || desig !=0){
 			desigIds =  desig;
-			getPetitionReferredMemberDetails(desigIds);
+			getPetitionReferredMemberDetails(desigIds,refCanId,statusId);
 	}
 	
 });
@@ -649,10 +649,11 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 	var deptIds = [];
 	var desigType='';
 	var subjArr = [];
+	var filterType=$("#locationSelId").val();
+		
 	  var desig=$("#designationsId").val();//
 	  if(desig != null && desig !=0){
 			desigIds =  desig;
-		var filterType=$("#locationSelId").val();
 		if(filterType == 'referrelDesignation'){
 			desigType="referral";
 		}else if(filterType == 'representeeDesignation'){
@@ -660,6 +661,11 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 		}
 	  }else if(desigId >0){
 		  desigIds.push(desigId);
+		  if(filterType == 'referrelDesignation'){
+			desigType="referral";
+		}else if(filterType == 'representeeDesignation'){
+			desigType="representee";
+		}
 	  }
 	var depts =$("#departmentId").val();
 	if(depts != null && depts !=0){
@@ -805,12 +811,22 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 	$("#referralNameId").html('<option value="0">Select Referral Name</option>');
 	$("#referralNameId").trigger('chosen:updated');
+	var selStatusId = $("#statusId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId >0){
+		statusIds.push(selStatusId);
+	}else if(statusId.length >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<=statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
  var json = {
-		 searchType :searchType,
+		 reportType :searchType,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
-		 desigId:desigId,
-		 statusId :statusId
+		 sourceId:desigId,
+		 statusIds :statusIds
 		}            
 	$.ajax({              
 		type:'POST',    
@@ -836,7 +852,7 @@ function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
 		if(desigId >0){
-		getPetitionReferredMemberDetails([desigId]);
+		getPetitionReferredMemberDetails([desigId],refCanId,statusId);
 		}
 		if(searchBy == 'referral' && desigId >0){
 			getRepresentativeSearchDetails1();
@@ -845,13 +861,22 @@ function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 }
 
 function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
-	
+	var selStatusId = $("#statusId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId >0){
+		statusIds.push(selStatusId);
+	}else if(statusId.length >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<=statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
  var json = {
-		 searchType :searchType,
+		 reportType :searchType,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
-		 deptId:deptId,
-		 statusId:statusId
+		 departmentId:deptId,
+		 statusId:statusIds
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -1081,10 +1106,20 @@ if(mandalId != null && mandalId.length > 0){
 	searchLevelId=5;
 	searchLevelValue=mandalId
 }
-var stausIds ;
+/* var stausIds ;
 if($("#statusId").val() != 0){
 	 stausIds = $("#statusId").val();
-}
+} */
+var selStatusId = $("#statusId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId >0){
+		statusIds.push(selStatusId);
+	}else if(statusId.length >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<=statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
  $("#representationRequestEntryTable").html(spinner);
 var json = {
     filterType :filterType,//mobileno/department/name/email
@@ -1099,7 +1134,7 @@ var json = {
     //maxVal:4,
     //startValue:0,
     //endValue:0,
-	statusIds:stausIds
+	statusIds:statusIds
     }
   
   $.ajax({                
@@ -1158,11 +1193,18 @@ function buildSummeryDetails(result){
 }
 
 function getStatusList(statusId){
-	
-	var statusIdArr = [];
-		 
+	var selStatusId = $("#statusId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId >0){
+		statusIds.push(selStatusId);
+	}else if(statusId.length >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<=statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
 	var json = {
-		statusId :statusIdArr
+		statusIds :statusIds
 	}
   $.ajax({                
     type:'POST',    
@@ -1661,10 +1703,23 @@ function openDoc(docmnt){
 	 window.open(docmnt);
 }
 
-function getPetitionReferredMemberDetails(desigIds){
+function getPetitionReferredMemberDetails(desigIds,refCanId,statusId){
+	var selStatusId = $("#statusId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId >0){
+		statusIds.push(selStatusId);
+	}else if(statusId.length >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<=statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
+	
      var json = {
 		 designationIds:desigIds,
-		 reprType :"referralView"
+		 reprType :"referralView",
+		 referrerCandidateId:refCanId,
+		 statusIds :statusIds
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -1681,10 +1736,17 @@ function getPetitionReferredMemberDetails(desigIds){
 			$("#referralNameDiv").show();
 			//$("#"+selBoxId).html("<option value='0'>Select Designation</option>");
 			for(var i in result){
-				$("#referralNameId").append("<option value='"+result[i].referrerCandidateId+"'>"+result[i].petitionMemberVO.name+"-"+result[i].petitionMemberVO.memberType+"-"+result[i].candidateAddressVO.assemblyName+"</option>");
+				if(refCanId != "" && refCanId == result[i].referrerCandidateId){
+					$("#referralNameId").append("<option value='"+result[i].referrerCandidateId+"' selected>"+result[i].petitionMemberVO.name+"-"+result[i].petitionMemberVO.memberType+"-"+result[i].candidateAddressVO.assemblyName+"</option>");
+				}else{
+					$("#referralNameId").append("<option value='"+result[i].referrerCandidateId+"'>"+result[i].petitionMemberVO.name+"-"+result[i].petitionMemberVO.memberType+"-"+result[i].candidateAddressVO.assemblyName+"</option>");
+				}
 			}
 		}
 		$("#referralNameId").trigger('chosen:updated');
+		if(searchBy == 'referralCan' && refCanId >0){
+			getRepresentativeSearchDetails1();
+		}
 	});	
 }
 function updatePetitionStatusDetails(){
@@ -1915,7 +1977,7 @@ $(document).on('click','.modelEndoreCls',function(){
 });
 
 function onLoadClickDataDetails(){
-	if(searchBy == 'referral'){
+	if(searchBy == 'referral' || searchBy == 'referralCan'){
 		$("#locationSelId").html('');
 		$("#locationSelId").html('<option value="referrelDesignation"> Referral Designation wise </option>');
 		$("#locationSelId").trigger('chosen:updated');
@@ -1937,13 +1999,22 @@ function checkIsNumber(id,value){
 	 }
 }
 function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
-	
+	var selStatusId = $("#statusId").val();
+	var statusIds = [];
+	if(selStatusId >0){
+		statusIds.push(selStatusId);
+	}else if(statusId >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
  var json = {
-		 searchType :searchType,
+		 reportType :searchType,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
-		 statusId:statusId,
-		 subjectId:subjectId
+		 statusIds:statusIds,
+		 assetType:subjectId
 		}           
 	$.ajax({              
 		type:'POST',    
