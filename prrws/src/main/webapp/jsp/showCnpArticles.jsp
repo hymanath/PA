@@ -1,46 +1,40 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!doctype html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Core DashBoard</title>
-<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
-<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
-<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
-<link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/iconmoon/style.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="newCoreDashBoard/css/simplePagination.css"/> 
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEWS ARTICLES</title>
+<link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
+<link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<script src="Assests/Plugins/Less/less.js"></script>
+<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
+<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<script src="https://use.fontawesome.com/e94c241642.js"></script>
+<link rel="stylesheet" type="text/css" href="Assests/Plugins/Scroller/simplePagination.css"/> 
+<style>
+</style>
 </head>
 <body>
-
-<div class="container m_top20">
-	<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-12">
-			<div id="articlesDivId"></div>
-			<div class="row ">
-				<div class="col-md-10 col-md-offset-5 m_top20">
-					<div class="paginationId"></div>
-				</div>
+<main>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12">
+				<div id="articlesDivId"></div>
+			</div>
 		</div>
-					
+		<div class="row ">
+			<div class="col-sm-12 m_top20">
+				<div class="paginationId"></div>
+			</div>
 		</div>
 	</div>
-</div>
-
+</main>
 <div class="modal fade" id="myModalShowNew"></div>
-<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="newCoreDashBoard/slimscroller/jquery.slimscroll.js"></script>
-<script type="text/javascript" src="newCoreDashBoard/js/simplePagination3.js" ></script>
-
+<script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
+<script src="Assests/js/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" ></script>
+<script type="text/javascript" src="Assests/Plugins/Scroller/simplePagination3.js" ></script>
 <script type="text/javascript">
 var globalEdTypeIdStr = "${param.edTypeIdStr}";
 var globalBfIdStr = "${param.bfIdStr}";
@@ -59,36 +53,25 @@ var globalNewsPaperIdsStr = "${param.npsStr}";
 var globalEdiDistIdsStr = "${param.ediDistIdsStr}";
 var globalPropIdsStr = "${param.propIdsStr}";
 
-var globalcategoryId = "${param.categoryId}";
+var globalEditionId = "${param.editionId}";
 var globalorganizationId = "${param.organizationId}";
 var globalbenefitId = "${param.benefitId}";
-var globalstartIndex = "${param.startIndex}";
-var globalendIndex = "${param.endIndex}";
 var globaltype = "${param.type}";
 	$(document).ready(function(){
 		//Main header remove
-		$(".eventsheader").hide();
+		//$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
 		if(globalCallFrom == "fblk"){
 			getArticlesOfNewsBasicCounts(0);
-		}else if(globalCallFrom == "dpdepok"){
-			getArticlesForPartyDetailedDistEdiPartiesOverView(0);
-		}else if(globalCallFrom == "dpnta"){
-			getArticlesForDetailedPartyNewsTypeAnalysisOverView(0);
-		}else if(globalCallFrom == "govdepwisedistoverview"){
-			getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(0);
-		}else if(globalCallFrom == "detailgovtimmedproblems"){
-			getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(0);
-		}else if(globalCallFrom == "prajaSankalpa"){
-			if(globaltype == "OverAllprintMedia"){
-				getEditionTypeWisePartiesAnalysisForClick(0);
-			}else if(globaltype == "PartyprintMedia"){
-				getPublicationWisePartiesAnalysisForClick(0);
-			}else if(globaltype == "PublicationprintMedia"){
-				getDistrictWisePartyOverViewForClick(0);
+		}else if(globalCallFrom == "newsArtclesInPrrws"){
+			getPrintMediaCountsDetailsInfoForArtcles(0);
+		}else if(globalCallFrom == "propForPrrws"){
+			if(globaltype == "actionData"){
+				getDepartmentWiseAnalysisOfActionImmediatelyDetailsInfoForArticles(0);
+			}else if(globaltype == "districtdata"){
+				getDepartmentWiseDistrictViewForArticles(0);
 			}
-		}
-			
+		}	
 	});
 	
 	var url = window.location.href;
@@ -101,9 +84,9 @@ var globaltype = "${param.type}";
 		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getArticlesOfNewsBasicCounts/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalBfIdStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalEdTypeIdStr+"/"+globalNewsPaperIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getArticlesOfNewsBasicCounts/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalBfIdStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalEdTypeIdStr+"/"+globalNewsPaperIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
 			
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesOfNewsBasicCounts/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalBfIdStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalEdTypeIdStr+"/"+globalNewsPaperIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesOfNewsBasicCounts/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalBfIdStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalEdTypeIdStr+"/"+globalNewsPaperIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
 			
 		}).then(function(results){
 			$("#articlesDivId").html('');
@@ -177,7 +160,7 @@ var globaltype = "${param.type}";
 											  str+='<td style="width:50%;">';
 												  str+='<ul class="list-inline m_0">';
 													
-													 str+='<li><img class="img-circle" style="display: inline-block; width: 20px; height: 20px; " src="newCoreDashBoard/img/'+results[i].subList[j].fromList[l].organizationName+'.png" onerror="setDefaultImage(this);"></li>';
+													 str+='<li><img class="img-circle" style="display: inline-block; width: 20px; height: 20px; " src="Assests/newsImages/'+results[i].subList[j].fromList[l].organizationName+'.png" onerror="setDefaultImage(this);"></li>';
 													 
 													 if(results[i].subList[j].fromList[l].organizationName == null || results[i].subList[j].fromList[l].organizationName == 0){
 														  str+='<li class="text-muted" style="font-size: 12px;text-align:center;"> - </li>';
@@ -194,7 +177,7 @@ var globaltype = "${param.type}";
 											  str+='</td>';
 											  str+='<td style="width:50%;">';
 												   str+='<ul class="list-inline m_0">';
-													   str+='<li><img  src="images/'+results[i].subList[j].fromList[l].benefit+'.png" style="display: inline-block; font-size: 20px;width: 20px; height: 20px;"></i></li>';
+													   str+='<li><img  src="Assests/newsImages/'+results[i].subList[j].fromList[l].benefit+'.png" style="display: inline-block; font-size: 20px;width: 20px; height: 20px;"></i></li>';
 													  if(results[i].subList[j].fromList[l].benefit == null || results[i].subList[j].fromList[l].benefit == 0){
 														   str+='<li class="text-muted" style="font-size: 12px;text-align:center;"> - </li>';
 													   }else{
@@ -313,7 +296,7 @@ var globaltype = "${param.type}";
 												str+='<tr>';
 												  str+='<td style="width:50%;">';
 													  str+='<ul class="list-inline m_0">';
-														   str+='<li><img class="img-circle" style="display: inline-block; width: 20px; height: 20px;" src="newCoreDashBoard/img/'+results[i].subList[j].toList[k].organizationName+'.png" onerror="setDefaultImage(this);"></li>';
+														   str+='<li><img class="img-circle" style="display: inline-block; width: 20px; height: 20px;" src="Assests/newsImages/'+results[i].subList[j].toList[k].organizationName+'.png" onerror="setDefaultImage(this);"></li>';
 														  if(results[i].subList[j].toList[k].organizationName != null && results[i].subList[j].toList[k].organizationName.length>7){
 															  str+='<li   data-toggle="tooltip" data-placement="top" title="'+results[i].subList[j].toList[k].organizationName+'" class="text-muted " style="font-size: 12px;cursor:pointer;">'+results[i].subList[j].toList[k].organizationName.substring(0,7)+'...</li>';
 														 }else{
@@ -324,7 +307,7 @@ var globaltype = "${param.type}";
 												  str+='</td>';
 												  str+='<td style="width:50%;">';
 													   str+='<ul class="list-inline m_0">';
-														  str+='<li><img  src="images/'+ results[i].subList[j].toList[k].benefit+'.png" style="display: inline-block; font-size: 20px;width: 20px; height: 20px;"></i></li>';
+														  str+='<li><img  src="Assests/newsImages/'+ results[i].subList[j].toList[k].benefit+'.png" style="display: inline-block; font-size: 20px;width: 20px; height: 20px;"></i></li>';
 														  if(results[i].subList[j].toList[k].benefit == null || results[i].subList[j].toList[k].benefit == 0){
 															   str+='<li class="text-muted" style="font-size: 12px"> - </li>';
 														  }else{
@@ -578,24 +561,15 @@ var globaltype = "${param.type}";
 						
 						if(globalCallFrom == "fblk"){
 							getArticlesOfNewsBasicCounts(num);
-						}else if(globalCallFrom == "dpdepok"){
-							getArticlesForPartyDetailedDistEdiPartiesOverView(num);
-						}else if(globalCallFrom == "dpnta"){
-							getArticlesForDetailedPartyNewsTypeAnalysisOverView(num);
-						}else if(globalCallFrom == "govdepwisedistoverview"){
-							getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(num);
-						}else if(globalCallFrom == "detailgovtimmedproblems"){
-							getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(num);
-						}else if(globalCallFrom == "prajaSankalpa"){
-							if(globaltype == "OverAllprintMedia"){
-								getEditionTypeWisePartiesAnalysisForClick(num);
-							}else if(globaltype == "PartyprintMedia"){
-								getPublicationWisePartiesAnalysisForClick(num);
-							}else if(globaltype == "PublicationprintMedia"){
-								getDistrictWisePartyOverViewForClick(num);
+						}else if(globalCallFrom == "newsArtclesInPrrws"){
+							getPrintMediaCountsDetailsInfoForArtcles(num);
+						}else if(globalCallFrom == "propForPrrws"){
+							if(globaltype == "actionData"){
+								getDepartmentWiseAnalysisOfActionImmediatelyDetailsInfoForArticles(num);
+							}else if(globaltype == "districtdata"){
+								getDepartmentWiseDistrictViewForArticles(num);
 							}
-						}
-							
+						}	
 					}
 					
 				});
@@ -634,7 +608,7 @@ var globaltype = "${param.type}";
 		{
 			
 				img.onerror = "";
-				img.src = "newCoreDashBoard/img/NoImageUpd.png";
+				img.src = "Assests/newsImages/NoImageUpd.png";
 				return true;
 		}
 			
@@ -647,7 +621,7 @@ var globaltype = "${param.type}";
 			$("#myModalShowNew").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 			$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
 			
 		}).then(function(results){
 			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","CORP-GMC","Ward","NATIONAL","INTERNATIONAL","MUNICIPALITY"];
@@ -688,9 +662,9 @@ var globaltype = "${param.type}";
 										str+='<table class="table table-bordered m_top10">';
 										str+='<tr>';
 										if( result.subList[i].fromList[j].organizationName != null && $.trim(result.subList[i].fromList[j].organizationName).length > 0 ){
-											str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].fromList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].fromList[j].organizationName+'</td>';
+											str+='<td><img class="img-circle" src="Assests/newsImages/'+result.subList[i].fromList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].fromList[j].organizationName+'</td>';
 										}
-										str+='<td><img class="img-circle" src="images/'+result.subList[i].fromList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].fromList[j].benefit+'</td>';
+										str+='<td><img class="img-circle" src="Assests/newsImages/'+result.subList[i].fromList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].fromList[j].benefit+'</td>';
 										str+='</tr>';
 										str+='<tr>';
 										str+='<td colspan="2">';
@@ -767,11 +741,11 @@ var globaltype = "${param.type}";
 										str+='<table class="table table-bordered m_top10">';
 										str+='<tr>';
 										if( result.subList[i].toList[j].organizationName != null && $.trim(result.subList[i].toList[j].organizationName).length > 0 ){
-											str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].toList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].toList[j].organizationName+'</td>';
+											str+='<td><img class="img-circle" src="Assests/newsImages/'+result.subList[i].toList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].toList[j].organizationName+'</td>';
 										}else{
 											str+='<td> - </td>';
 										}
-										str+='<td><img class="img-circle" src="images/'+result.subList[i].toList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].toList[j].benefit+'</td>';
+										str+='<td><img class="img-circle" src="Assests/newsImages/'+result.subList[i].toList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].toList[j].benefit+'</td>';
 										str+='</tr>';
 										str+='<tr>';
 										str+='<td colspan="2">';
@@ -1065,14 +1039,12 @@ var globaltype = "${param.type}";
 		var articleId = $(this).attr('attr_articleId');
 		getOverAllDetailsOfAnArticle(articleId);
 	});
-	
-	function getArticlesForPartyDetailedDistEdiPartiesOverView(globalStIndex){
-		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		
+	function getPrintMediaCountsDetailsInfoForArtcles(globalStIndex){
+		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverviewArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalBfIdStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalEdTypeIdStr+"/"+globalNewsPaperIdsStr+"/"+globalEdiDistIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfoForArtcles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex+""
 			
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverviewArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalBfIdStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalEdTypeIdStr+"/"+globalNewsPaperIdsStr+"/"+globalEdiDistIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
+			url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfoForArtcles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex+""
 			
 		}).then(function(results){
 			$("#articlesDivId").html('');
@@ -1080,13 +1052,12 @@ var globaltype = "${param.type}";
 			buildArticlesByDateRangeWise(results,globalStIndex,countByDate)
 		});
 	}
-	function getArticlesForDetailedPartyNewsTypeAnalysisOverView(globalStIndex){
-		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		
+	function getDepartmentWiseAnalysisOfActionImmediatelyDetailsInfoForArticles(globalStIndex){
+		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysisArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalNewsPaperIdsStr+"/"+globalPropIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseAnalysisOfActionImmediatelyDetailsInfoForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalStIndex+"/"+globalEndIndex+""
 			
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysisArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalNewsPaperIdsStr+"/"+globalPropIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
+			url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseAnalysisOfActionImmediatelyDetailsInfoForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalStIndex+"/"+globalEndIndex+""
 			
 		}).then(function(results){
 			$("#articlesDivId").html('');
@@ -1094,13 +1065,12 @@ var globaltype = "${param.type}";
 			buildArticlesByDateRangeWise(results,globalStIndex,countByDate)
 		});
 	}
-	function getArticlesForgetDetailedGovtDepartmentWiseDistrictsOverview(globalStIndex){
-		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		
+	function getDepartmentWiseDistrictViewForArticles(globalStIndex){
+		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseDistrictsOverviewArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalNewsPaperIdsStr+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseDistrictViewForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalStIndex+"/"+globalEndIndex+""
 			
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDepartmentWiseDistrictsOverviewArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalNewsPaperIdsStr+"/"+globalBfIdStr+"/"+globalStIndex+"/"+globalEndIndex+""
+			url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseDistrictViewForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalStIndex+"/"+globalEndIndex+""
 			
 		}).then(function(results){
 			$("#articlesDivId").html('');
@@ -1108,58 +1078,6 @@ var globaltype = "${param.type}";
 			buildArticlesByDateRangeWise(results,globalStIndex,countByDate)
 		});
 	}
-	function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles(globalStIndex){
-		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		
-		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsPaperIdsStr+"/"+globalPropIdsStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+""
-			
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblemsArticles/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalNewsPaperIdsStr+"/"+globalPropIdsStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalStIndex+"/"+globalEndIndex+""
-			
-		}).then(function(results){
-			$("#articlesDivId").html('');
-			var countByDate = 0;
-			buildArticlesByDateRangeWise(results,globalStIndex,countByDate)
-		});
-	}
-//Clicks Print Media
-function getEditionTypeWisePartiesAnalysisForClick(globalstartIndex){
-	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
-		
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
-	}).then(function(result){
-		$("#articlesDivId").html('');
-		var countByDate = 0;
-		buildArticlesByDateRangeWise(result,globalstartIndex,countByDate)
-	});
-}
-function getPublicationWisePartiesAnalysisForClick(globalstartIndex){
-	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
-		
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
-	}).then(function(result){
-		$("#articlesDivId").html('');
-		var countByDate = 0;
-		buildArticlesByDateRangeWise(result,globalstartIndex,countByDate)
-	});
-}
-function getDistrictWisePartyOverViewForClick(globalstartIndex){
-	$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
-		
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForClick/"+globalStartDate+"/"+globalEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
-	}).then(function(result){
-		$("#articlesDivId").html('');
-		var countByDate = 0;
-		buildArticlesByDateRangeWise(result,globalstartIndex,countByDate)
-	});
-}
-
-</script> 
+</script> 	
 </body>
 </html>
