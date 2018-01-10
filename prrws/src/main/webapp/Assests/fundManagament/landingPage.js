@@ -87,7 +87,7 @@ function buildFavouriteComponentsResult(result) {
 			}else if (result[i].name == "Mandal Buildings") {
 				compnentName = "Mandal buildings1";
 			}
-			if (compnentName != null && compnentName != "PRIS" && compnentName != "DRAINS" && compnentName != "LED MONITORING" && compnentName != "FUND MANAGMENT SYSTEM" && compnentName != "ENGINEERING DEPARTMENT" && compnentName != "PANACHAYATI RAJ EXPENDITURE" &&  compnentName != "SPIKE ANALYSIS" && compnentName != "MGNREGS" && compnentName != "RURAL DEVELOPMENT" && compnentName != "RURAL WATER SUPPLY" && compnentName != "ITEC" && compnentName != "SWATCH BHARATH IHHL" && compnentName != "SWATCH BHARATH PAYMENTS" && compnentName != "PR eOffice" && compnentName != "Enc Works" && compnentName != "Enc Roads" && compnentName != "PROMOTIONS") {
+			if (compnentName != null && compnentName != "PRIS" && compnentName != "DRAINS" && compnentName != "LED MONITORING" && compnentName != "FUND MANAGMENT SYSTEM" && compnentName != "ENGINEERING DEPARTMENT" && compnentName != "PANACHAYATI RAJ EXPENDITURE" &&  compnentName != "SPIKE ANALYSIS" && compnentName != "MGNREGS" && compnentName != "RURAL DEVELOPMENT" && compnentName != "RURAL WATER SUPPLY" && compnentName != "ITEC" && compnentName != "SWATCH BHARATH IHHL" && compnentName != "SWATCH BHARATH PAYMENTS" && compnentName != "PR eOffice" && compnentName != "Enc Works" && compnentName != "Enc Roads" && compnentName != "PROMOTIONS" && compnentName != "Man Days Comparision" && compnentName != "WATER TANK CHLORINATION" && compnentName != "WaterBudget") {
 			   globalComponentNameArr.push(compnentName);
 			}
 			
@@ -358,8 +358,8 @@ function onloadCallToGetAllBlockAchievent () {
 	getIHHLOverviewData();//swatch Bharath IHHL
 	getMGNREGSIHHLOverviewData();//mgnregs IHHL
 	getSBPaymentsAbstract();//SWATCH BHARATH PAYMENTS
-	getNtrJalaSiriAbstract('Ntr Jalasiri','state',"0");//ntr jalasiri
-	getRDAbstractDataByType('WaterBudget','state',"0");//ntr jalasiri
+	getNtrJalaSiriLvlWiseData('Ntr Jalasiri','state',"0");//ntr jalasiri
+	getRDAbstractDataByType('WaterBudget','state',"0");//Water Budget
 	getLocationWiseAlertStatusCounts();//jalavani
 	getAssetInfoBetweenDates();//assets
 	getKeyPerformanceIndicatorsInfo();//key performance
@@ -1160,18 +1160,17 @@ function getRDAbstractDataByType(type,locType,locId)
 	}); 
 }
 
-function getNtrJalaSiriAbstract(type,locType,locId)
+function getNtrJalaSiriLvlWiseData(type,locType,locId)
 {
 	$("."+type.replace(/\s+/g, '')+"AllCls").html(spinner);
 	var json = {
 		year : "2017",
 		fromDate : '2017-04-01',
 		toDate : moment().format("YYYY-MM")+'-30',
-		locationType : "district",
-		locationId : locId
+		locationType : "state"
 	}
 	$.ajax({
-		url: 'getNtrJalaSiriAbstract',
+		url: 'getNtrJalaSiriLvlWiseData',
 		data: JSON.stringify(json),
 		type: "POST",
 		dataType: 'json', 
