@@ -22,7 +22,7 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 	
 	public List<String> getWorkdetailsById() {
 		
-		Query query= getSession().createQuery("select distinct model.workId from RwsWork model where model.isActive ='Y'");
+		Query query= getSession().createQuery("select distinct model.workId from RwsWork model");
 		
 		return query.list();
 	}

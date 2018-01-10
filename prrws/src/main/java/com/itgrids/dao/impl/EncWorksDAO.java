@@ -8,8 +8,8 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IEncWorksDAO;
-import com.itgrids.dto.InputVO;
 import com.itgrids.model.EncWorks;
+import com.itgrids.model.RwsWorkLocation;
 
 @Repository
 public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements IEncWorksDAO {
@@ -54,6 +54,15 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 			query.setParameter("toDate", toDate);
 		}
 		return query.list();
+	}
+
+	@Override
+	public EncWorks findOneByworkId(Long workId) {
+		
+		Query query= getSession().createQuery("from EncWorks where workId=:workId");
+		query.setParameter("workId", workId);
+		RwsWorkLocation workLocation = (RwsWorkLocation) query.uniqueResult();
+		return (EncWorks) query.uniqueResult();
 	}
 	
 

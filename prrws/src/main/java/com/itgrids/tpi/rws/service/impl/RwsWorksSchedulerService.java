@@ -30,6 +30,8 @@ import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import sun.misc.BASE64Encoder;
+
 
 @Service
 @Transactional
@@ -115,6 +117,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 													}else if(work.getCommissionedDate() == null && work.getCompletedDate() == null && work.getGroundedDate() ==null){
 														work.setWorkStatus("Not Grounded");
 													}
+													work.setIsActive("Y");
 													rwsWorkDAO.save(work);
 												}
 													RwsWorkLocation workLocation =rwsWorkLocationDAO.getWorkdetailsByHabAndId(work.getRwsWorkId(),jObj.getString("habitationCode"));
@@ -338,6 +341,15 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 									work.setCompletionDate(json.has("DT_COMPLETED")? sdf.parse(json.getString("DT_COMPLETED")):null);
 									work.setTechSanctionDate(json.has("TECH_SANCTION_DATE")? sdf.parse(json.getString("TECH_SANCTION_DATE")): null);
 									work = encWorksDAO.save(work);
+								}else{
+									EncWorks work =encWorksDAO.findOneByworkId((json.has("WORK_ID") ? json.getLong("WORK_ID"): 0l));
+									work.setAgrementDate(json.has("AGREEMENT_DATE")? sdf.parse(json.getString("AGREEMENT_DATE")):null);
+									work.setAdminSanctionDate(json.has("ADMIN_SANC_DT")? sdf.parse(json.getString("ADMIN_SANC_DT")):null);
+									work.setGroundedDate(json.has("GROUND_DATE")? sdf.parse(json.getString("GROUND_DATE")):null);
+									work.setCompletionDate(json.has("DT_COMPLETED")? sdf.parse(json.getString("DT_COMPLETED")):null);
+									work.setTechSanctionDate(json.has("TECH_SANCTION_DATE")? sdf.parse(json.getString("TECH_SANCTION_DATE")): null);
+									work = encWorksDAO.save(work);
+
 								}
 								
 							}
@@ -357,22 +369,41 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 	public String getWorksDataDeletion() {
 
 		try{
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAllWorkAdminDetails");	        
-			String authStringEnc = commonMethodsUtilService.getAuthenticationString("itgrids","Itgrids@123");	        
-			ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class);
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getOnclickWorkDetails");	  
+			InputVO input = new InputVO();
+			input.setFromDateStr("01-04-1977");
+			input.setToDateStr("01-04-2028");
+			input.setWorkStatus("ongoing");
+			//{"year":"2017","fromDateStr":"01-04-1977","toDateStr":"01-04-2028","workStatus":"ongoing"}
+			/*JsonObject jobj = new JsonObject();
+			jobj.addProperty("fromDateStr", "01-04-1977");
+			jobj.addProperty("toDateStr", "01-04-2028");
+			jobj.addProperty("workStatus", "ongoing");*/
+			//ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class,jobj.toString());
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getOnclickWorkDetails");
+			String authStringEnc = getAuthenticationString("admin","admin@123");
+        	ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class, input);
+        
 			if(response.getStatus() != 200){
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 		 	}else{
 		 		 String output = response.getEntity(String.class);
 	 	    	 if(output != null && !output.isEmpty()){
+	 	    		JSONObject jsonObj = new JSONObject(output);
+	 	    		
 	 	    		List<String> workIds= new ArrayList<String>();
-	 	    		List<String> workIdsnotAval= new ArrayList<String>();
-	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		List<String> workData= rwsWorkDAO.getWorkdetailsById();
-	 	    		for (int i = 0; i < finalArray.length(); i++) {
-	 	    			JSONObject obj = finalArray.getJSONObject(i);
-	 	    			workIds.add(obj.getString("workId"));
+	 	    		if(jsonObj.getString("status") !="null" && !jsonObj.getString("status").trim().isEmpty() && jsonObj.getString("status").trim().equalsIgnoreCase("Success")){
+	 	    			
+	 	    			JSONArray onClickWorksArray =  jsonObj.getJSONArray("onClickWorksList");
+	 	    			if(onClickWorksArray!=null && onClickWorksArray.length()>0){
+	 	    				for(int i=0;i<onClickWorksArray.length();i++){
+	 		 	    			JSONObject obj = onClickWorksArray.getJSONObject(i);
+	 		 	    			workIds.add(obj.getString("workId"));
+	 		 	    		}
+	 	    			}
 	 	    		}
+	 	    		
 	 	    		for (String workId : workData) {
 						if(!workIds.contains(workId.trim())){
 							RwsWork work =rwsWorkDAO.getWorkdetailsByIds(workId);
@@ -390,5 +421,15 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 		}
 
 	}	
+	public String getAuthenticationString(String name,String password){
+		try {			
+	        String authString = name + ":" + password;
+	        return new BASE64Encoder().encode(authString.getBytes());
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAuthenticationString - RWSNICService service", e);
+		}
+		return null;
+	}
 
 }

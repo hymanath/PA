@@ -70,7 +70,6 @@ public class Scheduler {
 			List<String> statusList = new ArrayList<String>();
 			statusList.add("completed");
 			statusList.add("ongoing");
-			statusList.add("not grounded");
 			statusList.add("commissioned");
 			input.setFromDateStr("01-01-1977");
 			input.setToDateStr("31-12-2027");
