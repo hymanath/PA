@@ -1,5 +1,6 @@
 package com.itgrids.controllers.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -25,6 +26,7 @@ import com.itgrids.dto.ItecEOfficeVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
 import com.itgrids.dto.MeesevaKPIDtlsVO;
+import com.itgrids.model.MeesevaKpiCenters;
 import com.itgrids.service.IItcDashboardService;
 
 @EnableAutoConfiguration
@@ -340,5 +342,43 @@ public class ItcController {
 	   public @ResponseBody  List<ItecEOfficeVO>  getEofficePrAndRdDeptDesginationDetails(@RequestBody InputVO inputVO) {
 		   List<ItecEOfficeVO>  returnList = itcDashboardService.getEofficePrAndRdDeptDesginationDetails(inputVO);
 		   return returnList;
+	   }
+	   @RequestMapping(value = "/saveMeesevaKPIDetails", method = RequestMethod.POST)
+	   public @ResponseBody  IdNameVO  saveMeesevaKPIDetails() {
+		   IdNameVO  finalVO = null;
+		   
+		String[] districtIdsArr =  {"01","02","03","04","05","06","07","08","09","10","11","12","13"};
+			List<String> districtIds = new ArrayList<String>(0);
+			if(districtIdsArr != null && districtIdsArr.length > 0){
+				for (int i = 0; i < districtIdsArr.length; i++) {
+					districtIds.add(districtIdsArr[i]);
+				}
+			}
+		   
+			if(districtIds != null && !districtIds.isEmpty()){
+				for (String districtIdStr : districtIds) {
+					 finalVO = itcDashboardService.saveMeesevaKPIDetails(districtIdStr);
+				}
+			}
+			finalVO.setName("SUCCESS");
+		   return finalVO;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPIOverViewDetailsNew", method = RequestMethod.POST)
+	   public @ResponseBody  MeesevaKPIDtlsVO  getMeesevaKPIOverViewDetailsNew() {
+		   MeesevaKPIDtlsVO  resultVO = itcDashboardService.getMeesevaKPIOverViewDetailsNew();
+		   return resultVO;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaKPILocationWiseDetailsNew", method = RequestMethod.POST)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPILocationWiseDetailsNew() {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPILocationWiseDetailsNew();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaCentersForDistrict", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaCentersForDistrict(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaCentersForDistrict(inputVO);
+		   return resultList;
 	   }
 }

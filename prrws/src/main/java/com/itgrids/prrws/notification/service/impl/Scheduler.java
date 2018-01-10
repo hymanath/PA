@@ -120,4 +120,28 @@ public class Scheduler {
 			return;
 	}
 	
+	@Scheduled(cron ="0 6 * ? * *")
+	public void runTheSchedulerForEvry24HrsAt6AM()
+	{
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			LOG.error("Cron Job For ITE&C Meeseva KPI Started");
+			String[] districtIdsArr =  {"01","02","03","04","05","06","07","08","09","10","11","12","13"};
+			List<String> districtIds = new ArrayList<String>(0);
+			if(districtIdsArr != null && districtIdsArr.length > 0){
+				for (int i = 0; i < districtIdsArr.length; i++) {
+					districtIds.add(districtIdsArr[i]);
+				}
+			}
+			if(districtIds != null && !districtIds.isEmpty()){
+				for (String districtIdStr : districtIds) {
+					itcDashboardService.saveMeesevaKPIDetails(districtIdStr);
+				}
+			}
+			LOG.error("Cron Job For ITE&C Meeseva KPI Completed");
+		}
+		else 
+			return;
+	}
+	
 }

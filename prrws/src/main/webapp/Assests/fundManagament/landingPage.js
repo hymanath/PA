@@ -687,7 +687,7 @@ function getMeesevaKPIOverViewDetails(){
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getMeesevaKPIOverViewDetails',
+		url: 'getMeesevaKPIOverViewDetailsNew',//'getMeesevaKPIOverViewDetails',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){

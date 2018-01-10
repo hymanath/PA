@@ -70,4 +70,8 @@ public interface IItcDashboardService {
 	public List<ItecEOfficeVO> getEofficeDesginationWiseDetailsFrDepartmentNew(InputVO inputVO);
 	public List<ItecEOfficeVO> getEOfcPrAndRdDepartsOverviewDetails(InputVO inputVO);
 	public List<ItecEOfficeVO> getEofficePrAndRdDeptDesginationDetails(InputVO inputVO);
+	public IdNameVO saveMeesevaKPIDetails(String districtIdStr);
+	public MeesevaKPIDtlsVO getMeesevaKPIOverViewDetailsNew();
+	public List<MeesevaKPIDtlsVO> getMeesevaKPILocationWiseDetailsNew();
+	public List<MeesevaKPIDtlsVO> getMeesevaCentersForDistrict(InputVO inputVO);
 }

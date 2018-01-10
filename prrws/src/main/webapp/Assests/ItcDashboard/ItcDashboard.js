@@ -4382,7 +4382,7 @@ function getMeesevaKPIOverViewDetails(type,divId,blockId){
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getMeesevaKPIOverViewDetails',
+		url: 'getMeesevaKPIOverViewDetailsNew',//'getMeesevaKPIOverViewDetails',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -4453,7 +4453,7 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 		
 		str+='<div class="col-sm-2  m_top10">';
 			str+='<div class="white_block_ITC">';
-				str+='<h4 class=""><b>Established In<br/> Last 1 Month</b></h4>';
+				str+='<h4 class=""><b>Established In<br/> Last 30 Days</b></h4>';
 				str+='<h4 class="m_top10"><b>'+result.establishedLastOneMonth+'</b></h4>';
 			str+='</div>';
 		str+='</div>';
@@ -4675,7 +4675,7 @@ function getMeesevaKPILocationWiseDetails(divId,blockId){
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getMeesevaKPILocationWiseDetails',
+		url: 'getMeesevaKPILocationWiseDetailsNew',//'getMeesevaKPILocationWiseDetails',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -4701,14 +4701,14 @@ function buildMeesevaKPILocationWiseDetails(result){
 					str+='<th>Est from 2014</th>';
 					str+='<th>Last Year Est</th>';
 					str+='<th>This Year Est</th>';
-					str+='<th>This Month Est</th>';
+					str+='<th>Last 30 Days</th>';
 				str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
 						str+='<td>'+result[i].name+'</td>';
-						str+='<td>'+result[i].totalMeesevaCentres+'</td>';
+						str+='<td class="mesevaCntrDetailsCls" attr_district_id="'+result[i].districtIdStr+'" attr_district_name="'+result[i].name+'" style="cursor:pointer;"><u>'+result[i].totalMeesevaCentres+'</u></td>';
 						str+='<td>'+result[i].percenatge+'</td>';
 						str+='<td>'+result[i].establishedFrom2014+'</td>';
 						str+='<td>'+result[i].establishedLastYear+'</td>';
@@ -4719,7 +4719,12 @@ function buildMeesevaKPILocationWiseDetails(result){
 			str+='<tbody>';
 		str+='</table>';
 		$("#locationWiseMeesavaCentres").html(str);
-		$("#locationWiseMeesavaKPI").dataTable();
+		$("#locationWiseMeesavaKPI").dataTable({
+				"iDisplayLength": 15,
+				"order": [ 1, 'desc' ],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+				
+			});
 }
 function getMeesevaKPIOnlineDeptWiseDetails(departmentId,year){
 	$("#kpiOnlineDeptDivId").html(spinner);
@@ -5360,3 +5365,67 @@ $(document).on("click",".panelCollapseIcon",function(){
 		$("#frame4DivID").html('<iframe  width="100%" height="780px" allowfullscreen="true" allowtransparency="true" style="background: #FFFFFF;" src="https://app.powerbi.com/view?r=eyJrIjoiNjJjM2VjMzQtOGQ5ZC00YjE1LTliOGYtY2IyMjNjNzgwMmM4IiwidCI6ImQzMjExYjNlLWJjMjYtNDlmYS1hMzAzLTYzMjEyMGFiNTQ1OSIsImMiOjEwfQ%3D%3D"></iframe>');
 	}
 });
+
+$(document).on("click",".mesevaCntrDetailsCls",function(){
+	$("#kpiDistrictModalId").modal('show');
+	var districtId = $(this).attr("attr_district_id");
+	var districtName = $(this).attr("attr_district_name");
+	getMeesevaCentersForDistrict(districtId,districtName);
+});
+function getMeesevaCentersForDistrict(districtId,districtName){
+	$("#kpiDistrictDivId").html(spinner);
+	$("#kpiDistrictHeadingId").html(districtName+" District Meeseva Centers Details.");
+	var json = {
+		locationIdStr : districtId
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getMeesevaCentersForDistrict',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMeesevaCentersForDistrict(result);
+		}else{
+			$("#kpiDistrictDivId").html("No Data Available")
+		}
+	});	
+}
+
+function buildMeesevaCentersForDistrict(result){
+	var str='';
+	str+='<table class="table" id="kpiDistrictTableId">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th>Mandal</th>';
+				str+='<th>Village</th>';
+				str+='<th>AgentId</th>';
+				str+='<th>Agent Name</th>';
+				str+='<th>Mobile No</th>';
+				str+='<th>Address</th>';
+				str+='<th>Type</th>';
+				str+='<th>Established Date</th>';
+				str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td>'+result[i].mandalName+'</td>';
+					str+='<td>'+result[i].villageName+'</td>';
+					str+='<td>'+result[i].agentId+'</td>';
+					str+='<td>'+result[i].agentName+'</td>';
+					str+='<td>'+result[i].mobileNo+'</td>';
+					str+='<td>'+result[i].address+'</td>';
+					str+='<td>'+result[i].centerType+'</td>';
+					str+='<td>'+result[i].estDate+'</td>';
+				str+='</tr>';
+			}
+		str+='<tbody>';
+	str+='</table>';
+	$("#kpiDistrictDivId").html(str);
+	$("#kpiDistrictTableId").dataTable();
+}

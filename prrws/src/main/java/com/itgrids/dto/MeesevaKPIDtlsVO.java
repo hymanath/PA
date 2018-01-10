@@ -35,6 +35,15 @@ public class MeesevaKPIDtlsVO {
 	private Long mobileAppServices2017 = 0L;
 	private Long totalMobileAppServices = 0L;
 	private String percenatge;
+	private String districtIdStr;
+	private String mandalName;
+	private String villageName;
+	private String agentId;
+	private String agentName;
+	private String mobileNo;
+	private String address;
+	private String centerType;
+	private String estDate;
 	
 	public Long getId() {
 		return id;
@@ -227,6 +236,60 @@ public class MeesevaKPIDtlsVO {
 	}
 	public void setPercenatge(String percenatge) {
 		this.percenatge = percenatge;
+	}
+	public String getDistrictIdStr() {
+		return districtIdStr;
+	}
+	public void setDistrictIdStr(String districtIdStr) {
+		this.districtIdStr = districtIdStr;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+	public String getVillageName() {
+		return villageName;
+	}
+	public void setVillageName(String villageName) {
+		this.villageName = villageName;
+	}
+	public String getAgentId() {
+		return agentId;
+	}
+	public void setAgentId(String agentId) {
+		this.agentId = agentId;
+	}
+	public String getAgentName() {
+		return agentName;
+	}
+	public void setAgentName(String agentName) {
+		this.agentName = agentName;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getCenterType() {
+		return centerType;
+	}
+	public void setCenterType(String centerType) {
+		this.centerType = centerType;
+	}
+	public String getEstDate() {
+		return estDate;
+	}
+	public void setEstDate(String estDate) {
+		this.estDate = estDate;
 	} 
 	
 }
