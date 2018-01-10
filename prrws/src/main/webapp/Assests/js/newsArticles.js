@@ -171,8 +171,6 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 	
 	totalPosPerc = (totalMainEdCount/totalEdCount*100).toFixed(2);
 	totalNegperc = (totalDistEdCount/totalEdCount*100).toFixed(2);
-	alert(totalPosPerc);
-	alert(totalNegperc);
 	str+='<div class="row m_top10">';
 		str+='<div class="col-sm-5 border_right_yash">';
 			str+='<div id="overAll'+typeval+'GraphDivId'+departmentId+'" style="height:250px;"></div>';
