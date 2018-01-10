@@ -11,4 +11,5 @@ public interface IZohoWebServiceHandlerService {
 	public JSONObject mobileOtpVerification(JSONObject jObj);
 	public String generateJwtForZoho(String userToken);
 	public String testMethod();
+	public JSONObject createAlertApi(JSONObject jobj);
 }

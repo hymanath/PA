@@ -58,8 +58,8 @@ public class RegionScopesDAO extends GenericDaoHibernate<RegionScopes, Long> imp
 	public List<Long> getIdOfName(String scope){
    		Query query = getSession().createQuery(" select " +
    				" model.regionScopesId " +
-   				" from RegionScopes model where model.scope=: locationLevel");
-   		query.setParameter("scope", scope);
+   				" from RegionScopes model where model.scope=:locationLevel");
+   		query.setParameter("locationLevel", scope);
    		return query.list();
      }
 }

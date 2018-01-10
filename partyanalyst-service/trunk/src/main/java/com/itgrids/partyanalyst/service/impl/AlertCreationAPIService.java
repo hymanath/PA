@@ -3,8 +3,6 @@ package com.itgrids.partyanalyst.service.impl;
 import java.io.File;
 import java.io.FileInputStream;
 
-import javax.ws.rs.core.MediaType;
-
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -14,6 +12,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactDAO;
+import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -26,9 +25,8 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceDAO;
-import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Alert;
-import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -55,13 +53,15 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	private IAlertTypeDAO alertTypeDAO;
 	private IRegionScopesDAO regionScopesDAO;
 	private IUserAddressDAO userAddressDAO ;
-	private IAlertImpactDAO alertImpactDAO;
+	private IAlertImpactScopeDAO alertImpactScopeDAO;
 	private IConstituencyTehsilDAO constituencyTehsilDAO;
 	private IAlertSourceDAO alertSourceDAO;
 	
 	
-	public void setAlertImpactDAO(IAlertImpactDAO alertImpactDAO) {
-		this.alertImpactDAO = alertImpactDAO;
+	
+
+	public void setAlertImpactScopeDAO(IAlertImpactScopeDAO alertImpactScopeDAO) {
+		this.alertImpactScopeDAO = alertImpactScopeDAO;
 	}
 
 	public void setAlertSourceDAO(IAlertSourceDAO alertSourceDAO) {
@@ -371,12 +371,14 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	 }
 	 
 	 // Expose Alert Creation Api From Zoho End	 
-	 public void createAlertApi(final JSONObject jsonObject) throws JSONException{
+	 public JSONObject createAlertApi(final JSONObject jsonObject) throws JSONException{
+		 JSONObject status=new JSONObject();
 		try {
-			Alert alert = (Alert) transactionTemplate
+			 status = (JSONObject) transactionTemplate
 					.execute(new TransactionCallback() {
 						public Object doInTransaction(TransactionStatus status) {
-								
+							
+							JSONObject result = new JSONObject();
 							 DateUtilService date = new DateUtilService();
 							 Alert alert = new Alert();
 							 
@@ -393,7 +395,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 									 alert.setAlertTypeId(alertTypeDAO.getIdOfName(jsonObject.getString("alertType")).get(0));
 								 }
 								 if(jsonObject.has("impactScope") && !jsonObject.getString("impactScope").trim().isEmpty()){
-									 alert.setImpactScopeId(alertImpactDAO.getIdOfName(jsonObject.getString("impactScope")).get(0));
+									 alert.setImpactScopeId(alertImpactScopeDAO.getIdOfName(jsonObject.getString("impactScope")).get(0));
 								 }
 								 if(jsonObject.has("locationLevel") && !jsonObject.getString("locationLevel").trim().isEmpty()){
 									 alert.setImpactLevelId(regionScopesDAO.getIdOfName(jsonObject.getString("locationLevel")).get(0));
@@ -426,14 +428,22 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 							// alert.setAlertCategoryTypeId(inputVO.getCategoryId());
 							 
 							 alert = alertDAO.save(alert);
-							 return alert;
+							 try {
+								 result.put("message", "success");
+								 result.put("uniqueKey", alert.getAlertId().toString());
+							 } catch (Exception e) {
+								e.printStackTrace();
+							}
+							 return result;
 						}
 					}
 				); 
 		} catch (Exception e) {
+			status.put("message", "failure");
+			status.put("exceptionMsg", "Exception occured.Please Contact Admin");
 			LOG.error("Exception Occured in createAlertApi() in AlertCreationAPIService Class ", e);
 		}
-
+		return status;
 	}
 	 
 	public UserAddress setLocationValuesByJson(JSONObject json,Alert alert){
@@ -506,7 +516,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 					
 					if(alert.getImpactLevelId() == 6l){
 						address.setTehsil(constituencyTehsilDAO.getTehsilInfoOfConstuencyByTehsilName(address.getConstituency().getConstituencyId(), json.getString("tehsil")).get(0));
-						address.setPanchayatId(panchayatDAO.getPanchayatInfoOfTehsilByPanchayatName(address.getConstituency().getConstituencyId(), json.getString("panchayat")).get(0));
+						address.setPanchayatId(panchayatDAO.getPanchayatInfoOfTehsilByPanchayatName(address.getTehsil().getTehsilId(), json.getString("panchayat")).get(0));
 						alert.setImpactLevelValue(address.getPanchayatId());
 					}else if(alert.getImpactLevelId() == 8l){
 						address.setLocalElectionBody(localElectionBodyDAO.getLocalElectionBodyByDistrictId(address.getDistrict().getDistrictId(),json.getString("municipality")).get(0));

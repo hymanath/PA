@@ -10,4 +10,5 @@ public interface IAlertImpactScopeDAO extends GenericDao<AlertImpactScope, Long>
 	public List<Object[]> getAllAlertImpactLevel();
 	public List<Object[]> getAlertImpactScope();
 	public List<Object[]> getAlertImpactScopeByImpactId(List<Long> alertImpactLevelIds);
+	public List<Long> getIdOfName(String impactScope);
 }
