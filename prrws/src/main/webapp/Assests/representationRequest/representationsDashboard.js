@@ -464,6 +464,8 @@ getReferralWiseOverviewDetails("");
 function getReferralWiseOverviewDetails(desigId){
 	if(desigId == ""){
 		$("#desigWiseCountId").html(spinner);	
+	}else if(desigId >=0){
+		$("#desigWiseCandidatesView").html(spinner);
 	}
 	var desigIds = [];
 	if(desigId != ""){
@@ -502,7 +504,7 @@ function getReferralWiseOverviewDetails(desigId){
 	  for(var i in result.subList){
 		
 	   str+='<div class="col-sm-3" id="column2">';
-		str+='<div class="panel panel-default">';
+		str+='<div class="panel panel-default" style="cursor:pointer;">';
 	str+='<div class="panel-heading desigClsDivId" style="background-color:#D2DEF1;" attr_desigId="'+result.subList[i].deptDesigId+'"><h4><b>'+result.subList[i].desigName+'-'+result.subList[i].subWorkIds.length+'</b></h4></div>';
 			str+='<div class="panel-body" style="background-color:#E7EDF8;">';
 				
@@ -529,10 +531,12 @@ function getReferralWiseOverviewDetails(desigId){
 	} 
 	
 function buildDesignationsWiseInformation(result){
-	$("#desigWiseCandidatesView").html(spinner);
+	
 	var str='';
+	str+='<div class="scrollCls">';
+	str+='<div class="col-sm-12" id="status">';
 			for(var i in result.referrerList){
-			str+='<div class="col-sm-12" id="status">';
+			
 								str+='<div class="col-sm-2">';
 									str+='<h5><b>'+result.referrerList[i].referrerName+'</b><h5><p>'+result.referrerList[i].desigName+'</p>';
 								str+='</div>';
@@ -567,9 +571,10 @@ function buildDesignationsWiseInformation(result){
 										str+='</div>';
 									}
 								}
-							str+='</div>';
+							
 			}
-	
+	str+='</div>';
+	str+='</div>';
 		$("#desigWiseCandidatesView").html(str);
-
+$(".scrollCls").mCustomScrollbar({setHeight:'600px'})
 }
