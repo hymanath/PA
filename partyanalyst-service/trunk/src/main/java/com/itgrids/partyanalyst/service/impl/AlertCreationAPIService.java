@@ -1,7 +1,13 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
@@ -32,8 +38,15 @@ import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataMultiPart;
+import com.sun.jersey.multipart.MultiPart;
+import com.sun.jersey.multipart.file.FileDataBodyPart;
 
 public class AlertCreationAPIService implements IAlertCreationAPIService {
 
@@ -166,7 +179,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 					 customJson.put("News Paper Edition", alert.getEdition().getEditionAlias());
 					 customJson.put("Edition Type", alert.getEditionType().getEditionType());
 					 
-					// String image = getZohoUploadDocumentId("mytdp.com/NewsReaderImages/"+alert.getImageUrl());
+					//String imageId = getZohoUploadDocumentId("mytdp.com/NewsReaderImages/"+alert.getImageUrl());
 					 
 				 }else if(alert.getAlertCategoryId() == 3l){
 					 customJson.put("TV News Channel", alert.getTvNewsChannel().getChannelName());
@@ -194,7 +207,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 				WebResource.Builder builder = webResource.getRequestBuilder();
 
 				builder.header("Authorization", IConstants.ZOHO_ADMIN_AUTHORIZATION);
-				builder.header("orgId", IConstants.ZOHO_ADMIN_OTGID);
+				builder.header("orgId", IConstants.ZOHO_ADMIN_ORGID);
 				builder.accept("application/json");
 				builder.type("application/json");
 				
@@ -331,44 +344,80 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 			return customJson;
 		}
 	 public String getZohoUploadDocumentId(String imageUrl){
+		 String attachmentId = null;
 		try {
 			
-			JSONObject jobj = new JSONObject();
-			
-				FileInputStream imageFile = new FileInputStream(new File(imageUrl));
-				jobj.put("file", imageFile);
-				
-				/*MultiPart multiPart = new MultiPart();
-				multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);
-
-				FileDataBodyPart fileDataBodyPart = new FileDataBodyPart("POST Body", imageFile);
-				multiPart.bodyPart(fileDataBodyPart);*/
-			
-			    WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://desk.zoho.com/api/v1/uploads");
-
-				WebResource.Builder builder = webResource.getRequestBuilder();
-
-				builder.header("Authorization", IConstants.ZOHO_ADMIN_AUTHORIZATION);
-				builder.header("orgId", IConstants.ZOHO_ADMIN_OTGID);
-				builder.type("multipart/form-data");
-				
-				ClientResponse response = builder.post(ClientResponse.class,jobj);
-			
-				if (response.getStatus() != 200) {
-					throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-				} else {
-					String output = response.getEntity(String.class);
-					if (output != null && !output.isEmpty()) {
-						System.out.println("success");
-					}				
+			String jsonStr = uploadMultiPartFile("https://desk.zoho.com/api/v1/uploads",new File(imageUrl));
+			if(jsonStr !=null && !jsonStr.isEmpty()){
+				JSONObject json = new JSONObject(jsonStr);
+				if(json !=null){
+					attachmentId = json.getString("id");
 				}
-				
-			 
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		 return null;
+		 return attachmentId;
 	 }
+	 
+	 public String uploadMultiPartFile(String URL,File uploadFile) 
+	    {
+	    	try{
+		        final ClientConfig config = new DefaultClientConfig();
+		        final Client client = Client.create(config);
+		        final WebResource resource = client.resource(URL);
+		        
+		        FileDataBodyPart fileDataBodyPart = new FileDataBodyPart("file",uploadFile,MediaType.APPLICATION_OCTET_STREAM_TYPE);
+		        fileDataBodyPart.setContentDisposition(FormDataContentDisposition.name("file").fileName(uploadFile.getName()).build());
+		
+		        final MultiPart multiPart = new FormDataMultiPart().bodyPart(fileDataBodyPart);
+		        multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);
+		        
+		        ClientResponse response = resource.type("multipart/form-data")
+		        		.header("Authorization",IConstants.ZOHO_ADMIN_AUTHORIZATION)
+		        		.header("orgId",IConstants.ZOHO_ADMIN_ORGID)
+		        		.post(ClientResponse.class,multiPart);
+		        String result = getStringFromInputStream(response.getEntityInputStream());
+		        System.out.println(result);
+		        client.destroy();
+		        return result;
+	    	}catch(Exception e)
+	    	{
+	    		e.printStackTrace();
+	    	}
+	    	return null;
+	    }
+	 
+	 private String getStringFromInputStream(InputStream is) 
+	    {
+	    	try{
+	        BufferedReader br = null;
+	        final StringBuilder sb = new StringBuilder();
+	        String line;
+	        try {
+	            br = new BufferedReader(new InputStreamReader(is));
+	            while ((line = br.readLine()) != null) {
+	                sb.append(line);
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } finally {
+	            if (br != null) {
+	                try {
+	                    br.close();
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+	        return sb.toString();
+	    	}catch(Exception e)
+	    	{
+	    		e.printStackTrace();
+	    	}
+	    	return null;
+	    }
 	 
 	 // Expose Alert Creation Api From Zoho End	 
 	 public JSONObject createAlertApi(final JSONObject jsonObject) throws JSONException{
