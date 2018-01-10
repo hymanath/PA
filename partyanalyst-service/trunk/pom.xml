@@ -345,6 +345,12 @@
 			<artifactId>jersey-json</artifactId>
 			<version>1.8</version>
 		</dependency> 	
+		<!-- https://mvnrepository.com/artifact/com.sun.jersey.contribs/jersey-multipart -->
+		<dependency>
+		    <groupId>com.sun.jersey.contribs</groupId>
+		    <artifactId>jersey-multipart</artifactId>
+		    <version>1.8</version>
+		</dependency>
 		
 		<dependency>
   			<groupId>com.rabbitmq</groupId>
