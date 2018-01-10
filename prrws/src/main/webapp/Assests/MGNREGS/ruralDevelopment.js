@@ -33,7 +33,7 @@ $('#dateRangePickerMGNF').on('dp.change', function(e){
 			getRDAbstractDataByType(overViewArr[i],'state',"0",'',2);
 		}else if(overViewArr[i] == 'Ntr Jalasiri')
 		{
-			getNtrJalaSiriAbstract(overViewArr[i],'state',0,'',2);
+			getNtrJalaSiriLvlWiseData("","state","",menuLocationType,menuLocationId,"Abstract");
 		}
 	}
 
@@ -50,7 +50,7 @@ $('#dateRangePickerMGNT').on('dp.change', function(e){
 			getRDAbstractDataByType(overViewArr[i],'state',"0",'',2);
 		}else if(overViewArr[i] == 'Ntr Jalasiri')
 		{
-			getNtrJalaSiriAbstract(overViewArr[i],'state',0,'',2);
+			getNtrJalaSiriLvlWiseData("","state","",menuLocationType,menuLocationId,"Abstract");
 		}
 	}
 
@@ -98,7 +98,7 @@ $(document).on("click",".menuDataCollapse",function(){
 				getRDAbstractDataByType(overViewArr[i],'district',locId,blockName,levelId,'onLoad');
 			}else if(overViewArr[i] == 'Ntr Jalasiri')
 			{
-				getNtrJalaSiriAbstract(overViewArr[i],'district',locId,levelId,'abstract');
+				getNtrJalaSiriLvlWiseData("","state","",menuLocationType,menuLocationId,"Abstract",blockName);
 			}
 		}
 	}else if(levelId == 4)
@@ -111,7 +111,7 @@ $(document).on("click",".menuDataCollapse",function(){
 				getRDAbstractDataByType(overViewArr[i],'constituency',locId,blockName,levelId,'onLoad');
 			}else if(overViewArr[i] == 'Ntr Jalasiri')
 			{
-				getNtrJalaSiriAbstract(overViewArr[i],'constituency',locId,levelId,'abstract');
+				getNtrJalaSiriLvlWiseData("","state","",menuLocationType,menuLocationId,"Abstract",blockName);
 			}
 		}
 	}else if(levelId == 2)
@@ -124,7 +124,7 @@ $(document).on("click",".menuDataCollapse",function(){
 				getRDAbstractDataByType(overViewArr[i],'state',locId,blockName,levelId,'onLoad');
 			}else if(overViewArr[i] == 'Ntr Jalasiri')
 			{
-				getNtrJalaSiriAbstract(overViewArr[i],'state',locId,levelId,'abstract');
+				getNtrJalaSiriLvlWiseData("","state","",menuLocationType,menuLocationId,"Abstract",blockName);
 			}
 		}
 	}
@@ -249,7 +249,7 @@ $(document).on('click','[overview-level]', function(){
 			{
 				if(divId == 'Ntr Jalasiri')
 				{
-					getNtrJalaSiriLvlWiseData(divId,levelType,theadArr,menuLocationType,menuLocationId);
+					getNtrJalaSiriLvlWiseData(divId,levelType,theadArr,menuLocationType,menuLocationId,"Data","");
 				}else{
 					getRDLevelsWiseData(divId,levelType,theadArr,menuLocationType,menuLocationId);
 				}
@@ -268,7 +268,7 @@ for(var i in overViewArr)
 		getRDAbstractDataByType(overViewArr[i],'state',"0",'',2);
 	}else if(overViewArr[i] == 'Ntr Jalasiri')
 	{
-		getNtrJalaSiriAbstract(overViewArr[i],'state',0,'',2);
+		getNtrJalaSiriLvlWiseData("","state","","state","0","Abstract","");
 	}
 }
 
@@ -360,7 +360,6 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 {
 	$("[overview-block='"+type+"']").removeClass("panel-block-white");
 	var str='';
-	
 	$("[overview-block='"+type+"']").attr("attr_levelId",levelId);
 	$("[overview-block='"+type+"']").attr("attr_locationId",locId);
 	
@@ -448,7 +447,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					str+='<div class="row">';
 						str+='<div class="col-sm-6 text-center">';
 							str+='<label>Target</label>';
-							if(result[i].target != null && result[i].target.length > 0)
+							if(result[i].target != null && result[i].target > 0)
 							{
 								if(result[i].parameter == 'Labour Budget' && levelId == 2)
 								{
@@ -464,12 +463,13 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						str+='</div>';
 						str+='<div class="col-sm-6 text-center">';
 							str+='<label>Completed</label>';
-							if(result[i].completed != null && result[i].completed.length > 0)
+							if(type == 'Ntr Jalasiri')
 							{
-								if(result[i].parameter == 'Labour Budget' && levelId == 2)
-								{
-									str+='<h4>'+result[i].completed+'L</h4>';
-								}else if(result[i].parameter == 'Timely Payments'){
+								str+='<h4>'+result[i].borewellenergisation+'</h4>';
+							}
+							else if(result[i].completed != null && result[i].completed > 0)
+							{
+								if(result[i].parameter == 'Timely Payments'){
 									str+='<h4>'+result[i].completed+'%</h4>';
 								}else{
 									str+='<h4>'+result[i].completed+'</h4>';
@@ -1349,7 +1349,7 @@ function projectData(divId,levelId,locationId)
 	var tableId = divId.replace(/\s+/g, '')+''+dataArr[0];
 	if(divId == 'Ntr Jalasiri')
 	{
-		getNtrJalaSiriLvlWiseData(divId,dataArr[0],theadArr,menuLocationType,menuLocationId);
+		getNtrJalaSiriLvlWiseData(divId,dataArr[0],theadArr,menuLocationType,menuLocationId,"Data","");
 	}else{
 		getRDLevelsWiseData(divId,dataArr[0],theadArr,menuLocationType,menuLocationId);
 	}
@@ -1564,7 +1564,7 @@ function tableView(blockId,theadArr,result,locationType)
 	}
 	
 }
-function getNtrJalaSiriLvlWiseData(divId,locationType,theadArr,menuLocationType,menuLocationId)
+function getNtrJalaSiriLvlWiseData(divId,locationType,theadArr,menuLocationType,menuLocationId,resultType,blockName)
 {
 	var tableId = divId.replace(/\s+/g, '')+''+locationType;
 		$("#"+tableId).html(spinner);
@@ -1584,64 +1584,69 @@ function getNtrJalaSiriLvlWiseData(divId,locationType,theadArr,menuLocationType,
 		  xhr.setRequestHeader("Content-Type", "application/json");
 		},
 		success: function(result) {
-			var str = '';
-			if(result != null && result.length > 0){
-				for(var i in result){
-					str+='<tr>';
-						if(locationType == "state"){
-							str+='<td class="text-capital">'+locationType+'</td>';
-						}
-						else if(locationType == "district"){
-							str+='<td class="text-capital">'+result[i].district+'</td>';
-						}
-						else if(locationType == "constituency"){
-							str+='<td class="text-capital">'+result[i].district+'</td>';
-							str+='<td class="text-capital">'+result[i].constituency+'</td>';
-						}
-						else if(locationType == "mandal"){
-							str+='<td class="text-capital">'+result[i].district+'</td>';
-							str+='<td class="text-capital">'+result[i].constituency+'</td>';
-							str+='<td class="text-capital">'+result[i].mandal+'</td>';
-						}
-						else if(locationType == "panchayat"){
-							str+='<td class="text-capital">'+result[i].district+'</td>';
-							str+='<td class="text-capital">'+result[i].constituency+'</td>';
-							str+='<td class="text-capital">'+result[i].mandal+'</td>';
-							str+='<td class="text-capital">'+result[i].panchayat+'</td>';
-						}	
-						
-						str+='<td>'+result[i].target+'</td>';
-						str+='<td>'+result[i].borewellsDrilled+'</td>';
-						str+='<td>'+result[i].ltFiles+'</td>';
-						str+='<td>'+result[i].sentToTransco+'</td>';
-						str+='<td>'+result[i].beneficaryContribution+'</td>';
-						str+='<td>'+result[i].amountPaidTransco+'</td>';
-						str+='<td>'+result[i].borewellenergisation+'</td>';
-						
-						if(result[i].percentage >= 100){
-							str+='<td style="background-color:#f7b519">'+result[i].percentage+'</td>';
-						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-							str+='<td style="background-color:#00AF50">'+result[i].percentage+'</td>';
-						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-							str+='<td style="background-color:#FFBA00">'+result[i].percentage+'</td>';
-						}else{
-							str+='<td style="background-color:#FF0000">'+result[i].percentage+'</td>';
-						}
-						
-						/* if(result[i].percentage < 50)
-						{
-							str+='<td style="background-color:#FF0000">'+result[i].percentage+'</td>';
-						}else if(result[i].percentage >= 50 && result[i].percentage < 80)
-						{
-							str+='<td style="background-color:#FFBA00">'+result[i].percentage+'</td>';
-						}else if(result[i].percentage >= 80)
-						{
-							str+='<td style="background-color:#00AF50">'+result[i].percentage+'</td>';
-						} */
-					str+='</tr>';
-				}
+			if(resultType == "Abstract"){
+				buildNREGSAbstractDataByTypeNew("Ntr Jalasiri",result,blockName,menuLocationId,menuLocationType,2);
 			}
-			tableView(tableId,theadArr,str,locationType);
+			else{
+				var str = '';
+				if(result != null && result.length > 0){
+					for(var i in result){
+						str+='<tr>';
+							if(locationType == "state"){
+								str+='<td class="text-capital">'+locationType+'</td>';
+							}
+							else if(locationType == "district"){
+								str+='<td class="text-capital">'+result[i].district+'</td>';
+							}
+							else if(locationType == "constituency"){
+								str+='<td class="text-capital">'+result[i].district+'</td>';
+								str+='<td class="text-capital">'+result[i].constituency+'</td>';
+							}
+							else if(locationType == "mandal"){
+								str+='<td class="text-capital">'+result[i].district+'</td>';
+								str+='<td class="text-capital">'+result[i].constituency+'</td>';
+								str+='<td class="text-capital">'+result[i].mandal+'</td>';
+							}
+							else if(locationType == "panchayat"){
+								str+='<td class="text-capital">'+result[i].district+'</td>';
+								str+='<td class="text-capital">'+result[i].constituency+'</td>';
+								str+='<td class="text-capital">'+result[i].mandal+'</td>';
+								str+='<td class="text-capital">'+result[i].panchayat+'</td>';
+							}	
+							
+							str+='<td>'+result[i].target+'</td>';
+							str+='<td>'+result[i].borewellsDrilled+'</td>';
+							str+='<td>'+result[i].ltFiles+'</td>';
+							str+='<td>'+result[i].sentToTransco+'</td>';
+							str+='<td>'+result[i].beneficaryContribution+'</td>';
+							str+='<td>'+result[i].amountPaidTransco+'</td>';
+							str+='<td>'+result[i].borewellenergisation+'</td>';
+							
+							if(result[i].percentage >= 100){
+								str+='<td style="background-color:#f7b519">'+result[i].percentage+'</td>';
+							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
+								str+='<td style="background-color:#00AF50">'+result[i].percentage+'</td>';
+							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
+								str+='<td style="background-color:#FFBA00">'+result[i].percentage+'</td>';
+							}else{
+								str+='<td style="background-color:#FF0000">'+result[i].percentage+'</td>';
+							}
+							
+							/* if(result[i].percentage < 50)
+							{
+								str+='<td style="background-color:#FF0000">'+result[i].percentage+'</td>';
+							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
+							{
+								str+='<td style="background-color:#FFBA00">'+result[i].percentage+'</td>';
+							}else if(result[i].percentage >= 80)
+							{
+								str+='<td style="background-color:#00AF50">'+result[i].percentage+'</td>';
+							} */
+						str+='</tr>';
+					}
+				}
+				tableView(tableId,theadArr,str,locationType);
+			}
 		}
 	});
 }
