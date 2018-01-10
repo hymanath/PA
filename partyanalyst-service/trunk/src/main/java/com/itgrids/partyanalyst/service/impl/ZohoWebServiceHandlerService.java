@@ -5,6 +5,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
 import com.itgrids.partyanalyst.service.IZohoAlertService;
 import com.itgrids.partyanalyst.service.IZohoWebServiceHandlerService;
 
@@ -14,7 +15,14 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 	
 	
 	private IZohoAlertService zohoAlertService;
+	private IAlertCreationAPIService alertCreationAPIService;
 
+	
+
+	public void setAlertCreationAPIService(
+			IAlertCreationAPIService alertCreationAPIService) {
+		this.alertCreationAPIService = alertCreationAPIService;
+	}
 
 	public void setZohoAlertService(IZohoAlertService zohoAlertService) {
 		this.zohoAlertService = zohoAlertService;
@@ -56,13 +64,19 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 		}
 		return null;
 	}
-	
-	
 	public String generateJwtForZoho(String userToken) {
 		try {
 			return zohoAlertService.generateJwtForZoho(userToken);
 		} catch (Exception e) {
 			LOG.error("Exception raised at mobileOtpVerification method in ZohoWebServiceHandlerService Class", e);
+		}
+		return null;
+	}
+	public JSONObject createAlertApi(JSONObject jobj){
+		try {
+			 return alertCreationAPIService.createAlertApi(jobj);
+		} catch (Exception e) {
+			LOG.error("Exception raised at createAlertApi method in ZohoWebServiceHandlerService Class", e);
 		}
 		return null;
 	}

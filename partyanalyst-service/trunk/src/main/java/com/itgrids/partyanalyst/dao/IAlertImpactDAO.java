@@ -8,5 +8,4 @@ import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertImpact;
 
 public interface IAlertImpactDAO extends GenericDao<AlertImpact, Long> {
-	public List<Long> getIdOfName(String impact);
 }
