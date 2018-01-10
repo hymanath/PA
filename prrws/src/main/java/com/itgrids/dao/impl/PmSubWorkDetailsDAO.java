@@ -392,8 +392,11 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(startDate != null && endDate != null){
 			 sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
 		}
-		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
+		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0 && inputVO.getDesignationIds().get(0) > 0){
 			sb.append(" and  model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId=:desigIds ");
+		}
+		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0 && inputVO.getDesignationIds().get(0) == 0){
+			sb.append(" and  model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId not in (1,2,7) ");
 		}
 		sb.append(" group by   model.petition.petitionId, model.pmStatus.pmStatusId,model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId " );
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size()>0){
@@ -405,7 +408,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
 			query.setParameterList("deptIds", inputVO.getDeptIdsList());
 		}
-		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
+		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0 && inputVO.getDesignationIds().get(0) > 0){
 			query.setParameterList("desigIds", inputVO.getDesignationIds());
 		}
 		if(startDate != null && endDate != null){

@@ -460,13 +460,13 @@ $(document).on("click",".desigClsDivId",function(){
 	var designationId = $(this).attr("attr_desigId");
 	getReferralWiseOverviewDetails(designationId);
 });
-getReferralWiseOverviewDetails(0);
+getReferralWiseOverviewDetails("");
 function getReferralWiseOverviewDetails(desigId){
-	if(desigId == 0){
+	if(desigId == ""){
 		$("#desigWiseCountId").html(spinner);	
 	}
 	var desigIds = [];
-	if(desigId >0){
+	if(desigId != ""){
 		desigIds.push(desigId);
 	}
 	var json = {
@@ -483,9 +483,9 @@ function getReferralWiseOverviewDetails(desigId){
 		}
 	}).done(function(result){
 		 if(result!= null){
-			 if(desigId ==0)
+			 if(desigId =="")
 			 buildDesignationsWiseCount(result);
-			 if(desigId >0)
+			 if(desigId >=0)
 			 buildDesignationsWiseInformation(result);
 		}
 		else{
@@ -509,11 +509,11 @@ function getReferralWiseOverviewDetails(desigId){
 				   str+='<div class="row">';			
 					str+='<div class="col-sm-6">';
 					str+='<p><b>Representations</b></p>';
-					str+='<h4><b>'+result.subList[i].petitionIds.length+'</b></h4>';
+					str+='<h4><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.subList[i].deptDesigId+'" target="_blank">'+result.subList[i].petitionIds.length+'</a></h4>';
 					str+='</div>';
 					str+='<div class="col-sm-6">';
 					str+='<p><b>Works</b></p>';
-					str+='<h4><b>'+result.subList[i].noOfWorks+'</b></h4>';
+					str+='<h4><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.subList[i].deptDesigId+'" target="_blank">'+result.subList[i].noOfWorks+'</a></h4>';
 					str+='</div>';				
 				str+='</div>';
 					
@@ -556,9 +556,17 @@ function buildDesignationsWiseInformation(result){
 									str+='</div>';
 									}
 								str+='</div>';	
-								str+='<div class="col-sm-1" id="amount">';
-									str+='<h6>Amount</h6><b>412 cr</b>';
-								str+='</div>';
+								for(var j in result.referrerList[i].statusList){
+									if(result.referrerList[i].statusList[j].id ==3 && typeof(result.referrerList[i].statusList.estimationCost) != "undefined"){
+										str+='<div class="col-sm-1" id="amount">';
+										str+='<h6>Amount</h6><b>'+result.referrerList[i].statusList[j].estimationCost+'</b>';
+										str+='</div>';
+									}else if(result.referrerList[i].statusList[j].id ==3){
+										str+='<div class="col-sm-1" id="amount">';
+										str+='<h6>Amount</h6><b>-</b>';
+										str+='</div>';
+									}
+								}
 							str+='</div>';
 			}
 	
