@@ -58,17 +58,16 @@ public class ZohoWebServiceHandler {
 		}
 		return null;
 	}
-	/*
-	@POST 
-	@Path("/sendOTP")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String sendOTPAtLoginTime(){
+	
+	
+	@GET 
+	@Path("/getJwt/{userToken}")
+	public String getJwtByUserToken(@PathParam("userToken") String userToken){
 		try {
-			return zohoWebServiceHandlerService.sendOTPAtLoginTime(memberShipId);
+			return zohoWebServiceHandlerService.generateJwtForZoho(userToken);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getMobileNoByMemberShipId() Method in ZohoWebServiceHandler ",e);
 		}
 		return null;
-	}*/
+	}
 }
