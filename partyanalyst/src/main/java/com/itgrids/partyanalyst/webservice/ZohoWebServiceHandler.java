@@ -70,4 +70,18 @@ public class ZohoWebServiceHandler {
 		}
 		return null;
 	}
+	
+	@POST 
+	@Path("/createAlertApi")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JSONObject createAlertApi(JSONObject jObj){
+		try {
+			 return zohoWebServiceHandlerService.createAlertApi(jObj);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in createAlertApi() Method in ZohoWebServiceHandler ",e);
+		}
+		return null;
+	}
+	
 }
