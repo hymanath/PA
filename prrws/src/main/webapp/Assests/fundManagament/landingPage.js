@@ -87,7 +87,7 @@ function buildFavouriteComponentsResult(result) {
 			}else if (result[i].name == "Mandal Buildings") {
 				compnentName = "Mandal buildings1";
 			}
-			if (compnentName != null && compnentName != "PRIS" && compnentName != "DRAINS" && compnentName != "LED MONITORING" && compnentName != "FUND MANAGMENT SYSTEM" && compnentName != "ENGINEERING DEPARTMENT" && compnentName != "PANACHAYATI RAJ EXPENDITURE" &&  compnentName != "SPIKE ANALYSIS" && compnentName != "MGNREGS" && compnentName != "RURAL DEVELOPMENT" && compnentName != "RURAL WATER SUPPLY" && compnentName != "ITEC" && compnentName != "SWATCH BHARATH IHHL" && compnentName != "SWATCH BHARATH PAYMENTS" && compnentName != "PR eOffice" && compnentName != "Enc Works" && compnentName != "Enc Roads") {
+			if (compnentName != null && compnentName != "PRIS" && compnentName != "DRAINS" && compnentName != "LED MONITORING" && compnentName != "FUND MANAGMENT SYSTEM" && compnentName != "ENGINEERING DEPARTMENT" && compnentName != "PANACHAYATI RAJ EXPENDITURE" &&  compnentName != "SPIKE ANALYSIS" && compnentName != "MGNREGS" && compnentName != "RURAL DEVELOPMENT" && compnentName != "RURAL WATER SUPPLY" && compnentName != "ITEC" && compnentName != "SWATCH BHARATH IHHL" && compnentName != "SWATCH BHARATH PAYMENTS" && compnentName != "PR eOffice" && compnentName != "Enc Works" && compnentName != "Enc Roads" && compnentName != "PROMOTIONS") {
 			   globalComponentNameArr.push(compnentName);
 			}
 			
@@ -1384,7 +1384,9 @@ function getAPInnovationSocietyOverview(){
 	});	
 }
 function getITSectorWiseOverviewDetails(){
-	$(".PROMOTIONSAllCls").html(spinner);
+
+$(".PROMOTIONSAllCls").html("10,301.43 Cr");
+/*	$(".PROMOTIONSAllCls").html(spinner);
 	var json = {
 		category:'ALL'
 	}
@@ -1402,10 +1404,10 @@ function getITSectorWiseOverviewDetails(){
 		{
 			if(result[i].sector == "Total")
 			{
-				$(".PROMOTIONSAllCls").html(result[i].investment+" Cr");
+				$(".PROMOTIONSAllCls").html("10,301.43 Cr");
 			}
 		}
-	});	
+	});	*/
 }
 function getSessionToken(){
 	$(".WATERTANKCHLORINATIONAllCls").html(spinner);	

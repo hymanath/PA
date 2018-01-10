@@ -31,13 +31,13 @@ $(document).on("click","#promotionsBlockSwitch li",function(){
 	}else{
 		$("[promotions]").show();
 	}
-	getITSectorWiseOverviewDetails();
-	getITSectorCategoryWiseDetails("RED",typeOfBlock);
-	getITSectorCategoryWiseDetails("GREEN",typeOfBlock);
-	getITSectorCategoryWiseDetails("DROPPED",typeOfBlock);
-	getITSectorLeadCategoryWiseDetails("RED",typeOfBlock);
-	getITSectorLeadCategoryWiseDetails("GREEN",typeOfBlock);
-	getITSectorLeadCategoryWiseDetails("DROPPED",typeOfBlock);
+	//getITSectorWiseOverviewDetails();
+	//getITSectorCategoryWiseDetails("RED",typeOfBlock);
+	//getITSectorCategoryWiseDetails("GREEN",typeOfBlock);
+	//getITSectorCategoryWiseDetails("DROPPED",typeOfBlock);
+	//getITSectorLeadCategoryWiseDetails("RED",typeOfBlock);
+	//getITSectorLeadCategoryWiseDetails("GREEN",typeOfBlock);
+	//getITSectorLeadCategoryWiseDetails("DROPPED",typeOfBlock);
 });
 function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 	'use strict';
@@ -63,7 +63,7 @@ function onloadCalls(){
 	}
 	
 	departmentWiseOverView();
-	getITSectorWiseOverviewDetails();
+	//getITSectorWiseOverviewDetails();
 	//getMeesevaSLAOverviewDtls("meesevaSla",5);
 	getMeesevaSLACatWiseAbstarctDetails("meesevaSla",5,"onload")
 	getMeesevaKPIOverViewDetails("onload","","");
@@ -148,7 +148,7 @@ function departmentWiseOverView(){
 						block+='</div>';
 						if(departmentWiseArr[i].id ==1){
 							block+='<div class="m_top20">';
-								block+='<h3 id="promotionsHeadingId"></h3>';
+								block+='<h3 id="promotionsHeadingId">10,301.43 Cr</h3>';
 								block+='<h6>Committed Investment</h6>';
 							block+='<h6>(IT,E&F)</h6>';
 							block+='</div>';
@@ -584,16 +584,16 @@ function departmentBlockWiseDetails(divId)
 	}
 	if(divId == 'promotions')
 	{
-		getITSectorWiseOverviewDetails();
-		getITSectorCategoryWiseDetails("RED",'Total');
-		getITSectorCategoryWiseDetails("GREEN",'Total');
-		getITSectorCategoryWiseDetails("DROPPED",'Total');
-		getITSectorLeadCategoryWiseDetails("RED",'Total');
-		getITSectorLeadCategoryWiseDetails("GREEN",'Total');
-		getITSectorLeadCategoryWiseDetails("DROPPED",'Total');
-		getITDistrictWiseDetails("IT","ALL",'body');
-		getITDistrictWiseDetails("Electronics","ALL",'body');
-		getITDistrictWiseDetails("Fintech","ALL",'body');
+		//getITSectorWiseOverviewDetails();
+		//getITSectorCategoryWiseDetails("RED",'Total');
+		//getITSectorCategoryWiseDetails("GREEN",'Total');
+		//getITSectorCategoryWiseDetails("DROPPED",'Total');
+		//getITSectorLeadCategoryWiseDetails("RED",'Total');
+		//getITSectorLeadCategoryWiseDetails("GREEN",'Total');
+		//getITSectorLeadCategoryWiseDetails("DROPPED",'Total');
+		//getITDistrictWiseDetails("IT","ALL",'body');
+		//getITDistrictWiseDetails("Electronics","ALL",'body');
+		//getITDistrictWiseDetails("Fintech","ALL",'body');
 	}
 	
 	$('#itcDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
@@ -819,7 +819,7 @@ function getITSectorWiseOverviewDetails(){
 		{
 			if(result[i].sector == "Total")
 			{
-				$("#promotionsHeadingId").html(result[i].investment+" Cr");
+				//$("#promotionsHeadingId").html(result[i].investment+" Cr");
 			}
 			
 			var str = '';
