@@ -281,7 +281,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	public List<Object[]> getLeadWiseOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.pmSubWorkDetailsId),model.pmLead.pmLeadId,model.pmLead.leadName, model.pmStatus.pmStatusId,model.pmStatus.status ");
-		sb.append("  from PmSubWorkDetails model where model.isDeleted='N' ");
+		sb.append(", model.petition.petitionId  from PmSubWorkDetails model where model.isDeleted='N' ");
 		
 		//sb.append("  model.pmSubject.isDeleted='N' and model.pmDepartment.isDeleted='N' and model.pmLead.isDeleted='N' and ");
 		//sb.append("  model.pmSubject.parentPmSubjectId is null  ");
@@ -291,7 +291,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(startDate != null && endDate != null){
 			 sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
 		}
-		sb.append(" group by   model.petition.petitionId, model.pmStatus.pmStatusId ,model.pmLead.pmLeadId " );
+		sb.append(" group by   model.petition.petitionId, model.pmStatus.pmStatusId ,model.pmBriefLead.pmBriefLeadId " );
 		
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size() >0){
