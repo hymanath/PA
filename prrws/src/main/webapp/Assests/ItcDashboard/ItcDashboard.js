@@ -3163,9 +3163,14 @@ function buildEOfcDepartWiseOverviewDetails(result){
 					str+='</thead>';
 					str+='<tbody>';
 					for(var i in result){
-						if(result[i].departmentName != "ITE & C" && result[i].departmentName != "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
+						if(result[i].departmentName != "ITE & C"){
 							str+='<tr>';
+							if(result[i].departmentName == "INFORMATION TECHNOLOGY ELECTRONICS AND COMMUNICATION DEPARTMENT"){
+								str+='<td style="cursor:pointer;"><i class="fa fa-external-link departmentDetailsCls" aria-hidden="true" class="" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'"></i><b>SECRETARIAT DEPARTMENT</b></td>';
+							}else{
 								str+='<td style="cursor:pointer;"><i class="fa fa-external-link departmentDetailsCls" aria-hidden="true" class="" attr_department_id="'+result[i].departmentId+'" attr_department_name="'+result[i].departmentName+'"></i><b> '+result[i].departmentName+'</b></td>';
+							}
+								
 								str+='<td >'+result[i].created+'</td>';
 								str+='<td >'+result[i].actionFiles+'</td>';
 								str+='<td >'+result[i].totalCount+'</td>';
