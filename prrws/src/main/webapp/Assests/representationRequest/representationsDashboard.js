@@ -461,6 +461,8 @@ $(document).on("click",".desigClsDivId",function(){
 	getReferralWiseOverviewDetails(designationId);
 });
 $(document).on("change","#briefLeadId",function(){
+	$("#desigWiseCandidatesView").html("");
+	$("#desigWiseCountId").html("");
 	getReferralWiseOverviewDetails("");
 });
 getReferralWiseOverviewDetails("");
@@ -561,10 +563,10 @@ function buildDesignationsWiseInformation(result){
 									for(var j in result.referrerList[i].statusList){
 									str+='<div class="col-sm-3">';
 										str+='<div class="col-sm-8" style="background-color:#F3F3F3;">';
-											str+='<h6>'+result.referrerList[i].statusList[j].name+' Representations</h6><b>'+result.referrerList[i].statusList[j].petitionIds.length+'</b>';
+											str+='<h6>'+result.referrerList[i].statusList[j].name+' Representations</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId=1,3,6,7&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].petitionIds.length+'</a>';
 										str+='</div>';
 										str+='<div class="col-sm-4 pad_bag">';
-											str+='<h6>Works</h6><b>'+result.referrerList[i].statusList[j].noOfWorks+'</b>';
+											str+='<h6>Works</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId=1,3,6,7&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].noOfWorks+'</a>';
 										str+='</div>';
 									str+='</div>';
 									}

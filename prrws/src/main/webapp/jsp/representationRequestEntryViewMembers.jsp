@@ -431,8 +431,12 @@ $(document).on("click",".closeSecondModal",function(){
   var statusId= '${param.statusId}';
   var deptId ='${param.deptId}';
  var subjId = '${param.subjId}';
+ var refCanId ='${param.refCanId}';
     if(deptId ==''){
 	deptId=0;
+	}
+	if(refCanId ==''){
+	refCanId=0;
 	}
 	if(desigId ==''){
 	desigId=0;

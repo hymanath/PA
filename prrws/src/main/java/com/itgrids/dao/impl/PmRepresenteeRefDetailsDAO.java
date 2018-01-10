@@ -236,16 +236,29 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Long> getPmReferralCandidateIdsByDesigIds(List<Long> desigIds){
+	public List<Long> getPmReferralCandidateIdsByDesigIds(List<Long> desigIds,Long refCandId,List<Long> statusIds){
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(" select distinct model.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId from PmRepresenteeRefDetails model where model.isDeleted ='N' ");
+		sb.append(" select distinct model.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId from PmRepresenteeRefDetails model," +
+				"PmSubWorkDetails model1 where model.isDeleted ='N' and model1.petition.petitionId=model.petition.petitionId and model1.isDeleted ='N' ");
 		if(desigIds!=null && desigIds.size() >0){
 			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:desigIds) ");
+		}
+		if(refCandId != null && refCandId.longValue()>0l){
+			sb.append("  and  model.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId = :refCandId ");
+		}
+		if(statusIds != null && statusIds.size() >0){
+			sb.append("  and  model1.pmStatus.pmStatusId in (:statusIds) ");
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if(desigIds!=null && desigIds.size() >0){
 			query.setParameterList("desigIds", desigIds);
+		}
+		if(refCandId != null && refCandId.longValue()>0l){
+			query.setParameter("refCandId", refCandId);
+		}
+		if(statusIds != null && statusIds.size() >0){
+			query.setParameterList("statusIds", statusIds);
 		}
 		return query.list();
 	}
