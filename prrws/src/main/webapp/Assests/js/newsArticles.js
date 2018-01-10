@@ -55,7 +55,7 @@ var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-Y
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"
 			//: "http://localhost:8086/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"
 		}).then(function(result){
-			alert(9087);
+			//alert(9087);
 			console.log(result);
 			if(result !=null && result.length>0){
 				buildOverAllPrintMediaDetails(result,"PrintMedia","overAllPrintMediaDivId","overAll",0);
