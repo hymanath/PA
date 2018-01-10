@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -3101,4 +3100,23 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 }
 			    return petitionHistoryVOLst;
 			 }
+		
+		public List<RepresenteeViewVO> getBriefLeads(Long userId,List<Long> deptIds){
+			List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
+			try {
+				List<Object[]> list = pmSubWorkDetailsDAO.getPmBriefLeadIds(deptIds);
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					for (Object[] param : list) {
+						RepresenteeViewVO vo = new RepresenteeViewVO();
+						vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						returnList.add(vo);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				 LOG.error("Exception raised into PmRequestDetailsService of getBriefLeads() ",e);
+			}
+			return returnList;
+		}
 }

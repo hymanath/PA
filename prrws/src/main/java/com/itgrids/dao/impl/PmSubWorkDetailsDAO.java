@@ -395,6 +395,9 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0 && inputVO.getDesignationIds().get(0) > 0){
 			sb.append(" and  model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId=:desigIds ");
 		}
+		if(inputVO.getLightVendorIdList() != null && inputVO.getLightVendorIdList().size() > 0){
+			sb.append(" and model.pmBriefLead.pmBriefLeadId in (:briefLeadIds) ");
+		}
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0 && inputVO.getDesignationIds().get(0) == 0){
 			sb.append(" and  model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId not in (1,2,7) ");
 		}
@@ -415,6 +418,28 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
 		}
+		if(inputVO.getLightVendorIdList() != null && inputVO.getLightVendorIdList().size() > 0){
+			query.setParameterList("briefLeadIds", inputVO.getLightVendorIdList());
+		}
 		return query.list();
 	}
+
+	@Override
+	public List<Object[]> getPmBriefLeadIds(List<Long> deptIds) {
+		StringBuilder sb = new StringBuilder();
+		 sb.append(" select distinct model.pmBriefLead.pmBriefLeadId, model.pmBriefLead.briefLead from PmSubWorkDetails model ,PmRepresenteeRefDetails model1 where model.pmBriefLead.pmBriefLeadId is not null");
+		 sb.append("  and model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and  model1.pmRefCandidateDesignation.isDeleted = 'N' " +
+					"and model1.isDeleted='N' and model1.pmRepresentee.isDeleted = 'N'  " +
+					" and model1.pmRefCandidate.isDeleted = 'N'  and model.isDeleted='N'   ");
+		 if(deptIds != null && deptIds.size()>0){
+		 sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		 Query query = getSession().createQuery(sb.toString());
+		 if(deptIds != null && deptIds.size()>0){
+			 query.setParameterList("deptIds", deptIds);
+		 }
+		 return query.list();		
+	}
+	
+	
 }

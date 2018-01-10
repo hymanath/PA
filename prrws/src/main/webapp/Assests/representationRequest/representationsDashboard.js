@@ -460,6 +460,9 @@ $(document).on("click",".desigClsDivId",function(){
 	var designationId = $(this).attr("attr_desigId");
 	getReferralWiseOverviewDetails(designationId);
 });
+$(document).on("change","#briefLeadId",function(){
+	getReferralWiseOverviewDetails("");
+});
 getReferralWiseOverviewDetails("");
 function getReferralWiseOverviewDetails(desigId){
 	if(desigId == ""){
@@ -471,8 +474,14 @@ function getReferralWiseOverviewDetails(desigId){
 	if(desigId != ""){
 		desigIds.push(desigId);
 	}
+	var briefLeadIds = [];
+	if($("#briefLeadId").val() >0){
+		briefLeadIds.push($("#briefLeadId").val());
+	}
+	
 	var json = {
-			designationIds:desigIds	  
+			designationIds:desigIds,
+				lightVendorIdList:briefLeadIds
 	  };
 	$.ajax({              
 		type:'POST',    
@@ -577,4 +586,27 @@ function buildDesignationsWiseInformation(result){
 	str+='</div>';
 		$("#desigWiseCandidatesView").html(str);
 $(".scrollCls").mCustomScrollbar({setHeight:'600px'})
+}
+getBriefLeads();
+function getBriefLeads(){
+$.ajax({ 
+ type:'POST', 
+ url: 'getBriefLeads',
+ dataType: 'json',
+ beforeSend : function(xhr){
+ xhr.setRequestHeader("Accept", "application/json");
+ xhr.setRequestHeader("Content-Type", "application/json");
+ }
+}).done(function(result){
+  $("#briefLeadId").empty();
+		if(result !=null && result.length >0){
+			//$("#"+selBoxId).html("<option value='0'>Select Department</option>");
+			$("#subjectDivId").show();
+			for(var i in result){
+				$("#briefLeadId").append("<option value='"+result[i].id+"' selected>"+result[i].name+"</option>");
+				}
+		}
+		$("#briefLeadId").trigger('chosen:updated');
+		 
+}); 
 }

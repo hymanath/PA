@@ -127,11 +127,8 @@
 							<img src="Assests/icons/group.PNG" style="float:left;"><h4 style="padding-top:18px;"><b>Referral wise Overview</b></h4>
 						</div>
 						<div class="col-sm-2 pull-right">
-							<select class="form-control">
-								<option>All</option>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
+							<select class="form-control" id="briefLeadId">
+								<option value="0">All</option>
 							</select>
 						</div>	
 					</div>
