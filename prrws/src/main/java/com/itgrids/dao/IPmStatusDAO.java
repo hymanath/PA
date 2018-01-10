@@ -7,6 +7,6 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.model.PmStatus;
 
 public interface IPmStatusDAO extends GenericDao<PmStatus, Long> {
-	public List<Object[]> getPmStatusList(Long statId);
+	public List<Object[]> getPmStatusList(List<Long> statId);
 
 }

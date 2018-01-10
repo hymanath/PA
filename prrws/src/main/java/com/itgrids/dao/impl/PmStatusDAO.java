@@ -22,16 +22,16 @@ public class PmStatusDAO extends GenericDaoHibernate<PmStatus, Long> implements 
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<Object[]> getPmStatusList(Long statId){
+	public List<Object[]> getPmStatusList(List<Long> statId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.pmStatusId,model.status from PmStatus model where model.isDeleted = 'N' ");
-		if(statId != null && statId.longValue() >0l){
-			sb.append(" and  model.pmStatusId =:statId ");
+		if(statId != null && statId.size()>0){
+			sb.append(" and  model.pmStatusId in (:statId) ");
 		}
 		sb.append(" order by model.orderNo ");
 		Query qry = getSession().createQuery(sb.toString());
-		if(statId != null && statId.longValue() >0l){
-			qry.setParameter("statId", statId);
+		if(statId != null && statId.size() >0){
+			qry.setParameterList("statId", statId);
 		}
 		return qry.list();
 	}
