@@ -111,59 +111,22 @@
 						</div>
 					</div>
 				</div>
-				<div class="row" id="desigWiseCountId">
-						</div>
-						<div class="row" style="padding:5px 5px;" id="desigWiseCandidatesView">
-						</div>
-			<!--
-				 <div class="col-sm-12 m_top20">
+			<!--	<div class="col-sm-12 m_top20">
 					<div class="white-block" style="padding:10px">
 						<h4><img src="Assests/icons/2000px-Circle-icons-crossroads.svg.png"><b style="padding-left:5px;">Lead wise Overview</b></h4>
 						<div class="row m_top10" style="height:375px;overflow-y:">
 						<div id ="leadWiseOverviewId">						
-							<div class="col-sm-3">
-								<div class="panel panel-default">
-									<div class="panel-heading" style="background-color:#D6E8F2">
-										<h5><span class="count_cls">1</span><b>Forwarded for taking further necessary action as per Rules - FFNA</b></h5>
-									</div>
-									<div class="panel-body">
-										<div class="row" style="border-bottom:1px solid grey;padding-bottom:10px">
-											<div class="col-sm-6">
-												<p>Representations</p>
-												<h4><b>187</b></h4>
-											</div>
-											<div class="col-sm-6">
-												<p>Works</p>
-												<h4><b>187</b></h4>
-											</div>
-										</div>
-										<div class="row m_top5">
-											<div class="col-sm-6" style="padding:2px">
-												<div class="well pad_5 m_bottom_0">
-														<div class="row">
-															<div class="col-sm-6"><span>Pending</span><br><b>100</b></div>
-															<div class="col-sm-6"><span>Works</span><br><b>100</b></div>
-														</div>
-												</div>
-											</div>
-											<div class="col-sm-6" style="padding:2px">
-												<div class="well pad_5 m_bottom_0">
-														<div class="row">
-															<div class="col-sm-6"><span>Pending</span><br><b>100</b></div>
-															<div class="col-sm-6"><span>Works</span><br><b>100</b></div>
-														</div>
-												</div>
-											</div>
-											
-										</div>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
-				</div>
-				<div class="col-sm-12 m_top20">
+				</div>-->
+				<div class="row" id="desigWiseCountId">
+						</div>
+						<div class="row" style="padding:5px 5px;" id="desigWiseCandidatesView">
+						</div>
+			
+				 
+				<!--<div class="col-sm-12 m_top20">
 					<div class="white-block" style="padding:10px">
 						<div class="row">
 							<div class="col-sm-9"><h4><img src=""><i class="fa fa-info info_icon" aria-hidden="true"></i><b style="padding-left:2px">Status - Officer Wise</b></h4></div>

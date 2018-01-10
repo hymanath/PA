@@ -350,7 +350,7 @@ function buildCompleteOrStatusOverviewDetails(result){
 getLeadWiseOverviewDetails();
 function getLeadWiseOverviewDetails(){
 	$("#completeOverviewId").html(spinner);
-	//$("#leadWiseOverviewId").html(spinner);
+	$("#leadWiseOverviewId").html(spinner);
     $("#myActionsId").html(spinner);
 var json = {
 		 fromDate :"",
@@ -367,12 +367,12 @@ var json = {
 		}
 	}).done(function(result){
 		
-		/* if(result!= null){
+		 if(result!= null){
 			buildLeadWiseOverviewDetails(result);
 		}
 		else{
 			$("#leadWiseOverviewId").html("No data available");
-		} */
+		} 
 	});	
 }
 
@@ -399,7 +399,7 @@ function buildLeadWiseOverviewDetails(result){
 					str+='<div class="row m_top5">';
 						str+='<div class="col-sm-6">';
 								str+='<p>Representations</p>';
-								str+='<h4><b>'+result[i].totalRepresents+'</b></h4>';
+								str+='<h4><b>'+result[i].petitionIds.length+'</b></h4>';
 							str+='</div>';
 							str+='<div class="col-sm-6">';
 								str+='<p>Works</p>';
@@ -412,9 +412,9 @@ function buildLeadWiseOverviewDetails(result){
 								str+='<div class="well pad_5 m_bottom_0">';
 									str+='<div class="row">';
 										if(result[i].statusList[j].id == 1){
-											str+='<div class="col-sm-6"><span>Pending</span><br><b>'+result[i].statusList[j].totalRepresents+'</b></div>';
+											str+='<div class="col-sm-6"><span>Pending</span><br><b>'+result[i].statusList[j].petitionIds.length+'</b></div>';
 										}else if(result[i].statusList[j].id == 2){
-											str+='<div class="col-sm-6"><span>Completed</span><br><b>'+result[i].statusList[j].totalRepresents+'</b></div>';
+											str+='<div class="col-sm-6"><span>Completed</span><br><b>'+result[i].statusList[j].petitionIds.length+'</b></div>';
 										}
 										//str+='<div class="col-sm-6"><span>Pending</span><br><b>'+result[i].statusList[j].totalRepresents+'</b></div>';
 										str+='<div class="col-sm-6"><span>Works</span><br><b>'+result[i].statusList[j].noOfWorks+'</b></div>';
@@ -562,7 +562,6 @@ function buildDesignationsWiseInformation(result){
 							str+='</div>';
 			}
 	
-		$("#desigWiseCandidatesView").html(str);	
-		
+		$("#desigWiseCandidatesView").html(str);
 
 }
