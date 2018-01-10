@@ -37,4 +37,5 @@ public interface IPmRequestDetailsService {
 	public ResultStatus endorsingSubWorksAndAssigningToOfficer(RepresenteeViewVO inputVO);
 	public RepresenteeViewVO getReferralWiseOverviewDetails(InputVO inputVO);
 	public List<PetitionHistoryVO> getPetitionTrackingHistoryDetails(PetitionTrackingVO dataVO);
+	public List<RepresenteeViewVO> getBriefLeads(Long userId,List<Long> deptIds);
 }
