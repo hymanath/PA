@@ -2420,6 +2420,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		
 		public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate){
 			List<RepresenteeViewVO> leadList = null;
+			RepresenteeViewVO leadVO=null;
 			try {
 				KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
 				List<Long> deptIds = deptVO.getDeptIdsList();
@@ -2439,47 +2440,64 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isListOrSetValid(leadObjects)){
 					leadMap = new HashMap<Long,RepresenteeViewVO>();
 					for (Object[] param : leadObjects) {
-						RepresenteeViewVO leadVO = leadMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
-						if(leadVO == null){
-							leadVO = new RepresenteeViewVO();
-							leadVO.getStatusList().addAll(setLeadStatusTemplate(statusIds));
-							if(commonMethodsUtilService.getLongValueForObject(param[1])>0l)
-							leadMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), leadVO);
+						 Long leadId = commonMethodsUtilService.getLongValueForObject(param[1]);
+						 if(leadId.longValue() == 12L || leadId.longValue() == 3L || leadId.longValue() == 2L||leadId.longValue() == 4L || leadId.longValue() == 10L || leadId.longValue() == 9L||leadId.longValue() == 6L||leadId.longValue() == 5L){
+							leadVO=leadMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+							if(leadVO == null){
+								leadVO =new RepresenteeViewVO();
+								leadVO.getStatusList().addAll(setLeadStatusTemplate(statusIds));
+								leadVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+								leadVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+								leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+								leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+								leadMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), leadVO);
+						}else{
+							leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+							leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 						}
-						leadVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
-						leadVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
-						leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
-						leadVO.setTotalRepresents(leadVO.getTotalRepresents()+1l);
+					}else{
+						    leadVO=leadMap.get(0L);
+						    if(leadVO == null){
+						    	leadVO = new RepresenteeViewVO();
+						    	leadVO.getStatusList().addAll(setLeadStatusTemplate(statusIds));
+						    	leadVO.setId(0L);
+						    	leadVO.setName("OTHERS");
+						    	leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						    	leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+						    	leadMap.put(0l, leadVO);
+						    }else{
+						  	  	leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						  	    leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+						    }
+					   }
 						if(IConstants.PETITION_COMPLETED_IDS.contains(param[3])){
 							RepresenteeViewVO completedVO = getMatchVO(leadVO.getStatusList(), 2l);
 							if(completedVO != null){
 								completedVO.setName("Completed");
 								completedVO.setNoOfWorks(completedVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
-								completedVO.setTotalRepresents(completedVO.getTotalRepresents()+1l);
+								completedVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 							}
 						}else if(IConstants.PETITION_IN_PROGRESS_IDS.contains(param[3])){
 							RepresenteeViewVO inprogressVO = getMatchVO(leadVO.getStatusList(), 1l);
 							if(inprogressVO != null){
 								inprogressVO.setName("Pending");
 								inprogressVO.setNoOfWorks(inprogressVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
-								inprogressVO.setTotalRepresents(inprogressVO.getTotalRepresents()+1l);
-							}
-						}
+								inprogressVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+							}	
 					}
 				}
-				
 				if(commonMethodsUtilService.isMapValid(leadMap)){
 					leadList = new ArrayList();
 					leadList.addAll(leadMap.values());
 				}
-				
-			} catch (Exception e) {
+				}
+					} catch (Exception e) {
 				e.printStackTrace();
 				LOG.error("Exception raised into PmRequestDetailsService of getLeadWiseOverviewDetails() ",e);
 			}
 			return leadList;
 		}
-		
+			
 		public List<RepresenteeViewVO> setLeadStatusTemplate(List<Long> statusIds){
 			List<RepresenteeViewVO> list = new ArrayList<RepresenteeViewVO>();
 			try {
