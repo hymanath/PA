@@ -680,43 +680,45 @@ function buildPetitionDetailsView(result){
 													str+='</div>';
 												str+='</div>';
 												for(var h in result.subWorksList[i].subWorksList[j].historyList){
-													str+='<div class="row">';
-														str+='<div class="col-sm-12">';
-															str+='<h5 class="text-capital font_weight">Latest History</h5>';
-															str+='<div class="row">';
-																str+='<div class="col-sm-6">';
-																	str+='<h5>Time : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].timeStr+'</b></h5>';
-																str+='</div>';
-																str+='<div class="col-sm-6">';
-																	str+='<h5>User : '+result.subWorksList[i].subWorksList[j].historyList[h].userName+'<b></b></h5>';
-																str+='</div>';
-															str+='</div>';
-															str+='<div class="row">';
-																str+='<div class="col-sm-12">';
-																	if(result.subWorksList[i].subWorksList[j].historyList[h].remarks !=null && result.subWorksList[i].subWorksList[j].historyList[h].remarks.length>20){
-																		str+='<h5 class="tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].historyList[h].remarks+'">Remarks : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].remarks.substring(0,20)+'...</b></h5>';
-																	}else{
-																		str+='<h5>Remarks : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].remarks+'</b></h5>';
-																	}
-																	
-																str+='</div>';
-																str+='</div>';
+													if(h ==0){
+														str+='<div class="pad_light_yash_bg m_top10 border_yash border_radius_5">';
+														str+='<div class="row">';
+															str+='<div class="col-sm-12">';
+																str+='<h5 class="text-capital font_weight">Latest History</h5>';
 																str+='<div class="row">';
-																str+='<div class="col-sm-6">';
-																	if(result.subWorksList[i].subWorksList[j].historyList[h].filesList !=null && result.subWorksList[i].subWorksList[j].historyList[h].filesList.length>0){
-																		//historyLetterArr=result.subWorksList[i].subWorksList[j].historyList[h].filesList;
-																		historyLetterArr=[];
-																		str+='<h5 class="docsViewCls" attr_docs="historyLetter"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i>files</h5>';
-																	}
-																	
+																	str+='<div class="col-sm-6">';
+																		str+='<h5>Time : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].timeStr+'</b></h5>';
+																	str+='</div>';
+																	str+='<div class="col-sm-6">';
+																		str+='<h5>User : '+result.subWorksList[i].subWorksList[j].historyList[h].userName+'<b></b></h5>';
+																	str+='</div>';
 																str+='</div>';
+																str+='<div class="row m_top5">';
+																	str+='<div class="col-sm-12">';
+																		if(result.subWorksList[i].subWorksList[j].historyList[h].remarks !=null && result.subWorksList[i].subWorksList[j].historyList[h].remarks.length>25){
+																			str+='<h5 class="tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].historyList[h].remarks+'">Remarks : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].remarks.substring(0,25)+'...</b></h5>';
+																		}else{
+																			str+='<h5>Remarks : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].remarks+'</b></h5>';
+																		}
+																		
+																	str+='</div>';
+																	str+='</div>';
+																	str+='<div class="row m_top5">';
+																	str+='<div class="col-sm-6">';
+																		if(result.subWorksList[i].subWorksList[j].historyList[h].filesList !=null && result.subWorksList[i].subWorksList[j].historyList[h].filesList.length>0){
+																			//historyLetterArr=result.subWorksList[i].subWorksList[j].historyList[h].filesList;
+																			historyLetterArr=[];
+																			str+='<h5 class="docsViewCls" attr_docs="historyLetter"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i>files</h5>';
+																		}
+																		
+																	str+='</div>';
+																str+='</div>';
+																
 															str+='</div>';
-															
 														str+='</div>';
-													str+='</div>';
+														str+='</div>';
+													}
 												}
-													
-												
 											  str+='</div>';
 											str+='</div>';
 										str+='</div>';
@@ -744,7 +746,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
 	$("#fileUploadDiv").hide();
-	$("#commentsDivId").hide();
+	$("#commentsDivId").show();
 	$("#leadDivId").hide();
 	$("#grantDivId").hide();
 	$("#assignOfficerDivId").hide();
@@ -841,21 +843,24 @@ $(document).on("click",".updateStatusChangeCls",function(){
 $(document).on("change","#statusChangeId",function(){
 	var statusId = $(this).val();
 	var nextStatusId = $('option:selected', this).attr('attr_next_status_id') ;
-	$('#nextStatusId').val(0);
-	if(nextStatusId != null && nextStatusId>0)
-		$('#nextStatusId').val(nextStatusId);
-	if(statusId == 1){
-		$('#endorsementNoErr').html(' ');
+	
+	
+		$('#endorsementNoErr').html('');
 		$('#leadIdErr').html('');
 	    $('#grantIdErr').html('');
 		$('#assignToIdErr').html('');
 	    $('#officerIdErr').html('');
-		$("#remarkIdErr").html(' ');
-		$('#statusIdErrStr').html(' ');
+		$("#remarkIdErr").html('');
+		$('#statusIdErrStr').html('');
 		$("#officerId").html('<option value="0">SELECT OFFICER NAME</option>');
         $("#officerId").trigger("chosen:updated");
-		$("#remarksId").val(' ');
-		$("#endorsmentNo").val(' ');
+		$("#remarksId").val('');
+		$("#endorsmentNo").val('');
+		
+	$('#nextStatusId').val(0);
+	if(nextStatusId != null && nextStatusId>0)
+		$('#nextStatusId').val(nextStatusId);
+	if(statusId == 1){
 		$("#letterNameId").html("COVERING");
 		$("#endorsementDivId").show();
 		$("#commentsDivId").show();
@@ -871,12 +876,6 @@ $(document).on("change","#statusChangeId",function(){
 		getPmGrantList();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 6){
-		$('#assignToIdErr').html('');
-	    $('#officerIdErr').html('');
-		$("#remarkIdErr").html('');
-		$('#statusIdErrStr').html(' ');
-		$("#officerId").html('<option value="0">SELECT OFFICER NAME</option>');
-        $("#officerId").trigger("chosen:updated");
 		$("#remarksId").val('');
 		$("#letterNameId").html("ACTION COPY");
 		$("#commentsDivId").show();
@@ -891,7 +890,6 @@ $(document).on("change","#statusChangeId",function(){
 		$("#fileUploadDiv").show();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 7){
-		$('#statusIdErrStr').html(' ');
 		$("#remarkIdErr").html('');
 		$("#remarksId").val('');
 		$("#letterNameId").html("DETAILED REPORT");
@@ -906,7 +904,6 @@ $(document).on("change","#statusChangeId",function(){
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
 	}else if(statusId == 3 || statusId == 4 || statusId == 5){
-		$('#statusIdErrStr').html(' ');
 		$("#remarkIdErr").html('');
 		$("#remarksId").val('')
 		$("#letterNameId").html("");
@@ -922,7 +919,7 @@ $(document).on("change","#statusChangeId",function(){
 	else if(statusId == 0){
 		$("#letterNameId").html("");
 		$("#fileUploadDiv").hide();
-		$("#commentsDivId").hide();
+		$("#commentsDivId").show();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
@@ -1010,133 +1007,6 @@ $(document).on("click",".docsViewCls",function(){
 });
 
 function endorsingSubWorksAndAssigningToOfficer(){
-	var flag =false;
-	 $('#endorsementNoErr').html(' ');
-	 $('#leadIdErr').html('');
-	 $('#grantIdErr').html('');
-	 $('#assignToIdErr').html('');
-	 $('#officerIdErr').html('');
-	 $('#remarkIdErr').html('');
-	 $('#statusIdErrStr').html(' ');
-	 
-	  var errorEndsmentStr = '';
-	  var errorLeadStr = '';
-	  var errorGrantStr = '';
-	  var errorAssignToStr = '';
-	  var errorOfficerStr = '';
-	  var errRemarksStr = '';
-	  var errStatusIdStr  = '';
-	  
-	 var statusId = $("#statusChangeId").val();
-	
-	if(statusId == 0 || statusId == null){
-		$("#commentsDivId").hide();
-		errStatusIdStr += "<p style='color:red'>Please Select Status</p>"; 
-	}else if(statusId == 1){
-		
-		 var endorsementId =$("#endorsmentNo").val();
-	     var leadIdValue = $("#leadId").val();
-	     var grantIdValue = $("#grantId").val();
-		 var assignToIdValue = $("#assignToId").val();
-         var officerIdValue = $("#officerId").val();
-	     var remarksId =$("#remarksId").val();
-		 
-		  if(endorsementId == 0 || endorsementId == '' || endorsementId == null || endorsementId.trim().length == 0){
-		   errorEndsmentStr += "<p style='color:red'>Endosment no is required</p>"; 
-	     }
-	 
-		 if(leadIdValue == null || leadIdValue ==0){
-			errorLeadStr += "<p style='color:red'>Please select brief lead</p>"; 
-		 }
-		 if(grantIdValue == null || grantIdValue ==0){
-			errorGrantStr += "<p style='color:red'>Please select grant</p>"; 
-		 }
-	    if(assignToIdValue == null || assignToIdValue==0){
-			errorAssignToStr += "<p style='color:red'>Please select assign to</p>"; 
-		 }
-		 if(officerIdValue == null || officerIdValue==0){
-			 errorOfficerStr += "<p style='color:red'>Please select officer name</p>"; 
-		 }
-		if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
-			  errRemarksStr += "<p style='color:red'>Comment is required</p>"; 
-		 }
-	}else if(statusId == 6){
-		
-		 var assignToIdValue = $("#assignToId").val();
-         var officerIdValue = $("#officerId").val();
-	     var remarksId =$("#remarksId").val();
-		 
-		 if(assignToIdValue == null || assignToIdValue==0){
-			errorAssignToStr += "<p style='color:red'>Please select assign to</p>"; 
-		 }
-		 if(officerIdValue == null || officerIdValue==0){
-			 errorOfficerStr += "<p style='color:red'>Please select officer name</p>"; 
-		 }
-		if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
-			  errRemarksStr += "<p style='color:red'>Comment is required</p>"; 
-		 }
-		 
-	}else if(statusId == 7 || statusId == 3  || statusId == 4  || statusId == 5){
-		  var remarksId =$("#remarksId").val();
-		 if( remarksId == null || remarksId.trim().length == 0){
-			 errRemarksStr += "<p style='color:red'>Comment is required</p>";
-		 }
-	}
-	if(errorEndsmentStr.length >0)
-	{
-		$('#endorsementNoErr').html(errorEndsmentStr);
-		 flag =true ;
-	}else{
-		$('#endorsementNoErr').html('');
-	}
-	if(errorLeadStr.length >0)
-	{
-		$('#leadIdErr').html(errorLeadStr);
-		 flag =true ; ;
-	}else{
-		$('#leadIdErr').html('');
-	}
-	if(errorGrantStr.length >0)
-	{
-		$('#grantIdErr').html(errorGrantStr);
-		 flag =true ; ;
-	}else{
-		$('#grantIdErr').html('');
-	}
-	
-	if(errStatusIdStr.length >0)
-	{
-		$('#statusIdErrStr').html(errStatusIdStr);
-		falg = true ;
-	}else{
-		$('#statusIdErrStr').html('');
-	}
-	if(errorAssignToStr.length >0)
-	{
-		$('#assignToIdErr').html(errorAssignToStr);
-		falg = true ;
-	}else{
-		$('#assignToIdErr').html('');
-	}
-	if(errorOfficerStr.length >0)
-	{
-		$('#officerIdErr').html(errorOfficerStr);
-		falg = true ;
-	}else{
-		$('#officerIdErr').html('');
-	}
-	
-	if(errRemarksStr.length >0)
-	{
-		$('#remarkIdErr').html(errRemarksStr);
-		falg = true ;
-	}else{
-		$('#remarkIdErr').html('');
-	}
-	
-	if(flag==true)
-		return;
-	
 	   //$('#endorsWorksId').hide();
 	   var endorsementNO="";
 	   var formData = new FormData();
