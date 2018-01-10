@@ -245,7 +245,7 @@ public class PmRequestDetailsController {
 	    	return locationDetailsService.getSubjectsBySearchType(inputMap.get("searchType"),inputMap.get("fromDate"),inputMap.get("toDate"),deptIds,statusId,inputMap.get("subjectId"));
 	    }
 	    @RequestMapping(value ="/getStatusList",method = RequestMethod.POST)
-	    public @ResponseBody List<RepresenteeViewVO> getStatusList(@RequestBody Map<String,String> inputMap,HttpServletRequest request) {
+	    public @ResponseBody List<RepresenteeViewVO> getStatusList(@RequestBody InputVO inputVO,HttpServletRequest request) {
 	    	Long userId =null;
 	    	HttpSession session=request.getSession();
 			UserVO userVO = (UserVO) session.getAttribute("USER"); 
@@ -255,8 +255,8 @@ public class PmRequestDetailsController {
 			}else{
 				return null;
 			}
-			Long statusId = Long.valueOf(inputMap.get("statusId"));
-	       return pmRequestDetailsService.getStatusList(statusId);
+			//Long statusId = Long.valueOf(inputMap.get("statusId"));
+	       return pmRequestDetailsService.getStatusList(inputVO.getStatusIds());
 	    }
 	    @RequestMapping(value ="/getRegistrationPersonDetails",method = RequestMethod.POST)
 	    public @ResponseBody CadreRegistrationVO getRegistrationPersonDetails(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
@@ -458,7 +458,8 @@ public class PmRequestDetailsController {
 			}
 			List<Long> deptIds = null;
 			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
-			deptIds = deptVO.getDeptIdsList();		
+			deptIds = deptVO.getDeptIdsList();
+		
 	    	return pmRequestDetailsService.getBriefLeads(userId,deptIds);
 	    }
 	    
