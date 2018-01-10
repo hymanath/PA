@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.log4j.Logger;
@@ -20,6 +21,7 @@ import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IZohoAlertService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 import io.jsonwebtoken.JwtBuilder;
@@ -34,6 +36,7 @@ public class ZohoAlertService implements IZohoAlertService {
 	private DateUtilService dateUtilService;
 	private IOtpDetailsDAO otpDetailsDAO; 
 	private CommonMethodsUtilService commonMethodsUtilService ;
+	private IConstants Iconstants; 
 
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -70,6 +73,12 @@ public class ZohoAlertService implements IZohoAlertService {
 	public void setCommonMethodsUtilService(CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
+
+	public void setIconstants(IConstants iconstants) {
+		Iconstants = iconstants;
+	}
+
+
 
 	@Override
 	public String getMobileNoByMemberShip(String membershipId) {
@@ -190,7 +199,8 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	
 	
 	public JSONObject checkOTPDetails(JSONObject jobj){
-		JSONObject jwt =  new JSONObject();
+		JSONObject status =  new JSONObject();
+		
 		try {
 			Date currentTime = dateUtilService.getCurrentDateAndTime();
 
@@ -216,30 +226,29 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 						otpVerification.setIsValid('N');
 						otpVerification.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						otpVerification = otpDetailsDAO.save(otpVerification);
-						jwt.put("jwt", generateJwt(jobj.getString("memberShipId")));
-						jwt.put("status", "success");
-						return 	jwt;
+						status.put("memberShipId",jobj.getString("memberShipId"));
+						status.put("status", "success");
+						return 	status;
 					}
 					else{
-						jwt.put("jwt", "");
-						jwt.put("status", "failed");
+						status.put("membershipId", "");
+						status.put("status", "failed");
 					}
 		    	 }
 				 else{
-					 jwt = new JSONObject();
-					 jwt.put("jwt", "");
-					 jwt.put("status", "failed");
+					 status.put("membershipId", "");
+					 status.put("status", "failed");
 				 }
 			}
 			else{
-				jwt.put("jwt", "");
-			    jwt.put("status", "failed");
+				status.put("membershipId", "");
+				status.put("status", "failed");
 			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in checkOTPDetails() in ZohoAlertService class.",e);
 		}
-		return jwt;
+		return status;
 	}
 	
 	
@@ -268,7 +277,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 		try{
 			List<Object[]> mobileNoList = tdpCadreDAO.getMobileNoOfMembership(userToken);
 			if(mobileNoList!=null && mobileNoList.size()>0){
-		      String secretKey = "dEkQ7T0NGxWZXSrfXka5jRIJr5nA0LTMqfBAbs9g";
+		      String secretKey = IConstants.ZOHO_JWT_SECRETKEY;
 		      long notBeforeMillis = System.currentTimeMillis();
 		      long notAfterMillis = notBeforeMillis + 300000;
 
