@@ -456,10 +456,21 @@ var json = {
  }).done(function(result){
  }); 
 }
-getReferralWiseOverviewDetails();
-function getReferralWiseOverviewDetails(){
+$(document).on("click",".desigClsDivId",function(){
+	var designationId = $(this).attr("attr_desigId");
+	getReferralWiseOverviewDetails(designationId);
+});
+getReferralWiseOverviewDetails(0);
+function getReferralWiseOverviewDetails(desigId){
+	if(desigId == 0){
+		$("#desigWiseCountId").html(spinner);	
+	}
+	var desigIds = [];
+	if(desigId >0){
+		desigIds.push(desigId);
+	}
 	var json = {
-			designationIds:[]	  
+			designationIds:desigIds	  
 	  };
 	$.ajax({              
 		type:'POST',    
@@ -471,7 +482,87 @@ function getReferralWiseOverviewDetails(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		 if(result!= null){
+			 if(desigId ==0)
+			 buildDesignationsWiseCount(result);
+			 if(desigId >0)
+			 buildDesignationsWiseInformation(result);
+		}
+		else{
+			$("#desigWiseCountId").html("No data available");
+		} 		
 		
 	});	
+
+}
+
+ function buildDesignationsWiseCount(result){
+	var str ='';
+	
+	  for(var i in result.subList){
+		
+	   str+='<div class="col-sm-3" id="column2">';
+		str+='<div class="panel panel-default">';
+	str+='<div class="panel-heading desigClsDivId" style="background-color:#D2DEF1;" attr_desigId="'+result.subList[i].deptDesigId+'"><h4><b>'+result.subList[i].desigName+'-'+result.subList[i].subWorkIds.length+'</b></h4></div>';
+			str+='<div class="panel-body" style="background-color:#E7EDF8;">';
+				
+				   str+='<div class="row">';			
+					str+='<div class="col-sm-6">';
+					str+='<p><b>Representations</b></p>';
+					str+='<h4><b>'+result.subList[i].petitionIds.length+'</b></h4>';
+					str+='</div>';
+					str+='<div class="col-sm-6">';
+					str+='<p><b>Works</b></p>';
+					str+='<h4><b>'+result.subList[i].noOfWorks+'</b></h4>';
+					str+='</div>';				
+				str+='</div>';
+					
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	  }
+	  if(result.subList != null && result.subList.length>0){
+		  getReferralWiseOverviewDetails(result.subList[0].deptDesigId);
+	  }
+	  
+	$("#desigWiseCountId").html(str);
+	} 
+	
+function buildDesignationsWiseInformation(result){
+	$("#desigWiseCandidatesView").html(spinner);
+	var str='';
+			for(var i in result.referrerList){
+			str+='<div class="col-sm-12" id="status">';
+								str+='<div class="col-sm-2">';
+									str+='<h5><b>'+result.referrerList[i].referrerName+'</b><h5><p>'+result.referrerList[i].desigName+'</p>';
+								str+='</div>';
+								str+='<div class="col-sm-9">';
+									str+='<div class="col-sm-3">';
+										str+='<div class="col-sm-8" style="background-color:#F3F3F3; padding:6px;">';
+											str+='<h6>Total Representations</h6><b>'+result.referrerList[i].petitionIds.length+'</b>';
+										str+='</div>';
+										str+='<div class="col-sm-4 pad_bag">';
+											str+='<h6>Works</h6><b>'+result.referrerList[i].noOfWorks+'</b>';
+										str+='</div>';	
+									str+='</div>';
+									for(var j in result.referrerList[i].statusList){
+									str+='<div class="col-sm-3">';
+										str+='<div class="col-sm-8" style="background-color:#F3F3F3; padding:6px;">';
+											str+='<h6>'+result.referrerList[i].statusList[j].name+' Representations</h6><b>'+result.referrerList[i].statusList[j].petitionIds.length+'</b>';
+										str+='</div>';
+										str+='<div class="col-sm-4 pad_bag">';
+											str+='<h6>Works</h6><b>'+result.referrerList[i].statusList[j].noOfWorks+'</b>';
+										str+='</div>';
+									str+='</div>';
+									}
+								str+='</div>';	
+								str+='<div class="col-sm-1" id="amount">';
+									str+='<h6>Amount</h6><b>412 cr</b>';
+								str+='</div>';
+							str+='</div>';
+			}
+	
+		$("#desigWiseCandidatesView").html(str);	
+		
 
 }
