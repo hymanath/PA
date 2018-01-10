@@ -1,13 +1,14 @@
 package com.itgrids.partyanalyst.service;
 
-import org.codehaus.jettison.json.JSONObject;
+import java.io.UnsupportedEncodingException;
 
-import com.itgrids.partyanalyst.dto.ResultStatus;
+import org.codehaus.jettison.json.JSONObject;
 
 public interface IZohoAlertService {
 	
 	public String getMobileNoByMemberShip(String memberShipId);
 	public String sendOtp(String phoneNumber,Long cadreId,String membershipId);
 	public JSONObject checkOTPDetails(JSONObject jObj);
+	public String generateJwtForZoho(String userToken)throws UnsupportedEncodingException;
 
 }
