@@ -40,9 +40,9 @@ var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-Y
 		onLoadCalls();
 	});
 	
-	onloadCalls();
+	onLoadCalls();
 	
-	function onloadCalls(){
+	function onLoadCalls(){
 		getPrintMediaCountsDetailsInfo();
 		getDepartMentWiseAllNewsBulletinsAndPrograms();
 		getDistrictWiseTotalOverViewInfo();
@@ -53,8 +53,10 @@ var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-Y
 		 $("#overAllPrintMediaDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"
+			//: "http://localhost:8086/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"
 		}).then(function(result){
+			alert(9087);
+			console.log(result);
 			if(result !=null && result.length>0){
 				buildOverAllPrintMediaDetails(result,"PrintMedia","overAllPrintMediaDivId","overAll",0);
 			}else{
@@ -66,8 +68,9 @@ var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-Y
 		 $("#overAllElectronicMediaDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
+           //url: "http://localhost:8086/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
 		}).then(function(result){
+			
 				if(result !=null){
 					buildOverAllPrintMediaDetails(result,"ElectronicMedia","overAllElectronicMediaDivId","overAllEle",0);
 				}else{
@@ -79,7 +82,7 @@ var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-Y
 		$("#overAllDistrictWiseDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"
+			//url: "http://localhost:8086/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"
 		}).then(function(result){
 			if(result !=null){
 					buildOverAllDistrictWiseDetails(result,"overAllDistrictWiseDivId");
@@ -92,7 +95,7 @@ var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-Y
 		$("#departmentWiseDetailsDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"
+			//url: "http://localhost:8086/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				buildDepartmentWiSeBlockDetails(result);
