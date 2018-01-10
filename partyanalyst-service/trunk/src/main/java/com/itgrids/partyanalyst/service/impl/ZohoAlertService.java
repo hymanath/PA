@@ -262,5 +262,34 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	      return jwt;
 	}
 
+	
+	public String generateJwtForZoho(String userToken) throws UnsupportedEncodingException{
+		String jwt=null;
+		try{
+			List<Object[]> mobileNoList = tdpCadreDAO.getMobileNoOfMembership(userToken);
+			if(mobileNoList!=null && mobileNoList.size()>0){
+		      String secretKey = "dEkQ7T0NGxWZXSrfXka5jRIJr5nA0LTMqfBAbs9g";
+		      long notBeforeMillis = System.currentTimeMillis();
+		      long notAfterMillis = notBeforeMillis + 300000;
+
+		      SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
+		      byte[] apiKeySecretBytes = secretKey.getBytes();
+		      Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+
+		      JwtBuilder builder = Jwts.builder().signWith(signatureAlgorithm, signingKey);
+
+		      jwt = builder.claim("email_verified", true)
+		                                  .claim("not_after", notAfterMillis)
+		                                  .claim("not_before", notBeforeMillis)
+		                                  .claim("email", "").compact();
+		      return jwt;
+			}
+		}catch (Exception e) {
+			LOG.error("Exception Occured in generateJwt() in ZohoAlertService class.",e);
+		}
+		
+	      return "inValidMemberShipID";
+	}
 
 }
