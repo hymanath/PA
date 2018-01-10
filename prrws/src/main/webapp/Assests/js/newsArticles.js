@@ -65,7 +65,7 @@ var glStartDate = moment().subtract(20, 'years').startOf('year').format("DD-MM-Y
 	function getDepartMentWiseAllNewsBulletinsAndPrograms(){
 		 $("#overAllElectronicMediaDivId").html(spinner);
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/"
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
 			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
 		}).then(function(result){
 				if(result !=null){
