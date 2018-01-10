@@ -21,7 +21,7 @@ public interface IPmRequestDetailsService {
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO);
 	public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo);
 	public PmRequestEditVO setPmRepresenteeDataToResultView(Long petitionId,String pageType,Long userId);
-	public List<RepresenteeViewVO> getStatusList(Long statusId);
+	public List<RepresenteeViewVO> getStatusList(List<Long> statusId);
 	public UserVO getPmOffceUserDetails(Long userId, UserVO userVO);
 	
 	public CadreRegistrationVO getRegistrationPersonDetails(Map<String,String> inputMap);

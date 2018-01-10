@@ -1219,12 +1219,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	
 	@SuppressWarnings("static-access")
-	public List<RepresenteeViewVO> getStatusList(Long statId){
+	public List<RepresenteeViewVO> getStatusList(List<Long> statId){
 		List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
 		try {
 			
 			//List<PmStatus> list = pmStatusDAO.getAll();
-			 List<Object[]> statusList = pmStatusDAO.getPmStatusList(statId);
+			 List<Object[]> statusList = pmStatusDAO.getPmStatusList( statId);
 			 Map<Long,KeyValueVO> statusMap = new LinkedHashMap<Long,KeyValueVO>();
 			 if(commonMethodsUtilService.isListOrSetValid(statusList)){
 				for (Object[] param : statusList) {
