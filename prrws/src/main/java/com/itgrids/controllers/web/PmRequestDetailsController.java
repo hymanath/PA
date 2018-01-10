@@ -446,4 +446,22 @@ public class PmRequestDetailsController {
 	    	return pmRequestDetailsService.getPetitionTrackingHistoryDetails(dataVo);
 	    	
 	    }
+	    @RequestMapping(value ="/getBriefLeads",method = RequestMethod.POST)
+	    public @ResponseBody List<RepresenteeViewVO> getBriefLeads(HttpServletRequest request ) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
+			List<Long> deptIds = null;
+			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+			deptIds = deptVO.getDeptIdsList();		
+	    	return pmRequestDetailsService.getBriefLeads(userId,deptIds);
+	    }
+	    
+	    
+	    
 }
