@@ -2189,7 +2189,12 @@ str +='</table> ';
 //console.log(str)
 $("#activityId").html(str);
 //$("#activityTableId").dataTable({});
-   $('#activityTableId').dataTable();
+   $('#activityTableId').dataTable({
+	   "iDisplayLength": 10,
+		"aaSorting": [],
+		"order": [ 0, 'asc' ],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+   });
 }
 $(document).on("click",".modalCloseCls",function(){
 	$("#constituencyId").empty();
@@ -2521,9 +2526,8 @@ function getSettingActivitiesJBMData(locationId,divId){
 }
 function buildActivityEventdata(result,locationId){
 	var tableView='';
-	
 	tableView+='<div class="table-responsive">';
-		tableView+='<table class="table table-bordered" id="dataTable1'+locationId+'" style="width:100%;border:1px solid lightgrey">';
+		tableView+='<table class="table table-bordered dataTable1'+locationId+'" id="" style="width:100%;border:1px solid lightgrey">';
 			tableView+='<thead class="text-capital">';
 				tableView+='<tr>';
 					if(locationId == 'district'){
@@ -2628,9 +2632,115 @@ function buildActivityEventdata(result,locationId){
 			tableView+='</tbody>';
 		tableView+='</table>';
 	tableView+='</div>';
+	
+	tableView+='<table class="table table-bordered" id="exportExcel'+locationId+'" style="width:100%;border:1px solid lightgrey;display:none;">';
+			tableView+='<thead class="text-capital">';
+				tableView+='<tr>';
+					if(locationId == 'district'){
+						tableView+='<th rowspan =2>District</th>';
+					}else if(locationId == 'constituency'){
+						tableView+='<th rowspan =2>districtName</th>';
+						tableView+='<th rowspan =2>Assembly Constituency</th>';
+					}else if(locationId == 'parliament'){
+						tableView+='<th rowspan =2>Parliment Constituency</th>';
+					}
+					tableView+='<th rowspan ="2">Total Panchayaths/ Wards</th>';
+					tableView+='<th colspan="2">Info Cell Conducted</th>';
+					//tableView+='<th rowspan="2">Conducted%</th>';
+					for(var i in result[0].questionList){
+						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23){
+							tableView+='<th colspan="2">'+result[0].questionList[i].questionName+'</th>';
+						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId == 23){
+							tableView+='<th colspan="5">'+result[0].questionList[i].questionName+'</th>';
+						}else if (result[0].questionList[i].optionList.length==1){
+							if(result[0].questionList[i].questionId != 21){
+								tableView+='<th rowspan ="2">'+result[0].questionList[i].questionName+'</th>';
+							}else{
+								tableView+='<th rowspan ="2">'+result[0].questionList[i].questionName+'-(Minutes)</th>';
+							}
+						}else{
+							tableView+='<th colspan="'+result[0].questionList[i].optionList.length+'">'+result[0].questionList[i].questionName+'</th>';
+						}
+						
+					}
+				tableView+='</tr>';
+				tableView+='<tr>';
+					tableView+='<th>Total Count</th>';
+					tableView+='<th>%</th>';
+				for(var i in result[0].questionList){
+						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23){
+							
+							tableView+='<th>Yes Count</th>';
+							tableView+='<th>%</th>';
+						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId == 23){
+							tableView+='<th>Total Count</th>';
+							tableView+='<th>Yes Count</th>';
+							tableView+='<th>%</th>';
+							tableView+='<th>No Count</th>';
+							tableView+='<th>%</th>';
+						}
+						if(result[0].questionList[i].optionList.length !=2 && result[0].questionList[i].optionList.length !=1){
+							for(var j in result[0].questionList[i].optionList){
+								tableView+='<th>'+result[0].questionList[i].optionList[j].optionName+'</th>';
+						}
+						
+					}
+					//tableView+='<th></th>';
+				}
+				tableView+='</tr>';
+			tableView+='</thead>';
+			tableView+='<tbody>';
+				for(var i in result){
+					tableView+='<tr>';
+					if(locationId == 'constituency'){
+						tableView+='<td>'+result[i].districtName+'</td>';
+					}
+					tableView+='<td>'+result[i].locationName+'</td>';
+					tableView+='<td>'+result[i].totalCount+'</td>';
+					tableView+='<td>'+result[i].conductedCount+'</td>';
+					tableView+='<td>'+parseFloat((result[i].conductedCount/result[i].totalCount)*100).toFixed(2)+'%</td>';
+					for(var j in result[i].questionList){
+						if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId == 23){
+							tableView+='<td>'+result[i].questionList[j].count+'</td>';
+						}
+						 for(var k in result[i].questionList[j].optionList){
+							if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId != 23){
+								if(result[i].questionList[j].optionList[k].optionId ==1){
+									tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';yesCount=result[i].questionList[j].optionList[k].count;
+									if(result[i].conductedCount !==null && result[i].conductedCount !=0){
+										tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].conductedCount)*100).toFixed(2)+'%</td>';
+									}else{
+									tableView+='<td>-</td>';
+									}
+								}
+							}else if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId == 23){
+								tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
+							 	if(result[i].conductedCount !==null && result[i].conductedCount !=0 ){
+									tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].questionList[j].count)*100).toFixed(2)+'%</td>';
+								}else{
+								tableView+='<td>-</td>';
+								} 
+							}else if (result[i].questionList[j].optionList.length==1){
+								if(result[i].questionList[j].questionId !=21){
+									tableView+='<td>'+result[i].questionList[j].optionList[k].percentage+'</td>';
+								}else{
+									tableView+='<td>'+parseInt(result[i].questionList[j].optionList[k].count/(result[i].conductedCount))+'</td>';
+								}
+								
+							}else{
+								tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
+							}
+						}
+						
+					}
+					tableView+='</tr>';
+				}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		
 	$("#"+locationId).html(tableView);
 	
-	$("#dataTable1"+locationId).dataTable({
+	$(".dataTable1"+locationId).dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
 			"order": [ 0, 'asc' ],
@@ -2640,17 +2750,20 @@ function buildActivityEventdata(result,locationId){
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 			buttons: [
 				{
-					extend		:'csvHtml5',
-					text		:'<i class="fa fa-file-text-o"></i>',
+					//extend		:'csvHtml5',
+					text		:'<i class="fa fa-file-text-o generateExcelcdfdf" attr_id="exportExcel'+locationId+'"></i>',
 					titleAttr	: 'CSV',
-					title		:  "ENC WORKS DASHBOARD",
-					filename	:  locationId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					//title		:  "ENC WORKS DASHBOARD",
+					//filename	:  locationId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				}
 			]
 		});
 
 }
-
+$(document).on("click",".generateExcelcdfdf",function(){
+	var id = $(this).attr("attr_id");
+	tableToExcel(id, 'ENC WORKS DASHBOARD');
+});
 function districtWiseCohort(activityId){
 	$("#eventsDistWiseCohort1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	globalActivityIdsList = activityId.split(',');
