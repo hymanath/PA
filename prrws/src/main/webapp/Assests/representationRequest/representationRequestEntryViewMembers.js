@@ -1158,8 +1158,11 @@ function buildSummeryDetails(result){
 }
 
 function getStatusList(statusId){
+	
+	var statusIdArr = [];
+		 
 	var json = {
-		statusId :statusId
+		statusId :statusIdArr
 	}
   $.ajax({                
     type:'POST',    
