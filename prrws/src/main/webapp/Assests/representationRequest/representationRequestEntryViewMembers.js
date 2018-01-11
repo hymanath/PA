@@ -308,7 +308,7 @@ $('#advanceSearchBtnId').prop("checked",true);
 if($('#advanceSearchBtnId').prop( "checked")){
 	$("input[type='checkbox']").prop({disabled: true});
 }
-getStatusList(0);
+
 $("#advancedSearchButtonDivId").show();
 $(document).on("change","#locationSelId",function(){
 	$("#referralNameId").html('<option value="0">Select Referral Name</option>');
@@ -679,12 +679,10 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 	}else if(subjId>0){ 
 		subjArr.push(subjId);
 	}
-	//alert(statusId)	
-   var selStatusId = $("#statusId").val();
+	var selStatusId = $("#statusId").val();
    var statusIds = [];
-   //alert(selStatusId)	
-   if(selStatusId != null && selStatusId >0){
-    statusIds.push(selStatusId);
+   if(selStatusId != null && selStatusId.length >0){
+    statusIds=selStatusId;
    }else if(statusId.length >0){
    var statusList = statusId.split(',');
    for(var i=0;i<=statusList.length-1;i++){
@@ -744,8 +742,8 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
  }
  var selStatusId = $("#statusId").val();
 var statusIds = [];
-if(selStatusId >0){
-statusIds.push(selStatusId);
+if(selStatusId != null && selStatusId.length >0){
+statusIds=selStatusId;
 }else if(statusId >0){
 var statusList = statusId.split(',');
 for(var i=0;i<statusList.length-1;i++){
@@ -804,8 +802,8 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 	}
 	var selStatusId = $("#statusId").val();
   var statusIds = [];
-  if(selStatusId >0){
- statusIds.push(selStatusId);
+  if(selStatusId != null && selStatusId.length >0){
+ statusIds=selStatusId;
  }else if(statusId >0){
  var statusList = statusId.split(',');
  for(var i=0;i<statusList.length-1;i++){
@@ -848,8 +846,8 @@ function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 	$("#referralNameId").trigger('chosen:updated');
 	var selStatusId = $("#statusId").val();
 	var statusIds = [];
-	if(selStatusId != null && selStatusId >0){
-		statusIds.push(selStatusId);
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
 	}else if(statusId.length >0){
 		var statusList = statusId.split(',');
 		for(var i=0;i<=statusList.length-1;i++){
@@ -898,8 +896,8 @@ function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 	var selStatusId = $("#statusId").val();
 	var statusIds = [];
-	if(selStatusId != null && selStatusId >0){
-		statusIds.push(selStatusId);
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
 	}else if(statusId.length >0){
 		var statusList = statusId.split(',');
 		for(var i=0;i<=statusList.length-1;i++){
@@ -1147,7 +1145,7 @@ if($("#statusId").val() != 0){
 } */
 var selStatusId = $("#statusId").val();
 	var statusIds = [];
-	if(selStatusId != null && selStatusId >0){
+	if(selStatusId != null && selStatusId.length >0){
 		statusIds=selStatusId;
 	}else if(statusId.length >0){
 		var statusList = statusId.split(',');
@@ -1230,8 +1228,8 @@ function buildSummeryDetails(result){
 function getStatusList(statusId){
 	var selStatusId = $("#statusId").val();
 	var statusIds = [];
-	if(selStatusId != null && selStatusId >0){
-		statusIds.push(selStatusId);
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
 	}else if(statusId.length >0){
 		var statusList = statusId.split(',');
 		for(var i=0;i<=statusList.length-1;i++){
@@ -1741,8 +1739,8 @@ function openDoc(docmnt){
 function getPetitionReferredMemberDetails(desigIds,refCanId,statusId){
 	var selStatusId = $("#statusId").val();
 	var statusIds = [];
-	if(selStatusId != null && selStatusId >0){
-		statusIds.push(selStatusId);
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
 	}else if(statusId.length >0){
 		var statusList = statusId.split(',');
 		for(var i=0;i<=statusList.length-1;i++){
@@ -2036,8 +2034,8 @@ function checkIsNumber(id,value){
 function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 	var selStatusId = $("#statusId").val();
 	var statusIds = [];
-	if(selStatusId >0){
-		statusIds.push(selStatusId);
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
 	}else if(statusId >0){
 		var statusList = statusId.split(',');
 		for(var i=0;i<statusList.length-1;i++){

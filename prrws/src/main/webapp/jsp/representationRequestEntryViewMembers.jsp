@@ -450,6 +450,11 @@ $(document).on("click",".closeSecondModal",function(){
   if(searchBy != ''){
 	  onLoadClickDataDetails();
 	}
+if(statusId.length >0){
+	getStatusList(statusId);
+}else{
+	getStatusList(0);
+}
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationRequestEntryViewMembers")));
 //wurl = wurl.replace("/PRRWS-1.0","");
