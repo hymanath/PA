@@ -6,6 +6,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
@@ -61,11 +62,10 @@ public class ZohoWebServiceHandler {
 	
 	
 	@GET 
-	@Path("/getJwt/{userToken}")
-	public String getJwtByUserToken(@PathParam("userToken") String userToken){
+	@Path("/getJwt")
+	public String getJwtByUserToken(@QueryParam("user_token")String user_token){
 		try {
-			String userTokenStr= userToken.split("=")[1] != null ? userToken.split("=")[1].trim():"";
-			return zohoWebServiceHandlerService.generateJwtForZoho(userTokenStr);
+			return zohoWebServiceHandlerService.generateJwtForZoho(user_token);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getMobileNoByMemberShipId() Method in ZohoWebServiceHandler ",e);
 		}
