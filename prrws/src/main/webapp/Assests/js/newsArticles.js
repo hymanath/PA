@@ -314,6 +314,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 		title: {
 			text: null
 		},
+		
 	};
 	var xAxis = {
 		min: 0,
@@ -342,6 +343,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 			enabled: true,
 			color: '#000',
 			align: 'center',
+			y: 7,
 			formatter: function() {
 					return '<span>'+this.y+'</span>';
 			} 
@@ -365,9 +367,9 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 			}else if(departmentType == "overAll"){
 				if(typeval == "PrintMedia"){
 					if(result[i].organization == "Main"){
-						headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalPosPerc+'%)</b></h5>';
+						headingCountPrint+='<h5>Main Edition<br><b>'+totalCount+' <br/>('+totalPosPerc+'%)</b></h5>';
 					}else if(result[i].organization == "District"){
-						headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalNegperc+'%)</b></h5>';
+						headingCountPrint+='<h5>DistrictEdition<br><b>'+totalCount+' <br/>('+totalNegperc+'%)</b></h5>';
 					}
 				}
 			}
@@ -383,9 +385,9 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 			}else if(departmentType == "department"){
 				if(typeval == "PrintMediadepartment"+departmentId+""){
 					if(result[i].organization == "Main"){
-						headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalPosPerc+'%)</b></h5>';
+						headingCountPrint+='<h5>Main Edition<br><b>'+totalCount+' <br/>('+totalPosPerc+'%)</b></h5>';
 					}else if(result[i].organization == "District"){
-						headingCountPrint+='<h5><span>'+result[i].organization+' Edition</span><br><b>'+totalCount+' ('+totalNegperc+'%)</b></h5>';
+						headingCountPrint+='<h5>DistrictEdition<br><b>'+totalCount+' <br/>('+totalNegperc+'%)</b></h5>';
 					}
 				}
 			} 
@@ -681,9 +683,10 @@ function buildactionWiseAnalysisDetails(result,divId,departmentId){
 	
 	var mainArr = [];
 	var str='';
+	var totalCount=0;
 	if(result !=null && result.length>0){
 		for(var i in result){
-			var totalCount=0;
+			
 			totalCount=totalCount+result[i].count;
 			$("#totalCountAnalysisId"+departmentId).html(totalCount);
 			var colorObj={"Without Money":"#E4D254","<10L":"#8D4653",">10L":"#F15C81","State Wide Issue":"#8085E9"}
