@@ -1106,8 +1106,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
 					setSearchDetailsData(searchData,mapData);
 				}
-				 
-			}else{
+			    }else{
 				searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
 				setSearchDetailsData(searchData,mapData);
 			}
@@ -2131,9 +2130,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							statusVO.setName(commonMethodsUtilService.getCapitalStringValueForObject(param[3]));
 							statuMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusVO);
 						}
-						statusVO.setTotalRepresents(statusVO.getTotalRepresents().longValue()+1l);
+						statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
 						statusVO.setNoOfWorks(statusVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
-						returnVO.setTotalRepresents(returnVO.getTotalRepresents().longValue()+1l);
+						returnVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
 						returnVO.setNoOfWorks(returnVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 					}
 				}
@@ -2168,7 +2167,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					for(Map.Entry<Long,RepresenteeViewVO> entry :statuMap.entrySet()){
 						if(inProgressStatusIds.contains(entry.getKey()) && inProgressVO != null ){
 							inProgressVO.setNoOfWorks(inProgressVO.getNoOfWorks()+entry.getValue().getNoOfWorks());
-							inProgressVO.setTotalRepresents(inProgressVO.getTotalRepresents()+entry.getValue().getTotalRepresents());
+							inProgressVO.getPetitionIds().addAll(entry.getValue().getPetitionIds());
 							if(entry.getValue().getReferrerList() != null && entry.getValue().getReferrerList().size() >0){
 								for (RepresenteeViewVO refferVO : entry.getValue().getReferrerList()) {
 									RepresenteeViewVO inprogressrefMap = inprogreeReferMap.get(refferVO.getId());
@@ -2179,7 +2178,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 										inprogreeReferMap.put(inprogressrefMap.getId(), inprogressrefMap);
 									}
 									inprogressrefMap.setNoOfWorks(inprogressrefMap.getNoOfWorks()+refferVO.getNoOfWorks());
-									inprogressrefMap.setTotalRepresents(inprogressrefMap.getTotalRepresents()+refferVO.getTotalRepresents());
+									inprogressrefMap.getPetitionIds().addAll(refferVO.getPetitionIds());
 								}
 							}
 							if(entry.getValue().getSubList() != null && entry.getValue().getSubList().size() >0){
@@ -2192,7 +2191,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 										inprogreeSubjMap.put(inprogressSubMapVO.getId(), inprogressSubMapVO);
 									}
 									inprogressSubMapVO.setNoOfWorks(inprogressSubMapVO.getNoOfWorks()+subjVO.getNoOfWorks());
-									inprogressSubMapVO.setTotalRepresents(inprogressSubMapVO.getTotalRepresents()+subjVO.getTotalRepresents());
+									inprogressSubMapVO.getPetitionIds().addAll(subjVO.getPetitionIds());
 								}
 							}
 							if(entry.getValue().getReferrerList() != null && entry.getValue().getReferrerList().size() >0){
@@ -2205,7 +2204,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 										inprogreeDeptMap.put(inprogressDeptMapVO.getId(), inprogressDeptMapVO);
 									}
 									inprogressDeptMapVO.setNoOfWorks(inprogressDeptMapVO.getNoOfWorks()+deptVO1.getNoOfWorks());
-									inprogressDeptMapVO.setTotalRepresents(inprogressDeptMapVO.getTotalRepresents()+deptVO1.getTotalRepresents());
+									inprogressDeptMapVO.getPetitionIds().addAll(deptVO1.getPetitionIds());
 								}
 							}
 						}else if(entry.getKey().longValue() != 2l){
@@ -2298,8 +2297,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}
 						 VO.setId(id);
 						 VO.setName(name);
-						VO.setTotalRepresents(VO.getTotalRepresents().longValue()+1l);
-						VO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						 VO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
+						 VO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						
 					}
 				}
@@ -2360,7 +2359,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}
 						VO.setId(id);
 						VO.setName(name);
-						VO.setTotalRepresents(VO.getTotalRepresents().longValue()+1l);
+						VO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
 						VO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						
 					}
