@@ -616,14 +616,14 @@ function buildDepartmentWiSeBlockDetails(result){
 							
 								collapse+='<div class="row m_top10">';
 									collapse+='<div class="col-sm-6">';
-										collapse+='<div class="pad_light_yash_bg border_yash">';
+										collapse+='<div class="pad_light_yash_bg border_yash" style="height:340px;">';
 											collapse+='<div id="printMedia'+result[i].organizationId+'" style="width:100%"></div>';
 										collapse+='</div>';
 									collapse+='</div>';
 									for(var j in result[i].coreDashBoardVOList3){
 										if(result[i].coreDashBoardVOList3[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList3[j].coreDashBoardVOList.length>0){
 											collapse+='<div class="col-sm-6">';
-												collapse+='<div class="pad_light_yash_bg border_yash">';
+												collapse+='<div class="pad_light_yash_bg border_yash" style="height:340px;">';
 													collapse+='<div id="electronicMedia'+result[i].organizationId+'" style="width:100%"></div>';
 												collapse+='</div>';
 											collapse+='</div>';
