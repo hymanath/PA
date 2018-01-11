@@ -97,27 +97,27 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				"from PmRepresenteeRefDetails as model,PmSubWorkDetails as model1" +
 				",PmRefCandidateDesignation model2 ");
 		
-		if(filterType != null && (filterType.equalsIgnoreCase("work") || filterType.equalsIgnoreCase("department") || filterType.equalsIgnoreCase("subject"))){
+		if(filterType != null && (filterType.equalsIgnoreCase("work") || 
+				filterType.equalsIgnoreCase("department") || filterType.equalsIgnoreCase("subject") && searchLevelId != null && searchLevelId.longValue()>0L)){
 			sb.append(" left join model1.locationAddress locationAddress " );
-		}else if(filterType != null && (filterType.equalsIgnoreCase("referrelDesignation") || filterType.equalsIgnoreCase("referralName"))){
+		}else if(filterType != null && (filterType.equalsIgnoreCase("referrelDesignation") 
+				|| filterType.equalsIgnoreCase("referralName") && searchLevelId != null && searchLevelId.longValue()>0L)){
 			sb.append(" left join model.pmRefCandidateDesignation.pmRefCandidate.address locationAddress " );
-		}else if(filterType != null && filterType.equalsIgnoreCase("representeeDesignation") ){
+		}else if(filterType != null && filterType.equalsIgnoreCase("representeeDesignation") && searchLevelId != null && searchLevelId.longValue()>0L ){
 			sb.append(" left join model.pmRepresenteeDesignation.pmRepresentee.userAddress locationAddress " );
-		}else if(filterType != null && filterType.equalsIgnoreCase("referral")){
+		}else if(filterType != null && filterType.equalsIgnoreCase("referral") && searchLevelId != null && searchLevelId.longValue()>0L){
 			sb.append(" left join model.pmRefCandidate.address locationAddress " );
 		}/*else if(filterType != null && filterType.equalsIgnoreCase("representee")){
 			sb.append(" left join model.pmRepresentee.userAddress locationAddress " );
-		}*/else{
+		}*/else if(searchLevelId != null && searchLevelId.longValue()>0L){
 			sb.append(" left join model.pmRepresentee.userAddress locationAddress " );
 		}
-			
 		sb.append("  left join locationAddress.state state " +
 					" left join locationAddress.district district " +
 					" left join locationAddress.constituency constituency " +
 					" left join locationAddress.tehsil tehsil " +
 					" left join locationAddress.localElectionBody localElectionBody " );
 					//" left join locationAddress.panchayat panchayat  ");
-		
 		
 		sb.append(" where   model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
 				" and  model.pmRefCandidateDesignation.isDeleted = 'N' and model.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and model.pmRefCandidate.isDeleted = 'N' and model.pmRepresentee.isDeleted = 'N'  ");
