@@ -32,6 +32,7 @@
 <div class="modal fade" id="myModalShowNew"></div>
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/Plugins/Scroller/jquery.slimscroll.js" ></script>
 <script type="text/javascript" src="Assests/Plugins/Scroller/simplePagination3.js" ></script>
 <script type="text/javascript">
 var globalBfIdStr =" ";
