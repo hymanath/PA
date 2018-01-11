@@ -2,22 +2,24 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
-import com.itgrids.partyanalyst.dao.IAlertImpactDAO;
+import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
@@ -31,7 +33,6 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceDAO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
@@ -43,6 +44,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.MultiPart;
@@ -69,9 +71,18 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	private IAlertImpactScopeDAO alertImpactScopeDAO;
 	private IConstituencyTehsilDAO constituencyTehsilDAO;
 	private IAlertSourceDAO alertSourceDAO;
+	private IAlertAssignedDAO alertAssignedDAO;
+	private IAlertDocumentDAO alertDocumentDAO;
 	
 	
-	
+
+	public void setAlertDocumentDAO(IAlertDocumentDAO alertDocumentDAO) {
+		this.alertDocumentDAO = alertDocumentDAO;
+	}
+
+	public void setAlertAssignedDAO(IAlertAssignedDAO alertAssignedDAO) {
+		this.alertAssignedDAO = alertAssignedDAO;
+	}
 
 	public void setAlertImpactScopeDAO(IAlertImpactScopeDAO alertImpactScopeDAO) {
 		this.alertImpactScopeDAO = alertImpactScopeDAO;
@@ -136,7 +147,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	
 	
 	// Creation Of AlertApi At Zoho End
-	public void sendApiDetailsOfAlertToZoho(Long alertId,String contactId,String deptId){
+	public void sendApiDetailsOfAlertToZoho(Long alertId,String dummyContactId,String deptId){
 		 try {
 			 
 			 Alert alert=null;
@@ -148,13 +159,9 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 				 return;
 			 
 			 JSONObject jsObj = new JSONObject();
-			 
-			 // We Need to Call Search Api and Get ContactId
-			 
-			 // 
+			 JSONArray uploadArr = new JSONArray();
 			 
 			 
-			 jsObj.put("contactId", contactId);
 			 jsObj.put("subject", alert.getTitle());
 			 jsObj.put("departmentId", deptId);
 			 jsObj.put("description", alert.getDescription() !=null ? alert.getDescription():"");
@@ -173,30 +180,74 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 			 customJson.put("Impact Scope", alert.getAlertImpactScope().getImpactScope());
 			 customJson.put("Alert Type", alert.getAlertType().getAlertType());
 			 
+			 String imageUrlId =null;
+			 String contactId=null;
 			 if(alert.getAlertCategoryId() == 2l || alert.getAlertCategoryId() == 3l){
 				 if(alert.getAlertCategoryId() == 2l){
 					 customJson.put("News Paper", alert.getEdition().getNewsPaper().getNewsPaper());
 					 customJson.put("News Paper Edition", alert.getEdition().getEditionAlias());
 					 customJson.put("Edition Type", alert.getEditionType().getEditionType());
 					 
-					//String imageId = getZohoUploadDocumentId("mytdp.com/NewsReaderImages/"+alert.getImageUrl());
+					 String articleImageId = getZohoUploadDocumentId("mytdp.com/NewsReaderImages/"+alert.getImageUrl());
+					if(articleImageId !=null)
+						uploadArr.put(articleImageId);
 					 
 				 }else if(alert.getAlertCategoryId() == 3l){
 					 customJson.put("TV News Channel", alert.getTvNewsChannel().getChannelName());
 				 }
 				 customJson.put("Category Type Id", alert.getAlertCategoryTypeId());
+			 }else if(alert.getAlertCategoryId() == 1l){
+				 //0.documentId,1.documentPath
+					List<Object[]> uploadListObj = alertDocumentDAO.getDocumentsForAlert(alert.getAlertId());
+					if(uploadListObj !=null && uploadListObj.size()>0){
+						uploadArr = setUploadValuesToJsonArray(uploadListObj,uploadArr);
+					}
+					//Directly Assigning Scenario
+					List<Long> tdpCadreIdList = alertAssignedDAO.getAlertAssignedCandidateInfo(alert.getAlertId());
+					
+					if(tdpCadreIdList !=null && tdpCadreIdList.size()>0){
+						contactId = getContactIdForCadre(tdpCadreIdList.get(0));
+					}
 			 }
 				 
+			 if(uploadArr !=null && uploadArr.length()>0){
+				 jsObj.put("uploads", uploadArr);
+			 }
+			
+			 if(contactId != null){
+				 jsObj.put("contactId", contactId);
+				 jsObj.put("status", "Notified");
+			 }else{
+				 jsObj.put("contactId", dummyContactId);
+			 }
+			
+			 // Custom Fields Adding
 			 jsObj.put("customFields", customJson);
 			 
-			 sendApiOfZohoAlert(jsObj,alert.getAlertId());
+			sendApiOfZohoAlert(jsObj,alert.getAlertId());
 			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in sendApiDetailsOfAlertToZoho() in AlertCreationAPIService", e);
 		}
 	 }
 	 
-	 
+	 public JSONArray setUploadValuesToJsonArray(List<Object[]> uploadListObj,JSONArray uploadArr){
+		 try {
+			
+			 if(uploadListObj !=null && uploadListObj.size()>0){
+				 for (Object[] objects : uploadListObj) {	
+					 //String attachment=getZohoUploadDocumentId("mytdp.com/Reports/"+objects[1].toString());
+					 String attachment=getZohoUploadDocumentId("D:/static_content/Reports/"+objects[1].toString());
+					 if(attachment !=null)
+						 uploadArr.put(attachment);					 
+				}
+			 }
+			 
+		} catch (Exception e) {
+			LOG.error("Exception Occured in setUploadValuesToJsonArray() in AlertCreationAPIService", e);
+		}
+		 return uploadArr;
+	 }
 	 
 	 public String sendApiOfZohoAlert(JSONObject jsonObj,Long alertId){
 		 String result=null;
@@ -582,4 +633,41 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 		
 		return address;
 	}
+	
+	public String getContactIdForCadre(Long cadreId){
+	    try {
+	      if(cadreId != null && cadreId > 0l){
+	        ClientConfig clientConfig = new DefaultClientConfig();
+	           clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	           Client client = Client.create(clientConfig);
+	           WebResource webResource = client.resource("https://desk.zoho.com/api/v1/search?searchStr="+cadreId+"&module=contacts");         
+	           WebResource.Builder builder = webResource.getRequestBuilder();               
+	           builder.accept("application/json");
+	           builder.type("application/json");
+	           builder.header("orgId", IConstants.ZOHO_ADMIN_ORGID);
+	           builder.header("Authorization","Zoho-authtoken "+IConstants.ZOHO_ADMIN_AUTHORIZATION);
+
+	           ClientResponse response = builder.get(ClientResponse.class);
+	               
+	           if (response.getStatus() != 200) {
+	             throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+	           } else {
+	             String output = response.getEntity(String.class);
+	             JSONObject obj= new JSONObject(output);
+	             
+	             if(obj !=null){
+	               
+	               JSONArray finalArray = obj.getJSONArray("data");
+	                 if(finalArray!=null && finalArray.length()>0){
+	                   JSONObject jobj = (JSONObject) finalArray.get(0);
+	                    return  jobj.get("id").toString();
+	                 }
+	             }
+	           }
+	      }
+	    } catch (Exception e) {
+	      LOG.error("excption raised in getContactIdForCadre methos in AlertCreationAPIService Class ", e);
+	    }
+	    return null;
+	  }
 }
