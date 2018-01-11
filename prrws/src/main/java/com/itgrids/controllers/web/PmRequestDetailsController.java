@@ -396,6 +396,7 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
+				inputVO.setBlockLevelId(userId);
 			}else{
 		    	return null;
 		    }

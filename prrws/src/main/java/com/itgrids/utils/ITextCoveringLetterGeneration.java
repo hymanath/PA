@@ -1,20 +1,13 @@
 package com.itgrids.utils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringReader;
 import java.util.List;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.html.simpleparser.HTMLWorker;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.PmRequestEditVO;
 
 public class ITextCoveringLetterGeneration  {
 
-	public static final String GHOST_SCRIPT_PATH = "C:\\Program Files(x86)\\gs\\gs9.14\\bin\\gswin32c.exe";
+	public static final String GHOST_SCRIPT_PATH = "C:\\Program Files\\gs\\gs9.21\\bin\\gswin64c.exe";
 	public static final String CSS = "table { border:1px solid red; }";
 	public static final int	   CUTOFF_LEVEL1 = 95;
 	
@@ -32,13 +25,16 @@ public class ITextCoveringLetterGeneration  {
 	}*/
 	
 	/*public static void main(String a[]){
-		InputVO inputVO = new InputVO();
-		inputVO.setEndValue("5");
-		List<Object[]> coveringLetrImages = null;
-		String endorseCode = "No.1/Min(PR,RD,ITE&C)/2017Dt.18.05.2017";
-		generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseCode);
-	}*/
-	public static String generateCOVERINGLETTER(InputVO inputVO,List<Object[]> coveringLetrImages,String endorseCode){
+	InputVO inputVO = new InputVO();
+	inputVO.setEndValue("5");
+	List<Object[]> coveringLetrImages = null;
+	String endorseCode = "No.1/Min(PR,RD,ITE&C)/2017Dt.18.05.2017";
+	PmRequestEditVO petitionDetailsVO = new PmRequestEditVO();
+	petitionDetailsVO.setWorkName("requesting for sanction ...ost of Rs.150.00 Lakhs.");
+	
+	generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseCode,petitionDetailsVO);
+}*/
+	public static String generateCOVERINGLETTER(InputVO inputVO,List<Object[]> coveringLetrImages,String endorseCode,PmRequestEditVO petitionDetailsVO){
 		String filePath = "";
 		try {
 			String logo ="";
@@ -46,8 +42,19 @@ public class ITextCoveringLetterGeneration  {
 			String addrDetailsImg ="";
 			String sign ="";
 			String toAddrImg ="";
-			
-			if(coveringLetrImages != null && coveringLetrImages.size()>0){
+			String str1 = "As direced by Hon'ble minister, I am herewith forwarding the" +
+					" representation Dated:#rdate of #rname, #rdesig,#rconst,#rdist District addressed to Hon'ble Minister for PR,RD,IT" +
+			" E&C requesting for sanction of work providing  BT surface to the #subj from Angalakuduru to" + 
+			" Pinapadu-Dundipalem R&B Road via Hanumayamma Statue in Angalakuduru,Tenali Mandal of Guntur " +
+			" District under upgradation   of MGNREGS [Plain] funds with an Estimated Cost of #cost Lakhs." +
+
+
+			" #lead." ;
+			 str1 = str1.replace("#name", "hyma");
+			 str1 = str1.replace("#rdesig", "MLA");
+			 str1 = str1.replace("#rdesig", "MLA");
+			System.out.println(str1);
+			/*if(coveringLetrImages != null && coveringLetrImages.size()>0){
 				for (Object[] objects : coveringLetrImages) {
 					if(objects[1] != null && objects[1].toString().equalsIgnoreCase("LOGO")){
 						logo = objects[1].toString();
@@ -111,6 +118,7 @@ public class ITextCoveringLetterGeneration  {
 				str.append("</body>");
 			str.append("</html>");
 			
+			
 			String endorsmentNO = inputVO.getEndValue();
 			 filePath = "E:/Petitions/CoverLetter/"+endorsmentNO+".pdf";
 			OutputStream file = new FileOutputStream(new File(filePath));
@@ -120,7 +128,7 @@ public class ITextCoveringLetterGeneration  {
 			HTMLWorker htmlWorker = new HTMLWorker(document);
 			htmlWorker.parse(new StringReader(str.toString()));
 			document.close();
-			file.close();
+			file.close();*/
 			//System.out.println("UPDATE `ntr_health_campaign`.`student` SET `auto_gen_hallticket_status`='1' WHERE `student_id`='"+endorsmentNO+"';");
 		}catch (Exception e) {
 			System.out.println(e);
