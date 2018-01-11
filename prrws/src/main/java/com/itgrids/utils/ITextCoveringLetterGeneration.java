@@ -14,7 +14,7 @@ import com.itgrids.dto.InputVO;
 
 public class ITextCoveringLetterGeneration  {
 
-	public static final String GHOST_SCRIPT_PATH = "C:\\Program Files\\gs\\gs9.21\\bin\\gswin64c.exe";
+	public static final String GHOST_SCRIPT_PATH = "C:\\Program Files(x86)\\gs\\gs9.14\\bin\\gswin32c.exe";
 	public static final String CSS = "table { border:1px solid red; }";
 	public static final int	   CUTOFF_LEVEL1 = 95;
 	
@@ -32,14 +32,17 @@ public class ITextCoveringLetterGeneration  {
 	}*/
 	
 	/*public static void main(String a[]){
-		
-		//generateHallTktPDFGEST(stList);
+		InputVO inputVO = new InputVO();
+		inputVO.setEndValue("5");
+		List<Object[]> coveringLetrImages = null;
+		String endorseCode = "No.1/Min(PR,RD,ITE&C)/2017Dt.18.05.2017";
+		generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseCode);
 	}*/
-	public static String generateCOVERINGLETTER(InputVO inputVO,List<Object[]> coveringLetrImages){
+	public static String generateCOVERINGLETTER(InputVO inputVO,List<Object[]> coveringLetrImages,String endorseCode){
 		String filePath = "";
 		try {
 			String logo ="";
-			String deptDetailsImg ="";
+			String deptDetailsImg ="F:/Tomcat 8.0/webapps/PRRWS-1.0/";
 			String addrDetailsImg ="";
 			String sign ="";
 			String toAddrImg ="";
@@ -59,7 +62,55 @@ public class ITextCoveringLetterGeneration  {
 					}
 				}
 			}
-			StringBuilder str = new StringBuilder();
+			StringBuffer str = new StringBuffer();
+			str.append("<html>");
+				str.append("<body>");
+					str.append("<div class='container'>");
+						str.append("<header>");
+							str.append("<table class='table'>");
+								str.append("<tr>");
+									str.append("<td>");
+										str.append("<img src='F:/Tomcat 8.0/webapps/PRRWS-1.0/Assests/images/petition images/dept_details.png' width='150px' height='90px'>");
+									str.append("</td>");
+									str.append("<td>");
+										str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='F:/Tomcat 8.0/webapps/PRRWS-1.0/Assests/images/petition images/LOGO.png' width='80px' height='80px'>");
+									str.append("</td>");
+									str.append("<td>");
+										str.append("<img src='F:/Tomcat 8.0/webapps/PRRWS-1.0/Assests/images/petition images/address.png' width='150px' height='90px'>");
+									str.append("</td>");
+								str.append("</tr>");	
+							str.append("</table>");
+						str.append("</header><br><br>");
+						str.append("<table>");
+							str.append("<tr align='center'>");
+								str.append("<td ><font size='3'><b>"+endorseCode+"</b></font></td><br>");
+							str.append("</tr>");
+							str.append("<tr>");
+								str.append("<td><b>Dear Sir,</b></td>");
+							str.append("</tr>");
+							str.append("<tr>");
+								str.append("<td><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I wish to forward herewith therepresentations (list enclosed) received for transfers and postings. It is therefore requested to examine and take necessary action in this regard as per rules at the earliest.</p></td><br><br>");
+							str.append("</tr>");
+							str.append("<tr>");
+								str.append("<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;With regards,</td>");
+							str.append("</tr>");
+						str.append("</table>");
+						str.append("<table>");
+							str.append("<tr>");
+								str.append("<td>");
+									str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='F:/Tomcat 8.0/webapps/PRRWS-1.0/Assests/images/petition images/sign.png' width='80px' height='50px'>");
+								str.append("</td>");
+							str.append("</tr>");
+							str.append("<tr>");
+								str.append("<td>");
+									str.append("<img src='F:/Tomcat 8.0/webapps/PRRWS-1.0/Assests/images/petition images/to_address.png' width='170px' height='90px'>");
+								str.append("</td>");
+							str.append("</tr>");
+						str.append("</table>");
+					str.append("</div>");	
+				str.append("</body>");
+			str.append("</html>");
+			
 			String endorsmentNO = inputVO.getEndValue();
 			 filePath = "E:/Petitions/CoverLetter/"+endorsmentNO+".pdf";
 			OutputStream file = new FileOutputStream(new File(filePath));
