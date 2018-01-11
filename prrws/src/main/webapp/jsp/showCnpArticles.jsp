@@ -8,7 +8,6 @@
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
-<link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <link rel="stylesheet" type="text/css" href="Assests/Plugins/Scroller/simplePagination.css"/> 
@@ -33,7 +32,7 @@
 <div class="modal fade" id="myModalShowNew"></div>
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript" src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" ></script>
+<script type="text/javascript" src="Assests/Plugins/Scroller/jquery.slimscroll.js" ></script>
 <script type="text/javascript" src="Assests/Plugins/Scroller/simplePagination3.js" ></script>
 <script type="text/javascript">
 var globalEdTypeIdStr = "${param.edTypeIdStr}";
