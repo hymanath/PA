@@ -183,7 +183,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 					}else{
 						str+='<div class="col-sm-6">';
 					}
-					
+						str+='<div id="edition'+typeval+''+i+''+departmentId+'"></div>';
 						str+='<div id="overAll'+typeval+'MainDistEditionDivId'+i+''+departmentId+'" style="height:200px;"></div>';
 						str+='<div class="row">';
 							str+='<div class="col-sm-6">';
@@ -359,17 +359,19 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 			if(departmentType == "overAllEle"){
 				 if(typeval == "ElectronicMedia"){
 					if(result[i].organization == "News Bulletin"){	    //headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+totalPosPerc+'%)<br>('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
-						headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(2)+'%)<br><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
 					}else if(result[i].organization == "News Program"){
-						headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(2)+'%)<br>('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
+						//headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(1)+'%) ('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
+						
 					}
 				}
 			}else if(departmentType == "overAll"){
 				if(typeval == "PrintMedia"){
 					if(result[i].organization == "Main"){
-						headingCountPrint+='<h5>Main Edition<br><b>'+totalCount+' <br/>('+totalPosPerc+'%)</b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;">Main Edition<br/><span class="font_weight m_top5">'+totalCount+' ('+totalPosPerc+'%)</span></h5>';
 					}else if(result[i].organization == "District"){
-						headingCountPrint+='<h5>DistrictEdition<br><b>'+totalCount+' <br/>('+totalNegperc+'%)</b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;">DistrictEdition<br/><span class="font_weight m_top5">'+totalCount+' ('+totalNegperc+'%)</span></h5>';
 					}
 				}
 			}
@@ -377,20 +379,23 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 			else if(departmentType == "departmentEle"){
 				if(typeval == "ElectronicMediadepartment"+departmentId+""){
 					if(result[i].organization == "News Bulletin"){
-						headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(2)+'%)<br>('+result[i].positiveIsNotPrimeCoveredTime+')</b></h5>';
+						//headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(1)+'%) ('+result[i].positiveIsNotPrimeCoveredTime+')</b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].positiveIsNotPrimeCoveredTime+'</span></b></h5>';
 					}else if(result[i].organization == "News Program"){
-						headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(2)+'%)<br>('+result[i].positiveIsNotPrimeCoveredTime+')</b></h5>';
+						//headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(1)+'%) ('+result[i].positiveIsNotPrimeCoveredTime+')</b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].positiveIsNotPrimeCoveredTime+'</span></b></h5>';
 					}
 				}
 			}else if(departmentType == "department"){
 				if(typeval == "PrintMediadepartment"+departmentId+""){
 					if(result[i].organization == "Main"){
-						headingCountPrint+='<h5>Main Edition<br><b>'+totalCount+' <br/>('+totalPosPerc+'%)</b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;">Main Edition<br/><span class="font_weight m_top5">'+totalCount+' ('+totalPosPerc+'%)</span></h5>';
 					}else if(result[i].organization == "District"){
-						headingCountPrint+='<h5>DistrictEdition<br><b>'+totalCount+' <br/>('+totalNegperc+'%)</b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;">DistrictEdition<br/><span class="font_weight m_top5">'+totalCount+' ('+totalNegperc+'%)</span></h5>';
 					}
 				}
 			} 
+		$("#edition"+typeval+i+departmentId).html(headingCountPrint);
 		var id = 'overAll'+typeval+'MainDistEditionDivId'+i+departmentId;
 		var type = {
 			type: 'pie',
@@ -401,7 +406,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 			}
 		};
 		var title = {
-			text: headingCountPrint,
+			text: '',
 			align:'center',
 			 style: {
 				 color: '#000',
