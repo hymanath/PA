@@ -4,12 +4,12 @@
 	if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));
 
-	var currentFromDate = moment().format("DD-MM-YYYY");
-	var currentToDate = moment().format("DD-MM-YYYY");
+	var currentFromDatePa = moment().format("DD-MM-YYYY");
+	var currentToDatePa = moment().format("DD-MM-YYYY");
 	var globalcategoryId = $("#categoryId").find("option:selected").val();
 	var categoryName = $("#categoryName").find("option:selected").text();
 	$(".chosen-select").chosen();
-	$("#prajaHeadDate").html("Today("+currentFromDate+")"); 
+	$("#prajaHeadDate").html("Today("+currentFromDatePa+")"); 
 	var globalPartyId =0;
 	var globalBenefitId =0;
 	var globalChannelId =0;
@@ -18,19 +18,19 @@
 		if(type == "default"){
 			$('#dateRangePrajaSankalpaId').data('daterangepicker').setStartDate(moment());
 			$('#dateRangePrajaSankalpaId').data('daterangepicker').setEndDate(moment());
-			currentFromDate = moment().format("DD-MM-YYYY")
+			currentFromDatePa = moment().format("DD-MM-YYYY")
 			toDate = moment().format("DD-MM-YYYY")
-			$("#prajaHeadDate").html("Today("+currentFromDate+")");
+			$("#prajaHeadDate").html("Today("+currentFromDatePa+")");
 		}else if(type == "currentMonth"){
 			$('#dateRangePrajaSankalpaId').data('daterangepicker').setStartDate(moment().startOf("month"));
 			$('#dateRangePrajaSankalpaId').data('daterangepicker').setEndDate(moment().endOf("month"));
-			currentFromDate = moment().startOf("month").format("DD-MM-YYYY")
+			currentFromDatePa = moment().startOf("month").format("DD-MM-YYYY")
 			toDate = moment().endOf("month").format("DD-MM-YYYY")
 			$("#prajaHeadDate").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+"-"+moment().endOf("month").format("DD-MM-YYYY")+" )");
 		}else if(type == "lastMonth"){
 			$('#dateRangePrajaSankalpaId').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
 			$('#dateRangePrajaSankalpaId').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
-			currentFromDate = moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")
+			currentFromDatePa = moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")
 			toDate = moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")
 			$("#prajaHeadDate").html("LAST MONTH"+" ( "+moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")+"-"+moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")+" )");
 		}
@@ -41,9 +41,9 @@
 
 	$("#dateRangePrajaSankalpaId").daterangepicker({
 		opens: 'left',
-		startDate:currentFromDate,
+		startDate:currentFromDatePa,
 		//minDate:"06-11-2017",
-		endDate: currentToDate,
+		endDate: currentToDatePa,
 		locale: {
 		  format: 'DD-MM-YYYY'
 		},
@@ -59,8 +59,8 @@
 		}
 	});
 	$('#dateRangePrajaSankalpaId').on('apply.daterangepicker', function(ev, picker) {
-	  currentFromDate = picker.startDate.format('DD-MM-YYYY');
-	  currentToDate = picker.endDate.format('DD-MM-YYYY');
+	  currentFromDatePa = picker.startDate.format('DD-MM-YYYY');
+	  currentToDatePa = picker.endDate.format('DD-MM-YYYY');
 	  $("#prajaHeadDate").html("("+picker.startDate.format("DD/MM/YY")+" to "+picker.endDate.format("DD/MM/YY")+")");
 	  onloadPrajaSankaplaYatraCalls();
 	  /* if($(".prajaSankaplaYatraIconExpand").find("i").hasClass("glyphicon glyphicon-resize-small" )){
@@ -138,8 +138,8 @@ function getEditionTypeWisePartiesAnalysis(categoryId){
 	$("#overAllPrintMediaNewsDivId").html("");
 	$("#overAllPrintMediaNewsDivId").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
-		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
+		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
+		//url: "http://192.168.11.195:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
 	}).then(function(result){
 		if(result !=null){
 			mainNewsBlockPraja(result);
@@ -153,8 +153,8 @@ function getChannelWisePartiesAnalysis(categoryId){
 	$("#overAllElectronicMediaNewsDivId").html("");
 	$("#overAllElectronicMediaNewsDivId").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
-		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
+		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysis/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysis/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
 	}).then(function(result){
 		if(result !=null){
 			getpartyWiseChannelCountsPraja(result)
@@ -701,8 +701,8 @@ function getPublicationWisePartiesAnalysis(categoryId){
 	$("#publicationWisePartiesDivId").html("");
 	$("#publicationWisePartiesDivId").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysis/"+currentFromDate+"/"+currentToDate+"/"+categoryId
+		url: wurl+"/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysis/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysis/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildPublicationWisePartiesAnalysis(result);
@@ -716,8 +716,8 @@ function getDistrictWisePartyOverView(categoryId){
 	$("#districtWisePartiesDivId").html("");
 	$("#districtWisePartiesDivId").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDate+"/"+currentToDate+"/"+categoryId
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDate+"/"+currentToDate+"/"+categoryId
+		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverView/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildDistrictWisePartyOverView(result);
@@ -731,8 +731,8 @@ function getChannelWisePartiesAnalysisInfo(categoryId){
 	$("#ChannelWisePartyDivId").html("");
 	$("#ChannelWisePartyDivId").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfo/"+currentFromDate+"/"+currentToDate+"/"+categoryId
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfo/"+currentFromDate+"/"+currentToDate+"/"+categoryId
+		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfo/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfo/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildChannelWisePartiesAnalysisInfo(result);
@@ -746,8 +746,8 @@ function getDistrictWisePartyViewForElectrronicMediaInfo(categoryId){
 	$("#districtWiseChannelDivId").html("");
 	$("#districtWiseChannelDivId").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfo/"+currentFromDate+"/"+currentToDate+"/"+categoryId
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfo/"+currentFromDate+"/"+currentToDate+"/"+categoryId
+		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfo/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfo/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildDistrictWisePartyViewForElectrronicMediaInfo(result);
@@ -1044,8 +1044,8 @@ $(document).on("click",".partyMainEditionCls",function(){
 function getEditionTypeWisePartiesAnalysisForArticles(editionType,attrCategoryid,attrPartyids,attrBenifitId,attrEditionType){
 $("#popImgDiv").html(spinner);
 	$.ajax({	
-       url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+currentFromDate+"/"+currentToDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
-		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+currentFromDate+"/"+currentToDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
+       url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
+		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
 	}).then(function(result){
 		$("#popImgDiv").html("");
 		if(result != null && result.length >0){
@@ -1859,8 +1859,8 @@ $(document).on("click",".EMnCls",function(){
 function getPublicationWisePartiesAnalysisForArticles(benefitId,paperId,partyId,categoryId){
 	$("#popImgDiv").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+paperId
-		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+paperId
+		url: wurl+"/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+paperId
+		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getPublicationWisePartiesAnalysisForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+paperId
 	}).then(function(result){
 		$("#popImgDiv").html("");
 		if(result != null && result.length >0){
@@ -1871,8 +1871,8 @@ function getPublicationWisePartiesAnalysisForArticles(benefitId,paperId,partyId,
 function getDistrictWisePartyOverViewForArticles(benefitId,districtId,partyId,categoryId){
 	$("#popImgDiv").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
-		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
+		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
+		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getDistrictWisePartyOverViewForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
 	}).then(function(result){
 		$("#popImgDiv").html("");
 		if(result != null && result.length >0){
@@ -1883,8 +1883,8 @@ function getDistrictWisePartyOverViewForArticles(benefitId,districtId,partyId,ca
 function getChannelWisePartiesAnalysisForArticles(benefitId,channelId,partyId,categoryId){
 	$("#popImgDiv").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+channelId
-		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+channelId
+		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+channelId
+		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+channelId
 	}).then(function(result){
 		$("#popImgDiv").html("");
 		if(result != null && result.length >0){
@@ -1895,8 +1895,8 @@ function getChannelWisePartiesAnalysisForArticles(benefitId,channelId,partyId,ca
 function getDistrictWisePartyViewForElectrronicMediaInfoForArticles(benefitId,districtId,partyId,categoryId){
 	$("#popImgDiv").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfoForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
-		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfoForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
+		url: wurl+"/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfoForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
+		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getDistrictWisePartyViewForElectrronicMediaInfoForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+districtId
 	}).then(function(result){
 		$("#popImgDiv").html("");
 		buildingTable3(result);
@@ -1905,8 +1905,8 @@ function getDistrictWisePartyViewForElectrronicMediaInfoForArticles(benefitId,di
 function getChannelWisePartiesAnalysisInfoForArticles(benefitId,editionId,partyId,categoryId){
 	 $("#popImgDiv").html(spinner);
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfoForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+editionId
-		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfoForArticles/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+editionId
+		url: wurl+"/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfoForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+editionId
+		//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getChannelWisePartiesAnalysisInfoForArticles/"+currentFromDatePa+"/"+currentToDatePa+"/"+categoryId+"/"+partyId+"/"+benefitId+"/"+editionId
 	}).then(function(result){
 		$("#popImgDiv").html("");
 		if(result != null && result.length >0){
@@ -1919,37 +1919,37 @@ $(document).on("click",".articleWiseEmnCls",function(){
 		var scopeId = $(this).attr("attr_region_scopeid"); 
 		var scopeValue = $(this).attr("attr_scopeValue");
 		
-		window.open('showElectronicBulletinsAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=mainBlock&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
+		window.open('showElectronicBulletinsAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDatePa+'&edat='+currentToDatePa+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=mainBlock&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
 });
 $(document).on("click",".articleWiseDistEmnCls",function(){
 		var scopeId = $(this).attr("attr_region_scopeid"); 
 		var scopeValue = $(this).attr("attr_scopeValue");
 		
-		window.open('showElectronicBulletinsAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=distWiseCnt&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
+		window.open('showElectronicBulletinsAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDatePa+'&edat='+currentToDatePa+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=distWiseCnt&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
 });
 $(document).on("click",".articleWisePartyEmnCls",function(){
 		var scopeId = $(this).attr("attr_region_scopeid"); 
 		var scopeValue = $(this).attr("attr_scopeValue");
 		
-		window.open('showElectronicBulletinsAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=partyWiseCnt&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
+		window.open('showElectronicBulletinsAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDatePa+'&edat='+currentToDatePa+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=partyWiseCnt&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
 });
 $(document).on("click",".articleWisePrintMediaCls",function(){
 		var scopeId = $(this).attr("attr_region_scopeid"); 
 		var scopeValue = $(this).attr("attr_scopeValue");
 		
-		window.open('showArticlesAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=OverAllprintMedia&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
+		window.open('showArticlesAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDatePa+'&edat='+currentToDatePa+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=OverAllprintMedia&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
 });
 $(document).on("click",".articleWisePMPartyCls",function(){
 		var scopeId = $(this).attr("attr_region_scopeid"); 
 		var scopeValue = $(this).attr("attr_scopeValue");
 		
-		window.open('showArticlesAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=PartyprintMedia&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
+		window.open('showArticlesAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDatePa+'&edat='+currentToDatePa+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=PartyprintMedia&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
 });
 $(document).on("click",".articleWisePMDistCls",function(){
 		var scopeId = $(this).attr("attr_region_scopeid"); 
 		var scopeValue = $(this).attr("attr_scopeValue");
 		
-		window.open('showArticlesAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=PublicationprintMedia&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
+		window.open('showArticlesAction.action?organizationId='+globalPartyId+'&benefitId='+globalBenefitId+'&categoryId='+globalcategoryId+'&sdat='+currentFromDatePa+'&edat='+currentToDatePa+'&npsStr='+globalChannelId+'&levelId='+scopeId+'&temp='+scopeValue+'&type=PublicationprintMedia&&orgType=Y&stIdx=0&edIdx=6&callFrom=prajaSankalpa');
 });
 $(document).on("click",".refreshPrajaSankalpaCls",function(){
 	onloadPrajaSankaplaYatraCalls();

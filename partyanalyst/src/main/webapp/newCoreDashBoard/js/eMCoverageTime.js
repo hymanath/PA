@@ -4,8 +4,8 @@ var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
 	wurl = url.substr(0,(url.indexOf(".in")+3));
 
-var currentFromDate = moment().format("DD-MM-YYYY");
-var currentToDate = moment().format("DD-MM-YYYY");
+var currentFromDateEM = moment().format("DD-MM-YYYY");
+var currentToDateEM = moment().format("DD-MM-YYYY");
 $(".chosen-select").chosen();
 $(document).on("click",".EMCoverageSettingExpand",function(e){
 	e.stopPropagation();
@@ -14,18 +14,42 @@ $(document).on("click",".EMCoverageSettingExpand",function(e){
 $(document).on("click",".eMCoverageTimeSettingsBody",function(e){
 	e.stopPropagation();
 });
+function globalEMCoverageCalls(type)
+	{
+		if(type == "default"){
+			$('#dateRangeEMCoverageTimeId').data('daterangepicker').setStartDate(moment());
+			$('#dateRangeEMCoverageTimeId').data('daterangepicker').setEndDate(moment());
+			currentFromDateEM = moment().format("DD-MM-YYYY")
+			currentToDateEM = moment().format("DD-MM-YYYY")
+			$("#EMCoverageTimeHeadDate").html("TODAY"+" ( "+moment().format("DD-MM-YYYY")+"-"+moment().format("DD-MM-YYYY")+" )");
+		}else if(type == "currentMonth"){
+			$('#dateRangeEMCoverageTimeId').data('daterangepicker').setStartDate(moment().startOf("month"));
+			$('#dateRangeEMCoverageTimeId').data('daterangepicker').setEndDate(moment().endOf("month"));
+			currentFromDateEM = moment().startOf("month").format("DD-MM-YYYY")
+			currentToDateEM = moment().endOf("month").format("DD-MM-YYYY")
+			$("#EMCoverageTimeHeadDate").html("THIS MONTH"+" ( "+moment().startOf("month").format("DD-MM-YYYY")+"-"+moment().endOf("month").format("DD-MM-YYYY")+" )");
+		}else if(type == "lastMonth"){
+			$('#dateRangeEMCoverageTimeId').data('daterangepicker').setStartDate(moment().subtract(1,'month').startOf("month"));
+			$('#dateRangeEMCoverageTimeId').data('daterangepicker').setEndDate(moment().subtract(1,'month').endOf("month"));
+			currentFromDateEM = moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")
+			currentToDateEM = moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")
+			$("#EMCoverageTimeHeadDate").html("LAST MONTH"+" ( "+moment().subtract(1,'month').startOf("month").format("DD-MM-YYYY")+"-"+moment().subtract(1,'month').endOf("month").format("DD-MM-YYYY")+" )");
+		}
+		$("#dateRangeEMCoverageTimeId").val(currentFromDateEM+" - "+currentToDateEM);
+		onLoadEmCoverageTimeCalls();
+	}
 $(document).on("click",function(){
 	$(".eMCoverageTimeSettingsBody").hide();
 });
 $(document).on("click",".eMCoverageTimeSettingsCloseBody",function(){
 	$(this).closest(".eMCoverageTimeSettingsBody").hide();
 });
-$("#EMCoverageTimeHeadDate").html("Today("+currentFromDate+")"); 
-	
+$("#EMCoverageTimeHeadDate").html("Today("+currentFromDateEM+")"); 
+$(document).ready(function(){	
 $("#dateRangeEMCoverageTimeId").daterangepicker({
 	opens: 'left',
-	startDate:currentFromDate,
-	endDate: currentToDate,
+	startDate:currentFromDateEM,
+	endDate: currentToDateEM,
 	locale: {
 		format: 'DD-MM-YYYY'
 	},
@@ -42,8 +66,8 @@ $("#dateRangeEMCoverageTimeId").daterangepicker({
 });
 
 $('#dateRangeEMCoverageTimeId').on('apply.daterangepicker', function(ev, picker) {
-	currentFromDate = picker.startDate.format('DD-MM-YYYY');
-	currentToDate = picker.endDate.format('DD-MM-YYYY');
+	currentFromDateEM = picker.startDate.format('DD-MM-YYYY');
+	currentToDateEM = picker.endDate.format('DD-MM-YYYY');
 	$("#EMCoverageTimeHeadDate").html("("+picker.startDate.format("DD/MM/YY")+" to "+picker.endDate.format("DD/MM/YY")+")");
 	//onLoadEmCoverageTimeCalls();
 	var type;
@@ -69,11 +93,12 @@ $('#dateRangeEMCoverageTimeId').on('apply.daterangepicker', function(ev, picker)
 	
 	
 });
+});	
 function getAllTvChannels1()
 {
   $.ajax({
     url: wurl+"/CommunityNewsPortal/webservice/getAllTvChannels"
-   // url: "http://192.168.11.195:8086/CommunityNewsPortal/webservice/getAllTvChannels"
+    //url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getAllTvChannels"
   }).then(function(result){
 	  $("#emnNewsChannelsUlId1").html("");
 		if(result != null && result.length > 0){
@@ -253,8 +278,8 @@ function getCandidateAndPartyWiseNewsChannals(type,categoryId,isParticipated,cha
 	}); 
 	
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+type+"/"+isParticipated+"/"+channelIds
-		//url: "http://192.168.11.195:8086/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDate+"/"+currentToDate+"/"+categoryId+"/"+type+"/"+isParticipated+"/"+channelIds
+		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDateEM+"/"+currentToDateEM+"/"+categoryId+"/"+type+"/"+isParticipated+"/"+channelIds
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDateEM+"/"+currentToDateEM+"/"+categoryId+"/"+type+"/"+isParticipated+"/"+channelIds
 	}).then(function(result){
 		if(result != null && result.length > 0){
 			getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated);
@@ -384,8 +409,8 @@ function getDayWiseCandidateCoverageTime(type,categoryId,isParticipated,channelI
 		}
 	}); 
 	$.ajax({	
-		url: wurl+"/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDate+"/"+currentToDate+"/"+isParticipated+"/"+channelIds
-		//url: "http://192.168.11.195:8086/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDate+"/"+currentToDate+"/"+isParticipated+"/"+channelIds
+		url: wurl+"/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDateEM+"/"+currentToDateEM+"/"+isParticipated+"/"+channelIds
+		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDateEM+"/"+currentToDateEM+"/"+isParticipated+"/"+channelIds
 	}).then(function(result){
 		if(result != null && result.length > 0){
 			buildDayWiseCandidateCoverageTime(result);
@@ -663,7 +688,7 @@ $(document).on("click",".emctClickCls",function(){
 			partyId =0;
 		}
 		
-		window.open('showElectronicBulletinsAction.action?organizationId='+candidateId+'&benefitId='+benefitId+'&categoryId='+categoryId+'&sdat='+currentFromDate+'&edat='+currentToDate+'&npsStr='+channelId+'&type='+type+'&orgType='+participate+'&partyId='+partyId+'&stIdx=0&edIdx=6&callFrom=EMCT');
+		window.open('showElectronicBulletinsAction.action?organizationId='+candidateId+'&benefitId='+benefitId+'&categoryId='+categoryId+'&sdat='+currentFromDateEM+'&edat='+currentToDateEM+'&npsStr='+channelId+'&type='+type+'&orgType='+participate+'&partyId='+partyId+'&stIdx=0&edIdx=6&callFrom=EMCT');
 		
 });
 $(document).on("click",".EMCoverageTimeBlocksIcon",function(){

@@ -6154,6 +6154,7 @@ $(document).on("click",".globalDateChange",function(){
 		  globalPrajaSankalpaYatraCalls(type)
 		  globalMeetingsCalls(type);
 	  }else{
+		globalEMCoverageCalls(type);
 		globalAlertsCalls(type);
 		globalDebateCalls(type);
 		globalPrintMediaCalls(type);
