@@ -2552,11 +2552,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				PmGrant pmGrant = pmGrantDAO.get(Long.valueOf(inputVO.getGroupName()));
 				inputVO.setGroupName(pmGrant.getPmGrantName());//grantType
 				List<Object[]> coveringLetrImages = pmRequiredLettersImagesDAO.getDesignationWiseImages(inputVO.getDesignationIds(), inputVO.getType());
-				
+				String str = "ghasjkdajkbdhk #name hjfskjfksk #rdesig jkhdkjshkdha #rdate jdnhkasjd #refname jskada #refdesig";
 				inputVO.setAssetTypeList(deptIds);//deptIds
 				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getAssetTypeList(),dateUtilService.getCurrentDateAndTime());
 				inputVO.setCategory(endorseStr);
-				String filePath = ITextCoveringLetterGeneration.generateCOVERINGLETTER(inputVO,coveringLetrImages);
+				String filePath = ITextCoveringLetterGeneration.generateCOVERINGLETTER(inputVO,coveringLetrImages,"");
 				resultStatus.setExceptionMsg(filePath);
 			} catch (Exception e) {
 				e.printStackTrace();
