@@ -627,7 +627,7 @@ function buildDepartmentWiSeBlockDetails(result){
 								
 								collapse+='<div class="row m_top20">';
 									collapse+='<div class="col-sm-9">';
-										collapse+='<h5 class="font_weight text-capital">District wise Overview</h5>';
+										collapse+='<h5 class="font_weight text-capital">District wise Overview(print media)</h5>';
 										collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:330px;width:100%"></div>';
 									collapse+='</div>';
 									
