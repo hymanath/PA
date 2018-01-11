@@ -64,7 +64,8 @@ public class ZohoWebServiceHandler {
 	@Path("/getJwt/{userToken}")
 	public String getJwtByUserToken(@PathParam("userToken") String userToken){
 		try {
-			return zohoWebServiceHandlerService.generateJwtForZoho(userToken);
+			String userTokenStr= userToken.split("=")[1] != null ? userToken.split("=")[1].trim():"";
+			return zohoWebServiceHandlerService.generateJwtForZoho(userTokenStr);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getMobileNoByMemberShipId() Method in ZohoWebServiceHandler ",e);
 		}
