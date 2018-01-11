@@ -507,4 +507,16 @@ public int updateAlertSmsStatus(Long assignedId){
 		return query.list();
 	}
 	
+	public List<Long> getAlertAssignedCandidateInfo(Long alertId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.tdpCadre.tdpCadreId "+
+				" from AlertAssigned model where model.alert.isDeleted ='N' and model.isDeleted ='N' " +
+				" and  model.alert.alertId = :alertId ");
+		Query query = getSession().createQuery(str.toString() +" order by model.tdpCadre.tdpCadreId desc ");
+		
+		query.setParameter("alertId", alertId);
+		return query.list();
+	}
+	
 }
