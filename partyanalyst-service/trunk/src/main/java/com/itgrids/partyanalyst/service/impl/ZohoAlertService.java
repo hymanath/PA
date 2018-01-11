@@ -291,11 +291,11 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 		      jwt = builder.claim("email_verified", true)
 		                                  .claim("not_after", notAfterMillis)
 		                                  .claim("not_before", notBeforeMillis)
-		                                  .claim("email", "").compact();
+		                                  .claim("email", userToken).compact();
 		      return jwt;
 			}
 		}catch (Exception e) {
-			LOG.error("Exception Occured in generateJwt() in ZohoAlertService class.",e);
+			LOG.error("Exception Occured in generateJwtForZoho() in ZohoAlertService class.",e);
 		}
 		
 	      return "inValidMemberShipID";
