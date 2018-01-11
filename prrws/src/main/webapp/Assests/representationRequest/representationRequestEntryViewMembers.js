@@ -354,7 +354,7 @@ $(document).on("change","#locationSelId",function(){
    $('#advanceSearchBtnId').prop("checked",false); 
 	var searchType=$(this).val();
 	var dateRangeStr =$("#dateRangePicker").val();
-	getStatusList(statusId);
+	//getStatusList(statusId);
 	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
 	if(searchType == 'all'){
 		//$('#parametersList').hide();
@@ -650,7 +650,7 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 	var desigType='';
 	var subjArr = [];
 	var filterType=$("#locationSelId").val();
-		
+	var statIdsArr=[];
 	  var desig=$("#designationsId").val();//
 	  if(desig != null && desig !=0){
 			desigIds =  desig;
@@ -679,6 +679,18 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 	}else if(subjId>0){ 
 		subjArr.push(subjId);
 	}
+	//alert(statusId)	
+   var selStatusId = $("#statusId").val();
+   var statusIds = [];
+   //alert(selStatusId)	
+   if(selStatusId != null && selStatusId >0){
+    statusIds.push(selStatusId);
+   }else if(statusId.length >0){
+   var statusList = statusId.split(',');
+   for(var i=0;i<=statusList.length-1;i++){
+   statusIds.push(statusList[i]);
+   }
+   }
  var json = {
 		 filterType :searchType,
 		 fromDate :currentFromDate,
@@ -686,7 +698,8 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 		 deptIdsList:deptIds,
 		 designationIds:desigIds,
 		 pType:desigType,
-		 subProgramIdsList:subjArr
+		 subProgramIdsList:subjArr,
+		 statusIds:statusIds
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -729,6 +742,16 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
  if(depts != null || depts !=0){
  deptIds=depts;
  }
+ var selStatusId = $("#statusId").val();
+var statusIds = [];
+if(selStatusId >0){
+statusIds.push(selStatusId);
+}else if(statusId >0){
+var statusList = statusId.split(',');
+for(var i=0;i<statusList.length-1;i++){
+statusIds.push(statusList[i]);
+}
+}
  var json = {
 		 filterType :searchType,
 		 searchLvlVals: distictId,
@@ -736,7 +759,8 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
 		 toDate : currentToDate,
 		 deptIdsList:deptIds,
 		 designationIds:desigIds,
-		 type:desigType
+		 type:desigType,
+		 statusIds:statusIds
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -778,6 +802,16 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 	if(depts != null || depts !=0){
 		deptIds=depts;
 	}
+	var selStatusId = $("#statusId").val();
+  var statusIds = [];
+  if(selStatusId >0){
+ statusIds.push(selStatusId);
+ }else if(statusId >0){
+ var statusList = statusId.split(',');
+ for(var i=0;i<statusList.length-1;i++){
+ statusIds.push(statusList[i]);
+ }
+ }
  var json = {
 		 filterType :searchType,
 		 searchLvlVals: consituencyId,
@@ -785,7 +819,8 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 		 toDate : currentToDate,
 		 deptIdsList:deptIds,
 		 designationIds:desigIds,
-		 pType:desigType
+		 pType:desigType,
+		 statusIds:statusIds
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -1113,7 +1148,7 @@ if($("#statusId").val() != 0){
 var selStatusId = $("#statusId").val();
 	var statusIds = [];
 	if(selStatusId != null && selStatusId >0){
-		statusIds.push(selStatusId);
+		statusIds=selStatusId;
 	}else if(statusId.length >0){
 		var statusList = statusId.split(',');
 		for(var i=0;i<=statusList.length-1;i++){
