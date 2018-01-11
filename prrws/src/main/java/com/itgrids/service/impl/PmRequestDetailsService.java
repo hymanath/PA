@@ -2555,7 +2555,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				inputVO.setAssetTypeList(deptIds);//deptIds
 				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getAssetTypeList(),dateUtilService.getCurrentDateAndTime());
 				inputVO.setCategory(endorseStr);
-				String filePath = ITextCoveringLetterGeneration.generateCOVERINGLETTER(inputVO,coveringLetrImages,"");
+				PmRequestEditVO petitionDetailsVO =setPmRepresenteeDataToResultView(inputVO.getPageId(),inputVO.getpType(),inputVO.getBlockLevelId());
+				String filePath = ITextCoveringLetterGeneration.generateCOVERINGLETTER(inputVO,coveringLetrImages,"",petitionDetailsVO);
 				resultStatus.setExceptionMsg(filePath);
 			} catch (Exception e) {
 				e.printStackTrace();
