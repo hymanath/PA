@@ -464,8 +464,14 @@ $(document).on("click",".desigClsDivId",function(){
 });
 $(document).on("change","#briefLeadId",function(){
 	$("#desigWiseCandidatesView").html("");
-	$("#desigWiseCountId").html("");
-	getReferralWiseOverviewDetails("");
+	//$("#desigWiseCountId").html("");
+	var designationId = '';
+	$(".desigClsDivId").each(function(){
+				if($(this).hasClass("activeCls")){
+					designationId = $(this).attr("attr_desigId");
+				}
+			}); 
+	getReferralWiseOverviewDetails(designationId);
 });
 
 getReferralWiseOverviewDetails("");
@@ -501,8 +507,11 @@ function getReferralWiseOverviewDetails(desigId){
 		 if(result!= null){
 			 if(desigId =="")
 			 buildDesignationsWiseCount(result);
-			 if(desigId >=0)
-			 buildDesignationsWiseInformation(result);
+			 if(desigId >=0 && result.referrerList.length >0){
+				buildDesignationsWiseInformation(result);
+			 }else{
+				 $("#desigWiseCandidatesView").html("No data avialable");
+			 }
 		}
 		else{
 			$("#desigWiseCountId").html("No data available");
@@ -564,19 +573,27 @@ function buildDesignationsWiseInformation(result){
 								str+='<div class="col-sm-9">';
 									str+='<div class="col-sm-3">';
 										str+='<div class="col-sm-8" style="background-color:#F3F3F3; padding:6px;">';
-											str+='<h6>Total Representations</h6><b>'+result.referrerList[i].petitionIds.length+'</b>';
+											str+='<h6>Total Representations</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].petitionIds.length+'</a>';
 										str+='</div>';
 										str+='<div class="col-sm-4 pad_bag">';
-											str+='<h6>Works</h6><b>'+result.referrerList[i].noOfWorks+'</b>';
+											str+='<h6>Works</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].noOfWorks+'</a>';
 										str+='</div>';	
 									str+='</div>';
 									for(var j in result.referrerList[i].statusList){
+										var statusIds= '';
+										if(result.referrerList[i].statusList[j].id == 1){
+											statusIds='1,3,6,7';
+										}else if(result.referrerList[i].statusList[j].id == 2){
+											statusIds='5';
+										}if(result.referrerList[i].statusList[j].id == 3){
+											statusIds='4,8';
+										}
 									str+='<div class="col-sm-3">';
 										str+='<div class="col-sm-8" style="background-color:#F3F3F3;">';
-											str+='<h6>'+result.referrerList[i].statusList[j].name+' Representations</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId=1,3,6,7&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].petitionIds.length+'</a>';
+											str+='<h6>'+result.referrerList[i].statusList[j].name+' Representations</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].petitionIds.length+'</a>';
 										str+='</div>';
 										str+='<div class="col-sm-4 pad_bag">';
-											str+='<h6>Works</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId=1,3,6,7&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].noOfWorks+'</a>';
+											str+='<h6>Works</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].noOfWorks+'</a>';
 										str+='</div>';
 									str+='</div>';
 									}
@@ -612,10 +629,9 @@ $.ajax({
 }).done(function(result){
   $("#briefLeadId").empty();
 		if(result !=null && result.length >0){
-			//$("#"+selBoxId).html("<option value='0'>Select Department</option>");
-			$("#subjectDivId").show();
+			$("#briefLeadId").append("<option value=0>All</option>");
 			for(var i in result){
-				$("#briefLeadId").append("<option value='"+result[i].id+"' selected>"+result[i].name+"</option>");
+				$("#briefLeadId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
 				}
 		}
 		$("#briefLeadId").trigger('chosen:updated');
