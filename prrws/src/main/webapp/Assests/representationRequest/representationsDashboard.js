@@ -459,12 +459,15 @@ var json = {
 $(document).on("click",".desigClsDivId",function(){
 	var designationId = $(this).attr("attr_desigId");
 	getReferralWiseOverviewDetails(designationId);
+	$('.desigClsDivId').removeClass("activeCls");
+	$(this).addClass("activeCls");
 });
 $(document).on("change","#briefLeadId",function(){
 	$("#desigWiseCandidatesView").html("");
 	$("#desigWiseCountId").html("");
 	getReferralWiseOverviewDetails("");
 });
+
 getReferralWiseOverviewDetails("");
 function getReferralWiseOverviewDetails(desigId){
 	if(desigId == ""){
@@ -515,8 +518,15 @@ function getReferralWiseOverviewDetails(desigId){
 	  for(var i in result.subList){
 		
 	   str+='<div class="col-sm-3" id="column2">';
-		str+='<div class="panel panel-default" style="cursor:pointer;">';
-	str+='<div class="panel-heading desigClsDivId" style="background-color:#D2DEF1;" attr_desigId="'+result.subList[i].deptDesigId+'"><h4><b>'+result.subList[i].desigName+'-'+result.subList[i].subWorkIds.length+'</b></h4></div>';
+	   if(i==0)
+	   {
+	   str+='<div class="panel panel-default desigClsDivId activeCls"  style="cursor:pointer;" attr_desigId="'+result.subList[i].deptDesigId+'">';
+	   }
+		else
+		{
+	   str+='<div class="panel panel-default desigClsDivId"  style="cursor:pointer;" attr_desigId="'+result.subList[i].deptDesigId+'">';
+		}
+		str+='<div class="panel-heading" style="background-color:#D2DEF1;"><h4><b>'+result.subList[i].desigName+'-'+result.subList[i].subWorkIds.length+'</b></h4></div>';
 			str+='<div class="panel-body" style="background-color:#E7EDF8;">';
 				
 				   str+='<div class="row">';			
