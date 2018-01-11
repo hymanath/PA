@@ -223,7 +223,7 @@
 	<div class="row m_top20">
 		<div class="col-sm-12">
 			<div class="white_block">
-				<h4 class="font_weight">District wise Total Overview</h4>
+				<h4 class="font_weight">District wise Total Overview(Print Media)</h4>
 				<div id="overAllDistrictWiseDivId" class="m_top10" style="height:250px;"></div>
 			</div>
 		</div>
