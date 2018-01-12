@@ -2403,6 +2403,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						deptVO.getDeptIdsList().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						deptVO.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[2]));
 						deptVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(objects[1]));
+						if(deptVO.getDeptIdsList() != null && deptVO.getDeptIdsList().size() >0 && !deptVO.getDeptIdsList().contains(commonMethodsUtilService.getStringValueForObject(objects[0]))){
+							String dept = deptVO.getDeptName().concat(", "+commonMethodsUtilService.getStringValueForObject(objects[3]));
+							deptVO.setDeptName(dept);
+							deptVO.getDeptIdsList().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						}
 					}
 				}
 			}catch(Exception e){
@@ -2536,9 +2541,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return list;
 		}
 		
-		public String genarateEndorsementNo(String endrsementNo,String userType,List<String> depts,Date date){
+		public String genarateEndorsementNo(String endrsementNo,String userType,String depts,Date date){
 			String outputStr="";
-			if(endrsementNo != null && endrsementNo.trim().length() >0 && userType !=null && userType.trim().length() >0 && depts != null && depts.size() >0 && date !=null ){
+			if(endrsementNo != null && endrsementNo.trim().length() >0 && userType !=null && userType.trim().length() >0 && depts != null  && date !=null ){
 				String yearStr="";
 				String dateStr="";
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -2548,8 +2553,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					yearStr=year.toString();
 				 dateStr=	sdf.format(date);
 				 
-				String deptStr = commonMethodsUtilService.convertStringFromListWithOutDuplicates(depts);
-				outputStr=endrsementNo+"/"+userType+"("+deptStr+")/"+yearStr+"/"+dateStr;
+				//String deptStr = commonMethodsUtilService.convertStringFromListWithOutDuplicates(depts);
+				outputStr=endrsementNo+"/"+userType+"("+depts+")/"+yearStr+"/"+dateStr;
 			}
 			return "Endt NO. "+outputStr;
 		}
@@ -2560,6 +2565,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		public ResultStatus generateCoveringLetterForPetition(InputVO inputVO){
 			ResultStatus resultStatus = new ResultStatus();
 			try {
+				
+				//Department ids  Converting to List<Long> to List<String>
 				List<String> deptIds = null;
 				if(commonMethodsUtilService.isListOrSetValid(inputVO.getDeptIdsList())){
 					deptIds = new ArrayList<String>();
@@ -2573,12 +2580,20 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				PmGrant pmGrant = pmGrantDAO.get(Long.valueOf(inputVO.getGroupName()));
 				inputVO.setGroupName(pmGrant.getPmGrantName());//grantType
 				List<Object[]> coveringLetrImages = pmRequiredLettersImagesDAO.getDesignationWiseImages(inputVO.getDesignationIds(), inputVO.getType());
-				String str = "ghasjkdajkbdhk #name hjfskjfksk #rdesig jkhdkjshkdha #rdate jdnhkasjd #refname jskada #refdesig";
-				inputVO.setAssetTypeList(deptIds);//deptIds
-				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getAssetTypeList(),dateUtilService.getCurrentDateAndTime());
+				
+				String str = "As direced by Hon'ble minister, I am herewith forwarding the" +
+						" representation Dated:#rdate of #rname, #rdesig,#rconst,#rdist District addressed to Hon'ble Minister for PR,RD,IT" +
+				" E&C requesting for sanction of work providing  BT surface to the #subj from Angalakuduru to" + 
+				" Pinapadu-Dundipalem R&B Road via Hanumayamma Statue in Angalakuduru,Tenali Mandal of Guntur " +
+				" District under upgradation   of MGNREGS [Plain] funds with an Estimated Cost of #cost Lakhs." +
+
+
+				" #lead." ;
+				//inputVO.setAssetTypeList(deptIds);//deptIds
+				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getDeptCode(),dateUtilService.getCurrentDateAndTime());
 				inputVO.setCategory(endorseStr);
 				PmRequestEditVO petitionDetailsVO =setPmRepresenteeDataToResultView(inputVO.getPageId(),inputVO.getpType(),inputVO.getBlockLevelId());
-				String filePath = ITextCoveringLetterGeneration.generateCOVERINGLETTER(inputVO,coveringLetrImages,"",petitionDetailsVO);
+				String filePath = ITextCoveringLetterGeneration.generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseStr,petitionDetailsVO,str);
 				resultStatus.setExceptionMsg(filePath);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -2919,7 +2934,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					setDesignationWiseCount(referralList,returnVO.getSubList());
 				//}
 					
-				//	setOthersDataToLastIndexOfList(returnVO.getSubList());
+					//setOthersDataToLastIndexOfList(returnVO.getSubList());
 			} catch (Exception e) {
 				e.printStackTrace();
 				LOG.error("Exception Occured in PmRequestDetailsService @ getReferralWiseOverviewDetails() "+e.getMessage());
