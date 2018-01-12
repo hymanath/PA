@@ -174,7 +174,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 		try {
 			if(objArr != null && objArr.size() > 0){
 				for (Object[] objects : objArr) {
-					String fileURL = "http://mytdp.com/Reports/"+objects[1].toString();
+					String fileURL = IConstants.STATIC_CONTENT_FOLDER_URL+"Reports/"+objects[1].toString();
 					alertCreationAPIService.uploadMultiPartFile("https://desk.zoho.com/api/v1/tickets/"+alertTicketId+"/attachments",new File(fileURL));
 				}
 				return "success";

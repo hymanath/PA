@@ -199,7 +199,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 					 customJson.put("News Paper Edition", alert.getEdition().getEditionAlias());
 					 customJson.put("Edition Type", alert.getEditionType().getEditionType());
 					 
-					 String articleImageId = getZohoUploadDocumentId("mytdp.com/NewsReaderImages/"+alert.getImageUrl());
+					 String articleImageId = getZohoUploadDocumentId(IConstants.STATIC_CONTENT_FOLDER_URL+"NewsReaderImages/"+alert.getImageUrl());
 					 //String articleImageId = getZohoUploadDocumentId("C:/Program Files/Apache Software Foundation/Tomcat 6.0/webapps/NewsReaderImages/"+alert.getImageUrl());
 					
 					if(articleImageId !=null)
@@ -249,7 +249,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 			
 			 if(uploadListObj !=null && uploadListObj.size()>0){
 				 for (Object[] objects : uploadListObj) {	
-					 String attachment=getZohoUploadDocumentId("mytdp.com/Reports/"+objects[1].toString());
+					 String attachment=getZohoUploadDocumentId(IConstants.STATIC_CONTENT_FOLDER_URL+"Reports/"+objects[1].toString());
 					 //String attachment=getZohoUploadDocumentId("D:/static_content/Reports/"+objects[1].toString());
 					 if(attachment !=null)
 						 uploadArr.put(attachment);					 
