@@ -4620,7 +4620,7 @@
     	 
     	 <bean name="zohoWebServiceHandlerService" class="com.itgrids.partyanalyst.service.impl.ZohoWebServiceHandlerService" >
     	 	<property name="zohoAlertService" ref="zohoAlertService" />
-    	 	<property name="alertCreationAPIService" ref="alertCreationAPIService" />    	 
+    	 	<property name="alertRenderService" ref="alertRenderService" />    	 
     	 </bean>
     	 
     	 <bean name="alertUpdationAPIService" class="com.itgrids.partyanalyst.service.impl.AlertUpdationAPIService" >
@@ -4649,7 +4649,12 @@
     	 	<property name="constituencyTehsilDAO" ref="constituencyTehsilDAO"></property>
     	 	<property name="alertSourceDAO" ref="alertSourceDAO"></property>
     	 	<property name="alertAssignedDAO" ref="alertAssignedDAO"></property>
-    		<property name="alertDocumentDAO" ref="alertDocumentDAO"></property>  	 	
-    	 	
+    		<property name="alertDocumentDAO" ref="alertDocumentDAO"></property>
+    		<property name="alertStatusDAO" ref="alertStatusDAO"></property>  	 	
+    		<property name="alertCategoryDAO" ref="alertCategoryDAO"></property>
+    		
+    	 </bean>
+    	 <bean name="alertRenderService" class="com.itgrids.partyanalyst.service.impl.AlertRenderService">
+    	 	<property name="alertCreationAPIService" ref="alertCreationAPIService"></property>
     	 </bean>
 </beans>			
