@@ -14,8 +14,8 @@ $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menu-data-cls").toggle();
 });
-$(document).on("click",function(){
-	$(".menu-data-cls").hide();
+$(".dismiss").on("click",function(){
+		$(".menu-data-cls").hide();
 });
 
 function locationLevelRefresh(){
@@ -2097,3 +2097,67 @@ $.ajax({
  
 }); 
 }
+
+userIdsByEntitlementsLogin();
+function userIdsByEntitlementsLogin(){
+ var json = {
+
+ } 
+$.ajax({ 
+ type:'POST', 
+ url: 'userIdsByEntitlementsLogin',
+ dataType: 'json',
+ data : JSON.stringify(json),
+ beforeSend : function(xhr){
+ xhr.setRequestHeader("Accept", "application/json");
+ xhr.setRequestHeader("Content-Type", "application/json");
+ }
+}).done(function(result){
+ 
+ if(result != null && result.length >0){
+	 buildMenu(result);
+	 
+ }else{
+	$("#menuId").append('<li>No Data Available</li>');
+ }
+}); 
+}
+// $("#menuVerticalId ul").append('<li style="margin-left: 7px; width: 298px; margin-bottom: 5px;"><a href="'+subList[j].url+'" >'+subList[j].name+'</a></li>');
+function buildMenu(result){
+	var str='';
+	if(result.length ==1){
+		for(var i in result){
+				str+='<div id="collapse'+i+'" class="">';
+						str+='<ul class="list-group">';
+						for(var j in result[i].subList){
+							str+='<li><a href="'+result[i].subList[j].url+'" attr_id="'+result[i].subList[j].entitlementUrlId+'">'+result[i].subList[j].name+'</a></li>';
+						}
+						str+='</ul>';
+					str+='</div>';
+		}
+	}else{
+		for(var i in result){
+			str+='<div class="panel-group" id="accordion'+i+'">';
+				str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading">';
+						str+='<h4 class="panel-title" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+i+'" >';
+							str+='<a style="cursor:pointer;">'+result[i].name+'</a>';
+						str+='</h4>';
+					str+='</div>';
+					str+='<div id="collapse'+i+'" class="panel-collapse collapse">';
+						str+='<ul class="list-group">';
+						for(var j in result[i].subList){
+							str+='<li><a href="'+result[i].subList[j].url+'" attr_id="'+result[i].subList[j].entitlementUrlId+'">'+result[i].subList[j].name+'</a></li>';
+						}
+						str+='</ul>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		 }
+		
+	}
+	
+		$("#menuId").html(str); 
+}
+
+
