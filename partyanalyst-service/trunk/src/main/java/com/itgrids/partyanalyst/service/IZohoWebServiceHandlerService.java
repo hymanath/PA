@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -12,4 +13,6 @@ public interface IZohoWebServiceHandlerService {
 	public String generateJwtForZoho(String userToken);
 	public String testMethod();
 	public JSONObject createAlertApi(JSONObject jobj);
+	public JSONObject sendSms(JSONObject jobj);
+	public JSONObject getZohoWebHookDetails(JSONArray jArry);
 }

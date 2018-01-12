@@ -10,5 +10,6 @@ public interface IZohoAlertService {
 	public String sendOtp(String phoneNumber,Long cadreId,String membershipId);
 	public JSONObject checkOTPDetails(JSONObject jObj);
 	public String generateJwtForZoho(String userToken)throws UnsupportedEncodingException;
+	public JSONObject sendSms(String phoneNumber,String message);
 
 }

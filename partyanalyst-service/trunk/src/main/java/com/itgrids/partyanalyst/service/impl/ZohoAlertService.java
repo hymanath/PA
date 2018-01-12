@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.log4j.Logger;
@@ -263,5 +262,25 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 		
 	      return "inValidMemberShipID";
 	}
+
+
+
+	@Override
+	public JSONObject sendSms(String phoneNumber,String message) {
+		JSONObject status = new JSONObject();
+		try {
+			if(phoneNumber!=null && phoneNumber.length()>0){
+				String[] phnNoAry = {phoneNumber.toString()};
+ 				smsCountrySmsService.sendOTPSmsFromAdminForZohoUser(message, true, phnNoAry);
+ 				status.put("Status", "Success");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return status;
+	}
+	
+	
+	
 
 }
