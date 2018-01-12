@@ -381,4 +381,65 @@ public class ItcController {
 		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaCentersForDistrict(inputVO);
 		   return resultList;
 	   }
+	   
+	   @RequestMapping(value = "/saveMeesevaKPITargetAchievementValues", method = RequestMethod.POST)
+	   public @ResponseBody  IdNameVO  saveMeesevaKPITargetAchievementValues() {
+		   IdNameVO  finalVO = null;
+			 finalVO = itcDashboardService.saveMeesevaKPITargetAchievementValues();
+			 return finalVO;
+	   }
+	   
+	   @RequestMapping(value = "/getApInnovationOverviewDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getApInnovationOverviewDetails() {
+		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationOverviewDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getIncubatorsYearsDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getIncubatorsYearsDetails() {
+		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getIncubatorsYearsDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getBootCampYearsDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getBootCampYearsDetails() {
+		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getBootCampYearsDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getApInnovationIncubatorsXLr8APDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getApInnovationIncubatorsXLr8APDetails() {
+		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationIncubatorsXLr8APDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getApInnovationIncubatorsOtherBlockDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getApInnovationIncubatorsOtherBlockDetails(@RequestBody InputVO inputVO) {
+		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationIncubatorsOtherBlockDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getApInnovationCohortWiseDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getApInnovationCohortWiseDetails(@RequestBody InputVO inputVO) {
+		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationCohortWiseDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getApInnovationBootCampDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getApInnovationBootCampDetails(@RequestBody InputVO inputVO) {
+		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationBootCampDetails(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getApInnovationEventDetails", method = RequestMethod.POST)
+	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getApInnovationEventDetails() {
+		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationEventDetails();
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getApInnovationActivityDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getApInnovationActivityDetails(@RequestBody InputVO inputVO) {
+		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationActivityDetails(inputVO);
+		   return resultList;
+	   }
 }
