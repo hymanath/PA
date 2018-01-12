@@ -6,6 +6,7 @@ import java.util.Map;
 import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
+import com.itgrids.dto.MenuVO;
 import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionTrackingVO;
 import com.itgrids.dto.PmRequestEditVO;
@@ -38,4 +39,5 @@ public interface IPmRequestDetailsService {
 	public RepresenteeViewVO getReferralWiseOverviewDetails(InputVO inputVO);
 	public List<PetitionHistoryVO> getPetitionTrackingHistoryDetails(PetitionTrackingVO dataVO);
 	public List<RepresenteeViewVO> getBriefLeads(Long userId,List<Long> deptIds);
+	public List<MenuVO> userIdsByEntitlementsLogin(Long userId);
 }

@@ -26,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.io.Files;
 import com.itgrids.dao.IDocumentDAO;
+import com.itgrids.dao.IEntitlementUrlDAO;
+import com.itgrids.dao.IEntitlementsGroupEntitlementUrlDAO;
 import com.itgrids.dao.ILocationAddressDAO;
 import com.itgrids.dao.IPetitionDAO;
 import com.itgrids.dao.IPmBriefLeadDAO;
@@ -52,6 +54,7 @@ import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.MenuVO;
 import com.itgrids.dto.PetitionFileVO;
 import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionMemberVO;
@@ -166,6 +169,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	@Autowired
 	private IPmTrackingActionDAO pmTrackingActionDAO;
+	@Autowired
+	private IEntitlementsGroupEntitlementUrlDAO entitlementsGroupEntitlementUrlDAO;
+	@Autowired
+	private IEntitlementUrlDAO entitlementUrlDAO;
 	
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO){
 		ResponseVO responseVO = new ResponseVO();
@@ -3119,4 +3126,44 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return returnList;
 		}
+		
+		public List<MenuVO> userIdsByEntitlementsLogin(Long userId){
+			List<MenuVO> resultList = null;
+			Map<Long, MenuVO> userLoginMap = new HashMap<Long,MenuVO>();
+		
+			try{
+				LOG.info(" Entered into PmRequestDetailsService of userIdsByEntitlementsLogin ");
+				List<Object[]> entitlementObjsList = entitlementsGroupEntitlementUrlDAO.getUserIdsByEntitlementsLogin(userId);
+				
+				if(entitlementObjsList != null && entitlementObjsList.size() >0){
+					for(Object[] accessObj : entitlementObjsList){
+						
+						Long entitlementGroupId = commonMethodsUtilService.getLongValueForObject(accessObj[0]);
+						MenuVO menuVO = userLoginMap.get(entitlementGroupId);
+					
+						if(menuVO == null)	{
+							menuVO = new MenuVO();
+							menuVO.setId(entitlementGroupId);
+							menuVO.setName(commonMethodsUtilService.getStringValueForObject(accessObj[1]));
+						  }
+						
+						   MenuVO subVO = new MenuVO();
+					       subVO.setEntitlementUrlId(commonMethodsUtilService.getLongValueForObject(accessObj[2]));
+					       subVO.setUrl(commonMethodsUtilService.getStringValueForObject(accessObj[4]));
+					       subVO.setName(commonMethodsUtilService.getStringValueForObject(accessObj[3]));
+							
+					        menuVO.getSubList().add(subVO);
+							userLoginMap.put(menuVO.getId(), menuVO);
+					}
+				}
+				if(userLoginMap != null && userLoginMap.size() >0){
+					resultList = new ArrayList<MenuVO>(userLoginMap.values());
+				}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised into PmRequestDetailsService of userIdsByEntitlementsLogin",e);
+		}
+			return resultList;
+     
+  }
 }

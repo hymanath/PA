@@ -69,19 +69,22 @@
 										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;" ><a href="representationRequestEntryViewMembers" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">VIEW PETITION</a></h4>
 									</div>
 								</div>
-							</div>
+							</div> 
 							<div class="row">
+							
 								<div style="padding:10px;">
 								<div class="col-sm-5">
 										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;"><a href="representationsDashboard" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">DASHBOARD</a></h4>
 									</div>
-								</div>
+								</div> 
+								<!--<div id="menuId">
+								
+							   </div>-->
 							</div>
 							<div class="row">
 								<div style="padding:10px;">
 								<div class="col-sm-12">
-									<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
-									
+									<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>		
 								</div>
 								</div>
 							</div>
@@ -94,7 +97,7 @@
 </header>
 <main>
 	<section>
-		<div class="container-fluid">
+		<div class="container-fluid dismiss">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="panel-group">

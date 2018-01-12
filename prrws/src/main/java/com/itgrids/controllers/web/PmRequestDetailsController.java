@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
+import com.itgrids.dto.MenuVO;
 import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionTrackingVO;
 import com.itgrids.dto.PmRequestEditVO;
@@ -463,7 +464,17 @@ public class PmRequestDetailsController {
 		
 	    	return pmRequestDetailsService.getBriefLeads(userId,deptIds);
 	    }
-	    
-	    
-	    
+	    @RequestMapping(value ="/userIdsByEntitlementsLogin",method = RequestMethod.POST)
+	    public @ResponseBody List<MenuVO> userIdsByEntitlementsLogin(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
+	    	Long userId =null;
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
+	       return pmRequestDetailsService.userIdsByEntitlementsLogin(userId);
+	    }
 }
