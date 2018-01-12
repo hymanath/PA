@@ -4,9 +4,7 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.AmsVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
+import com.itgrids.partyanalyst.service.IAlertRenderService;
 import com.itgrids.partyanalyst.service.IZohoAlertService;
 import com.itgrids.partyanalyst.service.IZohoWebServiceHandlerService;
 
@@ -16,13 +14,11 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 	
 	
 	private IZohoAlertService zohoAlertService;
-	private IAlertCreationAPIService alertCreationAPIService;
-
+	private IAlertRenderService alertRenderService;
 	
 
-	public void setAlertCreationAPIService(
-			IAlertCreationAPIService alertCreationAPIService) {
-		this.alertCreationAPIService = alertCreationAPIService;
+	public void setAlertRenderService(IAlertRenderService alertRenderService) {
+		this.alertRenderService = alertRenderService;
 	}
 
 	public void setZohoAlertService(IZohoAlertService zohoAlertService) {
@@ -56,7 +52,6 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 
 
 
-	@Override
 	public JSONObject mobileOtpVerification(JSONObject jobj) {
 		try {
 			return zohoAlertService.checkOTPDetails(jobj);
@@ -73,34 +68,22 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 		}
 		return null;
 	}
-	public JSONObject createAlertApi(JSONObject jobj){
-		try {
-			 return alertCreationAPIService.createAlertApi(jobj);
-		} catch (Exception e) {
-			LOG.error("Exception raised at createAlertApi method in ZohoWebServiceHandlerService Class", e);
-		}
-		return null;
-	}
 
-	@Override
 	public JSONObject sendSms(JSONObject jobj) {
 		try {
 			return zohoAlertService.sendSms(jobj.getString("phoneNumber"), jobj.getString("message"));
 		} catch (Exception e) {
-			// TODO: handle exception
+			LOG.error("Exception raised at sendSms method in ZohoWebServiceHandlerService Class", e);
 		}
 		return null;
 	}
 
-	@Override
 	public JSONObject getZohoWebHookDetails(JSONArray jArry) {
 		JSONObject jobj = new JSONObject();
 		try {
-			jobj.put("status","need service");
-			//return zohoAlertService.getJsonStructureOfAlertFromZoho(jArry);
-			return jobj;
+			return alertRenderService.getJsonStructureOfAlertFromZoho(jArry);
 		} catch (Exception e) {
-			// TODO: handle exception
+			LOG.error("Exception raised at getZohoWebHookDetails method in ZohoWebServiceHandlerService Class", e);
 		}
 		return null;
 	}
