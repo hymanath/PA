@@ -438,11 +438,13 @@ function buildLeadWiseOverviewDetails(result){
 function generateCoveringLetterForPetition(){
  var  schemeIdsListArr =[1,9397];
 var json = {
-   sourceId :1,
-   schemeIdsList:schemeIdsListArr,
+   pageId :1,//petitionId
+   schemeIdsList:schemeIdsListArr,//subWorkIds
    leadName:"10",
    groupName:"3" ,
-	endValue:"5"
+	endValue:"5",//endorsmentNo
+	pType:"viewPage",
+	type:"COVERING LETTER"
   }           
  $.ajax({              
   type:'POST',    
@@ -553,9 +555,9 @@ function getReferralWiseOverviewDetails(desigId){
 		str+='</div>';
 	str+='</div>';
 	  }
-	  if(result.subList != null && result.subList.length>0){
+	  /* if(result.subList != null && result.subList.length>0){
 		  getReferralWiseOverviewDetails(result.subList[0].deptDesigId);
-	  }
+	  } */
 	  
 	$("#desigWiseCountId").html(str);
 	} 
