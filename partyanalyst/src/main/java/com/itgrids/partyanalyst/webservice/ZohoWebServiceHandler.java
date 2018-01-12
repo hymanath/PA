@@ -14,7 +14,6 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IZohoWebServiceHandlerService;
 
 @Component
@@ -61,8 +60,9 @@ public class ZohoWebServiceHandler {
 	}
 	
 	
-	@GET 
+	/*@GET 
 	@Path("/getJwt")
+	@Produces(MediaType.TEXT_PLAIN)
 	public String getJwtByUserToken(@QueryParam("user_token")String user_token){
 		try {
 			return zohoWebServiceHandlerService.generateJwtForZoho(user_token);
@@ -70,7 +70,16 @@ public class ZohoWebServiceHandler {
 			LOG.error("Exception Occured in getMobileNoByMemberShipId() Method in ZohoWebServiceHandler ",e);
 		}
 		return null;
-	}
+	}*/
+	
+	
+	@GET
+    @Path("/getJwt")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getURL(@QueryParam("user_token")String user_token)
+    {
+		return zohoWebServiceHandlerService.generateJwtForZoho(user_token);
+    }
 	
 	@POST 
 	@Path("/createAlertApi")
