@@ -1,9 +1,19 @@
 package com.itgrids.utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.PetitionsWorksVO;
 import com.itgrids.dto.PmRequestEditVO;
+import com.itgrids.dto.PmRequestVO;
 
 public class ITextCoveringLetterGeneration  {
 
@@ -34,38 +44,52 @@ public class ITextCoveringLetterGeneration  {
 	
 	generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseCode,petitionDetailsVO);
 }*/
-	public static String generateCOVERINGLETTER(InputVO inputVO,List<Object[]> coveringLetrImages,String endorseCode,PmRequestEditVO petitionDetailsVO){
+	public static String generateCOVERINGLETTER(InputVO inputVO,List<Object[]> coveringLetrImages,String endorseCode,PmRequestEditVO petitionDetailsVO,String str1){
 		String filePath = "";
 		try {
+			String sysPath = "D:/Tomcat 7.0/webapps/PRRWS-1.0/";
 			String logo ="";
-			String deptDetailsImg ="F:/Tomcat 8.0/webapps/PRRWS-1.0/";
+			String deptDetailsImg ="";
 			String addrDetailsImg ="";
 			String sign ="";
 			String toAddrImg ="";
-			String str1 = "As direced by Hon'ble minister, I am herewith forwarding the" +
-					" representation Dated:#rdate of #rname, #rdesig,#rconst,#rdist District addressed to Hon'ble Minister for PR,RD,IT" +
-			" E&C requesting for sanction of work providing  BT surface to the #subj from Angalakuduru to" + 
-			" Pinapadu-Dundipalem R&B Road via Hanumayamma Statue in Angalakuduru,Tenali Mandal of Guntur " +
-			" District under upgradation   of MGNREGS [Plain] funds with an Estimated Cost of #cost Lakhs." +
-
-
-			" #lead." ;
-			 str1 = str1.replace("#name", "hyma");
-			 str1 = str1.replace("#rdesig", "MLA");
-			 str1 = str1.replace("#rdesig", "MLA");
-			System.out.println(str1);
-			/*if(coveringLetrImages != null && coveringLetrImages.size()>0){
+			List<PmRequestVO> representeeList = new ArrayList<PmRequestVO>();
+			if(petitionDetailsVO != null){
+				if(petitionDetailsVO.getRepresenteeDetailsList() != null && petitionDetailsVO.getRepresenteeDetailsList().size()>0){
+					representeeList.addAll(petitionDetailsVO.getRepresenteeDetailsList());
+				}else if(petitionDetailsVO.getReferDetailsList() != null && petitionDetailsVO.getReferDetailsList().size()>0){
+					representeeList.addAll(petitionDetailsVO.getReferDetailsList());
+				}
+			}
+			
+			if(representeeList != null && representeeList.size()>0){
+				for (PmRequestVO pmRequestVO : representeeList) {
+					str1 = str1.replace("#rname", pmRequestVO.getName());
+					 str1 = str1.replace("#rdate", petitionDetailsVO.getRepresentationdate());
+					 str1 = str1.replace("#rdesig", pmRequestVO.getDesignation());
+					 str1 = str1.replace("#rconst",pmRequestVO.getCandidateAddressVO().getAssemblyName());
+					 str1 = str1.replace("#rdist",pmRequestVO.getCandidateAddressVO().getDistrictName());
+					 if(petitionDetailsVO.getSubWorksList() != null && petitionDetailsVO.getSubWorksList().size()>0){
+						 for (PetitionsWorksVO pmSubwork : petitionDetailsVO.getSubWorksList()) {
+							 str1 = str1.replace("#subj",pmSubwork.getSubject());
+						}
+					 }
+					 str1 = str1.replace("#cost",petitionDetailsVO.getEstimateCost());
+					System.out.println(str1);
+				}
+			}
+			if(coveringLetrImages != null && coveringLetrImages.size()>0){
 				for (Object[] objects : coveringLetrImages) {
 					if(objects[1] != null && objects[1].toString().equalsIgnoreCase("LOGO")){
-						logo = objects[1].toString();
+						logo = objects[2].toString();
 					}else if(objects[1] != null && objects[1].toString().equalsIgnoreCase("DEPARTMENT DETAILS")){
-						deptDetailsImg = objects[1].toString();
+						deptDetailsImg = objects[2].toString();
 					}else if(objects[1] != null && objects[1].toString().equalsIgnoreCase("ADDRESS DETAILS")){
-						addrDetailsImg = objects[1].toString();
+						addrDetailsImg = objects[2].toString();
 					}else if(objects[1] != null && objects[1].toString().equalsIgnoreCase("SIGNATURE")){
-						sign = objects[1].toString();
+						sign = objects[2].toString();
 					}else if(objects[1] != null && objects[1].toString().equalsIgnoreCase("TO ADDRESS DETAILS")){
-						toAddrImg = objects[1].toString();
+						toAddrImg = objects[2].toString();
 					}
 				}
 			}
@@ -77,13 +101,13 @@ public class ITextCoveringLetterGeneration  {
 							str.append("<table class='table'>");
 								str.append("<tr>");
 									str.append("<td>");
-										str.append("<img src='F:/Tomcat 8.0/webapps/PRRWS-1.0/Assests/images/petition images/dept_details.png' width='150px' height='90px'>");
+										str.append("<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/"+deptDetailsImg.toString()+"' width='150px' height='90px'>");
 									str.append("</td>");
 									str.append("<td>");
-										str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='F:/Tomcat 8.0/webapps/PRRWS-1.0/Assests/images/petition images/LOGO.png' width='80px' height='80px'>");
+										str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/"+logo.toString()+"' width='80px' height='80px'>");
 									str.append("</td>");
 									str.append("<td>");
-										str.append("<img src='F:/Tomcat 8.0/webapps/PRRWS-1.0/Assests/images/petition images/address.png' width='150px' height='90px'>");
+										str.append("<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/"+addrDetailsImg.toString()+"' width='150px' height='90px'>");
 									str.append("</td>");
 								str.append("</tr>");	
 							str.append("</table>");
@@ -96,7 +120,7 @@ public class ITextCoveringLetterGeneration  {
 								str.append("<td><b>Dear Sir,</b></td>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I wish to forward herewith therepresentations (list enclosed) received for transfers and postings. It is therefore requested to examine and take necessary action in this regard as per rules at the earliest.</p></td><br><br>");
+								str.append("<td><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+str1+"</p></td><br><br>");
 							str.append("</tr>");
 							str.append("<tr>");
 								str.append("<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;With regards,</td>");
@@ -105,12 +129,12 @@ public class ITextCoveringLetterGeneration  {
 						str.append("<table>");
 							str.append("<tr>");
 								str.append("<td>");
-									str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='F:/Tomcat 8.0/webapps/PRRWS-1.0/Assests/images/petition images/sign.png' width='80px' height='50px'>");
+									str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/"+sign.toString()+"' width='80px' height='50px'>");
 								str.append("</td>");
 							str.append("</tr>");
 							str.append("<tr>");
 								str.append("<td>");
-									str.append("<img src='F:/Tomcat 8.0/webapps/PRRWS-1.0/Assests/images/petition images/to_address.png' width='170px' height='90px'>");
+									str.append("<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/"+toAddrImg.toString()+"' width='170px' height='90px'>");
 								str.append("</td>");
 							str.append("</tr>");
 						str.append("</table>");
@@ -128,7 +152,7 @@ public class ITextCoveringLetterGeneration  {
 			HTMLWorker htmlWorker = new HTMLWorker(document);
 			htmlWorker.parse(new StringReader(str.toString()));
 			document.close();
-			file.close();*/
+			file.close();
 			//System.out.println("UPDATE `ntr_health_campaign`.`student` SET `auto_gen_hallticket_status`='1' WHERE `student_id`='"+endorsmentNO+"';");
 		}catch (Exception e) {
 			System.out.println(e);
