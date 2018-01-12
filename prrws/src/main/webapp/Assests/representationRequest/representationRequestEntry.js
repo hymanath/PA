@@ -13,6 +13,12 @@ var diffArr=[];
 var commonArr=[];
 var globalWorkTypeCount=0;
 var globalInnerWorksCount=1;// minimum work =1
+
+var alreadyCandidateReferralId=[];
+var searchCandidateReferralIds=[];
+var diffReferralArr=[];
+var commonReferralArr=[];
+
 setTimeout(function(){ 
 	$(".chosen-select").chosen();
 	//$('#self').trigger('click');
@@ -45,6 +51,7 @@ $(document).on("click",".selfRepresenceCls",function(){
 		if(typeVal == "self"){
 			$("#representDetailsDivId").html('');
 			alreadyCandidateId=[]
+			alreadyCandidateReferralId=[]
 			globalWorkTypeCount='';
 			globalWorkTypeCount=0;			
 			buildSelfAndRepresenteeDetails(typeVal);
@@ -493,21 +500,38 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='<div id="candidateDetails'+typeVal+'DivId"></div>';
 			str+='</div>';
 		str+='</div>';		
-			
+		if(typeVal=='self'){
+			str+='<div class="row">';
+				str+='<div class="col-sm-12" id="referralCanLength">';
+						str+='<h4 class="font_weight panel-title" style="display:none;" id="rederralNameDivId">Referral Candidates</h4>';
+					str+='<div id="candidateDetailsrepresenteeDivId" class="m_top10 lengthReferal"></div>';
+				str+='</div>';
+			str+='</div>';
+		}	
 			if(typeVal=='self'){
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-12">';
 						str+='<div class="pull-right">';
-							str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD SELF MEMBER</button>';
+							str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'" attr_add_referral_type="add_referral_type">ADD SELF MEMBER</button>';
 							
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
+				
+				str+='<div class="row m_top10">';
+					str+='<div class="col-sm-12">';
+						str+='<div class="pull-right">';
+							str+='<button type="button" class="btn btn-lg btn-success searchSelfReferralCandidateCls button_gray" attr_type="representee" attr_add_referral_type="add_referral_type" disabled>ADD REFERRAL</button>';
+							
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				
 			}else{
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-12">';
 						str+='<div class="pull-right">';
-							str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD REFERRAL</button>';
+							str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'" attr_add_referral_type="add_referral_type">ADD REFERRAL</button>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -600,7 +624,7 @@ $(document).on("click",".searchCandidateCls",function(){
 	 $("#designationsId").trigger("chosen:updated");
 	 $("#districtCandId").trigger("chosen:updated");
 	 $("#constituencyCanId").trigger("chosen:updated");
-
+	$(".selectionSearchDetailsCls").removeAttr("attr_add_referral_type");
 	var typeVal = $(this).attr("attr_type");
 	$(".selectionSearchDetailsCls").attr("attr_type",typeVal);
 	if(typeVal == "self"){
@@ -613,7 +637,25 @@ $(document).on("click",".searchCandidateCls",function(){
 		getPetitionDesignationList();
 	}
 });
+$(document).on("click",".searchSelfReferralCandidateCls",function(){
 
+	 $('#districtCandDivId').show();
+	 $('#constituencyCandDivId').show();
+	 $("#designationsId").html('<option value="0">Select Designation</option>');
+	 $("#districtCandId").html('<option value="0">Select District</option>');
+	 $("#constituencyCanId").html('<option value="0">Select Constituency</option>');
+	 $("#designationsId").trigger("chosen:updated");
+	 $("#districtCandId").trigger("chosen:updated");
+	 $("#constituencyCanId").trigger("chosen:updated");
+
+	var typeVal = $(this).attr("attr_type");
+	var referralType = $(this).attr("attr_add_referral_type");
+	$(".selectionSearchDetailsCls").attr("attr_type",typeVal);
+	$(".selectionSearchDetailsCls").attr("attr_add_referral_type",referralType);
+	$("#candidateDetailsDivId").html('');
+	$("#candidateSearchModelDivId").modal("show");
+	getPetitionDesignationList();
+});
 $(document).on("click",".selectionSearchDetailsCls",function(){
 	 $("#desiganationIErrDivd").html("");
 	var locationValue=0;
@@ -634,19 +676,55 @@ $(document).on("click",".selectionSearchDetailsCls",function(){
 		locationLevelId=4;
 	}
 	var typeVal = $(this).attr("attr_type");
-	searchCandidateIds=[];
-	diffArr=[];
-	commonArr=[];
+	var referralType = $(this).attr("attr_add_referral_type");
+	if(referralType == "add_referral_type"){
+		searchCandidateReferralIds=[];
+		diffReferralArr=[];
+		commonReferralArr=[];
+	}else{
+		searchCandidateIds=[];
+		diffArr=[];
+		commonArr=[];
+	}
+	
 	//alreadyCandidateId=[]
 	
 	if (desiganationId== 4 || desiganationId== 11){
 		locationLevelId=10;
 	}
-		
-	getPetitionReferredMemberDetails(desiganationId,locationLevelId,locationValue,typeVal);
+	if(referralType == "add_referral_type"){
+		getPetitionReferredMemberDetailsRefeeral(desiganationId,locationLevelId,locationValue,typeVal);
+	}else{
+		getPetitionReferredMemberDetails(desiganationId,locationLevelId,locationValue,typeVal);
+	}	
+	
 	
 });
 
+function getPetitionReferredMemberDetailsRefeeral(desiganationId,locationLevelId,locationValue,typeVal){
+    $("#candidateDetailsDivId").html(spinner);
+	  var json = {
+		 deptId:desiganationId,
+		 locationLevelId:locationLevelId,
+		 locationValue:locationValue 
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionReferredMemberDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildPetitionReferredMemberDetailsRefeeral(result,typeVal);
+		}else{
+			$("#candidateDetailsDivId").html("No Data Available");
+		}
+	});	
+}
 function getPetitionReferredMemberDetails(desiganationId,locationLevelId,locationValue,typeVal){
     $("#candidateDetailsDivId").html(spinner);
 	  var json = {
@@ -671,7 +749,6 @@ function getPetitionReferredMemberDetails(desiganationId,locationLevelId,locatio
 		}
 	});	
 }
-
 var refCandCount=0;
 $(document).on("click",".candidateAddedView",function(){
 	
@@ -681,6 +758,7 @@ $(document).on("click",".candidateAddedView",function(){
 	if(typeVal=='represent' || typeVal=='representee'){
 		representeeType='REPRESENTEE';
 	}else{
+		$(".searchSelfReferralCandidateCls").removeAttr("disabled")
 		if(refCandCount == 1){
 			alert('Only one Member allowed for SELF Representee Petition.');
 			return;
@@ -715,7 +793,6 @@ $(document).on("click",".candidateAddedView",function(){
 	
 
 });
-
 $(document).on("click",".ccccc",function(){
 	
 	if(!confirm('Are you sure want to remove this member ?'))
@@ -2799,3 +2876,395 @@ $(document).bind('keypress', function(event) {
 	       $('#basicBtnId').trigger('click');
 	     }  
 	});
+	
+function buildPetitionReferredMemberDetailsRefeeral(result,typeVal){
+	var str='';
+	for(var i in result){
+		searchCandidateReferralIds.push(result[i].referrerCandidateId)
+	}
+	$.grep(searchCandidateReferralIds, function(el) {
+		if ($.inArray(el, alreadyCandidateReferralId) == -1){
+			diffReferralArr.push(el);
+		}else if($.inArray(el, alreadyCandidateReferralId ) !== -1){
+			commonReferralArr.push(el);
+		} 
+			
+	});
+	console.log(diffReferralArr)
+	console.log(commonReferralArr)
+	console.log(alreadyCandidateReferralId) 
+	str+='<div  class="col-sm-12 table-responsive">';
+		str+='<table style="width:100%" class="table table-condensed table_padding" id="candidatesTab">';	
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th></th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+		if(alreadyCandidateReferralId !=null && alreadyCandidateReferralId.length>0){
+				for(var i in result){
+				 
+					for(var j in commonReferralArr){
+						
+						if(commonReferralArr[j] == result[i].referrerCandidateId){
+							str+='<tr><td>';
+							str+='<div id="candidatesAppendReferralDiv'+result[i].referrerCandidateId+'" style="position:relative;">';
+							str+='<div class="bgColorCandidatesView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidateReferral'+typeVal+''+result[i].referrerCandidateId+'">';
+							
+								str+='<div class="row">'; 
+										str+='<div class="pull-right showRemoveReferralIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
+										
+										str+='<div class="representation-selected display_block" id="candidateReferralRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove cccccReferral" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+										if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="'+result[i].petitionMemberVO.imagePath+'" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}else{
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}
+										
+										
+										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+											str+='<div class="nameAddressCss">';
+												str+='<h5 class="font_weight">Name:</h5>';
+												str+='<h5 class="m_top5">'+result[i].petitionMemberVO.name+'</h5>';
+												str+='<h5 class="m_top10 font_weight">Designation</h5>';
+												str+='<h5 class="text_bold m_top10">'+result[i].petitionMemberVO.memberType+',</h5>';
+												str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'">'+result[i].candidateAddressVO.assemblyName+'  Constituency,</h5>';
+												str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">'+result[i].candidateAddressVO.districtName+'  District,</h5>';
+											str+='</div>';
+									str+='</div>';
+									
+									str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+										str+='<div class="nameAddressCss">';
+											str+='<h5 class="font_weight">Party:</h5>';
+											str+='<h5 class="m_top5">Telugu Desam Party</h5>';
+											str+='<h5 class="m_top10 font_weight">Contact Details</h5>';
+											if(result[i].petitionMemberVO.emailId != null && result[i].petitionMemberVO.emailId.length > 0){
+												str+='<h5 class="text_bold m_top10" >Email-id:  '+result[i].petitionMemberVO.emailId+'</h5>';
+											}else{
+												str+='<h5 class="text_bold m_top10">Email-id: -</h5>';
+											}
+											if(result[i].petitionMemberVO.mobileNo != null && result[i].petitionMemberVO.mobileNo.length > 0){
+												str+='<h5 class="m_top5">Contact No : '+result[i].petitionMemberVO.mobileNo+'</h5>';
+											}else{
+												str+='<h5 class="m_top5">Contact No : -</h5>';
+											}
+											str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
+										str+='</div>';
+									str+='</div>';
+									
+									str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+											str+='<div class="nameAddressCss">';
+												str+='<h5 class="font_weight">Address:</h5>';
+												if(result[i].candidateNativeAddressVO != null){
+													//str+='<h5 class="m_top5">H No :</h5>';
+													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
+														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat </h5>';
+													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
+														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+'  Mandal/Munci.</h5>';
+													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+													if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+												}else{
+													str+='<h5 class="m_top5">Not Available</h5>';
+												}
+												
+											str+='</div>';
+									str+='</div>';
+									str+='<div id="fileUploadReferral'+typeVal+''+result[i].referrerCandidateId+'" style="display:none"></div>';
+								str+='</div>';
+							str+='</div>';
+							str+='</div>';
+							str+='</td></tr>';
+						}
+					}		
+				
+			}
+			
+			for(var i in result){
+				
+					for(var j in diffReferralArr){
+						if(diffReferralArr[j] == result[i].referrerCandidateId){
+							str+='<tr><td>';
+							str+='<div id="candidatesAppendReferralDiv'+result[i].referrerCandidateId+'" style="position:relative;">';
+							str+='<div class="bgColorCandidatesView candidateAddedReferralView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidateReferral'+typeVal+''+result[i].referrerCandidateId+'">';
+							
+								str+='<div class="row">';
+									str+='<div class="pull-right showRemoveReferralIcon" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;"><i class="glyphicon glyphicon-remove"></i></div>';
+									
+										str+='<div class="representation-selected" id="candidateReferralRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove cccccReferral" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+										
+										if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="'+result[i].petitionMemberVO.imagePath+'" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}else{
+											str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										}
+										
+										/*
+										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+												str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+												str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+										str+='</div>';
+										*/
+										
+										str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+											str+='<div class="nameAddressCss">';
+												str+='<h5 class="font_weight">Name:</h5>';
+												str+='<h5 class="m_top5">'+result[i].petitionMemberVO.name+'</h5>';
+												str+='<h5 class="m_top10 font_weight">Designation</h5>';
+												str+='<h5 class="text_bold m_top10">'+result[i].petitionMemberVO.memberType+',</h5>';
+												str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'">'+result[i].candidateAddressVO.assemblyName+'  Constituency,</h5>';
+												str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">'+result[i].candidateAddressVO.districtName+'  District,</h5>';
+											str+='</div>';
+									str+='</div>';
+									
+									str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+										str+='<div class="nameAddressCss">';
+											str+='<h5 class="font_weight">Party:</h5>';
+											str+='<h5 class="m_top5">Telugu Desam Party</h5>';
+											str+='<h5 class="m_top10 font_weight">Contact Details</h5>';
+											if(result[i].petitionMemberVO.emailId != null && result[i].petitionMemberVO.emailId.length > 0){
+												str+='<h5 class="text_bold m_top10" >Email-id:  '+result[i].petitionMemberVO.emailId+'</h5>';
+											}else{
+												str+='<h5 class="text_bold m_top10">Email-id: -</h5>';
+											}
+											if(result[i].petitionMemberVO.mobileNo != null && result[i].petitionMemberVO.mobileNo.length > 0){
+												str+='<h5 class="m_top5">Contact No : '+result[i].petitionMemberVO.mobileNo+'</h5>';
+											}else{
+												str+='<h5 class="m_top5">Contact No : -</h5>';
+											}
+											str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
+										str+='</div>';
+									str+='</div>';
+									
+									str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+											str+='<div class="nameAddressCss">';
+												str+='<h5 class="font_weight"> Address:</h5>';
+												if(result[i].candidateNativeAddressVO != null){
+													//str+='<h5 class="m_top5">H No :</h5>';
+													if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
+														str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
+													if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
+														str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+' Mandal/Munci. </h5>';
+													if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+													if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
+														str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+												}else{
+													str+='<h5 class="m_top5">Not Available</h5>';
+												}
+												
+											str+='</div>';
+									str+='</div>';
+									str+='<div id="fileUploadReferral'+typeVal+''+result[i].referrerCandidateId+'" style="display:none;"></div>';
+								str+='</div>';
+							str+='</div>';
+							str+='</div>';
+							str+='</td></tr>';
+						}
+					}
+				
+			} 
+		}else{
+			for(var i in result){
+				str+='<tr><td>';
+				 str+='<div id="candidatesAppendReferralDiv'+result[i].referrerCandidateId+'" style="position:relative;">';
+				 	str+='<div class="bgColorCandidatesView candidateAddedReferralView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidateReferral'+typeVal+''+result[i].referrerCandidateId+'">';
+					
+					str+='<div class="row">';
+					str+='<div class="pull-right showRemoveReferralIcon removeTooltipCls" title="Remove Referral Member" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;" data-toggle="tooltip" data-placement="top"><i class="glyphicon glyphicon-remove"></i></div>';
+					str+='<div class="representation-selected" id="candidateReferralRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span class="tooltipCls" data-toggle="tooltip" data-placement="top" title="Unselected Member"><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove cccccReferral" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
+					
+					if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
+						str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+							str+='<img src="'+result[i].petitionMemberVO.imagePath+'" class="imageCss"></img>';
+							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+					str+='</div>';
+					}else{
+						str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+							str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+					str+='</div>';
+					}
+					/*
+					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+							str+='<img src="http://www.mytdp.com/images/User.png" class="imageCss"></img>';
+							str+='<span style="position: relative; left: -31px; top: -62px;"><img src="Assests/images/TDP.PNG" class="smallerImg"></img></span>';
+					str+='</div>';
+					*/
+					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+						str+='<div class="nameAddressCss">';
+							str+='<h5 class="font_weight">Name:</h5>';
+							str+='<h5 class="m_top5">'+result[i].petitionMemberVO.name+'</h5>';
+							str+='<h5 class="m_top10 font_weight">Designation</h5>';
+							str+='<h5 class="text_bold m_top10">'+result[i].petitionMemberVO.memberType+',</h5>';
+							str+='<h5 class="m_top5" attr_assemblY_id="'+result[i].candidateAddressVO.assemblyId+'">'+result[i].candidateAddressVO.assemblyName+'  Constituency,</h5>';
+							str+='<h5 class="m_top5" attr_district_id="'+result[i].candidateAddressVO.districtId+'">'+result[i].candidateAddressVO.districtName+'  District,</h5>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+						str+='<div class="nameAddressCss">';
+							str+='<h5 class="font_weight">Party:</h5>';
+							str+='<h5 class="m_top5">Telugu Desam Party</h5>';
+							str+='<h5 class="m_top10 font_weight">Contact Details</h5>';
+							if(result[i].petitionMemberVO.emailId != null && result[i].petitionMemberVO.emailId.length > 0){
+								str+='<h5 class="text_bold m_top10" >Email-id:  '+result[i].petitionMemberVO.emailId+'</h5>';
+							}else{
+								str+='<h5 class="text_bold m_top10">Email-id: -</h5>';
+							}
+							if(result[i].petitionMemberVO.mobileNo != null && result[i].petitionMemberVO.mobileNo.length > 0){
+								str+='<h5 class="m_top5">Contact No : '+result[i].petitionMemberVO.mobileNo+'</h5>';
+							}else{
+								str+='<h5 class="m_top5">Contact No : -</h5>';
+							}
+							str+='<h5 class="m_top5">'+result[i].candidateAddressVO.districtName+' District.</h5>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-3 addRemoveCol'+typeVal+''+result[i].referrerCandidateId+'">';
+						str+='<div class="nameAddressCss">';
+							str+='<h5 class="font_weight">Address:</h5>';	
+							if(result[i].candidateNativeAddressVO != null){
+								//str+='<h5 class="m_top5">H No :</h5>';
+								if(result[i].candidateNativeAddressVO.panchayatName != null && result[i].candidateNativeAddressVO.panchayatName.length>0)
+									str+='<h5 class="m_top10">'+result[i].candidateNativeAddressVO.panchayatName+' Panchayat</h5>';
+								if(result[i].candidateNativeAddressVO.tehsilName != null && result[i].candidateNativeAddressVO.tehsilName.length>0)
+									str+='<h5 class="text_bold m_top10">'+result[i].candidateNativeAddressVO.tehsilName+'  Mandal/Munci.</h5>';
+								if(result[i].candidateNativeAddressVO.districtName != null && result[i].candidateNativeAddressVO.districtName.length>0)
+									str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.districtName+' District</h5>';
+								if(result[i].candidateNativeAddressVO.stateName != null && result[i].candidateNativeAddressVO.stateName.length>0)
+									str+='<h5 class="m_top5">'+result[i].candidateNativeAddressVO.stateName+' State</h5>';
+							}else{
+								str+='<h5 class="m_top5">Not Available</h5>';
+							}
+							
+						str+='</div>';
+					str+='</div>';
+						str+='<div id="fileUploadReferral'+typeVal+''+result[i].referrerCandidateId+'" style="display:none;"></div>';
+					str+='</div>';
+					
+					str+='</div>';
+				 str+='</div>';
+				 str+='</td></tr>';
+			}
+		}
+		str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+	$("#candidateDetailsDivId").html(str);
+	$(".tooltipCls").tooltip();
+	//$(".removeTooltipCls").tooltip();
+	
+	$('#candidatesTabReferral').dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]		
+	});	
+}
+var refCandReferralCount=0;
+$(document).on("click",".candidateAddedReferralView",function(){
+	
+	var typeVal = $(this).attr("attr_type");
+	var candidateId = $(this).attr("attr_candidateId");
+	$("#rederralNameDivId").show();
+	var representeeType='SELF';
+	if(typeVal=='represent' || typeVal=='representee'){
+		representeeType='REPRESENTEE';
+	}
+		
+	alreadyCandidateReferralId.push(parseInt(candidateId));
+	
+	$("#candidateDetails"+typeVal+"DivId").append($("#candidatesAppendReferralDiv"+candidateId).html());
+	
+	$("#candidateDetails"+typeVal+"DivId").find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-3").addClass("col-sm-2");
+	$("#candidateDetails"+typeVal+"DivId").find("#fileUploadReferral"+typeVal+candidateId).show();
+	
+	$("#fileUploadReferral"+typeVal+candidateId).append('<div class="col-sm-4" style="margin-top:-20px;"><label>REFERAL LETTER</label><input type="file"   attr_name="referList['+refCandReferralCount+']" name="" attr_image_tyep="refImage"  id="mainBlockFileUpload'+candidateId+''+typeVal+'" multiple="multiple" class=""/></div>');
+	$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden"  class="refCandidatesCls" id="petitionRef'+refCandReferralCount+'" name="referList['+refCandReferralCount+'].refCandidateId" value="'+candidateId+'" />');
+		 
+	refCandReferralCount=refCandReferralCount+1;
+	$(this).parent().find(".representation-selected").addClass("display_block");
+	$("#candidatesAppendDiv"+candidateId).find("#candidateReferral"+typeVal+candidateId).removeClass("candidateAddedReferralView");
+	
+	$("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").removeClass("candidateAddedReferralView");
+	$("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").css("cursor","auto");
+	$(".showRemoveReferralIcon").attr("attr_candidateId",candidateId)
+	$("#candidateDetails"+typeVal+"DivId").find(".showRemoveReferralIcon").show();
+	initializeFileUploadMainBlock(typeVal,candidateId);
+	
+
+});
+$(document).on("click",".cccccReferral",function(){
+	
+	if(!confirm('Are you sure want to remove this member ?'))
+		return;
+	
+	
+	var typeVal = $(this).attr("attr_type");
+	var candidateId = $(this).attr("attr_candidateId");
+	
+	$("#candidateDetails"+typeVal+"DivId").find("#candidateReferral"+typeVal+candidateId).remove();
+	$("#candidatesAppendReferralDiv"+candidateId).find(".representation-selected").removeClass("display_block");
+	$("#candidatesAppendReferralDiv"+candidateId).find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
+	refCandReferralCount=parseInt(refCandReferralCount)-parseInt(1);
+	/* alert($("#candidatesAppendDiv"+candidateId).find(".representation-selected").html())
+	$("#candidatesAppendDiv"+candidateId).find(".representation-selected").removeClass("display_block");
+	
+	$("#candidatesAppendDiv"+candidateId).find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
+	$("#candidatesAppendDiv"+candidateId).find("#fileUpload"+typeVal+candidateId).hide(); */
+	
+	
+	setTimeout(function(){ 
+		$("#candidatesAppendReferralDiv"+candidateId).find(".bgColorCandidatesView").addClass("candidateAddedReferralView")
+	}, 2000);
+	
+	var itemtoRemove = parseInt(candidateId);
+	alreadyCandidateReferralId.splice($.inArray(itemtoRemove, alreadyCandidateReferralId),1);
+	return;
+});
+$(document).on("click",".showRemoveReferralIcon",function(){
+	
+	if(!confirm('Are you sure want to remove this member ?'))
+		return;
+	
+	var typeVal = $(this).attr("attr_type");
+	
+	var candidateId = $("#candidateDetails"+typeVal+"DivId").find(".bgColorCandidatesView").attr("attr_candidateId");
+	
+	if(typeVal=="self"){
+		$('.searchCandidateCls').show();
+		$("#candidateDetails"+typeVal+"DivId").html('');	
+	}
+	refCandCount=parseInt(refCandCount)-1; 
+	$('.refCandidatesCls').each(function(){
+		var value = $(this).val();
+		if(parseInt(value)==parseInt(candidateId)){
+			$(this).val(0);
+			$(this).attr('id','');
+			$(this).remove();
+		}
+	});
+	
+	$(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-2").addClass("col-sm-3");
+	//$("#candidateDetails"+typeVal+"DivId").find(".showRemoveIcon").hide();
+	$("#candidateDetails"+typeVal+"DivId").find("#candidateReferral"+typeVal+candidateId).remove();
+	var itemtoRemove = parseInt(candidateId);
+	alreadyCandidateReferralId.splice($.inArray(itemtoRemove, alreadyCandidateReferralId),1);
+});
