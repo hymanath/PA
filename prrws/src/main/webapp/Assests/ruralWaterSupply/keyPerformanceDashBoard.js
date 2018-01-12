@@ -2146,3 +2146,157 @@ function builOverViewBlock(result,divId){
 		
 	}
 }
+$(document).on("click",".kpiClickView",function(){
+		$("#modalHablitationTable").html('');
+		$("#modalAlertTable").html('');
+		$("#modalAssetsTable").html('');
+		$("#modalWaterSourceTable").html('');
+		$("#modalIvrStatusTable").html('');
+		$("#modalKpiTable").html('');
+		$("#modalSchemsTable").html('');
+		var status = $(this).attr("attr_status");
+		var locationValue = $(this).attr("attr_filter_value");
+		var locationType=$(this).attr("attr_location_type");
+		var districtVal=$(this).attr("attr_district_val");
+		var workStatus=$(this).attr("attr_type");
+		var totalCount=$(this).attr("attr_total_count");
+		var locationName=$(this).attr("attr_location_name");
+		$("#modalHablitationDivId").modal('show');
+		$("#modalHabliHeadingId").html("<h4 class='text-capital'>"+locationName+"&nbsp;&nbsp;"+locationType+"&nbsp;&nbsp;"+workStatus+"&nbsp;&nbsp;Overview</h4>");
+		var startIndex=0;
+		getOnclickTargetsAcheievementsDetails(status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount);
+		
+		
+	});
+
+function getOnclickTargetsAcheievementsDetails(status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount){
+		$("#modalKpiTable").html(spinner);
+		var yearVal="";
+		var financialVal =$("#financialYearId").val();
+		if(financialVal != 0){
+			 yearVal=financialVal;
+		}
+		
+		var filterValue ='';
+		var filterType = '';	
+		if(locationType == "state"){
+			filterValue="";
+			filterType="";
+		}else{
+			filterValue = locationValue;
+			filterType = locationType;
+		}
+		var districtValStr="";	
+		if(locationType == "mandal"){
+			districtValStr = districtVal;
+			
+		}
+		
+			
+		var json = {
+			fromDateStr:glStartDate,
+			toDateStr:glEndDate,
+			year:yearVal,
+			startValue:startIndex,
+			endValue:"10",
+			districtValue:districtValStr,
+			filterType:filterType,
+			filterValue:filterValue,
+			workStatus:workStatus,
+			assetType:status
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getOnclickTargetsAcheievementsDetails',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				buildOnclickTargetsAcheievementsDetails(result,status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount);
+			}else{
+				$(".paginationId").html("");
+				$("#modalKpiTable").html('No Data Available');
+			}
+			
+			
+		});
+	}
+function buildOnclickTargetsAcheievementsDetails(result,status,workStatus,locationType,locationValue,districtVal,startIndex,totalCount){
+		var tableView='';
+		tableView+='<table class="table table-bordered" id="dataTableKpi">';
+			tableView+='<thead>';
+			tableView+='<tr>';
+					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>CONSTITUENCY</th>';
+					tableView+='<th>MANDAL</th>';
+					tableView+='<th>HABITATIONS NAME</th>';
+					tableView+='<th>HABITATIONS CODE</th>';
+				tableView+='</tr>';
+				
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+						tableView+='<td>'+result[i].districtName+'</td>';
+						tableView+='<td>'+result[i].constituencyName+'</td>';
+						tableView+='<td>'+result[i].mandalName+'</td>';
+						tableView+='<td>'+result[i].habitationName+'</td>';
+						tableView+='<td>'+result[i].habitationCode+'</td>';
+					tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+		$("#modalKpiTable").html(tableView);
+		$("#dataTableKpi").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"order": [ 0, 'desc' ],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Rural Water Supply',
+					filename:  'Rural Water Supply'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				}
+			]
+		});
+		
+		if(startIndex == 0 && totalCount > 0){
+				$(".paginationId").pagination({
+					items: totalCount,
+					itemsOnPage: 10,
+					cssStyle: 'light-theme',
+					hrefTextPrefix: '#pages-',
+					onPageClick: function(pageNumber) { 
+						var num=(pageNumber-1)*10;
+						getOnclickTargetsAcheievementsDetails(status,workStatus,locationType,locationValue,districtVal,num,totalCount)
+							
+					}
+					
+				});
+			}
+		$(".prev,.next").css("width","70px !important");	
+	}
