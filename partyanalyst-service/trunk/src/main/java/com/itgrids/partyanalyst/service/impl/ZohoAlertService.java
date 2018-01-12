@@ -110,19 +110,9 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 			String mobileNo=mobileNoStr.trim();
 			if(mobileNoStr.length()>10)
 				mobileNo = mobileNoStr.substring(mobileNoStr.length() - 10,mobileNoStr.length());
-			//mobileNo=mobileNoStr;
-			/*if(mobileNo.trim().equalsIgnoreCase("0")){
-				mobileNo = tdpCadreDAO.getCadreMobileNumber(tdpCadreId);
-			}else{
-				TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
-				cadreRegistrationService.saveDataToHistoryTable(tdpCadre);
-				tdpCadre.setMobileNo(mobileNoStr);
-				tdpCadreDAO.save(tdpCadre);
-			}*/
 
 			List<Object[]> existingOTPDtls = otpDetailsDAO.isExistOTPDetails(mobileNo,new DateUtilService().getCurrentDateAndTime());
 			if(existingOTPDtls != null && existingOTPDtls.size()>0L){
-			//	Object[] obj = existingOTPDtls.get(existingOTPDtls.size()-1);
 				Object[] obj = existingOTPDtls.get(0);
 				String otp = commonMethodsUtilService.getStringValueForObject(obj[0]);
 				String dateStr = commonMethodsUtilService.getStringValueForObject(obj[1]);
@@ -140,13 +130,8 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 						String finalDateStr = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(calendar.getTime());
 						String message = "your OTP is "+otp+" . This OTP Validate upto Next "+finalDateStr+" .";
 						String[] phoneNumbers  = {mobileNoStr.toString()};
-						//smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
 						smsCountrySmsService.sendOTPSmsFromAdminForZohoUser(message, true,phoneNumbers);
 		    	 }
-				/*else{
-					status=sendOtp(mobileNoStr,tdpCadreId);
-				}*/
-				
 			}else{
 				status=sendOtp(mobileNoStr,tdpCadreId,membershipId);
 			}
@@ -187,7 +172,6 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 						otpDetails.setIsValid('Y');
 						otpDetails.setMembershipId(membershipId);
 						otpDetailsDAO.save(otpDetails);
-						//otpDetailsDAO.flushAndclearSession();
 						
 			}
 		} catch (Exception e) {
@@ -204,7 +188,6 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 		try {
 			Date currentTime = dateUtilService.getCurrentDateAndTime();
 
-			//Long tabDetsId = tabUserOtpDetailsDAO.checkOTPDetails(tabDetailsVO.getOtpNo(), tabDetailsVO.getReferenceNo(), tabDetailsVO.getMobileNo(), tabDetailsVO.getTabUserInfoId(), tabDetailsVO.getUserId(), currentTime);
 			List<Object[]> otpDetails = otpDetailsDAO.checkOTPDetails(jobj.getString("otp"), jobj.getString("memberShipId"), currentTime);
 			if(otpDetails != null && otpDetails.size()>0)
 			{
@@ -249,26 +232,6 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 			LOG.error("Exception Occured in checkOTPDetails() in ZohoAlertService class.",e);
 		}
 		return status;
-	}
-	
-	
-	public static String generateJwt(String userToken) throws UnsupportedEncodingException{
-	      String secretKey = "dEkQ7T0NGxWZXSrfXka5jRIJr5nA0LTMqfBAbs9g";
-	      long notBeforeMillis = System.currentTimeMillis();
-	      long notAfterMillis = notBeforeMillis + 300000;
-
-	      SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-
-	      byte[] apiKeySecretBytes = secretKey.getBytes();
-	      Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-
-	      JwtBuilder builder = Jwts.builder().signWith(signatureAlgorithm, signingKey);
-
-	      String jwt = builder.claim("email_verified", true)
-	                                  .claim("not_after", notAfterMillis)
-	                                  .claim("not_before", notBeforeMillis)
-	                                  .claim("email", "").compact();
-	      return jwt;
 	}
 
 	
