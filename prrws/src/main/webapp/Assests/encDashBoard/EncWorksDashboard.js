@@ -508,22 +508,41 @@ function buildGraph(result)	{
 						table+='<td>'+result[i].totWorks+'</td>';
 						table+='<td>'+result[i].totTarget+'</td>';
 						table+='<td>'+result[i].totAchv+'</td>';
-						table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].totAchv/result[i].totTarget)*100).toFixed(2)+'%</small></td>';
+						if(result[i].totTarget != 0 && result[i].totTarget != null){
+							table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].totAchv/result[i].totTarget)*100).toFixed(2)+'%</small></td>';
+						}else{
+							table+='<td>-</td>';
+						}
 						table+='<td>'+parseFloat(result[i].totLength).toFixed(2)+'</td>';
 						table+='<td>'+parseFloat(result[i].totPopu).toFixed(2)+'</td>';
 						table+='<td>'+result[i].q1Target+'</td>';
 						table+='<td>'+result[i].q1Achv+'</td>';
+						if(result[i].q1Target != 0 && result[i].q1Target != null){
 						table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].q1Achv/result[i].q1Target)*100).toFixed(2)+'%</small></td>';
+						}else{
+							table+='<td>-</td>';
+						}
 						table+='<td>'+result[i].q2Target+'</td>';
 						table+='<td>'+result[i].q2Achv+'</td>';
+						if(result[i].q2Target != 0 && result[i].q2Target != null){
 						table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].q2Achv/result[i].q2Target)*100).toFixed(2)+'%</small></td>';
+						}else{
+							table+='<td>-</td>';
+						}
 						table+='<td>'+result[i].q3Target+'</td>';
 						table+='<td>'+result[i].q3Achv+'</td>';
+						if(result[i].q3Target != 0 && result[i].q3Target != null){
 						table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].q3Achv/result[i].q3Target)*100).toFixed(2)+'%</small></td>';
+						}else{
+							table+='<td>-</td>';
+						}
 						table+='<td>'+result[i].q4Target+'</td>';
 						table+='<td>'+result[i].q4Achv+'</td>';
+						if(result[i].q4Target != 0 && result[i].q4Target != null){
 						table+='<td><small style="color:#0FBE08">'+parseFloat((result[i].q4Achv/result[i].q4Target)*100).toFixed(2)+'%</small></td>';
-						
+						}else{
+							table+='<td>-</td>';
+						}
 					table+='</tr>';
 				}
 				table+='</tbody>';
@@ -781,7 +800,7 @@ $(document).on("click",".workWiseDetailsCls li",function(e){
 		if(locationType == "state"){
 			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','s','table');
 		}
-		else if(type == "district"){
+		else if(locationType == "district"){
 			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','d','table');
 		}
 		else if(locationType == "constituency"){
