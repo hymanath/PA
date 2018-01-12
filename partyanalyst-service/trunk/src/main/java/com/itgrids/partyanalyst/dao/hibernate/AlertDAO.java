@@ -11052,5 +11052,11 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			
 			return query.executeUpdate();
 	 	}
-	 	
+	 	public String getAlertTicketId(Long alertId){
+	 		Query query = getSession().createQuery(" select model.zohoTicketId " +
+	 				" from Alert model " +
+	 				" where model.alertId=:alertId ");
+	 		query.setParameter("alertId", alertId);
+	 		return (String)query.uniqueResult();
+	 	} 
 }
