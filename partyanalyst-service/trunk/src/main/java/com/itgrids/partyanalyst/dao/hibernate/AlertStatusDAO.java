@@ -69,5 +69,11 @@ public class AlertStatusDAO extends GenericDaoHibernate<AlertStatus, Long>
 	          sqlQuery.setDate("toDate", toDate);
 	          return sqlQuery.list();
 	   }
+	  public Long getIdOfName(String status){
+			Query query = getSession().createQuery(" select model.alertStatusId from AlertStatus model " +
+					"  where model.alertStatus =:status ");
+			query.setParameter("status", status.trim());  
+			return (Long) query.uniqueResult();   
+	  }
 
 }

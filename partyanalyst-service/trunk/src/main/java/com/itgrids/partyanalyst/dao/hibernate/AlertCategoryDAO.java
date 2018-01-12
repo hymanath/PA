@@ -35,4 +35,10 @@ public class AlertCategoryDAO extends GenericDaoHibernate<AlertCategory, Long>
 		Query query = getSession().createQuery("select model.alertCategoryId, model.category from AlertCategory model where model.alertCategoryId in (2,3,4,5) order by model.order  ");
 		return query.list();
 	}
+	
+	public Long getIdOfName(String category){
+		Query query = getSession().createQuery("select model.alertCategoryId from " +
+				" AlertCategory model where model.category =:category  ");
+		return (Long) query.uniqueResult();
+	}
 }

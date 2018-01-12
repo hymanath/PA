@@ -1366,6 +1366,5 @@ public interface IConstants {
 	public static final String ZOHO_ADMIN_DEPTID="239398000000006907";
 	public static final String ZOHO_ADMIN_AUTHORIZATION="0334a9147e76cd11781e207ef38f10fc";
 	public static final String ZOHO_ADMIN_ORGID="659130259";
-	public static final String ZOHO_API_TYPE="zoho";
 	public static final String ZOHO_JWT_SECRETKEY="dEkQ7T0NGxWZXSrfXka5jRIJr5nA0LTMqfBAbs9g";
 }
