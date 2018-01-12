@@ -2497,8 +2497,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					}
 				  
 				   DateUtilService date = new DateUtilService();
-				  List<Long> existCadreIds = new ArrayList<Long>();
-				  List<Long> tdpCadreIds = new ArrayList();
+				  List<Long> existCadreIds = new ArrayList<Long>(0);
+				  List<Long> tdpCadreIds = new ArrayList(0);
 				 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0)
 				 {
 					 

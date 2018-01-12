@@ -1,10 +1,11 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.AlertComment;
-import com.itgrids.partyanalyst.model.AlertTracking;
 
 public interface IAlertCommentDAO extends GenericDao<AlertComment, Long> {
-
+	public List<Object[]> getCommentsOfAlert(Long alertId);
 }
