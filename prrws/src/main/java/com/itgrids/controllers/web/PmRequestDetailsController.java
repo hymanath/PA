@@ -410,7 +410,12 @@ public class PmRequestDetailsController {
 			 if(inputVO.getDesignationIds() == null){
 				 inputVO.setDesignationIds(new ArrayList<Long>());
 			 }
+			 if(inputVO.getAssetTypeList() == null){
+				 inputVO.setAssetTypeList(new ArrayList<String>());
+			 }
+			 inputVO.getAssetTypeList().add(deptVO.getDesignation());
 			 inputVO.getDesignationIds().add(deptVO.getDesignationId());
+			 inputVO.setDeptCode(deptVO.getDeptName());
 			}
 	    	return pmRequestDetailsService.generateCoveringLetterForPetition(inputVO);
 	    }
