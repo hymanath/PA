@@ -499,7 +499,7 @@ function tabBlocks(blockId,blockName){
 				tabBlock+='<div class="col-sm-4">';
 					tabBlock+='<div class="pull-right">';
 						tabBlock+='<label class="checkbox-inline">';
-							tabBlock+='<input type="checkbox"  class="checkboxTypeCls" attr_block_name="'+blockName+'" id="checkboxType'+blockName+'Id" name="option" value="amount">With Amount';
+							tabBlock+='<input type="checkbox"  class="checkboxTypeCls" attr_block_name="'+blockName+'" id="checkboxType'+blockName+'Id" name="option" value="amount" checked>With Amount';
 						tabBlock+='</label>';
 					tabBlock+='</div>';
 				tabBlock+='</div>';
