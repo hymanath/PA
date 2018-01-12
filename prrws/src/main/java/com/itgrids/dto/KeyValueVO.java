@@ -13,7 +13,15 @@ public class KeyValueVO {
 	private String designation;
 	private Long designationId;
 	private List<KeyValueVO> subList = new ArrayList<KeyValueVO>(0);
-			
+	private String deptName="";
+	  
+	  
+	  public String getDeptName() {
+	    return deptName;
+	  }
+	  public void setDeptName(String deptName) {
+	    this.deptName = deptName;
+	  }		
 	public Long getTotalCount() {
 		return totalCount;
 	}
