@@ -10,6 +10,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -76,7 +77,7 @@ public class ZohoWebServiceHandler {
 	@GET
     @Path("/getJwt")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getURL(@QueryParam("user_token")String user_token)
+	public String getJwtByUserToken(@QueryParam("user_token")String user_token)
     {
 		return zohoWebServiceHandlerService.generateJwtForZoho(user_token);
     }
@@ -93,5 +94,34 @@ public class ZohoWebServiceHandler {
 		}
 		return null;
 	}
+	
+	
+	@POST 
+	@Path("/sendSms")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JSONObject sendSms(JSONArray jArry){
+		try {
+			 return zohoWebServiceHandlerService.getZohoWebHookDetails(jArry);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in createAlertApi() Method in ZohoWebServiceHandler ",e);
+		}
+		return null;
+	}
+	
+	
+	@POST 
+	@Path("/getZohoWebHookDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JSONObject getZohoWebHookDetails(JSONArray jArray){
+		try {
+			 return zohoWebServiceHandlerService.getZohoWebHookDetails(jArray);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getZohoWebHookDetails() Method in ZohoWebServiceHandler ",e);
+		}
+		return null;
+	}
+	
 	
 }
