@@ -1689,6 +1689,7 @@
 		<property name="cccDashboardService" ref="cccDashboardService"/>
 		<property name="alertManagementSystemService" ref="alertManagementSystemService"/>
 		<property name="loginService" ref="loginService"/>
+		<property name="alertUpdationAPIService" ref="alertUpdationAPIService"/>
 	</bean>
 	
 	<!-- Deabete End -->
@@ -1819,5 +1820,9 @@
 		<property name="coreDashboardCoreService" ref="coreDashboardCoreService"></property>
 		<property name="schedulerService" ref="schedulerService" />
 	</bean>		
+	
+	<bean id="alertUpdationAPIAction" class="com.itgrids.partyanalyst.web.action.AlertUpdationAPIAction" singleton="false">
+		<!-- <property name="alertUpdationAPIService" ref="alertUpdationAPIService" /> -->
+	</bean>
 </beans>	
 	

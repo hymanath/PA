@@ -47,12 +47,12 @@ import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
+import com.itgrids.partyanalyst.service.IAlertUpdationAPIService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 
 public class CreateAlertAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
 	private HttpSession session;
@@ -100,9 +100,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private IAlertManagementSystemService alertManagementSystemService;
 	private Long tdpCadreId;
 	private Long alertVerificationAssignedUserId;
+	private IAlertUpdationAPIService alertUpdationAPIService;
 	
 	
-	
+	public IAlertUpdationAPIService getAlertUpdationAPIService() {
+		return alertUpdationAPIService;
+	}
+
+	public void setAlertUpdationAPIService(
+			IAlertUpdationAPIService alertUpdationAPIService) {
+		this.alertUpdationAPIService = alertUpdationAPIService;
+	}
+
 	public IAlertManagementSystemService getAlertManagementSystemService() {
 		return alertManagementSystemService;
 	}
@@ -720,25 +729,30 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}
 	
-	public String saveAlertAssignedUser()
-	{
+	public String saveAlertAssignedUser(){
 		try{
 		session = request.getSession();
 		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 		jObj = new JSONObject(getTask());
 		//List<Long> ids = (List<Long>) jObj.getJSONArray("tdpCadreIds");
 		JSONArray jArray = jObj.getJSONArray("tdpCadreIds");
-		List<IdNameVO> cadreList = new ArrayList<IdNameVO>();
+		List<IdNameVO> cadreList = new ArrayList<IdNameVO>(0);
+		List<Long> cadreIDs = new ArrayList<Long>(0);
 		 for (int i = 0; i < jArray.length(); i++) 
 			{
 			 IdNameVO vo = new IdNameVO();
 			 vo.setId((Long.parseLong(jArray.getString(i))));
+			 cadreIDs.add(vo.getId());
 			 cadreList.add(vo);
 			}
 		AlertVO alertVO = new AlertVO();
 		alertVO.setIdNamesList(cadreList);
 		alertVO.setAlertTypeId(jObj.getLong("alertId"));
 		resultStatus = alertService.saveAlertAssignedUser(alertVO,regVo.getRegistrationID());
+		
+			if(cadreIDs.size() > 0 && resultStatus != null && resultStatus.getResultCode() == 0){
+				//String conactId = alertUpdationAPIService.sendAssignedCandidateCantactId(cadreIDs.get(0),jObj.getLong("alertId"));
+			}
 		}
 		catch (Exception e) {
 			LOG.error("Exception rised in saveAlertAssignedUser",e);

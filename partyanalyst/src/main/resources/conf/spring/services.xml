@@ -4623,6 +4623,14 @@
     	 	<property name="alertCreationAPIService" ref="alertCreationAPIService" />    	 
     	 </bean>
     	 
+    	 <bean name="alertUpdationAPIService" class="com.itgrids.partyanalyst.service.impl.AlertUpdationAPIService" >
+    	 	<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
+    	 	<property name="alertDAO" ref="alertDAO"/>
+    	 	<property name="alertDocumentDAO" ref="alertDocumentDAO"/>
+    	 	<property name="alertCreationAPIService" ref="alertCreationAPIService"/>
+    	 	<property name="alertCommentDAO" ref="alertCommentDAO"/>
+    	 </bean>
+    	 
     	 <bean name="alertCreationAPIService" class="com.itgrids.partyanalyst.service.impl.AlertCreationAPIService">
     	 	<property name="transactionTemplate" ref="transactionTemplate"></property>
     	 	<property name="alertDAO" ref="alertDAO"></property>
