@@ -108,8 +108,7 @@ public class MeesevaKpiCentersDAO extends GenericDaoHibernate<MeesevaKpiCenters,
 	public Long getMeesevaKPICentresForFromAndToDate(Date startDate,Date endDate){
 		Query query = getSession().createQuery("select count(*)"
 				+ " from MeesevaKpiCenters model"
-				+ " where date(model.estdate) between :startDate and :endDate"
-				+ " group by model.districtId");
+				+ " where date(model.estdate) between :startDate and :endDate");
 		query.setDate("startDate", startDate);
 		query.setDate("endDate", endDate);
 		return (Long) query.uniqueResult();
