@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AmsVO;
@@ -77,6 +78,29 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 			 return alertCreationAPIService.createAlertApi(jobj);
 		} catch (Exception e) {
 			LOG.error("Exception raised at createAlertApi method in ZohoWebServiceHandlerService Class", e);
+		}
+		return null;
+	}
+
+	@Override
+	public JSONObject sendSms(JSONObject jobj) {
+		try {
+			return zohoAlertService.sendSms(jobj.getString("phoneNumber"), jobj.getString("message"));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+
+	@Override
+	public JSONObject getZohoWebHookDetails(JSONArray jArry) {
+		JSONObject jobj = new JSONObject();
+		try {
+			jobj.put("status","need service");
+			//return zohoAlertService.getJsonStructureOfAlertFromZoho(jArry);
+			return jobj;
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 		return null;
 	}
