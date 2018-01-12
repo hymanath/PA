@@ -37,6 +37,7 @@ public class RepresenteeViewVO {
 	private Long deptDesigId;
 	private Long deptDesigOffcrId;
 	private String remark;
+	private Long order;
 	private List<Long> workIds = new ArrayList<Long>();
 	
 	
@@ -214,6 +215,12 @@ public class RepresenteeViewVO {
 	}
 	public void setDeptDesigOffcrId(Long deptDesigOffcrId) {
 		this.deptDesigOffcrId = deptDesigOffcrId;
+	}
+	public Long getOrder() {
+		return order;
+	}
+	public void setOrder(Long order) {
+		this.order = order;
 	}
 	
 	
