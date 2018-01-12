@@ -300,7 +300,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	
 	public List<Object[]> getLeadWiseOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select count(model.pmSubWorkDetailsId),model.pmLead.pmLeadId,model.pmLead.leadName, model.pmStatus.pmStatusId,model.pmStatus.status ");
+		sb.append(" select count(model.pmSubWorkDetailsId),model.pmBriefLead.pmBriefLeadId,model.pmBriefLead.briefLead, model.pmStatus.pmStatusId,model.pmStatus.status ");
 		sb.append(", model.petition.petitionId  from PmSubWorkDetails model where model.isDeleted='N' ");
 		
 		//sb.append("  model.pmSubject.isDeleted='N' and model.pmDepartment.isDeleted='N' and model.pmLead.isDeleted='N' and ");
