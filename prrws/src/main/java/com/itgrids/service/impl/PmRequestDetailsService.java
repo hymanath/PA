@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2495,13 +2497,26 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					leadList = new ArrayList();
 					leadList.addAll(leadMap.values());
 				}
+				if (leadList.size() > 0) {
+	    				Collections.sort(leadList, sortListBasedOnId);
+	    				
+	    			}
 				}
-					} catch (Exception e) {
+			    }catch (Exception e) {
 				e.printStackTrace();
 				LOG.error("Exception raised into PmRequestDetailsService of getLeadWiseOverviewDetails() ",e);
 			}
 			return leadList;
 		}
+		public static Comparator<RepresenteeViewVO> sortListBasedOnId = new Comparator<RepresenteeViewVO>() {
+		public int compare(RepresenteeViewVO o1, RepresenteeViewVO o2) {
+			if(o1.getId() != null && o2.getId() != null){
+				return o2.getId().compareTo(o1.getId());
+			}
+			return 0;
+		}
+	};
+		
 			
 		public List<RepresenteeViewVO> setLeadStatusTemplate(List<Long> statusIds){
 			List<RepresenteeViewVO> list = new ArrayList<RepresenteeViewVO>();
@@ -2904,7 +2919,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					setDesignationWiseCount(referralList,returnVO.getSubList());
 				//}
 					
-					setOthersDataToLastIndexOfList(returnVO.getSubList());
+				//	setOthersDataToLastIndexOfList(returnVO.getSubList());
 			} catch (Exception e) {
 				e.printStackTrace();
 				LOG.error("Exception Occured in PmRequestDetailsService @ getReferralWiseOverviewDetails() "+e.getMessage());
@@ -2928,6 +2943,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							refDesigCan = new RepresenteeViewVO();
 							refDesigCan.setDeptDesigId(id);
 							refDesigCan.setDesigName(name);
+							if(refDesigCan.getDesigName() != null && refDesigCan.getDesigName().trim().equalsIgnoreCase("Minister")){
+								refDesigCan.setOrder(0L);
+							}
+							else if(refDesigCan.getDesigName() != null && refDesigCan.getDesigName().trim().equalsIgnoreCase("MLA")){
+								refDesigCan.setOrder(1L);
+							}
+							else if(refDesigCan.getDesigName() != null && refDesigCan.getDesigName().trim().equalsIgnoreCase("MLC")){
+								refDesigCan.setOrder(2L);
+							}
+							else if(refDesigCan.getDesigName() != null && refDesigCan.getDesigName().trim().equalsIgnoreCase("Others")){
+								refDesigCan.setOrder(3L);
+							}
 							map.put(id, refDesigCan);
 						}
 						refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[6]));
@@ -2938,11 +2965,24 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isMapValid(map)){
 					returnList.addAll(map.values());
 				}
+				if (returnList.size() > 0) {
+    				Collections.sort(returnList, sortListBasedOnDesignation);
+				}
 			}catch (Exception e) {
 				e.printStackTrace();
 				LOG.error("Exception Occured in PmRequestDetailsService @ setDesignationWiseCount() "+e.getMessage());
 			}
 		}
+		 public static Comparator<RepresenteeViewVO> sortListBasedOnDesignation = new Comparator<RepresenteeViewVO>() {
+				public int compare(RepresenteeViewVO o1, RepresenteeViewVO o2) {
+					if(o1.getOrder() != null && o2.getOrder() != null){
+						return o1.getOrder().compareTo(o2.getOrder());
+					}
+					return 0;
+				}
+			};
+		
+		
 		public List<RepresenteeViewVO> setStatusList(List<Long> statusIds){
 			List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
 			try {

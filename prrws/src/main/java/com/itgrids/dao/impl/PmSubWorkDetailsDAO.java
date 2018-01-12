@@ -243,7 +243,6 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		query.setParameter("userId", userId);
 		return query.executeUpdate();
 	}
-
 	public List<Object[]> getCompleteOrStatusOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(distinct model.pmSubWorkDetailsId),model.petition.petitionId, model.pmStatus.pmStatusId,model.pmStatus.status ");
@@ -286,7 +285,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		}else if(type != null && (type.equalsIgnoreCase("statusDept") || type.equalsIgnoreCase("department"))){
 			sb.append(", model.pmDepartment.pmDepartmentId  order by model.pmDepartment.preferrableOrderNO asc,model.pmStatus.orderNo asc ");
 		}else{
-			sb.append(" order by model.pmStatus.orderNo asc ");
+			 sb.append(" order by model.pmStatus.orderNo asc ");
 		}
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size() >0){
