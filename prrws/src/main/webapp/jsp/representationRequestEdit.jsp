@@ -45,11 +45,18 @@
 						<div class="arrow_box_top">
 							<div class="row">
 								<div style="padding:10px;">
-									<div class="col-sm-6">
-										<h4><a href="representationRequestEntry">ADD PETITION</a></h4>
+									<div class="col-sm-5" id="entryLinkId">
+										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;"><a href="representationRequestEntry" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">ADD PETITION</a></h4>
 									</div>
-									<div class="col-sm-6">
-										<h4 class=""><a href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
+									<div class="col-sm-6"  id="viewLinkId">
+										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;" ><a href="representationRequestEntryViewMembers" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">VIEW PETITION</a></h4>
+									</div>
+								</div>
+							</div>
+							<div class="row"  id="dashboardLinkId">
+								<div style="padding:10px;">
+								<div class="col-sm-5">
+										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;"><a href="representationsDashboard" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">DASHBOARD</a></h4>
 									</div>
 								</div>
 							</div>
@@ -84,13 +91,13 @@
 								<div class="col-sm-12">
 									<h3 class="panel-title f_22"><span id="petitionViewType"></span> REPRESENTEE DETAILS </h3>
 									<div class="row m_top20">
-										<div class="col-sm-3">
+										<div class="col-sm-3" id="endorsementDivId" >
 											<h6> ENDORSMENT NO </h6>
 											<div class=" inline-block m_top10">
-												<input type="text" name="endorsmentNo" class="form-control" id="endorsmentNo"/>
+												<input type="text" name="endorsmentNo" readOnly="true" class="form-control" id="endorsmentNo"/>
 											</div>
 										</div>
-										<div class="col-sm-3">
+										<div class="col-sm-3" id="endorsementDateDivId" >
 											<h6> ENDORSMENT DATE </h6>
 											<div class="input-group inline-block m_top10">
 												<span class="input-group-addon">
@@ -317,5 +324,11 @@
 </body>
 <script>
 var petitionId='${param.petitionId}';
+var userId = '${sessionScope.USER.userId}';
+$('#petitionId').val(petitionId);
+if(userId==25 || userId==26 || userId==27){
+	$('#statusChangeDivId').hide();
+	$('#dashboardLinkId').hide();
+}
 </script>
 </html>
