@@ -197,7 +197,7 @@ public List<Object[]> getPartyMeetingMomPointsByUserAccessLevel(Long userAccessL
 	  	    }
 	  	    queryStr.append(" from PartyMeetingMinute model " +
 	  	    				" where " +
-	  	    				" model.partyMeeting.isActive='Y' ");
+	  	    				" model.partyMeeting.isActive='Y'  and model.isDeleted='N'  ");
   	
 	  	 if(monthId != null && monthId > 0){
 			  queryStr.append(" and month(model.partyMeeting.startDate)=:monthId ");	 
@@ -265,7 +265,7 @@ public List<Object[]> getPartyMeetingMomDtls(Long userAccessLevelId,List<Long> u
 		queryStr.append(",count(distinct model.partyMeetingMinuteId)");
 	    queryStr.append(" from PartyMeetingMinute model " +
 	    				" where " +
-	    				" model.partyMeeting.isActive='Y' ");
+	    				" model.partyMeeting.isActive='Y'  and model.isDeleted='N'  ");
 	
  	 if(monthId != null && monthId > 0){
 		  queryStr.append(" and month(model.insertedTime)=:monthId ");	 
@@ -323,7 +323,7 @@ public Long getMomCreatedByYourLocation(Long userAccessLevelId,List<Long> userAc
     queryStr.append(" count(distinct model.partyMeetingMinuteId)");
     queryStr.append(" from PartyMeetingMinute model " +
     				" where " +
-    				" model.partyMeeting.isActive='Y' ");
+    				" model.partyMeeting.isActive='Y' and model.isDeleted='N' ");
 
    if(monthId != null && monthId > 0){
 		  queryStr.append(" and month(model.insertedTime)=:monthId ");	 
@@ -350,11 +350,23 @@ public Long getMomCreatedByYourLocation(Long userAccessLevelId,List<Long> userAc
   }  
   //getting meeting levelId 
 	List<Long> partyMeetinLevelIds = getPartyMeetingLevelByRegionScope(userAccessLevelId);
-	if (partyMeetinLevelIds != null && partyMeetinLevelIds.size() > 0) {
-		 queryStr.append(" and model.partyMeeting.partyMeetingLevelId in (:partyMeetinLevelIds)");
+	if(type.equalsIgnoreCase("atYourLocationOnly"))
+		partyMeetinLevelIds.clear();// we are considering  below locatioins and own location MOMs (except assignto others MOMs)
+	
+	if(type == null || type.trim().isEmpty()){
+		partyMeetinLevelIds.clear();
+		partyMeetinLevelIds.add(userAccessLevelId);
+		if (partyMeetinLevelIds != null && partyMeetinLevelIds.size() > 0) {
+			 queryStr.append(" and model.createdLocationScopeId in (:partyMeetinLevelIds)");
+		}
+	}else{
+		if (partyMeetinLevelIds != null && partyMeetinLevelIds.size() > 0) {
+			 queryStr.append(" and model.partyMeeting.partyMeetingLevelId in (:partyMeetinLevelIds)");
+		}
 	}
+	
   if (type.equalsIgnoreCase("atYourLocationOnly")) {
-	 queryStr.append(" and model.assignedAddressId is null ");
+	 queryStr.append(" and model.assignedAddressId is null ");//(except assignto others MOMs)
   } else  if (type.equalsIgnoreCase("assignedToOther")) {
 	 queryStr.append(" and model.assignedAddressId is not null ");
   }
@@ -382,7 +394,7 @@ public Long getMomAssignedToYourLocation(Long userAccessLevelId,List<Long> userA
    queryStr.append(" count(distinct model.partyMeetingMinuteId)");
    queryStr.append(" from PartyMeetingMinute model " +
     				" where " +
-    				" model.partyMeeting.isActive='Y' ");
+    				" model.partyMeeting.isActive='Y'  and model.isDeleted='N'  ");
 
   if(monthId != null && monthId > 0){
 		  queryStr.append(" and month(model.insertedTime)=:monthId ");	 
@@ -407,8 +419,8 @@ public Long getMomAssignedToYourLocation(Long userAccessLevelId,List<Long> userA
  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_WARD_LEVEl_ID){ 
 	queryStr.append(" and model.assignedAddress.ward.constituencyId in (:userAccessLevelValues)"); 
  }  
-	//getting meeting levelId 
-	List<Long> partyMeetinLevelIds = getPartyMeetingLevelByRegionScope(userAccessLevelId);
+	//getting meeting levelId , in mom point view no need to consider meeting level. -- sathosh , srishialam 
+	List<Long> partyMeetinLevelIds = null;//getPartyMeetingLevelByRegionScope(userAccessLevelId);
 	if (partyMeetinLevelIds != null && partyMeetinLevelIds.size() > 0) {
 		 queryStr.append(" and model.partyMeeting.partyMeetingLevelId in (:partyMeetinLevelIds)");
 	}
@@ -445,7 +457,7 @@ public List<Object[]> getTotalMomDetailsByLocation(Long userAccessLevelId,List<L
     		" model.assignedLocationValue ");
     queryStr.append(" from PartyMeetingMinute model " +
     				" where " +
-    				" model.partyMeeting.isActive='Y' ");
+    				" model.partyMeeting.isActive='Y'  and model.isDeleted='N' ");
 
   if(monthId != null && monthId > 0){
 	queryStr.append(" and month(model.insertedTime)=:monthId ");	 
@@ -516,7 +528,7 @@ public List<Object[]> getMomCreationLocation(Long userAccessLevelId,List<Long> u
 	  queryStr.append(" left join createdAddress.localElectionBody localElectionBody ");
 	  queryStr.append(" left join createdAddress.ward ward " +
 	  		          " where " +
-	  		          " model.partyMeeting.isActive='Y' ");
+	  		          " model.partyMeeting.isActive='Y'  and model.isDeleted='N'  ");
 	  
 	  if(monthId != null && monthId > 0){
 			queryStr.append(" and month(model.insertedTime)=:monthId ");	 
@@ -636,7 +648,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
     		" model.assignedLocationValue ");
     queryStr.append(" from PartyMeetingMinute model " +
     				" where " +
-    				" model.partyMeeting.isActive='Y' ");
+    				" model.partyMeeting.isActive='Y'  and model.isDeleted='N'  ");
 
    if(monthId != null && monthId > 0){
 		  queryStr.append(" and month(model.insertedTime)=:monthId ");	 

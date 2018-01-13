@@ -26,4 +26,5 @@ public interface IPartyMeetingMinuteDAO extends GenericDao<PartyMeetingMinute,Lo
 	public List<Object[]> getMomCreationLocation(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId);
 	public List<Object[]> getMomAssignedLocation(Set<Long> momIdSet,Integer monthId,Integer yearId);
 	public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId,String type,String momType);
+	public List<Long> getPartyMeetingLevelByRegionScope(Long userAccessLevelId);
 }

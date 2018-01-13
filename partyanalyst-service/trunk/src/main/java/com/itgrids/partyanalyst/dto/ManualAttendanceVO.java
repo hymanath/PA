@@ -24,8 +24,29 @@ public class ManualAttendanceVO {
 	private Long tabPrimaryKey;
 	private Long partyMeetingSessionId;
 	private String attendedTime;
+	private String path;
+	private String documentType;
+	private String synched;
 	
 	
+	public String getSynched() {
+		return synched;
+	}
+	public void setSynched(String synched) {
+		this.synched = synched;
+	}
+	public String getDocumentType() {
+		return documentType;
+	}
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
+	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
 	public String getAttendedTime() {
 		return attendedTime;
 	}

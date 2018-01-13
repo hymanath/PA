@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.ManualAttendanceVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingLocationVO;
@@ -1143,7 +1144,7 @@ public class AttendanceService implements IAttendanceService{
 	public ResultStatus savingPartyMeetingImages(final ManualAttendanceVO inputvo){
 		ResultStatus resultStatus = new ResultStatus();
 		try {
-			Long serverKey = (Long)transactionTemplate.execute(new TransactionCallback() {
+			final KeyValueVO keyValueVO= (KeyValueVO) transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					
 					String folderName = folderCreation();
@@ -1175,17 +1176,33 @@ public class AttendanceService implements IAttendanceService{
 					partyMeetingDocument.setAddressId(partyMeeting.getMeetingAddressId());
 					partyMeetingDocument.setPath(pathBuilder.toString());
 					partyMeetingDocument.setDocumentName(randomNumber.toString()+".jpg");
-					partyMeetingDocument.setDocumentType("MEETING");
+					
+					if(inputvo.getDocumentType() == null || inputvo.getDocumentType().trim().isEmpty()){
+						partyMeetingDocument.setDocumentType("MEETING");
+						partyMeetingDocument.setAttendanceTabUserId(inputvo.getUserId());
+					}else{ 
+						if(inputvo.getDocumentType() != null && inputvo.getDocumentType().equalsIgnoreCase("MEETING")) { 
+							partyMeetingDocument.setDocumentType(inputvo.getDocumentType());
+							partyMeetingDocument.setAttendanceTabUserId(inputvo.getUserId());
+						}else{
+							partyMeetingDocument.setDocumentType(inputvo.getDocumentType());
+							partyMeetingDocument.setItdpAppUserId(inputvo.getUserId());
+						}
+					}
+					
 					partyMeetingDocument.setDocumentFormat("IMAGE");
 					//partyMeetingDocument.setUploadedById(inputvo.getUserId());
 					//partyMeetingDocument.setUpdatedById(inputvo.getUserId());
 					partyMeetingDocument.setUploadedTime(dateUtilService.getCurrentDateAndTime());
 					partyMeetingDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					partyMeetingDocument.setIsDeleted("N");
-					partyMeetingDocument.setAttendanceTabUserId(inputvo.getUserId());
+					
 					partyMeetingDocument = partyMeetingDocumentDAO.save(partyMeetingDocument);
 					
-					return partyMeetingDocument.getPartyMeetingDocumentId();
+					KeyValueVO keyValueVO = new KeyValueVO(); 
+					keyValueVO.setId(partyMeetingDocument.getPartyMeetingDocumentId());
+					keyValueVO.setPath(partyMeetingDocument.getPath());
+					return keyValueVO;//partyMeetingDocument.getPartyMeetingDocumentId();
 				}
 			});
 			
@@ -1193,7 +1210,10 @@ public class AttendanceService implements IAttendanceService{
 			resultStatus.setUniqueKey(inputvo.getUniqueKey());
 			resultStatus.setMessage("success");
 			resultStatus.setResultCode(0);
-			resultStatus.setServerPrimaryKey(serverKey);
+			if(keyValueVO != null){
+				resultStatus.setServerPrimaryKey(keyValueVO.getId());
+				resultStatus.setfPath(keyValueVO.getPath());
+			}
 		} catch (Exception e) {
 			resultStatus.setTabPrimaryKey(inputvo.getTabPrimaryKey());
 			resultStatus.setUniqueKey(inputvo.getUniqueKey());

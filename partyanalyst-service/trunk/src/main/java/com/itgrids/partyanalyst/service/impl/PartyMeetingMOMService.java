@@ -58,7 +58,7 @@ public class PartyMeetingMOMService implements IPartyMeetingMOMService {
 
 	
 private static final Logger LOG = Logger.getLogger(PartyMeetingMOMService.class);
-	
+
 	private IPartyMeetingDAO partyMeetingDAO;
 	private IPartyMeetingMinuteDAO partyMeetingMinuteDAO;
 	private IPartyMeetingDocumentDAO partyMeetingDocumentDAO;
@@ -435,6 +435,17 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingMOMService.class)
 								model.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 								model.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 								model.setIsDeleted("N");
+								
+								/* start saving location details for web dashboard */
+								List<Long> partyLevelIdsList = partyMeetingMinuteDAO.getPartyMeetingLevelByRegionScope(model.getCreatedLocationScopeId());
+								if(commonMethodsUtilService.isListOrSetValid(partyLevelIdsList)){
+									model.setLocationLevel(partyLevelIdsList.get(0));
+									model.setLocationValue(model.getCreatedLocationValue());
+									model.setUserAddressId(model.getCreatedAddressId());
+								}
+								
+								/* end saving location details for web dashboard */
+								
 								model = partyMeetingMinuteDAO.save(model);
 								//setting into vo to save into tracking table purpose
 								inputVO.setPartyMeetingMinuteId(model.getPartyMeetingMinuteId());
@@ -876,21 +887,49 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
 		  resultVO.setSubList2(getMomStatusPriorityWiseCountDetails(momStatusObjList));
 		  
 		  Long momCreatedByYourLocationCount = partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "");
-		  Long momAtYourLocationOnlyCount = partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "atYourLocationOnly");;
+		  Long momAtYourLocationOnlyCount = 0L;//partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "atYourLocationOnly");;
 		  Long assignedToOtherCount = partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "assignedToOther");
 		  Long assignedToYourLocationCount = partyMeetingMinuteDAO.getMomAssignedToYourLocation(userAccessLevel, accessValues,monthYearArr[0], monthYearArr[1]);
+		  Long TtotalMomInYourLocation =0L;
+		  if(momCreatedByYourLocationCount == null || momCreatedByYourLocationCount.longValue()==0L){// if not created atleast one MOM
+			  momCreatedByYourLocationCount=0L;
+			  if(assignedToYourLocationCount != null && assignedToYourLocationCount.longValue()>0L) // all assigned MOMs to my location comes under momAtYourLocationOnlyCount
+				  momAtYourLocationOnlyCount = assignedToYourLocationCount;
+		  }else{
+			  if(momCreatedByYourLocationCount != null){// removind assinged to others MOMs
+				  if(assignedToOtherCount != null && assignedToOtherCount.longValue()>0L)
+					  momAtYourLocationOnlyCount = momCreatedByYourLocationCount - assignedToOtherCount;
+				  else
+					  momAtYourLocationOnlyCount=momCreatedByYourLocationCount;
+			  }
+			  // momAtYourLocationOnlyCount = created by me (excluding assigned to others) + assigned to me
+			  if(momAtYourLocationOnlyCount != null && momAtYourLocationOnlyCount.longValue()>0L){ 
+				  momAtYourLocationOnlyCount = momAtYourLocationOnlyCount+assignedToYourLocationCount;
+			  }
+		  }
+		  
+		  if(momCreatedByYourLocationCount != null && momCreatedByYourLocationCount.longValue() >0L){
+			  TtotalMomInYourLocation = momCreatedByYourLocationCount;
+			  if(assignedToOtherCount != null && assignedToOtherCount.longValue()>0L){
+				  TtotalMomInYourLocation = momCreatedByYourLocationCount+assignedToYourLocationCount;// created in my location + assigned to my location
+			  }
+		  }
+		  else if(assignedToOtherCount != null && assignedToOtherCount.longValue()>0L){
+			  TtotalMomInYourLocation = momCreatedByYourLocationCount+assignedToYourLocationCount;// created in my location + assigned to my location
+		  }
 		  
 		  //setting into final VO
 		  resultVO.setMomCreatedByYourLocation(momCreatedByYourLocationCount);
 		  resultVO.setMomAtYourLocationOnly(momAtYourLocationOnlyCount);
 		  resultVO.setAssignedToOther(assignedToOtherCount);
 		  resultVO.setAssignedToYourLocation(assignedToYourLocationCount);
+		  resultVO.setTotalMomInYourLocation(TtotalMomInYourLocation);
 		  
-		  
-		  if (resultVO.getSubList2() != null && resultVO.getSubList2().size() > 0) {
+		/*  if (resultVO.getSubList2() != null && resultVO.getSubList2().size() > 0) {
 			  resultVO.setTotalMomInYourLocation(resultVO.getSubList2().get(0).getTotalMomInYourLocation());
 			  resultVO.getSubList2().get(0).setTotalMomInYourLocation(0l);
-		  }
+		  }*/
+		  
 	  } catch (Exception e) {
 		  LOG.error("Exception occurred at getMomDashboardOverviewDtls() of PartyMeetingMOMService class ",e);
 	  }
