@@ -1075,6 +1075,26 @@ public class AttendanceService implements IAttendanceService{
 		return resultStatus;
 	}
 	
+	public static String createFolderForMOMImages()
+	{
+		try {
+			LOG.debug(" in FolderForDocument ");
+	  		String date= new DateUtilService().getCurrentDateAndTimeInStringFormat().substring(0, 10);
+	  		String targetDirpath = IConstants.STATIC_CONTENT_FOLDER_URL+""+IConstants.PARTY_MEETING_MOM_DOCUMENT+"/"+date;
+			
+			File requriredDir = new File(targetDirpath);
+			
+			if(!requriredDir.exists())
+				requriredDir.mkdirs();
+			
+			return requriredDir.getAbsolutePath();
+			 
+		} catch (Exception e) {
+			LOG.error(" Failed to createFolderForMOMImages");  
+			return "FAILED";
+		}
+	}
+	
 	public static String folderCreation(){
 	  	 try {
 	  		 LOG.debug(" in FolderForArticle ");
@@ -1147,55 +1167,65 @@ public class AttendanceService implements IAttendanceService{
 			final KeyValueVO keyValueVO= (KeyValueVO) transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					
-					String folderName = folderCreation();
-					 
 					
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(new Date());
-					 int year = calendar.get(Calendar.YEAR);
-					 int month = calendar.get(Calendar.MONTH);
-					 int day = calendar.get(Calendar.DAY_OF_MONTH);
-					 int temp = month+1;
-					 
-					 StringBuilder pathBuilder = new StringBuilder();
-					 StringBuilder str = new StringBuilder();
-					 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-						
-					String destPath = folderName+"/"+randomNumber+".jpg";
-					pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumber).append(".").append("jpg");
-					str.append(randomNumber).append(".").append("jpg");
-					
-					ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
-					imageAndStringConverter.convertBase64StringToImage(inputvo.getBase64ImageStr(), destPath);
-					
-					PartyMeeting partyMeeting = partyMeetingDAO.get(inputvo.getPartyMeetingId());
-					
-					PartyMeetingDocument partyMeetingDocument = new PartyMeetingDocument();
-					partyMeetingDocument.setPartyMeetingId(inputvo.getPartyMeetingId());
-					partyMeetingDocument.setPartyMeetingSessionId(inputvo.getPartyMeetingSessionId());
-					partyMeetingDocument.setAddressId(partyMeeting.getMeetingAddressId());
-					partyMeetingDocument.setPath(pathBuilder.toString());
-					partyMeetingDocument.setDocumentName(randomNumber.toString()+".jpg");
-					
+					String folderName =createFolderForMOMImages();
 					if(inputvo.getDocumentType() == null || inputvo.getDocumentType().trim().isEmpty()){
-						partyMeetingDocument.setDocumentType("MEETING");
-						partyMeetingDocument.setAttendanceTabUserId(inputvo.getUserId());
+						 folderName = folderCreation();//meeting images
 					}else{ 
 						if(inputvo.getDocumentType() != null && inputvo.getDocumentType().equalsIgnoreCase("MEETING")) { 
-							partyMeetingDocument.setDocumentType(inputvo.getDocumentType());
-							partyMeetingDocument.setAttendanceTabUserId(inputvo.getUserId());
+							folderName = folderCreation();//meeting images
 						}else{
-							partyMeetingDocument.setDocumentType(inputvo.getDocumentType());
-							partyMeetingDocument.setItdpAppUserId(inputvo.getUserId());
+							folderName =createFolderForMOMImages();
 						}
 					}
-					
-					partyMeetingDocument.setDocumentFormat("IMAGE");
-					//partyMeetingDocument.setUploadedById(inputvo.getUserId());
-					//partyMeetingDocument.setUpdatedById(inputvo.getUserId());
-					partyMeetingDocument.setUploadedTime(dateUtilService.getCurrentDateAndTime());
-					partyMeetingDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-					partyMeetingDocument.setIsDeleted("N");
+					PartyMeetingDocument partyMeetingDocument = new PartyMeetingDocument();
+					if(folderName != null && !folderName.isEmpty()){
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(new Date());
+						 int year = calendar.get(Calendar.YEAR);
+						 int month = calendar.get(Calendar.MONTH);
+						 int day = calendar.get(Calendar.DAY_OF_MONTH);
+						 int temp = month+1;
+						 
+						 StringBuilder pathBuilder = new StringBuilder();
+						 StringBuilder str = new StringBuilder();
+						 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+							
+						String destPath = folderName+"/"+randomNumber+".jpg";
+						pathBuilder.append(year).append("/").append(temp).append("-").append(day).append("/").append(randomNumber).append(".").append("jpg");
+						str.append(randomNumber).append(".").append("jpg");
+						
+						ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
+						imageAndStringConverter.convertBase64StringToImage(inputvo.getBase64ImageStr(), destPath);
+						
+						PartyMeeting partyMeeting = partyMeetingDAO.get(inputvo.getPartyMeetingId());
+						
+						partyMeetingDocument.setPartyMeetingId(inputvo.getPartyMeetingId());
+						partyMeetingDocument.setPartyMeetingSessionId(inputvo.getPartyMeetingSessionId());
+						partyMeetingDocument.setAddressId(partyMeeting.getMeetingAddressId());
+						partyMeetingDocument.setPath(pathBuilder.toString());
+						partyMeetingDocument.setDocumentName(randomNumber.toString()+".jpg");
+						
+						if(inputvo.getDocumentType() == null || inputvo.getDocumentType().trim().isEmpty()){
+							partyMeetingDocument.setDocumentType("MEETING");
+							partyMeetingDocument.setAttendanceTabUserId(inputvo.getUserId());
+						}else{ 
+							if(inputvo.getDocumentType() != null && inputvo.getDocumentType().equalsIgnoreCase("MEETING")) { 
+								partyMeetingDocument.setDocumentType(inputvo.getDocumentType());
+								partyMeetingDocument.setAttendanceTabUserId(inputvo.getUserId());
+							}else{
+								partyMeetingDocument.setDocumentType(inputvo.getDocumentType());
+								partyMeetingDocument.setItdpAppUserId(inputvo.getUserId());
+							}
+						}
+						
+						partyMeetingDocument.setDocumentFormat("IMAGE");
+						//partyMeetingDocument.setUploadedById(inputvo.getUserId());
+						//partyMeetingDocument.setUpdatedById(inputvo.getUserId());
+						partyMeetingDocument.setUploadedTime(dateUtilService.getCurrentDateAndTime());
+						partyMeetingDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						partyMeetingDocument.setIsDeleted("N");
+					}
 					
 					partyMeetingDocument = partyMeetingDocumentDAO.save(partyMeetingDocument);
 					
