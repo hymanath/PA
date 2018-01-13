@@ -62,15 +62,15 @@
 						<div class="arrow_box_top">
 							<div class="row">
 								<div style="padding:10px;">
-									<div class="col-sm-5">
+									<div class="col-sm-5" id="entryLinkId">
 										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;"><a href="representationRequestEntry" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">ADD PETITION</a></h4>
 									</div>
-									<div class="col-sm-6">
+									<div class="col-sm-6"  id="viewLinkId">
 										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;" ><a href="representationRequestEntryViewMembers" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">VIEW PETITION</a></h4>
 									</div>
 								</div>
 							</div> 
-							<div class="row">
+							<div class="row"
 							
 								<div style="padding:10px;">
 								<div class="col-sm-5">
@@ -311,7 +311,7 @@
 		</div>		
 	  </div>
 	<form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
-	  <div class="modal-body">
+	  <div class="modal-body" id="statusChangeDivId">
 	   <div class="pad_light_yash_bg border_yash border_radius_5">
 			<div class="row">
 				<div class="col-sm-4">
@@ -421,6 +421,12 @@
 </script>
 <script>
 var userId = '${sessionScope.USER.userId}';
+
+if(userId==25 || userId==26 || userId==27){
+	//$('#statusChangeDivId').hide();
+	$('#dashboardLinkId').hide();
+}
+
 </script>
 <script type="text/javascript">
 $(document).on("click",".closeSecondModal",function(){

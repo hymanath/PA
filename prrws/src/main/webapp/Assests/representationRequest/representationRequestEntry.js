@@ -560,7 +560,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-12">';
 						str+='<div class="pull-right">';
-							str+='<button type="button" class="btn btn-lg btn-success searchSelfReferralCandidateCls button_gray" attr_type="representee" attr_add_referral_type="add_referral_type" disabled>ADD REFERRAL</button>';
+							//str+='<button type="button" class="btn btn-lg btn-success searchSelfReferralCandidateCls button_gray" attr_type="representee" attr_add_referral_type="add_referral_type" disabled>ADD REFERRAL</button>';
 							
 						str+='</div>';
 					str+='</div>';
@@ -2446,7 +2446,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	var estimationWorksCount = $('#noofWork'+typeVal+'').val();
 	if((parseInt(estimationWorksCount)>parseInt(globalInnerWorksCount)) || (parseInt(estimationWorksCount)<parseInt(globalInnerWorksCount))){ 
 		alert("Max no of works data not matched. Please check once.");
-		flag = false;
+		//flag = false;
 	}
 	
 	$(".validateCls").each(function(){
@@ -2741,11 +2741,11 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	});	
 	if(flag == false){
 		$('#saveButtonId').show();
-		return;
+		//return;
 	}
 	
 	
-	
+	$('#saveButtonId').hide();
 	$("#savingDetailsSpinner").html(spinner)
 	 var formData = new FormData();
 	$('#adminProfileForm input').each(

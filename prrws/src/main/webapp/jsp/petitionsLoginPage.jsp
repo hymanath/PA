@@ -166,10 +166,10 @@ function userLogin(){
 	}).done(function(result){
 		if(result !=  null){
 		  if(result.responceCode == 0){
-			$("#successMessage").html("<span style='color:red'>Invalid UserName and Password,Please Try Again..<span>");
+			$("#successMessage").html("<span style='color:red'>Invalid Username or Password,Please try again..<span>");
 			$("#spinnerImg").hide();
 		  }else if(result.responceCode == 1){
-			$("#successMessage").html("<span style='color:green'>Login Successfull,Page is Refreshing,Please Wait...<span>");
+			$("#successMessage").html("<span style='color:green'>Login successfull,page is refreshing,Please wait...<span>");
 			$(location).attr('href', result.url);
 			$("#spinnerImg").hide();
 		  }
