@@ -4630,7 +4630,7 @@
     	 	<property name="alertCreationAPIService" ref="alertCreationAPIService"/>
     	 	<property name="alertAssignedDAO" ref="alertAssignedDAO"/>
     	 	<property name="alertStatusDAO" ref="alertStatusDAO"/>
-    	 	<property name="dateutilService" ref="dateutilService"/>
+    	 	<property name="dateUtilService" ref="dateUtilService"/>
     	 	<property name="alertCommentDAO" ref="alertCommentDAO"/>
     	 	<property name="alertTrackingDAO" ref="alertTrackingDAO"/>
     	 	<property name="zohoTdpCadreContactDAO" ref="zohoTdpCadreContactDAO"/>
