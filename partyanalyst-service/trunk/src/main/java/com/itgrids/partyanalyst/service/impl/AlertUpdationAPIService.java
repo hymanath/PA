@@ -43,7 +43,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	private IAlertCreationAPIService alertCreationAPIService;
 	private IAlertAssignedDAO alertAssignedDAO;
 	private IAlertStatusDAO alertStatusDAO;
-	private DateUtilService dateutilService;
+	private DateUtilService dateUtilService;
 	private IAlertCommentDAO alertCommentDAO;
 	private IAlertTrackingDAO alertTrackingDAO;
 	private IZohoTdpCadreContactDAO zohoTdpCadreContactDAO;
@@ -76,11 +76,11 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	public void setAlertCommentDAO(IAlertCommentDAO alertCommentDAO) {
 		this.alertCommentDAO = alertCommentDAO;
 	}
-	public DateUtilService getDateutilService() {
-		return dateutilService;
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
 	}
-	public void setDateutilService(DateUtilService dateutilService) {
-		this.dateutilService = dateutilService;
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
 	}
 	public IAlertStatusDAO getAlertStatusDAO() {
 		return alertStatusDAO;
@@ -352,7 +352,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 					alertComment.setAlertId(alertIds.get(0));
 					alertComment.setComments(comment);
 					alertComment.setInsertedBy(1l);
-					alertComment.setInsertedTime(dateutilService.getCurrentDateAndTime());
+					alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					alertComment.setIsDeleted("N");
 					alertComment = alertCommentDAO.save(alertComment);
 					
@@ -361,7 +361,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 					alertTracking.setAlertCommentId(alertComment.getAlertCommentId());
 					alertTracking.setAlertTrackingActionId(2l);
 					alertTracking.setInsertedBy(1l);
-					alertTracking.setInsertedTime(dateutilService.getCurrentDateAndTime());
+					alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					alertTrackingDAO.save(alertTracking);
 				}
 			}
@@ -391,8 +391,8 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 							AlertAssigned alertAssigned = new AlertAssigned();
 							alertAssigned.setAlertId(alertIds.get(0));
 							alertAssigned.setTdpCadreId(cadreIds.get(0));
-							alertAssigned.setInsertedTime(dateutilService.getCurrentDateAndTime());
-							alertAssigned.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+							alertAssigned.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							alertAssigned.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							alertAssigned.setCreatedBy(1l);
 							alertAssigned.setIsDeleted("N");
 							alertAssigned.setSmsStatus("N");
@@ -424,7 +424,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 						Alert alert = alertDAO.get(alertIds.get(0));
 						alert.setAlertStatusId(statusIds.get(0));
 						alert.setUpdatedBy(1l);
-						alert.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+						alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						alert = alertDAO.save(alert);
 						
 						AlertTracking alertTracking = new AlertTracking();
@@ -433,7 +433,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 						alertTracking.setAlertTrackingActionId(1l);
 						alertTracking.setAlertSourceId(alert.getAlertSourceId());
 						alertTracking.setInsertedBy(1l);
-						alertTracking.setInsertedTime(dateutilService.getCurrentDateAndTime());
+						alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						alertTracking = alertTrackingDAO.save(alertTracking);
 					}
 				}
@@ -476,7 +476,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
    				alertDocument.setDocumentPath(IConstants.TOUR_DOCUMENTS+"/"+randomNumber+"."+ext);
    				alertDocument.setIsDeleted("N");
    				alertDocument.setInsertedBy(1l);
-   				alertDocument.setInsertedTime(dateutilService.getCurrentDateAndTime());
+   				alertDocument.setInsertedTime(dateUtilService.getCurrentDateAndTime());
    				alertDocumentDAO.save(alertDocument);
 			obj.put("message", "success");
 		} catch (Exception e) {
