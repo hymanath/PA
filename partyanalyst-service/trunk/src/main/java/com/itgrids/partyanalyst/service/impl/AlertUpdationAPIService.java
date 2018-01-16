@@ -5,15 +5,21 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import com.google.gson.JsonObject;
+import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
-import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
+import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
+import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.model.Alert;
+import com.itgrids.partyanalyst.model.AlertComment;
+import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
 import com.itgrids.partyanalyst.service.IAlertUpdationAPIService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -26,16 +32,43 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	private static final Logger LOG = Logger.getLogger(AlertUpdationAPIService.class);
 	private ITdpCadreDAO tdpCadreDAO;
 	private IAlertDAO alertDAO;
-	private IAlertDocumentDAO alertDocumentDAO;
 	private IAlertCreationAPIService alertCreationAPIService;
+	private IAlertAssignedDAO alertAssignedDAO;
+	private IAlertStatusDAO alertStatusDAO;
+	private DateUtilService dateutilService;
 	private IAlertCommentDAO alertCommentDAO;
+	private IAlertTrackingDAO alertTrackingDAO;
 	
 	
+	public IAlertTrackingDAO getAlertTrackingDAO() {
+		return alertTrackingDAO;
+	}
+	public void setAlertTrackingDAO(IAlertTrackingDAO alertTrackingDAO) {
+		this.alertTrackingDAO = alertTrackingDAO;
+	}
 	public IAlertCommentDAO getAlertCommentDAO() {
 		return alertCommentDAO;
 	}
 	public void setAlertCommentDAO(IAlertCommentDAO alertCommentDAO) {
 		this.alertCommentDAO = alertCommentDAO;
+	}
+	public DateUtilService getDateutilService() {
+		return dateutilService;
+	}
+	public void setDateutilService(DateUtilService dateutilService) {
+		this.dateutilService = dateutilService;
+	}
+	public IAlertStatusDAO getAlertStatusDAO() {
+		return alertStatusDAO;
+	}
+	public void setAlertStatusDAO(IAlertStatusDAO alertStatusDAO) {
+		this.alertStatusDAO = alertStatusDAO;
+	}
+	public IAlertAssignedDAO getAlertAssignedDAO() {
+		return alertAssignedDAO;
+	}
+	public void setAlertAssignedDAO(IAlertAssignedDAO alertAssignedDAO) {
+		this.alertAssignedDAO = alertAssignedDAO;
 	}
 	public IAlertCreationAPIService getAlertCreationAPIService() {
 		return alertCreationAPIService;
@@ -43,12 +76,6 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	public void setAlertCreationAPIService(
 			IAlertCreationAPIService alertCreationAPIService) {
 		this.alertCreationAPIService = alertCreationAPIService;
-	}
-	public IAlertDocumentDAO getAlertDocumentDAO() {
-		return alertDocumentDAO;
-	}
-	public void setAlertDocumentDAO(IAlertDocumentDAO alertDocumentDAO) {
-		this.alertDocumentDAO = alertDocumentDAO;
 	}
 	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
@@ -152,15 +179,31 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 		return null;
 	}
 	
-	//sending attachments of alert
-	public String sendAttachements(Long alertId){
+	public String sendAlertUpdationDetails(Long alertId,List<String> fileNames,String comment){
 		try {
 			if(alertId != null && alertId > 0l){
-				//0.documentId,1.documentPath
-				List<Object[]> uploadListObj = alertDocumentDAO.getDocumentsForAlert(alertId);
-				if(uploadListObj != null && uploadListObj.size() > 0){
-					String alertTicketId = alertDAO.getAlertTicketId(alertId);
-					sendAttachementsToZOHO(alertTicketId,uploadListObj);
+				String alertTicketId = alertDAO.getAlertTicketId(alertId);
+				if(fileNames != null && fileNames.size() > 0){
+					sendAttachements(alertTicketId,fileNames);
+				}
+				if(comment != null && !comment.trim().isEmpty()){
+					updateAlertComment(alertTicketId,comment);
+				}
+				updateAlertStatus(alertId);
+			}
+			
+			return "success";
+		} catch (Exception e) {
+			return "failure";
+		}
+	}
+	
+	//sending attachments of alert
+	public String sendAttachements(String alertTicketId,List<String> fileNames){
+		try {
+			if(fileNames != null && fileNames.size() > 0){
+				for (String string : fileNames) {
+					sendAttachementsToZOHO(alertTicketId,string);
 				}
 			}
 			return "success";
@@ -170,91 +213,98 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 		}
 	}
 	
-	public String sendAttachementsToZOHO(String alertTicketId,List<Object[]> objArr){
+	public String sendAttachementsToZOHO(String alertTicketId,String fileName){
+		String status = "";
 		try {
-			if(objArr != null && objArr.size() > 0){
-				for (Object[] objects : objArr) {
-					String fileURL = IConstants.STATIC_CONTENT_FOLDER_URL+"Reports/"+objects[1].toString();
-					alertCreationAPIService.uploadMultiPartFile("https://desk.zoho.com/api/v1/tickets/"+alertTicketId+"/attachments",new File(fileURL));
+			String fileURL = IConstants.STATIC_CONTENT_FOLDER_URL+"Reports/"+fileName;
+			String resultString  = alertCreationAPIService.uploadMultiPartFile("https://desk.zoho.com/api/v1/tickets/"+alertTicketId+"/attachments",new File(fileURL));
+			if(resultString != null && !resultString.trim().isEmpty()){
+				if(resultString.contains("id"))
+					status = "success";
+				else
+					status = "failure";
 				}
-				return "success";
-			}
 		} catch (Exception e) {
 			LOG.error("Exception raised while send the alert attachments to ZOHO", e);
-			return "failure";
+			status = "failure";
 		}
-		return null;
+		return status;
 	}
 	
 	//sending alert status
-	public String updateAlertStatus(String status,String alertTicketId){
-		try {
-			 ClientConfig clientConfig = new DefaultClientConfig();
-		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-		     Client client = Client.create(clientConfig);
-			 WebResource webResource = client.resource("https://desk.zoho.com/api/v1/tickets/"+alertTicketId);
-		         
-		     WebResource.Builder builder = webResource.getRequestBuilder();			         
-		     builder.header("Authorization",IConstants.ZOHO_ADMIN_AUTHORIZATION);
-		     builder.header("orgId",IConstants.ZOHO_ADMIN_ORGID);
-		     builder.accept("application/json");
-		     builder.type("application/json");
-		     
-		     JSONObject jobj = new JSONObject();
-		     jobj.put("status", status);
-
-		     ClientResponse response = builder.put(ClientResponse.class,jobj);
-		         
-		     if (response.getStatus() != 200) {
-		    	 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-		     } else {
-		    	 String output = response.getEntity(String.class);
-		    	 JSONObject obj= new JSONObject(output);
-		    	 if(obj.has("ticketNumber"))
-		    		 return "success";
-		    	 else
-		    		 return "failure";
-		     }
-		} catch (Exception e) {
-			LOG.error("Exception raised while updating alert status", e);
-			return "failure";
-		}
-	}
-	
-	public String updateAlertComment(Long alertId){
-		String status = null;
+	public String updateAlertStatus(Long alertId){
+		String result="";
 		try {
 			String alertTicketId = alertDAO.getAlertTicketId(alertId);
 			if(alertTicketId != null && !alertTicketId.trim().isEmpty()){
-				//get the comments of alert
-				List<Object[]> objList = alertCommentDAO.getCommentsOfAlert(alertId);
-				if(objList != null && objList.size() > 0){
-					 for (Object[] objects : objList) {
-				    	 ClientConfig clientConfig = new DefaultClientConfig();
-					     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-					     Client client = Client.create(clientConfig);
-						 WebResource webResource = client.resource("https://desk.zoho.com/api/v1/tickets/"+alertTicketId+"/comments");
-					         
-					     WebResource.Builder builder = webResource.getRequestBuilder();			         
-					     builder.header("Authorization","Zoho-authtoken "+IConstants.ZOHO_ADMIN_AUTHORIZATION);
-					     builder.header("orgId",IConstants.ZOHO_ADMIN_ORGID);
-					     builder.accept("application/json");
-					     builder.type("application/json");
+				Object[] objArr = alertDAO.getAlertStatus(alertId);
+				if(objArr != null && objArr.length > 0){
+					String status = objArr[1].toString();
+					
+					ClientConfig clientConfig = new DefaultClientConfig();
+				     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+				     Client client = Client.create(clientConfig);
+					 WebResource webResource = client.resource("https://desk.zoho.com/api/v1/tickets/"+alertTicketId);
+				         
+				     WebResource.Builder builder = webResource.getRequestBuilder();			         
+				     builder.header("Authorization",IConstants.ZOHO_ADMIN_AUTHORIZATION);
+				     builder.header("orgId",IConstants.ZOHO_ADMIN_ORGID);
+				     builder.accept("application/json");
+				     builder.type("application/json");
+				     
+				     JSONObject jobj = new JSONObject();
+				     jobj.put("status", status);
+
+				     ClientResponse response = builder.put(ClientResponse.class,jobj);
+				         
+				     if (response.getStatus() != 200) {
+				    	 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+				     } else {
+				    	 String output = response.getEntity(String.class);
+				    	 JSONObject obj= new JSONObject(output);
+				    	 if(obj.has("ticketNumber"))
+				    		 result = "success";
+				    	 else
+				    		 result = "failure";
+				     }
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised while updating alert status", e);
+			result = "failure";
+		}
+		return result;
+	}
+	
+	public String updateAlertComment(String alertTicketId,String comment){
+		String status = null;
+		try {
+			if(alertTicketId != null && !alertTicketId.trim().isEmpty()){
+				if(comment != null && !comment.trim().isEmpty()){
+					ClientConfig clientConfig = new DefaultClientConfig();
+					clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+					Client client = Client.create(clientConfig);
+					WebResource webResource = client.resource("https://desk.zoho.com/api/v1/tickets/"+alertTicketId+"/comments");
+					        
+					WebResource.Builder builder = webResource.getRequestBuilder();			         
+					builder.header("Authorization","Zoho-authtoken "+IConstants.ZOHO_ADMIN_AUTHORIZATION);
+					builder.header("orgId",IConstants.ZOHO_ADMIN_ORGID);
+					builder.accept("application/json");
+					builder.type("application/json");
 					     
-				    	 JSONObject jobj = new JSONObject();
-					     jobj.put("isPublic", "true");
-					     jobj.put("content", objects[1].toString());
+				    JSONObject jobj = new JSONObject();
+					jobj.put("isPublic", "true");
+					jobj.put("content", comment);
 					     
-					     ClientResponse response = builder.post(ClientResponse.class,jobj);
+					ClientResponse response = builder.post(ClientResponse.class,jobj);
 					         
-					     if (response.getStatus() != 200) {
-					    	 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-					     } else {
-					    	 String output = response.getEntity(String.class);
-					    	 JSONObject obj= new JSONObject(output);
-					    	 if(obj.has("id")) status = "success";
-					    	 else status = "failure";
-					     }
+					if (response.getStatus() != 200) {
+					   	 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+					} else {
+					   	 String output = response.getEntity(String.class);
+					   	 JSONObject obj= new JSONObject(output);
+					   	 if(obj.has("id")) status = "success";
+					   	 else status = "failure";
 					}
 				}
 			}
@@ -263,5 +313,104 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 			status = "failure";
 		}
 		return status;
+	}
+	
+
+	public JSONObject saveZohoAlertComment(JSONObject playLoadObj){
+		JSONObject obj = new JSONObject();
+		try {
+			if(playLoadObj.has("content") && playLoadObj.has("ticketId")){
+				String comment = playLoadObj.getString("content");
+				String alertTicketId = playLoadObj.getString("ticketId");
+				List<Long> alertIds = alertDAO.getAlertId(alertTicketId);
+				if(alertIds != null && alertIds.size() > 0){
+					AlertComment alertComment = new AlertComment();
+					alertComment.setAlertId(alertIds.get(0));
+					alertComment.setComments(comment);
+					alertComment.setInsertedBy(1l);
+					alertComment.setInsertedTime(dateutilService.getCurrentDateAndTime());
+					alertComment.setIsDeleted("N");
+					alertComment = alertCommentDAO.save(alertComment);
+					
+					AlertTracking alertTracking = new AlertTracking();
+					alertTracking.setAlertId(alertIds.get(0));
+					alertTracking.setAlertCommentId(alertComment.getAlertCommentId());
+					alertTracking.setAlertTrackingActionId(2l);
+					alertTracking.setInsertedBy(1l);
+					alertTracking.setInsertedTime(dateutilService.getCurrentDateAndTime());
+					alertTrackingDAO.save(alertTracking);
+				}
+			}
+			obj.put("message", "success");
+		} catch (Exception e) {
+			try {
+				obj.put("message", "failure");
+				LOG.error("Exception occured at saveZohoAlertComment()", e);
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+			
+		}
+		return obj;
+	}
+	
+	public JSONObject saveAlertAssign(JSONObject playLoadObj){
+		JSONObject obj = new JSONObject();
+		try {
+			
+			if(playLoadObj.has("ticketId")){
+				List<Long> alertIds = alertDAO.getAlertId(playLoadObj.getString("ticketId"));
+				String contactId = playLoadObj.getString("contactId");
+				
+				
+			}
+			obj.put("message", "success");
+		} catch (Exception e) {
+			try {
+				obj.put("message", "failure");
+				LOG.error("Exception occured at saveAlertAssign()", e);
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return obj;
+	}
+	
+	public JSONObject saveAlertStatus(JSONObject playLoadObj){
+		JSONObject obj = new JSONObject();
+		try {
+			if(playLoadObj.has("ticketId")){
+				List<Long> alertIds = alertDAO.getAlertId(playLoadObj.getString("ticketId"));
+				if(alertIds != null && alertIds.size() > 0){
+					List<Long> statusIds = alertStatusDAO.getStatusId(playLoadObj.getString("status").trim());
+					if(statusIds != null && statusIds.size() > 0){
+						Alert alert = alertDAO.get(alertIds.get(0));
+						alert.setAlertStatusId(statusIds.get(0));
+						alert.setUpdatedBy(1l);
+						alert.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+						alert = alertDAO.save(alert);
+						
+						AlertTracking alertTracking = new AlertTracking();
+						alertTracking.setAlertId(alert.getAlertId());
+						alertTracking.setAlertStatusId(alert.getAlertStatusId());
+						alertTracking.setAlertTrackingActionId(1l);
+						alertTracking.setAlertSourceId(alert.getAlertSourceId());
+						alertTracking.setInsertedBy(1l);
+						alertTracking.setInsertedTime(dateutilService.getCurrentDateAndTime());
+						alertTracking = alertTrackingDAO.save(alertTracking);
+					}
+				}
+				
+			}
+			obj.put("message", "success");
+		} catch (Exception e) {
+			try {
+				obj.put("message", "failure");
+				LOG.error("Exception occured at saveAlertStatus()", e);
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return obj;
 	}
 }

@@ -190,6 +190,7 @@ import com.itgrids.partyanalyst.model.VerificationStatus;
 import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
+import com.itgrids.partyanalyst.service.IAlertUpdationAPIService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -299,7 +300,18 @@ private IAlertVerificationUserDAO alertVerificationUserDAO;
 
 private SmsCountrySmsService smsCountrySmsService;
 private IAlertCreationAPIService alertCreationAPIService;
+private IAlertUpdationAPIService alertUpdationAPIService;
 
+
+
+public IAlertUpdationAPIService getAlertUpdationAPIService() {
+	return alertUpdationAPIService;
+}
+
+public void setAlertUpdationAPIService(
+		IAlertUpdationAPIService alertUpdationAPIService) {
+	this.alertUpdationAPIService = alertUpdationAPIService;
+}
 
 public void setAlertCreationAPIService(
 		IAlertCreationAPIService alertCreationAPIService) {
@@ -1992,6 +2004,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							alertTrackingDocumentsDAO.save(alertTrackingDocuments);
 						}
 		    		}
+		    		//call to send the alert updations to ZOHO
+		    		//alertUpdationAPIService.sendAlertUpdationDetails(inputVo.getId(),fileNames,alertComment.getComments());//sandeep
 				}catch (Exception ex) {
 					rs = "fail";
 					return rs;
