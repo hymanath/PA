@@ -751,7 +751,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		resultStatus = alertService.saveAlertAssignedUser(alertVO,regVo.getRegistrationID());
 		
 			if(cadreIDs.size() > 0 && resultStatus != null && resultStatus.getResultCode() == 0){
-				//String conactId = alertUpdationAPIService.sendAssignedCandidateCantactId(cadreIDs.get(0),jObj.getLong("alertId"));
+				//String conactId = alertUpdationAPIService.sendAssignedCandidateCantactId(cadreIDs.get(0),jObj.getLong("alertId"));//sandeep
 			}
 		}
 		catch (Exception e) {
