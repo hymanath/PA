@@ -6,14 +6,19 @@ import org.codehaus.jettison.json.JSONObject;
 
 import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
 import com.itgrids.partyanalyst.service.IAlertRenderService;
+import com.itgrids.partyanalyst.service.IAlertUpdationAPIService;
 
 public class AlertRenderService implements IAlertRenderService{
 	
 	private IAlertCreationAPIService alertCreationAPIService;
-
+	private IAlertUpdationAPIService alertUpdationAPIService;
 	
-	public void setAlertCreationAPIService(
-			IAlertCreationAPIService alertCreationAPIService) {
+	
+	public void setAlertUpdationAPIService(IAlertUpdationAPIService alertUpdationAPIService) {
+		this.alertUpdationAPIService = alertUpdationAPIService;
+	}
+
+	public void setAlertCreationAPIService(IAlertCreationAPIService alertCreationAPIService) {
 		this.alertCreationAPIService = alertCreationAPIService;
 	}
 
@@ -22,10 +27,28 @@ public class AlertRenderService implements IAlertRenderService{
 		try {			
 			if(jsonArr !=null && jsonArr.length()>0){
 				for (int i = 0; i < jsonArr.length(); i++) { 
-					JSONObject json = (JSONObject)jsonArr.get(0);
+					JSONObject json = (JSONObject)jsonArr.get(i);
 					if(json !=null){
-						if(json.has("payload") && json.has("eventType") && json.getString("eventType").equalsIgnoreCase("Tickets_Add")){
-							finalJson = getRenderedAlertObject(json.getJSONObject("payload"));
+						if(json.has("payload") && json.has("eventType")){
+							String eventType = json.getString("eventType").trim();
+							if(eventType.equalsIgnoreCase("Tickets_Add")){
+								finalJson = getRenderedAlertObject(json.getJSONObject("payload"));//alert creation
+								if(json.getJSONObject("payload").has("contactId")){
+									alertUpdationAPIService.saveAlertAssign(json.getJSONObject("payload"));
+								}	
+								if(json.getJSONObject("payload").has("status")){
+									alertUpdationAPIService.saveAlertStatus(json.getJSONObject("payload"));
+								}
+							}else if(eventType.equalsIgnoreCase("Ticket_Update")){
+								if(json.getJSONObject("payload").has("contactId")){
+									alertUpdationAPIService.saveAlertAssign(json.getJSONObject("payload"));
+								}	
+								if(json.getJSONObject("payload").has("status")){
+									alertUpdationAPIService.saveAlertStatus(json.getJSONObject("payload"));
+								}
+							}else if(eventType.equalsIgnoreCase("Ticket_Comment_Add")){
+								finalJson = alertUpdationAPIService.saveZohoAlertComment(json.getJSONObject("payload"));
+							}
 						}
 					}
 				}

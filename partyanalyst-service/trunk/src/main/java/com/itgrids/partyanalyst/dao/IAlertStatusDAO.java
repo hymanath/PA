@@ -14,4 +14,5 @@ public interface IAlertStatusDAO extends GenericDao<AlertStatus, Long> {
 	public List<Object[]> getAlertStatusDtlsBasidOnAlertIds(List<Long> statusIds);
 	public List<String> getMonthAndYear(Date fromDate,Date toDate);
 	public Long getIdOfName(String status);
+	public List<Long> getStatusId(String status);
 }

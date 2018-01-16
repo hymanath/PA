@@ -198,4 +198,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public void flushAndclearSession();
 	public int updateZohoAlertDetails(String ticketId,Long alertId);
 	public String getAlertTicketId(Long alertId);
+	public List<Long> getAlertId(String alertTicketId);
 }
