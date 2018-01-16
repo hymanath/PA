@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,16 +14,21 @@ import org.codehaus.jettison.json.JSONObject;
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.IZohoTdpCadreContactDAO;
 import com.itgrids.partyanalyst.model.Alert;
+import com.itgrids.partyanalyst.model.AlertAssigned;
 import com.itgrids.partyanalyst.model.AlertComment;
+import com.itgrids.partyanalyst.model.AlertDocument;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
 import com.itgrids.partyanalyst.service.IAlertUpdationAPIService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -38,8 +46,24 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	private DateUtilService dateutilService;
 	private IAlertCommentDAO alertCommentDAO;
 	private IAlertTrackingDAO alertTrackingDAO;
+	private IZohoTdpCadreContactDAO zohoTdpCadreContactDAO;
+	private IAlertDocumentDAO alertDocumentDAO;
 	
 	
+	
+	public IAlertDocumentDAO getAlertDocumentDAO() {
+		return alertDocumentDAO;
+	}
+	public void setAlertDocumentDAO(IAlertDocumentDAO alertDocumentDAO) {
+		this.alertDocumentDAO = alertDocumentDAO;
+	}
+	public IZohoTdpCadreContactDAO getZohoTdpCadreContactDAO() {
+		return zohoTdpCadreContactDAO;
+	}
+	public void setZohoTdpCadreContactDAO(
+			IZohoTdpCadreContactDAO zohoTdpCadreContactDAO) {
+		this.zohoTdpCadreContactDAO = zohoTdpCadreContactDAO;
+	}
 	public IAlertTrackingDAO getAlertTrackingDAO() {
 		return alertTrackingDAO;
 	}
@@ -357,12 +381,25 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	public JSONObject saveAlertAssign(JSONObject playLoadObj){
 		JSONObject obj = new JSONObject();
 		try {
-			
 			if(playLoadObj.has("ticketId")){
 				List<Long> alertIds = alertDAO.getAlertId(playLoadObj.getString("ticketId"));
-				String contactId = playLoadObj.getString("contactId");
-				
-				
+				if(alertIds != null && alertIds.size() > 0){
+					String contactId = playLoadObj.getString("contactId");
+					if(contactId != null && !contactId.trim().isEmpty()){
+						List<Long> cadreIds = zohoTdpCadreContactDAO.getTdpCadreId(contactId);
+						if(cadreIds != null && cadreIds.size() > 0){
+							AlertAssigned alertAssigned = new AlertAssigned();
+							alertAssigned.setAlertId(alertIds.get(0));
+							alertAssigned.setTdpCadreId(cadreIds.get(0));
+							alertAssigned.setInsertedTime(dateutilService.getCurrentDateAndTime());
+							alertAssigned.setUpdatedTime(dateutilService.getCurrentDateAndTime());
+							alertAssigned.setCreatedBy(1l);
+							alertAssigned.setIsDeleted("N");
+							alertAssigned.setSmsStatus("N");
+							alertAssignedDAO.save(alertAssigned);
+						}
+					}
+				}
 			}
 			obj.put("message", "success");
 		} catch (Exception e) {
@@ -407,6 +444,45 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 			try {
 				obj.put("message", "failure");
 				LOG.error("Exception occured at saveAlertStatus()", e);
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return obj;
+	}
+	
+	public JSONObject saveAlertDocument(String inpuUrl,Long alertId){
+		JSONObject obj = new JSONObject();
+		try {
+			URL website = new URL(inpuUrl);
+			byte[] ba1 = new byte[2048];
+				int baLength;
+				InputStream is1 = website.openStream();
+				String ouptputURl = IConstants.STATIC_CONTENT_FOLDER_PATH+"/Reports/"+IConstants.TOUR_DOCUMENTS;
+				Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+				String ext = inpuUrl.split(".")[1];
+				FileOutputStream fos1 = new FileOutputStream(ouptputURl+"/"+randomNumber+"."+ext);
+				while ((baLength = is1.read(ba1)) != -1) {
+   					fos1.write(ba1, 0, baLength);
+   				}
+   			
+   				fos1.flush();
+   				fos1.close();
+   				is1.close();
+   				
+   				
+   				AlertDocument alertDocument = new AlertDocument();
+   				alertDocument.setAlertId(alertId);
+   				alertDocument.setDocumentPath(IConstants.TOUR_DOCUMENTS+"/"+randomNumber+"."+ext);
+   				alertDocument.setIsDeleted("N");
+   				alertDocument.setInsertedBy(1l);
+   				alertDocument.setInsertedTime(dateutilService.getCurrentDateAndTime());
+   				alertDocumentDAO.save(alertDocument);
+			obj.put("message", "success");
+		} catch (Exception e) {
+			try {
+				obj.put("message", "failure");
+				LOG.error("Exception occured at saveAlertDocument()", e);
 			} catch (JSONException e1) {
 				e1.printStackTrace();
 			}

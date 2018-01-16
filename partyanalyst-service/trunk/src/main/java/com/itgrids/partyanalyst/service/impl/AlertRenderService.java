@@ -46,7 +46,8 @@ public class AlertRenderService implements IAlertRenderService{
 								if(json.getJSONObject("payload").has("status")){
 									alertUpdationAPIService.saveAlertStatus(json.getJSONObject("payload"));
 								}
-							}else if(eventType.equalsIgnoreCase("Ticket_Comment_Add")){
+							}
+							if(eventType.equalsIgnoreCase("Ticket_Comment_Add") || eventType.equalsIgnoreCase("Ticket_Comment_Update")){
 								finalJson = alertUpdationAPIService.saveZohoAlertComment(json.getJSONObject("payload"));
 							}
 						}
