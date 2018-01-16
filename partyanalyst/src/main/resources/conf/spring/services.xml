@@ -3708,6 +3708,7 @@
         <property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO"></property>
         <property name="alertVerificationUserDAO" ref="alertVerificationUserDAO"></property>		
         <property name="alertCreationAPIService" ref="alertCreationAPIService"></property>
+        <property name="alertUpdationAPIService" ref="alertUpdationAPIService"></property>
 	</bean>            
 	<!-- Debate End -->
 	
@@ -4626,9 +4627,12 @@
     	 <bean name="alertUpdationAPIService" class="com.itgrids.partyanalyst.service.impl.AlertUpdationAPIService" >
     	 	<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
     	 	<property name="alertDAO" ref="alertDAO"/>
-    	 	<property name="alertDocumentDAO" ref="alertDocumentDAO"/>
     	 	<property name="alertCreationAPIService" ref="alertCreationAPIService"/>
+    	 	<property name="alertAssignedDAO" ref="alertAssignedDAO"/>
+    	 	<property name="alertStatusDAO" ref="alertStatusDAO"/>
+    	 	<property name="dateutilService" ref="dateutilService"/>
     	 	<property name="alertCommentDAO" ref="alertCommentDAO"/>
+    	 	<property name="alertTrackingDAO" ref="alertTrackingDAO"/>
     	 </bean>
     	 
     	 <bean name="alertCreationAPIService" class="com.itgrids.partyanalyst.service.impl.AlertCreationAPIService">
@@ -4656,5 +4660,6 @@
     	 </bean>
     	 <bean name="alertRenderService" class="com.itgrids.partyanalyst.service.impl.AlertRenderService">
     	 	<property name="alertCreationAPIService" ref="alertCreationAPIService"></property>
+    	 	<property name="alertUpdationAPIService" ref="alertUpdationAPIService"></property>
     	 </bean>
 </beans>			
