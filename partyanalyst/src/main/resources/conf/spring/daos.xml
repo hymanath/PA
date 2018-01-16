@@ -4255,4 +4255,7 @@
 	 <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 	 
+	 <bean id="zohoTdpCadreContactDAO" class="com.itgrids.partyanalyst.dao.hibernate.ZohoTdpCadreContactDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		

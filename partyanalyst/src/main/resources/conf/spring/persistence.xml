@@ -1356,7 +1356,7 @@
 						 <value>com.itgrids.partyanalyst.model.AlertVerificationUser</value>
 						 <value>com.itgrids.partyanalyst.model.OtpDetails</value>
 						 
-						 
+						 <value>com.itgrids.partyanalyst.model.ZohoTdpCadreContact</value>
 				  </list>
 			
 		</property>

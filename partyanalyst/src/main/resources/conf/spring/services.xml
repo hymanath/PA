@@ -4633,6 +4633,8 @@
     	 	<property name="dateutilService" ref="dateutilService"/>
     	 	<property name="alertCommentDAO" ref="alertCommentDAO"/>
     	 	<property name="alertTrackingDAO" ref="alertTrackingDAO"/>
+    	 	<property name="zohoTdpCadreContactDAO" ref="zohoTdpCadreContactDAO"/>
+    	 	<property name="alertDocumentDAO" ref="alertDocumentDAO"/>
     	 </bean>
     	 
     	 <bean name="alertCreationAPIService" class="com.itgrids.partyanalyst.service.impl.AlertCreationAPIService">
