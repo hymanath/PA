@@ -1036,7 +1036,7 @@ public class CommonMethodsUtilService {
 	        return webResource;
 		}
 		public  String calculateAmountInWords(Long number){
-			NumberFormat formatter = new DecimalFormat("###.###");
+			NumberFormat formatter = new DecimalFormat("###.#####");
 			
 			String amountStr = number.toString();
 		      int lenght = amountStr.trim().length();
@@ -1050,7 +1050,7 @@ public class CommonMethodsUtilService {
 		    	 decAmount = amountStr.substring(len,len+3);
 		      }else{
 		    	  //System.out.println("else:"+String.valueOf(number/10000000.0));
-		    	  String f = formatter.format(number/100000.0);
+		    	  String f = formatter.format(number/10000000.0);
 		    	  //System.out.print(f);
 		    	  return f;
 		      }
