@@ -40,30 +40,30 @@
 				</div>
 				<div class="col-sm-5 col-xs-12 pull-right innerPageHeader">
 					<i class="glyphicon glyphicon-th menu-cls pull-right" style="position:relative;color:#AA8440"></i>
-					<div class="menu-data-cls">
+					<div class="menuCls">
 						<div class="arrow_box_top">
 							<div class="row">
 								<div style="padding:10px;">
-									<div class="col-sm-5">
+									<!--<div class="col-sm-5">
 										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;"><a href="representationRequestEntry" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">ADD PETITION</a></h4>
 									</div>
 									<div class="col-sm-6">
 										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;" ><a href="representationRequestEntryViewMembers" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">VIEW PETITION</a></h4>
-									</div>
+									</div>-->
 								</div>
+								<div id="menuId"></div>
 							</div>
-							<div class="row">
+							<!--<div class="row">
 								<div style="padding:10px;">
 								<div class="col-sm-5">
 										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;"><a href="representationsDashboard" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">DASHBOARD</a></h4>
 									</div>
 								</div>
-							</div>
+							</div>-->
 							<div class="row">
 								<div style="padding:10px;">
 								<div class="col-sm-12">
-									<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
-									
+									<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;"><i class="fa fa-sign-out" style="color:#FFBA00;"></i>&nbsp;&nbsp;Sign-out</a>
 								</div>
 								</div>
 							</div>
@@ -291,7 +291,7 @@
 		</div>
 	</section>
 </main>
-
+<script type="text/javascript" src="Assests/login/loginMenu.js"></script>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
