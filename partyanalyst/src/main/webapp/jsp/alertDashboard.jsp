@@ -281,7 +281,7 @@
 											<!--<option value="0" selected="selected">All</option>
 											<option value="1">Pending</option>
 											<option value="2">Notified</option>
-											<option value="3">Action In Progess</option>
+											<option value="3">Action In Progress</option>
 											<option value="4">Completed</option>
 											<option value="5">Unable to Resolve</option>
 											<option value="6">Action Not Required</option>
@@ -404,7 +404,7 @@
 							<option value='0'>Select Status</option>
 							
 							<option value='1'>Created</option>
-							<option value='2'>Action In Progess</option>
+							<option value='2'>Action In Progress</option>
 							<option value='3'>Completed</option>
 						</select>
 						<label>Comments</label><span ></span>
@@ -944,10 +944,10 @@ function getAlertInvolvedCandidate(cadreId){
 			}
 		});
 	}
-	var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
+	var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progress":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
 	function buildTotalAlertGroupByStatusThenCategory(result){
-		var colorArr = {"Pending":"#F08080","Notified":"#D8E5F5","Action In Progess":"#C9EBF5","Completed":"#C0E1D8","Unable to Resolve":"#ECDDD6","Action Not Required":"#E7D2D7"};
-		//var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progess":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
+		var colorArr = {"Pending":"#F08080","Notified":"#D8E5F5","Action In Progress":"#C9EBF5","Completed":"#C0E1D8","Unable to Resolve":"#ECDDD6","Action Not Required":"#E7D2D7"};
+		//var colorArrHead = {"Pending":"#F08080","Notified":"#0000CD","Action In Progress":"#40E0D0","Completed":"#006400","Unable to Resolve":"#FF8C00","Action Not Required":"#8B0000"};
 		var str = '';  
 		if($(window).width() < 500)
 		{
@@ -1244,7 +1244,7 @@ function getTotalAlertVerificationStatus(globalStateId,currentFromDate,currentTo
 } 
 var colorArrForStsHead = {"pending":"#F08080","completed":"#006400"};  
 function buildTotalAlertVerificationStatus(result,alertTypeId){
-		var colorArr = {"Pending":"#F08080","Notified":"#D8E5F5","Action In Progess":"#C9EBF5","Completed":"#C0E1D8","Unable to Resolve":"#ECDDD6","Action Not Required":"#E7D2D7"};
+		var colorArr = {"Pending":"#F08080","Notified":"#D8E5F5","Action In Progress":"#C9EBF5","Completed":"#C0E1D8","Unable to Resolve":"#ECDDD6","Action Not Required":"#E7D2D7"};
 		var str = '';  
 		if($(window).width() < 500)  
 		{
