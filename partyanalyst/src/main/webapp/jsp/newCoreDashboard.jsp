@@ -5886,6 +5886,8 @@ $("[expand-icon]").click(function(){
 			getChannelWisePartiesAnalysis(globalcategoryId);
 		}else if(blockName == 'kaizala'){
 			getUserTypeWiseKaizalaCommitteeMemberDetailsCnt();
+		}else if(blockName == 'pressmeet'){
+			getPartyWiseThenCandidateWisePerformance();
 		}
 	}else if(iconClass == 'glyphicon glyphicon-resize-small')
 	{
@@ -6281,7 +6283,6 @@ var globalImages;
 		getBoothCadreEnrolmentYears();
 	});
 	getLoggedInUserStructure();
-	
 	onLoadCalls();
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();
