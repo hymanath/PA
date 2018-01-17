@@ -593,7 +593,7 @@ function buildCandidateOverAllPerformanceCohortPressmeet(result)
 					{
 						str+='<a role="button" class="collapsepressmeetIcon" data-toggle="collapse" data-parent="#accordionInner" href="#collapseInner'+i+'" aria-expanded="true" aria-controls="collapseInner'+i+'">';
 					}else{
-						str+='<a role="button" class="collapsepressmeetIcon collapsed" data-toggle="collapse" data-parent="#accordionInner" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapseInner'+i+'">';
+						str+='<a role="button" class="collapsepressmeetIcon collapsed" data-toggle="collapse" data-parent="#accordionInner" href="#collapseInner'+i+'" aria-expanded="true" aria-controls="collapseInner'+i+'">';
 					}
 					
 						str+='<h4 class="panel-title"><img  src="newCoreDashBoard/img/'+result.paliticalPartyList[i].name+'.png" alt="'+result.paliticalPartyList[i].name+'" class="PressmeetPartyIcon"/> '+result.paliticalPartyList[i].name +' spokespersons</h4>';
