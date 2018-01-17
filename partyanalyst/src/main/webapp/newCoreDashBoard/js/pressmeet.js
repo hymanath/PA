@@ -74,10 +74,10 @@ function preemeeetOnloadCalls(){
 var partywiseresult='';
 $(document).on("click",".pressmeetIconExpand",function(){
 	if( $(this).find("i").hasClass("glyphicon glyphicon-resize-small" )){
-		setTimeout(function(){
-			getPartyWiseThenCandidateWisePerformance();
-		},1000);
-		  
+		getPartyWiseThenCandidateWisePerformance();
+	}else{
+		$(".collapsepressmeetIcon").addClass("collapsed")
+		$(".panel-collapse").removeClass("in")
 	}    
 	$(".pressmeetSpokesCls li").removeClass("active");
 	$(".pressmeetSpokesCls li:first-child").addClass("active");
