@@ -41,23 +41,25 @@
 				</div>
 				<div class="col-sm-5 col-xs-12 pull-right innerPageHeader">
 					<i class="glyphicon glyphicon-th menu-cls pull-right" style="position:relative;color:#AA8440"></i>
-					<div class="menu-data-cls">
+					<div class="menuCls">
 						<div class="arrow_box_top">
 							<div class="row">
 								<div style="padding:10px;">
-									<div class="col-sm-6">
+									<!--<div class="col-sm-6">
 										<h4><a href="representationRequestEntry">ADD PETITION</a></h4>
 									</div>
 									<div class="col-sm-6">
 										<h4 class=""><a href="representationRequestEntryViewMembers">VIEW PETITION</a></h4>
-									</div>
+									</div>-->
 								</div>
+								
+								<div id="menuId"></div>
+								
 							</div>
 							<div class="row">
 								<div style="padding:10px;">
 								<div class="col-sm-12">
-									<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>
-									
+									<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;"><i class="fa fa-sign-out" style="color:#FFBA00;"></i>&nbsp;&nbsp;Sign-out</a>
 								</div>
 								</div>
 							</div>
@@ -214,7 +216,8 @@
 <!-- for file uploader  -->              
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/jquery.filer.min.js"></script>
 <script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile.js?v=1.0.5"></script>                
-<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>                
+<script type="text/javascript" src="Assests/Plugins/dragAndDropPhoto/js/updateTourFile2.js?v=1.0.5"></script>
+<script type="text/javascript" src="Assests/login/loginMenu.js"></script>                
 <!-- for file uploader -->
 <script src="Assests/representationRequest/representationRequestEntry.js" type="text/javascript"></script>
 <script>

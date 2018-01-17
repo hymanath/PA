@@ -58,42 +58,45 @@
 				</div>
 				<div class="col-sm-5 col-xs-12 pull-right innerPageHeader">
 					<i class="glyphicon glyphicon-th menu-cls pull-right" style="position:relative;color:#AA8440"></i>
-					<div class="menu-data-cls">
+					<div class="menuCls">
 						<div class="arrow_box_top">
 							<div class="row">
-								<div style="padding:10px;">
-									<div class="col-sm-5" id="entryLinkId">
+								<!--<div style="padding:10px;">
+									<div class="col-sm-5">
 										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;"><a href="representationRequestEntry" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">ADD PETITION</a></h4>
 									</div>
-									<div class="col-sm-6"  id="viewLinkId">
+									<div class="col-sm-6">
 										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;" ><a href="representationRequestEntryViewMembers" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">VIEW PETITION</a></h4>
 									</div>
-								</div>
+								</div>-->
+								
+								
 							</div> 
-							<div class="row"
+							<div class="row">
 							
 								<div style="padding:10px;">
-								<div class="col-sm-5">
+								<!--<div class="col-sm-5">
 										<h4 style="border-radius: 5px; background-color: rgb(51, 51, 51); padding: 6px;"><a href="representationsDashboard" style="color: rgb(255, 255, 255) ! important; font-size: 14px;">DASHBOARD</a></h4>
-									</div>
+									</div>-->
 								</div> 
-								<!--<div id="menuId">
-								
-							   </div>-->
-							</div>
+								<div id="menuId"></div>
+									
+									
+							</div>	
 							<div class="row">
 								<div style="padding:10px;">
 								<div class="col-sm-12">
-									<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;">LOGOUT</a>		
+									<a class="btn btn-primary btnSearch m_top5 pull-right" href="petitionsLogout" style="display:inline-block" style="cursor:pointer;"><i class="fa fa-sign-out" style="color:#FFBA00;"></i>&nbsp;&nbsp;Sign-out</a>
 								</div>
 								</div>
 							</div>
+						
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-</nav>
+	</nav>
 </header>
 <main>
 	<section>
@@ -280,25 +283,7 @@
 	</div>
 </div>
 
-<div class="modal fade" id="docsModalDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="width:60%;margin:auto">
-    <div class="modal-content">
-      <div class="modal-header">
-			<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title text-capital" id="viewDocumentHeading" style="font-weight: bold"></h4> 
-	  </div>
-      <div class="modal-body">
-        <div class="row">
-			<div id="docsViewModalId"></div>
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default modalCloseCls closeSecondModal" data-dismiss="modal">Close</button>
-      </div>
-   
-  </div>
-</div>
-</div>
+
 <div class="modal fade" id="endorseMentModalDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="width:60%;margin:auto">
     <div class="modal-content">
@@ -311,7 +296,7 @@
 		</div>		
 	  </div>
 	<form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
-	  <div class="modal-body" id="statusChangeDivId">
+	  <div class="modal-body">
 	   <div class="pad_light_yash_bg border_yash border_radius_5">
 			<div class="row">
 				<div class="col-sm-4">
@@ -391,7 +376,7 @@
 </div>
 </div>
 
-	  
+<script type="text/javascript" src="Assests/login/loginMenu.js"></script>	  
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
@@ -421,12 +406,6 @@
 </script>
 <script>
 var userId = '${sessionScope.USER.userId}';
-
-if(userId==25 || userId==26 || userId==27){
-	//$('#statusChangeDivId').hide();
-	$('#dashboardLinkId').hide();
-}
-
 </script>
 <script type="text/javascript">
 $(document).on("click",".closeSecondModal",function(){

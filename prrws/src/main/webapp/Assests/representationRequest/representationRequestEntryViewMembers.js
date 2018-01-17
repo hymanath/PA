@@ -12,11 +12,11 @@ wurl = wurl.replace("/PartyAnalyst","");
 
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
-	$(".menu-data-cls").toggle();
+	$(".menuCls").toggle();
 });
-$(".dismiss").on("click",function(){
-		$(".menu-data-cls").hide();
-});
+/* $(".dismiss").on("click",function(){
+		$(".menuCls").hide();
+}); */
 
 function locationLevelRefresh(){
 	
@@ -2101,8 +2101,9 @@ $.ajax({
 userIdsByEntitlementsLogin();
 function userIdsByEntitlementsLogin(){
  var json = {
-
- } 
+	  username:"minister_test_user",
+	  passwordHashText:123456
+} 
 $.ajax({ 
  type:'POST', 
  url: 'userIdsByEntitlementsLogin',
@@ -2123,17 +2124,23 @@ $.ajax({
 }); 
 }
 // $("#menuVerticalId ul").append('<li style="margin-left: 7px; width: 298px; margin-bottom: 5px;"><a href="'+subList[j].url+'" >'+subList[j].name+'</a></li>');
-function buildMenu(result){
+/* function buildMenu(result){
 	var str='';
 	if(result.length ==1){
 		for(var i in result){
-				str+='<div id="collapse'+i+'" class="">';
-						str+='<ul class="list-group">';
-						for(var j in result[i].subList){
-							str+='<li><a href="'+result[i].subList[j].url+'" attr_id="'+result[i].subList[j].entitlementUrlId+'">'+result[i].subList[j].name+'</a></li>';
-						}
-						str+='</ul>';
-					str+='</div>';
+			str+='<div class="panel panel-default" style="margin:0px 4px;">';
+					str+='<div class="panel-heading" style="background-color:#a45e43e6;">';
+			str+='<div id="collapse'+i+'" class="">';
+				str+='<ul class="list-group">';
+				for(var j in result[i].subList){
+					str+='<li><div class="row"><div class="col-md-12 petCs"><a href="'+result[i].subList[j].url+'" attr_id="'+result[i].subList[j].entitlementUrlId+'">'+result[i].subList[j].name+'</a></div></div></li>';	
+				}
+				str+='</ul>';
+			str+='</div>';
+			str+='</div>';
+			str+='</div>';
+			
+					
 		}
 	}else{
 		for(var i in result){
@@ -2158,6 +2165,8 @@ function buildMenu(result){
 	}
 	
 		$("#menuId").html(str); 
-}
+} */
 
 
+				
+			
