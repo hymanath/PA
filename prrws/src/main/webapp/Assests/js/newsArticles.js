@@ -166,11 +166,11 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 		{ 
 		totalDistEdCount=totalDistEdCount+result[i].negativCountMain;
 		}
-		totalEdCount=totalMainEdCount+totalDistEdCount;
+		
 	}
-	
-	totalPosPerc = (totalPosCount/totalCount*100).toFixed(2);
-	totalNegperc = (totalNegCount/totalCount*100).toFixed(2);
+	totalEdCount=totalMainEdCount+totalDistEdCount;
+	totalPosPerc = (totalMainEdCount/totalEdCount*100).toFixed(2);
+	totalNegperc = (totalDistEdCount/totalEdCount*100).toFixed(2);
 	str+='<div class="row m_top10">';
 		str+='<div class="col-sm-5 border_right_yash">';
 		if(departmentType == "overAll"){
