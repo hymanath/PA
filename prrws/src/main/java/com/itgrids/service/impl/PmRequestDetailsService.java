@@ -568,7 +568,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}else{
 							
 							if(pmRequestVO.getEndorsmentNo() != null){
-								if(pmRequestVO.getEndorsmentDate() != null && !pmRequestVO.getEndorsmentDate().isEmpty())
+								if(pmRequestVO.getEndorsmentDate() != null && !pmRequestVO.getEndorsmentDate().trim().isEmpty())
 									petitionSubWorkLocationDetails.setEndorsmentDate(format.parse(pmRequestVO.getEndorsmentDate()));
 								petitionSubWorkLocationDetails.setWorkEndorsmentNo(pmRequestVO.getEndorsmentNo());
 							}else{
@@ -665,12 +665,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								petition = new Petition();
 								if(pmRequestVO.getExistingPetitionId() != null && pmRequestVO.getExistingPetitionId().longValue() >0L){
 									petition = pititionDAO.get(pmRequestVO.getExistingPetitionId());
-									petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate()));
+									//petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate()));
 									pmTrackingVO.setPmTrackingActionId(5L);//EDIT/UPDATED  PETITION
-									if(pmRequestVO.getRepresentationdate() != null && !pmRequestVO.getRepresentationdate().isEmpty() )
-										petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate()));
-									if(pmRequestVO.getEndorsmentDate() != null && !pmRequestVO.getEndorsmentDate().isEmpty())
-										petition.setEndorsmentDate(format.parse(pmRequestVO.getEndorsmentDate()));
+									if(pmRequestVO.getRepresentationdate() != null && !pmRequestVO.getRepresentationdate().trim().isEmpty() )
+										petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate().trim()));
+									if(pmRequestVO.getEndorsmentDate() != null && !pmRequestVO.getEndorsmentDate().trim().isEmpty())
+										petition.setEndorsmentDate(format.parse(pmRequestVO.getEndorsmentDate().trim()));
 									petition.setEndorsmentNo(pmRequestVO.getEndorsmentNo());
 									petition.setIsOldData(petition.getIsOldData());
 								}else{
@@ -678,8 +678,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									petition.setEndorsmentNo(null);
 									petition.setPmStatusId(1L);// Pending Endorsment
 									petition.setIsOldData("N");
-									if(pmRequestVO.getRepresentationdate() != null && !pmRequestVO.getRepresentationdate().isEmpty())
-										petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate()));
+									if(pmRequestVO.getRepresentationdate() != null && !pmRequestVO.getRepresentationdate().trim().isEmpty())
+										petition.setRepresentationDate(format.parse(pmRequestVO.getRepresentationdate().trim()));
 									petition.setRepresenteeType(pmRequestVO.getRepresentationType());
 									petition.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 									petition.setInsertedUserId(pmRequestVO.getUserId());
