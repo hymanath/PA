@@ -1,11 +1,11 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-$("header").on("click",".menu-cls",function(e){
+/* $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
-	$(".menu-data-cls").toggle();
-});
-$(document).on("click",function(){
+	$(".menuCls").toggle();
+}); */
+/* $(document).on("click",function(){
 	$(".menu-data-cls").hide();
-});
+}); */
 
 var GlWrkTypeId = 2; // default new proposal
 var GlLocationLvelId = 0;

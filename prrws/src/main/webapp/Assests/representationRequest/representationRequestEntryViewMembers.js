@@ -10,13 +10,6 @@ var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/cadreDetailsAction")));
 wurl = wurl.replace("/PartyAnalyst","");
 
-$("header").on("click",".menu-cls",function(e){
-	e.stopPropagation();
-	$(".menuCls").toggle();
-});
-/* $(".dismiss").on("click",function(){
-		$(".menuCls").hide();
-}); */
 
 function locationLevelRefresh(){
 	
@@ -2098,31 +2091,7 @@ $.ajax({
 }); 
 }
 
-userIdsByEntitlementsLogin();
-function userIdsByEntitlementsLogin(){
- var json = {
-	  username:"minister_test_user",
-	  passwordHashText:123456
-} 
-$.ajax({ 
- type:'POST', 
- url: 'userIdsByEntitlementsLogin',
- dataType: 'json',
- data : JSON.stringify(json),
- beforeSend : function(xhr){
- xhr.setRequestHeader("Accept", "application/json");
- xhr.setRequestHeader("Content-Type", "application/json");
- }
-}).done(function(result){
- 
- if(result != null && result.length >0){
-	 buildMenu(result);
-	 
- }else{
-	$("#menuId").append('<li>No Data Available</li>');
- }
-}); 
-}
+
 // $("#menuVerticalId ul").append('<li style="margin-left: 7px; width: 298px; margin-bottom: 5px;"><a href="'+subList[j].url+'" >'+subList[j].name+'</a></li>');
 /* function buildMenu(result){
 	var str='';

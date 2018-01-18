@@ -98,27 +98,28 @@
 					<div class="white-block">
 						<div class="media">
 							<div class="media-left"></div>
-							<div class="media-body">
-								<h4 class="m_top10"><img src="Assests/icons/Group 4631.png"><b>Status Overview</b></h4>
+								<div class="media-body">
+									<h4 class="m_top10"><img src="Assests/icons/Group 4631.png"><b>Status Overview</b></h4>
+								</div>
 							</div>
-						</div>
-						<div class="row m_top10">
-							<div class="col-sm-12" id="statusOverviewId">
+							<div class="row m_top10">
+								<div class="col-sm-12" id="statusOverviewId">
+								</div>
 							</div>
-						</div>
 						</div>
 					</div>
 				</div>
 				</div>
-				<div class="col-sm-12 m_top20">
-					<div class="white-block" style="padding:10px">
-						<h4><img src="Assests/icons/2000px-Circle-icons-crossroads.svg.png"><b style="padding-left:5px;">Lead wise Overview</b></h4>
-						<div class="row m_top10" style="height:375px;overflow-y:">
-						<div id ="leadWiseOverviewId">						
+				
+					<div class="col-sm-12 m_top20">
+						<div class="white-block" style="padding:10px">
+							<h4><img src="Assests/icons/2000px-Circle-icons-crossroads.svg.png"><b style="padding-left:5px;">Lead wise Overview</b></h4>
+							<div class="row m_top10" style="height:375px;overflow-y:">
+								<div id ="leadWiseOverviewId">						
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-				</div>
 				</div>
 				<div class="col-sm-12 m_top20">
 				<div class="white-block petition_block bor_c2">
@@ -291,8 +292,9 @@
 		</div>
 	</section>
 </main>
-<script type="text/javascript" src="Assests/login/loginMenu.js"></script>
+
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/login/loginMenu.js"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
