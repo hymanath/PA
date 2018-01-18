@@ -12,6 +12,14 @@
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <link rel="stylesheet" type="text/css" href="Assests/Plugins/Scroller/simplePagination.css"/> 
 <style>
+.prev{
+	 height: auto !important;
+	 width:auto !important;
+}
+.next{
+	 height: auto !important;
+	 width:auto !important;
+}
 </style>
 </head>
 <body>
