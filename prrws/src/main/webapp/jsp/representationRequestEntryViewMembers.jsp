@@ -100,7 +100,7 @@
 </header>
 <main>
 	<section>
-		<div class="container-fluid dismiss">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="panel-group">
@@ -376,8 +376,8 @@
 </div>
 </div>
 
-<script type="text/javascript" src="Assests/login/loginMenu.js"></script>	  
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/login/loginMenu.js"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>

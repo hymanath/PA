@@ -1,11 +1,11 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-$("header").on("click",".menu-cls",function(e){
+/* $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menuCls").toggle();
 });
-/* $(document).on("click",function(){
+ $(document).on("click",function(){
 	$(".menu-data-cls").hide();
-}); */
+});  */
 getDeptIdsListBYUserIdsLst();
 function getDeptIdsListBYUserIdsLst(){
 	$("#designationrepresent").html('');
@@ -638,32 +638,5 @@ $.ajax({
 		}
 		$("#briefLeadId").trigger('chosen:updated');
 		 
-}); 
-}
-
-
-userIdsByEntitlementsLogin();
-function userIdsByEntitlementsLogin(){
- var json = {
-	  username:"minister_test_user",
-	  passwordHashText:123456
-} 
-$.ajax({ 
- type:'POST', 
- url: 'userIdsByEntitlementsLogin',
- dataType: 'json',
- data : JSON.stringify(json),
- beforeSend : function(xhr){
- xhr.setRequestHeader("Accept", "application/json");
- xhr.setRequestHeader("Content-Type", "application/json");
- }
-}).done(function(result){
- 
- if(result != null && result.length >0){
-	 buildMenu(result);
-	 
- }else{
-	$("#menuId").append('<li>No Data Available</li>');
- }
 }); 
 }
