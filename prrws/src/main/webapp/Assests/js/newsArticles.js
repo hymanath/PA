@@ -160,11 +160,11 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 		overAllcategoryNegTime=result[i].totalIsPrimeNegativeCoveredTime
 		if(result[i].organization == "Main")
 		{
-		totalMainEdCount=totalMainEdCount+result[i].positiveCountMain;
+		totalMainEdCount=result[i].positiveCountMain+result[i].negativCountMain;
 		}
 		else if(result[i].organization == "District")
 		{ 
-		totalDistEdCount=totalDistEdCount+result[i].negativCountMain;
+		totalDistEdCount=result[i].positiveCountMain+result[i].negativCountMain;
 		}
 		
 	}
