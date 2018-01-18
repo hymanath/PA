@@ -2552,7 +2552,7 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 						}
 					str+='</tr>';*/
 					str+=' <tr>';
-						str+=' <td>Grand Total</td>';
+						str+=' <td>Grand Total</td>';//As Of Now
 						for(var i in result){
 							if(result[i].count != null && result[i].count != 0){
 								str+='<td class="cuntCls" style="cursor:pointer;" attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'" attr_radioType="'+radioType+'">'+result[i].count+'</td>';
@@ -8774,35 +8774,211 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 		},
 		success: function(ajaxresp) {
 			var str = '';
-				if(ajaxresp != null && ajaxresp.length > 0){
-					for(var i in ajaxresp){
+			var perDays1516 = 0.0;var wageExp1516 = 0.0;var matExp1516 = 0.0;var total1516 = 0.0;
+			var perDays1617 = 0.0;var wageExp1617 = 0.0;var matExp1617 = 0.0;var total1617 = 0.0;
+			var perDays1718 = 0.0;var wageExp1718 = 0.0;var matExp1718 = 0.0;var total1718 = 0.0;
+			
+			str+='<div class="table-responsive m_top10">';
+				str+='<table class="table table-bordered dataTable'+divIdd+'" style="width:100%">';
+					str+='<thead class="text-capitalize">';
 						str+='<tr>';
-							str+='<td>'+ajaxresp[i].thisMonth+'</td>';
-							str+='<td>'+ajaxresp[i].perDays1516+'</td>';
-							str+='<td>'+ajaxresp[i].wageExp1516+'</td>';
-							str+='<td>'+ajaxresp[i].matExp1516+'</td>';
-							str+='<td>'+ajaxresp[i].total1516+'</td>';
-							str+='<td>'+ajaxresp[i].perDays1617+'</td>';
-							str+='<td>'+ajaxresp[i].wageExp1617+'</td>';
-							str+='<td>'+ajaxresp[i].matExp1617+'</td>';
-							str+='<td>'+ajaxresp[i].total1617+'</td>';
-							str+='<td>'+ajaxresp[i].perDays1718+'</td>';
-							str+='<td>'+ajaxresp[i].wageExp1718+'</td>';
-							str+='<td>'+ajaxresp[i].matExp1718+'</td>';
-							str+='<td>'+ajaxresp[i].total1718+'</td>';
-							
-							
-							/* if(ajaxresp[i].percentage < 0){
-								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
-							}else if(ajaxresp[i].percentage >= 0){
-								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
-							}else{
-								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
-							} */
+							str+='<th rowspan="2" style="background-color:#034575;color:#fff">Month</th>';
+							str+='<th colspan="4" class="text-center" style="background-color:#26243c;color:#fff">2015-16</th>';
+							str+='<th colspan="4" class="text-center" style="background-color:#ea9009;color:#fff">2016-17</th>';
+							str+='<th colspan="4" class="text-center" style="background-color:green;color:#fff">2017-18</th>';
+							//str+='<th rowspan="2">Increment/Decrement (%)</th>';
 						str+='</tr>';
-					}
-				}
-				tableView(divIdd,theadArr,str,locationTypeNew,blockName);
+						str+='<tr>';
+							str+='<th style="background-color:#26243c;color:#fff">Person Days</th>';
+							str+='<th style="background-color:#26243c;color:#fff">Wage</th>';
+							str+='<th style="background-color:#26243c;color:#fff">Material</th>';
+							str+='<th style="background-color:#26243c;color:#fff">Total</th>';
+							
+							str+='<th style="background-color:#ea9009;color:#fff">Person Days</th>';
+							str+='<th style="background-color:#ea9009;color:#fff">Wage</th>';
+							str+='<th style="background-color:#ea9009;color:#fff">Material</th>';
+							str+='<th style="background-color:#ea9009;color:#fff">Total</th>';
+							
+							str+='<th style="background-color:green;color:#fff">Person Days</th>';
+							str+='<th style="background-color:green;color:#fff">Wage</th>';
+							str+='<th style="background-color:green;color:#fff">Material</th>';
+							str+='<th style="background-color:green;color:#fff">Total</th>';
+							
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						if(ajaxresp != null && ajaxresp.length > 0){
+							for(var i in ajaxresp){
+								str+='<tr>';
+									str+='<td style="background-color:#034575;color:#fff">'+ajaxresp[i].thisMonth+'</td>';
+									str+='<td style="background-color:#7873AD;color:#fff">'+ajaxresp[i].perDays1516+'</td>';
+									str+='<td style="background-color:#7873AD;color:#fff">'+ajaxresp[i].wageExp1516+'</td>';
+									str+='<td style="background-color:#7873AD;color:#fff">'+ajaxresp[i].matExp1516+'</td>';
+									str+='<td style="background-color:#7873AD;color:#fff">'+ajaxresp[i].total1516+'</td>';
+									str+='<td style="background-color:#C79345;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
+									str+='<td style="background-color:#C79345;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
+									str+='<td style="background-color:#C79345;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
+									str+='<td style="background-color:#C79345;color:#fff">'+ajaxresp[i].total1617+'</td>';
+									str+='<td style="background-color:#89D99A;color:#fff">'+ajaxresp[i].perDays1718+'</td>';
+									str+='<td style="background-color:#89D99A;color:#fff">'+ajaxresp[i].wageExp1718+'</td>';
+									str+='<td style="background-color:#89D99A;color:#fff">'+ajaxresp[i].matExp1718+'</td>';
+									str+='<td style="background-color:#89D99A;color:#fff">'+ajaxresp[i].total1718+'</td>';
+									
+									perDays1516 = parseFloat(perDays1516)+parseFloat(ajaxresp[i].perDays1516);
+									wageExp1516 = parseFloat(wageExp1516)+parseFloat(ajaxresp[i].wageExp1516);
+									matExp1516 = parseFloat(matExp1516)+parseFloat(ajaxresp[i].matExp1516);
+									total1516 = parseFloat(total1516)+parseFloat(ajaxresp[i].total1516);
+									
+									perDays1617 = parseFloat(perDays1617)+parseFloat(ajaxresp[i].perDays1617);
+									wageExp1617 = parseFloat(wageExp1617)+parseFloat(ajaxresp[i].wageExp1617);
+									matExp1617 = parseFloat(matExp1617)+parseFloat(ajaxresp[i].matExp1617);
+									total1617 = parseFloat(total1617)+parseFloat(ajaxresp[i].total1617);
+
+									perDays1718 = parseFloat(perDays1718)+parseFloat(ajaxresp[i].perDays1718);
+									wageExp1718 = parseFloat(wageExp1718)+parseFloat(ajaxresp[i].wageExp1718);
+									matExp1718 = parseFloat(matExp1718)+parseFloat(ajaxresp[i].matExp1718);
+									total1718 = parseFloat(total1718)+parseFloat(ajaxresp[i].total1718);
+									
+									/* if(ajaxresp[i].percentage < 0){
+										str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+									}else if(ajaxresp[i].percentage >= 0){
+										str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
+									}else{
+										str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
+									} */
+								str+='</tr>';
+							}
+						}
+					str+='<tr>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">Total</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+perDays1516.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+wageExp1516.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+matExp1516.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+total1516.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+perDays1617.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+wageExp1617.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+matExp1617.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+total1617.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+perDays1718.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+wageExp1718.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+matExp1718.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">'+total1718.toFixed(2)+'</td>';
+					str+='</tr>';
+					str+='</tbody>';
+					
+				str+='</table>';
+			str+='</div>';
+			$("#"+divIdd).html(str);	
+			if(locationTypeNew == 'state'){
+				$(".dataTable"+divIdd).dataTable({
+					"iDisplayLength": 20,
+					"aaSorting": [],
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+					"scrollX":        true,
+					"scrollCollapse": true,
+					"fixedColumns":   {
+						"leftColumns": 1,
+					},
+					"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+					"<'row'<'col-sm-12'tr>>" +
+					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+					buttons: [
+						{
+							extend:    'csvHtml5',
+							text:      '<i class="fa fa-file-text-o"></i>',
+							titleAttr: 'CSV',
+							title:	   divIdd,
+							filename:  divIdd+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+						},
+						{
+							extend:    'pdfHtml5',
+							text:      '<i class="fa fa-file-pdf-o"></i>',
+							titleAttr: 'PDF',
+							title:	   divIdd,
+							filename:  divIdd+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+							orientation: "landscape",
+							pageSize:'A3',
+							customize: function (doc) {
+								doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+							}
+						}
+					]
+				});
+			}
+			if(locationTypeNew == 'constituency' || locationTypeNew == 'mandal' || locationTypeNew == 'panchayat')
+			{
+				$(".dataTable"+divIdd).dataTable({
+					"iDisplayLength": 15,
+					"aaSorting": [],
+					"scrollX":        true,
+					"scrollCollapse": true,
+					"fixedColumns":   {
+						"leftColumns": 1,
+					},
+					"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+					"<'row'<'col-sm-12'tr>>" +
+					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+					buttons: [
+						{
+							extend:    'csvHtml5',
+							text:      '<i class="fa fa-file-text-o"></i>',
+							titleAttr: 'CSV',
+							title:	   blockName,
+							filename:  blockName+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+						},
+						{
+							extend:    'pdfHtml5',
+							text:      '<i class="fa fa-file-pdf-o"></i>',
+							titleAttr: 'PDF',
+							title:	   blockName,
+							filename:  blockName+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+							orientation: "landscape",
+							pageSize:'A3',
+							customize: function (doc) {
+								doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+							}
+						}
+					]
+				});
+			}else if(locationTypeNew == 'district')
+			{
+				$(".dataTable"+divIdd).dataTable({
+					"iDisplayLength": 20,
+					"aaSorting": [],
+					"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+					"scrollX":        true,
+					"scrollCollapse": true,
+					"fixedColumns":   {
+						"leftColumns": 1,
+					},
+					"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+					"<'row'<'col-sm-12'tr>>" +
+					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+					buttons: [
+						{
+							extend:    'csvHtml5',
+							text:      '<i class="fa fa-file-text-o"></i>',
+							titleAttr: 'CSV',
+							title:	   divIdd,
+							filename:  divIdd+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+						},
+						{
+							extend:    'pdfHtml5',
+							text:      '<i class="fa fa-file-pdf-o"></i>',
+							titleAttr: 'PDF',
+							title:	   divIdd,
+							filename:  divIdd+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+							orientation: "landscape",
+							pageSize:'A3',
+							customize: function (doc) {
+								doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+							}
+						}
+					]
+				});
+			}
+			//	tableView(divIdd,theadArr,str,locationTypeNew,blockName);
 			//}
 		}
 	});
