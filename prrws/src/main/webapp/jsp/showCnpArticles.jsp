@@ -8,10 +8,20 @@
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/css/style.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/icomoon/style.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <link rel="stylesheet" type="text/css" href="Assests/Plugins/Scroller/simplePagination.css"/> 
 <style>
+.prev{
+	 height: auto !important;
+	 width:auto !important;
+}
+.next{
+	 height: auto !important;
+	 width:auto !important;
+}
 </style>
 </head>
 <body>
@@ -24,7 +34,7 @@
 		</div>
 		<div class="row ">
 			<div class="col-sm-12 m_top20">
-				<div class="paginationId"></div>
+				<div class="paginationId  pull-right"></div>
 			</div>
 		</div>
 	</div>
@@ -85,7 +95,7 @@ var globaltype = "${param.type}";
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getArticlesOfNewsBasicCounts/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalBfIdStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalEdTypeIdStr+"/"+globalNewsPaperIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
 			
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesOfNewsBasicCounts/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalBfIdStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalEdTypeIdStr+"/"+globalNewsPaperIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getArticlesOfNewsBasicCounts/"+globalUserAccessLevelId+"/"+globalTemp+"/"+globalState+"/"+globalStartDate+"/"+globalEndDate+"/"+globalBfIdStr+"/"+globalImpactScopeIdsStr+"/"+globalOrgIdStr+"/"+globalOrgType+"/"+globalEdTypeIdStr+"/"+globalNewsPaperIdsStr+"/"+globalStIndex+"/"+globalEndIndex+""
 			
 		}).then(function(results){
 			$("#articlesDivId").html('');
@@ -1067,9 +1077,9 @@ var globaltype = "${param.type}";
 	function getDepartmentWiseDistrictViewForArticles(globalStIndex){
 		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseDistrictViewForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalStIndex+"/"+globalEndIndex+""
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseDistrictViewForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalbenefitId+""
 			
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseDistrictViewForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalStIndex+"/"+globalEndIndex+""
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseDistrictViewForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalbenefitId+""
 			
 		}).then(function(results){
 			$("#articlesDivId").html('');
