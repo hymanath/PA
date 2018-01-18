@@ -2536,7 +2536,7 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 //LabourBudget Exp Builing --  Nandhini
 function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocationId,radioType){
 	var str='';
-	 str+='<div class="table-responsive">';
+	str+='<div class="table-responsive">';
 			str+='<table class="table table-striped table-bordered">';
 				str+='<tbody>';
 					 str+='<tr>';
@@ -2545,6 +2545,12 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 							 str+='<td>'+result[i].name+'</td>';
 						 }
 					  str+='</tr>';
+					 /* str+=' <tr style="color:red">';
+						str+=' <td><b>As On Nov 30th</b></td>';
+						for(var i in result){
+							str+='<td>'+result[i].diffCount+'/'+result[i].orderNo+'</td>';
+						}
+					str+='</tr>';*/
 					str+=' <tr>';
 						str+=' <td>Grand Total</td>';
 						for(var i in result){
@@ -2564,6 +2570,37 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
+		
+	/*	str+='<div class="col-md-12 table-responsive m_top10">';
+			str+='<table class="table table-striped table-bordered">';
+				str+='<thead>';
+					str+='<th>As on Nov 30th</th>';
+					str+='<th>Total</th>';
+					str+='<th>0</th>';
+					str+='<th>Below 1</th>';
+					str+='<th>1-5</th>';
+					str+='<th>5-10</th>';
+					str+='<th>10-20</th>';
+					str+='<th>Above 20</th>';
+				str+='</thead>';
+				str+='<tbody>';
+					if(result[0].subList != null && result[0].subList.length > 0){
+						for(var i in result[0].subList){
+							str+='<tr>';
+								str+='<td><b>'+result[0].subList[i].name+'</b></td>';
+								str+='<td>'+result[0].subList[i].orderNo+'</td>';
+								str+='<td>'+result[0].subList[i].zeroCount+'</td>';
+								str+='<td>'+result[0].subList[i].belowOneCount+'</td>';
+								str+='<td>'+result[0].subList[i].oneToFiveCount+'</td>';
+								str+='<td>'+result[0].subList[i].fiveToTenCount+'</td>';
+								str+='<td>'+result[0].subList[i].tenToTwentyCount+'</td>';
+								str+='<td>'+result[0].subList[i].diffCount+'</td>';
+							str+='</tr>';
+						}
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';*/
 	$("#projectExp"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(str);
 }
 
@@ -5602,9 +5639,9 @@ function getManWorkDaysOfNrega(divIdd,locationTypeNew,theadArr,menuLocationType,
 							
 							str+='<td>'+ajaxresp[i].thisMonth+'</td>';
 							str+='<td>'+ajaxresp[i].finAsOfToday+'</td>';
-							if(ajaxresp[i].percentage < 0){
+							if(ajaxresp[i].parameter != null && ajaxresp[i].parameter == 'Decrement'){
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
-							}else if(ajaxresp[i].percentage >= 0){
+							}else if(ajaxresp[i].parameter != null && ajaxresp[i].parameter == 'Increment'){
 								str+='<td style="background-color:#00AF50;color:#fff">'+ajaxresp[i].percentage+'</td>';
 							}else{
 								str+='<td style="background-color:#FF0000;color:#fff">'+ajaxresp[i].percentage+'</td>';
