@@ -281,12 +281,12 @@
 				var targetPopulationArrOne = []; */
 
 				stressedArr.push("Habitations");						
-				achievedHabitationArr.push({"y":result[0].achivedPopulation,"extra":result[0].percentageOne.toFixed(1)});
-				targetHabitationArr.push({"y":result[0].targetPopulation,"extra":result[0].achivedHabPerc.toFixed(1)});
-				
+				achievedHabitationArr.push({"y":result[0].achived,"extra":result[0].percentageOne.toFixed(1)});
+				targetHabitationArr.push({"y":result[0].target,"extra":result[0].achivedHabPerc.toFixed(1)});
+
 				stressedArr.push("Population");						
-				achievedHabitationArr.push({"y":result[0].achived,"extra":result[0].targetPopPerc.toFixed(1)});
-				targetHabitationArr.push({"y":result[0].target,"extra":result[0].achivedPopPerc.toFixed(1)});
+				achievedHabitationArr.push({"y":result[0].achivedPopulation,"extra":result[0].targetPopPerc.toFixed(1)});
+				targetHabitationArr.push({"y":result[0].targetPopulation,"extra":result[0].achivedPopPerc.toFixed(1)});
 								
 				
 				$("#planOfAction").highcharts({
@@ -531,10 +531,9 @@
 				var $windowWidth = $(window).width();
 				var tableView='';
 				tableView+='<h5 style="padding:5px"><span class="chartTitleAlign"><img src="Assests/icons/alert_status.png"> <span style="margin-left:5px;">Alert Status Jalavani</span></span></h5>';
-				if($windowWidth < 768)
-				{
+				
 					tableView+='<div class="table-responsive">';
-				}
+				
 					tableView+='<table class="table table-bordered dataTableAlert'+locationType+'">';
 					tableView+='<thead class="text-capital">';
 						tableView+='<tr>'; 
@@ -685,95 +684,7 @@
 				
 			
 		}
-		function tableViewWaterStatus(divId,GLtbodyAlertArr,locationType){
-			
-			if(GLtbodyAlertArr !=null && GLtbodyAlertArr.length>0){
-				var $windowWidth = $(window).width();
-					var tableView='';
-					
-					tableView+='<h5 style="padding:5px"><span class="chartTitleAlign"><img src="Assests/icons/driking.png"> <span style="margin-left:5px;">Drinking Water Satisfaction Levels</span></span></h5>';
-				if($windowWidth < 768)
-				{
-					tableView+='<div class="table-responsive">';
-				}
-					tableView+='<table class="table table-bordered dataTableDrinking'+locationType+'">';
-					tableView+='<thead class="text-capital">';
-					tableView+='<tr>'; 
-					tableView+='<th>'+locationType+'</th>';
-						if(GLtbodyAlertArr[0] !=null && GLtbodyAlertArr[0].statusList !=null && GLtbodyAlertArr[0].statusList.length>0){
-							for(var j in GLtbodyAlertArr[0].statusList){
-									tableView+='<th>'+GLtbodyAlertArr[0].statusList[j].name+'</th>';
-									tableView+='<th>%</th>';
-							}
-						}
-					tableView+='<th>Total Hamlets</th>';	
-					tableView+='</tr>'; 
-					tableView+='</thead>';
-					tableView+='<tbody>';	
-					
-						for(var i in GLtbodyAlertArr){
-							tableView+='<tr>'; 
-							if(locationType == "state"){
-								tableView+='<td>Andhra Pradesh</td>';
-							}else{
-								tableView+='<td>'+GLtbodyAlertArr[i].name+'</td>';
-							}	
-							var totalCount=0;
-							if(GLtbodyAlertArr[i].statusList !=null && GLtbodyAlertArr[i].statusList.length>0){
-								for(var j in GLtbodyAlertArr[i].statusList){
-										tableView+='<td class="ivrStatusViewCls" attr_status_name="'+GLtbodyAlertArr[i].statusList[j].name+'" attr_location_type="'+locationType+'" attr_location_value="'+GLtbodyAlertArr[i].id+'" attr_location_name="'+GLtbodyAlertArr[i].name+'" attr_total_count="'+GLtbodyAlertArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyAlertArr[i].statusList[j].count+'</td>';
-										if(GLtbodyAlertArr[i].statusList[j].percentage !=null && GLtbodyAlertArr[i].statusList[j].percentage >0){
-											tableView+='<td><small style="color:#0FBE08">'+GLtbodyAlertArr[i].statusList[j].percentage+'</small></td>';
-										}else{
-											tableView+='<td> - </td>';
-										}
-										
-										totalCount =totalCount+GLtbodyAlertArr[i].statusList[j].count;
-								}
-							}
-							tableView+='<td>'+totalCount+'</td>';
-							tableView+='</tr>'; 
-						}
-					tableView+='</tbody>';
-					tableView+='</table>';
-				if($windowWidth < 768)
-				{
-					tableView+='</div>';
-				}
-				
-				$("#drinking"+locationType).html(tableView);
-				if(locationType !="state" || locationType !="district"){
-					$(".dataTableDrinking"+locationType).dataTable({
-						"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
-							"<'row'<'col-sm-12'tr>>" +
-							"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-						buttons: [
-							{
-								extend:    'csvHtml5',
-								text:      '<i class="fa fa-file-text-o"></i>',
-								titleAttr: 'CSV',
-								title:	   locationType,
-								filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-							},
-							{
-								extend:    'pdfHtml5',
-								text:      '<i class="fa fa-file-pdf-o"></i>',
-								titleAttr: 'PDF',
-								title:	   locationType,
-								filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-								orientation: "landscape",
-								pageSize:'A3',
-								customize: function (doc) {
-									doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-								}
-							}
-						]
-					});
-				}
-			}
-			
-			
-		}
+		
 		function tableViewHabitationStatus(divId,GLtbodyArr,locationType)//aravind
 		{
 				 for(var k in divId){
