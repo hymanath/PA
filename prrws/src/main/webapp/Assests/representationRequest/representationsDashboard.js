@@ -398,13 +398,13 @@ function buildLeadWiseOverviewDetails(result){
 				
 					str+='<div class="row m_top5">';
 						str+='<div class="col-sm-6">';
-								str+='<p>Representations</p>';
-								str+='<h4><b>'+result[i].petitionIds.length+'</b></h4>';
-							str+='</div>';
-							str+='<div class="col-sm-6">';
-								str+='<p>Works</p>';
-								str+='<h4><b>'+result[i].noOfWorks+'</b></h4>';
-							str+='</div>';
+							str+='<p>Representations</p>';
+							str+='<h4><b>'+result[i].petitionIds.length+'</b></h4>';
+						str+='</div>';
+						str+='<div class="col-sm-6">';
+							str+='<p>Works</p>';
+							str+='<h4><b>'+result[i].noOfWorks+'</b></h4>';
+						str+='</div>';
 					str+='</div>';
 					str+='<div class="row m_top5">';
 						for(var j in result[i].statusList){
@@ -561,8 +561,7 @@ function getReferralWiseOverviewDetails(desigId){
 	  
 	$("#desigWiseCountId").html(str);
 	} 
-	
-function buildDesignationsWiseInformation(result){
+	/*function buildDesignationsWiseInformation(result){
 	
 	var str='';
 	str+='<div class="scrollCls">';
@@ -618,6 +617,79 @@ function buildDesignationsWiseInformation(result){
 		$("#desigWiseCandidatesView").html(str);
 $(".scrollCls").mCustomScrollbar({setHeight:'600px'})
 }
+*/
+function buildDesignationsWiseInformation(result){
+	
+	var str='';
+			str+='<div class="col-md-12">';
+			str+='<div class="table-responsive">';
+				str+='<table class="table table-bordered" id="workDetailsTab">';
+					str+='<thead>';
+						str+='<tr>';
+							str+='<th>Name</th>';
+							str+='<th>Total Representations</th>';
+							str+='<th>Works</th>';
+							str+='<th>Pending Representations</th>';
+							str+='<th>Works</th>';
+							str+='<th>Rejected Representations</th>';
+							str+='<th>Works</th>';
+							str+='<th>Completed Representations</th>';
+							str+='<th>Works</th>';
+							str+='<th>Amount</th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result.referrerList){
+							str+='<tr>';
+								str+='<td><h5><b>'+result.referrerList[i].referrerName+'</b><h5><p>'+result.referrerList[i].desigName+'</p></td>';
+								
+								str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].petitionIds.length+'</a></td>';
+								
+								str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].noOfWorks+'</a></td>';
+								
+								for(var j in result.referrerList[i].statusList){
+										var statusIds= '';
+										if(result.referrerList[i].statusList[j].id == 1){
+											statusIds='1,3,6,7';
+										}else if(result.referrerList[i].statusList[j].id == 2){
+											statusIds='5';
+										}if(result.referrerList[i].statusList[j].id == 3){
+											statusIds='4,8';
+										}
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].petitionIds.length+'</a></td>';
+									
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].noOfWorks+'</a></td>';
+									
+								}
+									for(var j in result.referrerList[i].statusList){
+									if(result.referrerList[i].statusList[j].id ==3 && typeof(result.referrerList[i].statusList.estimationCost) != "undefined"){
+										str+='<td><b>'+result.referrerList[i].statusList[j].estimationCost+'</b></td>';
+									}else  if(result.referrerList[i].statusList[j].id ==3) {
+										str+='<td><b>-</b></td>';
+									}	
+								}	
+							str+='</tr>';
+						}
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';	
+	
+	
+		$("#desigWiseCandidatesView").html(str);
+$(".scrollCls").mCustomScrollbar({setHeight:'600px'})
+$("#workDetailsTab").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
+	});
+}
+
 getBriefLeads();
 function getBriefLeads(){
 $.ajax({ 
