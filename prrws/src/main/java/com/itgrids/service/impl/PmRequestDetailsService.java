@@ -1398,7 +1398,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 returnVO.getFileList().addAll(petitionFilesListMap.values());
 						 }
 						 
-						 if(returnVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE")){
+						// if(returnVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE")){
 							 PmRequestVO  representeeVO = new PmRequestVO();
 							 representeeVO.setRepresenteeId(commonMethodsUtilService.getLongValueForObject(param[30]));					
 							 representeeVO.setName(commonMethodsUtilService.getCapitalStringValueForObject(param[0]));
@@ -1435,7 +1435,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 
 							 representeeVO.setAddressVO(addressVO);
 							 returnVO.getRepresenteeDetailsList().add(representeeVO);
-						 }
+						// }
 						 i=i+1;
 					}
 					
