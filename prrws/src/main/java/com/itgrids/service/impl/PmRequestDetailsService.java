@@ -1219,6 +1219,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setDesigName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						vo.getDesigList().add(commonMethodsUtilService.getStringValueForObject(param[7]));
 						//vo.set
+						vo.setReferrerName(commonMethodsUtilService.getCapitalStringValueForObject(param[5]));
+						vo.getReferList().add(commonMethodsUtilService.getCapitalStringValueForObject(param[5]));
 						if(commonMethodsUtilService.getLongValueForObject(param[0]) >0l)
 							mapData.put(commonMethodsUtilService.getLongValueForObject(param[0]), vo);
 					}else{
@@ -1226,6 +1228,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							String designations = vo.getDesigName().concat(", "+commonMethodsUtilService.getStringValueForObject(param[7]));
 							vo.setDesigName(designations);
 							vo.getDesigList().add(commonMethodsUtilService.getStringValueForObject(param[7]));
+						}
+						if(vo.getReferList() != null && vo.getReferList().size() >0 && !vo.getReferList().contains(commonMethodsUtilService.getCapitalStringValueForObject(param[5]))){
+							String refName = vo.getReferrerName().concat(", "+commonMethodsUtilService.getCapitalStringValueForObject(param[5]));
+							vo.setReferrerName(refName);
+							vo.getReferList().add(commonMethodsUtilService.getCapitalStringValueForObject(param[5]));
 						}
 					}
 					vo.setPetitionId(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -1235,7 +1242,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}
 					vo.setEstimationCost(commonMethodsUtilService.getStringValueForObject(param[3]));
 					vo.setName(commonMethodsUtilService.getCapitalStringValueForObject(param[4]));
-					vo.setReferrerName(commonMethodsUtilService.getCapitalStringValueForObject(param[5]));
+					//vo.setReferrerName(commonMethodsUtilService.getCapitalStringValueForObject(param[5]));
 					vo.setNoOfWorks(commonMethodsUtilService.getLongValueForObject(param[6]));
 					 dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[8]),commonMethodsUtilService.getStringValueForObject(param[9]));
 					commonMethodsUtilService.getLongValueForObject(param[10]);

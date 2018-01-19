@@ -122,11 +122,11 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 					//" left join locationAddress.panchayat panchayat  ");
 		}
 		
-		sb.append(" where   model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
-				" and  model.pmRefCandidateDesignation.isDeleted = 'N' ");
+		sb.append(" where   model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " );
+		//sb.append(" and  model.pmRefCandidateDesignation.isDeleted = 'N' ");
 				//" and model.pmRefCandidateDesignation.isDeleted = 'N' and model.pmRefCandidate.isDeleted = 'N' and model.pmRepresentee.isDeleted = 'N'  ");
 		sb.append(" and model2.pmRefCandidateId=model.pmRefCandidateId "); 
-		//sb.append("  and model1.pmSubject.parentPmSubjectId is null and  ");
+		//sb.append("  and model1.pmSubject.parentPmSubjectId is null   ");
 		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValues != null && searchLevelValues.size()>0){
 			if(searchLevelId.longValue() ==2L){
 				sb.append(" and  state.stateId in (:searchLevelValues) ");

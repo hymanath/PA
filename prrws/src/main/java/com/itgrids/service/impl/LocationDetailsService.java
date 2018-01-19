@@ -690,7 +690,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			Date startDate = null;
 			Date endDate = null;
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			if(startDate != null && endDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
+			if(fromDate != null && toDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
@@ -770,7 +770,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			Date startDate = null;
 			Date endDate = null;
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			if(startDate != null && endDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
+			if(fromDate != null && toDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
@@ -802,7 +802,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			Date startDate = null;
 			Date endDate = null;
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			if(startDate != null && endDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
+			if(fromDate != null && toDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
@@ -831,7 +831,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			Date startDate = null;
 			Date endDate = null;
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			if(startDate != null && endDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
+			if(fromDate != null && toDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
