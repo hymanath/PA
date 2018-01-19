@@ -2209,8 +2209,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isMapValid(statuMap)){
 					for (Map.Entry<Long, RepresenteeViewVO> entry : statuMap.entrySet()) {
 						setOthersDataToLastIndexOfList(entry.getValue().getReferrerList());
-						setOthersDataToLastIndexOfList(entry.getValue().getSubList());
-						setOthersDataToLastIndexOfList(entry.getValue().getDeptList());
+						//setOthersDataToLastIndexOfList(entry.getValue().getSubList());
+						//setOthersDataToLastIndexOfList(entry.getValue().getDeptList());
 						returnVO.getStatusList().add(entry.getValue());
 					}
 					
@@ -2218,7 +2218,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				
 				List<Long> inProgressStatusIds = IConstants.PETITION_IN_PROGRESS_IDS;
 				RepresenteeViewVO inProgressVO = statuMap.get(2l);
-				
 				Map<Long,RepresenteeViewVO> inprogreeReferMap = new HashMap<Long,RepresenteeViewVO>();
 				Map<Long,RepresenteeViewVO> inprogreeSubjMap = new HashMap<Long,RepresenteeViewVO>();
 				Map<Long,RepresenteeViewVO> inprogreeDeptMap = new HashMap<Long,RepresenteeViewVO>();
@@ -2289,8 +2288,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 				returnVO.getList().add(inProgressVO);
 				setOthersDataToLastIndexOfList(returnVO.getReferrerList());
-				setOthersDataToLastIndexOfList(returnVO.getSubList());
-				setOthersDataToLastIndexOfList(returnVO.getDeptList());
+				//setOthersDataToLastIndexOfList(returnVO.getSubList());
+				//setOthersDataToLastIndexOfList(returnVO.getDeptList());
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -2342,8 +2341,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								 VO = new  RepresenteeViewVO();
 								 returnVO.getDeptList().add(VO);
 							 }
+							 if (returnVO!=null) {
+				    				Collections.sort( returnVO.getDeptList(), sortListBasedOnId);
+				    				
+				    			}	
 						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
-							if(id.longValue() != 188l && id.longValue() != 20l && id.longValue() != 67l && id.longValue() != 439l && id.longValue() != 447l ){
+							if(id.longValue() != 16l && id.longValue() != 3l && id.longValue() != 13l && id.longValue() != 22l){
 								id = 0l; 
 								name="OTHERS";
 							}
@@ -2353,6 +2356,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								 VO = new  RepresenteeViewVO();
 									 returnVO.getSubList().add(VO);
 							 }
+							 if (returnVO!=null) {
+				    				Collections.sort( returnVO.getSubList(), sortListBasedOnId);
+				    				
+				    			}		
 						}
 						 VO.setId(id);
 						 VO.setName(name);
@@ -2404,8 +2411,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								 VO = new  RepresenteeViewVO();
 								 statusVO.getDeptList().add(VO);
 							 }
+							 if (statusVO!=null) {
+				    				Collections.sort( statusVO.getDeptList(), sortListBasedOnId);
+				    				
+				    			}	
+							 
 						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
-							if(id.longValue() != 8l && id.longValue() != 16l && id.longValue() != 17l && id.longValue() != 20l  ){
+							if(id.longValue() != 16l && id.longValue() != 3l && id.longValue() != 13l && id.longValue() != 22l){
 								id = 0l; 
 								name="OTHERS";
 							}
@@ -2414,7 +2426,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 if(VO == null){
 								 VO = new  RepresenteeViewVO();
 								 statusVO.getSubList().add(VO);
-							}
+							 }
+							 if (statusVO!=null) {
+				    				Collections.sort( statusVO.getSubList(), sortListBasedOnId);
+				    				
+				    			}							 						 
 						}
 						VO.setId(id);
 						VO.setName(name);
