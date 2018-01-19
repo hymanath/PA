@@ -1,9 +1,9 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-$("header").on("click",".menu-cls",function(e){
+/* $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menuCls").toggle();
 });
-
+ */
 $(".tooltipCls").tooltip();
 
 var GlWrkTypeId = 0;
@@ -2883,12 +2883,12 @@ function validation(typeVal){
 	var completeWorkName='';
 	var noofWorks='';
 	var workCost='';
-	var phonePattern= /^\d{0-9}$/;
+	//var phonePattern= /^\d{0-9}$/;
 	
 	completeWorkName = $("#name"+typeVal).val();
 	noofWorks = $("#noofWork"+typeVal).val();
 	workCost = $("#workCost"+typeVal).val();
-	//alert(completeWorkName)
+ 	//alert(completeWorkName)
 	//alert(noofWorks)
 	//alert(workCost)
 	
@@ -2998,7 +2998,7 @@ function getRegistrationPersonDetails(voterId,typeVal){
 			familyVoterId:"0",
 			tdpCadreId:"0",
 			status:""
-
+ 
 			};
   
 	$.ajax({              
@@ -3522,28 +3522,3 @@ $(document).on("click",".showRemoveReferralIcon",function(){
 });
 
 
-userIdsByEntitlementsLogin();
-function userIdsByEntitlementsLogin(){
- var json = {
-	  username:"minister_test_user",
-	  passwordHashText:123456
-} 
-$.ajax({ 
- type:'POST', 
- url: 'userIdsByEntitlementsLogin',
- dataType: 'json',
- data : JSON.stringify(json),
- beforeSend : function(xhr){
- xhr.setRequestHeader("Accept", "application/json");
- xhr.setRequestHeader("Content-Type", "application/json");
- }
-}).done(function(result){
- 
- if(result != null && result.length >0){
-	 buildMenu(result);
-	 
- }else{
-	$("#menuId").append('<li>No Data Available</li>');
- }
-}); 
-}
