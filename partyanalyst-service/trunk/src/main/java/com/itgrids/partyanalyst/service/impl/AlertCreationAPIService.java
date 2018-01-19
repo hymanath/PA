@@ -502,14 +502,20 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 								 
 								 alert.setZohoTicketId(getValueByKey(jsonObject,"zohoTicketId"));
 								 
-								 alert.setAlertSeverityId(getValueByKey(jsonObject,"severity")!=null ? 
+								 alert.setAlertSeverityId(getValueByKey(jsonObject,"severity")!=null && getValueByKey(jsonObject,"severity") != "null" ?
 											 alertSeverityDAO.getIdOfName(jsonObject.getString("severity")).get(0):null);
-								 alert.setAlertTypeId(getValueByKey(jsonObject,"alertType")!=null ? alertTypeDAO.getIdOfName(jsonObject.getString("alertType")).get(0):null);
-								 alert.setImpactScopeId(getValueByKey(jsonObject,"impactScope")!=null ? alertImpactScopeDAO.getIdOfName(jsonObject.getString("impactScope")).get(0):null);
-								 alert.setImpactLevelId(getValueByKey(jsonObject,"locationLevel")!=null ? regionScopesDAO.getIdOfName(jsonObject.getString("locationLevel")).get(0):null);
-								 alert.setAlertSourceId(getValueByKey(jsonObject,"alertSource")!=null ? alertSourceDAO.getIdOfName(jsonObject.getString("alertSource")).get(0):null);
-								 alert.setAlertStatusId(getValueByKey(jsonObject,"status")!=null ? alertStatusDAO.getIdOfName(jsonObject.getString("status")):null);
-								 alert.setAlertCategoryId(getValueByKey(jsonObject,"category")!=null ? alertCategoryDAO.getIdOfName(jsonObject.getString("category")):null);
+								 alert.setAlertTypeId(getValueByKey(jsonObject,"alertType")!=null && getValueByKey(jsonObject,"alertType")!= "null" ?  
+										 alertTypeDAO.getIdOfName(jsonObject.getString("alertType")).get(0):null);
+								 alert.setImpactScopeId(getValueByKey(jsonObject,"impactScope")!=null && getValueByKey(jsonObject,"impactScope")!= "null" ?
+										 alertImpactScopeDAO.getIdOfName(jsonObject.getString("impactScope")).get(0):null);
+								 alert.setImpactLevelId(getValueByKey(jsonObject,"locationLevel")!=null && getValueByKey(jsonObject,"locationLevel") !="null" ?
+										 regionScopesDAO.getIdOfName(jsonObject.getString("locationLevel")).get(0):null);
+								 alert.setAlertSourceId(getValueByKey(jsonObject,"alertSource")!=null && getValueByKey(jsonObject,"alertSource") != "null" ?
+										 alertSourceDAO.getIdOfName(jsonObject.getString("alertSource")).get(0):null);
+								 alert.setAlertStatusId(getValueByKey(jsonObject,"status")!=null && getValueByKey(jsonObject,"status") !="null" ?
+										 alertStatusDAO.getIdOfName(jsonObject.getString("status")):null);
+								 alert.setAlertCategoryId(getValueByKey(jsonObject,"category")!=null && getValueByKey(jsonObject,"category") !="null" ? 
+										 alertCategoryDAO.getIdOfName(jsonObject.getString("category")):null);
 								 
 							} catch (Exception e) {
 								LOG.error("Exception Occured in JsonValues Appending in alertCreationApi method in AlertCreationAPIService", e);
@@ -555,31 +561,41 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	public UserAddress setLocationValuesByJson(JSONObject json,Alert alert){
 		UserAddress address = new UserAddress();
 		try{
+			if(alert.getImpactLevelId() !=null){
 				if(alert.getImpactLevelId() == 2l )
 				{
-					address.setState(getValueByKey(json,"state") !=null ? stateDAO.findByStateName(json.getString("state")).get(0):null);
+					address.setState(getValueByKey(json,"state") !=null && getValueByKey(json,"state") != "null" ? 
+							 stateDAO.findByStateName(json.getString("state")).get(0):null);
 					alert.setImpactLevelValue(address.getState() !=null ? address.getState().getStateId():null);
 				}
 				else if(alert.getImpactLevelId() == 3l)
 				{
-					address.setState(getValueByKey(json,"state") !=null ? stateDAO.findByStateName(json.getString("state")).get(0):null);
-					address.setDistrict(getValueByKey(json,"district") !=null ? districtDAO.findByDistrictName(json.getString("district")).get(0):null);
+					address.setState(getValueByKey(json,"state") !=null && getValueByKey(json,"state") != "null" ? 
+							 stateDAO.findByStateName(json.getString("state")).get(0):null);
+					address.setDistrict(getValueByKey(json,"district") !=null && getValueByKey(json,"district") !="null" ?
+							districtDAO.findByDistrictName(json.getString("district")).get(0):null);
 					
 					alert.setImpactLevelValue(address.getDistrict() !=null ? address.getDistrict().getDistrictId():null);
 					
 				}else if(alert.getImpactLevelId() == 4l){
 					
-					address.setState(getValueByKey(json,"state") !=null ? stateDAO.findByStateName(json.getString("state")).get(0):null);
-					address.setDistrict(getValueByKey(json,"district") !=null ? districtDAO.findByDistrictName(json.getString("district")).get(0):null);
-					address.setConstituency(getValueByKey(json,"constituency") !=null ? constituencyDAO.getConstituencyInfo(address.getDistrict() !=null ? address.getDistrict().getDistrictId():null,json.getString("constituency")).get(0):null);
+					address.setState(getValueByKey(json,"state") !=null && getValueByKey(json,"state") != "null" ? 
+							 stateDAO.findByStateName(json.getString("state")).get(0):null);
+					address.setDistrict(getValueByKey(json,"district") !=null && getValueByKey(json,"district") !="null" ?
+							districtDAO.findByDistrictName(json.getString("district")).get(0):null);
+					address.setConstituency(getValueByKey(json,"constituency") !=null && getValueByKey(json,"constituency") != "null" ?
+							constituencyDAO.getConstituencyInfo(address.getDistrict() !=null ? address.getDistrict().getDistrictId():null,json.getString("constituency")).get(0):null);
 					
 					alert.setImpactLevelValue(address.getConstituency() !=null ? address.getConstituency().getConstituencyId():null);
 					
 				}else if(alert.getImpactLevelId() == 5l || alert.getImpactLevelId() == 7l)
 				{
-					address.setState(getValueByKey(json,"state") !=null ? stateDAO.findByStateName(json.getString("state")).get(0):null);
-					address.setDistrict(getValueByKey(json,"district") !=null ? districtDAO.findByDistrictName(json.getString("district")).get(0):null);
-					address.setConstituency(getValueByKey(json,"constituency") !=null ? constituencyDAO.getConstituencyInfo(address.getDistrict() !=null ? address.getDistrict().getDistrictId():null,json.getString("constituency")).get(0):null);
+					address.setState(getValueByKey(json,"state") !=null && getValueByKey(json,"state") != "null" ? 
+							 stateDAO.findByStateName(json.getString("state")).get(0):null);
+					address.setDistrict(getValueByKey(json,"district") !=null && getValueByKey(json,"district") !="null" ?
+							districtDAO.findByDistrictName(json.getString("district")).get(0):null);
+					address.setConstituency(getValueByKey(json,"constituency") !=null && getValueByKey(json,"constituency") != "null" ?
+							constituencyDAO.getConstituencyInfo(address.getDistrict() !=null ? address.getDistrict().getDistrictId():null,json.getString("constituency")).get(0):null);
 					
 					if(alert.getImpactLevelId() == 5l){
 						address.setTehsil(constituencyTehsilDAO.getTehsilInfoOfConstuencyByTehsilName(address.getConstituency() !=null ? address.getConstituency().getConstituencyId():null, json.getString("tehsil")).get(0));
@@ -590,9 +606,12 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 					}
 					
 				}else if(alert.getImpactLevelId() == 6l || alert.getImpactLevelId() == 8l){
-					address.setState(getValueByKey(json,"state") !=null ? stateDAO.findByStateName(json.getString("state")).get(0):null);
-					address.setDistrict(getValueByKey(json,"district") !=null ? districtDAO.findByDistrictName(json.getString("district")).get(0):null);
-					address.setConstituency(getValueByKey(json,"constituency") !=null ? constituencyDAO.getConstituencyInfo(address.getDistrict() !=null ? address.getDistrict().getDistrictId():null,json.getString("constituency")).get(0):null);
+					address.setState(getValueByKey(json,"state") !=null && getValueByKey(json,"state") != "null" ? 
+							 stateDAO.findByStateName(json.getString("state")).get(0):null);
+					address.setDistrict(getValueByKey(json,"district") !=null && getValueByKey(json,"district") !="null" ?
+							districtDAO.findByDistrictName(json.getString("district")).get(0):null);
+					address.setConstituency(getValueByKey(json,"constituency") !=null && getValueByKey(json,"constituency") != "null" ?
+							constituencyDAO.getConstituencyInfo(address.getDistrict() !=null ? address.getDistrict().getDistrictId():null,json.getString("constituency")).get(0):null);
 					
 					if(alert.getImpactLevelId() == 6l){
 						address.setTehsil(constituencyTehsilDAO.getTehsilInfoOfConstuencyByTehsilName(address.getConstituency() !=null ? address.getConstituency().getConstituencyId():null, json.getString("tehsil")).get(0));
@@ -603,7 +622,8 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 						address.setWard(constituencyDAO.getWardInfoOfLocalBody(address.getLocalElectionBody().getLocalElectionBodyId(), json.getString("ward")).get(0));
 						alert.setImpactLevelValue(address.getWard().getConstituencyId());
 					}
-				}	
+				}
+			}
 			
 		}catch(Exception e){
 			e.printStackTrace();

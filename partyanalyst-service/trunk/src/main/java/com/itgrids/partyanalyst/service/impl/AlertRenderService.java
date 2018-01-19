@@ -85,7 +85,7 @@ public class AlertRenderService implements IAlertRenderService{
 			
 			alertJson.put("impactScope", getValueByKey(customFields, "Impact Scope"));
 			alertJson.put("alertType", getValueByKey(customFields, "Alert Type"));			
-			alertJson.put("alertType", getValueByKey(customFields, "Alert Source"));
+			alertJson.put("alertSource", getValueByKey(customFields, "Alert Source"));
 			alertJson.put("tvNewsChannel", getValueByKey(customFields, "TV News Channel"));
 			alertJson.put("editionType", getValueByKey(customFields, "Edition Type"));
 			alertJson.put("newsPaperEdition", getValueByKey(customFields, "News Paper Edition"));

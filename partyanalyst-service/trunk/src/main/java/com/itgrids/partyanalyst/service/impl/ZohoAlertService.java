@@ -35,7 +35,6 @@ public class ZohoAlertService implements IZohoAlertService {
 	private DateUtilService dateUtilService;
 	private IOtpDetailsDAO otpDetailsDAO; 
 	private CommonMethodsUtilService commonMethodsUtilService ;
-	private IConstants Iconstants; 
 
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
@@ -72,12 +71,6 @@ public class ZohoAlertService implements IZohoAlertService {
 	public void setCommonMethodsUtilService(CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-
-	public void setIconstants(IConstants iconstants) {
-		Iconstants = iconstants;
-	}
-
-
 
 	@Override
 	public String getMobileNoByMemberShip(String membershipId) {
@@ -263,7 +256,10 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	      return "inValidMemberShipID";
 	}
 
-
+    /*
+     * 
+     * @see com.itgrids.partyanalyst.service.IZohoAlertService#sendSms(java.lang.String, java.lang.String)
+     */
 
 	@Override
 	public JSONObject sendSms(String phoneNumber,String message) {
@@ -275,7 +271,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
  				status.put("Status", "Success");
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			LOG.error("Exception Occured in sendSms() in ZohoAlertService class.",e);
 		}
 		return status;
 	}
