@@ -2007,7 +2007,8 @@ getAllDepartments();
 											if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
 											  table+='<td>'+result[i].amount+'</td>';	
 											}else {
-											  table+='<td>'+result[i].amount+'  ('+result[i].count+')</td>';	
+											  //table+='<td>'+result[i].amount+'  ('+result[i].count+')</td>';	
+											  table+='<td>'+result[i].amount+'</td>';	
 											}
 											
 										}
@@ -2028,8 +2029,8 @@ getAllDepartments();
 											if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
 											   table+='<td>'+result[i].amount+'</td>';	
 											}else {
-											  table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
-										      //table+='<td>'+result[i].amount+'</td>';		
+											  //table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
+										      table+='<td>'+result[i].amount+'</td>';		
 											}
 									}
 								
@@ -2046,8 +2047,8 @@ getAllDepartments();
 										    if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
 											   table+='<td>'+result[i].amount+'</td>';	
 											}else{
-										      table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
-										      //table+='<td>'+result[i].amount+'</td>';
+										      //table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "DISTRICT" >'+result[i].count+')</small></td>';
+										      table+='<td>'+result[i].amount+'</td>';
 											}
 									}
 							}
@@ -2075,8 +2076,8 @@ getAllDepartments();
 										    if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
 											   table+='<td>'+result[i].amount+'</td>';	
 											}else{
-										      table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "CONSTITUENCY" >'+result[i].count+')</small></td>';
-										      //table+='<td>'+result[i].amount+'</td>';
+										      //table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "CONSTITUENCY" >'+result[i].count+')</small></td>';
+										      table+='<td>'+result[i].amount+'</td>';
 											}
 									}
 								
@@ -2111,8 +2112,8 @@ getAllDepartments();
 										 if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
 											   table+='<td>'+result[i].amount+'</td>';	
 										}else{
-										  table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "MANDAL">'+result[i].count+')</small></td>';
-										   //table+='<td>'+result[i].amount+'</td>';
+										  //table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "MANDAL">'+result[i].count+')</small></td>';
+										   table+='<td>'+result[i].amount+'</td>';
 										}
 									}
 								
@@ -2139,8 +2140,8 @@ getAllDepartments();
 											 if(result[i].count == 0) { // in the case MGNREGS we are sending count is zero and we are not displaying it.
 											   table+='<td>'+result[i].amount+'</td>';	
 											 }else{
-												table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "VILLAGE">'+result[i].count+')</small></td>';
-												//table+='<td>'+result[i].amount+'</td>';
+												//table+='<td>'+result[i].amount+'  (<small title="No of times amount sanctioned..." class="toolltipCls"  attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+schmeIdstr+'" attr_dept_id="0" style="color:green;" attr_level_name = "VILLAGE">'+result[i].count+')</small></td>';
+												table+='<td>'+result[i].amount+'</td>';
 											 }
 										}
 								
@@ -2161,13 +2162,15 @@ getAllDepartments();
 											table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</small></td>';
 											
 										}else{
-											table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" attr_location_name="'+locatioName+'" attr_level_name="'+levelName+'" attr_location_strids="'+result[i].locationIdStr+'" attr_mgnregs_name="'+result[i].subList[j].subList[k].name+'" attr_view_type="'+viewType+'">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls">&nbsp;&nbsp;(<u><span style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</span> </u>)</small></td>';
+											//table+='<td class="text-center no-right-border fundSanctionCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" attr_location_name="'+locatioName+'" attr_level_name="'+levelName+'" attr_location_strids="'+result[i].locationIdStr+'" attr_mgnregs_name="'+result[i].subList[j].subList[k].name+'" attr_view_type="'+viewType+'">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls">&nbsp;&nbsp;(<u><span style="cursor:pointer;color:green;">'+result[i].subList[j].subList[k].count+'</span> </u>)</small></td>';
+											table+='<td><span class="text-center no-right-border fundSanctionCls toolltipCls" attr_scope_id="'+levelId+'" attr_level_value="'+lvlVal+'" attr_financial_yr_id="'+newYearId+'" attr_scheme_id="'+result[i].subList[j].subList[k].id+'" attr_dept_id="0" attr_location_name="'+locatioName+'" attr_level_name="'+levelName+'" attr_location_strids="'+result[i].locationIdStr+'" attr_mgnregs_name="'+result[i].subList[j].subList[k].name+'" attr_view_type="'+viewType+'" title="Click here to view total works ('+result[i].subList[j].subList[k].count+') details">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</span></td>';
 										}
 									}else{
 										if(result[i].subList[j].subList[k].count != null && result[i].subList[j].subList[k].count == 0){
 											table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</td>';
 										}else{
-											table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls" >&nbsp;&nbsp;('+result[i].subList[j].subList[k].count+')</small></td>';
+											//table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'<br/><small title="No of times amount sanctioned..." class="toolltipCls" >&nbsp;&nbsp;('+result[i].subList[j].subList[k].count+')</small></td>';
+											table+='<td class="text-center no-right-border">'+parseFloat(result[i].subList[j].subList[k].amount.replace(/,/g, ""))+'</td>';
 										}
 									}
 								
