@@ -3112,7 +3112,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							refDesigCan = new RepresenteeViewVO();
 							refDesigCan.setStatusList(setStatusList(null));
 							refDesigCan.setId(commonMethodsUtilService.getLongValueForObject(objects[6]));
-							refDesigCan.setReferrerName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+							refDesigCan.setReferrerName(commonMethodsUtilService.getCapitalStringValueForObject(objects[7]));
 							refDesigCan.setDeptDesigId(commonMethodsUtilService.getLongValueForObject(objects[4]));
 							refDesigCan.setDesigName(commonMethodsUtilService.getStringValueForObject(objects[5]));
 							refDesigCan.setName(commonMethodsUtilService.getStringValueForObject(objects[7]));
