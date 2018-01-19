@@ -31,7 +31,7 @@ public class AlertRenderService implements IAlertRenderService{
 					if(json !=null){
 						if(json.has("payload") && json.has("eventType")){
 							String eventType = json.getString("eventType").trim();
-							if(eventType.equalsIgnoreCase("Tickets_Add")){
+							if(eventType.equalsIgnoreCase("Ticket_Add")){
 								finalJson = getRenderedAlertObject(json.getJSONObject("payload"));//alert creation
 								if(json.getJSONObject("payload").has("contactId")){
 									alertUpdationAPIService.saveAlertAssign(json.getJSONObject("payload"));
