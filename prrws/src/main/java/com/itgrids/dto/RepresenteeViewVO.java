@@ -39,8 +39,15 @@ public class RepresenteeViewVO {
 	private String remark;
 	private Long order;
 	private List<Long> workIds = new ArrayList<Long>();
+	private List<String> referList = new ArrayList<String>();
 	
 	
+	public List<String> getReferList() {
+		return referList;
+	}
+	public void setReferList(List<String> referList) {
+		this.referList = referList;
+	}
 	public List<Long> getWorkIds() {
 		return workIds;
 	}

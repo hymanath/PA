@@ -258,16 +258,18 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		}
 		sb.append("  from PmSubWorkDetails model  ");
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
-			sb.append(" ,PmRepresenteeRefDetails model1,PmRefCandidateDesignation model2 where model1.petition.petitionId=model.petition.petitionId and ");
-			sb.append(" model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and  model1.pmRefCandidateDesignation.isDeleted = 'N' and model1.isDeleted='N' and model1.pmRepresentee.isDeleted = 'N'  " +
-					" and model1.pmRefCandidate.isDeleted = 'N' and model2.pmRefCandidateId=model1.pmRefCandidateId and model.isDeleted='N' and  ");
+			sb.append(" ,PmRepresenteeRefDetails model1,PmRefCandidateDesignation model2 where model1.petition.petitionId=model.petition.petitionId  and model1.isDeleted='N'" +
+					" and model.isDeleted='N' and model2.pmRefCandidateId=model1.pmRefCandidateId ");
 		//}else{
 		//	sb.append(" where ");
 		//}
-		sb.append("  model.pmDepartment.isDeleted='N' and ");
+			
+		/*sb.append(" model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and  model1.pmRefCandidateDesignation.isDeleted = 'N' and model1.pmRepresentee.isDeleted = 'N'  " +
+					" and model1.pmRefCandidate.isDeleted = 'N'   and  ");
+		sb.append("  model.pmDepartment.isDeleted='N' and ");*/
 		//sb.append("  model.pmSubject.isDeleted='N' and  ");
 		//if(type.equalsIgnoreCase("subject")){
-			sb.append("  model.pmSubject.parentPmSubjectId is null ");
+			sb.append(" and  model.pmSubject.parentPmSubjectId is null ");
 		//}
 		if(deptIds != null && deptIds.size() >0){
 			 sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
@@ -398,14 +400,13 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		//}
 			sb.append(", sum(model.costEstimation) ");	
 		sb.append("  from PmSubWorkDetails model  ");
-		sb.append(" ,PmRepresenteeRefDetails model1,PmRefCandidateDesignation model2 where model1.petition.petitionId=model.petition.petitionId and ");
-		sb.append(" model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and  model1.pmRefCandidateDesignation.isDeleted = 'N' " +
-					"and model1.isDeleted='N' and model1.pmRepresentee.isDeleted = 'N'  " +
-					" and model1.pmRefCandidate.isDeleted = 'N' and model2.pmRefCandidateId=model1.pmRefCandidateId and model.isDeleted='N' and  ");
+		sb.append(" ,PmRepresenteeRefDetails model1,PmRefCandidateDesignation model2 where model1.petition.petitionId=model.petition.petitionId  ");
+		sb.append(" and model1.isDeleted='N'  and model2.pmRefCandidateId=model1.pmRefCandidateId and model.isDeleted='N'   ");
 		
-		sb.append("  model.pmDepartment.isDeleted='N' and ");
-		//sb.append("  model.pmSubject.isDeleted='N' and  ");
-		sb.append("  model.pmSubject.parentPmSubjectId is null ");
+		/*sb.append(" and model.pmDepartment.isDeleted='N' and model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' " +
+				"and  model1.pmRefCandidateDesignation.isDeleted = 'N' and model1.pmRepresentee.isDeleted = 'N' and model1.pmRefCandidate.isDeleted = 'N' ");
+		sb.append("  model.pmSubject.isDeleted='N' and  ");*/
+		//sb.append("  and model.pmSubject.parentPmSubjectId is null ");
 		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
 			 sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
