@@ -509,9 +509,9 @@ function getReferralWiseOverviewDetails(desigId){
 		 if(result!= null){
 			 if(desigId =="")
 			 buildDesignationsWiseCount(result);
-			 if(desigId >=0 && result.referrerList.length >0){
-				buildDesignationsWiseInformation(result);
-			 }else{
+			 if(desigId != "" && desigId >=0 && result.referrerList.length >0){
+				 buildDesignationsWiseInformation(result);
+			 }else if(desigId != ""){
 				 $("#desigWiseCandidatesView").html("No data avialable");
 			 }
 		}
@@ -520,7 +520,6 @@ function getReferralWiseOverviewDetails(desigId){
 		} 		
 		
 	});	
-
 }
 
  function buildDesignationsWiseCount(result){
@@ -543,11 +542,13 @@ function getReferralWiseOverviewDetails(desigId){
 				   str+='<div class="row">';			
 					str+='<div class="col-sm-6">';
 					str+='<p><b>Representations</b></p>';
-					str+='<h4><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.subList[i].deptDesigId+'" target="_blank">'+result.subList[i].petitionIds.length+'</a></h4>';
+					//str+='<h4><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.subList[i].deptDesigId+'" target="_blank">'+result.subList[i].petitionIds.length+'</a></h4>';
+					str+='<h4><span>'+result.subList[i].petitionIds.length+'</span></h4>';
 					str+='</div>';
 					str+='<div class="col-sm-6">';
 					str+='<p><b>Works</b></p>';
-					str+='<h4><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.subList[i].deptDesigId+'" target="_blank">'+result.subList[i].noOfWorks+'</a></h4>';
+					//str+='<h4><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.subList[i].deptDesigId+'" target="_blank">'+result.subList[i].noOfWorks+'</a></h4>';
+					str+='<h4><span>'+result.subList[i].noOfWorks+'</span></h4>';
 					str+='</div>';				
 				str+='</div>';
 					
@@ -555,9 +556,9 @@ function getReferralWiseOverviewDetails(desigId){
 		str+='</div>';
 	str+='</div>';
 	  }
-	  /* if(result.subList != null && result.subList.length>0){
-		  getReferralWiseOverviewDetails(result.subList[0].deptDesigId);
-	  } */
+	   if(result.subList != null && result.subList.length>0){
+		  getReferralWiseOverviewDetails("7");
+	  } 
 	  
 	$("#desigWiseCountId").html(str);
 	} 

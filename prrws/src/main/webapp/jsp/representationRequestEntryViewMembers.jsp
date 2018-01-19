@@ -366,6 +366,7 @@
 				<span id="uploadFile"></span>
 			</div>
 		</div>
+		<!--<button type="button" class="btn btn-default" onclick="generateCoveringLetterForPetition();">Generate Cover Letter</button>-->
 	  </div>
 	  <div class="modal-footer">
 		 <button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>

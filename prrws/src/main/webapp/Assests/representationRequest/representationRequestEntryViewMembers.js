@@ -2136,6 +2136,71 @@ $.ajax({
 		$("#menuId").html(str); 
 } */
 
-
+//generateCoveringLetterForPetition();
+function generateCoveringLetterForPetition(){
+	 //$('#endorsWorksId').hide();
+	 var  schemeIdsListArr =[];
+	   var endorsementNO="";
+	   var petitionId=0;
+	   var formData = new FormData();
+	   $('#endorsingSubWorksId input').each(
+		  function(){			  
+			var input = $(this);
+			var text =input.attr('type');
+			var id = input.attr('id');
+			//debugger;
+			if (typeof id !== typeof undefined && id !== false) {
+				if(text=='text' || text=='hidden'){
+					var name = $('#'+id+'').attr('name');
+					formData.append(name, $('#'+id+'').val());
+					if(name=="petitionId")
+						petitionId = $('#'+id+'').val();
+					else if(name=="endorsementNO")
+						endorsementNO = $('#'+id+'').val();
+				}else if(text=='radio'){
+					if($('#'+id+'').is(':checked')){
+						var name = $('#'+id+'').attr('name');
+						formData.append(name, $('#'+id+'').val());
+					}
+				}else if(text=='file'){
+					if(this.files !=null && this.files.length>0){
+						for(var i = 0; i < this.files.length; i++){
+								formData.append("filesList["+i+"]", this.files[i]);
+						}
+					}
+				}
+			}			
+		}
+	);
+	
+	var leadId = $("#leadId").val();
+	var grantId = $("#grantId").val();
+	if(selectdWorksArr !=null && selectdWorksArr.length>0){
+			for(var i = 0; i < selectdWorksArr.length; i++){
+				schemeIdsListArr.push(selectdWorksArr[i]);
+		}
+	}
+ 
+var json = {
+   pageId :petitionId,//petitionId
+   schemeIdsList:schemeIdsListArr,//subWorkIds
+   leadName:leadId,
+   groupName:grantId ,
+	endValue:endorsementNO,//endorsmentNo
+	pType:"viewPage",
+	type:"COVERING LETTER"
+  }           
+ $.ajax({              
+  type:'POST',    
+  url: 'generateCoveringLetterForPetition',
+  dataType: 'json',
+  data : JSON.stringify(json),
+  beforeSend :   function(xhr){
+   xhr.setRequestHeader("Accept", "application/json");
+   xhr.setRequestHeader("Content-Type", "application/json");
+  }
+ }).done(function(result){
+ }); 
+}
 				
 			
