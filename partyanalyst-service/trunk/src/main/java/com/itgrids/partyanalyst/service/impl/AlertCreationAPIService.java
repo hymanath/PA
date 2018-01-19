@@ -54,7 +54,7 @@ import com.sun.jersey.multipart.file.FileDataBodyPart;
 
 public class AlertCreationAPIService implements IAlertCreationAPIService {
 
-	private static final Logger LOG = Logger.getLogger(AlertService.class);
+	private static final Logger LOG = Logger.getLogger(AlertCreationAPIService.class);
 	
 	private IAlertDAO alertDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
