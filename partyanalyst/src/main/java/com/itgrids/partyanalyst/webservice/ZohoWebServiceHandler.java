@@ -89,6 +89,7 @@ public class ZohoWebServiceHandler {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public JSONObject getZohoWebHookDetails(JSONArray jArray){
 		try {
+			LOG.error("getZohoWebHookDetails Json Object is : "+jArray+" - in String Format It Is : "+jArray.toString());
 			 return zohoWebServiceHandlerService.getZohoWebHookDetails(jArray);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getZohoWebHookDetails() Method in ZohoWebServiceHandler ",e);
