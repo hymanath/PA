@@ -67,8 +67,14 @@ public class ITextCoveringLetterGeneration  {
 					str1 = str1.replace("#rname", pmRequestVO.getName());
 					 str1 = str1.replace("#rdate", petitionDetailsVO.getRepresentationdate());
 					 str1 = str1.replace("#rdesig", pmRequestVO.getDesignation());
-					 str1 = str1.replace("#rconst",pmRequestVO.getCandidateAddressVO().getAssemblyName());
-					 str1 = str1.replace("#rdist",pmRequestVO.getCandidateAddressVO().getDistrictName());
+					 if(petitionDetailsVO.getRepresentationType() != null && petitionDetailsVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE")){
+						 str1 = str1.replace("#rconst",pmRequestVO.getAddressVO().getAssemblyName());
+						 str1 = str1.replace("#rdist",pmRequestVO.getAddressVO().getDistrictName());
+					 }else if(petitionDetailsVO.getRepresentationType() != null && petitionDetailsVO.getRepresentationType().equalsIgnoreCase("SELF")){
+						 str1 = str1.replace("#rconst",pmRequestVO.getCandidateAddressVO().getAssemblyName());
+						 str1 = str1.replace("#rdist",pmRequestVO.getCandidateAddressVO().getDistrictName());
+					 }
+					
 					 if(petitionDetailsVO.getSubWorksList() != null && petitionDetailsVO.getSubWorksList().size()>0){
 						 for (PetitionsWorksVO pmSubwork : petitionDetailsVO.getSubWorksList()) {
 							 str1 = str1.replace("#subj",pmSubwork.getSubject());
@@ -144,7 +150,7 @@ public class ITextCoveringLetterGeneration  {
 			
 			
 			String endorsmentNO = inputVO.getEndValue();
-			 filePath = "E:/Petitions/CoverLetter/"+endorsmentNO+".pdf";
+			 filePath = "E:/Petitions/CoverLetter/"+endorsmentNO+".PDF";
 			OutputStream file = new FileOutputStream(new File(filePath));
 			Document document = new Document();
 			PdfWriter.getInstance(document, file);
