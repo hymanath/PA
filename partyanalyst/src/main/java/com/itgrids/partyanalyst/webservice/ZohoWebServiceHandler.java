@@ -60,20 +60,6 @@ public class ZohoWebServiceHandler {
 		return null;
 	}
 	
-	
-	/*@GET 
-	@Path("/getJwt")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getJwtByUserToken(@QueryParam("user_token")String user_token){
-		try {
-			return zohoWebServiceHandlerService.generateJwtForZoho(user_token);
-		} catch (Exception e) {
-			LOG.error("Exception Occured in getMobileNoByMemberShipId() Method in ZohoWebServiceHandler ",e);
-		}
-		return null;
-	}*/
-	
-	
 	@GET
     @Path("/getJwt")
 	@Produces(MediaType.TEXT_PLAIN)
