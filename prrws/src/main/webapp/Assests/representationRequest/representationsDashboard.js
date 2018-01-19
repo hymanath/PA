@@ -561,64 +561,8 @@ function getReferralWiseOverviewDetails(desigId){
 	  
 	$("#desigWiseCountId").html(str);
 	} 
-	/*function buildDesignationsWiseInformation(result){
 	
-	var str='';
-	str+='<div class="scrollCls">';
-	
-			for(var i in result.referrerList){
-							str+='<div class="col-sm-12" id="status">';
-								str+='<div class="col-sm-2">';
-									str+='<h5><b>'+result.referrerList[i].referrerName+'</b><h5><p>'+result.referrerList[i].desigName+'</p>';
-								str+='</div>';
-								str+='<div class="col-sm-9">';
-									str+='<div class="col-sm-3">';
-										str+='<div class="col-sm-8" style="background-color:#F3F3F3; padding:6px;">';
-											str+='<h6>Total Representations</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].petitionIds.length+'</a>';
-										str+='</div>';
-										str+='<div class="col-sm-4 pad_bag">';
-											str+='<h6>Works</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].noOfWorks+'</a>';
-										str+='</div>';	
-									str+='</div>';
-									for(var j in result.referrerList[i].statusList){
-										var statusIds= '';
-										if(result.referrerList[i].statusList[j].id == 1){
-											statusIds='1,3,6,7';
-										}else if(result.referrerList[i].statusList[j].id == 2){
-											statusIds='5';
-										}if(result.referrerList[i].statusList[j].id == 3){
-											statusIds='4,8';
-										}
-									str+='<div class="col-sm-3">';
-										str+='<div class="col-sm-8" style="background-color:#F3F3F3;">';
-											str+='<h6>'+result.referrerList[i].statusList[j].name+' Representations</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].petitionIds.length+'</a>';
-										str+='</div>';
-										str+='<div class="col-sm-4 pad_bag">';
-											str+='<h6>Works</h6><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].noOfWorks+'</a>';
-										str+='</div>';
-									str+='</div>';
-									}
-								str+='</div>';	
-								for(var j in result.referrerList[i].statusList){
-									if(result.referrerList[i].statusList[j].id ==3 && typeof(result.referrerList[i].statusList.estimationCost) != "undefined"){
-										str+='<div class="col-sm-1" id="amount">';
-										str+='<h6>Amount</h6><b>'+result.referrerList[i].statusList[j].estimationCost+'</b>';
-										str+='</div>';
-									}else if(result.referrerList[i].statusList[j].id ==3){
-										str+='<div class="col-sm-1" id="amount">';
-										str+='<h6>Amount</h6><b>-</b>';
-										str+='</div>';
-									}
-								}
-							str+='</div>';
-			}
-	
-	str+='</div>';
-		$("#desigWiseCandidatesView").html(str);
-$(".scrollCls").mCustomScrollbar({setHeight:'600px'})
-}
-*/
-function buildDesignationsWiseInformation(result){
+ function buildDesignationsWiseInformation(result){
 	
 	var str='';
 			str+='<div class="col-md-12">';
@@ -626,21 +570,21 @@ function buildDesignationsWiseInformation(result){
 				str+='<table class="table table-bordered" id="workDetailsTab">';
 					str+='<thead>';
 						str+='<tr>';
-							str+='<th>Name</th>';
-							str+='<th>Total Representations</th>';
-							str+='<th>Works</th>';
-							str+='<th>Pending Representations</th>';
-							str+='<th>Works</th>';
-							str+='<th>Rejected Representations</th>';
-							str+='<th>Works</th>';
-							str+='<th>Completed Representations</th>';
-							str+='<th>Works</th>';
-							str+='<th>Amount</th>';
+							str+='<th style="background-color:#C0C0C0;">Name</th>';
+							str+='<th style="background-color:#C0C0C0;">Total Representations</th>';
+							str+='<th style="background-color:#C0C0C0;">Works</th>';
+							str+='<th style="background-color:#C0C0C0;">Pending Representations</th>';
+							str+='<th style="background-color:#C0C0C0;">Works</th>';
+							str+='<th style="background-color:#C0C0C0;">Rejected Representations</th>';
+							str+='<th style="background-color:#C0C0C0;">Works</th>';
+							str+='<th style="background-color:#C0C0C0;">Completed Representations</th>';
+							str+='<th style="background-color:#C0C0C0;">Works</th>';
+							str+='<th style="background-color:#C0C0C0;">Amount</th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
 						for(var i in result.referrerList){
-							str+='<tr>';
+							str+='<tr style="text-align:center;">';
 								str+='<td><h5><b>'+result.referrerList[i].referrerName+'</b><h5><p>'+result.referrerList[i].desigName+'</p></td>';
 								
 								str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].petitionIds.length+'</a></td>';
