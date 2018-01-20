@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itgrids.dao.IComponentTargetConfigurationDAO;
+import com.itgrids.dao.IComponentTargetConfigurationTempDAO;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.INregaComponentCommentsDAO;
@@ -92,6 +94,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	private INregaFAVacantPanchayatDAO nregaFAVacantPanchayatDAO;
 	@Autowired
 	private INregaFATypeDAO nregaFATypeDAO;
+	@Autowired
+	private IComponentTargetConfigurationDAO componentTargetConfigurationDAO;
+	@Autowired
+	private IComponentTargetConfigurationTempDAO componentTargetConfigurationTempDAO;
 	
 	/*
 	 * Date : 16/06/2017
@@ -228,6 +234,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<IdNameVO> getLabourBudgetExpenditure(InputVO inputVO){
 		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
 		try {
+			Map<String,IdNameVO> rangeWiseMap = new LinkedHashMap<String,IdNameVO>();
 			String str = convertingInputVOToString(inputVO);
 			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str);
 	        
@@ -239,8 +246,49 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 		+ "{\"RANGE\": \"5-10\",\"GPSCOUNT\": \"2978\"},{\"RANGE\": \"10-20\",\"GPSCOUNT\": \"3986\"},{\"RANGE\": \"20-30\",\"GPSCOUNT\": \"1694\"},"
 	 	    	 		+ "{\"RANGE\": \"30-50\",\"GPSCOUNT\": \"901\"},{\"RANGE\": \"50-100\",\"GPSCOUNT\": \"286\"},{\"RANGE\": \"100-200\",\"GPSCOUNT\": \"21\"},"
 	 	    	 		+ "{\"RANGE\": \"200-300\",\"GPSCOUNT\": \"2\"},{\"RANGE\": \"300-400\",\"GPSCOUNT\": \"0\"},{\"RANGE\": \"Above 400\",\"GPSCOUNT\": \"0\"}]";*/
-	 	    	 
-	 	    	 Long totalCount = 0l;
+	 	    	List<Object[]> list = componentTargetConfigurationDAO.getRangeWiseVillageDetails(inputVO.getpType());
+	 	    	if(list != null && !list.isEmpty()){
+	 	    		for (Object[] obj : list) {
+						String rangeStr = "0";
+						Double expValue = Double.valueOf(obj[4] != null ? obj[4].toString():"0.00");
+						if(expValue == 0)
+							rangeStr = "0";
+						else if(expValue > 0 && expValue <= 1)
+							rangeStr = "Below 1";
+						else if(expValue > 1 && expValue <= 5)
+							rangeStr = "1-5";
+						else if(expValue > 5 && expValue <= 10)
+							rangeStr = "5-10";
+						else if(expValue > 10 && expValue <= 20)
+							rangeStr = "10-20";
+						else if(expValue > 20 && expValue <= 30)
+							rangeStr = "20-30";
+						else if(expValue > 30 && expValue <= 50)
+							rangeStr = "30-50";
+						else if(expValue > 50 && expValue <= 100)
+							rangeStr = "50-100";
+						else if(expValue > 100 && expValue <= 200)
+							rangeStr = "100-200";
+						else if(expValue > 200 && expValue <= 300)
+							rangeStr = "200-300";
+						else if(expValue > 300 && expValue <= 400)
+							rangeStr = "300-400";
+						else if(expValue > 400)
+							rangeStr = "Above 400";
+						IdNameVO vo = rangeWiseMap.get(rangeStr);
+						if(vo == null){
+							vo = new IdNameVO();
+							vo.setName(rangeStr);
+							vo.setCount(1L);
+							vo.getComponentNameList().add(obj[3] != null ? obj[3].toString():"0");
+							rangeWiseMap.put(rangeStr, vo);
+						}else{
+							vo.setCount(vo.getCount()+1L);
+							vo.getComponentNameList().add(obj[3] != null ? obj[3].toString():"0");
+						}
+					}
+	 	    	}
+	 	    	Long totalCount = 0l;
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
@@ -250,6 +298,20 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setName(jObj.getString("RANGE"));
 	 	    				vo.setCount(jObj.getLong("GPSCOUNT"));
 	 	    				totalCount = totalCount+vo.getCount();
+	 	    				//vo.setUrl(list.get(i)[1].toString());
+	 	    				IdNameVO prevo = rangeWiseMap.get(vo.getName());
+	 	    				if(prevo != null){
+	 	    					vo.setOrderNo(prevo.getCount());
+	 	    					vo.setComponentNameList(prevo.getComponentNameList());
+	 	    					vo.setDiffCount(vo.getOrderNo() - vo.getCount());
+	 	    				}
+	 	    				else{
+	 	    					vo.setOrderNo(0L);
+	 	    					vo.setDiffCount(0L);
+	 	    				}
+	 	    					
+	 	    				//vo.setOrderNo(rangeWiseMap.get(vo.getName()).getCount());
+	 	    				//vo.setComponentNameList(rangeWiseMap.get(vo.getName()).getComponentNameList());
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
@@ -262,6 +324,92 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				else
 	 	    					vo.setTotl("0.00");
 						}
+	 	    		}
+	 	    		
+	 	    		Map<String,String> panchTargMap = new LinkedHashMap<String,String>();
+	 	    		List<Object[]> panchTargList = componentTargetConfigurationTempDAO.getPanchayatTargetDetails(inputVO.getpType());
+	 	    		if(panchTargList != null && !panchTargList.isEmpty()){
+	 	    			for (Object[] obj : panchTargList) {
+							String panchCode = obj[0] != null ? obj[0].toString():"0";
+							Double expValue = Double.valueOf(obj[1] != null ? obj[1].toString():"0");
+							String rangeStr = "0";
+							if(expValue == 0)
+								rangeStr = "0";
+							else if(expValue > 0 && expValue <= 1)
+								rangeStr = "Below 1";
+							else if(expValue > 1 && expValue <= 5)
+								rangeStr = "1-5";
+							else if(expValue > 5 && expValue <= 10)
+								rangeStr = "5-10";
+							else if(expValue > 10 && expValue <= 20)
+								rangeStr = "10-20";
+							else if(expValue > 20 && expValue <= 30)
+								rangeStr = "20-30";
+							else if(expValue > 30 && expValue <= 50)
+								rangeStr = "30-50";
+							else if(expValue > 50 && expValue <= 100)
+								rangeStr = "50-100";
+							else if(expValue > 100 && expValue <= 200)
+								rangeStr = "100-200";
+							else if(expValue > 200 && expValue <= 300)
+								rangeStr = "200-300";
+							else if(expValue > 300 && expValue <= 400)
+								rangeStr = "300-400";
+							else if(expValue > 400)
+								rangeStr = "Above 400";
+							panchTargMap.put(panchCode, rangeStr);
+						}
+	 	    		}
+	 	    		
+	 	    		if(voList != null && !voList.isEmpty()){
+	 	    			for (IdNameVO idNameVO : voList) {
+							if(idNameVO.getName() != null && (idNameVO.getName().equalsIgnoreCase("0") || idNameVO.getName().equalsIgnoreCase("Below 1") 
+									|| idNameVO.getName().equalsIgnoreCase("1-5") || idNameVO.getName().equalsIgnoreCase("5-10") || idNameVO.getName().equalsIgnoreCase("10-20"))){
+								if(idNameVO.getComponentNameList() != null && !idNameVO.getComponentNameList().isEmpty()){
+									IdNameVO subvo = new IdNameVO();
+									subvo.setName(idNameVO.getName());
+									subvo.setCount(idNameVO.getCount());
+									subvo.setOrderNo(idNameVO.getOrderNo());
+									for (String panch : idNameVO.getComponentNameList()) {
+										String rangStr = panchTargMap.get(panch);
+										if(rangStr != null && rangStr.equalsIgnoreCase("0"))
+											subvo.setZeroCount(subvo.getZeroCount()+1L);
+										else if(rangStr != null && rangStr.equalsIgnoreCase("Below 1"))
+											subvo.setBelowOneCount(subvo.getBelowOneCount()+1L);
+										else if(rangStr != null && rangStr.equalsIgnoreCase("1-5"))
+											subvo.setOneToFiveCount(subvo.getOneToFiveCount()+1L);
+										else if(rangStr != null && rangStr.equalsIgnoreCase("5-10"))
+											subvo.setFiveToTenCount(subvo.getFiveToTenCount()+1L);
+										else if(rangStr != null && rangStr.equalsIgnoreCase("10-20"))
+											subvo.setTenToTwentyCount(subvo.getTenToTwentyCount()+1L);
+										else
+											subvo.setDiffCount(subvo.getDiffCount()+1L);
+									}
+									voList.get(0).getSubList().add(subvo);
+								}
+							}
+						}
+	 	    			if(voList.get(0).getSubList() != null && !voList.get(0).getSubList().isEmpty()){
+	 	    				for (IdNameVO idNameVO : voList.get(0).getSubList()) {
+								String name = idNameVO.getName();
+								if(name != null && name.trim().equalsIgnoreCase("0")){
+									idNameVO.setChangedCount(idNameVO.getOrderNo() - idNameVO.getZeroCount());
+									idNameVO.setZeroCount(0L);
+								}else if(name != null && name.trim().equalsIgnoreCase("Below 1")){
+									idNameVO.setChangedCount(idNameVO.getOrderNo() - idNameVO.getBelowOneCount());
+									idNameVO.setBelowOneCount(0L);
+								}else if(name != null && name.trim().equalsIgnoreCase("1-5")){
+									idNameVO.setChangedCount(idNameVO.getOrderNo() - idNameVO.getOneToFiveCount());
+									idNameVO.setOneToFiveCount(0L);
+								}else if(name != null && name.trim().equalsIgnoreCase("5-10")){
+									idNameVO.setChangedCount(idNameVO.getOrderNo() - idNameVO.getFiveToTenCount());
+									idNameVO.setFiveToTenCount(0L);
+								}else if(name != null && name.trim().equalsIgnoreCase("10-20")){
+									idNameVO.setChangedCount(idNameVO.getOrderNo() - idNameVO.getTenToTwentyCount());
+									idNameVO.setTenToTwentyCount(0L);
+								}
+							}
+	 	    			}
 	 	    		}
 	 	    	}
 	 	    }
@@ -7030,7 +7178,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	public List<IdNameVO> getPanchayatsExpenditure(InputVO inputVO,String locationId,Long levelId){
 		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
 		try {
-			
+			Map<String,IdNameVO> rangeWiseMap = new LinkedHashMap<String,IdNameVO>();
 			if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 1L){
 				inputVO.setLocationType("state");
 			}else if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 2L){
@@ -7049,6 +7197,50 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
 	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	List<Object[]> list = componentTargetConfigurationDAO.getRangeWiseVillageDetails(inputVO.getpType());
+	 	    	if(list != null && !list.isEmpty()){
+	 	    		for (Object[] obj : list) {
+						String rangeStr = "0";
+						Double expValue = Double.valueOf(obj[4] != null ? obj[4].toString():"0.00");
+						if(expValue == 0)
+							rangeStr = "0";
+						else if(expValue > 0 && expValue <= 1)
+							rangeStr = "Below 1";
+						else if(expValue > 1 && expValue <= 5)
+							rangeStr = "1-5";
+						else if(expValue > 5 && expValue <= 10)
+							rangeStr = "5-10";
+						else if(expValue > 10 && expValue <= 20)
+							rangeStr = "10-20";
+						else if(expValue > 20 && expValue <= 30)
+							rangeStr = "20-30";
+						else if(expValue > 30 && expValue <= 50)
+							rangeStr = "30-50";
+						else if(expValue > 50 && expValue <= 100)
+							rangeStr = "50-100";
+						else if(expValue > 100 && expValue <= 200)
+							rangeStr = "100-200";
+						else if(expValue > 200 && expValue <= 300)
+							rangeStr = "200-300";
+						else if(expValue > 300 && expValue <= 400)
+							rangeStr = "300-400";
+						else if(expValue > 400)
+							rangeStr = "Above 400";
+						IdNameVO vo = rangeWiseMap.get(rangeStr);
+						if(vo == null){
+							vo = new IdNameVO();
+							vo.setName(rangeStr);
+							vo.setCount(1L);
+							vo.getComponentNameList().add(obj[3] != null ? obj[3].toString():"0");
+							rangeWiseMap.put(rangeStr, vo);
+						}else{
+							vo.setCount(vo.getCount()+1L);
+							vo.getComponentNameList().add(obj[3] != null ? obj[3].toString():"0");
+						}
+					}
+	 	    	}
+	 	    	 
 	 	    	 Long totalCount = 0l;
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -7059,6 +7251,16 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setName(jObj.getString("RANGE"));
 	 	    				vo.setCount(jObj.getLong("GPSCOUNT"));
 	 	    				totalCount = totalCount+vo.getCount();
+	 	    				IdNameVO prevo = rangeWiseMap.get(vo.getName());
+	 	    				if(prevo != null){
+	 	    					vo.setOrderNo(prevo.getCount());
+	 	    					vo.setComponentNameList(prevo.getComponentNameList());
+	 	    					vo.setDiffCount(vo.getOrderNo() - vo.getCount());
+	 	    				}
+	 	    				else{
+	 	    					vo.setOrderNo(0L);
+	 	    					vo.setDiffCount(0L);
+	 	    				}
 	 	    				
 	 	    				voList.add(vo);
 	 	    			}
@@ -7071,6 +7273,92 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				else
 	 	    					vo.setTotl("0.00");
 						}
+	 	    		}
+	 	    		
+	 	    		Map<String,String> panchTargMap = new LinkedHashMap<String,String>();
+	 	    		List<Object[]> panchTargList = componentTargetConfigurationTempDAO.getPanchayatTargetDetails(inputVO.getpType());
+	 	    		if(panchTargList != null && !panchTargList.isEmpty()){
+	 	    			for (Object[] obj : panchTargList) {
+							String panchCode = obj[0] != null ? obj[0].toString():"0";
+							Double expValue = Double.valueOf(obj[1] != null ? obj[1].toString():"0");
+							String rangeStr = "0";
+							if(expValue == 0)
+								rangeStr = "0";
+							else if(expValue > 0 && expValue <= 1)
+								rangeStr = "Below 1";
+							else if(expValue > 1 && expValue <= 5)
+								rangeStr = "1-5";
+							else if(expValue > 5 && expValue <= 10)
+								rangeStr = "5-10";
+							else if(expValue > 10 && expValue <= 20)
+								rangeStr = "10-20";
+							else if(expValue > 20 && expValue <= 30)
+								rangeStr = "20-30";
+							else if(expValue > 30 && expValue <= 50)
+								rangeStr = "30-50";
+							else if(expValue > 50 && expValue <= 100)
+								rangeStr = "50-100";
+							else if(expValue > 100 && expValue <= 200)
+								rangeStr = "100-200";
+							else if(expValue > 200 && expValue <= 300)
+								rangeStr = "200-300";
+							else if(expValue > 300 && expValue <= 400)
+								rangeStr = "300-400";
+							else if(expValue > 400)
+								rangeStr = "Above 400";
+							panchTargMap.put(panchCode, rangeStr);
+						}
+	 	    		}
+	 	    		
+	 	    		if(voList != null && !voList.isEmpty()){
+	 	    			for (IdNameVO idNameVO : voList) {
+							if(idNameVO.getName() != null && (idNameVO.getName().equalsIgnoreCase("0") || idNameVO.getName().equalsIgnoreCase("Below 1") 
+									|| idNameVO.getName().equalsIgnoreCase("1-5") || idNameVO.getName().equalsIgnoreCase("5-10") || idNameVO.getName().equalsIgnoreCase("10-20"))){
+								if(idNameVO.getComponentNameList() != null && !idNameVO.getComponentNameList().isEmpty()){
+									IdNameVO subvo = new IdNameVO();
+									subvo.setName(idNameVO.getName());
+									subvo.setCount(idNameVO.getCount());
+									subvo.setOrderNo(idNameVO.getOrderNo());
+									for (String panch : idNameVO.getComponentNameList()) {
+										String rangStr = panchTargMap.get(panch);
+										if(rangStr != null && rangStr.equalsIgnoreCase("0"))
+											subvo.setZeroCount(subvo.getZeroCount()+1L);
+										else if(rangStr != null && rangStr.equalsIgnoreCase("Below 1"))
+											subvo.setBelowOneCount(subvo.getBelowOneCount()+1L);
+										else if(rangStr != null && rangStr.equalsIgnoreCase("1-5"))
+											subvo.setOneToFiveCount(subvo.getOneToFiveCount()+1L);
+										else if(rangStr != null && rangStr.equalsIgnoreCase("5-10"))
+											subvo.setFiveToTenCount(subvo.getFiveToTenCount()+1L);
+										else if(rangStr != null && rangStr.equalsIgnoreCase("10-20"))
+											subvo.setTenToTwentyCount(subvo.getTenToTwentyCount()+1L);
+										else
+											subvo.setDiffCount(subvo.getDiffCount()+1L);
+									}
+									voList.get(0).getSubList().add(subvo);
+								}
+							}
+						}
+	 	    			if(voList.get(0).getSubList() != null && !voList.get(0).getSubList().isEmpty()){
+	 	    				for (IdNameVO idNameVO : voList.get(0).getSubList()) {
+								String name = idNameVO.getName();
+								if(name != null && name.trim().equalsIgnoreCase("0")){
+									idNameVO.setChangedCount(idNameVO.getOrderNo() - idNameVO.getZeroCount());
+									idNameVO.setZeroCount(0L);
+								}else if(name != null && name.trim().equalsIgnoreCase("Below 1")){
+									idNameVO.setChangedCount(idNameVO.getOrderNo() - idNameVO.getBelowOneCount());
+									idNameVO.setBelowOneCount(0L);
+								}else if(name != null && name.trim().equalsIgnoreCase("1-5")){
+									idNameVO.setChangedCount(idNameVO.getOrderNo() - idNameVO.getOneToFiveCount());
+									idNameVO.setOneToFiveCount(0L);
+								}else if(name != null && name.trim().equalsIgnoreCase("5-10")){
+									idNameVO.setChangedCount(idNameVO.getOrderNo() - idNameVO.getFiveToTenCount());
+									idNameVO.setFiveToTenCount(0L);
+								}else if(name != null && name.trim().equalsIgnoreCase("10-20")){
+									idNameVO.setChangedCount(idNameVO.getOrderNo() - idNameVO.getTenToTwentyCount());
+									idNameVO.setTenToTwentyCount(0L);
+								}
+							}
+	 	    			}
 	 	    		}
 	 	    	}
 	 	    }

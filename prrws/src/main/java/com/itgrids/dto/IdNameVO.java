@@ -13,11 +13,11 @@ public class IdNameVO implements Serializable{
 	private Double total;
 	private double average;
 	private double percentage;
-	private Long count;
+	private Long count = 0L;
 	private String totl;
 	private String minDate;
 	private String maxDate;
-	private List<String> componentNameList;
+	private List<String> componentNameList = new ArrayList<String>();;
 	private Double sanctionedAmount =0.0;
 	
 	private String url;
@@ -83,7 +83,15 @@ public class IdNameVO implements Serializable{
 	private String goNumber;
 
 	private String locationName;
-	 
+	private Long diffCount = 0L;
+	
+	private Long zeroCount = 0L;
+	private Long belowOneCount = 0L;
+	private Long oneToFiveCount = 0L;
+	private Long fiveToTenCount = 0L;
+	private Long tenToTwentyCount = 0L;
+	private Long changedCount = 0L;
+	
 	
 	public IdNameVO() {
 		super();
@@ -100,6 +108,48 @@ public class IdNameVO implements Serializable{
 		this.totl = totl;
 	}
 
+	public Long getChangedCount() {
+		return changedCount;
+	}
+	public void setChangedCount(Long changedCount) {
+		this.changedCount = changedCount;
+	}
+	public Long getZeroCount() {
+		return zeroCount;
+	}
+	public void setZeroCount(Long zeroCount) {
+		this.zeroCount = zeroCount;
+	}
+	public Long getBelowOneCount() {
+		return belowOneCount;
+	}
+	public void setBelowOneCount(Long belowOneCount) {
+		this.belowOneCount = belowOneCount;
+	}
+	public Long getOneToFiveCount() {
+		return oneToFiveCount;
+	}
+	public void setOneToFiveCount(Long oneToFiveCount) {
+		this.oneToFiveCount = oneToFiveCount;
+	}
+	public Long getFiveToTenCount() {
+		return fiveToTenCount;
+	}
+	public void setFiveToTenCount(Long fiveToTenCount) {
+		this.fiveToTenCount = fiveToTenCount;
+	}
+	public Long getTenToTwentyCount() {
+		return tenToTwentyCount;
+	}
+	public void setTenToTwentyCount(Long tenToTwentyCount) {
+		this.tenToTwentyCount = tenToTwentyCount;
+	}
+	public Long getDiffCount() {
+		return diffCount;
+	}
+	public void setDiffCount(Long diffCount) {
+		this.diffCount = diffCount;
+	}
 	public String getServiceProviderName() {
 		return serviceProviderName;
 	}

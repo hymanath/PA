@@ -1,4 +1,5 @@
 package com.itgrids.prrws.notification.service.impl;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,10 +10,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.itgrids.dto.InputVO;
+import com.itgrids.service.IConstituencyWiseWorkStatusService;
 import com.itgrids.service.IItcDashboardService;
 import com.itgrids.service.ILightMonitoring;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
+import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
 
 @Configuration
@@ -28,6 +31,9 @@ public class Scheduler {
 	private IRwsWorksSchedulerService rwsWorksSchedulerService;
     @Autowired
   	private IItcDashboardService itcDashboardService;
+    @Autowired
+    private IConstituencyWiseWorkStatusService constituencyWiseWorkStatusService;
+    
 	
 	//@Scheduled(cron = "0 30 2,14 * * * ")
     //run scheduler every 15 minutes
@@ -143,4 +149,23 @@ public class Scheduler {
 			return;
 	}
 	
+	@Scheduled(cron ="0 4 * ? * *")
+	public void runTheSchedulerForEveryDayAt4AM()
+	{
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			LOG.error("Cron Job For Labour Budget Panchayat Vs Expenditure Details Started");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			InputVO inputVO = new InputVO();
+			inputVO.setYear("2017");
+			inputVO.setFromDate("2017-04-01");
+			inputVO.setToDate(sdf.format(new DateUtilService().getCurrentDateInDateFormat()));
+			inputVO.setLocationType("state");
+			inputVO.setLocationId(0L);
+			constituencyWiseWorkStatusService.savingLabourBudgetRangeWiseExpenditureDetailsEveryDay(inputVO);
+			LOG.error("Cron Job For Labour Budget Panchayat Vs Expenditure Details Completed");
+		}
+		else 
+			return;
+	}
 }

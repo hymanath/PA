@@ -50,12 +50,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="row m_top10">
-			<div class="col-sm-12">
-				<div class="white_block">
+		<div class="white_block m_top10">
+				<div class="row">
 					<div id="panchtExptDivId"></div>
 				</div>
-			</div>
 		</div>
 		<div class="row m_top10">
 			<div class="col-sm-12">
@@ -163,8 +161,8 @@ function getPanchayatsExpenditure(radioType)
 
 function buildPanchayatsExpenditure(result){
 	var str='';
-		str+='<h4 class="text-capital font_weight">Panchayats Vs Expenditure Comments</h4>';
-		str+='<div class="table-responsive m_top20">';
+		str+='<h4 class="text-capital font_weight" style="margin-left: 15px;">Panchayats Vs Expenditure Comments</h4>';
+		str+='<div class="col-md-12 table-responsive m_top20">';
 			str+='<table class="table table_right_css">';
 				str+='<thead>';
 					 str+='<tr>';
@@ -174,9 +172,15 @@ function buildPanchayatsExpenditure(result){
 						 }
 					  str+='</tr>';
 					 str+='</thead>'; 
-					str+='<tbody>';  
+					str+='<tbody>';
+						str+=' <tr">';
+							str+=' <td>As On Nov 30th</td>';
+							for(var i in result){
+								str+='<td>'+result[i].orderNo+'</td>';
+							}
+						str+='</tr>';
 					str+=' <tr>';
-						str+=' <td>Grand Total</td>';
+						str+=' <td>As Of Today</td>';
 						for(var i in result){
 							if(result[i].count != null && result[i].count != 0){
 								str+='<td>'+result[i].count+'</td>';
@@ -185,12 +189,81 @@ function buildPanchayatsExpenditure(result){
 							}
 						}
 					str+='</tr>';
-					str+=' <tr>';
+					/*str+=' <tr>';
 						str+=' <td>Percentage</td>';
 						for(var i in result){
 							str+='<td>'+result[i].totl+'</td>';
 						}
+					str+='</tr>';*/
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		
+		str+='<div class="col-md-12 table-responsive m_top20">';
+			str+='<h4><b>BELOW 20L EXPENDITURE PANCHAYATS CHANGED STATUS SUMMARY FROM NOV-30th TO TODAY</b></h4>';
+			str+='<table class="table table-striped table-bordered table_labour_css m_top10">';
+				str+='<thead>';
+					str+='<tr>';
+					str+='<th>Expenditure Ranges</th>';
+					str+='<th>As On Nov 30th</th>';
+					str+='<th>As Of Today</th>';
+					str+='<th>Changed</th>';
+					//str+='<th>Changed Status</th>';
+					//str+='</tr>';
+					//str+='<tr>';
+					str+='<th>0</th>';
+					str+='<th>Below 1</th>';
+					str+='<th>1-5</th>';
+					str+='<th>5-10</th>';
+					str+='<th>10-20</th>';
+					str+='<th>Above 20</th>';
 					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					if(result[0].subList != null && result[0].subList.length > 0){
+						for(var i in result[0].subList){
+							str+='<tr>';
+								str+='<td>'+result[0].subList[i].name+'</td>';
+								str+='<td>'+result[0].subList[i].orderNo+'</td>';
+								str+='<td>'+result[0].subList[i].count+'</td>';
+								str+='<td>'+result[0].subList[i].changedCount+'</td>';
+								/*if(i == 0){
+									str+='<td style="color:red;">'+result[0].subList[i].zeroCount+'</td>';
+								}
+								else
+									str+='<td>'+result[0].subList[i].zeroCount+'</td>';
+								if(i == 1)
+									str+='<td style="color:red;">'+result[0].subList[i].belowOneCount+'</td>';
+								else
+									str+='<td>'+result[0].subList[i].belowOneCount+'</td>';
+								if(i == 2)
+									str+='<td style="color:red;">'+result[0].subList[i].oneToFiveCount+'</td>';
+								else
+									str+='<td>'+result[0].subList[i].oneToFiveCount+'</td>';
+								if(i == 3)
+									str+='<td style="color:red;">'+result[0].subList[i].fiveToTenCount+'</td>';
+								else
+									str+='<td>'+result[0].subList[i].fiveToTenCount+'</td>';
+								if(i == 4)
+									str+='<td style="color:red;">'+result[0].subList[i].tenToTwentyCount+'</td>';
+								else
+									str+='<td>'+result[0].subList[i].tenToTwentyCount+'</td>';*/
+								str+='<td>'+result[0].subList[i].zeroCount+'</td>';
+								str+='<td>'+result[0].subList[i].belowOneCount+'</td>';
+								str+='<td>'+result[0].subList[i].oneToFiveCount+'</td>';
+								str+='<td>'+result[0].subList[i].fiveToTenCount+'</td>';
+								str+='<td>'+result[0].subList[i].tenToTwentyCount+'</td>';
+								str+='<td>'+result[0].subList[i].diffCount+'</td>';
+							str+='</tr>';
+						}
+						/*str+='<tr style="background-color:#C0C0C0;">';
+							str+='<td colspan="2" class="text-center"><b>As Of Now</b></td>'
+							for(var i in result[0].subList){
+								str+='<td>'+result[0].subList[i].count+'</td>';
+							}
+							str+='<td>'+totalChangedCount+'</td>';
+						str+='</tr>';*/
+					}
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';

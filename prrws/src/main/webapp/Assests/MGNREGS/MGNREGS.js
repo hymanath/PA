@@ -1421,8 +1421,10 @@ function overviewData(divId,levelId,locationId)
 	}
 	
 	
-	if(divId == 'Labour Budget')
+	if(divId == 'Labour Budget'){
 		getNREGSLabourBudgetOverview(divId,menuLocationType,menuLocationId);
+		//getNREGSLabourBudgetExpenditure(divId,menuLocationType,menuLocationId,"TOT");
+	}
 	else if(divId == 'Payments')
 		getNregaPaymentsAbsAndOverviewDtls(divId,menuLocationType,menuLocationId,2,'overview');
 	else if(divId == 'Timely Payment')
@@ -2536,7 +2538,7 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 //LabourBudget Exp Builing --  Nandhini
 function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocationId,radioType){
 	var str='';
-	str+='<div class="table-responsive">';
+	str+='<div class="col-md-12 table-responsive">';
 			str+='<table class="table table-striped table-bordered">';
 				str+='<tbody>';
 					 str+='<tr>';
@@ -2545,14 +2547,14 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 							 str+='<td>'+result[i].name+'</td>';
 						 }
 					  str+='</tr>';
-					 /* str+=' <tr style="color:red">';
+					  str+=' <tr>';
 						str+=' <td><b>As On Nov 30th</b></td>';
 						for(var i in result){
-							str+='<td>'+result[i].diffCount+'/'+result[i].orderNo+'</td>';
+							str+='<td>'+result[i].orderNo+'</td>';
 						}
-					str+='</tr>';*/
+					str+='</tr>';
 					str+=' <tr>';
-						str+=' <td>Grand Total</td>';//As Of Now
+						str+=' <td>As Of Today</td>';//As Of Now
 						for(var i in result){
 							if(result[i].count != null && result[i].count != 0){
 								str+='<td class="cuntCls" style="cursor:pointer;" attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'" attr_radioType="'+radioType+'">'+result[i].count+'</td>';
@@ -2561,34 +2563,65 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 							}
 						}
 					str+='</tr>';
-					str+=' <tr>';
-						str+=' <td>Percentage</td>';
+					/*str+=' <tr style="color:red">';
+						str+=' <td>Changed</td>';
 						for(var i in result){
-							str+='<td>'+result[i].totl+'</td>';
+							str+='<td>'+result[i].diffCount+'</td>';
 						}
-					str+='</tr>';
+					str+='</tr>';*/
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
 		
-	/*	str+='<div class="col-md-12 table-responsive m_top10">';
-			str+='<table class="table table-striped table-bordered">';
+		str+='<div class="col-md-12 table-responsive m_top20">';
+			str+='<h4><b>BELOW 20L EXPENDITURE PANCHAYATS CHANGED STATUS SUMMARY FROM NOV-30th TO TODAY</b></h4>';
+			str+='<table class="table table-striped table-bordered table_labour_css m_top10">';
 				str+='<thead>';
-					str+='<th>As on Nov 30th</th>';
-					str+='<th>Total</th>';
+					str+='<tr>';
+					str+='<th>Expenditure Ranges</th>';
+					str+='<th>As On Nov 30th</th>';
+					str+='<th>As Of Today</th>';
+					str+='<th>Changed</th>';
+					//str+='<th>Changed Status</th>';
+					//str+='</tr>';
+					//str+='<tr>';
 					str+='<th>0</th>';
 					str+='<th>Below 1</th>';
 					str+='<th>1-5</th>';
 					str+='<th>5-10</th>';
 					str+='<th>10-20</th>';
 					str+='<th>Above 20</th>';
+					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
 					if(result[0].subList != null && result[0].subList.length > 0){
 						for(var i in result[0].subList){
 							str+='<tr>';
-								str+='<td><b>'+result[0].subList[i].name+'</b></td>';
+								str+='<td>'+result[0].subList[i].name+'</td>';
 								str+='<td>'+result[0].subList[i].orderNo+'</td>';
+								str+='<td>'+result[0].subList[i].count+'</td>';
+								str+='<td>'+result[0].subList[i].changedCount+'</td>';
+								/*if(i == 0){
+									str+='<td style="color:red;">'+result[0].subList[i].zeroCount+'</td>';
+								}
+								else
+									str+='<td>'+result[0].subList[i].zeroCount+'</td>';
+								if(i == 1)
+									str+='<td style="color:red;">'+result[0].subList[i].belowOneCount+'</td>';
+								else
+									str+='<td>'+result[0].subList[i].belowOneCount+'</td>';
+								if(i == 2)
+									str+='<td style="color:red;">'+result[0].subList[i].oneToFiveCount+'</td>';
+								else
+									str+='<td>'+result[0].subList[i].oneToFiveCount+'</td>';
+								if(i == 3)
+									str+='<td style="color:red;">'+result[0].subList[i].fiveToTenCount+'</td>';
+								else
+									str+='<td>'+result[0].subList[i].fiveToTenCount+'</td>';
+								if(i == 4)
+									str+='<td style="color:red;">'+result[0].subList[i].tenToTwentyCount+'</td>';
+								else
+									str+='<td>'+result[0].subList[i].tenToTwentyCount+'</td>';*/
 								str+='<td>'+result[0].subList[i].zeroCount+'</td>';
 								str+='<td>'+result[0].subList[i].belowOneCount+'</td>';
 								str+='<td>'+result[0].subList[i].oneToFiveCount+'</td>';
@@ -2597,10 +2630,17 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 								str+='<td>'+result[0].subList[i].diffCount+'</td>';
 							str+='</tr>';
 						}
+						/*str+='<tr style="background-color:#C0C0C0;">';
+							str+='<td colspan="2" class="text-center"><b>As Of Now</b></td>'
+							for(var i in result[0].subList){
+								str+='<td>'+result[0].subList[i].count+'</td>';
+							}
+							str+='<td>'+totalChangedCount+'</td>';
+						str+='</tr>';*/
 					}
 				str+='</tbody>';
 			str+='</table>';
-		str+='</div>';*/
+		str+='</div>';
 	$("#projectExp"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(str);
 }
 
