@@ -211,24 +211,36 @@
 			<div class="white_block">
 				<h4 class="font_weight">Print Media</h4>
 				<div id="overAllPrintMediaDivId"></div>
+				<h4 class="font_weight m_top10">District wise Total Overview</h4>
+				<div id="overAllDistrictWiseDivId" class="m_top10" style="height:250px;"></div>
 			</div>
 		</div>
 		<div class="col-sm-6">
 			<div class="white_block">
 				<h4 class="font_weight">Electronic Media</h4>
 				<div id="overAllElectronicMediaDivId"></div>
+				<h4 class="font_weight m_top10">District wise Total Overview</h4>
+				<div id="overAllDistrictEMWiseDivId" class="m_top30" style="height:250px;"></div>
 			</div>
 		</div>
 	</div>
 	<div class="row m_top20">
 		<div class="col-sm-12">
 			<div class="white_block">
-				<h4 class="font_weight">District wise Total Overview(Print Media)</h4>
-				<div id="overAllDistrictWiseDivId" class="m_top10" style="height:250px;"></div>
+				<h4 class="font_weight">Department Wise Details</h4>
+				<div class="row">
+					<ul class="list-inline pull-right switch-btn">
+						<li class="active">Print Media</li>
+						<li class="">Electronic Media</li>
+					</ul>
+				</div>
+				<div class="row">
+					<div id="departmentWiseDetailsDivId"></div>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div id="departmentWiseDetailsDivId"></div>
+	
 </div>
 </main>
 </body>
