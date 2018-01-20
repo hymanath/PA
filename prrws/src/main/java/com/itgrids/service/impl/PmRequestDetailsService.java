@@ -1052,6 +1052,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	    		for( Object[] param : referalObjs ){
 	    			RepresentationRequestVO mainV0 = new RepresentationRequestVO();
 	    			mainV0.setReferrerCandidateId(commonMethodsUtilService.getLongValueForObject(param[0]));
+	    			mainV0.setDesignationId(commonMethodsUtilService.getLongValueForObject(param[38]));//refCandidateDesigId
 	    			PetitionMemberVO petitionMemberVO = new PetitionMemberVO();
 	    			petitionMemberVO.setId(commonMethodsUtilService.getLongValueForObject(param[15]));//desigantionId
 	    			petitionMemberVO.setName(commonMethodsUtilService.getCapitalStringValueForObject(param[1]));

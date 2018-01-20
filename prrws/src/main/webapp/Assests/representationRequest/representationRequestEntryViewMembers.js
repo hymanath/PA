@@ -1763,7 +1763,7 @@ function getPetitionReferredMemberDetails(desigIds,refCanId,statusId){
 			//$("#"+selBoxId).html("<option value='0'>Select Designation</option>");
 			for(var i in result){
 				if(refCanId != "" && refCanId == result[i].referrerCandidateId){
-					$("#referralNameId").append("<option value='"+result[i].referrerCandidateId+"' selected>"+result[i].petitionMemberVO.name+"-"+result[i].petitionMemberVO.memberType+"-"+result[i].candidateAddressVO.assemblyName+"</option>");
+					$("#referralNameId").append("<option value='"+result[i].designationId+"' selected>"+result[i].petitionMemberVO.name+"-"+result[i].petitionMemberVO.memberType+"-"+result[i].candidateAddressVO.assemblyName+"</option>");
 				}else{
 					$("#referralNameId").append("<option value='"+result[i].referrerCandidateId+"'>"+result[i].petitionMemberVO.name+"-"+result[i].petitionMemberVO.memberType+"-"+result[i].candidateAddressVO.assemblyName+"</option>");
 				}

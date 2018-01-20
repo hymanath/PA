@@ -48,6 +48,7 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 		sb.append(",natParliament.constituencyId,natParliament.name ");//30,31
 		sb.append(",localbody.localElectionBodyId, localbody.name ,''");//32,33,34
 		sb.append(",natLocalbody.localElectionBodyId, natLocalbody.name ,'' ");//35,36,37
+		sb.append(", model.pmRefCandidateDesignationId ");//38
 		
 		sb.append(" from PmRefCandidateDesignation model ");
 		sb.append(" left join model.pmRefCandidate pmRefCandidate ");
