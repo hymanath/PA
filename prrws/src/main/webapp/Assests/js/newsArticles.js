@@ -46,14 +46,19 @@ if(wurl.length == 3)
 		getPrintMediaCountsDetailsInfo();
 		getDepartMentWiseAllNewsBulletinsAndPrograms();
 		getDistrictWiseTotalOverViewInfo();
-		getDepartmentWiSeBlockDetails();
+		getDistrictWiseNewsTotalOverviewForElectronicMedia();
+		getDepartmentWiSeBlockDetails("PrintMediadepartment","printMedia","department");
 	}
-	
+	$(document).on("click",".switch-btn li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		getDepartmentWiSeBlockEMDetails("ElectronicMediadepartment","electronicMedia","departmentEle");
+	});	
 	 function getPrintMediaCountsDetailsInfo(){
 		 $("#overAllPrintMediaDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"
-			//url: "http://localhost:9652/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				buildOverAllPrintMediaDetails(result,"PrintMedia","overAllPrintMediaDivId","overAll",0);
@@ -66,7 +71,7 @@ if(wurl.length == 3)
 		 $("#overAllElectronicMediaDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
-			//url: "http://localhost:9652/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
 		}).then(function(result){
 				if(result !=null){
 					buildOverAllPrintMediaDetails(result,"ElectronicMedia","overAllElectronicMediaDivId","overAllEle",0);
@@ -79,7 +84,7 @@ if(wurl.length == 3)
 		$("#overAllDistrictWiseDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"
-			//url: "http://localhost:9652/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"
 		}).then(function(result){
 			if(result !=null){
 					buildOverAllDistrictWiseDetails(result,"overAllDistrictWiseDivId",0);
@@ -88,14 +93,40 @@ if(wurl.length == 3)
 			}
 		});
 	}
-	function getDepartmentWiSeBlockDetails(){
+	function getDistrictWiseNewsTotalOverviewForElectronicMedia(){
+		$("#overAllDistrictEMWiseDivId").html(spinner);
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseNewsTotalOverviewForElectronicMedia/"+glStartDate+"/"+glEndDate+"/''"
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDistrictWiseNewsTotalOverviewForElectronicMedia/"+glStartDate+"/"+glEndDate+"/''"
+		}).then(function(result){
+			if(result !=null){
+					buildOverAllDistrictWiseDetails(result,"overAllDistrictEMWiseDivId",0);
+			}else{
+				$("#overAllDistrictEMWiseDivId").html("No Data Available");
+			}
+		});
+	}
+	function getDepartmentWiSeBlockDetails(type,divId,typeVal){
 		$("#departmentWiseDetailsDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"
-			//url: "http://localhost:9652/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"
 		}).then(function(result){
 			if(result !=null && result.length>0){
-				buildDepartmentWiSeBlockDetails(result);
+				buildDepartmentWiSeBlockDetails(result,type,divId,typeVal);
+			}else{
+				$("#departmentWiseDetailsDivId").html("No Data Available");
+			}
+		});
+	}
+	function getDepartmentWiSeBlockEMDetails(type,divId,typeVal){
+		$("#departmentWiseDetailsDivId").html(spinner);
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+glStartDate+"/"+glEndDate+"/"
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+glStartDate+"/"+glEndDate+"/"
+		}).then(function(result){
+			if(result !=null && result.length>0){
+				buildDepartmentWiSeBlockDetails(result,type,divId,typeVal);
 			}else{
 				$("#departmentWiseDetailsDivId").html("No Data Available");
 			}
@@ -551,7 +582,7 @@ function buildOverAllDistrictWiseDetails(result,divId,deptId){
 
 				$.each(this.points, function () {
 					s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-						(this.y)+'%'+' - ' +
+						Highcharts.numberFormat(this.y,1)+'%'+' - ' +
 						(this.point.countVal);
 				});
 
@@ -572,7 +603,7 @@ function buildOverAllDistrictWiseDetails(result,divId,deptId){
 						if (this.y === 0) {
 							return null;
 						} else {
-							return (this.y) +'%';
+							return Highcharts.numberFormat(this.y,0) +'%';
 						}
 					}
 				  
@@ -602,7 +633,7 @@ function buildOverAllDistrictWiseDetails(result,divId,deptId){
 		}]
 	});
 }
-function buildDepartmentWiSeBlockDetails(result){
+function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 	
 	var collapse='';
 	
@@ -610,77 +641,56 @@ function buildDepartmentWiSeBlockDetails(result){
 		collapse+='<div class="row m_top20">';
 		collapse+='<div class="col-sm-12">';
 			collapse+='<div class="white_block">';
-				/* collapse+='<div class="panel-group" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
-					collapse+='<div class="panel panel-default panel-white">';
-						collapse+='<div class="panel-heading" role="tab" id="heading'+i+'">';
-							if(i == 0)
-							{
-								collapse+='<a role="button" class="panelCollapseIconChangePE"  data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'" style="margin-top:0px !important;">';
-							}else{
-								collapse+='<a role="button" class="panelCollapseIconChangePE collapsed"  data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'" style="margin-top:0px !important;">';
-							}
-							collapse+='<h4 class="panel-title text-capital">'+result[i].organization+'</h4>';
-								
-							collapse+='</a>';
-						collapse+='</div>';
-						if(i == 0)
-						{
-							collapse+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
-						}else{
-							collapse+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
-						}
-						
-							collapse+='<div class="panel-body">'; */
-							collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
+					collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
+						collapse+='<div class="row m_top10">';
+							collapse+='<div class="col-sm-6">';
+								collapse+='<div class="pad_light_yash_bg border_yash">';
+									collapse+='<h4>OverAll Details</h4>';
+									collapse+='<div id="'+divId+''+result[i].organizationId+'" style="width:100%"></div>';
+								collapse+='</div>';
+							collapse+='</div>';
 							
-								collapse+='<div class="row m_top10">';
-									collapse+='<div class="col-sm-6">';
-										collapse+='<div class="pad_light_yash_bg border_yash">';
-											collapse+='<h4>Print media</h4>';
-											collapse+='<div id="printMedia'+result[i].organizationId+'" style="width:100%"></div>';
-										collapse+='</div>';
-									collapse+='</div>';
-									for(var j in result[i].coreDashBoardVOList3){
-										if(result[i].coreDashBoardVOList3[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList3[j].coreDashBoardVOList.length>0){
-											collapse+='<div class="col-sm-6">';
-												collapse+='<div class="pad_light_yash_bg border_yash">';
-												collapse+='<h4>Electronic media</h4>';
-													collapse+='<div id="electronicMedia'+result[i].organizationId+'" style="width:100%"></div>';
+							for(var j in result[i].coreDashBoardVOList2){
+										if(result[i].coreDashBoardVOList2[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList2[j].coreDashBoardVOList.length>0){
+										collapse+='<div class="col-sm-6">';
+											collapse+='<div class="pad_light_yash_bg border_yash">';
+												collapse+='<h5 class="font_weight text-capital">Analysis of Action Immediately</h5>';
+												collapse+='<h5 class="m_top10 font_weight">Total Count - <a><span id="totalCountAnalysisId'+result[i].organizationId+'" class="propertiesCls" attr_deptId="'+result[i].organizationId+'" attr_propertyId="0" style="cursor:pointer;"></span></a></h5>';
+												collapse+='<div class="row">';
+													collapse+='<div class="col-sm-6">';
+														collapse+='<div id="actionWiseAnalysis'+result[i].organizationId+'" class="" style="height:180px;width:100%;margin-top:50px;"></div>';
+													collapse+='</div>';
+													collapse+='<div class="col-sm-6">';
+														collapse+='<ul class="list-inline" style="margin-top:50px;">';
+															collapse+='<div id="problemWise'+result[i].organizationId+'"></div>';
+														collapse+='</ul>';
+													collapse+='</div>';
 												collapse+='</div>';
 											collapse+='</div>';
-										}
+										collapse+='</div>';
+										
 									}
-									
-								collapse+='</div>';
+								}
 								
-								collapse+='<div class="row m_top20">';
-									collapse+='<div class="col-sm-9">';
-										collapse+='<h5 class="font_weight text-capital">District wise Overview(print media)</h5>';
-										collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:330px;width:100%"></div>';
-									collapse+='</div>';
-									
-									
-										for(var j in result[i].coreDashBoardVOList2){
-												if(result[i].coreDashBoardVOList2[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList2[j].coreDashBoardVOList.length>0){
-												collapse+='<div class="col-sm-3">';
-													collapse+='<h5 class="font_weight text-capital">Analysis of Action Immediately</h5>';
-													collapse+='<h5 class="m_top10 font_weight">Total Count - <a><span id="totalCountAnalysisId'+result[i].organizationId+'" class="propertiesCls" attr_deptId="'+result[i].organizationId+'" attr_propertyId="0" style="cursor:pointer;"></span></a></h5>';
-													collapse+='<div id="actionWiseAnalysis'+result[i].organizationId+'" class="" style="height:180px;width:100%"></div>';	
-												collapse+='<ul class="list-inline col-sm-11">';
-													collapse+='<div id="problemWise'+result[i].organizationId+'"></div>';
-												collapse+='</li>';
-												collapse+='</div>';
-											}
-										}
-										
-										
-									
-								collapse+='</div>';
-								
-						/* 	//collapse+='</div>';
+							
+							
 						collapse+='</div>';
-					collapse+='</div>';
-				collapse+='</div>'; */
+						
+						collapse+='<div class="row m_top20">';
+							for(var j in result[i].coreDashBoardVOList3){
+								if(result[i].coreDashBoardVOList3[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList3[j].coreDashBoardVOList.length>0){
+									collapse+='<div class="col-sm-3">';
+										collapse+='<h5 class="font_weight text-capital">State wise Overview</h5>';
+											collapse+='<div id="stateLevelMedia'+result[i].organizationId+'" style="height:330px;width:100%"></div>';
+										collapse+='</div>';
+									
+								}
+							}
+							collapse+='<div class="col-sm-9">';
+								collapse+='<h5 class="font_weight text-capital">District wise Overview</h5>';
+								collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:330px;width:100%"></div>';
+							collapse+='</div>';
+						collapse+='</div>';
 				collapse+='</div>';
 		collapse+='</div>';
 	collapse+='</div>';
@@ -695,12 +705,12 @@ function buildDepartmentWiSeBlockDetails(result){
 		
 		for(var j in result[i].coreDashBoardVOList){
 			//printMediaCall
-			buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList[j].coreDashBoardVOList,'PrintMediadepartment'+result[i].organizationId+'','printMedia'+result[i].organizationId+'',"department",result[i].organizationId)
+			buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList[j].coreDashBoardVOList,''+type+''+result[i].organizationId+'',''+divId+''+result[i].organizationId+'',''+typeVal+'',result[i].organizationId)
 		}
 		for(var j in result[i].coreDashBoardVOList3){
 			//ElectronicCall
-			buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'ElectronicMediadepartment'+result[i].organizationId+'','electronicMedia'+result[i].organizationId+'',"departmentEle",result[i].organizationId)
-			
+			//buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'ElectronicMediadepartment'+result[i].organizationId+'','electronicMedia'+result[i].organizationId+'',"departmentEle",result[i].organizationId)
+			buildOverAllStateWiseDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'stateLevelMedia'+result[i].organizationId+'',result[i].organizationId)
 		}
 		for(var j in result[i].coreDashBoardVOList2){
 			//ActionWiseCall
@@ -781,6 +791,122 @@ function buildactionWiseAnalysisDetails(result,divId,departmentId){
 				data: mainArr
 			}]
 		});
+}
+function buildOverAllStateWiseDetails(result,divId,deptId){
+	var districtWiseNegativeCountArray=[];
+	var districtWisePositiveCountArray=[];
+	var districtNamesArray=[];
+	for(var i in result){
+		districtNamesArray.push(result[i].organization)
+		districtWiseNegativeCountArray.push({y:result[i].negativePerc,"extra":result[i].negativCountMain+"-"+result[i].organizationId+"-"+deptId+"-2","countVal":result[i].negativCountMain})
+		districtWisePositiveCountArray.push({y:result[i].positivePerc,"extra":result[i].positiveCountMain+"-"+result[i].organizationId+"-"+deptId+"-1","countVal":result[i].positiveCountMain})
+	}
+	
+	$('#'+divId).highcharts({
+		colors: ['#64C664','#D33E39'],
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: ''
+		},
+		xAxis: {
+			 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,
+				categories: districtNamesArray,
+			labels: {
+					rotation: -45,
+					style: {
+						fontSize: '12px',
+						fontFamily: 'Verdana, sans-serif'
+					}
+				}
+		},
+		yAxis: {
+			min: 0,
+				   gridLineWidth: 0,
+					minorGridLineWidth: 0,
+			title: {
+				text: ''
+			},
+			stackLabels: {
+				enabled: false,
+				style: {
+					fontWeight: 'bold',
+					color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+				}
+			}
+		},
+		legend: {
+			enabled: true,
+			/* //align: 'right',
+			x: -40,
+			y: 30,
+			verticalAlign: 'top',
+			//y: -32,
+			floating: true, */
+			backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+			borderColor: '#CCC',
+			borderWidth: 1,
+			shadow: false
+		},
+		tooltip: {
+			formatter: function () {
+				var s = '<b>' + this.x + '</b>';
+
+				$.each(this.points, function () {
+					s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+						Highcharts.numberFormat(this.y,0)+'%'+' - ' +
+						(this.point.countVal);
+				});
+
+				return s;
+			},
+			shared: true
+		},
+		
+		plotOptions: {
+			pointPadding: 0.2,
+			borderWidth: 2,
+			groupPadding: 0.2,
+			column: {
+				stacking: 'percent',
+				dataLabels: {
+					enabled: true,
+					 formatter: function() {
+						if (this.y === 0) {
+							return null;
+						} else {
+							return Highcharts.numberFormat(this.y,1) +'%';
+						}
+					}
+				  
+				}
+			},
+			series: {
+				cursor: 'pointer',
+				point: {
+					events: {
+						click: function () {
+							var value = (this.extra).split("-");
+							var districtId = value[1];
+							var departmentId = value[2];
+							var benefitId = value[3];
+							getArtilcesForDistrict(districtId,departmentId,benefitId);
+						}
+					}
+				}
+			}
+		},
+		series: [{
+			name: 'Positive',
+			data: districtWisePositiveCountArray
+		}, {
+			name: 'Negative',
+			data: districtWiseNegativeCountArray
+		}]
+	});
 }
 $(document).on("click",".printOverAllCls",function(){
 	var deptId =$(this).attr("attr_deptId");
