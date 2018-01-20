@@ -3569,3 +3569,53 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 	cursor:pointer;
 	text-decoration:underline;
 }
+.table_API{
+	thead{
+		tr{
+			th:first-child{
+				border-left:1px solid #ccc !important;
+				border-top:1px solid #ccc !important;
+			}
+			th:last-child{
+				border-right:1px solid #ccc !important;
+				border-top:1px solid #ccc !important;
+			}
+			th:nth-child(n){
+				border-top:1px solid #ccc !important;
+			}
+			
+		}
+	}
+	tbody{
+		tr{
+			td:first-child{
+				border-left:1px solid #ccc !important;
+				
+			}
+			td:last-child{
+				border-right:1px solid #ccc !important;
+				border-bottom:1px solid #ccc !important;
+			}
+			td:nth-child(n){
+				border-bottom:1px solid #ccc !important;
+			}
+			
+		}
+	}
+}
+.panel-grey
+{
+	border-radius:0px;
+	border: 1px solid #ccc !important;
+	.panel-heading{
+		padding-top: 7px;
+		padding-bottom: 7px;
+		background-color:#ccc !important;
+		color:#333333 !important;
+		.panel-title
+		{
+			color:#132C44 !important;
+			font-weight:600;
+		}
+	}
+}
