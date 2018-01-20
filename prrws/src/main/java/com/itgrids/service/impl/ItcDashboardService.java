@@ -25,7 +25,6 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.json.XML;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tempuri.GetMeeSevaAppDeptWiseServiceAbstractResponseGetMeeSevaAppDeptWiseServiceAbstractResult;
@@ -55,9 +54,7 @@ import com.itgrids.dto.ItecEOfficeVO;
 import com.itgrids.dto.ItecPromotionDetailsVO;
 import com.itgrids.dto.MeesevaDtlsVO;
 import com.itgrids.dto.MeesevaKPIDtlsVO;
-import com.itgrids.dto.NregsDataVO;
 import com.itgrids.model.EofficeEmployeeWorkDetails;
-import com.itgrids.model.MeesevaCentersAchievement;
 import com.itgrids.model.MeesevaCentersMonthWiseAchievement;
 import com.itgrids.model.MeesevaKpiCenters;
 import com.itgrids.service.IItcDashboardService;
@@ -5737,6 +5734,96 @@ public class ItcDashboardService implements IItcDashboardService {
 			LOG.error("Exception occured at getApInnovationActivityDetails() in  ItcDashboardService class",e);
 		}
 		return finalList;
+	}
+	
+	public List<ApInnovationSocietyOverviewVO> getCompleteOverviewForAPIS(InputVO inputVO){
+		List<ApInnovationSocietyOverviewVO> returnList = new ArrayList<ApInnovationSocietyOverviewVO>();
+		try {
+			String URL = "http://apinnovationsociety.com/dashboard/apiv2/incubators.php?district="+inputVO.getDistrictId()+"";
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	String output = response.getEntity(String.class);
+		    	if(output != null && !output.isEmpty()){
+		    		JSONObject finalObj = new JSONObject(output);
+		    		if(finalObj != null && finalObj.length() > 0){
+		    			JSONArray finalArr = new JSONArray(finalObj.get("data").toString());
+		    			if(finalArr != null && finalArr.length() > 0){
+		    				for (int i = 0; i < finalArr.length(); i++) {
+								JSONObject jObj = (JSONObject) finalArr.get(i);
+								ApInnovationSocietyOverviewVO vo = new ApInnovationSocietyOverviewVO();
+								vo.setId(jObj.getLong("id"));
+								vo.setName(jObj.getString("incubator_name"));
+								vo.setYear(jObj.getString("since"));
+								vo.setLocation(jObj.getString("location"));
+								vo.setWebSite(jObj.getString("website"));
+								vo.setStartUps(jObj.getString("startups"));
+								returnList.add(vo);
+							}
+		    			}
+		    		}
+		    	}
+		    }
+		} catch (Exception e) {
+			LOG.error("Exception occured at getCompleteOverviewForAPIS() in  ItcDashboardService class",e);
+		}
+		return returnList;
+	}
+	
+	public ApInnovationSocietyOverviewVO getStartupsEmploymentFundingPatternAcquisitionsDetails(InputVO inputVO){
+		ApInnovationSocietyOverviewVO returnvo = new ApInnovationSocietyOverviewVO();
+		try {
+			String URL = "http://apinnovationsociety.com/dashboard/apiv2/incubatorKPIs.php?id=0";
+			ClientResponse response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	String output = response.getEntity(String.class);
+		    	if(output != null && !output.isEmpty()){
+		    		JSONObject finalObj = new JSONObject(output);
+		    		if(finalObj != null && finalObj.length() > 0){
+		    			JSONArray finalArr = new JSONArray(finalObj.get("data").toString());
+		    			if(finalArr != null && finalArr.length() > 0){
+		    				for (int i = 0; i < finalArr.length(); i++) {
+								JSONObject jObj = (JSONObject) finalArr.get(i);
+								String parameter = jObj.getString("parameter");
+								Long count = jObj.getLong("achieved");
+								if(parameter != null && parameter.equalsIgnoreCase("Applications assessed"))
+									returnvo.setApplicationsAssessed(count);
+								else if(parameter != null && parameter.equalsIgnoreCase("Applications screened"))
+									returnvo.setApisScreened(count);
+								else if(parameter != null && parameter.equalsIgnoreCase("Faculty & Students trained"))
+									returnvo.setStudentsTrained(count);
+								else if(parameter != null && parameter.contains("Interns"))
+									returnvo.setInternship(count);
+								else if(parameter != null && parameter.equalsIgnoreCase("Funding raised (INR)"))
+									returnvo.setFundValue(commonMethodsUtilService.calculateAmountInWordsFrCrore(count));
+								else if(parameter != null && parameter.equalsIgnoreCase("Revenue generated (INR)"))
+									returnvo.setRevenueFundValue(commonMethodsUtilService.calculateAmountInWordsFrCrore(count));
+								else if(parameter != null && parameter.equalsIgnoreCase("Funding proposals in process"))
+									returnvo.setProposalsInProgress(count);
+								else if(parameter != null && parameter.equalsIgnoreCase("Companies selected & trained"))
+									returnvo.setApisProvidedTraining(count);
+								else if(parameter != null && parameter.equalsIgnoreCase("Companies in advanced acceleration"))
+									returnvo.setStartupsPlaced(count);
+								else if(parameter != null && parameter.equalsIgnoreCase("Commercial deals in progress"))
+									returnvo.setCommercialStartups(count);
+								else if(parameter != null && parameter.equalsIgnoreCase("Mergers and acquisitions (M&A)"))
+									returnvo.setMergedStartups(count);
+								else if(parameter != null && parameter.equalsIgnoreCase("Full-Time jobs created"))
+									returnvo.setFtJobsCreated(count);
+								else if(parameter != null && parameter.equalsIgnoreCase("Part-Time jobs created"))
+									returnvo.setPtJobsCreated(count);
+		    				}
+		    			}
+		    		}
+		    	}
+		    }
+		} catch (Exception e) {
+			LOG.error("Exception occured at getStartupsEmploymentFundingPatternAcquisitionsDetails() in  ItcDashboardService class",e);
+		}
+		return returnvo;
 	}
 	
 	/**
