@@ -69,6 +69,7 @@ function onloadCalls(){
 	getMeesevaKPIOverViewDetails("onload","","");
 	
 	//AP Innovation Society Ajax Call Start
+	//getAPInnovationSocietyOverviewHtml(divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id)
 	getAPInnovationSocietyOverview('onload','apInnovationSociety');
 	getEOfcDepartWiseOverviewDetails('onload');
 	getCMEDOBOverview("","","overview");
@@ -482,7 +483,7 @@ function departmentBlockWiseDetails(divId)
 									collapse+='<div class="col-sm-4 m_top20" id="Campaigns"></div>';
 									collapse+='<div class="col-sm-4 m_top20" id="CampusInnovationCenters"></div>';
 								collapse+='</div>';
-							}
+							} 
 						collapse+='</div>';
 					collapse+='</div>';
 				collapse+='</div>';
@@ -566,6 +567,7 @@ function departmentBlockWiseDetails(divId)
 			getMeesevaSLACatWiseAbstarctDetails(divId,levelWiseBlockArr[i].id,"change")
 		}else if(divId == 'apInnovationSociety')
 		{
+			//getAPInnovationSocietyOverviewHtml(divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id)
 			getAPInnovationSocietyOverview('overview',divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id);
 			getAPISXLR8APDetailedData();
 			getCampaignsDetailedData();
@@ -5428,4 +5430,442 @@ function buildMeesevaCentersForDistrict(result){
 	str+='</table>';
 	$("#kpiDistrictDivId").html(str);
 	$("#kpiDistrictTableId").dataTable();
+}
+function getAPInnovationSocietyOverviewHtml(divId){
+	var str='';
+	//first Block
+	str+='<div class="row">';
+		str+='<div class="col-sm-12">';
+			str+='<div class="panel panel-default">';
+				str+='<div class="panel-body">';
+					str+='<h4 class="font_weight">INCUBATORS</h4>';
+					
+					str+='<div class="pad_border">';
+						str+='<h5 class="f_16">Complete Overview</h5>';
+						str+='<div class="row m_top10">';
+							str+='<div class="col-sm-6">';
+								str+='<div class="media" style="border: 1px solid #ddd;border-top-left-radius: 5px;border-bottom-left-radius: 5px;">';
+									str+='<div class="pull-left" style="padding:10px;">';
+										str+='<h5 style="margin-top:40px;">Incubators</h5>';
+										str+='<h3 class="m_top20 font_weight text-center">20</h3>';
+									str+='</div>';
+								  str+='<div class="media-body">';
+										str+='<div class="table-responsive">';
+												str+='<table class="table table_API">';
+													str+='<thead>';
+														str+='<tr>';
+															str+='<th>Incubator Name</th>';
+															str+='<th>Since</th>';
+															str+='<th>Location</th>';
+														str+='</tr>';
+													str+='</thead>';
+													str+='<tbody>';
+														str+='<tr>';
+															str+='<td>XLr8AP</td>';
+															str+='<td>Sep-16</td>';
+															str+='<td>Tirupathi</td>';
+														str+='</tr>';
+														str+='<tr>';
+															str+='<td>NASSCOM 10K Startups</td>';
+															str+='<td>Sep-16</td>';
+															str+='<td>Tirupathi</td>';
+														str+='</tr>';
+														str+='<tr>';
+															str+='<td>GOVIN CAPITAL</td>';
+															str+='<td>Sep-16</td>';
+															str+='<td>Tirupathi</td>';
+														str+='</tr>';
+														str+='<tr>';
+															str+='<td>DRONE ASSEMBLY</td>';
+															str+='<td>Sep-16</td>';
+															str+='<td>Tirupathi</td>';
+														str+='</tr>';
+													str+='</tbody>';
+												str+='</table>';
+											str+='</div>';
+								  str+='</div>';
+								str+='</div>';
+								
+							str+='</div>';
+							str+='<div class="col-sm-6">';
+								str+='<div id="startupsHighchartsDivId" style="height:190px;"></div>';
+							str+='</div>';
+						str+='</div>';
+						//Second Block
+						str+='<div class="row m_top20">';
+							str+='<div class="col-sm-6">';
+								str+='<h5 class="f_16">Startups Overview</h5>';
+								str+='<div class="pad_border m_top10">';
+									str+='<div class="row">';
+									str+='<div class="col-sm-3 border_right_yash">';
+										str+='<h5 class="font_weight text-center">Applications Assessed</h5>';
+										str+='<h4 class="font_weight text-center m_top20">1470</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-3 border_right_yash">';
+										str+='<h5 class="font_weight text-center">APIS <br/>Screened</h5>';
+										str+='<h4 class="font_weight text-center m_top20">1470</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-3 border_right_yash">';
+										str+='<h5 class="font_weight text-center">APIS Povided Training</h5>';
+										str+='<h4 class="font_weight text-center m_top20">1470</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-3">';
+										str+='<h5 class="font_weight text-center">Startups placed in Advanced Acceleration</h5>';
+										str+='<h4 class="font_weight text-center m_top10">1470</h4>';
+									str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-6">';
+								str+='<h4 class="f_16">Employment Overview</h4>';
+								str+='<div class="pad_border m_top10">';
+									str+='<div class="row">';
+									str+='<div class="col-sm-4 border_right_yash">';
+										str+='<h5 class="font_weight text-center">Full-Time jobs <br/>created</h5>';
+										str+='<h4 class="font_weight text-center m_top20">1470</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-4 border_right_yash">';
+										str+='<h5 class="font_weight text-center">Part-Time jobs <br/>created</h5>';
+										str+='<h4 class="font_weight text-center m_top20">1470</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-4 border_right_yash">';
+										str+='<h5 class="font_weight text-center">Internship</h5>';
+										str+='<h4 class="font_weight text-center m_top30">1470</h4>';
+									str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						//Second Block End
+						//Third Block Start
+							str+='<div class="row m_top20">';
+								str+='<div class="col-sm-12">';
+									str+='<h4 class="f_16">Funding Pattern</h4>';
+								str+='</div>';
+									str+='<div class="col-sm-8 m_top10">';
+										str+='<div class="row">';
+											str+='<div class="col-sm-8">';
+												str+='<div class="panel panel-default panel-grey">';
+													str+='<div class="panel-heading">';
+														str+='<h5 class="font_weight">Funding Raised</h5>';
+													str+='</div>';
+													str+='<div class="panel-body">';
+														str+='<div class="row">';
+															str+='<div class="col-sm-4 border_right_yash">';
+																str+='<h5 class="font_weight text-center">No.of startups  <br/>got fund</h5>';
+																str+='<h4 class="font_weight text-center m_top20">1470</h4>';
+															str+='</div>';
+															str+='<div class="col-sm-4 border_right_yash">';
+																str+='<h5 class="font_weight text-center">Fund  <br/>Value</h5>';
+																str+='<h4 class="font_weight text-center m_top20">1470</h4>';
+															str+='</div>';
+															str+='<div class="col-sm-4">';
+																str+='<h5 class="font_weight text-center">Proposals n Progress for startups</h5>';
+																str+='<h4 class="font_weight text-center m_top30">1470</h4>';
+															str+='</div>';
+														str+='</div>';
+													str+='</div>';
+												str+='</div>';
+											str+='</div>';
+											str+='<div class="col-sm-4">';
+												str+='<div class="panel panel-default panel-grey">';
+													str+='<div class="panel-heading">';
+														str+='<h5 class="font_weight">Revenue Generated</h5>';
+													str+='</div>';
+													str+='<div class="panel-body">';
+														str+='<div class="row">';
+															str+='<div class="col-sm-6 border_right_yash">';
+																str+='<h5 class="font_weight text-center">Revenue from<br/>No.of startups</h5>';
+																str+='<h4 class="font_weight text-center m_top20">1470</h4>';
+															str+='</div>';
+															str+='<div class="col-sm-6">';
+																str+='<h5 class="font_weight text-center">Fund <br/>Value</h5>';
+																str+='<h4 class="font_weight text-center m_top20">1470</h4>';
+															str+='</div>';
+														str+='</div>';
+													str+='</div>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+									str+='<div class="col-sm-4">';
+										str+='<div class="pad_border m_top10">';
+											str+='<div class="row">';
+											str+='<div class="col-sm-4 border_right_yash">';
+												str+='<h5 class="font_weight text-center">Merged <br/>No.of <br>startups</h5>';
+												str+='<h4 class="font_weight text-center m_top30">1470</h4>';
+											str+='</div>';
+											str+='<div class="col-sm-4 border_right_yash">';
+												str+='<h5 class="font_weight text-center">Progressing Commercial deals with startups</h5>';
+												str+='<h4 class="font_weight text-center m_top20">1470</h4>';
+											str+='</div>';
+											str+='<div class="col-sm-4">';
+												str+='<h5 class="font_weight text-center">Faculty & Students Trained</h5>';
+												str+='<h4 class="font_weight text-center m_top30">1470</h4>';
+											str+='</div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+							str+='</div>';
+						//Third Block End
+						//Fourth Block Start
+							str+='<div class="row m_top10">';
+								str+='<div class="col-sm-12">';
+								str+='<div class="table-responsive">';
+									str+='<table class="table table_API">';
+										str+='<thead>';
+											str+='<tr>';
+												str+='<th>INDICATORS</th>';
+												str+='<th>XLr8AP Tirupathi</th>';
+												str+='<th>NASSCOM 10K Startups Visakhapatnam</th>';
+												str+='<th>GOVIN CAPITAL Visakhapatnam</th>';
+												str+='<th>DRONE ASSEMBLY Visakhapatnam</th>';
+											str+='</tr>';
+										str+='</thead>';
+										str+='<tbody>';
+											str+='<tr>';
+												str+='<td>Applications Assessed</td>';
+												str+='<td>1055</td>';
+												str+='<td>1055</td>';
+												str+='<td>1055</td>';
+												str+='<td>1055</td>';
+											str+='</tr>';
+											str+='<tr>';
+												str+='<td>Applications Assessed</td>';
+												str+='<td>1055</td>';
+												str+='<td>1055</td>';
+												str+='<td>1055</td>';
+												str+='<td>1055</td>';
+											str+='</tr>';
+											str+='<tr>';
+												str+='<td>Applications Assessed</td>';
+												str+='<td>1055</td>';
+												str+='<td>1055</td>';
+												str+='<td>1055</td>';
+												str+='<td>1055</td>';
+											str+='</tr>';
+										str+='</tbody>';
+									str+='</table>';
+								str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						//Fourth Block End
+					str+='</div>';
+					//fifth block start
+						str+='<div class="row m_top10">';
+							str+='<div class="col-sm-4">';
+								str+='<div class="panel panel-default panel-grey">';
+									str+='<div class="panel-heading" style="background-color: #E17779 !important;padding: 15px;color: #fff !important;">';
+										str+='<h4 class="font_weight">Bootcamps</h4>';
+									str+='</div>';
+									str+='<div class="panel-body" style="padding:0px;background-color: #f9f9f9;">';
+										str+='<div class="table-responsive">';
+											str+='<table class="table table-bordered">';
+												str+='<tbody>';
+													str+='<tr>';
+														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
+														str+='<td>Tirupathi </td>';
+													str+='</tr>';
+													str+='<tr>';
+														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
+														str+='<td>Tirupathi </td>';
+													str+='</tr>';
+													str+='<tr>';
+														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
+														str+='<td>Tirupathi </td>';
+													str+='</tr>';
+												str+='</tbody>';
+											str+='</table>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-4">';
+								str+='<div class="panel panel-default panel-grey">';
+									str+='<div class="panel-heading" style="background-color: #77B1CF !important;padding: 15px;color: #fff !important;">';
+										str+='<h4 class="font_weight">Events participated by APIS</h4>';
+									str+='</div>';
+									str+='<div class="panel-body" style="padding:0px;background-color: #f9f9f9;">';
+										str+='<div class="table-responsive">';
+											str+='<table class="table table-bordered">';
+												str+='<tbody>';
+													str+='<tr>';
+														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
+														str+='<td>Tirupathi </td>';
+													str+='</tr>';
+													str+='<tr>';
+														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
+														str+='<td>Tirupathi </td>';
+													str+='</tr>';
+													str+='<tr>';
+														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
+														str+='<td>Tirupathi </td>';
+													str+='</tr>';
+												str+='</tbody>';
+											str+='</table>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-4">';
+								str+='<div class="panel panel-default panel-grey">';
+									str+='<div class="panel-heading" style="background-color: #77BA7C !important;padding: 15px;color: #fff !important;">';
+										str+='<h4 class="font_weight">Activities by APIS</h4>';
+									str+='</div>';
+									str+='<div class="panel-body" style="padding:0px;background-color: #f9f9f9;">';
+										str+='<div class="table-responsive">';
+											str+='<table class="table table-bordered">';
+												str+='<tbody>';
+													str+='<tr>';
+														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
+														str+='<td>Tirupathi </td>';
+													str+='</tr>';
+													str+='<tr>';
+														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
+														str+='<td>Tirupathi </td>';
+													str+='</tr>';
+													str+='<tr>';
+														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
+														str+='<td>Tirupathi </td>';
+													str+='</tr>';
+												str+='</tbody>';
+											str+='</table>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					//fifth block End
+					//six block Start
+						str+='<div class="row m_top10">';
+							str+='<div class="col-sm-12">';
+							str+='<div class="panel panel-default panel-grey">';
+								str+='<div class="panel-heading">';
+									str+='<h4 class="font_weight">Events - Details</h4>';
+								str+='</div>';
+								str+='<div class="panel-body">';
+									str+='<h4 class="f_16">APIS in EXPO</h4>';
+									str+='<div class="table-responsive m_top10">';
+										str+='<table class="table table-bordered">';
+											str+='<div class="table-responsive">';
+												str+='<table class="table table_API">';
+													str+='<thead>';
+														str+='<tr>';
+															str+='<th>EVENT NAME</th>';
+															str+='<th>EVENT TYPE</th>';
+															str+='<th>LOCATION</th>';
+															str+='<th>VENUE</th>';
+															str+='<th>FROM DATE/th>';
+															str+='<th>TO DATE/th>';
+															str+='<th>TOTAL PARTICIPANTS/th>';
+														str+='</tr>';
+													str+='</thead>';
+													str+='<tbody>';
+														str+='<tr>';
+															str+='<td>Applications Assessed</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+														str+='</tr>';
+														str+='<tr>';
+															str+='<td>Applications Assessed</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+														str+='</tr>';
+														str+='<tr>';
+															str+='<td>Applications Assessed</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+															str+='<td>1055</td>';
+														str+='</tr>';
+													str+='</tbody>';
+												str+='</table>';
+											str+='</div>';
+										str+='</table>';
+									str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					//six block End
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	
+	
+	$("#"+divId).html(str);
+	
+	var assetTypeArr=['XLr8AP','NASSCOM','GOVIN','DRONE'];
+	$("#startupsHighchartsDivId").highcharts({
+		 colors: ['#8DC760','#5EA5D6','#F688EB','#C6CCB1'],
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: ''
+		},
+		subtitle: {
+			text: ''
+		},
+		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: assetTypeArr,
+			
+		},
+		yAxis:{
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+				title: {
+					text: 'Startups'
+				},
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions:{ 
+			column: {
+				colorByPoint: true
+			}
+		},
+		tooltip: {
+			useHTML:true,
+			formatter: function () {
+				return '<b>' + this.x + '</b><br/>' +
+					this.y+'';
+			}
+		},
+		series: [{
+			name: 'Count',
+			data: [
+				[23.7],
+				[16.1],
+				[14.2],
+				[14.0]
+			],
+			dataLabels: {
+				useHTML:true,
+				enabled: true,
+				color: '#000',
+				align: 'center',
+				formatter: function() {
+						return '<span>'+this.y+'</span>';
+				} 
+			}
+		}]
+	});
 }
