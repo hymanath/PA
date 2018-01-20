@@ -436,4 +436,16 @@ public class ItcController {
 		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationIndicatorDetails();
 		   return resultList;
 	   }
+	   
+	   @RequestMapping(value = "/getCompleteOverviewForAPIS", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getCompleteOverviewForAPIS(@RequestBody InputVO inputVO) {
+		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getCompleteOverviewForAPIS(inputVO);
+		   return resultList;
+	   }
+	   
+	   @RequestMapping(value = "/getStartupsEmploymentFundingPatternAcquisitionsDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  ApInnovationSocietyOverviewVO  getStartupsEmploymentFundingPatternAcquisitionsDetails(@RequestBody InputVO inputVO) {
+		   ApInnovationSocietyOverviewVO  resultvo = itcDashboardService.getStartupsEmploymentFundingPatternAcquisitionsDetails(inputVO);
+		   return resultvo;
+	   }
 }

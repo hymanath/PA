@@ -83,4 +83,7 @@ public interface IItcDashboardService {
 	public List<ApInnovationSocietyOverviewVO> getApInnovationEventDetails();
 	public List<ApInnovationSocietyOverviewVO> getApInnovationActivityDetails(InputVO inputVO);
 	public List<ApInnovationSocietyOverviewVO> getApInnovationIndicatorDetails();
+	
+	public List<ApInnovationSocietyOverviewVO> getCompleteOverviewForAPIS(InputVO inputVO);
+	public ApInnovationSocietyOverviewVO getStartupsEmploymentFundingPatternAcquisitionsDetails(InputVO inputVO);
 }
