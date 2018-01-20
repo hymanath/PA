@@ -51,8 +51,115 @@ public class ApInnovationSocietyOverviewVO {
 	private String govinCount;
 	private String droneCount; 
 	
+	private Long applicationsAssessed = 0L;
+	private Long apisScreened = 0L;
+	private Long apisProvidedTraining = 0L;
+	private Long startupsPlaced = 0L;
+	private Long ftJobsCreated = 0L;
+	private Long ptJobsCreated = 0L;
+	private Long internship = 0L;
+	private Long startupsGotFund = 0L;
+	private String fundValue;
+	private Long proposalsInProgress = 0L;
+	private Long revenueStartups = 0L;
+	private String revenueFundValue;
+	private Long mergedStartups = 0L;
+	private Long commercialStartups = 0L;
+	private Long studentsTrained = 0L;
 	
 	private List<ApInnovationSocietyOverviewVO> subList = new ArrayList<ApInnovationSocietyOverviewVO>(0);
+	
+	
+	public String getFundValue() {
+		return fundValue;
+	}
+	public void setFundValue(String fundValue) {
+		this.fundValue = fundValue;
+	}
+	public String getRevenueFundValue() {
+		return revenueFundValue;
+	}
+	public void setRevenueFundValue(String revenueFundValue) {
+		this.revenueFundValue = revenueFundValue;
+	}
+	public Long getApplicationsAssessed() {
+		return applicationsAssessed;
+	}
+	public void setApplicationsAssessed(Long applicationsAssessed) {
+		this.applicationsAssessed = applicationsAssessed;
+	}
+	public Long getApisScreened() {
+		return apisScreened;
+	}
+	public void setApisScreened(Long apisScreened) {
+		this.apisScreened = apisScreened;
+	}
+	public Long getApisProvidedTraining() {
+		return apisProvidedTraining;
+	}
+	public void setApisProvidedTraining(Long apisProvidedTraining) {
+		this.apisProvidedTraining = apisProvidedTraining;
+	}
+	public Long getStartupsPlaced() {
+		return startupsPlaced;
+	}
+	public void setStartupsPlaced(Long startupsPlaced) {
+		this.startupsPlaced = startupsPlaced;
+	}
+	public Long getFtJobsCreated() {
+		return ftJobsCreated;
+	}
+	public void setFtJobsCreated(Long ftJobsCreated) {
+		this.ftJobsCreated = ftJobsCreated;
+	}
+	public Long getPtJobsCreated() {
+		return ptJobsCreated;
+	}
+	public void setPtJobsCreated(Long ptJobsCreated) {
+		this.ptJobsCreated = ptJobsCreated;
+	}
+	public Long getInternship() {
+		return internship;
+	}
+	public void setInternship(Long internship) {
+		this.internship = internship;
+	}
+	public Long getStartupsGotFund() {
+		return startupsGotFund;
+	}
+	public void setStartupsGotFund(Long startupsGotFund) {
+		this.startupsGotFund = startupsGotFund;
+	}
+	public Long getProposalsInProgress() {
+		return proposalsInProgress;
+	}
+	public void setProposalsInProgress(Long proposalsInProgress) {
+		this.proposalsInProgress = proposalsInProgress;
+	}
+	public Long getRevenueStartups() {
+		return revenueStartups;
+	}
+	public void setRevenueStartups(Long revenueStartups) {
+		this.revenueStartups = revenueStartups;
+	}
+	public Long getMergedStartups() {
+		return mergedStartups;
+	}
+	public void setMergedStartups(Long mergedStartups) {
+		this.mergedStartups = mergedStartups;
+	}
+	public Long getCommercialStartups() {
+		return commercialStartups;
+	}
+	public void setCommercialStartups(Long commercialStartups) {
+		this.commercialStartups = commercialStartups;
+	}
+	public Long getStudentsTrained() {
+		return studentsTrained;
+	}
+	public void setStudentsTrained(Long studentsTrained) {
+		this.studentsTrained = studentsTrained;
+	}
 	public Long getStartups() {
 		return Startups;
 	}

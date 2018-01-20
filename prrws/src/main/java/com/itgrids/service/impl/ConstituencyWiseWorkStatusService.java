@@ -7,16 +7,22 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IAssemblyMlaDAO;
+import com.itgrids.dao.IComponentTargetConfigurationDAO;
+import com.itgrids.dao.IComponentTargetConfigurationTempDAO;
+import com.itgrids.dao.IComponentTargetDAO;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDepartmentDAO;
 import com.itgrids.dao.IFundSanctionDAO;
@@ -24,9 +30,16 @@ import com.itgrids.dao.INregaWorkExpenditureLocationDAO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.NregsFmsWorksVO;
+import com.itgrids.dto.ResponseVO;
+import com.itgrids.model.ComponentTarget;
+import com.itgrids.model.ComponentTargetConfiguration;
+import com.itgrids.model.ComponentTargetConfigurationTemp;
 import com.itgrids.service.IConstituencyWiseWorkStatusService;
+import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
+import com.sun.jersey.api.client.ClientResponse;
 
 @Service
 @Transactional
@@ -44,6 +57,14 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	private INregaWorkExpenditureLocationDAO nregaWorkExpenditureLocationDAO;
 	@Autowired
 	private IDepartmentDAO departmentDAO;
+	@Autowired
+	private WebServiceUtilService webServiceUtilService;
+	@Autowired
+	private IComponentTargetDAO componentTargetDAO;
+	@Autowired
+	private IComponentTargetConfigurationDAO componentTargetConfigurationDAO;
+	@Autowired
+	private IComponentTargetConfigurationTempDAO componentTargetConfigurationTempDAO;
 	
 	/*
 	 * Swadhin K Lenka
@@ -621,5 +642,251 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 		}catch(Exception e){
 			 LOG.error(" Exception occured in FundManagementDashboardService ,buildDeptWiseMap() ",e);
 		}
+	}
+	
+	public ResponseVO savingLabourBudgetRangeWiseExpenditureDetails(InputVO inputVO){
+		ResponseVO responseVO = new ResponseVO();
+		try {
+			Map<String,String> wageExpMap = new LinkedHashMap<String,String>();
+	    	Map<String,String> matExpMap = new LinkedHashMap<String,String>();
+	    	Map<String,Long> componentTargetMap = new LinkedHashMap<String,Long>();
+	    	List<ComponentTarget> list = componentTargetDAO.getAll();
+	    	/*if(list != null && !list.isEmpty()){
+	    		for (ComponentTarget componentTarget : list) {
+					
+				}
+	    	}*/
+	    	
+			//InputVO inputVO = new InputVO();
+			//inputVO.setFromDate("2017-04-01");inputVO.setToDate("2017-12-31");inputVO.setYear("2017");inputVO.setLocationType("state");inputVO.setLocationIdStr("-1");
+			
+			//{"fromDate" : "2017-04-31","toDate" : "2018-01-31","year" : "2017","locationType" : "state","locationId" : "-1","FromRange" : "300","ToRange" : "400","pType" : "TOT"}
+			String[] rangeArr = {"0-0","0-1","1-5","5-10","10-20","20-30","30-50","50-100","100-200","200-300","300-400","400-5000"};
+			String[] pTypeArr = {"WAGE","MAT"};
+			for (int i = 0; i < pTypeArr.length; i++) {
+				for (int j = 0; j < rangeArr.length; j++) {
+					String[] rangeStr = rangeArr[j].split("-");
+					String pType = pTypeArr[i];
+					inputVO.setFromRange(Long.valueOf(rangeStr[0]));
+					inputVO.setToRange(Long.valueOf(rangeStr[1]));
+					inputVO.setpType(pType);
+					
+					String str = convertingInputVOToString(inputVO);
+					ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
+					if(response.getStatus() != 200){
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      }else{
+			 	    	  System.out.println("Completed for "+pType+" - "+rangeArr[j]);
+			 	    	 String output = response.getEntity(String.class);
+				 	    	if(output != null && !output.isEmpty()){
+				 	    		JSONArray finalArray = new JSONArray(output);
+				 	    		if(finalArray!=null && finalArray.length()>0){
+				 	    			for(int k=0;k<finalArray.length();k++){
+				 	    				JSONObject jObj = (JSONObject) finalArray.get(k);
+				 	    				String uniqueCode = jObj.getString("UNIQUEID");
+				 	    				String expenditure = jObj.getString("TOTALEXPENDITURE");
+				 	    				if(i == 0)
+				 	    					wageExpMap.put(uniqueCode, expenditure);
+				 	    				else
+				 	    					matExpMap.put(uniqueCode, expenditure);
+				 	    			}
+				 	    		}
+				 	    	}
+			 	      }
+				 }
+			}
+			
+			for (int j = 0; j < rangeArr.length; j++) {
+				String[] rangeStr = rangeArr[j].split("-");
+				inputVO.setFromRange(Long.valueOf(rangeStr[0]));
+				inputVO.setToRange(Long.valueOf(rangeStr[1]));
+				inputVO.setpType("TOT");
+				
+				String str = convertingInputVOToString(inputVO);
+				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
+				if(response.getStatus() != 200){
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	      }else{
+		 	    	 String output = response.getEntity(String.class);
+			 	    	if(output != null && !output.isEmpty()){
+			 	    		JSONArray finalArray = new JSONArray(output);
+			 	    		if(finalArray!=null && finalArray.length()>0){
+			 	    			for(int k=0;k<finalArray.length();k++){
+			 	    				JSONObject jObj = (JSONObject) finalArray.get(k);
+			 	    				
+			 	    				ComponentTargetConfiguration model = new ComponentTargetConfiguration();
+			 	    				model.setNregaComponentId(1L);
+			 	    				model.setRegionScopesId(6L);
+			 	    				model.setScopeValue(jObj.getString("UNIQUEID"));
+			 	    				model.setComponentTargetId(j+1L);
+			 	    				model.setTotalExpenditure(Double.valueOf(jObj.getString("TOTALEXPENDITURE")));
+			 	    				model.setWage(Double.valueOf(wageExpMap.get(jObj.getString("UNIQUEID"))));
+			 	    				model.setMaterial(Double.valueOf(matExpMap.get(jObj.getString("UNIQUEID"))));
+			 	    				model.setYear("2017-2018");
+			 	    				model.setIsDeleted("N");
+			 	    				model.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+			 	    				model = componentTargetConfigurationDAO.save(model);
+			 	    			}
+			 	    		}
+			 	    	}
+		 	      }
+			 }
+			responseVO.setMessage("Success");
+			responseVO.setResponseCode("0");
+		} catch (Exception e) {
+			responseVO.setMessage("Fail");
+			responseVO.setResponseCode("1");
+			LOG.error(" Exception occured in ConstituencyWiseWorkStatusService ,savingLabourBudgetRangeWiseExpenditureDetails() ",e);
+		}
+		return responseVO;
+	}
+	
+	public ResponseVO savingLabourBudgetRangeWiseExpenditureDetailsEveryDay(InputVO inputVO){
+		ResponseVO responseVO = new ResponseVO();
+		try {
+			Map<String,String> wageExpMap = new LinkedHashMap<String,String>();
+	    	Map<String,String> matExpMap = new LinkedHashMap<String,String>();
+	    	
+	    	String[] rangeArr = {"0-0","0-1","1-5","5-10","10-20","20-30","30-50","50-100","100-200","200-300","300-400","400-5000"};
+			String[] pTypeArr = {"WAGE","MAT"};
+			for (int i = 0; i < pTypeArr.length; i++) {
+				for (int j = 0; j < rangeArr.length; j++) {
+					String[] rangeStr = rangeArr[j].split("-");
+					String pType = pTypeArr[i];
+					inputVO.setFromRange(Long.valueOf(rangeStr[0]));
+					inputVO.setToRange(Long.valueOf(rangeStr[1]));
+					inputVO.setpType(pType);
+					
+					String str = convertingInputVOToString(inputVO);
+					ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
+					if(response.getStatus() != 200){
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      }else{
+			 	    	  System.out.println("Completed for "+pType+" - "+rangeArr[j]);
+			 	    	 String output = response.getEntity(String.class);
+				 	    	if(output != null && !output.isEmpty()){
+				 	    		JSONArray finalArray = new JSONArray(output);
+				 	    		if(finalArray!=null && finalArray.length()>0){
+				 	    			for(int k=0;k<finalArray.length();k++){
+				 	    				JSONObject jObj = (JSONObject) finalArray.get(k);
+				 	    				String uniqueCode = jObj.getString("UNIQUEID");
+				 	    				String expenditure = jObj.getString("TOTALEXPENDITURE");
+				 	    				if(i == 0)
+				 	    					wageExpMap.put(uniqueCode, expenditure);
+				 	    				else
+				 	    					matExpMap.put(uniqueCode, expenditure);
+				 	    			}
+				 	    		}
+				 	    	}
+			 	      }
+				 }
+			}
+			int updateresult = componentTargetConfigurationTempDAO.updateoldData();
+			System.out.println("Updated Count - "+updateresult);
+			
+			for (int j = 0; j < rangeArr.length; j++) {
+				String[] rangeStr = rangeArr[j].split("-");
+				inputVO.setFromRange(Long.valueOf(rangeStr[0]));
+				inputVO.setToRange(Long.valueOf(rangeStr[1]));
+				inputVO.setpType("TOT");
+				
+				String str = convertingInputVOToString(inputVO);
+				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
+				if(response.getStatus() != 200){
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	      }else{
+		 	    	 String output = response.getEntity(String.class);
+			 	    	if(output != null && !output.isEmpty()){
+			 	    		JSONArray finalArray = new JSONArray(output);
+			 	    		if(finalArray!=null && finalArray.length()>0){
+			 	    			for(int k=0;k<finalArray.length();k++){
+			 	    				JSONObject jObj = (JSONObject) finalArray.get(k);
+			 	    				
+			 	    				ComponentTargetConfigurationTemp model = new ComponentTargetConfigurationTemp();
+			 	    				model.setNregaComponentId(1L);
+			 	    				model.setRegionScopesId(6L);
+			 	    				model.setScopeValue(jObj.getString("UNIQUEID"));
+			 	    				model.setTotalExpenditure(Double.valueOf(jObj.getString("TOTALEXPENDITURE")));
+			 	    				model.setWage(Double.valueOf(wageExpMap.get(jObj.getString("UNIQUEID"))));
+			 	    				model.setMaterial(Double.valueOf(matExpMap.get(jObj.getString("UNIQUEID"))));
+			 	    				model.setYear("2017-2018");
+			 	    				model.setIsDeleted("N");
+			 	    				model.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+			 	    				model = componentTargetConfigurationTempDAO.save(model);
+			 	    			}
+			 	    		}
+			 	    	}
+		 	      }
+			 }
+			responseVO.setMessage("Success");
+			responseVO.setResponseCode("0");
+		} catch (Exception e) {
+			responseVO.setMessage("Fail");
+			responseVO.setResponseCode("1");
+			LOG.error(" Exception occured in ConstituencyWiseWorkStatusService ,savingLabourBudgetRangeWiseExpenditureDetails() ",e);
+		}
+		return responseVO;
+	}
+	
+	public String convertingInputVOToString(InputVO inputVO){
+		String str = "";
+		try {
+			//if(inputVO.getDivType() != null && !inputVO.getDivType().trim().equalsIgnoreCase("MonthWise Expenditure")){
+				if(inputVO.getLocationId() != null){
+					if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+						if(inputVO.getLocationId().longValue() > 0l && inputVO.getLocationId().longValue() <= 9l)
+							inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+					}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+						if(inputVO.getDistrictId().longValue() > 0l && inputVO.getDistrictId().longValue() <= 9l){
+							if(inputVO.getLocationId().longValue() > 0l)
+								inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+						}
+					}
+				}
+			//}
+			
+				
+			str = "{";
+			
+			if(inputVO.getFromDate() != null )
+				str += "\"fromDate\" : \""+inputVO.getFromDate()+"\",";
+			if(inputVO.getToDate() != null)
+				str += "\"toDate\" : \""+inputVO.getToDate()+"\",";
+			if(inputVO.getYear() != null)
+				str += "\"year\" : \""+inputVO.getYear()+"\",";
+			if(inputVO.getLocationType() != null)
+				str += "\"locationType\" : \""+inputVO.getLocationType()+"\",";
+			if(inputVO.getLocationIdStr() != null)
+				str += "\"locationId\" : \""+inputVO.getLocationIdStr()+"\",";
+			else if(inputVO.getLocationId() != null)
+				str += "\"locationId\" : \""+inputVO.getLocationId()+"\",";
+			if(inputVO.getSublocationType() != null)
+				str += "\"SublocationType\" : \""+inputVO.getSublocationType()+"\",";
+			if(inputVO.getFromRange() != null)
+				str += "\"FromRange\" : \""+inputVO.getFromRange()+"\",";
+			if(inputVO.getToRange() != null)
+				str += "\"ToRange\" : \""+inputVO.getToRange()+"\",";
+			if(inputVO.getType() != null)
+				str += "\"type\" : \""+inputVO.getType()+"\",";
+			if(inputVO.getProgram() != null)
+				str += "\"program\" : \""+inputVO.getProgram()+"\",";
+			if(inputVO.getCategory() != null)
+				str += "\"categoryName\" : \""+inputVO.getCategory()+"\",";
+			if(inputVO.getGroupName() != null)
+				str += "\"groupName\" : \""+inputVO.getGroupName()+"\",";
+			if(inputVO.getMonth() != null)
+				str += "\"month\" : \""+inputVO.getMonth()+"\",";
+			if(inputVO.getpType() != null)
+				str += "\"pType\" : \""+inputVO.getpType()+"\",";
+			
+			if(str.length() > 1)
+				str = str.substring(0,str.length()-1);
+			
+			str += "}";
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertingInputVOToString - NREGSTCSService service", e);
+		}
+		return str;
 	}
 }

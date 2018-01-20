@@ -24,9 +24,11 @@ import com.itgrids.dto.NregaPaymentsVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
+import com.itgrids.dto.ResponseVO;
 import com.itgrids.dto.UserVO;
 import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
+import com.itgrids.service.IConstituencyWiseWorkStatusService;
 import com.itgrids.service.IUserService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
@@ -45,6 +47,8 @@ public class NregsDashboardController {
 	private INREGSTCSService nregsTcsService;
 	@Autowired
 	private IUserService userServiceImpl;
+	@Autowired
+	private IConstituencyWiseWorkStatusService constituencyWiseWorkStatusService;
 		
 	/*@RequestMapping(value ="/test", method = RequestMethod.GET)
     public String fundManagementDashboardPage(ModelMap model) {
@@ -786,5 +790,28 @@ public class NregsDashboardController {
 			LOG.error("Exception raised at getLocationWiseEmptyVacenciesDetails - NREGSController controller", e);
 		}
 		return levlWiseVOList;
+	}
+	
+	@PostMapping("/savingLabourBudgetRangeWiseExpenditureDetails")
+	public @ResponseBody ResponseVO savingLabourBudgetRangeWiseExpenditureDetails(@RequestBody InputVO vo){
+		ResponseVO responseVO = null;
+		try {
+			responseVO = constituencyWiseWorkStatusService.savingLabourBudgetRangeWiseExpenditureDetails(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at savingLabourBudgetRangeWiseExpenditureDetails - NREGSController controller", e);
+		}
+		return responseVO;
+	}
+	@PostMapping("/savingLabourBudgetRangeWiseExpenditureDetailsForEveryDayTemp")
+	public @ResponseBody ResponseVO savingLabourBudgetRangeWiseExpenditureDetailsEveryDay(@RequestBody InputVO vo){
+		ResponseVO responseVO = null;
+		try {
+			responseVO = constituencyWiseWorkStatusService.savingLabourBudgetRangeWiseExpenditureDetailsEveryDay(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at savingLabourBudgetRangeWiseExpenditureDetailsEveryDay - NREGSController controller", e);
+		}
+		return responseVO;
 	}
 }
