@@ -76,12 +76,11 @@ public interface IItcDashboardService {
 	public List<MeesevaKPIDtlsVO> getMeesevaCentersForDistrict(InputVO inputVO);
 	public IdNameVO saveMeesevaKPITargetAchievementValues();
 	public List<ApInnovationSocietyOverviewVO> getApInnovationOverviewDetails();
-	public List<ApInnovationSocietyOverviewVO> getIncubatorsYearsDetails();
-	public List<ApInnovationSocietyOverviewVO> getBootCampYearsDetails();
 	public List<ApInnovationSocietyOverviewVO> getApInnovationIncubatorsXLr8APDetails();
 	public List<ApInnovationSocietyOverviewVO> getApInnovationIncubatorsOtherBlockDetails(InputVO inputVO);
 	public List<ApInnovationSocietyOverviewVO> getApInnovationCohortWiseDetails(InputVO inputVO);
 	public List<ApInnovationSocietyOverviewVO> getApInnovationBootCampDetails(InputVO inputVO);
 	public List<ApInnovationSocietyOverviewVO> getApInnovationEventDetails();
 	public List<ApInnovationSocietyOverviewVO> getApInnovationActivityDetails(InputVO inputVO);
+	public List<ApInnovationSocietyOverviewVO> getApInnovationIndicatorDetails();
 }

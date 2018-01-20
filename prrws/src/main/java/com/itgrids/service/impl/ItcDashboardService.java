@@ -5323,7 +5323,7 @@ public class ItcDashboardService implements IItcDashboardService {
 			ClientResponse response = null;
 			String output = null;
 			
-			String[] apInnovationArr  ={"Incubators","BootCamp","Events","Activities"};
+			String[] apInnovationArr  ={"BootCamp","Events","Activities"};
 			List<String> apInnovations = new ArrayList<String>(0);
 			Long id = 0L;
 			if(apInnovationArr != null){
@@ -5338,7 +5338,7 @@ public class ItcDashboardService implements IItcDashboardService {
 			
 			
 			
-			//Total Counts Of Ap Innovation
+			/*//Total Counts Of Ap Innovation
 			 URL = "http://apinnovationsociety.com/dashboard/apiv2/overview.php";//Total
 			 response = itcWebServiceUtilService.getWebServiceCall(URL);
 			if (response.getStatus() != 200) {
@@ -5365,9 +5365,9 @@ public class ItcDashboardService implements IItcDashboardService {
 						activityVO.setCount(Long.valueOf(list.get("Activites").toString()));
 					}
 				}
-		    }
+		    }*/
 			
-			//Incubators Details
+			/*//Incubators Details
 		    URL = "http://apinnovationsociety.com/dashboard/apiv2/incubators.php?district=0";
 			response = itcWebServiceUtilService.getWebServiceCall(URL);
 			if (response.getStatus() != 200) {
@@ -5389,7 +5389,7 @@ public class ItcDashboardService implements IItcDashboardService {
 					}
 				}
 		    }
-			
+			*/
 			//BootCamp Details
 		    URL = "http://apinnovationsociety.com/dashboard/apiv2/bootcamps.php?district=0";
 			response = itcWebServiceUtilService.getWebServiceCall(URL);
@@ -5406,7 +5406,7 @@ public class ItcDashboardService implements IItcDashboardService {
 							JSONObject jObj = (JSONObject) finalArray.get(i);
 							bootCampVO.setIncubatorName(jObj.getString("venue"));
 							bootCampVO.setLocation(jObj.getString("place"));
-							finalList.get(1).getSubList().add(bootCampVO);
+							finalList.get(0).getSubList().add(bootCampVO);
 						}
 					}
 				}
@@ -5428,7 +5428,7 @@ public class ItcDashboardService implements IItcDashboardService {
 							JSONObject jObj = (JSONObject) finalArray.get(i);
 							eventVO.setIncubatorName(jObj.getString("eventname"));
 							eventVO.setLocation(jObj.getString("location"));
-							finalList.get(2).getSubList().add(eventVO);
+							finalList.get(1).getSubList().add(eventVO);
 						}
 					}
 				}
@@ -5450,7 +5450,7 @@ public class ItcDashboardService implements IItcDashboardService {
 							JSONObject jObj = (JSONObject) finalArray.get(i);
 							activityVO.setIncubatorName(jObj.getString("category"));
 							activityVO.setLocation(jObj.getString("total") != null ? jObj.getString("total"):"0");
-							finalList.get(3).getSubList().add(activityVO);
+							finalList.get(2).getSubList().add(activityVO);
 						}
 					}
 				}
@@ -5477,101 +5477,6 @@ public class ItcDashboardService implements IItcDashboardService {
 			LOG.error("Exception occured at getMatchedVO() in  ItcDashboardService class",e);
 		}
 		return null;
-	}
-	/**
-	 * @author Nandhini.k
-	 * @description {This service is get AP Innovation Incubator Year Wise Details.}
-	 * @return List<ApInnovationSocietyOverviewVO>
-	 * @Date 11-01-2018
-	 */
-	
-	public List<ApInnovationSocietyOverviewVO> getIncubatorsYearsDetails(){
-		List<ApInnovationSocietyOverviewVO> finalList = new ArrayList<ApInnovationSocietyOverviewVO>(0);
-		try {
-			String URL = "http://apinnovationsociety.com/dashboard/apiv2/incubatorsYearWise.php?year=0";
-			ClientResponse response = itcWebServiceUtilService.getWebServiceCall(URL);
-			if (response.getStatus() != 200) {
-		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-		    } else {
-		      String output = response.getEntity(String.class);
-				if(output != null && !output.isEmpty()){
-					org.json.JSONObject finalOutObject = new org.json.JSONObject(output);
-					JSONArray finalArray = new JSONArray(finalOutObject.get("data").toString());
-					if (finalArray != null && finalArray.length() > 0) {
-						for (int i = 0; i < finalArray.length(); i++) {
-							ApInnovationSocietyOverviewVO incubatorVO = new ApInnovationSocietyOverviewVO();
-							JSONObject jObj = (JSONObject) finalArray.get(i);
-							incubatorVO.setIncubatorName(jObj.getString("incubator_name"));
-							if(jObj.getString("location") != null && jObj.getString("location").trim().equalsIgnoreCase("Tirupati")){
-								incubatorVO.setLocation("Chittoor");
-							}else if(jObj.getString("location") != null && jObj.getString("location").trim().equalsIgnoreCase("Visakhapatnam")){
-								incubatorVO.setLocation("Visakhapatnam");
-							}
-							incubatorVO.setYear(jObj.get("since").toString() != null ? jObj.getString("since"):"0");
-							incubatorVO.setWebSite(jObj.get("website").toString() != null ? jObj.getString("website"):"0");
-							incubatorVO.setStartUps(jObj.get("startups").toString() != null ? jObj.getString("startups"):"0");
-							finalList.add(incubatorVO);
-						}
-						
-					}
-				}
-		    }
-			
-		} catch (Exception e) {
-			LOG.error("Exception occured at getIncubatorsYearsDetails() in  ItcDashboardService class",e);
-		}
-		return finalList;
-	}
-	
-	/**
-	 * @author Nandhini.k
-	 * @description {This service is get AP Innovation BootCamp Year Wise Details.}
-	 * @return List<ApInnovationSocietyOverviewVO>
-	 * @Date 11-01-2018
-	 */
-	
-	public List<ApInnovationSocietyOverviewVO> getBootCampYearsDetails(){
-		List<ApInnovationSocietyOverviewVO> finalList = new ArrayList<ApInnovationSocietyOverviewVO>(0);
-		try {
-			String URL = "http://apinnovationsociety.com/dashboard/apiv2/bootcampsYearWise.php?year=0";
-			ClientResponse response = itcWebServiceUtilService.getWebServiceCall(URL);
-			if (response.getStatus() != 200) {
-		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-		    } else {
-		      String output = response.getEntity(String.class);
-				if(output != null && !output.isEmpty()){
-					org.json.JSONObject finalOutObject = new org.json.JSONObject(output);
-					JSONArray finalArray = new JSONArray(finalOutObject.get("data").toString());
-					if (finalArray != null && finalArray.length() > 0) {
-						for (int i = 0; i < finalArray.length(); i++) {
-							ApInnovationSocietyOverviewVO bootCampVO = new ApInnovationSocietyOverviewVO();
-							JSONObject jObj = (JSONObject) finalArray.get(i);
-							bootCampVO.setIncubatorName(jObj.getString("venue") != null ?jObj.getString("venue"):"");
-							if(jObj.getString("place") != null && jObj.getString("place").trim().equalsIgnoreCase("Tirupati")){
-								bootCampVO.setLocation("Chittoor");
-							}else if(jObj.getString("place") != null && (jObj.getString("place").trim().equalsIgnoreCase("Eluru")
-									|| jObj.getString("place").trim().equalsIgnoreCase("Bhimavaram"))){
-								bootCampVO.setLocation("West Godavari");
-							}else if(jObj.getString("place") != null && jObj.getString("place").trim().equalsIgnoreCase("Kurnool")){
-								bootCampVO.setLocation("Kurnool");
-							}else if(jObj.getString("place") != null && jObj.getString("place").trim().equalsIgnoreCase("Vijayawada")){
-								bootCampVO.setLocation("Krishna");
-							}
-							bootCampVO.setFromDate(jObj.get("fromdate").toString() != null ? jObj.get("fromdate").toString():"");
-							bootCampVO.setToDtae(jObj.get("todate").toString()!= null ? jObj.get("todate").toString():"");
-							bootCampVO.setTotalPartiCount(Long.valueOf(jObj.get("total_participants").toString() != null ? jObj.get("total_participants").toString():"0"));
-							bootCampVO.setColleges(Long.valueOf(jObj.get("colleges_covered").toString() != null ? jObj.get("colleges_covered").toString():"0"));
-							finalList.add(bootCampVO);
-						}
-						
-					}
-				}
-		    }
-			
-		} catch (Exception e) {
-			LOG.error("Exception occured at getBootCampYearsDetails() in  ItcDashboardService class",e);
-		}
-		return finalList;
 	}
 	
 	/**
@@ -5827,6 +5732,147 @@ public class ItcDashboardService implements IItcDashboardService {
 					}
 				}
 		    }
+		    	
+		}catch(Exception e){
+			LOG.error("Exception occured at getApInnovationActivityDetails() in  ItcDashboardService class",e);
+		}
+		return finalList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is get Ap Innovation Indicator Details.}
+	 * @return List<ApInnovationSocietyOverviewVO>
+	 * @Date 19-01-2018
+	 */
+	public List<ApInnovationSocietyOverviewVO> getApInnovationIndicatorDetails(){
+		List<ApInnovationSocietyOverviewVO> finalList = new ArrayList<ApInnovationSocietyOverviewVO>();
+		try{
+			Map<String,ApInnovationSocietyOverviewVO> incubMap = new HashMap<String,ApInnovationSocietyOverviewVO>(0);
+			String URL = null;
+			ClientResponse response = null;
+			String output = null;
+			
+			//XLr8AP Details
+			URL = "http://apinnovationsociety.com/dashboard/apiv2/incubatorKPIs.php?id=1";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					org.json.JSONObject finalOutObject = new org.json.JSONObject(output);
+					JSONArray finalArray = new JSONArray(finalOutObject.get("data").toString());
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+							ApInnovationSocietyOverviewVO vo = incubMap.get(jObj.get("parameter").toString());
+							if(vo == null){
+								vo = new ApInnovationSocietyOverviewVO();
+								vo.setName(jObj.get("parameter").toString());
+								vo.setXlr8apCount(jObj.get("achieved").toString());
+								incubMap.put(vo.getName(), vo);
+							}
+						}
+					}
+				}
+		    }
+			
+			//NASSCOM 10K Startups  Details
+			URL = "http://apinnovationsociety.com/dashboard/apiv2/incubatorKPIs.php?id=2";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					org.json.JSONObject finalOutObject = new org.json.JSONObject(output);
+					JSONArray finalArray = new JSONArray(finalOutObject.get("data").toString());
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+							ApInnovationSocietyOverviewVO vo = incubMap.get(jObj.get("parameter").toString());
+							if(vo != null){
+								vo.setNassomCount(jObj.get("achieved").toString());
+							}else{
+								vo = new ApInnovationSocietyOverviewVO();
+								vo.setName(jObj.get("parameter").toString());
+								vo.setNassomCount(jObj.get("achieved").toString());
+								incubMap.put(vo.getName(), vo);
+							}
+						}
+					}
+				}
+		    }
+			
+			//Govin Capital  Details
+			URL = "http://apinnovationsociety.com/dashboard/apiv2/incubatorKPIs.php?id=3";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					org.json.JSONObject finalOutObject = new org.json.JSONObject(output);
+					JSONArray finalArray = new JSONArray(finalOutObject.get("data").toString());
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+							ApInnovationSocietyOverviewVO vo = incubMap.get(jObj.get("parameter").toString());
+							if(vo != null){
+								vo.setGovinCount(jObj.get("achieved").toString());
+							}else{
+								vo = new ApInnovationSocietyOverviewVO();
+								vo.setName(jObj.get("parameter").toString());
+								vo.setGovinCount(jObj.get("achieved").toString());
+								incubMap.put(vo.getName(), vo);
+							}
+						}
+					}
+				}
+		    }
+			
+			/*//Drone Assembly & Reverse Engineering Centre  Details
+			URL = "http://apinnovationsociety.com/dashboard/apiv2/incubatorKPIs.php?id=4";
+			response = itcWebServiceUtilService.getWebServiceCall(URL);
+			if (response.getStatus() != 200) {
+		        throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    } else {
+		    	output = response.getEntity(String.class);
+				if(output != null && !output.isEmpty()){
+					org.json.JSONObject finalOutObject = new org.json.JSONObject(output);
+					JSONArray finalArray = new JSONArray(finalOutObject.get("data").toString());
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+							ApInnovationSocietyOverviewVO vo = incubMap.get(jObj.get("parameter").toString());
+							if(vo != null){
+								vo.setDroneCount(jObj.get("2017-18_Target").toString());
+							}else{
+								vo = new ApInnovationSocietyOverviewVO();
+								vo.setName(jObj.get("parameter").toString());
+								vo.setDroneCount(jObj.get("2017-18_Target").toString());
+								incubMap.put(vo.getName(), vo);
+							}
+						}
+					}
+				}
+		    }*/
+			
+			if(incubMap != null){
+				finalList = new ArrayList<ApInnovationSocietyOverviewVO>(incubMap.values());
+			}
+			
+			if(finalList != null && !finalList.isEmpty()){
+				for (ApInnovationSocietyOverviewVO finalVO : finalList) {
+					if(finalVO.getName() != null && (finalVO.getName().trim().equalsIgnoreCase("Funding raised (INR)") || finalVO.getName().trim().equalsIgnoreCase("Revenue generated (INR)"))){
+						finalVO.setXlr8apCount(commonMethodsUtilService.calculateAmountInWordsFrCrore(Long.valueOf(finalVO.getXlr8apCount() != null ? finalVO.getXlr8apCount():"0")));
+						finalVO.setNassomCount(commonMethodsUtilService.calculateAmountInWordsFrCrore(Long.valueOf(finalVO.getNassomCount() != null ? finalVO.getNassomCount():"0")));
+						finalVO.setGovinCount(commonMethodsUtilService.calculateAmountInWordsFrCrore(Long.valueOf(finalVO.getGovinCount() != null ? finalVO.getGovinCount():"0")));
+						//finalVO.setDroneCount(commonMethodsUtilService.calculateAmountInWordsFrCrore(Long.valueOf(finalVO.getDroneCount() != null ? finalVO.getDroneCount():"0")));
+					}
+				}
+			}
 		    	
 		}catch(Exception e){
 			LOG.error("Exception occured at getApInnovationActivityDetails() in  ItcDashboardService class",e);

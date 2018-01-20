@@ -46,6 +46,10 @@ public class ApInnovationSocietyOverviewVO {
 	private String venue;
 	private String totalParticipaints;
 	private String conductedBy;
+	private String xlr8apCount;
+	private String nassomCount;
+	private String govinCount;
+	private String droneCount; 
 	
 	
 	private List<ApInnovationSocietyOverviewVO> subList = new ArrayList<ApInnovationSocietyOverviewVO>(0);
@@ -282,6 +286,30 @@ public class ApInnovationSocietyOverviewVO {
 	}
 	public void setConductedBy(String conductedBy) {
 		this.conductedBy = conductedBy;
+	}
+	public String getXlr8apCount() {
+		return xlr8apCount;
+	}
+	public void setXlr8apCount(String xlr8apCount) {
+		this.xlr8apCount = xlr8apCount;
+	}
+	public String getNassomCount() {
+		return nassomCount;
+	}
+	public void setNassomCount(String nassomCount) {
+		this.nassomCount = nassomCount;
+	}
+	public String getGovinCount() {
+		return govinCount;
+	}
+	public void setGovinCount(String govinCount) {
+		this.govinCount = govinCount;
+	}
+	public String getDroneCount() {
+		return droneCount;
+	}
+	public void setDroneCount(String droneCount) {
+		this.droneCount = droneCount;
 	}
 	
 }
