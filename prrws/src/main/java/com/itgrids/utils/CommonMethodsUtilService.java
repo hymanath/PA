@@ -1205,4 +1205,47 @@ public class CommonMethodsUtilService {
 			}
 			return output;
 		}
+		
+		public  String calculateAmountInWordsFrCrore(Long number){
+			NumberFormat formatter = new DecimalFormat("###.#####");
+			
+			String amountStr = number.toString();
+		      int lenght = amountStr.trim().length();
+		      int maxLength=0;
+		      String tempAmount = amountStr;
+		     /* String decAmount = "";
+		      if(lenght>7){
+		    	 tempAmount = amountStr.substring(0, amountStr.length()-7);
+		    	 //decimal point is required
+		    	 int len = amountStr.length()-7;
+		    	 decAmount = amountStr.substring(len,len+3);
+		      }else{
+		    	  //System.out.println("else:"+String.valueOf(number/10000000.0));
+		    	  String f = formatter.format(number/10000000.0);
+		    	  //System.out.print(f);
+		    	  return f;
+		      }*/
+		      amountStr = tempAmount;
+		      lenght = tempAmount.trim().length();
+		      if(amountStr.length()>3){
+		    	  String temp="";
+		    	  String temp1="";
+		    	  for (int i = 0; i < amountStr.length(); i++) {
+		    		  if(i==2){
+		    			  temp = amountStr.substring(lenght-(i+1),lenght);
+		    			  temp1=temp;
+		    		  }else if(i>2 && i%2==0 ){
+		    			  maxLength=lenght-(i+1)+2;
+		    			  temp = amountStr.substring(lenght-(i+1),maxLength)+","+temp;
+		    			  temp1 = temp1+amountStr.substring(lenght-(i+1),maxLength);
+		    		  }	else if(temp.length()>0 && temp1.length()>0 && lenght-temp1.length()==1){
+		    			  temp = amountStr.substring(0,1)+","+temp;
+		    		  }	    		  
+				}
+		    	  amountStr = temp;
+		      }
+		      //System.out.println(amountStr+"."+decAmount);
+		      return amountStr;  
+		     
+		    }
 }
