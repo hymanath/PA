@@ -204,7 +204,7 @@ function buildPanchayatsExpenditure(result){
 			str+='<table class="table table-striped table-bordered table_labour_css m_top10">';
 				str+='<thead>';
 					str+='<tr>';
-					str+='<th>Expenditure Ranges</th>';
+					str+='<th>Expenditure Ranges (In Lakhs)</th>';
 					str+='<th>As On Nov 30th</th>';
 					str+='<th>As Of Today</th>';
 					str+='<th>Changed</th>';
@@ -300,7 +300,7 @@ function getPanchatVsExpData(radioType)
 
 function buildLabourBudgetPanExpData(result){
 			var str='';
-				str+='<h4 class="font_weight text-capital">Panchayat Details</h4>';
+				str+='<h4 class="font_weight text-capital">Below 20l expenditure Panchayats</h4>';
 				str+='<div class="table-responsive m_top20">';
 					str+='<table class="table table_right_css" id="larBudExpTableId">';
 						str+='<thead>';

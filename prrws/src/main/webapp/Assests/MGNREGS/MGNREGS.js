@@ -2578,7 +2578,7 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 			str+='<table class="table table-striped table-bordered table_labour_css m_top10">';
 				str+='<thead>';
 					str+='<tr>';
-					str+='<th>Expenditure Ranges</th>';
+					str+='<th>Expenditure Ranges (In Lakhs)</th>';
 					str+='<th>As On Nov 30th</th>';
 					str+='<th>As Of Today</th>';
 					str+='<th>Changed</th>';
