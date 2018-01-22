@@ -3889,7 +3889,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			
 			if(flag == false){
 				$('#saveButtonId').show();
-				return;
+				//return;
 			}
 	}
 	
@@ -4012,7 +4012,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			error: function(request,error) { 
 				$("#savingDetailsSpinner").html('')
 				console.log(request);
-				//console.log(error);
+				console.log(error);
 				alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
 				$('#saveButtonId').show();				
 			}
