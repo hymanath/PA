@@ -27,8 +27,10 @@ public class ComponentTargetConfigurationTemp {
 	private String year;
 	private String isDeleted;
 	private Date insertedTime;
+	private Long addressId;
 	private NregaComponent nregaComponent;
 	private RegionScopes  regionScopes; 
+	private LocationAddress locationAddress;
 	
 	@Id 
 	@Column(name="component_target_configuration_id")
@@ -117,5 +119,20 @@ public class ComponentTargetConfigurationTemp {
 	}
 	public void setRegionScopes(RegionScopes regionScopes) {
 		this.regionScopes = regionScopes;
+	}
+	@Column(name="address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id", insertable = false, updatable = false)
+	public LocationAddress getLocationAddress() {
+		return locationAddress;
+	}
+	public void setLocationAddress(LocationAddress locationAddress) {
+		this.locationAddress = locationAddress;
 	}
 }

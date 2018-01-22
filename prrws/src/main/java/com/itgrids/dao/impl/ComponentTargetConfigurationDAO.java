@@ -25,7 +25,7 @@ public class ComponentTargetConfigurationDAO extends GenericDaoHibernate<Compone
 		return query.list();
 	}
 	
-	public List<Object[]> getRangeWiseVillageDetails(String type){
+	public List<Object[]> getRangeWiseVillageDetails(String type,String locationType,String locationIdStr){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.componentTargetId,model.componentTarget.target,model.componentTargetConfigurationId,model.scopeValue,");
 		if(type != null && type.equalsIgnoreCase("TOT"))
@@ -36,8 +36,12 @@ public class ComponentTargetConfigurationDAO extends GenericDaoHibernate<Compone
 			sb.append(" model.material");
 		sb.append(" from ComponentTargetConfiguration model"
 				+ " where model.isDeleted = 'N' and model.nregaComponentId = 1");
+		if(locationType != null && locationType.equalsIgnoreCase("district") && locationIdStr != null)
+			sb.append(" and model.locationAddress.district.prDistrict.districtCode = :locationIdStr");
 				//+ " order by model.componentTargetId");
 		Query query = getSession().createQuery(sb.toString());
+		if(locationType != null && locationType.equalsIgnoreCase("district") && locationIdStr != null)
+			query.setParameter("locationIdStr", locationIdStr);
 		return query.list();
 	}
 }

@@ -28,9 +28,12 @@ public class ComponentTargetConfiguration {
 	private String year;
 	private String isDeleted;
 	private Date insertedTime;
+	private Long addressId;
 	private NregaComponent nregaComponent;
 	private RegionScopes  regionScopes; 
 	private ComponentTarget  componentTarget;
+	private LocationAddress locationAddress;
+	
 	@Id 
 	@Column(name="component_target_configuration_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -133,6 +136,21 @@ public class ComponentTargetConfiguration {
 	}
 	public void setComponentTarget(ComponentTarget componentTarget) {
 		this.componentTarget = componentTarget;
+	}
+	@Column(name="address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id", insertable = false, updatable = false)
+	public LocationAddress getLocationAddress() {
+		return locationAddress;
+	}
+	public void setLocationAddress(LocationAddress locationAddress) {
+		this.locationAddress = locationAddress;
 	}
 }
 
