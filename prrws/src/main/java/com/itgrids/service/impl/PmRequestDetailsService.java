@@ -1,6 +1,7 @@
 package com.itgrids.service.impl;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2478,7 +2479,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						deptVO.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[2]));
 						deptVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(objects[1]));
 						if(deptVO.getDeptIdsList() != null && deptVO.getDeptIdsList().size() >0 && !deptVO.getDeptIdsList().contains(commonMethodsUtilService.getStringValueForObject(objects[0]))){
-							String dept = deptVO.getDeptName().concat(", "+commonMethodsUtilService.getStringValueForObject(objects[3]));
+							String dept = deptVO.getDeptName().concat(commonMethodsUtilService.getStringValueForObject(objects[3])+", ");
 							deptVO.setDeptName(dept);
 							deptVO.getDeptIdsList().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						}
@@ -2655,19 +2656,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				inputVO.setGroupName(pmGrant.getPmGrantName());//grantType
 				List<Object[]> coveringLetrImages = pmRequiredLettersImagesDAO.getDesignationWiseImages(inputVO.getDesignationIds(), inputVO.getType());
 				
-				String str = "As direced by Hon'ble minister, I am herewith forwarding the" +
-						" representation Dated:#rdate of #rname, #rdesig,#rconst,#rdist District addressed to Hon'ble Minister for PR,RD,IT" +
-				" E&C requesting for sanction of work providing  BT surface to the #subj from Angalakuduru to" + 
-				" Pinapadu-Dundipalem R&B Road via Hanumayamma Statue in Angalakuduru,Tenali Mandal of Guntur " +
-				" District under upgradation   of MGNREGS [Plain] funds with an Estimated Cost of #cost Lakhs." +
-
-
-				" #lead." ;
+				String str1 = " Please find the enclosed representations recieved from of Mis./Mr. " +
+						"#rname #rdesig #rconst #rdist with referrance of #refname  #refdesig  " +
+						"#refconst , Please take action for below mentioned works as #lead " +
+						"#grname " +
+						"#works";
 				//inputVO.setAssetTypeList(deptIds);//deptIds
 				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getDeptCode(),dateUtilService.getCurrentDateAndTime());
 				inputVO.setCategory(endorseStr);
 				PmRequestEditVO petitionDetailsVO =setPmRepresenteeDataToResultView(inputVO.getPageId(),inputVO.getpType(),inputVO.getBlockLevelId());
-				String filePath = ITextCoveringLetterGeneration.generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseStr,petitionDetailsVO,str);
+				String staticPath = commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER);
+							if(staticPath != null && staticPath.equalsIgnoreCase("FAILED"))
+								throw new Exception("File path not available . Please check once file path.");
+				String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
+				String fileName = datePath+"_"+inputVO.getEndValue()+".PDF";
+				String filePath = ITextCoveringLetterGeneration.generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseStr,petitionDetailsVO,str1,staticPath,fileName);
 				resultStatus.setExceptionMsg(filePath);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -3133,11 +3136,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						if(statusVO != null){
 							statusVO.setNoOfWorks(statusVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
 							statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
-						if(statusId.longValue() == 3l){
-							Long estimationCost = commonMethodsUtilService.getLongValueForObject(objects[8]);
-							Long totalCost = Long.valueOf(statusVO.getEstimationCost())+estimationCost;
-							statusVO.setEstimationCost(totalCost.toString());
-						}
+						//if(statusId.longValue() == 3l){
+							String estimationCost = commonMethodsUtilService.getStringValueForObject(objects[8]);
+							if(refDesigCan.getEstimationCost() != null && refDesigCan.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+							BigDecimal decmial= new BigDecimal(refDesigCan.getEstimationCost());
+							BigDecimal decmial1= new BigDecimal(estimationCost);
+								BigDecimal totalCost = decmial.add(decmial1);
+							refDesigCan.setEstimationCost(totalCost.toString());
+							//refDesigCan.setEstimationCost(refDesigCan.getEstimationCost()+);
+							}
+						//}
 						}
 					}
 				}

@@ -580,7 +580,7 @@ function getReferralWiseOverviewDetails(desigId){
 							str+='<th>Works</th>';
 							str+='<th>Completed Representations</th>';
 							str+='<th>Works</th>';
-							str+='<th>Amount</th>';
+							str+='<th>Est Amount(in lkhs)</th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
@@ -606,13 +606,13 @@ function getReferralWiseOverviewDetails(desigId){
 									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].noOfWorks+'</a></td>';
 									
 								}
-									for(var j in result.referrerList[i].statusList){
-									if(result.referrerList[i].statusList[j].id ==3 && typeof(result.referrerList[i].statusList.estimationCost) != "undefined"){
-										str+='<td><b>'+result.referrerList[i].statusList[j].estimationCost+'</b></td>';
-									}else  if(result.referrerList[i].statusList[j].id ==3) {
+									//for(var j in result.referrerList[i].statusList){
+									if(typeof(result.referrerList[i].estimationCost) != "undefined"){
+										str+='<td><b>'+result.referrerList[i].estimationCost+'</b></td>';
+									}else{
 										str+='<td><b>-</b></td>';
 									}	
-								}	
+								//}	
 							str+='</tr>';
 						}
 					str+='</tbody>';
