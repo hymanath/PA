@@ -385,15 +385,15 @@ function buildPetitionDetailsView(result){
 									str+='</div>';
 								}
 									//row closed
-									str+='<div class="row m_top10">';
-									str+='<div class="col-sm-12">';
-										str+='<h5 class="pull-right">';
-										str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-											str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-										str+='</label>';
-										str+='</h5>';
-									str+='</div>';
-									str+='</div>';
+									//str+='<div class="row m_top10">';
+									//str+='<div class="col-sm-12">';
+									//	str+='<h5 class="pull-right">';
+										//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+											//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+										//str+='</label>';
+										//str+='</h5>';
+									//str+='</div>';
+									//str+='</div>';
 									var workCount = 0;
 								str+='<div class="row m_top10">';
 									for(var j in result.subWorksList[i].subWorksList){
@@ -429,13 +429,13 @@ function buildPetitionDetailsView(result){
 														str+='<div class="col-sm-6">';
 															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>Pending Endorsement</span>';
 														str+='</div>';
-														str+='<div class="col-sm-3">';
-															str+='<h5 class="pull-right">';
-															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-															str+='</label>';
-															str+='</h5>';
-														str+='</div>';
+														//str+='<div class="col-sm-3">';
+															//str+='<h5 class="pull-right">';
+															//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+															//str+='</label>';
+															//str+='</h5>';
+														//str+='</div>';
 													str+='</div>';
 												}else if(result.subWorksList[i].subWorksList[j].status == "Pending Final Approval" || result.subWorksList[i].subWorksList[j].status == "Pending - Action Memo" || result.subWorksList[i].subWorksList[j].status == "Pending - Detailed Report"){
 													str+='<div class="row">';
@@ -445,13 +445,13 @@ function buildPetitionDetailsView(result){
 														str+='<div class="col-sm-6">';
 															str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>'+result.subWorksList[i].subWorksList[j].status+'</span>';
 														str+='</div>';
-														str+='<div class="col-sm-3">';
-															str+='<h5 class="pull-right">';
-															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-															str+='</label>';
-															str+='</h5>';
-														str+='</div>';
+														//str+='<div class="col-sm-3">';
+															//str+='<h5 class="pull-right">';
+															//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+															//str+='</label>';
+															//str+='</h5>';
+														//str+='</div>';
 													str+='</div>';
 												}else{
 													str+='<div class="row">';
@@ -602,18 +602,18 @@ function buildPetitionDetailsView(result){
 																		str+='<div class="col-sm-12">';
 																			str+='<h5>';
 																			if(result.subWorksList[i].subWorksList[j].addressVO.districtName != null && result.subWorksList[i].subWorksList[j].addressVO.districtName.trim().length>0){
-																				str+='<span class="m_top5" style="margin-left: 5px;">D: <b>'+result.subWorksList[i].subWorksList[j].addressVO.districtName+'</b>,</span>';
+																				str+='<span class="m_top5" style="margin-left: 5px;" title="DISTRICT">D: <b>'+result.subWorksList[i].subWorksList[j].addressVO.districtName+'</b>,</span>';
 																			}else{
 																					//str+='<span class="m_top5"> D: -, </span>';
 																			}
 																			if(result.subWorksList[i].subWorksList[j].addressVO.assemblyName != null && result.subWorksList[i].subWorksList[j].addressVO.assemblyName.trim().length>0){
-																				str+='<span class="m_top5" style="margin-left: 5px;">C: <b>'+result.subWorksList[i].subWorksList[j].addressVO.assemblyName+'</b>,</span>';
+																				str+='<span class="m_top5" style="margin-left: 5px;" title="CONSTITUENCY">C: <b>'+result.subWorksList[i].subWorksList[j].addressVO.assemblyName+'</b>,</span>';
 																			}else{
 																				//str+='<span class="m_top5">C: - ,</span>';
 																			}
 																			
 																			if(result.subWorksList[i].subWorksList[j].addressVO.tehsilName !=null && result.subWorksList[i].subWorksList[j].addressVO.tehsilName.trim().length>0){
-																				str+='<span class="m_top5" style="margin-left: 5px;">M: <b>'+result.subWorksList[i].subWorksList[j].addressVO.tehsilName+'</b>,</h5>';
+																				str+='<span class="m_top5" style="margin-left: 5px;" title="MANDAL">M: <b>'+result.subWorksList[i].subWorksList[j].addressVO.tehsilName+'</b>,</h5>';
 																			}else{
 																				//str+='<span class="m_top5">M: - ,</span>';
 																			}
@@ -725,11 +725,11 @@ function buildPetitionDetailsView(result){
 										
 									}
 								str+='</div>';
-								str+='<div class="row m_top10">';
-									str+='<div class="col-sm-12">';
-										str+='<button type="button" class="btn btn-primary btn-sm pull-right updateStatusChangeCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
-									str+='</div>';
-								str+='</div>';
+								//str+='<div class="row m_top10">';
+									//str+='<div class="col-sm-12">';
+										//str+='<button type="button" class="btn btn-primary btn-sm pull-right updateStatusChangeCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+									//str+='</div>';
+								//str+='</div>';
 						  str+='</div>';
 						str+='</div>';
 					 str+='</div>';

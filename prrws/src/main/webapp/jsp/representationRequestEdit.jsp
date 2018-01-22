@@ -220,7 +220,7 @@
 	  </div>
 	<form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
 	  <div class="modal-body">
-	   <div class="pad_light_yash_bg border_yash border_radius_5">
+	   <div class="pad_light_yash_bg border_yash border_radius_5" id="totalWorkEditDivId" >
 			<div class="row">
 				<div class="col-sm-4">
 					<h5>TOTAL WORKS : <span id="totalWorksId" class="font_weight">0</span></h5>
@@ -234,15 +234,15 @@
 			</div>
 		</div>
 		<div class="row m_top10">
-			<div class="col-sm-4">
-				<label>Select Status</label>
+			<div class="col-sm-4" id="statusChangeDivId">
+				<label>Select Status<span style="color:red;">*</span></label>
 				<select class="form-control chosen-select" id="statusChangeId">
 					<option value="0">Select Status</option>
 				</select>
 			</div>
 		</div>
-		 <div class="row m_top10" id="endorsementDivId" style="display:none;">
-			<div class="col-sm-8">
+		 <div class="row m_top10">
+			<div class="col-sm-8" id="endorsementModalDivId" style="display:none;">
 				<label>ENDORSMENT NO<span style="color:red;">*</span><span id="endorsementNoErr"></span></label>
 				<input type="text" class="form-control" id="workEndorsmentNo" placeholder="Endorsment NO" name="endorsementNO"/>
 			</div>
@@ -263,13 +263,13 @@
 		</div>
 		<div class="row m_top10">
 			<div class="col-sm-4" id ="assignDesignationDivId" style="display:none;">
-				<label>ASSIGN TO<span style="color:red;">*</span><span id="assignToIdErr"></span></label>
+				<label>ASSIGN TO<span id="assignToIdErr"></span></label>
 				<select class="form-control chosen-select popUpChangesCls" id="assignToId" name="deptDesigId">
 					<option value="0">SELECT DESIGNATION</option>
 				</select>
 			</div>
 			<div class="col-sm-4" id ="assignOfficerDivId" style="display:none;">
-				<label>OFFICER NAME<span style="color:red;">*</span><span id="officerIdErr"></span></label>
+				<label>OFFICER NAME<span id="officerIdErr"></span></label>
 				<select class="form-control chosen-select" id="officerId" name="deptDesigOffcrId">
 					<option value="0">SELECT OFFICER NAME</option>
 				</select>

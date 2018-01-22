@@ -4184,6 +4184,7 @@ $(document).on("change",".madalChangeCls",function(){
  $(document).on("click",".updateStatusChangeCls",function(){
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
+	 $('#remarkIdErr').html("");
 	$("#fileUploadDiv").hide();
 	$("#commentsDivId").show();
 	$("#leadDivId").hide();
@@ -4286,8 +4287,14 @@ $(document).on("change","#statusChangeId",function(){
 	if(nextStatusId != null && nextStatusId>0)
 		$('#nextStatusId').val(nextStatusId);
 	if(statusId == 1){
+     $('#endorsementNoErr').html(' ');
+	 $('#leadIdErr').html('');
+	 $('#grantIdErr').html('');
+	 $('#assignToIdErr').html('');
+	 $('#officerIdErr').html('');
+	 $('#remarkIdErr').html('');
 		$("#letterNameId").html("COVERING");
-		$("#endorsementDivId").show();
+		$("#endorsementModalDivId").show();
 		$("#commentsDivId").show();
 		$("#leadDivId").show();
 		$("#grantDivId").show();
@@ -4302,13 +4309,14 @@ $(document).on("change","#statusChangeId",function(){
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 6){
 		$("#remarksId").val('');
+		 $('#remarkIdErr').html('');
 		$("#letterNameId").html("ACTION COPY");
 		$("#commentsDivId").show();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").show();
 		$("#assignDesignationDivId").show();
-		$("#endorsementDivId").hide();
+		$("#endorsementModalDivId").hide();
 		$("#buttonNameId").html("Forward")
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
@@ -4324,7 +4332,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
 		$("#assignDesignationDivId").hide();
-		$("#endorsementDivId").hide();
+		$("#endorsementModalDivId").hide();
 		$("#buttonNameId").html("Save Details")
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
@@ -4338,10 +4346,11 @@ $(document).on("change","#statusChangeId",function(){
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
 		$("#assignDesignationDivId").hide();
-		$("#endorsementDivId").hide();
+		$("#endorsementModalDivId").hide();
 		$("#buttonNameId").html("Save Details")
 	}
 	else if(statusId == 0){
+		 $('#remarkIdErr').html('');
 		$("#letterNameId").html("");
 		$("#fileUploadDiv").hide();
 		$("#commentsDivId").show();
@@ -4349,7 +4358,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
 		$("#assignDesignationDivId").hide();
-		$("#endorsementDivId").hide();
+		$("#endorsementModalDivId").hide();
 		$("#endorsmentNo").val('');
 		$("#remarksId").val('');
 		$("#leadId").html('');
@@ -4480,71 +4489,104 @@ $.ajax({
 
 
 function endorsingSubWorksAndAssigningToOfficer(){
-
-	var flag =false;
-	 
+      var flag = false;
+     $('#endorsementNoErr').html(' ');
+	 $('#leadIdErr').html('');
+	 $('#grantIdErr').html('');
 	 $('#assignToIdErr').html('');
 	 $('#officerIdErr').html('');
 	 $('#remarkIdErr').html('');
+	 $('#statusIdErrStr').html(' ');
 	 
-	  var errorAssignToStr = '';
-	  var errorOfficerStr = '';
-	  var errRemarksStr = '';
-	  var errStatusIdStr  = '';
-	  
-	 var statusId = $("#statusChangeId").val();
 	
-	 if(statusId == 6){
-		 var assignToIdValue = $("#assignToId").val();
-         var officerIdValue = $("#officerId").val();
+	    var endorsementId =$("#endorsmentNo").val();
+	     var leadIdValue = $("#leadId").val();
+	     var grantIdValue = $("#grantId").val();
+		 //var assignToIdValue = $("#assignToId").val();
+        //var officerIdValue = $("#officerId").val();
 	     var remarksId =$("#remarksId").val();
-		 
-		 if(assignToIdValue == null || assignToIdValue==0){
-			errorAssignToStr += "<p style='color:red'>Please select assign to</p>"; 
-		 }
-		 if(officerIdValue == null || officerIdValue==0){
-			 errorOfficerStr += "<p style='color:red'>Please select officer name</p>"; 
-		 }
+	    var statusId = $("#statusChangeId").val();
+	
+	if(statusId == 0){
 		if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
-			  errRemarksStr += "<p style='color:red'>Comment is required</p>"; 
+			$('#remarkIdErr').html("<h5 style='color:red;'>Comment is required</h5>");
+			   flag = true ; 
+		 }else{
+			 $('#remarkIdErr').html("");
+		 }
+	}else if(statusId == 1){
+		 
+		  if(endorsementId == 0 || endorsementId == '' || endorsementId == null || endorsementId.trim().length == 0){
+			  $('#endorsementNoErr').html("<h5 style='color:red;'>Endosment no is required</h5>");
+		        flag =true;
+	       }else{
+			  $('#endorsementNoErr') .html("");
+		   }
+	 
+		  if(leadIdValue == null || leadIdValue ==0){
+			 $('#leadIdErr').html("<h5 style='color:red;'>Please select brief lead</h5>");
+				flag =true; 
+			}else{
+				  $('#leadIdErr').html("");
+		   }
+		 if(grantIdValue == null || grantIdValue ==0){
+			 $('#grantIdErr').html("<h5 style='color:red;'>Please select grant</h5>");
+		     flag =true ; ;
+		 }else{
+			  $('#grantIdErr').html("");
+		 }
+		 
+	    /* if(assignToIdValue == null || assignToIdValue==0){
+			$('#assignToIdErr').html("<h5 style='color:red;'>Please select assign to</h5>");
+			flag =true ; 
+		 }else{
+			 $('#assignToIdErr').html("");
+		 }
+		 
+		 if(officerIdValue == null || officerIdValue==0){
+			 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer name</h5>");
+			 flag = true ; 
+		 }else{
+			  $('#officerIdErr').html(""); 
+		 } */
+		 
+		if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
+			$('#remarkIdErr').html("<h5 style='color:red;'>Comment is required</h5>");
+			   flag = true ; 
+		 }else{
+			 $('#remarkIdErr').html("");
+		 }
+	 }else if(statusId == 6){
+		
+		  /* if(assignToIdValue == null || assignToIdValue==0){
+			$('#assignToIdErr').html("<h5 style='color:red;'>Please select assign to</h5>");
+			   flag =true ; 
+		  }else{
+			 $('#assignToIdErr').html("");
+		  }
+		 if(officerIdValue == null || officerIdValue==0){
+			 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer name</h5>");
+			    flag = true ; 
+		 }else{
+			  $('#officerIdErr').html(""); 
+		 } */
+		if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
+			$('#remarkIdErr').html("<h5 style='color:red;'>Comment is required</h5>");
+			   flag = true ; 
+		 }else{
+			 $('#remarkIdErr').html("");
 		 }
 		 
 	}else if(statusId == 7 || statusId == 3  || statusId == 4  || statusId == 5){
 		  var remarksId =$("#remarksId").val();
-		 if( remarksId == null || remarksId.trim().length == 0){
-			 errRemarksStr += "<p style='color:red'>Comment is required</p>";
+		 if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
+			$('#remarkIdErr').html("<h5 style='color:red;'>Comment is required</h5>");
+			   flag = true ; 
+		 }else{
+			 $('#remarkIdErr').html("");
 		 }
 	}
 	
-	if(errStatusIdStr.length >0)
-	{
-		$('#statusIdErrStr').html(errStatusIdStr);
-		falg = true ;
-	}else{
-		$('#statusIdErrStr').html('');
-	}
-	if(errorAssignToStr.length >0)
-	{
-		$('#assignToIdErr').html(errorAssignToStr);
-		falg = true ;
-	}else{
-		$('#assignToIdErr').html('');
-	}
-	if(errorOfficerStr.length >0)
-	{
-		$('#officerIdErr').html(errorOfficerStr);
-		falg = true ;
-	}else{
-		$('#officerIdErr').html('');
-	}
-	
-	if(errRemarksStr.length >0)
-	{
-		$('#remarkIdErr').html(errRemarksStr);
-		falg = true ;
-	}else{
-		$('#remarkIdErr').html('');
-	}
 	
 	if(flag==true)
 		return;

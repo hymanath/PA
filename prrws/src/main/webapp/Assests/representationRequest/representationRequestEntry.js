@@ -1254,7 +1254,7 @@ function buildTemplateWorkDetails(typeVal){
 							str+='<div class="row ">';
 									str+='<div class="col-sm-12">';
 										str+='<label>WORK DETAILS <span class="starColor">*</span></label>';
-										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].grievanceDescription" class="form-control m_top5  validateCls workDetailsReFreshCls'+globalWorkTypeCount+'" id="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter work details..." attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0"  style="height:100px;"/> <br><span class="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0"></span>';
+										str+='<textarea name="worksList['+globalWorkTypeCount+'].subWorksList[0].grievanceDescription" class="form-control m_top5  validateCls workDetailsReFreshCls'+globalWorkTypeCount+'" id="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter work details..." attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0"  style="height:100px;"/> <br><span class="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0"></span>';
 									str+='</div>';
 							str+='</div>';
 							str+='<div class="row m_top10">';
