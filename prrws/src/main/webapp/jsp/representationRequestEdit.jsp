@@ -242,8 +242,8 @@
 			</div>
 		</div>
 		 <div class="row m_top10">
-			<div class="col-sm-8" id="endorsementModalDivId" style="display:none;">
-				<label>ENDORSMENT NO<span style="color:red;">*</span><span id="endorsementNoErr"></span></label>
+			<div class="col-sm-8" id="endorsentDivId" style="display:none;">
+				<label>ENDORSMENT NO<span style="color:red;">*</span><span id="WorkEndorsementNoErr"></span></label>
 				<input type="text" class="form-control" id="workEndorsmentNo" placeholder="Endorsment NO" name="endorsementNO"/>
 			</div>
         </div>	
