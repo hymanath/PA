@@ -5845,7 +5845,7 @@ function buildPaymentsOverviewData(result,projectDivId)
 					str+='</div>';
 					str+='<div class="col-sm-4">';
 						str+='<div class="block-border">';
-							str+='<h5 class="text-danger">Release Pending / Rejected Regenerate</h5>';
+							str+='<h5 class="text-danger">Pending At Bank For Want Of Funds / Rejected Regenerate</h5>';
 							str+='<p>Total Amount : '+result[0].totalReleasePendingAmount+' / '+result[0].totalReprocessPendingAmount+'</p>';
 							str+='<p>Wage Amount :'+result[0].releasePendingWageAmount+' / '+result[0].reprocessPendingWageAmount+'</p>';
 							str+='<p>Material Amount : '+result[0].releasePendingMaterialAmount+' / '+result[0].reprocessPendingMaterialAmount+'</p>';
