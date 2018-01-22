@@ -44,8 +44,8 @@ public class ITextCoveringLetterGeneration  {
 	
 	generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseCode,petitionDetailsVO);
 }*/
-	public static String generateCOVERINGLETTER(InputVO inputVO,List<Object[]> coveringLetrImages,String endorseCode,PmRequestEditVO petitionDetailsVO,String str1){
-		String filePath = "";
+	public static String generateCOVERINGLETTER(InputVO inputVO,List<Object[]> coveringLetrImages,String endorseCode,PmRequestEditVO petitionDetailsVO,String str1,String staticPath,String fileName){
+		String fileUrl = "";
 		try {
 			String sysPath = "D:/Tomcat 7.0/webapps/PRRWS-1.0/";
 			String logo ="";
@@ -57,33 +57,68 @@ public class ITextCoveringLetterGeneration  {
 			if(petitionDetailsVO != null){
 				if(petitionDetailsVO.getRepresenteeDetailsList() != null && petitionDetailsVO.getRepresenteeDetailsList().size()>0){
 					representeeList.addAll(petitionDetailsVO.getRepresenteeDetailsList());
-				}else if(petitionDetailsVO.getReferDetailsList() != null && petitionDetailsVO.getReferDetailsList().size()>0){
+					for (PmRequestVO pmRequestVO : representeeList) {
+						 if(pmRequestVO.getName() != null && pmRequestVO.getName() != ""){
+							 str1 = str1.replace("#rname", pmRequestVO.getName()+",");
+						 }else{
+							 str1 = str1.replace("#rname", "");
+						 }
+						 if(pmRequestVO.getDesignation() != null && pmRequestVO.getDesignation() != ""){
+							 str1 = str1.replace("#rdesig", pmRequestVO.getDesignation()+",");
+						 }else{
+							 str1 = str1.replace("#rdesig", "");
+						 }
+						 if(pmRequestVO.getAddressVO().getAssemblyName() != null && pmRequestVO.getAddressVO().getAssemblyName() != ""){
+							 str1 = str1.replace("#rconst",pmRequestVO.getAddressVO().getAssemblyName()+",");
+						 }else{
+							 str1 = str1.replace("#rconst","");
+						 }
+						 if(pmRequestVO.getAddressVO().getDistrictName() != null && pmRequestVO.getAddressVO().getDistrictName() != ""){
+							 str1 = str1.replace("#rdist",pmRequestVO.getAddressVO().getDistrictName()+",");
+						 }else{
+							 str1 = str1.replace("#rdist","");
+						 }
+					}
+				}
+				if(petitionDetailsVO.getReferDetailsList() != null && petitionDetailsVO.getReferDetailsList().size()>0){
+					representeeList.clear();
 					representeeList.addAll(petitionDetailsVO.getReferDetailsList());
+					for (PmRequestVO pmRequestVO : representeeList) {
+						if(pmRequestVO.getName() != null && pmRequestVO.getName() != ""){
+							 str1 = str1.replace("#refname","<br>"+pmRequestVO.getName()+",");
+						 }else{
+							 str1 = str1.replace("#refname","");
+						 }
+						if(pmRequestVO.getDesignation() != null && pmRequestVO.getDesignation() != ""){
+							 str1 = str1.replace("#refdesig", pmRequestVO.getDesignation()+",");
+						 }else{
+							 str1 = str1.replace("#refdesig", "");
+						 }
+						if(pmRequestVO.getCandidateAddressVO().getAssemblyName() != null && pmRequestVO.getCandidateAddressVO().getAssemblyName() != ""){
+							str1 = str1.replace("#refconst",pmRequestVO.getCandidateAddressVO().getAssemblyName()+",");
+						 }else{
+							 str1 = str1.replace("#refconst", "");
+						 }
+					}
 				}
 			}
-			
-			if(representeeList != null && representeeList.size()>0){
-				for (PmRequestVO pmRequestVO : representeeList) {
-					str1 = str1.replace("#rname", pmRequestVO.getName());
-					 str1 = str1.replace("#rdate", petitionDetailsVO.getRepresentationdate());
-					 str1 = str1.replace("#rdesig", pmRequestVO.getDesignation());
-					 if(petitionDetailsVO.getRepresentationType() != null && petitionDetailsVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE")){
-						 str1 = str1.replace("#rconst",pmRequestVO.getAddressVO().getAssemblyName());
-						 str1 = str1.replace("#rdist",pmRequestVO.getAddressVO().getDistrictName());
-					 }else if(petitionDetailsVO.getRepresentationType() != null && petitionDetailsVO.getRepresentationType().equalsIgnoreCase("SELF")){
-						 str1 = str1.replace("#rconst",pmRequestVO.getCandidateAddressVO().getAssemblyName());
-						 str1 = str1.replace("#rdist",pmRequestVO.getCandidateAddressVO().getDistrictName());
-					 }
-					
-					 if(petitionDetailsVO.getSubWorksList() != null && petitionDetailsVO.getSubWorksList().size()>0){
-						 for (PetitionsWorksVO pmSubwork : petitionDetailsVO.getSubWorksList()) {
-							 str1 = str1.replace("#subj",pmSubwork.getSubject());
-						}
-					 }
-					 str1 = str1.replace("#cost",petitionDetailsVO.getEstimateCost());
-					System.out.println(str1);
+			StringBuilder works = new StringBuilder();
+			 if(petitionDetailsVO.getSubWorksList() != null && petitionDetailsVO.getSubWorksList().size()>0){
+				 for (PetitionsWorksVO pmSubwork : petitionDetailsVO.getSubWorksList()) {
+					 for (PetitionsWorksVO pmSubwork1 : pmSubwork.getSubWorksList()) {
+						 if(inputVO.getSchemeIdsList().contains(pmSubwork1.getWorkId())){
+							 works.append("<br>*. "+pmSubwork1.getWorkName());
+						 }
+					}
 				}
-			}
+			 }
+			 if(works != null){
+				 str1 = str1.replace("#works", " Works : <br>"+works);
+			 }
+			 str1 = str1.replace("#lead", ""+inputVO.getLeadName());
+			 if(inputVO.getGroupName() != null)
+			 str1 = str1.replace("#grname"," under Grant - "+ inputVO.getGroupName());
+			System.out.println(str1);
 			if(coveringLetrImages != null && coveringLetrImages.size()>0){
 				for (Object[] objects : coveringLetrImages) {
 					if(objects[1] != null && objects[1].toString().equalsIgnoreCase("LOGO")){
@@ -107,13 +142,13 @@ public class ITextCoveringLetterGeneration  {
 							str.append("<table class='table'>");
 								str.append("<tr>");
 									str.append("<td>");
-										str.append("<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/"+deptDetailsImg.toString()+"' width='150px' height='90px'>");
+										str.append("<img src='http://www.mytdp.com/PRRWS/"+deptDetailsImg.toString()+"' width='150px' height='90px'>");
 									str.append("</td>");
 									str.append("<td>");
-										str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/"+logo.toString()+"' width='80px' height='80px'>");
+										str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='http://www.mytdp.com/PRRWS/"+logo.toString()+"' width='80px' height='80px'>");
 									str.append("</td>");
 									str.append("<td>");
-										str.append("<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/"+addrDetailsImg.toString()+"' width='150px' height='90px'>");
+										str.append("<img src='http://www.mytdp.com/PRRWS/"+addrDetailsImg.toString()+"' width='150px' height='90px'>");
 									str.append("</td>");
 								str.append("</tr>");	
 							str.append("</table>");
@@ -123,7 +158,7 @@ public class ITextCoveringLetterGeneration  {
 								str.append("<td ><font size='3'><b>"+endorseCode+"</b></font></td><br>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td><b>Dear Sir,</b></td>");
+								str.append("<td><b>Dear Sir/Madam,</b></td>");
 							str.append("</tr>");
 							str.append("<tr>");
 								str.append("<td><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+str1+"</p></td><br><br>");
@@ -135,12 +170,12 @@ public class ITextCoveringLetterGeneration  {
 						str.append("<table>");
 							str.append("<tr>");
 								str.append("<td>");
-									str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/"+sign.toString()+"' width='80px' height='50px'>");
+									str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='http://www.mytdp.com/PRRWS/"+sign.toString()+"' width='80px' height='50px'>");
 								str.append("</td>");
 							str.append("</tr>");
 							str.append("<tr>");
 								str.append("<td>");
-									str.append("<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/"+toAddrImg.toString()+"' width='170px' height='90px'>");
+									str.append("<img src='http://www.mytdp.com/PRRWS/"+toAddrImg.toString()+"' width='170px' height='90px'>");
 								str.append("</td>");
 							str.append("</tr>");
 						str.append("</table>");
@@ -148,10 +183,9 @@ public class ITextCoveringLetterGeneration  {
 				str.append("</body>");
 			str.append("</html>");
 			
-			
+			 fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+fileName;
 			String endorsmentNO = inputVO.getEndValue();
-			 filePath = "E:/Petitions/CoverLetter/"+endorsmentNO+".PDF";
-			OutputStream file = new FileOutputStream(new File(filePath));
+			OutputStream file = new FileOutputStream(new File(staticPath+fileName));
 			Document document = new Document();
 			PdfWriter.getInstance(document, file);
 			document.open();
@@ -166,7 +200,7 @@ public class ITextCoveringLetterGeneration  {
 			return "FAILURE";
 		}
 		
-		return filePath;
+		return fileUrl;
 	}
 	
 	

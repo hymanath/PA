@@ -18,7 +18,7 @@ public class RepresenteeViewVO {
 	private String desigName;
 	private String workName;
 	private Long noOfWorks = 0l;
-	private String estimationCost;
+	private String estimationCost="0";
 	private String statusType="";
 	private List<String> desigList = new ArrayList<String>();
 	private String raisedDate;

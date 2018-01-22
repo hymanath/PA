@@ -398,7 +398,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		//if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size()>0){
 			sb.append(", model1.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId,model1.pmRefCandidateDesignation.pmRefCandidate.name  ");
 		//}
-			sb.append(", sum(model.costEstimation) ");	
+			sb.append(", round(sum(model.costEstimation),2) ");	
 		sb.append("  from PmSubWorkDetails model  ");
 		sb.append(" ,PmRepresenteeRefDetails model1,PmRefCandidateDesignation model2 where model1.petition.petitionId=model.petition.petitionId  ");
 		sb.append(" and model1.isDeleted='N'  and model2.pmRefCandidateId=model1.pmRefCandidateId and model.isDeleted='N'   ");
