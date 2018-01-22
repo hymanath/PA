@@ -246,7 +246,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 		+ "{\"RANGE\": \"5-10\",\"GPSCOUNT\": \"2978\"},{\"RANGE\": \"10-20\",\"GPSCOUNT\": \"3986\"},{\"RANGE\": \"20-30\",\"GPSCOUNT\": \"1694\"},"
 	 	    	 		+ "{\"RANGE\": \"30-50\",\"GPSCOUNT\": \"901\"},{\"RANGE\": \"50-100\",\"GPSCOUNT\": \"286\"},{\"RANGE\": \"100-200\",\"GPSCOUNT\": \"21\"},"
 	 	    	 		+ "{\"RANGE\": \"200-300\",\"GPSCOUNT\": \"2\"},{\"RANGE\": \"300-400\",\"GPSCOUNT\": \"0\"},{\"RANGE\": \"Above 400\",\"GPSCOUNT\": \"0\"}]";*/
-	 	    	List<Object[]> list = componentTargetConfigurationDAO.getRangeWiseVillageDetails(inputVO.getpType());
+	 	    	List<Object[]> list = componentTargetConfigurationDAO.getRangeWiseVillageDetails(inputVO.getpType(),null,null);
 	 	    	if(list != null && !list.isEmpty()){
 	 	    		for (Object[] obj : list) {
 						String rangeStr = "0";
@@ -7198,7 +7198,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	      }else{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	 
-	 	    	List<Object[]> list = componentTargetConfigurationDAO.getRangeWiseVillageDetails(inputVO.getpType());
+	 	    	List<Object[]> list = componentTargetConfigurationDAO.getRangeWiseVillageDetails(inputVO.getpType(),inputVO.getLocationType(),inputVO.getLocationIdStr());
 	 	    	if(list != null && !list.isEmpty()){
 	 	    		for (Object[] obj : list) {
 						String rangeStr = "0";
