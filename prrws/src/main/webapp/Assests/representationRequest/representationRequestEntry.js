@@ -1,9 +1,9 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-/* $("header").on("click",".menu-cls",function(e){
+/*$("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menuCls").toggle();
 });
- */
+*/
 $(".tooltipCls").tooltip();
 
 var GlWrkTypeId = 0;
@@ -1248,7 +1248,7 @@ function buildTemplateWorkDetails(typeVal){
 									str+='</div>';*/
 									str+='<div class="col-sm-3">';
 										str+='<label>eOFFICE-ID <span class="starColor"></span></label>';
-										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].eOfficeId" class="form-control m_top5 height45 validateCls counterappendId officerIdReFreshCls'+globalWorkTypeCount+'" id="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0" /><br><span class="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0"></span>';
+										str+='<textarea  name="worksList['+globalWorkTypeCount+'].subWorksList[0].eOfficeId" class="form-control m_top5 height45 validateCls counterappendId officerIdReFreshCls'+globalWorkTypeCount+'" id="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0" /><br><span class="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0"/></span>';
 									str+='</div>';
 							str+='</div>';
 							str+='<div class="row ">';
@@ -1663,7 +1663,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId,locationL
 							clonedTemplate+='<div class="row ">';
 									clonedTemplate+='<div class="col-sm-12">';
 										clonedTemplate+='<label>WORK DETAILS <span class="starColor">*</span></label>';
-										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].grievanceDescription" class="form-control m_top5 validateCls workDetailsReFreshCls'+counterappendId+'" id="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter work details..." attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'" style="height:100px;" /><br><span class="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'" ></span>';
+										clonedTemplate+='<textarea  name="worksList['+counterappendId+'].subWorksList['+blockId+'].grievanceDescription" class="form-control m_top5 validateCls workDetailsReFreshCls'+counterappendId+'" id="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter work details..." attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'" style="height:100px;" /><br><span class="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'" ></span>';
 									clonedTemplate+='</div>';
 							clonedTemplate+='</div>';
 							clonedTemplate+='<div class="row m_top10">';
@@ -1886,7 +1886,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 				clonedInnerTemplate+='<div class="row ">';
 							clonedInnerTemplate+='<div class="col-sm-12">';
 								clonedInnerTemplate+='<label>WORK DETAILS <span class="starColor">*</span></label>';
-								clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].grievanceDescription" class="form-control m_top5  validateInnerCls workDetailsReFreshCls'+mainWorkCount+'" id="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter work details..." attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"  style="height:100px;"/><br><span class="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"  ></span>';
+								clonedInnerTemplate+='<textarea  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].grievanceDescription" class="form-control m_top5  validateInnerCls workDetailsReFreshCls'+mainWorkCount+'" id="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter work details..." attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"  style="height:100px;"/><br><span class="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"  ></span>';
 								clonedInnerTemplate+='</div>';
 				clonedInnerTemplate+='</div>';
 				clonedInnerTemplate+='<div class="row m_top10">';
