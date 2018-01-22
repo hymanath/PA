@@ -226,13 +226,27 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 		return status;
 	}
 
-	
-	public String generateJwtForZoho(String userToken) throws UnsupportedEncodingException{
+	public String generateJwtForZoho(String userToken) {
+
+		try {
+			if(userToken!=null && !userToken.trim().isEmpty()){
+				List<Object[]> mobileNoList = tdpCadreDAO.getMobileNoOfMembership(userToken.split("@")[0]);
+				if (mobileNoList != null && mobileNoList.size() > 0) {
+					return jwtCodeGeneration(userToken);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in generateJwtForZoho() in ZohoAlertService class.", e);
+		}
+
+		return "inValidMemberShipID";
+	}
+
+	public String jwtCodeGeneration(String userToken) {
 		String jwt=null;
-		try{
-			List<Object[]> mobileNoList = tdpCadreDAO.getMobileNoOfMembership(userToken);
-			if(mobileNoList!=null && mobileNoList.size()>0){
-		      String secretKey = IConstants.ZOHO_JWT_SECRETKEY;
+		try {
+			String secretKey = IConstants.ZOHO_JWT_SECRETKEY;
 		      long notBeforeMillis = System.currentTimeMillis();
 		      long notAfterMillis = notBeforeMillis + 300000;
 
@@ -248,14 +262,13 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 		                                  .claim("not_before", notBeforeMillis)
 		                                  .claim("email", userToken).compact();
 		      return jwt;
-			}
-		}catch (Exception e) {
-			LOG.error("Exception Occured in generateJwtForZoho() in ZohoAlertService class.",e);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in generateJwtForZoho() in ZohoAlertService class.", e);
 		}
-		
-	      return "inValidMemberShipID";
+		return null;
 	}
 
+	
     /*
      * 
      * @see com.itgrids.partyanalyst.service.IZohoAlertService#sendSms(java.lang.String, java.lang.String)
