@@ -18,8 +18,6 @@ $(document).on("click",function(e){
 userIdsByEntitlementsLogin();
 function userIdsByEntitlementsLogin(){
  var json = {
-	  username:"minister_test_user",
-	  passwordHashText:123456
 } 
 $.ajax({ 
  type:'POST', 
