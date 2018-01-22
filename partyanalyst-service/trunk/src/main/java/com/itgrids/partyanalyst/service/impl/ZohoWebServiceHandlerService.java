@@ -79,7 +79,6 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 	}
 
 	public JSONObject getZohoWebHookDetails(JSONArray jArry) {
-		JSONObject jobj = new JSONObject();
 		try {
 			return alertRenderService.getJsonStructureOfAlertFromZoho(jArry);
 		} catch (Exception e) {
