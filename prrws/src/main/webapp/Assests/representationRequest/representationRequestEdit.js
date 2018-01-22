@@ -4287,14 +4287,14 @@ $(document).on("change","#statusChangeId",function(){
 	if(nextStatusId != null && nextStatusId>0)
 		$('#nextStatusId').val(nextStatusId);
 	if(statusId == 1){
-     $('#endorsementNoErr').html(' ');
+     $('#WorkEndorsementNoErr').html(' ');
 	 $('#leadIdErr').html('');
 	 $('#grantIdErr').html('');
 	 $('#assignToIdErr').html('');
 	 $('#officerIdErr').html('');
 	 $('#remarkIdErr').html('');
 		$("#letterNameId").html("COVERING");
-		$("#endorsementModalDivId").show();
+		$("#endorsentDivId").show();
 		$("#commentsDivId").show();
 		$("#leadDivId").show();
 		$("#grantDivId").show();
@@ -4308,6 +4308,7 @@ $(document).on("change","#statusChangeId",function(){
 		getPmGrantList();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 6){
+		  $('#WorkEndorsementNoErr').html(' ');
 		$("#remarksId").val('');
 		 $('#remarkIdErr').html('');
 		$("#letterNameId").html("ACTION COPY");
@@ -4316,7 +4317,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").show();
 		$("#assignDesignationDivId").show();
-		$("#endorsementModalDivId").hide();
+		$("#endorsentDivId").hide();
 		$("#buttonNameId").html("Forward")
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
@@ -4332,7 +4333,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
 		$("#assignDesignationDivId").hide();
-		$("#endorsementModalDivId").hide();
+		$("#endorsentDivId").hide();
 		$("#buttonNameId").html("Save Details")
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
@@ -4346,7 +4347,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
 		$("#assignDesignationDivId").hide();
-		$("#endorsementModalDivId").hide();
+		$("#endorsentDivId").hide();
 		$("#buttonNameId").html("Save Details")
 	}
 	else if(statusId == 0){
@@ -4358,7 +4359,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
 		$("#assignDesignationDivId").hide();
-		$("#endorsementModalDivId").hide();
+		$("#endorsentDivId").hide();
 		$("#endorsmentNo").val('');
 		$("#remarksId").val('');
 		$("#leadId").html('');
@@ -4490,7 +4491,8 @@ $.ajax({
 
 function endorsingSubWorksAndAssigningToOfficer(){
       var flag = false;
-     $('#endorsementNoErr').html(' ');
+     //$('#endorsementNoErr').html(' ');
+	 $('#WorkEndorsementNoErr').html(' ');
 	 $('#leadIdErr').html('');
 	 $('#grantIdErr').html('');
 	 $('#assignToIdErr').html('');
@@ -4499,7 +4501,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	 $('#statusIdErrStr').html(' ');
 	 
 	
-	    var endorsementId =$("#endorsmentNo").val();
+	    var endorsementId =$("#workEndorsmentNo").val();
 	     var leadIdValue = $("#leadId").val();
 	     var grantIdValue = $("#grantId").val();
 		 //var assignToIdValue = $("#assignToId").val();
@@ -4517,10 +4519,10 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	}else if(statusId == 1){
 		 
 		  if(endorsementId == 0 || endorsementId == '' || endorsementId == null || endorsementId.trim().length == 0){
-			  $('#endorsementNoErr').html("<h5 style='color:red;'>Endosment no is required</h5>");
+			   $('#WorkEndorsementNoErr').html("<h5 style='color:red;'>Endosment no is required</h5>");
 		        flag =true;
 	       }else{
-			  $('#endorsementNoErr') .html("");
+			   $('#WorkEndorsementNoErr') .html("");
 		   }
 	 
 		  if(leadIdValue == null || leadIdValue ==0){
