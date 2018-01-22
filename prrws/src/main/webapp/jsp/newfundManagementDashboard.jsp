@@ -327,7 +327,7 @@
 														
 													</div>
 													<div class="col-sm-3">
-														<label>SCHEMS</label>
+														<label>SCHEMES</label>
 														<select class="form-control chosenSelect" id="subProgramNamesState" >
 														</select>
 													</div>
@@ -417,7 +417,7 @@
 												
 											</div>
 											<div class="col-sm-4">
-												<label>SCHEMS</label>
+												<label>SCHEMES</label>
 												<select class="form-control chosenSelect" id="subProgramNamesDistrict" >
 												</select>
 											</div>
@@ -561,7 +561,7 @@
 											
 										</div>
 										<div class="col-sm-3 showHideConstituencyPgramsCls" style="display:none;">
-											<label>SCHEMS</label>
+											<label>SCHEMES</label>
 											<select class="form-control chosenSelect" id="subProgramNamesConst" >
 											</select>
 										</div>
@@ -712,7 +712,7 @@
 											
 										</div>
 										<div class="col-sm-3 showHideMandalPgramsCls" style="display:none;">
-											<label>SCHEMS</label>
+											<label>SCHEMES</label>
 											<select class="form-control chosenSelect" id="subProgramNamesMandal" >
 											</select>
 										</div>
@@ -871,7 +871,7 @@
 											
 										</div>
 										<div class="col-sm-3 showHideVillagePgramsCls" style="display:none;">
-											<label>SCHEMS</label>
+											<label>SCHEMES</label>
 											<select class="form-control chosenSelect" id="subProgramNamesVillage" >
 											</select>
 										</div>
