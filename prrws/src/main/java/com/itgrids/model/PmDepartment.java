@@ -15,6 +15,7 @@ public class PmDepartment {
 	
 	private Long pmDepartmentId;
 	private String department;
+	private String shortName;
 	private String isDeleted;
 	private Long orderNo;
 	private Long preferrableOrderNO;
@@ -56,6 +57,14 @@ public class PmDepartment {
 	}
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
+	}
+	
+	@Column(name="short_name")
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 	
 	

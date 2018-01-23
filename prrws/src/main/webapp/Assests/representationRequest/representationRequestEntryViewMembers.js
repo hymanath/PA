@@ -858,7 +858,7 @@ function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 	}).done(function(result){
 		$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
-			//$("#designationDiv").show();
+			$("#designationDiv").show();
 			//$("#"+selBoxId).html("<option value='0'>Select Designation</option>");
 			for(var i in result){
 				if(desigId >0 && desigId == result[i].key){
@@ -1047,7 +1047,8 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
  }); */
 function getRepresentativeSearchDetails1(){
 	$("#errMsgId").html("");
- 
+ var startDate = currentFromDate;
+ var endDate = currentToDate;
    var filterType=$("#locationSelId").val();
     var filterValue="";
    if(filterType == 'referrelDesignation' || filterType == 'representeeDesignation'){
@@ -1101,6 +1102,9 @@ function getRepresentativeSearchDetails1(){
 	    filterValue=$("#emailId").val();
    }else if(filterType == 'endorsmentNO'){
 	    filterValue=$("#endorsmentNoId").val();
+   }else if(filterType == 'all'){
+	   startDate = "";
+		endDate = "";
    }
    
 	var districtId=$("#districtCandId").val();
@@ -1144,8 +1148,8 @@ var json = {
     filterValue:filterValue,
     searchLevelId:searchLevelId,
     searchLvlVals:searchLevelValue,
-    fromDate :currentFromDate,
-	toDate : currentToDate,
+    fromDate :startDate,
+	toDate : endDate,
    // fromRange:0,
    // toRange:0,
    // minVal:0,

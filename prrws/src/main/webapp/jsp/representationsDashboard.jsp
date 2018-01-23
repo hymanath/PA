@@ -77,7 +77,12 @@
 <main>
 	<section>
 		<div class="container-fluid">
-			<div class="row">
+		<div class="row">
+			<div class="col-sm-12">
+				<h4 class="pull-right">Note: All amounts in Crores</h4>
+			</div>
+		</div>
+			<div class="row m_top10">
 				<div class="col-sm-12">
 					<div class="white-block petition_block">
 						<div class="row">
