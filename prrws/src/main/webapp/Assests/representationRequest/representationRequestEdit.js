@@ -4225,18 +4225,27 @@ $(document).on("change",".madalChangeCls",function(){
 		 $("#statusChangeId").append('<option value="0" attr_next_status_id="0" >Select Status</option>');
 		for(var i in globalStatusArr){
 			var nextStatusId=6;
-			if(globalStatusArr[i].key == 1)
+			if(globalStatusArr[i].key == 1){
+				
 				nextStatusId=6;
-			else if(globalStatusArr[i].key == 6)
+			}	
+			else if(globalStatusArr[i].key == 6){
+				
 				nextStatusId=7;
-			else if(globalStatusArr[i].key == 7)
+			}
+			else if(globalStatusArr[i].key == 7){
+				
 				nextStatusId=3;
-			else if(globalStatusArr[i].key == 3)
+			}
+			else if(globalStatusArr[i].key == 3){
 				nextStatusId=8;
-			else if(globalStatusArr[i].key == 4)
+			}
+			else if(globalStatusArr[i].key == 4){
 				nextStatusId=4;
-			else if(globalStatusArr[i].key == 5)
+			}
+			else if(globalStatusArr[i].key == 5){
 				nextStatusId=5;	
+			}
 			if(enrorsNo !=null && enrorsNo>0){
 				if(globalStatusArr[i].key !=1){
 					if(globalStatusArr[i].key == 6)
@@ -4308,6 +4317,7 @@ $(document).on("change","#statusChangeId",function(){
 		getPmGrantList();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 6){
+		
 		  $('#WorkEndorsementNoErr').html(' ');
 		$("#remarksId").val('');
 		 $('#remarkIdErr').html('');
@@ -4324,6 +4334,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#fileUploadDiv").show();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 7){
+		
 		$("#remarkIdErr").html('');
 		$("#remarksId").val('');
 		$("#letterNameId").html("DETAILED REPORT");
@@ -4696,7 +4707,6 @@ $.ajax({
 			}
      });
  }	
-//generateCoveringLetterForPetition();
 function generateCoveringLetterForPetition(){
 	 //$('#endorsWorksId').hide();
 	 var  schemeIdsListArr =[];
@@ -4760,5 +4770,47 @@ var json = {
    xhr.setRequestHeader("Content-Type", "application/json");
   }
  }).done(function(result){
+	 if(result !=null){
+		 var str='';
+		 var scanCopySpl = result.exceptionMsg.split("."); 
+			var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
+			str+='<div  class="row">';
+			str+='<div class="col-sm-4">';
+				str+='<div class="viewImageCss">';
+				if(scanCopyExt =="pdf"){
+					str+='<a class="fancyboxView" href="#inlineddd">';
+					str+='<div class="mouse-over">Expand</div>';
+						str+='<object data="'+result.exceptionMsg+'" type="application/pdf" width="100%"height="100px;"></object>';
+						
+					str+='</a>';
+					str+='<div id="inlineddd" style="width:100%;display: none;">';
+						str+='<object data="'+result.exceptionMsg+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
+						
+					str+='</div>';
+					
+				}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
+					str+='<a class="fancyboxView" href="#inlineddds">';
+						str+='<img src="'+result.exceptionMsg+'"  width="100%" height="100px;"></img>';
+						
+					str+='</a>';
+					str+='<div id="inlineddds" style="width:100%;display: none;">';
+						str+='<img src="'+result.exceptionMsg+'"    style="cursor:pointer;height:1000px;width:1000px"></object>';
+						
+					str+='</div>';
+				}else{
+					str+='<b>Click <a href="javascript:{};" onclick="openDoc(\''+result.exceptionMsg+'\')">Here</a> To View Document</b>';
+					
+				}
+
+		str+='</div>';
+	str+='</div>';
+	
+	$("#coveringLetterGenerator").html(str);
+	$(".fancyboxView").fancybox();
+	 }
+	
+	
  }); 
-} 
+}
+	
+	
