@@ -115,8 +115,9 @@ $('#newsLetternewsPaperId').change(function() {
 function getAllNewsPapers(){
 	
 	$.ajax({
-      type : 'GET',      
-      url: "http://192.168.11.172:8446/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+		type : 'GET', 
+		var url=wurl+"CommunityNewsPortal/webservice/getAllNewsPapers/AP";
+      //url: "http://192.168.11.172:8446/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
     }).then(function(result){
 		return buildResult('newsLetternewsPaperId',result);
       
@@ -145,8 +146,8 @@ $(document).on("click","#submitId",function(){
 		"fromDateStr":glStartDate,
 		"toDateStr":glEndDate
 	};
-	//var url=wurl+"/CommunityNewsPortal/webservice/imageRendering";
-	var url="http://192.168.11.172:8446/CommunityNewsPortal/webservice/imageRendering";
+	var url=wurl+"/CommunityNewsPortal/webservice/imageRendering";
+	//var url="http://192.168.11.172:8446/CommunityNewsPortal/webservice/imageRendering";
 	$.ajax({
 		url: url,
 		data: JSON.stringify(json),
