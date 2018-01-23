@@ -29,7 +29,7 @@ public class OtpDetailsDAO extends GenericDaoHibernate<OtpDetails, Long> impleme
 									.addScalar("dateStr", Hibernate.STRING)
 									.addScalar("cadreId", Hibernate.LONG);
 		query.setParameter("mobileNo", mobileNo);
-		query.setDate("currentTime", currentTime);
+		query.setParameter("currentTime", currentTime);
 		return  query.list();
 	}
 
