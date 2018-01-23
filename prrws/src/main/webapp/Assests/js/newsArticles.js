@@ -39,8 +39,10 @@ if(wurl.length == 3)
 		glEndDate = picker.endDate.format("DD-MM-YYYY");
 		onLoadCalls();
 	});
+	setTimeout(function(){
+		onLoadCalls();
+	},2000);
 	
-	onLoadCalls();
 	
 	function onLoadCalls(){
 		getPrintMediaCountsDetailsInfo();
@@ -57,8 +59,8 @@ if(wurl.length == 3)
 	 function getPrintMediaCountsDetailsInfo(){
 		 $("#overAllPrintMediaDivId").html(spinner);
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"
+			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				buildOverAllPrintMediaDetails(result,"PrintMedia","overAllPrintMediaDivId","overAll",0);
@@ -70,10 +72,10 @@ if(wurl.length == 3)
 	function getDepartMentWiseAllNewsBulletinsAndPrograms(){
 		 $("#overAllElectronicMediaDivId").html(spinner);
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
 		}).then(function(result){
-				if(result !=null){
+				if(result !=null && result.length>0){
 					buildOverAllPrintMediaDetails(result,"ElectronicMedia","overAllElectronicMediaDivId","overAllEle",0);
 				}else{
 					$("#overAllElectronicMediaDivId").html("No Data Available");
@@ -83,11 +85,11 @@ if(wurl.length == 3)
 	function getDistrictWiseTotalOverViewInfo(){
 		$("#overAllDistrictWiseDivId").html(spinner);
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"
+			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
 		}).then(function(result){
-			if(result !=null){
-					buildOverAllDistrictWiseDetails(result,"overAllDistrictWiseDivId",0);
+			if(result !=null && result.length>0){
+					buildOverAllDistrictWiseDetails(result,"overAllDistrictWiseDivId",globalDeptId,"overAllPrint");
 			}else{
 				$("#overAllDistrictWiseDivId").html("No Data Available");
 			}
@@ -96,11 +98,11 @@ if(wurl.length == 3)
 	function getDistrictWiseNewsTotalOverviewForElectronicMedia(){
 		$("#overAllDistrictEMWiseDivId").html(spinner);
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseNewsTotalOverviewForElectronicMedia/"+glStartDate+"/"+glEndDate+"/''"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDistrictWiseNewsTotalOverviewForElectronicMedia/"+glStartDate+"/"+glEndDate+"/''"
+			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseNewsTotalOverviewForElectronicMedia/"+glStartDate+"/"+glEndDate+"/''"+"/"+globalDeptId+"/"
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDistrictWiseNewsTotalOverviewForElectronicMedia/"+glStartDate+"/"+glEndDate+"/''"+"/"+globalDeptId+"/"
 		}).then(function(result){
-			if(result !=null){
-					buildOverAllDistrictWiseDetails(result,"overAllDistrictEMWiseDivId",0);
+			if(result !=null && result.length>0){
+					buildOverAllDistrictWiseDetails(result,"overAllDistrictEMWiseDivId",globalDeptId,"overAllEM");
 			}else{
 				$("#overAllDistrictEMWiseDivId").html("No Data Available");
 			}
@@ -109,8 +111,8 @@ if(wurl.length == 3)
 	function getDepartmentWiSeBlockDetails(type,divId,typeVal){
 		$("#departmentWiseDetailsDivId").html(spinner);
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				buildDepartmentWiSeBlockDetails(result,type,divId,typeVal);
@@ -122,8 +124,8 @@ if(wurl.length == 3)
 	function getDepartmentWiSeBlockEMDetails(type,divId,typeVal){
 		$("#departmentWiseDetailsDivId").html(spinner);
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+glStartDate+"/"+glEndDate+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+glStartDate+"/"+glEndDate+"/"
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				buildDepartmentWiSeBlockDetails(result,type,divId,typeVal);
@@ -517,7 +519,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 	
 	
 }
-function buildOverAllDistrictWiseDetails(result,divId,deptId){
+function buildOverAllDistrictWiseDetails(result,divId,deptId,type){
 	var districtWiseNegativeCountArray=[];
 	var districtWisePositiveCountArray=[];
 	var districtNamesArray=[];
@@ -616,9 +618,20 @@ function buildOverAllDistrictWiseDetails(result,divId,deptId){
 						click: function () {
 							var value = (this.extra).split("-");
 							var districtId = value[1];
-							var departmentId = value[2];
+							var departmentId = value[2];;
 							var benefitId = value[3];
-							getArtilcesForDistrict(districtId,departmentId,benefitId);
+							if(type == "overAllPrint"){
+								getArtilcesForDistrict(districtId,departmentId,benefitId);
+							}else if(type == "overAllEM"){
+								//overAllElecDistrict
+								getArtilcesForDistrictFOrEMN(districtId,departmentId,benefitId);
+							}else if(type == "department"){
+								getArtilcesForDistrict(districtId,departmentId,benefitId);
+							}else if(type == "departmentEle"){
+								getArtilcesForDistrictFOrEMN(districtId,departmentId,benefitId);
+							}
+							
+							
 						}
 					}
 				}
@@ -634,92 +647,167 @@ function buildOverAllDistrictWiseDetails(result,divId,deptId){
 	});
 }
 function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
-	
 	var collapse='';
 	
 	for(var i in result){
-		collapse+='<div class="row m_top20">';
-		collapse+='<div class="col-sm-12">';
-			collapse+='<div class="white_block">';
-					collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
-						collapse+='<div class="row m_top10">';
-							collapse+='<div class="col-sm-6">';
-								collapse+='<div class="pad_light_yash_bg border_yash">';
-									collapse+='<h4>OverAll Details</h4>';
-									collapse+='<div id="'+divId+''+result[i].organizationId+'" style="width:100%"></div>';
-								collapse+='</div>';
-							collapse+='</div>';
-							
-							for(var j in result[i].coreDashBoardVOList2){
-										if(result[i].coreDashBoardVOList2[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList2[j].coreDashBoardVOList.length>0){
+		if(globalDeptId != "0"){
+			if(result[i].organizationId == globalDeptId){
+				collapse+='<div class="row m_top20">';
+					collapse+='<div class="col-sm-12">';
+						collapse+='<div class="white_block">';
+								collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
+									collapse+='<div class="row m_top10">';
 										collapse+='<div class="col-sm-6">';
 											collapse+='<div class="pad_light_yash_bg border_yash">';
-												collapse+='<h5 class="font_weight text-capital">Analysis of Action Immediately</h5>';
-												collapse+='<h5 class="m_top10 font_weight">Total Count - <a><span id="totalCountAnalysisId'+result[i].organizationId+'" class="propertiesCls" attr_deptId="'+result[i].organizationId+'" attr_propertyId="0" style="cursor:pointer;"></span></a></h5>';
-												collapse+='<div class="row">';
-													collapse+='<div class="col-sm-6">';
-														collapse+='<div id="actionWiseAnalysis'+result[i].organizationId+'" class="" style="height:180px;width:100%;margin-top:50px;"></div>';
-													collapse+='</div>';
-													collapse+='<div class="col-sm-6">';
-														collapse+='<ul class="list-inline" style="margin-top:50px;">';
-															collapse+='<div id="problemWise'+result[i].organizationId+'"></div>';
-														collapse+='</ul>';
-													collapse+='</div>';
-												collapse+='</div>';
+												collapse+='<h4>OverAll Details</h4>';
+												collapse+='<div id="'+divId+''+result[i].organizationId+'" style="width:100%"></div>';
 											collapse+='</div>';
 										collapse+='</div>';
 										
+										for(var j in result[i].coreDashBoardVOList2){
+													if(result[i].coreDashBoardVOList2[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList2[j].coreDashBoardVOList.length>0){
+													collapse+='<div class="col-sm-6">';
+														collapse+='<div class="pad_light_yash_bg border_yash" style="height:362px;>';
+															collapse+='<h5 class="font_weight text-capital">Analysis of Action Immediately</h5>';
+															collapse+='<h5 class="m_top10 font_weight">Total Count - <a><span id="totalCountAnalysisId'+result[i].organizationId+'" class="propertiesCls" attr_deptId="'+result[i].organizationId+'" attr_propertyId="0" attr_type="" style="cursor:pointer;"></span></a></h5>';
+															collapse+='<div class="row">';
+																collapse+='<div class="col-sm-6">';
+																	collapse+='<div id="actionWiseAnalysis'+result[i].organizationId+'" class="" style="height:180px;width:100%;margin-top:20px;"></div>';
+																collapse+='</div>';
+																collapse+='<div class="col-sm-6">';
+																	collapse+='<ul class="list-inline" style="margin-top:50px;">';
+																		collapse+='<div id="problemWise'+result[i].organizationId+'"></div>';
+																	collapse+='</ul>';
+																collapse+='</div>';
+															collapse+='</div>';
+														collapse+='</div>';
+													collapse+='</div>';
+													
+												}
+											}
+											
+										
+										
+									collapse+='</div>';
+									
+									collapse+='<div class="row m_top20">';
+										for(var j in result[i].coreDashBoardVOList3){
+											if(result[i].coreDashBoardVOList3[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList3[j].coreDashBoardVOList.length>0){
+												collapse+='<div class="col-sm-3">';
+													collapse+='<h5 class="font_weight text-capital">State wise Overview</h5>';
+														collapse+='<div id="stateLevelMedia'+result[i].organizationId+'" style="height:330px;width:100%"></div>';
+													collapse+='</div>';
+												
+											}
+										}
+										collapse+='<div class="col-sm-9">';
+											collapse+='<h5 class="font_weight text-capital">District wise Overview</h5>';
+											collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:330px;width:100%"></div>';
+										collapse+='</div>';
+									collapse+='</div>';
+							collapse+='</div>';
+					collapse+='</div>';
+				collapse+='</div>';
+			}
+		}else{
+			collapse+='<div class="row m_top20">';
+			collapse+='<div class="col-sm-12">';
+				collapse+='<div class="white_block">';
+				collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
+							collapse+='<div class="row m_top10">';
+								collapse+='<div class="col-sm-6">';
+									collapse+='<div class="pad_light_yash_bg border_yash">';
+										collapse+='<h4>OverAll Details</h4>';
+										collapse+='<div id="'+divId+''+result[i].organizationId+'" style="width:100%"></div>';
+									collapse+='</div>';
+								collapse+='</div>';
+								
+								for(var j in result[i].coreDashBoardVOList2){
+											if(result[i].coreDashBoardVOList2[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList2[j].coreDashBoardVOList.length>0){
+											collapse+='<div class="col-sm-6">';
+												collapse+='<div class="pad_light_yash_bg border_yash" style="height:362px;>';
+													collapse+='<h5 class="font_weight text-capital">Analysis of Action Immediately</h5>';
+													collapse+='<h5 class="m_top10 font_weight">Total Count - <a><span id="totalCountAnalysisId'+result[i].organizationId+'" class="propertiesCls" attr_deptId="'+result[i].organizationId+'" attr_propertyId="0" attr_type="" style="cursor:pointer;"></span></a></h5>';
+													collapse+='<div class="row">';
+														collapse+='<div class="col-sm-6">';
+															collapse+='<div id="actionWiseAnalysis'+result[i].organizationId+'" class="" style="height:180px;width:100%;margin-top:20px;"></div>';
+														collapse+='</div>';
+														collapse+='<div class="col-sm-6">';
+															collapse+='<ul class="list-inline" style="margin-top:50px;">';
+																collapse+='<div id="problemWise'+result[i].organizationId+'"></div>';
+															collapse+='</ul>';
+														collapse+='</div>';
+													collapse+='</div>';
+												collapse+='</div>';
+											collapse+='</div>';
+											
+										}
+									}
+									
+								
+								
+							collapse+='</div>';
+							
+							collapse+='<div class="row m_top20">';
+								for(var j in result[i].coreDashBoardVOList3){
+									if(result[i].coreDashBoardVOList3[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList3[j].coreDashBoardVOList.length>0){
+										collapse+='<div class="col-sm-3">';
+											collapse+='<h5 class="font_weight text-capital">State wise Overview</h5>';
+												collapse+='<div id="stateLevelMedia'+result[i].organizationId+'" style="height:330px;width:100%"></div>';
+											collapse+='</div>';
+										
 									}
 								}
-								
-							
-							
-						collapse+='</div>';
-						
-						collapse+='<div class="row m_top20">';
-							for(var j in result[i].coreDashBoardVOList3){
-								if(result[i].coreDashBoardVOList3[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList3[j].coreDashBoardVOList.length>0){
-									collapse+='<div class="col-sm-3">';
-										collapse+='<h5 class="font_weight text-capital">State wise Overview</h5>';
-											collapse+='<div id="stateLevelMedia'+result[i].organizationId+'" style="height:330px;width:100%"></div>';
-										collapse+='</div>';
-									
-								}
-							}
-							collapse+='<div class="col-sm-9">';
-								collapse+='<h5 class="font_weight text-capital">District wise Overview</h5>';
-								collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:330px;width:100%"></div>';
+								collapse+='<div class="col-sm-9">';
+									collapse+='<h5 class="font_weight text-capital">District wise Overview</h5>';
+									collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:330px;width:100%"></div>';
+								collapse+='</div>';
 							collapse+='</div>';
-						collapse+='</div>';
-				collapse+='</div>';
+					collapse+='</div>';
+			collapse+='</div>';
 		collapse+='</div>';
-	collapse+='</div>';
+		}
+		
+		
 		}
 			
 	$("#departmentWiseDetailsDivId").html(collapse);
 	for(var i in result){
 		for(var j in result[i].coreDashBoardVOList1){
 			//DistrictCall
-			buildOverAllDistrictWiseDetails(result[i].coreDashBoardVOList1[j].coreDashBoardVOList,'districtWise'+result[i].organizationId+'',result[i].organizationId)
+			buildOverAllDistrictWiseDetails(result[i].coreDashBoardVOList1[j].coreDashBoardVOList,'districtWise'+result[i].organizationId+'',result[i].organizationId,typeVal)
 		}
 		
 		for(var j in result[i].coreDashBoardVOList){
 			//printMediaCall
 			buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList[j].coreDashBoardVOList,''+type+''+result[i].organizationId+'',''+divId+''+result[i].organizationId+'',''+typeVal+'',result[i].organizationId)
 		}
-		for(var j in result[i].coreDashBoardVOList3){
+		if(type =="PrintMediadepartment"){
+			for(var j in result[i].coreDashBoardVOList3){
 			//ElectronicCall
 			//buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'ElectronicMediadepartment'+result[i].organizationId+'','electronicMedia'+result[i].organizationId+'',"departmentEle",result[i].organizationId)
-			buildOverAllStateWiseDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'stateLevelMedia'+result[i].organizationId+'',result[i].organizationId)
-		}
-		for(var j in result[i].coreDashBoardVOList2){
+				buildOverAllStateWiseDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'stateLevelMedia'+result[i].organizationId+'',result[i].organizationId,type)
+			}
+			for(var j in result[i].coreDashBoardVOList2){
 			//ActionWiseCall
-			buildactionWiseAnalysisDetails(result[i].coreDashBoardVOList2[j].coreDashBoardVOList,"actionWiseAnalysis"+result[i].organizationId+"",result[i].organizationId)
+				buildactionWiseAnalysisDetails(result[i].coreDashBoardVOList2[j].coreDashBoardVOList,"actionWiseAnalysis"+result[i].organizationId+"",result[i].organizationId,type)
 			
+			}
+		}else if(type == "ElectronicMediadepartment"){
+			for(var j in result[i].coreDashBoardVOList3){
+			//ElectronicCall
+                //buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'ElectronicMediadepartment'+result[i].organizationId+'','electronicMedia'+result[i].organizationId+'',"departmentEle",result[i].organizationId)
+				buildOverAllStateWiseDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'stateLevelMedia'+result[i].organizationId+'',result[i].organizationId,type)
+			}
+			for(var j in result[i].coreDashBoardVOList2){
+			//ActionWiseCall
+				buildactionWiseAnalysisDetails(result[i].coreDashBoardVOList2[j].coreDashBoardVOList,"actionWiseAnalysis"+result[i].organizationId+"",result[i].organizationId,type)
+			
+			}
 		}
 	}
 }
-function buildactionWiseAnalysisDetails(result,divId,departmentId){
+function buildactionWiseAnalysisDetails(result,divId,departmentId,type){
 	var withOutAmoneyArr=[];
 	var below10LakhsArr=[];
 	var above10Lakhs=[];
@@ -735,7 +823,7 @@ function buildactionWiseAnalysisDetails(result,divId,departmentId){
 			$("#totalCountAnalysisId"+departmentId).html(totalCount);
 			var colorObj={"Without Money":"#E4D254","<10L":"#8D4653",">10L":"#F15C81","State Wide Issue":"#8085E9"}
 			
-			str+='<li class="m_top10"><span class="square_csss" style="background-color:'+colorObj[result[i].organization]+'"></span>'+result[i].organization+'<span class="pull-right"><a class="propertiesCls" attr_propertyId="'+result[i].organizationId+'" attr_deptId="'+departmentId+'" style="cursor:pointer;">'+result[i].count+'</a> - <span style="color:green">'+result[i].positivePerc+'%</span></span></li>';
+			str+='<li class="m_top10"><span class="square_csss" style="background-color:'+colorObj[result[i].organization]+'"></span>'+result[i].organization+'<span class="pull-right"><a class="propertiesCls" attr_propertyId="'+result[i].organizationId+'" attr_deptId="'+departmentId+'" attr_type="'+type+'" style="cursor:pointer;">'+result[i].count+'</a> - <span style="color:green">'+result[i].positivePerc+'%</span></span></li>';
 			
 			$("#problemWise"+departmentId).html(str);					
 			var subArr = [];
@@ -792,7 +880,7 @@ function buildactionWiseAnalysisDetails(result,divId,departmentId){
 			}]
 		});
 }
-function buildOverAllStateWiseDetails(result,divId,deptId){
+function buildOverAllStateWiseDetails(result,divId,deptId,typeVal){
 	var districtWiseNegativeCountArray=[];
 	var districtWisePositiveCountArray=[];
 	var districtNamesArray=[];
@@ -890,10 +978,14 @@ function buildOverAllStateWiseDetails(result,divId,deptId){
 					events: {
 						click: function () {
 							var value = (this.extra).split("-");
-							var districtId = value[1];
+							var stateId = value[1];
 							var departmentId = value[2];
 							var benefitId = value[3];
-							getArtilcesForDistrict(districtId,departmentId,benefitId);
+							if(typeVal =="PrintMediadepartment"){
+								getArtilcesForStateForPM(stateId,departmentId,benefitId);
+							}else if(typeVal =="ElectronicMediadepartment"){
+								getArtilcesForStateForEMN(stateId,departmentId,benefitId);
+							}
 						}
 					}
 				}
@@ -922,9 +1014,23 @@ $(document).on("click",".printOverAllCls",function(){
 });
 $(document).on("click",".propertiesCls",function(){
 	var deptId =$(this).attr("attr_deptId");
+	var type =$(this).attr("attr_type");
 	var propertyId =$(this).attr("attr_propertyId");
+	if(type =="PrintMediadepartment"){
 		window.open('showCnpArticles.action?organizationId='+deptId+'&benefitId=0&editionId='+propertyId+'&sdat='+glStartDate+'&edat='+glEndDate+'&type=actionData&&orgType=Y&stIdx=0&edIdx=6&callFrom=propForPrrws');
+	}else if(type =="ElectronicMediadepartment"){
+		window.open('electronicMediaBulletinsCD.action?organizationId='+deptId+'&benefitId=0&categoryId='+propertyId+'&sdat='+glStartDate+'&edat='+glEndDate+'&type=districtdata&&orgType=Y&stIdx=0&edIdx=6&callFrom=propertiesData');
+	}
 });
 function getArtilcesForDistrict(districtId,deptId,benefitId){
 	window.open('showCnpArticles.action?organizationId='+deptId+'&benefitId='+benefitId+'&editionId='+districtId+'&sdat='+glStartDate+'&edat='+glEndDate+'&type=districtdata&&orgType=Y&stIdx=0&edIdx=6&callFrom=propForPrrws');
+}
+function getArtilcesForStateForPM(stateId,deptId,benefitId){
+	window.open('showCnpArticles.action?organizationId='+deptId+'&benefitId='+benefitId+'&editionId='+stateId+'&sdat='+glStartDate+'&edat='+glEndDate+'&type=stateData&&orgType=Y&stIdx=0&edIdx=6&callFrom=propForPrrws');
+}
+function getArtilcesForStateForEMN(stateId,deptId,benefitId){
+	window.open('electronicMediaBulletinsCD.action?organizationId='+deptId+'&benefitId='+benefitId+'&categoryId='+stateId+'&sdat='+glStartDate+'&edat='+glEndDate+'&type=electronic&&orgType=&stIdx=0&edIdx=6&callFrom=stateData');
+}
+function getArtilcesForDistrictFOrEMN(districtId,deptId,benefitId){
+	window.open('electronicMediaBulletinsCD.action?organizationId='+deptId+'&benefitId='+benefitId+'&categoryId='+districtId+'&sdat='+glStartDate+'&edat='+glEndDate+'&type=districtdata&&orgType=Y&stIdx=0&edIdx=6&callFrom=districtData');
 }
