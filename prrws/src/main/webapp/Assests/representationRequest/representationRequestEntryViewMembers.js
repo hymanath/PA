@@ -93,6 +93,7 @@ $("#dateRangePicker").daterangepicker({
 		if(picker.chosenLabel == 'All')
 		{
 			$("#dateRangePicker").val('All');
+			$("#petitionSubWorkRadioDivId").hide();
 		}
 		locationLevelRefresh();
 	});
@@ -858,7 +859,7 @@ function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 	}).done(function(result){
 		$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
-			$("#designationDiv").show();
+			//$("#designationDiv").show();
 			//$("#"+selBoxId).html("<option value='0'>Select Designation</option>");
 			for(var i in result){
 				if(desigId >0 && desigId == result[i].key){
@@ -873,7 +874,7 @@ function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 		getPetitionReferredMemberDetails([desigId],refCanId,statusId);
 		}
 		if(searchBy == 'referral' && desigId >0){
-			getRepresentativeSearchDetails1();
+			getRepresentativeSearchDetails1("subWork");
 		}
 	});	
 }
@@ -920,7 +921,7 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
 		if(searchBy == 'department' && deptId >0){
-			getRepresentativeSearchDetails1();
+			getRepresentativeSearchDetails1("subWork");
 		}
 	});	
 }
@@ -1035,7 +1036,7 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 	var isErr= searchValidations();
 	if(isErr == true)
 		return; 
-	getRepresentativeSearchDetails1();
+	getRepresentativeSearchDetails1('subWork');
  });
 
 /* $(document).on("click",".viewBtnCls",function(){
@@ -1045,10 +1046,13 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 	$("#representeeDetailsModelDivId").modal("show");
    getPetitionDetails(petionId,endorsNo);
  }); */
-function getRepresentativeSearchDetails1(){
+function getRepresentativeSearchDetails1(value){
+	$("#representationRequestEntryTable").html(spinner);
+	$("#petitionSubWorkRadioDivId").hide();
 	$("#errMsgId").html("");
- var startDate = currentFromDate;
- var endDate = currentToDate;
+   var startDate = currentFromDate;
+   var endDate = currentToDate;
+	var radioTypeVal = value;
    var filterType=$("#locationSelId").val();
     var filterValue="";
    if(filterType == 'referrelDesignation' || filterType == 'representeeDesignation'){
@@ -1142,7 +1146,7 @@ var selStatusId = $("#statusId").val();
 			statusIds.push(statusList[i]);
 		}
 	}
- $("#representationRequestEntryTable").html(spinner);
+
 var json = {
     filterType :filterType,//mobileno/department/name/email
     filterValue:filterValue,
@@ -1170,9 +1174,17 @@ var json = {
     }
   }).done(function(result){
 	  $("#summaryId").html('');
+      $("#petitionSubWorkRadioDivId").show();
+	  $("#representationRequestEntryTable").html("");
     if(result != null && result.length>0){
+		if(radioTypeVal == "petition"){
+			buildSummeryDetails(result);
+		 petitionWiseRepresenteeDetails(result)
+		}else{
 		buildSummeryDetails(result);
-      representationRequestEntryTable(result);
+        representationRequestEntryTable(result);
+		}
+		
     }else{
       $("#representationRequestEntryTable").html("NO DATA AVAILABLE");
     }
@@ -1252,7 +1264,7 @@ function getStatusList(statusId){
 		}
 		$("#statusId").trigger('chosen:updated');
 		if(searchBy == 'total' && statusId >0){
-			getRepresentativeSearchDetails1();
+			getRepresentativeSearchDetails1("subWork");
 		}
   }); 
 }
@@ -1767,7 +1779,7 @@ function getPetitionReferredMemberDetails(desigIds,refCanId,statusId){
 		}
 		$("#referralNameId").trigger('chosen:updated');
 		if(searchBy == 'referralCan' && refCanId >0){
-			getRepresentativeSearchDetails1();
+			getRepresentativeSearchDetails1("subWork");
 		}
 	});	
 }
@@ -2062,7 +2074,7 @@ function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
 		if(searchBy == 'subject' && subjId >0){
-			getRepresentativeSearchDetails1();
+			getRepresentativeSearchDetails1("subWork");
 		} 
 	});	
 }
@@ -2131,3 +2143,143 @@ $.ajax({
 	
 		$("#menuId").html(str); 
 } */
+
+$(document).on("click",".petitionSubWorkRadoCls",function(){
+	if($(this).is(":checked")){
+		var typeVal =  $(this).attr("attr_type");
+		
+		if(typeVal == "subWork"){
+			$("#representationRequestEntryTable").html('');
+			$("#petitionId").prop("checked",false);
+			getRepresentativeSearchDetails1(typeVal);
+			$("#petitionSubWorkRadioDivId").show();
+		}else if(typeVal == "petition"){
+			$("#workId").prop("checked",false);
+			$("#representationRequestEntryTable").html('');
+			getRepresentativeSearchDetails1(typeVal);
+			$("#petitionSubWorkRadioDivId").show();
+		}
+	}
+});
+
+function petitionWiseRepresenteeDetails(result){
+	var str='';
+	str+='<div class="panel panel-default" style="margin-top:-8px;">';
+		str+='<div class="panel-heading" style="background-color:#344650; color:#fff;" data-toggle="collapse">';
+			str+='<h4 class="panel-title">';
+			str+='<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"> REPRESENTATIONS DETAILS </a></h4>';
+		str+='</div>';
+		str+='<div id="collapseTwo" class="panel-collapse collapse in">';
+		str+='<div class="panel-body">';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th title="Representation Date" >REPR.&nbsp;DATE</th>';
+						str+='<th title="Endorsment No" >ENDORS&nbsp;NO</th>';
+						str+='<th title="Endorsment Date" >ENDORS&nbsp;DATE</th>';
+						str+='<th title="Representee Name" >REPRESENTEE&nbsp;NAME</th>';
+						str+='<th title="Referrer Name" >REF.&nbsp;NAME</th>';
+						str+='<th title="Referreer Designation" >REF.&nbsp;DESIGNATION</th>';				
+						str+='<th style="min-width:200px !important;"  title="Work Description" >WORK&nbsp;DESC.</th>';
+						//str+='<th>No&nbsp;of&nbsp;Works</th>';
+						str+='<th>BUDGET</th>';
+						str+='<th>STATUS</th>';
+						str+='<th>NO OF WORKS</th>';
+						str+='<th>ACTION</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result){
+					  /* for(var j in result[i].subList){
+						  var noofWorks = result[i].subList;
+					} */
+												
+					var endorsmentNo='';
+					str+='<tr>';
+						if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
+							str+='<td style="text-align:center;">'+result[i].raisedDate+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						if (result[i].endorsementNO != null && result[i].endorsementNO != 0){
+							str+='<td style="text-align:center;">'+result[i].endorsementNO+'</td>';
+							endorsmentNo=result[i].endorsementNO;
+						}else
+							str+='<td style="text-align:center;"> - </td>';
+						
+						
+						if (result[i].endorsmentDate != null && result[i].endorsmentDate != "")
+							str+='<td style="text-align:center;">'+result[i].endorsmentDate+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						if (result[i].name != null && typeof(result[i].name) != "undefined")
+							str+='<td style="text-align:center;">'+result[i].name+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						
+						if (result[i].referrerName != null && typeof(result[i].referrerName) != "undefined")
+							str+='<td style="text-align:center;">'+result[i].referrerName+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						if (result[i].desigName != null && typeof(result[i].desigName) != "undefined")
+							str+='<td style="text-align:center;">'+result[i].desigName+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						if (result[i].workName != null && result[i].workName != "")
+							str+='<td>'+result[i].workName+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						/* if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
+							str+='<td>'+result[i].noOfWorks+'</td>';
+						else
+							str+='<td> - </td>'; */
+						if (result[i].estimationCost != "" && result[i].estimationCost != "0")
+							str+='<td style="text-align:center;">'+result[i].estimationCost+'</td>';
+						else
+							str+='<td style="text-align:center;">-</td>';
+						if (result[i].statusType != "" && typeof(result[i].statusType) != "undefined" )
+							str+='<td style="text-align:center;">'+result[i].statusType+'</td>';
+						else{
+							if (result[i].endorsementNO != null && result[i].endorsementNO != 0){
+							str+='<td style="text-align:center;"> In Progress </td>';
+							}
+							else
+								str+='<td style="text-align:center;">-</td>';
+							
+						if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined"){
+							str+='<td class="text-center"><i class=" viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i>'+result[i].noOfWorks+'</td>';
+						}else
+							str+='<td> - </td>';
+							str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
+						//24 - userId - admin_user
+						//if(userId == 24){
+							str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
+						/*}else{
+							if(result[i].subList[j].statusType == 'Pending Endorsement' || result[i].subList[j].statusId == 1) 
+								str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
+						}
+						*/
+						str+='</td>';
+					str+='</tr>';
+					
+					}
+				str+='</tbody>';
+			str+='</table>';
+			str+='</div>';
+			str+='</div>';
+		str+='</div>';	
+	str+='</div>';
+	$("#representationRequestEntryTable").html(str);
+	$(".tooltipCls").tooltip();
+	$("#workDetailsTab").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
+	});
+  }
+}
