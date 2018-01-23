@@ -89,6 +89,12 @@ $(document).ready(function(){
 			newsBulletinPointBasicDetailsBulletinsOfOrganization(0); 
 		}else if(callFrom == "electrincMediaFOrPrrws"){
 			getDepartMentWiseAllNewsBulletinsAndProgramsClicks(0);
+		}else if(callFrom == "stateData"){
+			getDepartmentWiseStateLevelDetailsForEMNArtciles(0);
+		}else if(callFrom == "districtData"){
+			getDistrictWiseTotalOverviewForEMNPoints(0);
+		}else if(callFrom == "propertiesData"){
+			getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles(0);
 		}
 	}, 1000);
 	
@@ -468,6 +474,12 @@ $(document).ready(function(){
 								newsBulletinPointBasicDetailsBulletinsOfOrganization(num);	
 							}else if(callFrom == "electrincMediaFOrPrrws"){
 								getDepartMentWiseAllNewsBulletinsAndProgramsClicks(num);
+							}else if(callFrom == "stateData"){
+								getDepartmentWiseStateLevelDetailsForEMNArtciles(num);
+							}else if(callFrom == "districtData"){
+								getDistrictWiseTotalOverviewForEMNPoints(num);
+							}else if(callFrom == "propertiesData"){
+								getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles(num);
 							}
 					}					
 				});
@@ -511,7 +523,45 @@ function getDepartMentWiseAllNewsBulletinsAndProgramsClicks(globalStIndex){
 			var countByDate=0;
 			buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
 		});		
-	}
+}
+function getDepartmentWiseStateLevelDetailsForEMNArtciles(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+
+		$.ajax({
+			type : 'GET',			
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseStateLevelDetailsForEMNArtciles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseStateLevelDetailsForEMNArtciles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex
+		}).then(function(result){
+			var countByDate=0;
+			buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});		
+}
+function getDistrictWiseTotalOverviewForEMNPoints(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+
+		$.ajax({
+			type : 'GET',			
+			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseTotalOverviewForEMNPoints/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalcategoryIdP+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDistrictWiseTotalOverviewForEMNPoints/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalcategoryIdP+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex
+		}).then(function(result){
+			var countByDate=0;
+			buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});		
+}
+function getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles(globalStIndex){
+		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var globalStartDate ="15-12-2016";
+		var globalEndDate ="04-06-2017";
+
+		$.ajax({
+			type : 'GET',			
+			url: wurl+"/CommunityNewsPortal/webservice/getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalStIndex+"/"+globalEndIndex
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalStIndex+"/"+globalEndIndex
+		}).then(function(result){
+			var countByDate=0;
+			buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
+		});		
+}
 </script> 	
 </body>
 </html>
