@@ -154,7 +154,8 @@ function buildMyActionsDetails(result){
 														str+='<div class="media-body">';
 															str+='<p>Representations</p>';
 															str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].petitionIds.length+'</a></h4>';
-															var crores = (result.statusList[i].estimationCost/10000000).toFixed(4);
+															var convertToAmt = result.statusList[i].estimationCost*100000;
+															var crores = (convertToAmt/10000000).toFixed(3);
 															str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
@@ -169,7 +170,8 @@ function buildMyActionsDetails(result){
 														str+='<div class="media-body">';
 															str+='<p>Works</p>';
 															str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].noOfWorks+'</a></h4>';
-															var crores = (result.statusList[i].estimationCost/10000000).toFixed(4);
+															var convertToAmt = result.statusList[i].estimationCost*100000;
+															var crores = (convertToAmt/10000000).toFixed(3);
 															str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
@@ -261,7 +263,8 @@ function buildCompleteOrStatusOverviewDetails(result){
 														str+='<div class="media-body">';
 															str+='<p>Representations</p>';
 															str+='<h4><b>'+result.petitionIds.length+'</b></h4>';
-															var crores = (result.estimationCost/10000000).toFixed(4);
+															var convertToAmt = result.estimationCost*100000;
+															var crores = (convertToAmt/10000000).toFixed(3);
 															str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
@@ -276,7 +279,8 @@ function buildCompleteOrStatusOverviewDetails(result){
 														str+='<div class="media-body">';
 														str+='	<p>Works</p>';
 														str+='	<h4><b>'+result.noOfWorks+'</b></h4>';
-														var crores = (result.estimationCost/10000000).toFixed(4);
+														var convertToAmt = result.estimationCost*100000;
+														var crores = (convertToAmt/10000000).toFixed(3);
 														str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
@@ -583,8 +587,9 @@ function getReferralWiseOverviewDetails(desigId){
 									
 								}
 									//for(var j in result.referrerList[i].statusList){
-										var crores = (result.referrerList[i].estimationCost/10000000).toFixed(4);
 									if(typeof(result.referrerList[i].estimationCost) != "undefined"){
+										var convertToAmt = result.referrerList[i].estimationCost*100000;
+										var crores = (convertToAmt/10000000).toFixed(3);
 										str+='<td><b>'+crores+'</b></td>';
 									}else{
 										str+='<td><b>-</b></td>';
