@@ -70,10 +70,12 @@ function onloadCalls(){
 	
 	//AP Innovation Society Ajax Call Start
 	//getAPInnovationSocietyOverviewHtml(divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id)
-	getAPInnovationSocietyOverview('onload','apInnovationSociety');
+	//getAPInnovationSocietyOverview('onload','apInnovationSociety');
+	getCompleteOverviewForAPIS('onLoad','apInnovationSociety');
 	getEOfcDepartWiseOverviewDetails('onload');
 	getCMEDOBOverview("","","overview");
 	getBioMetricDashboardOverViewDtls();
+	
 	
 	
 }
@@ -260,10 +262,10 @@ function departmentBlockWiseDetails(divId)
 					
 						collapse+='<div class="panel-body">';
 							
-							if(divId == 'apInnovationSociety')
+							/* if(divId == 'apInnovationSociety')
 							{
 								collapse+='<h4 style="margin-bottom:20px">Applications Received</h4>';
-							}
+							} */
 							if(divId == 'eOffice')
 							{
 								collapse+='<div class="row">';
@@ -475,7 +477,7 @@ function departmentBlockWiseDetails(divId)
 								collapse+='</div>';
 							}
 							collapse+='<div id="'+divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id+'"></div>';
-							if(divId == 'apInnovationSociety')
+							/* if(divId == 'apInnovationSociety')
 							{
 
 								collapse+='<div class="row">';
@@ -483,7 +485,7 @@ function departmentBlockWiseDetails(divId)
 									collapse+='<div class="col-sm-4 m_top20" id="Campaigns"></div>';
 									collapse+='<div class="col-sm-4 m_top20" id="CampusInnovationCenters"></div>';
 								collapse+='</div>';
-							} 
+							} */ 
 						collapse+='</div>';
 					collapse+='</div>';
 				collapse+='</div>';
@@ -567,11 +569,18 @@ function departmentBlockWiseDetails(divId)
 			getMeesevaSLACatWiseAbstarctDetails(divId,levelWiseBlockArr[i].id,"change")
 		}else if(divId == 'apInnovationSociety')
 		{
-			//getAPInnovationSocietyOverviewHtml(divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id)
-			getAPInnovationSocietyOverview('overview',divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id);
+			startUpsArr = [];
+			var incubatorsIdsArr = [1,2,3];
+			getAPInnovationSocietyOverviewHtml(divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id,incubatorsIdsArr)
+			/* getAPInnovationSocietyOverview('overview',divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id);
 			getAPISXLR8APDetailedData();
 			getCampaignsDetailedData();
-			getCampusInnovationCentersDetailedData();
+			getCampusInnovationCentersDetailedData(); */
+			getApInnovationIndicatorDetails();
+			getApInnovationOverviewDetails();
+			getCompleteOverviewForAPIS('overView','incubatorsOverviewId');
+			getStartupsEmploymentFundingPatternAcquisitionsDetails();
+			//getApInnovationIncubatorsXLr8APDetails(1);
 		}else if(divId == 'eOffice')
 		{
 			getEOfcDepartWiseOverviewDetails('overview');
@@ -5095,7 +5104,10 @@ function getMeesevaKPIOnlineServiceOverviewCount(){
 		}
 	});	
 }
-
+var globalOnlServ2014;
+var globalOnlServ2015;
+var globalOnlServ2016;
+var globalOnlServ2017;
 function buildMeesevaKPIOnlineServiceOverviewCount(result){
 	globalOnlServ2014 = result.onLineServices2014;
 	globalOnlServ2015 = result.onLineServices2015;
@@ -5431,7 +5443,8 @@ function buildMeesevaCentersForDistrict(result){
 	$("#kpiDistrictDivId").html(str);
 	$("#kpiDistrictTableId").dataTable();
 }
-function getAPInnovationSocietyOverviewHtml(divId){
+//var incubatorsIdsArr = [1,2,3];
+function getAPInnovationSocietyOverviewHtml(divId,incubatorsIdsArr){
 	var str='';
 	//first Block
 	str+='<div class="row">';
@@ -5444,367 +5457,605 @@ function getAPInnovationSocietyOverviewHtml(divId){
 						str+='<h5 class="f_16">Complete Overview</h5>';
 						str+='<div class="row m_top10">';
 							str+='<div class="col-sm-6">';
-								str+='<div class="media" style="border: 1px solid #ddd;border-top-left-radius: 5px;border-bottom-left-radius: 5px;">';
-									str+='<div class="pull-left" style="padding:10px;">';
-										str+='<h5 style="margin-top:40px;">Incubators</h5>';
-										str+='<h3 class="m_top20 font_weight text-center">20</h3>';
-									str+='</div>';
-								  str+='<div class="media-body">';
-										str+='<div class="table-responsive">';
-												str+='<table class="table table_API">';
-													str+='<thead>';
-														str+='<tr>';
-															str+='<th>Incubator Name</th>';
-															str+='<th>Since</th>';
-															str+='<th>Location</th>';
-														str+='</tr>';
-													str+='</thead>';
-													str+='<tbody>';
-														str+='<tr>';
-															str+='<td>XLr8AP</td>';
-															str+='<td>Sep-16</td>';
-															str+='<td>Tirupathi</td>';
-														str+='</tr>';
-														str+='<tr>';
-															str+='<td>NASSCOM 10K Startups</td>';
-															str+='<td>Sep-16</td>';
-															str+='<td>Tirupathi</td>';
-														str+='</tr>';
-														str+='<tr>';
-															str+='<td>GOVIN CAPITAL</td>';
-															str+='<td>Sep-16</td>';
-															str+='<td>Tirupathi</td>';
-														str+='</tr>';
-														str+='<tr>';
-															str+='<td>DRONE ASSEMBLY</td>';
-															str+='<td>Sep-16</td>';
-															str+='<td>Tirupathi</td>';
-														str+='</tr>';
-													str+='</tbody>';
-												str+='</table>';
-											str+='</div>';
-								  str+='</div>';
-								str+='</div>';
-								
+								str+='<div id="incubatorsOverviewId"></div>';
 							str+='</div>';
 							str+='<div class="col-sm-6">';
 								str+='<div id="startupsHighchartsDivId" style="height:190px;"></div>';
 							str+='</div>';
 						str+='</div>';
 						//Second Block
-						str+='<div class="row m_top20">';
-							str+='<div class="col-sm-6">';
-								str+='<h5 class="f_16">Startups Overview</h5>';
-								str+='<div class="pad_border m_top10">';
-									str+='<div class="row">';
-									str+='<div class="col-sm-3 border_right_yash">';
-										str+='<h5 class="font_weight text-center">Applications Assessed</h5>';
-										str+='<h4 class="font_weight text-center m_top20">1470</h4>';
-									str+='</div>';
-									str+='<div class="col-sm-3 border_right_yash">';
-										str+='<h5 class="font_weight text-center">APIS <br/>Screened</h5>';
-										str+='<h4 class="font_weight text-center m_top20">1470</h4>';
-									str+='</div>';
-									str+='<div class="col-sm-3 border_right_yash">';
-										str+='<h5 class="font_weight text-center">APIS Povided Training</h5>';
-										str+='<h4 class="font_weight text-center m_top20">1470</h4>';
-									str+='</div>';
-									str+='<div class="col-sm-3">';
-										str+='<h5 class="font_weight text-center">Startups placed in Advanced Acceleration</h5>';
-										str+='<h4 class="font_weight text-center m_top10">1470</h4>';
-									str+='</div>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
-							str+='<div class="col-sm-6">';
-								str+='<h4 class="f_16">Employment Overview</h4>';
-								str+='<div class="pad_border m_top10">';
-									str+='<div class="row">';
-									str+='<div class="col-sm-4 border_right_yash">';
-										str+='<h5 class="font_weight text-center">Full-Time jobs <br/>created</h5>';
-										str+='<h4 class="font_weight text-center m_top20">1470</h4>';
-									str+='</div>';
-									str+='<div class="col-sm-4 border_right_yash">';
-										str+='<h5 class="font_weight text-center">Part-Time jobs <br/>created</h5>';
-										str+='<h4 class="font_weight text-center m_top20">1470</h4>';
-									str+='</div>';
-									str+='<div class="col-sm-4 border_right_yash">';
-										str+='<h5 class="font_weight text-center">Internship</h5>';
-										str+='<h4 class="font_weight text-center m_top30">1470</h4>';
-									str+='</div>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
+						str+='<div id="startUpsOverviewDivId"></div>';
+						
 						//Second Block End
 						//Third Block Start
-							str+='<div class="row m_top20">';
-								str+='<div class="col-sm-12">';
-									str+='<h4 class="f_16">Funding Pattern</h4>';
-								str+='</div>';
-									str+='<div class="col-sm-8 m_top10">';
-										str+='<div class="row">';
-											str+='<div class="col-sm-8">';
-												str+='<div class="panel panel-default panel-grey">';
-													str+='<div class="panel-heading">';
-														str+='<h5 class="font_weight">Funding Raised</h5>';
-													str+='</div>';
-													str+='<div class="panel-body">';
-														str+='<div class="row">';
-															str+='<div class="col-sm-4 border_right_yash">';
-																str+='<h5 class="font_weight text-center">No.of startups  <br/>got fund</h5>';
-																str+='<h4 class="font_weight text-center m_top20">1470</h4>';
-															str+='</div>';
-															str+='<div class="col-sm-4 border_right_yash">';
-																str+='<h5 class="font_weight text-center">Fund  <br/>Value</h5>';
-																str+='<h4 class="font_weight text-center m_top20">1470</h4>';
-															str+='</div>';
-															str+='<div class="col-sm-4">';
-																str+='<h5 class="font_weight text-center">Proposals n Progress for startups</h5>';
-																str+='<h4 class="font_weight text-center m_top30">1470</h4>';
-															str+='</div>';
-														str+='</div>';
-													str+='</div>';
-												str+='</div>';
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<div class="panel panel-default panel-grey">';
-													str+='<div class="panel-heading">';
-														str+='<h5 class="font_weight">Revenue Generated</h5>';
-													str+='</div>';
-													str+='<div class="panel-body">';
-														str+='<div class="row">';
-															str+='<div class="col-sm-6 border_right_yash">';
-																str+='<h5 class="font_weight text-center">Revenue from<br/>No.of startups</h5>';
-																str+='<h4 class="font_weight text-center m_top20">1470</h4>';
-															str+='</div>';
-															str+='<div class="col-sm-6">';
-																str+='<h5 class="font_weight text-center">Fund <br/>Value</h5>';
-																str+='<h4 class="font_weight text-center m_top20">1470</h4>';
-															str+='</div>';
-														str+='</div>';
-													str+='</div>';
-												str+='</div>';
-											str+='</div>';
-										str+='</div>';
-									str+='</div>';
-									str+='<div class="col-sm-4">';
-										str+='<div class="pad_border m_top10">';
-											str+='<div class="row">';
-											str+='<div class="col-sm-4 border_right_yash">';
-												str+='<h5 class="font_weight text-center">Merged <br/>No.of <br>startups</h5>';
-												str+='<h4 class="font_weight text-center m_top30">1470</h4>';
-											str+='</div>';
-											str+='<div class="col-sm-4 border_right_yash">';
-												str+='<h5 class="font_weight text-center">Progressing Commercial deals with startups</h5>';
-												str+='<h4 class="font_weight text-center m_top20">1470</h4>';
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<h5 class="font_weight text-center">Faculty & Students Trained</h5>';
-												str+='<h4 class="font_weight text-center m_top30">1470</h4>';
-											str+='</div>';
-											str+='</div>';
-										str+='</div>';
-									str+='</div>';
-							str+='</div>';
+							
 						//Third Block End
 						//Fourth Block Start
 							str+='<div class="row m_top10">';
 								str+='<div class="col-sm-12">';
-								str+='<div class="table-responsive">';
-									str+='<table class="table table_API">';
-										str+='<thead>';
-											str+='<tr>';
-												str+='<th>INDICATORS</th>';
-												str+='<th>XLr8AP Tirupathi</th>';
-												str+='<th>NASSCOM 10K Startups Visakhapatnam</th>';
-												str+='<th>GOVIN CAPITAL Visakhapatnam</th>';
-												str+='<th>DRONE ASSEMBLY Visakhapatnam</th>';
-											str+='</tr>';
-										str+='</thead>';
-										str+='<tbody>';
-											str+='<tr>';
-												str+='<td>Applications Assessed</td>';
-												str+='<td>1055</td>';
-												str+='<td>1055</td>';
-												str+='<td>1055</td>';
-												str+='<td>1055</td>';
-											str+='</tr>';
-											str+='<tr>';
-												str+='<td>Applications Assessed</td>';
-												str+='<td>1055</td>';
-												str+='<td>1055</td>';
-												str+='<td>1055</td>';
-												str+='<td>1055</td>';
-											str+='</tr>';
-											str+='<tr>';
-												str+='<td>Applications Assessed</td>';
-												str+='<td>1055</td>';
-												str+='<td>1055</td>';
-												str+='<td>1055</td>';
-												str+='<td>1055</td>';
-											str+='</tr>';
-										str+='</tbody>';
-									str+='</table>';
+								str+='<div id="indicatorsDivId">';
 								str+='</div>';
 								str+='</div>';
 							str+='</div>';
 						//Fourth Block End
 					str+='</div>';
-					//fifth block start
-						str+='<div class="row m_top10">';
-							str+='<div class="col-sm-4">';
-								str+='<div class="panel panel-default panel-grey">';
-									str+='<div class="panel-heading" style="background-color: #E17779 !important;padding: 15px;color: #fff !important;">';
-										str+='<h4 class="font_weight">Bootcamps</h4>';
-									str+='</div>';
-									str+='<div class="panel-body" style="padding:0px;background-color: #f9f9f9;">';
-										str+='<div class="table-responsive">';
-											str+='<table class="table table-bordered">';
-												str+='<tbody>';
-													str+='<tr>';
-														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
-														str+='<td>Tirupathi </td>';
-													str+='</tr>';
-													str+='<tr>';
-														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
-														str+='<td>Tirupathi </td>';
-													str+='</tr>';
-													str+='<tr>';
-														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
-														str+='<td>Tirupathi </td>';
-													str+='</tr>';
-												str+='</tbody>';
-											str+='</table>';
-										str+='</div>';
-									str+='</div>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-12">';
+						str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+							str+='<div class="panel panel-default" style="border: 1px solid #ddd;">';
+								str+='<div class="panel-heading" role="tab" id="headingAPIS" style="background-color:grey !important;padding: 15px;color: #fff !important;">';
+									str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion" href="#collapseAPIS" aria-expanded="true" aria-controls="collapseAPIS">';
+									str+='<h4 class="panel-title text-capital">Incubators - Details</h4>';
+									str+='</a>';
 								str+='</div>';
-							str+='</div>';
-							str+='<div class="col-sm-4">';
-								str+='<div class="panel panel-default panel-grey">';
-									str+='<div class="panel-heading" style="background-color: #77B1CF !important;padding: 15px;color: #fff !important;">';
-										str+='<h4 class="font_weight">Events participated by APIS</h4>';
-									str+='</div>';
-									str+='<div class="panel-body" style="padding:0px;background-color: #f9f9f9;">';
-										str+='<div class="table-responsive">';
-											str+='<table class="table table-bordered">';
-												str+='<tbody>';
-													str+='<tr>';
-														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
-														str+='<td>Tirupathi </td>';
-													str+='</tr>';
-													str+='<tr>';
-														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
-														str+='<td>Tirupathi </td>';
-													str+='</tr>';
-													str+='<tr>';
-														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
-														str+='<td>Tirupathi </td>';
-													str+='</tr>';
-												str+='</tbody>';
-											str+='</table>';
-										str+='</div>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
-							str+='<div class="col-sm-4">';
-								str+='<div class="panel panel-default panel-grey">';
-									str+='<div class="panel-heading" style="background-color: #77BA7C !important;padding: 15px;color: #fff !important;">';
-										str+='<h4 class="font_weight">Activities by APIS</h4>';
-									str+='</div>';
-									str+='<div class="panel-body" style="padding:0px;background-color: #f9f9f9;">';
-										str+='<div class="table-responsive">';
-											str+='<table class="table table-bordered">';
-												str+='<tbody>';
-													str+='<tr>';
-														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
-														str+='<td>Tirupathi </td>';
-													str+='</tr>';
-													str+='<tr>';
-														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
-														str+='<td>Tirupathi </td>';
-													str+='</tr>';
-													str+='<tr>';
-														str+='<td>Sri Padmavathi Mahila Viswavidyalayam </td>';
-														str+='<td>Tirupathi </td>';
-													str+='</tr>';
-												str+='</tbody>';
-											str+='</table>';
-										str+='</div>';
-									str+='</div>';
+								str+='<div id="collapseAPIS" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAPIS">';
+								for(var i in incubatorsIdsArr){
+									str+='<div id="incubatorsDetailsDivId'+incubatorsIdsArr[i]+'" class="m_top10"></div>';
+								}
+									//str+='<div id="incubatorsDetailsDivId"></div>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-					//fifth block End
-					//six block Start
+					str+='</div>';
+					str+='</div>';
 						str+='<div class="row m_top10">';
-							str+='<div class="col-sm-12">';
-							str+='<div class="panel panel-default panel-grey">';
-								str+='<div class="panel-heading">';
-									str+='<h4 class="font_weight">Events - Details</h4>';
-								str+='</div>';
-								str+='<div class="panel-body">';
-									str+='<h4 class="f_16">APIS in EXPO</h4>';
-									str+='<div class="table-responsive m_top10">';
-										str+='<table class="table table-bordered">';
-											str+='<div class="table-responsive">';
-												str+='<table class="table table_API">';
-													str+='<thead>';
-														str+='<tr>';
-															str+='<th>EVENT NAME</th>';
-															str+='<th>EVENT TYPE</th>';
-															str+='<th>LOCATION</th>';
-															str+='<th>VENUE</th>';
-															str+='<th>FROM DATE/th>';
-															str+='<th>TO DATE/th>';
-															str+='<th>TOTAL PARTICIPANTS/th>';
-														str+='</tr>';
-													str+='</thead>';
-													str+='<tbody>';
-														str+='<tr>';
-															str+='<td>Applications Assessed</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-														str+='</tr>';
-														str+='<tr>';
-															str+='<td>Applications Assessed</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-														str+='</tr>';
-														str+='<tr>';
-															str+='<td>Applications Assessed</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-															str+='<td>1055</td>';
-														str+='</tr>';
-													str+='</tbody>';
-												str+='</table>';
-											str+='</div>';
-										str+='</table>';
-									str+='</div>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
+							str+='<div id="bootEventsActivitiesBlockId"></div>';
 						str+='</div>';
-					//six block End
+						str+='<div class="row m_top10">';
+							str+='<div id="bootCampDetailsDivId"></div>';
+						str+='</div>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
-	
-	
-	
+	$("#"+divId).html(str);
+	for(var i in incubatorsIdsArr){
+		if(incubatorsIdsArr[i] != null && incubatorsIdsArr[i] == 1){
+			getApInnovationIncubatorsXLr8APDetails(incubatorsIdsArr[i]);
+		}else if(incubatorsIdsArr[i] != null && (incubatorsIdsArr[i] == 2 || incubatorsIdsArr[i] == 3)){
+			getApInnovationIncubatorsOtherBlockDetails(incubatorsIdsArr[i]);
+		}
+	}
+}
+
+function getApInnovationIndicatorDetails(){
+	$("#indicatorsDivId").html(spinner);
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getApInnovationIndicatorDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildApInnovationIndicatorDetails(result);
+		}else{
+			$("#indicatorsDivId").html("No Data Available")
+		}
+	});	
+}
+
+function buildApInnovationIndicatorDetails(result){
+	var str='';
+	str+='<div class="table-responsive">';
+	str+='<table class="table table_API" id="indicatorsTableId">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th>INDICATORS</th>';
+				str+='<th>XLr8AP<br>Tirupathi</th>';
+				str+='<th>NASSCOM 10K Startups<br>Visakhapatnam</th>';
+				str+='<th>GOVIN CAPITAL<br>Visakhapatnam</th>';
+				str+='<th>DRONE ASSEMBLY<br>Visakhapatnam</th>';
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+				str+='<td>'+result[i].name+'</td>';
+				if(result[i].xlr8apCount != null && result[i].xlr8apCount != 0){
+					str+='<td>'+result[i].xlr8apCount+'</td>';
+				}else{
+					str+='<td>-</td>';
+				}
+				if(result[i].nassomCount != null && result[i].nassomCount != 0){
+					str+='<td>'+result[i].nassomCount+'</td>';
+				}else{
+					str+='<td>-</td>';
+				}
+				if(result[i].govinCount != null && result[i].govinCount != 0){
+					str+='<td>'+result[i].govinCount+'</td>';
+				}else{
+					str+='<td>-</td>';
+				}
+				str+='<td>-</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	$("#indicatorsDivId").html(str);
+	$("#indicatorsTableId").dataTable();
+}
+function getApInnovationOverviewDetails(){
+	$("#bootEventsActivitiesBlockId").html(spinner);
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getApInnovationOverviewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildApInnovationOverviewDetails(result);
+		}else{
+			$("#bootEventsActivitiesBlockId").html("No Data Available")
+		}
+	});	
+}
+var bootCampArrIds=[];
+var activitiesNameArr = [];
+function buildApInnovationOverviewDetails(result){
+	var str='';
+	for (var i in result){
+		str+='<div class="col-sm-4">';
+			str+='<div class="panel panel-default panel-grey">';
+				if(result[i].name != null && result[i].name == 'BootCamp'){
+					bootCampArrIds.push(result[i].subList.length);
+					str+='<div class="panel-heading" style="background-color: #E17779 !important;padding: 15px;color: #fff !important;">';
+					str+='<h4 class="font_weight APISDetailsCls" attr_type="Bootcamps" style="cursor:pointer;"><i class="fa fa-laptop" aria-hidden="true"></i>&nbsp;&nbsp;Bootcamps</h4>';
+				}else if(result[i].name != null && result[i].name == 'Events'){
+					str+='<div class="panel-heading" style="background-color: #77B1CF !important;padding: 15px;color: #fff !important;">';
+					str+='<h4 class="font_weight APISDetailsCls" attr_type="Events" style="cursor:pointer;"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;Events participated by APIS</h4>';
+				}else if(result[i].name != null && result[i].name == 'Activities'){
+					str+='<div class="panel-heading" style="background-color: #77BA7C !important;padding: 15px;color: #fff !important;">';
+					str+='<h4 class="font_weight APISDetailsCls" attr_type="Activities" style="cursor:pointer;"><i class="fa fa-gears" aria-hidden="true"></i>&nbsp;&nbsp;Activities by APIS</h4>';
+				}
+				str+='</div>';
+				str+='<div class="panel-body" style="padding:0px;background-color: #f9f9f9;">';
+					str+='<div class="scrollDivCls">';
+					str+='<div class="table-responsive">';
+						str+='<table class="table table-bordered">';
+							str+='<tbody>';
+							for(var j in result[i].subList){
+								str+='<tr>';
+									str+='<td>'+result[i].subList[j].incubatorName+'</td>';
+									str+='<td>'+result[i].subList[j].location+'</td>';
+								str+='</tr>';
+								if(result[i].name != null && result[i].name == 'Activities'){
+									activitiesNameArr.push(result[i].subList[j].incubatorName.trim())
+								}
+							}
+							
+							str+='</tbody>';
+						str+='</table>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#bootEventsActivitiesBlockId").html(str);
+		var length='';
+		for(var i in result){
+			length = result[i].subList.length;
+			
+		}
+		if(length>5){
+			$(".scrollDivCls").mCustomScrollbar({setHeight:'250px'});
+		}
+		
+		
+	}
+}
+function getApInnovationBootCampDetails(deptId){
+	$("#bootCampId"+deptId).html(spinner);
+	var json = {
+		deptId : deptId
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getApInnovationBootCampDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			buildApInnovationBootCampDetails(result,deptId);
+		}else{
+			$("#bootCampBlockDetailsId").html("No Data Available")
+		}
+	});	
+}
+function buildApInnovationBootCampDetails(result,deptId){
+	var str='';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered dataTableCls" id="dataTable'+deptId+'">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th colspan="6"><h4 style="color:#fff !important;">Venue: '+result.name+' ( '+result.fromDate+' )</h4></th>';
+					str+='</tr>';
+					str+='<tr>';
+						//str+='<th style="background-color:#fff !important;">ID</th>';
+						str+='<th style="background-color:#fff !important;">STUDENT NAME</th>';
+						str+='<th style="background-color:#fff !important;">COLLEGE</th>';
+						str+='<th style="background-color:#fff !important;">COURSE</th>';
+						str+='<th style="background-color:#fff !important;">YEAR</th>';
+						str+='<th style="background-color:#fff !important;">BRANCH</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result.subList){
+					str+='<tr>';
+						//str+='<td>'+result.subList[i].id+'</td>';
+						if(result.subList[i].studentName != null){
+							str+='<td>'+result.subList[i].studentName+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].college != null && result.subList[i].college.length !=0){
+							str+='<td>'+result.subList[i].college+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].course != null && result.subList[i].course !=0){
+							str+='<td>'+result.subList[i].course+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].year != null && result.subList[i].year != 0 && result.subList[i].year == '3'){
+							str+='<td>3rd</td>';
+						}else if(result.subList[i].year != null && result.subList[i].year != 0 && result.subList[i].year == '4'){
+							str+='<td>4th</td>';
+						}else if(result.subList[i].year != null && result.subList[i].year != 0 && result.subList[i].year == '2'){
+							str+='<td>2rd</td>';
+						}else if(result.subList[i].year != null && result.subList[i].year != 0 && result.subList[i].year == '1'){
+							str+='<td>1st</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].branch != null && result.subList[i].branch !=0){
+							str+='<td>'+result.subList[i].branch+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						
+					str+='</tr>';
+				}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	$("#bootCampId"+deptId).html(str);
+	//$("#dataTable"+deptId).dataTable();
+	$(".dataTableCls").dataTable();
+}
+
+$(document).on("click",".APISDetailsCls",function(){
+	var type = $(this).attr("attr_type");
+	$('html,body').animate({
+		scrollTop: $("#bootCampDetailsDivId").offset().top},
+	'slow');
+	var str='';
+	if(type != null && type == "Bootcamps"){
+			str+='<div class="col-sm-12">';
+					str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+						str+='<div class="panel panel-default" style="border: 1px solid #ddd;">';
+							str+='<div class="panel-heading" role="tab" id="headingAP" style="background-color: #E17779 !important;padding: 15px;color: #fff !important;">';
+								str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordion" href="#collapseAP" aria-expanded="true" aria-controls="collapseAP">';
+								str+='<h4 class="panel-title text-capital">Bootcamps - Details</h4>';
+									
+								str+='</a>';
+							str+='</div>';
+							str+='<div id="collapseAP" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAP">';
+								str+='<div class="panel-body">';
+									for(var i=1;i<=bootCampArrIds;i++){
+										str+='<div id="bootCampId'+i+'" class="m_top10"></div>';
+									}
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+			str+='</div>';
+		$("#bootCampDetailsDivId").html(str);
+		setTimeout(function(){
+			 for(var i=1;i<=bootCampArrIds;i++){
+				getApInnovationBootCampDetails(i);
+			}
+		}, 500); 
+	}else if(type != null && type == "Events"){
+		getApInnovationEventDetails("bootCampDetailsDivId"); 
+	}else if(type != null && type == "Activities"){
+		str+='<div class="col-sm-12">';
+				str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+					str+='<div class="panel panel-default" style="border: 1px solid #ddd;">';
+						str+='<div class="panel-heading" role="tab" id="headingAP" style="background-color: #77BA7C !important;padding: 15px;color: #fff !important;">';
+							str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordion" href="#collapseAP" aria-expanded="true" aria-controls="collapseAP">';
+							str+='<h4 class="panel-title text-capital">Activities - Details (Category wise)</h4>';
+								
+							str+='</a>';
+						str+='</div>';
+						str+='<div id="collapseAP" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAP">';
+							str+='<div class="panel-body">';
+								for(var i in activitiesNameArr){
+									str+='<div id="activities'+activitiesNameArr[i].replace(/\s+/g, '')+'" class="m_top10"></div>';
+								}
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+		str+='</div>';
+	$("#bootCampDetailsDivId").html(str);
+		setTimeout(function(){
+			 for(var i in activitiesNameArr){
+				getApInnovationActivityDetails(activitiesNameArr[i]);
+			}
+		}, 500);
+	}
+});
+
+function getApInnovationEventDetails(divId){
+	$("#"+divId).html(spinner);
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getApInnovationEventDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildApInnovationEventDetails(result,divId);
+		}else{
+			$("#"+divId).html("No Data Available")
+		}
+	});	
+}
+function buildApInnovationEventDetails(result,divId){
+	var str='';
+	str+='<div class="col-sm-12">';
+		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+			str+='<div class="panel panel-default" style="border: 1px solid #ddd;">';
+				str+='<div class="panel-heading" role="tab" id="headingAP" style="background-color: #77B1CF !important;padding: 15px;color: #fff !important;">';
+					str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordion" href="#collapseAP" aria-expanded="true" aria-controls="collapseAP">';
+					str+='<h4 class="panel-title text-capital">Events - Details</h4>';
+					str+='</a>';
+				str+='</div>';
+				str+='<div id="collapseAP" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAP">';
+					str+='<div class="panel-body">';
+						str+='<div class="table-responsive">';
+							str+='<table class="table table-bordered" id="dataTable'+divId+'">';
+								str+='<thead>';
+									str+='<tr>';
+										str+='<th colspan="7"><h4 style="color:#fff !important;">APIS In EXPO</h4></th>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<th style="background-color:#fff !important;">EVENT NAME</th>';
+										str+='<th style="background-color:#fff !important;">EVENT TYPE</th>';
+										str+='<th style="background-color:#fff !important;">LOCATION</th>';
+										str+='<th style="background-color:#fff !important;">VENUE</th>';
+										str+='<th style="background-color:#fff !important;">FROM DATE</th>';
+										str+='<th style="background-color:#fff !important;">TO DATE</th>';
+										str+='<th style="background-color:#fff !important;">TOTAL PARTICIPANTS</th>';
+									str+='</tr>';
+								str+='</thead>';
+								str+='<tbody>';
+								for(var i in result){
+									str+='<tr>';
+										//str+='<td>'+result[i].id+'</td>';
+										if(result[i].eventName != null){
+											str+='<td>'+result[i].eventName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].eventType != null && result[i].eventType !=0){
+											str+='<td>'+result[i].eventType+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].venue != null && result[i].venue !=0){
+											str+='<td>'+result[i].venue+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].location != null && result[i].location != 0){
+											str+='<td>'+result[i].location+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].fromDate != null && result[i].fromDate !=0){
+											str+='<td>'+result[i].fromDate+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].toDtae != null && result[i].toDtae !=0){
+											str+='<td>'+result[i].toDtae+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].totalParticipaints != null && result[i].totalParticipaints !=0){
+											str+='<td>'+result[i].totalParticipaints+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										
+									str+='</tr>';
+								}
+								str+='</tbody>';
+							str+='</table>';
+						str+='</div>';
+						str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			$("#"+divId).html(str);
+			$("#dataTable"+divId).dataTable();
+}
+
+function getApInnovationActivityDetails(category){
+	$("#activities"+category.replace(/\s+/g, '')).html(spinner);
+	var json = {
+		category : category
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getApInnovationActivityDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			buildApInnovationActivityDetails(result,category)
+		}else{
+			$("#bootCampBlockDetailsId").html("No Data Available")
+		}
+	});	
+}
+function buildApInnovationActivityDetails(result,category){
+	var str='';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered" id="dataTable'+category.replace(/\s+/g, '')+'">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th colspan="6"><h4 style="color:#fff !important;">'+result.name+'</h4></th>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th style="background-color:#fff !important;">CONDUCTED BY</th>';
+						str+='<th style="background-color:#fff !important;">VENUE</th>';
+						str+='<th style="background-color:#fff !important;">FROM DATE</th>';
+						str+='<th style="background-color:#fff !important;">TO DATE</th>';
+						str+='<th style="background-color:#fff !important;">DESCRIPTION</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result.subList){
+					str+='<tr>';
+						if(result.subList[i].conductedBy != null && result.subList[i].conductedBy !=0){
+							str+='<td>'+result.subList[i].conductedBy+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].venue != null && result.subList[i].venue !=0){
+							str+='<td>'+result.subList[i].venue+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].fromDate != null && result.subList[i].fromDate !=0){
+							str+='<td>'+result.subList[i].fromDate+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].toDtae != null && result.subList[i].toDtae !=0){
+							str+='<td>'+result.subList[i].toDtae+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].remarks != null && result.subList[i].remarks !=0){
+							str+='<td>'+result.subList[i].remarks+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						
+					str+='</tr>';
+				}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	$("#activities"+category.replace(/\s+/g, '')).html(str);
+	$("#dataTable"+category.replace(/\s+/g, '')).dataTable();
+}
+function getCompleteOverviewForAPIS(type,divId){
+	$("#"+divId).html(spinner);
+	$("#startupsHighchartsDivId").html(spinner);
+	var json = {
+		districtId : 0
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getCompleteOverviewForAPIS',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			if(type == 'onLoad'){
+				var startUpsCount = 0;
+				for(var i in result){
+					if(result[i].startUps != null && result[i].startUps !='NA'){
+						startUpsCount = startUpsCount+parseInt(result[i].startUps);
+					}
+				}
+				$("#"+divId).html(startUpsCount);
+			}else if(type == 'overView'){
+				return buildCompleteOverviewForAPIS(result,divId);
+			}
+		}else{
+			$("#"+divId).html("No Data Available")
+		}
+	});	
+}
+var startUpsArr = [];
+function buildCompleteOverviewForAPIS(result,divId){
+	//$("#startupsHighchartsDivId").html("");
+	var str='';
+	str+='<div class="media" style="border: 1px solid #ddd;border-top-left-radius: 5px;border-bottom-left-radius: 5px;">';
+		str+='<div class="pull-left" style="padding:10px;">';
+			str+='<h5 style="margin-top:40px;">Incubators</h5>';
+			str+='<h3 class="m_top20 font_weight text-center">'+result.length+'</h3>';
+		str+='</div>';
+	  str+='<div class="media-body">';
+			str+='<div class="table-responsive">';
+					str+='<table class="table table_API">';
+						str+='<thead>';
+							str+='<tr>';
+								str+='<th>Incubator Name</th>';
+								str+='<th>Since</th>';
+								str+='<th>Location</th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result){
+							str+='<tr>';
+								str+='<td>'+result[i].name+'</td>';
+								str+='<td>'+result[i].year+'</td>';
+								str+='<td>'+result[i].location+'</td>';
+								if(result[i].startUps != null && result[i].startUps == 'NA'){
+									startUpsArr.push(0);
+								}else{
+									startUpsArr.push(parseInt(result[i].startUps));
+								}
+								//incubatorsIdsArr.push(result[i].id);
+							str+='</tr>';
+						}
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
+	  str+='</div>';
+	str+='</div>';
 	$("#"+divId).html(str);
 	
 	var assetTypeArr=['XLr8AP','NASSCOM','GOVIN','DRONE'];
@@ -5851,12 +6102,7 @@ function getAPInnovationSocietyOverviewHtml(divId){
 		},
 		series: [{
 			name: 'Count',
-			data: [
-				[23.7],
-				[16.1],
-				[14.2],
-				[14.0]
-			],
+			data: startUpsArr,
 			dataLabels: {
 				useHTML:true,
 				enabled: true,
@@ -5868,4 +6114,426 @@ function getAPInnovationSocietyOverviewHtml(divId){
 			}
 		}]
 	});
+}
+function getStartupsEmploymentFundingPatternAcquisitionsDetails(){
+	$("#startUpsOverviewDivId").html(spinner);
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getStartupsEmploymentFundingPatternAcquisitionsDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			buildStartupsEmploymentFundingPatternAcquisitionsDetails(result)
+		}else{
+			$("#startUpsOverviewDivId").html("No Data Available")
+		}
+	});	
+}
+function buildStartupsEmploymentFundingPatternAcquisitionsDetails(result){
+	var str='';
+	str+='<div class="row m_top20">';
+	str+='<div class="col-sm-6">';
+	str+='<div class="">';
+	str+='<h5 class="f_16">Startups Overview</h5>';
+	str+='<div class="pad_border m_top10">';
+		str+='<div class="row">';
+		str+='<div class="col-sm-3 border_right_yash">';
+			str+='<h5 class="font_weight text-center">Applications Assessed</h5>';
+			str+='<h4 class="font_weight text-center m_top20">'+result.applicationsAssessed+'</h4>';
+		str+='</div>';
+		str+='<div class="col-sm-3 border_right_yash">';
+			str+='<h5 class="font_weight text-center">APIS <br/>Screened</h5>';
+			str+='<h4 class="font_weight text-center m_top20">'+result.apisScreened+'</h4>';
+		str+='</div>';
+		str+='<div class="col-sm-3 border_right_yash">';
+			str+='<h5 class="font_weight text-center">APIS Povided Training</h5>';
+			str+='<h4 class="font_weight text-center m_top20">'+result.apisProvidedTraining+'</h4>';
+		str+='</div>';
+		str+='<div class="col-sm-3">';
+			str+='<h5 class="font_weight text-center">Startups placed in Advanced Acceleration</h5>';
+			str+='<h4 class="font_weight text-center m_top10">'+result.startupsPlaced+'</h4>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+	str+='</div>';
+str+='</div>';
+str+='<div class="col-sm-6">';
+	str+='<h4 class="f_16 m_top10">Employment Overview</h4>';
+	str+='<div class="pad_border m_top10">';
+		str+='<div class="row">';
+		str+='<div class="col-sm-4 border_right_yash">';
+			str+='<h5 class="font_weight text-center">Full-Time jobs <br/>created</h5>';
+			str+='<h4 class="font_weight text-center m_top20">'+result.ftJobsCreated+'</h4>';
+		str+='</div>';
+		str+='<div class="col-sm-4 border_right_yash">';
+			str+='<h5 class="font_weight text-center">Part-Time jobs <br/>created</h5>';
+			str+='<h4 class="font_weight text-center m_top20">'+result.ptJobsCreated+'</h4>';
+		str+='</div>';
+		str+='<div class="col-sm-4 border_right_yash">';
+			str+='<h5 class="font_weight text-center">Internship</h5>';
+			str+='<h4 class="font_weight text-center m_top30">'+result.internship+'</h4>';
+		str+='</div>';
+		str+='</div>';
+	str+='</div>';
+str+='</div>';
+str+='</div>';
+str+='<div class="row m_top20">';
+	str+='<div class="col-sm-12">';
+		str+='<h4 class="f_16">Funding Pattern</h4>';
+	str+='</div>';
+		str+='<div class="col-sm-8 m_top10">';
+			str+='<div class="row">';
+				str+='<div class="col-sm-8">';
+					str+='<div class="panel panel-default panel-grey">';
+						str+='<div class="panel-heading">';
+							str+='<h5 class="font_weight">Funding Raised</h5>';
+						str+='</div>';
+						str+='<div class="panel-body">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-4 border_right_yash">';
+									str+='<h5 class="font_weight text-center">No.of startups  <br/>got fund</h5>';
+									str+='<h4 class="font_weight text-center m_top20">'+result.startupsGotFund+'</h4>';
+								str+='</div>';
+								str+='<div class="col-sm-4 border_right_yash">';
+									str+='<h5 class="font_weight text-center">Fund  <br/>Value</h5>';
+									str+='<h4 class="font_weight text-center m_top20">'+result.fundValue+'</h4>';
+								str+='</div>';
+								str+='<div class="col-sm-4">';
+									str+='<h5 class="font_weight text-center">Proposals In Progress for startups</h5>';
+									str+='<h4 class="font_weight text-center m_top30">'+result.proposalsInProgress+'</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<div class="panel panel-default panel-grey">';
+						str+='<div class="panel-heading">';
+							str+='<h5 class="font_weight">Revenue Generated</h5>';
+						str+='</div>';
+						str+='<div class="panel-body">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 border_right_yash">';
+									str+='<h5 class="font_weight text-center">Revenue from<br/>No.of startups</h5>';
+									str+='<h4 class="font_weight text-center m_top30">'+result.revenueStartups+'</h4>';
+								str+='</div>';
+								str+='<div class="col-sm-6">';
+									str+='<h5 class="font_weight text-center">Fund <br/>Value</h5>';
+									str+='<h4 class="font_weight text-center m_top30">'+result.revenueFundValue+'</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-4">';
+			str+='<div class="pad_border m_top10">';
+				str+='<div class="row">';
+				str+='<div class="col-sm-4 border_right_yash">';
+					str+='<h5 class="font_weight text-center">Merged <br/>No.of <br>startups</h5>';
+					str+='<h4 class="font_weight text-center m_top30">'+result.mergedStartups+'</h4>';
+				str+='</div>';
+				str+='<div class="col-sm-4 border_right_yash">';
+					str+='<h5 class="font_weight text-center">Progressing Commercial deals with startups</h5>';
+					str+='<h4 class="font_weight text-center m_top30">'+result.commercialStartups+'</h4>';
+				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<h5 class="font_weight text-center">Faculty & Students Trained</h5>';
+					str+='<h4 class="font_weight text-center m_top30">'+result.studentsTrained+'</h4>';
+				str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+str+='</div>';
+$("#startUpsOverviewDivId").html(str);
+}
+function getApInnovationIncubatorsXLr8APDetails(divId){
+	$("#incubatorsDetailsDivId"+divId).html(spinner);
+	var json = {
+		
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getApInnovationIncubatorsXLr8APDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length > 0){
+			buildApInnovationIncubatorsXLr8APDetails(result,divId)
+		}else{
+			$("#incubatorsDetailsDivId"+divId).html("No Data Available")
+		}
+	});	
+}
+
+function buildApInnovationIncubatorsXLr8APDetails(result,divId){
+	var str='';
+	str+='<div class="panel-body">';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered" id="XLr8APdataTableId" style="width:100%">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th colspan="9"><h4 style="color:#fff !important;">XLr8AP - Tirupathi</h4></th>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th rowspan="2" style="background-color:#fff !important;">CHOHORT NAME </th>';
+						str+='<th rowspan="2" style="background-color:#fff !important;">DURATION</th>';
+						str+='<th rowspan="2" style="background-color:#fff !important;">REGISTERED<br>COMPANIES</th>';
+						str+='<th colspan="4"style="background-color:#fff !important;text-align:center;">JOBS</th>';
+						str+='<th rowspan="2" style="background-color:#fff !important;text-align:center;">STATUS</th>';
+					str+='</tr>';
+					str+='<tr>';	
+						str+='<th style="background-color:#fff !important;">TOTAL</th>';
+						str+='<th style="background-color:#fff !important;">TEMP</th>';
+						str+='<th style="background-color:#fff !important;">PERM</th>';
+						str+='<th style="background-color:#fff !important;">INTERNS</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						//str+='<td>'+result[i].id+'</td>';
+						if(result[i].name != null){
+							str+='<td>'+result[i].name+'<span class="glyphicon glyphicon-edit pull-right incubatorChorotCls" style="cursor:pointer;" attr_chorot_id="'+result[i].id+'" attr_cohort_name="'+result[i].name+'"></span></td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].year != null && result[i].year !=0){
+							str+='<td>'+result[i].year+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].compReg != null && result[i].compReg !=0){
+							str+='<td>'+result[i].compReg+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].totalJobs != null && result[i].totalJobs != 0){
+							str+='<td>'+result[i].totalJobs+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].temporaryJobs != null && result[i].temporaryJobs !=0){
+							str+='<td>'+result[i].temporaryJobs+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].permentJobs != null && result[i].permentJobs !=0){
+							str+='<td>'+result[i].permentJobs+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].internJobs != null && result[i].internJobs !=0){
+							str+='<td>'+result[i].internJobs+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].remarks != null && result[i].remarks !=0){
+							str+='<td>'+result[i].remarks+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						
+					str+='</tr>';
+				}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	str+='</div>';
+	$("#incubatorsDetailsDivId"+divId).html(str);
+}
+function getApInnovationIncubatorsOtherBlockDetails(divId){
+	$("#incubatorsDetailsDivId"+divId).html(spinner);
+	var json = {
+		deptId : divId
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getApInnovationIncubatorsOtherBlockDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			buildApInnovationIncubatorsOtherBlockDetails(result,divId)
+		}else{
+			$("#incubatorsDetailsDivId"+divId).html("No Data Available")
+		}
+	});	
+}
+
+function buildApInnovationIncubatorsOtherBlockDetails(result,divId){
+	var totalJobs = 0;
+	var str='';
+	str+='<div class="panel-body">';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-bordered" id="dataTable'+divId+'" style="width:100%">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th colspan="9"><h4 style="color:#fff !important;">'+result.name+'- '+result.location+'</h4></th>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th rowspan="2" style="background-color:#fff !important;">COMPANY NAME </th>';
+						str+='<th rowspan="2" style="background-color:#fff !important;">STATE</th>';
+						str+='<th colspan="4"style="background-color:#fff !important;text-align:center;">JOBS</th>';
+						str+='<th rowspan="2" style="background-color:#fff !important;">SECTOR</th>';
+						str+='<th rowspan="2" style="background-color:#fff !important;text-align:center;">DESCRIPTION</th>';
+					str+='</tr>';
+					str+='<tr>';	
+						str+='<th style="background-color:#fff !important;">TOTAL</th>';
+						str+='<th style="background-color:#fff !important;">TEMP</th>';
+						str+='<th style="background-color:#fff !important;">PERM</th>';
+						str+='<th style="background-color:#fff !important;">INTERNS</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result.subList){
+					str+='<tr>';
+						totalJobs = parseInt(result.subList[i].temporaryJobs)+parseInt(result.subList[i].permentJobs)+parseInt(result.subList[i].internJobs);
+						if(result.subList[i].name != null){
+							str+='<td>'+result.subList[i].name+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].state != null && result.subList[i].state !=0){
+							str+='<td>'+result.subList[i].state+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						str+='<td>'+totalJobs+'</td>';
+						if(result.subList[i].temporaryJobs != null && result.subList[i].temporaryJobs !=0){
+							str+='<td>'+result.subList[i].temporaryJobs+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].permentJobs != null && result.subList[i].permentJobs !=0){
+							str+='<td>'+result.subList[i].permentJobs+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].internJobs != null && result.subList[i].internJobs !=0){
+							str+='<td>'+result.subList[i].internJobs+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].sector != null && result.subList[i].sector !=0){
+							str+='<td>'+result.subList[i].sector+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.subList[i].remarks != null && result.subList[i].remarks !=0){
+							str+='<td>'+result.subList[i].remarks+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						
+					str+='</tr>';
+				}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	str+='</div>';
+	$("#incubatorsDetailsDivId"+divId).html(str);
+	$("#dataTable"+divId).dataTable();
+}
+$(document).on("click",".incubatorChorotCls",function(){
+	var cohortId = $(this).attr("attr_chorot_id");
+	var cohortName = $(this).attr("attr_cohort_name");
+	getApInnovationCohortWiseDetails(cohortId,cohortName);
+});
+function getApInnovationCohortWiseDetails(cohortId,cohortName){
+	$("#cohortModalId").modal('show');
+	$("#cohortModalTitleId").html(cohortName+' Details.')
+	$("#cohortModalDivId").html(spinner);
+	var json = {
+		deptId : cohortId
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'getApInnovationCohortWiseDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			buildApInnovationCohortWiseDetails(result)
+		}else{
+			$("#cohortModalDivId").html("No Data Available")
+		}
+	});	
+}
+
+function buildApInnovationCohortWiseDetails(result){
+	var str='';
+	str+='<table class="table table-bordered" id="dataTableId">';
+			str+='<thead>';
+				str+='<tr>';
+					//str+='<th rowspan="2">ID</th>';
+					str+='<th rowspan="2">COMPANY NAME</th>';
+					str+='<th colspan="3" style="text-align:center;background-color:#f3f3f3">JOBS</th>';
+					str+='<th rowspan="2" style="text-align:center;">INNOVATION</th>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<th style="background-color:#f3f3f3">FULL&nbsp;-&nbsp;TIME</th>';
+					str+='<th style="background-color:#f3f3f3">PART&nbsp;-&nbsp;TIME</th>';
+					str+='<th style="background-color:#f3f3f3">INTERNS</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					/* if(result[i].id != null){
+						str+='<td>'+result[i].id+'</td>';
+					} */
+					if(result[i].companyName != null && result[i].companyName !=0){
+						str+='<td>'+result[i].companyName+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(result[i].permentJobs != null && result[i].permentJobs !=0){
+						str+='<td>'+result[i].permentJobs+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(result[i].temporaryJobs != null && result[i].temporaryJobs !=0){
+						str+='<td>'+result[i].temporaryJobs+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(result[i].internJobs != null && result[i].internJobs !=0){
+						str+='<td>'+result[i].internJobs+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(result[i].innovation != null && result[i].innovation !=0){
+						str+='<td>'+result[i].innovation+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+				str+='</tr>';
+			}
+			str+='</tbody>';
+		str+='</table>';
+		$("#cohortModalDivId").html(str);
+		$("#dataTableId").dataTable();
+		
 }

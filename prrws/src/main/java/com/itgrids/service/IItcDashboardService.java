@@ -77,13 +77,13 @@ public interface IItcDashboardService {
 	public IdNameVO saveMeesevaKPITargetAchievementValues();
 	public List<ApInnovationSocietyOverviewVO> getApInnovationOverviewDetails();
 	public List<ApInnovationSocietyOverviewVO> getApInnovationIncubatorsXLr8APDetails();
-	public List<ApInnovationSocietyOverviewVO> getApInnovationIncubatorsOtherBlockDetails(InputVO inputVO);
+	public ApInnovationSocietyOverviewVO getApInnovationIncubatorsOtherBlockDetails(InputVO inputVO);
 	public List<ApInnovationSocietyOverviewVO> getApInnovationCohortWiseDetails(InputVO inputVO);
-	public List<ApInnovationSocietyOverviewVO> getApInnovationBootCampDetails(InputVO inputVO);
+	public ApInnovationSocietyOverviewVO getApInnovationBootCampDetails(InputVO inputVO);
 	public List<ApInnovationSocietyOverviewVO> getApInnovationEventDetails();
-	public List<ApInnovationSocietyOverviewVO> getApInnovationActivityDetails(InputVO inputVO);
+	public ApInnovationSocietyOverviewVO getApInnovationActivityDetails(InputVO inputVO);
 	public List<ApInnovationSocietyOverviewVO> getApInnovationIndicatorDetails();
 	
 	public List<ApInnovationSocietyOverviewVO> getCompleteOverviewForAPIS(InputVO inputVO);
-	public ApInnovationSocietyOverviewVO getStartupsEmploymentFundingPatternAcquisitionsDetails(InputVO inputVO);
+	public ApInnovationSocietyOverviewVO getStartupsEmploymentFundingPatternAcquisitionsDetails();
 }

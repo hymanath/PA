@@ -402,9 +402,9 @@ public class ItcController {
 	   }
 	   
 	   @RequestMapping(value = "/getApInnovationIncubatorsOtherBlockDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getApInnovationIncubatorsOtherBlockDetails(@RequestBody InputVO inputVO) {
-		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationIncubatorsOtherBlockDetails(inputVO);
-		   return resultList;
+	   public @ResponseBody  ApInnovationSocietyOverviewVO  getApInnovationIncubatorsOtherBlockDetails(@RequestBody InputVO inputVO) {
+		   ApInnovationSocietyOverviewVO resultVO = itcDashboardService.getApInnovationIncubatorsOtherBlockDetails(inputVO);
+		   return resultVO;
 	   }
 	   
 	   @RequestMapping(value = "/getApInnovationCohortWiseDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -414,9 +414,9 @@ public class ItcController {
 	   }
 	   
 	   @RequestMapping(value = "/getApInnovationBootCampDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getApInnovationBootCampDetails(@RequestBody InputVO inputVO) {
-		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationBootCampDetails(inputVO);
-		   return resultList;
+	   public @ResponseBody  ApInnovationSocietyOverviewVO  getApInnovationBootCampDetails(@RequestBody InputVO inputVO) {
+		   ApInnovationSocietyOverviewVO  returnVO = itcDashboardService.getApInnovationBootCampDetails(inputVO);
+		   return returnVO;
 	   }
 	   
 	   @RequestMapping(value = "/getApInnovationEventDetails", method = RequestMethod.POST)
@@ -426,9 +426,9 @@ public class ItcController {
 	   }
 	   
 	   @RequestMapping(value = "/getApInnovationActivityDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  List<ApInnovationSocietyOverviewVO>  getApInnovationActivityDetails(@RequestBody InputVO inputVO) {
-		   List<ApInnovationSocietyOverviewVO>  resultList = itcDashboardService.getApInnovationActivityDetails(inputVO);
-		   return resultList;
+	   public @ResponseBody  ApInnovationSocietyOverviewVO  getApInnovationActivityDetails(@RequestBody InputVO inputVO) {
+		   ApInnovationSocietyOverviewVO  returnVO = itcDashboardService.getApInnovationActivityDetails(inputVO);
+		   return returnVO;
 	   }
 	   
 	   @RequestMapping(value = "/getApInnovationIndicatorDetails", method = RequestMethod.POST)
@@ -443,9 +443,9 @@ public class ItcController {
 		   return resultList;
 	   }
 	   
-	   @RequestMapping(value = "/getStartupsEmploymentFundingPatternAcquisitionsDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
-	   public @ResponseBody  ApInnovationSocietyOverviewVO  getStartupsEmploymentFundingPatternAcquisitionsDetails(@RequestBody InputVO inputVO) {
-		   ApInnovationSocietyOverviewVO  resultvo = itcDashboardService.getStartupsEmploymentFundingPatternAcquisitionsDetails(inputVO);
+	   @RequestMapping(value = "/getStartupsEmploymentFundingPatternAcquisitionsDetails", method = RequestMethod.POST)
+	   public @ResponseBody  ApInnovationSocietyOverviewVO  getStartupsEmploymentFundingPatternAcquisitionsDetails() {
+		   ApInnovationSocietyOverviewVO  resultvo = itcDashboardService.getStartupsEmploymentFundingPatternAcquisitionsDetails();
 		   return resultvo;
 	   }
 }

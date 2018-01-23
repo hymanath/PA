@@ -1365,13 +1365,11 @@ function getEOfcDepartWiseOverviewDetails(){
 function getAPInnovationSocietyOverview(){
 	$(".APINNOVATIONSOCIETYAllCls").html(spinner);
 	var json = {
-		fromDate:"",
-		toDate:"",
-		year:""
+		districtId : 0
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getAPInnovationSocietyOverview',
+		url: 'getCompleteOverviewForAPIS',//'getAPInnovationSocietyOverview',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -1379,7 +1377,13 @@ function getAPInnovationSocietyOverview(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$(".APINNOVATIONSOCIETYAllCls").html(result.startups);
+		var startUpsCount = 0;
+			for(var i in result){
+				if(result[i].startUps != null && result[i].startUps !='NA'){
+					startUpsCount = startUpsCount+parseInt(result[i].startUps);
+				}
+			}
+		$(".APINNOVATIONSOCIETYAllCls").html(startUpsCount);
 	});	
 }
 function getITSectorWiseOverviewDetails(){
