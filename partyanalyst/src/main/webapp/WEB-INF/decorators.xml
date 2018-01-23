@@ -760,6 +760,7 @@
 		<pattern>/areaWiseNtrTrustViewAction*</pattern>
 		<pattern>/boothCommitteeDetailsAction*</pattern>
 		<pattern>/myCoreDashb0ardAction*</pattern>
+		<pattern>/imageRenderingAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">
