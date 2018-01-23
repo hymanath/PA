@@ -814,4 +814,26 @@ public class NregsDashboardController {
 		}
 		return responseVO;
 	}
+	@PostMapping("/saveNregaComponentsWiseAchvPerc")
+	public @ResponseBody IdNameVO saveNregaComponentsWiseAchvPerc(){
+		IdNameVO statusVO = null;
+		try {
+			statusVO = nregsTcsService.saveNregaComponentsWiseAchvPerc();
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveNregaComponentsWiseAchvPerc - NREGSController controller", e);
+		}
+		return statusVO;
+	}
+	@PostMapping("/saveNregaComponentsWiseAchvPercTillToday")
+	public @ResponseBody IdNameVO saveNregaComponentsWiseAchvPercTillToday(){
+		IdNameVO statusVO = null;
+		try {
+			statusVO = nregsTcsService.saveNregaComponentsWiseAchvPercTillToday();
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveNregaComponentsWiseAchvPercTillToday - NREGSController controller", e);
+		}
+		return statusVO;
+	}
 }

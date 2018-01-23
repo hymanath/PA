@@ -5401,8 +5401,8 @@ public class ItcDashboardService implements IItcDashboardService {
 						for (int i = 0; i < finalArray.length(); i++) {
 							ApInnovationSocietyOverviewVO bootCampVO = new ApInnovationSocietyOverviewVO();
 							JSONObject jObj = (JSONObject) finalArray.get(i);
-							bootCampVO.setIncubatorName(jObj.getString("venue"));
-							bootCampVO.setLocation(jObj.getString("place"));
+							bootCampVO.setIncubatorName(jObj.get("venue").toString().trim().length()>0 ?jObj.get("venue").toString():"0");
+							bootCampVO.setLocation(jObj.get("place").toString().trim().length()>0 ?jObj.get("place").toString():"0");
 							finalList.get(0).getSubList().add(bootCampVO);
 						}
 					}
@@ -5423,8 +5423,8 @@ public class ItcDashboardService implements IItcDashboardService {
 						for (int i = 0; i < finalArray.length(); i++) {
 							ApInnovationSocietyOverviewVO eventVO = new ApInnovationSocietyOverviewVO();
 							JSONObject jObj = (JSONObject) finalArray.get(i);
-							eventVO.setIncubatorName(jObj.getString("eventname"));
-							eventVO.setLocation(jObj.getString("location"));
+							eventVO.setIncubatorName(jObj.get("eventname").toString().trim().length()>0 ?jObj.get("eventname").toString():"0");
+							eventVO.setLocation(jObj.get("location").toString().trim().length()>0 ?jObj.get("location").toString():"0");
 							finalList.get(1).getSubList().add(eventVO);
 						}
 					}
@@ -5445,8 +5445,8 @@ public class ItcDashboardService implements IItcDashboardService {
 						for (int i = 0; i < finalArray.length(); i++) {
 							ApInnovationSocietyOverviewVO activityVO = new ApInnovationSocietyOverviewVO();
 							JSONObject jObj = (JSONObject) finalArray.get(i);
-							activityVO.setIncubatorName(jObj.getString("category"));
-							activityVO.setLocation(jObj.getString("total") != null ? jObj.getString("total"):"0");
+							activityVO.setIncubatorName(jObj.get("category").toString().trim().length()>0 ?jObj.get("category").toString():"0");
+							activityVO.setLocation(jObj.get("total").toString().trim().length()>0 ?jObj.get("total").toString():"0");
 							finalList.get(2).getSubList().add(activityVO);
 						}
 					}
@@ -5499,14 +5499,15 @@ public class ItcDashboardService implements IItcDashboardService {
 						for (int i = 0; i < finalArray.length(); i++) {
 							ApInnovationSocietyOverviewVO incubatorVO = new ApInnovationSocietyOverviewVO();
 							JSONObject jObj = (JSONObject) finalArray.get(i);
-							incubatorVO.setName(jObj.getString("cohort_name"));
-							incubatorVO.setYear(jObj.getString("duration"));
-							incubatorVO.setCompReg(Long.valueOf(jObj.get("companies_registered").toString() != null ? jObj.get("companies_registered").toString():"0"));
-							incubatorVO.setPermentJobs(jObj.get("permanent_jobs").toString() != null ? jObj.get("permanent_jobs").toString():"0");
-							incubatorVO.setTemporaryJobs(jObj.get("temporary_jobs").toString() != null ? jObj.get("temporary_jobs").toString():"0");
-							incubatorVO.setInternJobs(jObj.get("interns").toString() != null ? jObj.get("interns").toString():"0");
-							incubatorVO.setTotalJobs(jObj.get("total_jobs").toString() != null ? jObj.get("total_jobs").toString():"0");
-							incubatorVO.setRemarks(jObj.get("remarks").toString() != null ? jObj.get("remarks").toString():"");
+							incubatorVO.setId(Long.valueOf(jObj.get("cohort_id").toString()));
+							incubatorVO.setName(jObj.get("cohort_name").toString().trim().length()>0 ?jObj.get("cohort_name").toString():"0");
+							incubatorVO.setYear(jObj.get("duration").toString().trim().length()>0 ?jObj.get("duration").toString():"0");
+							incubatorVO.setCompReg(Long.valueOf(jObj.get("companies_registered").toString().trim().length()>0 ?jObj.get("companies_registered").toString():"0"));
+							incubatorVO.setPermentJobs(jObj.get("permanent_jobs").toString().trim().length()>0 ?jObj.get("permanent_jobs").toString():"0");
+							incubatorVO.setTemporaryJobs(jObj.get("temporary_jobs").toString().trim().length()>0 ?jObj.get("temporary_jobs").toString():"0");
+							incubatorVO.setInternJobs(jObj.get("interns").toString().trim().length()>0 ?jObj.get("interns").toString():"0");
+							incubatorVO.setTotalJobs(jObj.get("total_jobs").toString().trim().length()>0 ?jObj.get("total_jobs").toString():"0");
+							incubatorVO.setRemarks(jObj.get("remarks").toString().trim().length()>0 ?jObj.get("remarks").toString():"0");
 							finalList.add(incubatorVO);
 						}
 						
@@ -5526,10 +5527,19 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return List<ApInnovationSocietyOverviewVO>
 	 * @Date 11-01-2018
 	 */
-	public List<ApInnovationSocietyOverviewVO> getApInnovationIncubatorsOtherBlockDetails(InputVO inputVO){
-		List<ApInnovationSocietyOverviewVO> finalList = new ArrayList<ApInnovationSocietyOverviewVO>();
+	public ApInnovationSocietyOverviewVO getApInnovationIncubatorsOtherBlockDetails(InputVO inputVO){
+		ApInnovationSocietyOverviewVO finalVO = new ApInnovationSocietyOverviewVO();
 		try{
-		
+			String incubatorName = null;
+			String location = null;
+			if(inputVO.getDeptId() != null && inputVO.getDeptId().longValue() == 2L){
+				incubatorName = "NASSCOM 10K Startups";
+				location = "Visakhapatnam";
+			}else if(inputVO.getDeptId() != null && inputVO.getDeptId().longValue() == 3L){
+				incubatorName = "Govin Capitals";
+				location = "Visakhapatnam";
+			}
+			
 			String URL = "http://apinnovationsociety.com/dashboard/apiv2/incubatordetails.php?id="+inputVO.getDeptId()+"";
 			ClientResponse response = itcWebServiceUtilService.getWebServiceCall(URL);
 			if (response.getStatus() != 200) {
@@ -5543,24 +5553,25 @@ public class ItcDashboardService implements IItcDashboardService {
 						for (int i = 0; i < finalArray.length(); i++) {
 							ApInnovationSocietyOverviewVO incubatorVO = new ApInnovationSocietyOverviewVO();
 							JSONObject jObj = (JSONObject) finalArray.get(i);
-							incubatorVO.setName(jObj.getString("company_name"));
-							incubatorVO.setState(jObj.get("state").toString() != null ? jObj.get("state").toString():"");
-							incubatorVO.setPermentJobs(jObj.get("fulltime-jobs").toString() != null ? jObj.get("fulltime-jobs").toString():"0");
-							incubatorVO.setTemporaryJobs(jObj.get("parttime-jobs").toString() != null ? jObj.get("parttime-jobs").toString():"0");
-							incubatorVO.setInternJobs(jObj.get("interns").toString() != null ? jObj.get("interns").toString():"0");
-							incubatorVO.setSector(jObj.get("sector").toString() != null ? jObj.get("sector").toString():"");
-							incubatorVO.setRemarks(jObj.get("company_dscription").toString() != "" ? jObj.get("company_dscription").toString():"");
-							finalList.add(incubatorVO);
+							incubatorVO.setName(jObj.get("company_name").toString().trim().length()>0 ?jObj.get("company_name").toString():"0");
+							incubatorVO.setState(jObj.get("state").toString().trim().length()>0 ?jObj.get("state").toString():"0");
+							incubatorVO.setPermentJobs(jObj.get("fulltime-jobs").toString().trim().length()>0 ?jObj.get("fulltime-jobs").toString():"0");
+							incubatorVO.setTemporaryJobs(jObj.get("parttime-jobs").toString().trim().length()>0 ?jObj.get("parttime-jobs").toString():"0");
+							incubatorVO.setInternJobs(jObj.get("interns").toString().trim().length()>0 ?jObj.get("interns").toString():"0");
+							incubatorVO.setSector(jObj.get("sector").toString().trim().length()>0 ?jObj.get("sector").toString():"0");
+							incubatorVO.setRemarks(jObj.get("company_dscription").toString().trim().length()>0 ?jObj.get("company_dscription").toString():"0");
+							finalVO.getSubList().add(incubatorVO);
 						}
 						
 					}
 				}
 		    }
-		    	
+			finalVO.setName(incubatorName);
+			finalVO.setLocation(location);
 		}catch(Exception e){
 			LOG.error("Exception occured at getApInnovationIncubatorsOtherBlockDetails() in  ItcDashboardService class",e);
 		}
-		return finalList;
+		return finalVO;
 	}
 	
 	/**
@@ -5586,12 +5597,13 @@ public class ItcDashboardService implements IItcDashboardService {
 						for (int i = 0; i < finalArray.length(); i++) {
 							ApInnovationSocietyOverviewVO incubatorVO = new ApInnovationSocietyOverviewVO();
 							JSONObject jObj = (JSONObject) finalArray.get(i);
-							incubatorVO.setName(jObj.getString("cohort"));
-							incubatorVO.setCompanyName(jObj.get("company_name").toString());
-							incubatorVO.setPermentJobs(jObj.get("fulltime_jobs").toString() != null ? jObj.get("fulltime_jobs").toString():"0");
-							incubatorVO.setTemporaryJobs(jObj.get("parttime_jobs").toString() != null ? jObj.get("parttime_jobs").toString():"0");
-							incubatorVO.setInternJobs(jObj.get("interns").toString() != null ? jObj.get("interns").toString():"0");
-							incubatorVO.setInnovation(jObj.get("innovation").toString());
+							incubatorVO.setId(Long.valueOf(jObj.get("id").toString().trim().length()>0 ?jObj.get("id").toString():"0"));
+							incubatorVO.setName(jObj.get("cohort").toString().trim().length()>0 ?jObj.get("cohort").toString():"0");
+							incubatorVO.setCompanyName(jObj.get("company_name").toString().trim().length()>0 ?jObj.get("company_name").toString():"0");
+							incubatorVO.setPermentJobs(jObj.get("fulltime_jobs").toString().trim().length()>0 ?jObj.get("fulltime_jobs").toString():"0");
+							incubatorVO.setTemporaryJobs(jObj.get("parttime_jobs").toString().trim().length()>0 ?jObj.get("parttime_jobs").toString():"0");
+							incubatorVO.setInternJobs(jObj.get("interns").toString().trim().length()>0 ?jObj.get("interns").toString():"0");
+							incubatorVO.setInnovation(jObj.get("innovation").toString().trim().length()>0 ?jObj.get("innovation").toString():"0");
 							finalList.add(incubatorVO);
 						}
 						
@@ -5611,10 +5623,22 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return List<ApInnovationSocietyOverviewVO>
 	 * @Date 12-01-2018
 	 */
-	public List<ApInnovationSocietyOverviewVO> getApInnovationBootCampDetails(InputVO inputVO){
-		List<ApInnovationSocietyOverviewVO> finalList = new ArrayList<ApInnovationSocietyOverviewVO>();
+	public ApInnovationSocietyOverviewVO getApInnovationBootCampDetails(InputVO inputVO){
+		ApInnovationSocietyOverviewVO finalVO = new ApInnovationSocietyOverviewVO();
 		try{
-			
+			String bootCampName = null;
+			String  dateStr = null;
+			if(inputVO.getDeptId() != null && inputVO.getDeptId().longValue() == 1L){
+				bootCampName = "Sri Padmavati Mahila Viswavidayalayam";
+			}else if(inputVO.getDeptId() != null && inputVO.getDeptId().longValue() == 2L){
+				bootCampName = "Sir CRR College of Engineering";
+			}else if(inputVO.getDeptId() != null && inputVO.getDeptId().longValue() == 3L){
+				bootCampName = "SRKR College of Engineering";
+			}else if(inputVO.getDeptId() != null && inputVO.getDeptId().longValue() == 4L){
+				bootCampName = "PVP Siddartha Inistitute of Technology";
+			}else if(inputVO.getDeptId() != null && inputVO.getDeptId().longValue() == 5L){
+				bootCampName = "G Pullareddy Engineering College";
+			}
 			String URL = "http://apinnovationsociety.com/dashboard/apiv2/bootcampsParticipants.php?id="+inputVO.getDeptId()+"";
 			ClientResponse response = itcWebServiceUtilService.getWebServiceCall(URL);
 			if (response.getStatus() != 200) {
@@ -5623,26 +5647,30 @@ public class ItcDashboardService implements IItcDashboardService {
 		    	String output = response.getEntity(String.class);
 				if(output != null && !output.isEmpty()){
 					org.json.JSONObject finalOutObject = new org.json.JSONObject(output);
+					dateStr= finalOutObject.get("subtitle").toString();
 					JSONArray finalArray = new JSONArray(finalOutObject.get("data").toString());
 					if (finalArray != null && finalArray.length() > 0) {
 						for (int i = 0; i < finalArray.length(); i++) {
 							ApInnovationSocietyOverviewVO bootCampVO = new ApInnovationSocietyOverviewVO();
 							JSONObject jObj = (JSONObject) finalArray.get(i);
-							bootCampVO.setStudentName(jObj.get("name").toString());
-							bootCampVO.setCourse(jObj.get("course").toString());
-							bootCampVO.setCollege(jObj.get("college").toString());
-							bootCampVO.setBranch(jObj.get("branch").toString());
-							bootCampVO.setYear(jObj.get("year").toString());
-							finalList.add(bootCampVO);
+							bootCampVO.setId(Long.valueOf(jObj.get("id").toString()));
+							bootCampVO.setStudentName(commonMethodsUtilService.toConvertStringToTitleCase(jObj.get("name").toString().trim().length()>0 ?jObj.get("name").toString():"0"));
+							bootCampVO.setCourse(jObj.get("course").toString().trim().length()>0 ?jObj.get("course").toString():"0");
+							bootCampVO.setCollege(jObj.get("college").toString().trim().length()>0 ?jObj.get("college").toString():"0");
+							bootCampVO.setBranch(jObj.get("branch").toString().trim().length()>0 ?jObj.get("branch").toString():"0");
+							bootCampVO.setYear(jObj.get("year").toString().trim().length()>0 ?jObj.get("year").toString():"0");
+							finalVO.getSubList().add(bootCampVO);
 						}
 					}
 				}
 		    }
+			finalVO.setName(bootCampName);
+			finalVO.setFromDate(dateStr);
 		    	
 		}catch(Exception e){
 			LOG.error("Exception occured at getApInnovationBootCampDetails() in  ItcDashboardService class",e);
 		}
-		return finalList;
+		return finalVO;
 	}
 	
 	/**
@@ -5668,13 +5696,13 @@ public class ItcDashboardService implements IItcDashboardService {
 						for (int i = 0; i < finalArray.length(); i++) {
 							ApInnovationSocietyOverviewVO eventVO = new ApInnovationSocietyOverviewVO();
 							JSONObject jObj = (JSONObject) finalArray.get(i);
-							eventVO.setEventName(jObj.get("eventname").toString());
-							eventVO.setEventType(jObj.get("eventtype").toString());
-							eventVO.setVenue(jObj.get("venue").toString());
-							eventVO.setLocation(jObj.get("location").toString());
-							eventVO.setFromDate(jObj.get("fromdate").toString());
-							eventVO.setToDtae(jObj.get("todate").toString());
-							eventVO.setTotalParticipaints(jObj.get("totalparticipants").toString());
+							eventVO.setEventName(jObj.get("eventname").toString().trim().length()>0 ?jObj.get("eventname").toString():"0");
+							eventVO.setEventType(jObj.get("eventtype").toString().trim().length()>0 ?jObj.get("eventtype").toString():"0");
+							eventVO.setVenue(jObj.get("venue").toString().trim().length()>0 ?jObj.get("venue").toString():"0");
+							eventVO.setLocation(jObj.get("location").toString().trim().length()>0 ?jObj.get("location").toString():"0");
+							eventVO.setFromDate(jObj.get("fromdate").toString().trim().length()>0 ?jObj.get("fromdate").toString():"0");
+							eventVO.setToDtae(jObj.get("todate").toString().trim().length()>0 ?jObj.get("todate").toString():"0");
+							eventVO.setTotalParticipaints(jObj.get("totalparticipants").toString().trim().length()>0 ?jObj.get("totalparticipants").toString():"0");
 							finalList.add(eventVO);
 						}
 					}
@@ -5693,9 +5721,10 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return List<ApInnovationSocietyOverviewVO>
 	 * @Date 12-01-2018
 	 */
-	public List<ApInnovationSocietyOverviewVO> getApInnovationActivityDetails(InputVO inputVO){
-		List<ApInnovationSocietyOverviewVO> finalList = new ArrayList<ApInnovationSocietyOverviewVO>();
+	public ApInnovationSocietyOverviewVO getApInnovationActivityDetails(InputVO inputVO){
+		ApInnovationSocietyOverviewVO finalVO = new ApInnovationSocietyOverviewVO();
 		try{
+			String categoryName = inputVO.getCategory();
 			if(inputVO.getCategory() != null && inputVO.getCategory().contains(" ")){
 				String[] categoryArr = inputVO.getCategory().split(" ");
 				int length = categoryArr.length;
@@ -5719,21 +5748,21 @@ public class ItcDashboardService implements IItcDashboardService {
 						for (int i = 0; i < finalArray.length(); i++) {
 							ApInnovationSocietyOverviewVO activityVO = new ApInnovationSocietyOverviewVO();
 							JSONObject jObj = (JSONObject) finalArray.get(i);
-							activityVO.setConductedBy(jObj.get("conducted_by").toString());
-							activityVO.setRemarks(jObj.get("discription").toString());
-							activityVO.setVenue(jObj.get("venue").toString());
-							activityVO.setFromDate(jObj.get("fromdate").toString());
-							activityVO.setToDtae(jObj.get("todate").toString());
-							finalList.add(activityVO);
+							activityVO.setConductedBy(jObj.get("conducted_by").toString().trim().length()>0 ?jObj.get("conducted_by").toString():"0");
+							activityVO.setRemarks(jObj.get("discription").toString().trim().length()>0 ?jObj.get("discription").toString():"0");
+							activityVO.setVenue(jObj.get("venue").toString().trim().length()>0 ?jObj.get("venue").toString():"0");
+							activityVO.setFromDate(jObj.get("fromdate").toString().trim().length()>0 ?jObj.get("fromdate").toString():"0");
+							activityVO.setToDtae(jObj.get("todate").toString().trim().length()>0 ?jObj.get("todate").toString():"0");
+							finalVO.getSubList().add(activityVO);
 						}
 					}
 				}
 		    }
-		    	
+		    finalVO.setName(categoryName);	
 		}catch(Exception e){
 			LOG.error("Exception occured at getApInnovationActivityDetails() in  ItcDashboardService class",e);
 		}
-		return finalList;
+		return finalVO;
 	}
 	
 	public List<ApInnovationSocietyOverviewVO> getCompleteOverviewForAPIS(InputVO inputVO){
@@ -5771,7 +5800,7 @@ public class ItcDashboardService implements IItcDashboardService {
 		return returnList;
 	}
 	
-	public ApInnovationSocietyOverviewVO getStartupsEmploymentFundingPatternAcquisitionsDetails(InputVO inputVO){
+	public ApInnovationSocietyOverviewVO getStartupsEmploymentFundingPatternAcquisitionsDetails(){
 		ApInnovationSocietyOverviewVO returnvo = new ApInnovationSocietyOverviewVO();
 		try {
 			String URL = "http://apinnovationsociety.com/dashboard/apiv2/incubatorKPIs.php?id=0";

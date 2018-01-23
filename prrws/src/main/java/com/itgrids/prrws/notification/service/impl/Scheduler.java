@@ -13,6 +13,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.service.IConstituencyWiseWorkStatusService;
 import com.itgrids.service.IItcDashboardService;
 import com.itgrids.service.ILightMonitoring;
+import com.itgrids.service.integration.impl.INREGSTCSService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
 import com.itgrids.utils.DateUtilService;
@@ -33,6 +34,8 @@ public class Scheduler {
   	private IItcDashboardService itcDashboardService;
     @Autowired
     private IConstituencyWiseWorkStatusService constituencyWiseWorkStatusService;
+    @Autowired
+    private INREGSTCSService nregstcsService;
     
 	
 	//@Scheduled(cron = "0 30 2,14 * * * ")
@@ -125,7 +128,7 @@ public class Scheduler {
 			return;
 	}
 	
-	@Scheduled(cron ="0 6 * ? * *")
+	@Scheduled(cron ="0 6 * * *")
 	public void runTheSchedulerForEvry24HrsAt6AM()
 	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
@@ -149,7 +152,7 @@ public class Scheduler {
 			return;
 	}
 	
-	@Scheduled(cron ="0 4 * ? * *")
+	@Scheduled(cron ="0 4 * * *")
 	public void runTheSchedulerForEveryDayAt4AM()
 	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
@@ -164,6 +167,19 @@ public class Scheduler {
 			inputVO.setLocationId(0L);
 			constituencyWiseWorkStatusService.savingLabourBudgetRangeWiseExpenditureDetailsEveryDay(inputVO);
 			LOG.error("Cron Job For Labour Budget Panchayat Vs Expenditure Details Completed");
+		}
+		else 
+			return;
+	}
+	
+	@Scheduled(cron ="0 6 * * *")
+	public void runTheSchedulerForNregaComponetsByEveryDay6AM()
+	{
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			LOG.error("Cron Job For E&D Started");
+			nregstcsService.saveNregaComponentsWiseAchvPercTillToday();
+			LOG.error("Cron Job For E&D Completed");
 		}
 		else 
 			return;

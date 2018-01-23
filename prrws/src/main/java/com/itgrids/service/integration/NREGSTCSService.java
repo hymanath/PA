@@ -1,6 +1,7 @@
 package com.itgrids.service.integration;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IComponentTargetConfigurationDAO;
 import com.itgrids.dao.IComponentTargetConfigurationTempDAO;
+import com.itgrids.dao.IComponentWiseAchievementConfigurationDAO;
+import com.itgrids.dao.IComponentWiseAchievementConfigurationTempDAO;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.INregaComponentCommentsDAO;
@@ -42,6 +45,8 @@ import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
+import com.itgrids.model.ComponentWiseAchievementConfiguration;
+import com.itgrids.model.ComponentWiseAchievementConfigurationTemp;
 import com.itgrids.model.NregaComponentComments;
 import com.itgrids.model.NregaComponentCommentsHistory;
 import com.itgrids.model.NregaComponentStatus;
@@ -98,6 +103,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	private IComponentTargetConfigurationDAO componentTargetConfigurationDAO;
 	@Autowired
 	private IComponentTargetConfigurationTempDAO componentTargetConfigurationTempDAO;
+	@Autowired
+	private IComponentWiseAchievementConfigurationDAO componentWiseAchievementConfigurationDAO;
+	@Autowired
+	private IComponentWiseAchievementConfigurationTempDAO componentWiseAchievementConfigurationTempDAO;
 	
 	/*
 	 * Date : 16/06/2017
@@ -7671,5 +7680,190 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at getFieldManDaysWorkDetails - NREGSTCSService service", e);
 		}
 		return returnList;
+	}
+	
+	/*
+	 * Date : 23/01/2018
+	 * Author :Nandhini
+	 * @description : getFieldManDaysWorkDetails
+	 */
+	
+	public IdNameVO saveNregaComponentsWiseAchvPerc(){
+		IdNameVO statusVO = new IdNameVO();
+		try { 
+			List<ComponentWiseAchievementConfiguration> list = new ArrayList<ComponentWiseAchievementConfiguration>(0);
+			String webServiceUrl = null;
+			Long componentId = 0L;
+			String[] componentsArr = {"Farm Ponds","IHHL","Vermi Compost","Solid Waste Management","Play fields","Burial Ground","Timely Payment"};
+			if(componentsArr != null && componentsArr.length > 0){
+				for (int i = 0; i < componentsArr.length; i++) {
+					if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Farm Ponds")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService_new/FarmPondData_new";
+						componentId = 2l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("IHHL")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService_new/IHHLData_new";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData
+						componentId = 3l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Vermi Compost")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/VermiService_new/VermiData_new";
+						componentId = 4l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Solid Waste Management")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SolidWasteManagementServices/SolidWasteManagementData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SWMService/SWMData
+						componentId = 5l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Play Fields")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFieldsServices/PlayFieldsData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFields/PlayFieldsData
+						componentId = 11l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Burial Ground")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialGroundsServices/BurialGroundsData";
+						componentId = 10l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Timely Payment")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentsServicesNew/TimePaymentsDataNew";
+						componentId = 9l;
+					}
+					InputVO inputVO = new InputVO();
+					inputVO.setYear("2017");
+					inputVO.setFromDate("2017-04-01");
+					inputVO.setToDate("2017-11-30");
+					inputVO.setLocationType("state");
+					inputVO.setLocationId(Long.valueOf(-1));
+					inputVO.setSublocationType("mandal");
+					if(componentsArr[i] != null && (componentsArr[i].trim().toString().equalsIgnoreCase("Farm Ponds") || componentsArr[i].trim().toString().equalsIgnoreCase("Timely Payment"))){
+						inputVO.setProgram("-1");
+					}
+					String str = convertingInputVOToString(inputVO);
+					
+					ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			        
+			        if(response.getStatus() != 200){
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      }else{
+			 	    	 String output = response.getEntity(String.class);
+			 	    	 
+			 	    	if(output != null && !output.isEmpty()){
+			 	    		JSONArray finalArray = new JSONArray(output);
+			 	    		if(finalArray!=null && finalArray.length()>0){
+			 	    			for(int j=0;j<finalArray.length();j++){
+			 	    				JSONObject jObj = (JSONObject) finalArray.get(j);
+			 	    				ComponentWiseAchievementConfiguration model = new ComponentWiseAchievementConfiguration();
+			 	    				model.setNregaComponentId(componentId);
+			 	    				model.setRegionScopesId(5l);
+			 	    				model.setScopeValue((jObj.getString("UNIQUEID").toString().trim().length() > 0 ? jObj.getString("UNIQUEID") : "1").toString());
+			 	    				model.setAchievedPercentage(jObj.getString("PERCENTAGE") != null ? jObj.getString("PERCENTAGE"):"0");
+			 	    				model.setYear("2017-2018");
+			 	    				model.setIsDeleted("N");
+			 	    				model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			 	    				list.add(model);
+			 	    			}
+			 	    		}
+			 	    	}
+			 	      }
+					}
+				}
+			
+			if(list != null && !list.isEmpty()){
+				for (ComponentWiseAchievementConfiguration finalData : list) {
+					componentWiseAchievementConfigurationDAO.save(finalData);
+				}
+			}
+			
+			statusVO.setName("SUCCESS");
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveNregaComponentsWiseAchvPerc - NREGSTCSService service", e);
+		}
+		return statusVO;
+	}
+	
+	/*
+	 * Date : 23/01/2018
+	 * Author :Nandhini
+	 * @description : saveNregaComponentsWiseAchvPercTillToday
+	 */
+	
+	public IdNameVO saveNregaComponentsWiseAchvPercTillToday(){
+		IdNameVO statusVO = new IdNameVO();
+		try { 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date todayDate =dateUtilService.getCurrentDateAndTime();
+			String toDateStr = sdf.format(todayDate);
+			List<ComponentWiseAchievementConfigurationTemp> list = new ArrayList<ComponentWiseAchievementConfigurationTemp>(0);
+			String webServiceUrl = null;
+			Long componentId = 0L;
+			String[] componentsArr = {"Farm Ponds","IHHL","Vermi Compost","Solid Waste Management","Play fields","Burial Ground","Timely Payment"};
+			if(componentsArr != null && componentsArr.length > 0){
+				for (int i = 0; i < componentsArr.length; i++) {
+					if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Farm Ponds")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService_new/FarmPondData_new";
+						componentId = 2l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("IHHL")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService_new/IHHLData_new";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData
+						componentId = 3l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Vermi Compost")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/VermiService_new/VermiData_new";
+						componentId = 4l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Solid Waste Management")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SolidWasteManagementServices/SolidWasteManagementData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SWMService/SWMData
+						componentId = 5l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Play Fields")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFieldsServices/PlayFieldsData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFields/PlayFieldsData
+						componentId = 11l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Burial Ground")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialGroundsServices/BurialGroundsData";
+						componentId = 10l;
+					}else if(componentsArr[i] != null && componentsArr[i].trim().toString().equalsIgnoreCase("Timely Payment")){
+						webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentsServicesNew/TimePaymentsDataNew";
+						componentId = 9l;
+					}
+					InputVO inputVO = new InputVO();
+					inputVO.setYear("2017");
+					inputVO.setFromDate("2017-04-01");
+					inputVO.setToDate(toDateStr);
+					inputVO.setLocationType("state");
+					inputVO.setLocationId(Long.valueOf(-1));
+					inputVO.setSublocationType("mandal");
+					if(componentsArr[i] != null && (componentsArr[i].trim().toString().equalsIgnoreCase("Farm Ponds") || componentsArr[i].trim().toString().equalsIgnoreCase("Timely Payment"))){
+						inputVO.setProgram("-1");
+					}
+					String str = convertingInputVOToString(inputVO);
+					
+					ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			        
+			        if(response.getStatus() != 200){
+			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			 	      }else{
+			 	    	 String output = response.getEntity(String.class);
+			 	    	 
+			 	    	if(output != null && !output.isEmpty()){
+			 	    		JSONArray finalArray = new JSONArray(output);
+			 	    		if(finalArray!=null && finalArray.length()>0){
+			 	    			for(int j=0;j<finalArray.length();j++){
+			 	    				JSONObject jObj = (JSONObject) finalArray.get(j);
+			 	    				ComponentWiseAchievementConfigurationTemp model = new ComponentWiseAchievementConfigurationTemp();
+			 	    				model.setNregaComponentId(componentId);
+			 	    				model.setRegionScopesId(5l);
+			 	    				model.setScopeValue((jObj.getString("UNIQUEID").toString().trim().length() > 0 ? jObj.getString("UNIQUEID") : "1").toString());
+			 	    				model.setAchievedPercentage(jObj.getString("PERCENTAGE") != null ? jObj.getString("PERCENTAGE"):"0");
+			 	    				model.setYear("2017-2018");
+			 	    				model.setIsDeleted("N");
+			 	    				model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			 	    				list.add(model);
+			 	    			}
+			 	    		}
+			 	    	}
+			 	      }
+					}
+				}
+			
+			if(list != null && !list.isEmpty()){
+				for (ComponentWiseAchievementConfigurationTemp finalData : list) {
+					componentWiseAchievementConfigurationTempDAO.save(finalData);
+				}
+			}
+			
+			statusVO.setName("SUCCESS");
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveNregaComponentsWiseAchvPercTillToday - NREGSTCSService service", e);
+		}
+		return statusVO;
 	}
 }

@@ -88,4 +88,6 @@ public interface INREGSTCSService {
 	public List<NregsDataVO> getFieldManDaysWorkDetails(InputVO inputVO);
 	
 	public List<NregsProjectsVO> getLocationWiseEmptyVacenciesDetails(InputVO inputVO);
+	public IdNameVO saveNregaComponentsWiseAchvPerc();
+	public IdNameVO saveNregaComponentsWiseAchvPercTillToday();
 }
