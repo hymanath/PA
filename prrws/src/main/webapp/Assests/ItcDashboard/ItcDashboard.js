@@ -6200,11 +6200,16 @@ str+='<div class="row m_top20">';
 							str+='<div class="row">';
 								str+='<div class="col-sm-4 border_right_yash">';
 									str+='<h5 class="font_weight text-center">No.of startups  <br/>got fund</h5>';
-									str+='<h4 class="font_weight text-center m_top20">'+result.startupsGotFund+'</h4>';
+									if(result.startupsGotFund != null && result.startupsGotFund !=0){
+										str+='<h4 class="font_weight text-center m_top30">'+result.startupsGotFund+'</h4>';
+									}else{
+										str+='<h4 class="font_weight text-center m_top30">-</h4>';
+									}
+									
 								str+='</div>';
 								str+='<div class="col-sm-4 border_right_yash">';
 									str+='<h5 class="font_weight text-center">Fund  <br/>Value</h5>';
-									str+='<h4 class="font_weight text-center m_top20">'+result.fundValue+'</h4>';
+									str+='<h4 class="font_weight text-center m_top30">'+result.fundValue+'</h4>';
 								str+='</div>';
 								str+='<div class="col-sm-4">';
 									str+='<h5 class="font_weight text-center">Proposals In Progress for startups</h5>';
@@ -6223,7 +6228,12 @@ str+='<div class="row m_top20">';
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 border_right_yash">';
 									str+='<h5 class="font_weight text-center">Revenue from<br/>No.of startups</h5>';
-									str+='<h4 class="font_weight text-center m_top30">'+result.revenueStartups+'</h4>';
+									if(result.revenueStartups != null && result.revenueStartups !=0){
+										str+='<h4 class="font_weight text-center m_top30">'+result.revenueStartups+'</h4>';
+									}else{
+										str+='<h4 class="font_weight text-center m_top30">-</h4>';
+									}
+									
 								str+='</div>';
 								str+='<div class="col-sm-6">';
 									str+='<h5 class="font_weight text-center">Fund <br/>Value</h5>';
@@ -6240,15 +6250,15 @@ str+='<div class="row m_top20">';
 				str+='<div class="row">';
 				str+='<div class="col-sm-4 border_right_yash">';
 					str+='<h5 class="font_weight text-center">Merged <br/>No.of <br>startups</h5>';
-					str+='<h4 class="font_weight text-center m_top30">'+result.mergedStartups+'</h4>';
+					str+='<h4 class="font_weight text-center m_top40">'+result.mergedStartups+'</h4>';
 				str+='</div>';
 				str+='<div class="col-sm-4 border_right_yash">';
 					str+='<h5 class="font_weight text-center">Progressing Commercial deals with startups</h5>';
-					str+='<h4 class="font_weight text-center m_top30">'+result.commercialStartups+'</h4>';
+					str+='<h4 class="font_weight text-center m_top40">'+result.commercialStartups+'</h4>';
 				str+='</div>';
 				str+='<div class="col-sm-4">';
 					str+='<h5 class="font_weight text-center">Faculty & Students Trained</h5>';
-					str+='<h4 class="font_weight text-center m_top30">'+result.studentsTrained+'</h4>';
+					str+='<h4 class="font_weight text-center m_top40">'+result.studentsTrained+'</h4>';
 				str+='</div>';
 				str+='</div>';
 			str+='</div>';
