@@ -12,6 +12,11 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
+.panel-black .panel-heading {
+    background-color: #333;
+    border-radius: 0;
+    color: #fff;
+}
 </style>
 </head>
 <body>
@@ -250,5 +255,9 @@
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/js/newsArticles.js"></script>
+<script type="text/javascript">
+var globalDeptId = "${param.deptId}";
+var globalfavName = "${param.name}";
+</script>
 </body>
 </html>
