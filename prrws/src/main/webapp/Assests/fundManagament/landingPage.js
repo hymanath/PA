@@ -4,21 +4,20 @@ var imagesObj = {
 "PRIS":"Group 2344.png","DRAINS":"Group 2345.png","LED MONITORING":"Group 2348.png","UGD":"Group 2359.png","RDP":"Group 2343.png","FUND MANAGMENT SYSTEM":"Group 2352.png","ENGINEERING DEPARTMENT":"Group 2346.png","PANACHAYATI RAJ EXPENDITURE":"Group 2343.png","SPIKE ANALYSIS":"Group 2347.png","MGNREGS":"Group 2357.png","RURAL WATER SUPPLY":"Group 2350.png","ITEC":"Group 2351.png","SWATCH BHARATH IHHL":"Group 2362.png","MGNREGS IHHL":"Group 2362.png",'Labour Budget':"Group 2344.png",'Farm Ponds':"Group 2344.png",'IHHL':"Group 2344.png",'Vermi Compost':"Group 2344.png",'GH':"Group 2344.png",'Check Dams':"Group 2344.png",'Rock Fill Dams':"Group 2344.png",'Solid Waste Management':"Group 2344.png",'Burial Ground':"Group 2344.png",'Play fields':"Group 2344.png",'Agriculture Activities':"Group 2344.png",'Average Wage':"Group 2344.png",'Average Days of Employment':"Group 2344.png",'HH Completed 100 Days':"Group 2344.png",'Timely Payment':"Group 2344.png",'CC Roads1':"Group 2344.png",'Anganwadi':"Group 2344.png",'GP Buildings1':"Group 2344.png",'Mandal buildings1':"Group 2344.png",'NTR 90 Days':"Group 2344.png",'Production of Bricks':"Group 2344.png",'Mulbery New':"Group 2344.png",'Silk worm New':"Group 2344.png",'Horticulture':"Group 2344.png",'Avenue':"Group 2344.png",'Fish Ponds':"Group 2344.png",'Fish Drying Platforms':"Group 2344.png",'Payments':"Group 2344.png",'FAperformance':"Group 2344.png",'OPGK-Perinnials':"Group 2344.png",'OPGK-Annuals':"Group 2344.png",'UGDrainage':"Group 2344.png",'Ntr Jalasiri':"Group 2349.png",'WaterBudget':"Group 2350.png","SWATCH BHARATH PAYMENTS":"Group 2352.png","JALAVANI":"Jalavani.png","JALAVANI":"Jalavani.png",'ASSETS':"assets.png","WATER SOURCE":"water source.png","WORKS":"works.png","PROMOTIONS":"promotions.png","E OFFICE":"eOffice.png","MEESEVA-SLA KPI":"meeSevaSla.png","AP INNOVATION SOCIETY":"APInnovationSoc.png","MEESEVA & KPI":"MeeSevaKPI.png","WATER TANK CHLORINATION":"waterTank.png","coffee":"Group 2907.png","Raising and Maintenance of Nursery":"RaisingandMaintenanceofNursery.png","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and Check Dams.png","Mini Percolation Tanks":"Mini Percolation Tanks.png","Continuous Contour Trenches":"Continuous Contour Trenches.png","Greenary works Chettu":"Greenary works Chettu.png","Agriculture Related Works":"Agriculture Related Works.png","Rural Sanitation Works":"Rural Sanitation Works.png","Soil Moisture Conservation works Neeru":"Soil Moisture Conservation works Neeru.png","Works in community lands":"Works in community lands.png","OTHERS":"OTHERS.png","Institutional Development Works":"Institutional Development Works.png","Road Works":"Road Works.png","Water Harvesting Structures Neeru":"Water Harvesting Structures Neeru.png","Fisheries work":"Fisheries work.png","AH-Live Stock Related works":"AH-Live Stock Related works.png",
 "Renovation and Improvements to existing Check Dams Check Wall":"Group 2352.png","Road Formation Upto WBM GR II Including CD works":"Group 2352.png","Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas":"Group 2352.png","Construction Of Animal Hostel":"Group 2352.png","Roads for Unconnected Habitations 2011-12":"Group 2352.png","Construction of New Check Dam":"Group 2352.png","Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality":"Group 2352.png","Construction of Food Grains Storage Structures of 250MT":"Group 2352.png","Formation of Road upto WBM Gr II surface including CD works in Tribal areas":"Group 2352.png","Construction of Village Haats Infrastructure fecilities":"Group 2352.png","Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham":"Group 2352.png","Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT":"Group 2352.png","Comprehensive Restoration of minor Irrigation Tank":"Group 2352.png","Construction of Buildings for women self help group federation":"Group 2352.png","Work Site Facilities":"Group 2352.png","Renovation and Improvements to existing Percolation Tank  Mini Percolation tank":"Group 2352.png","GP level BNRGSK knowledge resource centre 2012-13 and afterwards":"Group 2352.png","Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality":"Group 2352.png","Production of Grafts in HNTC":"Group 2352.png","Improvements of RYTHU BAZAR":"Group 2352.png","Roads for Unconnected Habitations 2012-13 and afterwards":"Group 2352.png","HNTC Development":"Group 2352.png","New Open Well for Drinking water purpose":"Group 2352.png","Construction of Crematoria Burial Grounds":"Group 2352.png","Repairs to Existing Check Dam":"Group 2352.png","Formation of Road upto Gravel surface including CD works to agriculture fields":"Group 2352.png","Formation of Approach Road upto Gravel surface including CD works to Burial ground":"Group 2352.png","Construction of Food Grains Storage Structures of 500MT":"Group 2352.png","Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas":"Group 2352.png","Raising of Cashew bag seedlings for 2014-15":"Group 2352.png","Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas":"Group 2352.png","NTR Rural House":"Group 2352.png","Cattle Ponds":"Group 2352.png","Desilting of Drinking Water Tanks":"Group 2352.png","Animal Husbandry Others":"Group 2352.png","Comprehensive Restoration of minor Irrigation Tank1":"Group 2352.png",
 "Avenue Plantation":"Group 2352.png","Forest Others":"Group 2352.png","Scooping and Dibbling of seed":"Group 2352.png","IJP PROGRAM WORKS":"Group 2352.png",
-"Azolla Production Unit":"Group 2352.png","Construction of silopits of 3 MTs capacity":"Group 2352.png","Fodder trough for Cattle Cattle drinking water trough":"Group 2352.png","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"Group 2352.png","Raising of Perinnial Fodder":"Group 2352.png","Raising of Silvipasture clubbed with subabul plantation":"Group 2352.png","Raising and Maintenance of Avenue plantations":"Group 2352.png","Raising and Maintenance of Block Plantations":"Group 2352.png","Raising and Maintenance of nurseries":"Group 2352.png","Soil and Moisture Conservation Works":"Group 2352.png","CM EODB":"MeeSevaKPI.png","BIOMETRIC DASHBOARD":"BioMetricL.png","Man Days Comparision":"Group 2352.png","AC WORKS":"Group 2352.png","Expenditure":"Group 2352.png","Field Man Days":"Group 2352.png","KEY PERFORMANCE":"Group 2352.png","FA Vacancies":"Group 2352.png","Solid Waste Management":"Group 2352.png","PR eOffice":"eOffice.png","Enc Works":"Road Works.png","Enc Roads":"Road Works.png"
-
+"Azolla Production Unit":"Group 2352.png","Construction of silopits of 3 MTs capacity":"Group 2352.png","Fodder trough for Cattle Cattle drinking water trough":"Group 2352.png","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"Group 2352.png","Raising of Perinnial Fodder":"Group 2352.png","Raising of Silvipasture clubbed with subabul plantation":"Group 2352.png","Raising and Maintenance of Avenue plantations":"Group 2352.png","Raising and Maintenance of Block Plantations":"Group 2352.png","Raising and Maintenance of nurseries":"Group 2352.png","Soil and Moisture Conservation Works":"Group 2352.png","CM EODB":"MeeSevaKPI.png","BIOMETRIC DASHBOARD":"BioMetricL.png","Man Days Comparision":"Group 2352.png","AC WORKS":"Group 2352.png","Expenditure":"Group 2352.png","Field Man Days":"Group 2352.png","KEY PERFORMANCE":"Group 2352.png","FA Vacancies":"Group 2352.png","Solid Waste Management":"Group 2352.png","PR eOffice":"eOffice.png","Enc Works":"Road Works.png","Enc Roads":"Road Works.png","NEWS":"Cnp News.png"
 }
 
 var blockClassObject = {
 "PRIS":"prisOverAchvmntAllCls","DRAINS":"DRAINSAllCls","LED MONITORING":"LEDMONITORINGAllCls","UGD":"","RDP":"","FUND MANAGMENT SYSTEM":"FUNDMANAGMENTSYSTEMAllCls","ENGINEERING DEPARTMENT":"encOverAchvmntAllCls","PANACHAYATI RAJ EXPENDITURE":"preOverAchvmntAllCls","SPIKE ANALYSIS":"SPIKEANALYSISAllCls","MGNREGS":"MGNREGSAllCls","RURAL WATER SUPPLY":"RURALWATERSUPPLYAllCls","ITEC":"itecOverAchvmntAllCls","SWATCH BHARATH IHHL":"SWATCHBHARATHIHHLAllCls","MGNREGS IHHL":"MGNREGSIHHLAllCls","SWATCH BHARATH PAYMENTS":"SWATCHBHARATHPAYMENTSAllCls",'Labour Budget':'LabourBudgetAllCls','Farm Ponds':'FarmPondsAllCls','IHHL':'IHHLAllCls','Vermi Compost':'VermiCompostAllCls','GH':'GHAllCls','Check Dams':'CheckDamsAllCls','Rock Fill Dams':'RockFillDamsAllCls','Solid Waste Management':'SolidWasteManagementAllCls','Burial Ground':'BurialGroundAllCls','Play fields':'PlayfieldsAllCls','Agriculture Activities':'AgricultureActivitiesAllCls','Average Wage':'AverageWageAllCls','Average Days of Employment':'AverageDaysofEmploymentAllCls','HH Completed 100 Days':'HHCompleted100DaysAllCls','Timely Payment':'TimelyPaymentAllCls','CC Roads1':'CCRoads1AllCls','Anganwadi':'AnganwadiAllCls','GP Buildings1':'GPBuildings1AllCls','Mandal buildings1':'Mandalbuildings1AllCls','NTR 90 Days':'NTR90DaysAllCls','Production of Bricks':'ProductionofBricksAllCls','Mulbery New':'MulberyNewAllCls','Silk worm New':'SilkwormNewAllCls','Horticulture':'HorticultureAllCls','Avenue':'AvenueAllCls','Fish Ponds':'FishPondsAllCls','Fish Drying Platforms':'FishDryingPlatformsAllCls','Payments':'PaymentsAllCls','FAperformance':'FAperformanceAllCls','OPGK-Perinnials':'OPGK-PerinnialsAllCls','OPGK-Annuals':'OPGK-AnnualsAllCls','UGDrainage':'UGDrainageAllCls','Ntr Jalasiri':"NtrJalasiriAllCls",'WaterBudget':"WaterBudgetAllCls",'JALAVANI':"JALAVANIAllCls",'ASSETS':"ASSETSAllCls","WATER SOURCE":"WATERSOURCEAllCls","WORKS":"WORKSAllCls","PROMOTIONS":"PROMOTIONSAllCls","E OFFICE":"EOFFICEAllCls","MEESEVA-SLA KPI":"MEESEVA-SLAKPIAllCls","AP INNOVATION SOCIETY":"APINNOVATIONSOCIETYAllCls","WATER TANK CHLORINATION":"WATERTANKCHLORINATIONAllCls","coffee":"coffeeAllCls","Raising and Maintenance of Nursery":"RaisingandMaintenanceofNurseryAllCls","Desilting of Perculation Tanks and Check Dams":"DesiltingofPerculationTanksandCheckDamsAllCls","Mini Percolation Tanks":"MiniPercolationTanksAllCls","Continuous Contour Trenches":"ContinuousContourTrenchesAllCls","Greenary works Chettu":"GreenaryworksChettuAllCls","Agriculture Related Works":"AgricultureRelatedWorksAllCls","Rural Sanitation Works":"RuralSanitationWorksAllCls","Soil Moisture Conservation works Neeru":"SoilMoistureConservationworksNeeruAllCls","Works in community lands":"WorksincommunitylandsAllCls","OTHERS":"OTHERSAllCls","Institutional Development Works":"InstitutionalDevelopmentWorksAllCls","Road Works":"RoadWorksAllCls","Water Harvesting Structures Neeru":"WaterHarvestingStructuresNeeruAllCls","Fisheries work":"FisheriesworkAllCls","AH-Live Stock Related works":"AH-LiveStockRelatedworksAllCls",
 "Renovation and Improvements to existing Check Dams Check Wall":"RenovationandImprovementstoexistingCheckDamsCheckWallAllCls","Road Formation Upto WBM GR II Including CD works":"RoadFormationUptoWBMGRIIIncludingCDworksAllCls","Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas":"FormationofRoaduptoWBMGrIIsurfaceincludingCDworksConnectingSChabitationorLocalityinPlainareasAllCls","Construction Of Animal Hostel":"ConstructionOfAnimalHostelAllCls","Roads for Unconnected Habitations 2011-12":"RoadsforUnconnectedHabitations2011-12AllCls","Construction of New Check Dam":"ConstructionofNewCheckDamAllCls","Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality":"FormationofinternalroaduptoWBMGrIIsurfaceincludingCDworksandDrainsinSCHabitationorLocalityAllCls","Construction of Food Grains Storage Structures of 250MT":"ConstructionofFoodGrainsStorageStructuresof250MTAllCls","Formation of Road upto WBM Gr II surface including CD works in Tribal areas":"FormationofRoaduptoWBMGrIIsurfaceincludingCDworksinTribalareasAllCls","Construction of Village Haats Infrastructure fecilities":"ConstructionofVillageHaatsInfrastructurefecilitiesAllCls","Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham":"ProvidingBTroadforSriAnanthaPadmanabhaSwamyTempleHilltopRoadatPadmabnabhamAllCls","Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT":"ConstructionofPostHarvestfacilitiesDryingPlatformincludingPuccastoragefacilitiesof100MTAllCls","Comprehensive Restoration of minor Irrigation Tank":"ComprehensiveRestorationofminorIrrigationTankAllCls","Construction of Buildings for women self help group federation":"ConstructionofBuildingsforwomenselfhelpgroupfederationAllCls","Work Site Facilities":"WorkSiteFacilitiesAllCls","Renovation and Improvements to existing Percolation Tank  Mini Percolation tank":"RenovationandImprovementstoexistingPercolationTankMiniPercolationtankAllCls","GP level BNRGSK knowledge resource centre 2012-13 and afterwards":"GPlevelBNRGSKknowledgeresourcecentre2012-13andafterwardsAllCls","Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality":"FormationofinternalroaduptoWBMGrIIsurfaceincludingCDworksandDrainsinotherHabitationorLocalityAllCls","Production of Grafts in HNTC":"ProductionofGraftsinHNTCAllCls","Improvements of RYTHU BAZAR":"ImprovementsofRYTHUBAZARAllCls","Roads for Unconnected Habitations 2012-13 and afterwards":"RoadsforUnconnectedHabitations2012-13andafterwardsAllCls","HNTC Development":"HNTCDevelopmentAllCls","New Open Well for Drinking water purpose":"NewOpenWellforDrinkingwaterpurposeAllCls","Construction of Crematoria Burial Grounds":"ConstructionofCrematoriaBurialGroundsAllCls","Repairs to Existing Check Dam":"RepairstoExistingCheckDamAllCls","Formation of Road upto Gravel surface including CD works to agriculture fields":"FormationofRoaduptoGravelsurfaceincludingCDworkstoagriculturefieldsAllCls","Formation of Approach Road upto Gravel surface including CD works to Burial ground":"FormationofApproachRoaduptoGravelsurfaceincludingCDworkstoBurialgroundAllCls","Construction of Food Grains Storage Structures of 500MT":"ConstructionofFoodGrainsStorageStructuresof500MTAllCls","Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas":"FormationofRoaduptoWBMGrIIsurfaceincludingCDworksConnectingotherhabitationorLocalityinPlainareasAllCls","Raising of Cashew bag seedlings for 2014-15":"RaisingofCashewbagseedlingsfor2014-15AllCls","Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas":"FormationofRoaduptoWBMGrIIsurfaceincludingCDworksConnectingSThabitationorLocalityinPlainareasAllCls","NTR Rural House":"NTRRuralHouseAllCls","Cattle Ponds":"CattlePondsAllCls","Desilting of Drinking Water Tanks":"DesiltingofDrinkingWaterTanksAllCls","Animal Husbandry Others":"AnimalHusbandryOthersAllCls","Comprehensive Restoration of minor Irrigation Tank1":"ComprehensiveRestorationofminorIrrigationTank1AllCls","Avenue Plantation":"AvenuePlantationAllCls","Forest Others":"ForestOthersAllcls","Scooping and Dibbling of seed":"ScoopingandDibblingofseedAllCls","IJP PROGRAM WORKS":"IJPPROGRAMWORKSAllCls",
-"Azolla Production Unit":"AzollaProductionUnitAllCls","Construction of silopits of 3 MTs capacity":"Constructionofsilopitsof3MTscapacityAllCls","Fodder trough for Cattle Cattle drinking water trough":"FoddertroughforCattleCattledrinkingwatertroughAllCls","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"RaisingofFodderMaizeFodderJowarNutrifeedSugargrazeAllCls","Raising of Perinnial Fodder":"RaisingofPerinnialFodderAllCls","Raising of Silvipasture clubbed with subabul plantation":"RaisingofSilvipastureclubbedwithsubabulplantationAllCls","Raising and Maintenance of Avenue plantations":"RaisingandMaintenanceofAvenueplantationsAllCls","Raising and Maintenance of Block Plantations":"RaisingandMaintenanceofBlockPlantationsAllCls","Raising and Maintenance of nurseries":"RaisingandMaintenanceofnurseriesAllCls","Soil and Moisture Conservation Works":"SoilandMoistureConservationWorksAllCls","CM EODB":"CMEODBAllCls","BIOMETRIC DASHBOARD":"BIOMETRICDASHBOARDAllCls","Man Days Comparision":"ManDaysComparisionAllCls","AC WORKS":"ACWORKSAllCls","Expenditure":"ExpenditureAllCls","Field Man Days":"FieldManDaysAllCls","KEY PERFORMANCE":"KEYPERFORMANCEAllCls","FA Vacancies":"FAVacanciesAllCls","Solid Waste Management":"SolidWasteManagementAllCls","PR eOffice":"PReOfficeAllCls","Enc Works":"EncWorksAllCls","Enc Roads":"EncRoadsAllCls"
+"Azolla Production Unit":"AzollaProductionUnitAllCls","Construction of silopits of 3 MTs capacity":"Constructionofsilopitsof3MTscapacityAllCls","Fodder trough for Cattle Cattle drinking water trough":"FoddertroughforCattleCattledrinkingwatertroughAllCls","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"RaisingofFodderMaizeFodderJowarNutrifeedSugargrazeAllCls","Raising of Perinnial Fodder":"RaisingofPerinnialFodderAllCls","Raising of Silvipasture clubbed with subabul plantation":"RaisingofSilvipastureclubbedwithsubabulplantationAllCls","Raising and Maintenance of Avenue plantations":"RaisingandMaintenanceofAvenueplantationsAllCls","Raising and Maintenance of Block Plantations":"RaisingandMaintenanceofBlockPlantationsAllCls","Raising and Maintenance of nurseries":"RaisingandMaintenanceofnurseriesAllCls","Soil and Moisture Conservation Works":"SoilandMoistureConservationWorksAllCls","CM EODB":"CMEODBAllCls","BIOMETRIC DASHBOARD":"BIOMETRICDASHBOARDAllCls","Man Days Comparision":"ManDaysComparisionAllCls","AC WORKS":"ACWORKSAllCls","Expenditure":"ExpenditureAllCls","Field Man Days":"FieldManDaysAllCls","KEY PERFORMANCE":"KEYPERFORMANCEAllCls","FA Vacancies":"FAVacanciesAllCls","Solid Waste Management":"SolidWasteManagementAllCls","PR eOffice":"PReOfficeAllCls","Enc Works":"EncWorksAllCls","Enc Roads":"EncRoadsAllCls","NEWS":"NewsAllCls"
 
 }
 
 var blockHeadingObject = {
 "PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"No.of Habitations Covered","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery New':"ACHIEVED",'Silk worm New':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"",'ASSETS':"RWS ASSETS","WATER SOURCE":"TOTAL","WORKS":"COMPLETED","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA-SLA KPI":"Beyond SLA/etaal - KPI","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CHLORINATION":"","coffee":"COFFEE","Raising and Maintenance of Nursery":"Raising and Maintenance of Nursery","Desilting of Perculation Tanks and Check Dams":"Desilting of Perculation Tanks and CheckDams","Mini Percolation Tanks":"Mini Percolation Tanks","Continuous Contour Trenches":"Continuous Contour Trenches","Greenary works Chettu":"Greenary works Chettu","Agriculture Related Works":"Agriculture Related Works","Rural Sanitation Works":"Rural Sanitation Works","Soil Moisture Conservation works Neeru":"Soil Moisture Conservation works Neeru","Works in community lands":"Works in community lands","OTHERS":"OTHERS","Institutional Development Works":"Institutional Development Works","Road Works":"Road Works","Water Harvesting Structures Neeru":"Water Harvesting Structures Neeru","Fisheries work":"Fisheries work","AH-Live Stock Related works":"AH-Live Stock Related works",
 "Renovation and Improvements to existing Check Dams Check Wall":"ACHIEVED","Road Formation Upto WBM GR II Including CD works":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas":"ACHIEVED","Construction Of Animal Hostel":"ACHIEVED","Roads for Unconnected Habitations 2011-12":"ACHIEVED","Construction of New Check Dam":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality":"ACHIEVED","Construction of Food Grains Storage Structures of 250MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works in Tribal areas":"ACHIEVED","Construction of Village Haats Infrastructure fecilities":"ACHIEVED","Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham":"ACHIEVED","Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank":"ACHIEVED","Construction of Buildings for women self help group federation":"ACHIEVED","Work Site Facilities":"ACHIEVED","Renovation and Improvements to existing Percolation Tank  Mini Percolation tank":"ACHIEVED","GP level BNRGSK knowledge resource centre 2012-13 and afterwards":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality":"ACHIEVED","Production of Grafts in HNTC":"ACHIEVED","Improvements of RYTHU BAZAR":"ACHIEVED","Roads for Unconnected Habitations 2012-13 and afterwards":"ACHIEVED","HNTC Development":"ACHIEVED","New Open Well for Drinking water purpose":"ACHIEVED","Construction of Crematoria Burial Grounds":"ACHIEVED","Repairs to Existing Check Dam":"ACHIEVED","Formation of Road upto Gravel surface including CD works to agriculture fields":"ACHIEVED","Formation of Approach Road upto Gravel surface including CD works to Burial ground":"ACHIEVED","Construction of Food Grains Storage Structures of 500MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas":"ACHIEVED","Raising of Cashew bag seedlings for 2014-15":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas":"ACHIEVED","NTR Rural House":"NTR Rural House","Cattle Ponds":"Cattle Ponds","Desilting of Drinking Water Tanks":"Desilting of Drinking Water Tanks","Animal Husbandry Others":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank1":"ACHIEVED","Avenue Plantation":"ACHIEVED","Forest Others":"ACHIEVED","Scooping and Dibbling of seed":"ACHIEVED","IJP PROGRAM WORKS":"ACHIEVED",
-"Azolla Production Unit":"ACHIEVED","Construction of silopits of 3 MTs capacity":"ACHIEVED","Fodder trough for Cattle Cattle drinking water trough":"ACHIEVED","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"ACHIEVED","Raising of Perinnial Fodder":"ACHIEVED","Raising of Silvipasture clubbed with subabul plantation":"ACHIEVED","Raising and Maintenance of Avenue plantations":"ACHIEVED","Raising and Maintenance of Block Plantations":"ACHIEVED","Raising and Maintenance of nurseries":"ACHIEVED","Soil and Moisture Conservation Works":"ACHIEVED","CM EODB":"Total/Approved","BIOMETRIC DASHBOARD":"TotalEmployee/Present","Man Days Comparision":"","AC WORKS":"RURAL CONSTITUENCIES","Expenditure":"","Field Man Days":"Today","KEY PERFORMANCE":"PERCENTAGE","FA Vacancies":"Total Vacancies","Solid Waste Management":"","PR eOffice":"TOTAL PENDENCY","Enc Works":"Techincal Sancationed / Completed","Enc Roads":"Total Road Length"
+"Azolla Production Unit":"ACHIEVED","Construction of silopits of 3 MTs capacity":"ACHIEVED","Fodder trough for Cattle Cattle drinking water trough":"ACHIEVED","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"ACHIEVED","Raising of Perinnial Fodder":"ACHIEVED","Raising of Silvipasture clubbed with subabul plantation":"ACHIEVED","Raising and Maintenance of Avenue plantations":"ACHIEVED","Raising and Maintenance of Block Plantations":"ACHIEVED","Raising and Maintenance of nurseries":"ACHIEVED","Soil and Moisture Conservation Works":"ACHIEVED","CM EODB":"Total/Approved","BIOMETRIC DASHBOARD":"TotalEmployee/Present","Man Days Comparision":"","AC WORKS":"RURAL CONSTITUENCIES","Expenditure":"","Field Man Days":"Today","KEY PERFORMANCE":"PERCENTAGE","FA Vacancies":"Total Vacancies","Solid Waste Management":"","PR eOffice":"TOTAL PENDENCY","Enc Works":"Techincal Sancationed / Completed","Enc Roads":"Total Road Length","NEWS":"News"
 }
 var overViewArrConsolidated = [];
 var overViewIdsArr = [];
@@ -122,6 +121,17 @@ function buildFavouriteComponentsResult(result) {
 							str+='<h2 class="" style="margin-top: 0px">161</h2>';
 							str+='<p class="">RURAL CONSTITUENCIES</p>';
 							str+='</div>';
+						}else if(result[i].name == 'NEWS'){
+							str+='<div class="row" >';
+								str+='<div id="printMediaCountId"></div>';
+								str+='<div class="col-sm-1 text-right">';
+									str+='<h2 style="font-size:45px;">/</h2>';
+								str+='</div>';
+								str+='<div id="ElectronicMediaCountId"></div>';
+							str+='</div>';
+							str+='<div class="m_top5">';
+								str+='<p class="">News</p>';
+							str+='</div>';
 						}
 						else{
 							str+='<div class="" style="text-align: right">';
@@ -140,6 +150,7 @@ function buildFavouriteComponentsResult(result) {
 							str+='<i class="fa fa-star starcolorChange '+componentNameWithoutSpace+'Color" attr_url="'+result[i].url
 							+'" attr_full_block_name="'+compnentName+'" attr_color_name="green" attr_block_name="'+componentNameWithoutSpace+'" aria-hidden="true"></i>';
 							str+='<a class="pull-right" href="'+result[i].url+'" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
+							
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -379,6 +390,16 @@ function onloadCallToGetAllBlockAchievent () {
 	getEOfcOtherDepartWiseOverviewDetails();//PR eOffice
 	getLocationWiseWorksInformation();//ENC Works.
 	getStateWiseRoadsInformation();//ENC ROADS.
+	getNewsPapersInformation(0);
+	getBulletinNewsPapersInformation(0);
+	getNewsPapersInformation(1699);
+	getBulletinNewsPapersInformation(1699);
+	getNewsPapersInformation(2170);
+	getBulletinNewsPapersInformation(2170);
+	getNewsPapersInformation(2171);
+	getBulletinNewsPapersInformation(2171);
+	getNewsPapersInformation(1698);
+	getBulletinNewsPapersInformation(1698);
 	for(var i in globalComponentNameArr)
 	{
 		if(globalComponentNameArr[i] == 'NTR 90 Days' || globalComponentNameArr[i] == 'Production of Bricks' || globalComponentNameArr[i] == 'Cattle Drinking Water Troughs' || globalComponentNameArr[i] == 'Raising of Perinnial Fodders' || globalComponentNameArr[i] == 'Fish Ponds' || globalComponentNameArr[i] == 'Fish Drying Platforms' || globalComponentNameArr[i] == 'NTR Rural House' || globalComponentNameArr[i] == 'OPGK-Perinnials' || globalComponentNameArr[i] == 'OPGK-Annuals')
@@ -1975,6 +1996,45 @@ function buildPageWiseComponents(result,pageId){
 								}else if(result[i].subList[j].name == "Man Days Comparision"){
 									str+='<div class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="text-align: right">';
 									str+='<h2 class="" style="margin-top: 0px"><span></span></h2>';
+								}else if(result[i].subList[j].name == "NEWS"){
+									if(result[i].subList[j].order == 308){
+									str+='<div class="" style="text-align: right">';	
+									str+='<div class="row" >';
+										str+='<div id="printMediaCountId1"></div>';
+										str+='<div class="col-sm-1 text-right">';
+											str+='<h2 style="font-size:45px;">/</h2>';
+										str+='</div>';
+										str+='<div id="ElectronicMediaCountId1"></div>';
+									str+='</div>';
+									}else if(result[i].subList[j].order == 309){
+										str+='<div class="" style="text-align: right">';	
+										str+='<div class="row" >';
+										str+='<div id="printMediaCountId2"></div>';
+										str+='<div class="col-sm-1 text-right">';
+											str+='<h2 style="font-size:45px;">/</h2>';
+										str+='</div>';
+										str+='<div id="ElectronicMediaCountId2"></div>';
+									str+='</div>';
+									}else if(result[i].subList[j].order == 310){
+										str+='<div class="" style="text-align: right">';	
+										str+='<div class="row" >';
+										str+='<div id="printMediaCountId3"></div>';
+										str+='<div class="col-sm-1 text-right">';
+											str+='<h2 style="font-size:45px;">/</h2>';
+										str+='</div>';
+										str+='<div id="ElectronicMediaCountId3"></div>';
+									str+='</div>';
+									}else if(result[i].subList[j].order == 311){
+										str+='<div class="" style="text-align: right">';	
+										str+='<div class="row" >';
+											str+='<div id="printMediaCountId4"></div>';
+												str+='<div class="col-sm-1 text-right">';
+													str+='<h2 style="font-size:45px;">/</h2>';
+												str+='</div>';
+											str+='<div id="ElectronicMediaCountId4"></div>';
+									str+='</div>';
+									}
+									
 								}else{
 									str+='<div class=" " style="text-align: right">';
 									str+='<h2 class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="margin-top: 0px"><span></span></h2>';
@@ -1997,6 +2057,7 @@ function buildPageWiseComponents(result,pageId){
 									str+='<i class="fa fa-star starcolorChange '+result[i].subList[j].name.replace(/\s+/g, '')+'Color" title="click to add as favourite component."  attr_url="'+result[i].subList[j].url+'" attr_full_block_name="'+result[i].subList[j].name+'" attr_color_name="gray" attr_block_name="'+result[i].subList[j].name.replace(/\s+/g, '')+'" aria-hidden="true" attr_page_id="'+pageId+'"></i>';
 								}
 								str+='<a class="pull-right" href="'+result[i].subList[j].url+'" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
+								
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -2321,3 +2382,153 @@ function jalavaniData(notifiedValue,inProgressValue)
 	str+='</div>';		
 	return str;
 }
+
+var newsStartDate = moment().startOf('month').format("DD-MM-YYYY");
+var newsEndDate = moment().format("DD-MM-YYYY");
+var url = window.location.href;
+var wurl = url.substr(0,(url.indexOf(".com")+4));
+if(wurl.length == 3)
+	wurl = url.substr(0,(url.indexOf(".in")+3));
+
+ function getNewsPapersInformation(deptId){
+		 $("#printMediaCountId").html(spinner);
+		 $("#printMediaCountId1").html(spinner);
+		 $("#printMediaCountId2").html(spinner);
+		 $("#printMediaCountId3").html(spinner);
+		 $("#printMediaCountId4").html(spinner);
+		 var printCount =0;
+		 var printCount1 =0;
+		 var printCount2 =0;
+		 var printCount3 =0;
+		 var printCount4 =0;
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+newsStartDate+"/"+newsEndDate+"/"+deptId
+			url: "http://192.168.11.173:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+newsStartDate+"/"+newsEndDate+"/"+deptId
+		}).then(function(result){
+			if(result !=null && result.length>0){
+				if(deptId ==0){
+					for(var i in result){
+					printCount =printCount+result[i].count;
+				}
+				var str='';
+				str+='<div class="col-sm-6 text-right">';
+					str+='<h2 style="margin-top: 0px">'+printCount+'</h2>';
+					str+='<p class="">Print Media</p>';
+				str+='</div>';
+				$("#printMediaCountId").html(str);
+				}else if(deptId ==1699){
+					for(var i in result){
+					printCount1 =printCount1+result[i].count;
+				}
+				var str='';
+				str+='<div class="col-sm-6 text-right">';
+					str+='<h2 style="margin-top: 0px">'+printCount1+'</h2>';
+					str+='<p class="">Print Media</p>';
+				str+='</div>';
+				$("#printMediaCountId1").html(str);
+				}else if(deptId ==2170){
+					for(var i in result){
+					printCount2 =printCount2+result[i].count;
+				}
+				var str='';
+				str+='<div class="col-sm-6 text-right">';
+					str+='<h2 style="margin-top: 0px">'+printCount2+'</h2>';
+					str+='<p class="">Print Media</p>';
+				str+='</div>';
+				$("#printMediaCountId2").html(str);
+				}else if(deptId ==2171){
+					for(var i in result){
+					printCount3 =printCount3+result[i].count;
+				}
+				var str='';
+				str+='<div class="col-sm-6 text-right">';
+					str+='<h2 style="margin-top: 0px">'+printCount3+'</h2>';
+					str+='<p class="">Print Media</p>';
+				str+='</div>';
+				$("#printMediaCountId3").html(str);
+				}else if(deptId ==1698){
+					for(var i in result){
+					printCount4 =printCount4+result[i].count;
+				}
+				var str='';
+				str+='<div class="col-sm-6 text-right">';
+					str+='<h2 style="margin-top: 0px">'+printCount4+'</h2>';
+					str+='<p class="">Print Media</p>';
+				str+='</div>';
+				$("#printMediaCountId4").html(str);
+				}
+			}
+			
+		});
+}
+function getBulletinNewsPapersInformation(deptId){
+		$("#ElectronicMediaCountId").html(spinner);
+		$("#ElectronicMediaCountId1").html(spinner);
+		$("#ElectronicMediaCountId2").html(spinner);
+		$("#ElectronicMediaCountId3").html(spinner);
+		$("#ElectronicMediaCountId4").html(spinner);
+		var electCount=0;
+		var electCount1=0;
+		var electCount2=0;
+		var electCount3=0;
+		var electCount4=0;
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
+			url: "http://192.168.11.173:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
+		}).then(function(result){
+			if(result !=null && result.length>0){
+				if(deptId ==0){
+					for(var i in result){
+						electCount =electCount+result[i].count;
+					}
+					var str='';
+					str+='<div class="col-sm-5 text-right">';
+						str+='<h2 class="" style="margin-top: 0px">'+electCount+'</h2>';
+						str+='<p class="">Electronic Media</p>';
+					str+='</div>';
+					$("#ElectronicMediaCountId").html(str);
+				}else if(deptId ==1699){
+					for(var i in result){
+						electCount1 =electCount1+result[i].count;
+					}
+					var str='';
+					str+='<div class="col-sm-5 text-right">';
+						str+='<h2 class="" style="margin-top: 0px">'+electCount1+'</h2>';
+						str+='<p class="">Electronic Media</p>';
+					str+='</div>';
+					$("#ElectronicMediaCountId1").html(str);
+				}else if(deptId ==2170){
+					for(var i in result){
+						electCount2 =electCount2+result[i].count;
+					}
+					var str='';
+					str+='<div class="col-sm-5 text-right">';
+						str+='<h2 class="" style="margin-top: 0px">'+electCount2+'</h2>';
+						str+='<p class="">Electronic Media</p>';
+					str+='</div>';
+					$("#ElectronicMediaCountId2").html(str);
+				}else if(deptId ==2171){
+					for(var i in result){
+						electCount3 =electCount3+result[i].count;
+					}
+					var str='';
+					str+='<div class="col-sm-5 text-right">';
+						str+='<h2 class="" style="margin-top: 0px">'+electCount3+'</h2>';
+						str+='<p class="">Electronic Media</p>';
+					str+='</div>';
+					$("#ElectronicMediaCountId3").html(str);
+				}else if(deptId ==1698){
+					for(var i in result){
+						electCount4 =electCount4+result[i].count;
+					}
+					var str='';
+					str+='<div class="col-sm-5 text-right">';
+						str+='<h2 class="" style="margin-top: 0px">'+electCount4+'</h2>';
+						str+='<p class="">Electronic Media</p>';
+					str+='</div>';
+					$("#ElectronicMediaCountId4").html(str);
+				}
+				
+			}	
+		});
+} 
