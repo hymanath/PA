@@ -1824,5 +1824,8 @@
 	<bean id="alertUpdationAPIAction" class="com.itgrids.partyanalyst.web.action.AlertUpdationAPIAction" singleton="false">
 		<!-- <property name="alertUpdationAPIService" ref="alertUpdationAPIService" /> -->
 	</bean>
+	<bean id="imageRenderingAction" class="com.itgrids.partyanalyst.web.action.ImageRenderingAction" singleton="false">
+		<!-- <property name="alertUpdationAPIService" ref="alertUpdationAPIService" /> -->
+	</bean>
 </beans>	
 	
