@@ -79,6 +79,8 @@ var globaltype = "${param.type}";
 				getDepartmentWiseAnalysisOfActionImmediatelyDetailsInfoForArticles(0);
 			}else if(globaltype == "districtdata"){
 				getDepartmentWiseDistrictViewForArticles(0);
+			}else if(globaltype == "stateData"){
+				getDepartmentWiseStateLevelDetailsInfoForArticles(0);
 			}
 		}	
 	});
@@ -577,6 +579,8 @@ var globaltype = "${param.type}";
 								getDepartmentWiseAnalysisOfActionImmediatelyDetailsInfoForArticles(num);
 							}else if(globaltype == "districtdata"){
 								getDepartmentWiseDistrictViewForArticles(num);
+							}else if(globaltype == "stateData"){
+								getDepartmentWiseStateLevelDetailsInfoForArticles(num);
 							}
 						}	
 					}
@@ -1080,6 +1084,19 @@ var globaltype = "${param.type}";
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseDistrictViewForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalbenefitId+""
 			
 			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseDistrictViewForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalbenefitId+""
+			
+		}).then(function(results){
+			$("#articlesDivId").html('');
+			var countByDate = 0;
+			buildArticlesByDateRangeWise(results,globalStIndex,countByDate)
+		});
+	}
+	function getDepartmentWiseStateLevelDetailsInfoForArticles(globalStIndex){
+		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');		
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseStateLevelDetailsInfoForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalbenefitId+""
+			
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseStateLevelDetailsInfoForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalbenefitId+""
 			
 		}).then(function(results){
 			$("#articlesDivId").html('');
