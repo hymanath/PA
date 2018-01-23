@@ -128,7 +128,7 @@ public class Scheduler {
 			return;
 	}
 	
-	@Scheduled(cron ="0 6 * * * ?")
+	@Scheduled(cron ="0 30 0 * * ?")
 	public void runTheSchedulerForEvry24HrsAt6AM()
 	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
@@ -152,7 +152,7 @@ public class Scheduler {
 			return;
 	}
 	
-	@Scheduled(cron ="0 4 * * * ?")
+	@Scheduled(cron ="0 30 0 * * ?")
 	public void runTheSchedulerForEveryDayAt4AM()
 	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
@@ -172,7 +172,7 @@ public class Scheduler {
 			return;
 	}
 	
-	@Scheduled(cron ="0 6 * * * ?")
+	@Scheduled(cron ="0 30 0 * * ?")
 	public void runTheSchedulerForNregaComponetsByEveryDay6AM()
 	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
