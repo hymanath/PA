@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsFmsWorksVO;
+import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.ResponseVO;
 
 public interface IConstituencyWiseWorkStatusService {
@@ -18,4 +20,7 @@ public interface IConstituencyWiseWorkStatusService {
 	
 	public ResponseVO savingLabourBudgetRangeWiseExpenditureDetails(InputVO inputVO);
 	public ResponseVO savingLabourBudgetRangeWiseExpenditureDetailsEveryDay(InputVO inputVO);
+	
+	public NregsOverviewVO getComponentWiseOverview(InputVO inputVO,String locationId,Long levelId);
+	public List<NregsDataVO> getComponentWiseLocationData(InputVO inputVO,String locationId,Long levelId);
 }
