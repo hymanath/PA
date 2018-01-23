@@ -4617,128 +4617,111 @@
 	</div>
 	<div class="row">
 		<!-----------News Letters Start----------->
-		<!--<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="newsLetters">
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="newsLetters">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/news.png" class="iconClass" style="background-color:none;"/>
-										newsLetters
-								</h4>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="newsLetters">
-								<span class="newsLettersRefresh pull-right">
-									<i class="glyphicon glyphicon-refresh"></i>
-								</span>
-							</div>     
+		<!-- <div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="newsLetters">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="newsLetters">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/news.png" class="iconClass" style="background-color:none;"/>
+									newsLetters
+							</h4>
 						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="newsLetters">
+							<span class="newsLettersRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</span>
+						</div>     
 					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="newsLetters">
-								<div class="row">
-									<div class="col-sm-4">
-										<label>State</label>
-										<select class="form-control chosen-select" id="newsLetterStateId">
-											<option value="" selected>State</option>
-											<option value="Andhra Pradesh"> Andhra Pradesh </option>
-											<option value="Karnataka"> Karnataka </option>
-											<option value="Tamil Nadu"> Tamil Nadu </option>
-										</select>
-									</div>
-									<div class="col-sm-4">
-										<label>District</label>
-										<select class="form-control chosen-select" id="newsLetterConstituencyId">
-											<option value="" selected>Distrtict</option>
-											<option> Kurnool </option>
-											<option> West Godavari </option>
-											<option> Anantapur </option>
-											<option> Srikakulam </option>
-											<option> Chittoor </option>
-										</select>
-									</div>
-									<div class="col-sm-4">
-										<label>Constitency</label>
-										<select class="form-control chosen-select" id="newsLetterConstituencyId">
-											<option value="" selected>Constituency</option>
-											<option> NANDYAL </option>
-											<option> AMADALAVALASA </option>
-											<option> VIJAYAWADA WEST </option>
-											<option> ELURU </option>
-											<option> SATYAVEDU </option>
-											<option> KADIRI </option>
-										</select>
-									</div>
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-4">
-										<label>Parliament</label>
-										<select class="form-control chosen-select" id="newsLetterParliamentId">
-											<option value="" selected>Parliament</option>
-											<option> Rajahmundry </option>
-											<option> Visakhapatnam </option>
-											<option> Vijayawada </option>
-											<option> Rajampet </option>
-											<option> Warangal </option>
-										</select>
-									</div>
-									<div class="col-sm-4">
-										<label>News Paper</label>
-										<select class="form-control chosen-select" id="newsLetternewsPaperId">
-											<option value="" selected>News_Paper</option>
-											<option> AndhraBhoomi </option>
-											<option> AndhraJyothi </option>
-											<option> Sakshi </option>
-											<option> PrajaSakti </option>
-											<option> NavaTelangaana </option>
-										</select>
-									</div>
-									<div class="col-sm-4">
-										<label>Edition Type</label>
-										<select class="form-control chosen-select" id="newsLetterEditionId">
-											<option value="" selected>Edition_Type</option>
-											<option> Main </option>
-											<option> District </option>
-											<option> Online </option>
-										</select>
-									</div>
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-4">
-										<label>From Date</label>
-										<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
-											<input type="text" id="dateRangeFromDateNewsId" class="form-control" />
-											<span class="input-group-addon">
-												<i class="glyphicon glyphicon-calendar"></i>
-											</span>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="newsLetters">
+							
+							<div class="row m_top10">
+								<div class="col-sm-6">
+									<label>From Date</label>
+									<span class="input-group dateRangePickerCls" style="margin-right:23px;">
+										<input type="text" id="dateRangeFromDateNewsId" class="form-control" style="width: 221px; height: 33px;"/>
+										<span class="input-group-addon">
+											<i class="glyphicon glyphicon-calendar"></i>
 										</span>
-									</div>
-									<div class="col-sm-4">
-										<label>To Date</label>
-										<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
-											<input type="text" id="dateRangeToDateNewsId" class="form-control" />
-											<span class="input-group-addon">
-												<i class="glyphicon glyphicon-calendar"></i>
-											</span>
+									</span>
+								</div>
+								<div class="col-sm-6">
+									<label>To Date</label>
+									<span class="input-group dateRangePickerCls" style="margin-right:23px;">
+										<input type="text" id="dateRangeToDateNewsId" class="form-control" style="width: 221px; height: 33px;" />
+										<span class="input-group-addon">
+											<i class="glyphicon glyphicon-calendar"></i>
 										</span>
-									</div>
-									<div class="col-sm-4">
-										<button type="button" class="btn btn-default btn-md m_top10">Submit</button>
-									</div>
+									</span>
+								</div>	
+							</div>
+							<div class="row m_top10">
+								<div class="col-sm-6">
+									<label>State</label>
+									<select class="form-control chosen-select" id="newsLetterStateId">
+										<option value="Andhra Pradesh" selected> Andhra Pradesh </option>
+									</select>
 								</div>
-								<div class="row m_top20">
-									<div id=""></div>
+								<div class="col-sm-6">
+									<label>District</label>
+									<select class="form-control chosen-select" id="newsLetterDistrictId">
+										
+									</select>
 								</div>
+								
+							</div>
+							<div class="row m_top10">
+								<div class="col-sm-6">
+									<label>Constitency</label>
+									<select class="form-control chosen-select" id="newsLetterConstituencyId">
+										
+									</select>
+								</div>
+								<!--<div class="col-sm-4">
+									<label>Parliament</label>
+									<select class="form-control chosen-select" id="newsLetterParliamentId">
+										<option value="" selected>Parliament</option>
+										<option> Rajahmundry </option>
+										<option> Visakhapatnam </option>
+										<option> Vijayawada </option>
+										<option> Rajampet </option>
+										<option> Warangal </option>
+									</select>
+								</div>
+								<div class="col-sm-6">
+									<label>News Paper</label>
+									<select class="form-control chosen-select" multiple="multiple" id="newsLetternewsPaperId">
+										
+									</select>
+								</div>
+							</div>
+							<div class="row m_top10">
+								<div class="col-sm-6">
+									<label>Edition Type</label>
+									<select class="form-control chosen-select" multiple="multiple" id="newsLetterEditionId">
+										<option> Main </option>
+										<option> District </option>
+										<option> Online </option>
+									</select>
+								</div>
+								<div class="col-sm-6" style="border-top-width: 0px; padding-top: 9px; padding-left: 73px;">
+									<button type="button" id="submitId" class="btn btn-default btn-md m_top10">Submit</button>
+								</div>
+							</div>
+							<div class="row m_top20">
+								<div class="img-responsive" id ="imageId"></div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>-->
+			</div>
 			<!--------News Letters End----------->
-	</div>
+		</div>
 	
-</div>
+	</div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
 <input type="hidden" id="alertEditionTypeHiddenId"></input>  
 <input type="hidden" id="hiddenActivityId"></input>  
@@ -5774,6 +5757,7 @@
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<script src="js/imageRendering.js" type="text/javascript"></script>
 <script type="text/javascript">
  $(document).on("change","#categorySelId",function(){
 		getPrintMediaOverAllPSYCounts("OverAll","printMedia",$(this).val());
