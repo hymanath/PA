@@ -38,10 +38,17 @@ public class RepresenteeViewVO {
 	private Long deptDesigOffcrId;
 	private String remark;
 	private Long order;
+	private String amountInCrores="0.0";
 	private List<Long> workIds = new ArrayList<Long>();
 	private List<String> referList = new ArrayList<String>();
 	
 	
+	public String getAmountInCrores() {
+		return amountInCrores;
+	}
+	public void setAmountInCrores(String amountInCrores) {
+		this.amountInCrores = amountInCrores;
+	}
 	public List<String> getReferList() {
 		return referList;
 	}

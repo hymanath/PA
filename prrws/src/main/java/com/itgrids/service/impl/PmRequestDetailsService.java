@@ -46,6 +46,7 @@ import com.itgrids.dao.IPmRepresenteeDAO;
 import com.itgrids.dao.IPmRepresenteeDesignationDAO;
 import com.itgrids.dao.IPmRepresenteeRefDetailsDAO;
 import com.itgrids.dao.IPmRepresenteeRefDocumentDAO;
+import com.itgrids.dao.IPmRequiredFileFormatTextDAO;
 import com.itgrids.dao.IPmRequiredLettersImagesDAO;
 import com.itgrids.dao.IPmStatusDAO;
 import com.itgrids.dao.IPmSubWorkCoveringLetterDAO;
@@ -176,6 +177,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	private IEntitlementsGroupEntitlementUrlDAO entitlementsGroupEntitlementUrlDAO;
 	@Autowired
 	private IEntitlementUrlDAO entitlementUrlDAO;
+	@Autowired
+	private IPmRequiredFileFormatTextDAO pmRequiredFileFormatTextDAO;
 	
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO){
 		ResponseVO responseVO = new ResponseVO();
@@ -2202,6 +2205,27 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						statusVO.setNoOfWorks(statusVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						returnVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
 						returnVO.setNoOfWorks(returnVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						String estimationCost = commonMethodsUtilService.getStringValueForObject(param[6]);
+						if(returnVO.getEstimationCost() != null && returnVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+						BigDecimal decmial= new BigDecimal(returnVO.getEstimationCost());
+						BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
+						BigDecimal decmialCrores= new BigDecimal(returnVO.getAmountInCrores());
+						BigDecimal decmial2crores= new BigDecimal(statusVO.getAmountInCrores());
+						BigDecimal decmial1= new BigDecimal(estimationCost);
+						BigDecimal crore= new BigDecimal("10000000");
+							BigDecimal totalCost = decmial.add(decmial1);
+							BigDecimal totalCost1 = decmial2.add(decmial1);
+							BigDecimal totalCostCrores = decmialCrores.add(decmial1);
+							BigDecimal totalCost1Crores = decmial2crores.add(decmial1);
+							BigDecimal totalCost1InCrores = totalCost1Crores.divide(crore);
+							BigDecimal totalCostInCrores = totalCostCrores.divide(crore);
+							statusVO.setAmountInCrores(totalCost1InCrores.toString());
+							returnVO.setAmountInCrores(totalCostInCrores.toString());
+							
+							statusVO.setEstimationCost(totalCost1.toString());
+							returnVO.setEstimationCost(totalCost.toString());
+						//refDesigCan.setEstimationCost(refDesigCan.getEstimationCost()+);
+						}
 					}
 				}
 				
@@ -2627,7 +2651,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					Integer year=cal.get(Calendar.YEAR);
 					yearStr=year.toString();
 				 dateStr=	sdf.format(date);
-				 
+				 if(userType != null && userType.contains("AP MINISTER")){
+					 userType = "Min";
+				 }else if(userType != null && userType.contains("OSD")){
+					 userType = "OSD";
+				 }else{
+					 userType = "";
+				 }
+				 if(depts == null){
+					 depts = "";
+				 }
 				//String deptStr = commonMethodsUtilService.convertStringFromListWithOutDuplicates(depts);
 				outputStr=endrsementNo+"/"+userType+"("+depts+")/"+yearStr+"/"+dateStr;
 			}
@@ -2649,19 +2682,24 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						deptIds.add(deptId.toString());
 					}
 				}
-				PmBriefLead briefLead = pmBriefLeadDAO.get(Long.valueOf(inputVO.getLeadName()));
-				inputVO.setLeadName(briefLead.getBriefLead());
+				if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0")){
+					PmBriefLead briefLead = pmBriefLeadDAO.get(Long.valueOf(inputVO.getLeadName()));
+					inputVO.setLeadName(briefLead.getBriefLead());
+				}
 				
-				PmGrant pmGrant = pmGrantDAO.get(Long.valueOf(inputVO.getGroupName()));
-				inputVO.setGroupName(pmGrant.getPmGrantName());//grantType
+				if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
+					PmGrant pmGrant = pmGrantDAO.get(Long.valueOf(inputVO.getGroupName()));
+				 inputVO.setGroupName(pmGrant.getPmGrantName());//grantType
+				}
 				List<Object[]> coveringLetrImages = pmRequiredLettersImagesDAO.getDesignationWiseImages(inputVO.getDesignationIds(), inputVO.getType());
-				
-				String str1 = " Please find the enclosed representations recieved from of Mis./Mr. " +
+			
+				/*String str1 = " Please find the enclosed representations recieved from of Mis./Mr. " +
 						"#rname #rdesig #rconst #rdist with referrance of #refname  #refdesig  " +
-						"#refconst , Please take action for below mentioned works as #lead " +
+						"#refconst #refComma Please take action for below mentioned works as #lead " +
 						"#grname " +
-						"#works";
+						"#works";*/
 				//inputVO.setAssetTypeList(deptIds);//deptIds
+						String str1 = pmRequiredFileFormatTextDAO.getCoverLetterMessage();
 				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getDeptCode(),dateUtilService.getCurrentDateAndTime());
 				inputVO.setCategory(endorseStr);
 				PmRequestEditVO petitionDetailsVO =setPmRepresenteeDataToResultView(inputVO.getPageId(),inputVO.getpType(),inputVO.getBlockLevelId());
@@ -3140,8 +3178,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							String estimationCost = commonMethodsUtilService.getStringValueForObject(objects[8]);
 							if(refDesigCan.getEstimationCost() != null && refDesigCan.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
 							BigDecimal decmial= new BigDecimal(refDesigCan.getEstimationCost());
+							BigDecimal decmialcrores= new BigDecimal(refDesigCan.getAmountInCrores());
 							BigDecimal decmial1= new BigDecimal(estimationCost);
 								BigDecimal totalCost = decmial.add(decmial1);
+								BigDecimal totalCostCrores = decmialcrores.add(decmial1);
+								BigDecimal crore= new BigDecimal("10000000");
+								BigDecimal totalCostIncrore = totalCostCrores.divide(crore);
+								refDesigCan.setAmountInCrores(totalCostIncrore.toString());
 							refDesigCan.setEstimationCost(totalCost.toString());
 							//refDesigCan.setEstimationCost(refDesigCan.getEstimationCost()+);
 							}

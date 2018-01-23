@@ -255,7 +255,11 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			sb.append(", model.pmSubject.pmSubjectId,model.pmSubject.subject ");
 		}else if(type != null && (type.equalsIgnoreCase("statusDept") || type.equalsIgnoreCase("department"))){
 			sb.append(", model.pmDepartment.pmDepartmentId,model.pmDepartment.department ");
+		}else{
+			sb.append(",'','' ");
 		}
+		
+		sb.append(",round(sum(model.costEstimation),2) " );
 		sb.append("  from PmSubWorkDetails model  ");
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
 			sb.append(" ,PmRepresenteeRefDetails model1,PmRefCandidateDesignation model2 where model1.petition.petitionId=model.petition.petitionId  and model1.isDeleted='N'" +

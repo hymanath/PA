@@ -100,25 +100,17 @@ function buildStatusOverviewDetails(result){
 												str+='<div class="panel-heading" style="background-color:#FDE8F5">';
 												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4427.png">';
 											}
-											
-												str+='<b style="padding-left:5px;font-size:13px">'+result.list[i].name+'</b></h5>';
-											
-												
+											str+='<b style="padding-left:5px;font-size:13px">'+result.list[i].name+'</b></h5>';
 											str+='</div>';
 											str+='<div class="panel-body">';
 												str+='<div class="row">';
 												str+='<div class="col-sm-8" style="padding-left:5px">';
 													str+='<p>Representations</p>';
-													
 														str+='<h4><b>'+result.list[i].petitionIds.length+'</b></h4>';
-													
 												str+='</div>';
 												str+='<div class="col-sm-4" style="padding-left:5px">';
 													str+='<p>Works</p>';
-													
 														str+='<h4><b>'+result.list[i].noOfWorks+'</b></h4>';
-													
-													
 												str+='</div>';
 												str+='</div>';
 												
@@ -143,13 +135,13 @@ function buildMyActionsDetails(result){
 										str+='<div class="col-sm-12">';
 										for(var i in result.statusList){
 											if(result.statusList[i].statusType == "UserStatus"){
-											str+='<div class="col-sm-5">';
+											str+='<div class="col-sm-4">';
 												str+='<div class="media">';
 													str+='<div class="media-left">';
 														str+='<img src="Assests/icons/Group 4370.png">';
 													str+='</div>';
 													str+='<div class="media-body">';
-														str+='<h4 attr_id="'+result.statusList[i].id+'"><b>'+result.statusList[i].name+'</b></h4>';
+														str+='<h5 attr_id="'+result.statusList[i].id+'"><b>'+result.statusList[i].name+'</b></h5>';
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
@@ -162,11 +154,13 @@ function buildMyActionsDetails(result){
 														str+='<div class="media-body">';
 															str+='<p>Representations</p>';
 															str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].petitionIds.length+'</a></h4>';
+															var crores = (result.statusList[i].estimationCost/10000000).toFixed(4);
+															str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
-											str+='<div class="col-sm-3">';
+											str+='<div class="col-sm-4">';
 												str+='<div class="white-block pad_5">';
 													str+='<div class="media">';
 														str+='<div class="media-left">';
@@ -175,6 +169,8 @@ function buildMyActionsDetails(result){
 														str+='<div class="media-body">';
 															str+='<p>Works</p>';
 															str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].noOfWorks+'</a></h4>';
+															var crores = (result.statusList[i].estimationCost/10000000).toFixed(4);
+															str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
 												str+='</div>';
@@ -246,13 +242,13 @@ function buildCompleteOrStatusOverviewDetails(result){
 	if(result != null){
 	 str+='<div class="row">';
 										str+='<div class="col-sm-12">';
-											str+='<div class="col-sm-5">';
+											str+='<div class="col-sm-4">';
 												str+='<div class="media">';
 													str+='<div class="media-left">';
 														str+='<img src="Assests/icons/Group 4370.png">';
 													str+='</div>';
 													str+='<div class="media-body">';
-														str+='<h4><b>Total Reprasentations</b></h4>';
+														str+='<h5><b>Total Representations</b></h5>';
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
@@ -265,11 +261,13 @@ function buildCompleteOrStatusOverviewDetails(result){
 														str+='<div class="media-body">';
 															str+='<p>Representations</p>';
 															str+='<h4><b>'+result.petitionIds.length+'</b></h4>';
+															var crores = (result.estimationCost/10000000).toFixed(4);
+															str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
-											str+='<div class="col-sm-3">';
+											str+='<div class="col-sm-4">';
 												str+='<div class="white-block pad_5">';
 												str+='	<div class="media">';
 													str+='	<div class="media-left">';
@@ -278,6 +276,8 @@ function buildCompleteOrStatusOverviewDetails(result){
 														str+='<div class="media-body">';
 														str+='	<p>Works</p>';
 														str+='	<h4><b>'+result.noOfWorks+'</b></h4>';
+														var crores = (result.estimationCost/10000000).toFixed(4);
+														str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
 												str+='</div>';
@@ -434,30 +434,6 @@ function buildLeadWiseOverviewDetails(result){
 	$("#leadWiseOverviewId").html(str);
 	$(".tooltipCls").tooltip();
 }
-//generateCoveringLetterForPetition();
-function generateCoveringLetterForPetition(){
- var  schemeIdsListArr =[1,9397];
-var json = {
-   pageId :1,//petitionId
-   schemeIdsList:schemeIdsListArr,//subWorkIds
-   leadName:"10",
-   groupName:"3" ,
-	endValue:"5",//endorsmentNo
-	pType:"viewPage",
-	type:"COVERING LETTER"
-  }           
- $.ajax({              
-  type:'POST',    
-  url: 'generateCoveringLetterForPetition',
-  dataType: 'json',
-  data : JSON.stringify(json),
-  beforeSend :   function(xhr){
-   xhr.setRequestHeader("Accept", "application/json");
-   xhr.setRequestHeader("Content-Type", "application/json");
-  }
- }).done(function(result){
- }); 
-}
 $(document).on("click",".desigClsDivId",function(){
 	var designationId = $(this).attr("attr_desigId");
 	getReferralWiseOverviewDetails(designationId);
@@ -580,7 +556,7 @@ function getReferralWiseOverviewDetails(desigId){
 							str+='<th>Works</th>';
 							str+='<th>Completed Representations</th>';
 							str+='<th>Works</th>';
-							str+='<th>Est Amount(in lkhs)</th>';
+							str+='<th>Amount</th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
@@ -607,8 +583,9 @@ function getReferralWiseOverviewDetails(desigId){
 									
 								}
 									//for(var j in result.referrerList[i].statusList){
+										var crores = (result.referrerList[i].estimationCost/10000000).toFixed(4);
 									if(typeof(result.referrerList[i].estimationCost) != "undefined"){
-										str+='<td><b>'+result.referrerList[i].estimationCost+'</b></td>';
+										str+='<td><b>'+crores+'</b></td>';
 									}else{
 										str+='<td><b>-</b></td>';
 									}	
