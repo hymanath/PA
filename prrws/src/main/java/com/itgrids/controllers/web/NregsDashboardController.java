@@ -760,7 +760,7 @@ public class NregsDashboardController {
 		try{
 			UserVO userVO = (UserVO) request.getSession().getAttribute("USER");
 			if(userVO != null){
-				return nregsTcsService.savePanchayatComponentComments(vo.getLocationId(),vo.getSourceId(),vo.getCategory(),vo.getAssetType(),vo.getDisplayType(),userVO.getUserId());
+				return nregsTcsService.savePanchayatComponentComments(vo.getLocationId(),vo.getSourceId(),vo.getCategory(),vo.getAssetType(),vo.getDisplayType(),userVO.getUserId(),vo.getDivType());
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -813,6 +813,34 @@ public class NregsDashboardController {
 			LOG.error("Exception raised at savingLabourBudgetRangeWiseExpenditureDetailsEveryDay - NREGSController controller", e);
 		}
 		return responseVO;
+	}
+	
+	@PostMapping("/getComponentWiseOverview")
+	public @ResponseBody NregsOverviewVO getComponentWiseOverview(@RequestBody InputVO vo,HttpServletRequest request){
+		NregsOverviewVO locationVOList = null;
+		try {
+			UserVO uservo = (UserVO) request.getSession().getAttribute("User");
+			if(uservo != null){
+				locationVOList = constituencyWiseWorkStatusService.getComponentWiseOverview(vo,uservo.getPrDistrictId(),uservo.getAccessLvelId());
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getComponentWiseOverview - NREGSController controller", e);
+		}
+		return locationVOList;
+	}
+	
+	@PostMapping("/getComponentWiseLocationData")
+	public @ResponseBody List<NregsDataVO> getComponentWiseLocationData(@RequestBody InputVO vo,HttpServletRequest request){
+		List<NregsDataVO> locationVOList = null;
+		try {
+			UserVO uservo = (UserVO) request.getSession().getAttribute("User");
+			if(uservo != null){
+				locationVOList = constituencyWiseWorkStatusService.getComponentWiseLocationData(vo,uservo.getPrDistrictId(),uservo.getAccessLvelId());
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getComponentWiseLocationData - NREGSController controller", e);
+		}
+		return locationVOList;
 	}
 	@PostMapping("/saveNregaComponentsWiseAchvPerc")
 	public @ResponseBody IdNameVO saveNregaComponentsWiseAchvPerc(){

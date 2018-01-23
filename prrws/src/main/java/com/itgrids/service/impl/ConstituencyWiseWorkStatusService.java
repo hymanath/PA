@@ -26,10 +26,13 @@ import com.itgrids.dao.IComponentTargetDAO;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDepartmentDAO;
 import com.itgrids.dao.IFundSanctionDAO;
+import com.itgrids.dao.INregaComponentCommentsDAO;
 import com.itgrids.dao.INregaWorkExpenditureLocationDAO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsFmsWorksVO;
+import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.ResponseVO;
 import com.itgrids.model.ComponentTarget;
 import com.itgrids.model.ComponentTargetConfiguration;
@@ -65,6 +68,8 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	private IComponentTargetConfigurationDAO componentTargetConfigurationDAO;
 	@Autowired
 	private IComponentTargetConfigurationTempDAO componentTargetConfigurationTempDAO;
+	@Autowired
+	private INregaComponentCommentsDAO nregaComponentCommentsDAO;
 	
 	/*
 	 * Swadhin K Lenka
@@ -860,8 +865,8 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				str += "\"locationId\" : \""+inputVO.getLocationIdStr()+"\",";
 			else if(inputVO.getLocationId() != null)
 				str += "\"locationId\" : \""+inputVO.getLocationId()+"\",";
-			if(inputVO.getSublocationType() != null)
-				str += "\"SublocationType\" : \""+inputVO.getSublocationType()+"\",";
+			if(inputVO.getSublocaType() != null)
+				str += "\"SublocationType\" : \""+inputVO.getSublocaType()+"\",";
 			if(inputVO.getFromRange() != null)
 				str += "\"FromRange\" : \""+inputVO.getFromRange()+"\",";
 			if(inputVO.getToRange() != null)
@@ -885,8 +890,202 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			str += "}";
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised at convertingInputVOToString - NREGSTCSService service", e);
+			LOG.error("Exception raised at convertingInputVOToString - ConstituencyWiseWorkStatusService service", e);
 		}
 		return str;
+	}
+	
+	public NregsOverviewVO getComponentWiseOverview(InputVO inputVO,String locationId,Long levelId){
+		NregsOverviewVO returnvo = new NregsOverviewVO();
+		try {
+			if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 1L){
+				inputVO.setLocationType("state");
+			}else if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 2L){
+				inputVO.setLocationType("district");
+			}else if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 3L){
+				inputVO.setLocationType("constituency");
+			}
+			if(locationId != null){
+				inputVO.setLocationIdStr(locationId);
+			}
+			
+			String webServiceUrl = null;
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Farm Ponds"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService_new/FarmPondOverview_new";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("IHHL"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService_new/IHHLOverview_new";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Vermi Compost"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/VermiService_new/VermiOverview_new";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Solid Waste Management"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SolidWasteManagementServices/SolidWasteManagementOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Play Fields"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFieldsServices/PlayFieldsOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Ground"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialGroundsServices/BurialGroundsOverview";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payment"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentsServicesNew/TimePaymentsOverviewNew";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject Obj = new JSONObject(output);
+	 	    		if(Obj!=null && Obj.length()>0){
+	 	    			returnvo.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
+	 	    			returnvo.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
+	 	    			returnvo.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
+	 	    			returnvo.setTotalDistricts(Obj.getLong("TOTALDISTRICTS"));
+ 	    				returnvo.setConstituenciesInRed(Obj.getLong("CONSTITUENCIESINRED"));
+ 	    				returnvo.setConstituenciesInOrange(Obj.getLong("CONSTITUENCIESINORANGE"));
+ 	    				returnvo.setConstituenciesInGreen(Obj.getLong("CONSTITUENCIESINGREEN"));
+ 	    				returnvo.setTotalConstituencies(Obj.getLong("TOTALCONSTITUENCIES"));
+ 	    				returnvo.setMandalsInRed(Obj.getLong("MANDALSINRED"));
+ 	    				returnvo.setMandalsInOrange(Obj.getLong("MANDALSINORANGE"));
+ 	    				returnvo.setMandalsInGreen(Obj.getLong("MANDALSINGREEN"));
+ 	    				returnvo.setTotalMandals(Obj.getLong("TOTALMANDALS"));
+ 	    				returnvo.setVillagesInRed(Obj.getLong("VILLAGESINRED"));
+ 	    				returnvo.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
+ 	    				returnvo.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
+ 	    				returnvo.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
+ 	    				if(Obj.has("DISTRICTSINGOLD")){
+ 	    					returnvo.setDistrictsInGold(Obj.getLong("DISTRICTSINGOLD"));
+ 	    					returnvo.setConstituenciesInGold(Obj.getLong("CONSTITUENCIESINGOLD"));
+ 	    					returnvo.setMandalsInGold(Obj.getLong("MANDALSINGOLD"));
+ 	    					returnvo.setVillagesInGold(Obj.getLong("VILLAGESINGOLD"));
+ 	    				}
+	 	    		}
+	 	    	}
+	 	    }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getComponentWiseOverview - ConstituencyWiseWorkStatusService service", e);
+		}
+		return returnvo;
+	}
+	
+	public List<NregsDataVO> getComponentWiseLocationData(InputVO inputVO,String locationId,Long levelId){
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
+		try {
+			if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 1L){
+				inputVO.setLocationType("state");
+			}else if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 2L){
+				inputVO.setLocationType("district");
+			}else if(levelId != null && levelId.longValue() > 0L && levelId.longValue() == 3L){
+				inputVO.setLocationType("constituency");
+			}
+			if(locationId != null){
+				inputVO.setLocationIdStr(locationId);
+			}
+			
+			String webServiceUrl = null;
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Farm Ponds"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService_new/FarmPondData_new";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("IHHL"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService_new/IHHLData_new";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Vermi Compost"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/VermiService_new/VermiData_new";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Solid Waste Management"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SolidWasteManagementServices/SolidWasteManagementData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Play Fields"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFieldsServices/PlayFieldsData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial Ground"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialGroundsServices/BurialGroundsData";
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payment"))
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentsServicesNew/TimePaymentsDataNew";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			if(inputVO.getDivType() != null && inputVO.getDivType().trim().equalsIgnoreCase("Timely Payment")){
+	 	    				for(int i=0;i<finalArray.length();i++){
+	 	    					NregsDataVO vo = new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				vo.setUniqueCode(jObj.getString("UNIQUEID"));
+		 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+		 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+		 	    				vo.setMandal(jObj.getString("MANDAL"));
+		 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+		 	    				vo.setTarget(jObj.getLong("TARGET"));
+		 	    				vo.setAchivement(jObj.getString("ACHIVEMENT"));
+		 	    				vo.setPercentage(new BigDecimal(jObj.getString("PERCENTAGE")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		 	    				if(Double.valueOf(vo.getPercentage())  < 60)
+		 	    					returnList.add(vo);
+	 	    				}
+	 	    			}else{
+	 	    				for(int i=0;i<finalArray.length();i++){
+	 	    					NregsDataVO vo = new NregsDataVO();
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				vo.setUniqueCode(jObj.getString("UNIQUEID"));
+		 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+		 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+		 	    				vo.setMandal(jObj.getString("MANDAL"));
+		 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+		 	    				vo.setTarget(jObj.getLong("TARGET"));
+		 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+		 	    				if(jObj.getString("NOTGROUNDED").trim().contains("-"))
+		 	    					vo.setNotGrounded("0");
+		 	    				else
+		 	    					vo.setNotGrounded(jObj.getString("NOTGROUNDED"));
+		 	    				vo.setInProgress(jObj.getLong("INPROGRESS"));
+		 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+		 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+		 	    				vo.setWageExpenditure(jObj.getString("WAGE_EXP"));
+	 	    					vo.setMaterialExpenditure(jObj.getString("MAT_EXP"));
+	 	    					vo.setTotalExpenditure(jObj.getString("TOT_EXP"));
+	 	    					if(Double.valueOf(vo.getPercentage())  < 60)
+	 	    						returnList.add(vo);
+	 	    				}
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	
+	 	    	List<Object[]> nregaComments= nregaComponentCommentsDAO.getNregaComponentCommentsByComponent(inputVO.getDivType());
+				if(nregaComments != null && nregaComments.size()>0){
+					for(Object[] param : nregaComments){
+						NregsDataVO matchedVo= getMatchedVoForUniqueCode(returnList,commonMethodsUtilService.getStringValueForObject(param[3]));
+						if(matchedVo != null){
+							matchedVo.setStatus(commonMethodsUtilService.getStringValueForObject(param[0]));
+							matchedVo.setComments(commonMethodsUtilService.getStringValueForObject(param[1]));
+							matchedVo.setActionPlan(commonMethodsUtilService.getStringValueForObject(param[2]));
+							matchedVo.setStatusId(commonMethodsUtilService.getLongValueForObject(param[4]));
+							matchedVo.setComponentId(commonMethodsUtilService.getLongValueForObject(param[5]));
+						}
+					}
+				}
+	 	     }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getComponentWiseLocationData - ConstituencyWiseWorkStatusService service", e);
+		}
+		return returnList;
+	}
+	
+	public NregsDataVO getMatchedVoForUniqueCode(List<NregsDataVO> list,String uniqueCode){
+		try{
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (NregsDataVO nregaPaymentsVO : list) {
+					if(nregaPaymentsVO.getUniqueCode().equalsIgnoreCase(uniqueCode)){
+						return nregaPaymentsVO;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getMatchedVo - NREGSTCSService service", e);
+		}
+		return null;
 	}
 }

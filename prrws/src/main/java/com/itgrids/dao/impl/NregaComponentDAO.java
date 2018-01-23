@@ -32,5 +32,10 @@ public class NregaComponentDAO extends GenericDaoHibernate<NregaComponent, Long>
 		return query.list();
 		
 	}
-
+	
+	public Long getComponentIdByComponentName(String componentName){
+		Query query = getSession().createQuery("select model.nregaComponentId from NregaComponent model where model.componentName = :componentName");
+		query.setParameter("componentName", componentName);
+		return (Long) query.uniqueResult();
+	}
 }

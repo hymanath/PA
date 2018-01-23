@@ -19,12 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IComponentTargetConfigurationDAO;
 import com.itgrids.dao.IComponentTargetConfigurationTempDAO;
+import com.itgrids.dao.IComponentTargetDAO;
 import com.itgrids.dao.IComponentWiseAchievementConfigurationDAO;
 import com.itgrids.dao.IComponentWiseAchievementConfigurationTempDAO;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.INregaComponentCommentsDAO;
 import com.itgrids.dao.INregaComponentCommentsHistoryDAO;
+import com.itgrids.dao.INregaComponentDAO;
 import com.itgrids.dao.INregaComponentStatusDAO;
 import com.itgrids.dao.INregaFATypeDAO;
 import com.itgrids.dao.INregaFAVacantPanchayatDAO;
@@ -103,6 +105,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	private IComponentTargetConfigurationDAO componentTargetConfigurationDAO;
 	@Autowired
 	private IComponentTargetConfigurationTempDAO componentTargetConfigurationTempDAO;
+	@Autowired
+	private INregaComponentDAO nregaComponentDAO;
 	@Autowired
 	private IComponentWiseAchievementConfigurationDAO componentWiseAchievementConfigurationDAO;
 	@Autowired
@@ -3835,7 +3839,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    			
 	 	    		}
 	 	    	}
-	 	    	List<Object[]> nregaComments= nregaComponentCommentsDAO.getNregaComponentComments(uniqueCodeStr);
+	 	    	List<Object[]> nregaComments= nregaComponentCommentsDAO.getNregaComponentCommentsByComponent("Labour Budget");
  				if(nregaComments != null && nregaComments.size()>0){
  					for(Object[] param : nregaComments){
  						NregsDataVO matchedVo= getMatchedVoForUniqueCode(voList,commonMethodsUtilService.getStringValueForObject(param[3]));
@@ -6640,7 +6644,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		try{
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (NregsDataVO nregaPaymentsVO : list) {
-					if(nregaPaymentsVO.getUniqueCode().equals(uniqueCode)){
+					if(nregaPaymentsVO.getUniqueCode().equalsIgnoreCase(uniqueCode)){
 						return nregaPaymentsVO;
 					}
 				}
@@ -7447,7 +7451,7 @@ public class NREGSTCSService implements INREGSTCSService{
 						}
 					}
 	        
-	        List<Object[]> nregaComments= nregaComponentCommentsDAO.getNregaComponentComments(uniqueCodeStr);
+	        List<Object[]> nregaComments= nregaComponentCommentsDAO.getNregaComponentCommentsByComponent("Labour Budget");
 				if(nregaComments != null && nregaComments.size()>0){
 					for(Object[] param : nregaComments){
 						NregsDataVO matchedVo= getMatchedVoForUniqueCode(voList,commonMethodsUtilService.getStringValueForObject(param[3]));
@@ -7485,7 +7489,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 * Author :Nandhini
 	 * @description : savePanchayatComponentComments
 	 */
-	public InputVO savePanchayatComponentComments(Long componentComentId,Long statusId,String comment,String actionType,String uniqueCode,Long userId){
+	public InputVO savePanchayatComponentComments(Long componentComentId,Long statusId,String comment,String actionType,String uniqueCode,Long userId,String component){
 		InputVO vo=new InputVO();
 		try {
 			NregaComponentComments 	componentComent =null;
@@ -7498,9 +7502,10 @@ public class NREGSTCSService implements INREGSTCSService{
 				NregaComponentCommentsHistory model = new NregaComponentCommentsHistory();
 				if(componentComent.getNregaComponentId() != null){
 					model.setNregaComponentId(componentComent.getNregaComponentId());
-				}else{
-					model.setNregaComponentId(1L);
-				}
+				}else if(component != null && component.trim().length() > 0)
+					componentComent.setNregaComponentId(nregaComponentDAO.getComponentIdByComponentName(component));
+				else
+					componentComent.setNregaComponentId(1L);
 					
 					model.setNregaComponentStatusId(componentComent.getNregaComponentStatusId());
 					model.setComment(componentComent.getComment());
@@ -7547,7 +7552,10 @@ public class NREGSTCSService implements INREGSTCSService{
 					if(uniqueCode != null){
 						componentComent.setUniqueCode(uniqueCode);
 					}
-					componentComent.setNregaComponentId(1L);
+					if(component != null && component.trim().length() > 0)
+						componentComent.setNregaComponentId(nregaComponentDAO.getComponentIdByComponentName(component));
+					else
+						componentComent.setNregaComponentId(1L);
 					componentComent.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					componentComent.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					componentComent.setUpdatedBy(userId);

@@ -34,4 +34,19 @@ public class NregaComponentCommentsDAO extends GenericDaoHibernate<NregaComponen
 		 }
 		 return query.list();
 	}
+	
+	public List<Object[]> getNregaComponentCommentsByComponent(String componentName) {
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append("select model.nregaComponentStatus.status,model.comment,model.actionPlan,model.uniqueCode," +
+		 		" model.nregaComponentStatus.nregaComponentStatusId,model.nregaComponentCommentsId " +
+		 		" from NregaComponentComments model where model.isDeleted='N' " );
+		 if(componentName != null && componentName.trim().length() > 0){
+			 queryStr.append(" and model.nregaComponent.componentName = :componentName");
+		 }
+		 Query query = getSession().createQuery(queryStr.toString());
+		 if(componentName != null && componentName.trim().length() > 0){
+		    query.setParameter("componentName", componentName);
+		 }
+		 return query.list();
+	}
 }

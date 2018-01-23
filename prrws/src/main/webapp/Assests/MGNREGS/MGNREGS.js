@@ -2294,193 +2294,196 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 		str1+='</div>';
 		
 	}
-	str1+='<div class="table-responsive">';
-		str1+='<table class="table table-bordered m_top10" >';
-			str1+='<tbody>';
-				str1+='<tr>';
-					str1+='<td>';
-						str1+='<div class="col-sm-12">';
-							str1+='<h4 attr_locationType="district" attr_type="total"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
-						str1+='</div>';
-						str1+='<div class="col-sm-12 m_top10">';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-								if(result.districtsInRed != null && result.districtsInRed > 0)
-									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_locationType="district" attr_type="red" style="cursor:pointer;">Districts in Red : '+result.districtsInRed+'</p>';
-								else
-									str1+='<p class="media-body" attr_locationType="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
+	if(result != null && result.districtsInRed != null){
+		str1+='<div class="table-responsive">';
+			str1+='<table class="table table-bordered m_top10" >';
+				str1+='<tbody>';
+					str1+='<tr>';
+						str1+='<td>';
+							str1+='<div class="col-sm-12">';
+								str1+='<h4 attr_locationType="district" attr_type="total"><strong>Total Districts : '+result.totalDistricts+'</strong></h4>';
 							str1+='</div>';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-								if(result.districtsInOrange != null && result.districtsInOrange > 0)
-									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="district" attr_type="orange" style="cursor:pointer;">Districts in Orange : '+result.districtsInOrange+'</p>';
-								else
-									str1+='<p class="media-body" attr_locationType="district" attr_type="orange" >Districts in Orange : '+result.districtsInOrange+'</p>';
-							str1+='</div>';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-								if(result.districtsInGreen != null && result.districtsInGreen > 0)
-									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="district" attr_type="green" style="cursor:pointer;">Districts in Green : '+result.districtsInGreen+'</p>';
-								else
-									str1+='<p class="media-body" attr_locationType="district" attr_type="green" >Districts in Green : '+result.districtsInGreen+'</p>';
-							str1+='</div>';
-							if(typeof(result.districtsInGold) != "undefined"){
+							str1+='<div class="col-sm-12 m_top10">';
 								str1+='<div class="media">';
-									str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
-									if(result.districtsInGold != null && result.districtsInGold > 0)
-										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="district" attr_type="gold" style="cursor:pointer;">Districts in Gold : '+result.districtsInGold+'</p>';
+									str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+									if(result.districtsInRed != null && result.districtsInRed > 0)
+										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'" attr_locationType="district" attr_type="red" style="cursor:pointer;">Districts in Red : '+result.districtsInRed+'</p>';
 									else
-										str1+='<p class="media-body" attr_locationType="district" attr_type="gold" >Districts in Gold : '+result.districtsInGold+'</p>';
+										str1+='<p class="media-body" attr_locationType="district" attr_type="red">Districts in Red : '+result.districtsInRed+'</p>';
 								str1+='</div>';
-							}
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+									if(result.districtsInOrange != null && result.districtsInOrange > 0)
+										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="district" attr_type="orange" style="cursor:pointer;">Districts in Orange : '+result.districtsInOrange+'</p>';
+									else
+										str1+='<p class="media-body" attr_locationType="district" attr_type="orange" >Districts in Orange : '+result.districtsInOrange+'</p>';
+								str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+									if(result.districtsInGreen != null && result.districtsInGreen > 0)
+										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="district" attr_type="green" style="cursor:pointer;">Districts in Green : '+result.districtsInGreen+'</p>';
+									else
+										str1+='<p class="media-body" attr_locationType="district" attr_type="green" >Districts in Green : '+result.districtsInGreen+'</p>';
+								str1+='</div>';
+								if(typeof(result.districtsInGold) != "undefined"){
+									str1+='<div class="media">';
+										str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+										if(result.districtsInGold != null && result.districtsInGold > 0)
+											str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="district" attr_type="gold" style="cursor:pointer;">Districts in Gold : '+result.districtsInGold+'</p>';
+										else
+											str1+='<p class="media-body" attr_locationType="district" attr_type="gold" >Districts in Gold : '+result.districtsInGold+'</p>';
+									str1+='</div>';
+								}
+								
+							str1+='</div>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<div class="col-sm-12">';
+								str1+='<h4 attr_locationType="constituency" attr_type="total"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
+							str1+='</div>';
+							str1+='<div class="col-sm-12 m_top10">';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+								if(result.constituenciesInRed != null && result.constituenciesInRed > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="red" style="cursor:pointer;">Constituencies in Red : '+result.constituenciesInRed+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="constituency" attr_type="red" >Constituencies in Red : '+result.constituenciesInRed+'</p>';
+									str1+='</div>';
+								str1+='<div class="media">';
+								str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+								if(result.constituenciesInOrange != null && result.constituenciesInOrange > 0)
+									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="orange" style="cursor:pointer;">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+								else
+									str1+='<p class="media-body" attr_locationType="constituency" attr_type="orange" >Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
+									str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+									if(result.constituenciesInGreen != null && result.constituenciesInGreen > 0)
+										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="green" style="cursor:pointer;">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+									else
+										str1+='<p class="media-body" attr_locationType="constituency" attr_type="green" >Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+								str1+='</div>';
+								if(typeof(result.constituenciesInGold) != "undefined"){
+									str1+='<div class="media">';
+										str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+										if(result.constituenciesInGold != null && result.constituenciesInGold > 0)
+											str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="gold" style="cursor:pointer;">Constituencies in Gold : '+result.constituenciesInGold+'</p>';
+										else
+											str1+='<p class="media-body" attr_locationType="constituency" attr_type="gold" >Constituencies in Gold : '+result.constituenciesInGold+'</p>';
+									str1+='</div>';
+								}
+							str1+='</div>';	
 							
-						str1+='</div>';
-					str1+='</td>';
-					str1+='<td>';
-						str1+='<div class="col-sm-12">';
-							str1+='<h4 attr_locationType="constituency" attr_type="total"><strong>Total Constituencies : '+result.totalConstituencies+'</strong></h4>';
-						str1+='</div>';
-						str1+='<div class="col-sm-12 m_top10">';
-							str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-							if(result.constituenciesInRed != null && result.constituenciesInRed > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="red" style="cursor:pointer;">Constituencies in Red : '+result.constituenciesInRed+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="constituency" attr_type="red" >Constituencies in Red : '+result.constituenciesInRed+'</p>';
-								str1+='</div>';
-							str1+='<div class="media">';
-							str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							if(result.constituenciesInOrange != null && result.constituenciesInOrange > 0)
-								str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="orange" style="cursor:pointer;">Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
-							else
-								str1+='<p class="media-body" attr_locationType="constituency" attr_type="orange" >Constituencies in Orange : '+result.constituenciesInOrange+'</p>';
-								str1+='</div>';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-								if(result.constituenciesInGreen != null && result.constituenciesInGreen > 0)
-									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="green" style="cursor:pointer;">Constituencies in Green : '+result.constituenciesInGreen+'</p>';
-								else
-									str1+='<p class="media-body" attr_locationType="constituency" attr_type="green" >Constituencies in Green : '+result.constituenciesInGreen+'</p>';
+						str1+='</td>';
+						str1+='<td>';
+							str1+='<div class="col-sm-12">';
+								str1+='<h4 attr_locationType="mandal" attr_type="total"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
 							str1+='</div>';
-							if(typeof(result.constituenciesInGold) != "undefined"){
+							str1+='<div class="col-sm-12 m_top10">';
 								str1+='<div class="media">';
-									str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
-									if(result.constituenciesInGold != null && result.constituenciesInGold > 0)
-										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="constituency" attr_type="gold" style="cursor:pointer;">Constituencies in Gold : '+result.constituenciesInGold+'</p>';
+									str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+									if(result.mandalsInRed != null && result.mandalsInRed > 0)
+										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="red" style="cursor:pointer;">Mandals in Red : '+result.mandalsInRed+'</p>';
 									else
-										str1+='<p class="media-body" attr_locationType="constituency" attr_type="gold" >Constituencies in Gold : '+result.constituenciesInGold+'</p>';
+										str1+='<p class="media-body" attr_locationType="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
 								str1+='</div>';
-							}
-						str1+='</div>';	
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+									if(result.mandalsInOrange != null && result.mandalsInOrange > 0)
+										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="orange" style="cursor:pointer;">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+									else
+										str1+='<p class="media-body" attr_locationType="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
+								str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+									if(result.mandalsInGreen != null && result.mandalsInGreen > 0)
+										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="green" style="cursor:pointer;">Mandals in Green : '+result.mandalsInGreen+'</p>';
+									else
+										str1+='<p class="media-body" attr_locationType="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
+								str1+='</div>';
+								if(typeof(result.mandalsInGold) != "undefined"){
+									str1+='<div class="media">';
+										str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+										if(result.mandalsInGold != null && result.mandalsInGold > 0)
+											str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="gold" style="cursor:pointer;">Mandals in Gold : '+result.mandalsInGold+'</p>';
+										else
+											str1+='<p class="media-body" attr_locationType="mandal" attr_type="gold">Mandals in Gold : '+result.mandalsInGold+'</p>';
+									str1+='</div>';
+								}
+							str1+='</div>';	
+						str1+='</td>';
+						if(globalDivName != null && globalDivName == "Mandal buildings1"){
+							str1+='<td>';
+							str1+='<div class="col-sm-12">';
+								str1+='<h4><strong>Total Villages : '+result.totalVillages+'</strong></h4>';
+							str1+='</div>';
+							str1+='<div class="col-sm-12 m_top10">';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+										str1+='<p class="media-body" attr_locationType="panchayat" attr_type="red">Villages in Red : '+result.villagesInRed+'</p>';
+								str1+='</div>';
+								str1+=' <div class="media">';
+								   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+										str1+='<p class="media-body" attr_locationType="panchayat" attr_type="orange">Villages in Orange : '+result.villagesInOrange+'</p>';
+								str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+										str1+='<p class="media-body" attr_locationType="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
+								str1+='</div>';
+								if(typeof(result.villagesInGold) != "undefined"){
+									str1+='<div class="media">';
+										str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+											str1+='<p class="media-body" attr_locationType="panchayat" attr_type="gold">Villages in Gold : '+result.villagesInGold+'</p>';
+									str1+='</div>';
+								}
+							str1+='</div>';	
+						str1+='</td>';
+						}else{
+							str1+='<td>';
+							str1+='<div class="col-sm-12">';
+								str1+='<h4><strong>Total Villages : '+result.totalVillages+'</strong></h4>';
+							str1+='</div>';
+							str1+='<div class="col-sm-12 m_top10">';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
+									if(result.villagesInRed != null && result.villagesInRed > 0)
+										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="red" style="cursor:pointer;">Villages in Red : '+result.villagesInRed+'</p>';
+									else
+										str1+='<p class="media-body" attr_locationType="panchayat" attr_type="red" style="cursor:pointer;"">Villages in Red : '+result.villagesInRed+'</p>';
+								str1+='</div>';
+								str1+=' <div class="media">';
+								   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
+								   if(result.villagesInOrange != null && result.villagesInOrange > 0)
+										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="orange" style="cursor:pointer;">Villages in Orange : '+result.villagesInOrange+'</p>';
+									else
+										str1+='<p class="media-body" attr_locationType="panchayat" attr_type="orange" style="cursor:pointer;">Villages in Orange : '+result.villagesInOrange+'</p>';
+								str1+='</div>';
+								str1+='<div class="media">';
+									str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
+									if(result.villagesInGreen != null && result.villagesInGreen > 0)
+										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="green" style="cursor:pointer;">Villages in Green : '+result.villagesInGreen+'</p>';
+									else
+										str1+='<p class="media-body" attr_locationType="panchayat" attr_type="green" style="cursor:pointer;">Villages in Green : '+result.villagesInGreen+'</p>';
+								str1+='</div>';
+								if(typeof(result.villagesInGold) != "undefined"){
+									str1+='<div class="media">';
+										str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
+										if(result.villagesInGold != null && result.villagesInGold > 0)
+											str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="gold" style="cursor:pointer;">Villages in Gold : '+result.villagesInGold+'</p>';
+										else
+											str1+='<p class="media-body" attr_locationType="panchayat" attr_type="gold" style="cursor:pointer;">Villages in Gold : '+result.villagesInGold+'</p>';
+									str1+='</div>';
+								}
+							str1+='</div>';	
+						str1+='</td>';
+						}
 						
-					str1+='</td>';
-					str1+='<td>';
-						str1+='<div class="col-sm-12">';
-							str1+='<h4 attr_locationType="mandal" attr_type="total"><strong>Total Mandals : '+result.totalMandals+'</strong></h4>';
-						str1+='</div>';
-						str1+='<div class="col-sm-12 m_top10">';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-								if(result.mandalsInRed != null && result.mandalsInRed > 0)
-									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="red" style="cursor:pointer;">Mandals in Red : '+result.mandalsInRed+'</p>';
-								else
-									str1+='<p class="media-body" attr_locationType="mandal" attr_type="red">Mandals in Red : '+result.mandalsInRed+'</p>';
-							str1+='</div>';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-								if(result.mandalsInOrange != null && result.mandalsInOrange > 0)
-									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="orange" style="cursor:pointer;">Mandals in Orange : '+result.mandalsInOrange+'</p>';
-								else
-									str1+='<p class="media-body" attr_locationType="mandal" attr_type="orange">Mandals in Orange : '+result.mandalsInOrange+'</p>';
-							str1+='</div>';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-								if(result.mandalsInGreen != null && result.mandalsInGreen > 0)
-									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="green" style="cursor:pointer;">Mandals in Green : '+result.mandalsInGreen+'</p>';
-								else
-									str1+='<p class="media-body" attr_locationType="mandal" attr_type="green">Mandals in Green : '+result.mandalsInGreen+'</p>';
-							str1+='</div>';
-							if(typeof(result.mandalsInGold) != "undefined"){
-								str1+='<div class="media">';
-									str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
-									if(result.mandalsInGold != null && result.mandalsInGold > 0)
-										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="mandal" attr_type="gold" style="cursor:pointer;">Mandals in Gold : '+result.mandalsInGold+'</p>';
-									else
-										str1+='<p class="media-body" attr_locationType="mandal" attr_type="gold">Mandals in Gold : '+result.mandalsInGold+'</p>';
-								str1+='</div>';
-							}
-						str1+='</div>';	
-					str1+='</td>';
-					if(globalDivName != null && globalDivName == "Mandal buildings1"){
-						str1+='<td>';
-						str1+='<div class="col-sm-12">';
-							str1+='<h4><strong>Total Villages : '+result.totalVillages+'</strong></h4>';
-						str1+='</div>';
-						str1+='<div class="col-sm-12 m_top10">';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="red">Villages in Red : '+result.villagesInRed+'</p>';
-							str1+='</div>';
-							str1+=' <div class="media">';
-							   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="orange">Villages in Orange : '+result.villagesInOrange+'</p>';
-							str1+='</div>';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="green">Villages in Green : '+result.villagesInGreen+'</p>';
-							str1+='</div>';
-							if(typeof(result.villagesInGold) != "undefined"){
-								str1+='<div class="media">';
-									str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
-										str1+='<p class="media-body" attr_locationType="panchayat" attr_type="gold">Villages in Gold : '+result.villagesInGold+'</p>';
-								str1+='</div>';
-							}
-						str1+='</div>';	
-					str1+='</td>';
-					}else{
-						str1+='<td>';
-						str1+='<div class="col-sm-12">';
-							str1+='<h4><strong>Total Villages : '+result.totalVillages+'</strong></h4>';
-						str1+='</div>';
-						str1+='<div class="col-sm-12 m_top10">';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Red.png"></p>';
-								if(result.villagesInRed != null && result.villagesInRed > 0)
-									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="red" style="cursor:pointer;">Villages in Red : '+result.villagesInRed+'</p>';
-								else
-									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="red" style="cursor:pointer;"">Villages in Red : '+result.villagesInRed+'</p>';
-							str1+='</div>';
-							str1+=' <div class="media">';
-							   str1+='<p class="media-left"><img src="Assests/icons/Orange.png"></p>';
-							   if(result.villagesInOrange != null && result.villagesInOrange > 0)
-									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="orange" style="cursor:pointer;">Villages in Orange : '+result.villagesInOrange+'</p>';
-								else
-									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="orange" style="cursor:pointer;">Villages in Orange : '+result.villagesInOrange+'</p>';
-							str1+='</div>';
-							str1+='<div class="media">';
-								str1+='<p class="media-left"><img src="Assests/icons/Green.png"></p>';
-								if(result.villagesInGreen != null && result.villagesInGreen > 0)
-									str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="green" style="cursor:pointer;">Villages in Green : '+result.villagesInGreen+'</p>';
-								else
-									str1+='<p class="media-body" attr_locationType="panchayat" attr_type="green" style="cursor:pointer;">Villages in Green : '+result.villagesInGreen+'</p>';
-							str1+='</div>';
-							if(typeof(result.villagesInGold) != "undefined"){
-								str1+='<div class="media">';
-									str1+='<p class="media-left"><img src="Assests/icons/Gold.png"></p>';
-									if(result.villagesInGold != null && result.villagesInGold > 0)
-										str1+='<p class="media-body overviewPopupCls" attr_menuLocationType="'+menuLocationType+'" attr_menuLocationId="'+menuLocationId+'"  attr_locationType="panchayat" attr_type="gold" style="cursor:pointer;">Villages in Gold : '+result.villagesInGold+'</p>';
-									else
-										str1+='<p class="media-body" attr_locationType="panchayat" attr_type="gold" style="cursor:pointer;">Villages in Gold : '+result.villagesInGold+'</p>';
-								str1+='</div>';
-							}
-						str1+='</div>';	
-					str1+='</td>';
-					}
-					
-				str1+='</tr>';
-			str1+='</tbody>';
-		str1+='</table>';
-	str1+='</div>';
+					str1+='</tr>';
+				str1+='</tbody>';
+			str1+='</table>';
+		str1+='</div>';
+	}
+	
 	if(projectDivId == 'Labour Budget'){
 	str1+='<div class="row">';
 	str1+='<div class="m_top20 col-sm-5" id="labourRadioDivId" style="display:none;">';
