@@ -392,9 +392,9 @@ function buildLabourBudgetPanExpData(result,divType){
 					str+='<th>District</th>';
 					str+='<th>Assembly</th>';
 					str+='<th>Mandal</th>';
-					str+='<th>Target Percentage</th>';
-					str+='<th>Achievement Percentage</th>';
-					str+='<th>Achieved Percentage</th>';
+					str+='<th>Target (%)</th>';
+					str+='<th>Achievement (%)</th>';
+					str+='<th>Achieved (%)</th>';
 					str+='<th>Status</th>';
 					str+='<th>Comment</th>';
 					str+='<th>Action Plan</th>';
@@ -443,8 +443,8 @@ function buildLabourBudgetPanExpData(result,divType){
 					str+='<th>Grounded</th>';
 					str+='<th>Not Grounded</th>';
 					str+='<th>Completed</th>';
-					str+='<th>Percentage</th>';
-					str+='<th>Wage Wxp</th>';
+					str+='<th>Achievement (%)</th>';
+					str+='<th>Wage Exp</th>';
 					str+='<th>Material Exp</th>';
 					str+='<th>Total Exp</th>';
 					str+='<th>Status</th>';
@@ -503,15 +503,15 @@ function buildLabourBudgetPanExpData(result,divType){
 				extend:    'csvHtml5',
 				text:      '<i class="fa fa-file-text-o"></i>',
 				titleAttr: 'CSV',
-				title:	   'Labour Budget',
-				filename:  'Labour Budget'+moment().format("DD/MMMM/YYYY  HH:MM"),
+				title:	   divType,
+				filename:  divType+moment().format("DD/MMMM/YYYY  HH:MM"),
 			},
 			{
 				extend:    'pdfHtml5',
 				text:      '<i class="fa fa-file-pdf-o"></i>',
 				titleAttr: 'PDF',
-				title:	   'Labour Budget',
-				filename:  'Labour Budget'+moment().format("DD/MMMM/YYYY  HH:MM"),
+				title:	   divType,
+				filename:  divType+moment().format("DD/MMMM/YYYY  HH:MM"),
 				orientation: "landscape",
 				pageSize:'A3',
 				customize: function (doc) {
@@ -523,6 +523,7 @@ function buildLabourBudgetPanExpData(result,divType){
 }
 
 $(document).on("click",".modalIconOpen",function(){
+		$("#UpdatedMsgId").html("");
 		$("#statusModalId").val('');
 		$("#commentId").val('');
 		$("#actionTypeId").val('');
@@ -648,7 +649,7 @@ function savePanchayatComponentComments(statusId,comment,actionType,uniqueCode,c
 		}).done(function(result){
 			$("#loadingId").html('');
 			if(result != null && result.displayType == "success"){
-				$("#UpdatedMsgId").html("Comments Updated Successfully.")
+				$("#UpdatedMsgId").html("Comments Updated Successfully.");
 				//alert("Comments Updated Successfully.");
 				setTimeout(function(){
 					$("#panchayatModalId").modal("hide");
