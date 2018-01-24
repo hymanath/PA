@@ -872,7 +872,7 @@ public interface IConstants {
     		 "coreDashboardAction1","updateTransactionTrackingDtalsAction","tdpMembershipPerformanceForAPAction.action","tdpMembershipPerformanceForTSAction.action",
     		 "getConstituencyWiseTodayAndOverAllCountsAction.action","getDistrictWiseTodayAndOverAllCountsAction.action","coreDashboardNewAction.action",
     		 "tdpMembershipPerformanceAction","getConstituencyWiseTodayAndOverAllCountsNewAction","getDistrictWiseTodayAndOverAllCountsNewAction",
-    		 "govtLoginAction"};
+    		 "govtLoginAction","imageRenderingAction"};
     public static final String CADRE_SMS_STATUS_FILES = "cadre_sms_status_files";
     public static final String EMPTY_STRING = "";
     
@@ -1199,7 +1199,7 @@ public interface IConstants {
    		  "getPartyMeetingTypeByPartyMeetingMainTypeAction" ,"getCommitteesBasicCountReportAction","getTrainingCampBasicDetailsCntOverviewAction" ,
    		   "getPartyWiseTotalDebateDetailsAction" ,"getToursBasicOverviewCountDetailsAction","getDesigWiseMemberDtlsAction" ,"getTotalNewRenewalCadreStateWiseAction",
    		    "getTotalNewRenewalCadreStateWiseTSAction","getStateDtls","getStateDtlsTS","getAttendanceOverViewForPartyOfficeAction" ,"getAttendanceOverViewForPartyOfficeWiseAction",
-   		     "getStateLevelCampAttendedDetails" ,"getPartyMeetingsMainTypeOverViewDataAction","getPartyMeetingBasicCountDetailsAction","coreDashboardNewAction"};
+   		     "getStateLevelCampAttendedDetails" ,"getPartyMeetingsMainTypeOverViewDataAction","getPartyMeetingBasicCountDetailsAction","coreDashboardNewAction","imageRenderingAction"};
 	
 	//public static final String CADRE_REGISTRATION_URL = "http://www.mytdp.in/";
 	//public static final String CADRE_REGISTRATION_URL = "http://localhost:8090/CadreReg-1.4.0.RELEASE/";
