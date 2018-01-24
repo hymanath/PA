@@ -36,22 +36,55 @@ public class ITextCoveringLetterGeneration  {
 	
 	/*public static void main(String a[]){
 	InputVO inputVO = new InputVO();
+	inputVO.setLeadName("Forwarded for taking further necessary action ");
+	inputVO.setGroupName("NREGS Convergence");
 	inputVO.setEndValue("5");
 	List<Object[]> coveringLetrImages = null;
 	String endorseCode = "No.1/Min(PR,RD,ITE&C)/2017Dt.18.05.2017";
 	PmRequestEditVO petitionDetailsVO = new PmRequestEditVO();
+	List<PmRequestVO> representeeList = new ArrayList<PmRequestVO>();
+	PmRequestVO pmRequestVO2 = new PmRequestVO();
+	pmRequestVO2.setName("Bandla Ashok");
+	pmRequestVO2.setDesignation("MLA");
+	AddressVO addr1 = new AddressVO();
+	addr1.setAssemblyName("Proddatur");
+	addr1.setDistrictName("Kadapa");
+	pmRequestVO2.setCandidateAddressVO(addr1);
+	representeeList.add(pmRequestVO2);
+	PmRequestVO pmRequestVO3 = new PmRequestVO();
+	pmRequestVO3.setName("Bandla Ashok");
+	pmRequestVO3.setDesignation("MLA");
+	AddressVO addr2 = new AddressVO();
+	addr2.setAssemblyName("Proddatur");
+	addr2.setDistrictName("Kadapa");
+	pmRequestVO3.setCandidateAddressVO(addr2);
+	representeeList.add(pmRequestVO3);
+	List<Long> workIds = new ArrayList<Long>();
+	workIds.add(105061l);
+	workIds.add(105060l);
+	inputVO.setSchemeIdsList(workIds);
+	List<PmRequestVO> representeeList1 = new ArrayList<PmRequestVO>();
+	PmRequestVO pmRequestVO1 = new PmRequestVO();
+	pmRequestVO1.setName("Bandla Ashok");
+	pmRequestVO1.setDesignation("MLA");
+	
+	
+	AddressVO addr = new AddressVO();
+	addr.setAssemblyName("Proddatur");
+	addr.setDistrictName("Kadapa");
+	pmRequestVO1.setAddressVO(addr);
+	representeeList1.add(pmRequestVO1);
+	petitionDetailsVO.setRepresenteeDetailsList(representeeList1);
+	//representeeList.add(pmRequestVO3);
+	petitionDetailsVO.getReferDetailsList().addAll(representeeList);
 	petitionDetailsVO.setWorkName("requesting for sanction ...ost of Rs.150.00 Lakhs.");
-	String str1 = " Please find the enclosed representations recieved from of Mis./Mr. " +
-			"#rname #rdesig #rconst #rdist with referrance of #refname  #refdesig  " +
-			"#refconst #refComma Please take action for below mentioned works as #lead " +
-			"#grname " +
-			"#works";
-	//String staticPath = commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER);
-	if(staticPath != null && staticPath.equalsIgnoreCase("FAILED"))
-		throw new Exception("File path not available . Please check once file path.");
+	String str1 = "  Please find the enclosed representations recieved from of Mis./Mr. #rname #rdesig #rconst #rdist with referrance of #ref Please take action for below mentioned works as #lead #grname #works";
+	//String staticPath =IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/2018/1/24" ;//commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER);
+	//if(staticPath != null && staticPath.equalsIgnoreCase("FAILED"))
+		//throw new Exception("File path not available . Please check once file path.");
 //String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
 //String fileName = datePath+"_"+inputVO.getEndValue()+".PDF";
-	String staticPath =IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/2018/1/23/";
+	String staticPath =IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/2018/1/24/";
 	String fileName = inputVO.getEndValue()+".PDF";
 	generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseCode,petitionDetailsVO,str1,staticPath,fileName);
 }*/
@@ -64,11 +97,12 @@ public class ITextCoveringLetterGeneration  {
 			String addrDetailsImg ="";
 			String sign ="";
 			String toAddrImg ="";
-			List<PmRequestVO> representeeList = new ArrayList<PmRequestVO>();
-			if(petitionDetailsVO != null){
+			//List<PmRequestVO> representeeList = new ArrayList<PmRequestVO>();
+			StringBuilder referrals = null;
+ 			if(petitionDetailsVO != null){
 				if(petitionDetailsVO.getRepresenteeDetailsList() != null && petitionDetailsVO.getRepresenteeDetailsList().size()>0){
-					representeeList.addAll(petitionDetailsVO.getRepresenteeDetailsList());
-					for (PmRequestVO pmRequestVO : representeeList) {
+					//representeeList.addAll(petitionDetailsVO.getRepresenteeDetailsList());
+					for (PmRequestVO pmRequestVO : petitionDetailsVO.getRepresenteeDetailsList()) {
 						 if(pmRequestVO.getName() != null && !pmRequestVO.getName().equalsIgnoreCase("")){
 							 str1 = str1.replace("#rname", pmRequestVO.getName());
 						 }else{
@@ -80,57 +114,94 @@ public class ITextCoveringLetterGeneration  {
 							 str1 = str1.replace("#rdesig", "");
 						 }
 						 if(pmRequestVO.getAddressVO().getAssemblyName() != null && !pmRequestVO.getAddressVO().getAssemblyName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rconst",","+pmRequestVO.getAddressVO().getAssemblyName());
+							 str1 = str1.replace("#rconst",","+pmRequestVO.getAddressVO().getAssemblyName()+"(Const)");
 						 }else{
 							 str1 = str1.replace("#rconst","");
 						 }
 						 if(pmRequestVO.getAddressVO().getDistrictName() != null && !pmRequestVO.getAddressVO().getDistrictName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdist",","+pmRequestVO.getAddressVO().getDistrictName());
+							 str1 = str1.replace("#rdist",","+pmRequestVO.getAddressVO().getDistrictName()+"(Dist)");
 						 }else{
 							 str1 = str1.replace("#rdist","");
 						 }
 					}
 				}
+ 			}
+				//representeeList.clear();
+ 			if(petitionDetailsVO != null){
+ 				referrals = new StringBuilder();
 				if(petitionDetailsVO.getReferDetailsList() != null && petitionDetailsVO.getReferDetailsList().size()>0){
-					representeeList.clear();
-					representeeList.addAll(petitionDetailsVO.getReferDetailsList());
-					for (PmRequestVO pmRequestVO : representeeList) {
+					for (PmRequestVO pmRequestVO : petitionDetailsVO.getReferDetailsList()) {
+						int index = petitionDetailsVO.getReferDetailsList().indexOf(pmRequestVO);
+						int no = 1;
+						int index1=index+no;
 						if(pmRequestVO.getName() != null && !pmRequestVO.getName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#refname","<br> "+representeeList.indexOf(pmRequestVO)+1+". "+pmRequestVO.getName());
+							referrals.append("<br> "+index1+").&nbsp;&nbsp; "+pmRequestVO.getName());
+							 //str1 = str1.replace("#refname","<br> "+index1+". "+pmRequestVO.getName());
 						 }else{
-							 str1 = str1.replace("#refname","");
+							// str1 = str1.replace("#refname","");
 						 }
 						if(pmRequestVO.getDesignation() != null && !pmRequestVO.getDesignation().equalsIgnoreCase("")){
-							 str1 = str1.replace("#refdesig", ","+pmRequestVO.getDesignation());
+							referrals.append(","+pmRequestVO.getDesignation());
+							// str1 = str1.replace("#refdesig", ","+pmRequestVO.getDesignation());
 						 }else{
-							 str1 = str1.replace("#refdesig", "");
+							 //str1 = str1.replace("#refdesig", "");
 						 }
 						if(pmRequestVO.getCandidateAddressVO().getAssemblyName() != null && !pmRequestVO.getCandidateAddressVO().getAssemblyName().equalsIgnoreCase("")){
-							str1 = str1.replace("#refconst",","+pmRequestVO.getCandidateAddressVO().getAssemblyName());
+							referrals.append(","+pmRequestVO.getCandidateAddressVO().getAssemblyName()+"(Const)");
+							//str1 = str1.replace("#refconst",","+pmRequestVO.getCandidateAddressVO().getAssemblyName());
 						 }else{
-							 str1 = str1.replace("#refconst", "");
+							 //str1 = str1.replace("#refconst", "");
 						 }
-						str1 = str1.replace("#refComma", ".");
+						referrals.append(".");
+						//str1 = str1.replace("#refComma", ".");
 					}
 				}
+				
 			}
+ 			if(referrals != null){
+				 str1 = str1.replace("#ref", " <br><b>Referrals</b> :"+referrals+"<br>");
+			 }else{
+				 str1 = str1.replace("#ref", "");
+			 }
+			List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>();
 			StringBuilder works = new StringBuilder();
 			 if(petitionDetailsVO.getSubWorksList() != null && petitionDetailsVO.getSubWorksList().size()>0){
 				 for (PetitionsWorksVO pmSubwork : petitionDetailsVO.getSubWorksList()) {
+					/*PetitionsWorksVO works1 = new PetitionsWorksVO();
+					 works1.setWorkId(105060l);
+					 works1.setWorkName("Test Work Description1");
+					 worksList.add(works1);
+					 PetitionsWorksVO works2 = new PetitionsWorksVO();
+					 works2.setWorkId(105061l);
+					 works2.setWorkName("Test Work Description1");
+					 worksList.add(works2);
+					pmSubwork.getSubWorksList().addAll(worksList);*/
 					 for (PetitionsWorksVO pmSubwork1 : pmSubwork.getSubWorksList()) {
 						 if(inputVO.getSchemeIdsList().contains(pmSubwork1.getWorkId())){
-							 works.append(pmSubwork.getSubWorksList().indexOf(pmSubwork1)+1+" "+pmSubwork1.getWorkName());
+							 int index =pmSubwork.getSubWorksList().indexOf(pmSubwork1);
+								int no = 1;
+								int index1=index+no;
+							 works.append(index1+").&nbsp;&nbsp;"+pmSubwork1.getWorkName()+".<br>");
+							 //works.append(".");
 						 }
 					}
 				}
 			 }
 			 if(works != null){
-				 str1 = str1.replace("#works", " Works : <br>"+works);
+				 str1 = str1.replace("#works", " <br><b>Works</b> : <br>  "+works);
+			 }else{
+				 str1 = str1.replace("#works", "");
 			 }
-			 if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0"))
-			 str1 = str1.replace("#lead", ""+inputVO.getLeadName());
-			 if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0"))
-			 str1 = str1.replace("#grname"," under Grant - "+ inputVO.getGroupName());
+			 if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0")){
+				 str1 = str1.replace("#lead", "as per Lead of&nbsp;"+inputVO.getLeadName());
+			 }else{
+				 str1 = str1.replace("#lead", "");
+			 }
+			 if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
+				 str1 = str1.replace("#grname"," under Grant - "+ inputVO.getGroupName()+".");
+			 }else{
+				 str1 = str1.replace("#grname","");
+			 }
 			System.out.println(str1);
 			if(coveringLetrImages != null && coveringLetrImages.size()>0){
 				for (Object[] objects : coveringLetrImages) {

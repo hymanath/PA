@@ -41,8 +41,15 @@ public class RepresenteeViewVO {
 	private String amountInCrores="0.0";
 	private List<Long> workIds = new ArrayList<Long>();
 	private List<String> referList = new ArrayList<String>();
+	private String coverLetterPath;
 	
 	
+	public String getCoverLetterPath() {
+		return coverLetterPath;
+	}
+	public void setCoverLetterPath(String coverLetterPath) {
+		this.coverLetterPath = coverLetterPath;
+	}
 	public String getAmountInCrores() {
 		return amountInCrores;
 	}
