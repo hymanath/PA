@@ -7532,7 +7532,11 @@ public class NREGSTCSService implements INREGSTCSService{
 					if(uniqueCode != null){
 						componentComent.setUniqueCode(uniqueCode);
 					}
-					componentComent.setNregaComponentId(1L);
+					if(component != null && component.trim().length() > 0)
+						componentComent.setNregaComponentId(nregaComponentDAO.getComponentIdByComponentName(component));
+					else
+						componentComent.setNregaComponentId(1L);
+					//componentComent.setNregaComponentId(1L);
 					componentComent.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					componentComent.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					componentComent.setUpdatedBy(userId);

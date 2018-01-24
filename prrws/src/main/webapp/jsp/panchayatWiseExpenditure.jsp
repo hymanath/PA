@@ -492,6 +492,9 @@ function buildLabourBudgetPanExpData(result,divType){
 		
 	$("#panchtsDetailsDivId").html(str);
 	$("#larBudExpTableId").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 		"<'row'<'col-sm-12'tr>>" +
 		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -587,7 +590,6 @@ function getNregaComponentStatus(statusId,comments,actionPlan){
 		});
 	}
 $(document).on("click","#updateId",function(){
-	$("#loadingId").html(smallSpinner);
 	var statusId= $("#statusModalId").val();
 	var commentId =$("#commentId").val();
 	var actionTypeId =$("#actionTypeId").val();
@@ -624,6 +626,7 @@ function savePanchayatComponentComments(statusId,comment,actionType,uniqueCode,c
 	}else{
 	 $("#errorId").html("");	
 	}
+	$("#loadingId").html(smallSpinner);
 	var componentName = $(".componentCls").val();
 		var json = {
 			locationId:componentId,
