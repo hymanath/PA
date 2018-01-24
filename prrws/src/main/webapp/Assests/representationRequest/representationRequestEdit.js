@@ -4710,8 +4710,7 @@ $.ajax({
 function generateCoveringLetterForPetition(){
 	//$('#endorsWorksId').hide();
 	 
-	  
-	/* var flag = false;
+	var flag = false;
 	$('#WorkEndorsementNoErr').html('');
 	$('#leadIdErr').html('');
 	$('#grantIdErr').html(''); 
@@ -4734,17 +4733,17 @@ function generateCoveringLetterForPetition(){
 			}else{
 				$('#leadIdErr').html("");
 		}
-		if(grantIdValue == null || grantIdValue ==0){
+		/* if(grantIdValue == null || grantIdValue ==0){
 			$('#grantIdErr').html("<h5 style='color:red;'>Please select grant</h5>");
 		    flag =true ;
 		}else{
 			 $('#grantIdErr').html("");
-		}
+		} */
 	}
 	
 
 	if(flag==true)
-	return; */
+	return; 
 	 
 	 var  schemeIdsListArr =[];
 	   var endorsementNO="";
@@ -4826,6 +4825,7 @@ var json = {
 						
 					str+='</div>';
 					$("#coverLetterPath").val(result.exceptionMsg);
+					$("#saveBtnId").show();
 				}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
 					str+='<a class="fancyboxView" href="#inlineddds">';
 						str+='<img src="'+result.exceptionMsg+'"  width="100%" height="100px;"></img>';
@@ -4836,9 +4836,11 @@ var json = {
 						
 					str+='</div>';
 					$("#coverLetterPath").val(result.exceptionMsg);
+					$("#saveBtnId").show();
 				}else{
 					str+='<b>Click <a href="javascript:{};" onclick="openDoc(\''+result.exceptionMsg+'\')">Here</a> To View Document</b>';
 					$("#coverLetterPath").val(result.exceptionMsg);
+					$("#saveBtnId").show();
 				}
 
 		str+='</div>';

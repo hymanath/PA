@@ -283,21 +283,21 @@
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 		</div>
-		<div class="row m_top20" id="fileUploadDiv" style="display:none;">
+		<!--<div class="row m_top20" id="fileUploadDiv" style="display:none;">
 	      <div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
 	        <h5 class="panel-title"> UPLOAD <span id="letterNameId"></span> LETTER <span id="fileUploadIdErr"></h5>
 	        <span id="uploadFile"></span>
 	      </div>
-    	</div>
-		<!--<div class="row m_top20" id="fileUploadDiv" style="display:none;">
+    	</div>-->
+		<div class="row m_top20" id="fileUploadDiv" style="display:none;">
 			<div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
 				<button type="button" class="btn btn-success" id="coverLetterId" onclick="generateCoveringLetterForPetition()">Generate Cover Letter</button>
 			</div>
 		</div>
-		<div id="coveringLetterGenerator"></div>-->
+		<div id="coveringLetterGenerator"></div>
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
 	  </div>
-	  <div class="modal-footer">
+	  <div class="modal-footer" id="saveBtnId" style="display:none;">
 		 <button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
 		<button type="button" class="btn btn-success pull-right" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" ><span id="buttonNameId"></span></button>
 	  </div>
