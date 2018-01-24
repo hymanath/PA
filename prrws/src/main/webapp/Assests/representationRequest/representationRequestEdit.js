@@ -4708,7 +4708,44 @@ $.ajax({
      });
  }	
 function generateCoveringLetterForPetition(){
-	 //$('#endorsWorksId').hide();
+	//$('#endorsWorksId').hide();
+	 
+	  
+	/* var flag = false;
+	$('#WorkEndorsementNoErr').html('');
+	$('#leadIdErr').html('');
+	$('#grantIdErr').html(''); 
+	
+	var endorsementId =$("#workEndorsmentNo").val();
+	var leadIdValue = $("#leadId").val();
+	var grantIdValue = $("#grantId").val();
+	var statusId = $("#statusChangeId").val();
+	  
+	if(statusId == 1){
+		if(endorsementId == 0 || endorsementId == '' || endorsementId == null || endorsementId.trim().length == 0){
+			   $('#WorkEndorsementNoErr').html("<h5 style='color:red;'>Endosment no is required</h5>");
+		        flag =true;
+		}else{
+		   $('#WorkEndorsementNoErr') .html("");
+		}
+	    if(leadIdValue == null || leadIdValue ==0){
+			$('#leadIdErr').html("<h5 style='color:red;'>Please select brief lead</h5>");
+				flag =true; 
+			}else{
+				$('#leadIdErr').html("");
+		}
+		if(grantIdValue == null || grantIdValue ==0){
+			$('#grantIdErr').html("<h5 style='color:red;'>Please select grant</h5>");
+		    flag =true ;
+		}else{
+			 $('#grantIdErr').html("");
+		}
+	}
+	
+
+	if(flag==true)
+	return; */
+	 
 	 var  schemeIdsListArr =[];
 	   var endorsementNO="";
 	   var petitionId=0;
@@ -4771,40 +4808,6 @@ var json = {
   }
  }).done(function(result){
 	 $("#coverLetterPath").val("");
-	/* var flag = false;
-	$('#WorkEndorsementNoErr').html('');
-	$('#leadIdErr').html('');
-	$('#grantIdErr').html(''); 
-	
-	var endorsementId =$("#workEndorsmentNo").val();
-	var leadIdValue = $("#leadId").val();
-	var grantIdValue = $("#grantId").val();
-	var statusId = $("#statusChangeId").val();
-	  
-	if(statusId == 1){
-		if(endorsementId == 0 || endorsementId == '' || endorsementId == null || endorsementId.trim().length == 0){
-			   $('#WorkEndorsementNoErr').html("<h5 style='color:red;'>Endosment no is required</h5>");
-		        flag =true;
-		}else{
-		   $('#WorkEndorsementNoErr') .html("");
-		}
-	    if(leadIdValue == null || leadIdValue ==0){
-			$('#leadIdErr').html("<h5 style='color:red;'>Please select brief lead</h5>");
-				flag =true; 
-			}else{
-				$('#leadIdErr').html("");
-		}
-		if(grantIdValue == null || grantIdValue ==0){
-			$('#grantIdErr').html("<h5 style='color:red;'>Please select grant</h5>");
-		    flag =true ;
-		}else{
-			 $('#grantIdErr').html("");
-		}
-	}
-	
-	if(flag==true)
-	return; */
-	
 	 if(result !=null){
 		 var str='';
 		 var scanCopySpl = result.exceptionMsg.split("."); 
