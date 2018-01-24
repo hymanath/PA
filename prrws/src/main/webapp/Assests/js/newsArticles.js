@@ -49,12 +49,20 @@ if(wurl.length == 3)
 		getDepartMentWiseAllNewsBulletinsAndPrograms();
 		getDistrictWiseTotalOverViewInfo();
 		getDistrictWiseNewsTotalOverviewForElectronicMedia();
+		$(".removecss").removeClass("active")
+		$(".addcss").addClass("active")
 		getDepartmentWiSeBlockDetails("PrintMediadepartment","printMedia","department");
 	}
 	$(document).on("click",".switch-btn li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
-		getDepartmentWiSeBlockEMDetails("ElectronicMediadepartment","electronicMedia","departmentEle");
+		var type = $(this).attr("attr_type");
+		if(type == "electronic"){
+			getDepartmentWiSeBlockEMDetails("ElectronicMediadepartment","electronicMedia","departmentEle");
+		}else{
+			getDepartmentWiSeBlockDetails("PrintMediadepartment","printMedia","department");
+		}
+		
 	});	
 	 function getPrintMediaCountsDetailsInfo(){
 		 $("#overAllPrintMediaDivId").html(spinner);
