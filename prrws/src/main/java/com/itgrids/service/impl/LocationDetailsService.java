@@ -141,17 +141,17 @@ public class LocationDetailsService implements ILocationDetailsService {
 					 }
 				 }
 			  }
-
+			 if(commonMethodsUtilService.isListOrSetValid(voList)){
 			 Collections.sort(voList,new Comparator<LocationFundDetailsVO>() {
 					public int compare(LocationFundDetailsVO o1,
 							LocationFundDetailsVO o2) {
 						return o1.getName().compareTo(o2.getName());
 					}
 				});
-
+			 }
 		 }catch(Exception e){
 			// e.printStackTrace();
-			LOG.error(" Exception raised at getdistrictidandname(); "); 
+			LOG.error(" Exception raised at getdistrictidandname(); ",e); 
 		 }
 		return voList;
 	 }
