@@ -30,8 +30,9 @@ public class PmDepartmentDesignationOfficerDAO extends GenericDaoHibernate<PmDep
 				" model.pmDepartmentDesignation.pmOfficerDesignation.designation from PmDepartmentDesignationOfficer model" +
 				//"  where model.pmDepartmentDesignationId =:deptDesignationId and " +
 				"  where model.pmDepartmentDesignation.pmOfficerDesignationId =:deptDesignationId and " +
-				" model.isActive ='Y' and model.pmOfficer.isActive ='Y'" +
-				"  group by model.pmOfficer.pmOfficerId order by model.pmDepartmentDesignation.pmDepartment.department,model.pmDepartmentDesignation.pmOfficerDesignation.designation ");
+				" model.isActive ='Y' and model.pmOfficer.isActive ='Y' " +
+				//"  group by model.pmOfficer.pmOfficerId order by model.pmDepartmentDesignation.pmDepartment.department,model.pmDepartmentDesignation.pmOfficerDesignation.designation ");
+				"  group by model.pmOfficer.pmOfficerId order by model.pmOfficer.name ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("deptDesignationId", deptDesignationId);
 		return query.list();

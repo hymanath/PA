@@ -35,7 +35,8 @@ public class PmDepartmentDesignationHierarchyDAO extends GenericDaoHibernate<PmD
 			if(deptDesignationIdsList != null && deptDesignationIdsList.size() >0){
 				str.append(" where model.pmDepartmentDesignationId in (:deptDesignationIdsList) ");
 			}
-			str.append(" and model.isActive='Y' and  model.subPmDepartmentDesignation.isDeleted='N' order by  model.subPmDepartmentDesignation.pmOfficerDesignation.designation ");
+			//str.append(" and model.isActive='Y' and  model.subPmDepartmentDesignation.isDeleted='N' order by  model.subPmDepartmentDesignation.pmOfficerDesignation.designation ");
+			str.append(" and model.isActive='Y' and  model.subPmDepartmentDesignation.isDeleted='N' order by  model.orderNo ");
 			Query query = getSession().createQuery(str.toString());
 			if(deptDesignationIdsList != null && deptDesignationIdsList.size() >0){
 				query.setParameterList("deptDesignationIdsList", deptDesignationIdsList);

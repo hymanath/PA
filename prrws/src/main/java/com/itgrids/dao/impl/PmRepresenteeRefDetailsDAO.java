@@ -123,7 +123,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		}
 		
 		sb.append(" where   model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " );
-		//sb.append(" and  model.pmRefCandidateDesignation.isDeleted = 'N' ");
+		sb.append(" and  model.pmRefCandidateDesignation.isDeleted = 'N' ");
 				//" and model.pmRefCandidateDesignation.isDeleted = 'N' and model.pmRefCandidate.isDeleted = 'N' and model.pmRepresentee.isDeleted = 'N'  ");
 		sb.append(" and model2.pmRefCandidateId=model.pmRefCandidateId "); 
 		//sb.append("  and model1.pmSubject.parentPmSubjectId is null   ");
