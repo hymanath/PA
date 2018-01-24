@@ -4770,7 +4770,7 @@ var json = {
    xhr.setRequestHeader("Content-Type", "application/json");
   }
  }).done(function(result){
-	 
+	 $("#coverLetterPath").val("");
 	/* var flag = false;
 	$('#WorkEndorsementNoErr').html('');
 	$('#leadIdErr').html('');
@@ -4802,7 +4802,6 @@ var json = {
 		}
 	}
 	
-
 	if(flag==true)
 	return; */
 	
@@ -4823,7 +4822,7 @@ var json = {
 						str+='<object data="'+result.exceptionMsg+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
 						
 					str+='</div>';
-					
+					$("#coverLetterPath").val(result.exceptionMsg);
 				}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
 					str+='<a class="fancyboxView" href="#inlineddds">';
 						str+='<img src="'+result.exceptionMsg+'"  width="100%" height="100px;"></img>';
@@ -4833,9 +4832,10 @@ var json = {
 						str+='<img src="'+result.exceptionMsg+'"    style="cursor:pointer;height:1000px;width:1000px"></object>';
 						
 					str+='</div>';
+					$("#coverLetterPath").val(result.exceptionMsg);
 				}else{
 					str+='<b>Click <a href="javascript:{};" onclick="openDoc(\''+result.exceptionMsg+'\')">Here</a> To View Document</b>';
-					
+					$("#coverLetterPath").val(result.exceptionMsg);
 				}
 
 		str+='</div>';

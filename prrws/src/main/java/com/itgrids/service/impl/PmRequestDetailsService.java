@@ -2209,18 +2209,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						if(returnVO.getEstimationCost() != null && returnVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
 						BigDecimal decmial= new BigDecimal(returnVO.getEstimationCost());
 						BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
-						BigDecimal decmialCrores= new BigDecimal(returnVO.getAmountInCrores());
-						BigDecimal decmial2crores= new BigDecimal(statusVO.getAmountInCrores());
+						/*BigDecimal decmialCrores= new BigDecimal(returnVO.getAmountInCrores());
+						BigDecimal decmial2crores= new BigDecimal(statusVO.getAmountInCrores());*/
 						BigDecimal decmial1= new BigDecimal(estimationCost);
-						BigDecimal crore= new BigDecimal("10000000");
+						//BigDecimal crore= new BigDecimal("10000000");
 							BigDecimal totalCost = decmial.add(decmial1);
 							BigDecimal totalCost1 = decmial2.add(decmial1);
-							BigDecimal totalCostCrores = decmialCrores.add(decmial1);
+							/*BigDecimal totalCostCrores = decmialCrores.add(decmial1);
 							BigDecimal totalCost1Crores = decmial2crores.add(decmial1);
 							BigDecimal totalCost1InCrores = totalCost1Crores.divide(crore);
 							BigDecimal totalCostInCrores = totalCostCrores.divide(crore);
 							statusVO.setAmountInCrores(totalCost1InCrores.toString());
-							returnVO.setAmountInCrores(totalCostInCrores.toString());
+							returnVO.setAmountInCrores(totalCostInCrores.toString());*/
 							
 							statusVO.setEstimationCost(totalCost1.toString());
 							returnVO.setEstimationCost(totalCost.toString());
@@ -2497,14 +2497,22 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			try{
 				LOG.info("entered into PmRequestDetailsService  of getDeptIdsListBYUserIds");
 				List<Object[]> deptIdsObjLst = pmOfficerUserDAO.getPmDeptIdByUserId(userId);
+				Long itration = 0l;
 				if(deptIdsObjLst != null && deptIdsObjLst.size() >0){
 					for (Object[] objects : deptIdsObjLst) {
+						itration =itration +1l;
 						deptVO.getDeptIdsList().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						deptVO.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[2]));
 						deptVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(objects[1]));
 						if(deptVO.getDeptIdsList() != null && deptVO.getDeptIdsList().size() >0 && !deptVO.getDeptIdsList().contains(commonMethodsUtilService.getStringValueForObject(objects[0]))){
-							String dept = deptVO.getDeptName().concat(commonMethodsUtilService.getStringValueForObject(objects[3])+", ");
-							deptVO.setDeptName(dept);
+							if(itration == 1l){
+								String dept = deptVO.getDeptName().concat(commonMethodsUtilService.getStringValueForObject(objects[3]));
+								deptVO.setDeptName(dept);
+							}else{
+								String dept = deptVO.getDeptName().concat(","+commonMethodsUtilService.getStringValueForObject(objects[3]));
+								deptVO.setDeptName(dept);
+							}
+							
 							deptVO.getDeptIdsList().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						}
 					}
@@ -2703,11 +2711,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getDeptCode(),dateUtilService.getCurrentDateAndTime());
 				inputVO.setCategory(endorseStr);
 				PmRequestEditVO petitionDetailsVO =setPmRepresenteeDataToResultView(inputVO.getPageId(),inputVO.getpType(),inputVO.getBlockLevelId());
-				String staticPath = commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER);
+				String staticPath = commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/Covering_Letter");
 							if(staticPath != null && staticPath.equalsIgnoreCase("FAILED"))
 								throw new Exception("File path not available . Please check once file path.");
-				String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
-				String fileName = datePath+"_"+inputVO.getEndValue()+".PDF";
+				//String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
+				String fileName = inputVO.getEndValue()+"_"+Math.abs(new Random().nextInt())+".PDF";
+				//String fileName = datePath+"_"+inputVO.getEndValue()+".PDF";
 				String filePath = ITextCoveringLetterGeneration.generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseStr,petitionDetailsVO,str1,staticPath,fileName);
 				resultStatus.setExceptionMsg(filePath);
 			} catch (Exception e) {
@@ -2979,14 +2988,22 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}
 				}
 				//String status="";
-				if(commonMethodsUtilService.isListOrSetValid(inputVO.getFilesList())){
+				/*if(commonMethodsUtilService.isListOrSetValid(inputVO.getFilesList())){
 					for (MultipartFile file : inputVO.getFilesList()) {
 						Document petitionCoverLetter = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,inputVO.getId());
 						if(petitionCoverLetter != null)
 							resultStatus =saveCoveringLetterDocument(inputVO.getRemark(),inputVO.getWorkIds(),petitionCoverLetter.getDocumentId(),inputVO.getId(), inputVO.getEndorsementNO(),inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId());
 					}
+				}*/
+				if(inputVO.getCoverLetterPath() != null & !inputVO.getCoverLetterPath().isEmpty()){
+					Document document = new Document();
+					document.setPath(inputVO.getCoverLetterPath());
+					document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					document.setInsertedUserId(inputVO.getId());
+					document = documentDAO.save(document);
+					if(document != null)
+						resultStatus =saveCoveringLetterDocument(inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),inputVO.getId(), inputVO.getEndorsementNO(),inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId());
 				}
-				
 				resultStatus.setExceptionMsg("SUCCESS");
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -3178,13 +3195,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							String estimationCost = commonMethodsUtilService.getStringValueForObject(objects[8]);
 							if(refDesigCan.getEstimationCost() != null && refDesigCan.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
 							BigDecimal decmial= new BigDecimal(refDesigCan.getEstimationCost());
-							BigDecimal decmialcrores= new BigDecimal(refDesigCan.getAmountInCrores());
+							//BigDecimal decmialcrores= new BigDecimal(refDesigCan.getAmountInCrores());
 							BigDecimal decmial1= new BigDecimal(estimationCost);
 								BigDecimal totalCost = decmial.add(decmial1);
-								BigDecimal totalCostCrores = decmialcrores.add(decmial1);
-								BigDecimal crore= new BigDecimal("10000000");
-								BigDecimal totalCostIncrore = totalCostCrores.divide(crore);
-								refDesigCan.setAmountInCrores(totalCostIncrore.toString());
+								//BigDecimal totalCostCrores = decmialcrores.add(decmial1);
+								//BigDecimal crore= new BigDecimal("10000000");
+								//BigDecimal totalCostIncrore = totalCostCrores.divide(crore);
+								//refDesigCan.setAmountInCrores(totalCostIncrore.toString());
 							refDesigCan.setEstimationCost(totalCost.toString());
 							//refDesigCan.setEstimationCost(refDesigCan.getEstimationCost()+);
 							}
