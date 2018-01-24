@@ -4770,12 +4770,48 @@ var json = {
    xhr.setRequestHeader("Content-Type", "application/json");
   }
  }).done(function(result){
+	 
+	/* var flag = false;
+	$('#WorkEndorsementNoErr').html('');
+	$('#leadIdErr').html('');
+	$('#grantIdErr').html(''); 
+	
+	var endorsementId =$("#workEndorsmentNo").val();
+	var leadIdValue = $("#leadId").val();
+	var grantIdValue = $("#grantId").val();
+	var statusId = $("#statusChangeId").val();
+	  
+	if(statusId == 1){
+		if(endorsementId == 0 || endorsementId == '' || endorsementId == null || endorsementId.trim().length == 0){
+			   $('#WorkEndorsementNoErr').html("<h5 style='color:red;'>Endosment no is required</h5>");
+		        flag =true;
+		}else{
+		   $('#WorkEndorsementNoErr') .html("");
+		}
+	    if(leadIdValue == null || leadIdValue ==0){
+			$('#leadIdErr').html("<h5 style='color:red;'>Please select brief lead</h5>");
+				flag =true; 
+			}else{
+				$('#leadIdErr').html("");
+		}
+		if(grantIdValue == null || grantIdValue ==0){
+			$('#grantIdErr').html("<h5 style='color:red;'>Please select grant</h5>");
+		    flag =true ;
+		}else{
+			 $('#grantIdErr').html("");
+		}
+	}
+	
+
+	if(flag==true)
+	return; */
+	
 	 if(result !=null){
 		 var str='';
 		 var scanCopySpl = result.exceptionMsg.split("."); 
 			var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
 			str+='<div  class="row">';
-			str+='<div class="col-sm-4">';
+			str+='<div class="col-sm-4 m_top10">';
 				str+='<div class="viewImageCss">';
 				if(scanCopyExt =="pdf"){
 					str+='<a class="fancyboxView" href="#inlineddd">';
@@ -4812,5 +4848,4 @@ var json = {
 	
  }); 
 }
-	
 	

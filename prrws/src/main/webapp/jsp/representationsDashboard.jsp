@@ -119,7 +119,7 @@
 					<div class="col-sm-12 m_top20">
 						<div class="white-block" style="padding:10px">
 							<h4><img src="Assests/icons/2000px-Circle-icons-crossroads.svg.png"><b style="padding-left:5px;">Lead wise Overview</b></h4>
-							<div class="row m_top10" style="height:375px;overflow-y:">
+							<div class="row m_top10">
 								<div id ="leadWiseOverviewId">						
 								</div>
 							</div>
