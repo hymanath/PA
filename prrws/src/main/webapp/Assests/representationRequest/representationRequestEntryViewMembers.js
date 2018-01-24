@@ -191,6 +191,7 @@ $(document).on("change",".clearDataCls",function(){
 function clearData(){
 	$("#summaryId").html("");
 	$("#representationRequestEntryTable").html('');
+	$("#petitionSubWorkRadioDivId").hide();
 }
 
 function representationRequestEntryTable(result){
