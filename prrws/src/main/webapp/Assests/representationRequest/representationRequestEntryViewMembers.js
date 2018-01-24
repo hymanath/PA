@@ -212,7 +212,7 @@ function representationRequestEntryTable(result){
 						str+='<th title="Referreer Designation" >REF.&nbsp;DESIGNATION</th>';				
 						str+='<th style="min-width:200px !important;"  title="Work Description" >WORK&nbsp;DESC.</th>';
 						//str+='<th>No&nbsp;of&nbsp;Works</th>';
-						str+='<th>BUDGET</th>';
+						str+='<th>BUDGET(in Lakhs)</th>';
 						str+='<th>STATUS</th>';
 						str+='<th>ACTION</th>';
 					str+='</tr>';
@@ -1107,8 +1107,8 @@ function getRepresentativeSearchDetails1(value){
    }else if(filterType == 'endorsmentNO'){
 	    filterValue=$("#endorsmentNoId").val();
    }else if(filterType == 'all'){
-	   startDate = "";
-		endDate = "";
+	  // startDate = "";
+		//endDate = "";
    }
    
 	var districtId=$("#districtCandId").val();
@@ -1174,12 +1174,12 @@ var json = {
     }
   }).done(function(result){
 	  $("#summaryId").html('');
-      $("#petitionSubWorkRadioDivId").show();
 	  $("#representationRequestEntryTable").html("");
     if(result != null && result.length>0){
+		$("#petitionSubWorkRadioDivId").show();
 		if(radioTypeVal == "petition"){
 			buildSummeryDetails(result);
-		 petitionWiseRepresenteeDetails(result)
+			petitionWiseRepresenteeDetails(result)
 		}else{
 		buildSummeryDetails(result);
         representationRequestEntryTable(result);
@@ -1820,7 +1820,7 @@ $(document).on("click",".closeSecondModal",function(){
  
  function getPmBriefLeadList(){
 	 $("#leadId").html('');
-	 $("#leadId").html('<option value="0"> SELECT LEAD </option>');
+	 $("#leadId").html('<option value="0"> Select lead </option>');
    var json = {
       
     };
@@ -1835,7 +1835,7 @@ $(document).on("click",".closeSecondModal",function(){
     }
   }).done(function(result){
 	  if(result !=null && result.length>0){
-			 $("#leadId").html('<option value="0">SELECT LEAD</option>');
+			 $("#leadId").html('<option value="0">Select lead</option>');
 			for(var i in result){
 				$("#leadId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
@@ -1846,7 +1846,7 @@ $(document).on("click",".closeSecondModal",function(){
 
 function getPmGrantList(){
 	 $("#grantId").html('');
-	 $("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
+	 $("#grantId").html('<option value="0">Select grant under </option>');
    var json = {
       
     };
@@ -1861,7 +1861,7 @@ function getPmGrantList(){
     }
   }).done(function(result){
 	  if(result !=null && result.length>0){
-			 $("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
+			 $("#grantId").html('<option value="0">Select grant under </option>');
 			for(var i in result){
 				$("#grantId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
@@ -1872,7 +1872,7 @@ function getPmGrantList(){
 
 function getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr){
 	 $("#assignToId").html('');
-	 $("#assignToId").html('<option value="0">SELECT DESIGNATION </option>');
+	 $("#assignToId").html('<option value="0"> Select designation </option>');
 	
  var json = {
 	 
