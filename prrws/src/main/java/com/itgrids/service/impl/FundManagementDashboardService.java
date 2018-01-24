@@ -257,11 +257,11 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 							schemeVO.setCount(commonMethodsUtilService.getLongValueForObject(param[4]));
 							schemeVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[5]));
 							schemeVO.setAmount(commonMethodsUtilService.calculateAmountInWords(schemeVO.getTotalCount()));
-							
+	
 						schemeVO.setAddressVO(addressVO);							
 						yearVO.setAddressVO(addressVO);
 						yearVO.getSubList().add(schemeVO);
-						
+
 						if(yearVO.getTotalCount() != null && yearVO.getTotalCount().longValue()>0L)
 							yearVO.setTotalCount(yearVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[5]));
 						else
@@ -327,8 +327,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			updateAmountAndCountForYearWise(returnList);
 		}
 		 /* MEARGINING MGNREGS DATA LOCATION WISE START */
-		     mergeMgnregsLocationWiseData(returnList,inputVO,schemesMap);
-		  /* END */
+	     mergeMgnregsLocationWiseData(returnList,inputVO,schemesMap);
+	  /* END */
 	     try {
 			  if(commonMethodsUtilService.isListOrSetValid(returnList)){
 					//returnList.addAll(locationMap.values());
@@ -3005,9 +3005,13 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 								if (mgnregsLocationVO != null) {
 									//setting mgnregs location id
 									fundSchemeVO.setLocationIdStr(mgnregsLocationVO.getLocationIdStr());
-									
 									fundVO.getSubList().add(0,mgnregsLocationVO.getSubList().get(0).getSubList().get(0));
 									fundSchemeVO.setAmount(f.format(Double.valueOf(fundVO.getAmount()) + Double.valueOf(mgnregsLocationVO.getSubList().get(0).getAmount())));
+									
+									FundSchemeVO mgneregsVO = mgnregsLocationVO.getSubList().get(0);
+									fundVO.setAmount(f.format(Double.valueOf(fundVO.getAmount())+ Double.valueOf(mgneregsVO.getAmount())));
+									fundVO.setCount((fundVO.getCount() != null ? fundVO.getCount():0l)+ mgneregsVO.getCount());
+									
 									locationDtlsList.remove(mgnregsLocationVO);//removing object once added into result list
 								} else {
 									fundVO.getSubList().add(0,getStaticTemplate());
