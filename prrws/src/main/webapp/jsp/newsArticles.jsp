@@ -235,8 +235,8 @@
 				<h4 class="font_weight">Department Wise Details</h4>
 				<div class="row">
 					<ul class="list-inline pull-right switch-btn">
-						<li class="active">Print Media</li>
-						<li class="">Electronic Media</li>
+						<li class="active removecss addcss" attr_type="print">Print Media</li>
+						<li class="removecss" attr_type="electronic">Electronic Media</li>
 					</ul>
 				</div>
 				<div class="row">
