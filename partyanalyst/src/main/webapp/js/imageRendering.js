@@ -149,7 +149,7 @@ $(document).on("click","#submitId",function(){
 	var newsurl=wurl+"/CommunityNewsPortal/webservice/imageRendering";
 	//var url="http://192.168.11.172:8446/CommunityNewsPortal/webservice/imageRendering";
 	$.ajax({
-		url: url,
+		url: newsurl,
 		data: JSON.stringify(json),
 		type: "POST",
 		dataType: 'json', 
