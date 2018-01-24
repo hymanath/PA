@@ -2402,8 +2402,8 @@ if(wurl.length == 3)
 		 var printCount3 =0;
 		 var printCount4 =0;
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+newsStartDate+"/"+newsEndDate+"/"+deptId
-			url: "http://192.168.11.173:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+newsStartDate+"/"+newsEndDate+"/"+deptId
+			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+newsStartDate+"/"+newsEndDate+"/"+deptId
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+newsStartDate+"/"+newsEndDate+"/"+deptId
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				if(deptId ==0){
@@ -2473,8 +2473,8 @@ function getBulletinNewsPapersInformation(deptId){
 		var electCount3=0;
 		var electCount4=0;
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
-			url: "http://192.168.11.173:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				if(deptId ==0){
