@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> VIEW PETITIONS DETAILS </title>
+<title> VIEW REPRESENTATIONS DETAILS </title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
@@ -106,7 +106,7 @@
 					<div class="panel-group">
 						<div class="panel panel-default panel-lightGreen">
 							<div class="panel-heading" style="padding-top:10px;padding-bottom:10px;">
-								<h4 class="panel-title f_22" style="font-weight:normal !important;">VIEW PETITION DETAILS</h4>
+								<h4 class="panel-title f_22" style="font-weight:normal !important;">VIEW REPRESENTATIONS DETAILS</h4>
 							</div>
 								<div class="panel-body">								
 										<div class="row">
@@ -252,14 +252,18 @@
 										</div>
 									</div>-->
 									<div class="row m_top10 " id="petitionSubWorkRadioDivId" style="display:none;">
-									    <div class="col-sm-3" style="left: 983px;" >
-										<input type="radio" class ="petitionSubWorkRadoCls" name="petition" value="petition" id="petitionId"  attr_type="petition" >
-											<label><h5>REPRESENTATIONS WISE</h5></label>
+										<div class="col-sm-12 ">
+											<div class="col-sm-2 pull-right">
+												<input type="radio" class ="petitionSubWorkRadoCls" name="subWork" checked value="work" id="workId"  attr_type="subWork" >
+												<label><h5>WORK WISE</h5></label>
+											</div>
+											<div class="col-sm-2 pull-right">
+												<input type="radio" class ="petitionSubWorkRadoCls" name="petition" value="petition" id="petitionId"  attr_type="petition" >
+												<label><h5>REPRESENTATION WISE</h5></label>
+											</div>
+											
 										</div>
-										<div class="col-sm-3  pull-right" >
-											<input type="radio" class ="petitionSubWorkRadoCls" name="subWork" checked value="work" id="workId"  attr_type="subWork" >
-											<label><h5>WORK WISE</h5></label>
-										</div>
+									    
 										
 									</div> 
 									<div class="row" id="summaryId">
