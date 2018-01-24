@@ -289,8 +289,7 @@
 	        <span id="uploadFile"></span>
 	      </div>
     	</div>
-		 
-		<!--<div class="row m_top20">
+		<!--<div class="row m_top20" id="fileUploadDiv" style="display:none;">
 			<div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
 				<button type="button" class="btn btn-success" id="coverLetterId" onclick="generateCoveringLetterForPetition()">Generate Cover Letter</button>
 			</div>
