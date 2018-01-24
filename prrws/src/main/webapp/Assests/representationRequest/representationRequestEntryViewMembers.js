@@ -59,6 +59,7 @@ function hideAndShowSelectBox(){
 	$("#endorsmentNoDivid").hide();
 	$("#subjectDivId").hide();	
 	$("#referralNameDiv").hide();
+	$("#petitionId").prop("checked",false);
 }
 $("#dateRangePicker").daterangepicker({
 		opens: 'left',
@@ -96,6 +97,7 @@ $("#dateRangePicker").daterangepicker({
 		}
 		locationLevelRefresh();
 		$("#petitionSubWorkRadioDivId").hide();
+		$("#workId").prop("checked",true);
 	});
 
 $(".chosen-select").chosen();
@@ -354,6 +356,7 @@ $(document).on("change","#locationSelId",function(){
 	if(searchType == 'all'){
 		//$('#parametersList').hide();
 		$("#districtConsMandDivId").hide();
+		 $('#petitionSubWorkRadioDivId').hide();
 		$('#advanceSearchBtnId').prop("checked",true);
 		$("#advancedSearchButtonDivId").show();
 		$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
@@ -382,6 +385,7 @@ $(document).on("change","#locationSelId",function(){
 			$("#emailId").val(' ');
 			$("#endorsmentNoId").val(' ');
 		    $('#advanceSearchBtnId').prop("checked",true);
+			$('#petitionSubWorkRadioDivId').hide();
 			$("#districtConsMandDivId").show();
 			$("#advancedSearchButtonDivId").show();
 			if($('#advanceSearchBtnId').prop( "checked")){
@@ -402,9 +406,10 @@ $(document).on("change","#locationSelId",function(){
 			$("#mobileId").val(' ');
 			$("#emailId").val(' ');
 			$("#endorsmentNoId").val(' ');
-			
+			 $('#petitionSubWorkRadioDivId').hide();
 			var serchTypValue = $(this).val();
 			if(serchTypValue == 'referrelDesignation'){
+				 $('#petitionSubWorkRadioDivId').hide();
 				 $("input[type='checkbox']").prop({disabled: false});
 				 $("#referralNameDiv").show();
 		         $("#districtConsMandDivId").hide();
@@ -413,6 +418,7 @@ $(document).on("change","#locationSelId",function(){
 			 getDesignationsBySearchType(serchTypValue,"designationsId",desigId,statusId);
 		   
 			}else if(serchTypValue == 'representeeDesignation'){
+				 $('#petitionSubWorkRadioDivId').hide();
 				 $("input[type='checkbox']").prop({disabled: false});
 				  getDesignationsBySearchType(serchTypValue,"designationsId",desigId,statusId);
 				  $("#designationDiv").show();
@@ -443,7 +449,7 @@ $(document).on("change","#locationSelId",function(){
 		$("#mobileId").val(' ');
 		$("#emailId").val(' ');
 		$("#endorsmentNoId").val(' ');
-
+         $('#petitionSubWorkRadioDivId').hide();
 	    $('#advanceSearchBtnId').prop("checked",false);
 	getDepartmentsBySearchType(searchType,"departmentId",deptId,statusId);
 		$("#departMentsDiv").show();
@@ -472,7 +478,7 @@ $(document).on("change","#locationSelId",function(){
 		$("#mobileId").val(' ');
 		$("#emailId").val(' ');
 		$("#endorsmentNoId").val(' ');       
-	         
+	          $('#petitionSubWorkRadioDivId').hide();
 	   $('#advanceSearchBtnId').prop("checked",false);
 	getSubjectsBySearchType(searchType,"subjectId",subjId,statusId);
 		$("#subjectDivId").show();
@@ -492,6 +498,7 @@ $(document).on("change","#locationSelId",function(){
    }else if(searchType == 'name' ||  searchType =='mobile' ||   searchType =='email' || searchType =='endorsmentNO'){
 		var searchType1=$(this).val();
 		if(searchType1 == 'name'){
+			 $('#petitionSubWorkRadioDivId').hide();
 			$('#advanceSearchBtnId').prop("checked",false);
 		    $("#nameDivid").show();
 			 $("#districtConsMandDivId").hide();
@@ -514,6 +521,7 @@ $(document).on("change","#locationSelId",function(){
 			 $("input[type='checkbox']").prop({disabled: false});
 			 
 		}else if(searchType1 == 'mobile'){
+			 $('#petitionSubWorkRadioDivId').hide();
 			$('#advanceSearchBtnId').prop("checked",false);
 			$("#mobileDivid").show();
 			 $("#districtConsMandDivId").hide();
@@ -535,6 +543,7 @@ $(document).on("change","#locationSelId",function(){
 	
 			$("input[type='checkbox']").prop({disabled: false});
 		}else if(searchType1 == 'email'){
+			 $('#petitionSubWorkRadioDivId').hide();
 			$('#advanceSearchBtnId').prop("checked",false);
 			$("#emailDivid").show();
 			$("#districtConsMandDivId").hide();
@@ -555,6 +564,7 @@ $(document).on("change","#locationSelId",function(){
 	         
 			$("input[type='checkbox']").prop({disabled: false});
 		}else if(searchType1 == 'endorsmentNO'){
+			 $('#petitionSubWorkRadioDivId').hide();
 			$('#advanceSearchBtnId').prop("checked",false);
 			$("#endorsmentNoDivid").show();
 			$("#districtConsMandDivId").hide();
