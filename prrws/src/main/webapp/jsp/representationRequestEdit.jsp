@@ -82,14 +82,14 @@
 				<div class="panel-group">
 					<div class="panel panel-default panel-lightGreen">
 						<div class="panel-heading padTopBottom">
-							<h4 class="panel-title f_22" style="font-weight:normal !important;"> EDIT/UPDATE PETITION DETAILS </h4>
+							<h4 class="panel-title f_22" style="font-weight:normal !important;"> EDIT/UPDATE REPRESENTATION DETAILS </h4>
 						</div>
 						<form action="saveRepresentRequestDetails" id="adminProfileForm" name="adminProfileFormName" enctype="multipart/form-data" method="post">
 						<input type="hidden"  name=""  value="100" class="form-control m_top10 height45" id="reffererCandidate0">
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-sm-12">
-									<h3 class="panel-title f_22"><span id="petitionViewType"></span> REPRESENTEE DETAILS </h3>
+									<!--<h3 class="panel-title f_22"><span id="petitionViewType"></span> REPRESENTEE DETAILS </h3>-->
 									<div class="row m_top20">
 										<div class="col-sm-3" id="endorsementDivId" >
 											<h6> ENDORSMENT NO </h6>
@@ -235,7 +235,7 @@
 		</div>
 		<div class="row m_top10">
 			<div class="col-sm-4" id="statusChangeDivId">
-				<label>Select Status<span style="color:red;">*</span></label>
+				<label>SELECT STATUS  : <span style="color:red;">*</span></label>
 				<select class="form-control chosen-select" id="statusChangeId">
 					<option value="0">Select Status</option>
 				</select>
@@ -243,19 +243,19 @@
 		</div>
 		 <div class="row m_top10">
 			<div class="col-sm-8" id="endorsentDivId" style="display:none;">
-				<label>ENDORSMENT NO<span style="color:red;">*</span><span id="WorkEndorsementNoErr"></span></label>
+				<label>ENDORSMENT NO : <span style="color:red;">*</span><span id="WorkEndorsementNoErr"></span></label>
 				<input type="text" class="form-control" id="workEndorsmentNo" placeholder="Endorsment NO" name="endorsementNO"/>
 			</div>
         </div>	
 		<div class="row m_top10">
 			<div class="col-sm-4" id="leadDivId" style="display:none;">
-				<label>LEAD<span style="color:red;">*</span><span id="leadIdErr"></span></label>
+				<label>LEAD : <span style="color:red;">*</span><span id="leadIdErr"></span></label>
 				<select class="form-control chosen-select" id="leadId" name="leadId">
 					<option value="1">SELECT LEAD</option>
 				</select>
 			</div>
 			<div class="col-sm-4" id="grantDivId" style="display:none;">
-				<label>GRANT UNDER<span  style="color:red;"></span><span id="grantIdErr"></span></label>
+				<label>GRANT UNDER : <span  style="color:red;"></span><span id="grantIdErr"></span></label>
 				<select class="form-control chosen-select" id="grantId" name="grantId">
 					<option value="1">SELECT GRANT UNDER</option>
 				</select>
@@ -263,13 +263,13 @@
 		</div>
 		<div class="row m_top10">
 			<div class="col-sm-4" id ="assignDesignationDivId" style="display:none;">
-				<label>ASSIGN TO<span id="assignToIdErr"></span></label>
+				<label>ASSIGN TO : <span id="assignToIdErr"></span></label>
 				<select class="form-control chosen-select popUpChangesCls" id="assignToId" name="deptDesigId">
 					<option value="0">SELECT DESIGNATION</option>
 				</select>
 			</div>
 			<div class="col-sm-4" id ="assignOfficerDivId" style="display:none;">
-				<label>OFFICER NAME<span id="officerIdErr"></span></label>
+				<label>OFFICER NAME : <span id="officerIdErr"></span></label>
 				<select class="form-control chosen-select" id="officerId" name="deptDesigOffcrId">
 					<option value="0">SELECT OFFICER NAME</option>
 				</select>
@@ -279,7 +279,7 @@
 		<input type="hidden" class="form-control" id="petitionId"  name="petitionId"/>
 		<div class="row m_top10" id="commentsDivId">
 			<div class="col-sm-8">
-				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
+				<label>COMMENT : <span style="color:red;">*</span><span id="remarkIdErr"></span></label>
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 		</div>
