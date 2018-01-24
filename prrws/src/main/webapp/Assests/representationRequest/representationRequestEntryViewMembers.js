@@ -2183,13 +2183,14 @@ function petitionWiseRepresenteeDetails(result){
 						str+='<th title="Referreer Designation" >REF.&nbsp;DESIGNATION</th>';				
 						str+='<th style="min-width:200px !important;"  title="Work Description" >WORK&nbsp;DESC.</th>';
 						//str+='<th>No&nbsp;of&nbsp;Works</th>';
-						str+='<th>BUDGET</th>';
+						str+='<th>BUDGET (in Lakhs)</th>';
 						str+='<th>STATUS</th>';
 						str+='<th>NO OF WORKS</th>';
 						str+='<th>ACTION</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
+				
 					for(var i in result){
 					  /* for(var j in result[i].subList){
 						  var noofWorks = result[i].subList;
@@ -2197,59 +2198,69 @@ function petitionWiseRepresenteeDetails(result){
 												
 					var endorsmentNo='';
 					str+='<tr>';
-						if (result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined")
+						if(result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined"){
 							str+='<td style="text-align:center;">'+result[i].raisedDate+'</td>';
-						else
+						}else{
 							str+='<td style="text-align:center;"> - </td>';
-						if (result[i].endorsementNO != null && result[i].endorsementNO != 0){
+						}
+						if(result[i].endorsementNO != null && result[i].endorsementNO != 0){
 							str+='<td style="text-align:center;">'+result[i].endorsementNO+'</td>';
 							endorsmentNo=result[i].endorsementNO;
-						}else
+						}else{
 							str+='<td style="text-align:center;"> - </td>';
-						
-						
-						if (result[i].endorsmentDate != null && result[i].endorsmentDate != "")
+						}
+						if(result[i].endorsmentDate != null && result[i].endorsmentDate != ""){
 							str+='<td style="text-align:center;">'+result[i].endorsmentDate+'</td>';
-						else
+						}else{
 							str+='<td style="text-align:center;"> - </td>';
-						if (result[i].name != null && typeof(result[i].name) != "undefined")
+						}
+						if (result[i].name != null && typeof(result[i].name) != "undefined"){
 							str+='<td style="text-align:center;">'+result[i].name+'</td>';
-						else
+						}else{
 							str+='<td style="text-align:center;"> - </td>';
+						}
 						
-						if (result[i].referrerName != null && typeof(result[i].referrerName) != "undefined")
+						if (result[i].referrerName != null && typeof(result[i].referrerName) != "undefined"){
 							str+='<td style="text-align:center;">'+result[i].referrerName+'</td>';
-						else
+						}else{
 							str+='<td style="text-align:center;"> - </td>';
-						if (result[i].desigName != null && typeof(result[i].desigName) != "undefined")
+						}
+						if (result[i].desigName != null && typeof(result[i].desigName) != "undefined"){
 							str+='<td style="text-align:center;">'+result[i].desigName+'</td>';
-						else
+						}else{
 							str+='<td style="text-align:center;"> - </td>';
-						if (result[i].workName != null && result[i].workName != "")
+						}
+						if (result[i].workName != null && result[i].workName != ""){
 							str+='<td>'+result[i].workName+'</td>';
-						else
+						}
+						else{
 							str+='<td style="text-align:center;"> - </td>';
+						}
 						/* if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
 							str+='<td>'+result[i].noOfWorks+'</td>';
 						else
 							str+='<td> - </td>'; */
-						if (result[i].estimationCost != "" && result[i].estimationCost != "0")
+						if (result[i].estimationCost != "" && result[i].estimationCost != "0"){
 							str+='<td style="text-align:center;">'+result[i].estimationCost+'</td>';
-						else
+						}else{
 							str+='<td style="text-align:center;">-</td>';
-						if (result[i].statusType != "" && typeof(result[i].statusType) != "undefined" )
+						}
+						if (result[i].statusType != "" && typeof(result[i].statusType) != "undefined" ){
 							str+='<td style="text-align:center;">'+result[i].statusType+'</td>';
-						else{
+						}else{
 							if (result[i].endorsementNO != null && result[i].endorsementNO != 0){
 							str+='<td style="text-align:center;"> In Progress </td>';
 							}
-							else
+							else{
 								str+='<td style="text-align:center;">-</td>';
-							
+							}
+						}
+						
 						if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined"){
 							str+='<td class="text-center"><i class=" viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i>'+result[i].noOfWorks+'</td>';
-						}else
+						}else{
 							str+='<td> - </td>';
+						}
 							str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
 						//24 - userId - admin_user
 						//if(userId == 24){
@@ -2282,4 +2293,3 @@ function petitionWiseRepresenteeDetails(result){
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 	});
   }
-}
