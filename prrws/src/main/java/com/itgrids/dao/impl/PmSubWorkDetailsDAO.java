@@ -341,7 +341,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	
 	public List<Object[]> getPetitionsDetailedSubWorksIdsList(List<Long>  petitionIdsList){
 		if(petitionIdsList != null && petitionIdsList.size()>0){
-			Query query = getSession().createQuery(" select distinct model.petitionId , model.pmSubWorkDetailsId ,model.pmStatusId model.pmSubWorkDetailsId model.pmStatusId from PmSubWorkDetails model where model.petitionId in (:petitionIdsList) and model.isDeleted='N' ");
+			Query query = getSession().createQuery(" select distinct model.petitionId , model.pmSubWorkDetailsId ,model.pmStatusId from PmSubWorkDetails model where model.petitionId in (:petitionIdsList) and model.isDeleted='N' ");
 			query.setParameterList("petitionIdsList", petitionIdsList);
 			return query.list();
 		}
