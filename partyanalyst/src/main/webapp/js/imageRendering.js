@@ -116,7 +116,7 @@ function getAllNewsPapers(){
 	
 	$.ajax({
 		type : 'GET', 
-		url: wurl+"CommunityNewsPortal/webservice/getAllNewsPapers/AP";
+		url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP";
       //url: "http://192.168.11.172:8446/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
     }).then(function(result){
 		return buildResult('newsLetternewsPaperId',result);
