@@ -49,6 +49,7 @@ import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
 import com.itgrids.model.ComponentWiseAchievementConfiguration;
 import com.itgrids.model.ComponentWiseAchievementConfigurationTemp;
+import com.itgrids.model.MeesevaKpiCenters;
 import com.itgrids.model.NregaComponentComments;
 import com.itgrids.model.NregaComponentCommentsHistory;
 import com.itgrids.model.NregaComponentStatus;
@@ -7865,13 +7866,21 @@ public class NREGSTCSService implements INREGSTCSService{
 					}
 				}
 			
-			if(list != null && !list.isEmpty()){
-				for (ComponentWiseAchievementConfigurationTemp finalData : list) {
-					componentWiseAchievementConfigurationTempDAO.save(finalData);
+			//Deleting Existing Data From Table
+			int deletedStatus = componentWiseAchievementConfigurationTempDAO.deleteRecrdsFrmTable();
+			
+			//Inserting New Data Into a Table
+			if(Long.valueOf(deletedStatus) != null && deletedStatus > 0){
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					for (ComponentWiseAchievementConfigurationTemp finalData : list) {
+						componentWiseAchievementConfigurationTempDAO.save(finalData);
+					}
 				}
 			}
+		
+			statusVO.setName("SUCCESS");	
 			
-			statusVO.setName("SUCCESS");
+			
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at saveNregaComponentsWiseAchvPercTillToday - NREGSTCSService service", e);
