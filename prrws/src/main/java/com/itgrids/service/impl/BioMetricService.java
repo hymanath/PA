@@ -96,12 +96,19 @@ public class BioMetricService implements IBioMetricService {
 	 */
 	public List<BioMetricDashBoardDtlsVO> getEmployeeAttendenceTimePeriodWise(String deptCode,String todayDate) {
 		List<BioMetricDashBoardDtlsVO> resultList = new ArrayList<BioMetricDashBoardDtlsVO>(0);
+		 JSONObject jsonObject=null;
 		 try {
+			
 			 String[] tempArr = {"Before - 10:00","10:00 - 10:30","10:30 - 11:00","After - 11:00"};
 			 BioAuthSoapProxy bioAuthSoapObj = new BioAuthSoapProxy();
 			
 			 String jsonString = bioAuthSoapObj.employeeIntimeStatistics(todayDate);
-			 JSONObject jsonObject = filterRequiredObject(jsonString);
+			 if(deptCode.equals("27001701024")){
+			  jsonObject = filterRequiredObject(jsonString);
+			 }
+			 else if(deptCode.equals("27001701035")){
+				 jsonObject = filterRequiredObjectsPr(jsonString);
+			  }
 				 for(String timePeriod:tempArr) {
 					 BioMetricDashBoardDtlsVO timePeriodVO = new BioMetricDashBoardDtlsVO();
 					 timePeriodVO.setName(timePeriod);
@@ -119,18 +126,30 @@ public class BioMetricService implements IBioMetricService {
 						  Date date = sdf1.parse(dateStr.trim());
 						  resultList.get(0).setInTime(formatter.format(date));
 					 }
+					}
+				 else{
+					 resultList.get(0).setInTime("0");
 				 }
+				 JSONObject outTimejsonObject=null;		 
 				 String outTimeJsonString = bioAuthSoapObj.employeeOuttimeStatistics(todayDate);
-				 JSONObject outTimejsonObject = filterRequiredObject(outTimeJsonString);
-
+				 if(deptCode.equals("27001701024")){
+				 outTimejsonObject = filterRequiredObject(outTimeJsonString);
+				 }
+				 else if(deptCode.equals("27001701035")){
+				 outTimejsonObject = filterRequiredObjectsPr(outTimeJsonString);
+				 }
 				 if(outTimejsonObject != null && outTimejsonObject.length() > 0 && outTimejsonObject.has("AVERAGEOUT_TIME")){
 					 String dateStr=outTimejsonObject.getString("AVERAGEOUT_TIME");
 					 if(dateStr != null && dateStr.length() > 0){
 						 Date date = sdf1.parse(dateStr.trim()); 
 						 resultList.get(0).setOutTime(formatter.format(date));
 					 }
+					 }	
+				 else{
+					 resultList.get(0).setOutTime("0");
 				 }
-		 } catch (Exception e) {
+						 
+		     } catch (Exception e) {
 			 LOG.error("Exception raised at getEmployeeAttendenceTimePeriodWise - BioMetricService service",e);
 		 }
 		 return resultList;
@@ -899,5 +918,26 @@ public class BioMetricService implements IBioMetricService {
 		}
 		return dateArr;
 	}
+	
+	private JSONObject filterRequiredObjectsPr(String jsonString) {
+    	 try {
+    		  if (jsonString != null && jsonString.trim().length() > 0) {
+    			  JSONArray finalJSONArray = new JSONArray(jsonString);
+    			   if (finalJSONArray != null && finalJSONArray.length() > 0) {
+    				   for (int i = 0; i < finalJSONArray.length(); i++) {
+    					    JSONObject jsonObj = (JSONObject) finalJSONArray.get(i);
+    					    String deptName = jsonObj.has("DEPARTMENT") ? jsonObj.getString("DEPARTMENT") : "";
+    					    if (deptName.trim().equalsIgnoreCase("PANCHAYATI RAJ \u0026 RURAL DEVELOPMENT")) {
+    					    	return jsonObj;
+    					    }
+    				   }
+     			   }
+    		  }
+    	 } catch (Exception e) {
+    		 LOG.error("Exception raised at filterRequiredObject - BioMetricService service",e);
+    	 }
+    	 return null;
+    }
+	
 	
 }

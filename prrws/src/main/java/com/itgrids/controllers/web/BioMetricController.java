@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,12 +25,16 @@ public class BioMetricController {
 	
 	    @Autowired
 	    private IBioMetricService bioMetricService;
-	   
+	    
 	    @RequestMapping(value ="/bioMetricDashBoard",method = RequestMethod.GET)
 	    public String bioMetricDashBoard() {
 		   return "bioMetricDashBoard";
 	    }
-	   
+	    @RequestMapping(value ="/prBioMetricDashBoard",method = RequestMethod.GET)
+	    public String prBioMetricDashBoard(ModelMap model) {
+	    return "prBioMetricDashBoard";
+	    }
+	    
 	    @RequestMapping(value ="/getBioMetricDashboardOverViewDtls",method = RequestMethod.POST)
 	    public @ResponseBody BioMetricDashBoardDtlsVO getBioMetricDashboardOverViewDtls(@RequestBody Map<String,String> inputMap) {
 	    	 return bioMetricService.getBioMetricDashboardOverViewDtls(inputMap.get("deptCode"));
