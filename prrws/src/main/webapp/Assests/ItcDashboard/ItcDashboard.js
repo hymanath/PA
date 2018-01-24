@@ -5580,7 +5580,12 @@ function buildApInnovationIndicatorDetails(result){
 	str+='</table>';
 	str+='</div>';
 	$("#indicatorsDivId").html(str);
-	$("#indicatorsTableId").dataTable();
+	//$("#indicatorsTableId").dataTable();
+	$("#indicatorsTableId").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	});
 }
 function getApInnovationOverviewDetails(){
 	$("#bootEventsActivitiesBlockId").html(spinner);
@@ -5683,10 +5688,10 @@ function getApInnovationBootCampDetails(deptId){
 function buildApInnovationBootCampDetails(result,deptId){
 	var str='';
 		str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered dataTableCls" id="dataTable'+deptId+'">';
+			str+='<table class="table table-bordered dataTableCls'+deptId+'" id="dataTable'+deptId+'">';
 				str+='<thead>';
 					str+='<tr>';
-						str+='<th colspan="6"><h4 style="color:#fff !important;">Venue: '+result.name+' ( '+result.fromDate+' )</h4></th>';
+						str+='<th colspan="5"><h4 style="color:#fff !important;">Venue: '+result.name+' ( '+result.fromDate+' )</h4></th>';
 					str+='</tr>';
 					str+='<tr>';
 						//str+='<th style="background-color:#fff !important;">ID</th>';
@@ -5740,7 +5745,12 @@ function buildApInnovationBootCampDetails(result,deptId){
 		str+='</div>';
 	$("#bootCampId"+deptId).html(str);
 	//$("#dataTable"+deptId).dataTable();
-	$(".dataTableCls").dataTable();
+	//$(".dataTableCls").dataTable();
+	$(".dataTableCls"+deptId).dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	});
 }
 
 $(document).on("click",".APISDetailsCls",function(){
@@ -5870,13 +5880,13 @@ function buildApInnovationEventDetails(result,divId){
 										}else{
 											str+='<td>-</td>';
 										}
-										if(result[i].venue != null && result[i].venue !=0){
-											str+='<td>'+result[i].venue+'</td>';
+										if(result[i].location != null && result[i].location != 0){
+											str+='<td>'+result[i].location+'</td>';
 										}else{
 											str+='<td>-</td>';
 										}
-										if(result[i].location != null && result[i].location != 0){
-											str+='<td>'+result[i].location+'</td>';
+										if(result[i].venue != null && result[i].venue !=0){
+											str+='<td>'+result[i].venue+'</td>';
 										}else{
 											str+='<td>-</td>';
 										}
@@ -5906,8 +5916,14 @@ function buildApInnovationEventDetails(result,divId){
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
-			$("#"+divId).html(str);
-			$("#dataTable"+divId).dataTable();
+		$("#"+divId).html(str);
+		//$("#dataTable"+divId).dataTable();
+		$("#dataTable"+divId).dataTable({
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		
+		});
 }
 
 function getApInnovationActivityDetails(category){
@@ -5938,7 +5954,7 @@ function buildApInnovationActivityDetails(result,category){
 			str+='<table class="table table-bordered" id="dataTable'+category.replace(/\s+/g, '')+'">';
 				str+='<thead>';
 					str+='<tr>';
-						str+='<th colspan="6"><h4 style="color:#fff !important;">'+result.name+'</h4></th>';
+						str+='<th colspan="5"><h4 style="color:#fff !important;">'+result.name+'</h4></th>';
 					str+='</tr>';
 					str+='<tr>';
 						str+='<th style="background-color:#fff !important;">CONDUCTED BY</th>';
@@ -5983,7 +5999,13 @@ function buildApInnovationActivityDetails(result,category){
 			str+='</table>';
 		str+='</div>';
 	$("#activities"+category.replace(/\s+/g, '')).html(str);
-	$("#dataTable"+category.replace(/\s+/g, '')).dataTable();
+	//$("#dataTable"+category.replace(/\s+/g, '')).dataTable();
+	$("#dataTable"+category.replace(/\s+/g, '')).dataTable({
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		
+		});
 }
 function getCompleteOverviewForAPIS(type,divId){
 	$("#"+divId).html(spinner);
@@ -6460,7 +6482,12 @@ function buildApInnovationIncubatorsOtherBlockDetails(result,divId){
 		str+='</div>';
 	str+='</div>';
 	$("#incubatorsDetailsDivId"+divId).html(str);
-	$("#dataTable"+divId).dataTable();
+	//$("#dataTable"+divId).dataTable();
+	$("#dataTable"+divId).dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	});
 }
 $(document).on("click",".incubatorChorotCls",function(){
 	var cohortId = $(this).attr("attr_chorot_id");
@@ -6544,6 +6571,11 @@ function buildApInnovationCohortWiseDetails(result){
 			str+='</tbody>';
 		str+='</table>';
 		$("#cohortModalDivId").html(str);
-		$("#dataTableId").dataTable();
+		//$("#dataTableId").dataTable();
+		$("#dataTableId").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	});
 		
 }
