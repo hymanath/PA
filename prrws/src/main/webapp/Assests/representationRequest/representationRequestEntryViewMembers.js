@@ -93,9 +93,9 @@ $("#dateRangePicker").daterangepicker({
 		if(picker.chosenLabel == 'All')
 		{
 			$("#dateRangePicker").val('All');
-			$("#petitionSubWorkRadioDivId").hide();
 		}
 		locationLevelRefresh();
+		$("#petitionSubWorkRadioDivId").hide();
 	});
 
 $(".chosen-select").chosen();
