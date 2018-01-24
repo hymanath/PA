@@ -255,16 +255,13 @@
 										<div class="col-sm-12 ">
 											<div class="col-sm-2 pull-right">
 												<input type="radio" class ="petitionSubWorkRadoCls" name="subWork" checked value="work" id="workId"  attr_type="subWork" >
-												<label><h5>WORK WISE</h5></label>
+												<label><h5>WORKS WISE</h5></label>
 											</div>
 											<div class="col-sm-2 pull-right">
 												<input type="radio" class ="petitionSubWorkRadoCls" name="petition" value="petition" id="petitionId"  attr_type="petition" >
-												<label><h5>REPRESENTATION WISE</h5></label>
+												<label><h5>REPRESENTATIONS WISE</h5></label>
 											</div>
-											
 										</div>
-									    
-										
 									</div> 
 									<div class="row" id="summaryId">
 									</div>
