@@ -167,9 +167,7 @@ $(document).on("click","#submitId",function(){
 			}else{
 				$('#imageId').html('<span style="textAlign:center; text-color:red">NO DATA AVAILABLE</span>'); 
 			}
-			getAllLocations(2,'1');
-			getAllNewsPapers();
-			$('#newsLetterEditionId').html('<option> Main </option> <option> District </option> <option> Online </option>').trigger('chosen:updated');	
+			
 		}
 	});
 	
