@@ -31,6 +31,7 @@ public class PmRequestVO {
 	private AddressVO candidateNativeAddressVO ;
 	private List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>(0);
 	private List<PmRequestVO> referList= new ArrayList<PmRequestVO>(0);
+	private List<PmRequestVO> selfReferList= new ArrayList<PmRequestVO>(0);
 	private List<MultipartFile> fileList = new ArrayList<MultipartFile>(0);
 	private List<KeyValueVO> fileNamesList = new ArrayList<KeyValueVO>();
 	
@@ -47,7 +48,15 @@ public class PmRequestVO {
 	private String endorsmentDate;
 	private String repImagePath; 
 	private String remarks;
+	private String saveType;
 	
+	
+	public String getSaveType() {
+		return saveType;
+	}
+	public void setSaveType(String saveType) {
+		this.saveType = saveType;
+	}
 	public String getRemarks() {
 		return remarks;
 	}
@@ -248,5 +257,10 @@ public class PmRequestVO {
 	public void setCandidateNativeAddressVO(AddressVO candidateNativeAddressVO) {
 		this.candidateNativeAddressVO = candidateNativeAddressVO;
 	}
-	
+	public List<PmRequestVO> getSelfReferList() {
+		return selfReferList;
+	}
+	public void setSelfReferList(List<PmRequestVO> selfReferList) {
+		this.selfReferList = selfReferList;
+	}
 }
