@@ -537,7 +537,7 @@ function getReferralWiseOverviewDetails(desigId){
 	str+='</div>';
 	  }
 	   if(result.subList != null && result.subList.length>0){
-		  getReferralWiseOverviewDetails("7");
+		  getReferralWiseOverviewDetails(result.referrerList[0].id);
 	  } 
 	  
 	$("#desigWiseCountId").html(str);
