@@ -4311,9 +4311,11 @@ $(document).on("change","#statusChangeId",function(){
 		$("#commentsDivId").show();
 		$("#leadDivId").show();
 		$("#grantDivId").show();
+		$("#saveBtnId").hide();
 		$("#assignOfficerDivId").show();
 		$("#assignDesignationDivId").show();
-		$("#fileUploadDiv").show();
+		$("#fileUploadDiv").hide();
+		$("#fileUploadIdDiv").show();
 		$("#buttonNameId").html("Forward")
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
@@ -4321,7 +4323,7 @@ $(document).on("change","#statusChangeId",function(){
 		getPmGrantList();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 6){
-		
+		$("#saveBtnId").show();
 		  $('#WorkEndorsementNoErr').html(' ');
 		$("#remarksId").val('');
 		 $('#remarkIdErr').html('');
@@ -4336,13 +4338,15 @@ $(document).on("change","#statusChangeId",function(){
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
 		$("#fileUploadDiv").show();
+		$("#fileUploadIdDiv").hide();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 7){
-		
+		$("#saveBtnId").show();
 		$("#remarkIdErr").html('');
 		$("#remarksId").val('');
 		$("#letterNameId").html("DETAILED REPORT");
 		$("#fileUploadDiv").show();
+		$("#fileUploadIdDiv").hide();
 		$("#commentsDivId").show();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
@@ -4353,10 +4357,12 @@ $(document).on("change","#statusChangeId",function(){
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
 	}else if(statusId == 3 || statusId == 4 || statusId == 5){
+		$("#saveBtnId").show();
 		$("#remarkIdErr").html('');
 		$("#remarksId").val('')
 		$("#letterNameId").html("");
 		$("#fileUploadDiv").hide();
+		$("#fileUploadIdDiv").hide();
 		$("#commentsDivId").show();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
@@ -4366,9 +4372,11 @@ $(document).on("change","#statusChangeId",function(){
 		$("#buttonNameId").html("Save Details")
 	}
 	else if(statusId == 0){
+		$("#saveBtnId").show();
 		 $('#remarkIdErr').html('');
 		$("#letterNameId").html("");
 		$("#fileUploadDiv").hide();
+		$("#fileUploadIdDiv").hide();
 		$("#commentsDivId").show();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
