@@ -1355,6 +1355,8 @@
 						 <value>com.itgrids.partyanalyst.model.TdpCommitteeLevelHierarchy</value>
 						 <value>com.itgrids.partyanalyst.model.AlertVerificationUser</value>
 						 <value>com.itgrids.partyanalyst.model.OtpDetails</value>
+						 <value>com.itgrids.partyanalyst.model.PsychometricTest</value>
+						 <value>com.itgrids.partyanalyst.model.TdpCadrePsychometricTest</value>
 						 
 						 <value>com.itgrids.partyanalyst.model.ZohoTdpCadreContact</value>
 				  </list>
