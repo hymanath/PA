@@ -276,7 +276,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 								}else if(departmentType == "overAll"){
 									if(typeval == "PrintMedia"){
 										if(result[i].positiveCountMain != null && result[i].positiveCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="0" attr_type="print" attr_categoryId="0">'+result[i].positiveCountMain+'</a>(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="0" attr_type="print" title="'+result[i].mainPositiveArticlePerc+'" attr_categoryId="0">'+result[i].positiveCountMain+'</a>(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 										}else{
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 										}
@@ -297,7 +297,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 								}else if(departmentType == "department"){
 									if(typeval == "PrintMediadepartment"+departmentId+""){
 										if(result[i].positiveCountMain !=null && result[i].positiveCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="0">'+result[i].positiveCountMain+'</a>(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" title="'+result[i].mainPositiveArticlePerc+'" attr_categoryId="0">'+result[i].positiveCountMain+'</a>(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 										}else{
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 										}
@@ -323,7 +323,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 								}else if(departmentType == "overAll"){
 									if(typeval == "PrintMedia"){
 										if(result[i].negativCountMain != null && result[i].negativCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="0" attr_type="print" attr_categoryId="0">'+result[i].negativCountMain+'</a>(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="0" attr_type="print" title="'+result[i].mainNegativeArticlePerc+'"  attr_categoryId="0">'+result[i].negativCountMain+'</a>(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 										}else{
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 										}
@@ -344,7 +344,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 								}else if(departmentType == "department"){
 									if(typeval == "PrintMediadepartment"+departmentId+""){
 										if(result[i].negativCountMain !=null && result[i].negativCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="0">'+result[i].negativCountMain+'</a>(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" title="'+result[i].mainNegativeArticlePerc+'" attr_categoryId="0">'+result[i].negativCountMain+'</a>(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 										}else{
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 										}
@@ -684,7 +684,7 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 													collapse+='<div class="col-sm-6">';
 														collapse+='<div class="pad_light_yash_bg border_yash" style="height:362px;>';
 															collapse+='<h5 class="font_weight text-capital">Analysis of Action Immediately</h5>';
-															collapse+='<h5 class="m_top10 font_weight">Total Count - <a><span id="totalCountAnalysisId'+result[i].organizationId+'" class="propertiesCls" attr_deptId="'+result[i].organizationId+'" attr_propertyId="0" attr_type="" style="cursor:pointer;"></span></a></h5>';
+															collapse+='<h5 class="m_top10 font_weight">Total Count - <a><span id="totalCountAnalysisId'+result[i].organizationId+'" class="propertiesCls" attr_deptId="'+result[i].organizationId+'" attr_propertyId="0" attr_type="'+type+'" style="cursor:pointer;"></span></a></h5>';
 															collapse+='<div class="row">';
 																collapse+='<div class="col-sm-6">';
 																	collapse+='<div id="actionWiseAnalysis'+result[i].organizationId+'" class="" style="height:180px;width:100%;margin-top:20px;"></div>';
@@ -742,7 +742,7 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 											collapse+='<div class="col-sm-6">';
 												collapse+='<div class="pad_light_yash_bg border_yash" style="height:362px;>';
 													collapse+='<h5 class="font_weight text-capital">Analysis of Action Immediately</h5>';
-													collapse+='<h5 class="m_top10 font_weight">Total Count - <a><span id="totalCountAnalysisId'+result[i].organizationId+'" class="propertiesCls" attr_deptId="'+result[i].organizationId+'" attr_propertyId="0" attr_type="" style="cursor:pointer;"></span></a></h5>';
+													collapse+='<h5 class="m_top10 font_weight">Total Count - <a><span id="totalCountAnalysisId'+result[i].organizationId+'" class="propertiesCls" attr_deptId="'+result[i].organizationId+'" attr_propertyId="0" attr_type="'+type+'" style="cursor:pointer;"></span></a></h5>';
 													collapse+='<div class="row">';
 														collapse+='<div class="col-sm-6">';
 															collapse+='<div id="actionWiseAnalysis'+result[i].organizationId+'" class="" style="height:180px;width:100%;margin-top:20px;"></div>';
