@@ -68,7 +68,7 @@ if(wurl.length == 3)
 		 $("#overAllPrintMediaDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
+			//url: "http://192.168.11.194:8080/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				buildOverAllPrintMediaDetails(result,"PrintMedia","overAllPrintMediaDivId","overAll",0);
@@ -81,7 +81,7 @@ if(wurl.length == 3)
 		 $("#overAllElectronicMediaDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
+			//url: "http://192.168.11.194:8080/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
 		}).then(function(result){
 				if(result !=null && result.length>0){
 					buildOverAllPrintMediaDetails(result,"ElectronicMedia","overAllElectronicMediaDivId","overAllEle",0);
@@ -94,7 +94,7 @@ if(wurl.length == 3)
 		$("#overAllDistrictWiseDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
+			//url: "http://192.168.11.194:8080/CommunityNewsPortal/webservice/getDistrictWiseTotalOverViewInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
 		}).then(function(result){
 			if(result !=null && result.length>0){
 					buildOverAllDistrictWiseDetails(result,"overAllDistrictWiseDivId",globalDeptId,"overAllPrint");
@@ -107,7 +107,7 @@ if(wurl.length == 3)
 		$("#overAllDistrictEMWiseDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDistrictWiseNewsTotalOverviewForElectronicMedia/"+glStartDate+"/"+glEndDate+"/''"+"/"+globalDeptId+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDistrictWiseNewsTotalOverviewForElectronicMedia/"+glStartDate+"/"+glEndDate+"/''"+"/"+globalDeptId+"/"
+			//url: "http://192.168.11.194:8080/CommunityNewsPortal/webservice/getDistrictWiseNewsTotalOverviewForElectronicMedia/"+glStartDate+"/"+glEndDate+"/''"+"/"+globalDeptId+"/"
 		}).then(function(result){
 			if(result !=null && result.length>0){
 					buildOverAllDistrictWiseDetails(result,"overAllDistrictEMWiseDivId",globalDeptId,"overAllEM");
@@ -120,7 +120,7 @@ if(wurl.length == 3)
 		$("#departmentWiseDetailsDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
+			//url: "http://192.168.11.194:8080/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				buildDepartmentWiSeBlockDetails(result,type,divId,typeVal);
@@ -133,7 +133,7 @@ if(wurl.length == 3)
 		$("#departmentWiseDetailsDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
+			//url: "http://192.168.11.194:8080/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+glStartDate+"/"+glEndDate+"/"+globalDeptId+"/"
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				buildDepartmentWiSeBlockDetails(result,type,divId,typeVal);
@@ -425,10 +425,10 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 			if(departmentType == "overAllEle"){
 				 if(typeval == "ElectronicMedia"){
 					if(result[i].organization == "News Bulletin"){	    //headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+totalPosPerc+'%)<br>('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
-						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <br/><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <br/><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimePositiveCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
 					}else if(result[i].organization == "News Program"){
 						//headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(1)+'%) ('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
-						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <br/><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <br/><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimePositiveCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
 						
 					}
 				}
