@@ -4185,18 +4185,17 @@ $(document).on("change",".madalChangeCls",function(){
 	}
  });
  $(document).on("click",".updateStatusChangeCls",function(){
+	 $("#coveringLetterGenerator").html("");
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
 	 $('#remarkIdErr').html("");
 	$("#fileUploadDiv").hide();
 	$("#commentsDivId").show();
-	$("#saveBtnId").show();
 	$("#leadDivId").hide();
 	$("#grantDivId").hide();
 	$("#assignOfficerDivId").hide();
 	$("#assignDesignationDivId").hide();
 	$("#endorsementDivId").hide();
-	$("#endorsentDivId").hide();
 	$("#endorsmentNo").val('');
 	$("#remarksId").val('');
 	$("#leadId").html('');
@@ -4208,7 +4207,7 @@ $(document).on("change",".madalChangeCls",function(){
     $("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
 	$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
 	$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');	
-	$("#statusChangeDivId").show();
+	//$("#statusChangeDivId").show();
 	selectdWorksArr=[];
 	$(".workStatusUpdateCls").each(function(){
 		if($(this).is(":checked")){
@@ -4316,12 +4315,18 @@ $(document).on("change","#statusChangeId",function(){
 		$("#assignDesignationDivId").show();
 		$("#fileUploadDiv").hide();
 		$("#fileUploadIdDiv").show();
+		$(".saveEnable").prop("disabled", true);
 		$("#buttonNameId").html("Forward")
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
 		getPmBriefLeadList();
 		getPmGrantList();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+		$('.saveEnable').attr('data-toggle', 'tooltip');
+		$('.saveEnable').attr('title', 'Please generate the covering letter.');
+		//$('[data-toggle="tooltip"]').tooltip();
+		//$('.saveEnable').removeAttr('title');
+		$("#coveringLetterGenerator").html("");
 	}else if(statusId == 6){
 		$("#saveBtnId").show();
 		  $('#WorkEndorsementNoErr').html(' ');
@@ -4335,11 +4340,14 @@ $(document).on("change","#statusChangeId",function(){
 		$("#assignDesignationDivId").show();
 		$("#endorsentDivId").hide();
 		$("#buttonNameId").html("Forward")
+		$(".saveEnable").prop("disabled", false);
+		$('.saveEnable').removeAttr('title');
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
 		$("#fileUploadDiv").show();
 		$("#fileUploadIdDiv").hide();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+		$("#coveringLetterGenerator").html("");
 	}else if(statusId == 7){
 		$("#saveBtnId").show();
 		$("#remarkIdErr").html('');
@@ -4353,9 +4361,12 @@ $(document).on("change","#statusChangeId",function(){
 		$("#assignOfficerDivId").hide();
 		$("#assignDesignationDivId").hide();
 		$("#endorsentDivId").hide();
+		$('.saveEnable').removeAttr('title');
+		$(".saveEnable").prop("disabled", false);
 		$("#buttonNameId").html("Save Details")
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
+		$("#coveringLetterGenerator").html("");
 	}else if(statusId == 3 || statusId == 4 || statusId == 5){
 		$("#saveBtnId").show();
 		$("#remarkIdErr").html('');
@@ -4370,6 +4381,9 @@ $(document).on("change","#statusChangeId",function(){
 		$("#assignDesignationDivId").hide();
 		$("#endorsentDivId").hide();
 		$("#buttonNameId").html("Save Details")
+		$(".saveEnable").prop("disabled", false);
+		$('.saveEnable').removeAttr('title');
+		$("#coveringLetterGenerator").html("");
 	}
 	else if(statusId == 0){
 		$("#saveBtnId").show();
@@ -4386,6 +4400,9 @@ $(document).on("change","#statusChangeId",function(){
 		$("#endorsmentNo").val('');
 		$("#remarksId").val('');
 		$("#leadId").html('');
+		$(".saveEnable").prop("disabled", false);
+		$('.saveEnable').removeAttr('title');
+		$('.saveEnable').tooltip({disabled: true});
 		$("#leadId").html('<option value="0"> SELECT LEAD </option>');
 		$("#leadId").trigger("chosen:updated");
 		$("#grantId").html('');
@@ -4394,6 +4411,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
 		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');	
+		$("#coveringLetterGenerator").html("");
 		return;
 	}
 });	
@@ -4837,7 +4855,8 @@ var json = {
 						
 					str+='</div>';
 					$("#coverLetterPath").val(result.exceptionMsg);
-					$("#saveBtnId").show();
+					//$("#saveBtnId").show();
+					$(".saveEnable").prop("disabled", false);
 				}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
 					str+='<a class="fancyboxView" href="#inlineddds">';
 						str+='<img src="'+result.exceptionMsg+'"  width="100%" height="100px;"></img>';
@@ -4865,7 +4884,6 @@ var json = {
 	
  }); 
 }
-
 $(document).on('click','.editAddCommentCls',function(){
 	
 	var totalWorks = $(this).attr("attr_total_works");
@@ -4903,4 +4921,3 @@ $(document).on('click','.editAddCommentCls',function(){
 	$('#endorsWorksId').html("Save Details");
 	
 });
-	
