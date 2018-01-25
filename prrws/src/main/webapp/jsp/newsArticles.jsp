@@ -211,7 +211,7 @@
 </header>
 <main style="margin-top:5px;background-color:#fff;padding-bottom:20px;">
 <div class="container-fluid">
-	<div class="row m_top20">
+	<div class="row m_top20" id="newsDiv" style="display:none;">
 		<div class="col-sm-6">
 			<div class="white_block">
 				<h4 class="font_weight">Print Media</h4>
