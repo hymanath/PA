@@ -75,7 +75,7 @@ if(wurl.length == 3)
 		 $("#overAllPrintMediaDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				buildOverAllPrintMediaDetails(result,"PrintMedia","overAllPrintMediaDivId","overAll",0);
@@ -88,7 +88,7 @@ if(wurl.length == 3)
 		 $("#overAllElectronicMediaDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
 		}).then(function(result){
 				if(result !=null && result.length>0){
 					buildOverAllPrintMediaDetails(result,"ElectronicMedia","overAllElectronicMediaDivId","overAllEle",0);
@@ -431,12 +431,19 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 		var headingCountPrint='';
 			if(departmentType == "overAllEle"){
 				 if(typeval == "ElectronicMedia"){
-					if(result[i].organization == "News Bulletin"){	    //headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+totalPosPerc+'%)<br>('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
+					if(result[i].organization == "News Bulletin"){
+					if(totalCount != null && totalCount >0){	//headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+totalPosPerc+'%)<br>('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
 						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <br/><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimePositiveCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
+					}else{
+						headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+totalPosPerc+'%)<br>('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
+					}
 					}else if(result[i].organization == "News Program"){
+						if(totalCount != null && totalCount >0){	
 						//headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(1)+'%) ('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
 						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <br/><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimePositiveCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
-						
+						}else{
+							headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(1)+'%) ('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
+						}
 					}
 				}
 			}else if(departmentType == "overAll"){
