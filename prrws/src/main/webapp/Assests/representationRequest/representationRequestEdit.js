@@ -2285,13 +2285,13 @@ function buildPetitionDetails(result){
 	
 		for(var i in result.subWorksList){
 			str+='<div class="col-sm-12">';
-			str+='<div class="panel-group" id="accordion'+i+'">';
+			str+='<div class="panel-group" id="accordionEdit'+i+'">';
 				str+='<div class="panel panel-default panel-blue">';
-					str+='<div class="panel-heading" id="heading'+i+'" style="padding:10px;">';
+					str+='<div class="panel-heading" id="headingEdit'+i+'" style="padding:10px;">';
 						if(i==0){
-							str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+							str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordionEdit'+i+'" href="#collapseEdit'+i+'" aria-expanded="true" aria-controls="collapseEdit'+i+'">';
 						}else{
-							str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+							str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionEdit'+i+'" href="#collapseEdit'+i+'" aria-expanded="true" aria-controls="collapseEdit'+i+'">';
 						}
 						
 						if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
@@ -2303,9 +2303,9 @@ function buildPetitionDetails(result){
 					 str+='</h4>';
 					str+='</div>';
 					if(i==0){
-						str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+						str+='<div id="collapseEdit'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEdit'+i+'">';
 					}else{
-						str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
+						str+='<div id="collapseEdit'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEdit'+i+'">';
 					}
 					  str+='<div class="panel-body" style="background-color: #F7F7F7;">';
 								for(var k in result.subWorksList[i].subWorksList){

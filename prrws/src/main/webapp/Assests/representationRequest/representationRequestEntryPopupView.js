@@ -324,13 +324,13 @@ function buildPetitionDetailsView(result){
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-12">';
 		for(var i in result.subWorksList){
-				str+='<div class="panel-group" id="accordion'+i+'">';
+				str+='<div class="panel-group" id="accordionView'+i+'">';
 					str+='<div class="panel panel-default panel-blue">';
-						str+='<div class="panel-heading" id="heading'+i+'">';
+						str+='<div class="panel-heading" id="headingView'+i+'">';
 							if(i==0){
-								str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+								str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordionView'+i+'" href="#collapseView'+i+'" aria-expanded="true" aria-controls="collapseView'+i+'">';
 							}else{
-								str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+								str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionView'+i+'" href="#collapseView'+i+'" aria-expanded="true" aria-controls="collapseView'+i+'">';
 							}
 							
 							if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
@@ -342,9 +342,9 @@ function buildPetitionDetailsView(result){
 						 str+='</h4>';
 						str+='</div>';
 						if(i==0){
-							str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+							str+='<div id="collapseView'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingView'+i+'">';
 						}else{
-							str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
+							str+='<div id="collapseView'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingView'+i+'">';
 						}
 						  str+='<div class="panel-body" style="background-color: #F7F7F7;">';
 						  if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
