@@ -4258,4 +4258,10 @@
 	 <bean id="zohoTdpCadreContactDAO" class="com.itgrids.partyanalyst.dao.hibernate.ZohoTdpCadreContactDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="psychometricTestDAO" class="com.itgrids.partyanalyst.dao.hibernate.PsychometricTestDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="tdpCadrePsychometricTestDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadrePsychometricTestDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
