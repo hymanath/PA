@@ -136,6 +136,7 @@ public class CadreInfo implements Serializable{
 	private String uniqueId;
 	private Long casteStateId;
 	private Set<String> designationSet = new HashSet<String>();
+	private String thomasUrl;
 	
 	
 	public String getUniqueId() {
@@ -893,6 +894,12 @@ public class CadreInfo implements Serializable{
 	}
 	public void setDesignationSet(Set<String> designationSet) {
 		this.designationSet = designationSet;
+	}
+	public String getThomasUrl() {
+		return thomasUrl;
+	}
+	public void setThomasUrl(String thomasUrl) {
+		this.thomasUrl = thomasUrl;
 	}
 	
 	

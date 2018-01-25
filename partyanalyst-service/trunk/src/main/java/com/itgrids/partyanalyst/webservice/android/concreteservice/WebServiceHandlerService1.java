@@ -26,11 +26,13 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
+import com.itgrids.partyanalyst.dao.IPsychometricTestDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
 import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreImageSinkDataDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadrePsychometricTestDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
@@ -62,6 +64,7 @@ import com.itgrids.partyanalyst.model.LoginDetailsByTab;
 import com.itgrids.partyanalyst.model.TabLogInAuth;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreImageSinkData;
+import com.itgrids.partyanalyst.model.TdpCadrePsychometricTest;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -181,7 +184,12 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	@Autowired 
 	private IVoterDAO voterDAO;
-	
+	@Autowired
+	private ITdpCadrePsychometricTestDAO tdpCadrePsychometricTestDAO;
+	@Autowired
+	private IPsychometricTestDAO psychometricTestDAO;
+	@Autowired
+	private DateUtilService dateUtilService;
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
 	}
@@ -1432,6 +1440,11 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     		if(desigSet != null && desigSet.size() > 0){
     			cadreInfo.setDesignationSet(desigSet);
     		}
+    		//Thomas Url
+    		String thomousUrl = getThomousUrlForMemberShipNO(membershipId);
+    		if(thomousUrl != null && !thomousUrl.isEmpty()){
+    			cadreInfo.setThomasUrl(thomousUrl);
+    		}
     		return cadreInfo;
     	}catch(Exception e){
     		LOG.error("Exception raised in saveMissedCallDetails  method in WebServiceHandlerService1",e);
@@ -1450,6 +1463,38 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     		LOG.error("Exception raised in getRegistrationPersonDetails  method in WebServiceHandlerService1",e);
     	}
     	return cadreRegVo;
+    }
+    public String getThomousUrlForMemberShipNO(String membershipId){
+    	String returnUrl = null;
+    	try {
+    		Object[] obj = null;
+    		Long psychometricTestId = 0L;
+    		String thomousUrl = null;
+    		if(membershipId != null){
+    			thomousUrl = tdpCadrePsychometricTestDAO.getUrlForMemberShipNo(membershipId);
+    			if(thomousUrl == null){
+    				List<Object[]> urlList = psychometricTestDAO.getThomousUrls();
+    				if(urlList != null && !urlList.isEmpty()){
+    					obj = urlList.get(0);
+    					psychometricTestId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+    					thomousUrl = commonMethodsUtilService.getStringValueForObject(obj[1]);
+    				}
+    				Long tdpCadreId = tdpCadreDAO.checkMemberExists(membershipId);
+        			TdpCadrePsychometricTest tdpCadrePsychometricTest = new TdpCadrePsychometricTest();
+        			tdpCadrePsychometricTest.setTdpCadreId(tdpCadreId);
+        			tdpCadrePsychometricTest.setPsychometricTestId(psychometricTestId);
+        			tdpCadrePsychometricTest.setIsDeleted("N");
+        			tdpCadrePsychometricTest.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+        			tdpCadrePsychometricTestDAO.save(tdpCadrePsychometricTest);
+        			//Update IsUsed Column By 'Y'
+        			psychometricTestDAO.updateExistingRecordForPsychometricTestId(psychometricTestId);
+        		}
+    		}
+    		returnUrl = thomousUrl;
+		} catch (Exception e) {
+			LOG.error("Exception raised in getThomousUrlForMemberShipNO  method in WebServiceHandlerService1",e);
+		}
+    	return returnUrl;
     }
 }
 
