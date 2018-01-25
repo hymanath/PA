@@ -55,7 +55,7 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRepresentee.userAddress.district.districtId,model.pmRepresentee.userAddress.district.districtName ");
 		sb.append( " from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where model.pmRepresentee.isDeleted='N' " +
-				" and model.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId ");
+				" and model.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N' ");
 		if(deptIds != null && deptIds.size()>0){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
@@ -92,7 +92,8 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRepresentee.userAddress.constituency.constituencyId,model.pmRepresentee.userAddress.constituency.name ");
 		sb.append( " from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where model.pmRepresentee.isDeleted='N' " +
-				" and model.isDeleted='N'and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId ");
+				" and model.isDeleted='N'and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId" +
+				" and model1.petition.isDeleted='N'  ");
 		if(districtIds != null && districtIds.size() >0 ){
 			sb.append("and model.pmRepresentee.userAddress.district.districtId in (:districtIds) ");
 		}		
@@ -137,7 +138,8 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		sb.append( " , localElectionBody.localElectionBodyId,localElectionBody.name," +
 				"localElectionBody.electionTypeId " +
 				"from PmRepresenteeRefDetails model left join model.pmRepresentee.userAddress.localElectionBody localElectionBody " +
-				"left join model.pmRepresentee.userAddress.tehsil tehsil ,PmSubWorkDetails model1 where model.isDeleted='N'  and model.pmRepresentee.isDeleted='N' and  model.petition.petitionId = model1.petition.petitionId  ");
+				"left join model.pmRepresentee.userAddress.tehsil tehsil ,PmSubWorkDetails model1 where model.isDeleted='N'  and " +
+				"model.pmRepresentee.isDeleted='N' and  model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N'  ");
 		if(constituencyIds != null && constituencyIds.size() >0 ){
 			sb.append("and model.pmRepresentee.userAddress.constituencyId in (:constituencyIds) ");
 		}

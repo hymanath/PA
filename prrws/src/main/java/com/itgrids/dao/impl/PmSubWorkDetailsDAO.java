@@ -63,7 +63,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		sb.append("select distinct model.locationAddress.district.districtId");
 		sb.append(",model.locationAddress.district.districtName ");
 		sb.append(" from PmSubWorkDetails model,PmRepresenteeRefDetails model1  " +
-				" where model1.pmRepresenteeDesignation.pmRepresentee.isDeleted='N' and  model.isDeleted='N' and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId " );
+				" where model1.pmRepresenteeDesignation.pmRepresentee.isDeleted='N' and  model.isDeleted='N' and model1.isDeleted='N' " +
+				"and model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N' " );
 		if(deptIds != null && deptIds.size() >0){
 			sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
@@ -110,7 +111,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		sb.append("select distinct model.locationAddress.constituency.constituencyId");
 		sb.append(",model.locationAddress.constituency.name ");
 		sb.append(" from PmSubWorkDetails model,PmRepresenteeRefDetails model1 where model1.pmRefCandidateDesignation.isDeleted='N' " +
-				"and model.isDeleted='N'and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId ");
+				"and model.isDeleted='N'and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId " +
+				" and model1.petition.isDeleted='N' ");
 		
 		if(districtIds != null && districtIds.size() >0L ){ 
 			sb.append("and model.locationAddress.district.districtId in (:districtIds) ");
@@ -157,7 +159,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				" ,localElectionBody.localElectionBodyId,localElectionBody.name," +
 				"localElectionBody.electionTypeId ");
 		sb.append(" from PmSubWorkDetails model left join model.locationAddress.localElectionBody localElectionBody left join model.locationAddress.tehsil tehsil" +
-				",PmRepresenteeRefDetails model1 where  model.isDeleted='N'  and model1.pmRefCandidateDesignation.isDeleted='N' and  model.petition.petitionId = model1.petition.petitionId ");
+				",PmRepresenteeRefDetails model1 where  model.isDeleted='N'  and model1.pmRefCandidateDesignation.isDeleted='N' and  model.petition.petitionId = model1.petition.petitionId " +
+				" and model1.petition.isDeleted='N' ");
 		if(constincyIdIds != null && constincyIdIds.size() >0L ){ 
 			sb.append(" and model.locationAddress.constituencyId in (:constincyIdIds) ");
 		}
@@ -200,7 +203,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	public List<Object[]> getDepartmentsByWorks(List<Long> deptIds,Date fromDate,Date toDate,List<Long> statusIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmDepartment.pmDepartmentId,model.pmDepartment.department "
-				+ "from PmSubWorkDetails model where model.isDeleted='N' and model.pmDepartment.isDeleted='N' ");
+				+ "from PmSubWorkDetails model where model.isDeleted='N' and model.pmDepartment.isDeleted='N' " +
+				" and model.petition.isDeleted='N' ");
 		if(deptIds != null && deptIds.size()>0){
 			sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
@@ -246,32 +250,33 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	public List<Object[]> getCompleteOrStatusOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(distinct model.pmSubWorkDetailsId),model.petition.petitionId, model.pmStatus.pmStatusId,model.pmStatus.status ");
+		sb.append(",round(sum(model.costEstimation),2) " );
 		
 		if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
-			sb.append(", model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId,model1.pmRefCandidateDesignation.pmDesignation.designation  ");
+			sb.append(", model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId,model1.pmRefCandidateDesignation.pmDesignation.designation" +
+					",model1.pmRefCandidateDesignation.pmDesignation.preferrableOrderNO  ");
 		}/*else if(type != null && (type.equalsIgnoreCase("overallStatus") || type.equalsIgnoreCase("status"))){
 			sb.append(", model.pmStatus.pmStatusId,model.pmStatus.status ");
 		}*/else if(type != null && (type.equalsIgnoreCase("statusSubject") || type.equalsIgnoreCase("subject"))){
-			sb.append(", model.pmSubject.pmSubjectId,model.pmSubject.subject ");
+			sb.append(", model.pmSubject.pmSubjectId,model.pmSubject.subject,model.pmSubject.preferrableOrderNO ");
 		}else if(type != null && (type.equalsIgnoreCase("statusDept") || type.equalsIgnoreCase("department"))){
-			sb.append(", model.pmDepartment.pmDepartmentId,model.pmDepartment.department ");
+			sb.append(", model.pmDepartment.pmDepartmentId,model.pmDepartment.department,model.pmDepartment.preferrableOrderNO ");
 		}else{
-			sb.append(",'','' ");
+			sb.append(",'','','' ");
 		}
 		
-		sb.append(",round(sum(model.costEstimation),2) " );
 		sb.append("  from PmSubWorkDetails model  ");
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
 			sb.append(" ,PmRepresenteeRefDetails model1,PmRefCandidateDesignation model2 where model1.petition.petitionId=model.petition.petitionId  and model1.isDeleted='N'" +
-					" and model.isDeleted='N' and model2.pmRefCandidateId=model1.pmRefCandidateId ");
+					" and model.isDeleted='N' and model2.pmRefCandidateId=model1.pmRefCandidateId and model1.petition.isDeleted='N' ");
 		//}else{
 		//	sb.append(" where ");
 		//}
 			
-		/*sb.append(" model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and  model1.pmRefCandidateDesignation.isDeleted = 'N' and model1.pmRepresentee.isDeleted = 'N'  " +
-					" and model1.pmRefCandidate.isDeleted = 'N'   and  ");
-		sb.append("  model.pmDepartment.isDeleted='N' and ");*/
-		//sb.append("  model.pmSubject.isDeleted='N' and  ");
+		sb.append(" and model1.pmRefCandidateDesignation.isDeleted='N' and  model1.pmRefCandidateDesignation.isDeleted = 'N' and model1.pmRepresentee.isDeleted = 'N'  " +
+					" and model1.pmRefCandidate.isDeleted = 'N'     ");
+		sb.append("  and model.pmDepartment.isDeleted='N'  ");
+		sb.append("  and model.pmSubject.isDeleted='N'   ");
 		//if(type.equalsIgnoreCase("subject")){
 			sb.append(" and  model.pmSubject.parentPmSubjectId is null ");
 		//}
@@ -307,10 +312,11 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	public List<Object[]> getLeadWiseOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.pmSubWorkDetailsId),model.pmBriefLead.pmBriefLeadId,model.pmBriefLead.briefLead, model.pmStatus.pmStatusId,model.pmStatus.status ");
-		sb.append(", model.petition.petitionId  from PmSubWorkDetails model where model.isDeleted='N' ");
+		sb.append(", model.petition.petitionId,round(sum(model.costEstimation),2)  from PmSubWorkDetails model where model.isDeleted='N'" +
+				" and model.petition.isDeleted='N' ");
 		
-		//sb.append("  model.pmSubject.isDeleted='N' and model.pmDepartment.isDeleted='N' and model.pmLead.isDeleted='N' and ");
-		//sb.append("  model.pmSubject.parentPmSubjectId is null  ");
+		sb.append("  and model.pmSubject.isDeleted='N' and model.pmDepartment.isDeleted='N' and model.pmLead.isDeleted='N'  ");
+		sb.append(" and model.pmSubject.parentPmSubjectId is null  ");
 		if(deptIds != null && deptIds.size() >0){
 			 sb.append("  and model.pmDepartment.pmDepartmentId in (:deptIds)  ");
 		}
@@ -362,7 +368,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmSubject.pmSubjectId,model.pmSubject.subject "
 				+ "from PmSubWorkDetails model where model.isDeleted='N' and model.pmSubject.isDeleted='N' " +
-				" and model.pmSubject.parentPmSubjectId is null ");
+				" and model.pmSubject.parentPmSubjectId is null and model.petition.isDeleted='N' ");
 		if(deptIds != null && deptIds.size()>0){
 			sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
@@ -402,15 +408,16 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		//if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size()>0){
 			sb.append(", model1.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId,model1.pmRefCandidateDesignation.pmRefCandidate.name  ");
 		//}
-			sb.append(", round(sum(model.costEstimation),2) ");	
+			sb.append(", round(sum(model.costEstimation),2),model1.pmRefCandidateDesignation.pmDesignation.preferrableOrderNO ");	
 		sb.append("  from PmSubWorkDetails model  ");
 		sb.append(" ,PmRepresenteeRefDetails model1,PmRefCandidateDesignation model2 where model1.petition.petitionId=model.petition.petitionId  ");
-		sb.append(" and model1.isDeleted='N'  and model2.pmRefCandidateId=model1.pmRefCandidateId and model.isDeleted='N'   ");
+		sb.append(" and model1.isDeleted='N'  and model2.pmRefCandidateId=model1.pmRefCandidateId and model.isDeleted='N'  " +
+				"and model1.petition.isDeleted='N' ");
 		
-		/*sb.append(" and model.pmDepartment.isDeleted='N' and model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' " +
+		sb.append(" and model.pmDepartment.isDeleted='N' and model1.pmRefCandidateDesignation.isDeleted='N' " +
 				"and  model1.pmRefCandidateDesignation.isDeleted = 'N' and model1.pmRepresentee.isDeleted = 'N' and model1.pmRefCandidate.isDeleted = 'N' ");
-		sb.append("  model.pmSubject.isDeleted='N' and  ");*/
-		//sb.append("  and model.pmSubject.parentPmSubjectId is null ");
+		sb.append(" and  model.pmSubject.isDeleted='N'   ");
+		sb.append("  and model.pmSubject.parentPmSubjectId is null ");
 		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
 			 sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
@@ -455,7 +462,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		 sb.append(" select distinct model.pmBriefLead.pmBriefLeadId, model.pmBriefLead.briefLead from PmSubWorkDetails model ,PmRepresenteeRefDetails model1 where model.pmBriefLead.pmBriefLeadId is not null");
 		 sb.append("  and model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and  model1.pmRefCandidateDesignation.isDeleted = 'N' " +
 					"and model1.isDeleted='N' and model1.pmRepresentee.isDeleted = 'N'  " +
-					" and model1.pmRefCandidate.isDeleted = 'N'  and model.isDeleted='N'   ");
+					" and model1.pmRefCandidate.isDeleted = 'N'  and model.isDeleted='N' and model.petition.isDeleted='N'   ");
 		 if(deptIds != null && deptIds.size()>0){
 		 sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
