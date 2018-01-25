@@ -24,7 +24,7 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRefCandidate.address.district.districtId ");
 		sb.append( ",model.pmRefCandidate.address.district.districtName from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where " +
-				"model.pmRefCandidate.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId ");
+				"model.pmRefCandidate.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N'");
 		if(deptIds != null && deptIds.size()>0){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
@@ -60,7 +60,8 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRefCandidate.address.constituency.constituencyId ");
 		sb.append( ",model.pmRefCandidate.address.constituency.name from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where " +
-				"model.pmRefCandidate.isDeleted='N' and model1.isDeleted='N'and  model.petition.petitionId = model1.petition.petitionId ");
+				"model.pmRefCandidate.isDeleted='N' and model1.isDeleted='N'and  " +
+				"model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N' ");
 		if(districtIds != null && districtIds.size() > 0){
 			sb.append("and model.pmRefCandidate.address.district.districtId in (:districtIds) ");
 		}
@@ -114,7 +115,7 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 				" , localElectionBody.localElectionBodyId,localElectionBody.name," +
 				"localElectionBody.electionTypeId  " +
 				" from PmRepresenteeRefDetails model left join model.pmRefCandidate.address.localElectionBody localElectionBody left join  model.pmRefCandidate.address.tehsil tehsil ,PmSubWorkDetails model1 where model.isDeleted ='N' and model.pmRefCandidate.isDeleted ='N'" +
-				" and model.petition.petitionId = model1.petition.petitionId  ");
+				" and model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N' ");
 		if(constituencyIds != null && constituencyIds.size() > 0){
 			sb.append("and model.pmRefCandidate.address.constituencyId in (:constituencyIds) ");
 		}

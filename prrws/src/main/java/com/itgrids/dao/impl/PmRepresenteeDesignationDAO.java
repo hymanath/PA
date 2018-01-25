@@ -46,7 +46,8 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRepresenteeDesignation.pmRepresentee.userAddress.district.districtId,model.pmRepresenteeDesignation.pmRepresentee.userAddress.district.districtName ");
 		sb.append( " from PmRepresenteeRefDetails model,PmSubWorkDetails model1 " +
-				" where model.isDeleted='N' and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId  ");
+				" where model.isDeleted='N' and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId  " +
+				"and model1.petition.isDeleted='N' ");
 		if(deptIds != null && deptIds.size()>0){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
@@ -82,7 +83,8 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRepresenteeDesignation.pmDesignation.pmDesignationId,model.pmRepresenteeDesignation.pmDesignation.designation "
 				+ "from PmRepresenteeRefDetails model,PmSubWorkDetails model1 " +
-				"where model.isDeleted='N' and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId  ");
+				"where model.isDeleted='N' and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId and " +
+				"model1.petition.isDeleted='N' ");
 		if(deptIds != null && deptIds.size()>0){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
@@ -117,7 +119,8 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmRepresenteeDesignation.pmRepresentee.userAddress.constituency.constituencyId ");
 		sb.append( ",model.pmRepresenteeDesignation.pmRepresentee.userAddress.constituency.name from PmRepresenteeRefDetails model,PmSubWorkDetails model1 " +
-				" where model.isDeleted='N' and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId  ");
+				" where model.isDeleted='N' and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId " +
+				"and model1.petition.isDeleted='N' ");
 		if(districtIds != null && districtIds.size() > 0L){
 			sb.append("and model.pmRepresenteeDesignation.pmRepresentee.userAddress.district.districtId in (:districtIds) ");
 		}		
@@ -161,7 +164,8 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 		sb.append( ",tehsil.tehsilName, localElectionBody.localElectionBodyId,localElectionBody.name," +
 				"localElectionBody.electionTypeId from PmRepresenteeRefDetails model left join model.pmRepresenteeDesignation.pmRepresentee.userAddress.localElectionBody localElectionBody" +
 				" left join model.pmRepresenteeDesignation.pmRepresentee.userAddress.tehsil  tehsil ,PmSubWorkDetails model1  "
-				+ "where model.pmRepresenteeDesignation.pmRepresentee.isDeleted='N' and  model.isDeleted='N' and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId ");
+				+ "where model.pmRepresenteeDesignation.pmRepresentee.isDeleted='N' and  model.isDeleted='N' and " +
+				"model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N' ");
 		if(constituencyIds != null && constituencyIds.size() > 0L){
 			sb.append("and model.pmRepresenteeDesignation.pmRepresentee.userAddress.constituencyId  in (:constituencyIds) ");
 		}
