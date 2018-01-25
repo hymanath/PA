@@ -2808,12 +2808,15 @@ function buildPetitionDetails(result){
 													str+='<div class="appendInnerBlocks'+result.representationType+''+k+''+innerWorkTypeCount+'"></div>';	
 													str+='<div class="row">';	
 													str+='<div class="col-sm-12">';
-														str+='<div class="pull-right">';
+														str+='<div class="pull-right" style="margin-top:20px;margin-bottom:5px;">';
 														
 														if(result.subWorksList[i].endorsmentNo == null || result.subWorksList[i].endorsmentNo =='' || (result.subWorksList[i].endorsmentNo !='undefined' && result.subWorksList[i].endorsmentNo.trim.length==0))
-															str+='<span class="addLocationCss m_top10 pull-right cloned_Inner_Element" style="cursor:pointer;" attr_type="'+result.representationType+'" attr_counterval="'+k+'" main_work_count="'+k+'" inner_work_count="'+innerWorkTypeCount+'" attr_id="manageInnerWorks'+globalWorkTypeCount+'">ADD WORK </span>';
+														
+															str+='<span class="addLocationCss m_top10  updateStatusChangeCls" style="cursor:pointer;margin-left: 20px;" attr_total_works="'+departmentWiseSubWorks[k].subWorksList.length+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">UPDATE STATUS</span>';
 															
-															str+='<span class="addLocationCss m_top10 pull-right updateStatusChangeCls" style="cursor:pointer;margin-right: 5px;" attr_total_works="'+departmentWiseSubWorks[k].subWorksList.length+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">UPDATE STATUS </span>';
+															str+='<span class="addLocationCss  m_top10  cloned_Inner_Element" style="cursor:pointer; margin-left:20px;" attr_type="'+result.representationType+'" attr_counterval="'+k+'" main_work_count="'+k+'" inner_work_count="'+innerWorkTypeCount+'" attr_id="manageInnerWorks'+globalWorkTypeCount+'">ADD WORK </span>';
+															
+															str+='<span class="addLocationCss  editAddCommentCls m_top10 " style="cursor:pointer;margin-left:20px;" attr_type="'+result.representationType+'" attr_counterval="'+k+'" main_work_count="'+k+'" inner_work_count="'+innerWorkTypeCount+'" attr_id="manageInnerWorks'+globalWorkTypeCount+'">ADD COMMENT </span>';
 															
 														str+='</div>';
 													str+='</div>';
@@ -4187,12 +4190,13 @@ $(document).on("change",".madalChangeCls",function(){
 	 $('#remarkIdErr').html("");
 	$("#fileUploadDiv").hide();
 	$("#commentsDivId").show();
+	$("#saveBtnId").show();
 	$("#leadDivId").hide();
 	$("#grantDivId").hide();
 	$("#assignOfficerDivId").hide();
 	$("#assignDesignationDivId").hide();
 	$("#endorsementDivId").hide();
-	
+	$("#endorsentDivId").hide();
 	$("#endorsmentNo").val('');
 	$("#remarksId").val('');
 	$("#leadId").html('');
@@ -4204,7 +4208,7 @@ $(document).on("change",".madalChangeCls",function(){
     $("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
 	$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
 	$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');	
-	
+	$("#statusChangeDivId").show();
 	selectdWorksArr=[];
 	$(".workStatusUpdateCls").each(function(){
 		if($(this).is(":checked")){
@@ -4853,4 +4857,42 @@ var json = {
 	
  }); 
 }
+
+$(document).on('click','.editAddCommentCls',function(){
+	
+	var totalWorks = $(this).attr("attr_total_works");
+	var enrorsNo = $(this).attr("attr_enrorsNo");
+
+	
+	selectdWorksArr=[];
+	$(".workStatusUpdateCls").each(function(){
+		if($(this).is(":checked")){
+			selectdWorksArr.push($(this).val());
+			departmentSelectArr.push($(this).attr("attr_department_id"));
+		}
+	});
+	if(selectdWorksArr.length == 0){
+		alert("Please select atleast one work to update.");
+		return ;
+	}
+	$("#remarksId").val('');
+	$("#endorseMentHeadingId").html("Comment ");
+	$("#remarkIdErr").html('');
+	$("#totalWorkEditDivId").hide();
+	$("#statusChangeDivId").hide();
+	$("#endorsentDivId").hide();
+	$("#leadDivId").hide();
+	$("#grantDivId").hide();
+	$("#assignDesignationDivId").hide();
+	$("#assignOfficerDivId").hide();
+	$("#fileUploadDiv").hide();
+	$("#commentsDivId").show();
+	$("#saveBtnId").show();
+	
+	$("#endorseMentModalDivId").modal("show");
+	
+	$('#endorsWorksId').show();
+	$('#endorsWorksId').html("Save Details");
+	
+});
 	
