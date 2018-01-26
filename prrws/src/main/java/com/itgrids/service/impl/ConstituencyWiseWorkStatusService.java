@@ -23,6 +23,8 @@ import com.itgrids.dao.IAssemblyMlaDAO;
 import com.itgrids.dao.IComponentTargetConfigurationDAO;
 import com.itgrids.dao.IComponentTargetConfigurationTempDAO;
 import com.itgrids.dao.IComponentTargetDAO;
+import com.itgrids.dao.IComponentWiseAchievementConfigurationDAO;
+import com.itgrids.dao.IComponentWiseAchievementConfigurationTempDAO;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDepartmentDAO;
 import com.itgrids.dao.IFundSanctionDAO;
@@ -70,6 +72,10 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	private IComponentTargetConfigurationTempDAO componentTargetConfigurationTempDAO;
 	@Autowired
 	private INregaComponentCommentsDAO nregaComponentCommentsDAO;
+	@Autowired
+	private IComponentWiseAchievementConfigurationDAO componentWiseAchievementConfigurationDAO;
+	@Autowired
+	private IComponentWiseAchievementConfigurationTempDAO componentWiseAchievementConfigurationTempDAO;
 	
 	/*
 	 * Swadhin K Lenka
@@ -933,7 +939,11 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
 	 	    	 String output = response.getEntity(String.class);
-	 	    	
+	 	    	 
+	 	    	 Map<String,String> mandPercMap = new LinkedHashMap<String,String>();
+	 	    	 List<Object[]> previousList = componentWiseAchievementConfigurationDAO.getComponentWiseMandalAchievementPercentage(inputVO.getDivType(), inputVO.getLocationType(), inputVO.getLocationIdStr());
+	 	    	 List<Object[]> presentList = componentWiseAchievementConfigurationTempDAO.getComponentWiseMandalAchievementPercentage(inputVO.getDivType());
+	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject Obj = new JSONObject(output);
 	 	    		if(Obj!=null && Obj.length()>0){
@@ -960,6 +970,94 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
  	    					returnvo.setVillagesInGold(Obj.getLong("VILLAGESINGOLD"));
  	    				}
 	 	    		}
+	 	    	}
+	 	    	
+	 	    	if(previousList != null && !previousList.isEmpty()){
+	 	    		for (Object[] obj : previousList) {
+						String mandalStr = obj[0] != null ? obj[0].toString():"0";
+						String percValue = obj[1] != null ? obj[1].toString():"0";
+						if(Double.valueOf(percValue)  < 60){
+    						returnvo.setPreviousRedMandals(returnvo.getPreviousRedMandals()+1L);
+    						returnvo.getPreviousRedList().add(mandalStr);
+    					}else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90){
+    						returnvo.setPreviousOrangeMandals(returnvo.getPreviousOrangeMandals()+1L);
+    						returnvo.getPreviousOrangeList().add(mandalStr);
+						}else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100){
+    						returnvo.setPreviousGreenMandals(returnvo.getPreviousGreenMandals()+1L);
+    						returnvo.getPreviousGreenList().add(mandalStr);
+    					}else if(Double.valueOf(percValue)  >=100){
+    						returnvo.setPreviousGoldMandals(returnvo.getPreviousGoldMandals()+1L);
+    						returnvo.getPreviousGoldList().add(mandalStr);
+    					}
+					}
+	 	    	}
+	 	    	
+	 	    	if(presentList != null && !presentList.isEmpty()){
+	 	    		for (Object[] obj : presentList) {
+	 	    			String mandalStr = obj[0] != null ? obj[0].toString():"0";
+						String percValue = obj[1] != null ? obj[1].toString():"0";
+						mandPercMap.put(mandalStr, percValue);
+					}
+	 	    	}
+	 	    	
+	 	    	String[] colorsArr = {"Red","Orange","Green","Gold"};
+	 	    	for (int i = 0; i < colorsArr.length; i++) {
+	 	    		NregsOverviewVO vo = new NregsOverviewVO();
+	 	    		vo.setName(colorsArr[i].toString());
+	 	    		List<String> mandalsList = null;
+	 	    		if(colorsArr[i].equalsIgnoreCase("Red")){
+	 	    			mandalsList = returnvo.getPreviousRedList();
+	 	    			vo.setPreviousCount(returnvo.getPreviousRedMandals());
+	 	    			vo.setPresentCount(returnvo.getMandalsInRed());
+	 	    		}else if(colorsArr[i].equalsIgnoreCase("Orange")){
+	 	    			mandalsList = returnvo.getPreviousOrangeList();
+	 	    			vo.setPreviousCount(returnvo.getPreviousOrangeMandals());
+	 	    			vo.setPresentCount(returnvo.getMandalsInOrange());
+	 	    		}else if(colorsArr[i].equalsIgnoreCase("Green")){
+	 	    			mandalsList = returnvo.getPreviousGreenList();
+	 	    			vo.setPreviousCount(returnvo.getPreviousGreenMandals());
+	 	    			vo.setPresentCount(returnvo.getMandalsInGreen());
+	 	    		}else if(colorsArr[i].equalsIgnoreCase("Gold")){
+	 	    			mandalsList = returnvo.getPreviousGoldList();
+	 	    			vo.setPreviousCount(returnvo.getPreviousGoldMandals());
+	 	    			vo.setPresentCount(returnvo.getMandalsInGold());
+	 	    		}
+	 	    		if(mandalsList != null && !mandalsList.isEmpty()){
+		 	    		for (String mandlStr : mandalsList) {
+							 String percValue = mandPercMap.get(mandlStr);
+							 if(Double.valueOf(percValue)  < 60)
+								 vo.setMandalsInRed(vo.getMandalsInRed()+1L);
+	    					 else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90)
+	    						 vo.setMandalsInOrange(vo.getMandalsInOrange()+1L);
+	    					 else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100)
+	    						 vo.setMandalsInGreen(vo.getMandalsInGreen()+1L);
+	    					 else if(Double.valueOf(percValue)  >=100)
+	    						 vo.setMandalsInGold(vo.getMandalsInGold()+1L);
+	    				}
+		 	    	}
+	 	    		returnvo.getSubList().add(vo);
+				}
+	 	    	
+	 	    	if(returnvo.getSubList() != null && !returnvo.getSubList().isEmpty()){
+	 	    		for (NregsOverviewVO vo : returnvo.getSubList()) {
+						if(vo.getName().equalsIgnoreCase("Red")){
+							vo.setChangedCount(vo.getPreviousCount() - vo.getMandalsInRed());
+							vo.setTotalMandals(vo.getMandalsInRed());
+							vo.setMandalsInRed(0L);
+						}else if(vo.getName().equalsIgnoreCase("Orange")){
+							vo.setChangedCount(vo.getPreviousCount() - vo.getMandalsInOrange());
+							vo.setTotalMandals(vo.getMandalsInOrange());
+							vo.setMandalsInOrange(0L);
+						}else if(vo.getName().equalsIgnoreCase("Green")){
+							vo.setChangedCount(vo.getPreviousCount() - vo.getMandalsInGreen());
+							vo.setTotalMandals(vo.getMandalsInGreen());
+							vo.setMandalsInGreen(0L);
+						}else if(vo.getName().equalsIgnoreCase("Gold")){
+							vo.setChangedCount(vo.getPreviousCount() - vo.getMandalsInGold());
+							vo.setTotalMandals(vo.getMandalsInGold());
+							vo.setMandalsInGold(0L);
+						}
+					}
 	 	    	}
 	 	    }
 		} catch (Exception e) {

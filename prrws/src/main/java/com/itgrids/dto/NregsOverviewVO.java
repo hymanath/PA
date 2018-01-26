@@ -1,6 +1,8 @@
 package com.itgrids.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 	/*
 	 * Date : 16/06/2017
@@ -8,7 +10,9 @@ import java.io.Serializable;
 	 * @description : IhhlProjectVO Vo Class
 	 */
 public class NregsOverviewVO implements Serializable{
-
+	
+	private Long id;
+	private String name;
 	private String averagePerDistrict;
 	private String averagePerConstituency;
 	private String averagePerMandal;
@@ -24,9 +28,9 @@ public class NregsOverviewVO implements Serializable{
 	private Long constituenciesInOrange;
 	private Long constituenciesInGreen;
 	private Long totalConstituencies;
-	private Long mandalsInRed;
-	private Long mandalsInOrange;
-	private Long mandalsInGreen;
+	private Long mandalsInRed = 0L;
+	private Long mandalsInOrange = 0L;
+	private Long mandalsInGreen = 0L;
 	private Long totalMandals;
 	private Long villagesInRed;
 	private Long villagesInOrange;
@@ -35,10 +39,106 @@ public class NregsOverviewVO implements Serializable{
 	private String totalBudget1;
 	private Long districtsInGold;
 	private Long constituenciesInGold;
-	private Long mandalsInGold;
+	private Long mandalsInGold = 0L;
 	private Long villagesInGold;
+	private Long previousRedMandals = 0L;
+	private Long previousOrangeMandals = 0L;
+	private Long previousGreenMandals = 0L;
+	private Long previousGoldMandals = 0L;
+	private List<String> previousRedList = new ArrayList<String>();
+	private List<String> previousOrangeList = new ArrayList<String>();
+	private List<String> previousGreenList = new ArrayList<String>();
+	private List<String> previousGoldList = new ArrayList<String>();
+	private List<NregsOverviewVO> subList = new ArrayList<NregsOverviewVO>();
+	private Long previousCount = 0L;
+	private Long presentCount = 0L;
+	private Long changedCount = 0L;
 	
 	
+	public Long getChangedCount() {
+		return changedCount;
+	}
+	public void setChangedCount(Long changedCount) {
+		this.changedCount = changedCount;
+	}
+	public Long getPreviousCount() {
+		return previousCount;
+	}
+	public void setPreviousCount(Long previousCount) {
+		this.previousCount = previousCount;
+	}
+	public Long getPresentCount() {
+		return presentCount;
+	}
+	public void setPresentCount(Long presentCount) {
+		this.presentCount = presentCount;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public List<NregsOverviewVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<NregsOverviewVO> subList) {
+		this.subList = subList;
+	}
+	public List<String> getPreviousRedList() {
+		return previousRedList;
+	}
+	public void setPreviousRedList(List<String> previousRedList) {
+		this.previousRedList = previousRedList;
+	}
+	public List<String> getPreviousOrangeList() {
+		return previousOrangeList;
+	}
+	public void setPreviousOrangeList(List<String> previousOrangeList) {
+		this.previousOrangeList = previousOrangeList;
+	}
+	public List<String> getPreviousGreenList() {
+		return previousGreenList;
+	}
+	public void setPreviousGreenList(List<String> previousGreenList) {
+		this.previousGreenList = previousGreenList;
+	}
+	public List<String> getPreviousGoldList() {
+		return previousGoldList;
+	}
+	public void setPreviousGoldList(List<String> previousGoldList) {
+		this.previousGoldList = previousGoldList;
+	}
+	public Long getPreviousRedMandals() {
+		return previousRedMandals;
+	}
+	public void setPreviousRedMandals(Long previousRedMandals) {
+		this.previousRedMandals = previousRedMandals;
+	}
+	public Long getPreviousOrangeMandals() {
+		return previousOrangeMandals;
+	}
+	public void setPreviousOrangeMandals(Long previousOrangeMandals) {
+		this.previousOrangeMandals = previousOrangeMandals;
+	}
+	public Long getPreviousGreenMandals() {
+		return previousGreenMandals;
+	}
+	public void setPreviousGreenMandals(Long previousGreenMandals) {
+		this.previousGreenMandals = previousGreenMandals;
+	}
+	public Long getPreviousGoldMandals() {
+		return previousGoldMandals;
+	}
+	public void setPreviousGoldMandals(Long previousGoldMandals) {
+		this.previousGoldMandals = previousGoldMandals;
+	}
 	public Long getDistrictsInGold() {
 		return districtsInGold;
 	}

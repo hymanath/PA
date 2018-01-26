@@ -2197,49 +2197,6 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocationId){
 	var $windowWidth = $(window).width();
 	var str1="";
-	/* if(result.averagePerDistrict != null)
-	{
-		str1+='<div class="table-responsive">';
-			str1+='<table class="table table-bordered" >';
-				str1+='<tbody>';
-					str1+='<tr>';
-						str1+='<td>';
-							str1+='<p>Average Per District : '+result.averagePerDistrict+'</p>';
-						str1+='</td>';
-						str1+='<td>';
-							str1+='<p>Total Avg '+projectDivId+' in District : '+result.totalAvgFarmsInDistrict+'</p>';
-						str1+='</td>';
-					str1+='</tr>';
-					str1+='<tr>';
-						str1+='<td>';
-							str1+='<p>Average Per Constituency : '+result.averagePerConstituency+'</p>';
-						str1+='</td>';
-						str1+='<td>';
-							str1+='<p>Total Avg '+projectDivId+' in Constituency : '+result.totalAvgFarmsInConstituency+'</p>';
-						str1+='</td>';
-					str1+='</tr>';
-					str1+='<tr>';
-						str1+='<td>';
-							str1+='<p>Average Per Mandal : '+result.averagePerMandal+'</p>';
-						str1+='</td>';
-						str1+='<td>';
-							str1+='<p>Total Avg '+projectDivId+' in Mandal: '+result.totalAvgFarmsInMandal+'</p>';
-						str1+='</td>';
-					str1+='</tr>';
-					str1+='<tr>';
-						str1+='<td>';
-							str1+='<p>Total Budget</p>';
-							str1+='<h4>'+result.totalBudget+'</h4>';
-						str1+='</td>';
-						str1+='<td>';
-							str1+='<p>Total '+projectDivId+'</p>';
-							str1+='<h4>'+result.totalBudget+'</h4>';
-						str1+='</td>';
-					str1+='</tr>';
-				str1+='</tbody>';
-			str1+='</table>';
-		str1+='</div>';
-	} */
 	if(result.maleLabour != null){
 		str1+='<div class="table-responsive">';
 			str1+='<table class="table table-bordered m_top10">';
@@ -2479,6 +2436,73 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 						}
 						
 					str1+='</tr>';
+				str1+='</tbody>';
+			str1+='</table>';
+		str1+='</div>';
+	}
+	
+	if(projectDivId == 'Farm Ponds' || projectDivId == 'IHHL' || projectDivId == 'Vermi Compost' || projectDivId == 'Solid Waste Management' || projectDivId == 'Play fields' || projectDivId == 'Burial Ground' || projectDivId == 'Timely Payment'){
+		str1+='<h4 class="text-capital font_weight m_top20" style="margin-left: 15px;">'+projectDivId+' Achievement Comparision Summary From NOV-30th to Today</h4>';
+		str1+='<div class="table-responsive m_top20">';
+			str1+='<table class="table table_right_css">';
+				str1+='<thead>';
+					str1+='<tr>';
+						str1+='<th></th>';
+						str1+='<th>Red</th>';
+						str1+='<th>Orange</th>';
+						str1+='<th>Green</th>';
+						str1+='<th>Gold</th>';
+					str1+='</tr>';
+				str1+='</thead>';
+				str1+='<tbody>';
+					str1+='<tr>';
+						str1+='<th>As Of Nov 30th</th>';
+						str1+=' <td>'+result.previousRedMandals+'</td>';
+						str1+=' <td>'+result.previousOrangeMandals+'</td>';
+						str1+=' <td>'+result.previousGreenMandals+'</td>';
+						str1+=' <td>'+result.previousGoldMandals+'</td>';
+					str1+='</tr>';
+					str1+='<tr>';
+						str1+='<th>As Of Today</th>';
+						str1+=' <td>'+result.mandalsInRed+'</td>';
+						str1+=' <td>'+result.mandalsInOrange+'</td>';
+						str1+=' <td>'+result.mandalsInGreen+'</td>';
+						str1+=' <td>'+result.mandalsInGold+'</td>';
+					str1+='</tr>';
+				str1+='</tbody>';
+			str1+='</table>';
+		str1+='</div>';
+		
+		str1+='<div class="table-responsive m_top20">';
+			str1+='<h4><b>ACHIEVEMENT PERCENTAGE BELOW 60% MANDALS CHANGED STATUS SUMMARY FROM NOV-30th TO TODAY</b></h4>';
+			str1+='<table class="table table-striped table-bordered table_labour_css m_top10">';
+				str1+='<thead>';
+					str1+='<tr>';
+						str1+='<th></th>';
+						str1+='<th>As On Nov 30th</th>';
+						str1+='<th>As Of Today</th>';
+						str1+='<th>Changed</th>';
+						str1+='<th>Red</th>';
+						str1+='<th>Orange</th>';
+						str1+='<th>Green</th>';
+						str1+='<th>Gold</th>';
+					str1+='</tr>';
+				str1+='</thead>';
+				str1+='<tbody>';
+					if(result.subList != null && result.subList.length > 0){
+						for(var i in result.subList){
+							str1+='<tr>';
+								str1+='<td>'+result.subList[i].name+'</td>';
+								str1+='<td>'+result.subList[i].previousCount+'</td>';
+								str1+='<td>'+result.subList[i].presentCount+'</td>';
+								str1+='<td>'+result.subList[i].changedCount+'</td>';
+								str1+='<td>'+result.subList[i].mandalsInRed+'</td>';
+								str1+='<td>'+result.subList[i].mandalsInOrange+'</td>';
+								str1+='<td>'+result.subList[i].mandalsInGreen+'</td>';
+								str1+='<td>'+result.subList[i].mandalsInGold+'</td>';
+							str1+='</tr>';
+						}
+					}
 				str1+='</tbody>';
 			str1+='</table>';
 		str1+='</div>';

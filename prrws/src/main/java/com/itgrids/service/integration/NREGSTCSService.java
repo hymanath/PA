@@ -260,7 +260,11 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 		+ "{\"RANGE\": \"5-10\",\"GPSCOUNT\": \"2978\"},{\"RANGE\": \"10-20\",\"GPSCOUNT\": \"3986\"},{\"RANGE\": \"20-30\",\"GPSCOUNT\": \"1694\"},"
 	 	    	 		+ "{\"RANGE\": \"30-50\",\"GPSCOUNT\": \"901\"},{\"RANGE\": \"50-100\",\"GPSCOUNT\": \"286\"},{\"RANGE\": \"100-200\",\"GPSCOUNT\": \"21\"},"
 	 	    	 		+ "{\"RANGE\": \"200-300\",\"GPSCOUNT\": \"2\"},{\"RANGE\": \"300-400\",\"GPSCOUNT\": \"0\"},{\"RANGE\": \"Above 400\",\"GPSCOUNT\": \"0\"}]";*/
-	 	    	List<Object[]> list = componentTargetConfigurationDAO.getRangeWiseVillageDetails(inputVO.getpType(),null,null);
+	 	    	if(inputVO.getLocationId() != null && inputVO.getLocationId() > 0L && inputVO.getLocationId() < 10L)
+	 	    		inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+	 	    	else
+	 	    		inputVO.setLocationIdStr(inputVO.getLocationId().toString());
+	 	    	List<Object[]> list = componentTargetConfigurationDAO.getRangeWiseVillageDetails(inputVO.getpType(),inputVO.getLocationType(),inputVO.getLocationIdStr());
 	 	    	if(list != null && !list.isEmpty()){
 	 	    		for (Object[] obj : list) {
 						String rangeStr = "0";
@@ -536,71 +540,129 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
 	 	    	 String output = response.getEntity(String.class);
+	 	    	if(inputVO.getLocationId() != null && inputVO.getLocationId() > 0L && inputVO.getLocationId() < 10L)
+	 	    		inputVO.setLocationIdStr("0"+inputVO.getLocationId().toString());
+	 	    	else
+	 	    		inputVO.setLocationIdStr(inputVO.getLocationId().toString());
+	 	    	 Map<String,String> mandPercMap = new LinkedHashMap<String,String>();
+	 	    	 List<Object[]> previousList = componentWiseAchievementConfigurationDAO.getComponentWiseMandalAchievementPercentage(inputVO.getDivType(), inputVO.getLocationType(), inputVO.getLocationIdStr());
+	 	    	 List<Object[]> presentList = componentWiseAchievementConfigurationTempDAO.getComponentWiseMandalAchievementPercentage(inputVO.getDivType());
+	 	    	 
 	 	    	
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject Obj = new JSONObject(output);
 	 	    		if(Obj!=null && Obj.length()>0){
-	 	    			/*if(inputVO.getDivType() != null && (inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Wage") || 
- 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Average Days of Employment") || 
- 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("HH Completed 100 Days") || 
- 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely Payment") || 
- 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Horticulture") || inputVO.getDivType().trim().toString().equalsIgnoreCase("Avenue") ||
- 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("Nurseries") ||	inputVO.getDivType().trim().toString().equalsIgnoreCase("FAperformance") ||
- 	    					inputVO.getDivType().trim().toString().equalsIgnoreCase("WaterBudget") || inputVO.getDivType().trim().toString().equalsIgnoreCase("GH") ||
- 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("NTR Rural House") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
- 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Perinnials") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
- 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("OPGK-Annuals") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")) ||
- 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("Cattle Drinking Water Troughs") && inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")) ||
- 	    					(inputVO.getDivType().trim().toString().equalsIgnoreCase("UGDrainage") && inputVO.getLocationType() != null && !inputVO.getLocationType().trim().equalsIgnoreCase("state")))){*/
-	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
-	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
-	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
-	 	    				finalVO.setTotalDistricts(Obj.getLong("TOTALDISTRICTS"));
-	 	    				finalVO.setConstituenciesInRed(Obj.getLong("CONSTITUENCIESINRED"));
-	 	    				finalVO.setConstituenciesInOrange(Obj.getLong("CONSTITUENCIESINORANGE"));
-	 	    				finalVO.setConstituenciesInGreen(Obj.getLong("CONSTITUENCIESINGREEN"));
-	 	    				finalVO.setTotalConstituencies(Obj.getLong("TOTALCONSTITUENCIES"));
-	 	    				finalVO.setMandalsInRed(Obj.getLong("MANDALSINRED"));
-	 	    				finalVO.setMandalsInOrange(Obj.getLong("MANDALSINORANGE"));
-	 	    				finalVO.setMandalsInGreen(Obj.getLong("MANDALSINGREEN"));
-	 	    				finalVO.setTotalMandals(Obj.getLong("TOTALMANDALS"));
-	 	    				finalVO.setVillagesInRed(Obj.getLong("VILLAGESINRED"));
-	 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
-	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
-	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
-	 	    				if(Obj.has("DISTRICTSINGOLD")){
-	 	    					finalVO.setDistrictsInGold(Obj.getLong("DISTRICTSINGOLD"));
-	 	    					finalVO.setConstituenciesInGold(Obj.getLong("CONSTITUENCIESINGOLD"));
-	 	    					finalVO.setMandalsInGold(Obj.getLong("MANDALSINGOLD"));
-	 	    					finalVO.setVillagesInGold(Obj.getLong("VILLAGESINGOLD"));
-	 	    				}
-	 	    			/*}else{
-	 	    				finalVO.setAveragePerDistrict(new BigDecimal(Obj.getString("AVERAGEPERDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				finalVO.setAveragePerConstituency(new BigDecimal(Obj.getString("AVERAGEPERCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				finalVO.setAveragePerMandal(new BigDecimal(Obj.getString("AVERAGEPERMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				finalVO.setTotalBudget(Obj.getString("TOTALBUDGET"));
-	 	    				finalVO.setTotalAvgFarmsInDistrict(new BigDecimal(Obj.getString("TOTALAVGFARMSINDISTRICT")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				finalVO.setTotalAvgFarmsInConstituency(new BigDecimal(Obj.getString("TOTALAVGFARMSINCONSTITUENCY")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				finalVO.setTotalAvgFarmsInMandal(new BigDecimal(Obj.getString("TOTALAVGFARMSINMANDAL")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-	 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
-	 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
-	 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
-	 	    				finalVO.setTotalDistricts(Obj.getLong("TOTALDISTRICTS"));
-	 	    				finalVO.setConstituenciesInRed(Obj.getLong("CONSTITUENCIESINRED"));
-	 	    				finalVO.setConstituenciesInOrange(Obj.getLong("CONSTITUENCIESINORANGE"));
-	 	    				finalVO.setConstituenciesInGreen(Obj.getLong("CONSTITUENCIESINGREEN"));
-	 	    				finalVO.setTotalConstituencies(Obj.getLong("TOTALCONSTITUENCIES"));
-	 	    				finalVO.setMandalsInRed(Obj.getLong("MANDALSINRED"));
-	 	    				finalVO.setMandalsInOrange(Obj.getLong("MANDALSINORANGE"));
-	 	    				finalVO.setMandalsInGreen(Obj.getLong("MANDALSINGREEN"));
-	 	    				finalVO.setTotalMandals(Obj.getLong("TOTALMANDALS"));
-	 	    				finalVO.setVillagesInRed(Obj.getLong("VILLAGESINRED"));
-	 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
-	 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
-	 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
-	 	    			}*/
-	 	    				
+ 	    				finalVO.setDistrictsInRed(Obj.getLong("DISTRICTSINRED"));
+ 	    				finalVO.setDistrictsInOrange(Obj.getLong("DISTRICTSINORANGE"));
+ 	    				finalVO.setDistrictsInGreen(Obj.getLong("DISTRICTSINGREEN"));
+ 	    				finalVO.setTotalDistricts(Obj.getLong("TOTALDISTRICTS"));
+ 	    				finalVO.setConstituenciesInRed(Obj.getLong("CONSTITUENCIESINRED"));
+ 	    				finalVO.setConstituenciesInOrange(Obj.getLong("CONSTITUENCIESINORANGE"));
+ 	    				finalVO.setConstituenciesInGreen(Obj.getLong("CONSTITUENCIESINGREEN"));
+ 	    				finalVO.setTotalConstituencies(Obj.getLong("TOTALCONSTITUENCIES"));
+ 	    				finalVO.setMandalsInRed(Obj.getLong("MANDALSINRED"));
+ 	    				finalVO.setMandalsInOrange(Obj.getLong("MANDALSINORANGE"));
+ 	    				finalVO.setMandalsInGreen(Obj.getLong("MANDALSINGREEN"));
+ 	    				finalVO.setTotalMandals(Obj.getLong("TOTALMANDALS"));
+ 	    				finalVO.setVillagesInRed(Obj.getLong("VILLAGESINRED"));
+ 	    				finalVO.setVillagesInOrange(Obj.getLong("VILLAGESINORANGE"));
+ 	    				finalVO.setVillagesInGreen(Obj.getLong("VILLAGESINGREEN"));
+ 	    				finalVO.setTotalVillages(Obj.getLong("TOTALVILLAGES"));
+ 	    				if(Obj.has("DISTRICTSINGOLD")){
+ 	    					finalVO.setDistrictsInGold(Obj.getLong("DISTRICTSINGOLD"));
+ 	    					finalVO.setConstituenciesInGold(Obj.getLong("CONSTITUENCIESINGOLD"));
+ 	    					finalVO.setMandalsInGold(Obj.getLong("MANDALSINGOLD"));
+ 	    					finalVO.setVillagesInGold(Obj.getLong("VILLAGESINGOLD"));
+ 	    				}
 	 	    		}
+	 	    	}
+	 	    	
+	 	    	if(previousList != null && !previousList.isEmpty()){
+	 	    		for (Object[] obj : previousList) {
+						String mandalStr = obj[0] != null ? obj[0].toString():"0";
+						String percValue = obj[1] != null ? obj[1].toString():"0";
+						if(Double.valueOf(percValue)  < 60){
+							finalVO.setPreviousRedMandals(finalVO.getPreviousRedMandals()+1L);
+							finalVO.getPreviousRedList().add(mandalStr);
+    					}else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90){
+    						finalVO.setPreviousOrangeMandals(finalVO.getPreviousOrangeMandals()+1L);
+    						finalVO.getPreviousOrangeList().add(mandalStr);
+						}else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100){
+							finalVO.setPreviousGreenMandals(finalVO.getPreviousGreenMandals()+1L);
+							finalVO.getPreviousGreenList().add(mandalStr);
+    					}else if(Double.valueOf(percValue)  >=100){
+    						finalVO.setPreviousGoldMandals(finalVO.getPreviousGoldMandals()+1L);
+    						finalVO.getPreviousGoldList().add(mandalStr);
+    					}
+					}
+	 	    	}
+	 	    	
+	 	    	if(presentList != null && !presentList.isEmpty()){
+	 	    		for (Object[] obj : presentList) {
+	 	    			String mandalStr = obj[0] != null ? obj[0].toString():"0";
+						String percValue = obj[1] != null ? obj[1].toString():"0";
+						mandPercMap.put(mandalStr, percValue);
+					}
+	 	    	}
+	 	    	
+	 	    	String[] colorsArr = {"Red","Orange","Green","Gold"};
+	 	    	for (int i = 0; i < colorsArr.length; i++) {
+	 	    		NregsOverviewVO vo = new NregsOverviewVO();
+	 	    		vo.setName(colorsArr[i].toString());
+	 	    		List<String> mandalsList = null;
+	 	    		if(colorsArr[i].equalsIgnoreCase("Red")){
+	 	    			mandalsList = finalVO.getPreviousRedList();
+	 	    			vo.setPreviousCount(finalVO.getPreviousRedMandals());
+	 	    			vo.setPresentCount(finalVO.getMandalsInRed());
+	 	    		}else if(colorsArr[i].equalsIgnoreCase("Orange")){
+	 	    			mandalsList = finalVO.getPreviousOrangeList();
+	 	    			vo.setPreviousCount(finalVO.getPreviousOrangeMandals());
+	 	    			vo.setPresentCount(finalVO.getMandalsInOrange());
+	 	    		}else if(colorsArr[i].equalsIgnoreCase("Green")){
+	 	    			mandalsList = finalVO.getPreviousGreenList();
+	 	    			vo.setPreviousCount(finalVO.getPreviousGreenMandals());
+	 	    			vo.setPresentCount(finalVO.getMandalsInGreen());
+	 	    		}else if(colorsArr[i].equalsIgnoreCase("Gold")){
+	 	    			mandalsList = finalVO.getPreviousGoldList();
+	 	    			vo.setPreviousCount(finalVO.getPreviousGoldMandals());
+	 	    			vo.setPresentCount(finalVO.getMandalsInGold());
+	 	    		}
+	 	    		if(mandalsList != null && !mandalsList.isEmpty()){
+		 	    		for (String mandlStr : mandalsList) {
+							 String percValue = mandPercMap.get(mandlStr);
+							 if(Double.valueOf(percValue)  < 60)
+								 vo.setMandalsInRed(vo.getMandalsInRed()+1L);
+	    					 else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90)
+	    						 vo.setMandalsInOrange(vo.getMandalsInOrange()+1L);
+	    					 else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100)
+	    						 vo.setMandalsInGreen(vo.getMandalsInGreen()+1L);
+	    					 else if(Double.valueOf(percValue)  >=100)
+	    						 vo.setMandalsInGold(vo.getMandalsInGold()+1L);
+	    				}
+		 	    	}
+	 	    		finalVO.getSubList().add(vo);
+				}
+	 	    	
+	 	    	if(finalVO.getSubList() != null && !finalVO.getSubList().isEmpty()){
+	 	    		for (NregsOverviewVO vo : finalVO.getSubList()) {
+						if(vo.getName().equalsIgnoreCase("Red")){
+							vo.setChangedCount(vo.getPreviousCount() - vo.getMandalsInRed());
+							vo.setTotalMandals(vo.getMandalsInRed());
+							vo.setMandalsInRed(0L);
+						}else if(vo.getName().equalsIgnoreCase("Orange")){
+							vo.setChangedCount(vo.getPreviousCount() - vo.getMandalsInOrange());
+							vo.setTotalMandals(vo.getMandalsInOrange());
+							vo.setMandalsInOrange(0L);
+						}else if(vo.getName().equalsIgnoreCase("Green")){
+							vo.setChangedCount(vo.getPreviousCount() - vo.getMandalsInGreen());
+							vo.setTotalMandals(vo.getMandalsInGreen());
+							vo.setMandalsInGreen(0L);
+						}else if(vo.getName().equalsIgnoreCase("Gold")){
+							vo.setChangedCount(vo.getPreviousCount() - vo.getMandalsInGold());
+							vo.setTotalMandals(vo.getMandalsInGold());
+							vo.setMandalsInGold(0L);
+						}
+					}
 	 	    	}
 	 	    }
 	 	    	 

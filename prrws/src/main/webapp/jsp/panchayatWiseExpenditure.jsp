@@ -278,6 +278,71 @@ function buildPanchayatsExpenditure(result,divType){
 			str+='</table>';
 		str+='</div>';
 	}else{
+		str+='<h4 class="text-capital font_weight" style="margin-left: 15px;">'+divType+' Achievement Comparision Summary From NOV-30th to Today</h4>';
+		str+='<div class="table-responsive m_top20">';
+			str+='<table class="table table_right_css">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th></th>';
+						str+='<th>Red</th>';
+						str+='<th>Orange</th>';
+						str+='<th>Green</th>';
+						str+='<th>Gold</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';
+						str+='<th>As Of Nov 30th</th>';
+						str+=' <td>'+result.previousRedMandals+'</td>';
+						str+=' <td>'+result.previousOrangeMandals+'</td>';
+						str+=' <td>'+result.previousGreenMandals+'</td>';
+						str+=' <td>'+result.previousGoldMandals+'</td>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th>As Of Today</th>';
+						str+=' <td>'+result.mandalsInRed+'</td>';
+						str+=' <td>'+result.mandalsInOrange+'</td>';
+						str+=' <td>'+result.mandalsInGreen+'</td>';
+						str+=' <td>'+result.mandalsInGold+'</td>';
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		
+		str+='<div class="table-responsive m_top20">';
+			str+='<h4><b>ACHIEVEMENT PERCENTAGE BELOW 60% MANDALS CHANGED STATUS SUMMARY FROM NOV-30th TO TODAY</b></h4>';
+			str+='<table class="table table-striped table-bordered table_labour_css m_top10">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th></th>';
+						str+='<th>As On Nov 30th</th>';
+						str+='<th>As Of Today</th>';
+						str+='<th>Changed</th>';
+						str+='<th>Red</th>';
+						str+='<th>Orange</th>';
+						str+='<th>Green</th>';
+						str+='<th>Gold</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					if(result.subList != null && result.subList.length > 0){
+						for(var i in result.subList){
+							str+='<tr>';
+								str+='<td>'+result.subList[i].name+'</td>';
+								str+='<td>'+result.subList[i].previousCount+'</td>';
+								str+='<td>'+result.subList[i].presentCount+'</td>';
+								str+='<td>'+result.subList[i].changedCount+'</td>';
+								str+='<td>'+result.subList[i].mandalsInRed+'</td>';
+								str+='<td>'+result.subList[i].mandalsInOrange+'</td>';
+								str+='<td>'+result.subList[i].mandalsInGreen+'</td>';
+								str+='<td>'+result.subList[i].mandalsInGold+'</td>';
+							str+='</tr>';
+						}
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	}/* else{
 		str+='<h4 class="text-capital font_weight" style="margin-left: 15px;">'+divType+' Overview</h4>';
 		str+='<div class="table-responsive m_top20">';
 			str+='<table class="table table_right_css">';
@@ -301,7 +366,7 @@ function buildPanchayatsExpenditure(result,divType){
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
-	}
+	} */
 	$("#panchtExptDivId").html(str);
 }
 
