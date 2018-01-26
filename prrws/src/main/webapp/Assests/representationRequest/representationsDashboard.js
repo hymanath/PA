@@ -170,9 +170,6 @@ function buildMyActionsDetails(result){
 														str+='<div class="media-body">';
 															str+='<p>Works</p>';
 															str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].noOfWorks+'</a></h4>';
-															var convertToAmt = result.statusList[i].estimationCost*100000;
-															var crores = (convertToAmt/10000000).toFixed(3);
-															str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
 												str+='</div>';
@@ -192,6 +189,9 @@ function buildMyActionsDetails(result){
 														str+='	<div class="">';
 															str+='<p>'+result.statusList[i].referrerList[j].name.toUpperCase()+'</p>';
 															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].noOfWorks+'</a></h5>';
+															//var convertToAmt = result.statusList[i].referrerList[j].estimationCost*100000;
+                                                           // var crores = (convertToAmt/10000000).toFixed(3);
+                                                            //str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 														str+='</div>';
 													}
@@ -207,6 +207,9 @@ function buildMyActionsDetails(result){
 														str+='	<div class="">';
 															str+='<p>'+result.statusList[i].subList[j].name.toUpperCase()+'</p>';
 															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&desigId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].noOfWorks+'</a></h5>';
+															//var convertToAmt = result.statusList[i].subList[j].estimationCost*100000;
+                                                            //var crores = (convertToAmt/10000000).toFixed(3);
+                                                            //str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 														str+='</div>';
 													}
@@ -222,6 +225,9 @@ function buildMyActionsDetails(result){
 														str+='	<div class="">';
 															str+='<p style="font-size:11px"><b>'+result.statusList[i].deptList[j].name.toUpperCase()+'</b></p>';
 															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].noOfWorks+'</a></h5>';
+															//var convertToAmt = result.statusList[i].deptList[j].estimationCost*100000;
+                                                            //var crores = (convertToAmt/10000000).toFixed(3);
+                                                            //str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 														str+='</div>';
 													}
@@ -279,9 +285,6 @@ function buildCompleteOrStatusOverviewDetails(result){
 														str+='<div class="media-body">';
 														str+='	<p>Works</p>';
 														str+='	<h4><b>'+result.noOfWorks+'</b></h4>';
-														var convertToAmt = result.estimationCost*100000;
-														var crores = (convertToAmt/10000000).toFixed(3);
-														str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
 												str+='</div>';
@@ -302,6 +305,9 @@ function buildCompleteOrStatusOverviewDetails(result){
 													str+='	<div class="">';
 														str+='	<p attr_id='+result.referrerList[i].id+'>'+result.referrerList[i].name.toUpperCase()+'</p>';
 														str+='	<h5><b title="Represents">'+result.referrerList[i].petitionIds.length+'</b> - <b title="Works">'+result.referrerList[i].noOfWorks+'</b></h5>';
+														//var convertToAmt = result.referrerList[i].estimationCost*100000;
+														//var crores = (convertToAmt/10000000).toFixed(3);
+														//str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 														str+='</div>';
 														}
@@ -320,6 +326,9 @@ function buildCompleteOrStatusOverviewDetails(result){
 													str+='	<div class="">';
 														str+='	<p attr_id="'+result.subList[i].id+'">'+result.subList[i].name.toUpperCase()+'</p>';
 														str+='	<h5><b title="Represents">'+result.subList[i].petitionIds.length+'</b> - <b title="Works">'+result.subList[i].noOfWorks+'</b></h5>';
+														//var convertToAmt = result.subList[i].estimationCost*100000;
+														//var crores = (convertToAmt/10000000).toFixed(3);
+														//str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 														str+='</div>';
 												}
@@ -337,6 +346,9 @@ function buildCompleteOrStatusOverviewDetails(result){
 													str+='	<div class="">';
 														str+='	<p attr_id="'+result.deptList[i].id+'" style="font-size:11px"><b>'+result.deptList[i].name.toUpperCase()+'</b></p>';
 														str+='	<h5><b title="Represents">'+result.deptList[i].petitionIds.length+'</b> - <b title="Works">'+result.deptList[i].noOfWorks+'</b></h5>';
+														//var convertToAmt = result.deptList[i].estimationCost*100000;
+														//var crores = (convertToAmt/10000000).toFixed(3);
+														//str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 														str+='</div>';
 												}
@@ -404,6 +416,9 @@ function buildLeadWiseOverviewDetails(result){
 						str+='<div class="col-sm-6">';
 							str+='<p>Representations</p>';
 							str+='<h4><b>'+result[i].petitionIds.length+'</b></h4>';
+							//var convertToAmt = result[i].estimationCost*100000;
+							//var crores = (convertToAmt/10000000).toFixed(3);
+							//str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 						str+='</div>';
 						str+='<div class="col-sm-6">';
 							str+='<p>Works</p>';
@@ -422,6 +437,9 @@ function buildLeadWiseOverviewDetails(result){
 										}
 										//str+='<div class="col-sm-6"><span>Pending</span><br><b>'+result[i].statusList[j].totalRepresents+'</b></div>';
 										str+='<div class="col-sm-6"><span>Works</span><br><b>'+result[i].statusList[j].noOfWorks+'</b></div>';
+										//var convertToAmt = result[i].statusList[j].estimationCost*100000;
+                                        //var crores = (convertToAmt/10000000).toFixed(3);
+                                        //str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -529,6 +547,9 @@ function getReferralWiseOverviewDetails(desigId){
 					str+='<p><b>Works</b></p>';
 					//str+='<h4><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.subList[i].deptDesigId+'" target="_blank">'+result.subList[i].noOfWorks+'</a></h4>';
 					str+='<h4><span>'+result.subList[i].noOfWorks+'</span></h4>';
+					 //var convertToAmt = result.subList[i].estimationCost*100000;
+                     //var crores = (convertToAmt/10000000).toFixed(3);
+                     //str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 					str+='</div>';				
 				str+='</div>';
 					
