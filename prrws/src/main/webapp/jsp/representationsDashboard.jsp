@@ -91,12 +91,12 @@
 				<div class="col-sm-12">
 					<div class="white-block petition_block">
 						<div class="row">
-						<div class="col-sm-6">
+						<div class="col-sm-6" style="display:none;" id="completeOverViewDivId"> 
 								<h4><img src="Assests/icons/Group 4361.png"><b>Complete Overview</b></h4>
 								<div class="petition_cls m_top10" style="border:1px solid #6DA4D6;background-color:#E2F2F9" id="completeOverviewId">
 									</div>
-							</div>
-							<div class="col-sm-6">
+						</div>
+							<div class="col-sm-6" style="display:none;" id="myActionDivId">
 								<h4><img src="Assests/icons/Group 4375.png" style="height:25px"><b>My Actions</b></h4>
 								<div class="petition_cls m_top10" style="border:1px solid #FFBB00;background-color:#FFF8E5" id="myActionsId">
 								</div>
@@ -104,7 +104,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-12 m_top20">
+				<div class="col-sm-12 m_top20" style="display:none;" id="statusDivId">
 					<div class="white-block">
 						<div class="media">
 							<div class="media-left"></div>
@@ -121,7 +121,7 @@
 				</div>
 				</div>
 				
-					<div class="col-sm-12 m_top20">
+					<div class="col-sm-12 m_top20" id="leadWiseDivId" style="display:none;">
 						<div class="white-block" style="padding:10px">
 							<h4><img src="Assests/icons/2000px-Circle-icons-crossroads.svg.png"><b style="padding-left:5px;">Lead wise Overview</b></h4>
 							<div class="row m_top10">
@@ -130,8 +130,8 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-sm-12 m_top20">
+				<!--</div>-->
+				<div class="col-sm-12 m_top20" id="refWiseOverViewId" style="display:none;">
 				<div class="white-block petition_block bor_c2">
 					<div class="row">
 						<div class="col-sm-3">
@@ -146,13 +146,13 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12">			
+			<div class="col-sm-12" id="desigWiseCountDivId" style="display:none;">			
 				<div class="white-block petition_block bor_c2">
 					<div class="row" id="desigWiseCountId">
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12">
+			<div class="col-sm-12" id="refWiseOverViewDivId" style="display:none;">
 				<div class="white-block petition_block bor_c2">
 					<div class="row" style="padding:5px 5px;" id="desigWiseCandidatesView">
 					</div>
@@ -336,6 +336,8 @@ $(document).on("click",".closeSecondModal",function(){
   });
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationsDashboard")));
+var loginDesigId = 0;
+
 //wurl = wurl.replace("/PartyAnalyst","");
 
 </script>

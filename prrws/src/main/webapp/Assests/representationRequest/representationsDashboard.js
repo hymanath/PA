@@ -7,11 +7,26 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 	$(".menu-data-cls").hide();
 });  */
 getDeptIdsListBYUserIdsLst();
+function onLoadCalls(){
+	//getDeptIdsListBYUserIdsLst();
+	getCompleteOrStatusOverviewDetails();
+	if(loginDesigId == 2 || loginDesigId == 23 || loginDesigId ==86){
+		$("#leadWiseDivId").show();
+		getLeadWiseOverviewDetails();
+	}
+	if(loginDesigId == 2 || loginDesigId == 23 || loginDesigId ==86){
+		$("#refWiseOverViewId").show();
+		$("#desigWiseCountDivId").show();
+		$("#refWiseOverViewDivId").show();
+		getReferralWiseOverviewDetails("");
+		getBriefLeads();
+	}
+}
+
 function getDeptIdsListBYUserIdsLst(){
 	$("#designationrepresent").html('');
 	  var json = {
-			 
-	  };
+	};
 	$.ajax({              
 		type:'POST',    
 		url: 'getDeptIdsListBYUserIdsLst',
@@ -22,17 +37,18 @@ function getDeptIdsListBYUserIdsLst(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		
+		if(result != null){
+			loginDesigId = result.designationId; 
+			if(loginDesigId > 0 ){
+				onLoadCalls();
+			}
+		}
 	});	
-
 }
 
 //getPmDeptStatusIdsByUserIdsLst();
 function getPmDeptStatusIdsByUserIdsLst(){
-	
-	  var json = {
-			 
-	  };
+	var json = {};
 	$.ajax({              
 		type:'POST',    
 		url: 'getPmDeptStatusIdsByUserIdsLst',
@@ -43,15 +59,23 @@ function getPmDeptStatusIdsByUserIdsLst(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		
 	});	
-
 }
-getCompleteOrStatusOverviewDetails();
+//getCompleteOrStatusOverviewDetails();
 function getCompleteOrStatusOverviewDetails(){
-	$("#completeOverviewId").html(spinner);
-	$("#statusOverviewId").html(spinner);
-	$("#myActionsId").html(spinner);
+	if(loginDesigId == 2 || loginDesigId == 23 || loginDesigId==86){
+		$("#completeOverViewDivId").show();
+		$("#myActionDivId").show();
+		$("#statusDivId").show();
+		$("#completeOverviewId").html(spinner);
+		$("#statusOverviewId").html(spinner);
+		$("#myActionsId").html(spinner);
+	}else{
+		$("#completeOverViewDivId").hide();
+		$("#myActionDivId").show();
+		$("#statusDivId").hide();
+		$("#myActionsId").html(spinner);
+	}
 var json = {
 		 fromDate :"",
 		 toDate:""
@@ -67,11 +91,15 @@ var json = {
 		}
 	}).done(function(result){
 		//$("#completeOverviewId").html(spinner);
-		$("#statusOverviewId").html(spinner);
-		$("#completeOverviewId").html(spinner);
+		//$("#statusOverviewId").html(spinner);
+		//$("#completeOverviewId").html(spinner);
+		if(loginDesigId == 2 || loginDesigId == 23 || loginDesigId == 86){
 			buildMyActionsDetails(result);
 			buildCompleteOrStatusOverviewDetails(result);
-			buildStatusOverviewDetails(result)
+			buildStatusOverviewDetails(result);
+		}else{
+			buildMyActionsDetails(result);
+		}
 		
 	});	
 }
@@ -363,7 +391,7 @@ function buildCompleteOrStatusOverviewDetails(result){
 		$("#completeOverviewId").html("No data available");
 	}
 }
-getLeadWiseOverviewDetails();
+//getLeadWiseOverviewDetails();
 function getLeadWiseOverviewDetails(){
 	$("#completeOverviewId").html(spinner);
 	$("#leadWiseOverviewId").html(spinner);
@@ -474,7 +502,7 @@ $(document).on("change","#briefLeadId",function(){
 	getReferralWiseOverviewDetails(designationId);
 });
 
-getReferralWiseOverviewDetails("");
+//getReferralWiseOverviewDetails("");
 function getReferralWiseOverviewDetails(desigId){
 	if(desigId == ""){
 		$("#desigWiseCountId").html(spinner);	
@@ -558,7 +586,7 @@ function getReferralWiseOverviewDetails(desigId){
 	str+='</div>';
 	  }
 	   if(result.subList != null && result.subList.length>0){
-		  getReferralWiseOverviewDetails(result.referrerList[0].id);
+		  getReferralWiseOverviewDetails(result.subList[0].deptDesigId);
 	  } 
 	  
 	$("#desigWiseCountId").html(str);
@@ -638,7 +666,7 @@ $("#workDetailsTab").dataTable({
 	});
 }
 
-getBriefLeads();
+//getBriefLeads();
 function getBriefLeads(){
 $.ajax({ 
  type:'POST', 
