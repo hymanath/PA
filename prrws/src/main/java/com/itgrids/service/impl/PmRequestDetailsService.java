@@ -2229,15 +2229,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}
 				}
 				
-				List<Object[]> referrerList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusReferral");
-				setObjectListToMap(referrerList,statuMap, "statusReferral");
-				setObjectListForCompleteOverview(referrerList,returnVO, "statusReferral");
-				List<Object[]> subjectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusSubject");
-				setObjectListToMap(subjectList,statuMap, "statusSubject");
-				setObjectListForCompleteOverview(subjectList,returnVO, "statusSubject");
-				List<Object[]> deptlist = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusDept");
-				setObjectListToMap(deptlist,statuMap, "statusDept");
-				setObjectListForCompleteOverview(deptlist,returnVO, "statusDept");
+				//List<Object[]> referrerList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusReferral");
+				setObjectListToMap(objectList,statuMap, "statusReferral");
+				setObjectListForCompleteOverview(objectList,returnVO, "statusReferral");
+				//List<Object[]> subjectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusSubject");
+				setObjectListToMap(objectList,statuMap, "statusSubject");
+				setObjectListForCompleteOverview(objectList,returnVO, "statusSubject");
+				//List<Object[]> deptlist = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusDept");
+				setObjectListToMap(objectList,statuMap, "statusDept");
+				setObjectListForCompleteOverview(objectList,returnVO, "statusDept");
 				
 				if(commonMethodsUtilService.isMapValid(statuMap)){
 					for (Map.Entry<Long, RepresenteeViewVO> entry : statuMap.entrySet()) {
@@ -2354,12 +2354,25 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isListOrSetValid(objectList)){
 					for (Object[] param : objectList) {
 						RepresenteeViewVO VO  = null;
-						Long id = commonMethodsUtilService.getLongValueForObject(param[5]);
-						String name = commonMethodsUtilService.getStringValueForObject(param[6]);
-						Long preferrableId = commonMethodsUtilService.getLongValueForObject(param[7]);
+						Long id= 0l;
+						String name = "";
+						Long preferrableId = 0l;
+						if(type != null && type.equalsIgnoreCase("statusReferral")){
+						  id = commonMethodsUtilService.getLongValueForObject(param[5]);
+						  name = commonMethodsUtilService.getStringValueForObject(param[6]);
+						  preferrableId = commonMethodsUtilService.getLongValueForObject(param[7]);
+						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
+							 id = commonMethodsUtilService.getLongValueForObject(param[8]);
+							 name = commonMethodsUtilService.getStringValueForObject(param[9]);
+							 preferrableId = commonMethodsUtilService.getLongValueForObject(param[10]);
+						}else if(type != null && type.equalsIgnoreCase("statusDept")){
+							 id = commonMethodsUtilService.getLongValueForObject(param[11]);
+							 name = commonMethodsUtilService.getStringValueForObject(param[12]);
+							 preferrableId = commonMethodsUtilService.getLongValueForObject(param[13]);
+						}
 						if(type != null && type.equalsIgnoreCase("statusReferral")){
 							//if(id.longValue() != 7l && id.longValue() != 4l && id.longValue() != 2l && id.longValue() != 1l ){
-							if(preferrableId.longValue() == 0l){
+							if(preferrableId.longValue() == 0l || id == 0l ){
 								id = 0l; 
 								name="OTHERS";
 							}
@@ -2370,7 +2383,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 }
 						}else if(type != null && type.equalsIgnoreCase("statusDept")){
 							//if(id.longValue() != 34l && id.longValue() != 27l && id.longValue() != 22l && id.longValue() != 5l ){
-							if(preferrableId.longValue() == 0l){
+							if(preferrableId.longValue() == 0l || id == 0l ){
 								id = 0l;
 								name="OTHERS";
 							}
@@ -2386,7 +2399,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				    			}	
 						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
 							//if(id.longValue() != 16l && id.longValue() != 3l && id.longValue() != 13l && id.longValue() != 22l){
-							if(preferrableId.longValue() == 0l){
+							if(preferrableId.longValue() == 0l || id == 0l ){
 								id = 0l; 
 								name="OTHERS";
 							}
@@ -2432,13 +2445,26 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							statuMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusVO);
 						}
 						RepresenteeViewVO VO  = null;
-						Long id = commonMethodsUtilService.getLongValueForObject(param[5]);
-						String name = commonMethodsUtilService.getStringValueForObject(param[6]);
-						Long preferrableId = commonMethodsUtilService.getLongValueForObject(param[7]);
+						Long id= 0l;
+						String name = "";
+						Long preferrableId = 0l;
+						if(type != null && type.equalsIgnoreCase("statusReferral")){
+						  id = commonMethodsUtilService.getLongValueForObject(param[5]);
+						  name = commonMethodsUtilService.getStringValueForObject(param[6]);
+						  preferrableId = commonMethodsUtilService.getLongValueForObject(param[7]);
+						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
+							 id = commonMethodsUtilService.getLongValueForObject(param[8]);
+							 name = commonMethodsUtilService.getStringValueForObject(param[9]);
+							 preferrableId = commonMethodsUtilService.getLongValueForObject(param[10]);
+						}else if(type != null && type.equalsIgnoreCase("statusDept")){
+							 id = commonMethodsUtilService.getLongValueForObject(param[11]);
+							 name = commonMethodsUtilService.getStringValueForObject(param[12]);
+							 preferrableId = commonMethodsUtilService.getLongValueForObject(param[13]);
+						}
 						if(type != null && type.equalsIgnoreCase("statusReferral")){
 							
 							//if(id.longValue() != 7l && id.longValue() != 4l && id.longValue() != 2l && id.longValue() != 1l ){
-							if(preferrableId.longValue() == 0l){
+							if(preferrableId.longValue() == 0l || id == 0l){
 								id = 0l; 
 								name="OTHERS";
 							}
@@ -2450,7 +2476,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}else if(type != null && type.equalsIgnoreCase("statusDept")){
 							
 							//if(id.longValue() != 34l && id.longValue() != 27l && id.longValue() != 22l && id.longValue() != 5l ){
-							if(preferrableId.longValue() == 0l){
+							if(preferrableId.longValue() == 0l || id == 0l){
 								id = 0l;
 								name="OTHERS";
 							}
@@ -2467,7 +2493,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 
 						}else if(type != null && type.equalsIgnoreCase("statusSubject")){
 							//if(id.longValue() != 16l && id.longValue() != 3l && id.longValue() != 13l && id.longValue() != 22l){
-							if(preferrableId.longValue() == 0l){
+							if(preferrableId.longValue() == 0l || id == 0l){
 								id = 0l; 
 								name="OTHERS";
 							}
@@ -3151,6 +3177,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[6]));
 						refDesigCan.setNoOfWorks(refDesigCan.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
 						refDesigCan.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
+						String estimationCost = commonMethodsUtilService.getStringValueForObject(objects[8]);
+						if(refDesigCan.getEstimationCost() != null && refDesigCan.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+							BigDecimal decmial= new BigDecimal(refDesigCan.getEstimationCost());
+							BigDecimal decmial1= new BigDecimal(estimationCost);
+							BigDecimal totalCost = decmial.add(decmial1);
+							refDesigCan.setEstimationCost(totalCost.toString());
+						}
 					}
 				}
 				if(commonMethodsUtilService.isMapValid(map)){
