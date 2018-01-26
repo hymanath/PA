@@ -472,7 +472,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	@Override
 	public List<Object[]> getPmBriefLeadIds(List<Long> deptIds) {
 		StringBuilder sb = new StringBuilder();
-		 sb.append(" select distinct model.pmBriefLead.pmBriefLeadId, model.pmBriefLead.briefLead from PmSubWorkDetails model ,PmRepresenteeRefDetails model1 where model.pmBriefLead.pmBriefLeadId is not null");
+		 sb.append(" select distinct model.pmBriefLead.pmBriefLeadId, model.pmBriefLead.briefLead from PmSubWorkDetails model ,PmRepresenteeRefDetails model1 " +
+		 		" where model.petitionId = model1.petitionId and model.pmBriefLead.pmBriefLeadId is not null ");
 		 sb.append("  and model1.pmRefCandidateDesignation.pmDesignation.isDeleted='N' and  model1.pmRefCandidateDesignation.isDeleted = 'N' " +
 					"and model1.isDeleted='N' and model1.pmRepresentee.isDeleted = 'N'  " +
 					" and model1.pmRefCandidate.isDeleted = 'N'  and model.isDeleted='N' and model.petition.isDeleted='N'   ");
