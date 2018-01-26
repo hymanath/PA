@@ -135,7 +135,7 @@ public class ITextCoveringLetterGeneration  {
 						int no = 1;
 						int index1=index+no;
 						if(pmRequestVO.getName() != null && !pmRequestVO.getName().equalsIgnoreCase("")){
-							referrals.append("<br> "+index1+").&nbsp;&nbsp; "+pmRequestVO.getName());
+							referrals.append("<br> "+index1+")&nbsp;&nbsp; "+pmRequestVO.getName());
 							 //str1 = str1.replace("#refname","<br> "+index1+". "+pmRequestVO.getName());
 						 }else{
 							// str1 = str1.replace("#refname","");
@@ -159,7 +159,7 @@ public class ITextCoveringLetterGeneration  {
 				
 			}
  			if(referrals != null){
-				 str1 = str1.replace("#ref", " <br><b>Referrals</b> :"+referrals+"<br>");
+				 str1 = str1.replace("#ref", " <br><b>Referred By :</b> :"+referrals+"<br>");
 			 }else{
 				 str1 = str1.replace("#ref", "");
 			 }
@@ -181,27 +181,27 @@ public class ITextCoveringLetterGeneration  {
 							 int index =pmSubwork.getSubWorksList().indexOf(pmSubwork1);
 								int no = 1;
 								int index1=index+no;
-							 works.append(index1+").&nbsp;&nbsp;"+pmSubwork1.getWorkName()+".<br>");
+							 works.append(index1+")&nbsp;&nbsp;"+pmSubwork1.getWorkName()+".<br>");
 							 //works.append(".");
 						 }
 					}
 				}
 			 }
 			 if(works != null){
-				 str1 = str1.replace("#works", " <br><b>Works</b> : <br>  "+works);
+				 str1 = str1.replace("#works", " <br><b>Below are mentioned Work Details :</b> : <br>  "+works);
 			 }else{
 				 str1 = str1.replace("#works", "");
 			 }
 			 if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0")){
-				 str1 = str1.replace("#lead", "as per Lead of&nbsp;"+inputVO.getLeadName());
+				 str1 = str1.replace("#lead", "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+inputVO.getLeadName());
 			 }else{
 				 str1 = str1.replace("#lead", "");
 			 }
-			 if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
+			 /*if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
 				 str1 = str1.replace("#grname"," under Grant - "+ inputVO.getGroupName()+".");
 			 }else{
 				 str1 = str1.replace("#grname","");
-			 }
+			 }*/
 			System.out.println(str1);
 			if(coveringLetrImages != null && coveringLetrImages.size()>0){
 				for (Object[] objects : coveringLetrImages) {
