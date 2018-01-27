@@ -98,7 +98,7 @@
 						</div>
 							<div class="col-sm-6" style="display:none;" id="myActionDivId">
 								<h4><img src="Assests/icons/Group 4375.png" style="height:25px"><b>My Actions</b></h4>
-								<div class="petition_cls m_top10" style="border:1px solid #FFBB00;background-color:#FFF8E5" id="myActionsId">
+								<div class="m_top10" id="myActionsId">
 								</div>
 							</div>
 						</div>

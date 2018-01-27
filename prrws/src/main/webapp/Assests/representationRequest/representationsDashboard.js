@@ -158,116 +158,156 @@ function buildStatusOverviewDetails(result){
 }
 function buildMyActionsDetails(result){
 	var str='';
+	var isMyactionApplied=false;
 	if(result != null && result.statusList.length >0){
 	str+='<div class="row">';
-										str+='<div class="col-sm-12">';
-										for(var i in result.statusList){
-											if(result.statusList[i].statusType == "UserStatus"){
+		str+='<div class="col-sm-12">';
+		str+='<div class="table-desig-scroll">';
+			for(var i in result.statusList){
+				if(result.statusList[i].statusType == "UserStatus"){
+					str+='<div class="panel-group" id="accordionView">';
+						str+='<div class="panel panel-default panel-pending">';
+							str+='<div class="panel-heading" role="tab" id="headingView1'+i+'" style="padding-top: 10px;padding-bottom: 10px;padding-right: 10px;padding-left: 10px;">';
+							if(!isMyactionApplied){
+								//isMyactionApplied = true;
+								str+='<a role="button" class="panelCollapseIconChangePE"  data-toggle="collapse" data-parent="#accordionView" href="#collapseView1'+i+'" aria-expanded="true" aria-controls="collapseView1'+i+'">';
+								}else{
+									str+='<a role="button" class="panelCollapseIconChangePE collapsed"  data-toggle="collapse" data-parent="#accordionView" href="#collapseView1'+i+'" aria-expanded="true" aria-controls="collapseView1'+i+'">';
+								}
+								str+='<h4 class="panel-title text-capital">'+result.statusList[i].name+'</h4>';
+								str+='</a>';
+							str+='</div>';
+							if(!isMyactionApplied){
+								isMyactionApplied = true;
+									str+='<div id="collapseView1'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingView1'+i+'">';
+								}else{
+									str+='<div id="collapseView1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingView1'+i+'">';
+								}
+								str+='<div class="panel-body pad_0">';
+								
+									str+='<div class="" style="background-color:#FFF8E5;padding:10px;">';
+										str+='<div class="row">';
+											str+='<div class="col-sm-12">';
 											str+='<div class="col-sm-4">';
-												str+='<div class="media">';
-													str+='<div class="media-left">';
-														str+='<img src="Assests/icons/Group 4370.png">';
-													str+='</div>';
-													str+='<div class="media-body">';
-														str+='<h5 attr_id="'+result.statusList[i].id+'"><b>'+result.statusList[i].name+'</b></h5>';
-													str+='</div>';
-												str+='</div>';
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<div class="white-block pad_5">';
 													str+='<div class="media">';
 														str+='<div class="media-left">';
-														str+='<img src="Assests/icons/Group 4377.png">';
+															str+='<img src="Assests/icons/Group 4370.png">';
 														str+='</div>';
 														str+='<div class="media-body">';
-															str+='<p>Representations</p>';
-															str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].petitionIds.length+'</a></h4>';
-															var convertToAmt = result.statusList[i].estimationCost*100000;
-															var crores = (convertToAmt/10000000).toFixed(3);
-															str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
+															str+='<h5 attr_id="'+result.statusList[i].id+'"><b>'+result.statusList[i].name+'</b></h5>';
 														str+='</div>';
 													str+='</div>';
 												str+='</div>';
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<div class="white-block pad_5">';
-													str+='<div class="media">';
-														str+='<div class="media-left">';
-															str+='<img src="Assests/icons/Group 4378.png">';
-														str+='</div>';
-														str+='<div class="media-body">';
-															str+='<p>Works</p>';
-															str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].noOfWorks+'</a></h4>';
+												str+='<div class="col-sm-4">';
+													str+='<div class="white-block pad_5">';
+														str+='<div class="media">';
+															str+='<div class="media-left">';
+															str+='<img src="Assests/icons/Group 4377.png">';
+															str+='</div>';
+															str+='<div class="media-body">';
+																str+='<p>Representations</p>';
+																str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].petitionIds.length+'</a></h4>';
+																var convertToAmt = result.statusList[i].estimationCost*100000;
+																var crores = (convertToAmt/10000000).toFixed(3);
+																str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
+															str+='</div>';
 														str+='</div>';
 													str+='</div>';
 												str+='</div>';
-											str+='</div>';
+												str+='<div class="col-sm-4">';
+													str+='<div class="white-block pad_5">';
+														str+='<div class="media">';
+															str+='<div class="media-left">';
+																str+='<img src="Assests/icons/Group 4378.png">';
+															str+='</div>';
+															str+='<div class="media-body">';
+																str+='<p>Works</p>';
+																str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].noOfWorks+'</a></h4>';
+															str+='</div>';
+														str+='</div>';
+													str+='</div>';
+												str+='</div>';
+												str+='</div>';
 										str+='</div>';
-										
 									str+='</div>';
-									str+='<div class="row m_top10 ">';
 									
-										str+='<div class="">';
-											str+='<div class="white-block">';
-												str+='<h5 style="background-color:#E2F2F9;" class="grad_bg_orange">Referral wise</h5>';
-												str+='<div class="row pad_10">';
-													str+='<div class="col-sm-12">';
+									str+='<div class="white-block">';
+										str+='<h5 style="background-color:#E2F2F9;" class="grad_bg_orange">Referral wise</h5>';
+											str+='<div class="row">';
+												str+='<div class="col-sm-12">';
 													for(var j in result.statusList[i].referrerList){
 														str+='<div class="col-sm-2 petition_border">';
-														str+='	<div class="">';
 															str+='<p>'+result.statusList[i].referrerList[j].name.toUpperCase()+'</p>';
 															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].noOfWorks+'</a></h5>';
 															//var convertToAmt = result.statusList[i].referrerList[j].estimationCost*100000;
-                                                           // var crores = (convertToAmt/10000000).toFixed(3);
-                                                            //str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
-														str+='</div>';
-														str+='</div>';
-													}
-													str+='</div>';
-												str+='</div>';
-												
-												str+='<div class="row pad_10">';
-												str+='<div class="border-styling" style="border-top:1px solid #FFBB00"></div>';
-												str+='<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_orange">Subject wise</h5>';
-													str+='<div class="col-sm-12">';
-													for(var j in result.statusList[i].subList){
-														str+='<div class="col-sm-2 petition_border">';
-														str+='	<div class="">';
-															str+='<p>'+result.statusList[i].subList[j].name.toUpperCase()+'</p>';
-															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&desigId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].noOfWorks+'</a></h5>';
-															//var convertToAmt = result.statusList[i].subList[j].estimationCost*100000;
-                                                            //var crores = (convertToAmt/10000000).toFixed(3);
-                                                            //str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
-														str+='</div>';
+														   // var crores = (convertToAmt/10000000).toFixed(3);
+															//str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													}
-													str+='</div>';
-													
-												str+='</div>';
-												str+='<div class="row pad_10">';
-												str+='<div class="border-styling" style="border-top:1px solid #FFBB00"></div>';
-												str+='<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_orange">Department wise</h5>';
-													str+='<div class="col-sm-12">';
-													for(var j in result.statusList[i].deptList){
-														str+='<div class="col-sm-2 petition_border">';
-														str+='	<div class="">';
-															str+='<p style="font-size:11px"><b>'+result.statusList[i].deptList[j].name.toUpperCase()+'</b></p>';
-															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].noOfWorks+'</a></h5>';
-															//var convertToAmt = result.statusList[i].deptList[j].estimationCost*100000;
-                                                            //var crores = (convertToAmt/10000000).toFixed(3);
-                                                            //str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
-														str+='</div>';
-														str+='</div>';
-													}
-													str+='</div>';
-													
-												str+='</div>';
 											str+='</div>';
-										}
-										}
 										str+='</div>';
 									str+='</div>';
-									$("#myActionsId").html(str);
+									
+									str+='<div class="row pad_10">';
+										str+='<div class="border-styling" style="border-top:1px solid #FFBB00"></div>';
+										str+='<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_orange">Subject wise</h5>';
+											str+='<div class="col-sm-12">';
+											for(var j in result.statusList[i].subList){
+												str+='<div class="col-sm-2 petition_border">';
+												str+='	<div class="">';
+													str+='<p>'+result.statusList[i].subList[j].name.toUpperCase()+'</p>';
+													str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&desigId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].noOfWorks+'</a></h5>';
+													//var convertToAmt = result.statusList[i].subList[j].estimationCost*100000;
+													//var crores = (convertToAmt/10000000).toFixed(3);
+													//str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
+												str+='</div>';
+												str+='</div>';
+											}
+											str+='</div>';
+											
+										str+='</div>';
+									
+									str+='<div class="row pad_10">';
+										str+='<div class="border-styling" style="border-top:1px solid #FFBB00"></div>';
+										str+='<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_orange">Department wise</h5>';
+											str+='<div class="col-sm-12">';
+											for(var j in result.statusList[i].deptList){
+												str+='<div class="col-sm-2 petition_border">';
+												str+='	<div class="">';
+													str+='<p style="font-size:11px"><b>'+result.statusList[i].deptList[j].name.toUpperCase()+'</b></p>';
+													str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].noOfWorks+'</a></h5>';
+													//var convertToAmt = result.statusList[i].deptList[j].estimationCost*100000;
+													//var crores = (convertToAmt/10000000).toFixed(3);
+													//str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
+												str+='</div>';
+												str+='</div>';
+											}
+											str+='</div>';
+											
+										str+='</div>';
+				
+				
+								str+='</div>';
+							str+='</div>';
+							
+						str+='</div>';
+					str+='</div>';
+				}
+			}
+		str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	$("#myActionsId").html(str);
+	var statusLength=[];
+	for(var i in result.statusList){
+		if(result.statusList[i].statusType == "UserStatus"){
+			statusLength.push(result.statusList[i].statusType)
+		}
+	}
+	if(statusLength.length>2){
+		$(".table-desig-scroll").mCustomScrollbar({setHeight:'392px'});
+	}
 	}else{
 		$("#myActionsId").html("No data available");
 	}
