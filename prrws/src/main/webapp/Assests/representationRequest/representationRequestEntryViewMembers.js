@@ -2323,3 +2323,24 @@ function petitionWiseRepresenteeDetails(result){
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 	});
   }
+
+getPetitionAndWorkWiseHistoryDetails();
+function getPetitionAndWorkWiseHistoryDetails(){
+ var subworkIdsList = [1,2,3];
+ var json = {
+ petitionId : 1,
+ subworkIdsList : subworkIdsList
+ } 
+$.ajax({ 
+ type:'POST', 
+ url: 'getPetitionAndWorkWiseHistoryDetails',
+ dataType: 'json',
+ data : JSON.stringify(json),
+ beforeSend : function(xhr){
+ xhr.setRequestHeader("Accept", "application/json");
+ xhr.setRequestHeader("Content-Type", "application/json");
+ }
+}).done(function(result){
+ 
+}); 
+}

@@ -40,4 +40,5 @@ public interface IPmRequestDetailsService {
 	public List<PetitionHistoryVO> getPetitionTrackingHistoryDetails(PetitionTrackingVO dataVO);
 	public List<RepresenteeViewVO> getBriefLeads(Long userId,List<Long> deptIds);
 	public List<MenuVO> userIdsByEntitlementsLogin(Long userId);
+	public PetitionHistoryVO getPetitionAndWorkWiseHistoryDetails(PetitionTrackingVO dataVO);
 }
