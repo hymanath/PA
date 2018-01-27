@@ -5449,22 +5449,41 @@ function getAPInnovationSocietyOverviewHtml(divId,incubatorsIdsArr){
 	//first Block
 	str+='<div class="row">';
 		str+='<div class="col-sm-12">';
-			str+='<div class="panel panel-default">';
+			str+='<div class="panel panel-default" style="border: none;">';
 				str+='<div class="panel-body">';
-					str+='<h4 class="font_weight">INCUBATORS</h4>';
+					str+='<h4 class="font_weight" style="background: #90979E;padding: 10px;border-top-left-radius: 5px;border-top-right-radius: 5px;color: #fff;">INCUBATORS</h4>';
 					
-					str+='<div class="pad_border">';
-						str+='<h5 class="f_16">Complete Overview</h5>';
+					str+='<div class="pad_border20" style="border-radius:none;">';
+						str+='<h5 class="f_16"><b>Complete Overview</b></h5>';
 						str+='<div class="row m_top10">';
 							str+='<div class="col-sm-6">';
 								str+='<div id="incubatorsOverviewId"></div>';
 							str+='</div>';
-							str+='<div class="col-sm-6">';
+							str+='<div class="col-sm-6 border-graph">';
 								str+='<div id="startupsHighchartsDivId" style="height:190px;"></div>';
 							str+='</div>';
 						str+='</div>';
 						//Second Block
-						str+='<div id="startUpsOverviewDivId"></div>';
+						
+						str+='<div class="row m_top10">';
+							str+='<div class="col-sm-12">';
+								str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+									str+='<div class="panel panel-default" style="border: 1px solid #ddd;">';
+										str+='<div class="panel-heading" role="tab" id="headingOverview" style="background-color:grey !important;padding: 15px;color: #fff !important;">';
+											str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordion" href="#collapseOverview" aria-expanded="true" aria-controls="collapseOverview">';
+											str+='<h4 class="panel-title text-capital">Indicators OverView</h4>';
+												
+											str+='</a>';
+										str+='</div>';
+										str+='<div id="collapseOverview" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOverview">';
+											str+='<div class="panel-body">';
+												str+='<div id="startUpsOverviewDivId"></div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+						str+='</div>';
+						str+='</div>';
 						
 						//Second Block End
 						//Third Block Start
@@ -5473,13 +5492,46 @@ function getAPInnovationSocietyOverviewHtml(divId,incubatorsIdsArr){
 						//Fourth Block Start
 							str+='<div class="row m_top10">';
 								str+='<div class="col-sm-12">';
-								str+='<div id="indicatorsDivId">';
+								str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+									str+='<div class="panel panel-default" style="border: 1px solid #ddd;">';
+										str+='<div class="panel-heading" role="tab" id="headingIndicators" style="background-color:grey !important;padding: 15px;color: #fff !important;">';
+											str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion" href="#collapseIndicators" aria-expanded="true" aria-controls="collapseIndicators">';
+											str+='<h4 class="panel-title text-capital">Indicators View For Incubators</h4>';
+											str+='</a>';
+										str+='</div>';
+										str+='<div id="collapseIndicators" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingIndicators">';
+											str+='<div class="panel-body">';
+												str+='<div id="indicatorsDivId">';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+								str+='</div>';
+								
+								str+='<div class="row m_top10">';
+									str+='<div class="col-sm-12">';
+									str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+										str+='<div class="panel panel-default" style="border: 1px solid #ddd;">';
+											str+='<div class="panel-heading" role="tab" id="headingAPIS" style="background-color:grey !important;padding: 15px;color: #fff !important;">';
+												str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion" href="#collapseAPIS" aria-expanded="true" aria-controls="collapseAPIS">';
+												str+='<h4 class="panel-title text-capital">Incubators - Details</h4>';
+												str+='</a>';
+											str+='</div>';
+											str+='<div id="collapseAPIS" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAPIS">';
+											for(var i in incubatorsIdsArr){
+												str+='<div id="incubatorsDetailsDivId'+incubatorsIdsArr[i]+'" class="m_top10"></div>';
+											}
+												//str+='<div id="incubatorsDetailsDivId"></div>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
 								str+='</div>';
 								str+='</div>';
 							str+='</div>';
 						//Fourth Block End
 					str+='</div>';
-					str+='<div class="row m_top10">';
+					/* str+='<div class="row m_top10">';
 						str+='<div class="col-sm-12">';
 						str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
 							str+='<div class="panel panel-default" style="border: 1px solid #ddd;">';
@@ -5497,7 +5549,7 @@ function getAPInnovationSocietyOverviewHtml(divId,incubatorsIdsArr){
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-					str+='</div>';
+					str+='</div>'; */
 						str+='<div class="row m_top10">';
 							str+='<div id="bootEventsActivitiesBlockId"></div>';
 						str+='</div>';
@@ -5547,11 +5599,11 @@ function buildApInnovationIndicatorDetails(result){
 	str+='<table class="table table_API" id="indicatorsTableId">';
 		str+='<thead>';
 			str+='<tr>';
-				str+='<th>INDICATORS</th>';
-				str+='<th>XLr8AP<br>Tirupathi</th>';
-				str+='<th>NASSCOM 10K Startups<br>Visakhapatnam</th>';
-				str+='<th>GOVIN CAPITAL<br>Visakhapatnam</th>';
-				str+='<th>DRONE ASSEMBLY<br>Visakhapatnam</th>';
+				str+='<th class="header-white2">INDICATORS</th>';
+				str+='<th class="header-white">XLr8AP<br>Tirupathi</th>';
+				str+='<th class="header-white">NASSCOM 10K Startups<br>Visakhapatnam</th>';
+				str+='<th class="header-white">GOVIN CAPITAL<br>Visakhapatnam</th>';
+				str+='<th class="header-white">DRONE ASSEMBLY<br>Visakhapatnam</th>';
 			str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
@@ -5618,14 +5670,17 @@ function buildApInnovationOverviewDetails(result){
 			str+='<div class="panel panel-default panel-grey">';
 				if(result[i].name != null && result[i].name == 'BootCamp'){
 					bootCampArrIds.push(result[i].subList.length);
-					str+='<div class="panel-heading" style="background-color: #E17779 !important;padding: 15px;color: #fff !important;">';
-					str+='<h4 class="font_weight APISDetailsCls" attr_type="Bootcamps" style="cursor:pointer;"><i class="fa fa-laptop" aria-hidden="true"></i>&nbsp;&nbsp;Bootcamps</h4>';
+					str+='<div class="panel-heading" style="height:50px !important; background-color: #E17779 !important;padding: 15px;color: #fff !important;">';
+					str+='<h4 class="font_weight" style="float:left;"><i class="fa fa-laptop" aria-hidden="true"></i>&nbsp;&nbsp;Bootcamps</h4>';
+					str+='<span class="pull-right"><a class=font-color-white><i class="fa fa-clone APISDetailsCls" aria-hidden="true" attr_type="Bootcamps" style="cursor:pointer;"></i></a></span>';
 				}else if(result[i].name != null && result[i].name == 'Events'){
-					str+='<div class="panel-heading" style="background-color: #77B1CF !important;padding: 15px;color: #fff !important;">';
-					str+='<h4 class="font_weight APISDetailsCls" attr_type="Events" style="cursor:pointer;"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;Events participated by APIS</h4>';
+					str+='<div class="panel-heading" style="height:50px !important; background-color: #77B1CF !important;padding: 15px;color: #fff !important;">';
+					str+='<h4 class="font_weight"  style="float:left;"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;Events participated by APIS</h4>';
+					str+='<span class="pull-right"><a class=font-color-white><i class="fa fa-clone APISDetailsCls" aria-hidden="true" attr_type="Events" style="cursor:pointer;"></i></a></span>';
 				}else if(result[i].name != null && result[i].name == 'Activities'){
-					str+='<div class="panel-heading" style="background-color: #77BA7C !important;padding: 15px;color: #fff !important;">';
-					str+='<h4 class="font_weight APISDetailsCls" attr_type="Activities" style="cursor:pointer;"><i class="fa fa-gears" aria-hidden="true"></i>&nbsp;&nbsp;Activities by APIS</h4>';
+					str+='<div class="panel-heading" style="height:50px !important; background-color: #77BA7C !important;padding: 15px;color: #fff !important;">';
+					str+='<h4 class="font_weight"  style="float:left;"><i class="fa fa-gears" aria-hidden="true"></i>&nbsp;&nbsp;Activities by APIS</h4>';
+					str+='<span class="pull-right"><a class=font-color-white><i class="fa fa-clone APISDetailsCls" aria-hidden="true" attr_type="Activities" style="cursor:pointer;"></i></a></span>';
 				}
 				str+='</div>';
 				str+='<div class="panel-body" style="padding:0px;background-color: #f9f9f9;">';
@@ -6044,19 +6099,19 @@ var startUpsArr = [];
 function buildCompleteOverviewForAPIS(result,divId){
 	//$("#startupsHighchartsDivId").html("");
 	var str='';
-	str+='<div class="media" style="border: 1px solid #ddd;border-top-left-radius: 5px;border-bottom-left-radius: 5px;">';
+	str+='<div class="media" style="border: 1px solid #ddd;border-top-left-radius: 5px;border-bottom-left-radius: 5px; background-color:#cbd0b6;">';
 		str+='<div class="pull-left" style="padding:10px;">';
 			str+='<h5 style="margin-top:40px;">Incubators</h5>';
-			str+='<h3 class="m_top20 font_weight text-center">'+result.length+'</h3>';
+			str+='<h2 class="m_top20 font_weight text-center number-color">'+result.length+'</h2>';
 		str+='</div>';
 	  str+='<div class="media-body">';
-			str+='<div class="table-responsive">';
+			str+='<div class="table-responsive tbl-bg-white">';
 					str+='<table class="table table_API">';
 						str+='<thead>';
 							str+='<tr>';
-								str+='<th>Incubator Name</th>';
-								str+='<th>Since</th>';
-								str+='<th>Location</th>';
+								str+='<th class="tbl-header-white">Incubator Name</th>';
+								str+='<th class="tbl-header-white">Since</th>';
+								str+='<th class="tbl-header-white">Location</th>';
 							str+='</tr>';
 						str+='</thead>';
 						str+='<tbody>';
@@ -6164,102 +6219,105 @@ function buildStartupsEmploymentFundingPatternAcquisitionsDetails(result){
 	str+='<div class="row m_top20">';
 	str+='<div class="col-sm-6">';
 	str+='<div class="">';
-	str+='<h5 class="f_16">Startups Overview</h5>';
-	str+='<div class="pad_border m_top10">';
+	str+='<h5 class="f_16"><b>Startups Overview</b></h5>';
+	str+='<div class="pad-border3 m_top10">';
 		str+='<div class="row">';
-		str+='<div class="col-sm-3 border_right_yash">';
-			str+='<h5 class="font_weight text-center">Applications Assessed</h5>';
-			str+='<h4 class="font_weight text-center m_top20">'+result.applicationsAssessed+'</h4>';
+		str+='<div class="col-sm-3 border_right_yash padding-startups">';
+			str+='<h5 class="font_weight text-center h5-pad-top">Applications <br>Assessed</h5>';
+			str+='<h4 class="font_weight text-center m_top25 h4-bg number-color">'+result.applicationsAssessed+'</h4>';
 		str+='</div>';
-		str+='<div class="col-sm-3 border_right_yash">';
-			str+='<h5 class="font_weight text-center">APIS <br/>Screened</h5>';
-			str+='<h4 class="font_weight text-center m_top20">'+result.apisScreened+'</h4>';
+		str+='<div class="col-sm-3 border_right_yash no-padding">';
+			str+='<h5 class="font_weight text-center h5-pad-top">APIS <br/>Screened</h5>';
+			str+='<h4 class="font_weight text-center m_top25 h4-bg-middle number-color">'+result.apisScreened+'</h4>';
 		str+='</div>';
-		str+='<div class="col-sm-3 border_right_yash">';
-			str+='<h5 class="font_weight text-center">APIS Povided Training</h5>';
-			str+='<h4 class="font_weight text-center m_top20">'+result.apisProvidedTraining+'</h4>';
+		str+='<div class="col-sm-3 border_right_yash no-padding">';
+			str+='<h5 class="font_weight text-center h5-pad-top">APIS Povided <br>Training</h5>';
+			str+='<h4 class="font_weight text-center m_top25 h4-bg-middle number-color">'+result.apisProvidedTraining+'</h4>';
 		str+='</div>';
-		str+='<div class="col-sm-3">';
-			str+='<h5 class="font_weight text-center">Startups placed in Advanced Acceleration</h5>';
-			str+='<h4 class="font_weight text-center m_top10">'+result.startupsPlaced+'</h4>';
+		str+='<div class="col-sm-3 no-padding">';
+			str+='<h5 class="font_weight text-center h5-pad-top">Startups placed in Advanced <br>Acceleration</h5>';
+			str+='<h4 class="font_weight text-center m_top10 h4-bg-rt number-color">'+result.startupsPlaced+'</h4>';
 		str+='</div>';
 		str+='</div>';
 		str+='</div>';
 	str+='</div>';
 str+='</div>';
-str+='<div class="col-sm-6">';
-	str+='<h4 class="f_16 m_top10">Employment Overview</h4>';
-	str+='<div class="pad_border m_top10">';
+str+='<div class="col-sm-6 m-top-10">';
+	str+='<h4 class="f_16 m_top10"><b>Employment Overview</b></h4>';
+	str+='<div class="pad-border3 m_top10">';
 		str+='<div class="row">';
-		str+='<div class="col-sm-4 border_right_yash">';
-			str+='<h5 class="font_weight text-center">Full-Time jobs <br/>created</h5>';
-			str+='<h4 class="font_weight text-center m_top20">'+result.ftJobsCreated+'</h4>';
+		str+='<div class="col-sm-4 border_right_yash padding-startups">';
+			str+='<h5 class="font_weight text-center h5-pad-top">Full-Time jobs <br/>created</h5>';
+			str+='<h4 class="font_weight text-center m_top25 h4-bg number-color">'+result.ftJobsCreated+'</h4>';
 		str+='</div>';
-		str+='<div class="col-sm-4 border_right_yash">';
-			str+='<h5 class="font_weight text-center">Part-Time jobs <br/>created</h5>';
-			str+='<h4 class="font_weight text-center m_top20">'+result.ptJobsCreated+'</h4>';
+		str+='<div class="col-sm-4 border_right_yash no-padding">';
+			str+='<h5 class="font_weight text-center h5-pad-top">Part-Time jobs <br/>created</h5>';
+			str+='<h4 class="font_weight text-center m_top25 h4-bg-middle number-color">'+result.ptJobsCreated+'</h4>';
 		str+='</div>';
-		str+='<div class="col-sm-4 border_right_yash">';
-			str+='<h5 class="font_weight text-center">Internship</h5>';
-			str+='<h4 class="font_weight text-center m_top30">'+result.internship+'</h4>';
+		str+='<div class="col-sm-4 no-padding">';
+			str+='<h5 class="font_weight text-center no-padding pad-top-17t">Internship</h5>';
+			str+='<h4 class="font_weight text-center m_top30 h4-bg-rt number-color">'+result.internship+'</h4>';
 		str+='</div>';
 		str+='</div>';
 	str+='</div>';
 str+='</div>';
 str+='</div>';
 str+='<div class="row m_top20">';
-	str+='<div class="col-sm-12">';
-		str+='<h4 class="f_16">Funding Pattern</h4>';
+	str+='<div class="col-sm-8">';
+		str+='<h4 class="f_16"><b>Funding Pattern</b></h4>';
+	str+='</div>';
+	str+='<div class="col-sm-4">';
+		str+='<h4 class="f_16"><b>Acquisitions</b></h4>';
 	str+='</div>';
 		str+='<div class="col-sm-8 m_top10">';
 			str+='<div class="row">';
-				str+='<div class="col-sm-8">';
+				str+='<div class="col-sm-8" style="padding-right:0px !important;">';
 					str+='<div class="panel panel-default panel-grey">';
 						str+='<div class="panel-heading">';
-							str+='<h5 class="font_weight">Funding Raised</h5>';
+							str+='<h5 class="font_weight header-white">Funding Raised</h5>';
 						str+='</div>';
-						str+='<div class="panel-body">';
+						str+='<div class="panel-body no-padding">';
 							str+='<div class="row">';
-								str+='<div class="col-sm-4 border_right_yash">';
-									str+='<h5 class="font_weight text-center">No.of startups  <br/>got fund</h5>';
+								str+='<div class="col-sm-4 border_right_yash padding-startups">';
+									str+='<h5 class="font_weight text-center h5-pad-top">No.of startups  <br/>got fund</h5>';
 									if(result.startupsGotFund != null && result.startupsGotFund !=0){
-										str+='<h4 class="font_weight text-center m_top30">'+result.startupsGotFund+'</h4>';
+										str+='<h4 class="font_weight text-center m_top25 h4-bg-funding">'+result.startupsGotFund+'</h4>';
 									}else{
-										str+='<h4 class="font_weight text-center m_top30">-</h4>';
+										str+='<h4 class="font_weight text-center m_top25 h4-bg-funding">-</h4>';
 									}
 									
 								str+='</div>';
-								str+='<div class="col-sm-4 border_right_yash">';
-									str+='<h5 class="font_weight text-center">Fund  <br/>Value</h5>';
-									str+='<h4 class="font_weight text-center m_top30">'+result.fundValue+'</h4>';
+								str+='<div class="col-sm-4 border_right_yash no-padding">';
+									str+='<h5 class="font_weight text-center h5-pad-top">Fund  <br/>Value</h5>';
+									str+='<h4 class="font_weight text-center m_top25 h4-bg-middle number-color">'+result.fundValue+'</h4>';
 								str+='</div>';
-								str+='<div class="col-sm-4">';
+								str+='<div class="col-sm-4 no-padding pad-t-r">';
 									str+='<h5 class="font_weight text-center">Proposals In Progress for startups</h5>';
-									str+='<h4 class="font_weight text-center m_top30">'+result.proposalsInProgress+'</h4>';
+									str+='<h4 class="font_weight text-center m_top25 h4-bg-rt2 number-color">'+result.proposalsInProgress+'</h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-4">';
+				str+='<div class="col-sm-4 pad-lt-1">';
 					str+='<div class="panel panel-default panel-grey">';
 						str+='<div class="panel-heading">';
-							str+='<h5 class="font_weight">Revenue Generated</h5>';
+							str+='<h5 class="font_weight header-white">Revenue Generated</h5>';
 						str+='</div>';
-						str+='<div class="panel-body">';
+						str+='<div class="panel-body no-padding">';
 							str+='<div class="row">';
-								str+='<div class="col-sm-6 border_right_yash">';
-									str+='<h5 class="font_weight text-center">Revenue from<br/>No.of startups</h5>';
+								str+='<div class="col-sm-6 border_right_yash padding-startups">';
+									str+='<h5 class="font_weight text-center h5-pad-top">Revenue from<br/>No.of startups</h5>';
 									if(result.revenueStartups != null && result.revenueStartups !=0){
-										str+='<h4 class="font_weight text-center m_top30">'+result.revenueStartups+'</h4>';
+										str+='<h4 class="font_weight text-center m_top25 h4-bg-funding number-color">'+result.revenueStartups+'</h4>';
 									}else{
-										str+='<h4 class="font_weight text-center m_top30">-</h4>';
+										str+='<h4 class="font_weight text-center m_top25 h4-bg-funding number-color">-</h4>';
 									}
 									
 								str+='</div>';
-								str+='<div class="col-sm-6">';
+								str+='<div class="col-sm-6 no-padding pad-t-r">';
 									str+='<h5 class="font_weight text-center">Fund <br/>Value</h5>';
-									str+='<h4 class="font_weight text-center m_top30">'+result.revenueFundValue+'</h4>';
+									str+='<h4 class="font_weight text-center m_top25 h4-bg-rt2 number-color">'+result.revenueFundValue+'</h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -6267,20 +6325,23 @@ str+='<div class="row m_top20">';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
+		
 		str+='<div class="col-sm-4">';
-			str+='<div class="pad_border m_top10">';
+		
+			str+='<div class="pad_border m_top10 no-padding">';
 				str+='<div class="row">';
-				str+='<div class="col-sm-4 border_right_yash">';
-					str+='<h5 class="font_weight text-center">Merged <br/>No.of <br>startups</h5>';
-					str+='<h4 class="font_weight text-center m_top40">'+result.mergedStartups+'</h4>';
+				
+				str+='<div class="col-sm-4 border_right_yash padding-startups padding-top-1024">';
+					str+='<h5 class="font_weight text-center h5-pad-top">Merged <br/>No.of <br>startups</h5>';
+					str+='<h4 class="font_weight text-center m_top40 h4-bg-funding number-color">'+result.mergedStartups+'</h4>';
 				str+='</div>';
-				str+='<div class="col-sm-4 border_right_yash">';
-					str+='<h5 class="font_weight text-center">Progressing Commercial deals with startups</h5>';
-					str+='<h4 class="font_weight text-center m_top40">'+result.commercialStartups+'</h4>';
+				str+='<div class="col-sm-4 border_right_yash no-padding">';
+					str+='<h5 class="font_weight text-center h5-pad-top">Progressing Commercial deals with startups</h5>';
+					str+='<h4 class="font_weight text-center m_top40 h4-bg-middle number-color">'+result.commercialStartups+'</h4>';
 				str+='</div>';
-				str+='<div class="col-sm-4">';
-					str+='<h5 class="font_weight text-center">Faculty & Students Trained</h5>';
-					str+='<h4 class="font_weight text-center m_top40">'+result.studentsTrained+'</h4>';
+				str+='<div class="col-sm-4 no-padding">';
+					str+='<h5 class="font_weight text-center pad-tr">Faculty & <br>Students <br>Trained</h5>';
+					str+='<h4 class="font_weight text-center m_top40 h4-bg-rt3 number-color">'+result.studentsTrained+'</h4>';
 				str+='</div>';
 				str+='</div>';
 			str+='</div>';
