@@ -309,7 +309,7 @@
 	  </div>
 	<form action="endorsingSubWorksAndAssigningToOfficer" id="endorsingSubWorksId" name="" enctype="multipart/form-data" method="post">
 	  <div class="modal-body">
-	   <div class="pad_light_yash_bg border_yash border_radius_5">
+	   <div class="pad_light_yash_bg border_yash border_radius_5" id="totalWorkEditDivId">
 			<div class="row">
 				<div class="col-sm-4">
 					<h5>TOTAL WORKS : <span id="totalWorksId" class="font_weight">0</span></h5>
@@ -323,7 +323,7 @@
 			</div>
 		</div>
 		<div class="row m_top10">
-			<div class="col-sm-4">
+			<div class="col-sm-4" id="statusChangeDivId">
 				<label>Select Status<span style="color:red;">*</span><span id="statusIdErrStr"></span></label>
 				<select class="form-control chosen-select" id="statusChangeId">
 					<option value="0">Select Status</option>
@@ -373,15 +373,23 @@
 			</div>
 		</div>
 		<div class="row m_top20" id="fileUploadDiv" style="display:none;">
+	      <div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
+	        <h5 class="panel-title"> UPLOAD <span id="letterNameId"></span> LETTER <span id="fileUploadIdErr"></h5>
+	        <span id="uploadFile"></span>
+	      </div>
+    	</div>
+		<div class="row m_top20" id="fileUploadIdDiv" style="display:none;">
 			<div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
-				<h5 class="panel-title"> UPLOAD <span id="letterNameId"></span> LETTER <span id="fileUploadIdErr"></h5>
-				<span id="uploadFile"></span>
+				<button type="button" class="btn btn-success" id="coverLetterId" onclick="generateCoveringLetterForPetition()">Generate Cover Letter</button>
 			</div>
 		</div>
-	  </div>
+		<div id="coveringLetterGenerator"></div>
+		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
+	   </div>
+
 	  <div class="modal-footer">
 		 <button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
-		<button type="button" class="btn btn-success pull-right" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" ><span id="buttonNameId"></span></button>
+		<button type="button" class="btn btn-success pull-right saveEnable " id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" ><span id="buttonNameId"></span></button>
 	  </div>
 	</form>
   </div>
