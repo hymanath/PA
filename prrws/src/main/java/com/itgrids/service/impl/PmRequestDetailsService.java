@@ -3437,4 +3437,138 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return resultList;
      
   }
+		/**
+		 * @author krishna
+		 * @param Long petitionId 
+		 * @param List<Long> petitionIdsList 
+		 * @description {This service is used to history overview details.}
+		 * @return List<PetitionHistoryVO>
+		 * @Date 27-01-2018
+		 */
+		public PetitionHistoryVO getPetitionAndWorkWiseHistoryDetails(PetitionTrackingVO dataVO){
+			Map<Long,List<PetitionHistoryVO>> historyMap = new HashMap<Long,List<PetitionHistoryVO>>();
+			//List<PetitionHistoryVO>
+			PetitionHistoryVO returnVO = new PetitionHistoryVO();
+			try{
+				LOG.info("entered into  PmRequestDetailsService of getPetitionAndWorkWiseHistoryDetails");
+				Long petitionStatusId =0L;
+				String insertedTimeStr = "";
+				String insertedUserName = "";
+				Map<String,Long> statusWiseMap = new LinkedHashMap<String,Long>(0);
+				statusWiseMap.put("TOTAL", 0L);
+				statusWiseMap.put("PENDING", 0L);
+				statusWiseMap.put("ENDORSED", 0L);
+				statusWiseMap.put("IN-PROGRESS", 0L);
+				statusWiseMap.put("COMPLETED", 0L);
+				
+				 List<Object[]> historyList = null;
+				 if(!commonMethodsUtilService.isListOrSetValid(dataVO.getSubworkIdsList()))
+					 historyList = pmTrackingDAO.getPetitionAndWorkWiseHistoryDetails(dataVO.getPetitionId(),null);
+				 else if(commonMethodsUtilService.isListOrSetValid(dataVO.getSubworkIdsList()))
+					 historyList =pmTrackingDAO.getPetitionAndWorkWiseHistoryDetails(null,dataVO.getSubworkIdsList());
+					
+					if(commonMethodsUtilService.isListOrSetValid(historyList)){
+						for (Object[] param : historyList) {
+							Long petitinId =commonMethodsUtilService.getLongValueForObject(param[0]);
+							Long workId=commonMethodsUtilService.getLongValueForObject(param[1]);
+							Long actionId = commonMethodsUtilService.getLongValueForObject(param[2]);
+							String actionName =commonMethodsUtilService.getStringValueForObject(param[3]);
+							String path=commonMethodsUtilService.getStringValueForObject(param[4]);
+							String remarks=commonMethodsUtilService.getStringValueForObject(param[5]);
+							String timeStr=commonMethodsUtilService.getStringValueForObject(param[6]);
+							Long insertedUserId = commonMethodsUtilService.getLongValueForObject(param[7]);
+							String userName =commonMethodsUtilService.getStringValueForObject(param[8]);
+							Long statusId = commonMethodsUtilService.getLongValueForObject(param[9]);
+							String stautus=commonMethodsUtilService.getStringValueForObject(param[10]);
+							Long officerId = commonMethodsUtilService.getLongValueForObject(param[11]);
+							String officerName=commonMethodsUtilService.getStringValueForObject(param[12]);
+							String mobileNo=commonMethodsUtilService.getStringValueForObject(param[13]);
+							Long pmOfficerdesgId = commonMethodsUtilService.getLongValueForObject(param[14]);
+							String designation=commonMethodsUtilService.getStringValueForObject(param[15]);
+							
+							List<PetitionHistoryVO> historyWorkList = new LinkedList<PetitionHistoryVO>();
+							if(historyMap.get(workId) != null){
+								historyWorkList = historyMap.get(workId);
+							}
+							PetitionHistoryVO historyVO = new PetitionHistoryVO();
+							historyVO.setId(petitinId);
+							historyVO.setWorkId(workId);
+							historyVO.setActionId(actionId);
+							historyVO.setActionName(actionName);
+							historyVO.setPath(path);
+							historyVO.setRemarks(remarks);
+							historyVO.setTimeStr(timeStr);
+							historyVO.setInsertedUserId(insertedUserId);
+							historyVO.setUserName(userName);
+							historyVO.setStatusId(statusId);
+							historyVO.setStautus(stautus);
+							historyVO.setOfficerId(officerId);
+							historyVO.setOfficerName(officerName);
+							historyVO.setPmOfficerDesgId(pmOfficerdesgId);
+							historyVO.setDesignation(designation);
+							if(historyVO.getOfficerName() ==null || historyVO.getOfficerName().isEmpty())
+								historyVO.setOfficerName(mobileNo);
+							historyWorkList.add(historyVO);
+							historyMap.put(workId, historyWorkList);
+							
+							
+						}
+						
+						List<Object[]> list = pmSubWorkDetailsDAO.getAllWorksLatesStatusDetails(dataVO.getPetitionId());
+						if(commonMethodsUtilService.isListOrSetValid(list)){
+							for (Object[] param : list) {
+								//Long petitinId = commonMethodsUtilService.getLongValueForObject(param[0]);
+								//Long subWorkId = commonMethodsUtilService.getLongValueForObject(param[1]);
+								Long subWorkStatusId = commonMethodsUtilService.getLongValueForObject(param[2]);
+								petitionStatusId = commonMethodsUtilService.getLongValueForObject(param[3]);
+								insertedTimeStr = commonMethodsUtilService.getStringValueForObject(param[4]);
+								Long userId = commonMethodsUtilService.getLongValueForObject(param[5]);
+								
+								if(subWorkStatusId.longValue()>0L){
+									statusWiseMap.put("TOTAL",statusWiseMap.get("TOTAL")+1L);
+									
+									if(subWorkStatusId.longValue() == 1L){
+										statusWiseMap.put("PENDING",statusWiseMap.get("PENDING")+1L);
+									}
+									else if(subWorkStatusId.longValue() == 6L){
+										statusWiseMap.put("ENDORSED",statusWiseMap.get("ENDORSED")+1L);
+									}
+									else if(subWorkStatusId.longValue() == 3L || subWorkStatusId.longValue() == 7L){
+										statusWiseMap.put("IN-PROGRESS",statusWiseMap.get("IN-PROGRESS")+1L);
+									}else if(subWorkStatusId.longValue() == 4L || subWorkStatusId.longValue() == 5L || subWorkStatusId.longValue() == 8L){
+										statusWiseMap.put("COMPLETED",statusWiseMap.get("COMPLETED")+1L);
+									}
+								}
+							}
+							returnVO.setPetitionId(dataVO.getPetitionId());
+							returnVO.setInsertedDate(insertedTimeStr);
+							returnVO.setStatusId(petitionStatusId);
+							returnVO.setUserName(insertedUserName);
+						}
+					}
+				
+				
+				if(commonMethodsUtilService.isMapValid(historyMap)){
+					for (Long workId : historyMap.keySet()) {
+						if(workId != null && workId.longValue()>0L){
+							PetitionHistoryVO workVO = new PetitionHistoryVO();
+							workVO.setWorkId(workId);
+							workVO.getSubList1().addAll(historyMap.get(workId));
+							returnVO.getSubList1().add(workVO);
+						}else{
+							returnVO.getPetitionHistoryList().addAll(historyMap.get(workId));
+						}
+					}
+				}
+				if(commonMethodsUtilService.isMapValid(statusWiseMap)){
+					for (String statusStr : statusWiseMap.keySet()) {
+						returnVO.getStatusList().add(new KeyValueVO(0L,statusStr,statusWiseMap.get(statusStr)));
+					}
+				}
+				
+			}catch(Exception e){
+				LOG.error("Exception raised into PmRequestDetailsService of getPetitionAndWorkWiseHistoryDetails",e);
+			}
+			return returnVO;
+		}
 }

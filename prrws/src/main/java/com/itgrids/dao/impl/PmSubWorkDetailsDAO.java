@@ -487,5 +487,12 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		 return query.list();		
 	}
 	
-	
+	public List<Object[]> getAllWorksLatesStatusDetails(Long petitionId){
+		StringBuilder sb = new StringBuilder();
+		 sb.append(" select model.petitionId, model.pmSubWorkDetailsId,model.pmStatusId,model.petition.pmStatusId, model.petition.insertedTime,"
+		 		+ "  model.petition.insertedUserId from PmSubWorkDetails model where model.isDeleted='N' and  model.petitionId =:petitionId and model.petition.isDeleted='N' ");
+		 Query query = getSession().createQuery(sb.toString());
+		 query.setParameter("petitionId", petitionId);
+		 return query.list();
+	}
 }

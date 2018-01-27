@@ -8,6 +8,8 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	private Long id;
 	private Long workId;
 	private String name;
+	private Long actionId;
+	private Long insertedUserId;
 	private String endorsmentNo;
 	private String datestr;
 	private String timeStr;
@@ -15,24 +17,15 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	private String stautus;
 	private String remarks;
 	private List<KeyValueVO> filesList = new ArrayList<KeyValueVO>(0);
+	private List<KeyValueVO> statusList = new ArrayList<KeyValueVO>(0);
+	private List<PetitionHistoryVO> petitionHistoryList = new ArrayList<>(0);
 	private String userName;
 	private String designation;
+	private Long officerId;
 	private String officerName;
     private String path;
-	
-	public String getDesignation() {
-		return designation;
-	}
-	public void setDesignation(String designation) {
-		this.designation = designation;
-	}
-	public Long getWorkId() {
-		return workId;
-	}
-	public void setWorkId(Long workId) {
-		this.workId = workId;
-	}
-	private List<PetitionHistoryVO> subList1 = new ArrayList<PetitionHistoryVO>();
+    private Long pmOfficerDesgId;
+    private List<PetitionHistoryVO> subList1 = new ArrayList<PetitionHistoryVO>();
 	
 	// create the history value
 	private Long pmTrackingId;
@@ -53,6 +46,32 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	private String pmDepartmentName;
 	private String insertedDate;
 	//private String pathStr;
+    
+	public List<PetitionHistoryVO> getPetitionHistoryList() {
+		return petitionHistoryList;
+	}
+	public List<KeyValueVO> getStatusList() {
+		return statusList;
+	}
+	public void setStatusList(List<KeyValueVO> statusList) {
+		this.statusList = statusList;
+	}
+	public void setPetitionHistoryList(List<PetitionHistoryVO> petitionHistoryList) {
+		this.petitionHistoryList = petitionHistoryList;
+	}
+	
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	public Long getWorkId() {
+		return workId;
+	}
+	public void setWorkId(Long workId) {
+		this.workId = workId;
+	}
 	
 	public Long getId() {
 		return id;
@@ -234,6 +253,32 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	public void setPath(String path) {
 		this.path = path;
 	}
+	public Long getActionId() {
+		return actionId;
+	}
+	public void setActionId(Long actionId) {
+		this.actionId = actionId;
+	}
+	public Long getInsertedUserId() {
+		return insertedUserId;
+	}
+	public void setInsertedUserId(Long insertedUserId) {
+		this.insertedUserId = insertedUserId;
+	}
+	public Long getOfficerId() {
+		return officerId;
+	}
+	public void setOfficerId(Long officerId) {
+		this.officerId = officerId;
+	}
+	public Long getPmOfficerDesgId() {
+		return pmOfficerDesgId;
+	}
+	public void setPmOfficerDesgId(Long pmOfficerDesgId) {
+		this.pmOfficerDesgId = pmOfficerDesgId;
+	}
+	
+	
 	/*public String getPathStr() {
 		return pathStr;
 	}

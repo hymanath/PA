@@ -76,7 +76,7 @@ public class PmRequestDetailsController {
 				}else{
 					return null;
 				}
-	    	 return pmRequestDetailsService.setPmRepresenteeDataToResultView(Long.valueOf(inputMap.get("petitionId")),String.valueOf(inputMap.get("pageType")),userId);
+		    	 return pmRequestDetailsService.setPmRepresenteeDataToResultView(Long.valueOf(inputMap.get("petitionId")),String.valueOf(inputMap.get("pageType")),userId);
 	    }
 	   	@RequestMapping(value ="/getPetitionReferredMemberDetails",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ,HttpServletRequest request) {
@@ -481,5 +481,11 @@ public class PmRequestDetailsController {
 				return null;
 			}
 	       return pmRequestDetailsService.userIdsByEntitlementsLogin(userId);
+	    }
+	    
+	    @RequestMapping(value ="/getPetitionAndWorkWiseHistoryDetails",method = RequestMethod.POST)
+	    public @ResponseBody PetitionHistoryVO getPetitionAndWorkWiseHistoryDetails(@RequestBody PetitionTrackingVO  dataVo,HttpServletRequest request){
+	    	return pmRequestDetailsService.getPetitionAndWorkWiseHistoryDetails(dataVo);
+	    	
 	    }
 }

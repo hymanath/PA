@@ -9,4 +9,5 @@ import com.itgrids.model.PmTracking;
 public interface IPmTrackingDAO extends GenericDao<PmTracking, Long> {
 	public List<Object[]> getPetitionTrackingHistoryDetails(Long petitionId,List<Long> subWorksList);
 	public List<Object[]> getLatestTrackingDetails(Long petitionId,List<Long> subWorksList);
+	public List<Object[]> getPetitionAndWorkWiseHistoryDetails(Long petitionId,List<Long> subWorksList);
 }

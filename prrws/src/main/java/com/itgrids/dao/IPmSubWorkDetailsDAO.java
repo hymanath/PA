@@ -25,6 +25,7 @@ public interface IPmSubWorkDetailsDAO extends GenericDao<PmSubWorkDetails, Long>
 	public List<Object[]> getSubjectsForSearchPage(List<Long> deptIds,Date fromDate,Date toDate,List<Long> statusId,Long subjectId);
 	public List<Object[]> getReferralWiseOverviewDetails(InputVO inputVO,Date startDate,Date endDate);
 	public List<Object[]> getPmBriefLeadIds(List<Long> deptIds);
+	public List<Object[]> getAllWorksLatesStatusDetails(Long petitionId);
 	
 	
 }
