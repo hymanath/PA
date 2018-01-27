@@ -40,6 +40,9 @@
 		right:none;
 		left:20px;
 	}
+	.whiteBlock{
+		height : 140px;
+	}
 </style>
 </head>
 <body>
