@@ -65,7 +65,10 @@ function buildPetitionDetailsView(result){
 			
 		str+='</div>';
 	str+='</div>';
-	
+	//Comment
+	str+='<div class="row">';
+		str+='<button type="button" class="btn btn-primary workWiseHistroyCls">View Histroy</button>';
+	str+='</div>';
 	if(result.representationType == "REPRESENTEE"){
 		str+='<div class="pad_yash_bg m_top20">';
 			str+='<div class="row">';
@@ -1459,3 +1462,224 @@ var json = {
 	$('#advanceSearchId').trigger('click');
  } 
 });
+$(document).on("click",".workWiseHistroyCls",function(){
+	$("#petitionHistroyModalId").modal("show");
+	getPetitionAndWorkWiseHistoryDetails();
+ });
+
+function getPetitionAndWorkWiseHistoryDetails(){
+	$("#petitionHistroyDetailsId").html(spinner);
+	 var subworkIdsList = [];//[1,2,3];
+	 var json = {
+		petitionId : 100336,
+		subworkIdsList : subworkIdsList
+	 } 
+	$.ajax({ 
+		type:'POST', 
+		url: 'getPetitionAndWorkWiseHistoryDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend : function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+		}).done(function(result){
+			if(result !=null){
+				buildPetitionAndWorkWiseHistoryDetails(result);
+			}else{
+				$("#petitionHistroyDetailsId").html("No Data Available");
+			}
+		}); 
+	}
+function buildPetitionAndWorkWiseHistoryDetails(result){
+	var str='';
+	str+='<div class="pad_light_yash_bg" style="border: 1px solid #ccc;border-radius: 5px;padding:5px;">';
+		str+='<div class="row">';
+			str+='<div class="col-sm-12">';
+				str+='<div class="col-sm-6" style="padding-left: 0px;">';
+					str+='<div class="pad_white_bg" style="padding:5px;border: 1px solid #79C4FF;">';
+						str+='<div class="row">';
+						for(var i in result.statusList){
+							if(result.statusList[i].value == "TOTAL" || result.statusList[i].value == "PENDING"){
+								if(result.statusList[i].value == "TOTAL"){
+									str+='<div class="col-sm-2">';
+										str+='<h5 class="font_weight m_top10">Total&nbsp;Works</h5>';
+										str+='<h5 class="font_weight m_top10">'+result.statusList[i].count+'</h5>';
+									str+='</div>';
+								}else if(result.statusList[i].value == "PENDING"){
+									str+='<div class="col-sm-2">';
+										str+='<h5 class="font_weight pending_color m_top10">Pending</h5>';
+										str+='<h5 class="font_weight m_top10">'+result.statusList[i].count+'</h5>';
+									str+='</div>';
+								}
+								
+							}
+						}
+						str+='<div class="col-sm-8">';
+							str+='<div class="pad_green">';
+								str+='<div class="row">';
+									for(var i in result.statusList){	
+										if(result.statusList[i].value == "ENDORSED"){
+											str+='<div class="col-sm-3">';
+												str+='<h5 class="font_weight completed_color m_top10">Endorsed</h5>';
+												str+='<h5 class="font_weight m_top10">'+result.statusList[i].count+'</h5>';
+											str+='</div>';
+										}
+									}
+									str+='<div class="col-sm-9">';
+										str+='<div class="pad_white_bg" style="padding:5px;">';
+											str+='<div class="row">';
+											for(var i in result.statusList){
+												if(result.statusList[i].value == "IN-PROGRESS"){
+													str+='<div class="col-sm-6">';
+														str+='<h5 class="font_weight pending_color m_top5">In&nbsp;Progress</h5>';
+														str+='<h5 class="font_weight m_top10">'+result.statusList[i].count+'</h5>';
+													str+='</div>';
+												}else if(result.statusList[i].value == "COMPLETED"){
+													str+='<div class="col-sm-6">';
+														str+='<h5 class="font_weight completed_color m_top5">Completed</h5>';
+														str+='<h5 class="font_weight m_top10">'+result.statusList[i].count+'</h5>';
+													str+='</div>';
+												}
+											}	
+												
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+										
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-2 border_right_yash">';
+				str+='<h5 class="font_weight  m_top5">Created Date</h5>';
+				str+='<h5 class="font_weight m_top10">'+result.insertedDate+'</h5>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-2">';
+				str+='<h5 class="font_weight  m_top5">Petition ID</h5>';
+				str+='<h5 class="font_weight m_top10">'+result.petitionId+'</h5>';
+			str+='</div>';
+			
+			str+='<div class="col-sm-2">';
+				str+='<div class="" style="padding:10px;background-color:#FFEED0;">';
+					str+='<div class="media">';
+						str+='<a class="pull-left" style="padding-right: 5px;">';
+							str+='<i class="fa fa-pause round_status_pending" aria-hidden="true" style="color:#FFAA00"></i>';
+					  str+='</a>';
+					  str+='<div class="media-body">';
+						str+='<h4 class="pull-right pending_color font_weight" style="margin-bottom: 10px;">In Progress</h4>';
+						str+='<h6 class="m_top10" style="margin-top: 25px;margin-bottom: 13px;padding-top: 9px;">Petition Status</h6>';
+					  str+='</div>';
+					str+='</div>';  
+				str+='</div>';
+			str+='</div>';
+			
+		str+='</div>';
+	str+='</div>';
+str+='</div>';
+str+='<div style="border: 1px solid #ddd;margin-top: 20px;">';
+str+='<div class="row m_top20">';
+	str+='<div class="col-sm-12">';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table_custom_pet">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>';
+							str+='WORK NO';
+						str+='</th>';
+						str+='<th>';
+							str+='DEPARTMENT';
+						str+='</th>';
+						str+='<th>';
+							str+='LATEST COMMENT';
+						str+='</th>';
+						str+='<th>';
+							str+='DESIGNATION';
+						str+='</th>';
+						str+='<th>';
+							str+='PENDING @';
+						str+='</th>';
+						str+='<th>';
+							str+='STATUS';
+						str+='</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result.subList1){
+						for(var j in result.subList1[i].subList1){
+							if(j==0){
+								str+='<tr>';
+									str+='<td>'+i+'</td>';
+									str+='<td>-</td>';
+									str+='<td>'+result.subList1[i].subList1[j].remarks+'</td>';
+									str+='<td>'+result.subList1[i].subList1[j].designation+'</td>';
+									str+='<td>'+result.subList1[i].subList1[j].officerName+'</td>';
+									str+='<td>'+result.subList1[i].subList1[j].stautus+'</td>';
+								str+='</tr>';
+							}
+							
+						}
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	str+='</div>';
+str+='</div>';
+str+='</div>';
+str+='<div class="row m_top20">';
+	str+='<div class="col-sm-12">';
+		str+='<h5 class="font_weight">COMMENTS BOX</h5>';
+		str+='<div class="table-desig-scroll">';
+		str+='<div style="border:1px solid #ddd;padding:10px;" class="m_top10">';
+		for(var i in result.petitionHistoryList){
+			
+			str+='<div class="pad_light_yash_bg m_top20" style="border: 1px solid #ccc;border-radius: 5px;">';
+				str+='<div class="row">';
+					str+='<div class="">';
+						str+='<div class="col-sm-3">';
+							str+='<div class="pad_white_bg" style="padding:10px;border: 1px solid #79C4FF;text-align: center;">';
+								str+='<h5 class="font_weight" style="color:#79C4FF">By : '+result.petitionHistoryList[i].officerName+'</h5>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-3 pull-right">';
+							if(result.petitionHistoryList[i].stautus == "Completed"){
+									str+='<div class="pad_white_bg " style="padding:10px;border: 1px solid #00DF0F;">';
+									str+='<h5 class="font_weight" ><span style="background-color:#00DF0F;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.petitionHistoryList[i].stautus+'</h5>';	
+							}else if(result.petitionHistoryList[i].stautus == "Pending Endorsement"){
+								str+='<div class="pad_white_bg " style="padding:10px;border: 1px solid #79C4FF;">';
+								str+='<h5 class="font_weight" ><span style="background-color:#0090FF;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.petitionHistoryList[i].stautus+'</h5>';
+							}else if(result.petitionHistoryList[i].stautus == "Pending Final Approval" || result.petitionHistoryList[i].stautus == "Pending - Action Memo" || result.petitionHistoryList[i].stautus == "Pending - Detailed Report"){
+								str+='<div class="pad_white_bg " style="padding:10px;border: 1px solid #FFC400;">';
+								str+='<h5 class="font_weight" ><span style="background-color:#FFC400;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.petitionHistoryList[i].stautus+'</h5>';
+							}else{
+								str+='<div class="pad_white_bg " style="padding:10px;border: 1px solid #FFC400;">';
+								str+='<h5 class="font_weight" ><span style="background-color:#FFC400;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.petitionHistoryList[i].stautus+'</h5>';
+							}
+							
+								
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-12 m_top5">';
+						str+='<h5>'+result.petitionHistoryList[i].remarks+'</h5>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			
+		}
+			
+	str+='</div>';		
+	str+='</div>';		
+		
+	str+='</div>';
+str+='</div>';
+	$("#petitionHistroyDetailsId").html(str);
+	
+	if(result.petitionHistoryList.length>6){
+		$(".table-desig-scroll").mCustomScrollbar({setHeight:'400px'});
+	}
+}
