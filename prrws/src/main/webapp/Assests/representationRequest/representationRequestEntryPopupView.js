@@ -1224,9 +1224,19 @@ $.ajax({
 				
 					if(result!=null){
 					  if(result.exceptionMsg == "SUCCESS"){
-						  alert("Work(s) details updated successfully");
-						  $("#endorseMentModalDivId").modal("hide");
+						
+						 setTimeout(function () {
+						$("#ajaxImageId").html("<center><h4 style='color: green;'>Please Wait Work(s) details updated successfully</h4></center>").fadeOut(5000);
+						}, 500);
+						   setTimeout(function () {
+						 $("#endorseMentModalDivId").modal("hide");
+						}, 1000);
+							$(".saveEnable").prop("disabled", true);
+						 
+						 // alert("Work(s) details updated successfully");
+						 
 						  getPetitionDetails(petitionId,endorsementNO);
+						 
 						 // $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
 					  }else{
 						  $('#endorsWorksId').show();
@@ -1237,9 +1247,16 @@ $.ajax({
 			},
 			error: function(request,error) { 
 				$("#savingDetailsSpinner").html('');
+				
+				setTimeout(function () {
+						$("#ajaxImageId").html("<center><h4 style='color: green;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h4></center>").fadeOut(3000);
+						}, 500);
+						$(".saveEnable").prop("disabled", false);
 				//console.log(request);
 				//console.log(error);
-				alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
+				 //$("#").html("<center><h5 style='color: green;margin-top:-25px;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h5></center>")
+				 //$("#ajaxImageId").hide();
+				//alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
 				$('#endorsWorksId').show();				
 			}
      });

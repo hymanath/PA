@@ -297,10 +297,12 @@
 		<div id="coveringLetterGenerator"></div>
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
 	  </div>
+	  
 	  <!--<div class="modal-footer" id="saveBtnId" style="display:none;">
 		 <button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
 		<button type="button" class="btn btn-success pull-right" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" ><span id="buttonNameId"></span></button>
 	  </div>-->
+	  <div id="ajaxImageId"></div>
 	  <div class="modal-footer">
 		 <button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
 		<button type="button" class="btn btn-success pull-right saveEnable" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()"><span id="buttonNameId"></span></button>
