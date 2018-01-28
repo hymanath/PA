@@ -386,11 +386,10 @@
 		<div id="coveringLetterGenerator"></div>
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
 	   </div>
-	  <div id="ajaxImageId"></div>
 
 	  <div class="modal-footer">
 		 <button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
-		<button type="button" class="btn btn-success pull-right saveEnable" id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" ><span id="buttonNameId"></span></button>
+		<button type="button" class="btn btn-success pull-right saveEnable " id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" ><span id="buttonNameId"></span></button>
 	  </div>
 	</form>
   </div>
@@ -416,7 +415,23 @@
   </div>
 </div>
 </div>
-
+<div class="modal fade" id="petitionHistroyModalId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:80%;margin:auto">
+    <div class="modal-content">
+      <div class="modal-header">
+			<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title text-capital" id="" style="font-weight: bold">PETITION HISTORY</h4> 
+	  </div>
+      <div class="modal-body">
+        <div id="petitionHistroyDetailsId"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default modalCloseCls closeSecondModal" data-dismiss="modal">Close</button>
+      </div>
+   
+  </div>
+</div>
+</div>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/login/loginMenu.js"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
