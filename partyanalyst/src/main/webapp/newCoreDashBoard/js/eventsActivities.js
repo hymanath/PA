@@ -187,13 +187,13 @@ $(document).on("click",".activitesExpandIcon",function(){
 	{
 		if($(".eventsIconExpand").find("i").hasClass("glyphicon-resize-small"))
 		{
-			if(activityId == 37){
+			if(activityId == 37 || activityId == 38){
 				$("#levelWiseOverviewId").show();
 			}else{
 				$("#levelWiseOverviewId").hide();
 			}
 		}else{
-			if(activityId == 37){
+			if(activityId == 37 || activityId == 38){
 				$("#levelWiseOverviewId").show();
 			}else{
 				$("#levelWiseOverviewId").hide();
@@ -229,7 +229,7 @@ $(document).on("click",".activitesExpandIcon",function(){
 		{
 			//alert("already opened");eventsCmpBlckDivId
 			var activityId = $("#hiddenActivityId").val();
-			if(activityId==37){
+			if(activityId==37 || activityId==38){
 				levelWiseSBData(activityId);//sanjeev
 			}
 			stateWiseCohort(activityId);
@@ -1794,7 +1794,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 				str+='<div class="panel-group panelBlockCollapse" id="accordionAct" role="tablist" aria-multiselectable="true" style="margin-top: 10px;">';				
 				for(var i in result)
 				{
-					if((result[i].id != "36" || result[i].id != 36) && (result[i].id != "37" || result[i].id != 37)){
+					if((result[i].id != "36" || result[i].id != 36) && (result[i].id != "38" || result[i].id != 38)){
 						 if(i== 0){
 						activityIdsString = result[i].id;	
 						}else{
@@ -1814,7 +1814,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-					}else if(result[i].id == "37" || result[i].id == 37){
+					}else if(result[i].id == "38" || result[i].id == 38){
 						str1+='<div class="panel panel-default panelNewEvents">';
 						str1+='<div class="panel-heading" role="tab">';
 							str1+='<h4 class="panel-title">'+result[i].name+'';
@@ -2518,13 +2518,13 @@ function getSettingActivitiesJBMData(locationId,divId){
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			buildActivityEventdata(result,locationId);
+			buildActivityEventdata(result,locationId,divId);
 		}else{
 			$("#"+locationId).html('NO DATA AVAILABLE');
 		}
 	});
 }
-function buildActivityEventdata(result,locationId){
+function buildActivityEventdata(result,locationId,divId){
 	var tableView='';
 	tableView+='<div class="table-responsive">';
 		tableView+='<table class="table table-bordered dataTable1'+locationId+'" id="" style="width:100%;border:1px solid lightgrey">';
@@ -2542,9 +2542,9 @@ function buildActivityEventdata(result,locationId){
 					tableView+='<th colspan="2">Info Cell Conducted</th>';
 					//tableView+='<th rowspan="2">Conducted%</th>';
 					for(var i in result[0].questionList){
-						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23){
+						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23 && divId !=38){
 							tableView+='<th colspan="2">'+result[0].questionList[i].questionName+'</th>';
-						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId == 23){
+						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].		questionId == 23){
 							tableView+='<th colspan="5">'+result[0].questionList[i].questionName+'</th>';
 						}else if (result[0].questionList[i].optionList.length==1){
 							if(result[0].questionList[i].questionId != 21){
@@ -2552,7 +2552,10 @@ function buildActivityEventdata(result,locationId){
 							}else{
 								tableView+='<th rowspan ="2">'+result[0].questionList[i].questionName+'-(Minutes)</th>';
 							}
-						}else{
+						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].		questionId != 23 && divId ==38){
+							tableView+='<th colspan="4">'+result[0].questionList[i].questionName+'</th>';
+						}
+						else{
 							tableView+='<th colspan="'+result[0].questionList[i].optionList.length+'">'+result[0].questionList[i].questionName+'</th>';
 						}
 						
@@ -2562,7 +2565,7 @@ function buildActivityEventdata(result,locationId){
 					tableView+='<th>Total Count</th>';
 					tableView+='<th>%</th>';
 				for(var i in result[0].questionList){
-						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23){
+						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23 && divId !=38){
 							
 							tableView+='<th>Yes Count</th>';
 							tableView+='<th>%</th>';
@@ -2572,13 +2575,17 @@ function buildActivityEventdata(result,locationId){
 							tableView+='<th>%</th>';
 							tableView+='<th>No Count</th>';
 							tableView+='<th>%</th>';
-						}
-						if(result[0].questionList[i].optionList.length !=2 && result[0].questionList[i].optionList.length !=1){
+						}else if(result[0].questionList[i].optionList.length !=2 && result[0].questionList[i].optionList.length !=1){
 							for(var j in result[0].questionList[i].optionList){
 								tableView+='<th>'+result[0].questionList[i].optionList[j].optionName+'</th>';
+							}
+						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23 && divId ==38){
+							for(var j in result[0].questionList[i].optionList){
+								tableView+='<th>'+result[0].questionList[i].optionList[j].optionName+'</th>';
+								tableView+='<th>%</th>';
+							}
+							
 						}
-						
-					}
 					//tableView+='<th></th>';
 				}
 				tableView+='</tr>';
@@ -2600,8 +2607,15 @@ function buildActivityEventdata(result,locationId){
 						 for(var k in result[i].questionList[j].optionList){
 							if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId != 23){
 								if(result[i].questionList[j].optionList[k].optionId ==1){
-									tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';yesCount=result[i].questionList[j].optionList[k].count;
-									if(result[i].conductedCount !==null && result[i].conductedCount !=0){
+									tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
+									if(result[i].conductedCount !== null && result[i].conductedCount != 0 && result[i].conductedCount != '0'){
+										tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].conductedCount)*100).toFixed(2)+'%</td>';
+									}else{
+									tableView+='<td>-</td>';
+									}
+								}else{
+									tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
+									if(result[i].conductedCount !== null && result[i].conductedCount != 0 && result[i].conductedCount != '0'){
 										tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].conductedCount)*100).toFixed(2)+'%</td>';
 									}else{
 									tableView+='<td>-</td>';
@@ -2609,11 +2623,11 @@ function buildActivityEventdata(result,locationId){
 								}
 							}else if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId == 23){
 								tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
-							 	if(result[i].conductedCount !==null && result[i].conductedCount !=0 ){
-									tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].questionList[j].count)*100).toFixed(2)+'%</td>';
+							 	if(result[i].totalCount !==null && result[i].totalCount !=0  && result[i].totalCount != '0' ){
+									tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].totalCount)*100).toFixed(2)+'%</td>';
 								}else{
 								tableView+='<td>-</td>';
-								} 
+								}  
 							}else if (result[i].questionList[j].optionList.length==1){
 								if(result[i].questionList[j].questionId !=21){
 									tableView+='<td>'+result[i].questionList[j].optionList[k].percentage+'</td>';
