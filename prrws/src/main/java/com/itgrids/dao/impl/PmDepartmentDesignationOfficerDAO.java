@@ -1,9 +1,7 @@
 package com.itgrids.dao.impl;
 
 import java.util.List;
-import java.util.Map;
 
-import org.appfuse.dao.SearchException;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -50,6 +48,19 @@ public class PmDepartmentDesignationOfficerDAO extends GenericDaoHibernate<PmDep
 		query.setParameter("pmDepartmentDesignationOfficerId", pmDepartmentDesignationOfficerId);
 		query.setParameter("officerDesignationId", officerDesignationId);
 		return query.list();
+	}
+	
+	public Long geOfficerIdByDeptDesigIds(List<Long> deptdesigIds) {
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.pmOfficer.pmOfficerId from PmDepartmentDesignationOfficer model where model.isActive ='Y' and model.pmOfficer.isActive ='Y' " );
+		if(deptdesigIds != null && deptdesigIds.size() >0){
+			str.append(" and model.pmDepartmentDesignation.pmDepartmentDesignationId in (:deptdesigIds) ");
+		}
+		Query query = getSession().createQuery(str.toString());
+		if(deptdesigIds != null && deptdesigIds.size() >0){
+			query.setParameterList("deptdesigIds", deptdesigIds);
+		}
+		return (Long)query.uniqueResult();
 	}
 	
 }

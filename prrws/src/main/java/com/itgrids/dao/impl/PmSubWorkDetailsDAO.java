@@ -263,21 +263,22 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			/*sb.append(", model.pmStatus.pmStatusId," +//8
 					" model.pmStatus.status ");//9
 */		//}*/else if(type != null && (type.equalsIgnoreCase("statusSubject") || type.equalsIgnoreCase("subject"))){
-			sb.append(", pmSubject.pmSubjectId," +//8
-					" pmSubject.subject," + //9
-					" pmSubject.preferrableOrderNO ");//10
+			sb.append(", model.pmSubject.pmSubjectId," +//8
+					" model.pmSubject.subject," + //9
+					" model.pmSubject.preferrableOrderNO ");//10
 		//}else if(type != null && (type.equalsIgnoreCase("statusDept") || type.equalsIgnoreCase("department"))){
-			sb.append(",pmDepartment.pmDepartmentId," +//11
-					" pmDepartment.department," +//12
-					" pmDepartment.preferrableOrderNO ");//13
+			sb.append(",model.pmDepartment.pmDepartmentId," +//11
+					" model.pmDepartment.department," +//12
+					" model.pmDepartment.preferrableOrderNO ");//13
 		//}else{
 			//sb.append(",'','','' ");
 		//}
 		
-		sb.append("  from PmSubWorkDetails model,PmRepresenteeRefDetails model1 left join model1.pmRefCandidateDesignation model2 " +
-				 "  left join  model.pmDepartment pmDepartment left join model.pmSubject pmSubject ");
+		sb.append("  from PmSubWorkDetails model,PmRepresenteeRefDetails model1 , PmRefCandidateDesignation model2 " );
+				// "  left join  model.pmDepartment pmDepartment left join model.pmSubject pmSubject ");
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
-			sb.append("  where model1.petition.petitionId=model.petition.petitionId  and model1.isDeleted='N' " +
+			sb.append("  where model1.petition.petitionId=model.petition.petitionId and" +
+					" model1.pmRefCandidateDesignation.pmRefCandidateDesignationId=model2.pmRefCandidateDesignationId and model1.isDeleted='N' " +
 					" and model.isDeleted='N' and model2.pmRefCandidateId=model1.pmRefCandidateId and model1.petition.isDeleted='N' ");
 		//}else{
 		//	sb.append(" where ");
@@ -285,19 +286,21 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			
 		sb.append(" and model2.isDeleted='N' and model1.pmRepresentee.isDeleted = 'N'  " +
 					" and model1.pmRefCandidate.isDeleted = 'N'     ");
-		sb.append("  and pmDepartment.isDeleted='N'  ");
-		sb.append("  and pmSubject.isDeleted='N'   ");
+		sb.append("  and model.pmDepartment.isDeleted='N'  ");
+		sb.append("  and model.pmSubject.isDeleted='N'   ");
 		//if(type.equalsIgnoreCase("subject")){
-			sb.append(" and  pmSubject.parentPmSubjectId is null ");
+			sb.append(" and  model.pmSubject.parentPmSubjectId is null ");
 		//}
 		if(deptIds != null && deptIds.size() >0){
-			 sb.append(" and pmDepartment.pmDepartmentId in (:deptIds) ");
+			 sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
 		if(startDate != null && endDate != null){
 			 sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
 		}
 		sb.append(" group by model.petition.petitionId, model.pmStatus.pmStatusId " );
-		sb.append(" order by model.pmStatus.orderNo asc ");
+		sb.append(", model2.pmDesignation.pmDesignationId,model.pmSubject.pmSubjectId,model.pmDepartment.pmDepartmentId ");
+		sb.append(" order by model.pmStatus.orderNo asc ," +
+				"model2.pmDesignation.preferrableOrderNO asc,model.pmSubject.preferrableOrderNO asc,model.pmDepartment.preferrableOrderNO asc ");
 		//sb.append(", model2.pmDesignation.pmDesignationId,pmSubject.pmSubjectId,pmDepartment.pmDepartmentId order by " +
 			//	" model2.pmDesignation.preferrableOrderNO asc,pmSubject.preferrableOrderNO asc,pmDepartment.preferrableOrderNO asc,model.pmStatus.orderNo asc ");
 		if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
@@ -494,5 +497,25 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		 Query query = getSession().createQuery(sb.toString());
 		 query.setParameter("petitionId", petitionId);
 		 return query.list();
+	}
+	
+	public Object[] getMaxEndorsementAndTempEndorsementNos(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select max(workEndorsmentNo),max(tempEndorsNo) from PmSubWorkDetails model where model.isDeleted='N' ");
+		 Query query = getSession().createQuery(sb.toString());
+		 return (Object[])query.uniqueResult();
+	}
+	
+	public int saveTempEndorseNo(Long petitionId,List<Long> subWorkDetailsIds,String tempEndorsNo,Long userId,Date updateTime){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" update PmSubWorkDetails model set model.tempEndorsNo=:tempEndorsNo, model.updatedTime =:updateTime,model.updatedUserId =:userId "
+				+ " where model.pmSubWorkDetailsId  in (:subWorkDetailsIds) and model.petitionId =:petitionId  ");
+		
+		Query query =getSession().createQuery(sb.toString());
+		query.setParameterList("subWorkDetailsIds", subWorkDetailsIds);
+		query.setParameter("userId", userId);
+		query.setParameter("updateTime", updateTime);
+		query.setParameter("petitionId", petitionId);
+		return query.executeUpdate();
 	}
 }

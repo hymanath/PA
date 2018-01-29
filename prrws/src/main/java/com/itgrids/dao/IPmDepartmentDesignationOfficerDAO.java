@@ -9,4 +9,5 @@ import com.itgrids.model.PmDepartmentDesignationOfficer;
 public interface IPmDepartmentDesignationOfficerDAO extends GenericDao<PmDepartmentDesignationOfficer, Long> {
 	public List<Object[]> getDeptDesignationOfficerDetailsByDeptDesignation(Long deptDesignationId);
 	public List<Object[]> getDeptDesignationOfficerDetailsByDeptAndOffId(Long officerDesignationId,Long pmDepartmentDesignationOfficerId);
+	public Long geOfficerIdByDeptDesigIds(List<Long> deptdesigIds);
 }

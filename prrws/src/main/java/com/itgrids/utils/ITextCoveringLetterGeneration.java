@@ -93,10 +93,12 @@ public class ITextCoveringLetterGeneration  {
 		try {
 			String sysPath = "D:/Tomcat 7.0/webapps/PRRWS-1.0/";
 			String logo ="";
+			//D:/Tomcat 7.0/webapps/PRRWS-1.0/Assests/images/petition images/Group 1.png
 			String deptDetailsImg ="";
 			String addrDetailsImg ="";
 			String sign ="";
 			String toAddrImg ="";
+			String headerImg ="";
 			//List<PmRequestVO> representeeList = new ArrayList<PmRequestVO>();
 			StringBuilder referrals = null;
  			if(petitionDetailsVO != null){
@@ -193,7 +195,8 @@ public class ITextCoveringLetterGeneration  {
 				 str1 = str1.replace("#works", "");
 			 }
 			 if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0")){
-				 str1 = str1.replace("#lead", "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+inputVO.getLeadName());
+				 str1 = str1.replace("#lead", "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+				 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+inputVO.getLeadName());
 			 }else{
 				 str1 = str1.replace("#lead", "");
 			 }
@@ -215,6 +218,8 @@ public class ITextCoveringLetterGeneration  {
 						sign = objects[2].toString();
 					}else if(objects[1] != null && objects[1].toString().equalsIgnoreCase("TO ADDRESS DETAILS")){
 						toAddrImg = objects[2].toString();
+					}else if(objects[1] != null && objects[1].toString().equalsIgnoreCase("HEADER")){
+						headerImg = objects[2].toString();
 					}
 				}
 			}
@@ -226,16 +231,17 @@ public class ITextCoveringLetterGeneration  {
 							str.append("<table class='table'>");
 								str.append("<tr>");
 									str.append("<td>");
-										str.append("<img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+deptDetailsImg.toString()+"' width='150px' height='90px'>");
+										//str.append("<img src='"+deptDetailsImg+"' width='500px' height='100px'>");
+									str.append("<img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+headerImg.toString()+"' width='500px' height='100px'>");
 										//str.append("<img src='http://www.mydepartments.in/PRRWS/Assests/images/petition images/dept_details.png' width='150px' height='90px'>");
 										//str.append("<img src='"+IConstants.STATIC_CONTENT_FOLDER_URL+"/"+deptDetailsImg.toString()+"' width='150px' height='90px'>");
 									str.append("</td>");
-									str.append("<td>");
+									/*str.append("<td>");
 										str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+logo.toString()+"' width='80px' height='80px'>");
 									str.append("</td>");
 									str.append("<td>");
 										str.append("<img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+addrDetailsImg.toString()+"' width='150px' height='90px'>");
-									str.append("</td>");
+									str.append("</td>");*/
 								str.append("</tr>");	
 							str.append("</table>");
 						str.append("</header><br><br>");
@@ -250,7 +256,12 @@ public class ITextCoveringLetterGeneration  {
 								str.append("<td><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+str1+"</p></td><br><br>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;With regards,</td>");
+								str.append("<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+										"With regards,</td>");
 							str.append("</tr>");
 						str.append("</table>");
 						str.append("<table>");

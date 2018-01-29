@@ -19,6 +19,7 @@ public class PmRequiredLettersImages {
 	
 	private Long pmRequiredLettersImagesId;
 	private Long pmOfficerDesignationId;
+	private Long pmOfficerId;
 	private String letterType;
 	private String filePath;
 	private String  imageType;
@@ -26,6 +27,7 @@ public class PmRequiredLettersImages {
 	private Date  insertedTime;
 	private Long   insertedUserId;
 	private PmOfficerDesignation pmOfficerDesignation;
+	private PmOfficer pmOfficer;
 	
 	@Id
 	@Column(name="pm_required_letters_images_id")
@@ -93,4 +95,23 @@ public class PmRequiredLettersImages {
 	public void setPmOfficerDesignation(PmOfficerDesignation pmOfficerDesignation) {
 		this.pmOfficerDesignation = pmOfficerDesignation;
 	}
+	
+	@Column(name="pm_officer_id")
+	public Long getPmOfficerId() {
+		return pmOfficerId;
+	}
+	public void setPmOfficerId(Long pmOfficerId) {
+		this.pmOfficerId = pmOfficerId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_officer_id", insertable = false, updatable = false)
+	public PmOfficer getPmOfficer() {
+		return pmOfficer;
+	}
+	public void setPmOfficer(PmOfficer pmOfficer) {
+		this.pmOfficer = pmOfficer;
+	}
+	
+	
 }

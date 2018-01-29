@@ -2286,8 +2286,8 @@ function petitionWiseRepresenteeDetails(result){
 							}
 						}
 						
-						if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined"){
-							str+='<td class="text-center"><i class=" viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i>'+result[i].noOfWorks+'</td>';
+						if (result[i].subList != null && result[i].subList.length >0){
+							str+='<td class="text-center"><i class=" viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i>'+result[i].subList.length+'</td>';
 						}else{
 							str+='<td> - </td>';
 						}

@@ -14,9 +14,16 @@ public class KeyValueVO {
 	private Long designationId;
 	private List<KeyValueVO> subList = new ArrayList<KeyValueVO>(0);
 	private String deptName="";
+	private List<Long> depDesigIds  = null; 
 	  
-	  
-	  public String getDeptName() {
+	
+	  public List<Long> getDepDesigIds() {
+		return depDesigIds;
+	}
+	public void setDepDesigIds(List<Long> depDesigIds) {
+		this.depDesigIds = depDesigIds;
+	}
+	public String getDeptName() {
 	    return deptName;
 	  }
 	  public void setDeptName(String deptName) {
