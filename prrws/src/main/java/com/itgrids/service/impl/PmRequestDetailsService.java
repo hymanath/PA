@@ -2207,24 +2207,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						returnVO.setNoOfWorks(returnVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						String estimationCost = commonMethodsUtilService.getStringValueForObject(param[4]);
 						if(returnVO.getEstimationCost() != null && returnVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
-						BigDecimal decmial= new BigDecimal(returnVO.getEstimationCost());
-						BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
-						/*BigDecimal decmialCrores= new BigDecimal(returnVO.getAmountInCrores());
-						BigDecimal decmial2crores= new BigDecimal(statusVO.getAmountInCrores());*/
-						BigDecimal decmial1= new BigDecimal(estimationCost);
-						//BigDecimal crore= new BigDecimal("10000000");
+							BigDecimal decmial= new BigDecimal(returnVO.getEstimationCost());
+							BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
+							BigDecimal decmial1= new BigDecimal(estimationCost);
 							BigDecimal totalCost = decmial.add(decmial1);
 							BigDecimal totalCost1 = decmial2.add(decmial1);
-							/*BigDecimal totalCostCrores = decmialCrores.add(decmial1);
-							BigDecimal totalCost1Crores = decmial2crores.add(decmial1);
-							BigDecimal totalCost1InCrores = totalCost1Crores.divide(crore);
-							BigDecimal totalCostInCrores = totalCostCrores.divide(crore);
-							statusVO.setAmountInCrores(totalCost1InCrores.toString());
-							returnVO.setAmountInCrores(totalCostInCrores.toString());*/
-							
 							statusVO.setEstimationCost(totalCost1.toString());
 							returnVO.setEstimationCost(totalCost.toString());
-						//refDesigCan.setEstimationCost(refDesigCan.getEstimationCost()+);
 						}
 					}
 				}
@@ -2561,7 +2550,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								String dept = deptVO.getDeptName().concat(","+commonMethodsUtilService.getStringValueForObject(objects[3]));
 								deptVO.setDeptName(dept);
 							}
-							
+							if(deptVO.getDepDesigIds() == null){
+								deptVO.setDepDesigIds(new ArrayList<Long>(0));
+								deptVO.getDepDesigIds().add(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							}else if(!deptVO.getDepDesigIds().contains(commonMethodsUtilService.getLongValueForObject(objects[4]))){
+								deptVO.getDepDesigIds().add(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							}
 							deptVO.getDeptIdsList().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						}
 					}
@@ -2730,7 +2724,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				 if(userType != null && userType.contains("AP MINISTER")){
 					 userType = "Min";
 				 }else if(userType != null && userType.contains("OSD")){
-					 userType = "OSD";
+					 userType = "OSD-M";
 				 }else{
 					 userType = "";
 				 }
@@ -2767,15 +2761,29 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					PmGrant pmGrant = pmGrantDAO.get(Long.valueOf(inputVO.getGroupName()));
 				 inputVO.setGroupName(pmGrant.getPmGrantName());//grantType
 				}
-				List<Object[]> coveringLetrImages = pmRequiredLettersImagesDAO.getDesignationWiseImages(inputVO.getDesignationIds(), inputVO.getType());
+				Long ofcrId = pmDepartmentDesignationOfficerDAO.geOfficerIdByDeptDesigIds(inputVO.getSubProgramIdsList());
+				/*Long ofcrId = 0l;
+				if(ofcrIds != null && ofcrIds.size() >0){
+					 ofcrId = (Long)ofcrIds.get(0);
+					//ofcrId = commonMethodsUtilService.getLongValueForObject(list[0]);
+				}*/
+				List<Object[]> coveringLetrImages = pmRequiredLettersImagesDAO.getDesignationWiseImages(inputVO.getDesignationIds(), inputVO.getType(),ofcrId);
 			
-				/*String str1 = " Please find the enclosed representations recieved from of Mis./Mr. " +
-						"#rname #rdesig #rconst #rdist with referrance of #refname  #refdesig  " +
-						"#refconst #refComma Please take action for below mentioned works as #lead " +
-						"#grname " +
-						"#works";*/
-				//inputVO.setAssetTypeList(deptIds);//deptIds
-						String str1 = pmRequiredFileFormatTextDAO.getCoverLetterMessage();
+				/*Object[] maxList = pmSubWorkDetailsDAO.getMaxEndorsementAndTempEndorsementNos();
+				Long saveTempEndorseNo = 0l;
+				if(maxList != null){
+					String maxEndorNo = commonMethodsUtilService.getStringValueForObject(maxList[0]);
+					String tempEnodrse = commonMethodsUtilService.getStringValueForObject(maxList[1]);
+					if(maxEndorNo != "" && tempEnodrse !="" && Long.valueOf(maxEndorNo)>Long.valueOf(tempEnodrse)){
+						saveTempEndorseNo = Long.valueOf(maxEndorNo) +1l;
+						int saveStatus = pmSubWorkDetailsDAO.saveTempEndorseNo(inputVO.getPageId(),inputVO.getSchemeIdsList(),saveTempEndorseNo.toString(),inputVO.getBlockLevelId(),dateUtilService.getCurrentDateAndTime());
+					}else if(maxEndorNo != "" && tempEnodrse !="" && Long.valueOf(tempEnodrse)>Long.valueOf(maxEndorNo)){
+						saveTempEndorseNo = Long.valueOf(tempEnodrse) +1l;
+						inputVO.setEndValue(saveTempEndorseNo.toString());
+						int saveStatus = pmSubWorkDetailsDAO.saveTempEndorseNo(inputVO.getPageId(),inputVO.getSchemeIdsList(),saveTempEndorseNo.toString(),inputVO.getBlockLevelId(),dateUtilService.getCurrentDateAndTime());
+					}
+				}*/
+				String str1 = pmRequiredFileFormatTextDAO.getCoverLetterMessage(inputVO.getDesignationIds());
 				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getDeptCode(),dateUtilService.getCurrentDateAndTime());
 				inputVO.setCategory(endorseStr);
 				PmRequestEditVO petitionDetailsVO =setPmRepresenteeDataToResultView(inputVO.getPageId(),inputVO.getpType(),inputVO.getBlockLevelId());

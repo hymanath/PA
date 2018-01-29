@@ -55,6 +55,7 @@ public class PmSubWorkDetails {
 	private Long insertedUserId;
 	private Long updatedUserId;
 	private Date endorsmentDate;
+	private String tempEndorsNo; 
 	
 	@Id
 	@Column(name="pm_sub_work_details_id")
@@ -335,5 +336,13 @@ public class PmSubWorkDetails {
 	public void setEndorsmentDate(Date endorsmentDate) {
 		this.endorsmentDate = endorsmentDate;
 	}
+	public String getTempEndorsNo() {
+		return tempEndorsNo;
+	}
+	public void setTempEndorsNo(String tempEndorsNo) {
+		this.tempEndorsNo = tempEndorsNo;
+	}
+	
+	
 	
 }
