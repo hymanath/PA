@@ -5600,6 +5600,7 @@ function buildApInnovationIndicatorDetails(result){
 		str+='<thead>';
 			str+='<tr>';
 				str+='<th class="header-white2">INDICATORS</th>';
+				str+='<th class="header-white2">Total</th>';
 				str+='<th class="header-white">XLr8AP<br>Tirupathi</th>';
 				str+='<th class="header-white">NASSCOM 10K Startups<br>Visakhapatnam</th>';
 				str+='<th class="header-white">GOVIN CAPITAL<br>Visakhapatnam</th>';
@@ -5610,6 +5611,7 @@ function buildApInnovationIndicatorDetails(result){
 		for(var i in result){
 			str+='<tr>';
 				str+='<td>'+result[i].name+'</td>';
+				str+='<td>'+result[i].totalParticipaints+'</td>';
 				if(result[i].xlr8apCount != null && result[i].xlr8apCount != 0){
 					str+='<td>'+result[i].xlr8apCount+'</td>';
 				}else{
@@ -5634,9 +5636,9 @@ function buildApInnovationIndicatorDetails(result){
 	$("#indicatorsDivId").html(str);
 	//$("#indicatorsTableId").dataTable();
 	$("#indicatorsTableId").dataTable({
-		"iDisplayLength": 10,
+		"iDisplayLength": 15,
 		"aaSorting": [],
-		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+		"aLengthMenu": [[15, 30, 45, -1], [15, 30, 45, "All"]]
 	});
 }
 function getApInnovationOverviewDetails(){

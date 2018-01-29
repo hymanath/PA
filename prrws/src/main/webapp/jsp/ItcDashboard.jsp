@@ -48,7 +48,6 @@ var searchParams = new URLSearchParams(window.location.search);
 					<h4 class="text-capital">Panchayat Raj, RD & RWS</h4>
 					<p>IT E & C - Dashboard</p>
 				</div>
-				
 				<div class="col-sm-3 col-xs-12 pull-right">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
@@ -66,11 +65,19 @@ var searchParams = new URLSearchParams(window.location.search);
 									<div class="menu-heading-block">
 										<h4 class="text-capital">Rural Water Supply</h4>
 										<div class="row">
-											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#56A3C5">
 													<a href="ruralWaterSupplyDashBoard">
 														<h3>RWS</h3>
 														<p>Rural Water Supply</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#8A2BE2">
+													<a href="newsArticles?deptId=2171">
+														<h3>RWS News</h3>
+														<p>Rural&nbsp;Water&nbsp;Supply&nbsp;News</p>
 													</a>
 												</div>
 											</div>
@@ -161,8 +168,17 @@ var searchParams = new URLSearchParams(window.location.search);
 													</a>
 												</div>
 											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#008000">
+													<a href="newsArticles?deptId=1699">
+														<h3>PR News</h3>
+                           								 <p>Panchayat Raj News</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
+								</div>
 								<div class="col-sm-12 m_top10">
 									<div class="menu-heading-block">
 										<h4>RURAL DEVELOPMENT</h4>
@@ -176,38 +192,48 @@ var searchParams = new URLSearchParams(window.location.search);
 												</div>
 											</div>
 											<div class="col-sm-12 m_top10">
+											<div class="row">
+											<div class="col-sm-6">
 												<div class="menu-block" style="background-color:#ff1c5e">
 													<a href="RuralDevelopmentDashboard">
 														<h3>RD</h3>
-														<p>Rural Development Dashboard</p>
+														<p>Rural&nbsp;Development&nbsp;Dashboard</p>
 													</a>
 												</div>
 											</div>
-											
+											<div class="col-sm-6">
+												<div class="menu-block" style="background-color:#8B0000">
+													<a href="newsArticles?deptId=2170">
+														<h3>RD News</h3>
+														<p>Rural Development News</p>
+													</a>
+												</div>
+											</div>
+											</div>
+											</div>
 										</div>
 									</div>
 								</div>
-								<div class="col-sm-12 m_top10">
+								<!--<div class="col-sm-12 m_top10">
 									<div class="menu-block" style="background-color:#de4524 ">
 										<a href="itcDashboard">
 											<h3>IT E & C</h3>
 											<p>Dashboard</p>
 										</a>
 									</div>
-									<!-- <div class="col-sm-12 m_top10">
-										<div class="menu-block" style="background-color:#989820">
-											<a href="newsArticles">
-												<h3>News Articles</h3>
-												<p>Dashboard</p>
-											</a>
-										</div>
-									</div>-->
-								</div>
+								</div>-->
+								<!-- <div class="col-sm-12 m_top10">
+									<div class="menu-block" style="background-color:#989820">
+										<a href="newsArticles">
+											<h3>News Articles</h3>
+											<p>Dashboard</p>
+										</a>
+									</div>
+								</div>-->
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 		</div>
 	</nav>
 	<!--<section class="navbar-section">
