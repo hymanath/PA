@@ -2354,7 +2354,15 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 				finalList.add(vo);
 			}
 		}
-		
+ 		for (EventLocationVO finalVo : finalList) {
+ 			Collections.sort(finalVo.getQuestionList(), new Comparator<EventLocationVO>(){
+ 	 		   public int compare(EventLocationVO o1, EventLocationVO o2){
+ 	 		      return (int) (o1.getQuestionId() - o2.getQuestionId());
+ 	 		   }
+ 	 		});
+			
+		}
+ 		
 	}catch(Exception e){
 		 LOG.error("Error occured at activitiesLocationWiseData() in setAttendedDataToMap class",e); 
 	}
