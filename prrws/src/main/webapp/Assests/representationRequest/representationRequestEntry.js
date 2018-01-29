@@ -448,6 +448,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 	$("#"+typeVal+"DetailsDivId").html(spinner);
 	
 	var str='';
+	str+='<input type="hidden" value="" id="saveType" name="saveType" />';
 	if(typeVal == "represent" || typeVal == "representee"){
 				str+='<div class="row m_top20">';
 				str+='<div class="col-sm-12">';
@@ -558,7 +559,7 @@ function buildSelfAndRepresenteeDetails(typeVal){
 				str+='<div class="row m_top10">';
 					str+='<div class="col-sm-12">';
 						str+='<div class="pull-right">';
-							//str+='<button type="button" class="btn btn-lg btn-success searchSelfReferralCandidateCls button_gray" attr_type="representee" attr_add_referral_type="add_referral_type" disabled>ADD REFERRAL</button>';
+							str+='<button type="button" class="btn btn-lg btn-success searchSelfReferralCandidateCls button_gray" attr_type="representee" attr_add_referral_type="add_referral_type" disabled>ADD REFERRAL</button>';
 							
 						str+='</div>';
 					str+='</div>';
@@ -1961,6 +1962,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 		clonedInnerTemplate+='</div>';
 		clonedInnerTemplate+='</div>';
 		clonedInnerTemplate+='<div class="appendInnerBlocks'+typeVal+''+mainWorkCount+''+conterInnerVal+'"></div>';
+		
 		return clonedInnerTemplate;
 }
 
@@ -2742,10 +2744,10 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		//return;
 	}
 	
-	
 	$('#saveButtonId').hide();
 	$("#savingDetailsSpinner").html(spinner)
 	 var formData = new FormData();
+	
 	$('#adminProfileForm input').each(
 		  function(){			  
 			var input = $(this);
@@ -2755,11 +2757,13 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			if (typeof id !== typeof undefined && id !== false) {
 				if(text=='text' || text=='hidden'){
 					var name = $('#'+id+'').attr('name');
-					formData.append(name, $('#'+id+'').val());
+					if(formData.get(name) == null || formData.get(name) == 'undefined')
+						formData.append(name, $('#'+id+'').val());
 				}else if(text=='radio'){
 					if($('#'+id+'').is(':checked')){
 						var name = $('#'+id+'').attr('name');
-						formData.append(name, $('#'+id+'').val());
+						if(formData.get(name) == null || formData.get(name) == 'undefined')
+							formData.append(name, $('#'+id+'').val());
 					}
 				}else if(text=='file'){
 					var name = $('#'+id+'').attr('attr_name');//attr_image_tyep="refImage"  
@@ -2767,6 +2771,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 					if(this.files !=null && this.files.length>0){
 							for(var i = 0; i < this.files.length; i++){
 							//	alert(name+".fileList["+i+"]");
+							if(formData.get(name) == null || formData.get(name) == 'undefined')
 								formData.append(name+".fileList["+i+"]", this.files[i]);
 								
 							//alert(i)
@@ -2792,7 +2797,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				var id = input.attr('id');
 				if (typeof id !== typeof undefined && id !== false) {
 				var name = $('#'+id+'').attr('name');
-				formData.append(name, $('#'+id+'').val());
+				if(formData.get(name) == null || formData.get(name) == 'undefined')
+					formData.append(name, $('#'+id+'').val());
 			}
 		}
 	);
@@ -2803,7 +2809,8 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				var id = input.attr('id');
 				if (typeof id !== typeof undefined && id !== false) {
 					var name = $('#'+id+'').attr('name');
-					formData.append(name, $('#'+id+'').val());
+					if(formData.get(name) == null || formData.get(name) == 'undefined')
+						formData.append(name, $('#'+id+'').val());
 			}
 		}
 	);
@@ -3448,8 +3455,8 @@ $(document).on("click",".candidateAddedReferralView",function(){
 	$("#candidateDetails"+typeVal+"DivId").find(".addRemoveCol"+typeVal+candidateId).removeClass("col-sm-3").addClass("col-sm-2");
 	$("#candidateDetails"+typeVal+"DivId").find("#fileUploadReferral"+typeVal+candidateId).show();
 	
-	$("#fileUploadReferral"+typeVal+candidateId).append('<div class="col-sm-4" style="margin-top:-20px;"><label>REFERAL LETTER</label><input type="file"   attr_name="referList['+refCandReferralCount+']" name="" attr_image_tyep="refImage"  id="mainBlockFileUpload'+candidateId+''+typeVal+'" multiple="multiple" class=""/></div>');
-	$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden"  class="refCandidatesCls" id="petitionRef'+refCandReferralCount+'" name="referList['+refCandReferralCount+'].refCandidateId" value="'+candidateId+'" />');
+	$("#fileUploadReferral"+typeVal+candidateId).append('<div class="col-sm-4" style="margin-top:-20px;"><label>REFERAL LETTER</label><input type="file"   attr_name="selfReferList['+refCandReferralCount+']" name="" attr_image_tyep="refImage"  id="mainBlockFileUpload'+candidateId+''+typeVal+'" multiple="multiple" class=""/></div>');
+	$("#candidateDetails"+typeVal+"DivId").append('<input type="hidden"  class="refCandidatesCls" id="petitionRefSelf'+refCandReferralCount+'" name="selfReferList['+refCandReferralCount+'].refCandidateId" value="'+candidateId+'" />');
 		 
 	refCandReferralCount=refCandReferralCount+1;
 	$(this).parent().find(".representation-selected").addClass("display_block");
