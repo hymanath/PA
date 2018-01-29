@@ -125,31 +125,31 @@ function buildFavouriteComponentsResult(result) {
 							str+='<div class="row" style="margin-top: -15px;">';
 								str+='<div id="printMediaCountId"></div>';
 								str+='<div id="ElectronicMediaCountId"></div>';
-								str+='<div class="col-sm-12"><span class="pull-right">NEWS</span></div>';
+								str+='<div class="col-sm-12"><span class="pull-right">NEWS - RD,PR,RWS & ITE&C</span></div>';
 							str+='</div>';
 						}else if(result[i].name == "PR NEWS"){
 							 	str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdPR"></div>';
 									str+='<div id="ElectronicMediaCountIdPR"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">NEWS-PR</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For PR News</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "RD NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdRD"></div>';
 									str+='<div id="ElectronicMediaCountIdRD"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">NEWS-RD</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For RD News</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "RWS NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdRWS"></div>';
 									str+='<div id="ElectronicMediaCountIdRWS"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">NEWS-RWS</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For RWS News</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "IT E& C NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdIT"></div>';
 									str+='<div id="ElectronicMediaCountIdIT"></div>';
-								str+='<div class="col-sm-12"><span class="pull-right">NEWS-IT E&C</span></div>';
+								str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For IT E&C News</span></div>';
 								str+='</div>';
 						}
 						else{
@@ -2023,28 +2023,28 @@ function buildPageWiseComponents(result,pageId){
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId1"></div>';
 											str+='<div id="ElectronicMediaCountId1"></div>';
-											str+='<div class="col-sm-12"><span class="pull-right">NEWS-PR</span></div>';
+											str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For PR News</span></div>';
 										str+='</div>';
 								}else if(result[i].subList[j].name == "RD NEWS"){
 									str+='<div style="text-align: right">';
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId2"></div>';
 											str+='<div id="ElectronicMediaCountId2"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">NEWS-RD</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For RD News</span></div>';
 									str+='</div>';
 								}else if(result[i].subList[j].name == "RWS NEWS"){
 									str+='<div class="" style="text-align: right">';	
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId3"></div>';
 											str+='<div id="ElectronicMediaCountId3"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">NEWS-RWS</span></div>';	
+									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For RWS News</span></div>';	
 									str+='</div>';
 								}else if(result[i].subList[j].name == "IT E& C NEWS"){
 										str+='<div class="" style="text-align: right">';	
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId4"></div>';
 											str+='<div id="ElectronicMediaCountId4"></div>';
-										str+='<div class="col-sm-12"><span class="pull-right">NEWS-IT E&C</span></div>';
+										str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For IT E&C News</span></div>';
 										str+='</div>';
 								}else{
 									str+='<div class=" " style="text-align: right">';
