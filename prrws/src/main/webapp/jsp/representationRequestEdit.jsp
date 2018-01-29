@@ -74,6 +74,11 @@
 			</div>
 		</div>
 </nav>
+<%@ page import="com.itgrids.dto.UserVO" %>
+<% 
+	UserVO userVo=(UserVO)session.getAttribute("User");
+	out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;&nbsp; "+userVo.getUserName()+"</h4>"); 
+%>
 </header>
 <main>
 	<div class="container-fluid">
