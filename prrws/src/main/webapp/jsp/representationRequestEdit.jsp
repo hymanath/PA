@@ -96,13 +96,13 @@
 								<div class="col-sm-12">
 									<!--<h3 class="panel-title f_22"><span id="petitionViewType"></span> REPRESENTEE DETAILS </h3>-->
 									<div class="row m_top20">
-										<div class="col-sm-3" id="endorsementDivId" >
+										<div class="col-sm-3" id="endorsementDivId" style="display:none;" >
 											<h6> ENDORSMENT NO </h6>
 											<div class=" inline-block m_top10">
 												<input type="text" name="endorsmentNo" readOnly="true" class="form-control" id="endorsmentNo"/>
 											</div>
 										</div>
-										<div class="col-sm-3" id="endorsementDateDivId" >
+										<div class="col-sm-3" id="endorsementDateDivId" style="display:none;" >
 											<h6> ENDORSMENT DATE </h6>
 											<div class="input-group inline-block m_top10">
 												<span class="input-group-addon">

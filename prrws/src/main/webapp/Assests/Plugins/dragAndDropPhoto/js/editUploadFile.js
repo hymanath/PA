@@ -1,5 +1,5 @@
 /*swadhin*/
-function initializeEditFileUploadMainBlock(typeVal,candidateId) {
+function initializeEditFileUploadMainBlock(typeVal,candidateId,divId) {
 	//alert(candidateId)
 	var itemStr = '';
 	var itemAppendStr = '';
@@ -50,7 +50,7 @@ function initializeEditFileUploadMainBlock(typeVal,candidateId) {
 			itemAppendStr+='</div>';
 		itemAppendStr+='</li>';  
 				
-	$('#editFileUpload'+candidateId+typeVal).filer({      
+	$('#'+divId+candidateId+typeVal).filer({      
     changeInput: '<div class="jFiler-input-dragDrop" style="margin:0px;padding:10px;"><a class="jFiler-input-choose-btn blue">Browse <b style="color:green;"> PDF / IMAGES </b> Files (<i style="color:red">Max size 10 MB</i>) </a></div></div>',
     showThumbs: true,
     theme: "dragdropbox",

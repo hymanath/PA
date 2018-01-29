@@ -259,11 +259,11 @@
 									<div class="row m_top10 " id="petitionSubWorkRadioDivId" style="display:none;">
 										<div class="col-sm-12 ">
 											<div class="col-sm-2 pull-right">
-												<input type="radio" class ="petitionSubWorkRadoCls" name="subWork" checked value="work" id="workId"  attr_type="subWork" >
+												<input type="radio" class ="petitionSubWorkRadoCls" name="radioBtton"  value="work" id="workId"  attr_type="subWork" >
 												<label><h5>WORKS WISE</h5></label>
 											</div>
 											<div class="col-sm-2 pull-right">
-												<input type="radio" class ="petitionSubWorkRadoCls" name="petition" value="petition" id="petitionId"  attr_type="petition" >
+												<input type="radio" class ="petitionSubWorkRadoCls" name="radioBtton" checked value="petition" id="petitionId"  attr_type="petition" >
 												<label><h5>REPRESENTATIONS WISE</h5></label>
 											</div>
 										</div>
@@ -370,7 +370,7 @@
 			</div>
 		</div>
 		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
-		<input type="hidden" class="form-control" id="petitionId"  name="petitionId"/>
+		<input type="hidden" class="form-control" id="petitionsId"  name="petitionId"/>
 		<div class="row m_top10" id="commentsDivId">
 			<div class="col-sm-8">
 				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
@@ -401,7 +401,7 @@
 </div>
 </div>
 
-<div class="modal fade" id="docsModalDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="docsModalDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" style="z-index:9999">
   <div class="modal-dialog" role="document" style="width:60%;margin:auto">
     <div class="modal-content">
       <div class="modal-header">
@@ -425,7 +425,7 @@
     <div class="modal-content">
       <div class="modal-header">
 			<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title text-capital" id="" style="font-weight: bold">PETITION HISTORY</h4> 
+			<h4 class="modal-title text-capital" id="" style="font-weight: bold" id="headingTileHistoryId">PETITION HISTORY</h4> 
 	  </div>
       <div class="modal-body">
         <div id="petitionHistroyDetailsId"></div>

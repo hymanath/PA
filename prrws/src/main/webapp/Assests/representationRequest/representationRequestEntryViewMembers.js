@@ -59,7 +59,7 @@ function hideAndShowSelectBox(){
 	$("#endorsmentNoDivid").hide();
 	$("#subjectDivId").hide();	
 	$("#referralNameDiv").hide();
-	$("#petitionId").prop("checked",false);
+	//$("#petitionId").prop("checked",false);
 }
 $("#dateRangePicker").daterangepicker({
 		opens: 'left',
@@ -188,8 +188,8 @@ $(document).on("change",".clearDataCls",function(){
 	$("#representationRequestEntryTable").html('');
 	$("#summaryId").html("");
 	$("#petitionSubWorkRadioDivId").hide();
-	$("#workId").prop('checked',true);
-	$("#petitionId").prop('checked',false);
+	$("#workId").prop('checked',false);
+	$("#petitionId").prop('checked',true);
 });
 function clearData(){
 	$("#summaryId").html("");
@@ -392,8 +392,8 @@ $(document).on("change","#locationSelId",function(){
 			$('#petitionSubWorkRadioDivId').hide();
 			$("#districtConsMandDivId").show();
 			$("#advancedSearchButtonDivId").show();
-			$("#workId").prop("checked",true);
-			$("#petitionId").prop("checked",false);
+			$("#workId").prop("checked",false);
+			$("#petitionId").prop("checked",true);
 			
 			if($('#advanceSearchBtnId').prop( "checked")){
 				$("input[type='checkbox']").prop({disabled: true});
@@ -422,8 +422,8 @@ $(document).on("change","#locationSelId",function(){
 		         $("#districtConsMandDivId").hide();
 		         $("#advancedSearchButtonDivId").show();
 			     $("#designationDiv").show();
-				 $("#workId").prop("checked",true);
-				 $("#petitionId").prop("checked",false);
+				 $("#workId").prop("checked",false);
+				$("#petitionId").prop("checked",true);
 			 getDesignationsBySearchType(serchTypValue,"designationsId",desigId,statusId);
 		   
 			}else if(serchTypValue == 'representeeDesignation'){
@@ -433,8 +433,8 @@ $(document).on("change","#locationSelId",function(){
 				  $("#designationDiv").show();
 				  $("#districtConsMandDivId").hide();
 				  $("#advancedSearchButtonDivId").show();
-				  $("#workId").prop("checked",true);
-				  $("#petitionId").prop("checked",false);
+					$("#workId").prop("checked",false);
+					$("#petitionId").prop("checked",true);
 			}
 			 $('input[type="checkbox"]').click(function(){
              if($(this).prop("checked") == true){
@@ -462,8 +462,8 @@ $(document).on("change","#locationSelId",function(){
 		$("#endorsmentNoId").val(' ');
          $('#petitionSubWorkRadioDivId').hide();
 	    $('#advanceSearchBtnId').prop("checked",false);
-		$("#workId").prop("checked",true);
-		$("#petitionId").prop("checked",false);
+		$("#workId").prop("checked",false);
+			$("#petitionId").prop("checked",true);
 	getDepartmentsBySearchType(searchType,"departmentId",deptId,statusId);
 		$("#departMentsDiv").show();
 		$("#districtConsMandDivId").hide();
@@ -493,8 +493,8 @@ $(document).on("change","#locationSelId",function(){
 		$("#endorsmentNoId").val(' ');       
 	          $('#petitionSubWorkRadioDivId').hide();
 	   $('#advanceSearchBtnId').prop("checked",false);
-	    $("#workId").prop("checked",true);
-		$("#petitionId").prop("checked",false);
+	    $("#workId").prop("checked",false);
+			$("#petitionId").prop("checked",true);
 	  
 	getSubjectsBySearchType(searchType,"subjectId",subjId,statusId);
 		$("#subjectDivId").show();
@@ -535,8 +535,8 @@ $(document).on("change","#locationSelId",function(){
 				$("#endorsmentNoId").val(' ');
 	
 			 $("input[type='checkbox']").prop({disabled: false});
-			 $("#workId").prop("checked",true);
-			  $("#petitionId").prop("checked",false);
+			 $("#workId").prop("checked",false);
+			$("#petitionId").prop("checked",true);
 		}else if(searchType1 == 'mobile'){
 			 $('#petitionSubWorkRadioDivId').hide();
 			$('#advanceSearchBtnId').prop("checked",false);
@@ -557,8 +557,8 @@ $(document).on("change","#locationSelId",function(){
 	         $("#emailId").val(' ');
 	         $("#endorsmentNoId").val(' ');
 	        
-	        $("#workId").prop("checked",true);
-			 $("#petitionId").prop("checked",false);
+	       $("#workId").prop("checked",false);
+			$("#petitionId").prop("checked",true);
 			$("input[type='checkbox']").prop({disabled: false});
 		}else if(searchType1 == 'email'){
 			 $('#petitionSubWorkRadioDivId').hide();
@@ -579,8 +579,8 @@ $(document).on("change","#locationSelId",function(){
 			  $("#nameId").val(' ');
 			  $("#mobileId").val(' ');
 			  $("#endorsmentNoId").val(' ');
-	         $("#workId").prop("checked",true);
-			 $("#petitionId").prop("checked",false);
+	         $("#workId").prop("checked",false);
+			$("#petitionId").prop("checked",true);
 			$("input[type='checkbox']").prop({disabled: false});
 		}else if(searchType1 == 'endorsmentNO'){
 			 $('#petitionSubWorkRadioDivId').hide();
@@ -600,8 +600,8 @@ $(document).on("change","#locationSelId",function(){
 			  $("#nameId").val(' ');
 			  $("#mobileId").val(' ');
 			  $("#emailId").val(' ');
-	         $("#workId").prop("checked",true);
-			  $("#petitionId").prop("checked",false);
+	         $("#workId").prop("checked",false);
+			$("#petitionId").prop("checked",true);
 			$("#advancedSearchButtonDivId").show();
 			$("input[type='checkbox']").prop({disabled: false});
 		}
@@ -1066,7 +1066,9 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 	var isErr= searchValidations();
 	if(isErr == true)
 		return; 
-	getRepresentativeSearchDetails1('subWork');
+	$("#workId").prop("checked",false);
+	$("#petitionId").prop("checked",true);
+	getRepresentativeSearchDetails1('petition');
  });
 
 /* $(document).on("click",".viewBtnCls",function(){
@@ -1903,6 +1905,9 @@ function getPmGrantList(){
 function getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr){
 	 $("#assignToId").html('');
 	 $("#assignToId").html('<option value="0"> Select designation </option>');
+	 
+	$("#officerId").html('');
+	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
 	
  var json = {
 	 
@@ -1921,7 +1926,7 @@ $.ajax({
 	if(result !=null && result.length>0){
 		$("#assignToId").html('<option value ="0">SELECT DESIGNATION </option>');
 		for(var i in result){
-				$("#assignToId").append('<option value ="'+result[i].key+'">'+result[i].value+'</option>');
+				$("#assignToId").append('<option value ="'+result[i].key+'">'+result[i].value.toUpperCase()+'</option>');
 		}
 	}
 	$("#assignToId").trigger('chosen:updated');
@@ -1953,7 +1958,7 @@ $.ajax({
 	if(result != null && result.length >0){
 		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
 		for(var i in result){
-			$("#officerId").append('<option value ="'+result[i].key+'">'+result[i].value+'</option>');
+			$("#officerId").append('<option value ="'+result[i].key+'">'+result[i].value.toUpperCase()+'</option>');
 		}
 	}
 	$("#officerId").trigger('chosen:updated');
@@ -2007,6 +2012,13 @@ $(document).on('click','.modelEndoreCls',function(){
 			$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
 			$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
 			$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+			
+			$("#assignToId").html('');
+			 $("#assignToId").html('<option value="0"> Select designation </option>');
+			 
+			$("#officerId").html('');
+			$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+			
 			initializeSingleUploadDocument("uploadEndorsementDocId");
 			getPmBriefLeadList();
 			getPmGrantList();
@@ -2275,7 +2287,7 @@ function petitionWiseRepresenteeDetails(result){
 						}else{
 							str+='<td style="text-align:center;">-</td>';
 						}
-						if (result[i].statusType != "" && typeof(result[i].statusType) != "undefined" ){
+						/*if (result[i].statusType != "" && typeof(result[i].statusType) != "undefined" ){
 							str+='<td style="text-align:center;">'+result[i].statusType+'</td>';
 						}else{
 							if (result[i].endorsementNO != null && result[i].endorsementNO != 0){
@@ -2285,9 +2297,24 @@ function petitionWiseRepresenteeDetails(result){
 								str+='<td style="text-align:center;">-</td>';
 							}
 						}
+						*/
 						
-						if (result[i].subList != null && result[i].subList.length >0){
-							str+='<td class="text-center"><i class=" viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i>'+result[i].subList.length+'</td>';
+						if (result[i].petitionStatusId != null && result[i].petitionStatusId == 1){
+							str+='<td style="text-align:center;"> PENDING ENODRSEMENT </td>';
+						}else if (result[i].petitionStatusId != null && result[i].petitionStatusId == 2){
+							str+='<td style="text-align:center;"> IN-PROGRESS </td>';
+						}else if (result[i].petitionStatusId != null && result[i].petitionStatusId == 8){
+							str+='<td style="text-align:center;"> COMPLETED </td>';
+						}
+						else{
+							str+='<td style="text-align:center;">-</td>';
+						}
+							
+						if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined"){
+							var filledWorksCount = 0;
+							if(result[i].subList != 'undefined' && result[i].subList != null && result[i].subList.length>0) 
+								filledWorksCount = result[i].subList.length;
+							str+='<td class="text-center"><i class=" viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i> <span title="Entered works count " >'+filledWorksCount+' </span>/ <span title="Total works count " >'+result[i].noOfWorks+' </span> </td>';
 						}else{
 							str+='<td> - </td>';
 						}
@@ -2323,24 +2350,3 @@ function petitionWiseRepresenteeDetails(result){
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 	});
   }
-
-getPetitionAndWorkWiseHistoryDetails();
-function getPetitionAndWorkWiseHistoryDetails(){
- var subworkIdsList = [1,2,3];
- var json = {
- petitionId : 1,
- subworkIdsList : subworkIdsList
- } 
-$.ajax({ 
- type:'POST', 
- url: 'getPetitionAndWorkWiseHistoryDetails',
- dataType: 'json',
- data : JSON.stringify(json),
- beforeSend : function(xhr){
- xhr.setRequestHeader("Accept", "application/json");
- xhr.setRequestHeader("Content-Type", "application/json");
- }
-}).done(function(result){
- 
-}); 
-}
