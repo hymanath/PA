@@ -5460,7 +5460,7 @@ function getAPInnovationSocietyOverviewHtml(divId,incubatorsIdsArr){
 								str+='<div id="incubatorsOverviewId"></div>';
 							str+='</div>';
 							str+='<div class="col-sm-6 border-graph">';
-								str+='<div id="startupsHighchartsDivId" style="height:190px;"></div>';
+								str+='<div id="startupsHighchartsDivId" style="height:155px;"></div>';
 							str+='</div>';
 						str+='</div>';
 						//Second Block
