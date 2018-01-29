@@ -963,7 +963,7 @@ function callAjax(jsObj,url)
 				 buildDebateBTDatesTable(myResults);
 				}else if (jsObj.task == "generateURL")
 				{
-					$('#'+jsObj.div).text(myResults + "&debateId="+jsObj.debateId);
+					$('#'+jsObj.div).text(myResults + "&debateId="+jsObj.debateId + "&stateId="+jsObj.stateId);
 					$('#'+jsObj.div).show();
 				}else if(jsObj.task == "getPartyList"){
 					buildPartyList(myResults,jsObj);
@@ -1788,7 +1788,7 @@ function  buildDebateBTDatesTable(results)
 		str +='<td>'+results[i].type+'</td>';
 		str +='<td><a class="btn btn-info" value="'+results[i].id+'"';
 		str +='onClick="openDebateReport('+result[i].id+',\''+stateId+'\')">view</a></td>';
-		str +='<td><input type="button" class="btn btn-info" value="Generate URL " onCLick="generateURL('+results[i].id+',\'reportId'+results[i].id+'\',\''+results[i].name+'\')"/></td>';
+		str +='<td><input type="button" class="btn btn-info" value="Generate URL " onCLick="generateURL('+results[i].id+',\'reportId'+results[i].id+'\',\''+results[i].name+'\',\''+stateId+'\')"/></td>';
 		str +='<td><textarea id="reportId'+results[i].id+'" placeholder="Generated URL..."></textarea></td>';
 		str +='</tr>';
 		}
