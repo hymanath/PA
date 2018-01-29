@@ -2,7 +2,11 @@
 <projectDescription>
   <name>PRRWS</name>
   <comment>Parent Project. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
-  <projects/>
+  <projects>
+    <project>prrws-soap</project>
+    <project>prrws-biometric-soap</project>
+    <project>prrws_meeseva_app_soap</project>
+  </projects>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.wst.jsdt.core.javascriptValidator</name>
