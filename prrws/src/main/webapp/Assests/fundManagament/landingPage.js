@@ -106,6 +106,8 @@ function buildFavouriteComponentsResult(result) {
 						}else{
 							if(result[i].name != null && result[i].name == 'E OFFICE'){
 								str+='<h5 style="display: inline-block;display: inline-block;position: relative;top: -40px;text-transform:uppercase">e Office</h5>';
+							}else if(result[i].name != null && result[i].name == 'NEWS'){
+								str+='<h5 style="display: inline-block;text-transform:uppercase;display: inline-block;position: relative;top: -40px;">NEWS - RD,PR,RWS & ITE&C</h5>';
 							}else{
 								str+='<h5 style="display: inline-block;text-transform:uppercase;display: inline-block;position: relative;top: -40px;">'+result[i].name+'</h5>';
 							}
@@ -125,7 +127,7 @@ function buildFavouriteComponentsResult(result) {
 							str+='<div class="row" style="margin-top: -15px;">';
 								str+='<div id="printMediaCountId"></div>';
 								str+='<div id="ElectronicMediaCountId"></div>';
-								str+='<div class="col-sm-12"><span class="pull-right">NEWS - RD,PR,RWS & ITE&C</span></div>';
+								str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For News</span></div>';
 							str+='</div>';
 						}else if(result[i].name == "PR NEWS"){
 							 	str+='<div class="row" style="margin-top: -15px;">';
