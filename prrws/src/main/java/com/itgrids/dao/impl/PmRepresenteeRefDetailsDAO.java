@@ -93,7 +93,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				"model.petition.noOfWorks,model2.pmDesignation.designation," +//6,7
 				" date(model.petition.insertedTime),date(model1.updatedTime),model1.pmStatus.pmStatusId" +//8,9,10
 				",model.petition.workName,model1.costEstimation,model1.grievanceDescrption,model1.workEndorsmentNo,model1.pmSubWorkDetailsId " +//11,12,13,14,15
-				" ,model1.pmStatus.status,date(model1.endorsmentDate) " +//16,17
+				" ,model1.pmStatus.status,date(model1.endorsmentDate) ,model.petition.pmStatusId " +//16,17,18
 				"from PmRepresenteeRefDetails as model,PmSubWorkDetails as model1" +
 				",PmRefCandidateDesignation model2 ");
 		

@@ -1,5 +1,7 @@
 package com.itgrids.dao.impl;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,4 +17,7 @@ public class PmTrackingActionDAO extends GenericDaoHibernate<PmTrackingAction, L
 		super(PmTrackingAction.class);
 	}
 
+	public List<Object[]> getActionsList(){
+		return getSession().createQuery(" select distinct model.pmTrackingActionId,model.actionName from PmTrackingAction model ").list();
+	}
 }

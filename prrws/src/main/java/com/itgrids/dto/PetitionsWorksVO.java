@@ -50,7 +50,14 @@ public class PetitionsWorksVO {
 	private Long locationValue;
 	private Long uiSeriesNo;
 	private List<PetitionHistoryVO> historyList = new ArrayList<PetitionHistoryVO>(0);
-	
+	private List<PetitionHistoryVO> petitionHistoryList = new ArrayList<PetitionHistoryVO>(0);
+
+	public List<PetitionHistoryVO> getPetitionHistoryList() {
+		return petitionHistoryList;
+	}
+	public void setPetitionHistoryList(List<PetitionHistoryVO> petitionHistoryList) {
+		this.petitionHistoryList = petitionHistoryList;
+	}
 	public List<PetitionHistoryVO> getHistoryList() {
 		return historyList;
 	}

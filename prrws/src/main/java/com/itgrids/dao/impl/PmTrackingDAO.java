@@ -99,13 +99,16 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 	
 	public List<Object[]> getPetitionAndWorkWiseHistoryDetails(Long petitionId,List<Long> subWorksList){
 		StringBuilder str = new StringBuilder();
-		str.append(" select model.petitionId, model.pmSubWorkDetailsId,"
-				+ " pmTrackingAction.pmTrackingActionId,pmTrackingAction.actionName, "
-				+ " document.path, model.remarks, model.insertedTime," 
-				+ " insertedUser.userId,insertedUser.username,"
-				+ " pmStatus.pmStatusId,pmStatus.status,"
-				+ " pmOfficer.pmOfficerId,pmOfficer.name, pmOfficer.mobileNo, "
-				+ " pmOfficerDesignation.pmOfficerDesignationId,pmOfficerDesignation.designation " +
+		str.append(" select model.petitionId, model.pmSubWorkDetailsId,"//0,1 
+				+ " pmTrackingAction.pmTrackingActionId,pmTrackingAction.actionName, "//2,3 
+				+ " document.path, model.remarks, model.insertedTime," //4,5,6
+				+ " insertedUser.userId,insertedUser.username,"//7,8
+				+ " pmStatus.pmStatusId,pmStatus.status,"//9,10
+				+ " pmOfficer.pmOfficerId,pmOfficer.name, pmOfficer.mobileNo, "//11,12,13
+				+ " pmOfficerDesignation.pmOfficerDesignationId,pmOfficerDesignation.designation," +//14,15
+				"  pmDepartment.department ,pmDepartment.shortName,pmSubWorkDetails.grievanceDescrption,petition.workName , document.documentId," +//16,17,18,19,20
+				"  assignedToPmDepartmentDesignationOfficer.pmDepartmentDesignationOfficerId, assignedToPmOfficerDesignation.designation,assignedToPmOfficerDesignation.shortName," +//21,22,23
+				"  assignToPmOfficer.name, assignToPmOfficer.mobileNo" +//24,25
 				" from PmTracking model  " +
 				" left join  model.pmTrackingAction pmTrackingAction " +
 				" left join  model.document document " +
@@ -113,12 +116,19 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 				" left join model.pmStatus pmStatus" +
 				" left join model.pmDepartmentDesignationOfficer pmDepartmentDesignationOfficer " +
 				" left join pmDepartmentDesignationOfficer.pmOfficer pmOfficer" +
-				
 				" left join pmDepartmentDesignationOfficer.pmDepartmentDesignation pmDepartmentDesignation" +
-				" left join pmDepartmentDesignation.pmOfficerDesignation pmOfficerDesignation" );
+				" left join pmDepartmentDesignation.pmOfficerDesignation pmOfficerDesignation " +
+				" left join model.pmSubWorkDetails pmSubWorkDetails " +
+				" left join pmSubWorkDetails.pmDepartment pmDepartment " +
+				" left join model.petition petition " +
+				" left join model.assignedToPmDepartmentDesignationOfficer assignedToPmDepartmentDesignationOfficer " +
+				" left join assignedToPmDepartmentDesignationOfficer.pmDepartmentDesignation assignedToPmDepartmentDesignation " +
+				" left join assignedToPmDepartmentDesignation.pmOfficerDesignation assignedToPmOfficerDesignation " +
+				" left join assignedToPmDepartmentDesignationOfficer.pmOfficer assignToPmOfficer " );
 			    //" left join model.pmDepartmentDesignationOfficer pmDepartmentDesignationOfficer " +
 			   // " left join pmDepartmentDesignationOfficer.pmDepartmentDesignation pmDepartmentDesignation " +
 			   // " left join pmDepartmentDesignation.pmOfficerDesignation pmOfficerDesignation " +
+		
 		   str.append(" where ");
 			   if(petitionId != null && petitionId.longValue() >0l){
 				   str.append(" model.petitionId =:petitionId ");

@@ -11,6 +11,7 @@ public class RepresenteeViewVO {
 
 	private Long id;
 	private String name;
+	private Long petitionStatusId;
 	private String endorsementNO;
 	private Long petitionId;
 	private String endorsmentDate;
@@ -243,6 +244,10 @@ public class RepresenteeViewVO {
 	public void setOrder(Long order) {
 		this.order = order;
 	}
-	
-	
+	public Long getPetitionStatusId() {
+		return petitionStatusId;
+	}
+	public void setPetitionStatusId(Long petitionStatusId) {
+		this.petitionStatusId = petitionStatusId;
+	}
 }

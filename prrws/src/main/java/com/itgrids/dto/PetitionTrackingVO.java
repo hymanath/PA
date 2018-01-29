@@ -20,7 +20,22 @@ public class PetitionTrackingVO implements java.io.Serializable{
     private List<Long> petitionIdsList = new ArrayList<Long>();
     private List<Long> subworkIdsList = new ArrayList<Long>();
     private List<Long> deptIdsList = new ArrayList<Long>();
-		
+	private Long pmPetitionAssignedOfficerId;
+	private Long assignedToPmPetitionAssignedOfficerId;
+	
+	public Long getAssignedToPmPetitionAssignedOfficerId() {
+		return assignedToPmPetitionAssignedOfficerId;
+	}
+	public void setAssignedToPmPetitionAssignedOfficerId(
+			Long assignedToPmPetitionAssignedOfficerId) {
+		this.assignedToPmPetitionAssignedOfficerId = assignedToPmPetitionAssignedOfficerId;
+	}
+	public Long getPmPetitionAssignedOfficerId() {
+		return pmPetitionAssignedOfficerId;
+	}
+	public void setPmPetitionAssignedOfficerId(Long pmPetitionAssignedOfficerId) {
+		this.pmPetitionAssignedOfficerId = pmPetitionAssignedOfficerId;
+	}
 	public Long getPetitionId() {
 		return petitionId;
 	}
