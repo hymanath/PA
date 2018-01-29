@@ -25,7 +25,21 @@ public class PmRequestEditVO {
 	private List<PetitionFileVO> reportTypeFilesList = new ArrayList<PetitionFileVO>(0);
 	private List<KeyValueVO> statusList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> deptList = new ArrayList<KeyValueVO>(0);
+	private List<PetitionHistoryVO> historyList = new ArrayList<PetitionHistoryVO>(0);
+	private Long statusId;
 	
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public List<PetitionHistoryVO> getHistoryList() {
+		return historyList;
+	}
+	public void setHistoryList(List<PetitionHistoryVO> historyList) {
+		this.historyList = historyList;
+	}
 	public List<KeyValueVO> getDeptList() {
 		return deptList;
 	}

@@ -336,6 +336,8 @@ public class PmSubWorkDetails {
 	public void setEndorsmentDate(Date endorsmentDate) {
 		this.endorsmentDate = endorsmentDate;
 	}
+	
+	@Column(name="temp_work_endorsment_no")
 	public String getTempEndorsNo() {
 		return tempEndorsNo;
 	}

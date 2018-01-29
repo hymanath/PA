@@ -24,7 +24,21 @@ public class UserVO {
 	private Long accessLvelId;
 	private Long accessLevelValue;
 	private String prDistrictId;
+	private Long deptDesignationId;
+	private Long deptDesignationOfficerId;
 	
+	public Long getDeptDesignationId() {
+		return deptDesignationId;
+	}
+	public void setDeptDesignationId(Long deptDesignationId) {
+		this.deptDesignationId = deptDesignationId;
+	}
+	public Long getDeptDesignationOfficerId() {
+		return deptDesignationOfficerId;
+	}
+	public void setDeptDesignationOfficerId(Long deptDesignationOfficerId) {
+		this.deptDesignationOfficerId = deptDesignationOfficerId;
+	}
 	public Long getUserId() {
 		return userId;
 	}

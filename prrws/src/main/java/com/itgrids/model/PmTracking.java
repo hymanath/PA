@@ -26,6 +26,7 @@ public class PmTracking {
 	private Long pmTrackingActionId;
 	private Long documentId;
 	private Long pmDepartmentDesignationOfficerId;
+	private Long assignedToPmDepartmentDesignationOfficerId;
 	private Long insertedUserId;
 	private Long updateUserId;
 	private String remarks;
@@ -43,6 +44,7 @@ public class PmTracking {
 	 private PmTrackingAction PmTrackingAction;
 	 private Document document;
 	 private PmDepartmentDesignationOfficer pmDepartmentDesignationOfficer;
+	 private PmDepartmentDesignationOfficer assignedToPmDepartmentDesignationOfficer;
 	 
 	@Id
 	@Column(name="pm_tracking_id")
@@ -214,6 +216,25 @@ public class PmTracking {
 	}
 	public void setDocument(Document document) {
 		this.document = document;
+	}
+	
+	@Column(name="assigned_to_pm_petition_assigned_officer_id")
+	public Long getAssignedToPmDepartmentDesignationOfficerId() {
+		return assignedToPmDepartmentDesignationOfficerId;
+	}
+	public void setAssignedToPmDepartmentDesignationOfficerId(
+			Long assignedToPmDepartmentDesignationOfficerId) {
+		this.assignedToPmDepartmentDesignationOfficerId = assignedToPmDepartmentDesignationOfficerId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "assigned_to_pm_petition_assigned_officer_id", insertable = false, updatable = false)
+	public PmDepartmentDesignationOfficer getAssignedToPmDepartmentDesignationOfficer() {
+		return assignedToPmDepartmentDesignationOfficer;
+	}
+	public void setAssignedToPmDepartmentDesignationOfficer(
+			PmDepartmentDesignationOfficer assignedToPmDepartmentDesignationOfficer) {
+		this.assignedToPmDepartmentDesignationOfficer = assignedToPmDepartmentDesignationOfficer;
 	}
 	
 }

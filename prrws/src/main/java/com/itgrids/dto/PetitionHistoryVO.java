@@ -45,8 +45,22 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	private Long pmDepartmentId;
 	private String pmDepartmentName;
 	private String insertedDate;
+	private String subWorkDesc;
+	private String petitionDesc;
 	//private String pathStr;
+	
+	private Long assignedToDeptDesId;
+	private String assignedToDesignation;
+	private String assignedToOfficerName;
+	private String assignedToOfficerMobile;
+    private String shortName;
     
+	public PetitionHistoryVO(){}
+	public PetitionHistoryVO(Long actionId, String actionName){
+		this.actionId = actionId;
+		this.actionName = actionName;
+	}
+	
 	public List<PetitionHistoryVO> getPetitionHistoryList() {
 		return petitionHistoryList;
 	}
@@ -277,12 +291,46 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	public void setPmOfficerDesgId(Long pmOfficerDesgId) {
 		this.pmOfficerDesgId = pmOfficerDesgId;
 	}
-	
-	
-	/*public String getPathStr() {
-		return pathStr;
+	public String getSubWorkDesc() {
+		return subWorkDesc;
 	}
-	public void setPathStr(String pathStr) {
-		this.pathStr = pathStr;
-	}*/
+	public void setSubWorkDesc(String subWorkDesc) {
+		this.subWorkDesc = subWorkDesc;
+	}
+	public String getPetitionDesc() {
+		return petitionDesc;
+	}
+	public void setPetitionDesc(String petitionDesc) {
+		this.petitionDesc = petitionDesc;
+	}
+	public Long getAssignedToDeptDesId() {
+		return assignedToDeptDesId;
+	}
+	public void setAssignedToDeptDesId(Long assignedToDeptDesId) {
+		this.assignedToDeptDesId = assignedToDeptDesId;
+	}
+	public String getAssignedToDesignation() {
+		return assignedToDesignation;
+	}
+	public void setAssignedToDesignation(String assignedToDesignation) {
+		this.assignedToDesignation = assignedToDesignation;
+	}
+	public String getAssignedToOfficerName() {
+		return assignedToOfficerName;
+	}
+	public void setAssignedToOfficerName(String assignedToOfficerName) {
+		this.assignedToOfficerName = assignedToOfficerName;
+	}
+	public String getAssignedToOfficerMobile() {
+		return assignedToOfficerMobile;
+	}
+	public void setAssignedToOfficerMobile(String assignedToOfficerMobile) {
+		this.assignedToOfficerMobile = assignedToOfficerMobile;
+	}
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
 }

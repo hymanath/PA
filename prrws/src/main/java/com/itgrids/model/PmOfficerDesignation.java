@@ -13,6 +13,7 @@ public class PmOfficerDesignation {
 
 	private Long pmOfficerDesignationId;
 	private String designation;
+	private String shortName;
 	
 	@Id
 	@Column(name="pm_officer_designation_id")
@@ -29,6 +30,14 @@ public class PmOfficerDesignation {
 	}
 	public void setDesignation(String designation) {
 		this.designation = designation;
+	}
+	
+	@Column(name="short_name")
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 	
 	
