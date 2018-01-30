@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.impl.IAlertSourceDAO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
+import com.itgrids.partyanalyst.service.IAlertUpdationAPIService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -77,7 +78,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	private IAlertDocumentDAO alertDocumentDAO;
 	private IAlertStatusDAO alertStatusDAO;
 	private IAlertCategoryDAO alertCategoryDAO;
-	
+	private IAlertUpdationAPIService alertUpdationAPIService;
 
 	public void setAlertCategoryDAO(IAlertCategoryDAO alertCategoryDAO) {
 		this.alertCategoryDAO = alertCategoryDAO;
@@ -219,7 +220,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 					List<Long> tdpCadreIdList = alertAssignedDAO.getAlertAssignedCandidateInfo(alert.getAlertId());
 					
 					if(tdpCadreIdList !=null && tdpCadreIdList.size()>0){
-						contactId = getContactIdForCadre(tdpCadreIdList.get(0));
+						contactId = alertUpdationAPIService.callForZohoContact(tdpCadreIdList);
 					}
 			 }
 				 
@@ -227,11 +228,11 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 				 jsObj.put("uploads", uploadArr);
 			 }
 			
+			 jsObj.put("contactId", dummyContactId);
+			 
 			 if(contactId != null){
-				 jsObj.put("contactId", contactId);
+				 customJson.put("assignees", contactId);
 				 jsObj.put("status", "Notified");
-			 }else{
-				 jsObj.put("contactId", dummyContactId);
 			 }
 			
 			 // Custom Fields Adding

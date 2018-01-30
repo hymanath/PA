@@ -519,4 +519,8 @@ public int updateAlertSmsStatus(Long assignedId){
 		return query.list();
 	}
 	
+	public void flushAndclearSession(){
+		getSession().flush();
+		getSession().clear();
+	}
 }

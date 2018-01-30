@@ -31,9 +31,11 @@ public class AlertRenderService implements IAlertRenderService{
 					if(json !=null){
 						if(json.has("payload") && json.has("eventType")){
 							String eventType = json.getString("eventType").trim();
+							
+							
 							if(eventType.equalsIgnoreCase("Ticket_Add")){
 								finalJson = getRenderedAlertObject(json.getJSONObject("payload"));//alert creation
-								if(json.getJSONObject("payload").has("contactId")){
+								if(json.getJSONObject("payload").has("customFields") && json.getJSONObject("payload").getJSONObject("customFields").has("assignees")){
 									alertUpdationAPIService.saveAlertAssign(json.getJSONObject("payload"));
 								}	
 								if(json.getJSONObject("payload").has("status")){
@@ -50,6 +52,8 @@ public class AlertRenderService implements IAlertRenderService{
 							if(eventType.equalsIgnoreCase("Ticket_Comment_Add") || eventType.equalsIgnoreCase("Ticket_Comment_Update")){
 								finalJson = alertUpdationAPIService.saveZohoAlertComment(json.getJSONObject("payload"));
 							}
+							
+							
 						}
 					}
 				}

@@ -1161,7 +1161,7 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 	
 	if(resultStatus !=null && resultStatus.split(" ")[0].equalsIgnoreCase("success") ){
 		try {
-			//alertCreationAPIService.sendApiDetailsOfAlertToZoho(Long.parseLong(resultStatus.split(" ")[1]),IConstants.ZOHO_ADMIN_CONTACTID,IConstants.ZOHO_ADMIN_DEPTID);
+			alertCreationAPIService.sendApiDetailsOfAlertToZoho(Long.parseLong(resultStatus.split(" ")[1]),IConstants.ZOHO_ADMIN_CONTACTID,IConstants.ZOHO_ADMIN_DEPTID);
 		 } catch (Exception e) {
 			 LOG.error("Exception Occured in sendApiDetailsOfAlertToZoho() in AlertService Class ", e);
 		 }		
@@ -2005,7 +2005,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 		    		}
 		    		//call to send the alert updations to ZOHO
-		    		//alertUpdationAPIService.sendAlertUpdationDetails(inputVo.getId(),fileNames,alertComment.getComments());//sandeep
+		    		alertUpdationAPIService.sendAlertUpdationDetails(inputVo.getId(),fileNames,alertComment.getComments());//sandeep
 				}catch (Exception ex) {
 					rs = "fail";
 					return rs;
@@ -3476,7 +3476,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				
 				 if(inputVO.getType() !=null && inputVO.getType().equalsIgnoreCase("save")){
 						try {
-							//alertCreationAPIService.sendApiDetailsOfAlertToZoho(globalAlert.getAlertId(),IConstants.ZOHO_ADMIN_CONTACTID,IConstants.ZOHO_ADMIN_DEPTID);
+							alertCreationAPIService.sendApiDetailsOfAlertToZoho(globalAlert.getAlertId(),IConstants.ZOHO_ADMIN_CONTACTID,IConstants.ZOHO_ADMIN_DEPTID);
 						 } catch (Exception e) {
 							 LOG.error("Exception Occured in sendApiDetailsOfAlertToZoho() in AlertService Class ", e);
 						 }		
