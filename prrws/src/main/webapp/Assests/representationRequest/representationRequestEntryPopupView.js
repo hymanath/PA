@@ -9,6 +9,7 @@ var mainWorkCoveringDocuments=[];
 var historyLetterArr=[];
 var historyDocsArr=[];
 var glPetitionId=0;
+var  globalDesignationName= '';
 $(document).on("click",".viewBtnCls",function(){
 	var petionId = $(this).attr("attr_petiotion_id");
 	var endorsNo = $(this).attr("attr_enrorsNo");
@@ -45,6 +46,7 @@ $(document).on("click",".viewBtnCls",function(){
 }
 
 function buildPetitionDetailsView(result){
+	 globalDesignationName=$("#hiddenDesignationName").text();
 	var str='';
 	
 	var statusId = result.statusId;
@@ -1108,8 +1110,11 @@ function buildPetitionDetailsView(result){
 								str+='</div>';
 								str+='<div class="row m_top10">';
 									str+='<div class="col-sm-12">';
-										str+='<button type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
-										
+										if(globalDesignationName != null && globalDesignationName == 'Data Entry Officer'){
+											
+										}else{
+										str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+										}
 										str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
 									str+='</div>';
 								str+='</div>';
