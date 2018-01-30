@@ -79,6 +79,12 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	private IAlertStatusDAO alertStatusDAO;
 	private IAlertCategoryDAO alertCategoryDAO;
 	private IAlertUpdationAPIService alertUpdationAPIService;
+	
+	
+
+	public void setAlertUpdationAPIService(IAlertUpdationAPIService alertUpdationAPIService) {
+		this.alertUpdationAPIService = alertUpdationAPIService;
+	}
 
 	public void setAlertCategoryDAO(IAlertCategoryDAO alertCategoryDAO) {
 		this.alertCategoryDAO = alertCategoryDAO;
