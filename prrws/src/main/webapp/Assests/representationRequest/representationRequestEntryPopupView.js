@@ -120,14 +120,13 @@ function buildPetitionDetailsView(result){
 																	
 																	if(result.historyList[h].subList1[j].subList1[k].subList1[l].subList1 !='undefined' && result.historyList[h].subList1[j].subList1[k].subList1[l].subList1 != null && result.historyList[h].subList1[j].subList1[k].subList1[l].subList1.length>0){
 																		for(var m in result.historyList[h].subList1[j].subList1[k].subList1[l].subList1){
-																			/*var obj ={
-																						filesArr:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[0].filesList,
-																						name:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+''+p+''
+																			var obj ={
+																						filesArr:result.historyList[h].subList1[j].subList1[k].subList1[l].subList1[m].filesList,
+																						name:"petitionLatestHistory"+m+""
 																					}
 																					historyDocsArr.push(obj);
-																				*/						
 																			str+='<div class="col-sm-3">';
-																				str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="latestHistory" attr_name="latestHistory" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-paperclip" aria-hidden="true"></i> <u>'+result.historyList[h].subList1[j].subList1[k].subList1[l].subList1[m].name+' </u></p></div>';
+																				str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="historyDocs" attr_name="petitionLatestHistory'+m+'" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-paperclip" aria-hidden="true"></i> <u>'+result.historyList[h].subList1[j].subList1[k].subList1[l].subList1[m].name+' </u></p></div>';
 																			str+='</div>';
 																		}
 																	}
@@ -998,9 +997,16 @@ function buildPetitionDetailsView(result){
 																				
 																				if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1 !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1 != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1.length>0){
 																					for(var m in result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1){
+																						
 																						str+='<div class="col-sm-3">';
-																							str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="referral" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-file-text" aria-hidden="true"></i> <u>'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1[m].name+' </u></p></div>';
+																							str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="historyDocs" attr_name="workLatestHistory'+m+''+p+'" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-file-text" aria-hidden="true"></i> <u>'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1[m].name+' </u></p></div>';
 																						str+='</div>';
+																						
+																						var obj ={
+																							filesArr:result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1[m].filesList,
+																							name:"workLatestHistory"+m+""+p+""
+																						}
+																						historyDocsArr.push(obj);
 																					}
 																				}
 																			}
@@ -1387,7 +1393,6 @@ $(document).on("click",".docsViewCls",function(){
 	}else if($(this).attr("attr_docs") == "historyDocs"){
 		$("#viewDocumentHeading").html("Uploaded Documents");
 		var attr_name =$(this).attr('attr_name');
-		
 		if(historyDocsArr != null && historyDocsArr.length>0){
 			for(var i in historyDocsArr){
 				if(historyDocsArr[i].name==attr_name)
@@ -2191,7 +2196,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 							str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"> </h5> <p style="margin-left: 20px;" class="m_top5">'+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[0].remarks+' </p>';
 							
 							if(result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation != null && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation.length>0)
-								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ASSIGNED TO :</span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName+' ('+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation+')</h5>';
+								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ASSIGNED TO </span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName+' ('+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation+')</h5>';
 							
 								str+='<div class="row">';
 									str+='<div class="col-sm-12">';
@@ -2201,17 +2206,16 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 													if(result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1.length>0){
 														
 														for(var p in result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1){
-															/*
 															var obj ={
-																		filesArr:result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].subList1[0].filesList,
-																		name:"All"+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].name+''+p+''
-																	}
-																	historyDocsArr.push(obj);
-														*/
+																filesArr:result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].filesList,
+																name:"petitionsHistory"+m+""+p+""+j+""
+															}
+															historyDocsArr.push(obj);
+															
 															str+='<div class="col-sm-3 m_top15">';
 																str+='<div style="background-color: #fff;padding:3px;border: 1px solid #ddd;">';
 																	str+='<div style="padding:5px;background-color:#fff">';
-																		str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="All'+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].name+''+p+'"><i class="fa fa-paperclip" aria-hidden="true"></i> '+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].name+'</h5>';
+																		str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="petitionsHistory'+m+''+p+''+j+'"><i class="fa fa-paperclip" aria-hidden="true"></i> '+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].name+'</h5>';
 																	str+='</div>';
 																str+='</div>';
 															str+='</div>';
@@ -2342,7 +2346,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																	str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style=""> Remarks </span>: </h5> <p style="margin-left: 20px;" class="m_top5">'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].remarks+' </p>';
 																	
 																		if(result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation != null && result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation.length>0)
-																			str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ASSIGNED TO :</span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToOfficerName+' ('+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation+')</h5>';
+																			str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ASSIGNED TO </span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToOfficerName+' ('+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation+')</h5>';
 																			str+='<div class="row">';
 																				str+='<div class="col-sm-12">';
 																			if(result.subList1[j].subList1[k].subList1[l].subList1[m].subList1 !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1 != null && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1.length>0){
@@ -2351,17 +2355,17 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																						if(result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1 !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1 != null && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1.length>0){
 																							
 																							for(var p in result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1){
-																								
-																								var obj ={
-																											filesArr:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].subList1[0].filesList,
-																											name:"All"+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+''+p+''
-																										}
-																										historyDocsArr.push(obj);
 																							
+																									var obj ={
+																										filesArr:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].filesList,
+																										name:"worksHistory"+m+""+p+""+j+""
+																									}
+																									historyDocsArr.push(obj);
+																									
 																								str+='<div class="col-sm-3 m_top15">';
 																									str+='<div style="background-color: #fff;padding:3px;border: 1px solid #ddd;">';
 																										str+='<div style="padding:5px;background-color:#fff">';
-																											str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="All'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+''+p+'"><i class="fa fa-paperclip" aria-hidden="true"></i> '+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+'</h5>';
+																											str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="worksHistory'+m+''+p+''+j+'"><i class="fa fa-paperclip" aria-hidden="true"></i> '+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+'</h5>';
 																										str+='</div>';
 																									str+='</div>';
 																								str+='</div>';

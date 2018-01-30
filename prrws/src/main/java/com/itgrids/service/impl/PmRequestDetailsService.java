@@ -4017,7 +4017,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																			workDocVO.setName("PETITION DOCUMENTS");
 																			actionVO.getSubList1().add(workDocVO);
 																		}
-																		workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),hVO.getPath()));
+																		workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),"http://www.mydepartments.in/PRRWS/"+hVO.getPath()));
 																	}else if(hVO.getRemarks().equalsIgnoreCase("UPLOADED REFERRAL MEMBER RELATED DOCUMENTS")){
 																		PetitionHistoryVO workDocVO = new PetitionHistoryVO();
 																		PetitionHistoryVO workDocVO1 =  getMatchedActionVO(1L,actionVO.getSubList1());
@@ -4028,7 +4028,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																			workDocVO.setName("REFERRAL DOCUMENTS");
 																			actionVO.getSubList1().add(workDocVO);
 																		}
-																		workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),hVO.getPath()));
+																		workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),"http://www.mydepartments.in/PRRWS/"+hVO.getPath()));
 																	}else if(hVO.getRemarks().contains("UPLOADED COVERING DOCUMENT(S)")){
 																		PetitionHistoryVO workDocVO = new PetitionHistoryVO();
 																		PetitionHistoryVO workDocVO1 =  getMatchedActionVO(3L,actionVO.getSubList1());
@@ -4039,7 +4039,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																			workDocVO.setName("COVERING LETTER");
 																			actionVO.getSubList1().add(workDocVO);
 																		}
-																		workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),hVO.getPath()));
+																		workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),"http://www.mydepartments.in/PRRWS/"+hVO.getPath()));
 																	}else if(hVO.getRemarks().contains("UPLOADED DETAILED DOCUMENT(S)")){
 																		PetitionHistoryVO workDocVO = new PetitionHistoryVO();
 																		PetitionHistoryVO workDocVO1 =  getMatchedActionVO(5L,actionVO.getSubList1());
@@ -4050,7 +4050,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																			workDocVO.setName("DETAILED REPORT");
 																			actionVO.getSubList1().add(workDocVO);
 																		}
-																		workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),hVO.getPath()));
+																		workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),"http://www.mydepartments.in/PRRWS/"+hVO.getPath()));
 																	}else if(hVO.getRemarks().contains("UPLOADED ACTION COPY DOCUMENT(S)")){
 																		PetitionHistoryVO workDocVO = new PetitionHistoryVO();
 																		PetitionHistoryVO workDocVO1 =  getMatchedActionVO(4L,actionVO.getSubList1());
@@ -4061,7 +4061,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																			workDocVO.setName("ACTION COPY");
 																			actionVO.getSubList1().add(workDocVO);
 																		}
-																		workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),hVO.getPath()));
+																		workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),"http://www.mydepartments.in/PRRWS/"+hVO.getPath().trim()));
 																	}
 																}break;
 															}
