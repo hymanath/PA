@@ -71,8 +71,8 @@ public interface IItcDashboardService {
 	public List<ItecEOfficeVO> getEOfcPrAndRdDepartsOverviewDetails(InputVO inputVO);
 	public List<ItecEOfficeVO> getEofficePrAndRdDeptDesginationDetails(InputVO inputVO);
 	public IdNameVO saveMeesevaKPIDetails(String districtIdStr);
-	public MeesevaKPIDtlsVO getMeesevaKPIOverViewDetailsNew();
-	public List<MeesevaKPIDtlsVO> getMeesevaKPILocationWiseDetailsNew();
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIOverViewDetailsNew();
+	public List<MeesevaKPIDtlsVO> getMeesevaKPILocationWiseDetailsNew(InputVO inputVO);
 	public List<MeesevaKPIDtlsVO> getMeesevaCentersForDistrict(InputVO inputVO);
 	public IdNameVO saveMeesevaKPITargetAchievementValues();
 	public List<ApInnovationSocietyOverviewVO> getApInnovationOverviewDetails();
@@ -86,4 +86,5 @@ public interface IItcDashboardService {
 	
 	public List<ApInnovationSocietyOverviewVO> getCompleteOverviewForAPIS(InputVO inputVO);
 	public ApInnovationSocietyOverviewVO getStartupsEmploymentFundingPatternAcquisitionsDetails();
+	public  List<MeesevaKPIDtlsVO> getMeesevaCentersTargetAchievement(InputVO inputVO);
 }

@@ -7,6 +7,9 @@ var departmentWiseArr = [{name:'Promotions',id:'1',color:'#0D3B54',image:'promot
 var globalFromDateSLA = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDateSLA = moment().format("DD/MM/YYYY");
 
+var globalFromDateKPI ="2017-04-01";
+var globalToDateKPI = "2018-03-31";
+
 var globalFromDate = moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var globalToDate = moment().format("DD/MM/YYYY");
 var globalDeptCode = "27001701024";
@@ -4389,7 +4392,7 @@ function getMeesevaKPIOverViewDetails(type,divId,blockId){
 	$("#"+divId+"Block"+blockId).html(spinner);
 	
 	var json = {
-		year : "2017"
+		//year : "2017"
 	}
 	$.ajax({                
 		type:'POST',    
@@ -4402,19 +4405,22 @@ function getMeesevaKPIOverViewDetails(type,divId,blockId){
 		}
 	}).done(function(result){
 		if(result !=null){
+			var totalCentres = 0;
 			if(type == "onload"){
-				if(result.totalMeesevaCentres !=null && result.totalMeesevaCentres>0){
-					$("#meesevaKPIHeadingId").html(result.totalMeesevaCentres)
-				}else{
+				for(var i in result){
+					if(i == 0){
+						totalCentres=result[0].ruralCount+result[0].urbanCount;
+					}
+					$("#meesevaKPIHeadingId").html(totalCentres);
+				}/* else{
 					$("#meesevaKPIHeadingId").html("0")
-				}
-				
+				} */
 			}
 			buildMeesevaKPIOverViewDetails(result,divId,blockId);
 		}else{
 			$("#"+divId+"Block"+blockId).html("No Data Available");
 		}
-		getMeesevaKPITargetAchieveDetails(divId,blockId);
+		getMeesevaKPITargetAchieveDetails();
 		getMeesevaKPILocationWiseDetails(divId,blockId);
 		//getMeesevaKPIOnlineServiceDetails();Old Call FR Online Services
 		//getMeesevaKPIMobileSevicesDetails();Old Call FR Mobile App Services
@@ -4428,48 +4434,68 @@ function getMeesevaKPIOverViewDetails(type,divId,blockId){
 }
 function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 	var str='';
-	str+='<div class="row">';
-		str+='<div class="col-sm-12">';
-			str+='<h3 class="font_weight">MEESEVA CENTERS</h3>';
-		str+='</div>';
-	str+='</div>';
-	str+='<div class="row">';
-		str+='<div class="col-sm-2  m_top10">';
-			str+='<div class="white_block_ITC">';
-				str+='<h4 class=""><b>Total<br/> Meeseva Centers</b></h4>';
-				str+='<h4 class="m_top10"><b>'+result.totalMeesevaCentres+'</b></h4>';
+	var totalCentresMain=0;
+	var totalCentresYears=0;
+	if(result !=null && result.length>0){
+		str+='<div class="white_block_ITC m_top10">';
+			str+='<div class="row">';
+			for(var i in result){
+				totalCentres=result[i].ruralCount+result[i].urbanCount;
+					if(i==0){
+						str+='<div class="col-sm-4">';
+							str+='<div class="media">';
+								str+='<div class="media-left">';
+									str+='<img src="Assests/icons/ITC/police-station.png" style="padding-left:20px;">';
+								str+='</div>';
+								str+='<div class="media-body" style="padding-left:20px;padding-top:10px;">';
+										str+='<h4 class="">Total Meeseva Centers</h4>';
+										str+='<h3 class="font_weight m_top10">'+totalCentres+'</h3>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="row">';
+								str+='<div class="col-sm-6 m_top40">';
+									str+='<h4 class="">Rural Centers</h4>';
+									str+='<h3 class="font_weight m_top5">'+result[i].ruralCount+'</h3>';
+								str+='</div>';
+								str+='<div class="col-sm-6 m_top40">';
+									str+='<h4 class="">Urban Centers</h4>';
+									str+='<h3 class="font_weight m_top5">'+result[i].urbanCount+'</h3>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}
+				}
+				//
+				str+='<div class="col-sm-8">';
+					str+='<div class="row">';
+					
+					for(var i in result){
+						if(i!=0){
+						totalCentresYears=result[i].ruralCount+result[i].urbanCount;
+						str+='<div class="col-sm-3">';
+							str+='<div style="padding:10px;border: 2px solid #B8B8B8;border-radius:10px;">';
+									str+='<h4 class="f_16 text-center">'+result[i].name+'</h4>';
+									str+='<h3 class="font_weight m_top10 text-center">'+totalCentresYears+'</h3>';
+									str+='<div class="row">';
+										str+='<div class="col-sm-6 m_top15 text-center">';
+											str+='<h4 class="" style="font-size:15px;">Rural</h4>';
+											str+='<h4 class="font_weight m_top10">'+result[i].ruralCount+'</h4>';
+										str+='</div>';
+										str+='<div class="col-sm-6 m_top15 text-center">';
+											str+='<h4 class="" style="font-size:15px;">Urban</h4>';
+											str+='<h4 class="font_weight m_top10">'+result[i].urbanCount+'</h4>';
+										str+='</div>';
+									str+='</div>';	
+								str+='</div>';
+							str+='</div>';
+						}
+					}	
+					str+='</div>';
+				str+='</div>';
+				
+				str+='</div>';	
 			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="col-sm-2  m_top10">';
-			str+='<div class="white_block_ITC">';
-				str+='<h4 class=""><b>Established<br/> From 2014</b></h4>';
-				str+='<h4 class="m_top10"><b>'+result.establishedFrom2014+'</b></h4>';
-			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="col-sm-2  m_top10">';
-			str+='<div class="white_block_ITC">';
-				str+='<h4 class=""><b>Established In<br/> Last Year</b></h4>';
-				str+='<h4 class="m_top10"><b>'+result.establishedLastYear+'</b></h4>';
-			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="col-sm-2  m_top10">';
-			str+='<div class="white_block_ITC">';
-				str+='<h4 class=""><b>Established In<br/> This Year</b></h4>';
-				str+='<h4 class="m_top10"><b>'+result.establishedThisYear+'</b></h4>';
-			str+='</div>';
-		str+='</div>';
-		
-		str+='<div class="col-sm-2  m_top10">';
-			str+='<div class="white_block_ITC">';
-				str+='<h4 class=""><b>Established In<br/> Last 30 Days</b></h4>';
-				str+='<h4 class="m_top10"><b>'+result.establishedLastOneMonth+'</b></h4>';
-			str+='</div>';
-		str+='</div>';
-		
-	str+='</div>';
+	}
 	str+='<div class="row">';
 		str+='<div class="col-sm-4  m_top10">';
 			str+='<div class="white_block_ITC">';
@@ -4500,7 +4526,15 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 						str+='</div>';
 					str+='<div id="collapseMonthKPI" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingMonthKPI">';
 						str+='<div class="panel-body">';
-							str+='<div id="monthWiseMeesavaKPIGraph" style="height:300px;"></div>';
+							str+='<div class="row">';
+							str+='<div class="col-sm-12">';
+								str+='<ul class="list-inline liboderCls pull-right" style="cursor:pointer;">';
+									str+='<li attr_type="2016-17">2016-17</li>';
+									str+='<li class="active" attr_type="2017-18">2017-18</li>';
+								str+='</ul>'; 
+							str+='</div>';
+							str+='</div>';
+							str+='<div id="monthWiseMeesavaKPIGraph" style="height:300px;" class="m_top15"></div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -4590,14 +4624,15 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 	
 	$("#"+divId+"Block"+blockId).html(str);
 }
-function getMeesevaKPITargetAchieveDetails(divId,blockId){
+function getMeesevaKPITargetAchieveDetails(){
 	$("#monthWiseMeesavaKPIGraph").html(spinner)
 	var json = {
-		
+		fromDate:globalFromDateKPI,
+		toDate:globalToDateKPI
 	}
 	$.ajax({                
 		type:'POST',    
-		url: 'getMeesevaKPITargetAchieveDetails',
+		url: 'getMeesevaCentersTargetAchievement',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -4607,11 +4642,13 @@ function getMeesevaKPITargetAchieveDetails(divId,blockId){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			var targetArr=[];
-			var achievedArr=[];
+			var ruralArr=[];
+			var urbanArr=[];
 			var monthArr=[];
 			for(var i in result){
 					targetArr.push(result[i].target)
-					achievedArr.push(result[i].acheived)
+					ruralArr.push(result[i].ruralCount)
+					urbanArr.push(result[i].urbanCount)
 					monthArr.push(result[i].name)
 				}
 					$("#monthWiseMeesavaKPIGraph").highcharts({
@@ -4640,17 +4677,13 @@ function getMeesevaKPITargetAchieveDetails(divId,blockId){
 							enabled: true
 						},
 						tooltip: {
-							formatter: function () {
-								return '<b>' + this.x + '</b><br/>' +
-									this.series.name + ': ' + this.y
-							}
+							 pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> <br/>',
+							 shared: true
 						},
 
 						plotOptions: {
 							column: {
-								pointWidth: 30,
-								gridLineWidth: 15,
-							   // stacking: 'normal',
+								stacking: 'normal',
 								  dataLabels: {
 									enabled: true,
 									color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray',
@@ -4661,15 +4694,25 @@ function getMeesevaKPITargetAchieveDetails(divId,blockId){
 							}
 						},
 
-						series: [{
+						series: [
+							{
 								name: 'Target',
 								data: targetArr,
-								color:"#12A89D"
+								 stack: 'male',
+								color:"#7CB5EC"
+
+							},
+							{
+								name: 'Rural',
+								data: ruralArr,
+								stack: 'female',
+								color:"#D8AEEC"
 
 							},{
-								name: 'Achieved',
-								data: achievedArr,
-								color:"#9C6BAF"
+								name: 'Urban',
+								data: urbanArr,
+								stack: 'female',
+								color:"#7E576F"
 
 							}]
 					});
@@ -4682,7 +4725,7 @@ function getMeesevaKPITargetAchieveDetails(divId,blockId){
 function getMeesevaKPILocationWiseDetails(divId,blockId){
 	$("#locationWiseMeesavaCentres").html(spinner);
 	var json = {
-		
+		type : "district"
 	}
 	$.ajax({                
 		type:'POST',    
@@ -4703,28 +4746,114 @@ function getMeesevaKPILocationWiseDetails(divId,blockId){
 }
 function buildMeesevaKPILocationWiseDetails(result){
 	var str='';
-	str+='<table class="table table_customPS" id="locationWiseMeesavaKPI">';
+	str+='<table class="table table_custom_slaKPI table-bordered" id="locationWiseMeesavaKPI" style="width:100%;">';
 			str+='<thead>';
 				str+='<tr>';
-					str+='<th>Location</th>';
-					str+='<th>Total Center</th>';
-					str+='<th>%</th>';
-					str+='<th>Est from 2014</th>';
-					str+='<th>Last Year Est</th>';
-					str+='<th>This Year Est</th>';
-					str+='<th>Last 30 Days</th>';
+					str+='<th rowspan="2" class="text-center">District</th>';
+					str+='<th colspan="3" class="text-center">Total Meeseva Center</th>';
+					str+='<th colspan="3" class="text-center">Est. From 2014</th>';
+					str+='<th colspan="3" class="text-center">Est. In Last Year</th>';
+					str+='<th colspan="3" class="text-center">Est. In This Year</th>';
+					str+='<th colspan="3" class="text-center">Est. Last 30 Days</th>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<th style="background-color:#F5F0F7 !important;">Total</th>';
+					str+='<th>Rural</th>';
+					str+='<th style="background-color:#F5F0F7 !important;">Urban</th>';
+					str+='<th>Total</th>';
+					str+='<th>Rural</th>';
+					str+='<th>Urban</th>';
+					str+='<th>Total</th>';
+					str+='<th>Rural</th>';
+					str+='<th>Urban</th>';
+					str+='<th>Total</th>';
+					str+='<th>Rural</th>';
+					str+='<th>Urban</th>';
+					str+='<th>Total</th>';
+					str+='<th>Rural</th>';
+					str+='<th>Urban</th>';
 				str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
 						str+='<td>'+result[i].name+'</td>';
-						str+='<td class="mesevaCntrDetailsCls" attr_district_id="'+result[i].districtIdStr+'" attr_district_name="'+result[i].name+'" style="cursor:pointer;"><u>'+result[i].totalMeesevaCentres+'</u></td>';
-						str+='<td>'+result[i].percenatge+'</td>';
-						str+='<td>'+result[i].establishedFrom2014+'</td>';
-						str+='<td>'+result[i].establishedLastYear+'</td>';
-						str+='<td>'+result[i].establishedThisYear+'</td>';
-						str+='<td>'+result[i].establishedLastOneMonth+'</td>';
+						/* str+='<td class="mesevaCntrDetailsCls" attr_district_id="'+result[i].districtIdStr+'" attr_district_name="'+result[i].name+'" style="cursor:pointer;"><u>'+result[i].totalMeesevaCentres+'</u></td>'; */
+						if(result[i].totalMeesevaCentres != null && result[i].totalMeesevaCentres > 0){
+							str+='<td>'+result[i].totalMeesevaCentres+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].meesevaCentersRural != null && result[i].meesevaCentersRural > 0){
+							str+='<td>'+result[i].meesevaCentersRural+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].meesevaCentersUrban != null && result[i].meesevaCentersUrban > 0){
+							str+='<td>'+result[i].meesevaCentersUrban+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].establishedFrom2014 != null && result[i].establishedFrom2014 > 0){
+							str+='<td>'+result[i].establishedFrom2014+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].from2014Rural != null && result[i].from2014Rural > 0){
+							str+='<td>'+result[i].from2014Rural+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].from2014Urban != null && result[i].from2014Urban > 0){
+							str+='<td>'+result[i].from2014Urban+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].establishedLastYear != null && result[i].establishedLastYear > 0){
+							str+='<td>'+result[i].establishedLastYear+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].lastYearRural != null && result[i].lastYearRural > 0){
+							str+='<td>'+result[i].lastYearRural+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].lastYearUrban != null && result[i].lastYearUrban > 0){
+							str+='<td>'+result[i].lastYearUrban+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].establishedThisYear != null && result[i].establishedThisYear > 0){
+							str+='<td>'+result[i].establishedThisYear+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].thisYearRural != null && result[i].thisYearRural > 0){
+							str+='<td>'+result[i].thisYearRural+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].thisYearUrban != null && result[i].thisYearUrban > 0){
+							str+='<td>'+result[i].thisYearUrban+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].establishedLastOneMonth != null && result[i].establishedLastOneMonth > 0){
+							str+='<td>'+result[i].establishedLastOneMonth+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].lastMnthRural != null && result[i].lastMnthRural > 0){
+							str+='<td>'+result[i].lastMnthRural+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result[i].lastMnthUrban != null && result[i].lastMnthUrban > 0){
+							str+='<td>'+result[i].lastMnthUrban+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
 					str+='</tr>';
 				}
 			str+='<tbody>';
@@ -6642,3 +6771,16 @@ function buildApInnovationCohortWiseDetails(result){
 	});
 		
 }
+$(document).on("click",".liboderCls li",function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	var dateType = $(this).attr("attr_type");
+	if(dateType != null && dateType == '2016-17'){
+		 globalFromDateKPI ="2016-04-01";
+		 globalToDateKPI = "2017-03-31";
+	}else{
+		globalFromDateKPI ="2017-04-01";
+		globalToDateKPI = "2018-03-31";
+	}
+	getMeesevaKPITargetAchieveDetails();
+});

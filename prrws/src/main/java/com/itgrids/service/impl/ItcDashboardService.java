@@ -5045,40 +5045,116 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return MeesevaKPIDtlsVO
 	 * @Date 09-01-2018
 	 */
-	public MeesevaKPIDtlsVO getMeesevaKPIOverViewDetailsNew() {
-		MeesevaKPIDtlsVO finalVO = new MeesevaKPIDtlsVO();
+	public List<MeesevaKPIDtlsVO> getMeesevaKPIOverViewDetailsNew() {
+		List<MeesevaKPIDtlsVO> finalList = new ArrayList<MeesevaKPIDtlsVO>();
 		try{
+			Map<String,MeesevaKPIDtlsVO> centerTypeMap = new HashMap<String,MeesevaKPIDtlsVO>(0);
+			String year = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			//String[] dateObjArr = null;
 			String finalYearstrg = "04-01";
 			String finalYearend = "03-31";
 			Date curruntDate = dateUtilService.getCurrentDateAndTime();
 			String[] yearArr  = sdf.format(curruntDate).toString().split("-");
-			Long lastfinalYear  = Long.valueOf(yearArr[0])-1;//2017
+			if(yearArr[1] != null && Long.valueOf(yearArr[1]).longValue() >3){
+				year = String.valueOf(Long.valueOf(yearArr[0])+1);
+			}else{
+				year = yearArr[0];
+			}
+			Long lastfinalYear  = Long.valueOf(year)-1;//2017
 			Long lastFinalStartYear  = lastfinalYear -1;//2016
-			String thisYear  = yearArr[0];
+			String thisYear  = year;
 			
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MONTH, -1);
 			Date previousMnthDate  = cal.getTime();
-			//String[] prvMnthArr = sdf.format(previousMnthDate).toString().split("-");
-			//String prvMnthValue = Long.valueOf(prvMnthArr[0])+"-"+Long.valueOf(prvMnthArr[1]);
 			
-			Long totalMeesevaCentres = meesevaKpiCentersDAO.getStateWiseTotalMeesevaCentersCunts();
-			Long meesevaCentres2014Count = meesevaKpiCentersDAO.getMeesevaKPICentresEstFrom2014();
-			Long lastFinalYear = meesevaKpiCentersDAO.getMeesevaKPICentresEstLast(sdf.parse(lastFinalStartYear+"-"+finalYearstrg),sdf.parse(lastfinalYear+"-"+finalYearend));
-			Long thisFinalYear = meesevaKpiCentersDAO.getMeesevaKPICentresEstLast(sdf.parse(lastfinalYear+"-"+finalYearstrg),sdf.parse(thisYear+"-"+finalYearend));
-			Long lastOneMonth = meesevaKpiCentersDAO.getMeesevaKPICentresEstLast(previousMnthDate,curruntDate);
+			Long id = 0L;
+			String[] centresArr = {"Meeseva Centers","Established From 2014","Established In Last Year","Established In This Year","Established In Last 30 Days"};
+			if(centresArr != null){
+				for (int i = 0; i < centresArr.length; i++) {
+					MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+					id = id+1;
+					vo.setId(id);
+					vo.setName(centresArr[i]);
+					finalList.add(vo);
+				}
+			}
 			
-			finalVO.setTotalMeesevaCentres(totalMeesevaCentres);
-			finalVO.setEstablishedFrom2014(meesevaCentres2014Count);
-			finalVO.setEstablishedLastYear(lastFinalYear);
-			finalVO.setEstablishedThisYear(thisFinalYear);
-			finalVO.setEstablishedLastOneMonth(lastOneMonth);
+			
+			List<Object[]> meesevaCntrsList = meesevaKpiCentersDAO.getStateWiseTotalMeesevaCentersCunts();
+			if(meesevaCntrsList != null && !meesevaCntrsList.isEmpty()){
+				for (Object[] param : meesevaCntrsList) {
+					MeesevaKPIDtlsVO vo = getMatchedVOForMeeseva(finalList,1L);
+					if(vo != null){
+						if(param[0] != null && param[0].toString().trim().equalsIgnoreCase("Rural")){
+							vo.setRuralCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}else if(param[0] != null && param[0].toString().trim().equalsIgnoreCase("Urban")){
+							vo.setUrbanCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+					}
+				}
+			}
+			
+			List<Object[]> from2014List = meesevaKpiCentersDAO.getMeesevaKPICentresEstFrom2014();
+			if(from2014List != null && !from2014List.isEmpty()){
+				for (Object[] param : from2014List) {
+					MeesevaKPIDtlsVO vo = getMatchedVOForMeeseva(finalList,2L);
+					if(vo != null){
+						if(param[0] != null && param[0].toString().trim().equalsIgnoreCase("Rural")){
+							vo.setRuralCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}else if(param[0] != null && param[0].toString().trim().equalsIgnoreCase("Urban")){
+							vo.setUrbanCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+					}
+				}
+			}
+			
+			List<Object[]> lastFinalList = meesevaKpiCentersDAO.getMeesevaKPICentresEstLast(sdf.parse(lastFinalStartYear+"-"+finalYearstrg),sdf.parse(lastfinalYear+"-"+finalYearend));
+			if(lastFinalList != null && !lastFinalList.isEmpty()){
+				for (Object[] param : lastFinalList) {
+					MeesevaKPIDtlsVO vo = getMatchedVOForMeeseva(finalList,3L);
+					if(vo != null){
+						if(param[0] != null && param[0].toString().trim().equalsIgnoreCase("Rural")){
+							vo.setRuralCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}else if(param[0] != null && param[0].toString().trim().equalsIgnoreCase("Urban")){
+							vo.setUrbanCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+					}
+				}
+			}
+			
+			List<Object[]> thisFinalList = meesevaKpiCentersDAO.getMeesevaKPICentresEstLast(sdf.parse(lastfinalYear+"-"+finalYearstrg),sdf.parse(thisYear+"-"+finalYearend));
+			if(thisFinalList != null && !thisFinalList.isEmpty()){
+				for (Object[] param : thisFinalList) {
+					MeesevaKPIDtlsVO vo = getMatchedVOForMeeseva(finalList,4L);
+					if(vo != null){
+						if(param[0] != null && param[0].toString().trim().equalsIgnoreCase("Rural")){
+							vo.setRuralCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}else if(param[0] != null && param[0].toString().trim().equalsIgnoreCase("Urban")){
+							vo.setUrbanCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+					}
+				}
+			}
+			
+			List<Object[]> lastOneMnthList = meesevaKpiCentersDAO.getMeesevaKPICentresEstLast(previousMnthDate,curruntDate);
+			if(lastOneMnthList != null && !lastOneMnthList.isEmpty()){
+				for (Object[] param : lastOneMnthList) {
+					MeesevaKPIDtlsVO vo = getMatchedVOForMeeseva(finalList,5L);
+					if(vo != null){
+						if(param[0] != null && param[0].toString().trim().equalsIgnoreCase("Rural")){
+							vo.setRuralCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}else if(param[0] != null && param[0].toString().trim().equalsIgnoreCase("Urban")){
+							vo.setUrbanCount(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+					}
+				}
+			}
+			
 		 }catch (Exception e) {
 			 LOG.error("Exception occured at getMeesevaKPIOverViewDetailsNew() in  ItcDashboardService class",e);
 		 }
-		 return finalVO;
+		 return finalList;
 	}
 	
 	/**
@@ -5087,19 +5163,28 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @return List<MeesevaKPIDtlsVO>
 	 * @Date 09-01-2018
 	 */
-	public List<MeesevaKPIDtlsVO> getMeesevaKPILocationWiseDetailsNew() {
+	public List<MeesevaKPIDtlsVO> getMeesevaKPILocationWiseDetailsNew(InputVO inputVO) {
 		List<MeesevaKPIDtlsVO> finalList = new ArrayList<MeesevaKPIDtlsVO>();
 		try{
-			Map<String,MeesevaKPIDtlsVO> distrctMap = new HashMap<String,MeesevaKPIDtlsVO>(0);
+			Map<String,MeesevaKPIDtlsVO> levelsMap = new HashMap<String,MeesevaKPIDtlsVO>(0);
+			String locationIdStr = null;
+			String year = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String[] dateObjArr = null;
 			String finalYearstrg = "04-01";
 			String finalYearend = "03-31";
 			Date curruntDate = dateUtilService.getCurrentDateAndTime();
 			String[] yearArr  = sdf.format(curruntDate).toString().split("-");
-			Long lastfinalYear  = Long.valueOf(yearArr[0])-1;//2017
+			if(yearArr[1] != null && Long.valueOf(yearArr[1]).longValue() >3){
+				year = String.valueOf(Long.valueOf(yearArr[0])+1);
+			}else{
+				year = yearArr[0];
+			}
+			
+			Long lastfinalYear  = Long.valueOf(year)-1;//2017
 			Long lastFinalStartYear  = lastfinalYear -1;//2016
-			String thisYear  = yearArr[0];
+			String thisYear  = year;
+			
 			
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MONTH, -1);
@@ -5109,102 +5194,236 @@ public class ItcDashboardService implements IItcDashboardService {
 			
 			Long totalCenters = 0L;
 			//Total Centers For district Wise
-			List<Object[]> totalCntrsFrDisrict = meesevaKpiCentersDAO.getMeesevaKPICentresForDoistrict();
-			if(totalCntrsFrDisrict != null && !totalCntrsFrDisrict.isEmpty()){
-				for (Object[] param : totalCntrsFrDisrict) {
-					String districtIdStr = commonMethodsUtilService.getStringValueForObject(param[0]);
-					MeesevaKPIDtlsVO districtVO = distrctMap.get(districtIdStr);
-					if(districtVO == null){
-						districtVO  = new MeesevaKPIDtlsVO();
-						districtVO.setDistrictIdStr(districtIdStr);
-						districtVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-						districtVO.setTotalMeesevaCentres(commonMethodsUtilService.getLongValueForObject(param[2]));
-						totalCenters = totalCenters+districtVO.getTotalMeesevaCentres();
-						distrctMap.put(districtIdStr, districtVO);
+			List<Object[]> totalCntrsList = meesevaKpiCentersDAO.getMeesevaKPICentresByType(inputVO.getType());
+			if(totalCntrsList != null && !totalCntrsList.isEmpty()){
+				for (Object[] param : totalCntrsList) {
+					String centerType = commonMethodsUtilService.getStringValueForObject(param[0]);
+					if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+					}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("mandal")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[3]);
+					}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[5]);
+					}
+					
+					MeesevaKPIDtlsVO levelVO = levelsMap.get(locationIdStr);
+					if(levelVO == null){
+						levelVO  = new MeesevaKPIDtlsVO();
+						levelVO.setLocationIdStr(locationIdStr);
+						if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("mandal")){
+							levelVO.setDistrict(commonMethodsUtilService.getStringValueForObject(param[2]));
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+							levelVO.setDistrict(commonMethodsUtilService.getStringValueForObject(param[2]));
+							levelVO.setMandal(commonMethodsUtilService.getStringValueForObject(param[4]));
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[6]));
+						}
+						if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+							levelVO.setMeesevaCentersRural(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+							levelVO.setMeesevaCentersUrban(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}
+						levelsMap.put(locationIdStr, levelVO);
+					}else{
+						if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+							levelVO.setMeesevaCentersRural(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+							levelVO.setMeesevaCentersUrban(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}
 					}
 				}
 			}
 			
 			//From 2014 Meeseva Centers
-			List<Object[]> totalCntrsFrom2014FrDisrict = meesevaKpiCentersDAO.getMeesevaKPICentresFrom2014ForDistricts();
-			if(totalCntrsFrom2014FrDisrict != null && !totalCntrsFrom2014FrDisrict.isEmpty()){
-				for (Object[] param : totalCntrsFrom2014FrDisrict) {
-					String districtIdStr = commonMethodsUtilService.getStringValueForObject(param[0]);
-					MeesevaKPIDtlsVO districtVO = distrctMap.get(districtIdStr);
-					if(districtVO != null){
-						districtVO.setEstablishedFrom2014(commonMethodsUtilService.getLongValueForObject(param[2]));
+			List<Object[]> totalCntrsFrom2014List = meesevaKpiCentersDAO.getMeesevaKPICentresFrom2014ByType(inputVO.getType());
+			if(totalCntrsFrom2014List != null && !totalCntrsFrom2014List.isEmpty()){
+				for (Object[] param : totalCntrsFrom2014List) {
+					String centerType = commonMethodsUtilService.getStringValueForObject(param[0]);
+					if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+					}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("mandal")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[3]);
+					}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[5]);
+					}
+					
+					MeesevaKPIDtlsVO levelVO = levelsMap.get(locationIdStr);
+					if(levelVO == null){
+						levelVO  = new MeesevaKPIDtlsVO();
+						levelVO.setLocationIdStr(locationIdStr);
+						if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("mandal")){
+							levelVO.setDistrict(commonMethodsUtilService.getStringValueForObject(param[2]));
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+							levelVO.setDistrict(commonMethodsUtilService.getStringValueForObject(param[2]));
+							levelVO.setMandal(commonMethodsUtilService.getStringValueForObject(param[4]));
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[6]));
+						}
+						if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+							levelVO.setFrom2014Rural(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+							levelVO.setFrom2014Urban(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}
+						levelsMap.put(locationIdStr, levelVO);
 					}else{
-						districtVO = new MeesevaKPIDtlsVO();
-						districtVO.setDistrictIdStr(districtIdStr);
-						districtVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-						districtVO.setEstablishedFrom2014(commonMethodsUtilService.getLongValueForObject(param[2]));
-						distrctMap.put(districtIdStr, districtVO);
+						if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+							levelVO.setFrom2014Rural(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+							levelVO.setFrom2014Urban(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}
 					}
 				}
 			}
 			
 			//For Last Finacial Year Meeseva Centers
-			List<Object[]> lastYearCunts = meesevaKpiCentersDAO.getMeesevaKPICentresLastYearForDistricts(sdf.parse(lastFinalStartYear+"-"+finalYearstrg),sdf.parse(lastfinalYear+"-"+finalYearend));
-			if(lastYearCunts != null && !lastYearCunts.isEmpty()){
-				for (Object[] param : lastYearCunts) {
-					String districtIdStr = commonMethodsUtilService.getStringValueForObject(param[0]);
-					MeesevaKPIDtlsVO districtVO = distrctMap.get(districtIdStr);
-					if(districtVO != null){
-						districtVO.setEstablishedLastYear(commonMethodsUtilService.getLongValueForObject(param[2]));
+			List<Object[]> lastYearCuntsList = meesevaKpiCentersDAO.getMeesevaKPICentresLastYearByType(sdf.parse(lastFinalStartYear+"-"+finalYearstrg),sdf.parse(lastfinalYear+"-"+finalYearend),inputVO.getType());
+			if(lastYearCuntsList != null && !lastYearCuntsList.isEmpty()){
+				for (Object[] param : lastYearCuntsList) {
+					String centerType = commonMethodsUtilService.getStringValueForObject(param[0]);
+					if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+					}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("mandal")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[3]);
+					}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[5]);
+					}
+					
+					MeesevaKPIDtlsVO levelVO = levelsMap.get(locationIdStr);
+					if(levelVO == null){
+						levelVO  = new MeesevaKPIDtlsVO();
+						levelVO.setLocationIdStr(locationIdStr);
+						if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("mandal")){
+							levelVO.setDistrict(commonMethodsUtilService.getStringValueForObject(param[2]));
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+							levelVO.setDistrict(commonMethodsUtilService.getStringValueForObject(param[2]));
+							levelVO.setMandal(commonMethodsUtilService.getStringValueForObject(param[4]));
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[6]));
+						}
+						if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+							levelVO.setLastYearRural(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+							levelVO.setLastYearUrban(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}
+						levelsMap.put(locationIdStr, levelVO);
 					}else{
-						districtVO = new MeesevaKPIDtlsVO();
-						districtVO.setDistrictIdStr(districtIdStr);
-						districtVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-						districtVO.setEstablishedLastYear(commonMethodsUtilService.getLongValueForObject(param[2]));
-						distrctMap.put(districtIdStr, districtVO);
+						if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+							levelVO.setLastYearRural(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+							levelVO.setLastYearUrban(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}
 					}
 				}
 			}
 
 			//For This Finacial Year Meeseva Centers
-			List<Object[]> thisYearCunts = meesevaKpiCentersDAO.getMeesevaKPICentresLastYearForDistricts(sdf.parse(lastfinalYear+"-"+finalYearstrg),sdf.parse(thisYear+"-"+finalYearend));
+			List<Object[]> thisYearCunts = meesevaKpiCentersDAO.getMeesevaKPICentresLastYearByType(sdf.parse(lastfinalYear+"-"+finalYearstrg),sdf.parse(thisYear+"-"+finalYearend),inputVO.getType());
 			if(thisYearCunts != null && !thisYearCunts.isEmpty()){
 				for (Object[] param : thisYearCunts) {
-					String districtIdStr = commonMethodsUtilService.getStringValueForObject(param[0]);
-					MeesevaKPIDtlsVO districtVO = distrctMap.get(districtIdStr);
-					if(districtVO != null){
-						districtVO.setEstablishedThisYear(commonMethodsUtilService.getLongValueForObject(param[2]));
+					String centerType = commonMethodsUtilService.getStringValueForObject(param[0]);
+					if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+					}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("mandal")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[3]);
+					}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[5]);
+					}
+					
+					MeesevaKPIDtlsVO levelVO = levelsMap.get(locationIdStr);
+					if(levelVO == null){
+						levelVO  = new MeesevaKPIDtlsVO();
+						levelVO.setLocationIdStr(locationIdStr);
+						if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("mandal")){
+							levelVO.setDistrict(commonMethodsUtilService.getStringValueForObject(param[2]));
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+							levelVO.setDistrict(commonMethodsUtilService.getStringValueForObject(param[2]));
+							levelVO.setMandal(commonMethodsUtilService.getStringValueForObject(param[4]));
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[6]));
+						}
+						if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+							levelVO.setThisYearRural(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+							levelVO.setThisYearUrban(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}
+						levelsMap.put(locationIdStr, levelVO);
 					}else{
-						districtVO = new MeesevaKPIDtlsVO();
-						districtVO.setDistrictIdStr(districtIdStr);
-						districtVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-						districtVO.setEstablishedThisYear(commonMethodsUtilService.getLongValueForObject(param[2]));
-						distrctMap.put(districtIdStr, districtVO);
+						if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+							levelVO.setThisYearRural(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+							levelVO.setThisYearUrban(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}
 					}
 				}
 			}
 			
 			//For Last One Month Meeseva Centers
-			List<Object[]> OneMonthCunts = meesevaKpiCentersDAO.getMeesevaKPICentresLastYearForDistricts(previousMnthDate,curruntDate);
+			List<Object[]> OneMonthCunts = meesevaKpiCentersDAO.getMeesevaKPICentresLastYearByType(previousMnthDate,curruntDate,inputVO.getType());
 			if(OneMonthCunts != null && !OneMonthCunts.isEmpty()){
 				for (Object[] param : OneMonthCunts) {
-					String districtIdStr = commonMethodsUtilService.getStringValueForObject(param[0]);
-					MeesevaKPIDtlsVO districtVO = distrctMap.get(districtIdStr);
-					if(districtVO != null){
-						districtVO.setEstablishedLastOneMonth(commonMethodsUtilService.getLongValueForObject(param[2]));
+					String centerType = commonMethodsUtilService.getStringValueForObject(param[0]);
+					if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+					}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("mandal")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[3]);
+					}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+						locationIdStr = commonMethodsUtilService.getStringValueForObject(param[5]);
+					}
+					
+					MeesevaKPIDtlsVO levelVO = levelsMap.get(locationIdStr);
+					if(levelVO == null){
+						levelVO  = new MeesevaKPIDtlsVO();
+						levelVO.setLocationIdStr(locationIdStr);
+						if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("mandal")){
+							levelVO.setDistrict(commonMethodsUtilService.getStringValueForObject(param[2]));
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+							levelVO.setDistrict(commonMethodsUtilService.getStringValueForObject(param[2]));
+							levelVO.setMandal(commonMethodsUtilService.getStringValueForObject(param[4]));
+							levelVO.setName(commonMethodsUtilService.getStringValueForObject(param[6]));
+						}
+						if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+							levelVO.setLastMnthRural(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+							levelVO.setLastMnthUrban(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}
+						levelsMap.put(locationIdStr, levelVO);
 					}else{
-						districtVO = new MeesevaKPIDtlsVO();
-						districtVO.setDistrictIdStr(districtIdStr);
-						districtVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-						districtVO.setEstablishedLastOneMonth(commonMethodsUtilService.getLongValueForObject(param[2]));
-						distrctMap.put(districtIdStr, districtVO);
+						if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+							levelVO.setLastMnthRural(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+							levelVO.setLastMnthUrban(commonMethodsUtilService.getLongValueForObject(param[7]));
+						}
 					}
 				}
 			}
 			
 			
 			
-			if(commonMethodsUtilService.isMapValid(distrctMap)){
-				finalList = new ArrayList<MeesevaKPIDtlsVO>(distrctMap.values());
+			if(commonMethodsUtilService.isMapValid(levelsMap)){
+				finalList = new ArrayList<MeesevaKPIDtlsVO>(levelsMap.values());
 			}
 			
-			
 			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				for (MeesevaKPIDtlsVO vo : finalList) {
+					vo.setTotalMeesevaCentres(vo.getMeesevaCentersRural()+vo.getMeesevaCentersUrban());
+					vo.setEstablishedFrom2014(vo.getFrom2014Rural()+vo.getFrom2014Urban());
+					vo.setEstablishedLastYear(vo.getLastYearRural()+vo.getLastYearUrban());
+					vo.setEstablishedThisYear(vo.getThisYearRural()+vo.getThisYearUrban());
+					vo.setEstablishedLastOneMonth(vo.getLastMnthRural()+vo.getLastMnthUrban());
+				}
+			}
+			/*if(commonMethodsUtilService.isListOrSetValid(finalList)){
 				for (MeesevaKPIDtlsVO vo : finalList) {
 					if(vo.getTotalMeesevaCentres() != null && vo.getTotalMeesevaCentres().longValue() >0L && totalCenters != null && totalCenters.longValue() > 0L){
 						vo.setPercenatge(new BigDecimal(vo.getTotalMeesevaCentres()*100.00/totalCenters).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -5212,7 +5431,7 @@ public class ItcDashboardService implements IItcDashboardService {
 						vo.setPercenatge("0.00");
 					}
 				}
-			}
+			}*/
 			 
 		 }catch (Exception e) {
 			 LOG.error("Exception occured at getMeesevaKPILocationWiseDetailsNew() in  ItcDashboardService class",e);
@@ -5262,7 +5481,7 @@ public class ItcDashboardService implements IItcDashboardService {
 	public IdNameVO saveMeesevaKPITargetAchievementValues() {
 		IdNameVO finalVO = new IdNameVO();
 		try{
-			
+			Map<Date,MeesevaCentersMonthWiseAchievement> datesMap = new HashMap<Date,MeesevaCentersMonthWiseAchievement>(0);
 			List<MeesevaCentersMonthWiseAchievement> dataList = new ArrayList<MeesevaCentersMonthWiseAchievement>(0);
 			Long[] yearsArr = {2014L,2015L,2016L,2017L,2018L};
 			List<Long> years = new ArrayList<Long>(0);
@@ -5280,20 +5499,32 @@ public class ItcDashboardService implements IItcDashboardService {
 				}
 			}
 			
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if(years != null && !years.isEmpty()){
 				for (Long year : years) {
 					for (String month : months) {
 						MeesevaCentersMonthWiseAchievement model = new MeesevaCentersMonthWiseAchievement();
-						Long mnthCount = meesevaKpiCentersDAO.getMeesevaKPICentresForFromAndToDate(sdf.parse(year+"-"+month+"-"+"01"),sdf.parse(year+"-"+month+"-"+"31"));
+						List<Object[]> mnthCountList = meesevaKpiCentersDAO.getMeesevaKPICentresForFromAndToDate(sdf.parse(year+"-"+month+"-"+"01"),sdf.parse(year+"-"+month+"-"+"31"));
+						if(mnthCountList != null && !mnthCountList.isEmpty()){
+							for (Object[] param : mnthCountList) {
+								String centerType = commonMethodsUtilService.getStringValueForObject(param[0]);
+								if(centerType != null && centerType.trim().equalsIgnoreCase("Rural")){
+									model.setRuralAchievement(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+								}else if(centerType != null && centerType.trim().equalsIgnoreCase("Urban")){
+									model.setUrbanAchievement(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+								}
+							}
+						}
 						model.setDate(sdf.parse(year+"-"+month+"-"+"01"));
 						model.setTarget(0L);
-						model.setAchievement(mnthCount);
 						model.setIsDeleted("N");
 						dataList.add(model);
 					}
 				}
 			}
+			
+			int deleteStatus = meesevaCentersMonthWiseAchievementDAO.deleteRecordsFrmTable();
 			
 			if(dataList != null && !dataList.isEmpty()){
 				for (MeesevaCentersMonthWiseAchievement saveModel : dataList) {
@@ -5862,7 +6093,7 @@ public class ItcDashboardService implements IItcDashboardService {
 	 * @Date 19-01-2018
 	 */
 	public List<ApInnovationSocietyOverviewVO> getApInnovationIndicatorDetails(){
-	    List<ApInnovationSocietyOverviewVO> finalList = new ArrayList<ApInnovationSocietyOverviewVO>();
+		List<ApInnovationSocietyOverviewVO> finalList = new ArrayList<ApInnovationSocietyOverviewVO>();
 	    try{
 	      Map<String,ApInnovationSocietyOverviewVO> incubMap = new HashMap<String,ApInnovationSocietyOverviewVO>(0);
 	      String URL = null;
@@ -5999,4 +6230,79 @@ public class ItcDashboardService implements IItcDashboardService {
 	    }
 	    return finalList;
 	  }
+	
+	public MeesevaKPIDtlsVO getMatchedVOForMeeseva(List<MeesevaKPIDtlsVO> list,Long id){
+		ApInnovationSocietyOverviewVO returnVO = null;
+		try {
+			if(list != null && !list.isEmpty()){
+				for (MeesevaKPIDtlsVO meesevaKPIDtlsVO : list) {
+					if(meesevaKPIDtlsVO.getId().longValue() == id.longValue()){
+						return meesevaKPIDtlsVO;
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured at getMatchedVOForMeeseva() in  ItcDashboardService class",e);
+		}
+		return null;
+	}
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is get Ap Innovation Indicator Details.}
+	 * @return List<ApInnovationSocietyOverviewVO>
+	 * @Date 27-01-2018
+	 */
+	public  List<MeesevaKPIDtlsVO> getMeesevaCentersTargetAchievement(InputVO inputVO){
+		List<MeesevaKPIDtlsVO> finalList  = new ArrayList<MeesevaKPIDtlsVO>(0);
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date fromDate = null;
+			Date toDate = null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
+			}
+			List<Object[]> targetlist = meesevaCentersMonthWiseAchievementDAO.getTargetAchFrDates(fromDate, toDate);
+			if(targetlist != null && !targetlist.isEmpty()){
+				for (Object[] param : targetlist) {
+					MeesevaKPIDtlsVO vo = new MeesevaKPIDtlsVO();
+					vo.setTarget(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+					vo.setRuralCount(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+					vo.setUrbanCount(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+					String date = commonMethodsUtilService.getStringValueForObject(param[3]);
+					String[] dateArr = date.split("-");
+					if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 1L){
+						vo.setName("JAN");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 2L){
+						vo.setName("FEB");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 3L){
+						vo.setName("MAR");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 4L){
+						vo.setName("APR");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 5L){
+						vo.setName("MAY");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 6L){
+						vo.setName("JUN");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 7L){
+						vo.setName("JUL");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 8L){
+						vo.setName("AUG");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 9L){
+						vo.setName("SEP");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 10L){
+						vo.setName("OCT");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 11L){
+						vo.setName("NOV");
+					}else if(dateArr[1] != null && Long.valueOf(dateArr[1]).longValue() == 12L){
+						vo.setName("DEC");
+					}
+					finalList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getMeesevaCentersTargetAchievement() in  ItcDashboardService class",e);
+		}
+		return finalList;
+	}
 }

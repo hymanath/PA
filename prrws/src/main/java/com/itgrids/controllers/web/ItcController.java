@@ -365,14 +365,14 @@ public class ItcController {
 	   }
 	   
 	   @RequestMapping(value = "/getMeesevaKPIOverViewDetailsNew", method = RequestMethod.POST)
-	   public @ResponseBody  MeesevaKPIDtlsVO  getMeesevaKPIOverViewDetailsNew() {
-		   MeesevaKPIDtlsVO  resultVO = itcDashboardService.getMeesevaKPIOverViewDetailsNew();
-		   return resultVO;
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPIOverViewDetailsNew() {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPIOverViewDetailsNew();
+		   return resultList;
 	   }
 	   
-	   @RequestMapping(value = "/getMeesevaKPILocationWiseDetailsNew", method = RequestMethod.POST)
-	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPILocationWiseDetailsNew() {
-		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPILocationWiseDetailsNew();
+	   @RequestMapping(value = "/getMeesevaKPILocationWiseDetailsNew", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaKPILocationWiseDetailsNew(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaKPILocationWiseDetailsNew(inputVO);
 		   return resultList;
 	   }
 	   
@@ -447,5 +447,11 @@ public class ItcController {
 	   public @ResponseBody  ApInnovationSocietyOverviewVO  getStartupsEmploymentFundingPatternAcquisitionsDetails() {
 		   ApInnovationSocietyOverviewVO  resultvo = itcDashboardService.getStartupsEmploymentFundingPatternAcquisitionsDetails();
 		   return resultvo;
+	   }
+	   
+	   @RequestMapping(value = "/getMeesevaCentersTargetAchievement", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaCentersTargetAchievement(@RequestBody InputVO inputVO) {
+		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaCentersTargetAchievement(inputVO);
+		   return resultList;
 	   }
 }

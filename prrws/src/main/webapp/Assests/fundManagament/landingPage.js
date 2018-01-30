@@ -744,10 +744,18 @@ function getMeesevaKPIOverViewDetails(){
 		}
 	}).done(function(result){
 		if(result !=null){
-			if(result.totalMeesevaCentres !=null && result.totalMeesevaCentres>0){
+			var totalCentres = 0;
+			for(var i in result){
+					if(i == 0){
+						totalCentres=result[0].ruralCount+result[0].urbanCount;
+					}
+				}
+				totalTransaction = totalTransaction + " / "+ totalCentres;
+				$(".MEESEVA-SLAKPIAllCls").html(totalTransaction);
+			/* if(result.totalMeesevaCentres !=null && result.totalMeesevaCentres>0){
 				totalTransaction = totalTransaction + " / "+ result.totalMeesevaCentres;
 				$(".MEESEVA-SLAKPIAllCls").html(totalTransaction);
-			}
+			} */
 		}
 	});	
 }
