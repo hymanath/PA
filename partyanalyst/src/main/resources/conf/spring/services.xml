@@ -4658,6 +4658,7 @@
     		<property name="alertDocumentDAO" ref="alertDocumentDAO"></property>
     		<property name="alertStatusDAO" ref="alertStatusDAO"></property>  	 	
     		<property name="alertCategoryDAO" ref="alertCategoryDAO"></property>
+    		<property name="alertUpdationAPIService" ref="alertUpdationAPIService"></property>
     		
     	 </bean>
     	 <bean name="alertRenderService" class="com.itgrids.partyanalyst.service.impl.AlertRenderService">
