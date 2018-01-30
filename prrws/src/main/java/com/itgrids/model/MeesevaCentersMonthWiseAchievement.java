@@ -17,7 +17,8 @@ public class MeesevaCentersMonthWiseAchievement extends BaseModel implements Ser
 	private Long meesevaCentersMonthWiseAchievementId;
 	private Date date;
 	private Long target;
-	private Long achievement;
+	private Long ruralAchievement;
+	private Long urbanAchievement;
 	private String isDeleted;
 	
 	@Id
@@ -46,19 +47,27 @@ public class MeesevaCentersMonthWiseAchievement extends BaseModel implements Ser
 		this.target = target;
 	}
 	
-	@Column(name="achievement")
-	public Long getAchievement() {
-		return achievement;
-	}
-	public void setAchievement(Long achievement) {
-		this.achievement = achievement;
-	}
-	
 	@Column(name="is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	@Column(name="rural_achievement")
+	public Long getRuralAchievement() {
+		return ruralAchievement;
+	}
+	public void setRuralAchievement(Long ruralAchievement) {
+		this.ruralAchievement = ruralAchievement;
+	}
+	
+	@Column(name="urban_achievement")
+	public Long getUrbanAchievement() {
+		return urbanAchievement;
+	}
+	public void setUrbanAchievement(Long urbanAchievement) {
+		this.urbanAchievement = urbanAchievement;
 	}
 }

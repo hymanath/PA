@@ -44,6 +44,22 @@ public class MeesevaKPIDtlsVO {
 	private String address;
 	private String centerType;
 	private String estDate;
+	private Long ruralCount = 0L;
+	private Long urbanCount = 0L;
+	private String locationIdStr;
+	private String district;
+	private String mandal;
+	private Long meesevaCentersRural = 0L;
+	private Long meesevaCentersUrban = 0L;
+	private Long from2014Rural = 0L;
+	private Long from2014Urban = 0L;
+	private Long lastYearRural = 0L;
+	private Long lastYearUrban = 0L;
+	private Long thisYearRural = 0L;
+	private Long thisYearUrban = 0L;
+	private Long lastMnthRural = 0L;
+	private Long lastMnthUrban = 0L;
+	
 	
 	public Long getId() {
 		return id;
@@ -290,6 +306,96 @@ public class MeesevaKPIDtlsVO {
 	}
 	public void setEstDate(String estDate) {
 		this.estDate = estDate;
+	}
+	public Long getRuralCount() {
+		return ruralCount;
+	}
+	public void setRuralCount(Long ruralCount) {
+		this.ruralCount = ruralCount;
+	}
+	public Long getUrbanCount() {
+		return urbanCount;
+	}
+	public void setUrbanCount(Long urbanCount) {
+		this.urbanCount = urbanCount;
+	}
+	public String getLocationIdStr() {
+		return locationIdStr;
+	}
+	public void setLocationIdStr(String locationIdStr) {
+		this.locationIdStr = locationIdStr;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getMandal() {
+		return mandal;
+	}
+	public void setMandal(String mandal) {
+		this.mandal = mandal;
+	}
+	public Long getMeesevaCentersRural() {
+		return meesevaCentersRural;
+	}
+	public void setMeesevaCentersRural(Long meesevaCentersRural) {
+		this.meesevaCentersRural = meesevaCentersRural;
+	}
+	public Long getMeesevaCentersUrban() {
+		return meesevaCentersUrban;
+	}
+	public void setMeesevaCentersUrban(Long meesevaCentersUrban) {
+		this.meesevaCentersUrban = meesevaCentersUrban;
+	}
+	public Long getFrom2014Rural() {
+		return from2014Rural;
+	}
+	public void setFrom2014Rural(Long from2014Rural) {
+		this.from2014Rural = from2014Rural;
+	}
+	public Long getFrom2014Urban() {
+		return from2014Urban;
+	}
+	public void setFrom2014Urban(Long from2014Urban) {
+		this.from2014Urban = from2014Urban;
+	}
+	public Long getLastYearRural() {
+		return lastYearRural;
+	}
+	public void setLastYearRural(Long lastYearRural) {
+		this.lastYearRural = lastYearRural;
+	}
+	public Long getLastYearUrban() {
+		return lastYearUrban;
+	}
+	public void setLastYearUrban(Long lastYearUrban) {
+		this.lastYearUrban = lastYearUrban;
+	}
+	public Long getThisYearRural() {
+		return thisYearRural;
+	}
+	public void setThisYearRural(Long thisYearRural) {
+		this.thisYearRural = thisYearRural;
+	}
+	public Long getThisYearUrban() {
+		return thisYearUrban;
+	}
+	public void setThisYearUrban(Long thisYearUrban) {
+		this.thisYearUrban = thisYearUrban;
+	}
+	public Long getLastMnthRural() {
+		return lastMnthRural;
+	}
+	public void setLastMnthRural(Long lastMnthRural) {
+		this.lastMnthRural = lastMnthRural;
+	}
+	public Long getLastMnthUrban() {
+		return lastMnthUrban;
+	}
+	public void setLastMnthUrban(Long lastMnthUrban) {
+		this.lastMnthUrban = lastMnthUrban;
 	} 
 	
 }
