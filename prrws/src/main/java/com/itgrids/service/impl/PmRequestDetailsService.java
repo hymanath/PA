@@ -3064,17 +3064,22 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			
 				/*Object[] maxList = pmSubWorkDetailsDAO.getMaxEndorsementAndTempEndorsementNos();
 				Long saveTempEndorseNo = 0l;
+				int saveStatus = 0;
 				if(maxList != null){
-					String maxEndorNo = commonMethodsUtilService.getStringValueForObject(maxList[0]);
-					String tempEnodrse = commonMethodsUtilService.getStringValueForObject(maxList[1]);
-					if(maxEndorNo != "" && tempEnodrse !="" && Long.valueOf(maxEndorNo)>Long.valueOf(tempEnodrse)){
-						saveTempEndorseNo = Long.valueOf(maxEndorNo) +1l;
-						int saveStatus = pmSubWorkDetailsDAO.saveTempEndorseNo(inputVO.getPageId(),inputVO.getSchemeIdsList(),saveTempEndorseNo.toString(),inputVO.getBlockLevelId(),dateUtilService.getCurrentDateAndTime());
-					}else if(maxEndorNo != "" && tempEnodrse !="" && Long.valueOf(tempEnodrse)>Long.valueOf(maxEndorNo)){
-						saveTempEndorseNo = Long.valueOf(tempEnodrse) +1l;
-						inputVO.setEndValue(saveTempEndorseNo.toString());
-						int saveStatus = pmSubWorkDetailsDAO.saveTempEndorseNo(inputVO.getPageId(),inputVO.getSchemeIdsList(),saveTempEndorseNo.toString(),inputVO.getBlockLevelId(),dateUtilService.getCurrentDateAndTime());
+					Long maxEndorNo = commonMethodsUtilService.getLongValueForObject(maxList[0]);
+					Long tempEnodrse = commonMethodsUtilService.getLongValueForObject(maxList[1]);
+					if(maxEndorNo.longValue()>tempEnodrse.longValue()){
+						saveTempEndorseNo = maxEndorNo.longValue() +1l;
+						 saveStatus = pmSubWorkDetailsDAO.saveTempEndorseNo(inputVO.getPageId(),inputVO.getSchemeIdsList(),saveTempEndorseNo.toString(),inputVO.getBlockLevelId(),dateUtilService.getCurrentDateAndTime());
+						//inputVO.setEndValue(saveTempEndorseNo.toString());
+					}else if(tempEnodrse.longValue()>maxEndorNo.longValue()){
+						saveTempEndorseNo =tempEnodrse.longValue() +1l;
+						 saveStatus = pmSubWorkDetailsDAO.saveTempEndorseNo(inputVO.getPageId(),inputVO.getSchemeIdsList(),saveTempEndorseNo.toString(),inputVO.getBlockLevelId(),dateUtilService.getCurrentDateAndTime());
+						//inputVO.setEndValue(saveTempEndorseNo.toString());
 					}
+				}
+				if(saveStatus != 0){
+					inputVO.setEndValue(saveTempEndorseNo.toString());
 				}*/
 				String str1 = pmRequiredFileFormatTextDAO.getCoverLetterMessage(inputVO.getDesignationIds());
 				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getDeptCode(),dateUtilService.getCurrentDateAndTime());

@@ -516,6 +516,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		query.setParameter("userId", userId);
 		query.setParameter("updateTime", updateTime);
 		query.setParameter("petitionId", petitionId);
+		query.setParameter("tempEndorsNo", tempEndorsNo);
 		return query.executeUpdate();
 	}
 }

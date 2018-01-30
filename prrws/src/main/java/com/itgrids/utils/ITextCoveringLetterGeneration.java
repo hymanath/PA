@@ -78,7 +78,7 @@ public class ITextCoveringLetterGeneration  {
 	//representeeList.add(pmRequestVO3);
 	petitionDetailsVO.getReferDetailsList().addAll(representeeList);
 	petitionDetailsVO.setWorkName("requesting for sanction ...ost of Rs.150.00 Lakhs.");
-	String str1 = "  Please find the enclosed representations recieved from of Mis./Mr. #rname #rdesig #rconst #rdist with referrance of #ref Please take action for below mentioned works as #lead #grname #works";
+	String str1 = " Please find the enclosed representation recieved from #rname #ref #works #lead";
 	//String staticPath =IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/2018/1/24" ;//commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER);
 	//if(staticPath != null && staticPath.equalsIgnoreCase("FAILED"))
 		//throw new Exception("File path not available . Please check once file path.");
@@ -196,7 +196,9 @@ public class ITextCoveringLetterGeneration  {
 			 }
 			 if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0")){
 				 str1 = str1.replace("#lead", "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-				 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+inputVO.getLeadName());
+				 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+				 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+				 		""+inputVO.getLeadName());
 			 }else{
 				 str1 = str1.replace("#lead", "");
 			 }
@@ -261,6 +263,8 @@ public class ITextCoveringLetterGeneration  {
 										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
 										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
 										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
 										"With regards,</td>");
 							str.append("</tr>");
 						str.append("</table>");
