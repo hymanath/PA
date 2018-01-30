@@ -1,5 +1,8 @@
 package com.itgrids.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SolidWasteManagementVO {
 	
 	private String id;
@@ -26,6 +29,24 @@ public class SolidWasteManagementVO {
 	private Double swmCollection=0.00;
 	private Long blocks=0L;
 	private Long rfidTracking=0L;
+	private Long inTime=0L;
+	private Long outTime=0L;
+	private Long outOfTarget=0L;
+	private Long averageTarget=0L;
+	private Long averageInTime=0L;
+	private Long averageOutTime=0L;
+	private Long achieve=0L;
+	private Long target=0L;
+	private Long totalRfidTags=0L;
+	private Double trackingPer =0.00; 
+	private Long totalTime =0L;  
+	private Double AvertrackingPer =0.00;
+	private Long averageTime=0L;
+	private Long locationId=0L;
+	private String  locationName;
+	private Long   blockNo=0L;
+	private List<SolidWasteManagementVO> subList = new ArrayList<SolidWasteManagementVO>(0);
+	
 	public String getId() {
 		return id;
 	}
@@ -170,5 +191,108 @@ public class SolidWasteManagementVO {
 	public void setRfidTracking(Long rfidTracking) {
 		this.rfidTracking = rfidTracking;
 	}
+	public Long getInTime() {
+		return inTime;
+	}
+	public void setInTime(Long inTime) {
+		this.inTime = inTime;
+	}
+	public Long getOutTime() {
+		return outTime;
+	}
+	public void setOutTime(Long outTime) {
+		this.outTime = outTime;
+	}
+	public Long getOutOfTarget() {
+		return outOfTarget;
+	}
+	public void setOutOfTarget(Long outOfTarget) {
+		this.outOfTarget = outOfTarget;
+	}
+	public Long getAverageTarget() {
+		return averageTarget;
+	}
+	public void setAverageTarget(Long averageTarget) {
+		this.averageTarget = averageTarget;
+	}
+	public Long getAverageInTime() {
+		return averageInTime;
+	}
+	public void setAverageInTime(Long averageInTime) {
+		this.averageInTime = averageInTime;
+	}
+	public Long getAverageOutTime() {
+		return averageOutTime;
+	}
+	public void setAverageOutTime(Long averageOutTime) {
+		this.averageOutTime = averageOutTime;
+	}
+	public Long getAchieve() {
+		return achieve;
+	}
+	public void setAchieve(Long achieve) {
+		this.achieve = achieve;
+	}
+	public Long getTarget() {
+		return target;
+	}
+	public void setTarget(Long target) {
+		this.target = target;
+	}
+	public Long getTotalRfidTags() {
+		return totalRfidTags;
+	}
+	public void setTotalRfidTags(Long totalRfidTags) {
+		this.totalRfidTags = totalRfidTags;
+	}
+	public Double getTrackingPer() {
+		return trackingPer;
+	}
+	public void setTrackingPer(Double trackingPer) {
+		this.trackingPer = trackingPer;
+	}
+	public Long getTotalTime() {
+		return totalTime;
+	}
+	public void setTotalTime(Long totalTime) {
+		this.totalTime = totalTime;
+	}
+	public Double getAvertrackingPer() {
+		return AvertrackingPer;
+	}
+	public void setAvertrackingPer(Double avertrackingPer) {
+		AvertrackingPer = avertrackingPer;
+	}
+	public Long getAverageTime() {
+		return averageTime;
+	}
+	public void setAverageTime(Long averageTime) {
+		this.averageTime = averageTime;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public Long getBlockNo() {
+		return blockNo;
+	}
+	public void setBlockNo(Long blockNo) {
+		this.blockNo = blockNo;
+	}
+	public List<SolidWasteManagementVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<SolidWasteManagementVO> subList) {
+		this.subList = subList;
+	}
 	
+		
 }
