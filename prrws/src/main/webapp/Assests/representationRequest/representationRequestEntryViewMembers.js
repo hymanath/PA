@@ -2350,3 +2350,8 @@ function petitionWiseRepresenteeDetails(result){
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 	});
   }
+  $(document).on("click",".petitionModelClose",function(){
+	setTimeout(function(){
+	 $('body').addClass("modal-open");
+	}, 500);
+	});
