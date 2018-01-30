@@ -120,12 +120,12 @@ function buildPetitionDetailsView(result){
 																	
 																	if(result.historyList[h].subList1[j].subList1[k].subList1[l].subList1 !='undefined' && result.historyList[h].subList1[j].subList1[k].subList1[l].subList1 != null && result.historyList[h].subList1[j].subList1[k].subList1[l].subList1.length>0){
 																		for(var m in result.historyList[h].subList1[j].subList1[k].subList1[l].subList1){
-																			var obj ={
+																			/*var obj ={
 																						filesArr:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[0].filesList,
 																						name:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+''+p+''
 																					}
 																					historyDocsArr.push(obj);
-																										
+																				*/						
 																			str+='<div class="col-sm-3">';
 																				str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="latestHistory" attr_name="latestHistory" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-paperclip" aria-hidden="true"></i> <u>'+result.historyList[h].subList1[j].subList1[k].subList1[l].subList1[m].name+' </u></p></div>';
 																			str+='</div>';
