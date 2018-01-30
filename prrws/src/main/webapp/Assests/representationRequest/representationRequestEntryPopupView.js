@@ -89,33 +89,15 @@ function buildPetitionDetailsView(result){
 					//	if(i==0){
 							if(result.historyList[h].subList1 !='undefined' && result.historyList[h].subList1 != null && result.historyList[h].subList1.length>0){
 								for(var j in result.historyList[h].subList1){
+									if(j==0){
 									if(result.historyList[h].subList1[j].subList1 !='undefined' && result.historyList[h].subList1[j].subList1 != null && result.historyList[h].subList1[j].subList1.length>0){
 										for(var k in result.historyList[h].subList1[j].subList1){
 											if(k==0){
 											str+='<div class="pad_light_yash_bg m_top20" style="border: 1px solid #ccc;border-radius: 5px;">';
 												str+='<div class="row">';
 													str+='<div class="">';
-														str+='<div class="col-sm-2">';
-															str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8;">';
-																str+='<h5 class="font_weight" style="color:#1283C8">By&nbsp;:'+result.historyList[h].subList1[j].subList1[k].designation+'</h5><h5 class="font_weight f_10 m_top5">'+result.historyList[h].subList1[j].subList1[k].officerName+'</h5>';
-															str+='</div>';
-														str+='</div>';
 														
-														if(result.historyList[h].subList1[j].subList1[k].subList1 !='undefined' && result.historyList[h].subList1[j].subList1[k].subList1 != null && result.historyList[h].subList1[j].subList1[k].subList1.length>0){
-															for(var l in result.historyList[h].subList1[j].subList1[k].subList1){
-																if(result.historyList[h].subList1[j].subList1[k].subList1[l].actionId == 4){
-																	
-																	if(result.historyList[h].subList1[j].subList1[k].subList1[l].subList1 !='undefined' && result.historyList[h].subList1[j].subList1[k].subList1[l].subList1 != null && result.historyList[h].subList1[j].subList1[k].subList1[l].subList1.length>0){
-																		for(var m in result.historyList[h].subList1[j].subList1[k].subList1[l].subList1){
-																			str+='<div class="col-sm-3">';
-																				str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="referral" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-paperclip" aria-hidden="true"></i> <u>'+result.historyList[h].subList1[j].subList1[k].subList1[l].subList1[m].name+' </u></p></div>';
-																			str+='</div>';
-																		}
-																	}
-																}
-															}
-														}
-														str+='<div class="col-sm-3 pull-right">';
+														str+='<div class="col-sm-3 pull-left">';
 															if(result.historyList[h].subList1[j].subList1[k].stautus == "Completed"){
 																	str+='<div class="pad_white_bg " style="padding:10px;border: 1px solid #00DF0F;">';
 																	str+='<h5 class="font_weight" ><span style="background-color:#00DF0F;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.historyList[h].subList1[j].subList1[k].stautus+'</h5>';	
@@ -131,17 +113,54 @@ function buildPetitionDetailsView(result){
 															}
 															str+='</div>';
 														str+='</div>';
+														
+														if(result.historyList[h].subList1[j].subList1[k].subList1 !='undefined' && result.historyList[h].subList1[j].subList1[k].subList1 != null && result.historyList[h].subList1[j].subList1[k].subList1.length>0){
+															for(var l in result.historyList[h].subList1[j].subList1[k].subList1){
+																if(result.historyList[h].subList1[j].subList1[k].subList1[l].actionId == 4){
+																	
+																	if(result.historyList[h].subList1[j].subList1[k].subList1[l].subList1 !='undefined' && result.historyList[h].subList1[j].subList1[k].subList1[l].subList1 != null && result.historyList[h].subList1[j].subList1[k].subList1[l].subList1.length>0){
+																		for(var m in result.historyList[h].subList1[j].subList1[k].subList1[l].subList1){
+																			var obj ={
+																						filesArr:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[0].filesList,
+																						name:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+''+p+''
+																					}
+																					historyDocsArr.push(obj);
+																										
+																			str+='<div class="col-sm-3">';
+																				str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="latestHistory" attr_name="latestHistory" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-paperclip" aria-hidden="true"></i> <u>'+result.historyList[h].subList1[j].subList1[k].subList1[l].subList1[m].name+' </u></p></div>';
+																			str+='</div>';
+																		}
+																	}
+																}
+															}
+														}
+														
 													str+='</div>';
+													str+='<div class="col-sm-12 m_top15 ">';
+														str+='<h5 class="pull-left f_12 font_weight"><span style="color:#1283C8">ACTION:</span> '+result.historyList[h].subList1[j].subList1[k].subList1[0].actionName+'</h5>';
+													str+='</div>';
+													
 													str+='<div class="col-sm-12 m_top5">';
 														str+='<b>Remarks : </b>';
 														str+='<h5>'+result.historyList[h].subList1[j].subList1[k].subList1[0].remarks+'</h5>';
 													str+='</div>';
 													str+='<div class="col-sm-12 m_top15 ">';
-															if(result.historyList[h].subList1[j].subList1[k].assignedToDesignation !='undefined' && result.historyList[h].subList1[j].subList1[k].assignedToDesignation != null && result.historyList[h].subList1[j].subList1[k].assignedToDesignation.length>0)
-																	str+='<h5 class="pull-left"  ><u style="color:#1283C8" > ASSIGNED TO</u> :  '+result.historyList[h].subList1[j].subList1[k].assignedToDesignation+'</h5>';
+															if(result.historyList[h].subList1[j].subList1[k].assignedToDesignation !='undefined' && result.historyList[h].subList1[j].subList1[k].assignedToDesignation != null && result.historyList[h].subList1[j].subList1[k].assignedToDesignation.length>0){
+																	str+='<div class="col-sm-6">';
+																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > ASSIGNED TO</u> : '+result.historyList[h].subList1[j].subList1[k].assignedToOfficerName+' ('+result.historyList[h].subList1[j].subList1[k].assignedToDesignation+')</h5>';
+																	str+='</div>';
+															}
 										
-													
-														str+='<h5 class="pull-right"  style="color:#1283C8" ><u>'+result.historyList[h].subList1[j].timeStr+' @ '+result.historyList[h].subList1[j].subList1[k].timeStr+'</u></h5>';
+														
+														str+='<div class="col-sm-2 pull-right">';
+															str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8;">';
+																str+='<h5 class="font_weight" style="color:#1283C8">By&nbsp;:'+result.historyList[h].subList1[j].subList1[k].designation+'</h5><h5 class="font_weight f_10 m_top5">'+result.historyList[h].subList1[j].subList1[k].officerName+'</h5>';
+															str+='</div>';
+														str+='</div>';
+														str+='<div class="col-sm-2 pull-right">';
+															str+='<h5 class="pull-right"  style="color:#1283C8" ><u>'+result.historyList[h].subList1[j].timeStr+' @ '+result.historyList[h].subList1[j].subList1[k].timeStr+'</u></h5>';
+														str+='</div>';
+														
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
@@ -160,7 +179,7 @@ function buildPetitionDetailsView(result){
 									}
 								}
 							}
-						//}
+						}
 					//}
 						
 				str+='</div>';		
@@ -956,7 +975,8 @@ function buildPetitionDetailsView(result){
 					//	if(i==0){
 							if(result.subWorksList[i].subWorksList[j].historyList[h].subList1 !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1 != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1.length>0){
 								for(var s in result.subWorksList[i].subWorksList[j].historyList[h].subList1){
-									if(s==0){
+									//alert(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].workId);
+									if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].workId==result.subWorksList[i].subWorksList[j].workId){
 									if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1 !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1 != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1.length>0){
 										for(var k in result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1){
 											if(k==0){
@@ -1009,7 +1029,7 @@ function buildPetitionDetailsView(result){
 																str+='</div>';
 																str+='<div class="col-sm-12 m_top15 ">';
 																	if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation.length>0)
-																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > ASSIGNED TO</u> :  '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation+'</h5>';
+																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > ASSIGNED TO</u> : '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToOfficerName+' ('+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation+')</h5>';
 																
 																	str+='<h5 class="pull-right"  style="color:#1283C8" ><u>'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].timeStr+' @ '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].timeStr+'</u></h5>';
 																str+='</div>';
@@ -1231,7 +1251,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#assignDesignationDivId").show();
 		$("#fileUploadDiv").hide();
 		$("#fileUploadIdDiv").show();
-		$(".saveEnable").prop("disabled", true);
+		//$(".saveEnable").prop("disabled", true);
 		$("#buttonNameId").html("Forward")
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
@@ -1245,8 +1265,8 @@ $(document).on("change","#statusChangeId",function(){
 		$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
 		
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
-		$('.saveEnable').attr('data-toggle', 'tooltip');
-		$('.saveEnable').attr('title', 'Please generate the covering letter.');
+		//$('.saveEnable').attr('data-toggle', 'tooltip');
+		//$('.saveEnable').attr('title', 'Please generate the covering letter.');
 	}else if(statusId == 6){
 		$("#endorsementNoErr").html('');
 		$("#endorsentDivId").hide();
@@ -1291,8 +1311,8 @@ $(document).on("change","#statusChangeId",function(){
 		initializeSingleUploadDocument("uploadEndorsementDocId");
 		$("#fileUploadDiv").show();
 		$("#fileUploadIdDiv").hide();
-		$(".saveEnable").prop("disabled", false);
-		$('.saveEnable').removeAttr('title');
+		//$(".saveEnable").prop("disabled", false);
+		//$('.saveEnable').removeAttr('title');
 		$("#coveringLetterGenerator").html("");
 	}else if(statusId == 3 || statusId == 4 || statusId == 5){
 		$("#endorsentDivId").hide();
@@ -1308,8 +1328,8 @@ $(document).on("change","#statusChangeId",function(){
 	    $("#fileUploadDiv").hide();
 		$("#fileUploadIdDiv").hide();
 		$("#buttonNameId").html("Save Details")
-		$(".saveEnable").prop("disabled", false);
-		$('.saveEnable').removeAttr('title');
+		//$(".saveEnable").prop("disabled", false);
+		//$('.saveEnable').removeAttr('title');
 		$("#coveringLetterGenerator").html("");
 	}
 	else if(statusId == 0){
@@ -1325,9 +1345,9 @@ $(document).on("change","#statusChangeId",function(){
 		$("#endorsmentNo").val('');
 		$("#remarksId").val('');
 		$("#leadId").html('');
-		$(".saveEnable").prop("disabled", false);
-		$('.saveEnable').removeAttr('title');
-		$('.saveEnable').tooltip({disabled: true});
+		//$(".saveEnable").prop("disabled", false);
+		//$('.saveEnable').removeAttr('title');
+		//$('.saveEnable').tooltip({disabled: true});
 		$("#leadId").html('<option value="0"> SELECT LEAD </option>');
 		$("#leadId").trigger("chosen:updated");
 		$("#grantId").html('');
@@ -1615,7 +1635,7 @@ $.ajax({
 						   setTimeout(function () {
 						 $("#endorseMentModalDivId").modal("hide");
 						}, 1000);
-							$(".saveEnable").prop("disabled", true);
+							//$(".saveEnable").prop("disabled", true);
 						 
 						 // alert("Work(s) details updated successfully");
 						 
@@ -1635,7 +1655,7 @@ $.ajax({
 				setTimeout(function () {
 						$("#ajaxImageId").html("<center><h4 style='color: green;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h4></center>").fadeOut(3000);
 						}, 500);
-						$(".saveEnable").prop("disabled", false);
+						//$(".saveEnable").prop("disabled", false);
 				//console.log(request);
 				//console.log(error);
 				 //$("#").html("<center><h5 style='color: green;margin-top:-25px;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h5></center>")
@@ -1812,7 +1832,7 @@ var json = {
 					str+='</div>';
 					$("#coverLetterPath").val(result.exceptionMsg);
 					//$("#saveBtnId").show();
-					$(".saveEnable").prop("disabled", false);
+					//$(".saveEnable").prop("disabled", false);
 				}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
 					str+='<a class="fancyboxView" href="#inlineddds">';
 						str+='<img src="http://www.mydepartments.in/PRRWS/'+result.exceptionMsg+'"  width="100%" height="100px;"></img>';
@@ -2061,13 +2081,13 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 						str+='<tbody>';
 						
 							for(var i in result.subList1){
-								
-								if(result.subList1[i].subList1 != 'undefined' && result.subList1[i].subList1 != null && result.subList1[i].subList1.length>0){
+								if(i==0){
+									if(result.subList1[i].subList1 != 'undefined' && result.subList1[i].subList1 != null && result.subList1[i].subList1.length>0){
 								
 									for(var k in result.subList1[i].subList1){
 										if(parseInt(result.subList1[i].subList1[k].workId)>0){
 												str+='<tr>';
-													str+='<td>'+(parseInt(i)+parseInt(1))+'</td>';
+													str+='<td>'+parseInt(k)+'</td>';
 													str+='<td>'+result.subList1[i].subList1[k].subList1[0].subList1[0].pmDepartment+'</td>';
 													str+='<td>'+result.subList1[i].subList1[k].subList1[0].subList1[0].subWorkDesc+'</td>';
 													str+='<td>'+result.subList1[i].subList1[k].subList1[0].subList1[0].subList1[0].remarks+'<br> '+result.subList1[i].subList1[k].subList1[0].timeStr+' @ '+result.subList1[i].subList1[k].subList1[0].subList1[0].timeStr+'</td>';
@@ -2081,6 +2101,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 										}
 									}
 								}
+							}
 							}
 						str+='</tbody>';
 					str+='</table>';
@@ -2103,27 +2124,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 								str+='<div class="pad_light_yash_bg m_top20" style="border: 1px solid #ccc;border-radius: 5px;">';
 									str+='<div class="row">';
 										str+='<div class="">';
-											str+='<div class="col-sm-3">';
-												str+='<div class="pad_white_bg" style="padding:5px;border: 1px solid #1283C8;">';
-													str+='<h5 class="font_weight" style="color:#1283C8"> Updated By : '+result.petitionHistoryList[i].subList1[j].subList1[k].designation+'</h5><h5 class="font_weight">'+result.petitionHistoryList[i].subList1[j].subList1[k].officerName+'</h5>';
-												str+='</div>';
-											str+='</div>';
-											
-											if(result.petitionHistoryList[i].subList1[j].subList1[k].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[k].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[k].subList1.length>0){
-												for(var l in result.petitionHistoryList[i].subList1[j].subList1[k].subList1){
-													if(result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].actionId == 4){
-														
-														if(result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1.length>0){
-															for(var m in result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1){
-																str+='<div class="col-sm-3">';
-																	str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="referral" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-paperclip" aria-hidden="true"></i> <u class="f_12">'+result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1[m].name+' </u></p></div>';
-																str+='</div>';
-															}
-														}
-													}
-												}
-											}
-											str+='<div class="col-sm-3 pull-right">';
+											str+='<div class="col-sm-3 pull-left">';
 												if(result.petitionHistoryList[i].subList1[j].subList1[k].stautus == "Completed"){
 														str+='<div class="pad_white_bg" style="padding:10px;border: 1px solid #00DF0F;">';
 														str+='<h5 class="font_weight f_13" ><span style="background-color:#00DF0F;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[k].stautus+'</h5>';	
@@ -2137,8 +2138,6 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 													str+='<div class="pad_white_bg" style="padding:10px;border: 1px solid #FFC400;">';
 													str+='<h5 class="font_weight f_13" ><span style="background-color:#FFC400;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[k].stautus+'</h5>';
 												}
-												
-													
 												str+='</div>';
 											str+='</div>';
 										str+='</div>';
@@ -2151,11 +2150,35 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 											str+='<b>Remarks : </b>';
 											str+='<h5>'+result.petitionHistoryList[i].subList1[j].subList1[k].subList1[0].remarks+'</h5>';
 										str+='</div>';
+											if(result.petitionHistoryList[i].subList1[j].subList1[k].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[k].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[k].subList1.length>0){
+												for(var l in result.petitionHistoryList[i].subList1[j].subList1[k].subList1){
+													if(result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].actionId == 4){
+														
+														if(result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1.length>0){
+															for(var m in result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1){
+																str+='<div class="col-sm-3">';
+																	str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-paperclip" aria-hidden="true"></i> <u class="f_12">'+result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1[m].name+' </u></p></div>';
+																str+='</div>';
+															}
+														}
+													}
+												}
+											}
+											
 										str+='<div class="col-sm-12 m_top15 ">';
-										if(result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation != null && result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation.length>0)
-											str+='<h5 class="pull-left f_12 font_weight"><span style="color:#1283C8">ASSIGNED TO :</span> '+result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation+'</h5>';
-										
-											str+='<h5 class="pull-right"  style="color:#1283C8" ><u>'+result.petitionHistoryList[i].subList1[j].timeStr+' @ '+result.petitionHistoryList[i].subList1[j].subList1[k].timeStr+'</u></h5>';
+											if(result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation != null && result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation.length>0){
+												str+='<div class="col-sm-6">';
+													str+='<h5 class="pull-left f_12 font_weight"><span style="color:#1283C8">ASSIGNED TO :</span>'+result.petitionHistoryList[i].subList1[j].subList1[k].assignedToOfficerName+' ('+result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation+')</h5>';
+												str+='</div>';
+											}
+											str+='<div class="col-sm-3  pull-right ">';
+												str+='<div class="pad_white_bg" style="padding:5px;border: 1px solid #1283C8;">';
+													str+='<h5 class="font_weight" style="color:#1283C8"> By : '+result.petitionHistoryList[i].subList1[j].subList1[k].designation+'</h5><h5 class="font_weight" style="text-align:center;">'+result.petitionHistoryList[i].subList1[j].subList1[k].officerName+'</h5>';
+												str+='</div>';
+											str+='</div>';
+											str+='<div class="col-sm-3">';
+												str+='<h5 class="pull-right"  style="color:#1283C8" ><u>'+result.petitionHistoryList[i].subList1[j].timeStr+' @ '+result.petitionHistoryList[i].subList1[j].subList1[k].timeStr+'</u></h5>';
+											str+='</div>';
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
@@ -2252,9 +2275,10 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																	str+='</div>';
 																		str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ACTION:</span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].actionName+'</h5>';
 																	
-																		str+='<p style="margin-left: 20px;" class="m_top10">'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].remarks+' </p>';
+																	str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style=""> Remarks </span>: </h5> <p style="margin-left: 20px;" class="m_top5">'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].remarks+' </p>';
+																	
 																		if(result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation != null && result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation.length>0)
-																			str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ASSIGNED:</span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation+'</h5>';
+																			str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ASSIGNED TO :</span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToOfficerName+' ('+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation+')</h5>';
 																			
 																			
 																			str+='<div class="row">';
@@ -2269,15 +2293,15 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																							for(var p in result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1){
 																								
 																								var obj ={
-																											filesArr:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[0].filesList,
-																											name:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+''+p+''
+																											filesArr:result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].subList1[0].filesList,
+																											name:"All"+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+''+p+''
 																										}
 																										historyDocsArr.push(obj);
 																							
 																								str+='<div class="col-sm-3 m_top15">';
 																									str+='<div style="background-color: #fff;padding:3px;border: 1px solid #ddd;">';
 																										str+='<div style="padding:5px;background-color:#fff">';
-																											str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+''+p+'"><i class="fa fa-paperclip" aria-hidden="true"></i> '+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+'</h5>';
+																											str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="All'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+''+p+'"><i class="fa fa-paperclip" aria-hidden="true"></i> '+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+'</h5>';
 																										str+='</div>';
 																									str+='</div>';
 																								str+='</div>';
@@ -2294,7 +2318,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																			str+='<div class="col-sm-3 pull-right">';
 																					str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
 																						str+='<h5 class="font_weight" ><span style="color:#1283C8">BY </span>  : '+result.subList1[j].subList1[k].subList1[l].subList1[m].designation+'</h5>';
-																						str+='<h5 class="font_weight m_top5">'+result.subList1[j].subList1[k].subList1[l].subList1[m].officerName+'</h5>';
+																						str+='<h5 class="font_weight m_top5" style="text-align: center;">'+result.subList1[j].subList1[k].subList1[l].subList1[m].officerName+'</h5>';
 																		
 																					str+='</div>';
 																				str+='</div>';

@@ -228,7 +228,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmPetitionAssignedOfficer.setPetitionId(petition.getPetitionId());
 						pmPetitionAssignedOfficer.setPmDepartmentDesignationId(userVO.getDeptDesignationId());
 						pmPetitionAssignedOfficer.setPmDepartmentDesignationOfficerId(userVO.getDeptDesignationOfficerId());
-						pmPetitionAssignedOfficer.setRemarks("New Petition Created and assigned to Minister/OSD.");
+						pmPetitionAssignedOfficer.setRemarks("New Petition Created and assigned to Minister peshi.");
 						pmPetitionAssignedOfficer.setIsDeleted("N");
 						pmPetitionAssignedOfficer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						pmPetitionAssignedOfficer.setInsertedUserId(pmRequestVO.getUserId());
@@ -864,7 +864,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						else
 							pmTrackingVO.setPmTrackingActionId(5L);//EDIT/UPDATED  PETITION
 						pmTrackingVO.setAssignedToPmPetitionAssignedOfficerId(assignedToPmPetitionAssignedOfficerId);
-						pmTrackingVO.setRemarks("New work Created and assigned to Minister/OSD.");
+						pmTrackingVO.setRemarks(" New work Created and assigned to Minister Peshi.");
 						pmTrackingVO.setPmSubWorkDetailsId(petitionSubWorkLocationDetails.getPmSubWorkDetailsId());
 						updatePetitionTracking(pmTrackingVO);
 					}
@@ -900,7 +900,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					else
 						pmTrackingVO.setPmTrackingActionId(5L);//EDIT/UPDATED  PETITION
 					pmTrackingVO.setAssignedToPmPetitionAssignedOfficerId(assignedToPmPetitionAssignedOfficerId);
-					pmTrackingVO.setRemarks("New work Created and assigned to Minister/OSD.");
+					pmTrackingVO.setRemarks("New work Created and assigned to Minister Peshi.");
 					pmTrackingVO.setPmSubWorkDetailsId(petitionSubWorkLocationDetails.getPmSubWorkDetailsId());
 					updatePetitionTracking(pmTrackingVO);
 				}
@@ -3237,6 +3237,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					if(userVO.getDeptDesignationId() != null && userVO.getDeptDesignationId().longValue()>0L)
 						pmTracking.setPmDepartmentDesignationId(userVO.getDeptDesignationId());
 				}
+				pmTracking.setIsDeleted("N");
 				pmTrackingDAO.save(pmTracking);
 				
 			} catch (Exception e) {
@@ -3814,87 +3815,93 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						for (Object[] param : historyList) {
 							Long petitinId =commonMethodsUtilService.getLongValueForObject(param[0]);
 							Long workId=commonMethodsUtilService.getLongValueForObject(param[1]);
-							Long actionId = commonMethodsUtilService.getLongValueForObject(param[2]);
-							String actionName =commonMethodsUtilService.getStringValueForObject(param[3]);
-							String path=commonMethodsUtilService.getStringValueForObject(param[4]);
-							String remarks=commonMethodsUtilService.getStringValueForObject(param[5]);
-							String dateTimeStr=commonMethodsUtilService.getStringValueForObject(param[6]);
-							Long insertedUserId = commonMethodsUtilService.getLongValueForObject(param[7]);
-							String userName =commonMethodsUtilService.getStringValueForObject(param[8]);
-							Long statusId = commonMethodsUtilService.getLongValueForObject(param[9]);
-							String stautus=commonMethodsUtilService.getStringValueForObject(param[10]);
-							Long officerId = commonMethodsUtilService.getLongValueForObject(param[11]);
-							String officerName=commonMethodsUtilService.getStringValueForObject(param[12]);
-							String mobileNo=commonMethodsUtilService.getStringValueForObject(param[13]);
-							Long pmOfficerdesgId = commonMethodsUtilService.getLongValueForObject(param[14]);
-							String designation=commonMethodsUtilService.getStringValueForObject(param[15]);
-							String deptName = commonMethodsUtilService.getStringValueForObject(param[16]);
-							String deptShortName = commonMethodsUtilService.getStringValueForObject(param[17]);
-							String subWorkDesc = commonMethodsUtilService.getStringValueForObject(param[18]);
-							String petitionDesc = commonMethodsUtilService.getStringValueForObject(param[19]);
-							Long documentId = commonMethodsUtilService.getLongValueForObject(param[20]);
-							
-							//Long assignedToDeptDesiOfficeId = commonMethodsUtilService.getLongValueForObject(param[21]);
-							String assignedToDesignation = commonMethodsUtilService.getStringValueForObject(param[22]);
-							String assignedToDesignationShortName = commonMethodsUtilService.getStringValueForObject(param[23]);
-							String assignedToOfficerName = commonMethodsUtilService.getStringValueForObject(param[24]);
-							String assignedToOfficerMobileNo = commonMethodsUtilService.getStringValueForObject(param[25]);
-							if(!assignedToOfficerMobileNo.isEmpty())
-								assignedToOfficerName = assignedToOfficerName+" "+assignedToOfficerMobileNo;
-							if(deptShortName != null && !deptShortName.isEmpty())
-								deptName = deptShortName ;
-							
-							String dateStr = dateTimeStr.substring(0, 11).trim(); //2018-01-28 17:15:46 --> 2018-01-28
-							String timeStr = dateTimeStr.substring(11, 16).trim(); //2018-01-28 17:15:46 --> 17:15
-							
-							//List<PetitionHistoryVO> historyWorkList = new LinkedList<PetitionHistoryVO>();
-							
-							Map<String,Map<String,List<PetitionHistoryVO>>> dateStrMap = new LinkedHashMap<String,Map<String,List<PetitionHistoryVO>>>();
-							Map<String,List<PetitionHistoryVO>> timeMap = new LinkedHashMap<String,List<PetitionHistoryVO>>();
-							List<PetitionHistoryVO> historyWorkList = new LinkedList<PetitionHistoryVO>();
-							PetitionHistoryVO historyVO = new PetitionHistoryVO();
-							if(newHistoryMap.get(workId) != null){
-								dateStrMap = newHistoryMap.get(workId);
+							String workIsDeleted=commonMethodsUtilService.getStringValueForObject(param[26]);
+							String petitionIsDeleted=commonMethodsUtilService.getStringValueForObject(param[27]);
+							if(petitionIsDeleted != null && petitionIsDeleted.equalsIgnoreCase("N")){
+								if(workIsDeleted != null && (workIsDeleted.equalsIgnoreCase("Y") || workIsDeleted.equalsIgnoreCase("")) && workId.longValue()>0L )
+								  continue;
+								Long actionId = commonMethodsUtilService.getLongValueForObject(param[2]);
+								String actionName =commonMethodsUtilService.getStringValueForObject(param[3]);
+								String path=commonMethodsUtilService.getStringValueForObject(param[4]);
+								String remarks=commonMethodsUtilService.getStringValueForObject(param[5]);
+								String dateTimeStr=commonMethodsUtilService.getStringValueForObject(param[6]);
+								Long insertedUserId = commonMethodsUtilService.getLongValueForObject(param[7]);
+								String userName =commonMethodsUtilService.getStringValueForObject(param[8]);
+								Long statusId = commonMethodsUtilService.getLongValueForObject(param[9]);
+								String stautus=commonMethodsUtilService.getStringValueForObject(param[10]);
+								Long officerId = commonMethodsUtilService.getLongValueForObject(param[11]);
+								String officerName=commonMethodsUtilService.getStringValueForObject(param[12]);
+								String mobileNo=commonMethodsUtilService.getStringValueForObject(param[13]);
+								Long pmOfficerdesgId = commonMethodsUtilService.getLongValueForObject(param[14]);
+								String designation=commonMethodsUtilService.getStringValueForObject(param[15]);
+								String deptName = commonMethodsUtilService.getStringValueForObject(param[16]);
+								String deptShortName = commonMethodsUtilService.getStringValueForObject(param[17]);
+								String subWorkDesc = commonMethodsUtilService.getStringValueForObject(param[18]);
+								String petitionDesc = commonMethodsUtilService.getStringValueForObject(param[19]);
+								Long documentId = commonMethodsUtilService.getLongValueForObject(param[20]);
+								
+								//Long assignedToDeptDesiOfficeId = commonMethodsUtilService.getLongValueForObject(param[21]);
+								String assignedToDesignation = commonMethodsUtilService.getStringValueForObject(param[22]);
+								String assignedToDesignationShortName = commonMethodsUtilService.getStringValueForObject(param[23]);
+								String assignedToOfficerName = commonMethodsUtilService.getStringValueForObject(param[24]);
+								String assignedToOfficerMobileNo = commonMethodsUtilService.getStringValueForObject(param[25]);
+								if(!assignedToOfficerMobileNo.isEmpty())
+									assignedToOfficerName = assignedToOfficerName+" "+assignedToOfficerMobileNo;
+								if(deptShortName != null && !deptShortName.isEmpty())
+									deptName = deptShortName ;
+								
+								String dateStr = dateTimeStr.substring(0, 11).trim(); //2018-01-28 17:15:46 --> 2018-01-28
+								String timeStr = dateTimeStr.substring(11, 16).trim(); //2018-01-28 17:15:46 --> 17:15
+								
+								//List<PetitionHistoryVO> historyWorkList = new LinkedList<PetitionHistoryVO>();
+								
+								Map<String,Map<String,List<PetitionHistoryVO>>> dateStrMap = new LinkedHashMap<String,Map<String,List<PetitionHistoryVO>>>();
+								Map<String,List<PetitionHistoryVO>> timeMap = new LinkedHashMap<String,List<PetitionHistoryVO>>();
+								List<PetitionHistoryVO> historyWorkList = new LinkedList<PetitionHistoryVO>();
+								PetitionHistoryVO historyVO = new PetitionHistoryVO();
+								if(newHistoryMap.get(workId) != null){
+									dateStrMap = newHistoryMap.get(workId);
+								}
+								if(dateStrMap.get(dateStr) != null){
+									timeMap = dateStrMap.get(dateStr);
+								}
+								if(timeMap.get(timeStr) != null){
+									historyWorkList = timeMap.get(timeStr);
+								}
+								
+								historyVO.setId(petitinId);
+								historyVO.setWorkId(workId);
+								historyVO.setActionId(actionId);
+								historyVO.setActionName(actionName);
+								historyVO.setPath(path);
+								historyVO.setRemarks(remarks);
+								historyVO.setTimeStr(timeStr);
+								historyVO.setInsertedUserId(insertedUserId);
+								historyVO.setUserName(userName);
+								historyVO.setStatusId(statusId);
+								historyVO.setStautus(stautus);
+								historyVO.setOfficerId(officerId);
+								historyVO.setOfficerName(officerName);
+								historyVO.setPmOfficerDesgId(pmOfficerdesgId);
+								historyVO.setDesignation(designation);
+								historyVO.setPmDepartment(deptName);
+								historyVO.setSubWorkDesc(subWorkDesc);
+								historyVO.setPetitionDesc(petitionDesc);
+								historyVO.setId(documentId);
+								historyVO.setAssignedToDesignation(assignedToDesignation);
+								historyVO.setAssignedToOfficerName(assignedToOfficerName);
+								historyVO.setShortName(assignedToDesignationShortName);
+								
+								if(historyVO.getOfficerName() ==null || historyVO.getOfficerName().isEmpty())
+									historyVO.setOfficerName(mobileNo);
+								else if(mobileNo !=null && !mobileNo.isEmpty())
+									historyVO.setOfficerName(historyVO.getOfficerName()+"-"+mobileNo);
+								
+								historyWorkList.add(historyVO);
+								timeMap.put(timeStr, historyWorkList);
+								dateStrMap.put(dateStr, timeMap);
+								newHistoryMap.put(workId, dateStrMap);
 							}
-							if(dateStrMap.get(dateStr) != null){
-								timeMap = dateStrMap.get(dateStr);
-							}
-							if(timeMap.get(timeStr) != null){
-								historyWorkList = timeMap.get(timeStr);
-							}
-							
-							historyVO.setId(petitinId);
-							historyVO.setWorkId(workId);
-							historyVO.setActionId(actionId);
-							historyVO.setActionName(actionName);
-							historyVO.setPath(path);
-							historyVO.setRemarks(remarks);
-							historyVO.setTimeStr(timeStr);
-							historyVO.setInsertedUserId(insertedUserId);
-							historyVO.setUserName(userName);
-							historyVO.setStatusId(statusId);
-							historyVO.setStautus(stautus);
-							historyVO.setOfficerId(officerId);
-							historyVO.setOfficerName(officerName);
-							historyVO.setPmOfficerDesgId(pmOfficerdesgId);
-							historyVO.setDesignation(designation);
-							historyVO.setPmDepartment(deptName);
-							historyVO.setSubWorkDesc(subWorkDesc);
-							historyVO.setPetitionDesc(petitionDesc);
-							historyVO.setId(documentId);
-							historyVO.setAssignedToDesignation(assignedToDesignation);
-							historyVO.setAssignedToOfficerName(assignedToOfficerName);
-							historyVO.setShortName(assignedToDesignationShortName);
-							
-							if(historyVO.getOfficerName() ==null || historyVO.getOfficerName().isEmpty())
-								historyVO.setOfficerName(mobileNo);
-							else if(mobileNo !=null && !mobileNo.isEmpty())
-								historyVO.setOfficerName(historyVO.getOfficerName()+"-"+mobileNo);
-							
-							historyWorkList.add(historyVO);
-							timeMap.put(timeStr, historyWorkList);
-							dateStrMap.put(dateStr, timeMap);
-							newHistoryMap.put(workId, dateStrMap);
 						}
 						
 						List<Object[]> list = pmSubWorkDetailsDAO.getAllWorksLatesStatusDetails(dataVO.getPetitionId());
@@ -3985,7 +3992,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 													timeVO.setOfficerName(hVO.getOfficerName());
 													
 													timeVO.setAssignedToDesignation(hVO.getAssignedToDesignation());
-													timeVO.setAssignedToOfficerName(timeVO.getAssignedToOfficerName());
+													timeVO.setAssignedToOfficerName(hVO.getAssignedToOfficerName());
 													timeVO.setShortName(timeVO.getShortName());
 													
 													if(!commonMethodsUtilService.isListOrSetValid(timeVO.getSubList1()))
@@ -4099,7 +4106,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								}
 								returnVO.getSubList1().add(workVO);
 							}
-							break;
+							//break;
 						}
 					}
 				}
