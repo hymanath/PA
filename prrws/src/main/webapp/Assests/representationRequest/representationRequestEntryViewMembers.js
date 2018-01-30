@@ -1296,7 +1296,7 @@ function getStatusList(statusId){
 		}
 		$("#statusId").trigger('chosen:updated');
 		if(searchBy == 'total' && statusId >0){
-			getRepresentativeSearchDetails1("subWork");
+			getRepresentativeSearchDetails1("petition");
 		}
   }); 
 }
