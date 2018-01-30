@@ -57,8 +57,23 @@ public class SolidWasteManagementController {
 				
 			} catch (Exception e) {
 				LOG.error("Exception raised at  getSolidWasteManagementOverAllCounts - SolidWasteManagementController controller", e);
+			   
 			}
 			return solidWasteManagementVO;
 		}
+	   @PostMapping("/getRfidTrackingOverAllTargets")
+		public @ResponseBody List<SolidWasteManagementVO> getRfidTrackingOverAllTargets(@RequestBody InputVO inputVO)
+		{
+			
+			List<SolidWasteManagementVO> solidWasteManagementVO=null;
+			try {
+				solidWasteManagementVO = solidWasteManagementService.getRfidTrackingOverAllTargets(inputVO);
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at  getSolidInfoLocationWise - SolidWasteManagementController controller", e);
+			}
+			return solidWasteManagementVO;
+		}
+	   
 	   
 }
