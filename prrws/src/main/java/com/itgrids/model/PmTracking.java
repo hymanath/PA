@@ -13,6 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * @author sys
+ *
+ */
 @Entity
 @Table(name = "pm_tracking")
 public class PmTracking {
@@ -30,7 +34,7 @@ public class PmTracking {
 	private Long insertedUserId;
 	private Long updateUserId;
 	private String remarks;
-	
+	private String isDeleted;
     private User insertedUser;
 	private User updatedUser;
 	private Date insertedTime;
@@ -235,6 +239,13 @@ public class PmTracking {
 	public void setAssignedToPmDepartmentDesignationOfficer(
 			PmDepartmentDesignationOfficer assignedToPmDepartmentDesignationOfficer) {
 		this.assignedToPmDepartmentDesignationOfficer = assignedToPmDepartmentDesignationOfficer;
+	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	
 }

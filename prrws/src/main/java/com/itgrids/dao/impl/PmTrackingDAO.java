@@ -108,7 +108,7 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 				+ " pmOfficerDesignation.pmOfficerDesignationId,pmOfficerDesignation.designation," +//14,15
 				"  pmDepartment.department ,pmDepartment.shortName,pmSubWorkDetails.grievanceDescrption,petition.workName , document.documentId," +//16,17,18,19,20
 				"  assignedToPmDepartmentDesignationOfficer.pmDepartmentDesignationOfficerId, assignedToPmOfficerDesignation.designation,assignedToPmOfficerDesignation.shortName," +//21,22,23
-				"  assignToPmOfficer.name, assignToPmOfficer.mobileNo" +//24,25
+				"  assignToPmOfficer.name, assignToPmOfficer.mobileNo,pmSubWorkDetails.isDeleted ,petition.isDeleted " +//24,25,26,27
 				" from PmTracking model  " +
 				" left join  model.pmTrackingAction pmTrackingAction " +
 				" left join  model.document document " +
@@ -129,12 +129,12 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 			   // " left join pmDepartmentDesignationOfficer.pmDepartmentDesignation pmDepartmentDesignation " +
 			   // " left join pmDepartmentDesignation.pmOfficerDesignation pmOfficerDesignation " +
 		
-		   str.append(" where ");
+		   str.append(" where model.isDeleted='N' ");
 			   if(petitionId != null && petitionId.longValue() >0l){
-				   str.append(" model.petitionId =:petitionId ");
+				   str.append(" and model.petitionId =:petitionId ");
 			   }	  
 				if(subWorksList != null && subWorksList.size()>0){
-					str.append("  model.pmSubWorkDetailsId in (:subWorksList) ");
+					str.append(" and  model.pmSubWorkDetailsId in (:subWorksList) ");
 				}
 			
 		str.append(" order by model.insertedTime desc ");
