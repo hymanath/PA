@@ -2110,90 +2110,154 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 		str+='</div>';
 		str+='</div>';
 
+		
+	$('#headingTileHistoryId').html('PETITION WORK WISE HISTORY');
 	str+='<div class="row m_top20">';
-	str+='<div class="col-sm-12">';
-		str+='<h5 class="font_weight">COMMENTS BOX</h5>';
-		str+='<div class="table-desig-scroll">';
-		str+='<div style="border:1px solid #ddd;padding:10px;" class="m_top10">';
-		for(var i in result.petitionHistoryList){
-			if(i==0){
-				if(result.petitionHistoryList[i].subList1 !='undefined' && result.petitionHistoryList[i].subList1 != null && result.petitionHistoryList[i].subList1.length>0){
-					for(var j in result.petitionHistoryList[i].subList1){
-						if(result.petitionHistoryList[i].subList1[j].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1.length>0){
-							for(var k in result.petitionHistoryList[i].subList1[j].subList1){
-								str+='<div class="pad_light_yash_bg m_top20" style="border: 1px solid #ccc;border-radius: 5px;">';
+		str+='<div class="col-sm-12">';
+			str+='<h5 class="font_weight">COMMENTS BOX</h5>';
+			str+='<div class="table-desig-scroll">';
+			str+='<div style="border:1px solid #ddd;padding:10px;" class="m_top10">';
+			for(var i in result.petitionHistoryList){
+				if(i==0){
+					str+='<ul class="message-timeline" style="margin-top: 20px;">';
+					if(result.petitionHistoryList[i].subList1 !='undefined' && result.petitionHistoryList[i].subList1 != null && result.petitionHistoryList[i].subList1.length>0){
+						for(var j in result.petitionHistoryList[i].subList1){
+							
+							
+							str+='<li>';
+							str+='<span class="date"><i class="fa fa-calendar" aria-hidden="true" style="font-size: 22px;color: #fff;margin-top: 3px;"></i></span><span style="margin-left: 20px;">'+result.petitionHistoryList[i].subList1[j].timeStr+'</span>';
+													
+							if(result.petitionHistoryList[i].subList1[j].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1.length>0){
+								for(var m in result.petitionHistoryList[i].subList1[j].subList1){
+									str+='<div class="message-block">';
+									if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Completed"){
+										str+='<span class="time" style="border:1px solid #1BE00D">'+result.petitionHistoryList[i].subList1[j].subList1[m].timeStr+'</span>';	
+									}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Endorsement"){
+										str+='<span class="time" style="border:1px solid #0090FF">'+result.petitionHistoryList[i].subList1[j].subList1[m].timeStr+'</span>';	
+									}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Final Approval" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Action Memo" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Detailed Report"){
+										str+='<span class="time" style="border:1px solid #FFC400">'+result.petitionHistoryList[i].subList1[j].subList1[m].timeStr+'</span>';	
+									}else{
+										str+='<span class="time" style="border:1px solid #1BE00D">'+result.petitionHistoryList[i].subList1[j].subList1[m].timeStr+'</span>';	
+									}
+									
 									str+='<div class="row">';
-										str+='<div class="">';
-											str+='<div class="col-sm-3 pull-left">';
-												if(result.petitionHistoryList[i].subList1[j].subList1[k].stautus == "Completed"){
-														str+='<div class="pad_white_bg" style="padding:10px;border: 1px solid #00DF0F;">';
-														str+='<h5 class="font_weight f_13" ><span style="background-color:#00DF0F;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[k].stautus+'</h5>';	
-												}else if(result.petitionHistoryList[i].subList1[j].subList1[k].stautus == "Pending Endorsement"){
-													str+='<div class="pad_white_bg " style="padding:10px;border: 1px solid #1283C8;">';
-													str+='<h5 class="font_weight f_13" ><span style="background-color:#0090FF;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[k].stautus+'</h5>';
-												}else if(result.petitionHistoryList[i].subList1[j].subList1[k].stautus == "Pending Final Approval" || result.petitionHistoryList[i].subList1[j].subList1[k].stautus == "Pending - Action Memo" || result.petitionHistoryList[i].subList1[j].subList1[k].stautus == "Pending - Detailed Report"){
-													str+='<div class="pad_white_bg" style="padding:10px;border: 1px solid #FFC400;">';
-													str+='<h5 class="font_weight f_13" ><span style="background-color:#FFC400;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[k].stautus+'</h5>';
-												}else{
-													str+='<div class="pad_white_bg" style="padding:10px;border: 1px solid #FFC400;">';
-													str+='<h5 class="font_weight f_13" ><span style="background-color:#FFC400;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[k].stautus+'</h5>';
-												}
-												str+='</div>';
-											str+='</div>';
-										str+='</div>';
-										str+='<div class="col-sm-12 m_top15 ">';
-											str+='<h5 class="pull-left f_12 font_weight"><span style="color:#1283C8">ACTION:</span> '+result.petitionHistoryList[i].subList1[j].subList1[k].subList1[0].actionName+'</h5>';
-											//str+='<h5 class="pull-right"  style="color:#1283C8" ><u>'+result.petitionHistoryList[i].subList1[j].timeStr+' @ '+result.petitionHistoryList[i].subList1[j].subList1[k].timeStr+'</u></h5>';
-										str+='</div>';
-										
-										str+='<div class="col-sm-12 m_top10">';
-											str+='<b>Remarks : </b>';
-											str+='<h5>'+result.petitionHistoryList[i].subList1[j].subList1[k].subList1[0].remarks+'</h5>';
-										str+='</div>';
-											if(result.petitionHistoryList[i].subList1[j].subList1[k].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[k].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[k].subList1.length>0){
-												for(var l in result.petitionHistoryList[i].subList1[j].subList1[k].subList1){
-													if(result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].actionId == 4){
-														
-														if(result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1.length>0){
-															for(var m in result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1){
-																str+='<div class="col-sm-3">';
-																	str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-paperclip" aria-hidden="true"></i> <u class="f_12">'+result.petitionHistoryList[i].subList1[j].subList1[k].subList1[l].subList1[m].name+' </u></p></div>';
-																str+='</div>';
-															}
-														}
-													}
-												}
+									str+='<div class="col-sm-12">';
+									
+									if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Completed"){
+										str+='<div style="border: 1px solid #1BE00D;padding: 5px;margin-top: 6px;position: relative;left: -6px;border-left: none;padding-bottom: 0px;background-color: #F5F5F5;">';
+										str+='<p class="panel-title text_bold"></p>';
+										str+='<h5 style="margin-top: 19px;border-left: 1px solid #1BE00D;margin-left: -6px;">';
+									}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Endorsement"){
+										str+='<div style="border: 1px solid #0090FF;padding: 5px;margin-top: 6px;position: relative;left: -6px;border-left: none;padding-bottom: 0px;background-color: #F5F5F5;">';
+										str+='<p class="panel-title text_bold"></p>';
+										str+='<h5 style="margin-top: 19px;border-left: 1px solid #0090FF;margin-left: -6px;">';
+									}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Final Approval" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Action Memo" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Detailed Report"){
+										str+='<div style="border: 1px solid #FFC400;padding: 5px;margin-top: 6px;position: relative;left: -6px;border-left: none;padding-bottom: 0px;background-color: #F5F5F5;">';
+										str+='<p class="panel-title text_bold"></p>';
+										str+='<h5 style="margin-top: 19px;border-left: 1px solid #FFC400;margin-left: -6px;">';
+									}else{
+										str+='<div style="border: 1px solid #1BE00D;padding: 5px;margin-top: 6px;position: relative;left: -6px;border-left: none;padding-bottom: 0px;background-color: #F5F5F5;">';
+										str+='<p class="panel-title text_bold"></p>';
+										str+='<h5 style="margin-top: 19px;border-left: 1px solid #1BE00D;margin-left: -6px;">';
+									}
+									
+									
+									str+='<div style="padding: 6px;">';
+									str+='<div class="row">';
+									str+='<div style="margin-top: -15px;margin-left: 16px;">';
+										str+='<div class="col-sm-4">';
+											str+='<div class="pad_white_bg" style="border: 1px solid #ccc;">';
+											str+='<h5 class="font_weight f_13">';
+											if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Completed"){
+												str+='<span style="background-color:#1BE00D;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;">';
+												str+='</span> Status :'+result.petitionHistoryList[i].subList1[j].subList1[m].stautus+'';
+											}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Endorsement"){
+												str+='<span style="background-color:#317CB8;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;">';
+												str+='</span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[m].stautus+'';
+											}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Final Approval" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Action Memo" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Detailed Report"){
+												str+='<span style="background-color:#FFC400;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;">';
+												str+='</span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[m].stautus+'';
+											}else{
+												str+='<span style="background-color:#1BE00D;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;">';
+												str+='</span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[m].stautus+'';
 											}
-											
-										str+='<div class="col-sm-12 m_top15 ">';
-											if(result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation != null && result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation.length>0){
-												str+='<div class="col-sm-6">';
-													str+='<h5 class="pull-left f_12 font_weight"><span style="color:#1283C8">ASSIGNED TO :</span>'+result.petitionHistoryList[i].subList1[j].subList1[k].assignedToOfficerName+' ('+result.petitionHistoryList[i].subList1[j].subList1[k].assignedToDesignation+')</h5>';
-												str+='</div>';
-											}
-											str+='<div class="col-sm-3  pull-right ">';
-												str+='<div class="pad_white_bg" style="padding:5px;border: 1px solid #1283C8;">';
-													str+='<h5 class="font_weight" style="color:#1283C8"> By : '+result.petitionHistoryList[i].subList1[j].subList1[k].designation+'</h5><h5 class="font_weight" style="text-align:center;">'+result.petitionHistoryList[i].subList1[j].subList1[k].officerName+'</h5>';
-												str+='</div>';
-											str+='</div>';
-											str+='<div class="col-sm-3">';
-												str+='<h5 class="pull-right"  style="color:#1283C8" ><u>'+result.petitionHistoryList[i].subList1[j].timeStr+' @ '+result.petitionHistoryList[i].subList1[j].subList1[k].timeStr+'</u></h5>';
-											str+='</div>';
+											str+='</h5>';
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
+							str+='</div>';
+								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ACTION:</span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[0].actionName+'</h5>';
+							
+							str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"> </h5> <p style="margin-left: 20px;" class="m_top5">'+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[0].remarks+' </p>';
+							
+							if(result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation != null && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation.length>0)
+								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ASSIGNED TO :</span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName+' ('+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation+')</h5>';
+							
+								str+='<div class="row">';
+									str+='<div class="col-sm-12">';
+										if(result.petitionHistoryList[i].subList1[j].subList1[m].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[m].subList1.length>0){
+											for(var s in result.petitionHistoryList[i].subList1[j].subList1[m].subList1){
+												if(result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].actionId == 4){
+													if(result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1 !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1.length>0){
+														
+														for(var p in result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1){
+															/*
+															var obj ={
+																		filesArr:result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].subList1[0].filesList,
+																		name:"All"+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].name+''+p+''
+																	}
+																	historyDocsArr.push(obj);
+														*/
+															str+='<div class="col-sm-3 m_top15">';
+																str+='<div style="background-color: #fff;padding:3px;border: 1px solid #ddd;">';
+																	str+='<div style="padding:5px;background-color:#fff">';
+																		str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="All'+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].name+''+p+'"><i class="fa fa-paperclip" aria-hidden="true"></i> '+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].name+'</h5>';
+																	str+='</div>';
+																str+='</div>';
+															str+='</div>';
+															
+															
+															
+														}
+													}
+													
+												}
+											}
+										}
+										
+										str+='<div class="col-sm-3 pull-right">';
+										str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
+											str+='<h5 class="font_weight" ><span style="color:#1283C8">BY </span>  : '+result.petitionHistoryList[i].subList1[j].subList1[m].designation+'</h5>';
+											str+='<h5 class="font_weight m_top5" style="text-align: center;">'+result.petitionHistoryList[i].subList1[j].subList1[m].officerName+'</h5>';
+										str+='</div>';
+										
+																str+='</div>';
+															str+='</div>';
+														str+='</div>';
+													str+='</div>';
+														/* str+='<div class="row">';
+															str+='<div class="col-sm-12">';
+																
+															str+='</div>';
+														str+='</div>';	 */		
+														
+												str+='</div>';
+											str+='</h5>';
+										str+='</div>';
+										str+='</div>';
+									 str+='</div>';	
+									//str+='</div>';
+
+								}
 							}
+							str+='</li>';
+							
+
 						}
+						str+='</ul>';
 					}
 				}
 			}
-		}
-			
-	str+='</div>';		
-	str+='</div>';		
-		
-	str+='</div>';
-	str+='</div>';
 }else{
 	$('#headingTileHistoryId').html('PETITION WORK WISE HISTORY');
 	str+='<div class="row m_top20">';
@@ -2279,15 +2343,11 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																	
 																		if(result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation != null && result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation.length>0)
 																			str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ASSIGNED TO :</span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToOfficerName+' ('+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation+')</h5>';
-																			
-																			
 																			str+='<div class="row">';
 																				str+='<div class="col-sm-12">';
 																			if(result.subList1[j].subList1[k].subList1[l].subList1[m].subList1 !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1 != null && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1.length>0){
 																				for(var s in result.subList1[j].subList1[k].subList1[l].subList1[m].subList1){
 																					if(result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].actionId == 4){
-																						
-																			
 																						if(result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1 !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1 != null && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1.length>0){
 																							
 																							for(var p in result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1){
@@ -2312,8 +2372,6 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																						
 																					}
 																				}
-																				
-																				
 																			}
 																			str+='<div class="col-sm-3 pull-right">';
 																					str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';

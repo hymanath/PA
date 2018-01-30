@@ -904,7 +904,7 @@ function getDesignationsBySearchType(searchType,selBoxId,desigId,statusId){
 		getPetitionReferredMemberDetails([desigId],refCanId,statusId);
 		}
 		if(searchBy == 'referral' && desigId >0){
-			getRepresentativeSearchDetails1("subWork");
+			getRepresentativeSearchDetails1("petition");
 		}
 	});	
 }
@@ -951,7 +951,7 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
 		if(searchBy == 'department' && deptId >0){
-			getRepresentativeSearchDetails1("subWork");
+			getRepresentativeSearchDetails1("petition");
 		}
 	});	
 }
@@ -1811,7 +1811,7 @@ function getPetitionReferredMemberDetails(desigIds,refCanId,statusId){
 		}
 		$("#referralNameId").trigger('chosen:updated');
 		if(searchBy == 'referralCan' && refCanId >0){
-			getRepresentativeSearchDetails1("subWork");
+			getRepresentativeSearchDetails1("petition");
 		}
 	});	
 }
@@ -2116,7 +2116,7 @@ function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
 		if(searchBy == 'subject' && subjId >0){
-			getRepresentativeSearchDetails1("subWork");
+			getRepresentativeSearchDetails1("petition");
 		} 
 	});	
 }
