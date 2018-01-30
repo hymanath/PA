@@ -88,7 +88,7 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		String pageTrack = (String) session.getAttribute("PageTrack");
 		String requestTrack = (String) session.getAttribute("RequestTrack");
 		
-		if(registrationVO != null && registrationVO.getRegistrationID() != null)
+		/*if(registrationVO != null && registrationVO.getRegistrationID() != null)
 		{	
 			try{
 			if((requestTrack != null && requestTrack.equalsIgnoreCase("Y")) || (pageTrack != null && pageTrack.equalsIgnoreCase("Y") && 
@@ -108,6 +108,24 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 			{
 				LOG.error(e);
 			}
+		}*/
+		
+		try{
+		if(requestMethod == null || (requestMethod != null && !requestMethod.equalsIgnoreCase("XMLHttpRequest")))
+		{
+			UserTrackingVO userTrackingVO = new UserTrackingVO();
+			userTrackingVO.setRemoteAddress(getClientIp(request));
+            userTrackingVO.setRequestURI(request.getRequestURI().substring(1).concat(request.getQueryString() != null ? "?"+request.getQueryString():""));
+            userTrackingVO.setSessionId(session.getId());
+        
+            if(registrationVO != null)
+            	userTrackingVO.setUserId(registrationVO.getRegistrationID());
+    	
+        	userTrackingService.saveUserTrackingDetails(userTrackingVO);
+		}
+		}catch(Exception e)
+		{
+			LOG.error(e);
 		}
 		
 		if(url.contains("partyAndLeaderActivitiesAndPerformanceTracking") || url.contains("leadertoleader.in"))
