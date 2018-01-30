@@ -284,6 +284,7 @@
 		</div>
 	</section>
 </main>
+<input type="hidden" id="hiddenDesignationName" />
 <div class="modal fade" id="representeeDetailsModelDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="width:90%;margin:auto">
 		<div class="modal-content">
@@ -467,6 +468,9 @@
 </script>
 <script>
 var userId = '${sessionScope.USER.userId}';
+var designationId = '${sessionScope.USER.deptDesignationId}'
+var designationName = '${sessionScope.USER.designation}';
+$("#hiddenDesignationName").html(designationName);
 </script>
 <script type="text/javascript">
 $(document).on("click",".closeSecondModal",function(){
