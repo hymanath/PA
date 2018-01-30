@@ -35,7 +35,7 @@ public class ZohoWebServiceHandler {
     }
 	
 	@GET 
-	@Path("/getMobileNoByMemberShipId/{memberShipId}")
+	@Path("/getMobileNoByMemberShipId/{memberShipId}") // generate OTP BY MembershipId 
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String getMobileNoByMemberShipId(@PathParam("memberShipId") String memberShipId){
