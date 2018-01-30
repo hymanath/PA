@@ -123,11 +123,12 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	}
 	
 	//contact-id of candidate
-	public String sendAssignedCandidateCantactId(Long cadreId,Long alertId){
+	public String sendAssignedCandidateCantactId(List<Long> cadreIds,Long alertId){
 		String status=null;
 		try {
 				//getCandidate contactId	
-			 	String contactId = getContactIdForCadre(cadreId);
+			 	String contactId = callForZohoContact(cadreIds);
+			 	
 		       	 if(contactId != null && !contactId.trim().isEmpty()){
 		       		 String alertTicketId = alertDAO.getAlertTicketId(alertId);
 		       		 if(alertTicketId != null && !alertTicketId.trim().isEmpty()){
@@ -145,7 +146,11 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 			   		     builder.type("application/json");
 			   		     
 			   		     JSONObject jobj = new JSONObject();
-		       			 jobj.put("contactId", contactId);
+			   		     JSONObject customObj = new JSONObject();
+		       			 jobj.put("contactId", IConstants.ZOHO_ADMIN_CONTACTID);
+		       			 
+		       			 customObj.put("assignees", contactId);
+		       			 jobj.put("customFields", customObj);
 		       			 
 			   		     ClientResponse response = builder.put(ClientResponse.class,jobj);
 			   		     
@@ -161,6 +166,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 					         }
 			       		 }
 			       	 }
+		       	 
 			       	status="success";
 			     
 			
@@ -169,6 +175,21 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 			status="failure";
 		}
 		return status;
+	}
+	
+	public String callForZohoContact(List<Long> cadreIds){
+		String contact=null;
+		try {
+			for (Long cadreId : cadreIds) {
+				String contactId = getContactIdForCadre(cadreId);
+				if(contactId !=null && !contactId.trim().isEmpty()){
+					contact = contact == null?contactId:contact+";"+contactId;
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Excption raised in callForZohoContact method for AlertUpdationAPIService Class ", e);
+		}
+		return contact;
 	}
 	
 	public String getContactIdForCadre(Long cadreId){
@@ -387,24 +408,49 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 			if(playLoadObj.has("ticketId")){
 				List<Long> alertIds = alertDAO.getAlertId(playLoadObj.getString("ticketId"));
 				if(alertIds != null && alertIds.size() > 0){
-					String contactId = playLoadObj.getString("contactId");
-					if(contactId != null && !contactId.trim().isEmpty()){
-						List<Long> cadreIds = zohoTdpCadreContactDAO.getTdpCadreId(contactId);
-						if(cadreIds != null && cadreIds.size() > 0){
-							AlertAssigned alertAssigned = new AlertAssigned();
-							alertAssigned.setAlertId(alertIds.get(0));
-							alertAssigned.setTdpCadreId(cadreIds.get(0));
-							alertAssigned.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							alertAssigned.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							alertAssigned.setCreatedBy(1l);
-							alertAssigned.setIsDeleted("N");
-							alertAssigned.setSmsStatus("N");
-							alertAssignedDAO.save(alertAssigned);
+					
+					String[]  assigneesArr = null;
+					if(playLoadObj.has("customFields") && playLoadObj.getJSONObject("customFields").has("assignees")){						
+						String assignees = playLoadObj.getJSONObject("customFields").getString("assignees");
+						
+						if(assignees !=null && !assignees.trim().isEmpty()){
+							assigneesArr = assignees.split(";");
 						}
+						
 					}
+					//String contactId = playLoadObj.getString("contactId");
+					if(assigneesArr !=null && assigneesArr.length>0){
+						
+						for (String contactId : assigneesArr) {
+							if(contactId != null && !contactId.trim().isEmpty()){
+								List<Long> cadreIds = zohoTdpCadreContactDAO.getTdpCadreId(contactId);
+								if(cadreIds != null && cadreIds.size() > 0){
+									AlertAssigned alertAssigned = new AlertAssigned();
+									alertAssigned.setAlertId(alertIds.get(0));
+									alertAssigned.setTdpCadreId(cadreIds.get(0));
+									alertAssigned.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									alertAssigned.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									alertAssigned.setCreatedBy(1l);
+									alertAssigned.setIsDeleted("N");
+									alertAssigned.setSmsStatus("N");
+									alertAssignedDAO.save(alertAssigned);
+								}
+							}
+						}
+						alertAssignedDAO.flushAndclearSession();
+					}
+					
+					
 				}
+				
+				
+				
 			}
+			
+			
 			obj.put("message", "success");
+			
+			
 		} catch (Exception e) {
 			try {
 				obj.put("message", "failure");
