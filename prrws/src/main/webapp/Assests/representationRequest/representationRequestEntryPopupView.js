@@ -86,7 +86,7 @@ function buildPetitionDetailsView(result){
 					
 					str+='<div class="table-desig-scroll">';
 					str+='<div style="border:1px solid #ddd;padding:10px;" class="m_top10">';
-					str+='<h5 class="font_weight panel-title">LATEST HISTORY</h5>';
+					str+='<h5 class="font_weight panel-title">PETITION LATEST HISTORY</h5>';
 					//for(var i in result.historyList[h].petitionHistoryList){
 					//	if(i==0){
 							if(result.historyList[h].subList1 !='undefined' && result.historyList[h].subList1 != null && result.historyList[h].subList1.length>0){
@@ -155,11 +155,13 @@ function buildPetitionDetailsView(result){
 														
 														str+='<div class="col-sm-2 pull-right">';
 															str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8;">';
-																str+='<h5 class="font_weight" style="color:#1283C8">By&nbsp;:'+result.historyList[h].subList1[j].subList1[k].designation+'</h5><h5 class="font_weight f_10 m_top5">'+result.historyList[h].subList1[j].subList1[k].officerName+'</h5>';
+																str+='<h5 class="font_weight" style="color:#1283C8">Updated By&nbsp;:'+result.historyList[h].subList1[j].subList1[k].designation+'</h5><h5 class="font_weight f_10 m_top5">'+result.historyList[h].subList1[j].subList1[k].officerName+'</h5>';
 															str+='</div>';
 														str+='</div>';
 														str+='<div class="col-sm-2 pull-right">';
-															str+='<h5 class="pull-right"  style="color:#1283C8" ><u>'+result.historyList[h].subList1[j].timeStr+' @ '+result.historyList[h].subList1[j].subList1[k].timeStr+'</u></h5>';
+														str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8; height:48px;">';
+															str+='<h5 class="pull-right"> <span style="color:#1283C8" >Updated Date & Time </span>'+result.historyList[h].subList1[j].timeStr+' @ '+result.historyList[h].subList1[j].subList1[k].timeStr+'</h5>';
+														str+='</div>';
 														str+='</div>';
 														
 													str+='</div>';
@@ -167,7 +169,7 @@ function buildPetitionDetailsView(result){
 											str+='</div>';
 											str+='<div class="row m_top10">';
 												str+='<div class="col-sm-12">';
-													str+='<button type="button" class="btn btn-primary workWiseHistroyCls  pull-right" attr_work_id="'+glPetitionId+'" attr_sub_work_id="0" >View Histroy</button>';
+													str+='<button type="button" class="btn btn-primary workWiseHistroyCls  pull-right" attr_work_id="'+glPetitionId+'" attr_sub_work_id="0" >View History</button>';
 											//	str+='</div>';
 										//	str+='</div>';
 										//	str+='<div class="row m_top10">';
@@ -667,15 +669,20 @@ function buildPetitionDetailsView(result){
 									str+='</div>';
 								}
 									//row closed
-									str+='<div class="row">';
-									str+='<div class="col-sm-12">';
-									str+='<h5 class="pull-right">';
-										str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-											str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-										str+='</label>';
-										str+='</h5>';
-									str+='</div>';
-									str+='</div>';
+						            if(result.subWorksList[i].subWorksList.length != null && result.subWorksList[i].subWorksList.length <= 1){
+						            	
+						            }else{
+						            	str+='<div class="row">';
+										str+='<div class="col-sm-12">';
+										str+='<h5 class="pull-right">';
+											str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+												str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+											str+='</label>';
+											str+='</h5>';
+										str+='</div>';
+										str+='</div>';
+						            }
+									
 									var workCount = 0;
 								str+='<div class="row">';
 									for(var j in result.subWorksList[i].subWorksList){
@@ -969,7 +976,7 @@ function buildPetitionDetailsView(result){
 			if(h ==0){
 				str+='<div class="row m_top20">';
 				str+='<div class="col-sm-12">';
-					str+='<h5 class="font_weight">LATEST HISTORY</h5>';
+					str+='<h5 class="font_weight">WORK LATEST HISTORY</h5>';
 					str+='<div class="table-desig-scroll">';
 					str+='<div style="" class="m_top10">';
 					//for(var i in result.historyList[h].petitionHistoryList){
@@ -989,7 +996,7 @@ function buildPetitionDetailsView(result){
 																str+='<div class="">';
 																	str+='<div class="col-sm-5">';
 																		str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8;">';
-																			str+='<h5 class="font_weight" style="color:#1283C8">By: '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].designation+'</h5><h5 class="font_weight f_10 m_top5">'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].officerName+'</h5>';
+																			str+='<h5 class="font_weight" style="color:#1283C8">Updated By: '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].designation+'</h5><h5 class="font_weight f_10 m_top5">'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].officerName+'</h5>';
 																		str+='</div>';
 																	str+='</div>';
 																	
@@ -1039,7 +1046,7 @@ function buildPetitionDetailsView(result){
 																	if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation.length>0)
 																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > ASSIGNED TO</u> : '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToOfficerName+' ('+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation+')</h5>';
 																
-																	str+='<h5 class="pull-right"  style="color:#1283C8" ><u>'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].timeStr+' @ '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].timeStr+'</u></h5>';
+																	str+='<h5 class="pull-right">  <span style="color:#1283C8">Updated Date & Time</span>:'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].timeStr+' @ '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].timeStr+'</h5>';
 																str+='</div>';
 															str+='</div>';
 														str+='</div>';
@@ -2220,7 +2227,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 															str+='<div class="col-sm-3 m_top15">';
 																str+='<div style="background-color: #fff;padding:3px;border: 1px solid #ddd;">';
 																	str+='<div style="padding:5px;background-color:#fff">';
-																		str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="petitionsHistory'+m+''+p+''+j+'"><i class="fa fa-paperclip" aria-hidden="true"></i> '+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].name+'</h5>';
+																		str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="petitionsHistory'+m+''+p+''+j+'" style="cursor:pointer;color:#1283C8;" ><i class="fa fa-paperclip" aria-hidden="true"></i><u> '+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[s].subList1[p].name+'</u></h5>';
 																	str+='</div>';
 																str+='</div>';
 															str+='</div>';
@@ -2236,7 +2243,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 										
 										str+='<div class="col-sm-3 pull-right">';
 										str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
-											str+='<h5 class="font_weight" ><span style="color:#1283C8">BY </span>  : '+result.petitionHistoryList[i].subList1[j].subList1[m].designation+'</h5>';
+											str+='<h5 class="font_weight" ><span style="color:#1283C8">Updated BY </span>  : '+result.petitionHistoryList[i].subList1[j].subList1[m].designation+'</h5>';
 											str+='<h5 class="font_weight m_top5" style="text-align: center;">'+result.petitionHistoryList[i].subList1[j].subList1[m].officerName+'</h5>';
 										str+='</div>';
 										
@@ -2370,7 +2377,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																								str+='<div class="col-sm-3 m_top15">';
 																									str+='<div style="background-color: #fff;padding:3px;border: 1px solid #ddd;">';
 																										str+='<div style="padding:5px;background-color:#fff">';
-																											str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="worksHistory'+m+''+p+''+j+'"><i class="fa fa-paperclip" aria-hidden="true"></i> '+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+'</h5>';
+																											str+='<h5 class="font_weight f_13 docsViewCls" attr_docs="historyDocs" attr_name="worksHistory'+m+''+p+''+j+'" style="cursor:pointer;color:#1283C8;" ><i class="fa fa-paperclip" aria-hidden="true"></i><u >'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[s].subList1[p].name+'</u></h5>';
 																										str+='</div>';
 																									str+='</div>';
 																								str+='</div>';
