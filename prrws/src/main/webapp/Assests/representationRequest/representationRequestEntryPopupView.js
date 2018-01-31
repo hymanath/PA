@@ -1453,6 +1453,7 @@ $(document).on("click",".docsViewCls",function(){
 
 		$("#docsViewModalId").html(str);
 		$(".fancyboxView").fancybox();
+		$(".fancybox-overlay").addClass("z_index")
 });
 
 function endorsingSubWorksAndAssigningToOfficer(){
@@ -1872,6 +1873,7 @@ var json = {
 	
 	$("#coveringLetterGenerator").html(str);
 	$(".fancyboxView").fancybox();
+	$(".fancybox-overlay").addClass("z_index")
 	 }
 	
 	
@@ -2065,7 +2067,8 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
-		str+='<div style="border: 1px solid #ddd;margin-top: 20px;">';
+/*	
+	str+='<div style="border: 1px solid #ddd;margin-top: 20px;">';
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-12">';
 				str+='<div class="table-responsive">';
@@ -2126,13 +2129,13 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 			str+='</div>';
 		str+='</div>';
 		str+='</div>';
-
+*/
 		
 	$('#headingTileHistoryId').html('PETITION WORK WISE HISTORY');
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
-			str+='<h5 class="font_weight">COMMENTS BOX</h5>';
-			str+='<div class="table-desig-scroll">';
+			str+='<h5 class="font_weight"> Petition History </h5>';
+			str+='<div class="">';
 			str+='<div style="border:1px solid #ddd;padding:10px;" class="m_top10">';
 			for(var i in result.petitionHistoryList){
 				if(i==0){
@@ -2203,7 +2206,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ACTION:</span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[0].actionName+'</h5>';
+								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ACTION</span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[0].actionName+'</h5>';
 							
 							str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"> </h5> <p style="margin-left: 20px;" class="m_top5">'+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[0].remarks+' </p>';
 							
@@ -2278,7 +2281,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 	$('#headingTileHistoryId').html('PETITION WORK WISE HISTORY');
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
-			str+='<h5 class="font_weight">COMMENTS BOX</h5>';
+			str+='<h5 class="font_weight"></h5>';
 			str+='<div class="table-desig-scroll">';
 				str+='<div style="border:1px solid #ddd;padding:10px;" class="m_top10">';
 				for(var i in result.subList1){
@@ -2353,7 +2356,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																			str+='</div>';
 																		str+='</div>';
 																	str+='</div>';
-																		str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ACTION:</span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].actionName+'</h5>';
+																		str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ACTION</span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].actionName+'</h5>';
 																	
 																	str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style=""> Remarks </span>: </h5> <p style="margin-left: 20px;" class="m_top5">'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].remarks+' </p>';
 																	

@@ -2515,7 +2515,7 @@ function buildPetitionDetails(result){
 												str+='<div class="row m_top10" >';
 													str+='<div class="col-sm-3">';
 															str+='<label>DEPARTMENT : <span class="starColor">*</span></label>';
-															str+='<select  name="worksList['+k+'].subWorksList['+globalWorkTypeCount+'].deptId"  class="form-control chosen-select m_top10 validateCls OnchangeDeptCls"  id="WorkTypeWiseDepartmentId'+result.representationType+''+k+''+globalWorkTypeCount+'" attr_main_count="'+k+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox" onChange=getPetitionSubjectList(this.value,"subjectId'+result.representationType+''+k+'","'+globalWorkTypeCount+'","change")>';
+															str+='<select  name="worksList['+k+'].subWorksList[0].deptId"  class="form-control chosen-select m_top10 validateCls OnchangeDeptCls"  id="WorkTypeWiseDepartmentId'+result.representationType+''+k+''+globalWorkTypeCount+'" attr_main_count="'+k+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox" onChange=getPetitionSubjectList(this.value,"subjectId'+result.representationType+''+k+'","'+globalWorkTypeCount+'","change")>';
 															str+='<option value="0"> Select Department </option>';
 																for(var d in globalDepartmentsList){
 																	if(globalDepartmentsList[d].key == departmentWiseSubWorks[k].deptId){
@@ -2529,7 +2529,7 @@ function buildPetitionDetails(result){
 													
 													str+='<div class="col-sm-3">';
 														str+='<label>SUBJECT <span class="starColor">*</span></label>';
-														str+='<select  attr_load_type="onload" name="worksList['+k+'].subWorksList['+globalWorkTypeCount+'].subjectId"  class="form-control chosen-select m_top10 validateCls subjctOnchangeCls"  id="subjectId'+result.representationType+''+k+''+globalWorkTypeCount+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+result.representationType+''+k+'","'+globalWorkTypeCount+'","change") attr_main_count="'+k+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox">';
+														str+='<select  attr_load_type="onload" name="worksList['+k+'].subWorksList[0].subjectId"  class="form-control chosen-select m_top10 validateCls subjctOnchangeCls"  id="subjectId'+result.representationType+''+k+''+globalWorkTypeCount+'" onChange=getPetitionSubSubjectList(this.value,"subSubjectId'+result.representationType+''+k+'","'+globalWorkTypeCount+'","change") attr_main_count="'+k+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox">';
 														str+='<option value="0"> Select Subject </option>';
 														str+='<option value='+departmentWiseSubWorks[k].subWorksList[0].subjectId+' selected>'+departmentWiseSubWorks[k].subWorksList[0].subject+'</option>';
 															/*	for(var sd in departmentWiseSubWorks[k].subWorksList[0].subjectsList){
@@ -2546,7 +2546,7 @@ function buildPetitionDetails(result){
 													
 													str+='<div class="col-sm-3">';
 														str+='<label>SUB-SUBJECT <span class="starColor">*</span><span class="subSubjectId'+result.representationType+''+k+''+globalWorkTypeCount+'"></span></label>';
-														str+='<select   attr_load_type="onload" name="worksList['+k+'].subWorksList['+globalWorkTypeCount+'].subSubjectId"  class="form-control chosen-select m_top10 validateCls subSubjectReFreshCls'+k+' subSubjctOnchangeCls"  id="subSubjectId'+result.representationType+''+k+''+globalWorkTypeCount+'" attr_main_count="'+k+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox">';
+														str+='<select   attr_load_type="onload" name="worksList['+k+'].subWorksList[0].subSubjectId"  class="form-control chosen-select m_top10 validateCls subSubjectReFreshCls'+k+' subSubjctOnchangeCls"  id="subSubjectId'+result.representationType+''+k+''+globalWorkTypeCount+'" attr_main_count="'+k+'" attr_inner_count="'+globalWorkTypeCount+'" attr_select_type="selectbox">';
 														str+='<option value="0"> Select Sub Subject </option>';
 														str+='<option value='+departmentWiseSubWorks[k].subWorksList[0].subSubjectId+' selected>'+departmentWiseSubWorks[k].subWorksList[0].subSubject+'</option>';
 														/*	for(var sd in departmentWiseSubWorks[k].subWorksList[0].subSubjectsList){
