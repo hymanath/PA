@@ -22,7 +22,7 @@ public class PmRefCandidateDesignationDAO extends GenericDaoHibernate<PmRefCandi
 
 	public List<PmRefCandidateDesignation> getPmRepresenteeDesignationByPmRefCandidateId(Long pmRefCandidateId){
 		StringBuilder str = new StringBuilder();
-		str.append(" select model from PmRefCandidateDesignation model where model.pmRefCandidateId =:pmRefCandidateId ");
+		str.append(" select model from PmRefCandidateDesignation model where model.pmRefCandidateId =:pmRefCandidateId and model.isDeleted='N' and model.isActive='Y' ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("pmRefCandidateId", pmRefCandidateId);
 		return query.list();
