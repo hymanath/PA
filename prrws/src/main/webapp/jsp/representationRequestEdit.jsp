@@ -36,7 +36,7 @@
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
 					<h3 class="text-capital"><span style="color: rgb(255, 255, 255); font-weight: bold; margin-right: 7px;font-size: 20px;">MINISTER</span> <span class="text-color">PETITION MANAGEMENT SYSTEM</span></h3>
-					<p style="color: rgb(255, 255, 255);">Information Technology,Panchayathi Raj & </p>
+					<p style="color: rgb(255, 255, 255);">Information Technology,Panchayathi Raj,Rural Water Supply & </p>
 					<p style="color: rgb(255, 255, 255);">Rural Development</p>
 				</div>
 				<div class="col-sm-5 col-xs-12 pull-right innerPageHeader">

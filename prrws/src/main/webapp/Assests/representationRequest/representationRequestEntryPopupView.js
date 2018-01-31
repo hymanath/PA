@@ -278,7 +278,7 @@ function buildPetitionDetailsView(result){
 									str+='</div>';
 									str+='<div class="col-sm-3">';
 										str+='<div class="pad_light_yash_bg">';
-											str+='<p>Contact Details:</p>';
+											//str+='<p>Contact Details:</p>';
 											if(result.representeeDetailsList[i].email !=null && result.representeeDetailsList[i].email.trim().length>0){
 												str+='<p class="m_top5">Email Id:<b class="margin_left">'+result.representeeDetailsList[i].email+'</b></p>';
 											}
@@ -383,7 +383,7 @@ function buildPetitionDetailsView(result){
 								str+='<div class="nameAddressCss">';
 									str+='<h5 class="font_weight">Party:</h5>';
 									str+='<h5 class="m_top5">'+result.representeeDetailsList[i].partyName+'</h5>';
-									str+='<h5 class="m_top10 font_weight">Contact Details</h5>';
+									//str+='<h5 class="m_top10 font_weight">Contact Details</h5>';
 									str+='<h5 class="text_bold m_top10">Email-id: '+result.representeeDetailsList[i].email+'</h5>';
 									str+='<h5 class="m_top5">Contact No : '+result.representeeDetailsList[i].mobileNO+'</h5>';
 								str+='</div>';
@@ -1922,6 +1922,7 @@ $(document).on("click",".workWiseHistroyCls",function(){
  });
 
 function getPetitionAndWorkWiseHistoryDetails(petitinId,workId){
+	$('#headingTileHistoryId').html('');
 	$("#petitionHistroyDetailsId").html(spinner);
 	 var subworkIdsList = [];//[1,2,3];
 	 var isSubworkHistory=false;
@@ -1953,6 +1954,7 @@ function getPetitionAndWorkWiseHistoryDetails(petitinId,workId){
 		}); 
 	}
 function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
+	$('#headingTileHistoryId').html('');
 	var str='';
 	
 	if(isSubworkHistory == false){
@@ -2131,7 +2133,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 		str+='</div>';
 */
 		
-	$('#headingTileHistoryId').html('PETITION WORK WISE HISTORY');
+	$('#headingTileHistoryId').html('PETITION HISTORY');
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
 			str+='<h5 class="font_weight"> Petition History </h5>';
@@ -2278,7 +2280,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 				}
 			}
 }else{
-	$('#headingTileHistoryId').html('PETITION WORK WISE HISTORY');
+	$('#headingTileHistoryId').html(' WORK WISE HISTORY');
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12">';
 			str+='<h5 class="font_weight"></h5>';
