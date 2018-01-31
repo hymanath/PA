@@ -1,13 +1,10 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
