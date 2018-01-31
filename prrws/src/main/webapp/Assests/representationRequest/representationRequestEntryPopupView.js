@@ -906,7 +906,7 @@ function buildPetitionDetailsView(result){
 																				//str+='<span class="m_top5">M: - ,</span>';
 																			}
 																			if(result.subWorksList[i].subWorksList[j].addressVO.panchayatName !=null && result.subWorksList[i].subWorksList[j].addressVO.panchayatName.trim().length>0){
-																				str+='<span class="m_top5" style="margin-left: 5px;">P: <b>'+result.subWorksList[i].subWorksList[j].addressVO.panchayatName+'</b>,</h5>';
+																				str+='<span class="m_top5" style="margin-left: 5px;" title="PANCHAYAT">P: <b>'+result.subWorksList[i].subWorksList[j].addressVO.panchayatName+'</b>,</h5>';
 																			}else{
 																				//str+='<span class="m_top5">P: - ,</span>';
 																			}
