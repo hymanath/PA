@@ -1846,13 +1846,12 @@ function updatePetitionStatusDetails(){
 		}
 	  });
 	}
-$(document).on("click",".closeSecondModal",function(){
+ $(document).on("click",".closeSecondModal",function(){
     setTimeout(function(){
-      $("body").addClass("modal-open")
+      $("body").addClass("modal-open");
     },1000);
   });
- 
- 
+   
  function getPmBriefLeadList(){
 	 $("#leadId").html('');
 	 $("#leadId").html('<option value="0"> Select lead </option>');
