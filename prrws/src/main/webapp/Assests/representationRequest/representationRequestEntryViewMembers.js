@@ -1617,12 +1617,15 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 					str+='</div>';
 				}
 				
-				
-				str+='<div class="col-sm-12 m_top20">';
+				if(result.subWorksList[j].subWorksList.length != null && result.subWorksList[j].subWorksList.length <= 1){
+					
+				}else {
+					str+='<div class="col-sm-12 m_top20">';
 
-				str+='<div class="col-sm-12  ">';
-						str+='<button class="btn btn-info selectedCls pull-right" isSeleted="false" attr_worksId="0" attr_dept_id="0" style="margin-bottom:10px;" > SELECT ALL  </button>';
-					str+='</div>';
+					str+='<div class="col-sm-12  ">';
+							str+='<button class="btn btn-info selectedCls pull-right" isSeleted="false" attr_worksId="0" attr_dept_id="0" style="margin-bottom:10px;" > SELECT ALL  </button>';
+						str+='</div>';
+				}
 
 				var workCount = 0;
 				str+='<div class="row">';

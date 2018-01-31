@@ -2558,16 +2558,20 @@ function buildPetitionDetails(result){
 																}
 																*/
 														str+='</select>';
-													str+='</div>';
-													str+='<div class="col-sm-3">';
+														str+='</div>';
+														/*if(departmentWiseSubWorks.length != null && departmentWiseSubWorks.length <=1){
+															alert("edit if")
+														}else {
+														str+='<div class="col-sm-3">';
 														str+='<h5 class="pull-right">';
 															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
 																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
 															str+='</label>';
 															str+='</h5>';
 													str+='</div>';
-												str+='</div>';
-												
+												 str+='</div>';
+												}*/
+		
 												//add work individual append
 												
 												for(var j in departmentWiseSubWorks[k].subWorksList){
@@ -2580,16 +2584,16 @@ function buildPetitionDetails(result){
 															if(j !=0){
 																	str+='<h5 class="pull-right">';
 																	
-																	str+='<span style="margin-right: 5px;">';
+																	/* str+='<span style="margin-right: 5px;">';
 																		str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																			str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span>'; 
+																			//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span>'; 
 																			if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
 																				str+='<input type="checkbox" id="" value="'+departmentWiseSubWorks[k].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+departmentWiseSubWorks[k].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
 																			}else{
 																				str+='<input type="checkbox" id="" value="'+departmentWiseSubWorks[k].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: -14px;margin-left: 56px;" attr_department_id="'+departmentWiseSubWorks[k].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
 																			}	
 																			
-																		str+='</label>';
+																		str+='</label>'; */
 																	str+='</span>';
 																	str+='<span class="removeInnerWorkCls" id="manageInnerWorks'+globalWorkTypeCount+'" attr_id="workDivId'+k+''+j+'" attr_type="self" attr_candidateid="1" style="background-color:#ccc;padding:4px;top:2px;position:relative;">';
 																	str+='<i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove work"></i></span>';
@@ -2597,7 +2601,7 @@ function buildPetitionDetails(result){
 																}else{
 																	str+='<h5 class="pull-right">';
 																	str+='<span  attr_id="workDivId'+k+''+j+'" attr_type="self" attr_candidateid="1"></span>';
-																	str+='<span>';
+																	/*str+='<span>';
 																		str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
 																			str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span>'; 
 																			if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
@@ -2607,7 +2611,7 @@ function buildPetitionDetails(result){
 																			}	
 																			
 																		str+='</label>';
-																	str+='</span>';
+																	str+='</span>';*/
 																	str+='</h5>';
 																}
 																
@@ -2999,11 +3003,11 @@ function buildPetitionDetails(result){
 														
 														if(result.subWorksList[i].endorsmentNo == null || result.subWorksList[i].endorsmentNo =='' || (result.subWorksList[i].endorsmentNo !='undefined' && result.subWorksList[i].endorsmentNo.trim.length==0))
 														
-															str+='<span class="addLocationCss m_top10  updateStatusChangeCls" style="cursor:pointer;margin-left: 20px;" attr_total_works="'+departmentWiseSubWorks[k].subWorksList.length+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">UPDATE STATUS</span>';
+															//str+='<span class="addLocationCss m_top10  updateStatusChangeCls" style="cursor:pointer;margin-left: 20px;" attr_total_works="'+departmentWiseSubWorks[k].subWorksList.length+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">UPDATE STATUS</span>';
 															
 															str+='<span class="addLocationCss  m_top10  cloned_Inner_Element" style="cursor:pointer; margin-left:20px;" attr_type="'+result.representationType+'" attr_counterval="'+k+'" main_work_count="'+k+'" inner_work_count="'+innerWorkTypeCount+'" attr_id="manageInnerWorks'+globalWorkTypeCount+'">ADD WORK </span>';
 															
-															str+='<span class="addLocationCss  editAddCommentCls m_top10 " style="cursor:pointer;margin-left:20px;" attr_type="'+result.representationType+'" attr_counterval="'+k+'" main_work_count="'+k+'" inner_work_count="'+innerWorkTypeCount+'" attr_id="manageInnerWorks'+globalWorkTypeCount+'">ADD COMMENT </span>';
+															//str+='<span class="addLocationCss  editAddCommentCls m_top10 " style="cursor:pointer;margin-left:20px;" attr_type="'+result.representationType+'" attr_counterval="'+k+'" main_work_count="'+k+'" inner_work_count="'+innerWorkTypeCount+'" attr_id="manageInnerWorks'+globalWorkTypeCount+'">ADD COMMENT </span>';
 															
 														str+='</div>';
 													str+='</div>';
