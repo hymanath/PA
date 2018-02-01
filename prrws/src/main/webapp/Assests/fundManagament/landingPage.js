@@ -126,32 +126,32 @@ function buildFavouriteComponentsResult(result) {
 						}else if(result[i].name == 'NEWS'){
 							str+='<div class="row" style="margin-top: -15px;">';
 								str+='<div id="printMediaCountId"></div>';
-								str+='<div id="ElectronicMediaCountId"></div>';
-								str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For News</span></div>';
+								//str+='<div id="ElectronicMediaCountId"></div>';
+								str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
 							str+='</div>';
 						}else if(result[i].name == "PR NEWS"){
 							 	str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdPR"></div>';
-									str+='<div id="ElectronicMediaCountIdPR"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For PR News</span></div>';
+									//str+='<div id="ElectronicMediaCountIdPR"></div>';
+									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "RD NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdRD"></div>';
-									str+='<div id="ElectronicMediaCountIdRD"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For RD News</span></div>';
+									//str+='<div id="ElectronicMediaCountIdRD"></div>';
+									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "RWS NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdRWS"></div>';
-									str+='<div id="ElectronicMediaCountIdRWS"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For RWS News</span></div>';
+									//str+='<div id="ElectronicMediaCountIdRWS"></div>';
+									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "IT E& C NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdIT"></div>';
-									str+='<div id="ElectronicMediaCountIdIT"></div>';
-								str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For IT E&C News</span></div>';
+									//str+='<div id="ElectronicMediaCountIdIT"></div>';
+								str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
 								str+='</div>';
 						}
 						else{
@@ -417,15 +417,10 @@ function onloadCallToGetAllBlockAchievent () {
 	getLocationWiseWorksInformation();//ENC Works.
 	getStateWiseRoadsInformation();//ENC ROADS.
 	getNewsPapersInformation(0);
-	getBulletinNewsPapersInformation(0);
 	getNewsPapersInformation(1699);
-	getBulletinNewsPapersInformation(1699);
-	getNewsPapersInformation(2170);
-	getBulletinNewsPapersInformation(2170);
+	getNewsPapersInformation(2170);	
 	getNewsPapersInformation(2171);
-	getBulletinNewsPapersInformation(2171);
-	getNewsPapersInformation(1698);
-	getBulletinNewsPapersInformation(1698);
+	getNewsPapersInformation(1698);	
 	getPRBioMetricDashboardOverViewDtls();
 	for(var i in globalComponentNameArr)
 	{
@@ -2032,29 +2027,29 @@ function buildPageWiseComponents(result,pageId){
 									 str+='<div  style="text-align: right">';	
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId1"></div>';
-											str+='<div id="ElectronicMediaCountId1"></div>';
-											str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For PR News</span></div>';
+											//str+='<div id="ElectronicMediaCountId1"></div>';
+											str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
 										str+='</div>';
 								}else if(result[i].subList[j].name == "RD NEWS"){
 									str+='<div style="text-align: right">';
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId2"></div>';
-											str+='<div id="ElectronicMediaCountId2"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For RD News</span></div>';
+											//str+='<div id="ElectronicMediaCountId2"></div>';
+									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
 									str+='</div>';
 								}else if(result[i].subList[j].name == "RWS NEWS"){
 									str+='<div class="" style="text-align: right">';	
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId3"></div>';
-											str+='<div id="ElectronicMediaCountId3"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For RWS News</span></div>';	
+											//str+='<div id="ElectronicMediaCountId3"></div>';
+									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';	
 									str+='</div>';
 								}else if(result[i].subList[j].name == "IT E& C NEWS"){
 										str+='<div class="" style="text-align: right">';	
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId4"></div>';
-											str+='<div id="ElectronicMediaCountId4"></div>';
-										str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles For IT E&C News</span></div>';
+											//str+='<div id="ElectronicMediaCountId4"></div>';
+										str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
 										str+='</div>';
 								}else{
 									str+='<div class=" " style="text-align: right">';
@@ -2434,7 +2429,18 @@ var url = window.location.href;
 var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
 	wurl = url.substr(0,(url.indexOf(".in")+3));
-
+var printCount =0;
+var printCount1 =0;
+var printCount2 =0;
+var printCount3 =0;
+var printCount4 =0;
+var totalCount=0,totalCount1=0,totalCount2=0,totalCount3=0,totalCount4 =0;
+var electCount=0,electCount1=0,electCount2=0,electCount3=0,electCount4=0;
+var mainNews=0;
+var PRPerc=0;
+var RDPerc=0;
+var RWSPerc=0;
+var ITPerc=0;
  function getNewsPapersInformation(deptId){
 		 $("#printMediaCountId").html(spinner);
 		 $("#printMediaCountId1").html(spinner);
@@ -2445,11 +2451,7 @@ if(wurl.length == 3)
 		 $("#printMediaCountIdRD").html(spinner);
 		 $("#printMediaCountIdRWS").html(spinner);
 		 $("#printMediaCountIdPR").html(spinner);
-		 var printCount =0;
-		 var printCount1 =0;
-		 var printCount2 =0;
-		 var printCount3 =0;
-		 var printCount4 =0;
+		 
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+newsStartDate+"/"+newsEndDate+"/"+deptId
 			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+newsStartDate+"/"+newsEndDate+"/"+deptId
@@ -2458,62 +2460,45 @@ if(wurl.length == 3)
 				if(deptId ==0){
 					for(var i in result){
 					printCount =printCount+result[i].negativCountMain;
-				}
-				var str='';
-				str+='<div class="col-sm-6 text-right">';
-					str+='<h2 style="margin-top: 0px">'+printCount+'</h2>';
-					str+='<p class="">Print Media</p>';
-				str+='</div>';
-				$("#printMediaCountId").html(str);
+					totalCount =totalCount+result[i].count;
+					}
 				}else if(deptId ==1699){
 					for(var i in result){
 					printCount1 =printCount1+result[i].negativCountMain;
-				}
-				var str='';
-				str+='<div class="col-sm-6 text-right">';
-					str+='<h2 style="margin-top: 0px">'+printCount1+'</h2>';
-					str+='<p class="">Print Media</p>';
-				str+='</div>';
-				$("#printMediaCountId1").html(str);
-				$("#printMediaCountIdPR").html(str);
+					totalCount1 =totalCount1+result[i].count;
+					}
 				}else if(deptId ==2170){
 					for(var i in result){
 					printCount2 =printCount2+result[i].negativCountMain;
-				}
-				var str='';
-				str+='<div class="col-sm-6 text-right">';
-					str+='<h2 style="margin-top: 0px">'+printCount2+'</h2>';
-					str+='<p class="">Print Media</p>';
-				str+='</div>';
-				$("#printMediaCountId2").html(str);
-				$("#printMediaCountIdRD").html(str);
+					totalCount2 =totalCount2+result[i].count;
+					}
 				}else if(deptId ==2171){
 					for(var i in result){
 					printCount3 =printCount3+result[i].negativCountMain;
-				}
-				var str='';
-				str+='<div class="col-sm-6 text-right">';
-					str+='<h2 style="margin-top: 0px">'+printCount3+'</h2>';
-					str+='<p class="">Print Media</p>';
-				str+='</div>';
-				$("#printMediaCountId3").html(str);
-				$("#printMediaCountIdRWS").html(str);
+					totalCount3 =totalCount3+result[i].count;
+					}
 				}else if(deptId ==1698){
 					for(var i in result){
 					printCount4 =printCount4+result[i].negativCountMain;
-				}
-				var str='';
-				str+='<div class="col-sm-6 text-right">';
-					str+='<h2 style="margin-top: 0px">'+printCount4+'</h2>';
-					str+='<p class="">Print Media</p>';
-				str+='</div>';
-				$("#printMediaCountId4").html(str);
-				 $("#printMediaCountIdIT").html(str);
+					totalCount4 =totalCount4+result[i].count;
+					}
 				}
 			}
-			
+			if(deptId ==0){
+				getBulletinNewsPapersInformation(0);
+			}else if(deptId ==1699){
+				getBulletinNewsPapersInformation(1699);
+			}else if(deptId ==2170){
+				getBulletinNewsPapersInformation(2170);
+			}else if(deptId ==2171){
+				getBulletinNewsPapersInformation(2171);
+			}else if(deptId ==1698){
+				getBulletinNewsPapersInformation(1698);
+			}
 		});
+		
 }
+
 function getBulletinNewsPapersInformation(deptId){
 		$("#ElectronicMediaCountId").html(spinner);
 		$("#ElectronicMediaCountId1").html(spinner);
@@ -2524,11 +2509,7 @@ function getBulletinNewsPapersInformation(deptId){
 		$("#ElectronicMediaCountIdRD").html(spinner);
 		$("#ElectronicMediaCountIdRWS").html(spinner);
 		$("#ElectronicMediaCountIdPR").html(spinner);
-		var electCount=0;
-		var electCount1=0;
-		var electCount2=0;
-		var electCount3=0;
-		var electCount4=0;
+		
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
 			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
@@ -2537,59 +2518,72 @@ function getBulletinNewsPapersInformation(deptId){
 				if(deptId ==0){
 					for(var i in result){
 						electCount =electCount+result[i].negativCountMain;
+						totalCount =totalCount+result[i].count;
+						
 					}
+					var count =printCount+electCount;
+					mainNews = (count/totalCount*100).toFixed(2);
 					var str='';
-					str+='<div class="col-sm-5 text-right">';
-						str+='<h2 class="" style="margin-top: 0px">'+electCount+'</h2>';
-						str+='<p class="">Electronic Media</p>';
+					str+='<div class="col-sm-12 text-right">';
+						str+='<h2 class="" style="margin-top: 0px">'+count+'<small style="color:red;font-size:12px;">('+mainNews+'%)</small></h2>';
 					str+='</div>';
-					$("#ElectronicMediaCountId").html(str);
+					$("#printMediaCountId").html(str);
 				}else if(deptId ==1699){
 					for(var i in result){
 						electCount1 =electCount1+result[i].negativCountMain;
+						totalCount1 =totalCount1+result[i].count;
 					}
 					var str='';
-					str+='<div class="col-sm-5 text-right">';
-						str+='<h2 class="" style="margin-top: 0px">'+electCount1+'</h2>';
-						str+='<p class="">Electronic Media</p>';
+					str+='<div class="col-sm-12 text-right">';
+					var count1 =printCount1+electCount1;
+					
+					PRPerc = (count1/totalCount1*100).toFixed(2);
+					
+						str+='<h2 class="" style="margin-top: 0px">'+count1+'<small style="color:red;font-size:12px;">('+PRPerc+'%)</small></h2>';
 					str+='</div>';
-					$("#ElectronicMediaCountId1").html(str);
-					$("#ElectronicMediaCountIdPR").html(str);
+					$("#printMediaCountId1").html(str);
+					$("#printMediaCountIdPR").html(str);
 				}else if(deptId ==2170){
 					for(var i in result){
 						electCount2 =electCount2+result[i].negativCountMain;
+						totalCount2 =totalCount2+result[i].count;
 					}
 					var str='';
-					str+='<div class="col-sm-5 text-right">';
-						str+='<h2 class="" style="margin-top: 0px">'+electCount2+'</h2>';
-						str+='<p class="">Electronic Media</p>';
+					str+='<div class="col-sm-12 text-right">';
+					var count2 =printCount2+electCount2;
+					
+					RDPerc = (count2/totalCount2*100).toFixed(2);
+						str+='<h2 class="" style="margin-top: 0px">'+count2+'<small style="color:red;font-size:12px;">('+RDPerc+'%)</small></h2>';
 					str+='</div>';
-					$("#ElectronicMediaCountId2").html(str);
-					$("#ElectronicMediaCountIdRD").html(str);
+					$("#printMediaCountId2").html(str);
+					$("#printMediaCountIdRD").html(str);
 				}else if(deptId ==2171){
 					for(var i in result){
 						electCount3 =electCount3+result[i].negativCountMain;
+						totalCount3 =totalCount3+result[i].count;
 					}
 					var str='';
-					str+='<div class="col-sm-5 text-right">';
-						str+='<h2 class="" style="margin-top: 0px">'+electCount3+'</h2>';
-						str+='<p class="">Electronic Media</p>';
+					str+='<div class="col-sm-12 text-right">';
+					var count3 =printCount3+electCount3;
+					RWSPerc = (count3/totalCount3*100).toFixed(2);
+						str+='<h2 class="" style="margin-top: 0px">'+count3+'<small style="color:red;font-size:12px;">('+RWSPerc+'%)</small></h2>';
 					str+='</div>';
-					$("#ElectronicMediaCountId3").html(str);
-					$("#ElectronicMediaCountIdRWS").html(str);
+					$("#printMediaCountId3").html(str);
+					$("#printMediaCountIdRWS").html(str);
 				}else if(deptId ==1698){
 					for(var i in result){
 						electCount4 =electCount4+result[i].negativCountMain;
+						totalCount4 =totalCount4+result[i].count;
 					}
 					var str='';
-					str+='<div class="col-sm-5 text-right">';
-						str+='<h2 class="" style="margin-top: 0px">'+electCount4+'</h2>';
-						str+='<p class="">Electronic Media</p>';
+					str+='<div class="col-sm-12 text-right">';
+					var count4 =printCount4+electCount4;
+					ITPerc = (count4/totalCount4*100).toFixed(2);
+						str+='<h2 class="" style="margin-top: 0px">'+count4+'<small style="color:red;font-size:12px;">('+ITPerc+'%)</small></h2>';
 					str+='</div>';
-					$("#ElectronicMediaCountId4").html(str);
-					$("#ElectronicMediaCountIdIT").html(str);
+					$("#printMediaCountId4").html(str);
+					$("#printMediaCountIdIT").html(str);
 					}
-				
 			}	
 		});
 } 
