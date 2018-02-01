@@ -1139,6 +1139,7 @@ function buildPetitionDetailsView(result){
 }
 $(document).on("click",".updateStatusChangeCls",function(){
 	 $("#coveringLetterGenerator").html("");
+	 $("#remarkIdErr").html("");
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
 	$("#fileUploadDiv").hide();
@@ -1461,6 +1462,7 @@ $(document).on("click",".docsViewCls",function(){
 function endorsingSubWorksAndAssigningToOfficer(){
 	
 	var flag = false;
+	$("#ajaxcallImageId").html('');
      $('#endorsementNoErr').html(' ');
 	 $('#leadIdErr').html('');
 	 $('#grantIdErr').html('');
@@ -1471,10 +1473,10 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	 
 	
 	    var endorsementId =$("#endorsmentNo").val();
-	     var leadIdValue = $("#leadId").val();
-	     var grantIdValue = $("#grantId").val();
-		 //var assignToIdValue = $("#assignToId").val();
-        //var officerIdValue = $("#officerId").val();
+	     //var leadIdValue = $("#leadId").val();
+	     //var grantIdValue = $("#grantId").val();
+		 var assignToIdValue = $("#assignToId").val();
+        var officerIdValue = $("#officerId").val();
 	     var remarksId =$("#remarksId").val();
 	    var statusId = $("#statusChangeId").val();
 	
@@ -1494,7 +1496,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 			   $('#endorsementNoErr') .html("");
 		   }
 	 
-		  if(leadIdValue == null || leadIdValue ==0){
+		/*  if(leadIdValue == null || leadIdValue ==0){
 			 $('#leadIdErr').html("<h5 style='color:red;'>Please select brief lead</h5>");
 				flag =true; 
 			}else{
@@ -1505,9 +1507,9 @@ function endorsingSubWorksAndAssigningToOfficer(){
 		     flag =true ; ;
 		 }else{
 			  $('#grantIdErr').html("");
-		 }
+		 }*/
 		 
-	    /* if(assignToIdValue == null || assignToIdValue==0){
+	     if(assignToIdValue == null || assignToIdValue==0){
 			$('#assignToIdErr').html("<h5 style='color:red;'>Please select assign to</h5>");
 			flag =true ; 
 		 }else{
@@ -1519,7 +1521,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 			 flag = true ; 
 		 }else{
 			  $('#officerIdErr').html(""); 
-		 } */
+		 } 
 		 
 		if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
 			$('#remarkIdErr').html("<h5 style='color:red;'>Comment is required</h5>");
@@ -1559,9 +1561,10 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	}
 	
 	
-	if(flag==true)
+	if(flag==true){
 		return;
-	
+	}
+	$("#ajaxcallImageId").html("<center><h4 style='color: green;'>Please Wait...... </h4></center>");
 	   //$('#endorsWorksId').hide();
 	   var endorsementNO="";
 	   var formData = new FormData();
@@ -1650,14 +1653,14 @@ $.ajax({
 					  if(result.exceptionMsg == "SUCCESS"){
 						
 						 setTimeout(function () {
-						$("#ajaxImageId").html("<center><h4 style='color: green;'>Please Wait Work(s) details updated successfully</h4></center>").fadeOut(5000);
-						}, 500);
-						   setTimeout(function () {
+						$("#ajaxcallImageId").html("<center><h4 style='color: green;'>Updated Successfully</h4></center>")
+						}, 5000);
+						    setTimeout(function () {
 						 $("#endorseMentModalDivId").modal("hide");
-						}, 1000);
-							//$(".saveEnable").prop("disabled", true);
+						}, 6000); 
+							$(".saveEnable").prop("disabled", true);
 						 
-						 // alert("Work(s) details updated successfully");
+						 //alert("Work(s) details updated successfully");
 						 
 						  getPetitionDetails(petitionId,endorsementNO);
 						 
@@ -1673,8 +1676,8 @@ $.ajax({
 				$("#savingDetailsSpinner").html('');
 				
 				setTimeout(function () {
-						$("#ajaxImageId").html("<center><h4 style='color: green;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h4></center>").fadeOut(3000);
-						}, 500);
+						$("#ajaxcallImageId").html("<center><h4 style='color: green;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h4></center>")
+						}, 5000);
 						//$(".saveEnable").prop("disabled", false);
 				//console.log(request);
 				//console.log(error);

@@ -2744,8 +2744,9 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		//return;
 	}
 	
+	$("#statusMsgAppntReqt").html("<center><h4 style='color: green;'>Please Wait...</h4></center>")
 	$('#saveButtonId').hide();
-	$("#savingDetailsSpinner").html(spinner)
+	//$("#savingDetailsSpinner").html(spinner)
 	 var formData = new FormData();
 	
 	$('#adminProfileForm input').each(
@@ -2824,38 +2825,43 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			processData: false,
 			contentType: false,
 			success: function(result) {
-				$("#savingDetailsSpinner").html('')
+				//$("#savingDetailsSpinner").html('')
 				if(result!=null){
 				  if(result.responseCode == "0"){
-					   $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
-					  
-						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); 
-						window.location.reload(); 
-						$(".defaultCheckCls").prop("checked",true)},6000);
+					   setTimeout(function () {
+						$("#statusMsgAppntReqt").html("<center><h4 style='color: green;'>Application Saved Successfully</h4></center>")
+						}, 4000);
+						setTimeout(function() {$('html, body').animate({scrollTop:0}, 4000)
+						window.location.reload(); 	
+					       },6000);
+						
+						$(".defaultCheckCls").prop("checked",true);
 						 
 				  }else{
 					  $('#saveButtonId').show();
-					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
 					  setTimeout(function () {
-						 
-						}, 500);
+					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>")
+						}, 5000);
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				  }
 				}else{
 					  $('#saveButtonId').show();
-					setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>").fadeOut(4000);
-						}, 500);
+					   setTimeout(function () {
+						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>")
+						}, 5000);
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				 }
 				 
 				
 			},
 			error: function(request,error) { 
-				$("#savingDetailsSpinner").html('');
+				//$("#savingDetailsSpinner").html('');
 				//console.log(request);
 				//console.log(error);
-				alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
+				 setTimeout(function () {
+				$("#statusMsgAppntReqt").html("<center><h4 style='color: green;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h4></center>")
+						}, 5000);
+				//alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
 				$('#saveButtonId').show();				
 			}
      });	 
