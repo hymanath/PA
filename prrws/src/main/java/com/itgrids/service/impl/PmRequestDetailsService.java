@@ -3415,7 +3415,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmTrackingVO.setDocumentId(document.getDocumentId());
 						pmTrackingVO.setPmSubWorkDetailsId(subWorkId);
 						updatePetitionTracking(pmTrackingVO); // works wise tracking 
-						
+						if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L)
 						if(inputVO.getStatusId().longValue() ==4L && inputVO.getStatusId().longValue() ==5L && inputVO.getStatusId().longValue() ==8L)
 							pmTrackingVO.setPmStatusId(8L);
 						else
