@@ -159,10 +159,10 @@ $(document).on("click","#submitId",function(){
 		},
 		success: function(ajaxresp){
 			if(ajaxresp!=null){
-				if(ajaxresp.impagePath ==null && ajaxresp.impagePath.length == 0){
-					$('#imageId').html('<span style="textAlign:center; text-color:red">NO DATA AVAILABLE</span>'); 
+				if(ajaxresp.impagePath == "" && ajaxresp.impagePath.length == 0){
+					$('#imageId').html('<h3><span style="color:red; padding-left: 59px; ">Something Went Wrong...Please Try Again</span></h3>'); 
 				}else{	
-					$('#imageId').html('<img  class="img-responsive"  src="'+ajaxresp.impagePath+'">'); 
+					$('#imageId').html('<img  class="img-responsive"  src="'+ajaxresp.impagePath+'" alt="Something Went Wrong... Please Try Again ">'); 
 				}
 			}else{
 				$('#imageId').html('<span style="textAlign:center; text-color:red">NO DATA AVAILABLE</span>'); 
