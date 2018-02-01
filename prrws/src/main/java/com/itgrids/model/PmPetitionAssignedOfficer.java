@@ -29,6 +29,7 @@ public class PmPetitionAssignedOfficer {
 	private Long updatedUserId;
 	private Date insertedTime;
 	private Date updatedTime;
+	private String actionType;
 	
 	private Petition petition;
     private PmSubWorkDetails pmSubWorkDetails;
@@ -157,11 +158,21 @@ public class PmPetitionAssignedOfficer {
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
 	}
+	
+	@Column(name="remarks")
 	public String getRemarks() {
 		return remarks;
 	}
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+	
+	@Column(name="action_type")
+	public String getActionType() {
+		return actionType;
+	}
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
 	}
 	
 	

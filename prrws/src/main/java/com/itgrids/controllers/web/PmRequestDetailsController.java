@@ -374,7 +374,11 @@ public class PmRequestDetailsController {
 		    }else{
 		    	return null;
 		    }
-		    return pmRequestDetailsService.getLoginUserAccessSubDeptDesignationDetail(dataVo.getDeptIdsList(),userId);
+		   /* if(dataVo.getPmStatusId() != null && dataVo.getPmStatusId().longValue() == 1l){
+		    	return pmRequestDetailsService.getLoginUserAccessSubDeptDesignationDetail(dataVo.getDeptIdsList(),userId);
+		    }else{
+		    	return pmRequestDetailsService.getLoginUserAccessStatusWiseDeptDesignations(dataVo.getDeptIdsList(),userId,dataVo.getPmStatusId());
+		    }*/
 	    }
 	    
 	    @RequestMapping(value ="/getDeptDesignationOfficerDetail",method = RequestMethod.POST)

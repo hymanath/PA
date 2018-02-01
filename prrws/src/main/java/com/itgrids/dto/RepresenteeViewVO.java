@@ -43,8 +43,16 @@ public class RepresenteeViewVO {
 	private List<Long> workIds = new ArrayList<Long>();
 	private List<String> referList = new ArrayList<String>();
 	private String coverLetterPath;
+	private String actionType;
 	
 	
+	
+	public String getActionType() {
+		return actionType;
+	}
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
+	}
 	public String getCoverLetterPath() {
 		return coverLetterPath;
 	}

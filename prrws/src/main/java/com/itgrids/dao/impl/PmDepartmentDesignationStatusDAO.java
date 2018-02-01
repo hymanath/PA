@@ -18,4 +18,19 @@ public class PmDepartmentDesignationStatusDAO extends GenericDaoHibernate<PmDepa
 	PmDepartmentDesignationStatusDAO(){
 		super(PmDepartmentDesignationStatus.class);
 	}
+	
+	/*public List<Object[]> getLoginUserAccessStatusWiseDeptDesignations(List<Long> deptDesigIdsList ,Long statusId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct  model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId," +
+				"model.pmDepartmentDesignation.pmOfficerDesignation.designation from PmDepartmentDesignationStatus model where " +
+				" model.pmDepartmentDesignation.isDeleted='N' ");
+		if(statusId != null && statusId.longValue() >0l){
+			sb.append(" and model.pmStatusId = :statusId ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(statusId != null && statusId.longValue() >0l){
+			query.setParameter("statusId", statusId);
+		}
+		return query.list();
+	}*/
 }

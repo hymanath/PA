@@ -179,7 +179,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	private IEntitlementUrlDAO entitlementUrlDAO;
 	@Autowired
 	private IPmRequiredFileFormatTextDAO pmRequiredFileFormatTextDAO;
-	
+	/*@Autowired
+	private IPmDepartmentDesignationStatusDAO pmDepartmentDesignationStatusDAO;*/
 	public ResponseVO saveRepresentRequestDetailsTest(PmRequestVO pmRequestVO){
 		return null;
 	}
@@ -3017,18 +3018,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					Integer year=cal.get(Calendar.YEAR);
 					yearStr=year.toString();
 				 dateStr=	sdf.format(date);
-				 if(userType != null && userType.contains("AP MINISTER")){
-					 userType = "Min";
+				 if(userType != null && (userType.equalsIgnoreCase("AP MINISTER") || userType.equalsIgnoreCase("MINISTER"))){
+					 userType = "M";
 				 }else if(userType != null && userType.contains("OSD")){
-					 userType = "OSD-M";
+					 userType = "OSD";
 				 }else{
 					 userType = "";
 				 }
 				 if(depts == null){
 					 depts = "";
 				 }
+				 
+				 String[] strArr = dateStr.split("-");
+				 String dateFormat = strArr[0]+"."+strArr[1]+"."+strArr[2];
 				//String deptStr = commonMethodsUtilService.convertStringFromListWithOutDuplicates(depts);
-				outputStr=endrsementNo+"/"+userType+"("+depts+")/"+yearStr+"/"+dateStr;
+				outputStr=endrsementNo+"/"+userType+"("+depts+")/"+yearStr+", Dt: "+dateFormat;
 			}
 			return "Endt NO. "+outputStr;
 		}
@@ -3332,6 +3336,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								endorsmentNo = inputVO.getEndorsementNO();
 								pmSubWorkDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								pmSubWorkDetails.setUpdatedUserId(inputVO.getId());
+								/*if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && (inputVO.getStatusId().longValue() == 4L || inputVO.getStatusId().longValue() == 5L || 
+										inputVO.getStatusId().longValue() == 6L) ){
+									pmSubWorkDetails.setPmStatusId(inputVO.getStatusId());
+								}*/
 								if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L)
 									pmSubWorkDetails.setPmStatusId(inputVO.getStatusId());
 								pmSubWorkDetailsDAO.save(pmSubWorkDetails);
@@ -3382,6 +3390,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 										pmPetitionAssignedOfficer.setInsertedUserId(inputVO.getId());
 										pmPetitionAssignedOfficer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 										pmPetitionAssignedOfficer.setUpdatedUserId(inputVO.getId());
+										//pmPetitionAssignedOfficer.setActionType(inputVO.getActionType());
 										pmPetitionAssignedOfficer = pmPetitionAssignedOfficerDAO.save(pmPetitionAssignedOfficer);
 									}
 								}
@@ -4225,4 +4234,30 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 			return resultList;
   }	
+		/*public List<KeyValueVO> getLoginUserAccessStatusWiseDeptDesignations(List<Long> deptDesigIdsList , Long userId,Long statusId){
+			 List<KeyValueVO>  returnList = new ArrayList<KeyValueVO>();
+			try {
+				List<Long> deptDesignationIdsList = pmOfficerUserDAO.getPmDeptDesignationIdByUserId(userId);
+				if(commonMethodsUtilService.isListOrSetValid(deptDesignationIdsList)){
+					List<Object[]> childDeptDesignationsList = pmDepartmentDesignationHierarchyDAO.getSubDesignationDetailsForParentDeptDesignations(deptDesignationIdsList);
+					if(commonMethodsUtilService.isListOrSetValid(childDeptDesignationsList)){
+						for (Object[] param : childDeptDesignationsList) {
+							//returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])+" - "+commonMethodsUtilService.getStringValueForObject(param[2])));
+							returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]))));
+						}
+					}
+				}
+				List<Object[]> desigList = pmDepartmentDesignationStatusDAO.getLoginUserAccessStatusWiseDeptDesignations(deptDesigIdsList,statusId);
+				if(commonMethodsUtilService.isListOrSetValid(desigList)){
+					for (Object[] param : desigList) {
+						returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]))));
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception raised into PmRequestDetailsService of getLoginUserAccessSubDeptDesignationDetail() ",e);
+				returnList = null;
+			}
+			return returnList;
+		}*/
 }
