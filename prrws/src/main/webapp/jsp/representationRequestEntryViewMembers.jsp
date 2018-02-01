@@ -394,8 +394,15 @@
 	   </div>
 
 	  <div class="modal-footer">
-		 <button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
-		<button type="button" class="btn btn-success pull-right  " id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" ><span id="buttonNameId"></span></button>
+		  <div class="row m_top20" >
+			<div id="ajaxcallImageId" > </div>
+		  <div class="col-sm-8 ">
+		   </div>
+			 <div class="col-sm-4 ">
+				 <button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-success pull-right  " id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" ><span id="buttonNameId"></span></button>
+			   </div>
+		  </div>
 	  </div>
 	</form>
   </div>
