@@ -1380,6 +1380,7 @@ $(document).on("change","#statusChangeId",function(){
 	}
 });	
 $(document).on("click",".docsViewCls",function(){
+	$("#docsViewModalId").html('');
 	$("#docsModalDivId").modal("show");
 	var docsList = [];
 	var str="";
@@ -1433,6 +1434,7 @@ $(document).on("click",".docsViewCls",function(){
 							
 						}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
 							str+='<a class="fancyboxView" href="#inline'+j+'">';
+							str+='<div class="mouse-over">Expand</div>';
 								str+='<img src="'+docsList[j].value+'"  width="100%" height="300px;"></img>';
 								
 							str+='</a>';
@@ -1452,8 +1454,8 @@ $(document).on("click",".docsViewCls",function(){
 	}
 
 		$("#docsViewModalId").html(str);
-		$(".fancyboxView").fancybox();
-		$(".fancybox-overlay").addClass("z_index")
+		$(".fancyboxView").fancybox({live: false});
+		
 });
 
 function endorsingSubWorksAndAssigningToOfficer(){
@@ -1853,6 +1855,7 @@ var json = {
 					//$(".saveEnable").prop("disabled", false);
 				}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
 					str+='<a class="fancyboxView" href="#inlineddds">';
+					str+='<div class="mouse-over">Expand</div>';
 						str+='<img src="http://www.mydepartments.in/PRRWS/'+result.exceptionMsg+'"  width="100%" height="100px;"></img>';
 						
 					str+='</a>';
@@ -1872,8 +1875,8 @@ var json = {
 	str+='</div>';
 	
 	$("#coveringLetterGenerator").html(str);
-	$(".fancyboxView").fancybox();
-	$(".fancybox-overlay").addClass("z_index")
+	$(".fancyboxView").fancybox({live: false});
+	
 	 }
 	
 	
