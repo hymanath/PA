@@ -33,13 +33,16 @@ import com.itgrids.dao.IEntitlementUrlDAO;
 import com.itgrids.dao.IEntitlementsGroupEntitlementUrlDAO;
 import com.itgrids.dao.ILocationAddressDAO;
 import com.itgrids.dao.IPetitionDAO;
+import com.itgrids.dao.IPmActionTypeDAO;
 import com.itgrids.dao.IPmBriefLeadDAO;
 import com.itgrids.dao.IPmDepartmentDesignationHierarchyDAO;
 import com.itgrids.dao.IPmDepartmentDesignationOfficerDAO;
+import com.itgrids.dao.IPmDocumentTypeDAO;
 import com.itgrids.dao.IPmGrantDAO;
 import com.itgrids.dao.IPmOfficerUserDAO;
 import com.itgrids.dao.IPmPetitionAssignedOfficerDAO;
 import com.itgrids.dao.IPmPetitionDocumentDAO;
+import com.itgrids.dao.IPmPetitionTypeDAO;
 import com.itgrids.dao.IPmRefCandidateDAO;
 import com.itgrids.dao.IPmRefCandidateDesignationDAO;
 import com.itgrids.dao.IPmRepresenteeDAO;
@@ -179,6 +182,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	private IEntitlementUrlDAO entitlementUrlDAO;
 	@Autowired
 	private IPmRequiredFileFormatTextDAO pmRequiredFileFormatTextDAO;
+	@Autowired
+	private IPmPetitionTypeDAO pmPetitionTypeDAO;
+	@Autowired
+	private IPmDocumentTypeDAO pmDocumentTypeDAO;
+	@Autowired
+	private IPmActionTypeDAO pmActionTypeDAO;
 	/*@Autowired
 	private IPmDepartmentDesignationStatusDAO pmDepartmentDesignationStatusDAO;*/
 	public ResponseVO saveRepresentRequestDetailsTest(PmRequestVO pmRequestVO){
@@ -4260,4 +4269,72 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return returnList;
 		}*/
+		
+		/**
+		 * @Author : krishna 
+		 * @Date : 2nd feb,2018
+		 * @return List<KeyValueVO> 
+		 */
+		public List<KeyValueVO> getPmPetitionList(){
+			 List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+			try{
+				List<Object[]> pmPetitionObjsList = pmPetitionTypeDAO.getPmPetitionList();
+				if(pmPetitionObjsList != null && pmPetitionObjsList.size() >0){
+					for(Object[] petitionObj : pmPetitionObjsList){
+						KeyValueVO vo = new KeyValueVO();
+						vo.setKey(commonMethodsUtilService.getLongValueForObject(petitionObj[0]));
+						vo.setValue(commonMethodsUtilService.getStringValueForObject(petitionObj[1]));
+						resultList.add(vo);
+					}
+				}
+			}catch(Exception e){
+				LOG.error("exception raised into PmRequestDetailsService of getPmPetitionList()",e);
+			}
+			return resultList;
+		}
+		
+		/**
+		 * @Author : krishna 
+		 * @Date : 2nd feb,2018
+		 * @return List<KeyValueVO> 
+		 */
+		public List<KeyValueVO> getPmDocumentTypeList(){
+			 List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+			try{
+				List<Object[]> pmDocmentTypeObjsList = pmDocumentTypeDAO.getPmDocumentTypeList();
+				if(pmDocmentTypeObjsList != null && pmDocmentTypeObjsList.size() >0){
+					for(Object[] petitionObj : pmDocmentTypeObjsList){
+						KeyValueVO vo = new KeyValueVO();
+						vo.setKey(commonMethodsUtilService.getLongValueForObject(petitionObj[0]));
+						vo.setValue(commonMethodsUtilService.getStringValueForObject(petitionObj[1]));
+						resultList.add(vo);
+					}
+				}
+			}catch(Exception e){
+				LOG.error("exception raised into PmRequestDetailsService of getPmDocumentTypeList()",e);
+			}
+			return resultList;
+		}
+		/**
+		 * @Author : krishna 
+		 * @Date : 2nd feb,2018
+		 * @return List<KeyValueVO> 
+		 */
+		public List<KeyValueVO> getPmActionTypeList(){
+			 List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+			try{
+				List<Object[]> pmActionTypeObjsList = pmActionTypeDAO.getPmActionTypeList();
+				if(pmActionTypeObjsList != null && pmActionTypeObjsList.size() >0){
+					for(Object[] petitionObj : pmActionTypeObjsList){
+						KeyValueVO vo = new KeyValueVO();
+						vo.setKey(commonMethodsUtilService.getLongValueForObject(petitionObj[0]));
+						vo.setValue(commonMethodsUtilService.getStringValueForObject(petitionObj[1]));
+						resultList.add(vo);
+					}
+				}
+			}catch(Exception e){
+				LOG.error("exception raised into PmRequestDetailsService of getPmActionTypeList()",e);
+			}
+			return resultList;
+		}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.appfuse.dao.SearchException;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,7 +21,11 @@ public class PmActionTypeDAO extends GenericDaoHibernate<PmActionType, Long> imp
 		super(PmActionType.class);
 		
 	}
-
+	public List<Object[]> getPmActionTypeList(){
+		StringBuilder sb = new StringBuilder("select model.pmActionTypeId,model.pmActionType from PmActionType model where model.isDeleted ='N' ");
+		Query qry = getSession().createQuery(sb.toString());
+		return qry.list();
+	}
 	
 
 }
