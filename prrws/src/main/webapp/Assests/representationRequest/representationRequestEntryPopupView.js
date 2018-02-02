@@ -1269,6 +1269,8 @@ $(document).on("change","#statusChangeId",function(){
 		$("#assignOfficerDivId").show();
 		$("#assignDesignationDivId").show();
 		$("#fileUploadDiv").hide();
+		$("#documentTypeDivId").hide();
+		$("#referranceNoDivId").hide();
 		$("#fileUploadIdDiv").show();
 		//$(".saveEnable").prop("disabled", true);
 		$("#buttonNameId").html("Forward")
@@ -1298,6 +1300,8 @@ $(document).on("change","#statusChangeId",function(){
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").show();
 		$("#assignDesignationDivId").show();
+		$("#documentTypeDivId").hide();
+		$("#referranceNoDivId").hide();
 		$("#endorsementDivId").hide();
 		$("#buttonNameId").html("Forward")
 		$(".saveEnable").prop("disabled", false);
@@ -1314,6 +1318,36 @@ $(document).on("change","#statusChangeId",function(){
 		$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
 		
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+	}else if(statusId == 3){
+		$("#endorsementNoErr").html('');
+		$("#endorsentDivId").hide();
+		$("#coveringLetterGenerator").html("");
+		$("#remarksId").val('');
+		$("#letterNameId").html("FINAL COPY");
+		$("#endorsementDivId").hide();
+		$("#commentsDivId").show();
+		$("#leadDivId").hide();
+		$("#grantDivId").hide();
+		$("#assignOfficerDivId").hide();
+		$("#assignDesignationDivId").hide();
+		$("#documentTypeDivId").show();
+		$("#referranceNoDivId").show();
+		$("#endorsementDivId").hide();
+		$("#buttonNameId").html("Forward")
+		$(".saveEnable").prop("disabled", false);
+		$('.saveEnable').removeAttr('title');
+		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+		initializeSingleUploadDocument("uploadEndorsementDocId");
+		$("#fileUploadDiv").show();
+		$("#fileUploadIdDiv").hide();
+		
+		$("#assignToId").html('');
+		 $("#assignToId").html('<option value="0"> Select designation </option>');
+		 
+		$("#officerId").html('');
+		$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+		
+		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr)
 	}else if(statusId == 7){
 		$("#endorsentDivId").hide();
 		$("#remarkIdErr").html('');
@@ -1324,6 +1358,8 @@ $(document).on("change","#statusChangeId",function(){
 		$("#grantDivId").hide();
 		$("#assignOfficerDivId").hide();
 		$("#assignDesignationDivId").hide();
+		$("#documentTypeDivId").hide();
+		$("#referranceNoDivId").hide();
 		$("#endorsementDivId").hide();
 		$("#buttonNameId").html("Save Details")
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
@@ -1333,7 +1369,7 @@ $(document).on("change","#statusChangeId",function(){
 		//$(".saveEnable").prop("disabled", false);
 		//$('.saveEnable').removeAttr('title');
 		$("#coveringLetterGenerator").html("");
-	}else if(statusId == 3 || statusId == 4 || statusId == 5){
+	}else if(statusId == 4 || statusId == 5){
 		$("#endorsentDivId").hide();
 		$("#remarkIdErr").html('');
 		$("#remarksId").val('')
@@ -1345,6 +1381,8 @@ $(document).on("change","#statusChangeId",function(){
 		$("#assignDesignationDivId").hide();
 		$("#endorsementDivId").hide();
 	    $("#fileUploadDiv").hide();
+		$("#documentTypeDivId").hide();
+		$("#referranceNoDivId").hide();
 		$("#fileUploadIdDiv").hide();
 		$("#buttonNameId").html("Save Details")
 		//$(".saveEnable").prop("disabled", false);
@@ -1362,6 +1400,8 @@ $(document).on("change","#statusChangeId",function(){
 		$("#assignDesignationDivId").hide();
 		$("#endorsementDivId").hide();
 		$("#endorsmentNo").val('');
+		$("#documentTypeDivId").hide();
+		$("#referranceNoDivId").hide();
 		$("#remarksId").val('');
 		$("#leadId").html('');
 		//$(".saveEnable").prop("disabled", false);
@@ -1479,7 +1519,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
         var officerIdValue = $("#officerId").val();
 	     var remarksId =$("#remarksId").val();
 	    var statusId = $("#statusChangeId").val();
-	
+		var documentTypeId = $("#documentTypeId").val();
 	if(statusId == 0){
 		if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
 			$('#remarkIdErr').html("<h5 style='color:red;'>Comment is required</h5>");
@@ -1550,7 +1590,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 			 $('#remarkIdErr').html("");
 		 }
 		 
-	}else if(statusId == 7 || statusId == 3  || statusId == 4  || statusId == 5){
+	}else if(statusId == 7  || statusId == 4  || statusId == 5){
 		  var remarksId =$("#remarksId").val();
 		 if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
 			$('#remarkIdErr').html("<h5 style='color:red;'>Comment is required</h5>");
@@ -1558,6 +1598,13 @@ function endorsingSubWorksAndAssigningToOfficer(){
 		 }else{
 			 $('#remarkIdErr').html("");
 		 }
+	}else if(statusId == 3){
+		if(documentTypeId == null || documentTypeId==0){
+			 $('#documentTypeIdErr').html("<h5 style='color:red;'>Please select officer name</h5>");
+			 flag = true ; 
+		 }else{
+			  $('#documentTypeIdErr').html(""); 
+		 } 
 	}
 	
 	
@@ -1636,6 +1683,9 @@ function endorsingSubWorksAndAssigningToOfficer(){
 				}else if($("#nextStatusId").val()==3){
 					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
 						formData.append("statusType", "DETAILED REPORT");
+				}else if($("#nextStatusId").val()==8){
+					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
+						formData.append("statusType", "OTHER REPORT");
 				}
 		}
 	}
@@ -2448,3 +2498,28 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 		$(".table-desig-scroll").mCustomScrollbar({setHeight:'400px'});
 	}
 }
+getPmDocumentTypeList();
+function getPmDocumentTypeList(){
+	
+	 var json = {
+		
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmDocumentTypeList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			 $("#documentTypeId").html('<option value="0">Select Document Type</option>');
+			for(var i in result){
+				$("#documentTypeId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#documentTypeId").trigger('chosen:updated');
+	});	
+	}

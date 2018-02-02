@@ -44,9 +44,23 @@ public class RepresenteeViewVO {
 	private List<String> referList = new ArrayList<String>();
 	private String coverLetterPath;
 	private String actionType;
+	private Long documentTypeId;
+	private String refNo;
 	
 	
 	
+	public Long getDocumentTypeId() {
+		return documentTypeId;
+	}
+	public void setDocumentTypeId(Long documentTypeId) {
+		this.documentTypeId = documentTypeId;
+	}
+	public String getRefNo() {
+		return refNo;
+	}
+	public void setRefNo(String refNo) {
+		this.refNo = refNo;
+	}
 	public String getActionType() {
 		return actionType;
 	}

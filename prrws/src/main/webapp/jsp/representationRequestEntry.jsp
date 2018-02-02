@@ -147,6 +147,15 @@
 			 </div>
 		  <div class="modal-body">
 			<div class="row">
+				<div class="col-sm-4" style="display:none;">
+					<select class="form-control chosen-select m_top5 height45" id="petitionTypeId">
+						<option value="0">Select Petition Type</option>
+						<!--<option value="1">Works Related</option>
+						<option value="2">Transfers & Postings</option>
+						<option value="3">Others</option>-->
+					</select>
+					 <div class="m_top10 error_colorCls" id="desiganationIErrDivd"></div>
+				</div>
 				<div class="col-sm-4">
 					<input   name=""   onkeyUp="checkIsNumber('noofWorks',this.value)" type="text" class="form-control m_top5 height45 isNumberCls" id="noofWorks" placeholder="Enter No Of Work">
 					<br><span class="ErrCls" id="noofWorksErr"></span>
