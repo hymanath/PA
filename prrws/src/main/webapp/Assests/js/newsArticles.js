@@ -75,7 +75,7 @@ if(wurl.length == 3)
 		 $("#overAllPrintMediaDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+glStartDate+"/"+glEndDate+"/"+globalDeptId
 		}).then(function(result){
 			if(result !=null && result.length>0){
 				buildOverAllPrintMediaDetails(result,"PrintMedia","overAllPrintMediaDivId","overAll",0);
@@ -88,7 +88,7 @@ if(wurl.length == 3)
 		 $("#overAllElectronicMediaDivId").html(spinner);
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
 		}).then(function(result){
 				if(result !=null && result.length>0){
 					buildOverAllPrintMediaDetails(result,"ElectronicMedia","overAllElectronicMediaDivId","overAllEle",0);
@@ -213,9 +213,9 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 		
 		
 		
-		totalCount = totalCount+result[i].count;
-		totalPosCount = totalPosCount+result[i].positiveCountMain;
-		totalNegCount = totalNegCount+result[i].negativCountMain;
+		totalCount = totalCount+result[i].count+result[i].grpCount;
+		totalPosCount = totalPosCount+result[i].positiveCountMain+result[i].positiveCountGrpMain;
+		totalNegCount = totalNegCount+result[i].negativCountMain+result[i].negativCountGrpMain;
 		overAllcategoryTime=result[i].positiveIsPrimeCoveredTime;
 		overAllcategoryPosTime=result[i].totalIsPrimePositiveCoveredTime;
 		overAllcategoryNegTime=result[i].totalIsPrimeNegativeCoveredTime
@@ -264,7 +264,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 								if(departmentType == "overAllEle"){
 									 if(typeval == "ElectronicMedia"){
 										 if(result[i].positiveCountMain != null && result[i].positiveCountMain >0){
-											 str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="0" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="electronic" attr_categoryId="'+result[i].organizationId+'">'+result[i].positiveCountMain+'</a>(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
+											 str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="0" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'">'+result[i].positiveCountMain+'</a>(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 										//str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isPrimedescription+'</h5>';
 										
 											str+='<h5 class="font_weight m_top5" style="font-size:11px;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].overalIsPrimedescription+'\nNon&nbsp;Prime&nbsp;Time:'+result[i].overalIsNotPrimedescription+'">'+result[i].isPrimedescription+'</span></h5>';
@@ -276,7 +276,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 								}else if(departmentType == "overAll"){
 									if(typeval == "PrintMedia"){
 										if(result[i].positiveCountMain != null && result[i].positiveCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="0" attr_type="print" title="'+result[i].mainPositiveArticlePerc+'" attr_categoryId="0">'+result[i].positiveCountMain+'</a>(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')" attr_categoryId="0" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</a> - <a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles('+result[i].mainPositiveArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].positiveCountGrpMain+'</a> (<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 										}else{
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 										}
@@ -297,7 +297,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 								}else if(departmentType == "department"){
 									if(typeval == "PrintMediadepartment"+departmentId+""){
 										if(result[i].positiveCountMain !=null && result[i].positiveCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" title="'+result[i].mainPositiveArticlePerc+'" attr_categoryId="0">'+result[i].positiveCountMain+'</a>(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')" attr_categoryId="0" title="Click here to get individual articles" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</a> - <a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles('+result[i].mainPositiveArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].positiveCountGrpMain+'</a> (<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 										}else{
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 										}
@@ -323,7 +323,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 								}else if(departmentType == "overAll"){
 									if(typeval == "PrintMedia"){
 										if(result[i].negativCountMain != null && result[i].negativCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="0" attr_type="print" title="'+result[i].mainNegativeArticlePerc+'"  attr_categoryId="0">'+result[i].negativCountMain+'</a>(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainNegativeArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].negativCountMain+'</a> - <a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles(('+result[i].mainNegativeArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].negativCountGrpMain+'</a> (<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 										}else{
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 										}
@@ -344,7 +344,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 								}else if(departmentType == "department"){
 									if(typeval == "PrintMediadepartment"+departmentId+""){
 										if(result[i].negativCountMain !=null && result[i].negativCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" title="'+result[i].mainNegativeArticlePerc+'" attr_categoryId="0">'+result[i].negativCountMain+'</a>(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" title="Individual Articles('+result[i].mainNegativeArticlePerc+')" attr_categoryId="0" attr_group_type="individualArticles">'+result[i].negativCountMain+'</a> - <a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles('+result[i].mainNegativeArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].negativCountGrpMain+'</a> (<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 										}else{
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 										}
@@ -425,9 +425,9 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 	highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 	for(var i in result){
 		
-		var postiveCountPerc = result[i].positivePerc;
+		var postiveCountPerc = result[i].positivePerc+ result[i].positiveGrpPerc;
 		var negativCountPerc = result[i].negativePerc;
-		var totalCount=result[i].positiveCountMain+result[i].negativCountMain;
+		var totalCount=result[i].positiveCountMain+result[i].negativCountMain+result[i].positiveCountGrpMain+result[i].negativCountGrpMain;
 		var headingCountPrint='';
 			if(departmentType == "overAllEle"){
 				 if(typeval == "ElectronicMedia"){
@@ -1028,8 +1028,9 @@ $(document).on("click",".printOverAllCls",function(){
 	var benefitId =$(this).attr("attr_benefitId");
 	var type =$(this).attr("attr_type");
 	var categoryId =$(this).attr("attr_categoryId");
+	var groupType= $(this).attr("attr_group_type");
 	if(type =="print"){
-		window.open('showCnpArticles.action?organizationId='+deptId+'&benefitId='+benefitId+'&editionId='+editionId+'&sdat='+glStartDate+'&edat='+glEndDate+'&type=print&&orgType=Y&stIdx=0&edIdx=6&callFrom=newsArtclesInPrrws');
+		window.open('showCnpArticles.action?organizationId='+deptId+'&benefitId='+benefitId+'&editionId='+editionId+'&sdat='+glStartDate+'&edat='+glEndDate+'&temp='+groupType+'&type=print&&orgType=Y&stIdx=0&edIdx=6&callFrom=newsArtclesInPrrws');
 	}else if(type == "electronic"){
 		window.open('electronicMediaBulletinsCD.action?organizationId='+deptId+'&benefitId='+benefitId+'&categoryId='+categoryId+'&sdat='+glStartDate+'&edat='+glEndDate+'&type=electronic&&orgType=&stIdx=0&edIdx=6&callFrom=electrincMediaFOrPrrws');
 	}
