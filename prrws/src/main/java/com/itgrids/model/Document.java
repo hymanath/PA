@@ -22,7 +22,13 @@ public class Document {
 	private Long insertedUserId;
 	private Date insertedTime;
 	
+	private String docName;
+	private String base64str;
+	private Long mobileAppUserId;
+	
+	
 	private User insertedUser;
+	private MobileAppUser mobileAppUser;
 
 	@Id
 	@Column(name="document_id")
@@ -62,6 +68,39 @@ public class Document {
 	}
 	public void setInsertedUser(User insertedUser) {
 		this.insertedUser = insertedUser;
+	}
+
+	@Column(name="doc_name")
+	public String getDocName() {
+		return docName;
+	}
+	public void setDocName(String docName) {
+		this.docName = docName;
+	}
+
+	@Column(name="base64str")
+	public String getBase64str() {
+		return base64str;
+	}
+	public void setBase64str(String base64str) {
+		this.base64str = base64str;
+	}
+
+	@Column(name="mobile_app_user_id")
+	public Long getMobileAppUserId() {
+		return mobileAppUserId;
+	}
+	public void setMobileAppUserId(Long mobileAppUserId) {
+		this.mobileAppUserId = mobileAppUserId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "mobile_app_user_id", insertable = false, updatable = false)
+	public MobileAppUser getMobileAppUser() {
+		return mobileAppUser;
+	}
+	public void setMobileAppUser(MobileAppUser mobileAppUser) {
+		this.mobileAppUser = mobileAppUser;
 	}
 	
 	
