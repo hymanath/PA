@@ -379,6 +379,7 @@ public class PmRequestDetailsController {
 		    }else{
 		    	return pmRequestDetailsService.getLoginUserAccessStatusWiseDeptDesignations(dataVo.getDeptIdsList(),userId,dataVo.getPmStatusId());
 		    }*/
+		    return null;
 	    }
 	    
 	    @RequestMapping(value ="/getDeptDesignationOfficerDetail",method = RequestMethod.POST)
