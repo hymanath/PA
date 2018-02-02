@@ -445,6 +445,7 @@ public class SmsCountrySmsService implements ISmsService {
 	public ResultStatus sendOTPSmsFromAdminForZohoUser(String message, boolean isEnglish,String... phoneNumbers)
 	  {
 	    ResultStatus resultStatus = new ResultStatus();
+	    log.fatal("Sending OTP Sms for Mobile - "+phoneNumbers[0]+" Message : "+message);
 	    try
 	    {
 	      HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
