@@ -2096,6 +2096,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 Map<String,List<PetitionsWorksVO>> petitionSubWorksMap = getPetitionsSubWorksDetails(petitionId,pageType);
 			 Map<Long,List<PetitionFileVO>> petitionRequiredFilesMap =  getPetitionsRequiredFilesMap(petitionId);
 			 
+			 List<KeyValueVO> allFilesList = new ArrayList<KeyValueVO>(0);
+			 if(commonMethodsUtilService.isMapValid(petitionFilesListMap)){
+				 allFilesList.addAll(petitionFilesListMap.values());
+			 }
+			 if(commonMethodsUtilService.isMapValid(refFilesListMap)){
+				 for (Long fileId : refFilesListMap.keySet()) {
+					 if(refFilesListMap.get(fileId) != null)
+					 allFilesList.addAll(refFilesListMap.get(fileId));
+				}
+			 }
 			// Covering letter /Detailed report/action copy /all petition wise documents
 			 if(commonMethodsUtilService.isMapValid(petitionRequiredFilesMap) && petitionRequiredFilesMap.get(0L) != null)
 				 petitionVO.getReportTypeFilesList().addAll(petitionRequiredFilesMap.get(0L));
@@ -2340,6 +2350,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isMapValid(departmentsMap)){
 					petitionVO.getDeptList().addAll(departmentsMap.values());
 				}
+				if(commonMethodsUtilService.isListOrSetValid(allFilesList))
+					petitionVO.getAllFileList().addAll(allFilesList);
 				
 				return petitionVO;
 			}

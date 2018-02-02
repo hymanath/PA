@@ -303,7 +303,7 @@
 
 
 <div class="modal fade" id="endorseMentModalDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document" style="width:60%;margin:auto">
+  <div class="modal-dialog" role="document" style="width:90%;margin:auto">
     <div class="modal-content">
       <div class="modal-header">
 		<div class="row">
@@ -328,42 +328,44 @@
 				</div>
 			</div>
 		</div>
-		<div class="row m_top10">
-			<div class="col-sm-4" id="statusChangeDivId">
-				<label>Select Status<span style="color:red;">*</span><span id="statusIdErrStr"></span></label>
-				<select class="form-control chosen-select" id="statusChangeId">
-					<option value="0">Select Status</option>
-				</select>
-			</div>
-		</div>
-		 <div class="row m_top10" id="endorsementDivId" style="display:none;">
-			<div class="col-sm-8">
-				<label>ENDORSMENT NO<span style="color:red;">*</span><span id="endorsementNoErr"></span></label>
-				<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO" name="endorsementNO"/>
-			</div>
-        </div>	
-		<div class="row m_top10">
-			<div class="col-sm-4" id="leadDivId" style="display:none;">
-				<label>LEAD<span style="color:red;">*</span><span id="leadIdErr"></span></label>
-				<select class="form-control chosen-select" id="leadId" name="leadId">
-					<option value="1">SELECT LEAD</option>
-				</select>
-			</div>
-			<div class="col-sm-4" id="grantDivId" style="display:none;">
-				<label>GRANT UNDER<span  style="color:red;">*</span><span id="grantIdErr"></span></label>
-				<select class="form-control chosen-select" id="grantId" name="grantId">
-					<option value="1">SELECT GRANT UNDER</option>
-				</select>
-			</div>
-		</div>
-		<div class="row m_top10">
-			<div class="col-sm-4" id ="assignDesignationDivId" style="display:none;">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="row m_top10">
+					<div class="col-sm-12" id="statusChangeDivId">
+						<label>Select Status<span style="color:red;">*</span><span id="statusIdErrStr"></span></label>
+						<select class="form-control chosen-select" id="statusChangeId">
+							<option value="0">Select Status</option>
+						</select>
+					</div>
+				</div>
+				<div class="row m_top10" id="endorsementDivId" style="display:none;">
+					<div class="col-sm-12">
+						<label>ENDORSMENT NO<span style="color:red;">*</span><span id="endorsementNoErr"></span></label>
+						<input type="text" class="form-control" id="endorsmentNo" placeholder="Endorsment NO" name="endorsementNO"/>
+					</div>
+				</div>	
+				<div class="row m_top10">
+					<div class="col-sm-12" id="leadDivId" style="display:none;">
+						<label>LEAD<span style="color:red;">*</span><span id="leadIdErr"></span></label>
+						<select class="form-control chosen-select" id="leadId" name="leadId">
+							<option value="1">SELECT LEAD</option>
+						</select>
+					</div>
+					<div class="col-sm-12" id="grantDivId" style="display:none;">
+						<label>GRANT UNDER<span  style="color:red;">*</span><span id="grantIdErr"></span></label>
+						<select class="form-control chosen-select" id="grantId" name="grantId">
+							<option value="1">SELECT GRANT UNDER</option>
+						</select>
+					</div>
+				</div>
+				<div class="row m_top10">
+					<div class="col-sm-6" id ="assignDesignationDivId" style="display:none;">
 				<label>ASSIGN TO<span style="color:red;">*</span><span id="assignToIdErr"></span></label>
 				<select class="form-control chosen-select popUpChangesCls" id="assignToId" name="deptDesigId">
 					<option value="0">SELECT DESIGNATION</option>
 				</select>
 			</div>
-			<div class="col-sm-4" id ="assignOfficerDivId" style="display:none;">
+			<div class="col-sm-6" id ="assignOfficerDivId" style="display:none;">
 				<label>OFFICER NAME<span style="color:red;">*</span><span id="officerIdErr"></span></label>
 				<select class="form-control chosen-select" id="officerId" name="deptDesigOffcrId">
 					<option value="0">SELECT OFFICER NAME</option>
@@ -385,7 +387,7 @@
 		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
 		<input type="hidden" class="form-control" id="petitionsId"  name="petitionId"/>
 		<div class="row m_top10" id="commentsDivId">
-			<div class="col-sm-8">
+			<div class="col-sm-12">
 				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
@@ -404,7 +406,10 @@
 		<div id="coveringLetterGenerator"></div>
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
 	   </div>
-
+			<div class="col-sm-6" id="imageBuildingId">
+			</div>
+		</div>
+		
 	  <div class="modal-footer">
 		  <div class="row m_top20" >
 			<div id="ajaxcallImageId" > </div>

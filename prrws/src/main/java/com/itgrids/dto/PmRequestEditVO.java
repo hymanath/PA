@@ -19,6 +19,7 @@ public class PmRequestEditVO {
 	private String isOldData;
 	private List<KeyValueVO> coveringLetterPathsList = new ArrayList<KeyValueVO>(0);
 	private List<KeyValueVO> fileList = new ArrayList<KeyValueVO>();
+	private List<KeyValueVO> allFileList = new ArrayList<KeyValueVO>();
 	private List<PmRequestVO> representeeDetailsList = new ArrayList<PmRequestVO>(0);	
 	private List<PmRequestVO> referDetailsList = new ArrayList<PmRequestVO>(0);
 	private List<PetitionsWorksVO> subWorksList = new ArrayList<PetitionsWorksVO>();
@@ -28,6 +29,13 @@ public class PmRequestEditVO {
 	private List<PetitionHistoryVO> historyList = new ArrayList<PetitionHistoryVO>(0);
 	private Long statusId;
 	
+	
+	public List<KeyValueVO> getAllFileList() {
+		return allFileList;
+	}
+	public void setAllFileList(List<KeyValueVO> allFileList) {
+		this.allFileList = allFileList;
+	}
 	public Long getStatusId() {
 		return statusId;
 	}
