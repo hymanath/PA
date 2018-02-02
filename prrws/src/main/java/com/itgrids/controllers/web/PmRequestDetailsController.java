@@ -496,4 +496,16 @@ public class PmRequestDetailsController {
 	    	return pmRequestDetailsService.getPetitionAndWorkWiseHistoryDetails(dataVo);
 	    	
 	    }
+	     @RequestMapping(value ="/getPmPetitionList",method = RequestMethod.POST)
+	    public @ResponseBody List<KeyValueVO> getPmPetitionList(@RequestBody Map<String,String> inputMap ,HttpServletRequest request){
+	    	 return pmRequestDetailsService.getPmPetitionList();
+	     }
+	     @RequestMapping(value ="/getPmDocumentTypeList",method = RequestMethod.POST)
+		 public @ResponseBody List<KeyValueVO> getPmDocumentTypeList(@RequestBody Map<String,String> inputMap ,HttpServletRequest request){
+		    	 return pmRequestDetailsService.getPmDocumentTypeList();
+		     }
+	     @RequestMapping(value ="/getPmActionTypeList",method = RequestMethod.POST)
+		 public @ResponseBody List<KeyValueVO> getPmActionTypeList(@RequestBody Map<String,String> inputMap ,HttpServletRequest request){
+		    	 return pmRequestDetailsService.getPmActionTypeList();
+		     }
 }

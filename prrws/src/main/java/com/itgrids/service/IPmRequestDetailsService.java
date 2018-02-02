@@ -42,4 +42,7 @@ public interface IPmRequestDetailsService {
 	public List<MenuVO> userIdsByEntitlementsLogin(Long userId);
 	public PetitionHistoryVO getPetitionAndWorkWiseHistoryDetails(PetitionTrackingVO dataVO);
 	//public List<KeyValueVO> getLoginUserAccessStatusWiseDeptDesignations(List<Long> deptDesigIdsList , Long userId,Long statusId);
+	public List<KeyValueVO> getPmPetitionList();
+	public List<KeyValueVO> getPmDocumentTypeList();
+	public List<KeyValueVO> getPmActionTypeList();
 }
