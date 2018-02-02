@@ -1,7 +1,9 @@
 package com.itgrids.service.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -10,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.gson.JsonObject;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.NTRSujalaMotherPlantVO;
+import com.itgrids.dto.NTRSujalaOverviewVO;
 import com.itgrids.dto.NTRSujalaRduVO;
 import com.itgrids.service.INTRSujalaDashboardService;
 import com.itgrids.service.integration.external.ItcWebServiceUtilService;
@@ -44,7 +46,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 			 Long mpId = 0L;
 		      String URL = "http://13.126.165.56:9190/wms-api/minister-dashboard/mp30dayov/"+inputVO.getLocationId()+"";
 		      WebResource webResource = commonMethodsUtilService.getWebResourceObject(URL);
-		      ClientResponse response = webResource.header("Auth_Token","a59381782ca0e6f922e6c65bccc1ba05").get(ClientResponse.class);;
+		      ClientResponse response = webResource.header("Auth_Token","a59381782ca0e6f922e6c65bccc1ba05").get(ClientResponse.class);
 		      if (response.getStatus() != 200) {
 		            throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 		        } else {
@@ -83,7 +85,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 		      finalVO.setName(locationName);
 		      
 		} catch (Exception e) {
-			LOG.error("Exception occured at getLast30DaysMotherPlantDetails() in  ItcDashboardService class",e);
+			LOG.error("Exception occured at getLast30DaysMotherPlantDetails() in  NTRSujalaDashboardService class",e);
 		}
 		return finalVO;
 	}
@@ -102,7 +104,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 			 Long waterTankCap = 0L;
 		      String URL = "http://13.126.165.56:9190/wms-api/minister-dashboard/rdu30dayov/"+inputVO.getLocationId()+"";
 		      WebResource webResource = commonMethodsUtilService.getWebResourceObject(URL);
-		      ClientResponse response = webResource.header("Auth_Token","a59381782ca0e6f922e6c65bccc1ba05").get(ClientResponse.class);;
+		      ClientResponse response = webResource.header("Auth_Token","a59381782ca0e6f922e6c65bccc1ba05").get(ClientResponse.class);
 		      if (response.getStatus() != 200) {
 		            throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 		        } else {
@@ -133,8 +135,278 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 		      finalVO.setWaterTankCapacity(waterTankCap);
 		      
 		} catch (Exception e) {
-			LOG.error("Exception occured at getLast30DaysMotherPlantDetails() in  ItcDashboardService class",e);
+			LOG.error("Exception occured at getLast30DaysMotherPlantDetails() in  NTRSujalaDashboardService class",e);
 		}
 		return finalVO;
+	}
+	
+	/**
+	 * @author SRAVANTH
+	 * @description {This service is get Overview Details.}
+	 * @return NTRSujalaOverviewVO
+	 * @Date 31-01-2018
+	 */
+	public NTRSujalaOverviewVO getNtrSujalaOverview(){
+		NTRSujalaOverviewVO returnvo = new NTRSujalaOverviewVO();
+		try {
+			String URL = "http://13.126.165.56:9190/wms-api/minister-dashboard/mpsoverview";
+		    WebResource webResource = commonMethodsUtilService.getWebResourceObject(URL);
+		    ClientResponse response = webResource.header("Auth_Token","a59381782ca0e6f922e6c65bccc1ba05").header("organizationId", "1").get(ClientResponse.class);
+		    if (response.getStatus() != 200) {
+	            throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        } else {
+	        	String output = response.getEntity(String.class);
+		        if(output != null && !output.isEmpty()){
+		        	JSONObject Obj = new JSONObject(output);
+		        	if(Obj != null){
+		        		returnvo.setTotalMotherPlants(Obj.getLong("totalMotherPlants"));
+		        		returnvo.setActiveMotherPlants(Obj.getLong("activeMotherPlants"));
+		        		returnvo.setInActiveMotherPlants(Obj.getLong("inActiveMotherPlants"));
+		        		returnvo.setMpGoodWaterQuality(Obj.getLong("mpGoodWaterQuality"));
+		        		returnvo.setMpBadWaterQuality(Obj.getLong("mpBadWaterQuality"));
+		        		returnvo.setMpSafeWaterDispenced(Obj.getString("mpSafeWaterDispenced"));
+		        		returnvo.setTotalRDUs(Obj.getLong("totalRDUs"));
+		        		returnvo.setActiveRDUs(Obj.getLong("activeRDUs"));
+		        		returnvo.setInActiveRDUs(Obj.getLong("inActiveRDUs"));
+		        		returnvo.setRduGoodWaterQuality(Obj.getLong("rduGoodWaterQuality"));
+		        		returnvo.setRduBadWaterQuality(Obj.getLong("rduBadWaterQuality"));
+		        		returnvo.setRduSellWater(Obj.getString("rduSellWater"));
+		        		if(Obj.has("highDispanceRDU")){
+		        			JSONObject highDspncObj = Obj.getJSONObject("highDispanceRDU");
+		        			returnvo.setHighDispanceRDUName(highDspncObj.getString("name"));
+		        			returnvo.setHighRDUDispanceLtrs(highDspncObj.getString("dispanceLtrs"));
+		        		}
+		        		if(Obj.has("lowDispanceRDU")){
+		        			JSONObject lowDspncObj = Obj.getJSONObject("lowDispanceRDU");
+		        			returnvo.setLowDispanceRDUName(lowDspncObj.getString("name"));
+		        			returnvo.setLowRDUDispanceLtrs(lowDspncObj.getString("dispanceLtrs"));
+		        		}
+		        		if(Obj.has("customers")){
+		        			JSONObject customersObj = Obj.getJSONObject("customers");
+		        			returnvo.setActiveCustomers(customersObj.getLong("active"));
+		        			returnvo.setInActiveCustomers(customersObj.getLong("inActive"));
+		        			returnvo.setTotalCustomers(returnvo.getActiveCustomers()+returnvo.getInActiveCustomers());
+		        		}
+		        		JSONArray mpArr = new JSONArray(Obj.get("motherPlants").toString());
+		        		returnvo.setDistrictList(getDistrictWiseMotherPlants(mpArr));
+		        		returnvo.setMotherPlantsList(getMotherPlantsList(mpArr));
+		        	}
+		        }
+	        }
+		} catch (Exception e) {
+			LOG.error("Exception occured at getNtrSujalaOverview() in  NTRSujalaDashboardService class",e);
+		}
+		return returnvo;
+	}
+	
+	public List<NTRSujalaOverviewVO> getDistrictWiseMotherPlants(JSONArray finalArr){
+		List<NTRSujalaOverviewVO> returnList = new ArrayList<NTRSujalaOverviewVO>();
+		try {
+			Map<String,NTRSujalaOverviewVO> districtMap = new LinkedHashMap<String,NTRSujalaOverviewVO>();
+			if(finalArr != null && finalArr.length() > 0){
+				for (int i = 0; i < finalArr.length(); i++) {
+					JSONObject obj = new JSONObject(finalArr.get(i).toString());
+					String districtName = obj.getString("district");
+					NTRSujalaOverviewVO vo = districtMap.get(districtName);
+					if(vo == null){
+						vo = new NTRSujalaOverviewVO();
+						vo.setName(districtName);
+						NTRSujalaOverviewVO mpvo = new NTRSujalaOverviewVO();
+						mpvo.setId(obj.getLong("motherPlantId"));
+						mpvo.setName(obj.getString("name"));
+						mpvo.setHealth(obj.getString("health"));
+						mpvo.setWaterQuality(obj.getString("waterQuality"));
+						mpvo.setMpSafeWaterDispenced(obj.getString("safeWaterDispence"));
+						mpvo.setActiveRDUs(obj.getLong("activeRDUs"));
+						mpvo.setInActiveRDUs(obj.getLong("inActiveRDUs"));
+						mpvo.setTotalRDUs(mpvo.getActiveRDUs()+mpvo.getInActiveRDUs());
+						mpvo.setLocation(obj.has("localtion") ? obj.getString("localtion") : "");
+						mpvo.setMobileNo(obj.has("contactNo") ? obj.getString("contactNo") : "");
+						mpvo.setTds(obj.has("tds") ? obj.getString("tds") : "");
+						mpvo.setPh(obj.has("ph") ? obj.getString("ph") : "");
+						mpvo.setMandal(obj.has("mandal") ? obj.getString("mandal") : "");
+						mpvo.setDistrict(obj.has("district") ? obj.getString("district") : "");
+						mpvo.setLatitude(obj.has("latitude") ? obj.getString("latitude") : "");
+						mpvo.setLongitude(obj.has("longitude") ? obj.getString("longitude") : "");
+						
+						if(obj.has("highDispanceRDU")){
+		        			JSONObject highDspncObj = obj.getJSONObject("highDispanceRDU");
+		        			mpvo.setHighDispanceRDUName(highDspncObj.getString("name"));
+		        			mpvo.setHighRDUDispanceLtrs(highDspncObj.getString("dispanceLtrs"));
+		        		}
+		        		if(obj.has("lowDispanceRDU")){
+		        			JSONObject lowDspncObj = obj.getJSONObject("lowDispanceRDU");
+		        			mpvo.setLowDispanceRDUName(lowDspncObj.getString("name"));
+		        			mpvo.setLowRDUDispanceLtrs(lowDspncObj.getString("dispanceLtrs"));
+		        		}
+		        		if(obj.has("customers")){
+		        			JSONObject customersObj = obj.getJSONObject("customers");
+		        			mpvo.setActiveCustomers(customersObj.getLong("active"));
+		        			mpvo.setInActiveCustomers(customersObj.getLong("inActive"));
+		        			mpvo.setTotalCustomers(mpvo.getActiveCustomers()+mpvo.getInActiveCustomers());
+		        		}
+		        		if(obj.has("rdus")){
+		        			JSONArray rdusArr = new JSONArray(obj.get("rdus").toString());
+		        			if(rdusArr != null && rdusArr.length() > 0){
+		        				for (int j = 0; j < rdusArr.length(); j++) {
+									JSONObject rduObj = new JSONObject(rdusArr.get(j).toString());
+									if(rduObj != null && rduObj.length() > 0){
+										NTRSujalaOverviewVO rduvo = new NTRSujalaOverviewVO();
+										rduvo.setId(rduObj.getLong("rduId"));
+										rduvo.setName(rduObj.getString("name"));
+										rduvo.setLocation(rduObj.getString("location"));
+										rduvo.setLatitude(rduObj.getString("latitude"));
+										rduvo.setLongitude(rduObj.getString("longitude"));
+										rduvo.setWaterTankCapacity(rduObj.getLong("waterTankCapacity"));
+										rduvo.setMpSafeWaterDispenced(rduObj.getString("waterDispencePerDay"));
+										rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
+										rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
+										rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
+										mpvo.getSubList().add(rduvo);
+									}
+								}
+		        			}
+		        		}
+		        		vo.getSubList().add(mpvo);
+		        		districtMap.put(districtName, vo);
+					}else{
+						NTRSujalaOverviewVO mpvo = new NTRSujalaOverviewVO();
+						mpvo.setId(obj.getLong("motherPlantId"));
+						mpvo.setName(obj.getString("name"));
+						mpvo.setHealth(obj.getString("health"));
+						mpvo.setWaterQuality(obj.getString("waterQuality"));
+						mpvo.setMpSafeWaterDispenced(obj.getString("safeWaterDispence"));
+						mpvo.setActiveRDUs(obj.getLong("activeRDUs"));
+						mpvo.setInActiveRDUs(obj.getLong("inActiveRDUs"));
+						mpvo.setTotalRDUs(mpvo.getActiveRDUs()+mpvo.getInActiveRDUs());
+						mpvo.setLocation(obj.has("localtion") ? obj.getString("localtion") : "");
+						mpvo.setMobileNo(obj.has("contactNo") ? obj.getString("contactNo") : "");
+						mpvo.setTds(obj.has("tds") ? obj.getString("tds") : "");
+						mpvo.setPh(obj.has("ph") ? obj.getString("ph") : "");
+						mpvo.setMandal(obj.has("mandal") ? obj.getString("mandal") : "");
+						mpvo.setDistrict(obj.has("district") ? obj.getString("district") : "");
+						mpvo.setLatitude(obj.has("latitude") ? obj.getString("latitude") : "");
+						mpvo.setLongitude(obj.has("longitude") ? obj.getString("longitude") : "");
+						
+						if(obj.has("highDispanceRDU")){
+		        			JSONObject highDspncObj = obj.getJSONObject("highDispanceRDU");
+		        			mpvo.setHighDispanceRDUName(highDspncObj.getString("name"));
+		        			mpvo.setHighRDUDispanceLtrs(highDspncObj.getString("dispanceLtrs"));
+		        		}
+		        		if(obj.has("lowDispanceRDU")){
+		        			JSONObject lowDspncObj = obj.getJSONObject("lowDispanceRDU");
+		        			mpvo.setLowDispanceRDUName(lowDspncObj.getString("name"));
+		        			mpvo.setLowRDUDispanceLtrs(lowDspncObj.getString("dispanceLtrs"));
+		        		}
+		        		if(obj.has("customers")){
+		        			JSONObject customersObj = obj.getJSONObject("customers");
+		        			mpvo.setActiveCustomers(customersObj.getLong("active"));
+		        			mpvo.setInActiveCustomers(customersObj.getLong("inActive"));
+		        			mpvo.setTotalCustomers(mpvo.getActiveCustomers()+mpvo.getInActiveCustomers());
+		        		}
+		        		if(obj.has("rdus")){
+		        			JSONArray rdusArr = new JSONArray(obj.get("rdus").toString());
+		        			if(rdusArr != null && rdusArr.length() > 0){
+		        				for (int j = 0; j < rdusArr.length(); j++) {
+									JSONObject rduObj = new JSONObject(rdusArr.get(j).toString());
+									if(rduObj != null && rduObj.length() > 0){
+										NTRSujalaOverviewVO rduvo = new NTRSujalaOverviewVO();
+										rduvo.setId(rduObj.getLong("rduId"));
+										rduvo.setName(rduObj.getString("name"));
+										rduvo.setLocation(rduObj.getString("location"));
+										rduvo.setLatitude(rduObj.getString("latitude"));
+										rduvo.setLongitude(rduObj.getString("longitude"));
+										rduvo.setWaterTankCapacity(rduObj.getLong("waterTankCapacity"));
+										rduvo.setMpSafeWaterDispenced(rduObj.getString("waterDispencePerDay"));
+										rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
+										rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
+										rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
+										mpvo.getSubList().add(rduvo);
+									}
+								}
+		        			}
+		        		}
+		        		vo.getSubList().add(mpvo);
+					}
+				}
+			}
+			
+			if(districtMap != null)
+				returnList = new ArrayList<NTRSujalaOverviewVO>(districtMap.values());
+		} catch (Exception e) {
+			LOG.error("Exception occured at getDistrictWiseMotherPlants() in  NTRSujalaDashboardService class",e);
+		}
+		return returnList;
+	}
+	
+	public List<NTRSujalaOverviewVO> getMotherPlantsList(JSONArray finalArr){
+		List<NTRSujalaOverviewVO> returnList = new ArrayList<NTRSujalaOverviewVO>();
+		try {
+			if(finalArr != null && finalArr.length() > 0){
+				for (int i = 0; i < finalArr.length(); i++) {
+					JSONObject obj = new JSONObject(finalArr.get(i).toString());
+					NTRSujalaOverviewVO mpvo = new NTRSujalaOverviewVO();
+					mpvo.setId(obj.getLong("motherPlantId"));
+					mpvo.setName(obj.getString("name"));
+					mpvo.setHealth(obj.getString("health"));
+					mpvo.setWaterQuality(obj.getString("waterQuality"));
+					mpvo.setMpSafeWaterDispenced(obj.getString("safeWaterDispence"));
+					mpvo.setActiveRDUs(obj.getLong("activeRDUs"));
+					mpvo.setInActiveRDUs(obj.getLong("inActiveRDUs"));
+					mpvo.setTotalRDUs(mpvo.getActiveRDUs()+mpvo.getInActiveRDUs());
+					mpvo.setLocation(obj.has("localtion") ? obj.getString("localtion") : "");
+					mpvo.setMobileNo(obj.has("contactNo") ? obj.getString("contactNo") : "");
+					mpvo.setTds(obj.has("tds") ? obj.getString("tds") : "");
+					mpvo.setPh(obj.has("ph") ? obj.getString("ph") : "");
+					mpvo.setMandal(obj.has("mandal") ? obj.getString("mandal") : "");
+					mpvo.setDistrict(obj.has("district") ? obj.getString("district") : "");
+					mpvo.setLatitude(obj.has("latitude") ? obj.getString("latitude") : "");
+					mpvo.setLongitude(obj.has("longitude") ? obj.getString("longitude") : "");
+					
+					if(obj.has("highDispanceRDU")){
+	        			JSONObject highDspncObj = obj.getJSONObject("highDispanceRDU");
+	        			mpvo.setHighDispanceRDUName(highDspncObj.getString("name"));
+	        			mpvo.setHighRDUDispanceLtrs(highDspncObj.getString("dispanceLtrs"));
+	        		}
+	        		if(obj.has("lowDispanceRDU")){
+	        			JSONObject lowDspncObj = obj.getJSONObject("lowDispanceRDU");
+	        			mpvo.setLowDispanceRDUName(lowDspncObj.getString("name"));
+	        			mpvo.setLowRDUDispanceLtrs(lowDspncObj.getString("dispanceLtrs"));
+	        		}
+	        		if(obj.has("customers")){
+	        			JSONObject customersObj = obj.getJSONObject("customers");
+	        			mpvo.setActiveCustomers(customersObj.getLong("active"));
+	        			mpvo.setInActiveCustomers(customersObj.getLong("inActive"));
+	        			mpvo.setTotalCustomers(mpvo.getActiveCustomers()+mpvo.getInActiveCustomers());
+	        		}
+	        		if(obj.has("rdus")){
+	        			JSONArray rdusArr = new JSONArray(obj.get("rdus").toString());
+	        			if(rdusArr != null && rdusArr.length() > 0){
+	        				for (int j = 0; j < rdusArr.length(); j++) {
+								JSONObject rduObj = new JSONObject(rdusArr.get(j).toString());
+								if(rduObj != null && rduObj.length() > 0){
+									NTRSujalaOverviewVO rduvo = new NTRSujalaOverviewVO();
+									rduvo.setId(rduObj.getLong("rduId"));
+									rduvo.setName(rduObj.getString("name"));
+									rduvo.setLocation(rduObj.getString("location"));
+									rduvo.setLatitude(rduObj.getString("latitude"));
+									rduvo.setLongitude(rduObj.getString("longitude"));
+									rduvo.setWaterTankCapacity(rduObj.getLong("waterTankCapacity"));
+									rduvo.setMpSafeWaterDispenced(rduObj.getString("waterDispencePerDay"));
+									rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
+									rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
+									rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
+									mpvo.getSubList().add(rduvo);
+								}
+							}
+	        			}
+	        		}
+	        		returnList.add(mpvo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getMotherPlantsList() in  NTRSujalaDashboardService class",e);
+		}
+		return returnList;
 	}
 }

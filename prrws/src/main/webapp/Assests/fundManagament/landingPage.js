@@ -14,10 +14,10 @@ var blockClassObject = {
 
 }
 
-var blockHeadingObject = {
-"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"NO.OF HABITATIONS COVERED","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"ACHIEVED",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery New':"ACHIEVED",'Silk worm New':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"",'ASSETS':"RWS ASSETS","WATER SOURCE":"TOTAL","WORKS":"COMPLETED","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA-SLA KPI":"BEYOND SLA/ETAAL - KPI","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CHLORINATION":"","coffee":"COFFEE","Raising and Maintenance of Nursery":"ACHIEVED","Desilting of Perculation Tanks and Check Dams":"ACHIEVED","Mini Percolation Tanks":"ACHIEVED","Continuous Contour Trenches":"ACHIEVED","Greenary works Chettu":"ACHIEVED","Agriculture Related Works":"ACHIEVED","Rural Sanitation Works":"ACHIEVED","Soil Moisture Conservation works Neeru":"ACHIEVED","Works in community lands":"ACHIEVED","OTHERS":"ACHIEVED","Institutional Development Works":"ACHIEVED","Road Works":"ACHIEVED","Water Harvesting Structures Neeru":"ACHIEVED","Fisheries work":"ACHIEVED","AH-Live Stock Related works":"ACHIEVED",
+var blockHeadingObject = { 
+"PRIS":"ACHIEVEMENT","DRAINS":"ACHIEVEMENT","LED MONITORING":"ON&nbsp;/&nbsp;OFF&nbsp LIGHTS","UGD":"ACHIEVEMENT","RDP":"ACHIEVEMENT","FUND MANAGMENT SYSTEM":"TOTAL FUNDS","ENGINEERING DEPARTMENT":"ACHIEVEMENT","PANACHAYATI RAJ EXPENDITURE":"GROSS-AMOUNT","SPIKE ANALYSIS":"","MGNREGS":"ACHIEVEMENT","RURAL WATER SUPPLY":"NO.OF HABITATIONS COVERED","ITEC":"TOTAL TRANSACTIONS","SWATCH BHARATH IHHL":"COMPLETED","SWATCH BHARATH PAYMENTS":"PENDING",'Labour Budget':"ACHIEVED",'Farm Ponds':"ACHIEVED","MGNREGS IHHL":"COMPLETED",'IHHL':"ACHIEVED",'Vermi Compost':"ACHIEVED",'GH':"ACHIEVED",'Check Dams':"ACHIEVED",'Rock Fill Dams':"ACHIEVED",'Solid Waste Management':"HOUSES&nbsp;&nbsp/&nbsp;&nbspFARMERS &nbsp;TONS",'Burial Ground':"ACHIEVED",'Play fields':"ACHIEVED",'Agriculture Activities':"ACHIEVED",'Average Wage':"ACHIEVED",'Average Days of Employment':"ACHIEVED",'HH Completed 100 Days':"ACHIEVED",'Timely Payment':"ACHIEVED",'CC Roads1':"ACHIEVED",'Anganwadi':"ACHIEVED",'GP Buildings1':"ACHIEVED",'Mandal buildings1':"ACHIEVED",'NTR 90 Days':"ACHIEVED",'Production of Bricks':"ACHIEVED",'Mulbery New':"ACHIEVED",'Silk worm New':"ACHIEVED",'Horticulture':"ACHIEVED",'Avenue':"ACHIEVED",'Fish Ponds':"ACHIEVED",'Fish Drying Platforms':"ACHIEVED",'Payments':"PENDING PAYMENTS",'FAperformance':"ACHIEVED",'OPGK-Perinnials':"ACHIEVED",'OPGK-Annuals':"ACHIEVED",'UGDrainage':"ACHIEVED",'Ntr Jalasiri':"ACHIEVED",'WaterBudget':"ACHIEVED",'JALAVANI':"NOTIFIED &nbsp;&nbsp/&nbsp;&nbsp IN PROGRESS",'ASSETS':"RWS ASSETS","WATER SOURCE":"TOTAL","WORKS":"COMPLETED","PROMOTIONS":"COMMITTED INVESTMENT","E OFFICE":"TOTAL PENDENCY","MEESEVA-SLA KPI":"BEYOND SLA &nbsp;&nbsp  / &nbsp;&nbsp ETAAL - KPI","AP INNOVATION SOCIETY":"STARTUPS","MEESEVA & KPI":"ETAAL - KPI","WATER TANK CHLORINATION":"MONTH &nbsp;&nbsp/&nbsp;&nbsp TODAY &nbsp CHLORINATED","coffee":"COFFEE","Raising and Maintenance of Nursery":"ACHIEVED","Desilting of Perculation Tanks and Check Dams":"ACHIEVED","Mini Percolation Tanks":"ACHIEVED","Continuous Contour Trenches":"ACHIEVED","Greenary works Chettu":"ACHIEVED","Agriculture Related Works":"ACHIEVED","Rural Sanitation Works":"ACHIEVED","Soil Moisture Conservation works Neeru":"ACHIEVED","Works in community lands":"ACHIEVED","OTHERS":"ACHIEVED","Institutional Development Works":"ACHIEVED","Road Works":"ACHIEVED","Water Harvesting Structures Neeru":"ACHIEVED","Fisheries work":"ACHIEVED","AH-Live Stock Related works":"ACHIEVED",
 "Renovation and Improvements to existing Check Dams Check Wall":"ACHIEVED","Road Formation Upto WBM GR II Including CD works":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas":"ACHIEVED","Construction Of Animal Hostel":"ACHIEVED","Roads for Unconnected Habitations 2011-12":"ACHIEVED","Construction of New Check Dam":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality":"ACHIEVED","Construction of Food Grains Storage Structures of 250MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works in Tribal areas":"ACHIEVED","Construction of Village Haats Infrastructure fecilities":"ACHIEVED","Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham":"ACHIEVED","Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank":"ACHIEVED","Construction of Buildings for women self help group federation":"ACHIEVED","Work Site Facilities":"ACHIEVED","Renovation and Improvements to existing Percolation Tank  Mini Percolation tank":"ACHIEVED","GP level BNRGSK knowledge resource centre 2012-13 and afterwards":"ACHIEVED","Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality":"ACHIEVED","Production of Grafts in HNTC":"ACHIEVED","Improvements of RYTHU BAZAR":"ACHIEVED","Roads for Unconnected Habitations 2012-13 and afterwards":"ACHIEVED","HNTC Development":"ACHIEVED","New Open Well for Drinking water purpose":"ACHIEVED","Construction of Crematoria Burial Grounds":"ACHIEVED","Repairs to Existing Check Dam":"ACHIEVED","Formation of Road upto Gravel surface including CD works to agriculture fields":"ACHIEVED","Formation of Approach Road upto Gravel surface including CD works to Burial ground":"ACHIEVED","Construction of Food Grains Storage Structures of 500MT":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas":"ACHIEVED","Raising of Cashew bag seedlings for 2014-15":"ACHIEVED","Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas":"ACHIEVED","NTR Rural House":"NTR Rural House","Cattle Ponds":"Cattle Ponds","Desilting of Drinking Water Tanks":"Desilting of Drinking Water Tanks","Animal Husbandry Others":"ACHIEVED","Comprehensive Restoration of minor Irrigation Tank1":"ACHIEVED","Avenue Plantation":"ACHIEVED","Forest Others":"ACHIEVED","Scooping and Dibbling of seed":"ACHIEVED","IJP PROGRAM WORKS":"ACHIEVED",
-"Azolla Production Unit":"ACHIEVED","Construction of silopits of 3 MTs capacity":"ACHIEVED","Fodder trough for Cattle Cattle drinking water trough":"ACHIEVED","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"ACHIEVED","Raising of Perinnial Fodder":"ACHIEVED","Raising of Silvipasture clubbed with subabul plantation":"ACHIEVED","Raising and Maintenance of Avenue plantations":"ACHIEVED","Raising and Maintenance of Block Plantations":"ACHIEVED","Raising and Maintenance of nurseries":"ACHIEVED","Soil and Moisture Conservation Works":"ACHIEVED","CM EODB":"TOTAL/APPROVED","BIOMETRIC DASHBOARD":"TOTAL EMPLOYEE/PRESENT","Man Days Comparision":"","AC WORKS":"RURAL CONSTITUENCIES","Expenditure":"","Field Man Days":"TODAY","KEY PERFORMANCE":"PERCENTAGE","FA Vacancies":"TOTAL VACANCIES","Solid Waste Management":"","PR e Office":"TOTAL PENDENCY","Enc Works":"TECHINCAL SANCATIONED / COMPLETED","Enc Roads":"TOTAL ROAD LENGTH","NEWS":"NEWS","PR BioMetric":"TOTAL EMPLOYEE/PRESENT","PR NEWS":"","RD NEWS":"","RWS NEWS":"","IT E& C NEWS":""
+"Azolla Production Unit":"ACHIEVED","Construction of silopits of 3 MTs capacity":"ACHIEVED","Fodder trough for Cattle Cattle drinking water trough":"ACHIEVED","Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze":"ACHIEVED","Raising of Perinnial Fodder":"ACHIEVED","Raising of Silvipasture clubbed with subabul plantation":"ACHIEVED","Raising and Maintenance of Avenue plantations":"ACHIEVED","Raising and Maintenance of Block Plantations":"ACHIEVED","Raising and Maintenance of nurseries":"ACHIEVED","Soil and Moisture Conservation Works":"ACHIEVED","CM EODB":"APPROVED &nbsp;&nbsp / &nbsp;&nbsp TOTAL","BIOMETRIC DASHBOARD":"PRESENT&nbsp;&nbsp / &nbsp;&nbspTOTAL EMPLOYEE","Man Days Comparision":"","AC WORKS":"RURAL CONSTITUENCIES","Expenditure":"UPTO &nbsp;LAST &nbsp;MONTH &nbsp;PREVIOUS &nbsp;/&nbsp; THIS &nbsp;FIN.&nbsp; YEAR","Field Man Days":"TODAY","KEY PERFORMANCE":"PERCENTAGE","FA Vacancies":"TOTAL VACANCIES","PR e Office":"TOTAL PENDENCY","Enc Works":"COMPLETED&nbsp;&nbsp/&nbsp;&nbspTECHNICAL SANCATIONED","Enc Roads":"TOTAL ROAD LENGTH","NEWS":"NEWS","PR BioMetric":"PRESENT &nbsp;&nbsp/&nbsp;&nbsp TOTAL EMPLOYEE","PR NEWS":"","RD NEWS":"","RWS NEWS":"","IT E& C NEWS":""
 }
 var overViewArrConsolidated = [];
 var overViewIdsArr = [];
@@ -105,7 +105,9 @@ function buildFavouriteComponentsResult(result) {
 							
 						}else{
 							if(result[i].name != null && result[i].name == 'E OFFICE'){
-								str+='<h5 style="display: inline-block;display: inline-block;position: relative;top: -40px;text-transform:uppercase">e Office</h5>';
+								str+='<h5 style="display: inline-block;display: inline-block;position: relative;top: -40px;">e Office</h5>';
+							}else if(result[i].name != null && result[i].name == 'PR e Office'){
+								str+='<h5 style="display: inline-block;display: inline-block;position: relative;top: -40px;">PR e Office</h5>';
 							}else if(result[i].name != null && result[i].name == 'NEWS'){
 								str+='<h5 style="display: inline-block;text-transform:uppercase;display: inline-block;position: relative;top: -40px;">NEWS - RD,PR,RWS & ITE&C</h5>';
 							}else{
@@ -113,12 +115,17 @@ function buildFavouriteComponentsResult(result) {
 							}
 							
 						}
-						if(result[i].name == 'LED MONITORING' || result[i].name == 'Led Monitoring')
+						if(result[i].name == 'Expenditure')
 						{
-							str+='<div class="LEDMONITORINGAllCls"></div>';
-						}else if(result[i].name == 'WATER TANK CHLORINATION'){
-							str+='<div class="WATERTANKCHLORINATIONAllCls text-right"></div>';
-						}else if(result[i].name == 'AC WORKS'){
+							str+='<div class="" style="text-align: right">';
+								str+='<h2 class="'+blockClassObject[compnentName]+'" style="margin-top: 0px;font-size:26px;"></h2>';
+								str+='<p class="" style="margin-top:5px;">'+blockHeadingObject[compnentName]+'</p>';
+								
+							str+='</div>';
+						}/*else if(result[i].name == 'WATER TANK CHLORINATION'){
+							str+='<div class=" text-right"></div>';
+							str+='<h2 class="WATERTANKCHLORINATIONAllCls" style="margin-top: 0px"></h2>';
+						}*/else if(result[i].name == 'AC WORKS'){
 							str+='<div class=" " style="text-align: right">';
 							str+='<h2 class="" style="margin-top: 0px">161</h2>';
 							str+='<p class="">RURAL CONSTITUENCIES</p>';
@@ -127,31 +134,31 @@ function buildFavouriteComponentsResult(result) {
 							str+='<div class="row" style="margin-top: -15px;">';
 								str+='<div id="printMediaCountId"></div>';
 								//str+='<div id="ElectronicMediaCountId"></div>';
-								str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
+								str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 							str+='</div>';
 						}else if(result[i].name == "PR NEWS"){
 							 	str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdPR"></div>';
 									//str+='<div id="ElectronicMediaCountIdPR"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "RD NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdRD"></div>';
 									//str+='<div id="ElectronicMediaCountIdRD"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "RWS NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdRWS"></div>';
 									//str+='<div id="ElectronicMediaCountIdRWS"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "IT E& C NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdIT"></div>';
 									//str+='<div id="ElectronicMediaCountIdIT"></div>';
-								str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
+								str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 								str+='</div>';
 						}
 						else{
@@ -599,8 +606,9 @@ function getBasicLedOverviewDetails(){
 			var offLights = result[0].offLights;
 			var totalLights = result[0].totalLights;
 			//$("#ledMonitoring").html(ledMonitoringData('15/20','10'))
-			$(".LEDMONITORINGAllCls").html(ledMonitoringData(''+onLights+'/'+offLights+'',''+totalLights+'',''));
-		 // $(".LEDMONITORINGAllCls").html(result[0].onLights+"/"+result[0].offLights+"/"+result[0].totalLights);
+			//$(".LEDMONITORINGAllCls").html(ledMonitoringData(''+onLights+' / '+offLights+'',''+totalLights+'',''));
+			//$(".LEDMONITORINGAllCls").html(onLights+" / "+offLights+' / <small style="font-size:14px;top:0px;">'+totalLights+'</small>');
+			$(".LEDMONITORINGAllCls").html(onLights+" / "+offLights);
 		}
 	});		
 }
@@ -1270,7 +1278,8 @@ function getLocationWiseAlertStatusCounts()
 					}
 				}
 			}
-			$(".JALAVANIAllCls").html(jalavaniData(notifiedAct,inProgressAct));
+			//$(".JALAVANIAllCls").html(jalavaniData(notifiedAct,inProgressAct));
+			$(".JALAVANIAllCls").html(notifiedAct+' / '+inProgressAct);
 		}
 	});
 }
@@ -1541,7 +1550,8 @@ function getWaterBodyCumulativeCountsDay(sessionToken,oneMnthChrlPerc){
 				if(oneDayChlValue > 0 && oneDayCheckedValue > 0){
 					 oneDayChrlPerc = oneDayChlValue*100/oneDayCheckedValue;
 				}
-				 $(".WATERTANKCHLORINATIONAllCls").html(waterClorinationData(oneMnthChrlPerc,oneDayChrlPerc));
+				 //$(".WATERTANKCHLORINATIONAllCls").html(waterClorinationData(oneMnthChrlPerc,oneDayChrlPerc));
+				 $(".WATERTANKCHLORINATIONAllCls").html(oneMnthChrlPerc.toFixed(2)+' / '+oneDayChrlPerc.toFixed(2));
 			}
 				
 		});
@@ -1681,9 +1691,11 @@ function getCMEDOBOverview(){
 		}
 	}).done(function(result){
 		if(result !=null){
-			$(".CMEODBAllCls").html(result.overviewDtls.total+ "/" +result.overviewDtls.aprooved)
+			$(".CMEODBAllCls").html(result.overviewDtls.aprooved+' / <small style="font-size:14px;top:0px;">'+result.overviewDtls.total+'</small>');
+			//$(".EOFFICEAllCls").html(result[i].totalCount+'/<small style="font-size:14px;top:0px;">'+result[i].created+'</small>');
 		}else{
-			$(".CMEODBAllCls").html("0 /0")
+			$(".CMEODBAllCls").html("0 / <small style='color:#fff;font-size:14px;top:0px;'>0</small>");
+			//$(".EOFFICEAllCls").html("0/<small style='color:#fff;font-size:14px;top:0px;'>0</small>");
 		}
 	});		
 }
@@ -1703,9 +1715,11 @@ function getBioMetricDashboardOverViewDtls(){
 		}
 	}).done(function(result){
 		if(result !=null){
-			$(".BIOMETRICDASHBOARDAllCls").html(result.totalCount+"/"+result.presentCount);
+			$(".BIOMETRICDASHBOARDAllCls").html(result.presentCount+' / <small style="font-size:14px;top:0px;">'+result.totalCount+'</small>');
+			//$(".EOFFICEAllCls").html(result[i].totalCount+'/<small style="font-size:14px;top:0px;">'+result[i].created+'</small>');
 		} else {
-			$(".BIOMETRICDASHBOARDAllCls").html("0/0");
+			$(".BIOMETRICDASHBOARDAllCls").html("0 / <small style='color:#fff;font-size:14px;top:0px;'>0</small>");
+			//$(".EOFFICEAllCls").html("0/<small style='color:#fff;font-size:14px;top:0px;'>0</small>");
 		}
 		
 	});	
@@ -1714,15 +1728,15 @@ function ledMonitoringData(onOffVal,totalLightsVal)
 {
 	var str='';
 	str+='<div class="row" >';
-		str+='<div class="col-sm-6 text-right">';
-			str+='<h2 style="margin-top: 0px">'+onOffVal+'</h2>';
-			str+='<p class="">ON/OFF Lights</p>';
+		str+='<div class="col-sm-7 text-right">';
+			str+='<h2 style="margin-top: 0px;font-size:20px;">'+onOffVal+'</h2>';
+			str+='<p class="">ON / OFF Lights</p>';
 		str+='</div>';
 		str+='<div class="col-sm-1 text-right">';
-			str+='<h2 style="font-size:45px;">/</h2>';
+			str+='<h2 style="font-size:25px;">/</h2>';
 		str+='</div>';
-		str+='<div class="col-sm-5 text-right">';
-			str+='<h2 class="" style="margin-top: 0px">'+totalLightsVal+'</h2>';
+		str+='<div class="col-sm-4 text-right">';
+			str+='<h2 class="" style="margin-top: 0px;font-size:12px;">'+totalLightsVal+'</h2>';
 			str+='<p class="">TOTAL LIGHTS</p>';
 		str+='</div>';
 	str+='</div>';				
@@ -1852,7 +1866,14 @@ function getManWorksExpenditureAbstarct(){
 		success: function(ajaxresp) {
 		  if(ajaxresp != null){
 			 //$(".ExpenditureAllCls").html(ajaxresp[0].count);
-			 $(".ExpenditureAllCls").html(mandaysExpData(ajaxresp));
+			 //$(".ExpenditureAllCls").html(mandaysExpData(ajaxresp));
+			 if(ajaxresp[0].parameter == 'Increment'){
+				$(".ExpenditureAllCls").html(ajaxresp[0].total1617+' / '+ajaxresp[0].total1718+'<small>('+ajaxresp[0].percentage+'%<span><i class="fa fa-arrow-up text-success" aria-hidden="true"></i></span>)</small>');
+				//str+='<h5>('+ajaxresp[0].percentage+'%<span><i class="fa fa-arrow-up text-success" aria-hidden="true"></i></span>)</h5>';
+			}else{
+				$(".ExpenditureAllCls").html(ajaxresp[0].total1617+' / '+ajaxresp[0].total1718+'<small>('+ajaxresp[0].percentage+'%<span><i class="fa fa-arrow-up text-success" aria-hidden="true"></i></span>)</small>');
+				//str+='<h5>('+ajaxresp[0].percentage+'<span><i class="fa fa-arrow-down text-danger" aria-hidden="true"></i></span>)</h5>';
+			}	
 		  }
      }
   });
@@ -2005,7 +2026,9 @@ function buildPageWiseComponents(result,pageId){
 							str+='<div class="whiteBlock">';
 								str+='<img src="Assests/img/'+imagesObj[result[i].subList[j].name]+'" >';
 								if(result[i].subList[j].name != null && result[i].subList[j].name == "E OFFICE"){
-									str+='<h4 style="display: inline-block;display: inline-block;position: relative;top: -40px;text-transform:uppercase">e Office</h4>';
+									str+='<h4 style="display: inline-block;display: inline-block;position: relative;top: -40px;">e Office</h4>';
+								}else if(result[i].subList[j].name != null && result[i].subList[j].name == "PR e Office"){
+									str+='<h4 style="display: inline-block;display: inline-block;position: relative;top: -40px;">PR e Office</h4>';
 								}else{
 									str+='<h4 style="display: inline-block;display: inline-block;position: relative;top: -40px;text-transform:uppercase">'+result[i].subList[j].name+'</h4>';
 								}
@@ -2014,42 +2037,42 @@ function buildPageWiseComponents(result,pageId){
 								if(result[i].subList[j].name == "AC WORKS"){
 									str+='<div class=" " style="text-align: right">';
 									str+='<h2 class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="margin-top: 0px"><span>161</span></h2>';
-								}else if(result[i].subList[j].name == "LED MONITORING"){
-									str+='<div class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="text-align: right">';
-									str+='<h2 class="" style="margin-top: 0px"><span></span></h2>';
+								}else if(result[i].subList[j].name == "Expenditure"){
+									str+='<div class="" style="text-align: right">';
+									str+='<h2 class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="margin-top: 0px;font-size:26px;"><span></span></h2>';
 								}else if(result[i].subList[j].name == "WATER TANK CHLORINATION"){
-									str+='<div class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="text-align: right">';
-									str+='<h2 class="" style="margin-top: 0px"><span></span></h2>';
+									str+='<div class="" style="text-align: right">';
+									str+='<h2 class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="margin-top: 0px"><span></span></h2>';
 								}else if(result[i].subList[j].name == "Man Days Comparision"){
-									str+='<div class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="text-align: right">';
-									str+='<h2 class="" style="margin-top: 0px"><span></span></h2>';
+									str+='<div class="" style="text-align: right">';
+									str+='<h2 class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="margin-top: 0px"><span></span></h2>';
 								}else if(result[i].subList[j].name == "PR NEWS"){
 									 str+='<div  style="text-align: right">';	
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId1"></div>';
 											//str+='<div id="ElectronicMediaCountId1"></div>';
-											str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
+											str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 										str+='</div>';
 								}else if(result[i].subList[j].name == "RD NEWS"){
 									str+='<div style="text-align: right">';
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId2"></div>';
 											//str+='<div id="ElectronicMediaCountId2"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 									str+='</div>';
 								}else if(result[i].subList[j].name == "RWS NEWS"){
 									str+='<div class="" style="text-align: right">';	
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId3"></div>';
 											//str+='<div id="ElectronicMediaCountId3"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';	
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';	
 									str+='</div>';
 								}else if(result[i].subList[j].name == "IT E& C NEWS"){
 										str+='<div class="" style="text-align: right">';	
 										str+='<div class="row" style="margin-top:-15px;">';
 											str+='<div id="printMediaCountId4"></div>';
 											//str+='<div id="ElectronicMediaCountId4"></div>';
-										str+='<div class="col-sm-12"><span class="pull-right">This Month Negative Articles</span></div>';
+										str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 										str+='</div>';
 								}else{
 									str+='<div class=" " style="text-align: right">';
@@ -2057,7 +2080,7 @@ function buildPageWiseComponents(result,pageId){
 								}
 								
 									
-									str+='<p class="">'+blockHeadingObject[result[i].subList[j].name]+'</p>';
+									str+='<p class="" style="margin-top:5px;">'+blockHeadingObject[result[i].subList[j].name]+'</p>';
 								str+='</div>';
 								str+='<div class="block-footer">';
 								if(result[i].subList[j].name == 'MGNREGS'){
@@ -2293,7 +2316,9 @@ function getSolidWasteManagementOverAllCounts(){
 			var houses = result.houseCollecion.toFixed(2);
 			var farmers = result.farmerCollection.toFixed(2);
 			var total = result.swmCollection.toFixed(2);
-			$(".SolidWasteManagementAllCls").html(swmData(''+houses+'/'+farmers+'',''+total+'',''));
+			//$(".SolidWasteManagementAllCls").html(swmData(''+houses+' / '+farmers+'',''+total+'',''));
+			//$(".SolidWasteManagementAllCls").html(''+houses+' / '+farmers+' / <small style="font-size:14px;top:0px;">'+total+'</small>');
+			$(".SolidWasteManagementAllCls").html(houses+' / '+farmers);
 		}
 	});
 }
@@ -2301,15 +2326,15 @@ function swmData(houseFarmerVal,totalVal)
 {
 	var str='';
 	str+='<div class="row" >';
-		str+='<div class="col-sm-6 text-right">';
-			str+='<h2 style="margin-top: 0px;font-size:20px;">'+houseFarmerVal+'</h2>';
-			str+='<p style="font-size:13px;">HOUSES/FARMERS</p>';
+		str+='<div class="col-sm-8 text-right">';
+			str+='<h2 style="margin-top: 0px;font-size:18px;">'+houseFarmerVal+'</h2>';
+			str+='<p style="font-size:13px;">HOUSES&nbsp; / &nbsp;FARMERS</p>';
 		str+='</div>';
 		str+='<div class="col-sm-1 text-right">';
-			str+='<h2 style="font-size:35px;">/</h2>';
+			str+='<h2 style="font-size:30px;">/</h2>';
 		str+='</div>';
-		str+='<div class="col-sm-5 text-right">';
-			str+='<h2 class="" style="margin-top: 0px;font-size:20px;">'+totalVal+'</h2>';
+		str+='<div class="col-sm-3 text-right">';
+			str+='<h2 class="" style="margin-top: 0px;font-size:15px;">'+totalVal+'</h2>';
 			str+='<p style="font-size:13px;">TOTAL TONS</p>';
 		str+='</div>';
 	str+='</div>';				
@@ -2358,7 +2383,9 @@ function getLocationWiseWorksInformation(){
 		}
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			$(".EncWorksAllCls").html(''+result[0].technicallySanctionedCount+'/'+result[0].completedCount+'');
+			$(".EncWorksAllCls").html(''+result[0].completedCount+' / <small style="font-size:14px;top:0px;">'+result[0].technicallySanctionedCount+'</small>');
+		}else{
+			$(".EncWorksAllCls").html("0/<small style='color:#fff;font-size:14px;top:0px;'>0</small>");
 		}
 	});
 }
@@ -2415,9 +2442,9 @@ function getPRBioMetricDashboardOverViewDtls(){
 		}
 	}).done(function(result){
 		if(result !=null){
-			$(".PRBioMetricAllCls").html(result.totalCount+"/"+result.presentCount);
+			$(".PRBioMetricAllCls").html(result.presentCount+' / <small style="font-size:14px;top:0px;">'+result.totalCount+'</small>');
 		} else {
-			$(".PRBioMetricAllCls").html("0/0");
+			$(".PRBioMetricAllCls").html("0 / <small style='color:#fff;font-size:14px;top:0px;'>0</small>");
 		}
 		
 	});	
