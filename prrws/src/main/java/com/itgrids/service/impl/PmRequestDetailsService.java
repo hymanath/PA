@@ -3361,7 +3361,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									for (MultipartFile file : inputVO.getFilesList()) {
 										document = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,inputVO.getId());
 										if(document != null)
-											resultStatus =saveCoveringLetterDocument(pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),inputVO.getId(), endorsmentNo,inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId());
+											resultStatus =saveCoveringLetterDocument(pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),
+													inputVO.getId(), endorsmentNo,inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
 									}
 								}
 							}
@@ -3373,7 +3374,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									document.setInsertedUserId(inputVO.getId());
 									document = documentDAO.save(document);
 									if(document != null)
-										resultStatus =saveCoveringLetterDocument(pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),inputVO.getId(), endorsmentNo,inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId());
+										resultStatus =saveCoveringLetterDocument(pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),inputVO.getId(), endorsmentNo,inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
 								}
 							}
 							
@@ -3459,7 +3460,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									if(statusId.longValue() != 4L && statusId.longValue() !=5L && statusId.longValue() !=8L)
 										statusIdsList.add(statusId);
 								}
+								/*if(petition.getNoOfWorks() == list.size()){
+									petition.setPmStatusId(8L);
+								}else{
+									petition.setPmStatusId(9L);
+								}*/
 							}
+							
 							if(!commonMethodsUtilService.isListOrSetValid(statusIdsList)){
 								petition.setPmStatusId(8L);//Completed petition
 								
@@ -3503,7 +3510,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return resultStatus;
 		}
-		public ResultStatus saveCoveringLetterDocument(PmPetitionAssignedOfficer pmPetitionAssignedOfficer,String remarks,List<Long> subWorkIds,Long documentId,Long userId,String endorsmentNo,Long petitonId,String reportType,Long statusId){
+		public ResultStatus saveCoveringLetterDocument(PmPetitionAssignedOfficer pmPetitionAssignedOfficer,String remarks,List<Long> subWorkIds,
+				Long documentId,Long userId,String endorsmentNo,Long petitonId,String reportType,Long statusId,Long documentTypeId,String refNo){
 			ResultStatus status=new ResultStatus();
 			try {
 				if(documentId != null && documentId.longValue()>0L && commonMethodsUtilService.isListOrSetValid(subWorkIds)){
@@ -3516,7 +3524,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmSubWorkCoveringLetter.setDocumentId(documentId);
 						pmSubWorkCoveringLetter.setReportType(reportType);
 						pmSubWorkCoveringLetter.setIsDeleted("N");
-						
+						if(documentTypeId != null && documentTypeId.longValue() >0l){
+							pmSubWorkCoveringLetter.setDocumentTypeId(documentTypeId);
+						}else{
+							pmSubWorkCoveringLetter.setDocumentTypeId(4l);
+						}
+						pmSubWorkCoveringLetter.setRefNo(refNo);
 						pmSubWorkCoveringLetter = pmSubWorkCoveringLetterDAO.save(pmSubWorkCoveringLetter);
 						
 						PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();

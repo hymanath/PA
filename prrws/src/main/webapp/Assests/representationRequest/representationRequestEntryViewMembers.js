@@ -939,7 +939,7 @@ function getDepartmentsBySearchType(searchType,selBoxId,deptId,statusId){
 	}).done(function(result){
 		$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
-			//$("#departMentsDiv").show();
+			$("#departMentsDiv").show();
 			//$("#"+selBoxId).html("<option value='0'>Select Department</option>");
 			for(var i in result){
 				if(deptId != null && deptId==result[i].key){

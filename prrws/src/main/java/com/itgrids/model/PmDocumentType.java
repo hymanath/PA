@@ -24,7 +24,7 @@ public class PmDocumentType {
 	public void setPmDocumentTypeId(Long pmDocumentTypeId) {
 		this.pmDocumentTypeId = pmDocumentTypeId;
 	}
-	@Column(name="pm_petition_type")
+	@Column(name="pm_document_type")
 	public String getPmDocumentType() {
 		return pmDocumentType;
 	}

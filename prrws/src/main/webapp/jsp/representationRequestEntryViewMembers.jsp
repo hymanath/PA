@@ -370,6 +370,18 @@
 				</select>
 			</div>
 		</div>
+		<div class="row m_top10">
+			<div class="col-sm-4" id ="documentTypeDivId" style="display:none;">
+				<label>DOCUMENT TYPE<span style="color:red;">*</span><span id="documentTypeIdErr"></span></label>
+				<select class="form-control chosen-select" id="documentTypeId" name="documentTypeId">
+					<option value="0">SELECT DOCUMENT TYPE</option>
+				</select>
+			</div>
+			<div class="col-sm-4" id ="referranceNoDivId" style="display:none;">
+				<label>DOCUMENT REF. NO<span id="referranceNoIdErr"></span></label>
+				<input type="text" class="form-control" id="referranceNoId" placeholder="Endorsment NO" name="refNo"/>
+			</div>
+		</div>
 		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
 		<input type="hidden" class="form-control" id="petitionsId"  name="petitionId"/>
 		<div class="row m_top10" id="commentsDivId">

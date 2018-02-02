@@ -3084,7 +3084,14 @@ function checkIsNumber(id,value){
 	 }
 }
 
-
+$(document).on("change","#petitionTypeId",function(){
+	var selectVal = $(this).val();
+	if(selectVal == 2 || selectVal == 3){
+		$("#noofWorks").val(1);
+	}else{
+		$("#noofWorks").val("");
+	}
+});
 $(document).on("change",".OnchangeDeptCls",function(){
 	var outerCount=$(this).attr('attr_main_count');
 	$(".subSubjectReFreshCls"+outerCount).html('<option value="0">Select Sub Subject</option>');
@@ -3533,7 +3540,7 @@ $(document).on("click",".showRemoveReferralIcon",function(){
 	var itemtoRemove = parseInt(candidateId);
 	alreadyCandidateReferralId.splice($.inArray(itemtoRemove, alreadyCandidateReferralId),1);
 });
-
+getPmPetitionList();
 function getPmPetitionList(){
 	
  var json = {
@@ -3549,27 +3556,17 @@ $.ajax({
 		xhr.setRequestHeader("Content-Type", "application/json");
 	}
 }).done(function(result){
+	if(result !=null && result.length>0){
+			 $("#petitionTypeId").html('<option value="0">Select Designation</option>');
+			for(var i in result){
+				$("#petitionTypeId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+			}
+		}
+		$("#petitionTypeId").trigger('chosen:updated');
 });	
 }
 
-function getPmDocumentTypeList(){
-	
-	 var json = {
-		
-		}           
-	$.ajax({              
-		type:'POST',    
-		url: 'getPmDocumentTypeList',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-	});	
-	}
-
+getPmActionTypeList();
 function getPmActionTypeList(){
 	
 	 var json = {

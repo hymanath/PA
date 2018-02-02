@@ -22,6 +22,8 @@ public class PmSubWorkCoveringLetter implements Serializable {
 	private Long petitionId;
 	private Long pmSubWorkDetailsId;
 	private Long documentId;
+	private String refNo;
+	private Long documentTypeId;
 	private String isDeleted;
 	private String reportType;
 	private PmSubWorkDetails pmSubWorkDetails;
@@ -107,5 +109,23 @@ public class PmSubWorkCoveringLetter implements Serializable {
 	public void setPetition(Petition petition) {
 		this.petition = petition;
 	}
+	
+	@Column(name="ref_no")
+	public String getRefNo() {
+		return refNo;
+	}
+	public void setRefNo(String refNo) {
+		this.refNo = refNo;
+	}
+	
+	@Column(name="document_type_id")
+	public Long getDocumentTypeId() {
+		return documentTypeId;
+	}
+	public void setDocumentTypeId(Long documentTypeId) {
+		this.documentTypeId = documentTypeId;
+	}
+	
+	
 	
 }
