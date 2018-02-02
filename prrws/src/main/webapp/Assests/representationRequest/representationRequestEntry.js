@@ -3534,4 +3534,56 @@ $(document).on("click",".showRemoveReferralIcon",function(){
 	alreadyCandidateReferralId.splice($.inArray(itemtoRemove, alreadyCandidateReferralId),1);
 });
 
+function getPmPetitionList(){
+	
+ var json = {
+	
+	}           
+$.ajax({              
+	type:'POST',    
+	url: 'getPmPetitionList',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
+	}
+}).done(function(result){
+});	
+}
 
+function getPmDocumentTypeList(){
+	
+	 var json = {
+		
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmDocumentTypeList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+	});	
+	}
+
+function getPmActionTypeList(){
+	
+	 var json = {
+		
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmActionTypeList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+	});	
+	}
