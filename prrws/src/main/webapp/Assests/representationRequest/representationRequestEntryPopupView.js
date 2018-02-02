@@ -1136,6 +1136,7 @@ function buildPetitionDetailsView(result){
 			
 	$("#representeeViewId").html(str);
 	$(".tooltipCls").tooltip();
+	buildImages(result);
 }
 $(document).on("click",".updateStatusChangeCls",function(){
 	 $("#coveringLetterGenerator").html("");
@@ -1976,6 +1977,31 @@ $(document).on("click",".workWiseHistroyCls",function(){
 	var workId=$(this).attr('attr_sub_work_id');
 	getPetitionAndWorkWiseHistoryDetails(petitinId,workId);
  });
+
+
+function buildImages(result){
+	var str='';
+	str+='<div class="col-sm-12 m_top15" id="ScrollDivId" style="height:400px; overflow:scroll;">';
+		str+='<ul>';
+			for(var i in  result.allFileList){
+				var scanCopySpl = result.allFileList[i].value.split(".");
+				var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase());
+				if(scanCopyExt =="pdf"){
+					str+='<li style="list-style:none;"><object data="'+result.allFileList[i].value+'" style="width:100%; height:400px;"></object></li>';
+				}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg" || scanCopyExt =="gif" || scanCopyExt =="bmp" || scanCopyExt =="png"){
+					str+='<li style="list-style:none;"><img src="'+result.allFileList[i].value+'" style="width:100%; height:400px;"></li>';
+					}	
+				}
+		
+		str+='</ul>';
+	str+='</div>';	
+	
+	$("#imageBuildingId").html(str);	
+	if(result.allFileList.length < 1){
+		$("#imageBuildingId").hide();
+	}
+	
+}
 
 function getPetitionAndWorkWiseHistoryDetails(petitinId,workId){
 	$('#headingTileHistoryId').html('');
