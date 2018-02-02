@@ -1842,12 +1842,11 @@
 			
 			<ref bean="partyMeetingStatusUpdation" />
 			
-			<!-- 
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotal" /> 
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" /> 
 		    <ref bean="tdpCadreDetailsUpdationForDateWise" />   
 		    <ref bean="cronTriggerForTabUserInfoIntoIntermediateTable" />      
-		    -->
+		   
 		    
 		   <!--  <ref bean="tdpCadreDataHourWiseForTabUsersByToday"/> 
 		    <ref bean="tdpCadreDataHourWiseForTabUsersByOverall"/>
