@@ -425,6 +425,7 @@
   </div>
 </div>
 </div>
+</div>
 
 <div class="modal fade" id="docsModalDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" style="z-index:9999">
   <div class="modal-dialog" role="document" style="width:60%;margin:auto">
