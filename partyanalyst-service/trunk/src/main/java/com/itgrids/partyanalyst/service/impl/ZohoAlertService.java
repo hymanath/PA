@@ -74,6 +74,7 @@ public class ZohoAlertService implements IZohoAlertService {
 
 	@Override
 	public String getMobileNoByMemberShip(String membershipId) {
+		LOG.fatal(" Calling Zoho App Webservice For OTP with Membership ID -"+membershipId);
 		String mobileNo = null;
 		Long cadreId=0l;
 		try{
@@ -152,7 +153,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 					 otpRand = rnd.randomGenerator(6);
 				}
 					String otpNum = String.valueOf(otpRand);
-					String msg = "your OTP is "+otpNum+" . This OTP Validate for Next 15 mins.";
+					String msg = "Your OTP is "+otpNum+" . This OTP is valid for next 15 mins.";
 					String[] phoneNumbers = {phoneNumber.toString()};
 						ResultStatus otpStatus = smsCountrySmsService.sendOTPSmsFromAdminForZohoUser(msg, true, phoneNumbers);
 						otpDetails = new OtpDetails();
