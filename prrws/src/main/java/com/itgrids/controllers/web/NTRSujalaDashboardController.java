@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.NTRSujalaMotherPlantVO;
+import com.itgrids.dto.NTRSujalaOverviewVO;
 import com.itgrids.dto.NTRSujalaRduVO;
 import com.itgrids.service.INTRSujalaDashboardService;
 
@@ -36,6 +37,12 @@ public class NTRSujalaDashboardController {
    @RequestMapping(value = "/getLast30DaysRDUDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  NTRSujalaRduVO  getLast30DaysRDUDetails(@RequestBody InputVO inputVO) {
 	   NTRSujalaRduVO  resultVO = ntrSujalaDashboardService.getLast30DaysRDUDetails(inputVO);
+	   return resultVO;
+   }
+   
+   @RequestMapping(value = "/getNtrSujalaOverview", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+   public @ResponseBody  NTRSujalaOverviewVO  getNtrSujalaOverview(@RequestBody InputVO inputVO) {
+	   NTRSujalaOverviewVO  resultVO = ntrSujalaDashboardService.getNtrSujalaOverview();
 	   return resultVO;
    }
 }
