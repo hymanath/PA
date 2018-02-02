@@ -2,6 +2,9 @@ package com.itgrids.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
@@ -12,7 +15,9 @@ public class MobileAppUserType {
 	private String userType;
 	private String description;
 	
+	@Id
 	@Column(name="mobile_app_user_type_id")
+	@GeneratedValue(strategy= GenerationType.AUTO)
 	public String getMobileAppUserTypeId() {
 		return mobileAppUserTypeId;
 	}

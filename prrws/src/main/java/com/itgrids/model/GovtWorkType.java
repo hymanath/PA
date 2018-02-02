@@ -4,6 +4,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -14,7 +17,9 @@ public class GovtWorkType {
 	private Long govtWorkTypeId;
 	private String workType;
 	
+	@Id
 	@Column(name="govt_work_type_id")
+	@GeneratedValue(strategy= GenerationType.AUTO)
 	public Long getGovtWorkTypeId() {
 		return govtWorkTypeId;
 	}
