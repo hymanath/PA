@@ -424,10 +424,7 @@ function onloadCallToGetAllBlockAchievent () {
 	getLocationWiseWorksInformation();//ENC Works.
 	getStateWiseRoadsInformation();//ENC ROADS.
 	getNewsPapersInformation(0);
-	getNewsPapersInformation(1699);
-	getNewsPapersInformation(2170);	
-	getNewsPapersInformation(2171);
-	getNewsPapersInformation(1698);	
+	getDepartmentWiSeBlockDetails(0);	
 	getPRBioMetricDashboardOverViewDtls();
 	for(var i in globalComponentNameArr)
 	{
@@ -2456,19 +2453,11 @@ var url = window.location.href;
 var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
 	wurl = url.substr(0,(url.indexOf(".in")+3));
-var printCount =0;
-var printCount1 =0;
-var printCount2 =0;
-var printCount3 =0;
-var printCount4 =0;
+var printCount =0,printCount1 =0,printCount2 =0,printCount3 =0,printCount4 =0;
 var totalCount=0,totalCount1=0,totalCount2=0,totalCount3=0,totalCount4 =0;
 var electCount=0,electCount1=0,electCount2=0,electCount3=0,electCount4=0;
-var mainNews=0;
-var PRPerc=0;
-var RDPerc=0;
-var RWSPerc=0;
-var ITPerc=0;
- function getNewsPapersInformation(deptId){
+var mainNews=0.0,PRPerc=0.0,RDPerc=0.0,RWSPerc=0.0,ITPerc=0.0;
+function getNewsPapersInformation(deptId){
 		 $("#printMediaCountId").html(spinner);
 		 $("#printMediaCountId1").html(spinner);
 		 $("#printMediaCountId2").html(spinner);
@@ -2486,57 +2475,17 @@ var ITPerc=0;
 			if(result !=null && result.length>0){
 				if(deptId ==0){
 					for(var i in result){
-					printCount =printCount+result[i].negativCountMain;
+					printCount =printCount+result[i].negativCountMain+result[i].negativCountGrpMain;
 					totalCount =totalCount+result[i].count;
-					}
-				}else if(deptId ==1699){
-					for(var i in result){
-					printCount1 =printCount1+result[i].negativCountMain;
-					totalCount1 =totalCount1+result[i].count;
-					}
-				}else if(deptId ==2170){
-					for(var i in result){
-					printCount2 =printCount2+result[i].negativCountMain;
-					totalCount2 =totalCount2+result[i].count;
-					}
-				}else if(deptId ==2171){
-					for(var i in result){
-					printCount3 =printCount3+result[i].negativCountMain;
-					totalCount3 =totalCount3+result[i].count;
-					}
-				}else if(deptId ==1698){
-					for(var i in result){
-					printCount4 =printCount4+result[i].negativCountMain;
-					totalCount4 =totalCount4+result[i].count;
 					}
 				}
 			}
 			if(deptId ==0){
 				getBulletinNewsPapersInformation(0);
-			}else if(deptId ==1699){
-				getBulletinNewsPapersInformation(1699);
-			}else if(deptId ==2170){
-				getBulletinNewsPapersInformation(2170);
-			}else if(deptId ==2171){
-				getBulletinNewsPapersInformation(2171);
-			}else if(deptId ==1698){
-				getBulletinNewsPapersInformation(1698);
 			}
-		});
-		
+		});	
 }
-
 function getBulletinNewsPapersInformation(deptId){
-		$("#ElectronicMediaCountId").html(spinner);
-		$("#ElectronicMediaCountId1").html(spinner);
-		$("#ElectronicMediaCountId2").html(spinner);
-		$("#ElectronicMediaCountId3").html(spinner);
-		$("#ElectronicMediaCountId4").html(spinner);
-		$("#ElectronicMediaCountIdIT").html(spinner);
-		$("#ElectronicMediaCountIdRD").html(spinner);
-		$("#ElectronicMediaCountIdRWS").html(spinner);
-		$("#ElectronicMediaCountIdPR").html(spinner);
-		
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
 			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
@@ -2544,7 +2493,7 @@ function getBulletinNewsPapersInformation(deptId){
 			if(result !=null && result.length>0){
 				if(deptId ==0){
 					for(var i in result){
-						electCount =electCount+result[i].negativCountMain;
+						electCount =electCount+result[i].negativCountMain+result[i].negativCountGrpMain;
 						totalCount =totalCount+result[i].count;
 						
 					}
@@ -2555,26 +2504,117 @@ function getBulletinNewsPapersInformation(deptId){
 						str+='<h2 class="" style="margin-top: 0px">'+count+'<small style="color:red;font-size:12px;">('+mainNews+'%)</small></h2>';
 					str+='</div>';
 					$("#printMediaCountId").html(str);
-				}else if(deptId ==1699){
-					for(var i in result){
-						electCount1 =electCount1+result[i].negativCountMain;
-						totalCount1 =totalCount1+result[i].count;
+				}
+			 }			 
+		});
+} 
+function getDepartmentWiSeBlockDetails(deptId){
+		 $("#printMediaCountId").html(spinner);
+		 $("#printMediaCountId1").html(spinner);
+		 $("#printMediaCountId2").html(spinner);
+		 $("#printMediaCountId3").html(spinner);
+		 $("#printMediaCountId4").html(spinner);
+		 $("#printMediaCountIdIT").html(spinner);
+		 $("#printMediaCountIdRD").html(spinner);
+		 $("#printMediaCountIdRWS").html(spinner);
+		 $("#printMediaCountIdPR").html(spinner); 
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+newsStartDate+"/"+newsEndDate+"/"+deptId
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+newsStartDate+"/"+newsEndDate+"/"+deptId
+		}).then(function(result){
+			if(result !=null && result.length>0){
+			 for(var i in result){
+				if(result[i].organizationId ==1699){
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						 for( var j in result[i].coreDashBoardVOList){
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
+									printCount1 =printCount1+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountGrpMain;
+									totalCount1 =totalCount1+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].grpCount;
+								}
+							}
+						 }
 					}
-					var str='';
-					str+='<div class="col-sm-12 text-right">';
-					var count1 =printCount1+electCount1;
-					
-					PRPerc = (count1/totalCount1*100).toFixed(2);
-					
-						str+='<h2 class="" style="margin-top: 0px">'+count1+'<small style="color:red;font-size:12px;">('+PRPerc+'%)</small></h2>';
-					str+='</div>';
-					$("#printMediaCountId1").html(str);
-					$("#printMediaCountIdPR").html(str);
-				}else if(deptId ==2170){
-					for(var i in result){
-						electCount2 =electCount2+result[i].negativCountMain;
-						totalCount2 =totalCount2+result[i].count;
+				}else if(result[i].organizationId ==2170){
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						 for( var j in result[i].coreDashBoardVOList){
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
+									printCount2 =printCount2+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountGrpMain;
+									totalCount2 =totalCount2+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].grpCount;
+								}
+							}
+						 }
 					}
+				}else if(result[i].organizationId ==2171){
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						 for( var j in result[i].coreDashBoardVOList){
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
+									printCount3 =printCount3+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountGrpMain;
+									totalCount3 =totalCount3+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].grpCount;
+								}
+							}
+						 }
+					}
+				}else if(result[i].organizationId ==1698){
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						 for( var j in result[i].coreDashBoardVOList){
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
+									printCount4 =printCount4+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountGrpMain;
+									totalCount4 =totalCount4+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].grpCount;
+								}
+							}
+						 }
+					}
+				}
+			  }
+		    }
+			if(deptId ==0){
+				getDepartmentWiSeBlockDetailsForEMN(0);
+			}
+		});	
+}
+function getDepartmentWiSeBlockDetailsForEMN(deptId){
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+newsStartDate+"/"+newsEndDate+"/"+deptId
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+newsStartDate+"/"+newsEndDate+"/"+deptId
+		}).then(function(result){
+			if(result !=null && result.length>0){
+				for(var i in result){
+				 if(result[i].organizationId ==1699){
+					 if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						 for( var j in result[i].coreDashBoardVOList){
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){ 
+									electCount1 =electCount1+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain;
+									totalCount1 =totalCount1+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count;
+								}
+							  }
+						    }
+						  }
+						var str='';
+						str+='<div class="col-sm-12 text-right">';
+						var count1 =printCount1+electCount1;
+					
+						PRPerc = (count1/totalCount1*100).toFixed(2);
+						
+							str+='<h2 class="" style="margin-top: 0px">'+count1+'<small style="color:red;font-size:12px;">('+PRPerc+'%)</small></h2>';
+						str+='</div>';
+						$("#printMediaCountId1").html(str);
+						$("#printMediaCountIdPR").html(str);
+				}else if(result[i].organizationId ==2170){
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						 for( var j in result[i].coreDashBoardVOList){
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
+									electCount2 =electCount2+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain;
+									totalCount2 =totalCount2+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count;
+								}
+							}
+						 }
+					  }
 					var str='';
 					str+='<div class="col-sm-12 text-right">';
 					var count2 =printCount2+electCount2;
@@ -2584,10 +2624,16 @@ function getBulletinNewsPapersInformation(deptId){
 					str+='</div>';
 					$("#printMediaCountId2").html(str);
 					$("#printMediaCountIdRD").html(str);
-				}else if(deptId ==2171){
-					for(var i in result){
-						electCount3 =electCount3+result[i].negativCountMain;
-						totalCount3 =totalCount3+result[i].count;
+				}else if(result[i].organizationId ==2171){
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						 for( var j in result[i].coreDashBoardVOList){
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){	
+									electCount3 =electCount3+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain;
+									totalCount3 =totalCount3+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count;
+								}
+							}
+						 }
 					}
 					var str='';
 					str+='<div class="col-sm-12 text-right">';
@@ -2597,11 +2643,17 @@ function getBulletinNewsPapersInformation(deptId){
 					str+='</div>';
 					$("#printMediaCountId3").html(str);
 					$("#printMediaCountIdRWS").html(str);
-				}else if(deptId ==1698){
-					for(var i in result){
-						electCount4 =electCount4+result[i].negativCountMain;
-						totalCount4 =totalCount4+result[i].count;
-					}
+				}else if(result[i].organizationId ==1698){
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						 for( var j in result[i].coreDashBoardVOList){
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
+									electCount4 =electCount4+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain;
+									totalCount4 =totalCount4+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count;
+								}
+							}
+						 }
+					 }
 					var str='';
 					str+='<div class="col-sm-12 text-right">';
 					var count4 =printCount4+electCount4;
@@ -2611,6 +2663,7 @@ function getBulletinNewsPapersInformation(deptId){
 					$("#printMediaCountId4").html(str);
 					$("#printMediaCountIdIT").html(str);
 					}
-			}	
+				}
+		     }	
 		});
 } 
