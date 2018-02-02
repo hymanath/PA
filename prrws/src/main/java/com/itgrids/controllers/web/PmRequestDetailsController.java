@@ -374,13 +374,12 @@ public class PmRequestDetailsController {
 		    }else{
 		    	return null;
 		    }
-		   /* if(dataVo.getPmStatusId() != null && dataVo.getPmStatusId().longValue() == 1l){
+		   // if(dataVo.getPmStatusId() != null && dataVo.getPmStatusId().longValue() == 1l){
 		    	return pmRequestDetailsService.getLoginUserAccessSubDeptDesignationDetail(dataVo.getDeptIdsList(),userId);
-		    }else{
+		   /* }else{
 		    	return pmRequestDetailsService.getLoginUserAccessStatusWiseDeptDesignations(dataVo.getDeptIdsList(),userId,dataVo.getPmStatusId());
 		    }*/
-		    return null;
-	    }
+		}
 	    
 	    @RequestMapping(value ="/getDeptDesignationOfficerDetail",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getDeptDesignationOfficerDetail(@RequestBody Map<String,String> inputMap,HttpServletRequest request ){

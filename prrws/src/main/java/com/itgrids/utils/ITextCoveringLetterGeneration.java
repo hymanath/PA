@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -186,6 +187,7 @@ public class ITextCoveringLetterGeneration  {
 			 }else{
 				 str1 = str1.replace("#ref", "");
 			 }*/
+ 			 String estCost ="0.0";
 			List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>();
 			StringBuilder works = new StringBuilder();
 			 if(petitionDetailsVO.getSubWorksList() != null && petitionDetailsVO.getSubWorksList().size()>0){
@@ -199,6 +201,7 @@ public class ITextCoveringLetterGeneration  {
 					 works2.setWorkName("Test Work Description1");
 					 worksList.add(works2);
 					pmSubwork.getSubWorksList().addAll(worksList);*/
+					
 					 for (PetitionsWorksVO pmSubwork1 : pmSubwork.getSubWorksList()) {
 						 if(inputVO.getSchemeIdsList().contains(pmSubwork1.getWorkId())){
 							 int index =pmSubwork.getSubWorksList().indexOf(pmSubwork1);
@@ -208,12 +211,16 @@ public class ITextCoveringLetterGeneration  {
 								String tehsil ="";
 								String consti ="";
 								String dist ="";
-								String estCost ="";
+								
 								String grant ="";
 								if(!pmSubwork1.getEstimateCost().isEmpty()){
-									estCost= "&nbsp;&nbsp;With an Estimated Cost of Rs.<b>"+pmSubwork1.getEstimateCost()+"</b>&nbsp;Lakhs ";
+									//estCost= "&nbsp;&nbsp;With an Estimated Cost of Rs.<b>"+pmSubwork1.getEstimateCost()+"</b>&nbsp;Lakhs ";
+									BigDecimal decmial= new BigDecimal(pmSubwork1.getEstimateCost());
+									BigDecimal decmial1= new BigDecimal(estCost);
+									BigDecimal totalCost = decmial.add(decmial1);
+									estCost = totalCost.toString();
 								}
-								if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
+								/*if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
 									grant = " under "+ inputVO.getGroupName();
 								}
 								if(!pmSubwork1.getAddressVO().getPanchayatName().isEmpty()){
@@ -227,15 +234,24 @@ public class ITextCoveringLetterGeneration  {
 									}
 								if(!pmSubwork1.getAddressVO().getAssemblyName().isEmpty()){
 									consti= pmSubwork1.getAddressVO().getAssemblyName()+"&nbsp;&nbsp;Constituency of ";
-									}
-							 works.append(index1+")&nbsp;&nbsp;"+pmSubwork1.getSubSubject()+"&nbsp;in&nbsp;"+villageName+""+tehsil+""+consti+""+dist+""+grant+""+estCost+".<br>");
+									}*/
+							// works.append(index1+")&nbsp;&nbsp;"+pmSubwork1.getSubSubject()+"&nbsp;in&nbsp;"+villageName+""+tehsil+""+consti+""+dist+""+grant+""+estCost+".<br>");
 							 //works.append(".");
 						 }
 					}
 				}
 			 }
-			 if(works != null){
-				 str1 = str1.replace("#works", " <br>  "+works);
+			 String grant ="";
+			 if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
+					grant = " under "+ inputVO.getGroupName();
+				}
+			 if(estCost != ""){
+				 str1 = str1.replace("#cost", "&nbsp;"+grant+"&nbsp;With an Estimated Cost of Rs.<b>"+estCost+"</b>&nbsp;Lakhs ");
+			 }else{
+				 str1 = str1.replace("#cost", "");
+			 }
+			 if(inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().size()>0){
+				 str1 = str1.replace("#works", "&nbsp;"+inputVO.getSchemeIdsList().size()+"");
 			 }else{
 				 str1 = str1.replace("#works", "");
 			 }
