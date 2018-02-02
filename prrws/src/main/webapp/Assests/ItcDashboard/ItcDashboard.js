@@ -573,6 +573,7 @@ function departmentBlockWiseDetails(divId)
 		}else if(divId == 'apInnovationSociety')
 		{
 			startUpsArr = [];
+			bootCampArrIds = [];
 			var incubatorsIdsArr = [1,2,3];
 			getAPInnovationSocietyOverviewHtml(divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id,incubatorsIdsArr)
 			/* getAPInnovationSocietyOverview('overview',divId.replace(/\s+/g, '')+'Block'+levelWiseBlockArr[i].id);
@@ -5957,6 +5958,7 @@ $(document).on("click",".APISDetailsCls",function(){
 							str+='</div>';
 							str+='<div id="collapseAP" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingAP">';
 								str+='<div class="panel-body">';
+								//alert(bootCampArrIds)
 									for(var i=1;i<=bootCampArrIds;i++){
 										str+='<div id="bootCampId'+i+'" class="m_top10"></div>';
 									}
