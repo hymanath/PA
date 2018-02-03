@@ -4281,6 +4281,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		public Map<Long,List<Long>> getAssignedPetitionforPetitionDeptDesignationOfficer(Long userId,Long pmDeptDesignationOfficerId){
 			 Map<Long,List<Long>> petitiosWorksMap = new HashMap<>();
 			try {
+				boolean isAccessDashboard=false;
 				List<Long> pmDeptDesignationOfficerIdsList = new ArrayList<>();
 				if(pmDeptDesignationOfficerId == null || pmDeptDesignationOfficerId.longValue() ==0L ){
 					if(userId != null && userId.longValue()>0L){
@@ -4288,24 +4289,32 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						if(commonMethodsUtilService.isListOrSetValid(list)){
 							for (Object[] param : list) {
 								pmDeptDesignationOfficerIdsList.add(commonMethodsUtilService.getLongValueForObject(param[7]));
+								if(!isAccessDashboard){
+									if(IConstants.DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS.contains(commonMethodsUtilService.getLongValueForObject(param[9]))){
+										isAccessDashboard=true;
+									}
+								}
 							}
 						}	
 					}
 				}
 				
-				List<Object[]> assignedPetitionDetails = pmPetitionAssignedOfficerDAO.getAssignedPetitionforPetitionDeptDesignationOfficer(pmDeptDesignationOfficerIdsList);
-				if(commonMethodsUtilService.isListOrSetValid(assignedPetitionDetails)){
-					for (Object[] param : assignedPetitionDetails) {
-						List<Long> petitionsIdsList = new ArrayList<>();
-						Long petitionId =commonMethodsUtilService.getLongValueForObject(param[0]);
-						Long subWorksId =commonMethodsUtilService.getLongValueForObject(param[1]);
-						if(petitiosWorksMap.get(petitionId) != null){
-							petitionsIdsList = petitiosWorksMap.get(petitionId);
+				if(!isAccessDashboard){
+					List<Object[]> assignedPetitionDetails = pmPetitionAssignedOfficerDAO.getAssignedPetitionforPetitionDeptDesignationOfficer(pmDeptDesignationOfficerIdsList);
+					if(commonMethodsUtilService.isListOrSetValid(assignedPetitionDetails)){
+						for (Object[] param : assignedPetitionDetails) {
+							List<Long> petitionsIdsList = new ArrayList<>();
+							Long petitionId =commonMethodsUtilService.getLongValueForObject(param[0]);
+							Long subWorksId =commonMethodsUtilService.getLongValueForObject(param[1]);
+							if(petitiosWorksMap.get(petitionId) != null){
+								petitionsIdsList = petitiosWorksMap.get(petitionId);
+							}
+							petitionsIdsList.add(subWorksId);
+							petitiosWorksMap.put(petitionId, petitionsIdsList);
 						}
-						petitionsIdsList.add(subWorksId);
-						petitiosWorksMap.put(petitionId, petitionsIdsList);
 					}
 				}
+				
 				
 			} catch (Exception e) {
 				LOG.error("Exception raised into PmRequestDetailsService of getAssignedPetitionforPetitionDeptDesignationOfficer",e);
