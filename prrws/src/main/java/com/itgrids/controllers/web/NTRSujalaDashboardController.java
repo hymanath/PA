@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +28,10 @@ public class NTRSujalaDashboardController {
 	private INTRSujalaDashboardService ntrSujalaDashboardService;
 	
 	
+	@RequestMapping(value ="/NTRSujalaDashboard", method = RequestMethod.GET)
+    public String mgnregsDashBoardPage(ModelMap model) {
+		return "ntrSujalaDashboard";
+    }
 	
    @RequestMapping(value = "/getLast30DaysMotherPlantDetails", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  NTRSujalaMotherPlantVO  getLast30DaysMotherPlantDetails(@RequestBody InputVO inputVO) {
