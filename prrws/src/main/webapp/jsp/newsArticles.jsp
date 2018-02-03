@@ -28,7 +28,7 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayat Raj, RD & RWS</h4>
+					<h4 class="text-capital">Panchayat Raj, RD & RWS,IT E&C</h4>
 					<p>News Articles</p>
 				</div>
 				<div class="col-sm-1 col-xs-12 pull-right">
