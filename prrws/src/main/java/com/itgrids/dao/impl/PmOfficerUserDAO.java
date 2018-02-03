@@ -28,7 +28,8 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 		sb.append( "model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId,");//2-designtionId
 		sb.append("model.pmDepartmentDesignation.pmOfficerDesignation.designation,");//3-designtionName
 		sb.append("model2.pmOfficer.pmOfficerId,model2.pmOfficer.name, model2.pmOfficer.mobileNo, ");//4-officerId,5-name,6-mobileNo
-		sb.append(" model2.pmDepartmentDesignationOfficerId , model.pmDepartmentDesignationId ");//7-deptdesiofficerId,8- deptdesigId
+		sb.append(" model2.pmDepartmentDesignationOfficerId , model.pmDepartmentDesignationId," +//7-deptdesiofficerId,8- deptdesigId
+				" model2.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId ");//9-pmOfficerDesignationId
 		sb.append("from PmOfficerUser model,PmDepartmentDesignationOfficer model2 ");
 		sb.append( "where model.pmDepartmentDesignationId=model2.pmDepartmentDesignationId and ");
 		sb.append( "model.isActive ='Y' and model2.pmOfficer.isActive='Y' and model2.isActive='Y' and "
