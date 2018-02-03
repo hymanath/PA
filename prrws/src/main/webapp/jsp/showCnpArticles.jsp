@@ -1057,7 +1057,7 @@ var globaltype = "${param.type}";
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfoForArtcles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex+""
 			
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfoForArtcles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex+""
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfoForArtcles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalTemp+""
 			
 		}).then(function(results){
 			$("#articlesDivId").html('');
