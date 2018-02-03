@@ -1094,6 +1094,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 				finalVO.setWeekPerc(new BigDecimal(Double.valueOf(finalVO.getWeekPerc()) - 100.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				if(finalVO.getWeekPerc().trim().contains("-")){
 					finalVO.setWeekType("Decrement");
+					finalVO.setWeekPerc(finalVO.getWeekPerc().substring(1));
 				}else{
 					finalVO.setWeekType("Increment");
 				}
@@ -1107,6 +1108,7 @@ public class HealthMedicalAndFamilyWelfareService implements IHealthMedicalAndFa
 				finalVO.setMnthPerc(new BigDecimal(Double.valueOf(finalVO.getMnthPerc()) - 100.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				if(finalVO.getMnthPerc().trim().contains("-")){
 					finalVO.setMonthType("Decrement");
+					finalVO.setMnthPerc(finalVO.getMnthPerc().substring(1));
 				}else{
 					finalVO.setMonthType("Increment");
 				}

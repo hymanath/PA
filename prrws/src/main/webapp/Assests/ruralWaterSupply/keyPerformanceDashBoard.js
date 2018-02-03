@@ -1,6 +1,7 @@
  //Angular Start  getAlertsOfCategoryByStatusWise()
 		var glStartDate = moment().subtract(40, 'years').startOf('year').format("DD-MM-YYYY");
-		var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
+		var glEndDate = moment().format("DD-MM-YYYY");
+		//var glEndDate = moment().add(10, 'years').endOf('year').format("DD-MM-YYYY");
 		var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
 		"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
 		"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","PARTIALLY SATISFIED":"#FFBA00","NOT SATISFIED":"#FF0909","TARGET":"#FC5049","COMPLETED":"#14BAAD"}
