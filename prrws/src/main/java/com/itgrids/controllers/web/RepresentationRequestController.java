@@ -102,7 +102,7 @@ public class RepresentationRequestController {
     }
 	@RequestMapping(value ="/getPmBriefLeadList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getPmBriefLeadList(@RequestBody Map<String,String> inputMap ) {
-       return locationDetailsService.getPmBriefLeadList();
+       return locationDetailsService.getPmBriefLeadList(Long.valueOf(inputMap.get("designationId")));
     }
 	@RequestMapping(value ="/getPmGrantList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getPmGrantList(@RequestBody Map<String,String> inputMap ) {
