@@ -2,6 +2,7 @@ package com.itgrids.dao.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -247,7 +248,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		query.setParameter("userId", userId);
 		return query.executeUpdate();
 	}
-	public List<Object[]> getCompleteOrStatusOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate,String type){
+	public List<Object[]> getCompleteOrStatusOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate,String type,Set<Long> petitionsIdsList){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(distinct model.pmSubWorkDetailsId)," +//0
 				" model.petition.petitionId," +//1
@@ -297,6 +298,10 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(startDate != null && endDate != null){
 			 sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
 		}
+		if(petitionsIdsList != null && petitionsIdsList.size()>0){
+			sb.append(" and model.petition.petitionId in (:petitionsIdsList) ");
+		}
+		
 		sb.append(" group by model.petition.petitionId, model.pmStatus.pmStatusId " );
 		sb.append(", model2.pmDesignation.pmDesignationId,model.pmSubject.pmSubjectId,model.pmDepartment.pmDepartmentId ");
 		sb.append(" order by model.pmStatus.orderNo asc ," +
@@ -322,10 +327,14 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
 		}
+		if(petitionsIdsList != null && petitionsIdsList.size()>0){
+			query.setParameterList("petitionsIdsList", petitionsIdsList);
+		}
+		
 		return query.list();
 	}
 	
-	public List<Object[]> getLeadWiseOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate){
+	public List<Object[]> getLeadWiseOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate,Set<Long> petitionsIdsList){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(model.pmSubWorkDetailsId),model.pmBriefLead.pmBriefLeadId,model.pmBriefLead.briefLead, model.pmStatus.pmStatusId,model.pmStatus.status ");
 		sb.append(", model.petition.petitionId,round(sum(model.costEstimation),2)  from PmSubWorkDetails model where model.isDeleted='N'" +
@@ -339,6 +348,9 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(startDate != null && endDate != null){
 			 sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
 		}
+		if(petitionsIdsList != null && petitionsIdsList.size()>0){
+			sb.append(" and model.petition.petitionId in (:petitionsIdsList) ");
+		}
 		sb.append(" group by   model.petition.petitionId, model.pmStatus.pmStatusId ,model.pmBriefLead.pmBriefLeadId " );
 		
 		Query query =getSession().createQuery(sb.toString());
@@ -348,6 +360,9 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(startDate != null && endDate != null){
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
+		}
+		if(petitionsIdsList != null && petitionsIdsList.size()>0){
+			query.setParameterList("petitionsIdsList", petitionsIdsList);
 		}
 		return query.list();
 	}
@@ -416,7 +431,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		return query.list();
 	}
 	
-	public List<Object[]> getReferralWiseOverviewDetails(InputVO inputVO,Date startDate,Date endDate){
+	public List<Object[]> getReferralWiseOverviewDetails(InputVO inputVO,Date startDate,Date endDate,Set<Long> petitionsIdsList){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(distinct model.pmSubWorkDetailsId),model.petition.petitionId, model.pmStatus.pmStatusId,model.pmStatus.status ");
 		sb.append(", model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId,model1.pmRefCandidateDesignation.pmDesignation.designation  ");
@@ -449,6 +464,10 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0 && inputVO.getDesignationIds().get(0) == 0){
 			sb.append(" and  model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId not in (1,2,7) ");
 		}
+		if(petitionsIdsList != null && petitionsIdsList.size()>0){
+			sb.append(" and model.petition.petitionId in (:petitionsIdsList) ");
+		}
+		
 		sb.append(" group by   model.petition.petitionId, model.pmStatus.pmStatusId,model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId " );
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size()>0){
 			sb.append(", model1.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId ");
@@ -468,6 +487,9 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		}
 		if(inputVO.getLightVendorIdList() != null && inputVO.getLightVendorIdList().size() > 0){
 			query.setParameterList("briefLeadIds", inputVO.getLightVendorIdList());
+		}
+		if(petitionsIdsList != null && petitionsIdsList.size()>0){
+			query.setParameterList("petitionsIdsList", petitionsIdsList);
 		}
 		return query.list();
 	}
