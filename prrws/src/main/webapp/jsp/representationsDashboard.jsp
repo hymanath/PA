@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> VIEW PETITIONS DETAILS </title>
+<title> REPRESENTATIONS DASHBOARD DETAILS </title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
@@ -76,7 +76,7 @@
 <%@ page import="com.itgrids.dto.UserVO" %>
 <% 
 	UserVO userVo=(UserVO)session.getAttribute("User");
-	out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;&nbsp; "+userVo.getUserName()+"</h4>"); 
+	out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;&nbsp; "+userVo.getUserName()+"-"+userVo.getDesignation()+"</h4>"); 
 %>
 </header>
 <main>
