@@ -1981,7 +1981,8 @@ if(blockName == "state"){
 	if(blockType == "completeOverview"){
 		getSchemeWiseWorkDetails('table','state',blocksArr,"","","",blockType);
 	}else if(blockType == "exceededOverview"){// here using global globalStateLevelExceededTargetWorks arr no need sent ajax call in state level table building we have responce object onLoad
-		buildTableForHabitationCoverage(globalStateLevelExceededTargetWorks,'state',blocksArr,'habitations',blockType);
+		getExceedWorkDetailsLocationWise('table','state',blocksArr,"","","",blockType,statusType)
+		//buildTableForHabitationCoverage(globalStateLevelExceededTargetWorks,'state',blocksArr,'habitations',blockType);
 	}else if(blockType == "notGroundedoverView"){
 		getNotGroundedWorkDetailsLocationWise('table','state',blocksArr,"","","",blockType);
 	}
@@ -1990,7 +1991,7 @@ if(blockName == "state"){
 	if(blockType == "completeOverview"){
 		getSchemeWiseWorkDetails('table','district',blocksArr,"","","",blockType);
 	}else if(blockType == "exceededOverview"){
-		getExceedWorkDetailsLocationWise('table','district',blocksArr,"","","",blockType,statusType)
+		getExceedWorkDetailsLocationWise('table','district',blocksArr,"","","",blockType,statusType);
 	}else if(blockType == "notGroundedoverView"){
 		getNotGroundedWorkDetailsLocationWise('table','district',blocksArr,"","","",blockType);
 	}
@@ -2067,10 +2068,10 @@ function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,fil
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(ajaxresp){
-		$("[attr_level_type='state'][role='tabCummulative'] li:nth-child(2)").trigger("click");
+		//$("[attr_level_type='state'][role='tabCummulative'] li:nth-child(2)").trigger("click");
 	 	if(ajaxresp !=null && ajaxresp.length>0){
-			if(locationType == 'state'){
-				globalStateLevelExceededTargetWorks=ajaxresp;
+			if(type != 'table'){
+				//globalStateLevelExceededTargetWorks=ajaxresp;
 				buildGraph(ajaxresp);
 			}else{
 				buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',blockType);
