@@ -4522,7 +4522,7 @@ function buildMeesevaKPIOverViewDetails(result,divId,blockId){
 				str+='<div class="panel panel-default panel-black">';
 						str+='<div class="panel-heading" role="tab" id="headingMonthKPI">';
 							str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordionMonthKPI" href="#collapseMonthKPI" aria-expanded="true" aria-controls="collapseMonthKPI">';
-								str+='<h4 class="panel-title">2017 MEESEVA CENTERS TARGET WISE ACHIEVED</h4>';
+								str+='<h4 class="panel-title">MEESEVA CENTERS TARGET VS ACHIEVEMENT</h4>';
 							str+='</a>';
 						str+='</div>';
 					str+='<div id="collapseMonthKPI" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingMonthKPI">';

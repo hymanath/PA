@@ -41,7 +41,7 @@
 		left:20px;
 	}
 	.whiteBlock{
-		height : 140px;
+		height : 120px;
 	}
 </style>
 </head>
@@ -142,7 +142,7 @@
 <div id="blockWiseComponentDivId4"></div>
 <div id="blockWiseComponentDivId5"></div>
 <div id="blockWiseComponentDivId6"></div>
-<footer class="footerCls">
+<footer class="footerCls" style="padding-bottom: 0px;padding-top: 0px;">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12 footer-block">
