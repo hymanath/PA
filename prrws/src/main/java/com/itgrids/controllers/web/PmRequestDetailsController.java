@@ -134,6 +134,7 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
+				inputVO.setLocationId(userId);
 			}else{
 				return null;
 			}
@@ -153,6 +154,7 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
+				inputVO.setLocationId(userId);
 			}else{
 				return null;
 			}
@@ -172,6 +174,7 @@ public class PmRequestDetailsController {
 			Long userId =null;
 			if(userVO != null){
 				userId = userVO.getUserId();
+				inputVO.setLocationId(userId);
 			}else{
 				return null;
 			}
@@ -182,7 +185,7 @@ public class PmRequestDetailsController {
 				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
 				deptIds = deptVO.getDeptIdsList();
 			}
-	    	return locationDetailsService.getMandalsBySearchTypeAndConstituencyId(inputVO.getFilterType(),inputVO.getSearchLvlVals(),deptIds,inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds());
+	    	return locationDetailsService.getMandalsBySearchTypeAndConstituencyId(inputVO.getFilterType(),inputVO.getSearchLvlVals(),deptIds,inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),userId);
 	    }
 	    @RequestMapping(value ="/getDesignationsBySearchType",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getDesignationsBySearchType(@RequestBody InputVO inputVO,HttpServletRequest request ) {
@@ -199,7 +202,7 @@ public class PmRequestDetailsController {
 			 deptIds = deptVO.getDeptIdsList();
 			 Long desigId = inputVO.getSourceId();
 			 List<Long> statusIds = inputVO.getStatusIds();
-	    	return locationDetailsService.getDesignationsBySearchType(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,desigId,statusIds);
+	    	return locationDetailsService.getDesignationsBySearchType(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,desigId,statusIds,userId);
 	    }
 	    @RequestMapping(value ="/getDepartmentsBySearchType",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getDepartmentsBySearchType(@RequestBody InputVO inputVO,HttpServletRequest request ) {
@@ -225,7 +228,7 @@ public class PmRequestDetailsController {
 				deptIds = deptVO.getDeptIdsList();
 			}
 			List<Long> statusIds = inputVO.getStatusIds();
-	    	return locationDetailsService.getDepartmentsBySearchType(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,statusIds);
+	    	return locationDetailsService.getDepartmentsBySearchType(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,statusIds,userId);
 	    }
 	    
 	    @RequestMapping(value ="/getSubjectsBySearchType",method = RequestMethod.POST)
@@ -243,7 +246,7 @@ public class PmRequestDetailsController {
 			deptIds = deptVO.getDeptIdsList();
 			
 			List<Long> statusIds = inputVO.getStatusIds();
-	    	return locationDetailsService.getSubjectsBySearchType(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,statusIds,inputVO.getAssetType());
+	    	return locationDetailsService.getSubjectsBySearchType(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,statusIds,inputVO.getAssetType(),userId);
 	    }
 	    @RequestMapping(value ="/getStatusList",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresenteeViewVO> getStatusList(@RequestBody InputVO inputVO,HttpServletRequest request) {

@@ -1414,6 +1414,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			Date startDate = null;
 			Date endDate = null;
+			 Map<Long,List<Long>> assignedPetitionsMap =  getAssignedPetitionforPetitionDeptDesignationOfficer(inputVO.getLocationId(),null);
+			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			 
 			KeyValueVO deptVO = getDeptIdsListBYUserIds(inputVO.getLocationId());
 			inputVO.setDeptIdsList(deptVO.getDeptIdsList());
 			if(inputVO.getFromDate() != null && inputVO.getToDate() != null && !inputVO.getFromDate().isEmpty() && !inputVO.getToDate().isEmpty()){
@@ -1447,8 +1450,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					searchData = null;
 					inputVO.getSearchLvlVals().clear();
 					inputVO.getSearchLvlVals().addAll(inputVO.getLocationIds());
-					inputVO.setSearchLevelId(7l);
-					searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
+					inputVO.setSearchLevelId(7l); 
+					searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,petitionIdsList);
 					setSearchDetailsData(searchData,mapData);
 				}
 				if(inputVO.getLocationValues() != null && inputVO.getLocationValues().size() >0){
@@ -1456,11 +1459,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					inputVO.getSearchLvlVals().clear();
 					inputVO.getSearchLvlVals().addAll(inputVO.getLocationValues());
 					inputVO.setSearchLevelId(5l);
-					searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
+					searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,petitionIdsList);
 					setSearchDetailsData(searchData,mapData);
 				}
 			    }else{
-				searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate);
+				searchData = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,petitionIdsList);
 				setSearchDetailsData(searchData,mapData);
 			}
 			

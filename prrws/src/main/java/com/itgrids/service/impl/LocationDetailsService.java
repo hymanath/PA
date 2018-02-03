@@ -6,7 +6,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -40,6 +43,7 @@ import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.service.ILocationDetailsService;
+import com.itgrids.service.IPmRequestDetailsService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.IConstants;
 
@@ -104,6 +108,9 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private IPmRefCandidateDesignationDAO pmRefCandidateDesignationDAO;
 	@Autowired
 	private IPmRepresenteeDesignationDAO pmRepresenteeDesignationDAO;
+	@Autowired
+	private IPmRequestDetailsService pmRequestDetailsService;
+	
 	
 	 /**
 		 * Date : 30/11/2017
@@ -619,18 +626,21 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				fromDateStr = dateFormat.parse(inputVO.getFromDate());
 				toDateStr = dateFormat.parse(inputVO.getToDate());
 			}
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(inputVO.getLocationId(),null);
+			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			 
 			/*KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
 			List<Long> deptIds = deptVO.getDeptIdsList();*/
 			if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("work") || inputVO.getFilterType().trim().equalsIgnoreCase("department") || inputVO.getFilterType().trim().equalsIgnoreCase("subject"))){
-				districtObjs=pmSubWorkDetailsDAO.getAllDistricts(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getSubProgramIdsList(),inputVO.getStatusIds());
+				districtObjs=pmSubWorkDetailsDAO.getAllDistricts(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getSubProgramIdsList(),inputVO.getStatusIds(),petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referral")){
-				districtObjs=pmRefCandidateDAO.getAllDistrictsByReferral(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds());
+				districtObjs=pmRefCandidateDAO.getAllDistrictsByReferral(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referrelDesignation")){
-				districtObjs=pmRefCandidateDesignationDAO.getAllDistrictsByReferalAndDesignation(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds());
+				districtObjs=pmRefCandidateDesignationDAO.getAllDistrictsByReferalAndDesignation(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("representee") || inputVO.getFilterType().trim().equalsIgnoreCase("name") || inputVO.getFilterType().trim().equalsIgnoreCase("mobile") || inputVO.getFilterType().trim().equalsIgnoreCase("email") || inputVO.getFilterType().trim().equalsIgnoreCase("endorsmentNO"))){
-				districtObjs=pmRepresenteeDAO.getAllDistrictsBySearchType(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds());
+				districtObjs=pmRepresenteeDAO.getAllDistrictsBySearchType(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("representeeDesignation")){
-				districtObjs=pmRepresenteeDesignationDAO.getAllDistrictsByRepresenteeDesignationWise(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds());
+				districtObjs=pmRepresenteeDesignationDAO.getAllDistrictsByRepresenteeDesignationWise(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
 			}
 			if(districtObjs != null && districtObjs.size() >0 ){
 				for(Object[] param : districtObjs ){
@@ -657,17 +667,20 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				fromDateStr = dateFormat.parse(inputVO.getFromDate());
 				toDateStr = dateFormat.parse(inputVO.getToDate());
 			}
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(inputVO.getLocationId(),null);
+			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			 
 			List<Object[]> conObjs=null;
 			if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("work") || inputVO.getFilterType().trim().equalsIgnoreCase("department"))){
-				conObjs=pmSubWorkDetailsDAO.getAllConstituenciesByDistricId(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type, statIds);
+				conObjs=pmSubWorkDetailsDAO.getAllConstituenciesByDistricId(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type, statIds,petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referral")){
-				conObjs=pmRefCandidateDAO.getAllConstituenciesByReferralAndDistrict(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type, statIds);
+				conObjs=pmRefCandidateDAO.getAllConstituenciesByReferralAndDistrict(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type, statIds,petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referrelDesignation")){
-				conObjs=pmRefCandidateDesignationDAO.getAlConstituenciesByReferalAndDesignationBydistrict(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds);
+				conObjs=pmRefCandidateDesignationDAO.getAlConstituenciesByReferalAndDesignationBydistrict(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds,petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("representee") || inputVO.getFilterType().trim().equalsIgnoreCase("name") || inputVO.getFilterType().trim().equalsIgnoreCase("mobile") || inputVO.getFilterType().trim().equalsIgnoreCase("email") || inputVO.getFilterType().trim().equalsIgnoreCase("endorsmentNO"))){
-				conObjs=pmRepresenteeDAO.getAlConstituenciesBySearchType(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds);
+				conObjs=pmRepresenteeDAO.getAlConstituenciesBySearchType(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds,petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("representeeDesignation")){
-				conObjs=pmRepresenteeDesignationDAO.getAllConstituenciesByRepresenteeDesignationWise(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds);
+				conObjs=pmRepresenteeDesignationDAO.getAllConstituenciesByRepresenteeDesignationWise(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds,petitionIdsList);
 			}
 			if(conObjs != null && conObjs.size() >0 ){
 				for(Object[] param : conObjs ){
@@ -683,7 +696,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		}
 		return finalList;
 	}
-	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,List<Long> conIds,List<Long> deptIds,String fromDate,String toDate,List<Long> desigids,String desigType,List<Long> statIds){
+	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,List<Long> conIds,List<Long> deptIds,String fromDate,String toDate,List<Long> desigids,String desigType,List<Long> statIds,Long userId){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> conObjs=null;
@@ -694,16 +707,19 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null);
+			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			
 			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("department"))){
-				conObjs=pmSubWorkDetailsDAO.getAllMandalsByDistricId(conIds,deptIds,startDate,endDate,desigids,desigType,statIds);
+				conObjs=pmSubWorkDetailsDAO.getAllMandalsByDistricId(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referral")){
-				conObjs=pmRefCandidateDAO.getAllMandalsByReferralAndDistrict(conIds,deptIds,startDate,endDate,desigids,desigType,statIds);
+				conObjs=pmRefCandidateDAO.getAllMandalsByReferralAndDistrict(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referrelDesignation")){
-				conObjs=pmRefCandidateDesignationDAO.getAllMandalsByReferalAndDesignationBydistrict(conIds,deptIds,startDate,endDate,desigids,desigType,statIds);
+				conObjs=pmRefCandidateDesignationDAO.getAllMandalsByReferalAndDesignationBydistrict(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
 			}else if(serchType !=null && (serchType.trim().equalsIgnoreCase("representee") || serchType.trim().equalsIgnoreCase("name") || serchType.trim().equalsIgnoreCase("mobile") || serchType.trim().equalsIgnoreCase("email") || serchType.trim().equalsIgnoreCase("endorsmentNO"))){
-				conObjs=pmRepresenteeDAO.getAllMandalsBySearchType(conIds,deptIds,startDate,endDate,desigids,desigType,statIds);
+				conObjs=pmRepresenteeDAO.getAllMandalsBySearchType(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
 			}if(serchType !=null && serchType.trim().equalsIgnoreCase("representeeDesignation")){
-				conObjs=pmRepresenteeDesignationDAO.getAllMandalsByRepresenteeDesignationAndconstincy(conIds,deptIds,startDate,endDate,desigids,desigType,statIds);
+				conObjs=pmRepresenteeDesignationDAO.getAllMandalsByRepresenteeDesignationAndconstincy(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
 			}
 			if(conObjs != null && conObjs.size() >0 ){
 				for(Object[] param : conObjs ){
@@ -763,7 +779,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		 }
 		 return null;
 	}
-	public List<KeyValueVO> getDesignationsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,Long desigId,List<Long> statusIds){
+	public List<KeyValueVO> getDesignationsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,Long desigId,List<Long> statusIds,Long userId){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> desiObjs=null;
@@ -774,11 +790,13 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null);
+			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("referrelDesignation")){
-				desiObjs=pmRefCandidateDesignationDAO.getDesignationsByReferlDesigtion(startDate,endDate,deptIds,desigId,statusIds);
+				desiObjs=pmRefCandidateDesignationDAO.getDesignationsByReferlDesigtion(startDate,endDate,deptIds,desigId,statusIds,petitionIdsList);
 			}else if(searchType !=null && searchType.trim().equalsIgnoreCase("representeeDesignation")){
-				desiObjs=pmRepresenteeDesignationDAO.getDesignationsByRepresenteeDesigtion(deptIds,startDate,endDate,desigId,statusIds);
+				desiObjs=pmRepresenteeDesignationDAO.getDesignationsByRepresenteeDesigtion(deptIds,startDate,endDate,desigId,statusIds,petitionIdsList);
 			}
 			if(desiObjs != null && desiObjs.size() > 0){
 				for(Object[] param : desiObjs ){
@@ -795,7 +813,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		}
 		return finalList;
 	}
-	public List<KeyValueVO> getDepartmentsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusIds){
+	public List<KeyValueVO> getDepartmentsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusIds,Long userId){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> deptObjs=null;
@@ -806,8 +824,12 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
+			
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null);
+			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			 
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("department")){
-				deptObjs=pmSubWorkDetailsDAO.getDepartmentsByWorks(deptIds,startDate,endDate,statusIds);
+				deptObjs=pmSubWorkDetailsDAO.getDepartmentsByWorks(deptIds,startDate,endDate,statusIds,petitionIdsList);
 			}
 			if(deptObjs != null && deptObjs.size() > 0){
 				for(Object[] param : deptObjs ){
@@ -824,7 +846,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		return finalList;
 	}
 	
-	public List<KeyValueVO> getSubjectsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusIds,String subjectId){
+	public List<KeyValueVO> getSubjectsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusIds,String subjectId,Long userId){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> deptObjs=null;
@@ -835,8 +857,11 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null);
+			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			 
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("subject")){
-				deptObjs=pmSubWorkDetailsDAO.getSubjectsForSearchPage(deptIds,startDate,endDate,statusIds,Long.valueOf(subjectId));
+				deptObjs=pmSubWorkDetailsDAO.getSubjectsForSearchPage(deptIds,startDate,endDate,statusIds,Long.valueOf(subjectId),petitionIdsList);
 			}
 			if(deptObjs != null && deptObjs.size() > 0){
 				for(Object[] param : deptObjs ){
