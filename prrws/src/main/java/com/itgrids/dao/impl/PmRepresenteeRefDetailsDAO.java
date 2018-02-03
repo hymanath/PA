@@ -3,6 +3,7 @@ package com.itgrids.dao.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -82,7 +83,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		query.setParameter("petitionId", petitionId);	
 		return query.list();
 	}
-	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO,Date fromDate,Date toDate){
+	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO,Date fromDate,Date toDate,Set<Long> petitionIdsList){
 		StringBuilder sb = new StringBuilder();
 		String  filterValue = inputVO.getFilterValue();
 		Long searchLevelId = inputVO.getSearchLevelId();
@@ -130,6 +131,10 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append("and  model2.pmRefCandidateDesignationId=model.pmRefCandidateDesignation.pmRefCandidateDesignationId" +
 				" and  model1.pmDepartment.isDeleted='N' " +
 				"and model1.pmSubject.isDeleted='N'  ");
+		
+		if(petitionIdsList != null && petitionIdsList.size()>0){
+			sb.append(" and model.petition.petitionId in (:petitionIdsList)  ");
+		}
 		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValues != null && searchLevelValues.size()>0){
 			if(searchLevelId.longValue() ==2L){
 				sb.append(" and  state.stateId in (:searchLevelValues) ");
@@ -215,7 +220,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(filterType != null && !filterType.equalsIgnoreCase("department") && inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size()>0){
 			query.setParameterList("deptIds", inputVO.getDeptIdsList());
 		}
-		
+		if(petitionIdsList != null && petitionIdsList.size()>0){
+			query.setParameterList("petitionIdsList",petitionIdsList);
+		}
 		return query.list();
 	}
 	public List<Long> getPmRepresenteeRefDetailsIds(Long petitionId){

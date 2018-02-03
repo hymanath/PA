@@ -45,4 +45,5 @@ public interface IPmRequestDetailsService {
 	public List<KeyValueVO> getPmPetitionList();
 	public List<KeyValueVO> getPmDocumentTypeList();
 	public List<KeyValueVO> getPmActionTypeList();
+	public Map<Long,List<Long>> getAssignedPetitionforPetitionDeptDesignationOfficer(Long userId,Long pmDeptDesignationOfficerId);
 }
