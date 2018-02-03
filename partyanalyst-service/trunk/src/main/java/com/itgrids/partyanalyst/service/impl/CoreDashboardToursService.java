@@ -3830,8 +3830,11 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			
 			List<Object[]> totalUniquesMemberDtls = selfAppraisalCandidateLocationNewDAO.getUniqueCandiateBasedOnUserAccessLevel(locationAccessLevelId, locationValues, stateId,userTypeId);
 			resultVO.setTotalCandiateCount(Long.valueOf(getTourMemberTdpCadreIdSet(totalUniquesMemberDtls).size()));
-			List<Object[]> totalTourSubmittedUniquesMemberDtls = selfAppraisalCandidateDetailsNewDAO.getUniqueTourSubmittedCandiate(getTourMemberTdpCadreIdSet(totalUniquesMemberDtls),monthyearIds);
-			resultVO.setSubmittedCandiateCount(Long.valueOf(getTourMemberTdpCadreIdSet(totalTourSubmittedUniquesMemberDtls).size()));
+			List<Object[]> totalTourSubmittedUniquesMemberDtls = null;
+			if (monthyearIds != null && monthyearIds.size() > 0) {
+				totalTourSubmittedUniquesMemberDtls = selfAppraisalCandidateDetailsNewDAO.getUniqueTourSubmittedCandiate(getTourMemberTdpCadreIdSet(totalUniquesMemberDtls),monthyearIds);	
+				resultVO.setSubmittedCandiateCount(Long.valueOf(getTourMemberTdpCadreIdSet(totalTourSubmittedUniquesMemberDtls).size()));
+			}
 			resultVO.setNotSubmittedCandidateCount(resultVO.getTotalCandiateCount()- resultVO.getSubmittedCandiateCount());
 			resultVO.setSubmittedPer(calculatePercantage(resultVO.getSubmittedCandiateCount(),resultVO.getTotalCandiateCount()));
 			resultVO.setNotSubmittedPer(calculatePercantage(resultVO.getNotSubmittedCandidateCount(),resultVO.getTotalCandiateCount()));
@@ -3903,7 +3906,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 				
 			}
 		} catch (Exception e) {
-			LOG.error("Exception occured at getCandiateWiseTourSubmittedDetails() in CoreDashboardToursService class",e);
+			LOG.error("Exception occured at getCandaiteDetailsByType() in CoreDashboardToursService class",e);
 		}
 		return resultList;
 	}
