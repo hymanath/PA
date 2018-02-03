@@ -53,9 +53,9 @@ function levelWiseOverview()
 						collapse+='<div class="row">';
 							collapse+='<div class="col-sm-12">';
 								collapse+='<ul class="list-inline switch-btn workWiseDetailsCls">';
-									collapse+='<li class="active" attr_type="exceed" attr_location_type="'+levelWiseOverviewArr[i]+'">Exceed Works</li>';
-									collapse+='<li attr_type="works" attr_location_type="'+levelWiseOverviewArr[i]+'">Work Details</li>';
-									collapse+='<li attr_type="targets" attr_location_type="'+levelWiseOverviewArr[i]+'">Target&Achivements</li>';
+									collapse+='<li attr_type="works" attr_location_type="'+levelWiseOverviewArr[i]+'">Complete Work OverView</li>';
+									collapse+='<li class="active" attr_type="exceed" attr_location_type="'+levelWiseOverviewArr[i]+'">Exceed Works OverView</li>';
+									collapse+='<li attr_type="targets" attr_location_type="'+levelWiseOverviewArr[i]+'">Target&Achivements OverView</li>';
 								collapse+='</ul>';
 							collapse+='</div>';
 						collapse+='</div>';
