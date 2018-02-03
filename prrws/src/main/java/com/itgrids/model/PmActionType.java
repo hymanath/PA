@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = " pm_action_type")
+@Table(name = "pm_action_type")
 public class PmActionType {
 	
 private Long pmActionTypeId;

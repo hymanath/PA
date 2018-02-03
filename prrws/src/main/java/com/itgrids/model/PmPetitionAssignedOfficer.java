@@ -17,7 +17,6 @@ import javax.persistence.Table;
 @Table(name = "pm_petition_assigned_officer")
 public class PmPetitionAssignedOfficer {
 	
-	
 	private Long  pmPetitionAssignedOfficerId;
 	private Long  petitionId;
 	private Long  pmSubWorkDetailsId;
@@ -30,7 +29,9 @@ public class PmPetitionAssignedOfficer {
 	private Date insertedTime;
 	private Date updatedTime;
 	private String actionType;
+	private Long pmActionTypeId;
 	
+	private PmActionType pmActionType;
 	private Petition petition;
     private PmSubWorkDetails pmSubWorkDetails;
     private PmDepartmentDesignation pmDepartmentDesignation;
@@ -175,6 +176,20 @@ public class PmPetitionAssignedOfficer {
 		this.actionType = actionType;
 	}
 	
+	@Column(name="pm_action_type_id")
+	public Long getPmActionTypeId() {
+		return pmActionTypeId;
+	}
+	public void setPmActionTypeId(Long pmActionTypeId) {
+		this.pmActionTypeId = pmActionTypeId;
+	}
 	
-	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_action_type_id", insertable = false, updatable = false)
+	public PmActionType getPmActionType() {
+		return pmActionType;
+	}
+	public void setPmActionType(PmActionType pmActionType) {
+		this.pmActionType = pmActionType;
+	}
 }
