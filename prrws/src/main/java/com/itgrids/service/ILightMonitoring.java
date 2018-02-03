@@ -2,6 +2,7 @@ package com.itgrids.service;
 
 import java.util.List;
 
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LedOverviewVo;
 import com.itgrids.dto.LightMonitoringVO;
@@ -21,4 +22,13 @@ public interface ILightMonitoring {
 	public List<LightsVendor> getLightsVendorList();
 	public List<LightMonitoringVO> getTimePeriodWiseLightsDetails(String startDate,String endDate, String locationType, List<Long> locationValues,List<Long> lightMonitoringIds);		
 	public String getLatestInsertedTime();
+	public List<IdNameVO> getMandalsByDistrict(InputVO inputVO);
+	public List<IdNameVO> getPanchayatsByTehsil(InputVO inputVO);
+	public IdNameVO saveLEDVendorWiseDetails(InputVO inputVO,Long userId,Long vendorId);
+	public List<LightMonitoringVO> getLevelWiseVendorDetails(InputVO inputVO,Long lightVendorId);
+	public List<LightMonitoringVO> getTodayVendorDetails(Long vendorId);
+	public LightMonitoringVO getDateWiseVendorDetails(InputVO inputVO,Long vendorId);
+	public List<LightMonitoringVO> getVendorDashBoardOverviewDetails(InputVO inputVO);
+	public List<LightMonitoringVO> getDashBoardVendorDetailsByLocationId(InputVO inputVO);
+	public List<LightMonitoringVO> getDashBoardLevelWiseVendorDetails(InputVO inputVO);
 }

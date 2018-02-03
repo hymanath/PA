@@ -15,6 +15,7 @@ import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.IFavouriteComponentDAO;
 import com.itgrids.dao.IHamletDAO;
+import com.itgrids.dao.ILightsVendorUserDAO;
 import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.ITehsilDAO;
@@ -58,6 +59,8 @@ public class UserServiceImpl implements IUserService {
 	private IPmRequestDetailsService pmRequestDetailsService;
 	@Autowired
 	private IUserAccessLevelValueDAO userAccessLevelValueDAO;
+	@Autowired
+	private ILightsVendorUserDAO lightsVendorUserDAO;
 
 	@Override
 	public UserVO userAuthentication(String userName, String password,HttpServletRequest request) {
@@ -103,6 +106,16 @@ public class UserServiceImpl implements IUserService {
 			}
 		}else{
 			userVO.setPrDistrictId("-1");
+		}
+		//Setting LEDVendorId and VendorName to User
+		if(userId != null && userId.longValue() > 0L){
+			List<Object[]> vendorList = lightsVendorUserDAO.getVendorIdByUserId(userId);
+			if(vendorList != null && !vendorList.isEmpty()){
+				for (Object[] param : vendorList) {
+					userVO.setVendorId(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+					userVO.setVendorName(param[1] != null ? param[1].toString():"");
+				}
+			}
 		}
 		if(userVO != null && userVO.getStatus().equalsIgnoreCase("Valid user")){
 			httpSession.setAttribute("User", userVO);

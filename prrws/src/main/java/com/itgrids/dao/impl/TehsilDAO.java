@@ -390,4 +390,20 @@ public class TehsilDAO extends GenericDaoHibernate<Tehsil,Long> implements ITehs
 		Query query = getSession().createQuery("select model.encTehsilId,model.tehsilName from Tehsil model where model.encTehsilId is not null" );
 		return query.list();
 	}
+	
+	public List<Object[]> getTehsilsFrDistrict(Long districtId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.tehsilId,"
+				+ "model.tehsilName"
+				+ " from Tehsil model");
+		if(districtId != null && districtId.longValue() > 0L){
+			sb.append(" where model.district.districtId = :districtId");
+		}
+		sb.append(" order by model.tehsilName asc");
+		Query query = getSession().createQuery(sb.toString());
+		if(districtId != null && districtId.longValue() > 0L)
+			query.setParameter("districtId", districtId);
+		
+		return query.list();
+	}
 }
