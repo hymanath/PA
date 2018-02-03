@@ -480,11 +480,11 @@ public List<KeyValueVO>  getPmLeadDetailsList(){
   * Date : 04/12/2017
   * Description : { Getting Petition Brief Lead Details List }
   */
-public List<KeyValueVO>  getPmBriefLeadList(){
+public List<KeyValueVO>  getPmBriefLeadList(Long deptDesignationId){
 	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
 	    try{
 		LOG.info("Entered into LocationDetailsService of getPmBriefLeadList ");
-		List<Object[]> petitionDetailsObjsList = pmBriefLeadDAO.gePmBriefLeadDetailsList();
+		List<Object[]> petitionDetailsObjsList = pmBriefLeadDAO.gePmBriefLeadDetailsList(deptDesignationId);
 		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();
