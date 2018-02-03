@@ -43,12 +43,18 @@ public class RepresenteeViewVO {
 	private List<Long> workIds = new ArrayList<Long>();
 	private List<String> referList = new ArrayList<String>();
 	private String coverLetterPath;
+	private Long actionTypeId;
 	private String actionType;
 	private Long documentTypeId;
 	private String refNo;
 	
 	
-	
+	public Long getActionTypeId() {
+		return actionTypeId;
+	}
+	public void setActionTypeId(Long actionTypeId) {
+		this.actionTypeId = actionTypeId;
+	}
 	public Long getDocumentTypeId() {
 		return documentTypeId;
 	}
@@ -61,6 +67,7 @@ public class RepresenteeViewVO {
 	public void setRefNo(String refNo) {
 		this.refNo = refNo;
 	}
+	
 	public String getActionType() {
 		return actionType;
 	}
