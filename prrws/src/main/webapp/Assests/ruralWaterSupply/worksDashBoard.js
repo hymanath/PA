@@ -1,9 +1,17 @@
  //Angular Start  getAlertsOfCategoryByStatusWise()
-	var glStartDate = "01-04-"+moment().subtract(40,'years').format("YYYY");
-	var glEndDate = "01-04-"+moment().add(10, 'years').format("YYYY");
-	var globalStatusObj={"QA":"#494949","PC":"#FC5049","FC":"#14BAAD","Ground":"#14BAAD","Surface":"#FC5049","SAFE":"#14BAAD","UN-SAFE":"#FC5049",
-	"SINGAL VILLAGE":"#14BAAD","MULTI VILLAGE":"#FC5049","physicalTestCount":"#14BAAD","bacterialTestCount":"#FC5049",
-	"Completely Satisfied":"#0FBE08","Not Satisfied":"#FF0909","Partially Satisfied":"#FFBA00","SATISFIED":"#0FBE08","PARTIALLY SATISFIED":"#FFBA00","NOT SATISFIED":"#FF0909","TARGET":"#FC5049","COMPLETED":"#14BAAD"}
+var month =moment().format("M");
+	var glStartDate="";
+	var glEndDate="";
+	var year ="";
+	if(month >= 04){
+		glStartDate = "01-04-"+moment().format("YYYY");
+		glEndDate = "01-04-"+moment().add(1, 'years').format("YYYY");
+		year=moment().format("YYYY");
+	}else{
+		glStartDate = "01-04-"+moment().subtract(1, 'years').format("YYYY");
+		glEndDate = "01-04-"+moment().format("YYYY");
+		year=moment().subtract(1, 'years').format("YYYY");
+	}
 	var blocksArr = [{name:'Coverage Status Of Habitation',id:'habitation',img:'coverage_status.png'},
 					 {name:'Key Performance',id:'performance',img:'key_performance.png'},
 					 {name:'<p><span><img src="Assests/icons/alert_status.png"/> Jalavani </span></p>',id:'jalavani',img:'alert_status.png'},
@@ -483,6 +491,7 @@ function tabBlocks(blockId,blockName){
 					 }
 				});
 				if(statusType == ""){
+					
 					$(".headingExceedId").html("All Exceeded Works")
 				}else{
 					$(".headingExceedId").html("OnGoing Exceeded Works")
@@ -490,9 +499,9 @@ function tabBlocks(blockId,blockName){
 		tabBlock+='<div class="panel-body">';
 			tabBlock+='<div class="row">';
 				tabBlock+='<div class="col-sm-8">';
-					tabBlock+='<ul class="switch-btn-New" role="tabCummulative" attr_level_type="'+blockName+'">';
+					tabBlock+='<ul class=" list-inline switch-btn" role="tabCummulative" attr_level_type="'+blockName+'">';
 						tabBlock+='<li attr_type="completeOverview">Complete Works Overview</li>';
-						tabBlock+='<li class="active ActiveStateCls" attr_type="exceededOverview">Exceeded Target Works Details - <span class="headingExceedId"></span></li>';
+						tabBlock+='<li class="active ActiveStateCls" attr_type="exceededOverview"><span class="headingExceedId"> </span> Overview</li>';
 						tabBlock+='<li attr_type="notGroundedoverView">NotGrounded Works Overview</li>';
 					tabBlock+='</ul>';
 				tabBlock+='</div>';
@@ -1170,7 +1179,7 @@ $("#financialYearId").trigger('chosen:updated');
 				$("#financialYearId").append("<option value="+value[0]+">"+result[i].financialYear+"</option>");
 				
 			}
-			//$("#financialYearId").val('2017');
+			$("#financialYearId").val('2017');
 		}
 		
 		$("#financialYearId").chosen();
@@ -2011,7 +2020,7 @@ if(blockName == "state"){
 		$("#distValmandalBlockId").hide();
 		$("#constValmandalBlockId").hide();
 		$("#mandalValmandalBlockId").hide();
-		getExceedWorkDetailsLocationWise('table','mandal',blocksArr,"","","",blockType)
+		getExceedWorkDetailsLocationWise('table','mandal',blocksArr,"","","",blockType,statusType)
 	}else if(blockType == "notGroundedoverView"){
 		$("#distValmandalBlockId").hide();
 		$("#constValmandalBlockId").hide();
@@ -2022,7 +2031,7 @@ if(blockName == "state"){
 	}
 });
 function getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,filterValue,districtValue,blockType,statusType){
-	if(locationType == 'state'){
+	if(type != 'table'){
 		$("#ExceededTargetDetailsTotal").html(spinner);
 		$("#ExceededTargetDetails").html(spinner);
 	}else{
@@ -2082,9 +2091,18 @@ function getOnClickExceedWorkDetails(assetType,locationType,exceededDuration,loc
 		 }
 	});
 	var yearVal="";
+	var districtId="";
+	var locationVal ="";
 	var financialVal =$("#financialYearId").val();
 	if(financialVal != 0){
 		 yearVal=financialVal;
+		
+	}
+	if(locationType=='mandal'){
+		districtId=locationValue.substr(0,2);
+		 locationVal=locationValue.substr(2,3);
+	}else{
+		locationVal=locationValue;
 	}
  	var json = {
 			"assetType":assetType,
@@ -2092,9 +2110,10 @@ function getOnClickExceedWorkDetails(assetType,locationType,exceededDuration,loc
 			"toDateStr":glEndDate,
 			"locationType":locationType,
 			"exceededDuration":exceededDuration,
-			"locationValue":locationValue,
+			"locationIdStr":locationVal,
 			 "status" : statusType,
-			 "year": yearVal
+			 "year": yearVal,
+			 "districtValue":districtId
 			 
 			}
 	
