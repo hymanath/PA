@@ -107,7 +107,7 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 				+ " pmOfficer.pmOfficerId,pmOfficer.name, pmOfficer.mobileNo, "//11,12,13
 				+ " pmOfficerDesignation.pmOfficerDesignationId,pmOfficerDesignation.designation," +//14,15
 				"  pmDepartment.department ,pmDepartment.shortName,pmSubWorkDetails.grievanceDescrption,petition.workName , document.documentId," +//16,17,18,19,20
-				"  assignedToPmDepartmentDesignationOfficer.pmDepartmentDesignationOfficerId, assignedToPmOfficerDesignation.designation,assignedToPmOfficerDesignation.shortName," +//21,22,23
+				"  model.assignedToPmDepartmentDesignationOfficerId, assignedToPmOfficerDesignation.designation,assignedToPmOfficerDesignation.shortName," +//21,22,23
 				"  assignToPmOfficer.name, assignToPmOfficer.mobileNo,pmSubWorkDetails.isDeleted ,petition.isDeleted " +//24,25,26,27
 				" from PmTracking model  " +
 				" left join  model.pmTrackingAction pmTrackingAction " +
