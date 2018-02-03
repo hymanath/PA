@@ -1247,7 +1247,7 @@ function buildTemplateWorkDetails(typeVal){
 										str+='<label>WORK DETAILS <span class="starColor">*</span></label>';
 										str+='<input type="text"  name="worksList['+globalWorkTypeCount+'].subWorksList[0].grievanceDescription" class="form-control m_top5 height45 validateCls workDetailsReFreshCls'+globalWorkTypeCount+'" id="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0"/> <br><span class="appendWorkDetailsId'+typeVal+''+globalWorkTypeCount+'0"></span>';
 									str+='</div>';*/
-									str+='<div class="col-sm-3">';
+									str+='<div class="col-sm-3"  style="display:none;">';
 										str+='<label>eOFFICE-ID <span class="starColor"></span></label>';
 										str+='<textarea  name="worksList['+globalWorkTypeCount+'].subWorksList[0].eOfficeId" class="form-control m_top5 height45 validateCls counterappendId officerIdReFreshCls'+globalWorkTypeCount+'" id="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0" placeholder="Enter" attr_main_count="'+globalWorkTypeCount+'" attr_inner_count="0" /><br><span class="appendEofficeId'+typeVal+''+globalWorkTypeCount+'0"/></span>';
 									str+='</div>';
@@ -1656,7 +1656,7 @@ function clonedTemplate(blockId,type,counterId,typeVal,counterappendId,locationL
 										clonedTemplate+='<label>WORK DETAILS <span class="starColor">*</span></label>';
 										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].grievanceDescription" class="form-control m_top5 height45 validateCls workDetailsReFreshCls'+counterappendId+'" id="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"/><br><span class="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'"></span>';
 									clonedTemplate+='</div>';*/
-									clonedTemplate+='<div class="col-sm-3">';
+									clonedTemplate+='<div class="col-sm-3"  style="display:none;">';
 										clonedTemplate+='<label>eOFFICE-ID <span class="starColor"></span></label>';
 										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+blockId+'].eOfficeId" class="form-control m_top5 height45 validateCls officerIdReFreshCls'+counterappendId+'" id="appendEofficeId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"/><br><span class="appendEofficeId'+typeVal+''+counterappendId+''+blockId+'"></span>';
 									clonedTemplate+='</div>';
@@ -1879,7 +1879,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 							clonedInnerTemplate+='<label>WORK DETAILS <span class="starColor">*</span></label>';
 							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].grievanceDescription" class="form-control m_top5 height45 validateInnerCls workDetailsReFreshCls'+mainWorkCount+'" id="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"/><br><span class="appendWorkDetailsInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span>'; 
 						clonedInnerTemplate+='</div>';*/
-						clonedInnerTemplate+='<div class="col-sm-3">';
+						clonedInnerTemplate+='<div class="col-sm-3"  style="display:none;">';
 							clonedInnerTemplate+='<label>eOFFICE-ID <span class="starColor"></span></label>';
 							clonedInnerTemplate+='<input type="text"  name="worksList['+mainWorkCount+'].subWorksList['+innerWorkCount+'].eOfficeId" class="form-control m_top5 height45 validateInnerCls officerIdReFreshCls'+mainWorkCount+'" id="appendEofficeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'" placeholder="Enter" attr_main_count="'+mainWorkCount+'" attr_inner_count="'+innerWorkCount+'"/><br><span class="appendEofficeInnerId'+typeVal+''+mainWorkCount+''+innerWorkCount+'"></span>';
 						clonedInnerTemplate+='</div>';
@@ -2856,10 +2856,10 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			},
 			error: function(request,error) { 
 				//$("#savingDetailsSpinner").html('');
-				//console.log(request);
-				//console.log(error);
+				console.log(request);
+				console.log(error);
 				 setTimeout(function () {
-				$("#statusMsgAppntReqt").html("<center><h4 style='color: green;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h4></center>")
+				$("#statusMsgAppntReqt").html("<center><h4 style='color: red;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h4></center>")
 						}, 5000);
 				//alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
 				$('#saveButtonId').show();				

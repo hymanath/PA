@@ -285,6 +285,7 @@
 	</section>
 </main>
 <input type="hidden" id="hiddenDesignationName" />
+<input type="hidden" id="hiddenDesignationId" />
 <div class="modal fade" id="representeeDetailsModelDivId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="width:90%;margin:auto">
 		<div class="modal-content">
@@ -352,7 +353,7 @@
 						</select>
 					</div>
 					<div class="col-sm-12" id="grantDivId" style="display:none;">
-						<label>GRANT UNDER<span  style="color:red;">*</span><span id="grantIdErr"></span></label>
+						<label>GRANT UNDER<span  style="color:red;"></span><span id="grantIdErr"></span></label>
 						<select class="form-control chosen-select" id="grantId" name="grantId">
 							<option value="1">SELECT GRANT UNDER</option>
 						</select>
@@ -388,13 +389,13 @@
 		<input type="hidden" class="form-control" id="petitionsId"  name="petitionId"/>
 		<div class="row m_top10" id="commentsDivId">
 			<div class="col-sm-12">
-				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
+				<label>Comment<span style="color:red;"></span><span id="remarkIdErr"></span></label>
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 		</div>
 		<div class="row m_top20" id="fileUploadDiv" style="display:none;">
 	      <div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
-	        <h5 class="panel-title"> UPLOAD <span id="letterNameId"></span> LETTER <span id="fileUploadIdErr"></h5>
+	        <h5 class="panel-title"> UPLOAD <span id="letterNameId"></span> LETTER <span id="fileUploadIdErr"></span></h5>
 	        <span id="uploadFile"></span>
 	      </div>
     	</div>
@@ -402,9 +403,11 @@
 			<div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
 				<button type="button" class="btn btn-success" id="coverLetterId" onclick="generateCoveringLetterForPetition()">Generate Cover Letter</button>
 			</div>
+			<span id="coveringLetterPthErr" style="color:red;"></span>
 		</div>
 		<div id="coveringLetterGenerator"></div>
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
+		<input type="hidden" id="actionTypeStr" value="ASSIGN" name="actionType"/>
 	   </div>
 			<div class="col-sm-6" id="imageBuildingId">
 			</div>
@@ -496,6 +499,7 @@ var userId = '${sessionScope.USER.userId}';
 var designationId = '${sessionScope.USER.deptDesignationId}'
 var designationName = '${sessionScope.USER.designation}';
 $("#hiddenDesignationName").html(designationName);
+$("#hiddenDesignationId").val(designationId);
 </script>
 <script type="text/javascript">
 $(document).on("click",".closeSecondModal",function(){
