@@ -19,7 +19,7 @@ public interface ILocationDetailsService {
 	public List<KeyValueVO>  getPmSubjectList(Long deptId);
 	public List<KeyValueVO>  getPmSubSubjectList(Long subjectId);
 	public List<KeyValueVO>  getPmLeadDetailsList();
-	public List<KeyValueVO>  getPmBriefLeadList();
+	public List<KeyValueVO>  getPmBriefLeadList(Long deptDesignationId);
 	public List<KeyValueVO>  getPmGrantList();
 	public List<KeyValueVO>  getPmStatusList();
 	public List<KeyValueVO>  getWorkTypeList();
