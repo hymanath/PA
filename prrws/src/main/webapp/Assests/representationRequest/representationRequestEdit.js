@@ -1183,7 +1183,7 @@ function clondTemplate(blockId,type,counterId,typeVal,counterappendId,isNew,loca
 										clonedTemplate+='<label>WORK DETAILS <span class="starColor">*</span></label>';
 										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+defaultValue+'].grievanceDescription" class="form-control m_top5 height45 validateCls workDetailsReFreshCls'+counterappendId+'" id="appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'"> <br><span class="  ErrCls appendWorkDetailsId'+typeVal+''+counterappendId+''+blockId+'"></span>';
 									clonedTemplate+='</div>';*/
-									clonedTemplate+='<div class="col-sm-3">';
+									clonedTemplate+='<div class="col-sm-3" style="display:none;">';
 										clonedTemplate+='<label>eOFFICE-ID </label>';
 										clonedTemplate+='<input type="text"  name="worksList['+counterappendId+'].subWorksList['+defaultValue+'].eOfficeId" class="form-control m_top5 height45 validateCls officerIdReFreshCls'+counterappendId+'" id="appendEofficeId'+typeVal+''+counterappendId+''+blockId+'" placeholder="Enter" attr_main_count="'+counterappendId+'" attr_inner_count="'+blockId+'">';
 									clonedTemplate+='</div>';
@@ -1426,7 +1426,7 @@ function clonedInnerTemplate(type,counterId,typeVal,mainWorkCount,innerWorkCount
 							clonedInnerTemplate+='<label>WORK DETAILS <span class="starColor">*</span></label>';
 							clonedInnerTemplate+='<input type="text"  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].grievanceDescription" class="form-control m_top5 height45 validateCls workDetailsReFreshCls'+counterId+'" id="appendWorkDetailsInnerId'+typeVal+''+counterId+''+innerWorkCount+'" placeholder="Enter" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'"><br><span class=" ErrCls appendWorkDetailsInnerId'+typeVal+''+counterId+''+innerWorkCount+'"></span>';
 						clonedInnerTemplate+='</div>';*/
-						clonedInnerTemplate+='<div class="col-sm-3">';
+						clonedInnerTemplate+='<div class="col-sm-3"  style="display:none;">';
 							clonedInnerTemplate+='<label>eOFFICE-ID </label>';
 							clonedInnerTemplate+='<input type="text"  name="worksList['+counterId+'].subWorksList['+innerWorkCount+'].eOfficeId" class="form-control m_top5 height45 validateCls officerIdReFreshCls'+counterId+'" id="appendEofficeInnerId'+typeVal+''+counterId+''+innerWorkCount+'" placeholder="Enter" attr_main_count="'+counterId+'" attr_inner_count="'+innerWorkCount+'">';
 						clonedInnerTemplate+='</div>';
@@ -2641,7 +2641,7 @@ function buildPetitionDetails(result){
 																				str+='<label>WORK DETAILS <span class="starColor">*</span></label>';
 																				str+='<input type="text"  value="'+departmentWiseSubWorks[k].subWorksList[j].workName+'"  name="worksList['+k+'].subWorksList['+j+'].grievanceDescription" class="form-control m_top5 height45 validateCls workDetailsReFreshCls'+k+'" id="appendWorkDetailsId'+result.representationType+''+k+''+j+'" placeholder="Enter" attr_main_count="'+k+'" attr_inner_count="'+j+'"><br><span class=" ErrCls appendWorkDetailsId'+result.representationType+''+k+''+j+'"></span>';
 																			str+='</div>';*/
-																			str+='<div class="col-sm-3">';
+																			str+='<div class="col-sm-3"  style="display:none;">';
 																				str+='<label>eOFFICE-ID </label>';
 																				str+='<input type="text"  value="'+departmentWiseSubWorks[k].subWorksList[j].eOfficeId+'" name="worksList['+k+'].subWorksList['+j+'].eOfficeId" class="form-control m_top5 height45 validateCls officerIdReFreshCls'+k+'" id="appendEofficeId'+result.representationType+''+k+''+j+'" placeholder="Enter" attr_main_count="'+k+'" attr_inner_count="'+j+'">';
 																			str+='</div>';

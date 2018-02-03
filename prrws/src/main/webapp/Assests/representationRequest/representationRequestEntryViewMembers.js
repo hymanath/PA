@@ -1853,10 +1853,11 @@ function updatePetitionStatusDetails(){
   });
    
  function getPmBriefLeadList(){
+	 globalDesignationId =$("#hiddenDesignationId").val();
 	 $("#leadId").html('');
 	 $("#leadId").html('<option value="0"> Select lead </option>');
    var json = {
-      
+      designationId:globalDesignationId
     };
   $.ajax({              
     type:'POST',    
@@ -1871,7 +1872,10 @@ function updatePetitionStatusDetails(){
 	  if(result !=null && result.length>0){
 			 $("#leadId").html('<option value="0">Select lead</option>');
 			for(var i in result){
-				$("#leadId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				if(parseInt(result[i].key)==12)
+					$("#leadId").append('<option value="'+result[i].key+'" selected>'+result[i].value+' </option>');
+				else
+					$("#leadId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
 		$("#leadId").trigger('chosen:updated');
@@ -1905,6 +1909,7 @@ function getPmGrantList(){
 }
 
 function getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr){
+	
 	 $("#assignToId").html('');
 	 $("#assignToId").html('<option value="0"> Select designation </option>');
 	 
@@ -1928,6 +1933,10 @@ $.ajax({
 	if(result !=null && result.length>0){
 		$("#assignToId").html('<option value ="0">SELECT DESIGNATION </option>');
 		for(var i in result){
+			if(result[i].key == 23 ){
+				$("#assignToId").append('<option value ="'+result[i].key+'" selected>'+result[i].value.toUpperCase()+'</option>');
+				getDeptDesignationOfficerDetail(result[i].key);
+			}else
 				$("#assignToId").append('<option value ="'+result[i].key+'">'+result[i].value.toUpperCase()+'</option>');
 		}
 	}
@@ -1941,6 +1950,7 @@ $(document).on('change','.popUpChangesCls',function(){
 })
 
 function getDeptDesignationOfficerDetail(onChangeValue){
+	globalDesignationId =$("#hiddenDesignationId").val();
 	$("#officerId").html('');
 	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
 	var deptDesignationId = onChangeValue;
@@ -1960,7 +1970,10 @@ $.ajax({
 	if(result != null && result.length >0){
 		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
 		for(var i in result){
-			$("#officerId").append('<option value ="'+result[i].key+'">'+result[i].value.toUpperCase()+'</option>');
+			if(result[i].key == 381)// jawahar reddy
+				$("#officerId").append('<option value ="'+result[i].key+'" selected>'+result[i].value.toUpperCase()+'</option>');
+			else
+				$("#officerId").append('<option value ="'+result[i].key+'" >'+result[i].value.toUpperCase()+'</option>');
 		}
 	}
 	$("#officerId").trigger('chosen:updated');
