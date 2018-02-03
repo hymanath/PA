@@ -45,7 +45,7 @@ public class LightMonitoringVO implements Serializable{
 	private LightMonitoringVO overDtlsVO;
 	private Long lightVendorId;
 	private String lightVendorName;
-	private List<LightMonitoringVO> subList;
+	private List<LightMonitoringVO> subList = new ArrayList<LightMonitoringVO>();
     private Long newAddedLightcount = 0l;
     private Long newAddedPanelCount = 0l;
     private String timePeriod;
@@ -53,6 +53,9 @@ public class LightMonitoringVO implements Serializable{
     private Long panelTarget = 0l;
     private Double lightPercentage = 0.0d;
     private Double panelPercentage = 0.0d;
+    private Long teamCount = 0L;
+    private Long totalVillages = 0L;
+    private String workDate;
     
     public LightMonitoringVO() {
 		
@@ -344,6 +347,24 @@ public class LightMonitoringVO implements Serializable{
 	public void setOverDtlsVO(LightMonitoringVO overDtlsVO) {
 		this.overDtlsVO = overDtlsVO;
 	}
+	public Long getTeamCount() {
+		return teamCount;
+	}
+	public void setTeamCount(Long teamCount) {
+		this.teamCount = teamCount;
+	}
+	public Long getTotalVillages() {
+		return totalVillages;
+	}
+	public void setTotalVillages(Long totalVillages) {
+		this.totalVillages = totalVillages;
+	}
+	public String getWorkDate() {
+		return workDate;
+	}
+	public void setWorkDate(String workDate) {
+		this.workDate = workDate;
+	} 
 	
 	
 }

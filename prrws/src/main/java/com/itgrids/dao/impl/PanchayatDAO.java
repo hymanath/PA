@@ -386,4 +386,20 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat, Long> implement
 		}
 		return query.list();
 	}
+	public List<Object[]> getPanchayatsByMandald(Long tehsilId){
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(" select distinct model.panchayatId,model.panchayatName "
+	    			+ " from Panchayat model ");
+    		if(tehsilId != null && tehsilId.longValue()>0){
+    	    	sb.append(" where model.tehsilId =:tehsilId ");
+    	    }
+    		sb.append(" order by model.panchayatName asc");
+    		
+    	    Query query = getSession().createQuery(sb.toString());
+    	    if(tehsilId != null && tehsilId.longValue()>0){
+    		   query.setParameter("tehsilId", tehsilId);
+    	   }
+    	   
+    	   return query.list();
+		}
 }

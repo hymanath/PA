@@ -22,15 +22,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.ILightInstallationTargetDAO;
 import com.itgrids.dao.ILightMonitoringDAO;
+import com.itgrids.dao.ILightMonitoringDetailsDAO;
 import com.itgrids.dao.ILightWattageDAO;
 import com.itgrids.dao.ILightsVendorDAO;
+import com.itgrids.dao.IPanchayatDAO;
+import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.AddressVO;
+import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LedOverviewVo;
 import com.itgrids.dto.LightMonitoringVO;
 import com.itgrids.dto.LightWattageVO;
 import com.itgrids.dto.ResultVO;
 import com.itgrids.model.LightMonitoring;
+import com.itgrids.model.LightMonitoringDetails;
 import com.itgrids.model.LightWattage;
 import com.itgrids.model.LightsVendor;
 import com.itgrids.service.ILightMonitoring;
@@ -38,6 +43,8 @@ import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.sun.jersey.api.client.ClientResponse;
+
+import io.swagger.models.auth.In;
 
 @Service
 @Transactional
@@ -66,6 +73,15 @@ public class LightMonitoringService  implements ILightMonitoring{
 	
 	@Autowired
 	private ILightInstallationTargetDAO lightInstallationTargetDAO;
+	
+	@Autowired
+	private ITehsilDAO tehsilDAO;
+	
+	@Autowired
+	private IPanchayatDAO panchayatDAO;
+	
+	@Autowired
+	private ILightMonitoringDetailsDAO lightMonitoringDetailsDAO;
 		   
 	public ResultVO saveRealtimeStatusByVillages() {
 		ResultVO stausVO = new ResultVO();
@@ -1162,6 +1178,494 @@ public class LightMonitoringService  implements ILightMonitoring{
 		  }
 		  return latestTime;
 	 }
+	 
+ 	/**
+	 * @author Nandhini.k
+	 * @description {This service is get Mandals For District.}
+	 * @return List<IdNameVO>
+	 * @Date 01-02-2018
+	 */
+	public List<IdNameVO> getMandalsByDistrict(InputVO inputVO){
+		 List<IdNameVO> returnList = new ArrayList<IdNameVO>(0);
+		 try {
+			 List<Object[]> mndalList = tehsilDAO.getTehsilsFrDistrict(inputVO.getLocationId());
+			 if(mndalList != null && !mndalList.isEmpty()){
+				 for (Object[] param : mndalList) {
+					 IdNameVO vo = new IdNameVO();
+					 vo.setId(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+					 vo.setName(param[1] != null ? param[1].toString():"");
+					 returnList.add(vo);
+				}
+			 }
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMandalsByDistrict - LightMonitoringService service",e);
+		}
+	 return returnList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is get Panchayats For Mandals.}
+	 * @return List<IdNameVO>
+	 * @Date 01-02-2018
+	 */
+	public List<IdNameVO> getPanchayatsByTehsil(InputVO inputVO){
+		 List<IdNameVO> returnList = new ArrayList<IdNameVO>(0);
+		 try {
+			 List<Object[]> mndalList = panchayatDAO.getPanchayatsByMandald(inputVO.getLocationId());
+			 if(mndalList != null && !mndalList.isEmpty()){
+				 for (Object[] param : mndalList) {
+					 IdNameVO vo = new IdNameVO();
+					 vo.setId(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+					 vo.setName(param[1] != null ? param[1].toString():"");
+					 returnList.add(vo);
+				}
+			 }
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPanchayatsByTehsil - LightMonitoringService service",e);
+		}
+	 return returnList;
+	}
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is Save Led Vendor Wise Details.}
+	 * @return List<IdNameVO>
+	 * @Date 01-02-2018
+	 */
+	public IdNameVO saveLEDVendorWiseDetails(InputVO inputVO,Long userId,Long vendorId){
+		IdNameVO statusVO = new IdNameVO();
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			LightMonitoringDetails model = new LightMonitoringDetails();
+			if(inputVO.getLocationId() != null && inputVO.getLocationId().longValue() > 0L){
+				model.setPanchayatId(inputVO.getLocationId());
+			}
+			if(vendorId != null && vendorId.longValue() > 0L){
+				model.setLightVendorId(vendorId);
+			}
+			if(inputVO.getFromDate() != null){
+				model.setWorkDate(sdf.parse(inputVO.getFromDate()));
+			}
+			if(inputVO.getSourceId() != null && inputVO.getSourceId().longValue() > 0L){
+				model.setLightsFitted(inputVO.getSourceId());
+			}
+			if(inputVO.getSchemeId() != null && inputVO.getSchemeId().longValue() > 0L){
+				model.setTeamWorked(inputVO.getSchemeId());
+			}
+			if(userId != null && userId.longValue() > 0L){
+				model.setInsertedBy(userId);
+			}
+			model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			lightMonitoringDetailsDAO.save(model);
+			statusVO.setName("SUCCESS");
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPanchayatsByTehsil - LightMonitoringService service",e);
+		}
+		return statusVO;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is get Today Vendor Details}
+	 * @return LightMonitoringVO
+	 * @Date 01-02-2018
+	 */
+	public List<LightMonitoringVO> getTodayVendorDetails(Long vendorId){
+		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>();
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date todayDate = dateUtilService.getCurrentDateAndTime();
+			String todayDateStr = sdf.format(todayDate);
+			Date toDate = null;
+			if(todayDate != null){
+				toDate = sdf.parse(todayDateStr);
+			}
+			
+			//Today Data
+			List<Object[]> todayList = lightMonitoringDetailsDAO.getTodayVendorDetails(toDate,vendorId);
+			if(todayList != null && !todayList.isEmpty()){
+				for (Object[] param : todayList) {
+					LightMonitoringVO vo = new LightMonitoringVO();
+					vo.setDistrictId(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+					vo.setDistrictName(param[1] != null ? param[1].toString():"");
+					vo.setPanchayatId(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+					vo.setPanchayatName(param[3] != null ? param[3].toString():"");
+					vo.setLightCount(Long.valueOf(param[4] != null ? param[4].toString():"0"));
+					vo.setTeamCount(Long.valueOf(param[5] != null ? param[5].toString():"0"));
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTodayVendorDetails - LightMonitoringService service",e);
+		}
+		return returnList;
+	}
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is get Level Wise Vendor Details}
+	 * @return List<LightMonitoringVO>
+	 * @Date 01-02-2018
+	 */
+	public List<LightMonitoringVO> getLevelWiseVendorDetails(InputVO inputVO,Long lightVendorId){
+		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>(0);
+		try {
+			Long locationId = 0L;
+			String locationName = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date fromDate = null;
+			Date toDate = null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
+			}
+			Map<Long,LightMonitoringVO> locationMap = new HashMap<Long,LightMonitoringVO>(0);
+			List<Object[]> locationList = lightMonitoringDetailsDAO.getLightVendorDetailsByLevelType(inputVO.getType(), lightVendorId,fromDate,toDate);
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().equalsIgnoreCase("DateWise")){
+				if(locationList != null && !locationList.isEmpty()){
+					for (Object[] param : locationList) {
+						LightMonitoringVO locationVO = new LightMonitoringVO();
+						locationVO.setWorkDate(param[0] != null ? param[0].toString():"");
+						locationVO.setDistrictId(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+						locationVO.setDistrictName(param[2] != null ? param[2].toString():"");
+						if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+							locationVO.setPanchayatId(Long.valueOf(param[3] != null ? param[3].toString():"0"));
+							locationVO.setPanchayatName(param[4] != null ? param[4].toString():"");
+						}
+						locationVO.setLightCount(Long.valueOf(param[5] != null ? param[5].toString():"0"));
+						locationVO.setTeamCount(Long.valueOf(param[6] != null ? param[6].toString():"0"));
+						returnList.add(locationVO);
+					}
+				}
+			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().equalsIgnoreCase("Consolidated")){
+				if(locationList != null && !locationList.isEmpty()){
+					for (Object[] param : locationList) {
+						if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+							locationId = Long.valueOf(param[1] != null ? param[1].toString():"0");
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+							locationId = Long.valueOf(param[3] != null ? param[3].toString():"0");
+						}
+						LightMonitoringVO locationVO = locationMap.get(locationId);
+						if(locationVO == null){
+							locationVO = new LightMonitoringVO();
+							if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+								locationVO.setDistrictId(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+								locationVO.setDistrictName(param[2] != null ? param[2].toString():"");
+							}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+								locationVO.setPanchayatId(Long.valueOf(param[3] != null ? param[3].toString():"0"));
+								locationVO.setPanchayatName(param[4] != null ? param[4].toString():"");
+							}
+							locationVO.setLightCount(Long.valueOf(param[5] != null ? param[5].toString():"0"));
+							locationVO.setTeamCount(Long.valueOf(param[6] != null ? param[6].toString():"0"));
+							locationMap.put(locationId, locationVO);
+						}else{
+							locationVO.setLightCount(locationVO.getLightCount()+Long.valueOf(param[5] != null ? param[5].toString():"0"));
+							locationVO.setTeamCount(locationVO.getTeamCount()+Long.valueOf(param[6] != null ? param[6].toString():"0"));
+						}
+					}
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(locationMap)){
+				returnList = new ArrayList<LightMonitoringVO>(locationMap.values());
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLevelWiseVendorDetails - LightMonitoringService service",e);
+		}
+		return returnList;
+	}
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is get Date Wise Vendor Details}
+	 * @return LightMonitoringVO
+	 * @Date 01-02-2018
+	 */
+	public LightMonitoringVO getDateWiseVendorDetails(InputVO inputVO,Long vendorId){
+		LightMonitoringVO finalVO = new LightMonitoringVO();
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date fromDate = null;
+			Date toDate = null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
+			}
+			
+			List<Object[]> dateWiseList = lightMonitoringDetailsDAO.getLightsFittedCountBetweenDates(fromDate, toDate,vendorId);
+			if(dateWiseList != null && !dateWiseList.isEmpty()){
+				for (Object[] param : dateWiseList) {
+					finalVO.setTotalVillages(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+					finalVO.setLightCount(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+					finalVO.setTeamCount(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTodayVendorDetails - LightMonitoringService service",e);
+		}
+		return finalVO;
+	}
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is get Vendor DashBoard Details}
+	 * @return LightMonitoringVO
+	 * @Date 31-02-2018
+	 */
+	public List<LightMonitoringVO> getVendorDashBoardOverviewDetails(InputVO inputVO){
+		List<LightMonitoringVO> finalList = new ArrayList<LightMonitoringVO>();
+		try {
+			Long vendorId = null; 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date fromDate = null;
+			Date toDate = null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
+			}
+			
+			Map<Long,LightMonitoringVO> vendorMap = new HashMap<Long,LightMonitoringVO>(0);
+			List<Object[]> panelCountList = lightMonitoringDAO.getVendorsCount(fromDate,toDate);
+			if(panelCountList != null && !panelCountList.isEmpty()){
+				for (Object[] param : panelCountList) {
+					vendorId = Long.valueOf(param[0] != null ? param[0].toString():"0");
+					LightMonitoringVO vendorVO = vendorMap.get(vendorId);
+					if(vendorVO == null){
+						vendorVO = new LightMonitoringVO();
+						vendorVO.setLightVendorId(vendorId);
+						vendorVO.setLightVendorName(param[1] != null ? param[1].toString():"");
+						vendorVO.setTotalPanels(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+						vendorMap.put(vendorId, vendorVO);
+					}
+				}
+				
+			}
+			
+			List<Object[]> lightFittedList = lightMonitoringDetailsDAO.getVendorDetails(fromDate,toDate);
+			if(lightFittedList != null && !lightFittedList.isEmpty()){
+				for (Object[] param : lightFittedList) {
+					vendorId = Long.valueOf(param[0] != null ? param[0].toString():"0");
+					LightMonitoringVO vendorVO = vendorMap.get(vendorId);
+					if(vendorVO != null){
+						vendorVO.setLightCount(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+						vendorVO.setTeamCount(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+					}
+				}
+				
+			}
+			
+			if(vendorMap != null && !vendorMap.isEmpty()){
+				finalList = new ArrayList<LightMonitoringVO>(vendorMap.values());
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVendorDashBoardOverviewDetails - LightMonitoringService service",e);
+		}
+		return finalList;
+	}
+	
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is get Level Wise Vendor Details}
+	 * @return List<LightMonitoringVO>
+	 * @Date 31-02-2018
+	 */
+	public List<LightMonitoringVO> getDashBoardLevelWiseVendorDetails(InputVO inputVO){
+		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>(0);
+		try {
+			Long locationId = 0L;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date fromDate = null;
+			Date toDate = null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
+			}
+			
+			Map<Long,Map<Long,LightMonitoringVO>> ccmsCuntMap = new LinkedHashMap<Long,Map<Long,LightMonitoringVO>>(0);
+			List<Object[]> locationList = lightMonitoringDetailsDAO.getAllVendorDetailsByLevelType(inputVO.getType(),fromDate,toDate);
+			List<Object[]> ccmsCuntList = lightMonitoringDAO.getAllLevelCCMSVendorsCount(inputVO.getType(),fromDate,toDate);
+				if(locationList != null && !locationList.isEmpty()){
+					for (Object[] param : locationList) {
+						LightMonitoringVO locationVO = new LightMonitoringVO();
+						locationVO.setLightVendorId(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+						locationVO.setLightVendorName(param[1] != null ? param[1].toString():"");
+						locationVO.setDistrictId(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+						locationVO.setDistrictName(param[3] != null ? param[3].toString():"");
+						if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+							locationVO.setPanchayatId(Long.valueOf(param[4] != null ? param[4].toString():"0"));
+							locationVO.setPanchayatName(param[5] != null ? param[5].toString():"");
+						}
+						locationVO.setLightCount(Long.valueOf(param[6] != null ? param[6].toString():"0"));
+						locationVO.setTeamCount(Long.valueOf(param[7] != null ? param[7].toString():"0"));
+						returnList.add(locationVO);
+					}
+				}
+				if(ccmsCuntList != null && !ccmsCuntList.isEmpty()){
+					for (Object[] param : ccmsCuntList) {
+						if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district")){
+							locationId = Long.valueOf(param[0] != null ? param[0].toString():"0");
+						}else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+							locationId = Long.valueOf(param[2] != null ? param[2].toString():"0");
+						}
+						
+						Long vendorId = Long.valueOf(param[4] != null ? param[4].toString():"0");
+						Long count = Long.valueOf(param[5] != null ? param[5].toString():"0");
+						
+						Map<Long,LightMonitoringVO> vendorMap = ccmsCuntMap.get(locationId);
+						if(vendorMap == null){
+							vendorMap = new LinkedHashMap<Long,LightMonitoringVO>();
+							LightMonitoringVO vo = new LightMonitoringVO();
+							vo.setLightVendorId(vendorId);
+							vo.setLightVendorName(param[6] != null ? param[6].toString():"");
+							vo.setDistrictId(locationId);
+							vo.setDistrictName(param[1] != null ? param[1].toString():"");
+							if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+								vo.setPanchayatId(locationId);
+								vo.setPanchayatName(param[3] != null ? param[3].toString():"");
+							}
+							vo.setTotalPanels(count);
+							vendorMap.put(vendorId, vo);
+							ccmsCuntMap.put(locationId, vendorMap);
+						}else{
+							LightMonitoringVO vo = vendorMap.get(vendorId);
+							if(vo == null){
+								vo = new LightMonitoringVO();
+								vo.setLightVendorId(vendorId);
+								vo.setLightVendorName(param[6] != null ? param[6].toString():"");
+								vo.setDistrictId(locationId);
+								vo.setDistrictName(param[1] != null ? param[1].toString():"");
+								if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+									vo.setPanchayatId(locationId);
+									vo.setPanchayatName(param[3] != null ? param[3].toString():"");
+								}
+								vo.setTotalPanels(count);
+								vendorMap.put(vendorId, vo);
+							}else{
+								vo.setTotalPanels(vo.getTotalPanels()+count);
+							}
+						}
+					}
+				}
+				
+				if(ccmsCuntMap != null && !ccmsCuntMap.isEmpty()){
+					for (Entry<Long, Map<Long, LightMonitoringVO>> entry : ccmsCuntMap.entrySet()) {
+						 Map<Long, LightMonitoringVO> vendorMap = entry.getValue();
+						 for (Entry<Long, LightMonitoringVO> vendorEntry : vendorMap.entrySet()) {
+							 LightMonitoringVO ccmsCountDetailsVO = vendorEntry.getValue();
+							 LightMonitoringVO ccmCountVO = getMatchedVOByVendorId(returnList,entry.getKey(),vendorEntry.getKey(),inputVO.getType());
+							 if(ccmCountVO != null){
+								 ccmCountVO.setTotalPanels(ccmsCountDetailsVO.getTotalPanels());
+							 }else{
+								 ccmCountVO = new LightMonitoringVO();
+								 ccmCountVO.setLightVendorId(ccmsCountDetailsVO.getLightVendorId());
+								 ccmCountVO.setLightVendorName(ccmsCountDetailsVO.getLightVendorName());
+								 ccmCountVO.setDistrictId(ccmsCountDetailsVO.getDistrictId());
+								 ccmCountVO.setDistrictName(ccmsCountDetailsVO.getDistrictName());
+								 if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("panchayat")){
+									 ccmCountVO.setPanchayatId(ccmsCountDetailsVO.getPanchayatId()); 
+									 ccmCountVO.setPanchayatName(ccmsCountDetailsVO.getPanchayatName());
+								 }
+								 ccmCountVO.setTotalPanels(ccmsCountDetailsVO.getTotalPanels());
+								 returnList.add(ccmCountVO);
+							 }
+						 }
+					}
+				}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDashBoardLevelWiseVendorDetails - LightMonitoringService service",e);
+		}
+		return returnList;
+	}
+	/**
+	 * @author Nandhini.k
+	 * @description {This service is get District Wise Vendor Details}
+	 * @return List<LightMonitoringVO>
+	 * @Date 31-02-2018
+	 */
+	public List<LightMonitoringVO> getDashBoardVendorDetailsByLocationId(InputVO inputVO){
+		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>(0);
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date fromDate = null;
+			Date toDate = null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				fromDate = sdf.parse(inputVO.getFromDate());
+				toDate = sdf.parse(inputVO.getToDate());
+			}
+			String dateStr = null;
+			Map<String,LightMonitoringVO> dateMap = new LinkedHashMap<String,LightMonitoringVO>(0);
+			List<Object[]> lightFitList = lightMonitoringDetailsDAO.getVendorDetailsForLocation(inputVO.getType(), fromDate, toDate, inputVO.getLocationId(), inputVO.getLightVendorId());
+			if(lightFitList != null && !lightFitList.isEmpty()){
+				for (Object[] param : lightFitList) {
+					dateStr = param[0] != null ? param[0].toString():"";
+					LightMonitoringVO vo = dateMap.get(dateStr);
+					if(vo == null){
+						vo = new LightMonitoringVO();
+						vo.setWorkDate(dateStr);
+						vo.setLightCount(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+						vo.setTeamCount(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+						dateMap.put(dateStr, vo);
+					}else{
+						vo.setLightCount(vo.getLightCount()+Long.valueOf(param[1] != null ? param[1].toString():"0"));
+						vo.setTeamCount(vo.getTeamCount()+Long.valueOf(param[2] != null ? param[2].toString():"0"));
+					}
+				}
+				
+			}
+			
+		  List<Object[]> ccmsCuntList = lightMonitoringDAO.getCCMSVendorsCountForLocation(inputVO.getType(), fromDate, toDate, inputVO.getLocationId(), inputVO.getLightVendorId());
+		  if(ccmsCuntList != null && !ccmsCuntList.isEmpty()){
+			  for (Object[] param : ccmsCuntList) {
+				dateStr = param[0] != null ? param[0].toString():"";
+				LightMonitoringVO lightFittedVO = dateMap.get(dateStr);
+				if(lightFittedVO != null){
+					lightFittedVO.setTotalPanels(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+				}else{
+					lightFittedVO = new LightMonitoringVO();
+					lightFittedVO.setWorkDate(dateStr);
+					lightFittedVO.setTotalPanels(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+					dateMap.put(dateStr, lightFittedVO);
+				}
+			}
+		  }
+		
+		  if(dateMap != null && !dateMap.isEmpty()){
+			  returnList = new ArrayList<LightMonitoringVO>(dateMap.values());
+		  }
+		
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDashBoardVendorDetailsByLocationId - LightMonitoringService service",e);
+		}
+		return returnList;
+	}
+	
+	public LightMonitoringVO getMatchedVOByVendorId(List<LightMonitoringVO> list,Long locationId,Long vendorId,String levelType){
+		try {
+			Long locationId1 = 0L;
+			if(list != null && !list.isEmpty()){
+				for (LightMonitoringVO lightMonitoringVO : list) {
+					if(levelType != null && levelType.trim().equalsIgnoreCase("district")){
+						locationId1 = lightMonitoringVO.getDistrictId();
+					}else if(levelType != null && levelType.trim().equalsIgnoreCase("panchayat")){
+						locationId1 = lightMonitoringVO.getPanchayatId();
+					}
+					if(locationId1 != null && locationId1.longValue() == locationId.longValue() 
+					  && lightMonitoringVO.getLightVendorId() != null && vendorId != null && lightMonitoringVO.getLightVendorId().longValue() > 0L && vendorId.longValue() > 0L
+					  && lightMonitoringVO.getLightVendorId().longValue() == vendorId.longValue()){
+						return lightMonitoringVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMatchedVOByVendorId - LightMonitoringService service",e);
+		} 
+		return null;
+	}
  }
 	
 	        	

@@ -409,4 +409,93 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		Query query = getSession().createQuery("select  max(model.surveyDate) from LightMonitoring model where model.isDeleted ='N' ");
 		return (Date)query.uniqueResult();
 	}
+	public List<Object[]> getVendorsCount(Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.lightsVendor.lightsVendorId,"
+				+ "model.lightsVendor.vendorName,"
+				+ "sum(model.totalPanels)"
+				+ " from LightMonitoring model"
+				+ " where model.isDeleted ='N'"
+				+ " and model.panchayat.locationAddress.state.stateId = 1"
+				+ " and model.lightsVendor.lightsVendorId is not null");
+		if (fromDate != null && toDate != null) {
+			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate ");
+		}
+		sb.append( " group by model.lightsVendor.lightsVendorId");
+		Query query = getSession().createQuery(sb.toString());
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		return query.list();
+		
+	}
+	public List<Object[]> getAllLevelCCMSVendorsCount(String levelType,Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select");
+		if(levelType != null && levelType.trim().equalsIgnoreCase("district")){
+			sb.append(" model.panchayat.locationAddress.district.districtId,model.panchayat.locationAddress.district.districtName,'',''");
+		}else if(levelType != null && levelType.trim().equalsIgnoreCase("panchayat")){
+			sb.append(" model.panchayat.locationAddress.district.districtId,model.panchayat.locationAddress.district.districtName,model.panchayat.panchayatId,model.panchayat.panchayatName");
+		}
+		sb.append(",model.lightsVendor.lightsVendorId,"
+				+ "sum(model.totalPanels),"
+				+ "model.lightsVendor.vendorName"
+				+ " from LightMonitoring model"
+				+ " where model.isDeleted ='N'"
+				+ " and model.panchayat.locationAddress.state.stateId = 1"
+				+ " and model.lightsVendor.lightsVendorId is not null");
+		if (fromDate != null && toDate != null) {
+			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate");
+		}
+		if(levelType != null && levelType.trim().equalsIgnoreCase("district")){
+			sb.append(" group by model.panchayat.locationAddress.district.districtId");
+		}else if(levelType != null && levelType.trim().equalsIgnoreCase("panchayat")){
+			sb.append(" group by model.panchayat.panchayatId");
+		}
+				
+		sb.append(",model.lightsVendor.lightsVendorId");
+		Query query = getSession().createQuery(sb.toString());
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		return query.list();
+	}
+	public List<Object[]> getCCMSVendorsCountForLocation(String levelType,Date fromDate,Date toDate,Long locationValue,Long vendorId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select date(model.surveyDate),");
+		sb.append("sum(model.totalPanels)"
+				+ " from LightMonitoring model"
+				+ " where model.isDeleted ='N'"
+				+ " and model.panchayat.locationAddress.state.stateId = 1"
+				+ " and model.lightsVendor.lightsVendorId is not null");
+		
+		if (fromDate != null && toDate != null) {
+			sb.append(" and date(model.surveyDate) between :fromDate and :toDate ");
+		}
+		if(levelType != null && levelType.trim().length() > 0 && locationValue != null && locationValue.longValue() >0L){
+			if(levelType != null && levelType.trim().equalsIgnoreCase("district")){
+				sb.append(" and model.panchayat.locationAddress.district.districtId = :locationValue");
+			}else if(levelType != null && levelType.trim().equalsIgnoreCase("panchayat")){
+				sb.append(" and model.panchayat.panchayatId = :locationValue");
+			}
+		}	
+		if(vendorId != null && vendorId.longValue() > 0L) {
+			sb.append(" and model.lightsVendor.lightsVendorId = :vendorId");
+		}
+		
+		sb.append(" group by date(model.surveyDate)");
+		Query query = getSession().createQuery(sb.toString());
+		if(levelType != null && levelType.trim().length() > 0 && locationValue != null && locationValue.longValue() > 0L)
+			query.setParameter("locationValue", locationValue);
+		if (fromDate != null && toDate != null) {
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(vendorId != null && vendorId.longValue() > 0L)
+			query.setParameter("vendorId", vendorId);
+		
+		return query.list();
+	}
 }

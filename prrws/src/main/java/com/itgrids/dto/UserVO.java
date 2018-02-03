@@ -26,6 +26,8 @@ public class UserVO {
 	private String prDistrictId;
 	private Long deptDesignationId;
 	private Long deptDesignationOfficerId;
+	private Long vendorId;
+	private String vendorName;
 	
 	public Long getDeptDesignationId() {
 		return deptDesignationId;
@@ -121,6 +123,18 @@ public class UserVO {
 	}
 	public void setPrDistrictId(String prDistrictId) {
 		this.prDistrictId = prDistrictId;
+	}
+	public Long getVendorId() {
+		return vendorId;
+	}
+	public void setVendorId(Long vendorId) {
+		this.vendorId = vendorId;
+	}
+	public String getVendorName() {
+		return vendorName;
+	}
+	public void setVendorName(String vendorName) {
+		this.vendorName = vendorName;
 	}
 	
 	

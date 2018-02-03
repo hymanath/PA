@@ -22,5 +22,8 @@ public interface ILightMonitoringDAO extends GenericDao<LightMonitoring, Long > 
  	public List<String> getMonthAndYear(Date fromDate,Date toDate);
  	public List<Object[]> getDateWiseLightMonitoringDtls(Date fromDate,Date toDate,String locationType,List<Long> locationValues);
  	public Date getLatestInsertedTime();
+ 	public List<Object[]> getVendorsCount(Date fromDate,Date toDate);
+ 	public List<Object[]> getAllLevelCCMSVendorsCount(String levelType,Date fromDate,Date toDate);
+ 	public List<Object[]> getCCMSVendorsCountForLocation(String levelType,Date fromDate,Date toDate,Long locationValue,Long vendorId);
 
 }
