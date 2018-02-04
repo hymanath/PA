@@ -4101,7 +4101,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		return;
 	}
 	*/
-	$("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Please Wait..</h3></center>")
+	$("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Please Wait..</h3></center>")
 	$('#saveButtonId').hide();	
 	//$("#savingDetailsSpinner").html(spinner)
 	
@@ -4196,7 +4196,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				  }else{
 					  $('#saveButtonId').show();
 					  setTimeout(function() {
-					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Updation Failed..Try Later</h3></center>")
+					  $("#statusMsgAppntReqt").html("<center><h4 style='color: red;margin-top:-25px;'>Application Updation Failed..Try Later</h4></center>")
 				       },5000);
 					  setTimeout(function () {
 						 
@@ -4206,7 +4206,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				}else{
 					  $('#saveButtonId').show();
 					setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Updation Failed..Try Later</h3></center>")
+						 $("#statusMsgAppntReqt").html("<center><h4 style='color: red;margin-top:-25px;'>Application Updation Failed..Try Later</h4></center>")
 						}, 5000);
 						//setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				 }
