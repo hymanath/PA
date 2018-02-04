@@ -676,12 +676,56 @@ function buildPetitionDetailsView(result){
 										str+='</div>';
 									str+='</div>';
 								}
+								
 								var totalWorksToUpdate=result.subWorksList[i].subWorksList.length;
 								for(var j in result.subWorksList[i].subWorksList){
 									if(result.subWorksList[i].subWorksList[j].status == "Completed"){
 										totalWorksToUpdate = parseInt(totalWorksToUpdate)-parseInt(1);
 									}
 								}
+								
+								str+='<div class="row m_top10">';
+										str+='<div class="col-sm-12">';
+											str+='<div class="col-sm-2 pull-right">';
+												str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+											str+='</div>';
+											str+='<div class="col-sm-2 pull-right">';
+												if(globalDesignationName != null && globalDesignationName == 'Data Entry Officer'){
+													;
+												}else{
+													if(parseInt(totalWorksToUpdate) >0){
+														str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+													}
+												}
+											str+='</div>';
+											str+='<div class="col-sm-2 pull-right">';
+												str+='<h5>';
+													str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+														str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+													str+='</label>';
+												str+='</h5>';
+												
+												
+											str+='</div>';
+										
+									//ara
+											
+												
+												
+											
+										str+='</div>';
+									str+='</div>';
+									
+								/* //row closed
+								str+='<div class="row">';
+								str+='<div class="col-sm-12">';
+								str+='<h5 class="pull-right">';
+									str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+										str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+									str+='</label>';
+									str+='</h5>';
+								str+='</div>';
+								str+='</div>'; */
 								
 								var workCount = 0;
 								str+='<div class="row">';
@@ -945,15 +989,15 @@ function buildPetitionDetailsView(result){
 														
 													//}else{
 														//if(parseInt(totalWorksToUpdate)>1 && endorseMenNo !=''){
-															str+='<div class="row">';
-															str+='<div class="col-sm-12">';
-															str+='<h5 class="pull-right" id="selectAllCls">';
-																str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																	str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-																str+='</label>';
-																str+='</h5>';
-															str+='</div>';
-															str+='</div>';	
+															//str+='<div class="row">';
+															//str+='<div class="col-sm-12">';
+															//str+='<h5 class="pull-right" id="selectAllCls">';
+																//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																	//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+																//str+='</label>';
+																//str+='</h5>';
+															//str+='</div>';
+															//str+='</div>';	
 														//}
 													//}
 													
@@ -1122,15 +1166,32 @@ function buildPetitionDetailsView(result){
 								
 									str+='<div class="row m_top10">';
 										str+='<div class="col-sm-12">';
-									
-											if(globalDesignationName != null && globalDesignationName == 'Data Entry Officer'){
-												;
-											}else{
-												if(parseInt(totalWorksToUpdate) >0){
-													str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
-												}
-											}
+											str+='<div class="col-sm-2 pull-right">';
 												str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+											str+='</div>';
+											str+='<div class="col-sm-2 pull-right">';
+												if(globalDesignationName != null && globalDesignationName == 'Data Entry Officer'){
+													;
+												}else{
+													if(parseInt(totalWorksToUpdate) >0){
+														str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+													}
+												}
+											str+='</div>';
+											str+='<div class="col-sm-2 pull-right">';
+												str+='<h5>';
+													str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+														str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+													str+='</label>';
+												str+='</h5>';
+												
+												
+											str+='</div>';
+										
+									//ara
+											
+												
+												
 											
 										str+='</div>';
 									str+='</div>';
@@ -1250,11 +1311,40 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	$("#notSeleWorksId").html(notSeleWorks)
 	
 });	
+$(document).on("change","#assignTypeId",function(){
+	var assignType = $(this).val();
+	
+	$("#commentsDivId").hide();
+	$("#assignOfficerDivId").hide();
+	$("#assignDesignationDivId").hide();
+	$("#assighTypeId").hide();
+	$("#assignToId").html('');
+	$("#assignToId").html('<option value="0"> Select designation </option>');
+	$("#officerId").html('');
+	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+	
+	$("#assignToId").trigger("chosen:updated");
+	$("#officerId").trigger("chosen:updated");
+	//$('#actionTypeStr').val('COMPLETED');
+	$('#endorsWorksId').html('Save Details');
+	$("#actionTypId").val("0");
+	$("#actionTypId").trigger('chosen:updated');
+	if(assignType == 'ASSIGNED'){
+		//$('#actionTypeStr').val('ASSIGNED');
+		
+		$('#endorsWorksId').html('Assign');
+		$("#assighTypeId").show();
+		$("#commentsDivId").show();
+		$("#assignOfficerDivId").show();
+		$("#assignDesignationDivId").show();
+		//getPmActionTypeList();
+		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+	}
+	
+});
 $(document).on("change","#statusChangeId",function(){
 	var statusId = $(this).val();
 	var nextStatusId = $('option:selected', this).attr('attr_next_status_id') ;
-	
-	
 		$('#endorsementNoErr').html('');
 		$('#leadIdErr').html('');
 	    $('#grantIdErr').html('');
@@ -1266,6 +1356,8 @@ $(document).on("change","#statusChangeId",function(){
         $("#officerId").trigger("chosen:updated");
 		$("#remarksId").val('');
 		$("#endorsmentNo").val('');
+		$("#actionTypeDivId").hide();
+		$("#assighTypeId").hide();
 		
 	$('#nextStatusId').val(0);
 	if(nextStatusId != null && nextStatusId>0)
@@ -1307,11 +1399,11 @@ $(document).on("change","#statusChangeId",function(){
 		$("#remarksId").val('');
 		$("#letterNameId").html("ACTION COPY");
 		$("#endorsementDivId").hide();
-		$("#commentsDivId").show();
+		$("#commentsDivId").hide();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
-		$("#assignOfficerDivId").show();
-		$("#assignDesignationDivId").show();
+		$("#assignOfficerDivId").hide();
+		$("#assignDesignationDivId").hide();
 		$("#documentTypeDivId").hide();
 		$("#referranceNoDivId").hide();
 		$("#endorsementDivId").hide();
@@ -1322,14 +1414,8 @@ $(document).on("change","#statusChangeId",function(){
 		initializeSingleUploadDocument("uploadEndorsementDocId");
 		$("#fileUploadDiv").show();
 		$("#fileUploadIdDiv").hide();
+		$("#actionTypeDivId").show();
 		
-		$("#assignToId").html('');
-		 $("#assignToId").html('<option value="0"> Select designation </option>');
-		 
-		$("#officerId").html('');
-		$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
-		
-		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 3){
 		$("#endorsementNoErr").html('');
 		$("#endorsentDivId").hide();
@@ -1373,6 +1459,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#documentTypeDivId").hide();
 		$("#referranceNoDivId").hide();
 		$("#endorsementDivId").hide();
+		$("#actionTypeDivId").show();
 		$("#buttonNameId").html("Save Details")
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
@@ -1632,7 +1719,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	if(flag==true){
 		return;
 	}
-	return;
+
 	$("#ajaxcallImageId").html("<center><h4 style='color: green;'>Please Wait...... </h4></center>");
 	   //$('#endorsWorksId').hide();
 	   var endorsementNO="";
@@ -1730,11 +1817,11 @@ $.ajax({
 						    setTimeout(function () {
 						 $("#endorseMentModalDivId").modal("hide");
 						}, 6000); 
-							$(".saveEnable").prop("disabled", true);
+							//$(".saveEnable").prop("disabled", true);
 						 
-						 //alert("Work(s) details updated successfully");
-						 
-						  getPetitionDetails(petitionId,endorsementNO);
+						 alert("Work(s) details updated successfully");
+							window.reload();
+						  //getPetitionDetails(petitionId,endorsementNO);
 						 
 						 // $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
 					  }else{
@@ -1748,7 +1835,7 @@ $.ajax({
 				$("#savingDetailsSpinner").html('');
 				
 				setTimeout(function () {
-						$("#ajaxcallImageId").html("<center><h4 style='color: green;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h4></center>")
+						$("#ajaxcallImageId").html("<center><h4 style='color: red;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h4></center>")
 						}, 5000);
 						//$(".saveEnable").prop("disabled", false);
 				//console.log(request);
@@ -1810,6 +1897,7 @@ $.ajax({
 function generateCoveringLetterForPetition(){
 	//$('#endorsWorksId').hide();
 	$('#coveringLetterPthErr') .html("");
+	
 	var flag = false;
 	$('#endorsementNoErr').html('');
 	$('#leadIdErr').html('');
@@ -1908,7 +1996,9 @@ var json = {
   }
  }).done(function(result){
 	 $("#coverLetterPath").val("");
+	  $('#endorsementNoErr').html("");
 	 if(result !=null){
+		  $('#endorsementNoErr').html("<span style='color:green;'> covering letter generated successfully...</span>");
 		 var str='';
 		 var scanCopySpl = result.exceptionMsg.split("."); 
 			var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
@@ -1951,10 +2041,10 @@ var json = {
 	
 	$("#coveringLetterGenerator").html(str);
 	$(".fancyboxView").fancybox({live: false});
-	
+	$('#endorsementNoErr').html("");
 	 }
 	
-	
+	$('#endorsementNoErr').html("");
  }); 
 }
 
@@ -2025,7 +2115,48 @@ function buildImages(result){
 	if(result.allFileList.length < 1){
 		$("#imageBuildingId").hide();
 	}
-	
+	$(".partyWiseSlickApply").slick({
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 3,
+			 infinite: false,
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false,
+			 responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3
+				  }
+				},
+				{
+				  breakpoint: 768,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+				// You can unslick at a given breakpoint now by adding:
+				// settings: "unslick"
+				// instead of a settings object
+			  ]
+		}); 
 }
 
 function getPetitionAndWorkWiseHistoryDetails(petitinId,workId){
@@ -2567,7 +2698,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 		$(".table-desig-scroll").mCustomScrollbar({setHeight:'400px'});
 	}
 }
-getPmDocumentTypeList();
+getPmDocumentTypeList(); 
 function getPmDocumentTypeList(){
 	
 	 var json = {

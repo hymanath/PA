@@ -1909,15 +1909,14 @@ function getPmGrantList(){
 }
 
 function getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr){
-	
+	globalDesignationId =$("#hiddenDesignationId").val();
 	 $("#assignToId").html('');
-	 $("#assignToId").html('<option value="0"> Select designation </option>');
+	 $("#assignToId").html('<option value="0"> SELECT DESIGNATION </option>');
 	 
 	$("#officerId").html('');
 	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
 	
  var json = {
-	 
 	 deptIdsList : selectedDeptIdsArr
 	}           
 $.ajax({              
@@ -1933,11 +1932,22 @@ $.ajax({
 	if(result !=null && result.length>0){
 		$("#assignToId").html('<option value ="0">SELECT DESIGNATION </option>');
 		for(var i in result){
-			if(result[i].key == 23 ){
-				$("#assignToId").append('<option value ="'+result[i].key+'" selected>'+result[i].value.toUpperCase()+'</option>');
-				getDeptDesignationOfficerDetail(result[i].key);
-			}else
+			if(glDesignationId == 2 || glDesignationId==86){// minister/OSD
+				if(result[i].key == 23 ){
+					$("#assignToId").append('<option value ="'+result[i].key+'" selected>'+result[i].value.toUpperCase()+'</option>');
+					getDeptDesignationOfficerDetail(result[i].key);
+				}else
+					$("#assignToId").append('<option value ="'+result[i].key+'">'+result[i].value.toUpperCase()+'</option>');
+			}else if(glDesignationId == 23){
+				if(result[i].key == 94 ){// PS
+					$("#assignToId").append('<option value ="'+result[i].key+'" selected>'+result[i].value.toUpperCase()+'</option>');
+					getDeptDesignationOfficerDetail(result[i].key);
+				}else
+					$("#assignToId").append('<option value ="'+result[i].key+'">'+result[i].value.toUpperCase()+'</option>');
+			}else{
 				$("#assignToId").append('<option value ="'+result[i].key+'">'+result[i].value.toUpperCase()+'</option>');
+			}
+			
 		}
 	}
 	$("#assignToId").trigger('chosen:updated');
@@ -1950,7 +1960,7 @@ $(document).on('change','.popUpChangesCls',function(){
 })
 
 function getDeptDesignationOfficerDetail(onChangeValue){
-	globalDesignationId =$("#hiddenDesignationId").val();
+	
 	$("#officerId").html('');
 	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
 	var deptDesignationId = onChangeValue;
@@ -2067,7 +2077,34 @@ $(document).on('click','.modelEndoreCls',function(){
 	}
 });
 
+
+function getPmActionTypeList(){
+	$("#actionTypId").html("<option value='0' selected>SELECT ASSIGN TYPE</option>");
+	$("#actionTypId").trigger('chosen:updated');
+	 var json = {
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmActionTypeList',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null && result.length>0){
+			for(var i in result){
+				$("#actionTypId").append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
+			}
+		}
+		$("#actionTypId").trigger('chosen:updated');
+	});	
+	}
+	
 function onLoadClickDataDetails(){
+	getPmActionTypeList();
+	$("#actionTypId").trigger('chosen:updated');
 	if(searchBy == 'referral' || searchBy == 'referralCan'){
 		$("#locationSelId").html('');
 		$("#locationSelId").html('<option value="referrelDesignation"> Referral Designation wise </option>');
@@ -2240,7 +2277,7 @@ function petitionWiseRepresenteeDetails(result){
 						str+='<th title="Referreer Designation" >REF.&nbsp;DESIGNATION</th>';				
 						str+='<th style="min-width:200px !important;"  title="Work Description" >WORK&nbsp;DESC.</th>';
 						//str+='<th>No&nbsp;of&nbsp;Works</th>';
-						str+='<th>BUDGET (in Lakhs)</th>';
+						str+='<th>ESTIMATION COST (in Lakhs)</th>';
 						str+='<th>STATUS</th>';
 						str+='<th>NO OF WORKS</th>';
 						str+='<th>ACTION</th>';
@@ -2334,9 +2371,19 @@ function petitionWiseRepresenteeDetails(result){
 							str+='<td> - </td>';
 						}
 							str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
+							
+							var alreadyGiven=false;
+							if(endorsmentNo == null || endorsmentNo.length == 0){
+								 alreadyGiven=true;
+								str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
+							}
+							if(!alreadyGiven && (userId == 25 || userId == 26 || userId == 27 || userId == 28)){
+								str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
+							}
+							
 						//24 - userId - admin_user
 						//if(userId == 24){
-							str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
+							//str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
 						/*}else{
 							if(result[i].subList[j].statusType == 'Pending Endorsement' || result[i].subList[j].statusId == 1) 
 								str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';

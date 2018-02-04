@@ -339,6 +339,27 @@
 						</select>
 					</div>
 				</div>
+				
+				<div class="row m_top10" id="actionTypeDivId" style="display:none;">
+					<div class="col-sm-12" >
+						<label>SELECT ACTION TYPE <span style="color:red;">*</span><span id="actionTypeErr"></span></label>
+						<select class="form-control chosen-select" id="assignTypeId" name="actionType">
+							<option value="0">SELECT ACTION TYPE</option>
+							<option value="ASSIGNED">ASSIGN TO OFFICER</option>
+							<option value="COMPLETED">UPLOAD FILE COPY</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="row m_top10" id="assighTypeId" style="display:none;">
+					<div class="col-sm-12" >
+						<label>ASSIGN FOR : <span style="color:red;">*</span><span id="actionTypeErr"></span></label>
+						<select class="form-control chosen-select" id="actionTypId" name="actionTypeId">
+							<option value="0">SELECT ASSIGN TYPE</option>
+						</select>
+					</div>
+				</div>
+				
 				<div class="row m_top10" id="endorsementDivId" style="display:none;">
 					<div class="col-sm-12">
 						<label>ENDORSMENT NO<span style="color:red;">*</span><span id="endorsementNoErr"></span></label>
@@ -407,7 +428,7 @@
 		</div>
 		<div id="coveringLetterGenerator"></div>
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
-		<input type="hidden" id="actionTypeStr" value="ASSIGN" name="actionType"/>
+		<!--<input type="hidden" id="actionTypeStr" value="" name="actionType"/>-->
 	   </div>
 			<div class="col-sm-6" id="imageBuildingId">
 			</div>
@@ -496,10 +517,10 @@
 </script>
 <script>
 var userId = '${sessionScope.USER.userId}';
-var designationId = '${sessionScope.USER.deptDesignationId}'
-var designationName = '${sessionScope.USER.designation}';
-$("#hiddenDesignationName").html(designationName);
-$("#hiddenDesignationId").val(designationId);
+var glDesignationId = '${sessionScope.USER.designationId}'
+var glDesignationName = '${sessionScope.USER.designation}';
+$("#hiddenDesignationName").html(glDesignationName);
+$("#hiddenDesignationId").val(glDesignationId);
 </script>
 <script type="text/javascript">
 $(document).on("click",".closeSecondModal",function(){

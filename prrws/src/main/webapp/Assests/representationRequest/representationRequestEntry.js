@@ -606,8 +606,15 @@ function buildSelfAndRepresenteeDetails(typeVal){
 		
 	str+='<div class="row m_top10">';
 			str+='<div class="col-sm-12">';
+				str+='<div class="col-sm-6">';
 					//str+='<button type="button" class="btn btn-lg btn-success searchCandidateCls button_gray" attr_type="'+typeVal+'">ADD REFERRAL</button>';
-					str+='<div class="col-sm-12 m_top20"><span class="addLocationCss m_top20 saveRepresentRequestDetails" style="cursor:pointer;background-color:green;" attr_type="'+typeVal+'" id="saveButtonId" >SAVE DETAILS</span><span id="savingDetailsSpinner"></span><span class="col-sm-offset-4" id="statusMsgAppntReqt"></span><span class="ErrCls" id="refCandidatesErr"></span></div>';
+						str+='<div class="col-sm-12 m_top20">';
+							str+='<span class="addLocationCss m_top20 saveRepresentRequestDetails" style="cursor:pointer;background-color:green;" attr_type="'+typeVal+'" id="saveButtonId" >SAVE DETAILS</span><span id="savingDetailsSpinner"></span>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-6">';
+					str+='<span class="col-sm-offset-4" id="statusMsgAppntReqt"></span><span class="ErrCls" id="refCandidatesErr"></span>';
+					str+='<div>';
 			str+='</div>';
 		str+='</div>';
 		
@@ -2429,7 +2436,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	if(noofWorks == undefined || noofWorks == "undefined" || noofWorks === undefined || noofWorks.trim() == '' || noofWorks == null){
 		$("#noOfWorksId"+typeVal).html("<h5 style='color:red;'>Please enter no of works</h5>");
 		$('#saveButtonId').show();
-		flag = false;
+		//flag = false;
 		//return;
 	}else{
 		$("#noOfWorksId"+typeVal).html("");
@@ -2741,7 +2748,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	});	
 	if(flag == false){
 		$('#saveButtonId').show();
-		//return;
+		return;
 	}
 	
 	$("#statusMsgAppntReqt").html("<center><h4 style='color: green;'>Please Wait...</h4></center>")
@@ -2840,14 +2847,14 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 				  }else{
 					  $('#saveButtonId').show();
 					  setTimeout(function () {
-					  $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>")
+					  $("#statusMsgAppntReqt").html("<center><h4 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h4></center>")
 						}, 5000);
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				  }
 				}else{
 					  $('#saveButtonId').show();
 					   setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h3 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h3></center>")
+						 $("#statusMsgAppntReqt").html("<center><h4 style='color: red;margin-top:-25px;'>Application Failed..Try Later</h4></center>")
 						}, 5000);
 						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				 }
@@ -3565,22 +3572,3 @@ $.ajax({
 		$("#petitionTypeId").trigger('chosen:updated');
 });	
 }
-
-getPmActionTypeList();
-function getPmActionTypeList(){
-	
-	 var json = {
-		
-		}           
-	$.ajax({              
-		type:'POST',    
-		url: 'getPmActionTypeList',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-	});	
-	}
