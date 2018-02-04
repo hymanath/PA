@@ -22,7 +22,7 @@ public class PmActionTypeDAO extends GenericDaoHibernate<PmActionType, Long> imp
 		
 	}
 	public List<Object[]> getPmActionTypeList(){
-		StringBuilder sb = new StringBuilder("select model.pmActionTypeId,model.pmActionType from PmActionType model where model.isDeleted ='N' ");
+		StringBuilder sb = new StringBuilder("select distinct model.pmActionTypeId,model.pmActionType from PmActionType model where model.isDeleted ='N' ");
 		Query qry = getSession().createQuery(sb.toString());
 		return qry.list();
 	}

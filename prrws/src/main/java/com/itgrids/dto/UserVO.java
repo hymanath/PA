@@ -20,6 +20,7 @@ public class UserVO {
 	private String status;
 	
 	private String deptName;
+	private Long designationId;
 	private String designation;
 	private Long accessLvelId;
 	private Long accessLevelValue;
@@ -136,6 +137,10 @@ public class UserVO {
 	public void setVendorName(String vendorName) {
 		this.vendorName = vendorName;
 	}
-	
-	
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
 }

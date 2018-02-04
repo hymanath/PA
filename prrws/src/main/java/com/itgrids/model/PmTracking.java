@@ -39,6 +39,8 @@ public class PmTracking {
 	private User updatedUser;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long pmActionTypeId;
+	private String actionType;
 	
 	 private Petition petition;
 	 private PmSubWorkDetails pmSubWorkDetails;
@@ -49,6 +51,7 @@ public class PmTracking {
 	 private Document document;
 	 private PmDepartmentDesignationOfficer pmDepartmentDesignationOfficer;
 	 private PmDepartmentDesignationOfficer assignedToPmDepartmentDesignationOfficer;
+	 private PmActionType pmActionType;
 	 
 	@Id
 	@Column(name="pm_tracking_id")
@@ -246,6 +249,31 @@ public class PmTracking {
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	@Column(name="pm_action_type_id")
+	public Long getPmActionTypeId() {
+		return pmActionTypeId;
+	}
+	public void setPmActionTypeId(Long pmActionTypeId) {
+		this.pmActionTypeId = pmActionTypeId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_action_type_id", insertable = false, updatable = false)
+	public PmActionType getPmActionType() {
+		return pmActionType;
+	}
+	public void setPmActionType(PmActionType pmActionType) {
+		this.pmActionType = pmActionType;
+	}
+	
+	@Column(name="action_type")
+	public String getActionType() {
+		return actionType;
+	}
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
 	}
 	
 }
