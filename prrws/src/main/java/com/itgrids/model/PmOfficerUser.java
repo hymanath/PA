@@ -18,10 +18,12 @@ public class PmOfficerUser {
 	private Long pmOfficerUserId;
 	private Long pmDepartmentDesignationId;
 	private Long userId;
+	private Long pmOfficerId;
 	private String isActive;
+	
 	private PmDepartmentDesignation pmDepartmentDesignation;
 	private User insertedUser;
-	
+	private PmOfficer pmOfficer;
 	@Id
 	@Column(name="pm_officer_user_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -68,6 +70,21 @@ public class PmOfficerUser {
 	public void setInsertedUser(User insertedUser) {
 		this.insertedUser = insertedUser;
 	}
+
+	@Column(name = "pm_officer_id")
+	public Long getPmOfficerId() {
+		return pmOfficerId;
+	}
+	public void setPmOfficerId(Long pmOfficerId) {
+		this.pmOfficerId = pmOfficerId;
+	}
 	
-	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_officer_id", insertable = false, updatable = false)
+	public PmOfficer getPmOfficer() {
+		return pmOfficer;
+	}
+	public void setPmOfficer(PmOfficer pmOfficer) {
+		this.pmOfficer = pmOfficer;
+	}
 }
