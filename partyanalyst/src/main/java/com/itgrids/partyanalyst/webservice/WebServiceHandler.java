@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityDetailsVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AffiliatedMemberVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
@@ -3532,6 +3533,19 @@ public class WebServiceHandler {
 		
 		try{ 
 			return webServiceHandlerService1.getRegistrationPersonDetails(jObj.getString("voterId"),jObj.getLong("familyVoterId"),jObj.getLong("tdpCadreId"),jObj.getString("status"));
+		}catch(Exception e){
+			LOG.error("Exception Occured in getRegistrationPersonDetails() Method in WebServiceHandler, Exception is ",e);
+			return null;
+		}
+	}
+	@POST
+    @Path("/getAffiliatedMemberData")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AffiliatedMemberVO>  searchAffiliatedMemberDetails(JSONObject jObj){
+		
+		try{ 
+			return  webServiceHandlerService1.searchAffiliatedMemberDetails(jObj.getString("searchType"),jObj.getString("searchValue"),jObj.getString("locationType"),jObj.getLong("locationValue"));
 		}catch(Exception e){
 			LOG.error("Exception Occured in getRegistrationPersonDetails() Method in WebServiceHandler, Exception is ",e);
 			return null;
