@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BIOMETRIC-ITE&C SECRETARIAT</title>
+<title>BIOMETRIC-PR,RD&RWS</title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
@@ -102,7 +102,7 @@
 				</div>
 				<div class="col-sm-4 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayat Raj, RD & RWS</h4>
-					<p>BIOMETRIC&nbsp;-&nbsp;ITE&C&nbsp;SECRETARIAT</p>
+					<p>BIOMETRIC&nbsp;-&nbsp;PR,RD & RWS</p>
 				</div>
 				<div class="col-sm-3 col-xs-12 pull-right">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
@@ -315,7 +315,7 @@
 									<div id="inTimeStatisticsDivId" style="height:180px;" class="m_top10"></div>
 								</div>
 								<div class="col-sm-4">
-									<h5 class="font_weight m_top10" style="margin-left:15px">Information Technologies</h5>
+									<h5 class="font_weight m_top10" style="margin-left:15px">PR,RD & RWS</h5>
 									<div class="m_top20" style="background-color:#F1F1F1;padding:10px;">
 									<div class="row">
 										<div class="col-sm-6">
