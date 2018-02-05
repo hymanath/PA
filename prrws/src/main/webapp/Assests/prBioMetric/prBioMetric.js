@@ -272,7 +272,7 @@ function buildEmployeeAttendenceTimePeriodWise(result){
 			
 		},
 		series:[{
-			name: 'PR,RD&nbsp;& RWS',
+			name: 'PR,RD & RWS',
 			data: dataArr,
 
 			dataLabels: {
