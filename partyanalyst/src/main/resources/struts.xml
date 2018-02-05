@@ -18706,5 +18706,44 @@
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		<result name="input">/jsp/loginForm.jsp?src="imageRenderingAction"</result>		  	
 	</action>
+	 <action name="uploadArticleUserSummaryAction" class="uploadArticleUserAction" method="gettingArticleDetails">
+		    <result>/jsp/uploadArticleUserPage.jsp</result>
+		    <result name="input" type="redirect">loginpageAction.action</result>
+	</action>
+	<action name="getDayWiseOldUploadUserArticleDetailsAction" class="uploadArticleUserAction" method="getDayWiseOldUploadUserArticleDetails">
+		   <result type="json" name="success">
+			<param name="root">userList</param>
+		</result>
+	</action>
+	<action name="getLevelWisePostsOverViewAction1" class="coreDashboardAction" method="getLevelWisePostsOverView">
+		<result type="json" name="success">
+				<param name="root">nominatedPostCandList</param>
+		</result>
+	</action>
+	<action name="getDepartmentWisePostAndApplicationDetailsAction1" class="coreDashboardAction" method="getDepartmentWisePostAndApplicationDetails">
+		<result type="json" name="success">
+				<param name="root">nominatedPostDetailsVOList</param>
+		</result>
+	</action>
+	<action name="getNominatedPostLocationWiseBoardLevelCountAction" class="coreDashboardAction" method="getNominatedPostLocationWiseBoardLevelCount">
+		<result type="json" name="success">
+				<param name="root">nominatedPostCandList</param>
+		</result>
+	</action>
+	<action name="getNominatedPostStateWiseCountAction" class="coreDashboardAction" method="getNominatedPostStateWiseCount">
+		<result type="json" name="success">
+				<param name="root">nominatedPostCandList</param>
+		</result>
+	</action>
+	<action name="getUserTypeWiseNominatedPostDetailsCntAction" class="coreDashboardAction" method="getUserTypeWiseNominatedPostDetailsCnt">
+		<result type="json" name="success">
+				<param name="root">userTypeVOList</param>
+		</result>
+	</action>
+	<action name="getDepartMentAndBoardWisePositinsStatusCountAction" class="coreDashboardAction" method="getDepartMentAndBoardWisePositinsStatusCount">
+		<result type="json" name="success">
+				<param name="root">nominatedPostDetailsVOList</param>
+		</result>
+	</action>
  </package>
 </struts>

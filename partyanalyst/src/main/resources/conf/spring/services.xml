@@ -3602,6 +3602,8 @@
    		<property name="debateAnalysisService" ref="debateAnalysisService" />
    		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" />
    		<property name="debateParticipantLocationDAO" ref="debateParticipantLocationDAO" />
+   		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
+   		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
    </bean>
 
 	<bean name="debateAnalysisService" class="com.itgrids.partyanalyst.service.impl.DebateAnalysisService">
@@ -4663,5 +4665,19 @@
     	 <bean name="alertRenderService" class="com.itgrids.partyanalyst.service.impl.AlertRenderService">
     	 	<property name="alertCreationAPIService" ref="alertCreationAPIService"></property>
     	 	<property name="alertUpdationAPIService" ref="alertUpdationAPIService"></property>
+    	 </bean>
+    	 <bean name="coreDashboardNominatedPostService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardNominatedPostService">
+    	 	<property name="nominatedPostDAO" ref="nominatedPostDAO"></property>
+    	 	<property name="nominatedPostApplicationDAO" ref="nominatedPostApplicationDAO"></property>
+    	 	<property name="cadreDetailsService" ref="cadreDetailsService"></property>
+    	 	<property name="nominatedPostGovtOrderDAO" ref="nominatedPostGovtOrderDAO"></property> 
+            <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+            <property name="boardLevelDAO" ref="boardLevelDAO"></property>
+            <property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
+            <property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
+            <property name="districtDAO" ref="districtDAO"></property>
+            <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
+            <property name="constituencyDAO" ref="constituencyDAO"></property>
+            <property name="tehsilDAO" ref="tehsilDAO"></property>			
     	 </bean>
 </beans>			
