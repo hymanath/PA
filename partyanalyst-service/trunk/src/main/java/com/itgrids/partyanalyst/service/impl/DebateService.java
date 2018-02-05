@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IDebateSubjectDAO;
 import com.itgrids.partyanalyst.dao.IObserverDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITelecastTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.DebateDetailsVO;
@@ -79,6 +80,7 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IDebateAnalysisService;
 import com.itgrids.partyanalyst.service.IDebateService;
+import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -112,6 +114,8 @@ public class DebateService implements IDebateService{
 	
 	private ITdpCadreCandidateDAO				tdpCadreCandidateDAO;
 	private IDebateParticipantLocationDAO       debateParticipantLocationDAO;
+	private ITdpCadreDAO tdpCadreDAO;
+	private ISmsService  smsCountrySmsService;
 	public void setDebateReportDAO(IDebateReportDAO debateReportDAO) {
 		this.debateReportDAO = debateReportDAO;
 	}
@@ -222,6 +226,20 @@ public class DebateService implements IDebateService{
 			IDebateParticipantLocationDAO debateParticipantLocationDAO) {
 		this.debateParticipantLocationDAO = debateParticipantLocationDAO;
 	}
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+	public ISmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
 
 	/**
 	 * This service is used for telugu font saving as well as telugu font retriving
@@ -256,7 +274,8 @@ public class DebateService implements IDebateService{
 			LOG.info("Enterd into saveDebateDetails method in DebateService class");
 			 transactionTemplate.execute(new TransactionCallback() {
 				  public Object doInTransaction(TransactionStatus status) {
-					
+					  List<Long> candidateIds = new ArrayList<Long>();
+					  Long debateId = null;
 				  if(debateDetailsVO != null)
 				  {
 					  List<Integer> debateParticipantIds = null;
@@ -307,6 +326,7 @@ public class DebateService implements IDebateService{
 						  }
 					  
 					  debate=debateDAO.save(debate);
+					  debateId = debate.getDebateId();
 					  List<SelectOptionVO> subjectsList = debateDetailsVO.getSubjectList();
 					  if(subjectsList != null && subjectsList.size() > 0)
 					  {
@@ -344,6 +364,7 @@ public class DebateService implements IDebateService{
 								  debateParticipant.setParty(party);
 							  }
 							  Candidate candidate =candidateDAO.get(participantVO.getId());
+							  candidateIds.add(participantVO.getId());
 							  if(candidate != null)
 							  {
 								  debateParticipant.setCandidate(candidate);
@@ -452,8 +473,28 @@ public class DebateService implements IDebateService{
 					  }
 					
 				    }
+				  StringBuilder rString = new StringBuilder();
+				  String mobileNumbers = null;
+				  List<Long> tdpCadreIds = tdpCadreCandidateDAO.getTdpCadreIds(candidateIds);
+				  if(tdpCadreIds != null && tdpCadreIds.size()>0){
+					   List<String> phoneNumbers= tdpCadreDAO.getCadreMobileNumbers(tdpCadreIds);
+					   for ( int i = 0; i< phoneNumbers.size(); i++){
+						      //append the value into the builder
+						      rString.append(phoneNumbers.get(i));
+						      //if the value is not the last element of the list,then append the comma(,) as well
+						      if ( i != phoneNumbers.size()-1){
+						        rString.append(", ");
+						      }
+						    }
+					   mobileNumbers = rString.toString();
+					   
+				  }
+				  String message =" Dear Member,"+"\n"+ " Thank you for Participanting in the Debate."+
+				  		" Please find below url for more details on the Debate Summary " +
+				  		": http://mytdp.com/genereateReportAction.action?key=15d090b2-9d6a-4d21-a06b-7c26fa56bac8&debateId="+debateId+"&stateId=0 ";
+				  smsCountrySmsService.sendOTPSmsFromAdminForZohoUser(message, true, mobileNumbers);
 				  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-				  return resultStatus;  
+				  return resultStatus;
 				  }
 			 });
 		} 
