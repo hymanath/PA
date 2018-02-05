@@ -64,6 +64,7 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityDetailsVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AffiliatedMemberVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
@@ -167,6 +168,7 @@ import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IActivityService;
+import com.itgrids.partyanalyst.service.IAffiliatedMember;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAlertsNewsPortalService;
@@ -295,8 +297,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private ICccDashboardService cccDashboardService;
     private IKaizalaInfoService kaizalaInfoService;
     private IPartyMeetingMOMService partyMeetingMOMService;
-       
+    private IAffiliatedMember affiliatedMember;
     
+    
+	public IAffiliatedMember getAffiliatedMember() {
+		return affiliatedMember;
+	}
+
+	public void setAffiliatedMember(IAffiliatedMember affiliatedMember) {
+		this.affiliatedMember = affiliatedMember;
+	}
+
 	public IKaizalaInfoService getKaizalaInfoService() {
 		return kaizalaInfoService;
 	}
@@ -5730,4 +5741,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			}
 			return null;
 	 }
+	 
+	public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValue) {
+		List<AffiliatedMemberVO> affiliatedMemberList=new ArrayList<AffiliatedMemberVO>();
+		try{
+			affiliatedMemberList = affiliatedMember.searchAffiliatedMemberDetails(searchType,searchValue, locationType,locationValue);
+    	}catch(Exception e){
+    		log.error("Exception raised in getRegistrationPersonDetails  method in WebServiceHandlerService1",e);
+    	}
+    	return affiliatedMemberList;
+	}
 }

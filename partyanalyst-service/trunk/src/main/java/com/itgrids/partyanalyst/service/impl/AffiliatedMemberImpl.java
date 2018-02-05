@@ -13,17 +13,18 @@ import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 public class AffiliatedMemberImpl implements IAffiliatedMember {
 	private static final Logger   LOG = Logger.getLogger(AffiliatedMemberImpl.class);
 	
-	private IAffiliatedMemberDAO  iAffiliatedMemberDAO;
+	private IAffiliatedMemberDAO  affiliatedMemberDAO;
 	
 	private CommonMethodsUtilService commonMethodsUtilService;
 
-	public IAffiliatedMemberDAO getiAffiliatedMemberDAO() {
-		return iAffiliatedMemberDAO;
+	public IAffiliatedMemberDAO getAffiliatedMemberDAO() {
+		return affiliatedMemberDAO;
 	}
 
-	public void setiAffiliatedMemberDAO(IAffiliatedMemberDAO iAffiliatedMemberDAO) {
-		this.iAffiliatedMemberDAO = iAffiliatedMemberDAO;
+	public void setAffiliatedMemberDAO(IAffiliatedMemberDAO affiliatedMemberDAO) {
+		this.affiliatedMemberDAO = affiliatedMemberDAO;
 	}
+
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -34,8 +35,7 @@ public class AffiliatedMemberImpl implements IAffiliatedMember {
 	}
 
 	@Override
-	public AffiliatedMemberVO saveAffiliatedMemberDetails(
-			AffiliatedMemberVO affiliatedMemberVO) {
+	public AffiliatedMemberVO saveAffiliatedMemberDetails(AffiliatedMemberVO affiliatedMemberVO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -44,7 +44,7 @@ public class AffiliatedMemberImpl implements IAffiliatedMember {
 	public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType, String searchValue,String locationType, Long locationValues) {
 		 List<AffiliatedMemberVO> returnList = new ArrayList<AffiliatedMemberVO>();
 		try{  		
-			List<Object[]> affiliatedDtls = iAffiliatedMemberDAO.searchAffiliatedMemberDetails(searchType, searchValue, locationType,  locationValues);
+			List<Object[]> affiliatedDtls = affiliatedMemberDAO.searchAffiliatedMemberDetails(searchType, searchValue, locationType,  locationValues);
 			if(affiliatedDtls!= null && affiliatedDtls.size() >0){
 				for (Object[] objects : affiliatedDtls) {
 					AffiliatedMemberVO vo=new AffiliatedMemberVO();
