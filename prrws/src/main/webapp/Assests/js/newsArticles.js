@@ -287,7 +287,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 										if(result[i].positiveCountMain !=null && result[i].positiveCountMain >0){
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="0" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="electronic" attr_categoryId="'+result[i].organizationId+'">'+result[i].positiveCountMain+'</a>(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 											//str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isPrimedescription+'</h5>';
-											str+='<h5 class="font_weight m_top5" style="font-size:11px;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].overalIsPrimedescription+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].overalIsNotPrimedescription+'">'+result[i].isPrimedescription+'</span></h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:11px;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title="Prime&nbsp;Time:'+result[i].overalIsPrimedescription+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].overalIsNotPrimedescription+'">'+result[i].isPrimedescription+'</span></h5>';
 										}else{
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
 											//str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isPrimedescription+'</h5>';
@@ -313,7 +313,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 										 if(result[i].negativCountMain !=null && result[i].negativCountMain>0){
 											 str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="electronic" attr_categoryId="'+result[i].organizationId+'">'+result[i].negativCountMain+'</a>(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 											//str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isNotPrimedescription+'</h5
-											str+='<h5 class="font_weight m_top5" style="font-size:11px;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].negativeIsPrimeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].isNotPrimedescription+'</span></h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:11px;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title="Prime&nbsp;Time:'+result[i].negativeIsPrimeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].isNotPrimedescription+'</span></h5>';
 											}else{
 												 str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 												//str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isNotPrimedescription+'</h5>';
@@ -334,7 +334,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 										if(result[i].negativCountMain !=null && result[i].negativCountMain>0){
 											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="electronic" attr_categoryId="'+result[i].organizationId+'">'+result[i].negativCountMain+'</a>(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 											//str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isNotPrimedescription+'</h5>';
-											str+='<h5 class="font_weight m_top5" style="font-size:11px;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].negativeIsPrimeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].isNotPrimedescription+'</span></h5>';
+											str+='<h5 class="font_weight m_top5" style="font-size:11px;"><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title="Prime&nbsp;Time:'+result[i].negativeIsPrimeCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].negativeIsNotPrimeCoveredTime+'">'+result[i].isNotPrimedescription+'</span></h5>';
 											}else{
 												str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
 												//str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].isNotPrimedescription+'</h5>';
@@ -433,14 +433,14 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 				 if(typeval == "ElectronicMedia"){
 					if(result[i].organization == "News Bulletin"){
 					if(totalCount != null && totalCount >0){	//headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+totalPosPerc+'%)<br>('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
-						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <br/><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimePositiveCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <br/><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title="Prime&nbsp;Time:'+result[i].totalIsPrimePositiveCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
 					}else{
 						headingCountPrint+='<h5><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+totalPosPerc+'%)<br>('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
 					}
 					}else if(result[i].organization == "News Program"){
 						if(totalCount != null && totalCount >0){	
 						//headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(1)+'%) ('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
-						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <br/><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title=" Prime&nbsp;Time:'+result[i].totalIsPrimePositiveCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
+						headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+'('+result[i].tdpPerc.toFixed(1)+'%) <br/><span data-placement="top" class="emToolTipCls2"  style="cursor: pointer;font-size: 11px;" title="Prime&nbsp;Time:'+result[i].totalIsPrimePositiveCoveredTime+'\n Non&nbsp;Prime&nbsp;Time:'+result[i].totalIsPrimeNegativeCoveredTime+'">'+result[i].positiveIsPrimeCoveredTime+'</span></b></h5>';
 						}else{
 							headingCountPrint+='<h5 style="text-align: center;line-height: 20px;font-weight: bold;"><span>'+result[i].organization+'</span><br><b>'+totalCount+' ('+result[i].tdpPerc.toFixed(1)+'%) ('+result[i].positiveIsPrimeCoveredTime+')</b></h5>';
 						}
@@ -536,7 +536,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 			]
 		}];
 		highchartsPieChart(id,type,data,plotOptions,title,tooltip,legend);
-		$('.emToolTipCls3').tooltip();
+		$('.emToolTipCls2').tooltip();
 	}			
 	
 	
@@ -678,7 +678,7 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 					collapse+='<div class="col-sm-12">';
 						collapse+='<div class="white_block">';
 								collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
-									collapse+='<div class="row m_top10">';
+									collapse+='<div class="row m_top10 departmentWiseTotalCls">';
 										collapse+='<div class="col-sm-6">';
 											collapse+='<div class="pad_light_yash_bg border_yash">';
 												collapse+='<h4>OverAll Details</h4>';
@@ -722,10 +722,14 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 												
 											}
 										}
+										for(var j in result[i].coreDashBoardVOList1){
+											if(result[i].coreDashBoardVOList1[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList1[j].coreDashBoardVOList.length>0){
 										collapse+='<div class="col-sm-9">';
 											collapse+='<h5 class="font_weight text-capital">District wise Overview</h5>';
 											collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:330px;width:100%"></div>';
 										collapse+='</div>';
+											}
+										}///
 									collapse+='</div>';
 							collapse+='</div>';
 					collapse+='</div>';
@@ -736,7 +740,7 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 			collapse+='<div class="col-sm-12">';
 				collapse+='<div class="white_block">';
 				collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
-							collapse+='<div class="row m_top10">';
+							collapse+='<div class="row m_top10 departmentWiseTotalCls">';
 								collapse+='<div class="col-sm-6">';
 									collapse+='<div class="pad_light_yash_bg border_yash">';
 										collapse+='<h4>OverAll Details</h4>';
@@ -780,10 +784,14 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 										
 									}
 								}
+								for(var j in result[i].coreDashBoardVOList1){
+									if(result[i].coreDashBoardVOList1[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList1[j].coreDashBoardVOList.length>0){
 								collapse+='<div class="col-sm-9">';
 									collapse+='<h5 class="font_weight text-capital">District wise Overview</h5>';
 									collapse+='<div id="districtWise'+result[i].organizationId+'" class="m_top10" style="height:330px;width:100%"></div>';
 								collapse+='</div>';
+							   }
+							}
 							collapse+='</div>';
 					collapse+='</div>';
 			collapse+='</div>';
@@ -799,15 +807,14 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 			//DistrictCall
 			buildOverAllDistrictWiseDetails(result[i].coreDashBoardVOList1[j].coreDashBoardVOList,'districtWise'+result[i].organizationId+'',result[i].organizationId,typeVal)
 		}
-		
-		for(var j in result[i].coreDashBoardVOList){
+		if(type =="PrintMediadepartment"){
+			for(var j in result[i].coreDashBoardVOList){
 			//printMediaCall
 			buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList[j].coreDashBoardVOList,''+type+''+result[i].organizationId+'',''+divId+''+result[i].organizationId+'',''+typeVal+'',result[i].organizationId)
-		}
-		if(type =="PrintMediadepartment"){
+			}
+			
 			for(var j in result[i].coreDashBoardVOList3){
 			//ElectronicCall
-			//buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'ElectronicMediadepartment'+result[i].organizationId+'','electronicMedia'+result[i].organizationId+'',"departmentEle",result[i].organizationId)
 				buildOverAllStateWiseDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'stateLevelMedia'+result[i].organizationId+'',result[i].organizationId,type)
 			}
 			for(var j in result[i].coreDashBoardVOList2){
@@ -816,9 +823,17 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 			
 			}
 		}else if(type == "ElectronicMediadepartment"){
+			for(var j in result[i].coreDashBoardVOList){
+			//Electronic Media Call
+				if(result[i].coreDashBoardVOList[j].tdpCount !=null && result[i].coreDashBoardVOList[j].tdpCount !="" &&
+				result[i].coreDashBoardVOList[j].tdpCount >0){
+					buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList[j].coreDashBoardVOList,''+type+''+result[i].organizationId+'',''+divId+''+result[i].organizationId+'',''+typeVal+'',result[i].organizationId)
+				}else{
+					$(".departmentWiseTotalCls").html("No Data Available...");
+				}
+			}
 			for(var j in result[i].coreDashBoardVOList3){
 			//ElectronicCall
-                //buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'ElectronicMediadepartment'+result[i].organizationId+'','electronicMedia'+result[i].organizationId+'',"departmentEle",result[i].organizationId)
 				buildOverAllStateWiseDetails(result[i].coreDashBoardVOList3[j].coreDashBoardVOList,'stateLevelMedia'+result[i].organizationId+'',result[i].organizationId,type)
 			}
 			for(var j in result[i].coreDashBoardVOList2){
