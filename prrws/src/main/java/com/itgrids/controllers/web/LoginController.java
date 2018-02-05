@@ -110,4 +110,9 @@ public class LoginController {
 		request.getSession().invalidate();
         return "MGNREGSFieldLoginUpdates";
     }
+	@GetMapping("/lightMonitoringLogout")
+    public String ledLogout(HttpServletRequest request) {
+		request.getSession().invalidate();
+        return "MGNREGSFieldLoginUpdates";
+    }
 }

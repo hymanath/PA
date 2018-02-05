@@ -31,4 +31,5 @@ public interface ILightMonitoring {
 	public List<LightMonitoringVO> getVendorDashBoardOverviewDetails(InputVO inputVO);
 	public List<LightMonitoringVO> getDashBoardVendorDetailsByLocationId(InputVO inputVO);
 	public List<LightMonitoringVO> getDashBoardLevelWiseVendorDetails(InputVO inputVO);
+	public List<LightMonitoringVO> getDateWiseVendorDetailsByLocationId(InputVO inputVO);
 }

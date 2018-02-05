@@ -168,6 +168,14 @@ public class LightMonitoringController {
    public String entryPage(ModelMap model) {
 		return "lightMonitoringEntry";
    }
-   
+   @RequestMapping(value = "/getDateWiseVendorDetailsByLocationId", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+   public @ResponseBody  List<LightMonitoringVO>  getDateWiseVendorDetailsByLocationId(@RequestBody InputVO inputVO){
+	   List<LightMonitoringVO>  returnList = lightMonitoring.getDateWiseVendorDetailsByLocationId(inputVO);
+       return returnList;
+   }
+   @RequestMapping(value ="/lightMonitoringVendorDashboard", method = RequestMethod.GET)
+   public String ledVendorDashboardPage(ModelMap model) {
+		return "lightMonitoringVendorDashboard";
+   }
 }
 
