@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.webservice.android.abstractservice;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AffiliatedMemberVO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreImageVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -68,4 +69,6 @@ public interface IWebServiceHandlerService1 {
 	 public Object getMemberDetailsByMembershipId(String membershipId);
 	 
 	 public NewCadreRegistrationVO getRegistrationPersonDetails(String voterCardNo,Long familyVoterId,Long tdpCadreId,String status);
-}
+	 
+	 public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValue);
+	 }
