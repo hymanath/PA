@@ -589,7 +589,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		
 		if(inputVO.getAttributesIdsList() != null && inputVO.getAttributesIdsList() .size() > 0)
 		{
-			str.append(" and model.activityLocationInfo.activityScopeId in(:attributesIdsList)");
+			str.append(" and model.activityDocument.activityScopeId in(:attributesIdsList)");
 		}
 		 if(inputVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
 				str.append(" group by model.insertType,model.activityLocationInfo.constituency.district.districtId ");
@@ -742,7 +742,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.activityDocument.activityDocumentId)" +
-				"  from ActivityInfoDocument model where model.activityLocationInfo.activityScopeId = :activityDocumentId and model.isDeleted='N' ");
+				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId and model.isDeleted='N' ");
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
 		
@@ -837,7 +837,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select date(model.activityDocument.activityDate),model.day,count(model.activityDocument.activityDocumentId), count(distinct model.activityLocationInfoId) , count(distinct model.activityConductedInfoId)" +
-				"  from ActivityInfoDocument model where model.activityLocationInfo.activityScopeId = :activityDocumentId and model.isDeleted='N' ");
+				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId and model.isDeleted='N' ");
 		if(inputVO.getDay() != null && inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
 		
@@ -1110,7 +1110,7 @@ public List<Object[]>  getDistrictNamesLocationsInfocoveredLocationsByScopeId(Lo
 public List<Object[]>  getDistrictNamesConductedInfocoveredLocationsByScopeId(Long activityScopeId,Long stateId,Date stDate,Date endDate){
 	StringBuilder sb = new StringBuilder();
 		sb.append("select UA.district.districtId,UA.district.districtName," +
-				" count(district model.activityConductedInfoId) " +
+				" count(distinct model.activityConductedInfoId) " +
 				" from ActivityInfoDocument model,UserAddress UA" +
 				" where model.isDeleted ='N'" +
 				" and model.activityAddressId = UA.userAddressId ");
