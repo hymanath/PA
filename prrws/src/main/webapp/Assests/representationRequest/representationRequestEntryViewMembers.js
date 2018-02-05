@@ -307,7 +307,7 @@ function representationRequestEntryTable(result){
 }
 $('#advanceSearchBtnId').prop("checked",true);
 if($('#advanceSearchBtnId').prop( "checked")){
-	$("input[type='checkbox']").prop({disabled: true});
+	$("#advanceSearchBtnId").prop({disabled: true});
 }
 
 $("#advancedSearchButtonDivId").show();
@@ -368,7 +368,7 @@ $(document).on("change","#locationSelId",function(){
         $("#mandalCanId").html('<option value="0">Select Mandal</option>');
 	    $("#mandalCanId").trigger('chosen:updated');
 		if($('#advanceSearchBtnId').prop( "checked")){
-				$("input[type='checkbox']").prop({disabled: true});
+				$("#advanceSearchBtnId").prop({disabled: true});
 			}
 			
 		return;
@@ -396,7 +396,7 @@ $(document).on("change","#locationSelId",function(){
 			$("#petitionId").prop("checked",true);
 			
 			if($('#advanceSearchBtnId').prop( "checked")){
-				$("input[type='checkbox']").prop({disabled: true});
+				$("#advanceSearchBtnId").prop({disabled: true});
 			}
 			
 	}else if(searchType == 'referrelDesignation' || searchType == 'representeeDesignation'){
@@ -417,7 +417,7 @@ $(document).on("change","#locationSelId",function(){
 			var serchTypValue = $(this).val();
 			if(serchTypValue == 'referrelDesignation'){
 				 $('#petitionSubWorkRadioDivId').hide();
-				 $("input[type='checkbox']").prop({disabled: false});
+				 $("#advanceSearchBtnId").prop({disabled: false});
 				 $("#referralNameDiv").show();
 		         $("#districtConsMandDivId").hide();
 		         $("#advancedSearchButtonDivId").show();
@@ -428,7 +428,7 @@ $(document).on("change","#locationSelId",function(){
 		   
 			}else if(serchTypValue == 'representeeDesignation'){
 				 $('#petitionSubWorkRadioDivId').hide();
-				 $("input[type='checkbox']").prop({disabled: false});
+				 $("#advanceSearchBtnId").prop({disabled: false});
 				  getDesignationsBySearchType(serchTypValue,"designationsId",desigId,statusId);
 				  $("#designationDiv").show();
 				  $("#districtConsMandDivId").hide();
@@ -436,7 +436,7 @@ $(document).on("change","#locationSelId",function(){
 					$("#workId").prop("checked",false);
 					$("#petitionId").prop("checked",true);
 			}
-			 $('input[type="checkbox"]').click(function(){
+			 $('#advanceSearchBtnId').click(function(){
              if($(this).prop("checked") == true){
               $("#districtConsMandDivId").show();
 
@@ -468,8 +468,8 @@ $(document).on("change","#locationSelId",function(){
 		$("#departMentsDiv").show();
 		$("#districtConsMandDivId").hide();
 		$("#advancedSearchButtonDivId").show();
-		$("input[type='checkbox']").prop({disabled: false});
-	$('input[type="checkbox"]').click(function(){
+		$("#advanceSearchBtnId").prop({disabled: false});
+	$('#advanceSearchBtnId').click(function(){
            if($(this).prop("checked") == true){
 		   $("#districtConsMandDivId").show()
 	    }else if($(this).prop("checked") == false){
@@ -501,8 +501,8 @@ $(document).on("change","#locationSelId",function(){
 		$("#districtConsMandDivId").hide();
 		$("#advancedSearchButtonDivId").show();
 	
-		$("input[type='checkbox']").prop({disabled: false});
-	$('input[type="checkbox"]').click(function(){
+		$("#advanceSearchBtnId").prop({disabled: false});
+	$('#advanceSearchBtnId').click(function(){
            if($(this).prop("checked") == true){
 		   $("#districtConsMandDivId").show()
 	    }else if($(this).prop("checked") == false){
@@ -534,7 +534,7 @@ $(document).on("change","#locationSelId",function(){
 				$("#emailId").val(' ');
 				$("#endorsmentNoId").val(' ');
 	
-			 $("input[type='checkbox']").prop({disabled: false});
+			 $("#advanceSearchBtnId").prop({disabled: false});
 			 $("#workId").prop("checked",false);
 			$("#petitionId").prop("checked",true);
 		}else if(searchType1 == 'mobile'){
@@ -559,7 +559,7 @@ $(document).on("change","#locationSelId",function(){
 	        
 	       $("#workId").prop("checked",false);
 			$("#petitionId").prop("checked",true);
-			$("input[type='checkbox']").prop({disabled: false});
+			$("#advanceSearchBtnId").prop({disabled: false});
 		}else if(searchType1 == 'email'){
 			 $('#petitionSubWorkRadioDivId').hide();
 			$('#advanceSearchBtnId').prop("checked",false);
@@ -581,7 +581,7 @@ $(document).on("change","#locationSelId",function(){
 			  $("#endorsmentNoId").val(' ');
 	         $("#workId").prop("checked",false);
 			$("#petitionId").prop("checked",true);
-			$("input[type='checkbox']").prop({disabled: false});
+			$("#advanceSearchBtnId").prop({disabled: false});
 		}else if(searchType1 == 'endorsmentNO'){
 			 $('#petitionSubWorkRadioDivId').hide();
 			$('#advanceSearchBtnId').prop("checked",false);
@@ -603,10 +603,10 @@ $(document).on("change","#locationSelId",function(){
 	         $("#workId").prop("checked",false);
 			$("#petitionId").prop("checked",true);
 			$("#advancedSearchButtonDivId").show();
-			$("input[type='checkbox']").prop({disabled: false});
+			$("#advanceSearchBtnId").prop({disabled: false});
 		}
 	
-		 $('input[type="checkbox"]').click(function(){
+		 $('#advanceSearchBtnId').click(function(){
            if($(this).prop("checked") == true){
             $("#districtConsMandDivId").show();
 
@@ -2104,6 +2104,12 @@ function getPmActionTypeList(){
 	
 function onLoadClickDataDetails(){
 	getPmActionTypeList();
+	if(glDesignationId == 2 || glDesignationId == 86 || glDesignationId == 92){
+		$('#imageBuildingId').show();
+	}else{
+		//$('#imageBuildingId').css("display","none");
+		$('#imageBuildingId').hide();
+	}
 	$("#actionTypId").trigger('chosen:updated');
 	if(searchBy == 'referral' || searchBy == 'referralCan'){
 		$("#locationSelId").html('');
@@ -2172,6 +2178,7 @@ function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 		} 
 	});	
 }
+/*
 getPetitionTrackingHistoryDetails();
 function getPetitionTrackingHistoryDetails(){
  var subworkIdsList = [1,2,3];
@@ -2192,7 +2199,7 @@ $.ajax({
  
 }); 
 }
-
+*/
 
 // $("#menuVerticalId ul").append('<li style="margin-left: 7px; width: 298px; margin-bottom: 5px;"><a href="'+subList[j].url+'" >'+subList[j].name+'</a></li>');
 /* function buildMenu(result){

@@ -339,7 +339,19 @@
 						</select>
 					</div>
 				</div>
-				
+				<div class="row m_top10" id="actionTypeDivId" style="display:none;">
+					<div class="col-sm-12" >
+						 <label class="text-capitalize">
+							<span class="btn btn-success btn-md"><input type="checkbox"  value="ASSIGNED" id="assignToUserId">ASSIGN TO OFFICER</input></span>
+						 </label>
+						<!--<select class="form-control chosen-select" id="assignTypeId" name="actionType">
+							<option value="0">SELECT ACTION TYPE</option>
+							<option value="ASSIGNED">ASSIGN TO OFFICER</option>
+							<option value="COMPLETED">UPLOAD FILE COPY</option>
+						</select>-->
+					</div>
+				</div>
+				<!--
 				<div class="row m_top10" id="actionTypeDivId" style="display:none;">
 					<div class="col-sm-12" >
 						<label>SELECT ACTION TYPE <span style="color:red;">*</span><span id="actionTypeErr"></span></label>
@@ -350,7 +362,7 @@
 						</select>
 					</div>
 				</div>
-				
+				-->
 				<div class="row m_top10" id="assighTypeId" style="display:none;">
 					<div class="col-sm-12" >
 						<label>ASSIGN FOR : <span style="color:red;">*</span><span id="actionTypeErr"></span></label>
@@ -382,7 +394,7 @@
 				</div>
 				<div class="row m_top10">
 					<div class="col-sm-6" id ="assignDesignationDivId" style="display:none;">
-				<label>ASSIGN TO<span style="color:red;">*</span><span id="assignToIdErr"></span></label>
+				<label><span id="assignningTypeId">ASSIGN TO</span><span style="color:red;">*</span><span id="assignToIdErr"></span></label>
 				<select class="form-control chosen-select popUpChangesCls" id="assignToId" name="deptDesigId">
 					<option value="0">SELECT DESIGNATION</option>
 				</select>
@@ -428,9 +440,9 @@
 		</div>
 		<div id="coveringLetterGenerator"></div>
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
-		<!--<input type="hidden" id="actionTypeStr" value="" name="actionType"/>-->
+		<input type="hidden" id="actionTypeStr" value="COMPLETED" name="actionType"/>
 	   </div>
-			<div class="col-sm-6" id="imageBuildingId">
+			<div class="col-sm-6" id="imageBuildingId" style="display:none;">
 			</div>
 		</div>
 		
