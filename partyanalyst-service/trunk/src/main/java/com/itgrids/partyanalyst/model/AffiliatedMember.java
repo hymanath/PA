@@ -250,7 +250,7 @@ public class AffiliatedMember{
 		this.voter = voter;
 	}
 	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "address_id")
+	@JoinColumn(name = "address_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getUserAddress() {
