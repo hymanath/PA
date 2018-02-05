@@ -17,6 +17,11 @@
     border-radius: 0;
     color: #fff;
 }
+.tooltip-inner {
+    max-width: 170px;
+    /* If max-width does not work, try using width instead */
+    width: 170px; 
+}
 </style>
 </head>
 <body>
