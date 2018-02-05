@@ -4261,6 +4261,13 @@
 	 <bean id="psychometricTestDAO" class="com.itgrids.partyanalyst.dao.hibernate.PsychometricTestDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="affiliatedMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.AffiliatedMemberDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="affiliatedMemberTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AffiliateMemberTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 	 <bean id="tdpCadrePsychometricTestDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadrePsychometricTestDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
