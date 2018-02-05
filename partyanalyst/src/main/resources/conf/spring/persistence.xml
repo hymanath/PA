@@ -1359,6 +1359,9 @@
 						 <value>com.itgrids.partyanalyst.model.TdpCadrePsychometricTest</value>
 						 
 						 <value>com.itgrids.partyanalyst.model.ZohoTdpCadreContact</value>
+						 <value>com.itgrids.partyanalyst.model.AffiliatedMember</value>
+						  <value>com.itgrids.partyanalyst.model.AffiliateMemberType</value>
+						 
 				  </list>
 			
 		</property>
