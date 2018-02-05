@@ -1055,7 +1055,7 @@ var globaltype = "${param.type}";
 	function getPrintMediaCountsDetailsInfoForArtcles(globalStIndex){
 		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfoForArtcles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex+""
+			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfoForArtcles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalTemp+""
 			
 			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfoForArtcles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalEditionId+"/"+globalbenefitId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalTemp+""
 			
