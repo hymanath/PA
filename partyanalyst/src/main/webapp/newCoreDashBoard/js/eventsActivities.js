@@ -1762,11 +1762,26 @@ $(document).on("click",".btnCustomCreateEvents",function(){
 var  globalActivityIdsList =[];
 function getActivitiesDetails(){
 	$("#activityEventsListNew,#janmabhoomiEventDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 var dates = $('#dateRangeIdForEvents').val();
+	 /*var dates = $('#dateRangeIdForEvents').val();
 	  var dateArray = dates.split("-");
 	  var fromDateStr=dateArray[0];
 	  var toDateStr=dateArray[1];
-	
+	*/
+	 var dates=$('#daysListId').val();
+	  var fromDateStr='';
+	  var toDateStr='';
+	  
+	 if(dates != null && dates.length>0){
+		 var dateArray=dates.split(" to ");
+		  fromDateStr=dateArray[0];
+		  toDateStr=dateArray[1];
+		  if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			} 
+	 }
+	 
 	var jsObj={
 		//fromDate: '01/01/2014',//customStartDateActivities,
 		//toDate: '01/01/2020'  //customEndDateActivities
@@ -2781,15 +2796,32 @@ $(document).on("click",".generateExcelcdfdf",function(){
 function districtWiseCohort(activityId){
 	$("#eventsDistWiseCohort1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	globalActivityIdsList = activityId.split(',');
-	var dates = $('#dateRangeIdForEvents').val();
+	/*var dates = $('#dateRangeIdForEvents').val();
 	  var dateArray = dates.split("-");
 	  var fromDateStr=dateArray[0];
 	  var toDateStr=dateArray[1];
+	  */
+	  
+	   var dates=$('#daysListId').val();
+	  var fromDateStr='';
+	  var toDateStr='';
+	  
+	 if(dates != null && dates.length>0){
+		 var dateArray=dates.split(" to ");
+		  fromDateStr=dateArray[0];
+		  toDateStr=dateArray[1];
+		  if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			} 
+	 }
+	 
 	var  scopeId = 3;
 	var jsObj ={
 	   activityId : globalActivityIdsList,
-	   fromDate : '01/02/2015',//fromDateStr,//customStartDateActivities,
-	   toDate : '01/02/2020',//toDateStr,//customEndDateActivities,
+	   fromDate : fromDateStr,//fromDateStr,//customStartDateActivities,
+	   toDate : toDateStr,//toDateStr,//customEndDateActivities,
 	   scopeId : scopeId,
 	   activityMemberId : globalActivityMemberId,
 	   stateId : globalStateId,
@@ -2943,18 +2975,32 @@ function stateWiseCohort(activityId){
 	$("#eventsGraphBlock1").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	globalActivityIdsList = activityId.split(',');
 	var  scopeId = 2;
-	
+	/*
 	var dates = $('#dateRangeIdForEvents').val();
 	  var dateArray = dates.split("-");
 	  var fromDateStr=dateArray[0];
 	  var toDateStr=dateArray[1];
-	
+	*/
+	 var dates=$('#daysListId').val();
+	  var fromDateStr='';
+	  var toDateStr='';
+	  
+	 if(dates != null && dates.length>0){
+		 var dateArray=dates.split(" to ");
+		  fromDateStr=dateArray[0];
+		  toDateStr=dateArray[1];
+		  if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			} 
+	 }
 	var jsObj ={
 	   activityId : globalActivityIdsList,
 	   //fromDate : fromDateStr,//customStartDateActivities,
 	   //toDate : toDateStr,//customEndDateActivities,
-	   fromDate : '01/02/2015',
-	   toDate : '01/02/2020',
+	   fromDate : fromDateStr,
+	   toDate : toDateStr,
 	   scopeId : scopeId,
 	   activityMemberId : globalActivityMemberId,
 	   stateId : globalStateId,
@@ -3309,65 +3355,12 @@ getEventDocumentForPopup("district",1,0,0,'',attr_activity_scopeid,"state",1,"fi
 	 
 	 var date = date;
 	 var newdate = date.split("-").reverse().join("-");
-	 
+	// alert(888);
 		getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 		//getTempAvailablDates(GlobalPopupScope,GlobalPopuplocation,0,'',attr_activity_scopeid,newdate,newdate);
 		getDistrictNames('',newdate,newdate);	
   });
-  /* not using updated by srishailam */
-function getEventsDocuments(divId,Obj,attr_activity_scopeid)
-{
-		var jObj = {
-		activityId:attr_activity_scopeid,
-		locationScope:"state",
-		locationValue:1,		
-		day:1,
-		//fromDateStr:"01-01-2015",
-		//toDateStr:"22-01-2017",
-		fromDateStr : '01-02-2015',
-	    toDateStr : '01-02-2020',
-		locationName:Obj.locationName,
-		startIndex:0,
-		maxIndex:0,
-		callFrom:"BD",
-		activityMemberId : globalActivityMemberId,
-	    stateId : globalStateId,
-	    userTypeId : globalUserTypeId,
-		task:"daywise"
-		};
-		/* var jObj = {
-		activityId:Obj.activityScopeId,
-		locationScope:Obj.searchType,
-		locationValue:Obj.locationId,		
-		day:0,
-		fromDateStr:fromDateStr,
-		toDateStr:toDateStr,
-		locationName:Obj.locationName,
-		startIndex:0,
-		maxIndex:0,
-		callFrom:Obj.callFrom,
-		task:"daywise"
-		}; */
-	
-		$.ajax({
-          type:'GET',
-          url: 'getEventDocumentsAction.action',
-         data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-			//$('#'+divId+'').html('');
-			globallocationScope = '';
-			globallocationValue = '';
-			globallocationName = '';
-			globalActivityScope ='';
-			globallocationScope = jObj.locationScope;
-			globallocationValue = jObj.locationValue;
-			globallocationName = jObj.locationName;
-			globalActivityScope = jObj.activityId;
-			//buildDayWiseImages(result,divId);
-			
-			});
-}
-
+  
 function getAvailablDates(locationScope,locationValue,day,path,attr_activity_scopeid)
 	{
 	
@@ -3417,7 +3410,8 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
 					*/
 					
 					if(i==0 && globlbuildType =='overAll'){
-						str+='<li class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0"  ><a href="javascript:{};" > OVER ALL <br> (<span title="Total Images ">'+totalImagesCount+'</span> / <span title="Total Images Covered Locations ">'+coveredLocations+'</span>) <span class="sr-only">(current)</span><span class="sr-only">(current)</span></a></li>';
+						//str+='<li class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0"  ><a href="javascript:{};" > OVER ALL 111 <br> (<span title="Total Images ">'+totalImagesCount+'</span> / <span title="Total Images Covered Locations ">'+coveredLocations+'</span>) <span class="sr-only">(current)</span><span class="sr-only">(current)</span></a></li>';
+						str+='<li class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0"  ><a href="javascript:{};" > OVER ALL  <br> (<span title="Total Images ">'+totalImagesCount+'</span> / <span title="Total Images Covered Locations ">'+coveredLocations+'</span>) <span class="sr-only">(current)</span><span class="sr-only">(current)</span></a></li>';
 					}
 						
 					if(globlbuildType =='dayswise'){						
@@ -3506,15 +3500,22 @@ function buildLocationForPopup(locationScope,locationValue,ActivityScope)
 function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activity_scopeid,locationScope,locationScopeValue,calFrom, activity_name)
 {
 	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
-	 var dates=$('.searchDateCls ').val();
-/* 	  var dateArray=dates.split("/");
-	  var fromDateStr=dateArray[0];
-	  var toDateStr=dateArray[1];
-	  if(dateArray.length == 1)
+	// var dates=$('.searchDateCls ').val();
+	 var dates=$('#daysListId').val();
+	  var fromDateStr='';
+	  var toDateStr='';
+	  
+	 if(dates != null && dates.length>0){
+		 var dateArray=dates.split(" to ");
+		  fromDateStr=dateArray[0];
+		  toDateStr=dateArray[1];
+		  if(dateArray.length == 1)
 			{
 				fromDateStr=" ";
 				toDateStr=" ";
-			} */
+			} 
+	 }
+ 	  
 		globallocationScope=locationScope;
 		globallocationValue=locationScopeValue;
 		
@@ -3526,8 +3527,8 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 		day:day,
 		//fromDateStr:"01-01-2015",
 		//toDateStr:"22-01-2017",
-		fromDateStr : '01-02-2015',
-	    toDateStr : '01-02-2020',
+		fromDateStr :fromDateStr,
+	    toDateStr : toDateStr,
 		type:"popup",
 		startIndex:num,
 		maxIndex:10,
@@ -3538,6 +3539,7 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 	    userTypeId : globalUserTypeId,
 		 task:"popupdaywise"
 		};
+		//alert("image2");
 				$.ajax({
           type:'GET',
           url: 'getEventDocumentsAction.action',
@@ -3630,7 +3632,7 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 						
 					}
 						var weekDays = $("#daysListId").val();
-						
+						//alert(7777);
 						if(weekDays != null){
 							datesArr = weekDays.split('to');
 						}
@@ -3725,9 +3727,10 @@ $(document).on("change","#daysListId",function(){
 	var weekDays = $(this).val();
 	var datesArr = [];
 	if(weekDays != null){
-		datesArr = weekDays.split('to');
+		datesArr = weekDays.split(' to ');
 	}
 	$("#paginationDivId").html('');
+	//alert(666);
 	if(weekDays == 0){
 		getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,'',globalActivityScope,globallocationScope,globallocationValue,"","","");
 		getTempAvailablDates(globallocationScope,globallocationValue,0,'',globalActivityScope,"","");
@@ -3750,6 +3753,22 @@ $(document).on("change","#daysListId",function(){
 function getTempEventDocumentForPopup(searchType,locationId,day,num,path,attr_activity_scopeid,locationScope,locationScopeValue,calFrom,fromDateStr,toDateStr)
 {
 	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
+	
+	 var dates=$('#daysListId').val();
+	  var fromDateStr='';
+	  var toDateStr='';
+	  
+	 if(dates != null && dates.length>0){
+		 var dateArray=dates.split(" to ");
+		  fromDateStr=dateArray[0];
+		  toDateStr=dateArray[1];
+		  if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			} 
+	 }
+		 
 	 var dates=$('.searchDateCls ').val();
 		var jObj = {
 		activityId:globalActivityScope,
@@ -3770,6 +3789,8 @@ function getTempEventDocumentForPopup(searchType,locationId,day,num,path,attr_ac
 	    userTypeId : globalUserTypeId,
 		 task:"popupdaywise"
 		};
+		//alert("image1");
+	
 		$.ajax({
           type:'GET',
           url: 'getEventDocumentsAction.action',
@@ -3777,6 +3798,7 @@ function getTempEventDocumentForPopup(searchType,locationId,day,num,path,attr_ac
         }).done(function(result){
 			buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locationScope,locationScopeValue,searchType,locationId);
 			});
+			
 }
 
 function getTempAvailablDates(locationScope,locationValue,day,path,attr_activity_scopeid,fromDateStr,toDateStr)
@@ -3814,19 +3836,25 @@ function getTempAvailablDates(locationScope,locationValue,day,path,attr_activity
 					*/
 					
 					if(i==0 && globlbuildType =='overAll'){
-						str+='<li class="" ><a href="javascript:{};" class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0" > OVER ALL <span class="sr-only">(current)</span></a></li>';
+						//str+='<li class="" ><a href="javascript:{};" class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0" > OVER ALL <span class="sr-only">(current)</span></a></li>';
+						
+						//str+='<li class="" ><a href="javascript:{};" class="dayssCls active " locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0" ><a href="javascript:{};">OVER ALL 222</a><span class="sr-only">(current)</span></a></li>';
+						
+						str+='<li class=" dayssCls active"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0"><a href="javascript:{};">OVER ALL  </a></li>';
+						
+						
 					}
 						
 					if(globlbuildType =='dayswise'){						
 						if(result[i].id==day)
 						{//attr_activity_scopeid,locationScope,locationScopeValue
-							str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+							str+='<li class=" dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 							/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */
 						}else if (i==0){
-							str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+							str+='<li class=" dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 							/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */ 
 						}else{
-							str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+							str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 						 }
 					}
 					else if(globlbuildType =='overAll' && i == 0 ){
@@ -3834,16 +3862,15 @@ function getTempAvailablDates(locationScope,locationValue,day,path,attr_activity
 						{
 							if(result[i].documentsVOList[j].strDate==day)
 							{//attr_activity_scopeid,locationScope,locationScopeValue
-								str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};"> Day '+result[i].documentsVOList[j].day+' <br>  '+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+								str+='<li class=" dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};"> Day '+result[i].documentsVOList[j].day+' <br>  '+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 								/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */
 							}else if (j==0){
-								str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};"> Day '+result[i].documentsVOList[j].day+' <br>'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+								str+='<li class=" dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};"> Day '+result[i].documentsVOList[j].day+' <br>'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 								/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */ 
 							}else{
-								str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};">Day '+result[i].documentsVOList[j].day+' <br>'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+								str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};">Day '+result[i].documentsVOList[j].day+' <br>'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 							 }
 						}
-					
 					}
 				}
 				str+='</ul>';
@@ -3943,17 +3970,41 @@ function getDistrictNames(activity_name,startDate,endDate){
 	var date2Str ='';
 	
 	if( (startDate==null || startDate =='') || (endDate==null || endDate =='')){
-		var date1 = $("#dateRangeIdForEvents").val();
-		var date2Arr =date1.split(" - ");		
+		//var date1 = $("#dateRangeIdForEvents").val();
+		var date1 = $("#daysListId").val();
+		var date2Arr =date1.split(" to ");	
+		if(date2Arr != null && date2Arr.length>1){
 			date1Str = date2Arr[0].replace("/", "-");
 			date1Str = date1Str.replace("/", "-");
 			date2Str = date2Arr[1].replace("/", "-");
-			date2Str = date2Str.replace("/", "-");		
+			date2Str = date2Str.replace("/", "-");
+		}
+					
 	}
 	else{
 		date1Str =startDate;
 		date2Str =endDate;
+		/*
+		 var dates=$('#daysListId').val();
+		  var date1Str='';
+		  var date2Str='';
+		  
+			 if(dates != null && dates.length>0){
+				 var dateArray=dates.split(" to ");
+				  date1Str=dateArray[0];
+				  date2Str=dateArray[1];
+				  if(dateArray.length == 1)
+					{
+						date1Str=" ";
+						date2Str=" ";
+					} 
+			 }
+			 */
 	}
+	
+	 
+	 
+	 
 	var jObj = {
 		activityScopeId:scopeId,
 		activityMemberId : globalActivityMemberId,
@@ -3962,7 +4013,7 @@ function getDistrictNames(activity_name,startDate,endDate){
 	    stateId : globalStateId,
 	    userTypeId : globalUserTypeId,		
 	};
-	
+	//alert(999);
 	$.ajax({
 	  type:'GET',
 	  url: 'getDistrictListsAction.action',
@@ -3988,8 +4039,6 @@ function buildDistrictNames(result,activityLevelId,scopeId,activity_name)
 	
 	for(var i in result)
 	{
-		
-	
 		if(i==0){
 			str+='<div style="text-align:right;margin:10px ">';
 			//str+='<div class="panel-heading panel-headingModal" role="tab"  id="headingOneModa1l'+i+'" >';
@@ -4041,31 +4090,33 @@ $(document).on("click",".constituencyPopups",function(){
 function getConstituencyList(distId,activityLevelId){
 	$("#constituenciesBlock"+distId).html('');
 	$(".allConstCls").html('');
-	
+	var datevalue="";
 	$('.dayssCls').each(function(){
 		if($(this).hasClass("active")){
 			// var day = $(this).attr("attr");
 			var locationScope = 'district';
 			var locationScopeValue = distId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
+			var day = $(this).attr("attr");
+			datevalue = $(this).attr("datevalue");
 			
 			var path = $(this).attr("path");
 			//getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
 			//getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
-			
-			var weekDays = $("#daysListId").val();
+			getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",datevalue,datevalue);
+			/*var weekDays = $("#daysListId").val();
 			var datesArr = [];
 			if(weekDays != null){
 				datesArr = weekDays.split('to');
 			}
-			if(datesArr != null && datesArr.length==2){
-				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",datesArr[0].trim(),datesArr[1].trim());
-				getTempAvailablDates(locationScope,locationScopeValue,0,'',attr_activity_scopeid,datesArr[0].trim(),datesArr[1].trim());
+			if(datesArr != null && datesArr.length==2){ 
+				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",datevalue,datevalue);
+				//getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,datevalue,datevalue);
 			}else{
-				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",'','');
-				getTempAvailablDates(locationScope,locationScopeValue,0,'',attr_activity_scopeid,'','');
+				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",'','');
+				//getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,'','');
 			}
-			
+			*/
 		}
 	});
 	
@@ -4073,9 +4124,20 @@ function getConstituencyList(distId,activityLevelId){
 	var scopeId = $("#hiddenActivityScopeId").val();
 	var date = $("#daysListId").val();
 	var datesArr = [];
-	if(date != null){
-		datesArr = date.split('to');
+	
+	if(datevalue == null || datevalue.length==0){
+		if(date != null){
+			datesArr = date.split(' to ');
+			
+		}
+	}else{
+		var dateArr1 =datevalue.split("-");
+		if(dateArr1 != null && dateArr1.length>1){
+			datesArr.push(dateArr1[2]+"-"+dateArr1[1]+"-"+dateArr1[0]);
+			datesArr.push(dateArr1[2]+"-"+dateArr1[1]+"-"+dateArr1[0]);
+		}
 	}
+	
 	var jObj;
 	if(datesArr != null && datesArr.length==2){
 		jObj = {
@@ -4145,6 +4207,7 @@ $(document).on("click",".mandalPopups",function(){
 function getMandalOrMuncList(constituencyId,activityLevelId,value,scopeId){
 	
 	$("#mandalsBlock"+constituencyId).html('');
+	var datevalue="";
 	$('.dayssCls').each(function(){
 		if($(this).hasClass("active")){
 			 //var day = $(this).attr("attr");
@@ -4152,22 +4215,27 @@ function getMandalOrMuncList(constituencyId,activityLevelId,value,scopeId){
 			var locationScopeValue = constituencyId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 			var path = $(this).attr("path");
+			var day = $(this).attr("attr");
+			datevalue = $(this).attr("datevalue");
+			
 			//getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			//getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
-var weekDays = $("#daysListId").val();
+			getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datevalue,datevalue);
+			/*
+						var weekDays = $("#daysListId").val();
 						
 						if(weekDays != null){
-							datesArr = weekDays.split('to');
+							datesArr = weekDays.split(' to ');
 						}
 						if(datesArr != null && datesArr.length==2){
-							getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datesArr[0].trim(),datesArr[1].trim());
-							getTempAvailablDates(locationScope,locationScopeValue,0,'',attr_activity_scopeid,datesArr[0].trim(),datesArr[1].trim());
+							getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datesArr[0].trim(),datesArr[1].trim());
+							getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,datesArr[0].trim(),datesArr[1].trim());
 						}
 						else{
-							getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"","","");
-							getTempAvailablDates(locationScope,locationScopeValue,0,'',attr_activity_scopeid,"","");
+							getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datevalue,datevalue);
+							getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,"","");
 						}
-		
+		*/
 		}
 	});
 	
@@ -4181,15 +4249,28 @@ var weekDays = $("#daysListId").val();
 	//var scopeId = $("#hiddenActivityScopeId").val();
 	var date = $("#daysListId").val();
 	var datesArr = [];
-	if(date != null){
-		datesArr = date.split('to');
-	}
-	var jObj = {
+	
+	if(datevalue == null || datevalue.length==0){
+		if(date != null){
+			datesArr = date.split(' to ');
+		}
+	}else{
+		var dateArr1 = datevalue.split("-");
+		if(dateArr1 != null && dateArr1.length>1){
+			datesArr.push(dateArr1[2]+"-"+dateArr1[1]+"-"+dateArr1[0]);
+			datesArr.push(dateArr1[2]+"-"+dateArr1[1]+"-"+dateArr1[0]);
+		}
+	}	
+	
+	/*if(date != null){
+		datesArr = date.split(' to ');
+	}*/
+	/*var jObj = {
 		activityScopeId:activtyScopeId,
 		constituencyId : constituencyId,
 		fromDate: datesArr[0].trim(),
 		toDate: datesArr[1].trim()
-	};
+	};*/
 		
 	var jObj;
 	if(datesArr != null && datesArr.length==2){
@@ -4261,27 +4342,30 @@ $(document).on("click",".panchayatPopups",function(){
 
 function getPanchayatList(mandalId,scopeId,value){
 	$("#panchayatBlock"+mandalId).html('');
+	var datevalue="";
 	$('.dayssCls').each(function(){
 		if($(this).hasClass("active")){
-			// var day = $(this).attr("attr");
+			 var day = $(this).attr("attr");
 			var locationScope = 'mandal';
 			var locationScopeValue = mandalId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 			var path = $(this).attr("path");
+			datevalue = $(this).attr("datevalue");
 			
-			
+			getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",datevalue,datevalue);
+			/*
 			var weekDays = $("#daysListId").val();
 			var datesArr = [];
 			if(weekDays != null){
 				datesArr = weekDays.split('to');
 			}
 			if(datesArr != null && datesArr.length==2){
-				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datesArr[0].trim(),datesArr[1].trim());
-				getTempAvailablDates(locationScope,locationScopeValue,0,'',attr_activity_scopeid,datesArr[0].trim(),datesArr[1].trim());
+				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datesArr[0].trim(),datesArr[1].trim());
+				getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,datesArr[0].trim(),datesArr[1].trim());
 			}else{
-				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",'','');
-				getTempAvailablDates(locationScope,locationScopeValue,0,'',attr_activity_scopeid,'','');
-			}
+				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",'','');
+				getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,'','');
+			}*/
 			
 			/* getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid); */
@@ -4301,11 +4385,19 @@ function getPanchayatList(mandalId,scopeId,value){
 	
 	var date = $("#daysListId").val();
 	var datesArr = [];
-	if(date != null){
-		datesArr = date.split('to');
+	
+	if(datevalue == null || datevalue.length==0){
+		if(date != null){
+			datesArr = date.split(' to ');
+		}
+	}else{
+		var dateArr1 = datevalue.split("-");
+		if(dateArr1 != null && dateArr1.length>1){
+			datesArr.push(dateArr1[2]+"-"+dateArr1[1]+"-"+dateArr1[0]);
+			datesArr.push(dateArr1[2]+"-"+dateArr1[1]+"-"+dateArr1[0]);
+		}
 	}
 	var jObj;
-	
 	if(datesArr != null && datesArr.length==2){
 		jObj = {
 				activityScopeId:activtyScopeId,
@@ -4355,7 +4447,7 @@ $(document).on("click",".villagePopup",function(){
 	var panchayatId = $(this).attr("attr_villageId");
 	$('.dayssCls').each(function(){
 		if($(this).hasClass("active")){
-			// var day = $(this).attr("attr");
+			 var day = $(this).attr("attr");
 			var locationScope = 'village';
 			var locationScopeValue = panchayatId;
 			var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
@@ -4366,12 +4458,12 @@ $(document).on("click",".villagePopup",function(){
 				datesArr = weekDays.split('to');
 			}
 			if(datesArr != null && datesArr.length==2){
-				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datesArr[0].trim(),datesArr[1].trim());
-				getTempAvailablDates(locationScope,locationScopeValue,0,'',attr_activity_scopeid,datesArr[0].trim(),datesArr[1].trim());
+				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datesArr[0].trim(),datesArr[1].trim());
+				getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,datesArr[0].trim(),datesArr[1].trim());
 			}
 			else{
-				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"","","");
-				getTempAvailablDates(locationScope,locationScopeValue,0,'',attr_activity_scopeid,"","");
+				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"","","");
+				getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,"","");
 			}
 			/* getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid); */
@@ -4398,10 +4490,26 @@ function getUserTypeActivityConductedCnt(activityIdsString,activityLevelIds){
 	$("#UserTypeWiseEventMemberDtslDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$(".eventStrngPrCls").attr("attr_selected_type","Activity");
 	   var activityIds= activityIdsString.split(",");
-	   var dates = $('#dateRangeIdForEvents').val();
+	 /*  var dates = $('#dateRangeIdForEvents').val();
 	  var dateArray = dates.split("-");
 	  var fromDateStr=dateArray[0];
-	  var toDateStr=dateArray[1];
+	  var toDateStr=dateArray[1];*/
+	  
+	   var dates=$('#daysListId').val();
+	  var fromDateStr='';
+	  var toDateStr='';
+	  
+	 if(dates != null && dates.length>0){
+		 var dateArray=dates.split(" to ");
+		  fromDateStr=dateArray[0];
+		  toDateStr=dateArray[1];
+		  if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			} 
+	 }
+	 
 	var jsObj ={ 
 				 activityMemberId : globalActivityMemberId,
 				 stateId : globalStateId,
@@ -5288,10 +5396,26 @@ $(document).on("click",".radioBtnCls",function(){
 function getSettingActivities(){
 	//getActivitiesDetails();
 	 var type = "activities"
-	 var dates = $('#dateRangeIdForEvents').val();
+	/* var dates = $('#dateRangeIdForEvents').val();
 	  var dateArray = dates.split("-");
 	  var fromDateStr=dateArray[0];
-	  var toDateStr=dateArray[1];
+	  var toDateStr=dateArray[1];*/
+	  
+	   var dates=$('#daysListId').val();
+	  var fromDateStr='';
+	  var toDateStr='';
+	  
+	 if(dates != null && dates.length>0){
+		 var dateArray=dates.split(" to ");
+		  fromDateStr=dateArray[0];
+		  toDateStr=dateArray[1];
+		  if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			} 
+	 }
+	 
 	var jsObj={
 		//fromDate: '01/01/2014',//customStartDateActivities,
 		//toDate: '01/01/2020' //customEndDateActivities
