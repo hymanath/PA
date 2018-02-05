@@ -3545,7 +3545,7 @@ public class WebServiceHandler {
 	public List<AffiliatedMemberVO>  searchAffiliatedMemberDetails(JSONObject jObj){
 		
 		try{ 
-			return  webServiceHandlerService1.searchAffiliatedMemberDetails(jObj.getString("searchType"),jObj.getString("searchValue"),jObj.getString("locationType"),jObj.getLong("locationValue"));
+			return  webServiceHandlerService.searchAffiliatedMemberDetails(jObj.getString("searchType"),jObj.getString("searchValue"),jObj.getString("locationType"),jObj.getLong("locationValue"));
 		}catch(Exception e){
 			LOG.error("Exception Occured in getRegistrationPersonDetails() Method in WebServiceHandler, Exception is ",e);
 			return null;
