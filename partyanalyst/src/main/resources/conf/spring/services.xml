@@ -2480,6 +2480,7 @@
 	   <property name="locationDashboardService" ref="locationDashboardService"/>
 	   <property name="kaizalaInfoService" ref="kaizalaInfoService"/>
 	   <property name="partyMeetingMOMService" ref="partyMeetingMOMService"/>
+	   <property name="affiliatedMember" ref="affiliatedMember"/>
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -4666,6 +4667,12 @@
     	 	<property name="alertCreationAPIService" ref="alertCreationAPIService"></property>
     	 	<property name="alertUpdationAPIService" ref="alertUpdationAPIService"></property>
     	 </bean>
+    	 
+    	 <bean name="affiliatedMember" class="com.itgrids.partyanalyst.service.impl.AffiliatedMemberImpl" >
+        <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+        <property name="affiliatedMemberDAO" ref="affiliatedMemberDAO" />
+        </bean>
+        
     	 <bean name="coreDashboardNominatedPostService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardNominatedPostService">
     	 	<property name="nominatedPostDAO" ref="nominatedPostDAO"></property>
     	 	<property name="nominatedPostApplicationDAO" ref="nominatedPostApplicationDAO"></property>
