@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityDetailsVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AffiliatedMemberVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
@@ -302,4 +303,5 @@ public interface IWebServiceHandlerService {
     public ResultStatus saveActivityAnswerDetails(ActivityDetailsVO inputVO);
     public ResultStatus uploadDocumentImage(ActivityDetailsVO inputVO,List<String> docuemntBase64List);
     public List<ActivityDetailsVO> getDocumentDtlsByLocation(Long activityScopeId, Long activityLocationInfoId);
+    public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValue);
 }
