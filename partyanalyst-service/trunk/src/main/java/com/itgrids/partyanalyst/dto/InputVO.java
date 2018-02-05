@@ -31,7 +31,7 @@ public class InputVO {
 	private List<Long> levelValues = new ArrayList<Long>(0);
 	private Long userTypeId = 0L;
 	private Long stateId = 0L;
-	
+	private Long overalCount=0l;
 	
 	public Long getUserTypeId() {
 		return userTypeId;
@@ -166,5 +166,10 @@ public class InputVO {
 	public void setBoothId(Long boothId) {
 		this.boothId = boothId;
 	}
-		
+	public Long getOveralCount() {
+		return overalCount;
+	}
+	public void setOveralCount(Long overalCount) {
+		this.overalCount = overalCount;
+	}
 }

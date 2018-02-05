@@ -544,4 +544,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getMemberDetailsByMembershipId(String membershipId);
 	  public Long filteredTdpCardreIdsCount(List<Long> list,Long userAccessLevelId,List<Long> userAccessLevelValues);
 	  public List<Object[]> getMobileNoOfMembership(String membershipId);
+	  public List<String> getCadreMobileNumbers(List<Long> cadreIds);
 } 

@@ -357,6 +357,19 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		query.setParameter("locationValue", locationValue);
 		return query.list();
 	}
+	public List<Long> getAllTehsilIds( List<Long> levelValues) {
+		 StringBuilder queryString = new StringBuilder();
+		 queryString.append(" select distinct model.tehsil.tehsilId from Booth model " );
+		 if(levelValues != null && levelValues.size()>0){
+			 queryString.append(" where " +
+				" model.constituency.constituencyId in(:levelValues) ");
+		 }
+		 Query query = getSession().createQuery(queryString.toString());
+		 if(levelValues != null && levelValues.size()>0){
+		 query.setParameterList("levelValues", levelValues);
+		 }
+		return query.list();
+	}
 }
 	
 	

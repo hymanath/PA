@@ -97,4 +97,6 @@ public List<Object[]> getAllTehsilInfoDetails();
 	//public Long getAllConstituenciesByLocalElectionBodyWardId(Long localElectionBodyWardId) ;
 	public List<Long> getConstituencyByPanchayt(Long panchaytId);
 	public List<Long> getConstituencyByLocalBody(Long locationValue);
+	public List<Long> getAllTehsilIds(List<Long> levelValues);
+	
 }

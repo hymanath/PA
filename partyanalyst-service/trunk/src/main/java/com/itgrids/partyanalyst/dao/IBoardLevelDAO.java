@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.BoardLevel;
 public interface IBoardLevelDAO extends GenericDao<BoardLevel, Long>{
 
 	public List<Object[]> getBoardLevels();
+	public List<Object[]> getAllBoardLevels(Long boardLevelId);
 }
