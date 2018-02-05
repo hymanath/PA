@@ -70,5 +70,4 @@ public interface IWebServiceHandlerService1 {
 	 
 	 public NewCadreRegistrationVO getRegistrationPersonDetails(String voterCardNo,Long familyVoterId,Long tdpCadreId,String status);
 	 
-	 public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValue);
 	 }
