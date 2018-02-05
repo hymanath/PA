@@ -1311,8 +1311,46 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	$("#notSeleWorksId").html(notSeleWorks)
 	
 });	
-$(document).on("change","#assignTypeId",function(){
+
+$(document).on("click","#assignToUserId",function(){
 	var assignType = $(this).val();
+	//alert(assignType);
+	$("#commentsDivId").hide();
+	if(glDesignationId == 23){
+		$("#assignOfficerDivId").show();
+		$("#assignDesignationDivId").show();
+	}else{
+		$("#assignOfficerDivId").hide();
+		$("#assignDesignationDivId").hide();
+	}
+	getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+	$("#assighTypeId").hide();
+	$("#assignToId").html('');
+	$("#assignToId").html('<option value="0"> Select designation </option>');
+	$("#officerId").html('');
+	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+	$('#assignningTypeId').html('FORWARD TO');
+	$("#assignToId").trigger("chosen:updated");
+	$("#officerId").trigger("chosen:updated");
+	$('#endorsWorksId').html('Save Details');
+	$("#actionTypId").val("0");
+	$("#actionTypId").trigger('chosen:updated');
+	$('#actionTypeStr').val('COMPLETED');
+	if ($(this).is(':checked')) {
+		if(assignType == 'ASSIGNED'){
+			getPmActionTypeList();
+			$('#assignningTypeId').html('ASSIGN TO');
+			$('#actionTypeStr').val('ASSIGNED');
+			$('#endorsWorksId').html('Assign');
+			$("#assighTypeId").show();
+			$("#commentsDivId").show();
+			$("#assignOfficerDivId").show();
+			$("#assignDesignationDivId").show();
+		}
+	}
+});
+$(document).on("change","#assignTypeId",function(){
+	
 	
 	$("#commentsDivId").hide();
 	$("#assignOfficerDivId").hide();
@@ -1402,8 +1440,10 @@ $(document).on("change","#statusChangeId",function(){
 		$("#commentsDivId").hide();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
-		$("#assignOfficerDivId").hide();
-		$("#assignDesignationDivId").hide();
+		
+		$('#assignningTypeId').html('FORWARD TO');
+		$("#assignOfficerDivId").show();
+		$("#assignDesignationDivId").show();
 		$("#documentTypeDivId").hide();
 		$("#referranceNoDivId").hide();
 		$("#endorsementDivId").hide();
@@ -1415,7 +1455,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#fileUploadDiv").show();
 		$("#fileUploadIdDiv").hide();
 		$("#actionTypeDivId").show();
-		
+		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 3){
 		$("#endorsementNoErr").html('');
 		$("#endorsentDivId").hide();
@@ -1468,6 +1508,7 @@ $(document).on("change","#statusChangeId",function(){
 		//$(".saveEnable").prop("disabled", false);
 		//$('.saveEnable').removeAttr('title');
 		$("#coveringLetterGenerator").html("");
+		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 4 || statusId == 5){
 		$("#endorsentDivId").hide();
 		$("#remarkIdErr").html('');
@@ -1812,15 +1853,14 @@ $.ajax({
 					  if(result.exceptionMsg == "SUCCESS"){
 						
 						 setTimeout(function () {
-						$("#ajaxcallImageId").html("<center><h4 style='color: green;'>Updated Successfully</h4></center>")
+							$("#ajaxcallImageId").html("<center><h4 style='color: green;'>Updated Successfully</h4></center>");
+							alert("Work(s) details updated successfully");
+							window.location.reload();
 						}, 5000);
 						    setTimeout(function () {
 						 $("#endorseMentModalDivId").modal("hide");
 						}, 6000); 
-							//$(".saveEnable").prop("disabled", true);
-						 
-						 alert("Work(s) details updated successfully");
-							window.reload();
+							//$(".saveEnable").prop("disabled", true);							
 						  //getPetitionDetails(petitionId,endorsementNO);
 						 
 						 // $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
@@ -1896,7 +1936,7 @@ $.ajax({
 
 function generateCoveringLetterForPetition(){
 	//$('#endorsWorksId').hide();
-	$('#coveringLetterPthErr') .html("");
+	$('#coveringLetterPthErr').html("<span style='color:green;'> Please wait Covering Letter is generating...</span>");
 	
 	var flag = false;
 	$('#endorsementNoErr').html('');
@@ -1995,8 +2035,9 @@ var json = {
    xhr.setRequestHeader("Content-Type", "application/json");
   }
  }).done(function(result){
-	 $("#coverLetterPath").val("");
+	  $("#coverLetterPath").val("");
 	  $('#endorsementNoErr').html("");
+	  $('#coveringLetterPthErr').html("");
 	 if(result !=null){
 		  $('#endorsementNoErr').html("<span style='color:green;'> covering letter generated successfully...</span>");
 		 var str='';
@@ -2095,7 +2136,7 @@ function buildImages(result){
 	str+='<div class="col-sm-12 m_top15" id="ScrollDivId" style="height:400px; overflow:scroll;">';
 		str+='<ul>';
 		if(typeof(result.allFileList) != 'undefined' && result.allFileList != null && result.allFileList.length>0){
-			$('#imageBuildingId').show();
+			//$('#imageBuildingId').show();
 			for(var i in  result.allFileList){
 				var scanCopySpl = result.allFileList[i].value.split(".");
 				var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase());
@@ -2115,48 +2156,7 @@ function buildImages(result){
 	if(result.allFileList.length < 1){
 		$("#imageBuildingId").hide();
 	}
-	$(".partyWiseSlickApply").slick({
-			 slide: 'li',
-			 slidesToShow: 4,
-			 slidesToScroll: 3,
-			 infinite: false,
-			 swipeToSlide:false,
-			 swipe:false,
-			 touchMove:false,
-			 responsive: [
-				{
-				  breakpoint: 1024,
-				  settings: {
-					slidesToShow: 3,
-					slidesToScroll: 3
-				  }
-				},
-				{
-				  breakpoint: 768,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				},
-				{
-				  breakpoint: 600,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				},
-				{
-				  breakpoint: 480,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				}
-				// You can unslick at a given breakpoint now by adding:
-				// settings: "unslick"
-				// instead of a settings object
-			  ]
-		}); 
+	 
 }
 
 function getPetitionAndWorkWiseHistoryDetails(petitinId,workId){
