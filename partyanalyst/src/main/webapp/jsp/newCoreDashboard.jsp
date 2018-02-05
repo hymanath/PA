@@ -147,6 +147,7 @@
 		<li expand-icon="prajaSankaplaYatra" right-nav="true">Category Wise News</li>
 		<li expand-icon="EMCoverageTime" right-nav="true">EM Coverage Time</li>
 		<li expand-icon="kaizala" right-nav="true">kaizala</li>
+		<li expand-icon="nominatedPost" right-nav="true">Nominated Post</li>
 		<li expand-icon="pressmeet" right-nav="true">Press Meet</li>
 		<li expand-icon="newsLetters" right-nav="true">Press Meet</li>
 		<li expand-icon="tours" right-nav="true">Tours</li>
@@ -4546,7 +4547,7 @@
                             </div>
                         </div>
 						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="gunTopId"  expand-block-more="attendance">
-							
+						
 						</div>
 						
 						
@@ -4555,65 +4556,53 @@
             </div>
        </div>
 		<!-- Attendance End-->
-		<!-- grivance start-->
-		 <!--<div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
-			   <div class="panel panel-default panelNewCustom ">
-				   <div class="panel-heading">
-					 <div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="grivance">
-						   <h4 class="panel-title text-capital" style="width:440px;">    
-							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
-							  Grievance Efficiency 
-						   </h4>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="grivance">
-						   <span class="grivanceIconExpand pull-right" expand-icon="grivance">
-						   <i class="glyphicon glyphicon-fullscreen"></i>
-						   </span>
-						</div>
-					 </div>
-				  </div>
-				   <div class="panel-body">
+		<!-- Nominated Post Start-->
+		<!--<div class="col-md-6 col-xs-12 col-sm-12 newNominatedPostBlock" expand-block="nominatedPost">
+			 <div class="panel panel-default panelNewCustom">
+                <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-12">
-							<h4 class="headingColor">Efficiency
-							<span class="pull-right glyphicon glyphicon-calendar"></span>
+						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="nominatedPost">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
+								Nominated Posts - <small id="attendanceId" class="text-muted"></small>
 							</h4>
-					    </div>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="nominatedPost">
+							<span class="attendanceSetIcon pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="attendanceIconRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+							</span> 
+							<span class="attendaceIconExpand pull-right mainExpandCls" expand-icon="nominatedPost">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+						</div>
+					</div>					
+                </div>
+                <div class="panel-body">
+					//body starts
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock m_top10" expand-block-inner="nominatedPost">
+							left block
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="nominatedPost">
+							right block
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12">
+                        	<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon"  expand-block-right="nominatedPost" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        </div>
 					</div>
 					<div class="row">
-					<div class="col-sm-12 m_top20">
-					<div id="efficiencyId"></div>
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks"  expand-block-more="nominatedPost">
+							more info
+						</div>
 					</div>
-					</div>
-					<div class="row ">
-					<div class="col-sm-12 m_top10"></div>
-					<div id="donutchart"></div>
-					</div>
-					<div class="row">
-					<h4 style="padding-left: 20px;"> Search By Compliants </h4>
-					<div class="col-sm-12">
-					<div class="col-sm-6">
-					<select class="select" id="searchComplaintId">
-					<option value="Complaint ID">Complaint ID</option>
-					<option value="Mobile Number">Mobile Number</option>
-					<option value="Membership">Membership ID</option>
-					<option value="Name">Name</option>
-				    <option value="Voter ID">Voter ID</option>
-				    <option value="Admission No">Application No</option>
-					</select>
-					</div>
-					<div class=" col-sm-3">
-					   <input id="searchValue" class="form-control search-text" type="text">
-					</div>
-					<div class=" col-sm-3">
-					  <button type="button" class="btn btn-danger" id="clickbutton">SEARCH</button>
-				   </div>
-				   </div>
+					//body ends
 				</div>
-			  </div>
-	    </div>-->
-		<!-- grivance End-->
+			</div>
+		</div>-->
+		<!-- Nominated Post End-->
 	</div>
 	<div class="row">
 		<!-----------News Letters Start----------->
