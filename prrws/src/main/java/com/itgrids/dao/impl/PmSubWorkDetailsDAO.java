@@ -276,11 +276,12 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	}
 	public List<Object[]> getCompleteOrStatusOverviewDetails(List<Long> deptIds ,Date startDate,Date endDate,String type,Set<Long> petitionsIdsList){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select count(distinct model.pmSubWorkDetailsId)," +//0
+		sb.append(" select  model.pmSubWorkDetailsId," +//0
 				" model.petition.petitionId," +//1
 				"  model.pmStatus.pmStatusId," +//2
 				"model.pmStatus.status ");//3
-		sb.append(",round(sum(model.costEstimation),2) " );//4
+		sb.append(",round(model.costEstimation,2) " );//4
+		//sb.append(",round(sum(model.costEstimation),2) " );//4
 		
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
 			sb.append(", model2.pmDesignation.pmDesignationId" +//5
@@ -328,10 +329,10 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			sb.append(" and model.petition.petitionId in (:petitionsIdsList) ");
 		}
 		
-		sb.append(" group by model.petition.petitionId, model.pmStatus.pmStatusId " );
-		sb.append(", model2.pmDesignation.pmDesignationId,model.pmSubject.pmSubjectId,model.pmDepartment.pmDepartmentId ");
-		sb.append(" order by model.pmStatus.orderNo asc ," +
-				"model2.pmDesignation.preferrableOrderNO asc,model.pmSubject.preferrableOrderNO asc,model.pmDepartment.preferrableOrderNO asc ");
+		//sb.append(" group by model.petition.petitionId, model.pmStatus.pmStatusId " );
+		//sb.append(", model2.pmDesignation.pmDesignationId,model.pmSubject.pmSubjectId,model.pmDepartment.pmDepartmentId ");
+		//sb.append(" order by model.pmStatus.orderNo asc ," +
+			//	"model2.pmDesignation.preferrableOrderNO asc,model.pmSubject.preferrableOrderNO asc,model.pmDepartment.preferrableOrderNO asc ");
 		//sb.append(", model2.pmDesignation.pmDesignationId,pmSubject.pmSubjectId,pmDepartment.pmDepartmentId order by " +
 			//	" model2.pmDesignation.preferrableOrderNO asc,pmSubject.preferrableOrderNO asc,pmDepartment.preferrableOrderNO asc,model.pmStatus.orderNo asc ");
 		if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
