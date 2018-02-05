@@ -106,34 +106,34 @@ function buildEmpOverView(result){
 					str+='<div class="media-left" >';
 						if(employeeAttendanceOverView[i].name == "TOTAL EMPLOYEES"){
 							if (result.totalCount > 0) {
-								str+='<h5 class="m_top25 nameAlignmentCss employeeTypeCls" attr_type = "totalEmployee" style="cursor:pointer;"><span>Information Technology</span>';
+								str+='<h5 class="m_top25 nameAlignmentCss employeeTypeCls" attr_type = "totalEmployee" style="cursor:pointer;"><span>PR,RD&nbsp;& RWS</span>';
 								//str+='<span class="pull-right">'+result.totalCount+'</span>';
 								str+='</h5>';
 								//str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 							} else {
-									str+='<h6 class="m_top20 nameAlignmentCss" ><span>Information Technology</span></h6>';
+									str+='<h6 class="m_top20 nameAlignmentCss" ><span>PR,RD&nbsp;& RWS</span></h6>';
 								  // str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 							}
 						}else if(employeeAttendanceOverView[i].name == "PRESENT"){
 							if (result.presentCount > 0) {
-								str+='<h5 class="m_top25 nameAlignmentCss employeeTypeCls" attr_type = "todayPresentEmployee" style="cursor:pointer;"><span>Information Technology</span></h5>';
+								str+='<h5 class="m_top25 nameAlignmentCss employeeTypeCls" attr_type = "todayPresentEmployee" style="cursor:pointer;"><span>PR,RD&nbsp;& RWS</span></h5>';
 							   //str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 							} else {
-								str+='<h6 class="m_top25 nameAlignmentCss" ><span>Information Technology</span></h6>';
+								str+='<h6 class="m_top25 nameAlignmentCss" ><span>PR,RD&nbsp;& RWS</span></h6>';
 							     //str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 							}
 							
 						}else if(employeeAttendanceOverView[i].name == "ABSENT"){
 							if (result.absentCount > 0) {
-									str+='<h5 class="m_top25 nameAlignmentCss employeeTypeCls" attr_type = "absentEmployee" style="cursor:pointer;"><span>Information Technology</span></h5>';
+									str+='<h5 class="m_top25 nameAlignmentCss employeeTypeCls" attr_type = "absentEmployee" style="cursor:pointer;"><span>PR,RD&nbsp;& RWS</span></h5>';
 									//str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 							} else {
-									str+='<h6 class="m_top25 nameAlignmentCss" ><span>Information Technology</span></h6>';
+									str+='<h6 class="m_top25 nameAlignmentCss" ><span>PR,RD&nbsp;& RWS</span></h6>';
 									//str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 					
 							}
 						}else if(employeeAttendanceOverView[i].name == "BIOMETRIC DEVICES"){
-							str+='<h5 class="m_top20 nameAlignmentCss" ><span>Information Technology</span></h5>';
+							str+='<h5 class="m_top20 nameAlignmentCss" ><span>PR,RD&nbsp;& RWS</span></h5>';
 							//str+='<h5 class="m_top10"><span>Panchyathi-Raj</span> <span class="pull-right">0</span></h5>';
 						}
 						
@@ -272,7 +272,7 @@ function buildEmployeeAttendenceTimePeriodWise(result){
 			
 		},
 		series:[{
-			name: 'Information Technologies',
+			name: 'PR,RD&nbsp;& RWS',
 			data: dataArr,
 
 			dataLabels: {
@@ -652,7 +652,7 @@ function buildIndividualEmployeeAttendenceDetails(result){
 				
 			},
 			series:[{
-				name: 'Information Technologies',
+				name: 'PR,RD & RWS',
 				data: dataArr,
 
 				dataLabels: {
