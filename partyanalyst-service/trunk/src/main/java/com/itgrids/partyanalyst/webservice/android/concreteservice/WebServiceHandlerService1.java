@@ -40,7 +40,6 @@ import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
-import com.itgrids.partyanalyst.dto.AffiliatedMemberVO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreImageVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -66,7 +65,6 @@ import com.itgrids.partyanalyst.model.TabLogInAuth;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreImageSinkData;
 import com.itgrids.partyanalyst.model.TdpCadrePsychometricTest;
-import com.itgrids.partyanalyst.service.IAffiliatedMember;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -145,8 +143,6 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	@Autowired private IStrategyModelTargetingService strategyModelTargetingService;
     @Autowired private IUserSurveyBoothsDAO userSurveyBoothsDAO ;
     @Autowired private ISurveyDataDetailsService surveyDataDetailsService;
-    
-    @Autowired private IAffiliatedMember affiliatedMember;
     
     @Autowired
 	 public ISurveyUserBoothAssignDAO surveyUserBoothAssignDAO; 
@@ -243,13 +239,6 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		this.boothDAO = boothDAO;
 	}*/
 
-	public IAffiliatedMember getAffiliatedMember() {
-		return affiliatedMember;
-	}
-
-	public void setAffiliatedMember(IAffiliatedMember affiliatedMember) {
-		this.affiliatedMember = affiliatedMember;
-	}
 
 	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
 		return userVoterDetailsDAO;
@@ -1509,15 +1498,6 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		}
     	return returnUrl;
     }
-	@Override
-	public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValue) {
-		List<AffiliatedMemberVO> affiliatedMemberList=new ArrayList<AffiliatedMemberVO>();
-		try{
-			affiliatedMemberList = affiliatedMember.searchAffiliatedMemberDetails(searchType,searchValue, locationType,locationValue);
-    	}catch(Exception e){
-    		LOG.error("Exception raised in getRegistrationPersonDetails  method in WebServiceHandlerService1",e);
-    	}
-    	return affiliatedMemberList;
-	}
+	
 }
 
