@@ -45,6 +45,7 @@ public class SolidWasteManagementVO {
 	private Long locationId=0L;
 	private String  locationName;
 	private Long   blockNo=0L;
+	private Long gpCnt=0L;
 	private List<SolidWasteManagementVO> subList = new ArrayList<SolidWasteManagementVO>(0);
 	
 	public String getId() {
@@ -292,6 +293,12 @@ public class SolidWasteManagementVO {
 	}
 	public void setSubList(List<SolidWasteManagementVO> subList) {
 		this.subList = subList;
+	}
+	public Long getGpCnt() {
+		return gpCnt;
+	}
+	public void setGpCnt(Long gpCnt) {
+		this.gpCnt = gpCnt;
 	}
 	
 		
