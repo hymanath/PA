@@ -48,6 +48,8 @@ import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.NominatedPostCandidateDtlsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
@@ -72,6 +74,7 @@ import com.itgrids.partyanalyst.service.ICoreDashboardEventsActivitiesService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
+import com.itgrids.partyanalyst.service.ICoreDashboardNominatedPostService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
@@ -176,7 +179,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<SessionVO> sessionVOList = new ArrayList<SessionVO>();
 	private AlertOverviewVO alertOverviewVO = new AlertOverviewVO();
 	private List<TrainingCampSurveyVO> campSurveyVOs;
-	
+	private ICoreDashboardNominatedPostService coreDashboardNominatedPostService;
 	/**
 	 * starting Payment Gateway required parameters
 	 */
@@ -211,7 +214,9 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<KeyValueVO> keyValueVOList;
 	private KaizalaDashboardVO kaizalaDashboardVO;
 	private List<EventLocationVO> jbDataList;
-	
+
+	List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
+	List<NominatedPostDetailsVO> nominatedPostDetailsVOList;
 	//setters And Getters
 	
 	
@@ -1043,6 +1048,35 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setJbDataList(List<EventLocationVO> jbDataList) {
 		this.jbDataList = jbDataList;
+	}
+
+	
+	public ICoreDashboardNominatedPostService getCoreDashboardNominatedPostService() {
+		return coreDashboardNominatedPostService;
+	}
+
+	public void setCoreDashboardNominatedPostService(
+			ICoreDashboardNominatedPostService coreDashboardNominatedPostService) {
+		this.coreDashboardNominatedPostService = coreDashboardNominatedPostService;
+	}
+
+	public List<NominatedPostCandidateDtlsVO> getNominatedPostCandList() {
+		return nominatedPostCandList;
+	}
+
+	public void setNominatedPostCandList(
+			List<NominatedPostCandidateDtlsVO> nominatedPostCandList) {
+		this.nominatedPostCandList = nominatedPostCandList;
+	}
+
+	
+	public List<NominatedPostDetailsVO> getNominatedPostDetailsVOList() {
+		return nominatedPostDetailsVOList;
+	}
+
+	public void setNominatedPostDetailsVOList(
+			List<NominatedPostDetailsVO> nominatedPostDetailsVOList) {
+		this.nominatedPostDetailsVOList = nominatedPostDetailsVOList;
 	}
 
 	//business methods
@@ -5616,4 +5650,87 @@ public String getIndividualCandidateDesignationWiseTourComplainceDetails(){
 	}
 	return Action.SUCCESS;
 }
+public String getLevelWisePostsOverView(){
+    try{
+      jObj = new JSONObject(getTask());
+       List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+       nominatedPostCandList = coreDashboardNominatedPostService.getLevelWisePostsOverView(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"));
+    }catch(Exception e){
+      LOG.error("Exception raised at getLevelWisePostsOverView() of LocationDashboardAction{}", e);
+    }
+    return Action.SUCCESS;
+  }
+public String getDepartmentWisePostAndApplicationDetails(){
+    try{
+      jObj = new JSONObject(getTask());
+       List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+       nominatedPostDetailsVOList = coreDashboardNominatedPostService.getDepartmentWisePostAndApplicationDetails(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),
+       		jObj.getLong("deptId"));
+    }catch(Exception e){
+      LOG.error("Exception raised at getDepartmentWisePostAndApplicationDetails() of LocationDashboardAction{}", e);
+    }
+    return Action.SUCCESS;
+  }
+public List<Long> convertJsonStringList(JSONArray jsonArray){
+	List<Long> idsList=  new ArrayList<Long>();
+	if(jsonArray!=null && jsonArray.length()>0){
+		for(int i =0; i< jsonArray.length();i++){
+			idsList.add(Long.parseLong(jsonArray.getString(i)));        
+		}
+	}
+	return idsList;
+	
+}
+public String getNominatedPostLocationWiseBoardLevelCount(){
+    try{
+      jObj = new JSONObject(getTask());
+       List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+       nominatedPostCandList = coreDashboardNominatedPostService.getNominatedPostLocationWiseBoardLevelCount(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"));
+    }catch(Exception e){
+      LOG.error("Exception raised at getNominatedPostLocationWiseBoardLevelCount() of LocationDashboardAction{}", e);
+    }
+    return Action.SUCCESS;
+  }
+public String getNominatedPostStateWiseCount(){
+    try{
+      jObj = new JSONObject(getTask()); 
+      nominatedPostCandList = coreDashboardNominatedPostService.getNominatedPostStateWiseCount(jObj.getString("fromDateStr"),jObj.getString("toDateStr"));
+    }catch(Exception e){
+      LOG.error("Exception raised at getNominatedPostStateWiseCount() of LocationDashboardAction{}", e);
+    }
+    return Action.SUCCESS;
+  }
+public String getUserTypeWiseNominatedPostDetailsCnt(){
+	try {
+		LOG.info("Entered into getUserTypeWiseKaizalaCommitteeMemberDetailsCnt()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		Long userId = 1L;
+		Long userTypeId = jObj.getLong("userTypeId");
+		String fromDateStr = jObj.getString("fromDateStr");
+		String toDateStr = jObj.getString("toDateStr");
+		InputVO vo = new InputVO();
+		vo.setActivityMemberId(activityMemberId);
+		vo.setStateId(stateId);
+		vo.setUserId(userId);
+		vo.setUserTypeId(userTypeId);
+		vo.setFromDateStr(fromDateStr);
+		vo.setToDateStr(toDateStr);
+		userTypeVOList = coreDashboardNominatedPostService.getUserTypeWiseNominatedPostDetailsCnt(vo);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getUserTypeWiseKaizalaCommitteeMemberDetailsCnt() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getDepartMentAndBoardWisePositinsStatusCount(){
+    try{
+      jObj = new JSONObject(getTask());
+       List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+       nominatedPostDetailsVOList = coreDashboardNominatedPostService.getDepartMentAndBoardWisePositinsStatusCount(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"),jObj.getLong("statusId"));
+    }catch(Exception e){
+      LOG.error("Exception raised at getDepartMentAndBoardWisePositinsStatusCount() of LocationDashboardAction{}", e);
+    }
+    return Action.SUCCESS;
+  }
 }
