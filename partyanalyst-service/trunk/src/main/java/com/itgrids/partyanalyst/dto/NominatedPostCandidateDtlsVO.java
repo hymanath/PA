@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NominatedPostCandidateDtlsVO {
 
 	private Long tdpCadreId;
@@ -35,6 +38,20 @@ public class NominatedPostCandidateDtlsVO {
 	private double openPostPer=0.0;
 	private double goIssuedPer=0.0;
 	private double totalPer=0.0;
+	private Long finalizedPost =0l;
+	private double finalizedPer =0.0;
+	private Long expireOneMonth =0l;
+	private Long exprireTwoMnth=0l;
+	private Long expireThreeMnth =0l;
+	private List<NominatedPostCandidateDtlsVO> levelList = new ArrayList<NominatedPostCandidateDtlsVO>();
+	private String key;
+	private Long statePosts=0l;
+	private Long centralPosts=0l;
+	private Long districtPosts=0l;
+	private Long constncyPosts=0l;
+	private Long mandalPosts=0l;
+	private Long villagePosts=0l;
+	private Long overalTotal =0l;
 	public String getBoard() {
 		return board;
 	}
@@ -232,6 +249,90 @@ public class NominatedPostCandidateDtlsVO {
 	}
 	public void setTotalPer(double totalPer) {
 		this.totalPer = totalPer;
+	}
+	public Long getFinalizedPost() {
+		return finalizedPost;
+	}
+	public void setFinalizedPost(Long finalizedPost) {
+		this.finalizedPost = finalizedPost;
+	}
+	public double getFinalizedPer() {
+		return finalizedPer;
+	}
+	public void setFinalizedPer(double finalizedPer) {
+		this.finalizedPer = finalizedPer;
+	}
+	public List<NominatedPostCandidateDtlsVO> getLevelList() {
+		return levelList;
+	}
+	public void setLevelList(List<NominatedPostCandidateDtlsVO> levelList) {
+		this.levelList = levelList;
+	}
+	public Long getExpireOneMonth() {
+		return expireOneMonth;
+	}
+	public void setExpireOneMonth(Long expireOneMonth) {
+		this.expireOneMonth = expireOneMonth;
+	}
+	public Long getExprireTwoMnth() {
+		return exprireTwoMnth;
+	}
+	public void setExprireTwoMnth(Long exprireTwoMnth) {
+		this.exprireTwoMnth = exprireTwoMnth;
+	}
+	public Long getExpireThreeMnth() {
+		return expireThreeMnth;
+	}
+	public void setExpireThreeMnth(Long expireThreeMnth) {
+		this.expireThreeMnth = expireThreeMnth;
+	}
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
+	public Long getStatePosts() {
+		return statePosts;
+	}
+	public void setStatePosts(Long statePosts) {
+		this.statePosts = statePosts;
+	}
+	public Long getCentralPosts() {
+		return centralPosts;
+	}
+	public void setCentralPosts(Long centralPosts) {
+		this.centralPosts = centralPosts;
+	}
+	public Long getDistrictPosts() {
+		return districtPosts;
+	}
+	public void setDistrictPosts(Long districtPosts) {
+		this.districtPosts = districtPosts;
+	}
+	public Long getConstncyPosts() {
+		return constncyPosts;
+	}
+	public void setConstncyPosts(Long constncyPosts) {
+		this.constncyPosts = constncyPosts;
+	}
+	public Long getMandalPosts() {
+		return mandalPosts;
+	}
+	public void setMandalPosts(Long mandalPosts) {
+		this.mandalPosts = mandalPosts;
+	}
+	public Long getVillagePosts() {
+		return villagePosts;
+	}
+	public void setVillagePosts(Long villagePosts) {
+		this.villagePosts = villagePosts;
+	}
+	public Long getOveralTotal() {
+		return overalTotal;
+	}
+	public void setOveralTotal(Long overalTotal) {
+		this.overalTotal = overalTotal;
 	}
 	
 }

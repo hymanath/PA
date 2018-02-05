@@ -24,8 +24,17 @@ public class NominatedPostDetailsVO {
 	private Long receivedCnt = 0l;
 	private Long shorlistedCnt = 0l;
 	private Long readyToFinalCnt = 0l;
-	
-	
+	private Long finalizedCnt=0l;
+	private Long goIsuuedCnt =0l;
+	private Long expireOneMnth =0l;
+	private Long expireTwoMnth=0l;
+	private Long expireThreMnth=0l;
+	private Long boardId;
+	private String board;
+	private Long positionId;
+	private String position;
+	private Long positionCount=0l;
+	private Long boardCunt=0l;
 	
 	public String getPerc1() {
 		return Perc1;
@@ -129,6 +138,73 @@ public class NominatedPostDetailsVO {
 	public void setPerc(String perc) {
 		Perc = perc;
 	}
+	public Long getFinalizedCnt() {
+		return finalizedCnt;
+	}
+	public void setFinalizedCnt(Long finalizedCnt) {
+		this.finalizedCnt = finalizedCnt;
+	}
+	public Long getGoIsuuedCnt() {
+		return goIsuuedCnt;
+	}
+	public void setGoIsuuedCnt(Long goIsuuedCnt) {
+		this.goIsuuedCnt = goIsuuedCnt;
+	}
+	public Long getExpireOneMnth() {
+		return expireOneMnth;
+	}
+	public void setExpireOneMnth(Long expireOneMnth) {
+		this.expireOneMnth = expireOneMnth;
+	}
+	public Long getExpireTwoMnth() {
+		return expireTwoMnth;
+	}
+	public void setExpireTwoMnth(Long expireTwoMnth) {
+		this.expireTwoMnth = expireTwoMnth;
+	}
+	public Long getExpireThreMnth() {
+		return expireThreMnth;
+	}
+	public void setExpireThreMnth(Long expireThreMnth) {
+		this.expireThreMnth = expireThreMnth;
+	}
+	public Long getBoardId() {
+		return boardId;
+	}
+	public void setBoardId(Long boardId) {
+		this.boardId = boardId;
+	}
+	public String getBoard() {
+		return board;
+	}
+	public void setBoard(String board) {
+		this.board = board;
+	}
+	public Long getPositionId() {
+		return positionId;
+	}
+	public void setPositionId(Long positionId) {
+		this.positionId = positionId;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	public Long getPositionCount() {
+		return positionCount;
+	}
+	public void setPositionCount(Long positionCount) {
+		this.positionCount = positionCount;
+	}
+	public Long getBoardCunt() {
+		return boardCunt;
+	}
+	public void setBoardCunt(Long boardCunt) {
+		this.boardCunt = boardCunt;
+	}
+	
 	
 	
 }

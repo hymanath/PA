@@ -260,5 +260,121 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	}
 	 	 return query.list();
 	  }
+	public List<Object[]> getNominatedPostExpireDetails(List<Long> locationValues, Date startDate, Date endDate,Long locationTypeId, String year, Long boardLevelId,Long deptId){
+		StringBuilder sb = new StringBuilder();
+	 	 sb.append(" select ");
+	 	if(deptId != null && deptId.longValue() >0l){
+	 		sb.append("  nominatedPostGovt.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId," +
+	 	 		   " nominatedPostGovt.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardName," );
+	 	}else {
+	 		sb.append(" nominatedPostGovt.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
+		 	 		   " nominatedPostGovt.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.deptName," );
+	 	}
+	 	sb.append(" date(nominatedPostGovt.govtOrder.toDate) " + 		   
+	 	//sb.append(" nominatedPostGovt.nominatedPost.nominatedPostStatus.nominatedPostStatusId,nominatedPostGovt.nominatedPost.nominatedPostStatus.status" +
+	 	 		   " ,count(nominatedPostGovt.nominatedPost.nominatedPostId) " +
+	 	 		   " from NominatedPostGovtOrder nominatedPostGovt  " +
+	 	 		   " where nominatedPostGovt.nominatedPost.isDeleted = 'N' " +
+	 			   " and nominatedPostGovt.nominatedPost.isExpired = 'N' " +
+	 			   " and nominatedPostGovt.nominatedPost.nominatedPostMember.isDeleted = 'N' and nominatedPostGovt.isDeleted = 'N' " +
+	 			   " and nominatedPostGovt.isExpired = 'N' and nominatedPostGovt.govtOrder.isDeleted = 'N' ");
+	 	 
+	 	if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
+			/*if (locationTypeId == 2) {
+				//sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValues) ");
+				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+			} else*/ if (locationTypeId == 3) {
+				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.district.districtId in(:locationValues) ");
+			} else if (locationTypeId == 10) {
+				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
+			} else if (locationTypeId == 4) {
+				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValues) ");
+			} else if (locationTypeId == 5) {
+				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValues) ");
+			}else if (locationTypeId == 6) {
+				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostnominatedPostMember.address.panchayat.panchayatId in(:locationValues) ");
+			}else if (locationTypeId == 7) {
+				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValues) ");
+			}else if (locationTypeId == 8) {
+				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.ward.constituencyId in(:locationValues) ");
+			}		
+		}
+	 	
+	 	if(deptId != null && deptId.longValue() >0l){
+	 		 sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId  ");
+	 	 }
+	 	 if(startDate != null && endDate != null){
+	 		 sb.append(" and (date(nominatedPostGovt.nominatedPost.updatedTime) between :startDate and :endDate) ");
+	 	 }
+	 	 if(year != null && !year.trim().isEmpty()){
+	 		 sb.append(" and year(nominatedPostGovt.nominatedPost.updatedTime) = :year ");   
+	 	 }
+	 	if(boardLevelId != null && boardLevelId.longValue() > 0L){
+    	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
+    		  sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.boardLevelId =:boardLevelId ");
+    	   else if(boardLevelId.longValue() ==5L)
+    		  sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.boardLevelId in (5,6) ");
+    	  else if(boardLevelId.longValue() ==7L)
+    		  sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.boardLevelId in (7,8) ");
+	      }
+	 	sb.append(" group by ");
+	 	if(deptId != null && deptId.longValue() >0l){
+	 		sb.append(" nominatedPostGovt.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId ,");
+	 	}else{
+	 		sb.append(" nominatedPostGovt.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId ,");
+	 	}
+	 	 sb.append(" nominatedPostGovt.nominatedPost.nominatedPostStatus.nominatedPostStatusId ");
+	 	 sb.append(" order by nominatedPostGovt.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.deptName ");
+	 	 
+	 	 Query query = getSession().createQuery(sb.toString());
+	 	 
+	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 && locationTypeId != 2){
+	 		  query.setParameterList("locationValues", locationValues);
+	 	  }
+	 	
+	 	 if(year !=null && !year.trim().isEmpty()){
+	 		query.setParameter("year", Integer.parseInt(year));
+	 	 }
+	 	 if(startDate != null && endDate != null){
+	 		 query.setDate("startDate",startDate);
+	 		 query.setDate("endDate",endDate);
+	 	 }
+	 	if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L && boardLevelId.longValue() > 0l)
+	 		query.setParameter("boardLevelId", boardLevelId);
+	 	if(deptId != null && deptId.longValue() >0l)
+	 		query.setParameter("deptId", deptId);
+	 	 return query.list();
+		
+	}
+	
+	public List<Object[]> getNominatedPostStateWiseExpireDetails(Date startDate, Date endDate){
+		StringBuilder sb = new StringBuilder();
+	 	sb.append(" select ");
+	 	sb.append(" nominatedPostGovt.nominatedPost.nominatedPostMember.address.state.stateId," +
+		 	 	  " nominatedPost.nominatedPostMember.address.state.stateName," );
+	 	sb.append(" date(nominatedPostGovt.govtOrder.toDate) " + 		   
+	 	 		   " ,count(nominatedPostGovt.nominatedPost.nominatedPostId) " +
+	 	 		   " from NominatedPostGovtOrder nominatedPostGovt  " +
+	 	 		   " where nominatedPostGovt.nominatedPost.isDeleted = 'N' " +
+	 			   " and nominatedPostGovt.nominatedPost.isExpired = 'N' " +
+	 			   " and nominatedPostGovt.nominatedPost.nominatedPostMember.isDeleted = 'N' and nominatedPostGovt.isDeleted = 'N' " +
+	 			   " and nominatedPostGovt.isExpired = 'N' and nominatedPostGovt.govtOrder.isDeleted = 'N' ");
+	 	 if(startDate != null && endDate != null){
+	 		 sb.append(" and (date(nominatedPostGovt.nominatedPost.updatedTime) between :startDate and :endDate) ");
+	 	 }
+	 	 
+	 	sb.append(" group by ");
+	 	
+	 	 sb.append(" nominatedPostGovt.nominatedPost.nominatedPostStatus.nominatedPostStatusId,nominatedPostGovt.nominatedPost.nominatedPostMember.address.state.stateId ");
+	 	 sb.append(" order by nominatedPostGovt.nominatedPost.nominatedPostStatus.nominatedPostStatusId ");
+	 	 
+	 	 Query query = getSession().createQuery(sb.toString());
+	 	 if(startDate != null && endDate != null){
+	 		 query.setDate("startDate",startDate);
+	 		 query.setDate("endDate",endDate);
+	 	 }
+	 	 return query.list();
+		
+	}
 	
 }

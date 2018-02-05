@@ -9954,5 +9954,20 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			return query.list();
 			
 		}
+	   public List<String> getCadreMobileNumbers(List<Long> cadreIds){
+		   StringBuilder sb = new StringBuilder();
+			  sb.append("select model.mobileNo from TdpCadre model where  model.isDeleted = 'N' " ); 
+			  
+			  if(cadreIds != null && cadreIds.size() >0){
+				  sb.append(" and model.tdpCadreId in(:cadreIds) ");
+			  }
+			  
+			  Query query = getSession().createQuery(sb.toString());
+			  if(cadreIds != null && cadreIds.size() >0){
+				  query.setParameterList("cadreIds", cadreIds);
+			  }
+			  
+			return query.list();
+	   }
 
 }

@@ -707,5 +707,12 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		queryObject.setParameterList("parliamentConstituencyIds", parliamentConstituencyIds);
 		return queryObject.list();
 	}
+	public List<Long> getAllParliamentStateIds(List<Long> districtids) {
+		Query query = getSession().createQuery("select distinct model.delimitationConstituency.constituency.constituencyId " +
+				" from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year =2009 " +
+				" and model.constituency.district.districtId in(:districtIds)");
+		query.setParameterList("districtIds", districtids);
+		  return query.list();
+	}
 	
 }

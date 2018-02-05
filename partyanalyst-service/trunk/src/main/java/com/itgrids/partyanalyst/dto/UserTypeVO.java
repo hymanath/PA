@@ -99,6 +99,21 @@ public class UserTypeVO implements Serializable{
 	private String pendingPerc;
 	private String notSmartPhonePerc;
 	private List<UserTypeVO> subList1 = new ArrayList<UserTypeVO>(0);
+	private Long statePosts =0l;
+	private Long districtPosts =0l;
+	private Long constncyPosts =0l;
+	private Long mandalPosts =0l;
+	private Long centralPosts =0l;
+	private Long villagePosts =0l;
+	private Double statePostsPerc=0.0;
+	private Double districtPostsPerc=0.0;
+	private Double constncyPostsPerc=0.0;
+	private Double mandalPostsPerc=0.0;
+	private Double centralPostsPerc=0.0;
+	private Double villagePostsPerc=0.0;
+	private String totalPer;
+	private Long overalTotal =0l;
+	//private String 
 	// Don't add new variables
 	
 	public String getNotSmartPhonePerc() {
@@ -558,6 +573,89 @@ public class UserTypeVO implements Serializable{
 	public void setDaysList(List<TrainingCampProgramVO> daysList) {
 		this.daysList = daysList;
 	}
-	
+	public Long getStatePosts() {
+		return statePosts;
+	}
+	public void setStatePosts(Long statePosts) {
+		this.statePosts = statePosts;
+	}
+	public Long getDistrictPosts() {
+		return districtPosts;
+	}
+	public void setDistrictPosts(Long districtPosts) {
+		this.districtPosts = districtPosts;
+	}
+	public Long getConstncyPosts() {
+		return constncyPosts;
+	}
+	public void setConstncyPosts(Long constncyPosts) {
+		this.constncyPosts = constncyPosts;
+	}
+	public Long getMandalPosts() {
+		return mandalPosts;
+	}
+	public void setMandalPosts(Long mandalPosts) {
+		this.mandalPosts = mandalPosts;
+	}
+	public Long getCentralPosts() {
+		return centralPosts;
+	}
+	public void setCentralPosts(Long centralPosts) {
+		this.centralPosts = centralPosts;
+	}
+	public Long getVillagePosts() {
+		return villagePosts;
+	}
+	public void setVillagePosts(Long villagePosts) {
+		this.villagePosts = villagePosts;
+	}
+	public Double getStatePostsPerc() {
+		return statePostsPerc;
+	}
+	public void setStatePostsPerc(Double statePostsPerc) {
+		this.statePostsPerc = statePostsPerc;
+	}
+	public Double getDistrictPostsPerc() {
+		return districtPostsPerc;
+	}
+	public void setDistrictPostsPerc(Double districtPostsPerc) {
+		this.districtPostsPerc = districtPostsPerc;
+	}
+	public Double getConstncyPostsPerc() {
+		return constncyPostsPerc;
+	}
+	public void setConstncyPostsPerc(Double constncyPostsPerc) {
+		this.constncyPostsPerc = constncyPostsPerc;
+	}
+	public Double getMandalPostsPerc() {
+		return mandalPostsPerc;
+	}
+	public void setMandalPostsPerc(Double mandalPostsPerc) {
+		this.mandalPostsPerc = mandalPostsPerc;
+	}
+	public Double getCentralPostsPerc() {
+		return centralPostsPerc;
+	}
+	public void setCentralPostsPerc(Double centralPostsPerc) {
+		this.centralPostsPerc = centralPostsPerc;
+	}
+	public Double getVillagePostsPerc() {
+		return villagePostsPerc;
+	}
+	public void setVillagePostsPerc(Double villagePostsPerc) {
+		this.villagePostsPerc = villagePostsPerc;
+	}
+	public String getTotalPer() {
+		return totalPer;
+	}
+	public void setTotalPer(String totalPer) {
+		this.totalPer = totalPer;
+	}
+	public Long getOveralTotal() {
+		return overalTotal;
+	}
+	public void setOveralTotal(Long overalTotal) {
+		this.overalTotal = overalTotal;
+	}
 	
 }

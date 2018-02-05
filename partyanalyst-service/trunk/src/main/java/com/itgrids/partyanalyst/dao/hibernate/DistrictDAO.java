@@ -12,7 +12,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class DistrictDAO extends GenericDaoHibernate<District, Long> implements IDistrictDAO {
-
+	
 	public DistrictDAO() {
 		super(District.class);
 	}
@@ -510,4 +510,11 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 			 query.setParameterList("stateId",stateId );
 			 return query.list();
 			}
+			public List<Long> getAllDistrictIds(){
+				 Query query = getSession().createQuery("select model.districtId from District model " +
+							"where  " +
+							" model.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") order by model.districtName");
+				 //query.setParameterList("stateId",stateId );
+				 return query.list();
+				}
 }
