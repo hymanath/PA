@@ -112,6 +112,8 @@ function buildFavouriteComponentsResult(result) {
 								str+='<h5 style="display: inline-block;text-transform:uppercase;display: inline-block;position: relative;top: -40px;">NEWS - RD,PR,RWS & ITE&C</h5>';
 							}else if(result[i].name != null && result[i].name == 'IT E& C NEWS'){
 								str+='<h5 style="display: inline-block;text-transform:uppercase;display: inline-block;position: relative;top: -40px;">IT E&C NEWS</h5>';
+							}else if(result[i].name != null && result[i].name == 'WaterBudget'){
+								str+='<h5 style="display: inline-block;text-transform:uppercase;display: inline-block;position: relative;top: -40px;">water budget</h5>';
 							}else{
 								str+='<h5 style="display: inline-block;text-transform:uppercase;display: inline-block;position: relative;top: -40px;">'+result[i].name+'</h5>';
 							}
@@ -2050,6 +2052,8 @@ function buildPageWiseComponents(result,pageId){
 									str+='<h5 style="display: inline-block;display: inline-block;position: relative;top: -40px;">PR e Office</h5>';
 								}else if(result[i].subList[j].name == "IT E& C NEWS"){
 									str+='<h5 style="display: inline-block;display: inline-block;position: relative;top: -40px;text-transform:uppercase">IT E&C NEWS</h5>';
+								}else if(result[i].subList[j].name == "WaterBudget"){
+									str+='<h5 style="display: inline-block;display: inline-block;position: relative;top: -40px;text-transform:uppercase">water budget</h5>';
 								}else{
 									str+='<h5 style="display: inline-block;display: inline-block;position: relative;top: -40px;text-transform:uppercase">'+result[i].subList[j].name+'</h5>';
 								}

@@ -170,16 +170,16 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 		        		returnvo.setInActiveRDUs(Obj.getLong("inActiveRDUs"));
 		        		returnvo.setRduGoodWaterQuality(Obj.getLong("rduGoodWaterQuality"));
 		        		returnvo.setRduBadWaterQuality(Obj.getLong("rduBadWaterQuality"));
-		        		returnvo.setRduSellWater(Obj.getString("rduSellWater"));
+		        		returnvo.setRduSellWater(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(Obj.getString("rduSellWater"))));
 		        		if(Obj.has("highDispanceRDU")){
 		        			JSONObject highDspncObj = Obj.getJSONObject("highDispanceRDU");
 		        			returnvo.setHighDispanceRDUName(highDspncObj.getString("name"));
-		        			returnvo.setHighRDUDispanceLtrs(highDspncObj.getString("dispanceLtrs"));
+		        			returnvo.setHighRDUDispanceLtrs(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(highDspncObj.getString("dispanceLtrs"))));
 		        		}
 		        		if(Obj.has("lowDispanceRDU")){
 		        			JSONObject lowDspncObj = Obj.getJSONObject("lowDispanceRDU");
 		        			returnvo.setLowDispanceRDUName(lowDspncObj.getString("name"));
-		        			returnvo.setLowRDUDispanceLtrs(lowDspncObj.getString("dispanceLtrs"));
+		        			returnvo.setLowRDUDispanceLtrs(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(lowDspncObj.getString("dispanceLtrs"))));
 		        		}
 		        		if(Obj.has("customers")){
 		        			JSONObject customersObj = Obj.getJSONObject("customers");
@@ -206,127 +206,129 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 			if(finalArr != null && finalArr.length() > 0){
 				for (int i = 0; i < finalArr.length(); i++) {
 					JSONObject obj = new JSONObject(finalArr.get(i).toString());
-					String districtName = obj.getString("district");
-					NTRSujalaOverviewVO vo = districtMap.get(districtName);
-					if(vo == null){
-						vo = new NTRSujalaOverviewVO();
-						vo.setName(districtName);
-						NTRSujalaOverviewVO mpvo = new NTRSujalaOverviewVO();
-						mpvo.setId(obj.getLong("motherPlantId"));
-						mpvo.setName(obj.getString("name"));
-						mpvo.setHealth(obj.getString("health"));
-						mpvo.setWaterQuality(obj.getString("waterQuality"));
-						mpvo.setMpSafeWaterDispenced(obj.getString("safeWaterDispence"));
-						mpvo.setActiveRDUs(obj.getLong("activeRDUs"));
-						mpvo.setInActiveRDUs(obj.getLong("inActiveRDUs"));
-						mpvo.setTotalRDUs(mpvo.getActiveRDUs()+mpvo.getInActiveRDUs());
-						mpvo.setLocation(obj.has("localtion") ? obj.getString("localtion") : "");
-						mpvo.setMobileNo(obj.has("contactNo") ? obj.getString("contactNo") : "");
-						mpvo.setTds(obj.has("tds") ? obj.getString("tds") : "");
-						mpvo.setPh(obj.has("ph") ? obj.getString("ph") : "");
-						mpvo.setMandal(obj.has("mandal") ? obj.getString("mandal") : "");
-						mpvo.setDistrict(obj.has("district") ? obj.getString("district") : "");
-						mpvo.setLatitude(obj.has("latitude") ? obj.getString("latitude") : "");
-						mpvo.setLongitude(obj.has("longitude") ? obj.getString("longitude") : "");
-						
-						if(obj.has("highDispanceRDU")){
-		        			JSONObject highDspncObj = obj.getJSONObject("highDispanceRDU");
-		        			mpvo.setHighDispanceRDUName(highDspncObj.getString("name"));
-		        			mpvo.setHighRDUDispanceLtrs(highDspncObj.getString("dispanceLtrs"));
-		        		}
-		        		if(obj.has("lowDispanceRDU")){
-		        			JSONObject lowDspncObj = obj.getJSONObject("lowDispanceRDU");
-		        			mpvo.setLowDispanceRDUName(lowDspncObj.getString("name"));
-		        			mpvo.setLowRDUDispanceLtrs(lowDspncObj.getString("dispanceLtrs"));
-		        		}
-		        		if(obj.has("customers")){
-		        			JSONObject customersObj = obj.getJSONObject("customers");
-		        			mpvo.setActiveCustomers(customersObj.getLong("active"));
-		        			mpvo.setInActiveCustomers(customersObj.getLong("inActive"));
-		        			mpvo.setTotalCustomers(mpvo.getActiveCustomers()+mpvo.getInActiveCustomers());
-		        		}
-		        		if(obj.has("rdus")){
-		        			JSONArray rdusArr = new JSONArray(obj.get("rdus").toString());
-		        			if(rdusArr != null && rdusArr.length() > 0){
-		        				for (int j = 0; j < rdusArr.length(); j++) {
-									JSONObject rduObj = new JSONObject(rdusArr.get(j).toString());
-									if(rduObj != null && rduObj.length() > 0){
-										NTRSujalaOverviewVO rduvo = new NTRSujalaOverviewVO();
-										rduvo.setId(rduObj.getLong("rduId"));
-										rduvo.setName(rduObj.getString("name"));
-										rduvo.setLocation(rduObj.getString("location"));
-										rduvo.setLatitude(rduObj.getString("latitude"));
-										rduvo.setLongitude(rduObj.getString("longitude"));
-										rduvo.setWaterTankCapacity(rduObj.getLong("waterTankCapacity"));
-										rduvo.setMpSafeWaterDispenced(rduObj.getString("waterDispencePerDay"));
-										rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
-										rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
-										rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
-										mpvo.getSubList().add(rduvo);
+					if(obj.get("motherPlantId") != null && Long.valueOf(obj.get("motherPlantId").toString()) > 1L){
+						String districtName = obj.getString("district").toUpperCase();
+						NTRSujalaOverviewVO vo = districtMap.get(districtName);
+						if(vo == null){
+							vo = new NTRSujalaOverviewVO();
+							vo.setName(districtName);
+							NTRSujalaOverviewVO mpvo = new NTRSujalaOverviewVO();
+							mpvo.setId(obj.getLong("motherPlantId"));
+							mpvo.setName(obj.getString("name"));
+							mpvo.setHealth(obj.getString("health"));
+							mpvo.setWaterQuality(obj.getString("waterQuality"));
+							mpvo.setMpSafeWaterDispenced(obj.getString("safeWaterDispence"));
+							mpvo.setActiveRDUs(obj.getLong("activeRDUs"));
+							mpvo.setInActiveRDUs(obj.getLong("inActiveRDUs"));
+							mpvo.setTotalRDUs(mpvo.getActiveRDUs()+mpvo.getInActiveRDUs());
+							mpvo.setLocation(obj.has("localtion") ? obj.getString("localtion") : "");
+							mpvo.setMobileNo(obj.has("contactNo") ? obj.getString("contactNo") : "");
+							mpvo.setTds(obj.has("tds") ? obj.getString("tds") : "");
+							mpvo.setPh(obj.has("ph") ? obj.getString("ph") : "");
+							mpvo.setMandal(obj.has("mandal") ? obj.getString("mandal") : "");
+							mpvo.setDistrict(obj.has("district") ? obj.getString("district") : "");
+							mpvo.setLatitude(obj.has("latitude") ? obj.getString("latitude") : "");
+							mpvo.setLongitude(obj.has("longitude") ? obj.getString("longitude") : "");
+							
+							if(obj.has("highDispanceRDU")){
+			        			JSONObject highDspncObj = obj.getJSONObject("highDispanceRDU");
+			        			mpvo.setHighDispanceRDUName(highDspncObj.getString("name"));
+			        			mpvo.setHighRDUDispanceLtrs(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(highDspncObj.getString("dispanceLtrs"))));
+			        		}
+			        		if(obj.has("lowDispanceRDU")){
+			        			JSONObject lowDspncObj = obj.getJSONObject("lowDispanceRDU");
+			        			mpvo.setLowDispanceRDUName(lowDspncObj.getString("name"));
+			        			mpvo.setLowRDUDispanceLtrs(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(lowDspncObj.getString("dispanceLtrs"))));
+			        		}
+			        		if(obj.has("customers")){
+			        			JSONObject customersObj = obj.getJSONObject("customers");
+			        			mpvo.setActiveCustomers(customersObj.getLong("active"));
+			        			mpvo.setInActiveCustomers(customersObj.getLong("inActive"));
+			        			mpvo.setTotalCustomers(mpvo.getActiveCustomers()+mpvo.getInActiveCustomers());
+			        		}
+			        		if(obj.has("rdus")){
+			        			JSONArray rdusArr = new JSONArray(obj.get("rdus").toString());
+			        			if(rdusArr != null && rdusArr.length() > 0){
+			        				for (int j = 0; j < rdusArr.length(); j++) {
+										JSONObject rduObj = new JSONObject(rdusArr.get(j).toString());
+										if(rduObj != null && rduObj.length() > 0){
+											NTRSujalaOverviewVO rduvo = new NTRSujalaOverviewVO();
+											rduvo.setId(rduObj.getLong("rduId"));
+											rduvo.setName(rduObj.getString("name"));
+											rduvo.setLocation(rduObj.getString("location"));
+											rduvo.setLatitude(rduObj.getString("latitude"));
+											rduvo.setLongitude(rduObj.getString("longitude"));
+											rduvo.setWaterTankCapacity(rduObj.getLong("waterTankCapacity"));
+											rduvo.setMpSafeWaterDispenced(rduObj.getString("waterDispencePerDay"));
+											rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
+											rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
+											rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
+											mpvo.getSubList().add(rduvo);
+										}
 									}
-								}
-		        			}
-		        		}
-		        		vo.getSubList().add(mpvo);
-		        		districtMap.put(districtName, vo);
-					}else{
-						NTRSujalaOverviewVO mpvo = new NTRSujalaOverviewVO();
-						mpvo.setId(obj.getLong("motherPlantId"));
-						mpvo.setName(obj.getString("name"));
-						mpvo.setHealth(obj.getString("health"));
-						mpvo.setWaterQuality(obj.getString("waterQuality"));
-						mpvo.setMpSafeWaterDispenced(obj.getString("safeWaterDispence"));
-						mpvo.setActiveRDUs(obj.getLong("activeRDUs"));
-						mpvo.setInActiveRDUs(obj.getLong("inActiveRDUs"));
-						mpvo.setTotalRDUs(mpvo.getActiveRDUs()+mpvo.getInActiveRDUs());
-						mpvo.setLocation(obj.has("localtion") ? obj.getString("localtion") : "");
-						mpvo.setMobileNo(obj.has("contactNo") ? obj.getString("contactNo") : "");
-						mpvo.setTds(obj.has("tds") ? obj.getString("tds") : "");
-						mpvo.setPh(obj.has("ph") ? obj.getString("ph") : "");
-						mpvo.setMandal(obj.has("mandal") ? obj.getString("mandal") : "");
-						mpvo.setDistrict(obj.has("district") ? obj.getString("district") : "");
-						mpvo.setLatitude(obj.has("latitude") ? obj.getString("latitude") : "");
-						mpvo.setLongitude(obj.has("longitude") ? obj.getString("longitude") : "");
-						
-						if(obj.has("highDispanceRDU")){
-		        			JSONObject highDspncObj = obj.getJSONObject("highDispanceRDU");
-		        			mpvo.setHighDispanceRDUName(highDspncObj.getString("name"));
-		        			mpvo.setHighRDUDispanceLtrs(highDspncObj.getString("dispanceLtrs"));
-		        		}
-		        		if(obj.has("lowDispanceRDU")){
-		        			JSONObject lowDspncObj = obj.getJSONObject("lowDispanceRDU");
-		        			mpvo.setLowDispanceRDUName(lowDspncObj.getString("name"));
-		        			mpvo.setLowRDUDispanceLtrs(lowDspncObj.getString("dispanceLtrs"));
-		        		}
-		        		if(obj.has("customers")){
-		        			JSONObject customersObj = obj.getJSONObject("customers");
-		        			mpvo.setActiveCustomers(customersObj.getLong("active"));
-		        			mpvo.setInActiveCustomers(customersObj.getLong("inActive"));
-		        			mpvo.setTotalCustomers(mpvo.getActiveCustomers()+mpvo.getInActiveCustomers());
-		        		}
-		        		if(obj.has("rdus")){
-		        			JSONArray rdusArr = new JSONArray(obj.get("rdus").toString());
-		        			if(rdusArr != null && rdusArr.length() > 0){
-		        				for (int j = 0; j < rdusArr.length(); j++) {
-									JSONObject rduObj = new JSONObject(rdusArr.get(j).toString());
-									if(rduObj != null && rduObj.length() > 0){
-										NTRSujalaOverviewVO rduvo = new NTRSujalaOverviewVO();
-										rduvo.setId(rduObj.getLong("rduId"));
-										rduvo.setName(rduObj.getString("name"));
-										rduvo.setLocation(rduObj.getString("location"));
-										rduvo.setLatitude(rduObj.getString("latitude"));
-										rduvo.setLongitude(rduObj.getString("longitude"));
-										rduvo.setWaterTankCapacity(rduObj.getLong("waterTankCapacity"));
-										rduvo.setMpSafeWaterDispenced(rduObj.getString("waterDispencePerDay"));
-										rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
-										rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
-										rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
-										mpvo.getSubList().add(rduvo);
+			        			}
+			        		}
+			        		vo.getSubList().add(mpvo);
+			        		districtMap.put(districtName, vo);
+						}else{
+							NTRSujalaOverviewVO mpvo = new NTRSujalaOverviewVO();
+							mpvo.setId(obj.getLong("motherPlantId"));
+							mpvo.setName(obj.getString("name"));
+							mpvo.setHealth(obj.getString("health"));
+							mpvo.setWaterQuality(obj.getString("waterQuality"));
+							mpvo.setMpSafeWaterDispenced(obj.getString("safeWaterDispence"));
+							mpvo.setActiveRDUs(obj.getLong("activeRDUs"));
+							mpvo.setInActiveRDUs(obj.getLong("inActiveRDUs"));
+							mpvo.setTotalRDUs(mpvo.getActiveRDUs()+mpvo.getInActiveRDUs());
+							mpvo.setLocation(obj.has("localtion") ? obj.getString("localtion") : "");
+							mpvo.setMobileNo(obj.has("contactNo") ? obj.getString("contactNo") : "");
+							mpvo.setTds(obj.has("tds") ? obj.getString("tds") : "");
+							mpvo.setPh(obj.has("ph") ? obj.getString("ph") : "");
+							mpvo.setMandal(obj.has("mandal") ? obj.getString("mandal") : "");
+							mpvo.setDistrict(obj.has("district") ? obj.getString("district") : "");
+							mpvo.setLatitude(obj.has("latitude") ? obj.getString("latitude") : "");
+							mpvo.setLongitude(obj.has("longitude") ? obj.getString("longitude") : "");
+							
+							if(obj.has("highDispanceRDU")){
+			        			JSONObject highDspncObj = obj.getJSONObject("highDispanceRDU");
+			        			mpvo.setHighDispanceRDUName(highDspncObj.getString("name"));
+			        			mpvo.setHighRDUDispanceLtrs(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(highDspncObj.getString("dispanceLtrs"))));
+			        		}
+			        		if(obj.has("lowDispanceRDU")){
+			        			JSONObject lowDspncObj = obj.getJSONObject("lowDispanceRDU");
+			        			mpvo.setLowDispanceRDUName(lowDspncObj.getString("name"));
+			        			mpvo.setLowRDUDispanceLtrs(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(lowDspncObj.getString("dispanceLtrs"))));
+			        		}
+			        		if(obj.has("customers")){
+			        			JSONObject customersObj = obj.getJSONObject("customers");
+			        			mpvo.setActiveCustomers(customersObj.getLong("active"));
+			        			mpvo.setInActiveCustomers(customersObj.getLong("inActive"));
+			        			mpvo.setTotalCustomers(mpvo.getActiveCustomers()+mpvo.getInActiveCustomers());
+			        		}
+			        		if(obj.has("rdus")){
+			        			JSONArray rdusArr = new JSONArray(obj.get("rdus").toString());
+			        			if(rdusArr != null && rdusArr.length() > 0){
+			        				for (int j = 0; j < rdusArr.length(); j++) {
+										JSONObject rduObj = new JSONObject(rdusArr.get(j).toString());
+										if(rduObj != null && rduObj.length() > 0){
+											NTRSujalaOverviewVO rduvo = new NTRSujalaOverviewVO();
+											rduvo.setId(rduObj.getLong("rduId"));
+											rduvo.setName(rduObj.getString("name"));
+											rduvo.setLocation(rduObj.getString("location"));
+											rduvo.setLatitude(rduObj.getString("latitude"));
+											rduvo.setLongitude(rduObj.getString("longitude"));
+											rduvo.setWaterTankCapacity(rduObj.getLong("waterTankCapacity"));
+											rduvo.setMpSafeWaterDispenced(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(rduObj.getString("waterDispencePerDay"))));
+											rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
+											rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
+											rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
+											mpvo.getSubList().add(rduvo);
+										}
 									}
-								}
-		        			}
-		        		}
-		        		vo.getSubList().add(mpvo);
+			        			}
+			        		}
+			        		vo.getSubList().add(mpvo);
+						}
 					}
 				}
 			}
@@ -366,12 +368,12 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 					if(obj.has("highDispanceRDU")){
 	        			JSONObject highDspncObj = obj.getJSONObject("highDispanceRDU");
 	        			mpvo.setHighDispanceRDUName(highDspncObj.getString("name"));
-	        			mpvo.setHighRDUDispanceLtrs(highDspncObj.getString("dispanceLtrs"));
+	        			mpvo.setHighRDUDispanceLtrs(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(highDspncObj.getString("dispanceLtrs"))));
 	        		}
 	        		if(obj.has("lowDispanceRDU")){
 	        			JSONObject lowDspncObj = obj.getJSONObject("lowDispanceRDU");
 	        			mpvo.setLowDispanceRDUName(lowDspncObj.getString("name"));
-	        			mpvo.setLowRDUDispanceLtrs(lowDspncObj.getString("dispanceLtrs"));
+	        			mpvo.setLowRDUDispanceLtrs(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(lowDspncObj.getString("dispanceLtrs"))));
 	        		}
 	        		if(obj.has("customers")){
 	        			JSONObject customersObj = obj.getJSONObject("customers");
@@ -392,7 +394,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 									rduvo.setLatitude(rduObj.getString("latitude"));
 									rduvo.setLongitude(rduObj.getString("longitude"));
 									rduvo.setWaterTankCapacity(rduObj.getLong("waterTankCapacity"));
-									rduvo.setMpSafeWaterDispenced(rduObj.getString("waterDispencePerDay"));
+									rduvo.setMpSafeWaterDispenced(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(rduObj.getString("waterDispencePerDay"))));
 									rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
 									rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
 									rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());

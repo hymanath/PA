@@ -877,8 +877,8 @@ public class CommonMethodsUtilService {
 					 amountStr =amountStr2+","+amountStr1 ;
 				}
 				if(lenght >=7){
-					amountStr1=amountStr.substring(lenght-5,lenght);
-					amountStr2=amountStr.substring(0,lenght-5 );
+					amountStr1=amountStr.substring(lenght-3,lenght);
+					amountStr2=amountStr.substring(0,lenght-3 );
 					 Long d =Long.parseLong(amountStr2);
 					String amountStr3=new DecimalFormat("##,##").format(d);
 					 amountStr =amountStr3+","+amountStr1 ;
