@@ -33,7 +33,7 @@ function locationLevelRefresh(){
 	//$("#statusId").html('<option value="0">Select Status</option>');
 	//$("#statusId").trigger('chosen:updated');
 	if(searchBy == "total" || searchBy==""){
-		$("#locationSelId").val('all');
+		$("#locationSelId").val('endorsmentNO');
 		$("#locationSelId").trigger('chosen:updated');
 		$( "#locationSelId" ).trigger( "change" );
 	}else{
@@ -56,7 +56,7 @@ function hideAndShowSelectBox(){
 	$("#nameDivid").hide();
 	$("#mobileDivid").hide();
 	$("#emailDivid").hide();
-	$("#endorsmentNoDivid").hide();
+	//$("#endorsmentNoDivid").hide();
 	$("#subjectDivId").hide();	
 	$("#referralNameDiv").hide();
 	//$("#petitionId").prop("checked",false);
@@ -323,7 +323,7 @@ $(document).on("change","#locationSelId",function(){
 	$("#nameDivid").hide();
 	$("#mobileDivid").hide();
 	$("#emailDivid").hide();
-	$("#endorsmentNoDivid").hide();
+	$("#endorsmentNoDivid").show();
 	$("#districtCandId").html('<option value="0">Select District</option>');
 	$("#districtCandId").trigger('chosen:updated');
 	$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
@@ -347,7 +347,7 @@ $(document).on("change","#locationSelId",function(){
 	   $("#mobileErrDivId").html('');
 	   $("#emailErrDivId").html('');
 	   $("#endorsmentNoErrDivId").html('');
-	     $('#parametersList').show();
+	     //$('#parametersList').show();
 	    $("#nameId").html('');
 	    $("#mobileId").html('');
 	    $("#emailId").html('');
@@ -370,14 +370,14 @@ $(document).on("change","#locationSelId",function(){
 		if($('#advanceSearchBtnId').prop( "checked")){
 				$("#advanceSearchBtnId").prop({disabled: true});
 			}
-			
+			$("#endorsmentNoDivid").hide();
 		return;
 	}
 	
 	if(searchType == 'work' || searchType =='representee' || searchType =='referral'){
 			$("#districtCandId").html('<option value="0">Select District</option>');
 			$("#districtCandId").trigger('chosen:updated');
-	
+			$("#endorsmentNoDivid").hide();
 			$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 	        $("#constituencyCanId").trigger('chosen:updated');
 			$("#mandalCanId").html('<option value="0">Select Mandal</option>');
@@ -406,7 +406,7 @@ $(document).on("change","#locationSelId",function(){
 			
 			$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 			$("#constituencyCanId").trigger('chosen:updated');
-			
+			$("#endorsmentNoDivid").hide();
 			$("#mandalCanId").html('<option value="0">Select Mandal</option>');
 			$("#mandalCanId").trigger('chosen:updated');
 			$("#nameId").val(' ');
@@ -450,7 +450,7 @@ $(document).on("change","#locationSelId",function(){
 	}else if(searchType == 'department'){
 		$("#districtCandId").html('<option value="0">Select District</option>');
 		$("#districtCandId").trigger('chosen:updated');
-		
+		$("#endorsmentNoDivid").hide();
 		$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 		$("#constituencyCanId").trigger('chosen:updated');
 		
@@ -481,7 +481,7 @@ $(document).on("change","#locationSelId",function(){
    }else if(searchType == 'subject'){
 		$("#districtCandId").html('<option value="0">Select District</option>');
 		$("#districtCandId").trigger('chosen:updated');
-		
+		$("#endorsmentNoDivid").hide();
 		$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 		$("#constituencyCanId").trigger('chosen:updated');
 		
@@ -521,7 +521,7 @@ $(document).on("change","#locationSelId",function(){
 			 $("#advancedSearchButtonDivId").show();
 				$("#districtCandId").html('<option value="0">Select District</option>');
 				$("#districtCandId").trigger('chosen:updated');
-				
+				$("#endorsmentNoDivid").hide();
 				$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 				$("#constituencyCanId").trigger('chosen:updated');
 				
@@ -545,7 +545,7 @@ $(document).on("change","#locationSelId",function(){
 			 $("#advancedSearchButtonDivId").show();
 			 $("#districtCandId").html('<option value="0">Select District</option>');
 	         $("#districtCandId").trigger('chosen:updated');
-	
+			$("#endorsmentNoDivid").hide();
 	         $("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 	         $("#constituencyCanId").trigger('chosen:updated');
 	
@@ -568,7 +568,7 @@ $(document).on("change","#locationSelId",function(){
 			$("#advancedSearchButtonDivId").show();
 	         $("#districtCandId").html('<option value="0">Select District</option>');
 	         $("#districtCandId").trigger('chosen:updated');
-	
+			$("#endorsmentNoDivid").hide();
 	         $("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 	         $("#constituencyCanId").trigger('chosen:updated');
 	
@@ -589,7 +589,7 @@ $(document).on("change","#locationSelId",function(){
 			$("#districtConsMandDivId").hide();
 	         $("#districtCandId").html('<option value="0">Select District</option>');
 	         $("#districtCandId").trigger('chosen:updated');
-	
+			$("#endorsmentNoDivid").show();
 	         $("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 	         $("#constituencyCanId").trigger('chosen:updated');
 	

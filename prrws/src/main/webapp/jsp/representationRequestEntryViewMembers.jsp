@@ -155,12 +155,12 @@
 														<option value="name"> Name</option>
 														<option value="mobile"> Mobile No</option>
 														<option value="email"> Email</option>
-														<option value="endorsmentNO"> Endorsment No </option>
+														<option value="endorsmentNO" selected> Endorsment No </option>
 																	
 													</select>
 													<div class="error_colorCls" id="locationErrDivlId"></div>
 												</div>
-											<span id="parametersList" style="display:none;">
+											<span id="parametersList" >
 												<div class="col-sm-3" id="designationDiv" style="display:none;">
 													<label> DESIGNATION </label>
 													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT DESIGNATION "  id="designationsId" multiple>
@@ -204,7 +204,7 @@
 													<input type="text" class="form-control  clearCls" style="height:40px" id="emailId" placeholder="Please enter email">
 													<div class="error_colorCls" id="emailErrDivId"></div>
 												</div>	
-												<div class="col-sm-3" id="endorsmentNoDivid" style="display:none;">
+												<div class="col-sm-3" id="endorsmentNoDivid" >
 												<label> ENDORSMENT NO </label>
 													<input type="text"  onkeyUp="clearData();checkIsNumber(this.id,this.value);" class="form-control  clearCls" style="height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
 													<div class="error_colorCls" id="endorsmentNoErrDivId"></div>
