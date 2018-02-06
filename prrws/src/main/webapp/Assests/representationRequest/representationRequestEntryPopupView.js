@@ -108,7 +108,7 @@ function buildPetitionDetailsView(result){
 															}else if(result.historyList[h].subList1[j].subList1[k].stautus == "Pending Endorsement"){
 																str+='<div class="pad_white_bg " style="padding:10px;border: 1px solid #1283C8;">';
 																str+='<h5 class="font_weight" ><span style="background-color:#0090FF;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.historyList[h].subList1[j].subList1[k].stautus+'</h5>';
-															}else if(result.historyList[h].subList1[j].subList1[k].stautus == "Pending Final Approval" || result.historyList[h].subList1[j].subList1[k].stautus == "Pending - Action Memo" || result.historyList[h].subList1[j].subList1[k].stautus == "Pending - Detailed Report"){
+															}else if(result.historyList[h].subList1[j].subList1[k].stautus == "Final Approval" || result.historyList[h].subList1[j].subList1[k].stautus == "Action Memo" || result.historyList[h].subList1[j].subList1[k].stautus == "Detailed Report"){
 																str+='<div class="pad_white_bg " style="padding:10px;border: 1px solid #FFC400;">';
 																str+='<h5 class="font_weight" ><span style="background-color:#FFC400;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;"></span> Status : '+result.historyList[h].subList1[j].subList1[k].stautus+'</h5>';
 															}else{
@@ -770,7 +770,7 @@ function buildPetitionDetailsView(result){
 															str+='</h5>';
 														str+='</div>';
 													str+='</div>';
-												}else if(result.subWorksList[i].subWorksList[j].status == "Pending Final Approval" || result.subWorksList[i].subWorksList[j].status == "Pending - Action Memo" || result.subWorksList[i].subWorksList[j].status == "Pending - Detailed Report"){
+												}else if(result.subWorksList[i].subWorksList[j].status == "Final Approval" || result.subWorksList[i].subWorksList[j].status == "Action Memo" || result.subWorksList[i].subWorksList[j].status == "Detailed Report"){
 													str+='<div class="row">';
 														str+='<div class="col-sm-3">';
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
