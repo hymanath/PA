@@ -57,6 +57,9 @@ public class AffiliatedMember{
 	private Occupation 					occupation;
 	private CasteState 					casteState;
 	private AffiliateMemberType   affiliateMemberType;
+	private String isActiveMember;
+	private String isAppliedLoan;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -328,37 +331,20 @@ public class AffiliatedMember{
 	public void setCasteStateId(Long casteStateId) {
 		this.casteStateId = casteStateId;
 	}
-	
-	
-	
-	
-	
-
-	
-	
-
-	
-	
-
-
-
-
-
-
-
-
-
-	
-
-	
-
- 
-
-
-
-
-
-	
+	@Column(name="is_active_member")
+	public String getIsActiveMember() {
+		return isActiveMember;
+	}
+	public void setIsActiveMember(String isActiveMember) {
+		this.isActiveMember = isActiveMember;
+	}
+	@Column(name="is_applied_loan")
+	public String getIsAppliedLoan() {
+		return isAppliedLoan;
+	}
+	public void setIsAppliedLoan(String isAppliedLoan) {
+		this.isAppliedLoan = isAppliedLoan;
+	}
 	
 	
 	
