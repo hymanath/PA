@@ -3710,7 +3710,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						
 						if(pmTrackingVO.getRemarks() != null && !pmTrackingVO.getRemarks().isEmpty())
 							pmTrackingVO.setRemarks(pmTrackingVO.getRemarks()+" , "+remarks);
-						//pmTrackingVO.setPmDocumentTypeId(documentTypeId);
+						pmTrackingVO.setPmDocumentTypeId(documentTypeId);
 						pmTrackingVO.setPmTrackingActionId(4L);//FILE UPLOAD
 						pmTrackingVO.setDocumentId(documentId);
 						pmTrackingVO.setPmSubWorkDetailsId(subWorkId);

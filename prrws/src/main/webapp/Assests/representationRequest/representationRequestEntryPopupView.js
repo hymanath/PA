@@ -1749,7 +1749,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 		 }
 	}else if(statusId == 3){
 		if(documentTypeId == null || documentTypeId==0){
-			 $('#documentTypeIdErr').html("<h5 style='color:red;'>Please select officer name</h5>");
+			 $('#documentTypeIdErr').html("<h5 style='color:red;'>Please select document type </h5>");
 			 flag = true ; 
 		 }else{
 			  $('#documentTypeIdErr').html(""); 
