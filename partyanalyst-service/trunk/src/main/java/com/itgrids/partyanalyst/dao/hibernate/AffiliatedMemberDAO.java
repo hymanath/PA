@@ -18,8 +18,8 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 				StringBuilder sb=new StringBuilder();
 				
 				sb.append(" SELECT  model.tdpCadreId ,model.mobileNo," +
-						"   model.memberShipNo,voter.voterId voter.voterIDCardNo,model.relativename,  model. houseNo, model.casteState.caste.casteName,model.firstname,model.casteStateId " +
-						"   FROM  TdpCadre model LEFT JOIN model.voter voter" +
+						"   model.memberShipNo,voter.voterId, voter.voterIDCardNo,model.relativename,  model.houseNo, model.casteState.caste.casteName,model.firstname,model.casteStateId, " +
+						"   model.gender,model.userAddress.userAddressId FROM  TdpCadre model LEFT JOIN model.voter voter " +
 						"   WHERE   model.voterId=model.voterId and model.isDeleted='N' ");
 				if(searchType.equalsIgnoreCase("mobileno")){
 					
@@ -30,7 +30,6 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 					sb.append(" AND model.memberShipNo = :searchValue ");
 					
 				}else if(searchType.equalsIgnoreCase("votercardno")){
-					
 					sb.append(" AND voter.voterIDCardNo = :searchValue ");
 				}
 
@@ -42,10 +41,7 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 	    				sb.append(" and model.userAddress.tehsil.tehsilId =:locationValues ");
 	    			}else if(locationType.equalsIgnoreCase("panchayat")){
 	    				sb.append(" and model.userAddress.panchayat.panchayatId =:locationValues ");
-	    			}else if(locationType.equalsIgnoreCase("panchayat")){
-	    				sb.append(" and model.userAddress.panchayat.panchayatId =:locationValues ");
-	    			}
-	    			else if(locationType.equalsIgnoreCase("muncipality")){
+	    			}else if(locationType.equalsIgnoreCase("muncipality")){
 	    				sb.append(" and model.userAddress.localElectionBody.localElectionBodyId =:locationValues ");
 	    			}
 			
@@ -56,15 +52,52 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 					   query.setParameter("locationValues",locationValues);
 				 }
 				
-				if(searchType != null && searchType.trim().length() > 0){
-					   query.setParameter("searchType",searchType);
-				 }
-				
 				if(searchValue != null && searchValue.trim().length() > 0){
 					   query.setParameter("searchValue",searchValue);
 				 }
 				return query.list();
-				
+	  }
+	  
+	  /**
+	 * @return
+	 */
+	  public Long getAffliatedMember(String searchType,String searchValue){
 			
-	  }
-	  }
+			StringBuilder sb= new StringBuilder();
+			sb.append("select model.affiliatedMemberId from AffiliatedMember model left join model.tdpCadre tdpCadre  where model.isDeleted ='N' ");
+			
+			if(searchType.equalsIgnoreCase("mobileno")){
+				
+				sb.append(" AND model.mobileNo = :searchValue ");
+				
+			}else if(searchType.equalsIgnoreCase("mebershipno")){
+				
+				sb.append(" AND tdpCadre.memberShipNo = :searchValue ");
+				
+			}else if(searchType.equalsIgnoreCase("votercardno")){
+				
+				sb.append(" AND model.voterId = :searchValue ");
+			}
+
+			Query query = getSession().createQuery(sb.toString());
+			
+			if(searchValue != null && searchValue.trim().length() > 0){
+				   query.setParameter("searchValue",searchValue);
+			 }
+			return (Long)query.uniqueResult();
+			
+		}
+	@Override
+	public List<Object[]> searchAffiliatedMemberDetailsthroughVoter(String searchType, String searchValue) {
+		
+		StringBuilder sb=new StringBuilder();
+		
+		sb.append(" SELECT  '' ,'','',voter.voterId, voter.voterIDCardNo,voter.relativeName, voter.houseNo, '',voter.name,'', " +
+				"   voter.gender,'' FROM Voter voter " +
+				"   WHERE voter.voterIDCardNo=:searchValue");
+		
+		Query query = getSession().createQuery(sb.toString());
+		  query.setParameter("searchValue",searchValue);
+		return query.list();
+	}
+}
