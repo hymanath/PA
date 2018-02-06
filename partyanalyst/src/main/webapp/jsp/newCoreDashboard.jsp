@@ -5735,6 +5735,7 @@
 <script src="newCoreDashBoard/js/prajaSankaplaYatra.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/eMCoverageTime.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newsLetters.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/nominatedPost.js" type="text/javascript"></script>
 <!--<script src="newCoreDashBoard/js/trainingCampInfo.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/kaizala.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
