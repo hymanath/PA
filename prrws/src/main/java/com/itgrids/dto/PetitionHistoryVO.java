@@ -54,6 +54,7 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	private String assignedToOfficerName;
 	private String assignedToOfficerMobile;
     private String shortName;
+    private String documentType;
     
 	public PetitionHistoryVO(){}
 	public PetitionHistoryVO(Long actionId, String actionName){
@@ -333,4 +334,12 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
 	}
+	public String getDocumentType() {
+		return documentType;
+	}
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
+	}
+	
+	
 }

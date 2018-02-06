@@ -108,7 +108,7 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 				+ " pmOfficerDesignation.pmOfficerDesignationId,pmOfficerDesignation.designation," +//14,15
 				"  pmDepartment.department ,pmDepartment.shortName,pmSubWorkDetails.grievanceDescrption,petition.workName , document.documentId," +//16,17,18,19,20
 				"  model.assignedToPmDepartmentDesignationOfficerId, assignedToPmOfficerDesignation.designation,assignedToPmOfficerDesignation.shortName," +//21,22,23
-				"  assignToPmOfficer.name, assignToPmOfficer.mobileNo,pmSubWorkDetails.isDeleted ,petition.isDeleted " +//24,25,26,27
+				"  assignToPmOfficer.name, assignToPmOfficer.mobileNo,pmSubWorkDetails.isDeleted ,petition.isDeleted,documentType.pmDocumentType " +//24,25,26,27,28
 				" from PmTracking model  " +
 				" left join  model.pmTrackingAction pmTrackingAction " +
 				" left join  model.document document " +
@@ -124,7 +124,8 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 				" left join model.assignedToPmDepartmentDesignationOfficer assignedToPmDepartmentDesignationOfficer " +
 				" left join assignedToPmDepartmentDesignationOfficer.pmDepartmentDesignation assignedToPmDepartmentDesignation " +
 				" left join assignedToPmDepartmentDesignation.pmOfficerDesignation assignedToPmOfficerDesignation " +
-				" left join assignedToPmDepartmentDesignationOfficer.pmOfficer assignToPmOfficer " );
+				" left join assignedToPmDepartmentDesignationOfficer.pmOfficer assignToPmOfficer" +
+				" left join model.documentType documentType " );
 			    //" left join model.pmDepartmentDesignationOfficer pmDepartmentDesignationOfficer " +
 			   // " left join pmDepartmentDesignationOfficer.pmDepartmentDesignation pmDepartmentDesignation " +
 			   // " left join pmDepartmentDesignation.pmOfficerDesignation pmOfficerDesignation " +

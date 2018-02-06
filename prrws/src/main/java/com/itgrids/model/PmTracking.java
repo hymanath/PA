@@ -52,6 +52,8 @@ public class PmTracking {
 	 private PmDepartmentDesignationOfficer pmDepartmentDesignationOfficer;
 	 private PmDepartmentDesignationOfficer assignedToPmDepartmentDesignationOfficer;
 	 private PmActionType pmActionType;
+	 private Long pmDocumentTypeId;
+	private PmDocumentType documentType;
 	 
 	@Id
 	@Column(name="pm_tracking_id")
@@ -275,5 +277,22 @@ public class PmTracking {
 	public void setActionType(String actionType) {
 		this.actionType = actionType;
 	}
+	@Column(name="pm_document_type_id")
+	public Long getPmDocumentTypeId() {
+		return pmDocumentTypeId;
+	}
+	public void setPmDocumentTypeId(Long pmDocumentTypeId) {
+		this.pmDocumentTypeId = pmDocumentTypeId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_document_type_id", insertable = false, updatable = false)
+	public PmDocumentType getDocumentType() {
+		return documentType;
+	}
+	public void setDocumentType(PmDocumentType documentType) {
+		this.documentType = documentType;
+	}
+	
 	
 }

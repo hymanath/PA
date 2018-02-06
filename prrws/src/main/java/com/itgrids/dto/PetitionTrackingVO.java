@@ -24,7 +24,7 @@ public class PetitionTrackingVO implements java.io.Serializable{
 	private Long assignedToPmPetitionAssignedOfficerId;
 	private Long pmActionTypeId;
 	private String actionType;
-	
+	private Long pmDocumentTypeId;
 	public String getActionType() {
 		return actionType;
 	}
@@ -121,6 +121,14 @@ public class PetitionTrackingVO implements java.io.Serializable{
 	}
 	public void setDeptIdsList(List<Long> deptIdsList) {
 		this.deptIdsList = deptIdsList;
+	}
+	
+	
+	public Long getPmDocumentTypeId() {
+		return pmDocumentTypeId;
+	}
+	public void setPmDocumentTypeId(Long pmDocumentTypeId) {
+		this.pmDocumentTypeId = pmDocumentTypeId;
 	}
 	
 }
