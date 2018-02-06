@@ -64,8 +64,11 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 	  public Long getAffliatedMember(String searchType,String searchValue){
 			
 			StringBuilder sb= new StringBuilder();
-			sb.append("select model.affiliatedMemberId from AffiliatedMember model left join model.tdpCadre tdpCadre  where model.isDeleted ='N' ");
-			
+			if(searchType.equalsIgnoreCase("votercardno")){
+				sb.append("select model.affiliatedMemberId from AffiliatedMember model ");
+			}else{
+				sb.append("select model.affiliatedMemberId from AffiliatedMember model left join model.tdpCadre tdpCadre  where model.isDeleted ='N' ");
+			}
 			if(searchType.equalsIgnoreCase("mobileno")){
 				
 				sb.append(" AND model.mobileNo = :searchValue ");
@@ -76,7 +79,7 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 				
 			}else if(searchType.equalsIgnoreCase("votercardno")){
 				
-				sb.append(" AND model.voterId = :searchValue ");
+				sb.append(" where model.voter.voterIDCardNo = :searchValue ");
 			}
 
 			Query query = getSession().createQuery(sb.toString());
