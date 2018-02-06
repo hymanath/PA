@@ -3700,4 +3700,17 @@ public class WebServiceHandler {
 		}
 		return null;
 	}
+	@POST
+    @Path("/postAffiliatedMemberData")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public AffiliatedMemberVO  saveAffiliatedMemberDetails(JSONObject jObj){
+		
+		try{ 
+			return  webServiceHandlerService.saveAffiliatedMemberDetails(jObj);
+		}catch(Exception e){
+			LOG.error("Exception Occured in getRegistrationPersonDetails() Method in WebServiceHandler, Exception is ",e);
+			return null;
+		}
+	}
 }
