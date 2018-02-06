@@ -2481,6 +2481,7 @@
 	   <property name="kaizalaInfoService" ref="kaizalaInfoService"/>
 	   <property name="partyMeetingMOMService" ref="partyMeetingMOMService"/>
 	   <property name="affiliatedMember" ref="affiliatedMember"/>
+	   <property name="itdpAppUserDAO" ref="itdpAppUserDAO" />
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -4669,8 +4670,19 @@
     	 </bean>
     	 
     	 <bean name="affiliatedMember" class="com.itgrids.partyanalyst.service.impl.AffiliatedMemberImpl" >
-        <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
-        <property name="affiliatedMemberDAO" ref="affiliatedMemberDAO" />
+		        <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+		         <property name="affiliatedMemberDAO" ref="affiliatedMemberDAO" />
+		        <property name="imageAndStringConverter" ref="imageAndStringConverter" />
+		        <property name="panchayatDAO" ref="panchayatDAO" />
+          		<property name="stateDAO" ref="stateDAO" />
+          		<property name="userAddressDAO" ref="userAddressDAO" />
+          		<property name="tehsilDAO" ref="tehsilDAO" />
+          		<property name="districtDAO" ref="districtDAO" />
+          		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+          		<property name="constituencyDAO" ref="constituencyDAO" />
+          		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+          		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+          		<property name="transactionTemplate" ref="transactionTemplate" />
         </bean>
         
     	 <bean name="coreDashboardNominatedPostService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardNominatedPostService">
