@@ -9,7 +9,6 @@
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
-<link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
@@ -18,24 +17,7 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style type="text/css">
-.DTFC_LeftBodyWrapper
-{
-	top:-13px !important;
-}
-.DTFC_LeftBodyWrapper tr td
-{
-	background-color:#fff;
-}
-.sacnotsacClass
-{
-	background-color:green !important;
-	color:#fff;
-}
-.notstartinprogresscomClass
-{
-	background-color:brown !important;
-	color:#fff;
-}
+
 </style>
 </head>
 <body>
@@ -246,18 +228,75 @@
 <main>
 	<div class="container-fluid">
 		<div class="row">
-			
+			<div class="col-sm-12">
+				<div class="panel panel-default">
+					 <div class="panel-heading">
+						<h3 class="panel-title font_weight">Overview</h3>
+					</div>
+					<div class="panel-body">
+						<div id="overViewDetails"></div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="pad_white_bg" style="border: 1px solid #ccc;border-radius: 0px !important;">
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="row">
+						<div class="col-sm-3">
+							<label>District</label>
+							<select class="form-control chosen-select" id="districtId">
+								<option value="0">Select District</option>
+							</select>
+						</div>
+						<div class="col-sm-3">
+							<label>Mother Plant</label>
+							<select class="form-control chosen-select" id="motherPlantId">
+								<option value="0">Select Mother Plant</option>
+							</select>
+						</div>
+					</div>
+					<div id="mapDetailsDivId"></div>
+				</div>
+				<div class="col-sm-4">
+					<div id="mpWiseDetailsDivId"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row m_top20">
+			<div class="col-sm-12">
+				<div class="panel panel-default">
+					 <div class="panel-heading">
+						<h3 class="panel-title font_weight">District Wise Mother Plant Details</h3>
+					</div>
+					<div class="panel-body">
+						<div id="districtWiseMpDetailsId"></div>
+					</div>
+				</div>
+				
+			</div>
 		</div>	
+	</div>
+	
+	<div class="modal fade" id="mother_plants" role="dialog">
+		<div class="modal-dialog modal-lg" style="width:90%; margin:auto;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h3 class="modal-title"><b>Mother Plants Overview</b></h3>
+				</div>
+				<div class="modal-body" id="motherPlantsOverviewId"></div>
+				<div class="modal-footer" style="background-color:#E3E3E3;">
+				  <button type="button" class="btn btn-default Close_st" data-dismiss="modal">CLOSE</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </main>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
@@ -265,25 +304,10 @@
 <script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyD_ELXOA5iHgPThVcenSQjMwkev64EcZbE"></script>
+<script src="Assests/NTRSujala/ntrSujalaDashboard.js" type="text/javascript"></script>
 <script>
-getNTRSujalaOverviewDetails();
-function getNTRSujalaOverviewDetails(){
-	
-	
-	var json = {};
-	$.ajax({                
-		type:'POST',    
-		url: 'getNtrSujalaOverview',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		
-	});
-}
+
 </script>
 </body>
 </html>
