@@ -550,8 +550,6 @@ function getDistrictWiseTotalOverviewForEMNPoints(globalStIndex){
 }
 function getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles(globalStIndex){
 		$("#newsBulletinPointBasicDetailsBulletinsOfOrganization").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var globalStartDate ="15-12-2016";
-		var globalEndDate ="04-06-2017";
 
 		$.ajax({
 			type : 'GET',			
