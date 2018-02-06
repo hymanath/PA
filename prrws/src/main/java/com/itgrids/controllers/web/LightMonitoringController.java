@@ -165,8 +165,14 @@ public class LightMonitoringController {
        return returnList;
    }
    @RequestMapping(value ="/lightMonitoringEntryDashboard", method = RequestMethod.GET)
-   public String entryPage(ModelMap model) {
-		return "lightMonitoringEntry";
+   public String entryPage(ModelMap model,HttpServletRequest request) {
+	   	UserVO uservo = (UserVO) request.getSession().getAttribute("User");
+		if(uservo != null){
+			return "lightMonitoringEntry";
+		}else{
+			return "MGNREGSFieldLoginUpdates";
+		}
+		//return "lightMonitoringEntry";
    }
    @RequestMapping(value = "/getDateWiseVendorDetailsByLocationId", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
    public @ResponseBody  List<LightMonitoringVO>  getDateWiseVendorDetailsByLocationId(@RequestBody InputVO inputVO){
