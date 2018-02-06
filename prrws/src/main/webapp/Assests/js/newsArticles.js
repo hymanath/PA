@@ -858,8 +858,12 @@ function buildactionWiseAnalysisDetails(result,divId,departmentId,type){
 			totalCount=totalCount+result[i].count;
 			$("#totalCountAnalysisId"+departmentId).html(totalCount);
 			var colorObj={"Without Money":"#E4D254","<10L":"#8D4653",">10L":"#F15C81","State Wide Issue":"#8085E9"}
+			if(result[i].count !=null && result[i].count>0){
+				str+='<li class="m_top10"><span class="square_csss" style="background-color:'+colorObj[result[i].organization]+'"></span>'+result[i].organization+'<span class="pull-right"><a class="propertiesCls" attr_propertyId="'+result[i].organizationId+'" attr_deptId="'+departmentId+'" attr_type="'+type+'" style="cursor:pointer;">'+result[i].count+'</a> - <span style="color:green">'+result[i].positivePerc+'%</span></span></li>';
+			}else{
+				str+='<li class="m_top10"><span class="square_csss" style="background-color:'+colorObj[result[i].organization]+'"></span>'+result[i].organization+'<span class="pull-right">'+result[i].count+' - <span style="color:green">'+result[i].positivePerc+'%</span></span></li>';
+			}
 			
-			str+='<li class="m_top10"><span class="square_csss" style="background-color:'+colorObj[result[i].organization]+'"></span>'+result[i].organization+'<span class="pull-right"><a class="propertiesCls" attr_propertyId="'+result[i].organizationId+'" attr_deptId="'+departmentId+'" attr_type="'+type+'" style="cursor:pointer;">'+result[i].count+'</a> - <span style="color:green">'+result[i].positivePerc+'%</span></span></li>';
 			
 			$("#problemWise"+departmentId).html(str);					
 			var subArr = [];
