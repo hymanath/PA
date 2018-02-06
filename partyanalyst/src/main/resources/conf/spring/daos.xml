@@ -4271,4 +4271,7 @@
 	 <bean id="tdpCadrePsychometricTestDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadrePsychometricTestDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	  <bean id="itdpAppUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.ItdpAppUserDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
