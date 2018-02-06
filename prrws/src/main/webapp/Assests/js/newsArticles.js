@@ -425,7 +425,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 	highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip,colors,title);
 	for(var i in result){
 		
-		var postiveCountPerc = result[i].positivePerc+ result[i].positiveGrpPerc;
+		var postiveCountPerc = result[i].positivePerc;
 		var negativCountPerc = result[i].negativePerc;
 		var totalCount=result[i].positiveCountMain+result[i].negativCountMain+result[i].positiveCountGrpMain+result[i].negativCountGrpMain;
 		var headingCountPrint='';
