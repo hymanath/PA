@@ -910,7 +910,7 @@ function projectData(divId,levelId,locationId)
 					collapse+='<div class="panel-group" id="accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
 						collapse+='<div class="panel panel-default panel-black">';
 							collapse+='<div class="panel-heading" role="tab" id="heading'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
-								if(i == 0)
+								if(dataArr[i] == 'state' || dataArr[i] == 'district' || dataArr[i] == 'constituency')
 								{
 									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
 								}else{
@@ -976,7 +976,7 @@ function projectData(divId,levelId,locationId)
 									}
 								collapse+='</a>';
 							collapse+='</div>';
-							if(i == 0)
+							if(dataArr[i] == 'state' || dataArr[i] == 'district' || dataArr[i] == 'constituency')
 							{
 								collapse+='<div id="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
 							}else{
@@ -1066,6 +1066,13 @@ function projectData(divId,levelId,locationId)
 		collapse+='</div>';
 	collapse+='</section>';
 	$("#projectData").html(collapse);
+	/*var dynWidth = $('#accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'').width()*0.02+"px !important;";
+	var dynWidth1 = $('#accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'').height()-500+"px !important;";
+	$(".DTFC_ScrollWrapper").height(dynWidth1);
+	$(".DTFC_LeftWrapper").width(dynWidth);
+	$(window).trigger('resize');
+	alert(dynWidth)
+	alert(dynWidth1)*/
 	for(var i in dataArr){
 		if(divId == "Expenditure")
 			getAllDistricts(dataArr[i]);
@@ -1436,9 +1443,10 @@ function overviewData(divId,levelId,locationId)
 }
 function tableView(blockId,theadArr,result,locationType,blockName)
 {
+	
 	var tableView='';
 	tableView+='<div class="table-responsive m_top10">';
-		tableView+='<table class="table table-bordered dataTable'+blockId+'">';
+		tableView+='<table class="table table-bordered dataTable'+blockId+'" style="width:100%">';
 			tableView+='<thead class="text-capitalize">';
 			if(blockName == "Expenditure"){
 					tableView+=buildtheadManDaysExpenditure();
@@ -1513,6 +1521,7 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 		tableView+='</table>';
 	tableView+='</div>';
 	$("#"+blockId).html(tableView);	
+	
 	if(blockName == "Expenditure"){
 		if(locationType == 'state'){
 			$(".dataTable"+blockId).dataTable({
