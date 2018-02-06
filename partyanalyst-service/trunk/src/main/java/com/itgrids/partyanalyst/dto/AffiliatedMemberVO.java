@@ -39,6 +39,12 @@ public class AffiliatedMemberVO
 	private String houseNo;
 	private String locationType;
 	private Long locationValues;
+	private String isActiveMember;
+    private String isAppliedLoan;
+    private String status;
+    private String reason;
+    private String appuserId;
+    private String isActiveAppUser;
 
 
 	
@@ -233,6 +239,42 @@ public class AffiliatedMemberVO
 	}
 	public void setLocationValues(Long locationValues) {
 		this.locationValues = locationValues;
+	}
+	public String getIsActiveMember() {
+		return isActiveMember;
+	}
+	public void setIsActiveMember(String isActiveMember) {
+		this.isActiveMember = isActiveMember;
+	}
+	public String getIsAppliedLoan() {
+		return isAppliedLoan;
+	}
+	public void setIsAppliedLoan(String isAppliedLoan) {
+		this.isAppliedLoan = isAppliedLoan;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	public String getAppuserId() {
+		return appuserId;
+	}
+	public void setAppuserId(String appuserId) {
+		this.appuserId = appuserId;
+	}
+	public String getIsActiveAppUser() {
+		return isActiveAppUser;
+	}
+	public void setIsActiveAppUser(String isActiveAppUser) {
+		this.isActiveAppUser = isActiveAppUser;
 	}
 	
 	
