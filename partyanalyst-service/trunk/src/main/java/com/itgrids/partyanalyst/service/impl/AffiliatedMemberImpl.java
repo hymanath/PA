@@ -197,7 +197,7 @@ public class AffiliatedMemberImpl implements IAffiliatedMember {
 					vo.setCasteStateId(commonMethodsUtilService.getLongValueForObject(objects[9]));
 					if(commonMethodsUtilService.getStringValueForObject(objects[10]) != null && commonMethodsUtilService.getStringValueForObject(objects[10]).equalsIgnoreCase("M")){
 						vo.setGender("MALE");
-					}else if(commonMethodsUtilService.getStringValueForObject(objects[10]) != null && commonMethodsUtilService.getStringValueForObject(objects[10]).equalsIgnoreCase("M")){
+					}else if(commonMethodsUtilService.getStringValueForObject(objects[10]) != null && commonMethodsUtilService.getStringValueForObject(objects[10]).equalsIgnoreCase("F")){
 						vo.setGender("FEMALE");
 					}
 					if(commonMethodsUtilService.getLongValueForObject(objects[11]) != null && commonMethodsUtilService.getLongValueForObject(objects[11])>0 ){
@@ -253,7 +253,9 @@ public class AffiliatedMemberImpl implements IAffiliatedMember {
 			 		member.setCasteStateId(jobj.has("casteStateId") ? jobj.getLong("casteStateId") : null);
 			 		member.setLongititude(jobj.has("longititude") ? jobj.getString( "longititude"): null);
 			 		member.setIsDeleted("N");
-			 		member.setTdpCadreId(jobj.has("tdpCadreId") ? jobj.getLong("tdpCadreId") : null);
+			 		if(jobj.has("tdpCadreId") && jobj.getLong("tdpCadreId") !=0){
+			 			member.setTdpCadreId(jobj.getLong("tdpCadreId"));
+			 		}
 			 		member.setUpdatedTime(date);
 			 		member.setAppVersion(jobj.has("appVersion") ? jobj.getString("appVersion"): null );
 			 		member.setImagePath(path);
