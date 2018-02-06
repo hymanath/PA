@@ -1360,8 +1360,8 @@
 						 
 						 <value>com.itgrids.partyanalyst.model.ZohoTdpCadreContact</value>
 						 <value>com.itgrids.partyanalyst.model.AffiliatedMember</value>
-						  <value>com.itgrids.partyanalyst.model.AffiliateMemberType</value>
-						 
+						 <value>com.itgrids.partyanalyst.model.AffiliateMemberType</value>
+						 <value>com.itgrids.partyanalyst.model.ITdpAppUser</value>
 				  </list>
 			
 		</property>
