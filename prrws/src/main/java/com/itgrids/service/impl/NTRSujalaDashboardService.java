@@ -206,7 +206,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 			if(finalArr != null && finalArr.length() > 0){
 				for (int i = 0; i < finalArr.length(); i++) {
 					JSONObject obj = new JSONObject(finalArr.get(i).toString());
-					if(obj.get("motherPlantId") != null && Long.valueOf(obj.get("motherPlantId").toString()) > 1L){
+					//if(obj.get("motherPlantId") != null && Long.valueOf(obj.get("motherPlantId").toString()) > 1L){
 						String districtName = obj.getString("district").toUpperCase();
 						NTRSujalaOverviewVO vo = districtMap.get(districtName);
 						if(vo == null){
@@ -329,7 +329,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 			        		}
 			        		vo.getSubList().add(mpvo);
 						}
-					}
+					//}
 				}
 			}
 			
