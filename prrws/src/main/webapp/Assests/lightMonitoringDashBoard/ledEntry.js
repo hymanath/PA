@@ -659,54 +659,57 @@ $(document).on("click","#submitId",function(){
 });
 
 function saveLEDVendorWiseDetails(){
-	var isErr ;
+	var isErr = false;
 	var districtId = $("#districtId").val();
 	var mandalId = $("#mandalId").val();
 	var locationId = $("#villageId").val();
-	var lightFittedVal = $("#lightFitedId").val();
-	var teamCount = $("#teamWorkId").val();
+	var lightFittedVal = $("#lightFitedId").val().trim();
+	var teamCount = $("#teamWorkId").val().trim();
 	var workDate = $("#dateRangePickerMGNF").val();
-	/* if(districtId == 0){
-		$("#districtErrMsgId").html("Please Select Any District");
+	if(districtId == 0){
+		$("#districtErrMsgId").html("Select District");
 		isErr = true;
 	}else{
 		$("#districtErrMsgId").html('');
 	}
 	if(mandalId == 0){
-		$("#mandalErrMsgId").html("Please Select Any Mandal");
+		$("#mandalErrMsgId").html("Select Mandal");
 		isErr = true;
 	}else{
 		$("#mandalErrMsgId").html('');
 	}
 	if(locationId == 0){
-		$("#villageErrMsgId").html("Please Select Any Village");
+		$("#villageErrMsgId").html("Select Village");
 		isErr = true;
 	}else{
 		$("#villageErrMsgId").html('');
 	}
 	var numericExpression = /^[0-9]+$/;
-	if(!$('#lightFitedId').val().trim().match(numericExpression)){
-		alert("Enter Only Numbers");
-	}
-	if(lightFittedVal == 0){
-		$("#lightFittedErrMsgId").html("Please Give No.Of Lights.");
+	if(lightFittedVal == 0 || lightFittedVal.length == 0){
+		$("#lightFittedErrMsgId").html("Enter Lights Fitted");
 		isErr = true;
-	}else{
+	}
+	else if(!$('#lightFitedId').val().trim().match(numericExpression)){
+		$("#lightFittedErrMsgId").html("Enter Only Numbers");
+		isErr = true;
+	}
+	else{
 		$("#lightFittedErrMsgId").html('');
 	}
-	var numericExpression = /^[0-9]+$/;
-	if(!$('#teamWorkId').val().trim().match(numericExpression)){
-		alert("Enter Only Numbers");
-	}
-	if(teamCount == 0){
-		$("#teamWorkErrMsgId").html("Please Give No.Of Teams Worked.");
+	if(teamCount == 0 || teamCount.length == 0){
+		$("#teamWorkErrMsgId").html("Enter Teams Worked");
 		isErr = true;
-	}else{
+	}
+	else if(!$('#teamWorkId').val().trim().match(numericExpression)){
+		$("#teamWorkErrMsgId").html("Enter Only Numbers");
+		isErr = true;
+	}
+	else{
 		$("#teamWorkErrMsgId").html('');
 	}
-	if(isErr =='true'){
+	if(isErr){
 		return ;
-	} */
+	}
 	$("#submitLoading").html(spinner);
 	
 	var json = {
