@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dao.IitdpAppUserDAO;
 import com.itgrids.partyanalyst.dto.AccessLocationVO;
 import com.itgrids.partyanalyst.dto.AccommodationVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
@@ -151,6 +152,7 @@ import com.itgrids.partyanalyst.model.EventAttendee;
 import com.itgrids.partyanalyst.model.EventAttendeeError;
 import com.itgrids.partyanalyst.model.EventSurveyUser;
 import com.itgrids.partyanalyst.model.EventSurveyUserLoginDetails;
+import com.itgrids.partyanalyst.model.ITdpAppUser;
 import com.itgrids.partyanalyst.model.MessagingPropsDetails;
 import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
@@ -298,8 +300,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IKaizalaInfoService kaizalaInfoService;
     private IPartyMeetingMOMService partyMeetingMOMService;
     private IAffiliatedMember affiliatedMember;
+    private IitdpAppUserDAO itdpAppUserDAO;
     
-    
+	public IitdpAppUserDAO getItdpAppUserDAO() {
+		return itdpAppUserDAO;
+	}
+
+	public void setItdpAppUserDAO(IitdpAppUserDAO itdpAppUserDAO) {
+		this.itdpAppUserDAO = itdpAppUserDAO;
+	}
+
 	public IAffiliatedMember getAffiliatedMember() {
 		return affiliatedMember;
 	}
@@ -5747,8 +5757,21 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		try{
 			affiliatedMemberList = affiliatedMember.searchAffiliatedMemberDetails(searchType,searchValue, locationType,locationValue);
     	}catch(Exception e){
-    		log.error("Exception raised in getRegistrationPersonDetails  method in WebServiceHandlerService1",e);
+    		log.error("Exception raised in searchAffiliatedMemberDetails  method in WebServiceHandlerService1",e);
     	}
     	return affiliatedMemberList;
+	}
+
+	@Override
+	public AffiliatedMemberVO saveAffiliatedMemberDetails(JSONObject jobj) {
+		AffiliatedMemberVO vo = null;
+		try{
+			ITdpAppUser appuser= itdpAppUserDAO.get(jobj.getLong("appuserId"));
+			vo = affiliatedMember.saveAffiliatedMemberDetails(jobj,appuser.getIsDeleted());
+		}catch(Exception e){
+			log.error("Exception raised in saveAffiliatedMemberDetails  method in WebServiceHandlerService1",e);
+
+		}
+		return vo;
 	}
 }
