@@ -21,7 +21,6 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
-import com.itgrids.partyanalyst.dao.IitdpAppUserDAO;
 import com.itgrids.partyanalyst.dto.AffiliatedMemberVO;
 import com.itgrids.partyanalyst.model.AffiliatedMember;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -31,6 +30,7 @@ import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAffiliatedMember;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 
 public class AffiliatedMemberImpl implements IAffiliatedMember {
@@ -232,7 +232,7 @@ public class AffiliatedMemberImpl implements IAffiliatedMember {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				try{
 					Date date = new Date();
-					String path = "d:/dalithaTeja/"+(System.currentTimeMillis())+".png";
+					String path = IConstants.STATIC_CONTENT_FOLDER_URL+"dalitha_tejam/"+(System.currentTimeMillis())+".png";
 					Boolean isSave= imageAndStringConverter.convertBase64StringToImage(jobj.getString("imagePath"), path);
 					AffiliatedMember member = new AffiliatedMember();
 					member.setEducationId(jobj.has("educationId") ? jobj.getLong("educationId") :0);
