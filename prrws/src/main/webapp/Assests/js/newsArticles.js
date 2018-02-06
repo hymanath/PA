@@ -678,7 +678,7 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 					collapse+='<div class="col-sm-12">';
 						collapse+='<div class="white_block">';
 								collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
-									collapse+='<div class="row m_top10 departmentWiseTotalCls">';
+									collapse+='<div class="row m_top10 departmentWiseTotalCls" id="departmentDivId'+result[i].organizationId+'">';
 										collapse+='<div class="col-sm-6">';
 											collapse+='<div class="pad_light_yash_bg border_yash">';
 												collapse+='<h4>OverAll Details</h4>';
@@ -740,7 +740,7 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 			collapse+='<div class="col-sm-12">';
 				collapse+='<div class="white_block">';
 				collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
-							collapse+='<div class="row m_top10 departmentWiseTotalCls">';
+							collapse+='<div class="row m_top10 departmentWiseTotalCls" id="departmentDivId'+result[i].organizationId+'">';
 								collapse+='<div class="col-sm-6">';
 									collapse+='<div class="pad_light_yash_bg border_yash">';
 										collapse+='<h4>OverAll Details</h4>';
@@ -825,11 +825,10 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 		}else if(type == "ElectronicMediadepartment"){
 			for(var j in result[i].coreDashBoardVOList){
 			//Electronic Media Call
-				if(result[i].coreDashBoardVOList[j].tdpCount !=null && result[i].coreDashBoardVOList[j].tdpCount !="" &&
-				result[i].coreDashBoardVOList[j].tdpCount >0){
+				if(result[i].coreDashBoardVOList[j].tdpCount !=null && result[i].coreDashBoardVOList[j].tdpCount >0){
 					buildOverAllPrintMediaDetails(result[i].coreDashBoardVOList[j].coreDashBoardVOList,''+type+''+result[i].organizationId+'',''+divId+''+result[i].organizationId+'',''+typeVal+'',result[i].organizationId)
 				}else{
-					$(".departmentWiseTotalCls").html("No Data Available...");
+					$("#departmentDivId"+result[i].organizationId).html("No Data Available...");
 				}
 			}
 			for(var j in result[i].coreDashBoardVOList3){
