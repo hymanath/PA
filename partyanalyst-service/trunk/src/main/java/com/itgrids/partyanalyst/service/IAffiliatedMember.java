@@ -2,12 +2,14 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONObject;
+
 import com.itgrids.partyanalyst.dto.AffiliatedMemberVO;
 
 
 public interface IAffiliatedMember {
 
-	public AffiliatedMemberVO saveAffiliatedMemberDetails(AffiliatedMemberVO affiliatedMemberVO );
 	public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValues);
+	public AffiliatedMemberVO saveAffiliatedMemberDetails(JSONObject jobj,String IsActiveUser);
 	
 }

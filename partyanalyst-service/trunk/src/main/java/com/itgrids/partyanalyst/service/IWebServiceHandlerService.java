@@ -304,4 +304,5 @@ public interface IWebServiceHandlerService {
     public ResultStatus uploadDocumentImage(ActivityDetailsVO inputVO,List<String> docuemntBase64List);
     public List<ActivityDetailsVO> getDocumentDtlsByLocation(Long activityScopeId, Long activityLocationInfoId);
     public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValue);
+    public AffiliatedMemberVO saveAffiliatedMemberDetails(JSONObject jobj);
 }
