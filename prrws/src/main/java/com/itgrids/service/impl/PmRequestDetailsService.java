@@ -244,7 +244,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmPetitionAssignedOfficer.setPmDepartmentDesignationOfficerId(userVO.getDeptDesignationOfficerId());
 						pmPetitionAssignedOfficer.setRemarks("New Petition Created and assigned to Minister peshi.");
 						pmPetitionAssignedOfficer.setIsDeleted("N");
-						pmPetitionAssignedOfficer.setActionType("ASSIGNED");
+						pmPetitionAssignedOfficer.setActionType("COMPLETED");
 						pmPetitionAssignedOfficer.setInsertedTime(uploadDate);
 						pmPetitionAssignedOfficer.setInsertedUserId(pmRequestVO.getUserId());
 						pmPetitionAssignedOfficer.setUpdatedTime(uploadDate);
@@ -268,6 +268,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 		return responseVO;
 	}
+	
 	
 	@SuppressWarnings("static-access")
 	public Map<String,List<Long>> getToupdatePetitionSubWorksAndDocumentExistingRecordDetails(Long petitionId){
@@ -2126,14 +2127,23 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	public KeyValueVO getAssignedPetitionOfficersStatusDetails(Long petitionId,Long userId){
 		KeyValueVO returnVO = null; 
 		try {
-			UserVO userVO = getPmOffceUserDetails(userId,null);
-			if(userVO != null){
-				List<Object[]> assignedDetails = pmPetitionAssignedOfficerDAO.getActionTypeDetailsForDeptDesiOfficerId(userVO.getDeptDesignationOfficerId(),petitionId);
+			List<Object[]> list = pmOfficerUserDAO.getPmOffceUserDetails(userId);
+			List<Long> deptDesignationOfficerIdsList = new ArrayList<>();
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] userObj : list) {
+					if(userObj != null && userObj.length > 0){
+						deptDesignationOfficerIdsList.add(commonMethodsUtilService.getLongValueForObject(userObj[7]));
+					}
+				}
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(deptDesignationOfficerIdsList)){
+				List<Object[]> assignedDetails = pmPetitionAssignedOfficerDAO.getActionTypeDetailsForDeptDesiOfficerId(deptDesignationOfficerIdsList,petitionId);
 				if(commonMethodsUtilService.isListOrSetValid(assignedDetails)){
 					returnVO = new KeyValueVO(); 
-					for (Object[] param : assignedDetails) {
-						returnVO.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
-					}
+					Object[] param = assignedDetails.get(0);
+					returnVO.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					returnVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
 				}
 			}
 		} catch (Exception e) {
@@ -2155,8 +2165,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 Map<Long,List<PetitionFileVO>> petitionRequiredFilesMap =  getPetitionsRequiredFilesMap(petitionId);
 			 KeyValueVO assignedWorksStatusVO = getAssignedPetitionOfficersStatusDetails(petitionId,userId);
 			 List<KeyValueVO> allFilesList = new ArrayList<KeyValueVO>(0);
-			 if(assignedWorksStatusVO != null)
+			 if(assignedWorksStatusVO != null){
 				 petitionVO.setActionType(assignedWorksStatusVO.getValue());
+				 petitionVO.setWorksStatus(assignedWorksStatusVO.getName());
+			 }
 			 
 			// Covering letter /Detailed report/action copy /all petition wise documents
 			 if(commonMethodsUtilService.isMapValid(petitionRequiredFilesMap) && petitionRequiredFilesMap.get(0L) != null)
@@ -2176,7 +2188,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(userAccessStatusVO != null && commonMethodsUtilService.isListOrSetValid(userAccessStatusVO.getDeptIdsList())){
 					KeyValueVO pendingVO = statusMap.get(1L);//pending endorsment 
 					if(pendingVO != null){ 
-						UserVO userVO = getPmOffceUserDetails(userId,null);//lokesh Nara
+						UserVO userVO = getPmOffceUserDetails(userId,null);
 						List<Long> postStatusIdsList = new ArrayList<>();
 						if(userVO != null){
 							if(commonMethodsUtilService.isMapValid(petitionSubWorksMap)){
@@ -2195,7 +2207,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}
 						for (Long statusId : statusMap.keySet()) {
 							if(commonMethodsUtilService.isListOrSetValid(userAccessStatusVO.getDeptIdsList()) && commonMethodsUtilService.isListOrSetValid(postStatusIdsList)){
-								if(userAccessStatusVO.getDeptIdsList().contains(statusId) && postStatusIdsList.contains(statusId)) {
+								//if(userAccessStatusVO.getDeptIdsList().contains(statusId) || postStatusIdsList.contains(statusId)) {
+								if(postStatusIdsList.contains(statusId)) {
 									pendingVO.getSubList().add(new KeyValueVO(statusId, statusMap.get(statusId).getValue()));
 								}
 							}else{
@@ -3543,12 +3556,28 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return false;
 		}
+		
+		public List<KeyValueVO> getPetitionAssignedPrincipalSecretoryDetails(Long petitionId){
+			List<KeyValueVO>  assignedPrincipalSecretoryList = null;
+			try {
+				List<Object[]> list   = pmPetitionAssignedOfficerDAO.getPetitionAssignedPrinciplSecretoryDetails(petitionId);
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					assignedPrincipalSecretoryList = new ArrayList<>();
+					for (Object[] param : list) {
+						assignedPrincipalSecretoryList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),"",commonMethodsUtilService.getLongValueForObject(param[1])));
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised into PmRequestDetailsService of getPetitionAssignedPrincipalSecretoryDetails() ",e);
+			}
+			return assignedPrincipalSecretoryList;
+		}
 		public ResultStatus endorsingSubWorksAndAssigningToOfficer(RepresenteeViewVO inputVO){
 			ResultStatus resultStatus = new ResultStatus();
 			try {
 				if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue() == 1L)
 					inputVO.setStatusId(6L);//move to pending action memo
-				
+				Date updatedTime=dateUtilService.getCurrentDateAndTime();
 				resultStatus.setExceptionMsg("FAIL");
 				if(inputVO.getActionType() != null){
 					String endorsmentNo="";
@@ -3557,16 +3586,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					PmPetitionAssignedOfficer pmPetitionAssignedOfficer = null;
 					Document document =null;
 					UserVO userVO = getPmOffceUserDetails(inputVO.getId(),null);
-					/*String assignBy="DISTRICT";//distict level user
-					String assignTo="DISTRICT";
-					
-					if(userVO != null && IConstants.PETITIONS_STATE_LEVEL_DESIGNATION_IDS.contains(userVO.getDesignationId())){
-						assignBy="STATE";//state level user
-					}
-					if(IConstants.PETITIONS_STATE_LEVEL_DESIGNATION_IDS.contains(inputVO.getDeptDesigId())){
-						assignTo="STATE";//state level user
-					}*/
-					
+										
 					if(commonMethodsUtilService.isListOrSetValid(workIds)){
 						boolean alreadyUpdaeted=false; // only once documents should be tracked for petition, but for works multiple times.
 						for (Long subWorkId : workIds) {
@@ -3589,12 +3609,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 														pmSubWorkDetails.setPmGrantId(inputVO.getGrantId());
 													if(inputVO.getStatusId().longValue() == 6L){
 															pmSubWorkDetails.setWorkEndorsmentNo(inputVO.getEndorsementNO());
-															pmSubWorkDetails.setEndorsmentDate(dateUtilService.getCurrentDateAndTime());
+															pmSubWorkDetails.setEndorsmentDate(updatedTime);
 													}
 												}
 											}
 											endorsmentNo =  pmSubWorkDetails != null?pmSubWorkDetails.getWorkEndorsmentNo():inputVO.getEndorsementNO() != null?inputVO.getEndorsementNO():"";
-											pmSubWorkDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+											pmSubWorkDetails.setUpdatedTime(updatedTime);
 											pmSubWorkDetails.setUpdatedUserId(inputVO.getId());
 											/*if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && (inputVO.getStatusId().longValue() == 4L || inputVO.getStatusId().longValue() == 5L || 
 													inputVO.getStatusId().longValue() == 6L) ){
@@ -3615,6 +3635,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 										if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && (inputVO.getStatusId().longValue() == 6L || inputVO.getStatusId().longValue() == 7L || inputVO.getActionType() != null ) ){
 											if(inputVO.getDeptDesigOffcrId() != null ){
 												pmPetitionAssignedOfficer = new PmPetitionAssignedOfficer();
+												if(inputVO.getStatusId().longValue()==3L && (inputVO.getDeptDesigOffcrId() == null || inputVO.getDeptDesigOffcrId().longValue()==0L)){
+													List<KeyValueVO>  assignedPrincipalSecretoryList = getPetitionAssignedPrincipalSecretoryDetails(pmSubWorkDetails.getPetitionId());
+													if(commonMethodsUtilService.isListOrSetValid(assignedPrincipalSecretoryList)){
+														KeyValueVO vo = assignedPrincipalSecretoryList.get(0);
+														if(vo!=null){
+															inputVO.setDeptDesigOffcrId(vo.getKey());
+															inputVO.setDeptDesigId(vo.getCount());
+														}
+													}
+												}
+												
 												if(commonMethodsUtilService.getLongValueForObject(inputVO.getPetitionId()) >0l && (commonMethodsUtilService.getLongValueForObject(inputVO.getDeptDesigOffcrId()) >0l)){
 													List<Object[]> list = pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptAndOffId(inputVO.getDeptDesigId(),inputVO.getDeptDesigOffcrId());
 													Long deptDesigId = 0l;
@@ -3634,13 +3665,26 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 													pmPetitionAssignedOfficer.setPmDepartmentDesignationOfficerId(deptDesigOfficerId);
 													pmPetitionAssignedOfficer.setRemarks(inputVO.getRemark());
 													pmPetitionAssignedOfficer.setIsDeleted("N");
-													pmPetitionAssignedOfficer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+													pmPetitionAssignedOfficer.setInsertedTime(updatedTime);
 													pmPetitionAssignedOfficer.setInsertedUserId(inputVO.getId());
-													pmPetitionAssignedOfficer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+													pmPetitionAssignedOfficer.setUpdatedTime(updatedTime);
 													pmPetitionAssignedOfficer.setUpdatedUserId(inputVO.getId());
+													
+													if(userVO != null){
+														List<Object[]> list1 = pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptAndOffId(userVO.getDesignationId(),userVO.getPmOfficerId());
+														if(commonMethodsUtilService.isListOrSetValid(list1)){
+															Object[] param = list1.get(0);
+															pmPetitionAssignedOfficer.setAssignedByPmDepartmentDesignationOfficerId(commonMethodsUtilService.getLongValueForObject(param[0]));
+														}else{
+															throw new Exception(" Assign by members data not available ");
+														}
+													}
+													pmPetitionAssignedOfficer.setAssignedToPmDepartmentDesignationOfficerId(deptDesigId);
+													
 													pmPetitionAssignedOfficer.setActionType(inputVO.getActionType());
 													if( inputVO.getActionTypeId() != null && inputVO.getActionTypeId().longValue()>0L)
 														pmPetitionAssignedOfficer.setPmActionTypeId(inputVO.getActionTypeId());
+													
 													pmPetitionAssignedOfficer.setPmStatusId(inputVO.getStatusId());
 													pmPetitionAssignedOfficer = pmPetitionAssignedOfficerDAO.save(pmPetitionAssignedOfficer);
 												}
@@ -3651,11 +3695,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 											if(inputVO.getCoverLetterPath() != null & !inputVO.getCoverLetterPath().isEmpty()){
 												document = new Document();
 												document.setPath(inputVO.getCoverLetterPath());
-												document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+												document.setInsertedTime(updatedTime);
 												document.setInsertedUserId(inputVO.getId());
 												document = documentDAO.save(document);
 												if(document != null)
-													resultStatus =saveCoveringLetterDocument(pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),inputVO.getId(), endorsmentNo,inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
+													resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),inputVO.getId(), endorsmentNo,inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
 											}
 											
 										}else if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && inputVO.getStatusId().longValue() != 6L){
@@ -3664,7 +3708,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 												for (MultipartFile file : inputVO.getFilesList()) {
 													document = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,inputVO.getId(),null);
 													if(document != null)
-														resultStatus =saveCoveringLetterDocument(pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),
+														resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),
 																inputVO.getId(), endorsmentNo,inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
 												}
 											}
@@ -3697,43 +3741,28 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 												else
 													pmTrackingVO.setPmStatusId(2L);
 													pmTrackingVO.setPmSubWorkDetailsId(null);// for peition tracking
-													updatePetitionTracking(pmTrackingVO,null);
+													updatePetitionTracking(pmTrackingVO,updatedTime);
 										}
 									}
+								}else if(inputVO != null && inputVO.getStatusId() != null){
+									
+									pmSubWorkDetails.setPmStatusId(inputVO.getStatusId());
+									pmSubWorkDetails.setUpdatedTime(updatedTime);
+									pmSubWorkDetails.setUpdatedUserId(inputVO.getId());
+									pmSubWorkDetailsDAO.save(pmSubWorkDetails);
+									
+									PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
+									pmTrackingVO.setPmActionTypeId(inputVO.getActionTypeId());
+									pmTrackingVO.setActionType("COMPLETED");
+									pmTrackingVO.setUserId(inputVO.getId());
+									pmTrackingVO.setPetitionId(inputVO.getPetitionId());
+									pmTrackingVO.setRemarks(inputVO.getRemark());
+									pmTrackingVO.setPmTrackingActionId(3L);//COMMENT 
+									pmTrackingVO.setPmSubWorkDetailsId(subWorkId);
+									updatePetitionTracking(pmTrackingVO,updatedTime); // works wise tracking 
 								}
 							}
 							}
-							/*PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
-							pmTrackingVO.setPmActionTypeId(inputVO.getActionTypeId());
-							pmTrackingVO.setActionType(inputVO.getActionType());
-							if(inputVO.getStatusId() == null || inputVO.getStatusId().longValue()==0L){
-								pmTrackingVO.setPmStatusId(pmSubWorkDetailsDAO.get(subWorkId).getPmStatusId());// latest statusId , while updating only remarks for tracking
-								pmTrackingVO.setPmTrackingActionId(3L);//COMMENT 
-							}else{
-								pmTrackingVO.setPmStatusId(inputVO.getStatusId());
-								pmTrackingVO.setPmTrackingActionId(2L);//STATUS CHANGED
-								if(document != null)
-									pmTrackingVO.setPmTrackingActionId(4L);//File Uploded
-							}
-							if(pmPetitionAssignedOfficer != null)
-								pmTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficer.getPmPetitionAssignedOfficerId());
-							
-							pmTrackingVO.setUserId(inputVO.getId());
-							pmTrackingVO.setPetitionId(inputVO.getPetitionId());
-							pmTrackingVO.setRemarks(inputVO.getRemark());
-							if(document != null)
-								pmTrackingVO.setDocumentId(document.getDocumentId());
-							pmTrackingVO.setPmSubWorkDetailsId(subWorkId);
-							//updatePetitionTracking(pmTrackingVO); // works wise tracking 
-							if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && !alreadyUpdaeted){
-								if(inputVO.getStatusId().longValue() ==4L && inputVO.getStatusId().longValue() ==5L && inputVO.getStatusId().longValue() ==8L)
-									pmTrackingVO.setPmStatusId(8L);
-								else
-									pmTrackingVO.setPmStatusId(2L);
-									pmTrackingVO.setPmSubWorkDetailsId(null);// for peition tracking
-									//updatePetitionTracking(pmTrackingVO);
-									alreadyUpdaeted=true;
-							}*/
 						}
 					}else{
 						if(inputVO.getStatusId() == null || inputVO.getStatusId().longValue()==0L){
@@ -3748,7 +3777,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								pmTrackingVO.setDocumentId(document.getDocumentId());
 								//pmTrackingVO.setPmDocumentTypeId(4l);
 							}
-							updatePetitionTracking(pmTrackingVO,null); // works wise tracking 
+							updatePetitionTracking(pmTrackingVO,updatedTime); // works wise tracking 
 						}
 					}
 					
@@ -3791,7 +3820,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									}
 									if(pmPetitionAssignedOfficer != null)
 										pititionTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficer.getPmPetitionAssignedOfficerId());
-									updatePetitionTracking(pititionTrackingVO,null);// petition wise tracking 
+									updatePetitionTracking(pititionTrackingVO,updatedTime);// petition wise tracking 
 								}
 							}else if(inputVO.getStatusId().longValue() ==6L){
 								if(petition.getPmStatusId() != null && petition.getPmStatusId().longValue() !=2L){
@@ -3804,14 +3833,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									pititionTrackingVO.setUserId(inputVO.getId());
 									pititionTrackingVO.setPetitionId(inputVO.getPetitionId());
 									pititionTrackingVO.setRemarks(inputVO.getRemark());
-									pititionTrackingVO.setPmTrackingActionId(2L);//STATUS CHANGED
+									pititionTrackingVO.setPmTrackingActionId(4L);//covering letter uploaded
 									if(document != null){
 										pititionTrackingVO.setDocumentId(document.getDocumentId());
 										//pititionTrackingVO.setPmDocumentTypeId(4l);
 									}
 									if(pmPetitionAssignedOfficer != null)
 										pititionTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficer.getPmPetitionAssignedOfficerId());
-									updatePetitionTracking(pititionTrackingVO,null);// petition wise tracking 
+									updatePetitionTracking(pititionTrackingVO,updatedTime);// petition wise tracking 
 								}
 							}
 							
@@ -3831,7 +3860,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 			return resultStatus;
 		}
-		public ResultStatus saveCoveringLetterDocument(PmPetitionAssignedOfficer pmPetitionAssignedOfficer,String remarks,List<Long> subWorkIds,
+		public ResultStatus saveCoveringLetterDocument(Date updatedTime,RepresenteeViewVO inputVO,PmPetitionAssignedOfficer pmPetitionAssignedOfficer,String remarks,List<Long> subWorkIds,
 				Long documentId,Long userId,String endorsmentNo,Long petitonId,String reportType,Long statusId,Long documentTypeId,String refNo){
 			ResultStatus status=new ResultStatus();
 			try {
@@ -3862,7 +3891,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmTrackingVO.setRemarks("uploaded action memo document");
 						else if(statusId == 3L)
 							pmTrackingVO.setRemarks("Uploaded detailed report document");
-						
+						pmTrackingVO.setActionType(inputVO.getActionType());
 						if(pmTrackingVO.getRemarks() != null && !pmTrackingVO.getRemarks().isEmpty())
 							pmTrackingVO.setRemarks(pmTrackingVO.getRemarks()+" , "+remarks);
 						pmTrackingVO.setPmDocumentTypeId(documentTypeId);
@@ -3871,10 +3900,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmTrackingVO.setPmSubWorkDetailsId(subWorkId);
 						if(pmPetitionAssignedOfficer != null)
 							pmTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficer.getPmPetitionAssignedOfficerId());
-						updatePetitionTracking(pmTrackingVO,null);
+						updatePetitionTracking(pmTrackingVO,updatedTime);
 						
 						pmTrackingVO.setPmSubWorkDetailsId(null);
-						updatePetitionTracking(pmTrackingVO,null);
+						updatePetitionTracking(pmTrackingVO,updatedTime);
 						
 					}
 				}
@@ -4800,6 +4829,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return resultList;
 		}
 		
-		
+		public boolean assingThePetitiontoOfficers(Long assignedByDeptDesignationOfficerId,Long assignedToDeptDesignationOfficerId,String assignType)
+		{
+			boolean isAssigned=false;
+			try {
+				
+			} catch (Exception e) {
+				LOG.error("exception raised into PmRequestDetailsService of assingThePetitiontoOfficers()",e);
+			}
+			return isAssigned;
+		}
 		
 }

@@ -9,5 +9,6 @@ import com.itgrids.model.PmPetitionAssignedOfficer;
 public interface IPmPetitionAssignedOfficerDAO extends GenericDao<PmPetitionAssignedOfficer, Long> {
 	public List<Object[]> getAssignedPetitionforPetitionDeptDesignationOfficer(List<Long> pmDeptDesignationOfficerIdsList);
 	public List<Long> getAssingedOfficerStatusIdsList(List<Long> deptDesignationIdsList);
-	public List<Object[]> getActionTypeDetailsForDeptDesiOfficerId(Long pmDeptDesignationOfficerId,Long petitionId);
+	public List<Object[]> getActionTypeDetailsForDeptDesiOfficerId(List<Long> deptDesignationOfficerIdsList,Long petitionId);
+	public List<Object[]> getPetitionAssignedPrinciplSecretoryDetails(Long petitionId);
 }

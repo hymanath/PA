@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KeyValueVO {
+	private String name;
 	private Long key;
 	private String value;
 	private Long count=0L;
@@ -94,5 +95,10 @@ public class KeyValueVO {
 	public void setDeptIdsList(List<Long> deptIdsList) {
 		this.deptIdsList = deptIdsList;
 	}
-	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 }
