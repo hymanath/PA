@@ -2480,7 +2480,7 @@
 	   <property name="locationDashboardService" ref="locationDashboardService"/>
 	   <property name="kaizalaInfoService" ref="kaizalaInfoService"/>
 	   <property name="partyMeetingMOMService" ref="partyMeetingMOMService"/>
-	   <property name="affiliatedMember" ref="affiliatedMember"/>
+	   <property name="affiliatedMemberService" ref="affiliatedMemberService"/>
 	   <property name="itdpAppUserDAO" ref="itdpAppUserDAO" />
 	</bean>
  
@@ -4669,7 +4669,7 @@
     	 	<property name="alertUpdationAPIService" ref="alertUpdationAPIService"></property>
     	 </bean>
     	 
-    	 <bean name="affiliatedMember" class="com.itgrids.partyanalyst.service.impl.AffiliatedMemberImpl" >
+    	 <bean name="affiliatedMemberService" class="com.itgrids.partyanalyst.service.impl.AffiliatedMemberService" >
 		        <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
 		         <property name="affiliatedMemberDAO" ref="affiliatedMemberDAO" />
 		        <property name="imageAndStringConverter" ref="imageAndStringConverter" />
