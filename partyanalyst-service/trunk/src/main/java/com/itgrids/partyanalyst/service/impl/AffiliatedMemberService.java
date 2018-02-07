@@ -199,8 +199,13 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 				if(commonMethodsUtilService.isListOrSetValid(memberlist)){
 					affliatedDataList.addAll(memberlist);
 				}else{
-					List <Object[]> memberDataThroughVoterlist =affiliatedMemberDAO.searchAffiliatedMemberDetailsThroughVoter(searchType, searchValue, locationType, locationValues);
-					affliatedDataList.addAll(memberDataThroughVoterlist);
+					List <Object[]> memberDataThroughTClist =affiliatedMemberDAO.searchAffiliatedMemberDetailsThroughTC(searchType, searchValue, locationType, locationValues);
+					if(commonMethodsUtilService.isListOrSetValid(memberlist)){
+						affliatedDataList.addAll(memberDataThroughTClist);
+					}else{
+						List <Object[]> memberDataThroughVoterlist =affiliatedMemberDAO.searchAffiliatedMemberDetailsThroughVoter(searchType, searchValue, locationType, locationValues);
+						affliatedDataList.addAll(memberDataThroughVoterlist);
+					}
 				}
 			}else if(searchType != null && searchType.equalsIgnoreCase("mobileno")){
 				List <Object[]> memberlist = affiliatedMemberDAO.searchAffiliatedMemberDetails(searchType, searchValue, locationType, locationValues);
@@ -208,10 +213,12 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 				memberListSize=Long.valueOf(memberlist.size());
 				if(commonMethodsUtilService.isListOrSetValid(memberlist)){
 					affliatedDataList.addAll(memberlist);
-				}else{
-					List <Object[]> memberDataThroughTClist =affiliatedMemberDAO.searchAffiliatedMemberDetailsThroughTC(searchType, searchValue, locationType, locationValues);
+				}
+				List <Object[]> memberDataThroughTClist =affiliatedMemberDAO.searchAffiliatedMemberDetailsThroughTC(searchType, searchValue, locationType, locationValues);
+				if(commonMethodsUtilService.isListOrSetValid(memberDataThroughTClist)){
 					affliatedDataList.addAll(memberDataThroughTClist);
 				}
+				
 			}
 			
 			if(affliatedDataList!= null && affliatedDataList.size() >0){
@@ -234,11 +241,13 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 					if(commonMethodsUtilService.getLongValueForObject(objects[11]) != null && commonMethodsUtilService.getLongValueForObject(objects[11])>0 ){
 						vo.setAddressId(commonMethodsUtilService.getLongValueForObject(objects[11]));
 					}
-					if(commonMethodsUtilService.getLongValueForObject(objects[0]) !=null && commonMethodsUtilService.getLongValueForObject(objects[0]).longValue()>0l && memberListSize==0l){
-						vo.setAffiliatedMemberId(affiliatedMemberDAO.getAffiliatedMemberId(commonMethodsUtilService.getLongValueForObject(objects[0])));
+					/*if(commonMethodsUtilService.getLongValueForObject(objects[0]) !=null && commonMethodsUtilService.getLongValueForObject(objects[0]).longValue()>0l && memberListSize==0l){
+						vo.setAffiliatedMemberId(affiliatedMemberDAO.getAffiliatedMemberId(commonMethodsUtilService.getLongValueForObject(objects[0]),"cadre"));
+					}else if(commonMethodsUtilService.getLongValueForObject(objects[0]) !=null && commonMethodsUtilService.getLongValueForObject(objects[0]).longValue()>0l && memberListSize==0l){
+						vo.setAffiliatedMemberId(affiliatedMemberDAO.getAffiliatedMemberId(commonMethodsUtilService.getLongValueForObject(objects[3]),"voter"));
 					}else{
 						vo.setAffiliatedMemberId(commonMethodsUtilService.getLongValueForObject(objects[12]));
-					}
+					}*/
 					returnList.add(vo);
 				}
 			}
@@ -255,59 +264,73 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				try{
-					AffiliatedMember member = new AffiliatedMember();
-					member.setVoterId(commonMethodsUtilService.getLongObjectFromJson(jobj,"voterId"));
-					member.setTdpCadreId(commonMethodsUtilService.getLongObjectFromJson(jobj,"tdpCadreId"));
-					member.setFullName(jobj.has("fullName") ? jobj.getString("fullName").trim() : "");
-					member.setGender(jobj.has("gender") ? jobj.getString("gender").trim() : "");
-					member.setAge(commonMethodsUtilService.getLongObjectFromJson(jobj,"age"));
-					member.setMobileNo(jobj.has("mobileNo") ? jobj.getString("mobileNo").trim() :"");
-					member.setEmailId(jobj.has("emailId") ? jobj.getString("emailId").trim() : null);
-					member.setIsSmartPhone(jobj.has("isSmartPhone") ? jobj.getString("isSmartPhone").trim() : null);
-					member.setIsInterested("Y");
-					member.setIsActiveMember(jobj.has("isActiveMember") ? jobj.getString("isActiveMember").trim() :null);
-			 		member.setIsAppliedLoan(jobj.has("isAppliedLoan") ? jobj.getString("isAppliedLoan").trim() : null);
-					member.setEducationId(commonMethodsUtilService.getLongObjectFromJson(jobj,"educationId"));
-					member.setOccupationId(commonMethodsUtilService.getLongObjectFromJson(jobj,"occupationId"));
-					member.setCasteStateId(commonMethodsUtilService.getLongObjectFromJson(jobj,"casteStateId"));
-					member.setAffiliateMemberTypeId(1L);
-					member.setIsDeleted("N");
-					member.setLatitude(jobj.has("latitude") ? jobj.getString("latitude").trim() : null);
-					member.setLongititude(jobj.has("longititude") ? jobj.getString( "longititude").trim() : null);
-					member.setLocationAccuracy((jobj.has("locationAccuracy") && jobj.getString("locationAccuracy").trim().length() > 0)  ? jobj.getDouble("locationAccuracy") : null);
-				 	member.setImei(jobj.has("imei") ? jobj.getString("imei").trim() : null);
-				 	member.setAppVersion(jobj.has("appVersion") ? jobj.getString("appVersion").trim() : null );
-				 	member.setUniqueKey(jobj.has("uniqueKey") ? jobj.getString("uniqueKey").trim() : null);
-			 		member.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-			 		member.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-			 		member.setInsertedById(commonMethodsUtilService.getLongObjectFromJson(jobj,"appuserId"));
-			 		member.setUpdatedById(commonMethodsUtilService.getLongObjectFromJson(jobj,"appuserId"));
-			 		
-			 		UserAddress userAddress = userAddressDAO.get(setAddress(jobj.getString("locationType"),jobj.getLong("locationValues")));
-			 		String constituencyIdPath = "";
-			 		
-			 		if(userAddress != null)
-			 		{
-			 			member.setAddressId(userAddress.getUserAddressId());
-			 			if(userAddress.getConstituency() != null && userAddress.getConstituency().getConstituencyId().longValue() > 0)
-			 				constituencyIdPath = userAddress.getConstituency().getConstituencyId().toString()+"/";
-			 		}
-			 		
-			 		String imgName = System.currentTimeMillis()+".jpg";
-			 		String imgPath = constituencyIdPath + imgName;
-			 		String savePath = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.DALITHA_TEJAM_IMG_FOLDER+"/"+imgPath;
-					Boolean isSave = imageAndStringConverter.convertBase64StringToImage(jobj.getString("imagePath"),savePath);
-					
-					if(isSave)
-						member.setImagePath(imgPath);
-			 		
-			 		AffiliatedMember affiliatedMember=affiliatedMemberDAO.save(member);
-			 		
-					if(affiliatedMember != null){
-						finalVo.setAffiliatedMemberId(affiliatedMember.getAffiliatedMemberId());
-						finalVo.setStatus("Inserted Successfully");
-						finalVo.setIsActiveAppUser(IsActiveUser);
+					Long affiliatedMemberId = null;
+					if(jobj.has("tdpCadreId") && jobj.getLong("tdpCadreId")>0){
+						
+						affiliatedMemberId =affiliatedMemberDAO.getAffiliatedMemberId(jobj.getLong("tdpCadreId"),"cadre");
+					}else if(jobj.has("voterId") && jobj.getLong("voterId")>0){
+						affiliatedMemberId =affiliatedMemberDAO.getAffiliatedMemberId(jobj.getLong("voterId"),"voter");
 					}
+					if(affiliatedMemberId !=null){
+						finalVo.setStatus("Member Already Registered");
+						finalVo.setReason("Member Already Registered with Id:"+affiliatedMemberId);
+						finalVo.setIsActiveAppUser(IsActiveUser);
+					}else{
+						AffiliatedMember member = new AffiliatedMember();
+						member.setVoterId(commonMethodsUtilService.getLongObjectFromJson(jobj,"voterId"));
+						member.setTdpCadreId(commonMethodsUtilService.getLongObjectFromJson(jobj,"tdpCadreId"));
+						member.setFullName(jobj.has("fullName") ? jobj.getString("fullName").trim() : "");
+						member.setGender(jobj.has("gender") ? jobj.getString("gender").trim() : "");
+						member.setAge(commonMethodsUtilService.getLongObjectFromJson(jobj,"age"));
+						member.setMobileNo(jobj.has("mobileNo") ? jobj.getString("mobileNo").trim() :"");
+						member.setEmailId(jobj.has("emailId") ? jobj.getString("emailId").trim() : null);
+						member.setIsSmartPhone(jobj.has("isSmartPhone") ? jobj.getString("isSmartPhone").trim() : null);
+						member.setIsInterested("Y");
+						member.setIsActiveMember(jobj.has("isActiveMember") ? jobj.getString("isActiveMember").trim() :null);
+				 		member.setIsAppliedLoan(jobj.has("isAppliedLoan") ? jobj.getString("isAppliedLoan").trim() : null);
+						member.setEducationId(commonMethodsUtilService.getLongObjectFromJson(jobj,"educationId"));
+						member.setOccupationId(commonMethodsUtilService.getLongObjectFromJson(jobj,"occupationId"));
+						member.setCasteStateId(commonMethodsUtilService.getLongObjectFromJson(jobj,"casteStateId"));
+						member.setAffiliateMemberTypeId(1L);
+						member.setIsDeleted("N");
+						member.setLatitude(jobj.has("latitude") ? jobj.getString("latitude").trim() : null);
+						member.setLongititude(jobj.has("longititude") ? jobj.getString( "longititude").trim() : null);
+						member.setLocationAccuracy((jobj.has("locationAccuracy") && jobj.getString("locationAccuracy").trim().length() > 0)  ? jobj.getDouble("locationAccuracy") : null);
+					 	member.setImei(jobj.has("imei") ? jobj.getString("imei").trim() : null);
+					 	member.setAppVersion(jobj.has("appVersion") ? jobj.getString("appVersion").trim() : null );
+					 	member.setUniqueKey(jobj.has("uniqueKey") ? jobj.getString("uniqueKey").trim() : null);
+				 		member.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				 		member.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				 		member.setInsertedById(commonMethodsUtilService.getLongObjectFromJson(jobj,"appuserId"));
+				 		member.setUpdatedById(commonMethodsUtilService.getLongObjectFromJson(jobj,"appuserId"));
+				 		
+				 		UserAddress userAddress = userAddressDAO.get(setAddress(jobj.getString("locationType"),jobj.getLong("locationValues")));
+				 		String constituencyIdPath = "";
+				 		
+				 		if(userAddress != null)
+				 		{
+				 			member.setAddressId(userAddress.getUserAddressId());
+				 			if(userAddress.getConstituency() != null && userAddress.getConstituency().getConstituencyId().longValue() > 0)
+				 				constituencyIdPath = userAddress.getConstituency().getConstituencyId().toString()+"/";
+				 		}
+				 		
+				 		String imgName = System.currentTimeMillis()+".jpg";
+				 		String imgPath = constituencyIdPath + imgName;
+				 		String savePath = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.DALITHA_TEJAM_IMG_FOLDER+"/"+imgPath;
+						Boolean isSave = imageAndStringConverter.convertBase64StringToImage(jobj.getString("imagePath"),savePath);
+						
+						if(isSave)
+							member.setImagePath(imgPath);
+				 		
+				 		AffiliatedMember affiliatedMember=affiliatedMemberDAO.save(member);
+				 		
+						if(affiliatedMember != null){
+							finalVo.setAffiliatedMemberId(affiliatedMember.getAffiliatedMemberId());
+							finalVo.setStatus("Inserted Successfully");
+							finalVo.setIsActiveAppUser(IsActiveUser);
+						}
+					}
+					
 				}catch(Exception e){
 					finalVo.setStatus("Insertion Failed");
 					finalVo.setReason(e.getLocalizedMessage());
