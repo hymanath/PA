@@ -304,7 +304,7 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 				 		member.setInsertedById(commonMethodsUtilService.getLongObjectFromJson(jobj,"appuserId"));
 				 		member.setUpdatedById(commonMethodsUtilService.getLongObjectFromJson(jobj,"appuserId"));
 				 		
-				 		UserAddress userAddress = userAddressDAO.get(setAddress(jobj.getString("locationType"),jobj.getLong("locationValues")));
+				 		UserAddress userAddress = userAddressDAO.get(setAddress(jobj.getString("locationType"),jobj.getLong("locationValue")));
 				 		String constituencyIdPath = "";
 				 		
 				 		if(userAddress != null)
