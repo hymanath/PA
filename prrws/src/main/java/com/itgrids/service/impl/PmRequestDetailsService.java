@@ -2122,6 +2122,25 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 		return globalFilesList;
 	}
+	
+	public KeyValueVO getAssignedPetitionOfficersStatusDetails(Long petitionId,Long userId){
+		KeyValueVO returnVO = null; 
+		try {
+			UserVO userVO = getPmOffceUserDetails(userId,null);
+			if(userVO != null){
+				List<Object[]> assignedDetails = pmPetitionAssignedOfficerDAO.getActionTypeDetailsForDeptDesiOfficerId(userVO.getDeptDesignationOfficerId(),petitionId);
+				if(commonMethodsUtilService.isListOrSetValid(assignedDetails)){
+					returnVO = new KeyValueVO(); 
+					for (Object[] param : assignedDetails) {
+						returnVO.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in PmRequestDetailsService @ getAssignedPetitionOfficersStatusDetails "+e.getMessage());
+		}
+		return returnVO;
+	}
 	 @SuppressWarnings("static-access")//11111
 	public PmRequestEditVO setPmRepresenteeDataToResultView(Long petitionId,String pageType,Long userId){
 		 PmRequestEditVO returnVO = null;
@@ -2134,9 +2153,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 PmRequestEditVO petitionVO = getPetitionBasicDetails(petitionId,pageType,petitionFilesListMap,refFilesListMap);
 			 Map<String,List<PetitionsWorksVO>> petitionSubWorksMap = getPetitionsSubWorksDetails(petitionId,pageType);
 			 Map<Long,List<PetitionFileVO>> petitionRequiredFilesMap =  getPetitionsRequiredFilesMap(petitionId);
-			 
+			 KeyValueVO assignedWorksStatusVO = getAssignedPetitionOfficersStatusDetails(petitionId,userId);
 			 List<KeyValueVO> allFilesList = new ArrayList<KeyValueVO>(0);
-			
+			 if(assignedWorksStatusVO != null)
+				 petitionVO.setActionType(assignedWorksStatusVO.getValue());
+			 
 			// Covering letter /Detailed report/action copy /all petition wise documents
 			 if(commonMethodsUtilService.isMapValid(petitionRequiredFilesMap) && petitionRequiredFilesMap.get(0L) != null)
 				 petitionVO.getReportTypeFilesList().addAll(petitionRequiredFilesMap.get(0L));

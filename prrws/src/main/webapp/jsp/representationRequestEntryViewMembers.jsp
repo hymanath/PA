@@ -337,36 +337,15 @@
 			<div class="col-sm-6">
 				<div class="row m_top10" id="actionChangeDivId" style="display:none;">
 					<div class="col-sm-12">
-						<label class="radio-inline actionChangeCls">
-						  <input type="radio" name="optionsRadios" id="inlineCheckbox1" value="COMPLETED" class="actionCls font_weight" checked> ACTION CHANGE 
+						<label class="checkbox-inline actionChangeCls">
+						  <input type="checkbox" name="" id="inlineCheckbox1" value="COMPLETED" class="actionCls font_weight" checked> ACTION CHANGE 
 						</label>
-						<label class="radio-inline">
-						  <input type="radio" name="optionsRadios" id="inlineCheckbox2" value="ASSIGNED" class="actionCls font_weight"> FORWARD
+						<label class="checkbox-inline">
+						  <input type="checkbox" name="" id="inlineCheckbox2" value="ASSIGNED" class="actionCls font_weight"> FORWARD
 						</label>
 					</div>
 				</div>
-				<div class="row m_top10" id="actionTypeDivId1" style="display:none;">
-					<div class="col-sm-12" >
-						 <label class="text-capitalize">
-							<span class="btn btn-success btn-md"><input type="radio"  name="checkRadio" class="assignCls1" value="ASSIGNED" id="">ASSIGN TO OFFICER</input></span>
-						 </label>
-						<!--<select class="form-control chosen-select" id="assignTypeId" name="actionType">
-							<option value="0">SELECT ACTION TYPE</option>
-							<option value="ASSIGNED">ASSIGN TO OFFICER</option>
-							<option value="COMPLETED">UPLOAD FILE COPY</option>
-						</select>-->
-					</div>
-					<div class="col-sm-12" style="display:none;">
-						 <label class="text-capitalize">
-							<span class="btn btn-success btn-md"><input type="radio" name="checkRadio" class="assignCls1" checked value="COMPLETED" id="">CHANGE ACTION</input></span>
-						 </label>
-						<!--<select class="form-control chosen-select" id="assignTypeId" name="actionType">
-							<option value="0">SELECT ACTION TYPE</option>
-							<option value="ASSIGNED">ASSIGN TO OFFICER</option>
-							<option value="COMPLETED">UPLOAD FILE COPY</option>
-						</select>-->
-					</div>
-				</div>
+				
 				<div class="row m_top10" >
 					<div class="col-sm-12" id="statusChangeDivId">
 						<label>FORWARD FOR: <span style="color:red;">*</span><span id="statusIdErrStr"></span></label>

@@ -28,8 +28,14 @@ public class PmRequestEditVO {
 	private List<KeyValueVO> deptList = new ArrayList<KeyValueVO>(0);
 	private List<PetitionHistoryVO> historyList = new ArrayList<PetitionHistoryVO>(0);
 	private Long statusId;
+	private String actionType;
 	
-	
+	public String getActionType() {
+		return actionType;
+	}
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
+	}
 	public List<KeyValueVO> getAllFileList() {
 		return allFileList;
 	}
