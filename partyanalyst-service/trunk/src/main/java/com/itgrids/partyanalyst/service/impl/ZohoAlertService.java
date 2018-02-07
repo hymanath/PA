@@ -78,7 +78,7 @@ public class ZohoAlertService implements IZohoAlertService {
 		Long cadreId=0l;
 		try{
 			if(membershipId!=null && !membershipId.trim().isEmpty() && membershipId.trim().equalsIgnoreCase(IConstants.ZOHO_IOS_STATIC_MEMBERSHIP_ID)){
-				return null;
+				return IConstants.ZOHO_IOS_STATIC_MOBILE_NO;
 			}else{
 				List<Object[]> mobileNoList = tdpCadreDAO.getMobileNoOfMembership(membershipId);
 				if(mobileNoList!=null && mobileNoList.size()>0){
