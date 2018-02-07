@@ -42,7 +42,7 @@ public class AffiliatedMember{
 	private String imei;
 	private Long addressId;
 	private String appVersion;
-	private String unique_key;
+	private String uniqueKey;
 	private Double locationAccuracy;	
 	private String isDeleted;
 	private Date  insertedTime;	
@@ -59,6 +59,9 @@ public class AffiliatedMember{
 	private AffiliateMemberType   affiliateMemberType;
 	private String isActiveMember;
 	private String isAppliedLoan;
+	
+	private Long updatedById;
+	private Long insertedById;
 	
 	
 	@Id
@@ -196,20 +199,24 @@ public class AffiliatedMember{
 	public void setAppVersion(String appVersion) {
 		this.appVersion = appVersion;
 	}
-	@Column(name="unique_key")
-	public String getUnique_key() {
-		return unique_key;
-	}
-	public void setUnique_key(String unique_key) {
-		this.unique_key = unique_key;
-	}
+	
 	@Column(name="location_accuracy")
 	public Double getLocationAccuracy() {
 		return locationAccuracy;
 	}
+	
 	public void setLocationAccuracy(Double locationAccuracy) {
 		this.locationAccuracy = locationAccuracy;
 	}
+	
+	@Column(name="unique_key")
+	public String getUniqueKey() {
+		return uniqueKey;
+	}
+	public void setUniqueKey(String uniqueKey) {
+		this.uniqueKey = uniqueKey;
+	}
+	
 	@Column(name="is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;
@@ -346,6 +353,20 @@ public class AffiliatedMember{
 		this.isAppliedLoan = isAppliedLoan;
 	}
 	
+	@Column(name="updated_by")
+	public Long getUpdatedById() {
+		return updatedById;
+	}
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
+	}
 	
+	@Column(name="inserted_by")
+	public Long getInsertedById() {
+		return insertedById;
+	}
+	public void setInsertedById(Long insertedById) {
+		this.insertedById = insertedById;
+	}
 	
 }
