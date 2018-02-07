@@ -20,18 +20,18 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 				
 				sb.append("select model.tdpCadreId,model.mobileNo,model.tdpCadre.memberShipNo,model.voterId,model.voter.voterIDCardNo, model.voter.relativeName," +
 						" model.tdpCadre.houseNo,'',model.fullName, model.tdpCadre.casteState.casteStateId,model.gender,model.userAddress.userAddressId,model.affiliatedMemberId" +
-						"  from AffiliatedMember model ");
+						"  from AffiliatedMember model where model.isDeleted = 'N' ");
 				
 				if(searchType.equalsIgnoreCase("mobileno")){
 					
-					sb.append(" where model.mobileNo =:searchValue ");
+					sb.append(" and model.mobileNo =:searchValue ");
 					
 				}else if(searchType.equalsIgnoreCase("mebershipno")){
 					
-					sb.append(" where model.tdpCadre.memberShipNo = :searchValue ");
+					sb.append(" and model.tdpCadre.memberShipNo = :searchValue ");
 					
 				}else if(searchType.equalsIgnoreCase("votercardno")){
-					sb.append(" where model.voter.voterIDCardNo = :searchValue ");
+					sb.append(" and model.voter.voterIDCardNo = :searchValue ");
 				}
 				
 				if(locationType != null && locationType.equalsIgnoreCase("district")){
