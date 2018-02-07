@@ -170,7 +170,7 @@ import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IActivityService;
-import com.itgrids.partyanalyst.service.IAffiliatedMember;
+import com.itgrids.partyanalyst.service.IAffiliatedMemberService;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAlertsNewsPortalService;
@@ -299,7 +299,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private ICccDashboardService cccDashboardService;
     private IKaizalaInfoService kaizalaInfoService;
     private IPartyMeetingMOMService partyMeetingMOMService;
-    private IAffiliatedMember affiliatedMember;
+    private IAffiliatedMemberService affiliatedMemberService;
     private IitdpAppUserDAO itdpAppUserDAO;
     
 	public IitdpAppUserDAO getItdpAppUserDAO() {
@@ -310,12 +310,12 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		this.itdpAppUserDAO = itdpAppUserDAO;
 	}
 
-	public IAffiliatedMember getAffiliatedMember() {
-		return affiliatedMember;
+	public IAffiliatedMemberService getAffiliatedMember() {
+		return affiliatedMemberService;
 	}
 
-	public void setAffiliatedMember(IAffiliatedMember affiliatedMember) {
-		this.affiliatedMember = affiliatedMember;
+	public void setAffiliatedMember(IAffiliatedMemberService affiliatedMemberService) {
+		this.affiliatedMemberService = affiliatedMemberService;
 	}
 
 	public IKaizalaInfoService getKaizalaInfoService() {
@@ -5755,7 +5755,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValue) {
 		List<AffiliatedMemberVO> affiliatedMemberList=new ArrayList<AffiliatedMemberVO>();
 		try{
-			affiliatedMemberList = affiliatedMember.searchAffiliatedMemberDetails(searchType,searchValue, locationType,locationValue);
+			affiliatedMemberList = affiliatedMemberService.searchAffiliatedMemberDetails(searchType,searchValue, locationType,locationValue);
     	}catch(Exception e){
     		log.error("Exception raised in searchAffiliatedMemberDetails  method in WebServiceHandlerService1",e);
     	}
@@ -5767,7 +5767,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		AffiliatedMemberVO vo = null;
 		try{
 			ITdpAppUser appuser= itdpAppUserDAO.get(jobj.getLong("appuserId"));
-			vo = affiliatedMember.saveAffiliatedMemberDetails(jobj,appuser.getIsDeleted());
+			vo = affiliatedMemberService.saveAffiliatedMemberDetails(jobj,appuser.getIsDeleted());
 		}catch(Exception e){
 			log.error("Exception raised in saveAffiliatedMemberDetails  method in WebServiceHandlerService1",e);
 
