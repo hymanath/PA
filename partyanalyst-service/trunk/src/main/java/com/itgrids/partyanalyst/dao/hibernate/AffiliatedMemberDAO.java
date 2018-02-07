@@ -139,9 +139,8 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 	public Long getAffiliatedMemberId(Long value , String type) {
 		
 		StringBuilder sb = new StringBuilder();
-			sb.append("select  model.affiliatedMemberId from AffiliatedMember model where isDeleted='N' ");
+			sb.append("select  model.affiliatedMemberId from AffiliatedMember model where isDeleted ='N' ");
 		if(type !=null && type.equalsIgnoreCase("cadre")){
-			
 			sb.append(" and model.tdpCadreId =:value "); 
 		}else if(type !=null && type.equalsIgnoreCase("voter")){
 			sb.append(" and model.voterId =:value "); 
