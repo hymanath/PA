@@ -231,7 +231,7 @@
 		<div class="container-fluid padding_10">
 				<div class="row">
                     <div class="col-sm-2">
-						<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span><span class="tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-left: 10px" id="statePopupClick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="LED PROGRESS" attr_click="stateclick">&#9432;</span></h4>
+						<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span><span class="tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-left: 10px" id="statePopupClick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="LED PROGRESS" attr_click="stateclick">&#9432;</span>&nbsp;<span class="tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-left: 10px"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="LED lights Fitted vs CCMS panels dashboard " id="ledLightsFilteredId">&#9432;</span></h4>
 						<div class="multi-level-selection-menu arrow_box_top"></div>
 						
 					</div>
