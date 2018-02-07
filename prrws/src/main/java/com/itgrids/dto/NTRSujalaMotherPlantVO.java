@@ -20,7 +20,9 @@ public class NTRSujalaMotherPlantVO {
 	private Long customers;
 	private Long rduCount;
 	private String date;
+	private String mpWaterDispenced;
 	private List<NTRSujalaMotherPlantVO> subList = new ArrayList<NTRSujalaMotherPlantVO>(0);
+	
 	
 	public Long getId() {
 		return id;
@@ -117,5 +119,11 @@ public class NTRSujalaMotherPlantVO {
 	}
 	public void setSubList(List<NTRSujalaMotherPlantVO> subList) {
 		this.subList = subList;
+	}
+	public String getMpWaterDispenced() {
+		return mpWaterDispenced;
+	}
+	public void setMpWaterDispenced(String mpWaterDispenced) {
+		this.mpWaterDispenced = mpWaterDispenced;
 	}
 }

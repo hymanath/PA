@@ -64,6 +64,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 		              	vo.setWaterQuanStatus(jObj.get("waterQality").toString() != null ?jObj.get("waterQality").toString():"");
 		              	vo.setTdsCount(Long.valueOf(jObj.get("tds").toString() != null ?jObj.get("tds").toString():"0"));
 		              	vo.setPhCount(Long.valueOf(jObj.get("ph").toString() != null ?jObj.get("ph").toString():"0"));
+		              	vo.setMpWaterDispenced(jObj.get("dispenceWaterQuantity").toString() != null ?jObj.get("dispenceWaterQuantity").toString():"");
 		              	vo.setCustomers(Long.valueOf(jObj.get("customers").toString() != null ?jObj.get("customers").toString():"0"));
 		              	vo.setRduCount(Long.valueOf(jObj.get("rdusCount").toString() != null ?jObj.get("rdusCount").toString():"0"));
 		              	if(jObj.has("highDispanceRDU")){

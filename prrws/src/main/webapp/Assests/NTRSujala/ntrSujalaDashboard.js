@@ -14,8 +14,9 @@ $(".chosen-select").chosen();
 
 
 function getNTRSujalaOverviewDetails(){
-	
-	
+	$("#overViewDetails").html(spinner);
+	$("#mpWiseDetailsDivId").html(spinner);
+	$("#districtWiseMpDetailsId").html(spinner);
 	var json = {};
 	$.ajax({                
 		type:'POST',    
@@ -33,6 +34,10 @@ function getNTRSujalaOverviewDetails(){
 			buildMapDetails(result.districtList);
 			buildDistrictWiseMpDetails(result.districtList);
 			buildMotherPlantsOverviewDetails(result.motherPlantsList);
+		}else{
+			$("#overViewDetails").html('');
+			$("#mpWiseDetailsDivId").html('');
+			$("#districtWiseMpDetailsId").html('');
 		}
 	});
 }
@@ -52,7 +57,7 @@ function buildNTRSujalaOverviewDetails(result){
 						  str+='<div class="media-body">';
 							str+='<h4 class="media-heading font_weight">Mother Plant</h4>';
 							str+='<h5 class="m_top5">One Mother Plant with attached Multiple RDUs is called one Cluster </h5>';
-								str+='<h3 class="pull-right bg_yash_color m_top5" data-toggle="modal" data-target="#mother_plants" style="cursor:pointer;">'+result.totalMotherPlants+'</h3>';
+								str+='<h3 class="pull-right bg_yash_color m_top5" data-toggle="modal" data-target="#mother_plants" style="cursor:pointer;text-decoration:underline;">'+result.totalMotherPlants+'</h3>';
 						  str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -241,7 +246,7 @@ function buildNTRSujalaOverviewDetails(result){
 						str+='</div>';
 						str+='<div class="row">';
 							str+='<div class="col-sm-12">';
-								str+='<h5 class="pull-right ">'+result.highDispanceRDUName+'</h5>';
+								str+='<h5 class="pull-right f_12">'+result.highDispanceRDUName+'</h5>';
 							str+='</div>';
 						str+='</div>';
 						
@@ -253,7 +258,7 @@ function buildNTRSujalaOverviewDetails(result){
 						str+='</div>';
 						str+='<div class="row">';
 							str+='<div class="col-sm-12">';
-								str+='<h5 class="pull-right">'+result.lowDispanceRDUName+'</h5>';
+								str+='<h5 class="pull-right f_12">'+result.lowDispanceRDUName+'</h5>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -400,7 +405,7 @@ $(document).on("change","#motherPlantId",function(){
 
 function buildMotherPlantWiseDetails(result){
 	var str='';
-	str+='<div class="pad_5_fff">';
+	str+='<div class="pad_5_fff" style="border-radius: 3px;">';
 		str+='<div class="row">';
 				str+='<div class="col-sm-7">';
 					str+='<div class="pad_yash_5">';
@@ -411,7 +416,7 @@ function buildMotherPlantWiseDetails(result){
 							str+='</a>';
 						  str+='</div>';
 						  str+='<div class="media-body">';
-							str+='<h4 class="media-heading font_weight">'+result.name+'</h4>';
+							str+='<h4 class="media-heading font_weight motherPlantDetailsCls"  attr_mp_id="'+result.id+'" style="cursor:pointer;text-decoration:underline;">'+result.name+'</h4>';
 							str+='<h5 class="m_top5 pull-right">Mother Plant</h5>';
 						  str+='</div>';
 						str+='</div>';
@@ -429,16 +434,16 @@ function buildMotherPlantWiseDetails(result){
 			str+='<div class="row m_top10">';
 				str+='<div class="col-sm-12">';
 					str+='<div class="row">';
-						str+='<div class="col-sm-2">';
+						str+='<div class="col-sm-1">';
 							str+='<img class="media-object" src="Assests/images/icon-healthStatus.png" alt="..." style="width: 40px;height: 40px;">';
 						str+='</div>';
 						str+='<div class="col-sm-6">';
-							str+='<h5 class="m_top10">Health Status</h5>';
+							str+='<h4 class="font_weight m_top10">Health Status</h4>';
 						str+='</div>';
 					str+='</div>';
 					
 					str+='<div class="row">';
-						str+='<div class="col-sm-4 m_top10">';
+						str+='<div class="col-sm-4 m_top5">';
 							str+='<div class="pad_5_F6F7FF">';
 								str+='<h5 class="text-center">Plant Health</h5>';
 								if(result.health != null && result.health == 'OK')
@@ -447,7 +452,7 @@ function buildMotherPlantWiseDetails(result){
 									str+='<h5 class="bad_color m_top10 text-center">Bad</h5>';
 							str+='</div>';
 						str+='</div>';
-						str+='<div class="col-sm-8 m_top10">';
+						str+='<div class="col-sm-8 m_top5">';
 							str+='<div class="pad_5_F6F7FF">';
 								str+='<div class="row">';
 									if($(window).width>800){
@@ -488,103 +493,111 @@ function buildMotherPlantWiseDetails(result){
 				str+='</div>';
 			str+='</div>';
 	str+='</div>';
-	str+='<div class="pad_5_fff">';
-		str+='<div class="">';
-			str+='<div class="" style="background-color:#EEF0FF;">';
-				str+='<h5 class="font_weight pad_15">Remote Dispensing Units - '+result.subList.length+'</h5>';
-				str+='<div style="border:1px solid #ccc;padding:5px;">';
-					str+='<div style="background-color:#F0F0F0;padding:3px;">';
-					if(result.subList != null && result.subList.length > 0){
-						for(var i in result.subList){
-							str+='<div class="row">';
-								str+='<div class="col-sm-4">';
-									str+='<div class="media">';
-									  str+='<div class="media-left">';
-										str+='<h5 class="numberCircle">01</h5>';
-									  str+='</div>';
-									  str+='<div class="media-body">';
-										str+='<h5 class="media-heading font_weight">RDU Location</h5>';
-										str+='<h5 class="m_top5">'+result.subList[i].name+'</h5>';
-									  str+='</div>';
+	str+='<div class="pad_5_fff" style="background-color:#EEF0FF;border-radius: 3px;">';
+		str+='<h5 class="font_weight pad_15">Remote Dispensing Units - '+result.subList.length+'</h5>';
+		str+='<div class="desig-scroll">';
+		var k=0;
+			if(result.subList != null && result.subList.length > 0){
+				for(var i in result.subList){
+					k=k+1;
+					str+='<div class="row">';
+						str+='<div class="col-sm-12">';
+							str+='<div class="pad_5_border" style="background: #F0F0F0;border-bottom: none;">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-8">';
+										str+='<div class="pad_yash_5">';
+											str+='<div class="row">';
+												str+='<div class="col-sm-6">';
+													str+='<div class="media">';
+													  str+='<div class="media-left">';
+														str+='<h5 class="numberCircle">'+k+'</h5>';
+													  str+='</div>';
+													  str+='<div class="media-body">';
+														str+='<h5 class="media-heading font_weight">RDU Location</h5>';
+														str+='<h5 class="m_top5 f_12">'+result.subList[i].name+'</h5>';
+													  str+='</div>';
+													str+='</div>';
+												str+='</div>';
+												str+='<div class="col-sm-6">';
+													str+='<div class="border_left_width_water_tank">';
+														str+='<h5 class="font_weight m_left_5">Water&nbsp;Tank&nbsp;Capacity</h5>';
+														str+='<h5 class="m_top10 m_left_5">'+result.subList[i].waterTankCapacity+'</h5>';
+													str+='</div>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
 									str+='</div>';
-								str+='</div>';
-								str+='<div class="col-sm-4">';
-									str+='<div class="border_width_ph">';
-										str+='<h5>Water&nbsp;Tank&nbsp;Capacity</h5>';
-										str+='<h5 class="m_top10">'+result.subList[i].waterTankCapacity+'</h5>';
-									str+='</div>';
-								str+='</div>';
-								str+='<div class="col-sm-4">';
-									str+='<div style="background-color:#AED2FF;padding:3px;">';
-										str+='<h5>Water&nbsp;Tank&nbsp;Capacity</h5>';
-										str+='<h5 class="m_top10">'+result.subList[i].mpSafeWaterDispenced+' lts</h5>';
-										str+='<h5>Avg&nbsp;per&nbsp;Day</h5>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
-							str+='<div class="row">';
-								str+='<div class="col-sm-3">';
-									str+='<div class="">';
-										str+='<h5>Old Customers</h5>';
-										str+='<h5 class="m_top10">'+result.subList[i].oldCustomers+'</h5>';
-									str+='</div>';
-								str+='</div>';
-								str+='<div class="col-sm-3">';
-									str+='<div class="">';
-										str+='<h5>New Customers</h5>';
-										str+='<h5 class="m_top10">'+result.subList[i].newCustomers+'</h5>';
-									str+='</div>';
-								str+='</div>';
-								str+='<div class="col-sm-3">';
-									str+='<div class="">';
-										str+='<h5>Customers Visit</h5>';
-										str+='<h5 class="m_top10">'+result.subList[i].totalCustomers+' lts</h5>';
-										str+='<h5>Avg&nbsp;per&nbsp;Day</h5>';
-									str+='</div>';
-								str+='</div>';
-								str+='<div class="col-sm-3">';
-									str+='<div class="">';
-										str+='<h5>Revenue Generated</h5>';
-										str+='<h5 class="m_top10"> - </h5>';
+									str+='<div class="col-sm-4" >';
+										str+='<div class="pad_blue_5">';
+											str+='<h5 class="text-center font_weight">Water&nbsp;Dispence:</h5>';
+											str+='<h5 class="text-center">'+result.subList[i].mpSafeWaterDispenced+' Lts</h5>';
+											str+='<h5 class="text-center f_10 font_weight">Avg&nbsp;per&nbsp;Day</h5>';
+										str+='</div>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-						}
-					}
+							str+='<div class="pad_5_border" style="background: #fff;border:none;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">';
+								str+='<div class="row">';
+									str+='<div class="col-sm-3">';
+										str+='<h5 class="font_weight f_11">Old Customers</h5>';
+										str+='<h4 class="m_top10">'+result.subList[i].oldCustomers+'</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-3">';
+										str+='<h5 class="font_weight f_11">New Customers</h5>';
+										str+='<h4 class="m_top10">'+result.subList[i].newCustomers+'</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-2">';
+										str+='<h5 class="font_weight f_11">Customers&nbsp;Visit</h5>';
+										str+='<h4 class="m_top10">'+result.subList[i].totalCustomers+'</h4>';
+									str+='</div>';
+									str+='<div class="col-sm-4">';
+										str+='<div style="background-color: #86DBC6;padding: 5px;text-align: center;">';
+											str+='<h5 class="font_weight f_11 text-center">Revenue Generated</h5>';
+											str+='<h4 class="m_top10 text-center"> - </h4>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
 					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
+					
+				}
+			}
+		str+='</div>';	
 	str+='</div>';
 	$("#mpWiseDetailsDivId").html(str);
+	if(result.subList.length>1){
+		$(".desig-scroll").mCustomScrollbar({setHeight:'180px'});
+	}
+	
 }
 
 function buildDistrictWiseMpDetails(result){
 	var str='';
 	str+='<div class="table-responsive">';
-		str+='<table class="table tbl-border">';
+		str+='<table class="table table-bordered table_Ntr_Custom">';
 			str+='<thead>';
 				str+='<tr>';
-					str+='<th rowspan="3" class="text-align-center">Districts</th>';
-					str+='<th colspan="3" class="text-align-center mp_bg">Mother Plants';
+					str+='<th rowspan="3" class="default_white" style="min-width:20% !important;">Districts</th>';
+					str+='<th colspan="3" class="mother_pant_color">Mother Plants';
 					str+='</th>';
-					str+='<th colspan="3" class="text-align-center RDU_bg">RDU</th>';
-					str+='<th colspan="3" class="text-align-center customer_bg">Customers</th>';
-					str+='<th rowspan="3" class="text-align-center">Revenue</th>';
+					str+='<th colspan="3" class="rdu_pant_color">RDU</th>';
+					str+='<th colspan="3" class="customer_pant_color">Customers</th>';
+					str+='<th rowspan="3" class="default_white">Revenue</th>';
 				str+='</tr>';
 				str+='<tr>';
-					str+='<th rowspan="2" class="text-align-center mp_bg">Name</th>';
-					str+='<th rowspan="2" class="text-align-center mp_bg">Health</th>';
-					str+='<th rowspan="2" class="text-align-center mp_bg">Water Quality</th>';
-					str+='<th rowspan="2" class="text-align-center RDU_bg">Total</th>';
-					str+='<th colspan="2" class="text-align-center RDU_bg">Health</th>';
-					str+='<th rowspan="2" class="text-align-center customer_bg">Total</th>';
-					str+='<th rowspan="2" class="text-align-center customer_bg">Active</th>';
-					str+='<th rowspan="2" class="text-align-center customer_bg">In-Active</th>';
+					str+='<th rowspan="2" class="mother_pant_color">Name</th>';
+					str+='<th rowspan="2" class="mother_pant_color">Health</th>';
+					str+='<th rowspan="2" class="mother_pant_color">Water Quality</th>';
+					str+='<th rowspan="2" class="rdu_pant_color">Total</th>';
+					str+='<th colspan="2" class="rdu_pant_color">Health</th>';
+					str+='<th rowspan="2" class="customer_pant_color">Total</th>';
+					str+='<th rowspan="2" class="customer_pant_color">Active</th>';
+					str+='<th rowspan="2" class="customer_pant_color">In-Active</th>';
 				str+='</tr>';
 				str+='<tr>';
-					str+='<th class="text-align-center RDU_bg">Good</th>';
-					str+='<th class="text-align-center RDU_bg">Bad</th>';
+					str+='<th class="rdu_pant_color">Good</th>';
+					str+='<th class="rdu_pant_color">Bad</th>';
 				str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -594,50 +607,50 @@ function buildDistrictWiseMpDetails(result){
 					if(rdusCount > 1){
 						rdusCount = rdusCount + 1;
 						str+='<tr>';
-							str+='<td rowspan="'+rdusCount+'">'+result[i].name+'</td>';
+							str+='<td rowspan="'+rdusCount+'"><h4 class="font_weight"><img src="Assests/icons/ITC/'+result[i].name+'.png" style="width: 20%;"/>'+result[i].name+'</h4></td>';
 						str+='</tr>';
 						if(result[i].subList != null && result[i].subList.length > 0){
 							for(var j in result[i].subList){
 								str+='<tr>';
-									str+='<td>'+result[i].subList[j].name+'</td>';
+									str+='<td class="mother_pant_color motherPlantDetailsCls" attr_mp_id="'+result[i].subList[j].id+'" style="cursor:pointer;text-decoration:underline;">'+result[i].subList[j].name+'</td>';
 									if(result[i].subList[j].health != null && result[i].subList[j].health == 'OK')
-										str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
+										str+='<td class="good_color mother_pant_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
 									else
-										str+='<td class="bad_color"><p><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
+										str+='<td class="bad_color mother_pant_color"><p><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
 									if(result[i].subList[j].waterQuality != null && result[i].subList[j].waterQuality == 'OK')
-										str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
+										str+='<td class="good_color mother_pant_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
 									else
-										str+='<td class="bad_color"><p><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
-									str+='<td>'+result[i].subList[j].totalRDUs+'</td>';
-									str+='<td>'+result[i].subList[j].activeRDUs+'</td>';
-									str+='<td>'+result[i].subList[j].inActiveRDUs+'</td>';
-									str+='<td>'+result[i].subList[j].totalCustomers+'</td>';
-									str+='<td>'+result[i].subList[j].activeCustomers+'</td>';
-									str+='<td>'+result[i].subList[j].inActiveCustomers+'</td>';
+										str+='<td class="bad_color mother_pant_color"><p><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
+									str+='<td class="rdu_pant_color">'+result[i].subList[j].totalRDUs+'</td>';
+									str+='<td class="rdu_pant_color">'+result[i].subList[j].activeRDUs+'</td>';
+									str+='<td class="rdu_pant_color">'+result[i].subList[j].inActiveRDUs+'</td>';
+									str+='<td class="customer_pant_color">'+result[i].subList[j].totalCustomers+'</td>';
+									str+='<td class="customer_pant_color">'+result[i].subList[j].activeCustomers+'</td>';
+									str+='<td class="customer_pant_color">'+result[i].subList[j].inActiveCustomers+'</td>';
 									str+='<td> - </td>';
 								str+='</tr>';
 							}
 						}
 					}else{
 						str+='<tr>';
-							str+='<td>'+result[i].name+'</td>';
+							str+='<td><h4 class="font_weight"><img src="Assests/icons/ITC/'+result[i].name+'.png" style="width: 20%;"/>    '+result[i].name+'</h4></td>';
 							if(result[i].subList != null && result[i].subList.length > 0){
 								for(var j in result[i].subList){
-									str+='<td>'+result[i].subList[j].name+'</td>';
+									str+='<td class="mother_pant_color motherPlantDetailsCls" attr_mp_id="'+result[i].subList[j].id+'" style="cursor:pointer;text-decoration:underline;">'+result[i].subList[j].name+'</td>';
 									if(result[i].subList[j].health != null && result[i].subList[j].health == 'OK')
-										str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
+										str+='<td class="good_color mother_pant_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
 									else
-										str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
+										str+='<td class="bad_color mother_pant_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
 									if(result[i].subList[j].waterQuality != null && result[i].subList[j].waterQuality == 'OK')
-										str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
+										str+='<td class="good_color mother_pant_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
 									else
-										str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
-									str+='<td>'+result[i].subList[j].totalRDUs+'</td>';
-									str+='<td>'+result[i].subList[j].activeRDUs+'</td>';
-									str+='<td>'+result[i].subList[j].inActiveRDUs+'</td>';
-									str+='<td>'+result[i].subList[j].totalCustomers+'</td>';
-									str+='<td>'+result[i].subList[j].activeCustomers+'</td>';
-									str+='<td>'+result[i].subList[j].inActiveCustomers+'</td>';
+										str+='<td class="bad_color mother_pant_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
+									str+='<td class="rdu_pant_color">'+result[i].subList[j].totalRDUs+'</td>';
+									str+='<td class="rdu_pant_color">'+result[i].subList[j].activeRDUs+'</td>';
+									str+='<td class="rdu_pant_color">'+result[i].subList[j].inActiveRDUs+'</td>';
+									str+='<td class="customer_pant_color">'+result[i].subList[j].totalCustomers+'</td>';
+									str+='<td class="customer_pant_color">'+result[i].subList[j].activeCustomers+'</td>';
+									str+='<td class="customer_pant_color">'+result[i].subList[j].inActiveCustomers+'</td>';
 									str+='<td> - </td>';
 								}
 							}
@@ -655,14 +668,14 @@ function buildDistrictWiseMpDetails(result){
 function buildMotherPlantsOverviewDetails(result){
 	var str='';
 	str+='<div class="table-responsive">';
-		str+='<table class="table table-bordered">';
+		str+='<table class="table table-bordered table_Ntr_Custom1 motherPlantsTableCls">';
 			str+='<thead>';
 				str+='<tr>';
 					str+='<th>Name</th>';
 					str+='<th>Health</th>';
-					str+='<th>Water Quality</th>';
-					str+='<th>Water Generation Lts</th>';
-					str+='<th>Connected RDU s</th>';
+					str+='<th>Water&nbsp;Quality</th>';
+					str+='<th>Water&nbsp;Generation&nbsp;Lts</th>';
+					str+='<th>Connected&nbsp;RDU&nbsp;s</th>';
 					str+='<th>Customers</th>';
 					str+='<th>Location</th>';
 					str+='<th>Mandal</th>';
@@ -674,15 +687,15 @@ function buildMotherPlantsOverviewDetails(result){
 			if(result != null && result.length > 0){
 				for(var i in result){
 					str+='<tr>';
-						str+='<td><a href="">'+result[i].name+'</a></td>';
+						str+='<td class="motherPlantDetailsCls" attr_mp_id="'+result[i].id+'" style="cursor:pointer;text-decoration:underline;color:#004F9E;">'+result[i].name+'</td>';
 						if(result[i].health != null && result[i].health == 'OK')
-							str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
+							str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 						else
-							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
+							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
 						if(result[i].waterQuality != null && result[i].waterQuality == 'OK')
-							str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
+							str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 						else
-							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
+							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
 						if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
 							str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
 						else
@@ -700,4 +713,479 @@ function buildMotherPlantsOverviewDetails(result){
 		str+='</table>';
 	str+='</div>';
 	$("#motherPlantsOverviewId").html(str);
+	$(".motherPlantsTableCls").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": 15,
+		"aaSorting": [],
+		"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]]
+	});
 }
+
+$(document).on("click",".motherPlantDetailsCls",function(){
+	$("#mother_plants_Details").modal("show");
+	var mpId = $(this).attr("attr_mp_id");
+	$(".motherPlantLowLevelDtsCls").attr("attr_mpId",mpId);
+	var result;
+	if(globalOverviewResult.motherPlantsList != null && globalOverviewResult.motherPlantsList.length > 0){
+		for(var i in globalOverviewResult.motherPlantsList){
+			if(globalOverviewResult.motherPlantsList[i].id == mpId)
+				result = globalOverviewResult.motherPlantsList[i];
+		}
+	}
+	buildMotherPlantAndRDUDetails(result);
+});
+function buildMotherPlantAndRDUDetails(result){
+	var str='';
+	if(result != null){
+		$("#mpDetailsHeadingId").html(result.name);
+		$("#mpDetailsHeadingMobileId").html(" +91 "+result.mobileNo);
+		
+		str+='<div class="pad_border">';
+			str+='<div class="row">';
+				str+='<div class="col-sm-4">';
+					str+='<h5 class=""><img src="Assests/images/icon-healthStatus.png" style="width:25px;"/><span class="font_weight m_left_5">Health Status</span></h5>';
+					str+='<div class="row">';
+						str+='<div class="col-sm-4 m_top10">';
+							str+='<div class="pad_5_F6F7FF">';
+								str+='<h5 class="text-center f_12 font_weight">Plant Health</h5>';
+								if(result.health != null && result.health == "OK")
+									str+='<h5 class="good_color m_top15 text-center">Good</h5>';
+								else
+									str+='<h5 class="bad_color m_top15 text-center">Bad</h5>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-8 m_top10">';
+							str+='<div class="pad_5_F6F7FF">';
+								str+='<div class="row">';
+									if($(window).width>800){
+										str+='<div class="col-sm-5 m_top10">';
+									}else{
+										str+='<div class="col-sm-5 ">';
+									}
+										str+='<h5 class="margin_left_5 f_12 font_weight">Water&nbsp;Quality</h5>';
+										if(result.waterQuality != null && result.waterQuality == "OK")
+											str+='<h5 class="good_color margin_left_5 m_top15">Good</h5>';
+										else
+											str+='<h5 class="bad_color margin_left_5 m_top15">Bad</h5>';
+									str+='</div>';
+									if($(window).width>800){
+										str+='<div class="col-sm-3 m_top10">';
+									}else{
+										str+='<div class="col-sm-3 ">';
+									}
+										str+='<div class="border_width_tds">';
+											str+='<h5 class="margin_left_5 f_12 font_weight">TDS</h5>';
+											str+='<h5 class="margin_left_5 m_top15">'+result.tds+'</h5>';
+										str+='</div>';
+									str+='</div>';
+									if($(window).width>800){
+										str+='<div class="col-sm-3 m_top10">';
+									}else{
+										str+='<div class="col-sm-3 ">';
+									}
+										str+='<div class="border_width_ph">';
+											str+='<h5 class="margin_left_5 f_12 font_weight">pH</h5>';
+											str+='<h5 class="good_color margin_left_5 m_top15">'+result.ph+'</h5>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<h5 class=""><img src="Assests/images/RMD.png" style="width:25px;"/><span class="font_weight m_left_5">Remote Dispensing Units - '+result.subList.length+'</span></h5>';
+					str+='<div class="row">';
+						str+='<div class="col-sm-6 m_top10">';
+							str+='<div class="pad_5_F6F7FF">';
+								str+='<div class="border_left_width_water_tank">';
+									str+='<h5 class="m_left_5 f_12 font_weight">High Dispance RDU - '+result.highDispanceRDUName+'</h5>';
+									str+='<h4 class="m_top10  m_left_5">'+result.highRDUDispanceLtrs+' Lts</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-6 m_top10">';
+							str+='<div class="pad_5_F6F7FF">';
+								str+='<div class="border_left_width_red">';
+									str+='<h5 class="m_left_5 f_12 font_weight">Low Dispance RDU - '+result.lowDispanceRDUName+'</h5>';
+									str+='<h4 class="m_top10  m_left_5">'+result.lowRDUDispanceLtrs+' Lts</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<div class="row">';
+						str+='<div class="col-sm-6">';
+							str+='<h5 class=""><img src="Assests/images/water_icon.png" style="width:25px;"/><span class="font_weight m_left_5">Water Generated</span></h5>';
+							str+='<div class="pad_5_F6F7FF m_top10">';
+								str+='<div class="m_top_bottom">';
+									if(result.mpSafeWaterDispenced != null && result.mpSafeWaterDispenced != 'N/A' && result.mpSafeWaterDispenced > 0)
+										str+='<h4 class="m_left_5">'+result.mpSafeWaterDispenced+' Per&nbsp;Lts</h4>';
+									else
+										str+='<h4 class="m_left_5"> - Per&nbsp;Lts</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-3">';
+						str+='<h5 class=""><span class="font_weight m_left_5">Customers</span></h5>';
+						str+='<div class="pad_5_F6F7FF m_top20">';
+							str+='<div class="m_top_bottom">';
+								str+='<h4 class="">'+result.totalCustomers+'</h4>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-3">';
+						str+='<h5 class=""><span class="font_weight m_left_5">Revenue</span></h5>';
+						str+='<div class="pad_5_F6F7FF m_top20">';
+							str+='<div class="m_top_bottom_5">';
+								str+='<h4 class=""> - </h4>';
+								str+='<h5 class="f_11">In Lac</h5>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	str+='<div class="row">';
+	str+='<div class="scrollerDivCls">';
+	var k = 0;
+		if(result.subList != null && result.subList.length > 0){
+			for(var i in result.subList){
+				k=k+1;
+				str+='<div class="col-sm-6 m_top10">';
+					str+='<div class="row">';
+							str+='<div class="col-sm-12">';
+								str+='<div class="pad_5_border" style="background: #F0F0F0;border-bottom: none;">';
+									str+='<div class="row">';
+										str+='<div class="col-sm-8">';
+											str+='<div class="pad_yash_5">';
+												str+='<div class="row">';
+													str+='<div class="col-sm-6">';
+														str+='<div class="media">';
+														  str+='<div class="media-left">';
+															str+='<h5 class="numberCircle">'+k+'</h5>';
+														  str+='</div>';
+														  str+='<div class="media-body">';
+															str+='<h5 class="media-heading font_weight">RDU Location</h5>';
+															str+='<h5 class="m_top5 f_12">'+result.subList[i].name+'</h5>';
+														  str+='</div>';
+														str+='</div>';
+													str+='</div>';
+													str+='<div class="col-sm-6">';
+														str+='<div class="border_left_width_water_tank">';
+															str+='<h5 class="font_weight m_left_5">Water&nbsp;Tank&nbsp;Capacity</h5>';
+															str+='<h5 class="m_top10 m_left_5">'+result.subList[i].waterTankCapacity+' Lts</h5>';
+														str+='</div>';
+													str+='</div>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+										str+='<div class="col-sm-4" >';
+											str+='<div class="pad_blue_5">';
+												str+='<h5 class="text-center font_weight">Water&nbsp;Dispence: <span class="motherPlantWaterTankDtsCls pull-right" attr_rdu_id="'+result.subList[i].id+'"><i style="color: #fff;font-size: 12px;cursor:pointer;" class="glyphicon glyphicon-resize-full"></i></span></h5>';
+												str+='<h5 class="text-center">'+result.subList[i].mpSafeWaterDispenced+' Lts</h5>';
+												str+='<h5 class="text-center f_10 font_weight">Avg&nbsp;per&nbsp;Day</h5>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="pad_5_border" style="background: #fff;border:none;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-bottom:1px solid #ccc;">';
+									str+='<div class="row">';
+										str+='<div class="col-sm-3">';
+											str+='<h5 class="font_weight f_11">Old Customers</h5>';
+											str+='<h4 class="m_top10">'+result.subList[i].oldCustomers+'</h4>';
+										str+='</div>';
+										str+='<div class="col-sm-3">';
+											str+='<h5 class="font_weight f_11">New Customers</h5>';
+											str+='<h4 class="m_top10">'+result.subList[i].newCustomers+'</h4>';
+										str+='</div>';
+										str+='<div class="col-sm-2">';
+											str+='<h5 class="font_weight f_11">Customers&nbsp;Visit</h5>';
+											str+='<h4 class="m_top10">'+result.subList[i].totalCustomers+'</h4>';
+										str+='</div>';
+										str+='<div class="col-sm-4">';
+											str+='<div style="background-color: #86DBC6;padding: 5px;text-align: center;">';
+												str+='<h5 class="font_weight f_11 text-center">Revenue Generated</h5>';
+												str+='<h4 class="m_top10 text-center"> - </h4>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+				str+='</div>';
+			}
+		}
+	str+='</div>';
+	str+='</div>';
+	}
+	
+	$("#motherPlantsDetailsId").html(str);
+	if(result.subList.length>6){
+		$(".scrollerDivCls").mCustomScrollbar({setHeight:'360px'});
+	}
+}
+$(document).on("click",".motherPlantLowLevelDtsCls",function(){
+	$("#mother_plants_Details_low_level").modal("show");
+	var mpId = $(this).attr("attr_mpId");
+	getLast30DaysMpDetails(mpId);
+	//buildMotherPlantLowLevelDetails();
+});
+function getLast30DaysMpDetails(mpId){
+	$("#motherPlantsLowLevelDetailsId").html(spinner);
+	var json = {
+		locationId : mpId
+	};
+	$.ajax({                
+		type:'POST',    
+		url: 'getLast30DaysMotherPlantDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null)
+			buildMotherPlantLowLevelDetails(result);
+		else
+			$("#motherPlantsLowLevelDetailsId").html('NO DATA AVAILABLE...');
+	});
+}
+function buildMotherPlantLowLevelDetails(result){
+	var str='';
+	$("#mp30DaysHeadingId").html(result.name);
+	str+='<div class="scrollerDivCls1">';
+	if(result.subList != null && result.subList.length > 0){
+		for(var i in result.subList){
+			str+='<div class="row m_top10">';
+				str+='<div class="col-sm-2">';
+					str+='<div class="dateMotherCss">';
+						str+='<h4 class="" style="">'+result.subList[i].date+'</h4>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="pad_border">';
+				str+='<div class="row">';
+					str+='<div class="col-sm-4">';
+						str+='<h5 class=""><img src="Assests/images/icon-healthStatus.png" style="width:25px;"/><span class="font_weight m_left_5">Health Status</span></h5>';
+						str+='<div class="row">';
+							str+='<div class="col-sm-4 m_top10">';
+								str+='<div class="pad_5_F6F7FF">';
+									str+='<h5 class="text-center f_12 font_weight">Plant Health</h5>';
+									if(result.subList[i].plantHealthStatus != null && result.subList[i].plantHealthStatus == "OK")
+										str+='<h5 class="good_color m_top15 text-center">Good</h5>';
+									else
+										str+='<h5 class="bad_color m_top15 text-center">Bad</h5>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-8 m_top10">';
+								str+='<div class="pad_5_F6F7FF">';
+									str+='<div class="row">';
+										if($(window).width>800){
+											str+='<div class="col-sm-5 m_top10">';
+										}else{
+											str+='<div class="col-sm-5 ">';
+										}
+											str+='<h5 class="margin_left_5 f_12 font_weight">Water&nbsp;Quality</h5>';
+											if(result.subList[i].waterQuanStatus != null && result.subList[i].waterQuanStatus == "OK")
+												str+='<h5 class="good_color margin_left_5 m_top15">Good</h5>';
+											else
+												str+='<h5 class="bad_color margin_left_5 m_top15">Bad</h5>';
+										str+='</div>';
+										if($(window).width>800){
+											str+='<div class="col-sm-3 m_top10">';
+										}else{
+											str+='<div class="col-sm-3 ">';
+										}
+											str+='<div class="border_width_tds">';
+												str+='<h5 class="margin_left_5 f_12 font_weight">TDS</h5>';
+												str+='<h5 class="margin_left_5 m_top15">'+result.subList[i].tdsCount+'</h5>';
+											str+='</div>';
+										str+='</div>';
+										if($(window).width>800){
+											str+='<div class="col-sm-3 m_top10">';
+										}else{
+											str+='<div class="col-sm-3 ">';
+										}
+											str+='<div class="border_width_ph">';
+												str+='<h5 class="margin_left_5 f_12 font_weight">pH</h5>';
+												str+='<h5 class="good_color margin_left_5 m_top15">'+result.subList[i].phCount+'</h5>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<h5 class=""><img src="Assests/images/RMD.png" style="width:25px;"/><span class="font_weight m_left_5">Remote Dispensing Units - '+result.subList[i].rduCount+'</span></h5>';
+						str+='<div class="row">';
+							str+='<div class="col-sm-6 m_top10">';
+								str+='<div class="pad_5_F6F7FF">';
+									str+='<div class="border_left_width_water_tank">';
+										str+='<h5 class="m_left_5 f_12 font_weight">High Dispance RDU - '+result.subList[i].highDispanceRDUName+'</h5>';
+										str+='<h4 class="m_top10  m_left_5">'+result.subList[i].highDispanceRDUCount+' Lts</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-6 m_top10">';
+								str+='<div class="pad_5_F6F7FF">';
+									str+='<div class="border_left_width_red">';
+										str+='<h5 class="m_left_5 f_12 font_weight">Low Dispance RDU - '+result.subList[i].lowDispanceRDUName+'</h5>';
+										str+='<h4 class="m_top10  m_left_5">'+result.subList[i].lowDispanceRDUCount+' Lts</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-4">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-6">';
+								str+='<h5 class=""><img src="Assests/images/water_icon.png" style="width:25px;"/><span class="font_weight m_left_5">Water Generated</span></h5>';
+								str+='<div class="pad_5_F6F7FF m_top10">';
+									str+='<div class="m_top_bottom">';
+										if(result.subList[i].mpWaterDispenced != null && result.subList[i].mpWaterDispenced != 'N/A' && result.subList[i].mpWaterDispenced > 0)
+											str+='<h4 class="m_left_5">'+result.subList[i].mpWaterDispenced+' Per&nbsp;Lts</h4>';
+										else
+											str+='<h4 class="m_left_5"> - Per&nbsp;Lts</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-3">';
+							str+='<h5 class=""><span class="font_weight m_left_5">Customers</span></h5>';
+							str+='<div class="pad_5_F6F7FF m_top20">';
+								str+='<div class="m_top_bottom">';
+									str+='<h4 class="">'+result.subList[i].customers+'</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-3">';
+							str+='<h5 class=""><span class="font_weight m_left_5">Revenue</span></h5>';
+							str+='<div class="pad_5_F6F7FF m_top20">';
+								str+='<div class="m_top_bottom_5">';
+									str+='<h4 class=""> - </h4>';
+									str+='<h5 class="f_11">In Lac</h5>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		}
+	}
+	str+='</div>';
+	$("#motherPlantsLowLevelDetailsId").html(str);
+	if(result.subList.length>6){
+		$(".scrollerDivCls1").mCustomScrollbar({setHeight:'350px'});
+	}
+}
+$(document).on("click",".motherPlantWaterTankDtsCls",function(){
+	$("#mother_plants_Details_water_tank").modal("show");
+	var rduId = $(this).attr("attr_rdu_id");
+	getLast30DaysRDUDetails(rduId);
+	//buildMothePantWaterTankDetails();
+});
+function getLast30DaysRDUDetails(rduId){
+	$("#motherPlantsRDUDetailsId").html(spinner);
+	var json = {
+		locationId : rduId
+	};
+	$.ajax({                
+		type:'POST',    
+		url: 'getLast30DaysRDUDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null)
+			buildMothePantRDUDetails(result);
+		else
+			$("#motherPlantsRDUDetailsId").html('NO DATA AVAILABLE...');
+	});
+}
+function buildMothePantRDUDetails(result){
+	var str='';
+	$("#rduHeadingId").html(result.name);
+	$("#rduheadingCapacityId").html(result.waterTankCapacity+" Lts");
+	str+='<div class="scrollerDivCls2">';
+	if(result.subList != null && result.subList.length > 0){
+		for(var i in result.subList){
+			str+='<div class="pad_border">';
+				str+='<div class="row">';
+					str+='<div class="col-sm-2">';
+						str+='<div class="pad_border" style="padding: 22px;">';
+							str+='<h4 class="text-center">'+result.subList[i].date+'</h4>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-1">';
+						str+='<div class="pad_5_F6F7FF" style="padding-top: 10px;padding-bottom: 10px;">';
+						str+='<h5 class="text-center f_12 font_weight">RDU&nbsp;Health</h5>';
+						if(result.subList[i].rduHealthStatus != null && result.subList[i].rduHealthStatus == 'OK')
+							str+='<h5 class="good_color m_top15 text-center">Good</h5></div>';
+						else
+							str+='<h5 class="bad_color m_top15 text-center">Bad</h5></div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-3">';
+						str+='<div style="background-color:#F0F0F0;padding:12px;border-radius: 5px;">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-6">';
+									str+='<h5 class="font_weight f_11">Old Customers</h5>';
+									str+='<h4 class="m_top10">'+result.subList[i].oldCustomers+'</h4>';
+								str+='</div>';
+								str+='<div class="col-sm-6">';
+									str+='<h5 class="font_weight f_11">New Customers</h5>';
+									str+='<h4 class="m_top10">'+result.subList[i].newCustomers+'</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-2">';
+						str+='<div style="background-color:#F0F0F0;padding:12px;border-radius: 5px;">';
+							str+='<h5 class="font_weight f_11">Customers Visit</h5>';
+							str+='<h4 class="m_top10">'+result.subList[i].totalCustomers+'</h4>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-2">';
+						str+='<div style="background-color:#AED2FF;padding:12px;border-radius: 5px;">';
+							str+='<h5 class="font_weight f_11">Water Dispence</h5>';
+							str+='<h4 class="m_top10">'+result.subList[i].waterDispence+' Lts</h4>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-2">';
+						str+='<div style="background-color:#86DBC6;padding:12px;border-radius: 5px;">';
+							str+='<h5 class="font_weight f_11">Revenue Generated</h5>';
+							str+='<h4 class="m_top10"> - </h4>';
+						str+='</div>';
+					str+='</div>';
+				
+				str+='</div>';
+			str+='</div>';
+		}
+	}
+	str+='</div>';
+	$("#motherPlantsRDUDetailsId").html(str);
+	if(result.subList.length>6){
+		$(".scrollerDivCls2").mCustomScrollbar({setHeight:'400px'});
+	}
+}
+ $(document).on("click",".closeSecondModal",function(){
+    setTimeout(function(){
+      $("body").addClass("modal-open");
+    },1000);
+  });
