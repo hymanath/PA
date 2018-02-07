@@ -11,6 +11,7 @@
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
@@ -230,8 +231,8 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="panel panel-default">
-					 <div class="panel-heading">
-						<h3 class="panel-title font_weight">Overview</h3>
+					 <div class="panel-heading" style="padding: 15px;background-color: #CFCFCF;">
+						<h3 class="font_weight">Overview</h3>
 					</div>
 					<div class="panel-body">
 						<div id="overViewDetails"></div>
@@ -242,7 +243,7 @@
 		</div>
 		<div class="pad_white_bg" style="border: 1px solid #ccc;border-radius: 0px !important;">
 			<div class="row">
-				<div class="col-sm-8">
+				<div class="col-sm-7">
 					<div class="row">
 						<div class="col-sm-3">
 							<label>District</label>
@@ -259,7 +260,7 @@
 					</div>
 					<div id="mapDetailsDivId"></div>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-5">
 					<div id="mpWiseDetailsDivId"></div>
 				</div>
 			</div>
@@ -267,10 +268,10 @@
 		<div class="row m_top20">
 			<div class="col-sm-12">
 				<div class="panel panel-default">
-					 <div class="panel-heading">
+					 <div class="panel-heading" style="display:none;">
 						<h3 class="panel-title font_weight">District Wise Mother Plant Details</h3>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body" style="padding:0px;">
 						<div id="districtWiseMpDetailsId"></div>
 					</div>
 				</div>
@@ -280,24 +281,154 @@
 	</div>
 	
 	<div class="modal fade" id="mother_plants" role="dialog">
-		<div class="modal-dialog modal-lg" style="width:90%; margin:auto;">
+		<div class="modal-dialog modal-lg" style="width:95%; margin:auto;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h3 class="modal-title"><b>Mother Plants Overview</b></h3>
 				</div>
-				<div class="modal-body" id="motherPlantsOverviewId"></div>
-				<div class="modal-footer" style="background-color:#E3E3E3;">
+				<div class="modal-body" >	
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="motherPlantsOverviewId"></div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="modal-footer" style="background-color:#E1E1E1;">
 				  <button type="button" class="btn btn-default Close_st" data-dismiss="modal">CLOSE</button>
 				</div>
 			</div>
 		</div>
 	</div>
-</main>
+	<div class="modal fade" id="mother_plants_Details" role="dialog">
+		<div class="modal-dialog modal-lg" style="width:95%; margin:auto;">
+			<div class="modal-content">
+				<div class="modal-header linerGradientCss" style="padding: 10px;">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<div class="row">
+						<div class="col-sm-3">
+							<div class="media m_top0">
+							  <div class="media-left">
+								<a href="#">
+								 <img class="media-object" src="Assests/images/icon-motherPlanet.png" alt="..." style="width: 40px;">
+								</a>
+							  </div>
+							  <div class="media-body">
+								<h3 class="media-heading font_weight" style="font-size: 20px;" id="mpDetailsHeadingId"></h3>
+								<h5 class="m_top5">Mother Plant</h5>
+							  </div>
+							</div>
+						</div>
+						<div class="col-sm-1">
+							<h5 class="motherPlantLowLevelDtsCls"><i style="color: #ccc;font-size: 25px;cursor:pointer;" class="glyphicon glyphicon-resize-full"></i></h5>
+						</div>
+						<div class="col-sm-7">
+							<div class="pull-right" style="margin-right:20px;">
+								<h5 class="font_weight" style="color:#493333"><i class="fa fa-phone-square"></i><span id="mpDetailsHeadingMobileId"></h5>
+							</div>
+							
+						</div>
+					</div>
+					
+				</div>
+				<div class="modal-body" >	
+					<div id="motherPlantsDetailsId"></div>
+				</div>
+				<div class="modal-footer" style="background-color:#E1E1E1;">
+				  <button type="button" class="btn btn-default Close_st" data-dismiss="modal">CLOSE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="mother_plants_Details_low_level" role="dialog">
+		<div class="modal-dialog modal-lg" style="width:95%; margin:auto;">
+			<div class="modal-content">
+				<div class="modal-header linerGradientCss" style="padding: 10px;">
+					<button type="button" class="close closeSecondModal" data-dismiss="modal">&times;</button>
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="media m_top0">
+							  <div class="media-left">
+								<a href="#">
+								 <img class="media-object" src="Assests/images/icon-motherPlanet.png" alt="..." style="width: 40px;">
+								</a>
+							  </div>
+							  <div class="media-body">
+								<h3 class="media-heading font_weight" style="font-size: 20px;" id="mp30DaysHeadingId"></h3>
+								<h5 class="m_top5">Mother Plant</h5>
+							  </div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="m_top10" style="margin-right:20px;">
+								<h3 style="font-size: 20px;" id="">Last <span style="padding:5px;border:1px solid #ccc;border-radius:5px;">30Days</span> Wise Overview</h3>
+							</div>
+							
+						</div>
+					</div>
+					
+				</div>
+				<div class="modal-body" >	
+					<div id="motherPlantsLowLevelDetailsId"></div>
+				</div>
+				<div class="modal-footer" style="background-color:#E1E1E1;">
+				  <button type="button" class="btn btn-default Close_st closeSecondModal" data-dismiss="modal">CLOSE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="mother_plants_Details_water_tank" role="dialog">
+		<div class="modal-dialog modal-lg" style="width:95%; margin:auto;">
+			<div class="modal-content">
+				<div class="modal-header linerGradientCss" style="padding: 10px;">
+					<button type="button" class="close closeSecondModal" data-dismiss="modal">&times;</button>
+					<div class="row">
+						<div class="col-sm-3">
+							<div class="media m_top0">
+							  <div class="media-left">
+								<a href="#">
+								 <img class="media-object" src="Assests/images/icon-rdu.png" alt="..." style="width: 40px;">
+								</a>
+							  </div>
+							  <div class="media-body">
+								<h3 class="media-heading font_weight" style="font-size: 20px;" id="rduHeadingId"></h3>
+								<h5 class="m_top5">RDU</h5>
+							  </div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+								<div class="border_left_width_water_tank">
+									<h5 class="m_left_5 f_12 font_weight">Water Tank Capacity</h5>
+									<h4 class="m_top5  m_left_5" id="rduheadingCapacityId"></h4>
+								</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="m_top10" style="margin-right:20px;">
+								<h3 style="font-size: 20px;" id="">Last <span style="padding:5px;border:1px solid #ccc;border-radius:5px;">30Days</span> Wise Overview</h3>
+							</div>
+							
+						</div>
+					</div>
+					
+				</div>
+				<div class="modal-body" >	
+					<div id="motherPlantsRDUDetailsId"></div>
+				</div>
+				<div class="modal-footer" style="background-color:#E1E1E1;">
+				  <button type="button" class="btn btn-default Close_st closeSecondModal" data-dismiss="modal">CLOSE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>		
+			
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/pdf.js" type="text/javascript"></script>
