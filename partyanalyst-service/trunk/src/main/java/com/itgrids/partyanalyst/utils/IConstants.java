@@ -1368,4 +1368,6 @@ public interface IConstants {
 	public static final String ZOHO_ADMIN_ORGID="659130259";
 	public static final String ZOHO_JWT_SECRETKEY="dEkQ7T0NGxWZXSrfXka5jRIJr5nA0LTMqfBAbs9g";
 	public static final String ZOHO_SOURCEID="9bfc0c36-facd-11e7-8c3f-9a214cf093ae";
+	public static final String ZOHO_IOS_STATIC_MEMBERSHIP_ID="22708818";
+	public static final String ZOHO_IOS_STATIC_MEMBERSHIP_ID_OTP="2270";
 }

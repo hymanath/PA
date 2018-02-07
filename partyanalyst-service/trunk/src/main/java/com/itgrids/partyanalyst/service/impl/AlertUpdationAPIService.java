@@ -405,8 +405,8 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	public JSONObject saveAlertAssign(JSONObject playLoadObj){
 		JSONObject obj = new JSONObject();
 		try {
-			if(playLoadObj.has("ticketId")){
-				List<Long> alertIds = alertDAO.getAlertId(playLoadObj.getString("ticketId"));
+			if(playLoadObj.has("id")){
+				List<Long> alertIds = alertDAO.getAlertId(playLoadObj.getString("id"));
 				if(alertIds != null && alertIds.size() > 0){
 					
 					String[]  assigneesArr = null;
@@ -465,8 +465,8 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	public JSONObject saveAlertStatus(JSONObject playLoadObj){
 		JSONObject obj = new JSONObject();
 		try {
-			if(playLoadObj.has("ticketId")){
-				List<Long> alertIds = alertDAO.getAlertId(playLoadObj.getString("ticketId"));
+			if(playLoadObj.has("id")){
+				List<Long> alertIds = alertDAO.getAlertId(playLoadObj.getString("id"));
 				if(alertIds != null && alertIds.size() > 0){
 					List<Long> statusIds = alertStatusDAO.getStatusId(playLoadObj.getString("status").trim());
 					if(statusIds != null && statusIds.size() > 0){

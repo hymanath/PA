@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -78,15 +77,19 @@ public class ZohoAlertService implements IZohoAlertService {
 		String mobileNo = null;
 		Long cadreId=0l;
 		try{
-			List<Object[]> mobileNoList = tdpCadreDAO.getMobileNoOfMembership(membershipId);
-			if(mobileNoList!=null && mobileNoList.size()>0){
-				cadreId=mobileNoList.get(0)[0]!=null?(Long)mobileNoList.get(0)[0]:null;
-				mobileNo=mobileNoList.get(0)[1]!=null?mobileNoList.get(0)[1].toString():null;
-				if(mobileNo!=null && mobileNo.length()>0){
-					generatingAndSavingOTPDetails(cadreId,mobileNo,membershipId);
-				}
-			}else{
+			if(membershipId!=null && !membershipId.trim().isEmpty() && membershipId.trim().equalsIgnoreCase(IConstants.ZOHO_IOS_STATIC_MEMBERSHIP_ID)){
 				return null;
+			}else{
+				List<Object[]> mobileNoList = tdpCadreDAO.getMobileNoOfMembership(membershipId);
+				if(mobileNoList!=null && mobileNoList.size()>0){
+					cadreId=mobileNoList.get(0)[0]!=null?(Long)mobileNoList.get(0)[0]:null;
+					mobileNo=mobileNoList.get(0)[1]!=null?mobileNoList.get(0)[1].toString():null;
+					if(mobileNo!=null && mobileNo.length()>0){
+						generatingAndSavingOTPDetails(cadreId,mobileNo,membershipId);
+					}
+				}else{
+					return null;
+				}
 			}
 		}catch (Exception e) {
 			LOG.error("Exception raised at getMobileNoByMemberShip in ZohoAlertService Class ", e);
@@ -179,6 +182,18 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 		JSONObject status =  new JSONObject();
 		
 		try {
+			
+			if (jobj.getString("memberShipId").trim().equalsIgnoreCase(IConstants.ZOHO_IOS_STATIC_MEMBERSHIP_ID)) {
+				if (jobj.getString("otp").trim().equalsIgnoreCase(IConstants.ZOHO_IOS_STATIC_MEMBERSHIP_ID_OTP)) {
+					status.put("memberShipId", jobj.getString("memberShipId"));
+					status.put("status", "success");
+				} else {
+					status.put("membershipId", "");
+					status.put("status", "failed");
+				}
+				return status;
+			}
+			
 			Date currentTime = dateUtilService.getCurrentDateAndTime();
 
 			List<Object[]> otpDetails = otpDetailsDAO.checkOTPDetails(jobj.getString("otp"), jobj.getString("memberShipId"), currentTime);
