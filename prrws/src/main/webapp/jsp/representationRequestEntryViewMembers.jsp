@@ -337,7 +337,7 @@
 			<div class="col-sm-6">
 				<div class="row m_top10" id="actionChangeDivId" style="display:none;">
 					<div class="col-sm-12">
-						<label class="radio-inline">
+						<label class="radio-inline actionChangeCls">
 						  <input type="radio" name="optionsRadios" id="inlineCheckbox1" value="COMPLETED" class="actionCls font_weight" checked> ACTION CHANGE 
 						</label>
 						<label class="radio-inline">
@@ -453,7 +453,7 @@
 		</div>
 		<div class="row m_top20" id="fileUploadDiv" style="display:none;">
 	      <div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
-	        <h5 class="panel-title"> UPLOAD <span id="letterNameId"></span> LETTER <span id="fileUploadIdErr"></span></h5>
+	        <h5 class="panel-title"> UPLOAD <span id="letterNameId"></span><span id="fileUploadIdErr"></span></h5>
 	        <span id="uploadFile"></span>
 	      </div>
     	</div>
