@@ -174,23 +174,50 @@ public class AffiliatedMemberImpl implements IAffiliatedMember {
 	@Override
 	public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType, String searchValue,String locationType, Long locationValues) {
 		 List<AffiliatedMemberVO> returnList = new ArrayList<AffiliatedMemberVO>();
-		try{  	
-			
-			List<Object[]> affiliatedDtls = affiliatedMemberDAO.searchAffiliatedMemberDetails(searchType, searchValue, locationType,  locationValues);
-			if(searchType.equalsIgnoreCase("votercardno") && affiliatedDtls.size() == 0){
-				List<Object[]> affiliatedVoterDtls = affiliatedMemberDAO.searchAffiliatedMemberDetailsthroughVoter(searchType, searchValue);
-				affiliatedDtls.addAll(affiliatedVoterDtls);
+		try{
+			List<Object[]> affliatedDataList = new ArrayList<Object[]>();
+			Long memberListSize=null;
+			if(searchType != null && searchType.equalsIgnoreCase("mebershipno")){
+				List<Object[]> memberlist =affiliatedMemberDAO.searchAffiliatedMemberDetails(searchType, searchValue, locationType, locationValues);
+				
+				memberListSize=Long.valueOf(memberlist.size());
+				if(commonMethodsUtilService.isListOrSetValid(memberlist)){
+					affliatedDataList.addAll(memberlist);
+				}else{
+					List <Object[]> memberDataThroughTClist =affiliatedMemberDAO.searchAffiliatedMemberDetailsThroughTC(searchType, searchValue, locationType, locationValues);
+					affliatedDataList.addAll(memberDataThroughTClist);
+				}
+				
+			}else if(searchType != null && searchType.equalsIgnoreCase("votercardno")){
+				List <Object[]> memberlist =affiliatedMemberDAO.searchAffiliatedMemberDetails(searchType, searchValue, locationType, locationValues);
+				
+				memberListSize=Long.valueOf(memberlist.size());
+				if(commonMethodsUtilService.isListOrSetValid(memberlist)){
+					affliatedDataList.addAll(memberlist);
+				}else{
+					List <Object[]> memberDataThroughVoterlist =affiliatedMemberDAO.searchAffiliatedMemberDetailsThroughVoter(searchType, searchValue, locationType, locationValues);
+					affliatedDataList.addAll(memberDataThroughVoterlist);
+				}
+			}else if(searchType != null && searchType.equalsIgnoreCase("mobileno")){
+				List <Object[]> memberlist =affiliatedMemberDAO.searchAffiliatedMemberDetails(searchType, searchValue, locationType, locationValues);
+				
+				memberListSize=Long.valueOf(memberlist.size());
+				if(commonMethodsUtilService.isListOrSetValid(memberlist)){
+					affliatedDataList.addAll(memberlist);
+				}else{
+					List <Object[]> memberDataThroughTClist =affiliatedMemberDAO.searchAffiliatedMemberDetailsThroughTC(searchType, searchValue, locationType, locationValues);
+					affliatedDataList.addAll(memberDataThroughTClist);
+				}
 			}
-			//0-cadreId,1-mobileNum,2-memShipNo,3-voterId,4-cardNum,5-releativename,6-houseno,7-castename,8-firstnAMme,9-casteid,10-gender
-			if(affiliatedDtls!= null && affiliatedDtls.size() >0){
-				for (Object[] objects : affiliatedDtls) {
+			
+			if(affliatedDataList!= null && affliatedDataList.size() >0){
+				for (Object[] objects : affliatedDataList) {
 					AffiliatedMemberVO vo=new AffiliatedMemberVO();
 					vo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[1]));
 					vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[2]));
 					vo.setVoterId(commonMethodsUtilService.getLongValueForObject(objects[3]));
 					vo.setVoterIdCardNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
-					//vo.setAffiliatedMemberId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 					vo.setRelativeName(commonMethodsUtilService.getStringValueForObject(objects[5]));
 					vo.setHouseNo(commonMethodsUtilService.getStringValueForObject(objects[6]));
 					vo.setFullName(commonMethodsUtilService.getStringValueForObject(objects[8]));
@@ -203,22 +230,14 @@ public class AffiliatedMemberImpl implements IAffiliatedMember {
 					if(commonMethodsUtilService.getLongValueForObject(objects[11]) != null && commonMethodsUtilService.getLongValueForObject(objects[11])>0 ){
 						vo.setAddressId(commonMethodsUtilService.getLongValueForObject(objects[11]));
 					}
+					if(commonMethodsUtilService.getLongValueForObject(objects[0]) !=null && commonMethodsUtilService.getLongValueForObject(objects[0]).longValue()>0l && memberListSize==0l){
+						vo.setAffiliatedMemberId(affiliatedMemberDAO.getAffiliatedMemberId(commonMethodsUtilService.getLongValueForObject(objects[0])));
+					}else{
+						vo.setAffiliatedMemberId(commonMethodsUtilService.getLongValueForObject(objects[12]));
+					}
 					returnList.add(vo);
 				}
 			}
-			Long affiliatedmemberId= affiliatedMemberDAO.getAffliatedMember(searchType, searchValue);
-			if(affiliatedmemberId !=null){
-				for (AffiliatedMemberVO vo : returnList) {
-					if(searchType.equalsIgnoreCase("mebershipno") && vo.getMembershipNo().equalsIgnoreCase(searchValue)){
-						vo.setAffiliatedMemberId(affiliatedmemberId);
-					}else if(searchType.equalsIgnoreCase("votercardno") && vo.getVoterIdCardNo().equalsIgnoreCase(searchValue)){
-						vo.setAffiliatedMemberId(affiliatedmemberId);
-					}else if(searchType.equalsIgnoreCase("mobileno") && vo.getMobileNo().equalsIgnoreCase(searchValue)){
-						vo.setAffiliatedMemberId(affiliatedmemberId);
-					}
-				}
-			}
-			
 		}catch(Exception e){
 		        LOG.error("Exception rised in searchAffiliatedMemberDetails",e);
         }
