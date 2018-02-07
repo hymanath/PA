@@ -81,5 +81,6 @@ public interface IConstants {
     public static final List<Long> DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS=Arrays.asList(2L,86L,92L);//2 Minister, 86 - OSD, 23 - principal secretory ,92 data entry operator
     public static final List<Long> PETITIONS_STATE_LEVEL_DESIGNATION_IDS=Arrays.asList(2L,86L,23L,94L,95L,93L,96L,97L,84L);//,87L);// 87 - HODs
     public static final List<Long> PETITIONS_DISTRICT_LEVEL_DESIGNATION_IDS=Arrays.asList(19L,80L,79L,90L,88L,9L);
+    public static final List<Long> FINAL_APPROVED_ACCESS_DESIGNAION_IDS=Arrays.asList(23L);
     
 }
