@@ -14,15 +14,61 @@ var  globalDesignationId= 0;
 $('#actionTypeStr').val('COMPLETED');
 var globalReviewStatus='';
 $(document).on("click",".actionCls",function(){
+	var isSelected=false;
+	$(this).each(function(){
+		if($(this).is(":checked")){
+			 isSelected=true;
+		}
+	});
+	
+	if(!isSelected){
+		$(this).prop("checked",true);
+	}
+		
+	$('.actionCls').not(this).removeAttr('checked');
 	var value = $(this).val();
 	$("#endorsWorksId").html('Save Details')
+	$("#assignToId,#officerId,#actionTypId").val('0');
+	$("#assignToId,#officerId,#actionTypId").trigger("chosen:updated");
+		
 	if(value == "ASSIGNED"){
-		$("#statusChangeDivId").hide();
-		$("#assignDesignationDivId").show();
-		$("#assignOfficerDivId").show();
-		$("#fileUploadDiv").hide();
-		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
-		$('#actionTypeStr').val(value);
+		if(globalReviewStatus == "ASSIGNED"){
+				if($(this).is(":checked")){
+					$("#statusChangeDivId").hide();
+					$("#assignDesignationDivId").show();
+					$("#assignOfficerDivId").show();
+					$("#fileUploadDiv").hide();
+					$("#assighTypeId").show();
+					getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+					$('#actionTypeStr').val(value);
+			}else{
+				 $(".actionChangeCls").hide();
+				 $("#statusChangeDivId").hide();
+				 $("#fileUploadDiv").show();
+				 $("#assignDesignationDivId").hide();
+				 $("#assignOfficerDivId").hide();
+				 $("#assighTypeId").hide();
+				 $("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+				 initializeSingleUploadDocument("uploadEndorsementDocId");	
+				 $("#endorsWorksId").html('Forward For Review')
+				 $('#actionTypeStr').val('REVIEW');
+			}
+		}else{
+			if($(this).is(":checked")){
+				$("#statusChangeDivId").hide();
+				$("#assignDesignationDivId").show();
+				$("#assignOfficerDivId").show();
+				$("#fileUploadDiv").hide();
+				$("#assighTypeId").show();
+				getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+				$('#actionTypeStr').val(value);
+			}else{
+				
+			}
+			
+		}
+		
+		
 		
 	}else{
 		$("#statusChangeId").val('0')
@@ -95,6 +141,7 @@ function buildPetitionDetailsView(result){
 	 globalDesignationName=$("#hiddenDesignationName").text();
 	 globalDesignationId =$("#hiddenDesignationId").val();
 	 globalReviewStatus='ASSIGNED';
+	 //globalReviewStatus='COMPLETED';
 	var str='';
 	
 	var statusId = result.statusId;
@@ -1404,13 +1451,15 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	//ara
 	getPetitionDetailsBuildImages();
 	if(globalReviewStatus == "ASSIGNED"){
-		 $(".actionChangeCls").hide();
-		 $("#statusChangeDivId").hide();
-		 $("#fileUploadDiv").show();
-		 $("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
-		 initializeSingleUploadDocument("uploadEndorsementDocId");	
-		 $("#endorsWorksId").html('Forward For Review')
-		 $('#actionTypeStr').val('REVIEW');
+		if(!$('#inlineCheckbox2').is(":checked")){
+			$(".actionChangeCls").hide();
+			 $("#statusChangeDivId").hide();
+			 $("#fileUploadDiv").show();
+			 $("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+			 initializeSingleUploadDocument("uploadEndorsementDocId");	
+			 $("#endorsWorksId").html('Forward For Review')
+			 $('#actionTypeStr').val('REVIEW');
+		}
 	 }else{
 		  $(".actionChangeCls").show();
 		  $("#statusChangeDivId").show();
@@ -1506,6 +1555,10 @@ $(document).on("change","#statusChangeId",function(){
 		$("#endorsmentNo").val('');
 		$("#actionTypeDivId").hide();
 		$("#assighTypeId").hide();
+		
+		
+		$("#documentTypeId").val('0')
+		$("#documentTypeId").trigger("chosen:updated");
 		
 	$('#nextStatusId').val(0);
 	if(nextStatusId != null && nextStatusId>0)

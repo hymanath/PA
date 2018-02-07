@@ -36,4 +36,14 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 		query.setParameterList("deptDesignationIdsList", deptDesignationIdsList);
 		return query.list();
 	}
+	
+	public List<Object[]> getActionTypeDetailsForDeptDesiOfficerId(Long pmDeptDesignationOfficerId,Long petitionId){
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.petitionId,model.actionType,model.actionTypeId from PmPetitionAssignedOfficer model where model.isDeleted='N' and model.pmDepartmentDesignationOfficerId =:pmDeptDesignationOfficerId and " +
+				"  model.petitionId=:petitionId group by model.petitionId order by model.insertedTime desc ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("pmDeptDesignationOfficerId", pmDeptDesignationOfficerId);
+		query.setParameter("petitionId", petitionId);
+		return query.list();
+	}
 }
