@@ -345,12 +345,17 @@
 						</label>
 					</div>
 				</div>
-				
+				<div class="row m_top20" id="uploadFileDivCls">
+				  <div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
+					<h5 class="panel-title"> UPLOAD <span id="letterNameId"></span><span id="fileUploadIdErr"></span></h5>
+					<span id="uploadFile"></span>
+				  </div>
+				</div>
 				<div class="row m_top10" >
 					<div class="col-sm-12" id="statusChangeDivId">
-						<label>FORWARD FOR: <span style="color:red;">*</span><span id="statusIdErrStr"></span></label>
+						<label><span id="forwardText">FORWARD FOR:</span> <span style="color:red;">*</span><span id="statusIdErrStr"></span></label>
 						<select class="form-control chosen-select" id="statusChangeId">
-							<option value="0">Select Status</option>
+							<option value="0"> Select Action </option>
 						</select>
 					</div>
 				</div>
@@ -430,19 +435,14 @@
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 		</div>
-		<div class="row m_top20" id="fileUploadDiv" style="display:none;">
-	      <div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
-	        <h5 class="panel-title"> UPLOAD <span id="letterNameId"></span><span id="fileUploadIdErr"></span></h5>
-	        <span id="uploadFile"></span>
-	      </div>
-    	</div>
+		
 		<div class="row m_top20" id="fileUploadIdDiv" style="display:none;">
-			<div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
+			<div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;padding: 10px;">
 				<button type="button" class="btn btn-success" id="coverLetterId" onclick="generateCoveringLetterForPetition()">Generate Cover Letter</button>
 			</div>
-			<span id="coveringLetterPthErr" style="color:red;"></span>
+			<span id="coveringLetterPthErr" style="color:red;margin-left:10px;"></span>
 		</div>
-		<div id="coveringLetterGenerator"></div>
+		<div id="coveringLetterGenerator" class="m_top20"></div>
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
 		<input type="hidden" id="actionTypeStr" value="" name="actionType"/>
 	   </div>
@@ -450,7 +450,7 @@
 			</div>
 		</div>
 		
-	  <div class="modal-footer">
+	  <div class="modal-footer m_top20">
 		  <div class="row m_top20" >
 			<div id="ajaxcallImageId" > </div>
 		  <div class="col-sm-8 ">

@@ -31,7 +31,9 @@ public class PmPetitionAssignedOfficer {
 	private String actionType;
 	private Long pmActionTypeId;
 	private Long pmStatusId;
-	
+	private Long assignedByPmDepartmentDesignationOfficerId;
+    private Long assignedToPmDepartmentDesignationOfficerId;
+    
 	private PmActionType pmActionType;
 	private Petition petition;
     private PmSubWorkDetails pmSubWorkDetails;
@@ -40,6 +42,10 @@ public class PmPetitionAssignedOfficer {
     private User insertedUser;
     private User updatedUser;
     private PmStatus pmStatus;
+    private PmDepartmentDesignationOfficer assignedByPmDepartmentDesignationOfficer;
+    private PmDepartmentDesignationOfficer assignedToPmDepartmentDesignationOfficer;
+    
+    
     
     @Id
 	@Column(name="pm_petition_assigned_officer_id")
@@ -209,5 +215,44 @@ public class PmPetitionAssignedOfficer {
 	public void setPmStatus(PmStatus pmStatus) {
 		this.pmStatus = pmStatus;
 	}
+	
+	@Column(name="assigned_by_pm_dept_designation_officer_id")
+	public Long getAssignedByPmDepartmentDesignationOfficerId() {
+		return assignedByPmDepartmentDesignationOfficerId;
+	}
+	public void setAssignedByPmDepartmentDesignationOfficerId(
+			Long assignedByPmDepartmentDesignationOfficerId) {
+		this.assignedByPmDepartmentDesignationOfficerId = assignedByPmDepartmentDesignationOfficerId;
+	}
+	
+	@Column(name="assigned_to_pm_dept_designation_officer_id")
+	public Long getAssignedToPmDepartmentDesignationOfficerId() {
+		return assignedToPmDepartmentDesignationOfficerId;
+	}
+	public void setAssignedToPmDepartmentDesignationOfficerId(
+			Long assignedToPmDepartmentDesignationOfficerId) {
+		this.assignedToPmDepartmentDesignationOfficerId = assignedToPmDepartmentDesignationOfficerId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "assigned_by_pm_dept_designation_officer_id", insertable = false, updatable = false)
+	public PmDepartmentDesignationOfficer getAssignedByPmDepartmentDesignationOfficer() {
+		return assignedByPmDepartmentDesignationOfficer;
+	}
+	public void setAssignedByPmDepartmentDesignationOfficer(
+			PmDepartmentDesignationOfficer assignedByPmDepartmentDesignationOfficer) {
+		this.assignedByPmDepartmentDesignationOfficer = assignedByPmDepartmentDesignationOfficer;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "assigned_to_pm_dept_designation_officer_id", insertable = false, updatable = false)
+	public PmDepartmentDesignationOfficer getAssignedToPmDepartmentDesignationOfficer() {
+		return assignedToPmDepartmentDesignationOfficer;
+	}
+	public void setAssignedToPmDepartmentDesignationOfficer(
+			PmDepartmentDesignationOfficer assignedToPmDepartmentDesignationOfficer) {
+		this.assignedToPmDepartmentDesignationOfficer = assignedToPmDepartmentDesignationOfficer;
+	}
+	
 	
 }

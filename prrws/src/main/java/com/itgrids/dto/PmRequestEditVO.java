@@ -29,7 +29,14 @@ public class PmRequestEditVO {
 	private List<PetitionHistoryVO> historyList = new ArrayList<PetitionHistoryVO>(0);
 	private Long statusId;
 	private String actionType;
+	private String worksStatus;
 	
+	public String getWorksStatus() {
+		return worksStatus;
+	}
+	public void setWorksStatus(String worksStatus) {
+		this.worksStatus = worksStatus;
+	}
 	public String getActionType() {
 		return actionType;
 	}
