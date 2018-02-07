@@ -335,20 +335,16 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-6">
-				
-				<div class="row m_top10">
-					<div class="col-sm-12" >
-						 <label class="text-capitalize">
-							<span class="btn btn-success btn-md"><input type="radio"  name="forwardCls" checked class="assignCls1" value="statusChange" id="">STATUS CHANGE </input></span>
-						 </label>
-					</div>
+				<div class="row m_top10" id="actionChangeDivId" style="display:none;">
 					<div class="col-sm-12">
-						 <label class="text-capitalize">
-							<span class="btn btn-success btn-md"><input type="radio" name="forwardCls" class="assignCls1"  value="ASSIGNED" id="">FORWARD</input></span>
-						 </label>
+						<label class="radio-inline">
+						  <input type="radio" name="optionsRadios" id="inlineCheckbox1" value="COMPLETED" class="actionCls font_weight" checked> ACTION CHANGE 
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="optionsRadios" id="inlineCheckbox2" value="ASSIGNED" class="actionCls font_weight"> FORWARD
+						</label>
 					</div>
 				</div>
-				
 				<div class="row m_top10" id="actionTypeDivId1" style="display:none;">
 					<div class="col-sm-12" >
 						 <label class="text-capitalize">
@@ -373,7 +369,7 @@
 				</div>
 				<div class="row m_top10" >
 					<div class="col-sm-12" id="statusChangeDivId">
-						<label>SELECT STATUS <span style="color:red;">*</span><span id="statusIdErrStr"></span></label>
+						<label>FORWARD FOR: <span style="color:red;">*</span><span id="statusIdErrStr"></span></label>
 						<select class="form-control chosen-select" id="statusChangeId">
 							<option value="0">Select Status</option>
 						</select>
@@ -469,7 +465,7 @@
 		</div>
 		<div id="coveringLetterGenerator"></div>
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
-		<input type="hidden" id="actionTypeStr" value="COMPLETED" name="actionType"/>
+		<input type="hidden" id="actionTypeStr" value="" name="actionType"/>
 	   </div>
 			<div class="col-sm-6" id="imageBuildingId">
 			</div>
@@ -570,7 +566,9 @@ $(document).on("click",".closeSecondModal",function(){
       $("body").addClass("modal-open")
     },1000);
   });
- 
+  if(glDesignationId != 2 && glDesignationId!=86){
+	  $("#actionChangeDivId").show();
+  }
   var searchBy= '${param.searchBy}';
   var desigId= '${param.desigId}';
   var statusId= '${param.statusId}';

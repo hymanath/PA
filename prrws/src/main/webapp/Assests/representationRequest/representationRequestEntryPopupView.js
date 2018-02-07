@@ -11,17 +11,25 @@ var historyDocsArr=[];
 var glPetitionId=0;
 var  globalDesignationName= '';
 var  globalDesignationId= 0;
-
-$(document).on("click",".assignCls1",function(){
-	$(".assignCls1").removeAttr("checked");
-	$(this).addAttr("checked");
-	var value=$(this).val();
-	if(value == 'statusChange'){
-		//alert("statusChange");
-	}else if(value== 'ASSIGNED'){
-		//alert("ASSIGNED");
+$('#actionTypeStr').val('COMPLETED');
+$(document).on("click",".actionCls",function(){
+	var value = $(this).val();
+	if(value == "ASSIGNED"){
+		$("#statusChangeDivId").hide();
+		$("#assignDesignationDivId").show();
+		$("#assignOfficerDivId").show();
+		$("#fileUploadDiv").hide();
+		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+		$('#actionTypeStr').val(value);
+	}else{
+		$("#statusChangeId").val('0')
+		$("#statusChangeId").trigger("chosen:updated");
+		$("#statusChangeDivId").show();
+		$("#assignDesignationDivId").hide();
+		$("#assignOfficerDivId").hide();
+		$('#actionTypeStr').val(value);
 	}
-});
+}); 
 
 $(document).on("click",".viewBtnCls",function(){
 	var petionId = $(this).attr("attr_petiotion_id");
@@ -1735,15 +1743,15 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	 $('#statusIdErrStr').html(' ');
 	 
 	
-	    var endorsementId =$("#endorsmentNo").val();
-	     //var leadIdValue = $("#leadId").val();
-	     //var grantIdValue = $("#grantId").val();
-		 var assignToIdValue = $("#assignToId").val();
-        var officerIdValue = $("#officerId").val();
-	     var remarksId =$("#remarksId").val();
-	    var statusId = $("#statusChangeId").val();
-		var documentTypeId = $("#documentTypeId").val();
-		var coveringLetterPath=$('#coverLetterPath').val();
+	var endorsementId =$("#endorsmentNo").val();
+	 //var leadIdValue = $("#leadId").val();
+	 //var grantIdValue = $("#grantId").val();
+	 var assignToIdValue = $("#assignToId").val();
+	var officerIdValue = $("#officerId").val();
+	 var remarksId =$("#remarksId").val();
+	var statusId = $("#statusChangeId").val();
+	var documentTypeId = $("#documentTypeId").val();
+	var coveringLetterPath=$('#coverLetterPath').val();
 		
 	if(statusId == 0){
 		if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
