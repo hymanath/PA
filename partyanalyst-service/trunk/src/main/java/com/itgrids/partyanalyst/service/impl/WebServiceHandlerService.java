@@ -310,14 +310,6 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		this.itdpAppUserDAO = itdpAppUserDAO;
 	}
 
-	public IAffiliatedMemberService getAffiliatedMember() {
-		return affiliatedMemberService;
-	}
-
-	public void setAffiliatedMember(IAffiliatedMemberService affiliatedMemberService) {
-		this.affiliatedMemberService = affiliatedMemberService;
-	}
-
 	public IKaizalaInfoService getKaizalaInfoService() {
 		return kaizalaInfoService;
 	}
@@ -5773,5 +5765,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 
 		}
 		return vo;
+	}
+
+	public IAffiliatedMemberService getAffiliatedMemberService() {
+		return affiliatedMemberService;
+	}
+
+	public void setAffiliatedMemberService(
+			IAffiliatedMemberService affiliatedMemberService) {
+		this.affiliatedMemberService = affiliatedMemberService;
 	}
 }
