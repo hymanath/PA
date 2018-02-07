@@ -2286,3 +2286,6 @@ function getLatestInsertedTime(){
 		}
 	});
 }
+$(document).on("click","#ledLightsFilteredId",function(e){
+		window.open("lightMonitoringVendorDashboard");
+});

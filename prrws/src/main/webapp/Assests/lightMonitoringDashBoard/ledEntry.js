@@ -91,6 +91,10 @@ $(document).on("change","#districtId",function(){
 	getMandalsByDistrict();
 });
 function getMandalsByDistrict(){
+	$("#mandalId").empty();
+	$("#villageId").empty();
+	$("#villageId").append("<option value='0'>select village</option>")
+	$("#villageId").trigger("chosen:updated");
 	var districtId = $("#districtId").val();
 	var json = {
 		locationId : districtId
@@ -119,6 +123,7 @@ $(document).on("change","#mandalId",function(){
 	getPanchayatsByTehsil();
 });
 function getPanchayatsByTehsil(){
+		$("#villageId").empty();
 	var mandalId = $("#mandalId").val();
 	var json = {
 		locationId : mandalId
