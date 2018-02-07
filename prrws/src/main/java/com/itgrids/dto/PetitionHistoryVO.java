@@ -56,12 +56,49 @@ public class PetitionHistoryVO implements java.io.Serializable{
     private String shortName;
     private String documentType;
     
+    private List<KeyValueVO> petitionsFilesList = new ArrayList<KeyValueVO>(0);
+    private List<KeyValueVO> refaralFilesList = new ArrayList<KeyValueVO>(0);
+    private List<KeyValueVO> coveringLetterList = new ArrayList<KeyValueVO>(0);
+    private List<KeyValueVO> actionCopyList = new ArrayList<KeyValueVO>(0);
+    private List<KeyValueVO> refarralFilesList = new ArrayList<KeyValueVO>(0);
+    
 	public PetitionHistoryVO(){}
 	public PetitionHistoryVO(Long actionId, String actionName){
 		this.actionId = actionId;
 		this.actionName = actionName;
 	}
 	
+	
+	public List<KeyValueVO> getPetitionsFilesList() {
+		return petitionsFilesList;
+	}
+	public void setPetitionsFilesList(List<KeyValueVO> petitionsFilesList) {
+		this.petitionsFilesList = petitionsFilesList;
+	}
+	public List<KeyValueVO> getRefaralFilesList() {
+		return refaralFilesList;
+	}
+	public void setRefaralFilesList(List<KeyValueVO> refaralFilesList) {
+		this.refaralFilesList = refaralFilesList;
+	}
+	public List<KeyValueVO> getCoveringLetterList() {
+		return coveringLetterList;
+	}
+	public void setCoveringLetterList(List<KeyValueVO> coveringLetterList) {
+		this.coveringLetterList = coveringLetterList;
+	}
+	public List<KeyValueVO> getActionCopyList() {
+		return actionCopyList;
+	}
+	public void setActionCopyList(List<KeyValueVO> actionCopyList) {
+		this.actionCopyList = actionCopyList;
+	}
+	public List<KeyValueVO> getRefarralFilesList() {
+		return refarralFilesList;
+	}
+	public void setRefarralFilesList(List<KeyValueVO> refarralFilesList) {
+		this.refarralFilesList = refarralFilesList;
+	}
 	public List<PetitionHistoryVO> getPetitionHistoryList() {
 		return petitionHistoryList;
 	}

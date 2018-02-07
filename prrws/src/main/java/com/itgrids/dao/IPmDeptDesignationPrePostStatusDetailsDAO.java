@@ -7,5 +7,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.model.PmDeptDesignationPrePostStatusDetails;
 
 public interface IPmDeptDesignationPrePostStatusDetailsDAO extends GenericDao<PmDeptDesignationPrePostStatusDetails, Long> {
-	public List<Long> getItSelfandPoststatusDetail(Long statusId);
+	public List<Long> getItSelfandPoststatusDetail(List<Long> statusIdsList,Long pmOfficerDesignationId);
 }

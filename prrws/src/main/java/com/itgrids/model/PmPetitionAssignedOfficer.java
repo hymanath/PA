@@ -30,6 +30,7 @@ public class PmPetitionAssignedOfficer {
 	private Date updatedTime;
 	private String actionType;
 	private Long pmActionTypeId;
+	private Long pmStatusId;
 	
 	private PmActionType pmActionType;
 	private Petition petition;
@@ -38,6 +39,7 @@ public class PmPetitionAssignedOfficer {
     private PmDepartmentDesignationOfficer pmDepartmentDesignationOfficer;
     private User insertedUser;
     private User updatedUser;
+    private PmStatus pmStatus;
     
     @Id
 	@Column(name="pm_petition_assigned_officer_id")
@@ -192,4 +194,20 @@ public class PmPetitionAssignedOfficer {
 	public void setPmActionType(PmActionType pmActionType) {
 		this.pmActionType = pmActionType;
 	}
+	@Column(name="pm_status_id")
+	public Long getPmStatusId() {
+		return pmStatusId;
+	}
+	public void setPmStatusId(Long pmStatusId) {
+		this.pmStatusId = pmStatusId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_status_id", insertable = false, updatable = false)
+	public PmStatus getPmStatus() {
+		return pmStatus;
+	}
+	public void setPmStatus(PmStatus pmStatus) {
+		this.pmStatus = pmStatus;
+	}
+	
 }

@@ -29,7 +29,14 @@ public class UserVO {
 	private Long deptDesignationOfficerId;
 	private Long vendorId;
 	private String vendorName;
+	private Long pmOfficerId;
 	
+	public Long getPmOfficerId() {
+		return pmOfficerId;
+	}
+	public void setPmOfficerId(Long pmOfficerId) {
+		this.pmOfficerId = pmOfficerId;
+	}
 	public Long getDeptDesignationId() {
 		return deptDesignationId;
 	}
