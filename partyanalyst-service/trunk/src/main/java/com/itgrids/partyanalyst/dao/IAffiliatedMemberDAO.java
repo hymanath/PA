@@ -9,7 +9,9 @@ import com.itgrids.partyanalyst.model.AffiliatedMember;
 public interface IAffiliatedMemberDAO extends GenericDao<AffiliatedMember, Long> {
 	 public List<Object[]> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValues);
 
-	public Long getAffliatedMember(String searchType,String searchValue);
+	public List<Object[]> searchAffiliatedMemberDetailsThroughTC(String searchType, String searchValue, String locationType,Long locationValues);
 
-	public List<Object[]> searchAffiliatedMemberDetailsthroughVoter(String searchType, String searchValue);
+	public List<Object[]> searchAffiliatedMemberDetailsThroughVoter(String searchType, String searchValue, String locationType,Long locationValues);
+
+	public Long getAffiliatedMemberId(Long cadreId);
 }
