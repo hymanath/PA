@@ -17,6 +17,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gson.Gson;
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dao.IActivityTabRequestBackupDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentTimeSlotDAO;
@@ -5766,14 +5767,24 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	public AffiliatedMemberVO saveAffiliatedMemberDetails(JSONObject jobj) {
 		AffiliatedMemberVO vo = null;
 		try{
-			ITdpAppUser appuser= itdpAppUserDAO.get(jobj.getLong("appuserId"));
+			writeDataInFatalLog(jobj);
+			ITdpAppUser appuser = itdpAppUserDAO.get(jobj.getLong("appuserId"));
 			vo = affiliatedMemberService.saveAffiliatedMemberDetails(jobj,appuser.getIsDeleted());
 		}catch(Exception e){
 			log.error("Exception raised in saveAffiliatedMemberDetails  method in WebServiceHandlerService1",e);
-
 		}
 		return vo;
 	}
 
-
+	private void writeDataInFatalLog(JSONObject jobj)
+	{
+		try{
+			String data = new Gson().toJson(jobj);
+			data = data.replaceAll("\n","");
+			log.fatal(data);
+		}catch(Exception e)
+		{
+			Log.error(e);
+		}
+	}
 }
