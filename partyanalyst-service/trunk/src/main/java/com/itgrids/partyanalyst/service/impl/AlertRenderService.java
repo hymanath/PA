@@ -42,7 +42,7 @@ public class AlertRenderService implements IAlertRenderService{
 									alertUpdationAPIService.saveAlertStatus(json.getJSONObject("payload"));
 								}
 							}else if(eventType.equalsIgnoreCase("Ticket_Update")){
-								if(json.getJSONObject("payload").has("contactId")){
+								if(json.getJSONObject("payload").has("customFields") && json.getJSONObject("payload").getJSONObject("customFields").has("assignees")){
 									alertUpdationAPIService.saveAlertAssign(json.getJSONObject("payload"));
 								}	
 								if(json.getJSONObject("payload").has("status")){
