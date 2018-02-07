@@ -29,6 +29,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONObject;
 import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
@@ -1020,4 +1021,15 @@ public class CommonMethodsUtilService {
 			return returnList;
 		}
 		
+		public Long getLongObjectFromJson(JSONObject jobj,String key)
+		{
+			try{
+				if(jobj.has(key) && jobj.getString(key).trim().length() > 0 && jobj.getLong(key) > 0)
+					return jobj.getLong(key);
+			}catch(Exception e)
+			{
+				LOG.error(e);
+			}
+			return null;
+		}
 }
