@@ -258,27 +258,30 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 	}
 
 	@Override
-	public AffiliatedMemberVO saveAffiliatedMemberDetails(final JSONObject jobj,final String IsActiveUser) 
+	public AffiliatedMemberVO saveAffiliatedMemberDetails(final JSONObject jobj,final String isActiveUser) 
 	{
 		final AffiliatedMemberVO finalVo = new AffiliatedMemberVO();
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 				try{
 					Long affiliatedMemberId = null;
-					if(jobj.has("tdpCadreId") && jobj.getLong("tdpCadreId")>0){
-						
-						affiliatedMemberId =affiliatedMemberDAO.getAffiliatedMemberId(jobj.getLong("tdpCadreId"),"cadre");
-					}else if(jobj.has("voterId") && jobj.getLong("voterId")>0){
-						affiliatedMemberId =affiliatedMemberDAO.getAffiliatedMemberId(jobj.getLong("voterId"),"voter");
+					Long tdpCadreId = commonMethodsUtilService.getLongObjectFromJson(jobj,"tdpCadreId");
+					Long voterId = commonMethodsUtilService.getLongObjectFromJson(jobj,"voterId");
+					
+					if(tdpCadreId != null)
+						affiliatedMemberId = affiliatedMemberDAO.getAffiliatedMemberId(tdpCadreId,"cadre");
+					else if(jobj.has("voterId") && jobj.getLong("voterId")>0){
+						affiliatedMemberId = affiliatedMemberDAO.getAffiliatedMemberId(voterId,"voter");
 					}
-					if(affiliatedMemberId !=null){
+					
+					if(affiliatedMemberId != null){
 						finalVo.setStatus("Member Already Registered");
 						finalVo.setReason("Member Already Registered with Id:"+affiliatedMemberId);
-						finalVo.setIsActiveAppUser(IsActiveUser);
+						finalVo.setIsActiveAppUser(isActiveUser);
 					}else{
 						AffiliatedMember member = new AffiliatedMember();
-						member.setVoterId(commonMethodsUtilService.getLongObjectFromJson(jobj,"voterId"));
-						member.setTdpCadreId(commonMethodsUtilService.getLongObjectFromJson(jobj,"tdpCadreId"));
+						member.setVoterId(voterId);
+						member.setTdpCadreId(tdpCadreId);
 						member.setFullName(jobj.has("fullName") ? jobj.getString("fullName").trim() : "");
 						member.setGender(jobj.has("gender") ? jobj.getString("gender").trim() : "");
 						member.setAge(commonMethodsUtilService.getLongObjectFromJson(jobj,"age"));
@@ -327,14 +330,14 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 						if(affiliatedMember != null){
 							finalVo.setAffiliatedMemberId(affiliatedMember.getAffiliatedMemberId());
 							finalVo.setStatus("Inserted Successfully");
-							finalVo.setIsActiveAppUser(IsActiveUser);
+							finalVo.setIsActiveAppUser(isActiveUser);
 						}
 					}
 					
 				}catch(Exception e){
 					finalVo.setStatus("Insertion Failed");
 					finalVo.setReason(e.getLocalizedMessage());
-					finalVo.setIsActiveAppUser(IsActiveUser);
+					finalVo.setIsActiveAppUser(isActiveUser);
 					LOG.error("Exception rised in saveAffiliatedMemberDetails",e);
 				}
 			}
