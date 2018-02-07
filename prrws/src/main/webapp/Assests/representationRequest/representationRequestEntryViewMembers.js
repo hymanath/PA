@@ -2105,10 +2105,10 @@ function getPmActionTypeList(){
 function onLoadClickDataDetails(){
 	getPmActionTypeList();
 	if(glDesignationId == 2 || glDesignationId == 86 || glDesignationId == 92){
-		$('#imageBuildingId').show();
+		//$('#imageBuildingId').show();
 	}else{
 		//$('#imageBuildingId').css("display","none");
-		$('#imageBuildingId').hide();
+		//$('#imageBuildingId').hide();
 	}
 	$("#actionTypId").trigger('chosen:updated');
 	if(searchBy == 'referral' || searchBy == 'referralCan'){

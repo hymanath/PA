@@ -2344,14 +2344,14 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 		if(repCostituencyId == 0 || repCostituencyId == null || repCostituencyId == ''){
 			$("#constituencyErr"+typeVal+'').html("<h5 style='color:red;'>Please select  constituency.</h5>");
 			$('#saveButtonId').show();
-			flag = false;
+			//flag = false;
 		}else{
 			$("#constituencyErr"+typeVal+'').html("");
 		}
 		if(repTehsilId == 0 || repTehsilId == null || repTehsilId == ''){
 			$("#mandalErr"+typeVal+'').html("<h5 style='color:red;'>Please select  mandal/munci.</h5>");
 			$('#saveButtonId').show();
-			flag = false;
+			//flag = false;
 		}else{
 			$("#mandalErr"+typeVal+'').html("");
 		}

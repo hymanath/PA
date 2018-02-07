@@ -108,6 +108,9 @@ function buildStatusOverviewDetails(result){
 	if(result != null && result.list != null && result.list.length >0){
 	
 		for(var i in result.list){
+			if(parseInt(result.list[i].id) == 9  || parseInt(result.list[i].id) == 10 || parseInt(result.list[i].id) == 11 || parseInt(result.list[i].id) == 12)
+				continue;
+			
 		str+='<div class="col-sm-2 status_blocks">';
 										str+='<div class="panel panel-default">';
 											//str+='<div class="panel-heading" style="background-color:#FFF8EF">';
@@ -127,6 +130,9 @@ function buildStatusOverviewDetails(result){
 											}else if(result.list[i].id ==5 ){
 												str+='<div class="panel-heading" style="background-color:#FDE8F5">';
 												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4427.png">';
+											}else{
+												str+='<div class="panel-heading" style="background-color:#FDE8F5">';
+												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4369.png">';
 											}
 											str+='<b style="padding-left:5px;font-size:13px">'+result.list[i].name+'</b></h5>';
 											str+='</div>';
