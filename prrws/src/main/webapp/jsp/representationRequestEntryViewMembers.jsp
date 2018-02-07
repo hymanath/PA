@@ -13,6 +13,7 @@
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/slick/slick.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
 <!-- for file uploader -->
@@ -40,6 +41,9 @@
 	}
 	body{
 		font-family: 'Montserrat', sans-serif;;
+	}
+	.slick-prev::before, .slick-next::before {
+		color: #000 !important;
 	}
  </style>
 </head>
@@ -331,18 +335,34 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-6">
+				
 				<div class="row m_top10">
-					<div class="col-sm-12" id="statusChangeDivId">
-						<label>Select Status<span style="color:red;">*</span><span id="statusIdErrStr"></span></label>
-						<select class="form-control chosen-select" id="statusChangeId">
-							<option value="0">Select Status</option>
-						</select>
-					</div>
-				</div>
-				<div class="row m_top10" id="actionTypeDivId" style="display:none;">
 					<div class="col-sm-12" >
 						 <label class="text-capitalize">
-							<span class="btn btn-success btn-md"><input type="checkbox"  value="ASSIGNED" id="assignToUserId">ASSIGN TO OFFICER</input></span>
+							<span class="btn btn-success btn-md"><input type="radio"  name="forwardCls" checked class="assignCls1" value="statusChange" id="">STATUS CHANGE </input></span>
+						 </label>
+					</div>
+					<div class="col-sm-12">
+						 <label class="text-capitalize">
+							<span class="btn btn-success btn-md"><input type="radio" name="forwardCls" class="assignCls1"  value="ASSIGNED" id="">FORWARD</input></span>
+						 </label>
+					</div>
+				</div>
+				
+				<div class="row m_top10" id="actionTypeDivId1" style="display:none;">
+					<div class="col-sm-12" >
+						 <label class="text-capitalize">
+							<span class="btn btn-success btn-md"><input type="radio"  name="checkRadio" class="assignCls1" value="ASSIGNED" id="">ASSIGN TO OFFICER</input></span>
+						 </label>
+						<!--<select class="form-control chosen-select" id="assignTypeId" name="actionType">
+							<option value="0">SELECT ACTION TYPE</option>
+							<option value="ASSIGNED">ASSIGN TO OFFICER</option>
+							<option value="COMPLETED">UPLOAD FILE COPY</option>
+						</select>-->
+					</div>
+					<div class="col-sm-12" style="display:none;">
+						 <label class="text-capitalize">
+							<span class="btn btn-success btn-md"><input type="radio" name="checkRadio" class="assignCls1" checked value="COMPLETED" id="">CHANGE ACTION</input></span>
 						 </label>
 						<!--<select class="form-control chosen-select" id="assignTypeId" name="actionType">
 							<option value="0">SELECT ACTION TYPE</option>
@@ -351,6 +371,15 @@
 						</select>-->
 					</div>
 				</div>
+				<div class="row m_top10" >
+					<div class="col-sm-12" id="statusChangeDivId">
+						<label>SELECT STATUS <span style="color:red;">*</span><span id="statusIdErrStr"></span></label>
+						<select class="form-control chosen-select" id="statusChangeId">
+							<option value="0">Select Status</option>
+						</select>
+					</div>
+				</div>
+				
 				<!--
 				<div class="row m_top10" id="actionTypeDivId" style="display:none;">
 					<div class="col-sm-12" >
@@ -420,7 +449,7 @@
 		</div>
 		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
 		<input type="hidden" class="form-control" id="petitionsId"  name="petitionId"/>
-		<div class="row m_top10" id="commentsDivId">
+		<div class="row m_top10" id="commentsDivId" style="display:none;">
 			<div class="col-sm-12">
 				<label>Comment<span style="color:red;"></span><span id="remarkIdErr"></span></label>
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
@@ -442,7 +471,7 @@
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
 		<input type="hidden" id="actionTypeStr" value="COMPLETED" name="actionType"/>
 	   </div>
-			<div class="col-sm-6" id="imageBuildingId" style="display:none;">
+			<div class="col-sm-6" id="imageBuildingId">
 			</div>
 		</div>
 		
@@ -508,6 +537,7 @@
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="Assests/Plugins/slick/slick.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <!--<script src="Assests/Plugins/sliderbar/bootstrap-slider.js" type="text/javascript"></script>-->
 <script src="Assests/SimplePagination/simplePagination3.js" type="text/javascript"></script>

@@ -11,6 +11,18 @@ var historyDocsArr=[];
 var glPetitionId=0;
 var  globalDesignationName= '';
 var  globalDesignationId= 0;
+
+$(document).on("click",".assignCls1",function(){
+	$(".assignCls1").removeAttr("checked");
+	$(this).addAttr("checked");
+	var value=$(this).val();
+	if(value == 'statusChange'){
+		//alert("statusChange");
+	}else if(value== 'ASSIGNED'){
+		//alert("ASSIGNED");
+	}
+});
+
 $(document).on("click",".viewBtnCls",function(){
 	var petionId = $(this).attr("attr_petiotion_id");
 	var endorsNo = $(this).attr("attr_enrorsNo");
@@ -18,7 +30,29 @@ $(document).on("click",".viewBtnCls",function(){
 	$("#representeeDetailsModelDivId").modal("show");
 	getPetitionDetails(petionId,endorsNo);
  });
- 
+ function getPetitionDetailsBuildImages(){
+	 $("#imageBuildingId").html(spinner);
+   var json = {
+       petitionId:glPetitionId,//38,//100031
+	   pageType:"viewPage"
+    };
+  $.ajax({              
+    type:'POST',    
+    url: 'setPmRepresenteeDataToResultView',
+    dataType: 'json',
+    data : JSON.stringify(json),
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){
+    if(result != null){
+		buildImages(result);
+	}else{
+		$("#imageBuildingId").html("No Data Available");
+	}
+  });
+}
  function getPetitionDetails(petitionId,endorsNo){
 	$("#representeeViewId").html(spinner);
 	$('#petitionId').val(petitionId);
@@ -169,17 +203,23 @@ function buildPetitionDetailsView(result){
 													str+='</div>';
 												str+='</div>';
 											str+='</div>';
-											str+='<div class="row m_top10">';
-												str+='<div class="col-sm-12">';
-													str+='<button type="button" class="btn btn-primary workWiseHistroyCls  pull-right" attr_work_id="'+glPetitionId+'" attr_sub_work_id="0" >View History</button>';
+											
+												str+='<div class="row m_top10">';
+													str+='<div class="col-sm-12">';
+														str+='<button type="button" class="btn btn-primary workWiseHistroyCls  pull-right" attr_work_id="'+glPetitionId+'" attr_sub_work_id="0" >View History</button>';
+												//	str+='</div>';
 											//	str+='</div>';
-										//	str+='</div>';
-										//	str+='<div class="row m_top10">';
-												//str+='<div class="col-sm-6">';			
-													str+='<button type="button" class="btn btn-primary btn-sm pull-right petitionWiseViewCommentsCls" attr_petition_id ="'+result.petitionId+'" style="margin-right: 15px"> ADD COMMENT </button>';
-												str+='</div>';
-											str+='</div>'; 
-										}
+											//	str+='<div class="row m_top10">';
+													//str+='<div class="col-sm-6">';	
+													if(glDesignationId != null && parseInt(glDesignationId) == 92){
+														;
+													}else{													
+														str+='<button type="button" class="btn btn-primary btn-sm pull-right petitionWiseViewCommentsCls" attr_petition_id ="'+result.petitionId+'" style="margin-right: 15px"> ADD COMMENT </button>';
+													}
+													str+='</div>';
+												str+='</div>'; 
+											}
+										
 										}
 									}
 								}
@@ -687,10 +727,14 @@ function buildPetitionDetailsView(result){
 								str+='<div class="row m_top10">';
 										str+='<div class="col-sm-12">';
 											str+='<div class="col-sm-2 pull-right">';
-												str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+												if(glDesignationId != null && parseInt(glDesignationId) == 92){
+													;
+												}else{
+													str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+												}
 											str+='</div>';
 											str+='<div class="col-sm-2 pull-right">';
-												if(globalDesignationName != null && globalDesignationName == 'Data Entry Officer'){
+												if(glDesignationId != null && parseInt(glDesignationId) == 92){
 													;
 												}else{
 													if(parseInt(totalWorksToUpdate) >0){
@@ -700,9 +744,15 @@ function buildPetitionDetailsView(result){
 											str+='</div>';
 											str+='<div class="col-sm-2 pull-right">';
 												str+='<h5>';
+												if(glDesignationId != null && parseInt(glDesignationId) == 92){
+													;
+												}else{
 													str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
 														str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
 													str+='</label>';
+													
+												}
+													
 												str+='</h5>';
 												
 												
@@ -748,9 +798,13 @@ function buildPetitionDetailsView(result){
 														str+='</div>';
 														str+='<div class="col-sm-3">';
 															str+='<h5 class="pull-right">';
-															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+															if(glDesignationId != null && parseInt(glDesignationId) == 92){
+																;
+															}else{
+																str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
 																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-															str+='</label>';
+																str+='</label>';
+															}
 															str+='</h5>';
 														str+='</div>';
 													str+='</div>';
@@ -764,9 +818,13 @@ function buildPetitionDetailsView(result){
 														str+='</div>';
 														str+='<div class="col-sm-3">';
 															str+='<h5 class="pull-right">';
-															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+															if(glDesignationId != null && parseInt(glDesignationId) == 92){
+																;
+															}else{
+																str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
 																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-															str+='</label>';
+																str+='</label>';
+															}
 															str+='</h5>';
 														str+='</div>';
 													str+='</div>';
@@ -781,9 +839,13 @@ function buildPetitionDetailsView(result){
 														str+='<div class="col-sm-3">';
 														if(endorseMenNo !=''){
 															str+='<h5 class="pull-right">';
-															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-															str+='</label>';
+															if(glDesignationId != null && parseInt(glDesignationId) == 92){
+																;
+															}else{
+																str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																	str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+																str+='</label>';
+															}
 															str+='</h5>';
 														}
 														str+='</div>';
@@ -1167,10 +1229,14 @@ function buildPetitionDetailsView(result){
 									str+='<div class="row m_top10">';
 										str+='<div class="col-sm-12">';
 											str+='<div class="col-sm-2 pull-right">';
-												str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+												if(glDesignationId != null && parseInt(glDesignationId) == 92){
+													;
+												}else{
+													str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+												}
 											str+='</div>';
 											str+='<div class="col-sm-2 pull-right">';
-												if(globalDesignationName != null && globalDesignationName == 'Data Entry Officer'){
+												if(glDesignationId != null && parseInt(glDesignationId) == 92){
 													;
 												}else{
 													if(parseInt(totalWorksToUpdate) >0){
@@ -1180,9 +1246,13 @@ function buildPetitionDetailsView(result){
 											str+='</div>';
 											str+='<div class="col-sm-2 pull-right">';
 												str+='<h5>';
+												if(glDesignationId != null && parseInt(glDesignationId) == 92){
+													;
+												}else{
 													str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
 														str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
 													str+='</label>';
+												}
 												str+='</h5>';
 												
 												
@@ -1208,13 +1278,14 @@ function buildPetitionDetailsView(result){
 			
 	$("#representeeViewId").html(str);
 	$(".tooltipCls").tooltip();
-	buildImages(result);
+	
 }
 $(document).on("click",".updateStatusChangeCls",function(){
 	 $("#coveringLetterGenerator").html("");
 	 $("#remarkIdErr").html("");
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
+	var petionId = $(this).attr("attr_petition_id")
 	$("#fileUploadDiv").hide();
 	$("#commentsDivId").show();
 	$("#leadDivId").hide();
@@ -1271,31 +1342,39 @@ $(document).on("click",".updateStatusChangeCls",function(){
 			if(enrorsNo !=null && enrorsNo>0){
 				if(globalStatusArr[i].key !=1){
 					if(globalStatusArr[i].key == 6)
-						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD ACTION COPY</option>');
+						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> ACTION COPY</option>');
 					else if(globalStatusArr[i].key == 7)
-						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD DETAILED REPORT </option>');
+						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> DETAILED REPORT </option>');
 					else if(globalStatusArr[i].key == 3)
-						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> FINAL APPROVAL </option>');
+						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> FINAL APPROVAL </option>');
 					else if(globalStatusArr[i].key == 4)
-						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> LOOK FOR NEXT YEAR </option>');
+						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> LOOK FOR NEXT YEAR </option>');
 					else if(globalStatusArr[i].key == 5)
-						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> NOT POSSIBLE </option>');
-					
+						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> NOT POSSIBLE </option>');
+					/*if(globalStatusArr[i].key == 1)
+						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+nextStatusId+'"> ENDORSE PETITION </option>');
+					else
+						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+nextStatusId+'">'+globalStatusArr[i].value+'</option>');
+					*/
 				}
 			}else{
 				if(globalStatusArr[i].key == 1)
 					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> ENDORSE PETITION </option>');
 				else if(globalStatusArr[i].key == 6)
-					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD ACTION COPY</option>');
+					$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> ACTION COPY</option>');
 				else if(globalStatusArr[i].key == 7)
-					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> UPLOAD DETAILED REPORT </option>');
+					$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> DETAILED REPORT </option>');
 				else if(globalStatusArr[i].key == 3)
-					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> FINAL APPROVAL </option>');
+					$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> FINAL APPROVAL </option>');
 				else if(globalStatusArr[i].key == 4)
-					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> LOOK FOR NEXT YEAR </option>');
+					$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> LOOK FOR NEXT YEAR </option>');
 				else if(globalStatusArr[i].key == 5)
-					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> NOT POSSIBLE </option>');
-				
+					$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> NOT POSSIBLE </option>');
+				/*
+				if(globalStatusArr[i].key == 1)
+					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+nextStatusId+'"> ENDORSE PETITION </option>');
+				else
+					$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+nextStatusId+'">'+globalStatusArr[i].value+'</option>');*/
 			}	
 			
 		}
@@ -1309,6 +1388,8 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	$("#totalWorksId").html(totalWorks)
 	$("#selectdWorksId").html(selectdWorksArr.length)
 	$("#notSeleWorksId").html(notSeleWorks)
+	//ara
+	getPetitionDetailsBuildImages();
 	
 });	
 
@@ -1367,15 +1448,17 @@ $(document).on("change","#assignTypeId",function(){
 	$('#endorsWorksId').html('Save Details');
 	$("#actionTypId").val("0");
 	$("#actionTypId").trigger('chosen:updated');
+	$("#statusChangeDivId").show();
 	if(assignType == 'ASSIGNED'){
 		//$('#actionTypeStr').val('ASSIGNED');
 		
 		$('#endorsWorksId').html('Assign');
+		$("#statusChangeDivId").hide();
 		$("#assighTypeId").show();
 		$("#commentsDivId").show();
 		$("#assignOfficerDivId").show();
 		$("#assignDesignationDivId").show();
-		//getPmActionTypeList();
+		//getPmActionTypeList(); 
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}
 	
@@ -1437,7 +1520,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#remarksId").val('');
 		$("#letterNameId").html("ACTION COPY");
 		$("#endorsementDivId").hide();
-		$("#commentsDivId").hide();
+		$("#commentsDivId").show();
 		$("#leadDivId").hide();
 		$("#grantDivId").hide();
 		
@@ -1761,7 +1844,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 		return;
 	}
 
-	$("#ajaxcallImageId").html("<center><h4 style='color: green;'>Please Wait...... </h4></center>");
+	$("#ajaxcallImageId").html("<center><h4 style='color: green;'>Please Wait...... <img src='Assests/images/spinner.png'/> </h4></center>");
 	   //$('#endorsWorksId').hide();
 	   var endorsementNO="";
 	   var formData = new FormData();
@@ -1875,7 +1958,7 @@ $.ajax({
 				$("#savingDetailsSpinner").html('');
 				
 				setTimeout(function () {
-						$("#ajaxcallImageId").html("<center><h4 style='color: red;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h4></center>")
+						$("#ajaxcallImageId").html("<center><h4 style='color: red;'>Error occured while updating details.try again.</h4></center>")
 						}, 5000);
 						//$(".saveEnable").prop("disabled", false);
 				//console.log(request);
@@ -2134,28 +2217,38 @@ $(document).on("click",".workWiseHistroyCls",function(){
 function buildImages(result){
 	var str='';
 	str+='<div class="col-sm-12 m_top15" id="ScrollDivId" style="height:400px; overflow:scroll;">';
-		str+='<ul>';
+		str+='<ul class="partyWiseSlickApply list-inline">';
 		if(typeof(result.allFileList) != 'undefined' && result.allFileList != null && result.allFileList.length>0){
 			//$('#imageBuildingId').show();
 			for(var i in  result.allFileList){
 				var scanCopySpl = result.allFileList[i].value.split(".");
 				var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase());
 				if(scanCopyExt =="pdf"){
-					str+='<li style="list-style:none;"><object data="'+result.allFileList[i].value+'" style="width:100%; height:400px;"></object></li>';
+					str+='<li><object data="'+result.allFileList[i].value+'" style="width:100%; height:400px;"></object></li>';
 				}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg" || scanCopyExt =="gif" || scanCopyExt =="bmp" || scanCopyExt =="png"){
-					str+='<li style="list-style:none;"><img src="'+result.allFileList[i].value+'" style="width:100%; height:400px;"></li>';
+					str+='<li><img src="'+result.allFileList[i].value+'" style="width:100%; height:400px;"></li>';
 				}	
 			}
 		}else{
-			$('#imageBuildingId').hide();
+			//$('#imageBuildingId').hide();
 		}
 		str+='</ul>';
 	str+='</div>';	
 	
 	$("#imageBuildingId").html(str);	
 	if(result.allFileList.length < 1){
-		$("#imageBuildingId").hide();
+		//$("#imageBuildingId").hide();
 	}
+	$(".partyWiseSlickApply").slick({
+			 slide: 'li',
+			 slidesToShow: 1,
+			 slidesToScroll: 1,
+			 infinite: false,
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false,
+			
+		}); 
 	 
 }
 
@@ -2412,7 +2505,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 										str+='<span class="time" style="border:1px solid #1BE00D">'+result.petitionHistoryList[i].subList1[j].subList1[m].timeStr+'</span>';	
 									}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Endorsement"){
 										str+='<span class="time" style="border:1px solid #0090FF">'+result.petitionHistoryList[i].subList1[j].subList1[m].timeStr+'</span>';	
-									}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Final Approval" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Action Memo" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Detailed Report"){
+									}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Final Approval" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Action Memo" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Detailed Report"){
 										str+='<span class="time" style="border:1px solid #FFC400">'+result.petitionHistoryList[i].subList1[j].subList1[m].timeStr+'</span>';	
 									}else{
 										str+='<span class="time" style="border:1px solid #1BE00D">'+result.petitionHistoryList[i].subList1[j].subList1[m].timeStr+'</span>';	
@@ -2429,7 +2522,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 										str+='<div style="border: 1px solid #0090FF;padding: 5px;margin-top: 6px;position: relative;left: -6px;border-left: none;padding-bottom: 0px;background-color: #F5F5F5;">';
 										str+='<p class="panel-title text_bold"></p>';
 										str+='<h5 style="margin-top: 19px;border-left: 1px solid #0090FF;margin-left: -6px;">';
-									}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Final Approval" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Action Memo" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Detailed Report"){
+									}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Final Approval" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Action Memo" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Detailed Report"){
 										str+='<div style="border: 1px solid #FFC400;padding: 5px;margin-top: 6px;position: relative;left: -6px;border-left: none;padding-bottom: 0px;background-color: #F5F5F5;">';
 										str+='<p class="panel-title text_bold"></p>';
 										str+='<h5 style="margin-top: 19px;border-left: 1px solid #FFC400;margin-left: -6px;">';
@@ -2452,7 +2545,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 											}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Endorsement"){
 												str+='<span style="background-color:#317CB8;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;">';
 												str+='</span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[m].stautus+'';
-											}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending Final Approval" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Action Memo" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Pending - Detailed Report"){
+											}else if(result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Final Approval" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Action Memo" || result.petitionHistoryList[i].subList1[j].subList1[m].stautus == "Detailed Report"){
 												str+='<span style="background-color:#FFC400;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;">';
 												str+='</span> Status : '+result.petitionHistoryList[i].subList1[j].subList1[m].stautus+'';
 											}else{
@@ -2561,7 +2654,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 															str+='<span class="time" style="border:1px solid #1BE00D">'+result.subList1[j].subList1[k].subList1[l].subList1[m].timeStr+'</span>';	
 														}else if(result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending Endorsement"){
 															str+='<span class="time" style="border:1px solid #0090FF">'+result.subList1[j].subList1[k].subList1[l].subList1[m].timeStr+'</span>';	
-														}else if(result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending Final Approval" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending - Action Memo" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending - Detailed Report"){
+														}else if(result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Final Approval" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Action Memo" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Detailed Report"){
 															str+='<span class="time" style="border:1px solid #FFC400">'+result.subList1[j].subList1[k].subList1[l].subList1[m].timeStr+'</span>';	
 														}else{
 															str+='<span class="time" style="border:1px solid #1BE00D">'+result.subList1[j].subList1[k].subList1[l].subList1[m].timeStr+'</span>';	
@@ -2578,7 +2671,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																str+='<div style="border: 1px solid #0090FF;padding: 5px;margin-top: 6px;position: relative;left: -6px;border-left: none;padding-bottom: 0px;background-color: #F5F5F5;">';
 																str+='<p class="panel-title text_bold"></p>';
 																str+='<h5 style="margin-top: 19px;border-left: 1px solid #0090FF;margin-left: -6px;">';
-															}else if(result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending Final Approval" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending - Action Memo" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending - Detailed Report"){
+															}else if(result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Final Approval" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Action Memo" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Detailed Report"){
 																str+='<div style="border: 1px solid #FFC400;padding: 5px;margin-top: 6px;position: relative;left: -6px;border-left: none;padding-bottom: 0px;background-color: #F5F5F5;">';
 																str+='<p class="panel-title text_bold"></p>';
 																str+='<h5 style="margin-top: 19px;border-left: 1px solid #FFC400;margin-left: -6px;">';
@@ -2602,7 +2695,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																					}else if(result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending Endorsement"){
 																						str+='<span style="background-color:#317CB8;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;">';
 																						str+='</span> Status : '+result.subList1[j].subList1[k].subList1[l].subList1[m].stautus+'';
-																					}else if(result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending Final Approval" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending - Action Memo" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Pending - Detailed Report"){
+																					}else if(result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Final Approval" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Action Memo" || result.subList1[j].subList1[k].subList1[l].subList1[m].stautus == "Detailed Report"){
 																						str+='<span style="background-color:#FFC400;width: 15px;height: 15px;display: inline-block;border-radius: 50%;position: relative;top: 3px;">';
 																						str+='</span> Status : '+result.subList1[j].subList1[k].subList1[l].subList1[m].stautus+'';
 																					}else{
@@ -2723,3 +2816,5 @@ function getPmDocumentTypeList(){
 		$("#documentTypeId").trigger('chosen:updated');
 	});	
 	}
+
+	
