@@ -77,8 +77,9 @@ public interface IConstants {
     public static final List<Long> PETITION_IN_PROGRESS_IDS =Arrays.asList(3l,6l,7l);
     public static final Long[] PR_RD_EOFFICE_DEPT_IDS = {1448L,1466L,1424L,729L,2798L};
     public static final List<Long> PETITION_COMPLETED_IDS = Arrays.asList(4l,5l,8l);
-    public static final List<Long> DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS=Arrays.asList(2L,86L);
     public static final Long DEFAULT_PETITION_ASSIGNED_USER_ID = 21L;// Nara Lokesh
-    public static final List<Long> PETITIONS_STATE_LEVEL_DESIGNATION_IDS=Arrays.asList(2L,86L,23L,94L,95L,93L,96L,97L,84L,87L);
+    public static final List<Long> DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS=Arrays.asList(2L,86L,92L);//2 Minister, 86 - OSD, 23 - principal secretory ,92 data entry operator
+    public static final List<Long> PETITIONS_STATE_LEVEL_DESIGNATION_IDS=Arrays.asList(2L,86L,23L,94L,95L,93L,96L,97L,84L);//,87L);// 87 - HODs
     public static final List<Long> PETITIONS_DISTRICT_LEVEL_DESIGNATION_IDS=Arrays.asList(19L,80L,79L,90L,88L,9L);
+    
 }
