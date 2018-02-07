@@ -12,8 +12,10 @@ var glPetitionId=0;
 var  globalDesignationName= '';
 var  globalDesignationId= 0;
 $('#actionTypeStr').val('COMPLETED');
+var globalReviewStatus='';
 $(document).on("click",".actionCls",function(){
 	var value = $(this).val();
+	$("#endorsWorksId").html('Save Details')
 	if(value == "ASSIGNED"){
 		$("#statusChangeDivId").hide();
 		$("#assignDesignationDivId").show();
@@ -21,6 +23,7 @@ $(document).on("click",".actionCls",function(){
 		$("#fileUploadDiv").hide();
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 		$('#actionTypeStr').val(value);
+		
 	}else{
 		$("#statusChangeId").val('0')
 		$("#statusChangeId").trigger("chosen:updated");
@@ -91,6 +94,7 @@ $(document).on("click",".viewBtnCls",function(){
 function buildPetitionDetailsView(result){
 	 globalDesignationName=$("#hiddenDesignationName").text();
 	 globalDesignationId =$("#hiddenDesignationId").val();
+	 globalReviewStatus='ASSIGNED';
 	var str='';
 	
 	var statusId = result.statusId;
@@ -1291,6 +1295,7 @@ function buildPetitionDetailsView(result){
 $(document).on("click",".updateStatusChangeCls",function(){
 	 $("#coveringLetterGenerator").html("");
 	 $("#remarkIdErr").html("");
+	 
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
 	var petionId = $(this).attr("attr_petition_id")
@@ -1350,11 +1355,11 @@ $(document).on("click",".updateStatusChangeCls",function(){
 			if(enrorsNo !=null && enrorsNo>0){
 				if(globalStatusArr[i].key !=1){
 					if(globalStatusArr[i].key == 6)
-						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> ACTION COPY</option>');
-					else if(globalStatusArr[i].key == 7)
-						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> DETAILED REPORT </option>');
-					else if(globalStatusArr[i].key == 3)
-						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> FINAL APPROVAL </option>');
+						$("#statusChangeId").append('<option attr_next_status_id="7" value="7">DETAILED REPORT</option>');
+					/* else if(globalStatusArr[i].key == 7)
+						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> DETAILED REPORT </option>'); */
+					else if(globalStatusArr[i].key == 3 || globalStatusArr[i].key == 7)
+						$("#statusChangeId").append('<option attr_next_status_id="3" value="3"> FINAL APPROVAL </option>');
 					else if(globalStatusArr[i].key == 4)
 						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> LOOK FOR NEXT YEAR </option>');
 					else if(globalStatusArr[i].key == 5)
@@ -1398,7 +1403,21 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	$("#notSeleWorksId").html(notSeleWorks)
 	//ara
 	getPetitionDetailsBuildImages();
-	
+	if(globalReviewStatus == "ASSIGNED"){
+		 $(".actionChangeCls").hide();
+		 $("#statusChangeDivId").hide();
+		 $("#fileUploadDiv").show();
+		 $("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+		 initializeSingleUploadDocument("uploadEndorsementDocId");	
+		 $("#endorsWorksId").html('Forward For Review')
+		 $('#actionTypeStr').val('REVIEW');
+	 }else{
+		  $(".actionChangeCls").show();
+		  $("#statusChangeDivId").show();
+		  $("#fileUploadDiv").hide();
+		  $("#endorsWorksId").html('Save Details')
+		 $('#actionTypeStr').val(globalReviewStatus);
+	 }
 });	
 
 $(document).on("click","#assignToUserId",function(){
