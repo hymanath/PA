@@ -25,6 +25,7 @@ public class TrainingCampProgramVO {
 	private List<TrainingCampProgramVO> mandalList;
 	private List<TrainingCampProgramVO> villageList;
 	private List<TrainingCampProgramVO> locationList;
+	private TrainingCampProgramVO BoothVO;
 	
 	private List<TrainingCampProgramVO> leaderTrainingList = new ArrayList<TrainingCampProgramVO>();
 	
@@ -301,6 +302,12 @@ public class TrainingCampProgramVO {
 	}
 	public void setUpcommintbatch(Long upcommintbatch) {
 		this.upcommintbatch = upcommintbatch;
+	}
+	public TrainingCampProgramVO getBoothVO() {
+		return BoothVO;
+	}
+	public void setBoothVO(TrainingCampProgramVO boothVO) {
+		BoothVO = boothVO;
 	}
 	
 	
