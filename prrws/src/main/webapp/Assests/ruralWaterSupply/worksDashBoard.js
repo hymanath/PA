@@ -2464,7 +2464,7 @@ function getOnClickNotGroubnWorkDetails(assetType,locationType,exceededDuration,
 			"toDateStr":glEndDate,
 			"locationType":locationType,
 			"exceededDuration":exceededDuration,
-			"locationValue":locationValue,
+			"locationIdStr":locationValue,
 			 "status" : statusType,
 			 "year": yearVal
 			 
