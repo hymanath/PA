@@ -19,7 +19,4 @@ public interface IRwsWorkDAO extends GenericDao<RwsWork, Long>{
 
 	public List<Object[]> getnotGroundedWorkList(Date fromDate, Date toDate, String assetType, String locationType, String locationIdStr, String districtId);
 
-	public List<Object[]> getSchemeWiseDetails(Date fromDate, Date toDate, String locationType, Long locationValue,String districtValue, String filterType, String filterValue, String string);
-	
-
 }
