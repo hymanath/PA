@@ -4683,6 +4683,8 @@
           		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
           		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
           		<property name="transactionTemplate" ref="transactionTemplate" />
+          		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+          		<property name="boothDAO" ref="boothDAO" />
         </bean>
         
     	 <bean name="coreDashboardNominatedPostService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardNominatedPostService">
