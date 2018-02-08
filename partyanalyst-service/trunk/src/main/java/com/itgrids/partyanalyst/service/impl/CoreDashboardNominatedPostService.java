@@ -898,4 +898,59 @@ public NominatedPostDetailsVO getMatchedPositionVo(List<NominatedPostDetailsVO> 
 	}
 	return null;
 }
+
+public List<NominatedPostDetailsVO> getDepartMentWiseBoards(List<Long> locationValues,String fromDateStr, 
+		String toDateStr,Long locationTypeId,Long boardLevelId,Long statusId,Long departmentId){
+	List<NominatedPostDetailsVO> returnsList = new ArrayList<NominatedPostDetailsVO>();
+	try{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	     
+		Date startDate = null;
+		Date endDate = null;
+		if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
+			startDate = sdf.parse(fromDateStr);
+			endDate = sdf.parse(toDateStr);
+		}
+		//0-boardId,1-boardName
+		List<Object[]> postionDetails = nominatedPostDAO.getDepartMentWiseBoards(locationValues,startDate,endDate,locationTypeId,boardLevelId,statusId,departmentId);
+		if(postionDetails != null && postionDetails.size()>0l){
+			for(Object[] param : postionDetails){
+				NominatedPostDetailsVO vo=new NominatedPostDetailsVO();
+				vo.setBoardId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setBoard(commonMethodsUtilService.getStringValueForObject(param[1]));
+				returnsList.add(vo);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception raised in getDepartMentWiseBoards() method of CoreDashboardNominatedPostService", e);	
+	}
+	return returnsList;
+}
+public List<NominatedPostDetailsVO> getBoardWisePositions(List<Long> locationValues,String fromDateStr, 
+		String toDateStr,Long locationTypeId,Long boardLevelId,Long statusId,Long boardId){
+	List<NominatedPostDetailsVO> returnsList = new ArrayList<NominatedPostDetailsVO>();
+	try{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	     
+		Date startDate = null;
+		Date endDate = null;
+		if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
+			startDate = sdf.parse(fromDateStr);
+			endDate = sdf.parse(toDateStr);
+		}
+		//0-positionId,1-position
+		List<Object[]> postionDetails = nominatedPostDAO.getBoardWisePositions(locationValues,startDate,endDate,locationTypeId,boardLevelId,statusId,boardId);
+		if(postionDetails != null && postionDetails.size()>0l){
+			for(Object[] param : postionDetails){
+				NominatedPostDetailsVO vo=new NominatedPostDetailsVO();
+				vo.setBoardId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				vo.setBoard(commonMethodsUtilService.getStringValueForObject(param[1]));
+				returnsList.add(vo);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception raised in getBoardWisePositions() method of CoreDashboardNominatedPostService", e);	
+	}
+	return returnsList;
+}
 }
