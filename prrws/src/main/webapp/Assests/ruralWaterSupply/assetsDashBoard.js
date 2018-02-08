@@ -653,86 +653,12 @@
 						//{
 							tableView+='<div class="table-responsive">';
 						//}
-						if(divId[k].id=="habitation"){
-							if(locationType !="district"){
-								tableView+='<table class="table table-bordered" id="dataTable1'+locationType+divId[k].id+'">';
-							}else{
-								tableView+='<table class="table table-bordered" id="dataTableDis'+locationType+divId[k].id+'">';
-							}
-							
-						}else if(divId[k].id=="performance"){
-							tableView+='<table class="table table-bordered" id="dataTable'+locationType+divId[k].id+'">';
-						}else if(divId[k].id=="schemeId"){
-							tableView+='<table class="table table-bordered" id="dataTable3'+locationType+divId[k].id+'">';
-						}else if(divId[k].id=="assestsId"){
-							tableView+='<table class="table table-bordered" id="dataTable2'+locationType+divId[k].id+'">';
-						}else if(divId[k].id=="waterSourceId"){
-							tableView+='<table class="table table-bordered" id="dataTable4'+locationType+divId[k].id+'">';
+						if(divId[k].id=="assestsId"){
+							tableView+='<table class="table table-bordered" id="dataTable2'+locationType+divId[k].id+'" style="width: 100%;">';
 						}
 							tableView+='<thead class="text-capital">';
 							
-							if(divId[k].id=="habitation"){
-								tableView+='<tr>';
-								tableView+='<th>'+locationType+'</th>';
-								if(GLtbodyArr[0] !=null && GLtbodyArr[0].statusList !=null && GLtbodyArr[0].statusList.length>0){
-									for(var j in GLtbodyArr[0].statusList){
-										if(divId[k].id=="habitation"){
-											if(GLtbodyArr[0].statusList[j].status != 'NC'){
-												tableView+='<th>'+GLtbodyArr[0].statusList[j].status+'</th>';
-												tableView+='<th>%</th>';
-												
-											}
-										}
-									}
-								}
-								tableView+='<th>TOTAL</th>';
-								tableView+='</tr>'; 
-							}else if(divId[k].id=="performance"){
-								tableView+='<tr>';
-								tableView+='<th rowspan="2">'+locationType+'</th>';
-								tableView+='<th colspan="3" style="text-align: center;">Partially Covered<br/>Habitations Through Schemes</th>';
-								tableView+='<th colspan="3" style="text-align: center;">Quality Affected<br/>Habitations Through Schemes</th>';
-								tableView+='</tr>'; 
-								tableView+='<tr>'; 
-								tableView+='<th>Target</th>';
-								tableView+='<th>Achived</th>';
-								tableView+='<th>% Percentage</th>';
-								tableView+='<th>Target</th>';
-								tableView+='<th>Achived</th>';
-								tableView+='<th>% Percentage</th>';
-								tableView+='</tr>'; 
-							}else if(divId[k].id=="schemeId"){
-								tableView+='<tr>';
-								tableView+='<th rowspan="2">'+locationType+'</th>';
-								if(GLtbodyArr[0] !=null && GLtbodyArr[0].basicList !=null && GLtbodyArr[0].basicList.length>0){
-									for(var j in GLtbodyArr[0].basicList){
-											if(GLtbodyArr[0].basicList[j].assetType == 'PWS' || GLtbodyArr[0].basicList[j].assetType == "CPWS"){
-												tableView+='<th colspan="8">'+GLtbodyArr[0].basicList[j].assetType+'</th>';
-											}
-										
-									}
-								}
-								tableView+='</tr>';
-								tableView+='<tr>';
-									tableView+='<th>OnGoing</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Not Grounded</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Completed</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Commissioned</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>OnGoing</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Not Grounded</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Completed</th>';
-									tableView+='<th>%</th>';
-									tableView+='<th>Commissioned</th>';
-									tableView+='<th>%</th>';
-								tableView+='</tr>'
-									
-							}else if(divId[k].id=="assestsId"){
+							if(divId[k].id=="assestsId"){
 								tableView+='<tr>';
 								tableView+='<th>'+locationType+'</th>';
 								if(GLtbodyArr[0] !=null && GLtbodyArr[0].basicList !=null && GLtbodyArr[0].basicList.length>0){
@@ -742,153 +668,11 @@
 								}
 								tableView+='<th>TOTAL</th>';
 								tableView+='</tr>';
-							}else if(divId[k].id=="waterSourceId"){
-								tableView+='<tr>';
-									tableView+='<th rowspan="2">'+locationType+'</th>';
-									tableView+='<th colspan="3">GROUND</th>';
-									tableView+='<th colspan="3">SURFACE</th>';
-								tableView+='</tr>';
-								tableView+='<tr>';
-									tableView+='<th>SAFE</th>';
-									tableView+='<th>UNSAFE</th>';
-									tableView+='<th>TOTAL</th>';
-									tableView+='<th>SAFE</th>';
-									tableView+='<th>UNSAFE</th>';
-									tableView+='<th>TOTAL</th>';
-								tableView+='</tr>';
 							}
 						
 						tableView+='</thead>';
 						tableView+='<tbody>';
-							if(divId[k].id=="habitation"){
-								for(var i in GLtbodyArr){
-									var totalCount=0;
-									tableView+='<tr>';
-										tableView+='<td>'+GLtbodyArr[i].locationName+'&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle getDetailsCls" aria-hidden="true" attr_location_type="'+locationType+'" attr_level_id="'+GLtbodyArr[i].goNumber+'" attr_level_name="'+GLtbodyArr[i].locationName+'" attr_parent_locationId="'+GLtbodyArr[i].parentLocationId+'"></i></td>';
-									
-									if(GLtbodyArr[i].statusList !=null && GLtbodyArr[i].statusList.length>0){
-										for(var j in GLtbodyArr[i].statusList){
-										if(GLtbodyArr[i].statusList[j].status != 'NC'){
-												if(GLtbodyArr[i].statusList[j].count !=null && GLtbodyArr[i].statusList[j].count>0){
-													tableView+='<td class="hablitationClickView" attr_location_name="'+GLtbodyArr[i].locationName+'" attr_status="'+GLtbodyArr[i].statusList[j].status+'" attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].statusList[j].count+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].statusList[j].count+'</td>';
-													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].statusList[j].percentage+'</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-													tableView+='<td> - </td>';
-												}
-												totalCount += GLtbodyArr[i].statusList[j].count;
-											}
-										}
-									}
-									tableView+='<td>'+totalCount+'</td>';
-									tableView+='</tr>';
-								}
-							}else if(divId[k].id=="performance"){
-								
-								for(var i in GLtbodyArr){
-									tableView+='<tr>';
-									if(locationType == "state"){
-										tableView+='<td>Andhra Pradesh</td>';
-									}else{
-										tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
-									}
-									if(GLtbodyArr[i].pcTarget !=null && GLtbodyArr[i].pcTarget >0){
-										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].pcTarget+'" attr_type="targets" attr_location_name="'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcTarget+'</td>';
-									}else{
-										tableView+='<td> - </td>';
-									}
-									if(GLtbodyArr[i].pcAchivement !=null && GLtbodyArr[i].pcAchivement >0){
-										tableView+='<td class="kpiClickView" attr_status="PC" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].pcAchivement+'" attr_location_name="'+GLtbodyArr[i].locationName+'" attr_type="achieved" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].pcAchivement+'</td>';
-									}else{
-										tableView+='<td> - </td>';
-									}
-									if(GLtbodyArr[i].pcPercentage !=null && GLtbodyArr[i].pcPercentage >0){
-										if(GLtbodyArr[i].pcPercentage < 100){
-											tableView+='<td style="background-color:#FFE296">'+GLtbodyArr[i].pcPercentage.toFixed(2)+'</td>';
-										}else{
-											tableView+='<td style="background-color:#C7F0C5;">'+GLtbodyArr[i].pcPercentage.toFixed(2)+'</td>';
-										}
-										
-									}else{
-										tableView+='<td> - </td>';
-									}
-									if(GLtbodyArr[i].qaTarget !=null && GLtbodyArr[i].qaTarget >0){
-										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].qaTarget+'" attr_type="targets" attr_location_name="'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaTarget+'</td>';
-									}else{
-										tableView+='<td> - </td>';
-									}
-									if(GLtbodyArr[i].qaAchivement !=null && GLtbodyArr[i].qaAchivement >0){
-										tableView+='<td class="kpiClickView" attr_status="NSS" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_district_val="'+GLtbodyArr[i].parentLocationId+'" attr_total_count = "'+GLtbodyArr[i].qaAchivement+'" attr_type="achieved" attr_location_name="'+GLtbodyArr[i].locationName+'"  style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].qaAchivement+'</td>';
-									}else{
-										tableView+='<td> - </td>';
-									}
-									if(GLtbodyArr[i].qaPercentage !=null && GLtbodyArr[i].qaPercentage >0){
-										if(GLtbodyArr[i].qaPercentage < 100){
-											tableView+='<td style="background-color:#FFE296">'+GLtbodyArr[i].qaPercentage.toFixed(2)+'</td>';
-										}else{
-											tableView+='<td style="background-color:#C7F0C5;">'+GLtbodyArr[i].qaPercentage.toFixed(2)+'</td>';
-										}
-									}else{
-										tableView+='<td> - </td>';
-									}
-									tableView+='</tr>';
-								}
-								
-							}else if(divId[k].id=="schemeId"){
-								for(var i in GLtbodyArr){
-									tableView+='<tr>';
-										tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
-									
-									if(GLtbodyArr[i].basicList !=null && GLtbodyArr[i].basicList.length>0){
-										for(var j in GLtbodyArr[i].basicList){
-										if(GLtbodyArr[i].basicList[j].assetType == 'PWS' || GLtbodyArr[i].basicList[j].assetType == "CPWS"){
-												
-												if(GLtbodyArr[i].basicList[j].workOngoingCount !=null && GLtbodyArr[i].basicList[j].workOngoingCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "ongoing" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workOngoingCount+'</td>';
-												}else{
-													tableView+='<td> - </td>';
-												}
-												if(GLtbodyArr[i].basicList[j].percentageOne !=null && GLtbodyArr[i].basicList[j].percentageOne>0){
-													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageOne.toFixed(1)+'</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-												}
-												if(GLtbodyArr[i].basicList[j].workNotGroundedCount !=null && GLtbodyArr[i].basicList[j].workNotGroundedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "notgrounded" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workNotGroundedCount+'</td>';
-												}else{
-													tableView+='<td> - </td>';
-												}
-												if(GLtbodyArr[i].basicList[j].percentageFour !=null && GLtbodyArr[i].basicList[j].percentageFour>0){
-													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageFour.toFixed(1)+'</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-												}	
-												if(GLtbodyArr[i].basicList[j].workCompletedCount !=null && GLtbodyArr[i].basicList[j].workCompletedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "completed" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workCompletedCount+'</td>';
-												}else{
-													tableView+='<td> - </td>';
-												}
-												if(GLtbodyArr[i].basicList[j].percentageThree !=null && GLtbodyArr[i].basicList[j].percentageThree>0){
-													tableView+='<td><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageThree.toFixed(1)+'</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-												}	
-												if(GLtbodyArr[i].basicList[j].workComissionedCount !=null && GLtbodyArr[i].basicList[j].workComissionedCount>0){
-													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].basicList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].basicList[j].workOngoingCount+'" attr_type = "Commissioned" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].basicList[j].workComissionedCount+'</td>';
-												}else{
-													tableView+='<td> - </td>';
-												}
-												if(GLtbodyArr[i].basicList[j].percentageTwo !=null && GLtbodyArr[i].basicList[j].percentageTwo>0){
-													tableView+='<td ><small style="color:#0FBE08">'+GLtbodyArr[i].basicList[j].percentageTwo.toFixed(1)+'</small></td>';
-												}else{
-													tableView+='<td> - </td>';
-												}	
-											}
-										}
-									}
-									tableView+='</tr>';
-								}
-							}else if(divId[k].id=="assestsId"){
+							if(divId[k].id=="assestsId"){
 								for(var i in GLtbodyArr){
 									var totalCount=0;
 									tableView+='<tr>';
@@ -913,47 +697,6 @@
 									
 									tableView+='</tr>';
 								}
-							}else if(divId[k].id=="waterSourceId"){
-									for(var i in GLtbodyArr){
-										tableView+='<tr>';
-											tableView+='<td>'+GLtbodyArr[i].locationName+'</td>';
-											if(GLtbodyArr[i].safeGroundWaterSourceCount !=null && GLtbodyArr[i].safeGroundWaterSourceCount>0){
-												//tableView+='<td class="waterSourceClickView" attr_status="ground" attr_type="safe" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].safeGroundWaterSourceCount+'" attr_district_val="'+GLtbodyArr[i].locationId+'" attr_location_name = "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].safeGroundWaterSourceCount+'</td>';
-												tableView+='<td >'+GLtbodyArr[i].safeGroundWaterSourceCount+'</td>';
-											}else{
-												tableView+='<td> - </td>';
-											}
-											if(GLtbodyArr[i].unSafeGroundWaterSourceCount !=null && GLtbodyArr[i].unSafeGroundWaterSourceCount>0){
-												//tableView+='<td class="waterSourceClickView" attr_status="ground" attr_type="un-safe" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].unSafeGroundWaterSourceCount+'" attr_location_name = "'+GLtbodyArr[i].locationName+'" attr_district_val="'+GLtbodyArr[i].locationId+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].unSafeGroundWaterSourceCount+'</td>';
-												tableView+='<td >'+GLtbodyArr[i].unSafeGroundWaterSourceCount+'</td>';
-											}else{
-												tableView+='<td> - </td>';
-											}
-											if(GLtbodyArr[i].totalGroundWaterSourceCount !=null && GLtbodyArr[i].totalGroundWaterSourceCount>0){
-												tableView+='<td >'+GLtbodyArr[i].totalGroundWaterSourceCount+'</td>';
-											}else{
-												tableView+='<td> - </td>';
-											}
-											if(GLtbodyArr[i].safeSurfaceWaterSourceCount !=null && GLtbodyArr[i].safeSurfaceWaterSourceCount>0){
-												//tableView+='<td class="waterSourceClickView" attr_status="surface" attr_type="safe" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].safeSurfaceWaterSourceCount+'" attr_location_name = "'+GLtbodyArr[i].locationName+'"  attr_district_val="'+GLtbodyArr[i].locationId+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].safeSurfaceWaterSourceCount+'</td>';
-												tableView+='<td >'+GLtbodyArr[i].safeSurfaceWaterSourceCount+'</td>';
-											}else{
-												tableView+='<td> - </td>';
-											}
-											if(GLtbodyArr[i].unSafeSurfaceWaterSourceCount !=null && GLtbodyArr[i].unSafeSurfaceWaterSourceCount>0){
-												//tableView+='<td class="waterSourceClickView" attr_status="surface" attr_type="un-safe" attr_filter_value="'+GLtbodyArr[i].locationId+'" attr_location_type="'+locationType+'" attr_total_count = "'+GLtbodyArr[i].unSafeSurfaceWaterSourceCount+'" attr_location_name = "'+GLtbodyArr[i].locationName+'" attr_district_val="'+GLtbodyArr[i].locationId+'"  style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].unSafeSurfaceWaterSourceCount+'</td>';
-												tableView+='<td>'+GLtbodyArr[i].unSafeSurfaceWaterSourceCount+'</td>';
-											}else{
-												tableView+='<td> - </td>';
-											}
-											if(GLtbodyArr[i].totalSurfaceWaterSourceCount !=null && GLtbodyArr[i].totalSurfaceWaterSourceCount>0){
-												tableView+='<td>'+GLtbodyArr[i].totalSurfaceWaterSourceCount+'</td>';
-											}else{
-												tableView+='<td> - </td>';
-											}
-											
-										tableView+='</tr>';
-									}	
 							}
 						tableView+='</tbody>';
 						tableView+='</table>';	
@@ -963,128 +706,7 @@
 						//}
 					if(divId[k].id !=="jalavani"){
 						$("#"+locationType+"BlockId"+divId[k].id).html(tableView);
-						if(divId[k].id=="habitation"){
-							if(locationType == 'district'){
-								$("#dataTableDis"+locationType+divId[k].id).dataTable({
-									"paging":   false,
-									"info":     false,
-									"searching": false,
-									"autoWidth": true,
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
-										"<'row'<'col-sm-12'tr>>" +
-										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-									buttons: [
-										{
-											extend:    'csvHtml5',
-											text:      '<i class="fa fa-file-text-o"></i>',
-											titleAttr: 'CSV',
-											title:	   locationType,
-											filename:  locationType+divId[k].id+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-										},
-										{
-											extend:    'pdfHtml5',
-											text:      '<i class="fa fa-file-pdf-o"></i>',
-											titleAttr: 'PDF',
-											title:	   locationType,
-											filename:  locationType+divId[k].id+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-											orientation: "landscape",
-											pageSize:'A3',
-											customize: function (doc) {
-												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-											}
-										}
-									]
-								});
-							}else{
-								if(locationType != 'state'){
-									$("#dataTable1"+locationType+divId[k].id).dataTable({
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
-										"<'row'<'col-sm-12'tr>>" +
-										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-									buttons: [
-										{
-											extend:    'csvHtml5',
-											text:      '<i class="fa fa-file-text-o"></i>',
-											titleAttr: 'CSV',
-											title:	   locationType,
-											filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-										},
-										{
-											extend:    'pdfHtml5',
-											text:      '<i class="fa fa-file-pdf-o"></i>',
-											titleAttr: 'PDF',
-											title:	   locationType,
-											filename:  locationType+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-											orientation: "landscape",
-											pageSize:'A3',
-											customize: function (doc) {
-												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-											}
-										}
-									]
-								});
-								}
-								
-							}
-						}else if(divId[k].id=="performance"){
-							if(locationType !="state" && locationType !="district"){
-								$("#dataTable"+locationType+divId[k].id).dataTable({
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
-										"<'row'<'col-sm-12'tr>>" +
-										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-									buttons: [
-										{
-											extend:    'csvHtml5',
-											text:      '<i class="fa fa-file-text-o"></i>',
-											titleAttr: 'CSV',
-											title:	   locationType,
-											filename:  locationType+divId[k].id+' '+moment().format("DD/MMMM/YYYY  HH:MM"),
-										},
-										{
-											extend:    'pdfHtml5',
-											text:      '<i class="fa fa-file-pdf-o"></i>',
-											titleAttr: 'PDF',
-											title:	   locationType,
-											filename:  locationType+divId[k].id+' '+moment().format("DD/MMMM/YYYY  HH:MM"),
-											orientation: "landscape",
-											pageSize:'A3',
-											customize: function (doc) {
-												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-											}
-										}
-									]
-								});
-							}
-						}else if(divId[k].id=="schemeId"){
-							if(locationType !="state" && locationType !="district"){
-								$("#dataTable3"+locationType+divId[k].id).dataTable({
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
-										"<'row'<'col-sm-12'tr>>" +
-										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-									buttons: [
-										{
-											extend:    'csvHtml5',
-											text:      '<i class="fa fa-file-text-o"></i>',
-											titleAttr: 'CSV',
-											title:	   locationType,
-											filename:  locationType+divId[k].id+' '+moment().format("DD/MMMM/YYYY  HH:MM"),
-										},
-										{
-											extend:    'pdfHtml5',
-											text:      '<i class="fa fa-file-pdf-o"></i>',
-											titleAttr: 'PDF',
-											title:	   locationType,
-											filename:  locationType+divId[k].id+' '+moment().format("DD/MMMM/YYYY  HH:MM"),
-											orientation: "landscape",
-											pageSize:'A3',
-											customize: function (doc) {
-												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-											}
-										}
-									]
-								});
-							}
-						}else if(divId[k].id=="assestsId"){
+						if(divId[k].id=="assestsId"){
 							if(locationType !="state" && locationType !="district"){
 								$("#dataTable2"+locationType+divId[k].id).dataTable({
 									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
@@ -1112,36 +734,6 @@
 										}
 									]
 								});
-							}
-						}else if(divId[k].id=="waterSourceId"){
-							if(locationType !="state" && locationType !="district"){
-								$("#dataTable4"+locationType+divId[k].id).dataTable({
-									"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
-										"<'row'<'col-sm-12'tr>>" +
-										"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-									buttons: [
-										{
-											extend:    'csvHtml5',
-											text:      '<i class="fa fa-file-text-o"></i>',
-											titleAttr: 'CSV',
-											title:	   locationType,
-											filename:  locationType+divId[k].id+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-										},
-										{
-											extend:    'pdfHtml5',
-											text:      '<i class="fa fa-file-pdf-o"></i>',
-											titleAttr: 'PDF',
-											title:	   locationType,
-											filename:  locationType+divId[k].id+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-											orientation: "landscape",
-											pageSize:'A3',
-											customize: function (doc) {
-												doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-											}
-										}
-									]
-								});
-								
 							}
 						}
 					}	
