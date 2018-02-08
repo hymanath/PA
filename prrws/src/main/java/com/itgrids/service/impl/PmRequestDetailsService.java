@@ -3249,6 +3249,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		public ResultStatus generateCoveringLetterForPetition(InputVO inputVO){
 			ResultStatus resultStatus = new ResultStatus();
 			try {
+				String dupEndorseNo = "";
+				Long maxEndorseNo = 0l;
+				if(inputVO.getEndValue() != null && !inputVO.getEndValue().isEmpty()){
+					String endorseNo  = pmSubWorkDetailsDAO.getMaxEndirseNoAndValidatingEndorseNo(inputVO.getEndValue()); 
+					dupEndorseNo = commonMethodsUtilService.getStringValueForObject(endorseNo);
+					if(dupEndorseNo !="" && dupEndorseNo.equalsIgnoreCase(inputVO.getEndValue())){
+						resultStatus.setExceptionMsg("Exist");
+							return resultStatus;
+					}
+				}
 				
 				//Department ids  Converting to List<Long> to List<String>
 				List<String> deptIds = null;
@@ -4269,6 +4279,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								String assignedToOfficerName = commonMethodsUtilService.getStringValueForObject(param[24]);
 								String assignedToOfficerMobileNo = commonMethodsUtilService.getStringValueForObject(param[25]);
 								String pmDocumentType= commonMethodsUtilService.getStringValueForObject(param[28]);
+								String pmDeptShortName = commonMethodsUtilService.getStringValueForObject(param[29]);
 								
 								String dateStr = dateTimeStr.substring(0, 11).trim(); //2018-01-28 17:15:46 --> 2018-01-28
 								String timeStr = dateTimeStr.substring(11, 16).trim(); //2018-01-28 17:15:46 --> 17:15
@@ -4337,6 +4348,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								historyVO.setAssignedToOfficerName(assignedToOfficerName);
 								historyVO.setShortName(assignedToDesignationShortName);
 								historyVO.setDocumentType(pmDocumentType);
+								//pmDeptShortName
+								/*if(historyVO.getPmDepartmentName() == "" || historyVO.getPmDepartmentName().isEmpty()){
+									historyVO.setPmDepartmentName(pmDeptShortName);
+								}else{
+									historyVO.setPmDepartmentName(","+pmDeptShortName);
+								}*/
+								
 								if(historyVO.getOfficerName() ==null || historyVO.getOfficerName().isEmpty())
 									historyVO.setOfficerName(mobileNo);
 								else if(mobileNo !=null && !mobileNo.isEmpty())
@@ -4427,7 +4445,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 														timeVO.setStatusId(hVO.getStatusId());
 														timeVO.setStautus(hVO.getStautus());
 													}
-													
+													/*if(timeVO.getPmDepartmentName() == "" || timeVO.getPmDepartmentName().isEmpty()){
+														timeVO.setPmDepartmentName(hVO.getPmDepartmentName());
+													}else if(!timeVO.getPmDepartmentName().contains(hVO.getPmDepartmentName())){
+														timeVO.setPmDepartmentName(","+hVO.getPmDepartmentName());
+													}*/
+													List<Object[]> ofcrDeptIds =pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptAndOffId(hVO.getPmOfficerDesgId(),hVO.getOfficerId());
+													if(commonMethodsUtilService.isListOrSetValid(ofcrDeptIds)){
+														for (Object[] objects : ofcrDeptIds) {
+															if(timeVO.getPmDepartmentName() == "" || timeVO.getPmDepartmentName().isEmpty()){
+																timeVO.setPmDepartmentName(commonMethodsUtilService.getStringValueForObject(objects[6]));
+															}else if(!timeVO.getPmDepartmentName().contains(commonMethodsUtilService.getStringValueForObject(objects[6]))){
+																timeVO.setPmDepartmentName(timeVO.getPmDepartmentName()+","+commonMethodsUtilService.getStringValueForObject(objects[6]));
+															}
+														}
+													}
 													timeVO.setOfficerId(hVO.getOfficerId());
 													timeVO.setOfficerName(hVO.getOfficerName());
 													timeVO.setPmOfficerDesgId(hVO.getPmOfficerDesgId());

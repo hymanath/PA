@@ -56,7 +56,7 @@ function hideAndShowSelectBox(){
 	$("#nameDivid").hide();
 	$("#mobileDivid").hide();
 	$("#emailDivid").hide();
-	//$("#endorsmentNoDivid").hide();
+	$("#endorsmentNoDivid").hide();
 	$("#subjectDivId").hide();	
 	$("#referralNameDiv").hide();
 	//$("#petitionId").prop("checked",false);
@@ -323,7 +323,7 @@ $(document).on("change","#locationSelId",function(){
 	$("#nameDivid").hide();
 	$("#mobileDivid").hide();
 	$("#emailDivid").hide();
-	$("#endorsmentNoDivid").show();
+	$("#endorsmentNoDivid").hide();
 	$("#districtCandId").html('<option value="0">Select District</option>');
 	$("#districtCandId").trigger('chosen:updated');
 	$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
@@ -583,14 +583,13 @@ $(document).on("change","#locationSelId",function(){
 			$("#petitionId").prop("checked",true);
 			$("#advanceSearchBtnId").prop({disabled: false});
 		}else if(searchType1 == 'endorsmentNO'){
-			 $('#petitionSubWorkRadioDivId').hide();
+			$('#petitionSubWorkRadioDivId').hide();
 			$('#advanceSearchBtnId').prop("checked",false);
 			$("#endorsmentNoDivid").show();
 			$("#districtConsMandDivId").hide();
 	         $("#districtCandId").html('<option value="0">Select District</option>');
 	         $("#districtCandId").trigger('chosen:updated');
-			$("#endorsmentNoDivid").show();
-	         $("#constituencyCanId").html('<option value="0">Select Constituency</option>');
+			$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 	         $("#constituencyCanId").trigger('chosen:updated');
 	
 	         $("#mandalCanId").html('<option value="0">Select Mandal</option>');

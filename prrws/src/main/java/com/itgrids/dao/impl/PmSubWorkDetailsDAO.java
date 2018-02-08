@@ -574,4 +574,16 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		query.setParameter("tempEndorsNo", tempEndorsNo);
 		return query.executeUpdate();
 	}
+	public String getMaxEndirseNoAndValidatingEndorseNo(String endorseNo){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.workEndorsmentNo from PmSubWorkDetails model where model.isDeleted='N' and model.workEndorsmentNo is not null  ");
+		if(endorseNo != null && !endorseNo.isEmpty()){
+			sb.append(" and model.workEndorsmentNo = :endorseNo ");
+		}
+		 Query query = getSession().createQuery(sb.toString());
+		 if(endorseNo != null && !endorseNo.isEmpty()){
+			 query.setParameter("endorseNo", endorseNo);
+		 }
+		 return (String)query.uniqueResult();
+	}
 }
