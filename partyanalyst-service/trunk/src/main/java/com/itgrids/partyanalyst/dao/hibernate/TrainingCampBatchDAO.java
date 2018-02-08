@@ -586,7 +586,7 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		
 	}
 	
-	public List<Object[]> getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(Date fromDate,Date toDate,List<Long> enrollmentYearIds,List<Long> programYearIds){
+	public List<Object[]> getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(Date fromDate,Date toDate,List<Long> enrollmentYearIds,List<Long> programYearIds,String type){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.trainingCampBatchId,model.trainingCampBatchCode,");// 0  bastch Id, 1 batch cod
 		sb.append("model.trainingCampBatchName," ); // 2 batch name
@@ -607,7 +607,12 @@ public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<
 		if(programYearIds != null && programYearIds.size() >0){
 			sb.append(" and model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in(:programYearIds)   ");
 		}
-		sb.append(" OR (model.trainingCampBatchTypeId = 2 ) ");
+		if(type != null && type.equalsIgnoreCase("BoothCommittee")){
+			
+			sb.append(" and model.trainingCampSchedule.trainingCamp.trainingFor='BoothCommittee'");
+		}else{
+			sb.append(" OR (model.trainingCampBatchTypeId = 2 ) ");
+		}
 		
 		Query query = getSession().createQuery(sb.toString());
 		
