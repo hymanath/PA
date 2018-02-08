@@ -69,7 +69,7 @@ public class Scheduler {
 	
 	@Scheduled(cron ="0 0 0/4 * * ?")
 	//@Scheduled(cron ="0 0/20 * * * ?")
-	public void runTheExceededWorksForEveryOneHour()
+	public void runTheExceededWorksForEveryFourthHour()
 	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
 		{
@@ -115,7 +115,7 @@ public class Scheduler {
 			return;
 	}
 	
-	@Scheduled(cron ="0 0 0/4 * * ?")
+	@Scheduled(cron ="0 0 0/2 * * ?")
 	public void runTheSchedulerForENCEvryTwoHrs()
 	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
