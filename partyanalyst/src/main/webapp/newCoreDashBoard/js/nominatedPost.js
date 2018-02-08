@@ -548,10 +548,31 @@ function locationNominatedWiseDate(locationTypeVal)
 		if(locationTypeVal == "department"){
 			getDepartmentWisePostAndApplicationDetails(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal);
 		}else{
-			
+			getNominatedPostLocationWiseBoardLevelCount(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal)
+			//getNominatedPostStateWiseCount()
 		}
 		
 	}
+}
+function getNominatedPostLocationWiseBoardLevelCount(locationTypeId,divId,locationTypeVal){ 
+	var jsObj ={
+			 "locationValuesArr" : [],
+			 "fromDateStr" : " ",
+			 "toDateStr" : " ",
+			 "locationTypeId" : locationTypeId,
+			 "boardLevelId":locationTypeId
+			 
+		  }
+	$.ajax({
+		type : 'POST',
+		url : 'getNominatedPostLocationWiseBoardLevelCountAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeVal);
+		}
+	});
 }
  function getDepartmentWisePostAndApplicationDetails(locationTypeId,divId,locationTypeVal){   
 		var jsObj ={
@@ -560,7 +581,7 @@ function locationNominatedWiseDate(locationTypeVal)
 			 "toDateStr" : " ",
 			 "locationTypeId" :locationTypeId,
 			 "year" : " ",
-			 "boardLevelId":2,
+			 "boardLevelId":locationTypeId,
 			 "deptId": 0
 		  }
 		$.ajax({
@@ -636,30 +657,8 @@ function getNominatedPostStateWiseCount()
 		
 	});
 }
-function getNominatedPostLocationWiseBoardLevelCount()
-{ 
 
-
-	var jsObj ={
-	             "locationValuesArr" : [],
-				 "fromDateStr" : " ",
-				 "toDateStr" : " ",
-				 "locationTypeId" : locationTypeId,
-				 "boardLevelId":boardLevelId
-				 
-			  }
-	$.ajax({
-		type : 'POST',
-		url : 'getNominatedPostLocationWiseBoardLevelCountAction.action',
-		dataType : 'json',
-		data : {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		
-		
-	});
-}
-
-/* function getDepartMentAndBoardWisePositinsStatusCount()
+ function getDepartMentAndBoardWisePositinsStatusCount()//location Table Ciunt Click
 { 
 
 	var jsObj ={
@@ -680,7 +679,8 @@ function getNominatedPostLocationWiseBoardLevelCount()
 		
 	});
 }	
-getDepartMentWiseBoards();
+
+/*getDepartMentWiseBoards();
 function getDepartMentWiseBoards()
 { 
 
@@ -703,7 +703,7 @@ function getDepartMentWiseBoards()
 		
 	});
 }
-*/	
+	
 //getBoardWisePositions();
 function getBoardWisePositions()
 { 
@@ -726,4 +726,4 @@ function getBoardWisePositions()
 	}).done(function(result){
 		
 	});
-}
+}*/
