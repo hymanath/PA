@@ -149,6 +149,7 @@
 													<label> SEARCH BY : </label>
 													<select class="form-control chosen-select clearDataCls" id="locationSelId" >
 														<option value="all">All</option>
+														<option value="endorsmentNO" > Endorsment No </option>
 														<option value="work"> Work Location wise</option>
 														<option value="representee"> Representee Location wise </option>
 														<option value="referral"> Referral Location wise</option>
@@ -159,8 +160,6 @@
 														<option value="name"> Name</option>
 														<option value="mobile"> Mobile No</option>
 														<option value="email"> Email</option>
-														<option value="endorsmentNO" selected> Endorsment No </option>
-																	
 													</select>
 													<div class="error_colorCls" id="locationErrDivlId"></div>
 												</div>
