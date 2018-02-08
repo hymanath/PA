@@ -8951,4 +8951,13 @@ public List<Object[]> getVoteDetailsByLocation(Long searchVal,Long locationLevel
 	
 	return query.list();
 }
+	
+	public List<Long> getBoothIdOfAVoter(Long voterId,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("SELECT model.booth.boothId FROM BoothPublicationVoter model WHERE model.voter.voterId = :voterId AND " +
+				" model.booth.publicationDate.publicationDateId = :publicationDateId");
+		query.setParameter("voterId",voterId);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
 }

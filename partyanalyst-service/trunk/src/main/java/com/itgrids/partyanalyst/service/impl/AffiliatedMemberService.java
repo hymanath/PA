@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,6 +12,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAffiliatedMemberDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.AffiliatedMemberVO;
 import com.itgrids.partyanalyst.model.AffiliatedMember;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Panchayat;
@@ -64,6 +66,27 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 	private TransactionTemplate transactionTemplate;
 	
 	private DateUtilService dateUtilService = new DateUtilService();
+	
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	
+	private IBoothDAO boothDAO;
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
 
 	public IAffiliatedMemberDAO getAffiliatedMemberDAO() {
 		return affiliatedMemberDAO;
@@ -207,18 +230,26 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 						affliatedDataList.addAll(memberDataThroughVoterlist);
 					}
 				}
-			}else if(searchType != null && searchType.equalsIgnoreCase("mobileno")){
-				List <Object[]> memberlist = affiliatedMemberDAO.searchAffiliatedMemberDetails(searchType, searchValue, locationType, locationValues);
+			}else if(searchType != null && searchType.equalsIgnoreCase("mobileno"))
+			{
+				List <Object[]> memberlist = affiliatedMemberDAO.searchAffiliatedMemberDetailsForMobile(searchType, searchValue, locationType, locationValues);
+				List<Long> tdpCadreIds = new ArrayList<Long>(0);
 				
 				memberListSize=Long.valueOf(memberlist.size());
-				if(commonMethodsUtilService.isListOrSetValid(memberlist)){
+				if(commonMethodsUtilService.isListOrSetValid(memberlist))
+				{
 					affliatedDataList.addAll(memberlist);
+					for(Object[] params : memberlist)
+						if(params[0] != null)
+							tdpCadreIds.add((Long)params[0]);
 				}
 				List <Object[]> memberDataThroughTClist =affiliatedMemberDAO.searchAffiliatedMemberDetailsThroughTC(searchType, searchValue, locationType, locationValues);
-				if(commonMethodsUtilService.isListOrSetValid(memberDataThroughTClist)){
-					affliatedDataList.addAll(memberDataThroughTClist);
+				if(commonMethodsUtilService.isListOrSetValid(memberDataThroughTClist))
+				{
+					for(Object[] params : memberDataThroughTClist)
+						if(!tdpCadreIds.contains((Long)params[0]))
+							affliatedDataList.add(params);
 				}
-				
 			}
 			
 			if(affliatedDataList!= null && affliatedDataList.size() >0){
@@ -307,7 +338,20 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 				 		member.setInsertedById(commonMethodsUtilService.getLongObjectFromJson(jobj,"appuserId"));
 				 		member.setUpdatedById(commonMethodsUtilService.getLongObjectFromJson(jobj,"appuserId"));
 				 		
-				 		UserAddress userAddress = userAddressDAO.get(setAddress(jobj.getString("locationType"),jobj.getLong("locationValue")));
+				 		Long addressId = commonMethodsUtilService.getLongObjectFromJson(jobj,"addressId");
+				 		UserAddress userAddress = null;
+				 		
+				 		if(addressId != null)
+				 			userAddress = userAddressDAO.get(addressId);
+				 		
+				 		else if(addressId == null && voterId != null && voterId.longValue() > 0)
+				 		{
+				 			List<Long> list = boothPublicationVoterDAO.getBoothIdOfAVoter(voterId,IConstants.DALITHA_TEJAM_PUBLICATION_ID);
+				 			
+				 			if(list != null && list.size() > 0)
+				 				userAddress = userAddressDAO.get(setAddress("booth",list.get(0)));
+				 		}
+				 			
 				 		String constituencyIdPath = "";
 				 		
 				 		if(userAddress != null)
@@ -320,7 +364,10 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 				 		String imgName = System.currentTimeMillis()+".jpg";
 				 		String imgPath = constituencyIdPath + imgName;
 				 		String savePath = IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.DALITHA_TEJAM_IMG_FOLDER+"/"+imgPath;
-						Boolean isSave = imageAndStringConverter.convertBase64StringToImage(jobj.getString("imagePath"),savePath);
+				 		Boolean isSave = false;
+				 		
+				 		if(jobj.has("imagePath") && jobj.getString("imagePath").trim().length() > 0)
+				 			isSave = imageAndStringConverter.convertBase64StringToImage(jobj.getString("imagePath").trim(),savePath);
 						
 						if(isSave)
 							member.setImagePath(imgPath);
@@ -393,6 +440,29 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 					}else if(locationType.equalsIgnoreCase("district")){
 						District distinct = districtDAO.get(locationValues);
 						userAddress.setDistrict(distinct);
+					}
+					else if(locationType.equalsIgnoreCase("booth"))
+					{
+						Booth booth = boothDAO.get(locationValues);
+						userAddress.setBooth(booth);
+						if(booth.getPanchayat() != null)
+						{
+							userAddress.setPanchayatId(booth.getPanchayat().getPanchayatId());
+							userAddress.setTehsil(booth.getPanchayat().getTehsil() != null ? (tehsilDAO.get(booth.getPanchayat().getTehsil().getTehsilId())) : null);
+						}
+						else if(booth.getLocalBody() != null)
+						{
+							userAddress.setLocalElectionBody(localElectionBodyDAO.get(booth.getLocalBody().getLocalElectionBodyId()));
+							if(booth.getLocalBodyWard() != null)
+								userAddress.setWard(constituencyDAO.get(booth.getLocalBodyWard().getConstituencyId()));	
+						}
+						
+						if(booth.getConstituency() != null)
+						{
+							userAddress.setConstituency(constituencyDAO.get(booth.getConstituency().getConstituencyId()));
+							userAddress.setDistrict(districtDAO.get(booth.getConstituency().getDistrict().getDistrictId()));
+							userAddress.setState(stateDAO.get(booth.getConstituency().getDistrict().getState().getStateId()));
+						}
 					}
 					userAddress = userAddressDAO.save(userAddress);
 					

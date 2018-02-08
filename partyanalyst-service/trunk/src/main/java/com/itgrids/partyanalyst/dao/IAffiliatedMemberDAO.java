@@ -14,4 +14,6 @@ public interface IAffiliatedMemberDAO extends GenericDao<AffiliatedMember, Long>
 	public List<Object[]> searchAffiliatedMemberDetailsThroughVoter(String searchType, String searchValue, String locationType,Long locationValues);
 
 	public Long getAffiliatedMemberId(Long cadreId, String type);
+	
+	public List<Object[]> searchAffiliatedMemberDetailsForMobile(String searchType,String searchValue,String locationType, Long locationValue);
 }
