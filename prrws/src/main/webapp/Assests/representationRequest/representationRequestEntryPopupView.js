@@ -13,7 +13,7 @@ var  globalDesignationName= '';
 var  globalDesignationId= 0;
 $('#actionTypeStr').val('COMPLETED');
 var globalReviewStatus='';
-var globalActionName='COMPLETED';
+var globalActionName='';
 
 $(document).on("click",".actionCls",function(){
 	var isSelected=false;
@@ -153,13 +153,21 @@ function buildPetitionDetailsView(result){
 	 //globalReviewStatus='ASSIGNED';
 	 //globalReviewStatus='ASSIGNED';
 	 globalReviewStatus=result.actionType;
+	 
+	if(typeof (result.actionType) != 'undefined' && result.actionType !='undefined'){
+		globalReviewStatus = result.actionType;
+	}else{
+		globalReviewStatus="COMPLETED";
+	}
+	
 	 if(typeof (result.worksStatus) != 'undefined' && result.worksStatus !='undefined'){
 		globalActionName = result.worksStatus;
 	}else{
-		globalActionName="COMPLETED";
+		globalActionName="Pending Endorsement";
 	}
-	//alert(globalActionName);
-	 $('#actionTypeStr').val(globalActionName.toUpperCase());
+	 $('#forwardText').html('FORWARD FOR');
+	 $('#actionTypeStr').val(globalReviewStatus.toUpperCase());
+	 $("#letterNameId").html(""+globalActionName.toUpperCase()+"")
 	 if(globalReviewStatus=='COMPLETED'){
 		 $("#uploadFileDivCls").show();
 		 if(glDesignationId == 23){
@@ -180,7 +188,7 @@ function buildPetitionDetailsView(result){
 	var str='';
 	
 	var statusId = result.statusId;
-	
+	console.log(statusId);
 	str+='<div class="pad_pink_bg">';
 		str+='<div class="row">';
 			str+='<div class="col-sm-4">';
@@ -201,10 +209,10 @@ function buildPetitionDetailsView(result){
 			str+='<div class="col-sm-2">';
 				if(statusId == 1)
 					str+='<span class="pull-right pending_color font_weight"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i> Pending </span>';
-				else if(statusId != 1 || statusId != 4 ||  statusId != 5 || statusId != 8 )// ! pendigin endorse/ ! next year/! not possible/! completed
-					str+='<span class="pull-right pending_color font_weight"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>In Progress</span>';
-				else
+				else if(statusId == 8)
 					str+='<span class="pull-right completed_color font_weight"> <i class="fa  fa-check " aria-hidden="true"></i>Completed</span>';
+				else if(statusId != 1 || statusId != 4 ||  statusId != 5 )// ! pendigin endorse/ ! next year/! not possible/! completed
+					str+='<span class="pull-right pending_color font_weight"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>In Progress</span>';
 			str+='</div>';
 			
 		str+='</div>';
@@ -1442,7 +1450,11 @@ $(document).on("click",".updateStatusChangeCls",function(){
 			if(enrorsNo !=null && enrorsNo>0){
 				if(globalStatusArr[i].key !=1){
 					if(globalStatusArr[i].key == 6){
-						if(globalActionName !="Detailed Report")
+						//if(globalActionName !="Action Memo")
+							$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> ACTION COPY</option>');
+					}
+					if(globalStatusArr[i].key == 6){
+						//if(globalActionName !="Detailed Report")
 							$("#statusChangeId").append('<option attr_next_status_id="7" value="7">DETAILED REPORT</option>');
 					}
 					/* else if(globalStatusArr[i].key == 7)
@@ -1464,11 +1476,11 @@ $(document).on("click",".updateStatusChangeCls",function(){
 				if(globalStatusArr[i].key == 1)
 					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+globalStatusArr[i].key+'"> ENDORSE PETITION </option>');
 				else if(globalStatusArr[i].key == 6){
-					if(globalActionName !="Action Memo")
+					//if(globalActionName !="Action Memo")
 						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> ACTION COPY</option>');
 				}
 				else if(globalStatusArr[i].key == 7){
-					if(globalActionName !="Detailed Report")
+					//if(globalActionName !="Detailed Report")
 						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'"> DETAILEDREPORT </option>');
 				}
 				else if(globalStatusArr[i].key == 3){
