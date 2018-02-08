@@ -910,9 +910,12 @@ function projectData(divId,levelId,locationId)
 					collapse+='<div class="panel-group" id="accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
 						collapse+='<div class="panel panel-default panel-black">';
 							collapse+='<div class="panel-heading" role="tab" id="heading'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
-								if(dataArr[i] == 'state' || dataArr[i] == 'district' || dataArr[i] == 'constituency')
+								if(globalMCCMainDivName == 'Greenary works Chettu' || globalMCCMainDivName == 'Agriculture Related Works' || globalMCCMainDivName == 'Rural Sanitation Works' || globalMCCMainDivName == 'Soil Moisture Conservation works Neeru' || globalMCCMainDivName == 'Works in community lands' || globalMCCMainDivName == 'IJP PROGRAM WORKS' || globalMCCMainDivName == 'Institutional Development Works' || globalMCCMainDivName == 'Road Works' || globalMCCMainDivName == 'Water Harvesting Structures Neeru' || globalMCCMainDivName == 'AH-Live Stock Related works'){
+									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" overview-level-new="dataTable'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
+								}
+								else if(dataArr[i] == 'state' || dataArr[i] == 'district' || dataArr[i] == 'constituency')
 								{
-									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
+									collapse+='<a role="button" class="panelCollapseIcon" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" overview-level-new="dataTable'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
 								}else{
 									collapse+='<a role="button" class="panelCollapseIcon collapsed" overview-levelId="'+levelId+'" overview-locationId="'+locationId+'" overview-divId="'+divId+'" overview-level="'+dataArr[i]+'" data-toggle="collapse" data-parent="#accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" href="#collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
 								}
@@ -976,7 +979,10 @@ function projectData(divId,levelId,locationId)
 									}
 								collapse+='</a>';
 							collapse+='</div>';
-							if(dataArr[i] == 'state' || dataArr[i] == 'district' || dataArr[i] == 'constituency')
+							if(globalMCCMainDivName == 'Greenary works Chettu' || globalMCCMainDivName == 'Agriculture Related Works' || globalMCCMainDivName == 'Rural Sanitation Works' || globalMCCMainDivName == 'Soil Moisture Conservation works Neeru' || globalMCCMainDivName == 'Works in community lands' || globalMCCMainDivName == 'IJP PROGRAM WORKS' || globalMCCMainDivName == 'Institutional Development Works' || globalMCCMainDivName == 'Road Works' || globalMCCMainDivName == 'Water Harvesting Structures Neeru' || globalMCCMainDivName == 'AH-Live Stock Related works'){
+								collapse+='<div id="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
+							}
+							else if(dataArr[i] == 'state' || dataArr[i] == 'district' || dataArr[i] == 'constituency')
 							{
 								collapse+='<div id="collapse'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
 							}else{
@@ -1446,7 +1452,7 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 	
 	var tableView='';
 	tableView+='<div class="table-responsive m_top10">';
-		tableView+='<table class="table table-bordered dataTable'+blockId+'" style="width:100%">';
+		tableView+='<table class="table table-bordered dataTable'+blockId+'" style="width:100%;">';
 			tableView+='<thead class="text-capitalize">';
 			if(blockName == "Expenditure"){
 					tableView+=buildtheadManDaysExpenditure();
@@ -1575,13 +1581,49 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 			buttons: [
+				/*{
+					extend: 'excel',
+					text: 'Save as Excel',
+					customize: function( xlsx ) {
+						var sheet = xlsx.xl.worksheets['sheet1.xml'];
+						$('row c[r^="E"]', sheet).each( function () {
+					     console.log( $(this).text()*1)
+							var toto=$(this);
+							if ( ($(this).text()*1>60) ) {
+								$(this).attr( 's', '45' );                                 
+							}
+							else if ( ($(this).text()*1>=60) && ($(this).text()*1<= 90)) {
+								$(this).attr( 's', '30' );                                 
+							}
+							else if ( $(this).text()*1<90) {
+								$(this).attr( 's', '35' );                                 
+							}
+						});
+						$('row c[r^="I"]', sheet).each( function () {
+					     console.log( $(this).text()*1)
+							var toto=$(this);
+							if ( ($(this).text()*1>60) ) {
+								$(this).attr( 's', '45' );                                 
+							}
+							else if ( ($(this).text()*1>=60) && ($(this).text()*1<= 90)) {
+								$(this).attr( 's', '30' );                                 
+							}
+							else if ( $(this).text()*1<90) {
+								$(this).attr( 's', '35' );                                 
+							}
+						});
+					},
+					exportOptions: {                               
+						 columns: ':visible',                              
+					}
+				},*/
 				{
-					extend:    'csvHtml5',
-					text:      '<i class="fa fa-file-text-o"></i>',
-					titleAttr: 'CSV',
-					title:	   blockName,
-					filename:  blockName+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-				},
+						extend:    'csvHtml5',
+						text:      '<i class="fa fa-file-text-o"></i>',
+						titleAttr: 'CSV',
+						title:	   blockId,
+						filename:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					},
 				{
 					extend:    'pdfHtml5',
 					text:      '<i class="fa fa-file-pdf-o"></i>',
@@ -1705,7 +1747,10 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 			]
 		});
 	}
-	
+	if(locationType != "state")
+	{
+		$("[overview-level-new='dataTable"+blockId+"']").trigger("click");
+	}
 }
 function buildNREGSProjectsOverview(result,blockName)
 {
@@ -9145,6 +9190,7 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 			//}
 		}
 	});
+	$(".dataTable"+divIdd).closest("[overview-level-new]").trigger("click");
 }
 
 function getAllDistricts(locationType)
