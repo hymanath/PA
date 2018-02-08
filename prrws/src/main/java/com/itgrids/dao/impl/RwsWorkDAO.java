@@ -20,9 +20,15 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		super(RwsWork.class);
 	}
 	
-	public List<String> getWorkdetailsById() {
-		
-		Query query= getSession().createQuery("select distinct model.workId from RwsWork model");
+	public List<String> getWorkdetailsById(String type) {
+		StringBuilder sb = new StringBuilder();
+		if(type !=null && type.equalsIgnoreCase("all")){
+			sb.append("select distinct model.workId from RwsWork model ");
+			
+		}else{
+			sb.append("select distinct model.workId from RwsWork model where is_active='Y'");
+		}
+		Query query= getSession().createQuery(sb.toString());
 		
 		return query.list();
 	}
@@ -84,7 +90,7 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 
 	@Override
 	public RwsWork getWorkdetailsByIds(String workId) {
-		Query query= getSession().createQuery("from RwsWork where workId=:workId");
+		Query query= getSession().createQuery("from RwsWork model where workId=:workId and model.isActive='Y' ");
 		query.setParameter("workId", workId);
 		RwsWork work = (RwsWork) query.uniqueResult();
 		return work;
