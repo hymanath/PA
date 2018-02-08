@@ -7,8 +7,6 @@ public interface IRwsWorksSchedulerService {
 	
 	public String getWorksDataInsertion(InputVO inputVO);
 	
-	public boolean getWorkDetails2();
-
 	public String getEncworkDataInsertion();
 
 	public String getWorksDataDeletion();
