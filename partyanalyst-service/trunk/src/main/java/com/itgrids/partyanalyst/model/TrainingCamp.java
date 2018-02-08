@@ -21,6 +21,7 @@ public class TrainingCamp extends BaseModel implements Serializable{
 	private String description;
 	private String location;
 	private String address;
+	private String trainingFor;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="training_camp_id", unique=true, nullable=false)
@@ -59,5 +60,12 @@ public class TrainingCamp extends BaseModel implements Serializable{
 		this.address = address;
 	}
 	
+	@Column(name="training_for")
+	public String getTrainingFor() {
+		return trainingFor;
+	}
+	public void setTrainingFor(String trainingFor) {
+		this.trainingFor = trainingFor;
+	}
 
 }
