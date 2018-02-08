@@ -13,7 +13,7 @@ var  globalDesignationName= '';
 var  globalDesignationId= 0;
 $('#actionTypeStr').val('COMPLETED');
 var globalReviewStatus='';
-var globalActionName='';
+var globalActionName='COMPLETED';
 
 $(document).on("click",".actionCls",function(){
 	var isSelected=false;
@@ -153,7 +153,12 @@ function buildPetitionDetailsView(result){
 	 //globalReviewStatus='ASSIGNED';
 	 //globalReviewStatus='ASSIGNED';
 	 globalReviewStatus=result.actionType;
-	 globalActionName = result.worksStatus;
+	 if(typeof (result.worksStatus) != 'undefined' && result.worksStatus !='undefined'){
+		globalActionName = result.worksStatus;
+	}else{
+		globalActionName="COMPLETED";
+	}
+	//alert(globalActionName);
 	 $('#actionTypeStr').val(globalActionName.toUpperCase());
 	 if(globalReviewStatus=='COMPLETED'){
 		 $("#uploadFileDivCls").show();
