@@ -1372,4 +1372,5 @@ public interface IConstants {
 	public static final String ZOHO_IOS_STATIC_MEMBERSHIP_ID_OTP="2270";
 	public static final String ZOHO_IOS_STATIC_MOBILE_NO="9676696760";
 	public static final String DALITHA_TEJAM_IMG_FOLDER = "dalitha_tejam";
+	public static final Long DALITHA_TEJAM_PUBLICATION_ID=24l;
 }
