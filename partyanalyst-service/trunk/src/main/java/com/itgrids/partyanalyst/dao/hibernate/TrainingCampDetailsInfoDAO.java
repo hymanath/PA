@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
@@ -275,5 +276,45 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
  	public int pushTrainginCampDataLocationWiseByCommitteeLevel(){
 		Query query = getSession().createSQLQuery("CALL training_camp_details_info(); ");
 		return query.executeUpdate();  
+	}
+	@Override
+	public List<Object[]> getBoothlevelEligibleCandidates(List<Long> enrollmentYearIds, Long accessLevelValue, List<Long> userAccessLevelValues,List<Long> programIdList){
+		String  committeeEnrollmetYrId = "";
+		   if(enrollmentYearIds.contains(4L) && enrollmentYearIds.contains(3L) ){
+			   committeeEnrollmetYrId="1,2";
+		   }else if(enrollmentYearIds.contains(3L)){
+			   committeeEnrollmetYrId="1";
+		   }else if(enrollmentYearIds.contains(4L)){
+			   committeeEnrollmetYrId="2";
+		   }else{
+			   committeeEnrollmetYrId=enrollmentYearIds.get(0).toString();
+		   }
+		   
+		   String userAccessLevelValue="";
+		   if(userAccessLevelValues != null && userAccessLevelValues.size()>0){
+			   for (Long batchId : userAccessLevelValues) {
+				   if(userAccessLevelValue.trim().length()==0)
+					   userAccessLevelValue = ""+batchId;
+				   else
+					   userAccessLevelValue = userAccessLevelValue+","+batchId;
+			   }
+		   }
+		   
+		    if(userAccessLevelValue.isEmpty())
+		    	userAccessLevelValue = null;
+		    
+		  Query query = getSession().createSQLQuery("call get_booth_committee_eligible_members(:enrollmentYearIds,:accesslevelvalue,:locationValues,:programId)")
+				  .addScalar("m_location_scope_id",Hibernate.LONG)
+				  .addScalar("state_id",Hibernate.LONG)
+				  .addScalar("scope_value",Hibernate.LONG)
+				  .addScalar("eligible",Hibernate.LONG)
+				  .addScalar("attended",Hibernate.LONG)
+				   .addScalar("yet_to_earn",Hibernate.LONG);
+		  query.setParameter("programId", programIdList.get(0))
+		  .setParameter("enrollmentYearIds", committeeEnrollmetYrId)
+		  .setParameter("accesslevelvalue", accessLevelValue)
+		  .setParameter("locationValues", userAccessLevelValue); 
+		
+		return query.list();
 	}
 }
