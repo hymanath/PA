@@ -710,6 +710,9 @@
 									 <div id="programsDtlsCntTableId"></div>
 								</div>
 								<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									 <div id="boothProgramsDtlsCntTableId"></div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 									 <div id="specialProgramLeaderId"></div>
 								</div>-->
 								<div id="stateLevelCampId" class="m_top10"></div>
@@ -5873,7 +5876,10 @@ $("[expand-icon]").click(function(){
 		{
 			getAttendanceOverViewForPartyOfficeDeptWise();
 		}else if(blockName == 'training')
-		{
+		{	var type = $(this).attr("attr_type");
+			if(type == "leader"){
+				$(".leadericonCls").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
+			}
 			getUserTypeWiseTotalEligibleAndAttendedCnt();
 		}else if(blockName == 'cadreInsurance')
 		{
@@ -6318,6 +6324,7 @@ var globalImages;
 		//getTrainingCampProgramOverviewDtls();   
 		//Meeting
 		getTrainingCampBasicDetailsCntOverview(); 
+		getBoothlevelTrainingCampBasicDetailsCntOverview();
         getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
 		getPartyMeetingTypeByPartyMeetingMainType();
 		getStateLevelMeetingsByMeetingType();
