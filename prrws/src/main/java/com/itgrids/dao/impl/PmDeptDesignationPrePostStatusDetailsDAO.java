@@ -24,11 +24,12 @@ public class PmDeptDesignationPrePostStatusDetailsDAO extends GenericDaoHibernat
 	public List<Long> getItSelfandPoststatusDetail(List<Long> statusIdsList,Long pmOfficerDesignationId){
 		StringBuilder str = new StringBuilder();
 		str.append("select distinct model.pmPostStatus.pmStatusId  from PmDeptDesignationPrePostStatusDetails model where model.pmPreStatusId in (:statusIdsList) " +
-				" and model.pmOfficerDesignationId = :pmOfficerDesignationId and model.isDeleted='N' " +
+				//" and model.pmOfficerDesignationId = :pmOfficerDesignationId and model.isDeleted='N' " +
+				" and  model.isDeleted='N' " +
 				" and model.pmPostStatus.isDeleted='N' order by model.pmPostStatus.orderNo ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("statusIdsList", statusIdsList);
-		query.setParameter("pmOfficerDesignationId", pmOfficerDesignationId);
+	//	query.setParameter("pmOfficerDesignationId", pmOfficerDesignationId);
 		return query.list();
 	}
 }

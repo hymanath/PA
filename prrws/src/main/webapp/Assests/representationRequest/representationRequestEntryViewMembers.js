@@ -1965,7 +1965,9 @@ function getDeptDesignationOfficerDetail(onChangeValue){
 	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
 	var deptDesignationId = onChangeValue;
  var json = {
-	deptDesignationId : deptDesignationId
+		//deptDesignationId : deptDesignationId,
+		pmDeptDesignationOfficerId : deptDesignationId,
+		deptIdsList : departmentSelectArr
 	}           
 $.ajax({              
 	type:'POST',    

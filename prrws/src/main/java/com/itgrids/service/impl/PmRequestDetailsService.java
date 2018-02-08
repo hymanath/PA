@@ -3493,11 +3493,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return returnList;
 		}
 		
-		public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId , Long userId){
+		public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId ,List<Long> deptIdsList, Long userId){
 			 List<KeyValueVO>  returnList = new ArrayList<KeyValueVO>();
 			try {
-				if(deptDesignationId != null && deptDesignationId.longValue()>0L){
-					List<Object[]> deptDesignationOfficerDetails = pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptDesignation(deptDesignationId);
+				List<Long> deptDesignationIdsList = new ArrayList<>();//pmOfficerUserDAO.getPmDeptDesignationIdByUserId(userId);
+				deptDesignationIdsList.add(deptDesignationId);
+				
+				if(commonMethodsUtilService.isListOrSetValid(deptDesignationIdsList)){
+					List<Object[]> deptDesignationOfficerDetails = pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptDesignation(deptDesignationIdsList,deptIdsList);
 					if(commonMethodsUtilService.isListOrSetValid(deptDesignationOfficerDetails)){
 						for (Object[] param : deptDesignationOfficerDetails) {
 							Long pmDepartmentDesignationOfficerId = commonMethodsUtilService.getLongValueForObject(param[0]);

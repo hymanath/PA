@@ -20,7 +20,7 @@ public class PmDepartmentDesignationOfficerDAO extends GenericDaoHibernate<PmDep
 		super(PmDepartmentDesignationOfficer.class);
 	}
 
-	public List<Object[]> getDeptDesignationOfficerDetailsByDeptDesignation(Long deptDesignationId){
+	public List<Object[]> getDeptDesignationOfficerDetailsByDeptDesignation(List<Long> designationIdsList,List<Long> deptIdsList){
 		StringBuilder str = new StringBuilder();
 		//str.append(" select distinct model.pmDepartmentDesignationOfficerId, model.pmOfficer.name," +
 		str.append(" select distinct model.pmOfficer.pmOfficerId, model.pmOfficer.name," +
@@ -28,12 +28,13 @@ public class PmDepartmentDesignationOfficerDAO extends GenericDaoHibernate<PmDep
 				" model.pmDepartmentDesignation.pmOfficerDesignation.designation " +
 				" from PmDepartmentDesignationOfficer model" +
 				//"  where model.pmDepartmentDesignationId =:deptDesignationId and " +
-				"  where model.pmDepartmentDesignation.pmOfficerDesignationId =:deptDesignationId and " +
+				"  where model.pmDepartmentDesignation.pmOfficerDesignationId in (:designationIdsList) and model.pmDepartmentDesignation.pmDepartmentId in (:deptIdsList) and " +
 				" model.isActive ='Y' and model.pmOfficer.isActive ='Y' " +
 				//"  group by model.pmOfficer.pmOfficerId order by model.pmDepartmentDesignation.pmDepartment.department,model.pmDepartmentDesignation.pmOfficerDesignation.designation ");
 				"  group by model.pmOfficer.pmOfficerId order by model.pmOfficer.name ");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("deptDesignationId", deptDesignationId);
+		query.setParameterList("designationIdsList", designationIdsList);
+		query.setParameterList("deptIdsList", deptIdsList);
 		return query.list();
 	}
 	

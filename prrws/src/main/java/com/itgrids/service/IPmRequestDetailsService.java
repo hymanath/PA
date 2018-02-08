@@ -33,7 +33,7 @@ public interface IPmRequestDetailsService {
 	public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate);
 	public ResultStatus updatePetitionsStatusDetails(Long userId,List<Long> petitionIdsList, List<Long> subWorkIdsList,String remark,Long statusId);
 	public List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(List<Long> deptIdsList , Long userId);
-	public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId , Long userId);
+	public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId ,List<Long> deptIdsList, Long userId);
 	public ResultStatus generateCoveringLetterForPetition(InputVO inputVO);
 	public ResultStatus endorsingSubWorksAndAssigningToOfficer(RepresenteeViewVO inputVO);
 	public RepresenteeViewVO getReferralWiseOverviewDetails(InputVO inputVO);
