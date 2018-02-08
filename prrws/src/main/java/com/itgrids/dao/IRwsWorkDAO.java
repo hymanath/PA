@@ -9,7 +9,7 @@ import com.itgrids.model.RwsWork;
 
 public interface IRwsWorkDAO extends GenericDao<RwsWork, Long>{
 
-	public  List<String> getWorkdetailsById();
+	public  List<String> getWorkdetailsById(String type);
 
 	public List<Object[]> getWorksData(Date fromDate,Date toDate, String status, String assetType, String locationType,String locationIdStr, String  districtId);
 
@@ -18,6 +18,8 @@ public interface IRwsWorkDAO extends GenericDao<RwsWork, Long>{
 	public List<RwsWork> getWorksbyWorkIdList(List<String> workIds);
 
 	public List<Object[]> getnotGroundedWorkList(Date fromDate, Date toDate, String assetType, String locationType, String locationIdStr, String districtId);
+
+	public List<Object[]> getSchemeWiseDetails(Date fromDate, Date toDate, String locationType, Long locationValue,String districtValue, String filterType, String filterValue, String string);
 	
 
 }
