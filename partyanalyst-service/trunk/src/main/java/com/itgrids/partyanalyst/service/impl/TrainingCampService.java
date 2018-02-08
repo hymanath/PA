@@ -6399,7 +6399,7 @@ class TrainingCampService implements ITrainingCampService{
     	List<SimpleVO> finalResultList=new ArrayList<SimpleVO>(0);
     	try {
     		List<SimpleVO> voList = new ArrayList<SimpleVO>(0);
-    		List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(startDate,endDate,enrollmentYearIds,programmIds);
+    		List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(startDate,endDate,enrollmentYearIds,programmIds,null);
 			List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
 			if(trainingCampObj != null && trainingCampObj.size() >0){
 			 	for(Object[] param:trainingCampObj){
@@ -11426,7 +11426,7 @@ public List<SimpleVO> getDayWiseCountsForRunningBatches_Test(List<Object[]> runn
 		List<SimpleVO> trainingCampDetlsVOList = new ArrayList<SimpleVO>(0);
 		try {
 			
-			List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollmentYearIds,programYearIds);
+			List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollmentYearIds,programYearIds,null);
 			List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
 			// TrainingCamp Batch batch Details
 				List<Object[]> campDetailsList = new ArrayList<Object[]>(0);
@@ -13286,7 +13286,7 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 				 endDate=sdf.parse(toDateStr);
 			}
 			
-		List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(startDate,endDate,enrollmentYearIds,programmIds);
+		List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(startDate,endDate,enrollmentYearIds,programmIds,null);
 		List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
 		if(trainingCampObj != null && trainingCampObj.size() >0){
 		 	for(Object[] param:trainingCampObj){

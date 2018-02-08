@@ -472,7 +472,7 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			
 			//List<Long> programIds = trainingCampScheduleDAO.getTrainingCampProgramIds(enrollmentYearIds.get(0));
 			//List<Object[]> attendedList = trainingCampBatchAttendeeDAO.getDayWiseTrainingCampDetailsCount(programIds,fromDate,toDay,enrollmentYrIds,1L,committeeLvlVals,userAccessLevelId,levelVals);
-			List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollmentYearIds,programIdList);
+			List<Object[]>  trainingCampObj=trainingCampBatchDAO.getTraingCampBatchDetaisByDatesAndProgramIdsAndEnroleMentIds(null,null,enrollmentYearIds,programIdList,null);
 			List<Long> batchIdsList=new ArrayList<Long>();// adding all batchIds to list
 			if(trainingCampObj != null && trainingCampObj.size() >0){
 			 	for(Object[] param:trainingCampObj){
