@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -58,7 +60,6 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 	public String getWorksDataInsertion(InputVO inputVO) {
 		try {
 			DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			SimpleDateFormat sf = new SimpleDateFormat("dd-mm-yyyy");
 			SimpleDateFormat sff = new SimpleDateFormat("yyyy-mm-dd");
 			boolean insertionFlag = getWorkDetails();// getting work completed,dateofTarget date
 			if (insertionFlag) {
@@ -87,21 +88,20 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 											
 											RwsWork work =rwsWorkDAO.getWorkdetailsByIds(jObj.getString("workId"));
 											if(work != null){
-												if(work.getGroundedDate() == null || work.getCompletedDate() == null ||work.getCommissionedDate() == null || work.getStipulatedTargetDate() ==null){
-													if(work.getGroundedDate() == null && jObj.has("groundingDate")){
+													if(jObj.has("groundingDate") && status.equalsIgnoreCase("ongoing")){
 														 if(!jObj.getString("groundingDate").equalsIgnoreCase("--")){
-															 work.setGroundedDate(sdf.parse(jObj.has("groundingDate") ? jObj.getString("groundingDate") : null));
+															 work.setGroundedDate(sdf.parse(jObj.getString("groundingDate")));
 														 }else{
 															 work.setGroundedDate(null);
 														 }
 													}
-													if(work.getCompletedDate() == null && jObj.has("completionDate")){
+													if(jObj.has("completionDate")){
 														work.setCompletedDate(sff.parse(jObj.has("completionDate") ? jObj.getString("completionDate") : null));
 													}
-													if(work.getCommissionedDate() == null && jObj.has("commssionedDate")){
+													if(jObj.has("commssionedDate")){
 														work.setCommissionedDate(sff.parse(jObj.has("commssionedDate") ? jObj.getString("commssionedDate") : null));
 													}
-													if(work.getStipulatedTargetDate() == null && jObj.has("stipulatedDate")){
+													if(jObj.has("stipulatedDate")){
 														if(!jObj.getString("stipulatedDate").equalsIgnoreCase("--")){
 															work.setStipulatedTargetDate(sdf.parse(jObj.has("stipulatedDate") ? jObj.getString("stipulatedDate") : null));
 														}else{
@@ -119,7 +119,6 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 													}
 													work.setIsActive("Y");
 													rwsWorkDAO.save(work);
-												}
 													RwsWorkLocation workLocation =rwsWorkLocationDAO.getWorkdetailsByHabAndId(work.getRwsWorkId(),jObj.getString("habitationCode"));
 													
 													if(workLocation == null){
@@ -170,7 +169,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 		 	    	 if(output != null && !output.isEmpty()){
 		 	    		JSONArray finalArray = new JSONArray(output);
 		 	    		RwsWork works = null;
-		 	    		List<String> workData= rwsWorkDAO.getWorkdetailsById();
+		 	    		List<String> workData= rwsWorkDAO.getWorkdetailsById("All");
 		 	    		
 		 	    		for(int i=0;i<finalArray.length();i++){
 		 	    			works = new RwsWork();
@@ -186,7 +185,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 				 	    			works.setWorkStatus("Not Grounded");
 				 	    			works.setProgramCode(jObj.getString("programCode"));
 				 	    			works.setProgramName(jObj.getString("programName"));
-				 	    			works.setAdminNo(jObj.getString("adminNo"));
+				 	    			works.setAdminNo(removespecialcaharacter(jObj.getString("adminNo").trim()));
 				 	    			works.setSanctionedAmount(jObj.getDouble("sanctionAmount"));
 				 	    			
 				 	    			works.setAssetType(jObj.getString("typeOfAssestName"));
@@ -213,64 +212,14 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 		 }
 	}
 	
-	public boolean getWorkDetails2() {
-		 try {
-			 	DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-				DateFormat sff = new SimpleDateFormat("yyyy-MM-dd");
-			 	Calendar calendar = Calendar.getInstance();
-			    WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://rwss.ap.nic.in/rwscore/cd/getAllWorkAdminDetails");	        
-				String authStringEnc = commonMethodsUtilService.getAuthenticationString("itgrids","Itgrids@123");	        
-				ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class);
-				
-				if(response.getStatus() != 200){
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-		 	    }else{
-		 	    	 String output = response.getEntity(String.class);
-		 	    	 if(output != null && !output.isEmpty()){
-		 	    		JSONArray finalArray = new JSONArray(output);
-		 	    		RwsWork works = null;
-		 	    		List<String> workData= rwsWorkDAO.getWorkdetailsById();
-		 	    		
-		 	    		for(int i=0;i<finalArray.length();i++){
-		 	    			works = new RwsWork();
-		 	    			JSONObject jObj = (JSONObject) finalArray.get(i);
-		 	    			
-		 	    			if(jObj.getString("typeOfAssestName").equalsIgnoreCase("PWS") || jObj.getString("typeOfAssestName").equalsIgnoreCase("CPWS")){
-		 	    				
-		 	    				if(!workData.contains(jObj.getString("workId"))) {
-				 	    			
-		 	    					works.setWorkId(jObj.getString("workId"));
-				 	    			String name =jObj.getString("workName").replace("\u0096", "");
-				 	    			works.setWorkName(name);
-				 	    			works.setWorkStatus("Not Grounded");
-				 	    			works.setProgramCode(jObj.getString("programCode"));
-				 	    			works.setProgramName(jObj.getString("programName"));
-				 	    			works.setAdminNo(jObj.getString("adminNo"));
-				 	    			works.setSanctionedAmount(jObj.getDouble("sanctionAmount"));
-				 	    			
-				 	    			works.setAssetType(jObj.getString("typeOfAssestName"));
-				 	    			works.setAdminDate(sff.parse(jObj.getString("adminDate")));
-				 	    			works.setGroundedDate(null);
-				 	    			
-				 	    			//String target = 
-				 	    			calendar.setTimeInMillis(commonMethodsUtilService.getLongValueForObject(jObj.getLong("targetDateComp")));
-				 	    			works.setTargetDate(calendar.getTime());
-				 	    			
-				 	    			works.setCompletedDate(null);
-				 	    			works.setCommissionedDate(null);
-				 	    			
-				 	    			works = rwsWorkDAO.save(works);
-		 	    				}
-		 	    			}
-		 	    		}
-		 	    	 }
-		 	  }  
-				return true;
-		 
-		} catch (Exception e) {
-			 LOG.error("Exception Occured in getWorkDetails() method, Exception - ",e);
-			 return false;
-		 }
+	public String removespecialcaharacter(String data){
+		String dataString= data;
+		Pattern pt = Pattern.compile("[^a-zA-Z0-9]");
+		Matcher match= pt.matcher(data);
+		    while(match.find()){
+		    	dataString=dataString.replace(Character.toString(dataString.charAt(match.start()))," ");
+		         }
+		return dataString;
 	}
 	private InputVO prepareRequiredInputDetails(String workStatus,InputVO inputVO){
 		InputVO input = new InputVO();
@@ -374,11 +323,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 			input.setFromDateStr("01-04-1977");
 			input.setToDateStr("01-04-2028");
 			input.setWorkStatus("ongoing");
-			//{"year":"2017","fromDateStr":"01-04-1977","toDateStr":"01-04-2028","workStatus":"ongoing"}
-			/*JsonObject jobj = new JsonObject();
-			jobj.addProperty("fromDateStr", "01-04-1977");
-			jobj.addProperty("toDateStr", "01-04-2028");
-			jobj.addProperty("workStatus", "ongoing");*/
+		
 			//ClientResponse response = webResource.accept("application/json").type("application/json").header("Authorization", "Basic " + authStringEnc).post(ClientResponse.class,jobj.toString());
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.RWS_NIC_DOMINE_IP+"/rwscore/cd/getOnclickWorkDetails");
 			String authStringEnc = getAuthenticationString("admin","admin@123");
@@ -392,7 +337,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 	 	    		JSONObject jsonObj = new JSONObject(output);
 	 	    		
 	 	    		List<String> workIds= new ArrayList<String>();
-	 	    		List<String> workData= rwsWorkDAO.getWorkdetailsById();
+	 	    		List<String> workData= rwsWorkDAO.getWorkdetailsById("active");
 	 	    		if(jsonObj.getString("status") !="null" && !jsonObj.getString("status").trim().isEmpty() && jsonObj.getString("status").trim().equalsIgnoreCase("Success")){
 	 	    			
 	 	    			JSONArray onClickWorksArray =  jsonObj.getJSONArray("onClickWorksList");
@@ -431,5 +376,6 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 		}
 		return null;
 	}
+
 
 }
