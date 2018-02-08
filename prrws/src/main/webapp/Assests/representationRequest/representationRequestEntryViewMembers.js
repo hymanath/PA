@@ -33,7 +33,7 @@ function locationLevelRefresh(){
 	//$("#statusId").html('<option value="0">Select Status</option>');
 	//$("#statusId").trigger('chosen:updated');
 	if(searchBy == "total" || searchBy==""){
-		$("#locationSelId").val('endorsmentNO');
+		$("#locationSelId").val('all');
 		$("#locationSelId").trigger('chosen:updated');
 		$( "#locationSelId" ).trigger( "change" );
 	}else{
@@ -2344,7 +2344,8 @@ function petitionWiseRepresenteeDetails(result){
 						else
 							str+='<td> - </td>'; */
 						if (result[i].estimationCost != "" && result[i].estimationCost != "0"){
-							str+='<td style="text-align:center;">'+result[i].estimationCost+'</td>';
+							var estCost = parseFloat(result[i].estimationCost);
+							str+='<td style="text-align:center;">'+estCost.toFixed(4)+'</td>';
 						}else{
 							str+='<td style="text-align:center;">-</td>';
 						}
