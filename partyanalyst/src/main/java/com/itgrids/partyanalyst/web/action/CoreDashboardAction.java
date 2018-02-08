@@ -1788,7 +1788,7 @@ public String getTopPoorPerformancecommittees(){
 					enrollmentYearIds.add(Long.valueOf(enrollmentYearIdsArray.getString(i)));
 				}
 			}
-			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverview(userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYearIds,programIdList);
+			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverview(userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYearIds,programIdList,jObj.getString("type"));
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getTotalEligibleAttendedAndNotAttenedOverviewCount() method of CoreDashBoardAction", e);
@@ -1876,7 +1876,8 @@ public String getTopPoorPerformancecommittees(){
 			}
 			Long stateId = jObj.getLong("stateId");
 			String dateStr = jObj.getString("dateStr");
-			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(userId,userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYrIds,programIdList);
+			String type = jObj.getString("type");
+			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(userId,userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId,dateStr,enrollmentYrIds,programIdList,type);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getUserTypeWiseTotalEligibleAndAttendedCnt() method of CoreDashBoardAction", e); 
 	 }
