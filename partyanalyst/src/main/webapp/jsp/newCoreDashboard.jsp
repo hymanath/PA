@@ -4564,41 +4564,63 @@
 						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="nominatedPost">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
-								Nominated Posts - <small id="attendanceId" class="text-muted"></small>
+								Nominated Posts</small>
 							</h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="nominatedPost">
-							<span class="attendanceSetIcon pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
-							<span class="attendanceIconRefresh pull-right">
+							<span class="nominatedIconRefresh pull-right">
 								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
 							</span> 
-							<span class="attendaceIconExpand pull-right mainExpandCls" expand-icon="nominatedPost">
+							<span class="nominatedIconExpand pull-right mainExpandCls" expand-icon="nominatedPost">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
 						</div>
 					</div>					
                 </div>
                 <div class="panel-body">
-					//body starts
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock m_top10" expand-block-inner="nominatedPost">
-							left block
+							<div id="levelWiseNominatedPostDivId"></div>
 						</div>
+					
 						<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="nominatedPost">
-							right block
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="activeUlCls list-inline pull-right nominatedLicls" role='tabCummulativeNomi'>
+										<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+										<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+									</ul>
+								</div>
+							 </div>
+							  <div class="row">
+								<div class="col-sm-12">
+									<div class="verticalScrollBarNominated">
+										<div id="userTypeWiseNominatedDiv"></div>
+									</div>
+								</div>
+							 </div>
 						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12">
-                        	<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon"  expand-block-right="nominatedPost" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
-                        </div>
+					</div>	
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttNominatedBlocksIcon"  expand-block-right="nominatedPost" data-toggle="tooltip" data-placement="top" title="Click here for more" style="display: none;"></i>
 					</div>
+					<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 deptLocNominatedCls" expand-block-more="nominatedPost" style="display:none;">
+						<ul class="list-inline pull-right activeUlCls deptLocChnageCls" role='tabCummulativeNomi1'>
+							<li class="active" attr_location_type="department">Department wise</li>
+							<li class="" attr_location_type="location">Location Level Wise</li>
+						</ul>
+					</div>          
+					
 					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks"  expand-block-more="nominatedPost">
-							more info
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttNominatedBlocks"  expand-block-more="nominatedPost">
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="levelWiseNominatedDetailsDivId"></div>
+								</div>
+							 </div>
 						</div>
 					</div>
-					//body ends
+					
 				</div>
 			</div>
 		</div>-->
@@ -5862,6 +5884,8 @@ $("[expand-icon]").click(function(){
 			getUserTypeWiseKaizalaCommitteeMemberDetailsCnt();
 		}else if(blockName == 'pressmeet'){
 			getPartyWiseThenCandidateWisePerformance();
+		}else if(blockName == 'nominatedPost'){
+			getUserTypeWiseNominatedPostDetailsCnt();
 		}
 	}else if(iconClass == 'glyphicon glyphicon-resize-small')
 	{
@@ -6258,13 +6282,15 @@ var globalImages;
 	});
 	getLoggedInUserStructure();
 	onLoadCalls();
+	
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();
 		//Preemeet
 		preemeeetOnloadCalls();
 		onLoadEmCoverageTimeCalls();
 		onloadPrajaSankaplaYatraCalls();
-		onloadKaizalaCalls1();	
+		onloadKaizalaCalls1();
+		onloadNominatedCalls();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');
