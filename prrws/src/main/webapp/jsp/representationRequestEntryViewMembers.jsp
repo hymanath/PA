@@ -340,9 +340,10 @@
 						<label class="checkbox-inline actionChangeCls">
 						  <input type="checkbox" name="" id="inlineCheckbox1" value="COMPLETED" class="actionCls font_weight" checked> ACTION CHANGE 
 						</label>
-						<label class="checkbox-inline">
+						<!--<label class="checkbox-inline">
 						  <input type="checkbox" name="" id="inlineCheckbox2" value="ASSIGNED" class="actionCls font_weight"> FORWARD
 						</label>
+						-->
 					</div>
 				</div>
 				<div class="row m_top20" id="uploadFileDivCls">

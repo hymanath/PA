@@ -385,7 +385,7 @@ public class PmRequestDetailsController {
 		}
 	    
 	    @RequestMapping(value ="/getDeptDesignationOfficerDetail",method = RequestMethod.POST)
-	    public @ResponseBody List<KeyValueVO> getDeptDesignationOfficerDetail(@RequestBody Map<String,String> inputMap,HttpServletRequest request ){
+	    public @ResponseBody List<KeyValueVO> getDeptDesignationOfficerDetail(@RequestBody PetitionTrackingVO  dataVo,HttpServletRequest request ){
 		    Long userId =null;
 		    HttpSession session=request.getSession();
 		    UserVO userVO = (UserVO) session.getAttribute("USER"); 
@@ -395,7 +395,7 @@ public class PmRequestDetailsController {
 		    }else{
 		    	return null;
 		    }
-		    return pmRequestDetailsService.getDeptDesignationOfficerDetail(Long.valueOf(inputMap.get("deptDesignationId")) , userId);
+		    return pmRequestDetailsService.getDeptDesignationOfficerDetail(dataVo.getPmDeptDesignationOfficerId(),dataVo.getDeptIdsList() , userId);
 	    }
 	    @RequestMapping(value ="/generateCoveringLetterForPetition",method = RequestMethod.POST)
 	    public @ResponseBody ResultStatus generateCoveringLetterForPetition(@RequestBody InputVO inputVO,HttpServletRequest request ) {

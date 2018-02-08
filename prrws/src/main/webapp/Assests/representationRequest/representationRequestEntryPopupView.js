@@ -1452,7 +1452,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 						$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+nextStatusId+'"> ENDORSE PETITION </option>');
 					*/
 					else
-						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+'</option>');
+						$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value.toUpperCase()+'</option>');
 					
 				}
 			}else{
@@ -1483,7 +1483,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 					$("#statusChangeId").append('<option attr_next_status_id="'+nextStatusId+'" value="'+nextStatusId+'"> ENDORSE PETITION </option>');
 				*/
 				else
-					$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value+'</option>');
+					$("#statusChangeId").append('<option attr_next_status_id="'+globalStatusArr[i].key+'" value="'+globalStatusArr[i].key+'">'+globalStatusArr[i].value.toUpperCase()+'</option>');
 			}	
 			
 		}
@@ -1642,7 +1642,7 @@ $(document).on("change","#statusChangeId",function(){
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 		//$('.saveEnable').attr('data-toggle', 'tooltip');
 		//$('.saveEnable').attr('title', 'Please generate the covering letter.');
-	}else if(statusId == 6){
+	}else if(statusId == 6 || statusId == 10 || statusId == 11 || statusId == 12){
 		$("#endorsementNoErr").html('');
 		$("#endorsentDivId").hide();
 		$("#coveringLetterGenerator").html("");
