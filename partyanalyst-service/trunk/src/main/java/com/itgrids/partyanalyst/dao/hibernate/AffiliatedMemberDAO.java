@@ -20,7 +20,8 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 				
 				sb.append("select model.tdpCadreId,model.mobileNo,model.tdpCadre.memberShipNo,model.voterId,model.voter.voterIDCardNo, model.voter.relativeName," +
 						" model.tdpCadre.houseNo,'',model.fullName, model.tdpCadre.casteState.casteStateId,model.gender,model.userAddress.userAddressId,model.affiliatedMemberId" +
-						"  from AffiliatedMember model where model.isDeleted = 'N' ");
+						"  from AffiliatedMember model " +
+						" where model.isDeleted = 'N' ");
 				
 				if(searchType.equalsIgnoreCase("mobileno")){
 					
@@ -46,6 +47,43 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 					sb.append(" and model.userAddress.localElectionBody.localElectionBodyId=:locationValue");
 				}else if(locationType != null && locationType.equalsIgnoreCase("ward")){
 					sb.append(" and model.userAddress.ward.constituencyId=:locationValue");
+				}
+				
+				Query query = getSession().createQuery(sb.toString());
+				if(searchValue != null && searchValue.trim().length() > 0){
+					   query.setParameter("searchValue",searchValue);
+				 }
+				if(locationType != null && locationType.trim().length() > 0 && locationValue != null && locationValue.longValue()>0){
+					   query.setParameter("locationValue",locationValue);
+				 }
+				return query.list();
+	  }
+	  
+	//0-cadreId,1-mobileNum,2-memShipNo,3-voterId,4-cardNum,5-releativename,6-houseno,7-castename,8-firstnAMme,9-casteid,10-gender
+	  public List<Object[]> searchAffiliatedMemberDetailsForMobile(String searchType,String searchValue,String locationType, Long locationValue)
+	  {
+				StringBuilder sb=new StringBuilder();
+				
+				sb.append("SELECT TC.tdpCadreId,AM.mobileNo,TC.memberShipNo,V.voterId,V.voterIDCardNo,TC.relativename," +
+						" TC.houseNo,'',AM.fullName,CS.casteStateId,AM.gender,AM.userAddress.userAddressId,AM.affiliatedMemberId " +
+						" FROM AffiliatedMember AM " +
+						" LEFT JOIN AM.tdpCadre TC " +
+						" LEFT JOIN AM.voter V " +
+						" LEFT JOIN TC.casteState CS " +
+						" WHERE AM.isDeleted = 'N' and AM.mobileNo = :searchValue ");
+				
+				if(locationType != null && locationType.equalsIgnoreCase("district")){
+					sb.append(" and AM.userAddress.district.districtId=:locationValue");
+				}else if(locationType != null && locationType.equalsIgnoreCase("constituency")){
+					sb.append(" and AM.userAddress.constituency.constituencyId=:locationValue");
+				}else if(locationType != null && locationType.equalsIgnoreCase("mandal")){
+					sb.append(" and AM.userAddress.tehsil.tehsilId=:locationValue");
+				}else if(locationType != null && locationType.equalsIgnoreCase("panchayat")){
+					sb.append(" and AM.userAddress.panchayat.panchayatId=:locationValue");
+				}else if(locationType != null && locationType.equalsIgnoreCase("muncipality")){
+					sb.append(" and AM.userAddress.localElectionBody.localElectionBodyId=:locationValue");
+				}else if(locationType != null && locationType.equalsIgnoreCase("ward")){
+					sb.append(" and AM.userAddress.ward.constituencyId=:locationValue");
 				}
 				
 				Query query = getSession().createQuery(sb.toString());
