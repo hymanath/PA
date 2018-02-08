@@ -272,13 +272,13 @@ public class AffiliatedMemberService implements IAffiliatedMemberService {
 					if(commonMethodsUtilService.getLongValueForObject(objects[11]) != null && commonMethodsUtilService.getLongValueForObject(objects[11])>0 ){
 						vo.setAddressId(commonMethodsUtilService.getLongValueForObject(objects[11]));
 					}
-					/*if(commonMethodsUtilService.getLongValueForObject(objects[0]) !=null && commonMethodsUtilService.getLongValueForObject(objects[0]).longValue()>0l && memberListSize==0l){
+					if(vo.getTdpCadreId() !=null && vo.getTdpCadreId().longValue()>0l && memberListSize==0l){
 						vo.setAffiliatedMemberId(affiliatedMemberDAO.getAffiliatedMemberId(commonMethodsUtilService.getLongValueForObject(objects[0]),"cadre"));
-					}else if(commonMethodsUtilService.getLongValueForObject(objects[0]) !=null && commonMethodsUtilService.getLongValueForObject(objects[0]).longValue()>0l && memberListSize==0l){
+					}else if(vo.getVoterId()!=null && (vo.getTdpCadreId() == null || vo.getTdpCadreId().longValue()== 0l) && vo.getVoterId().longValue()>0l && memberListSize==0l){
 						vo.setAffiliatedMemberId(affiliatedMemberDAO.getAffiliatedMemberId(commonMethodsUtilService.getLongValueForObject(objects[3]),"voter"));
 					}else{
 						vo.setAffiliatedMemberId(commonMethodsUtilService.getLongValueForObject(objects[12]));
-					}*/
+					}
 					returnList.add(vo);
 				}
 			}
