@@ -565,16 +565,6 @@ public class RuralWaterSupplyDashBoardController {
 		return null;
 	}
 	
-	@PostMapping("/getWorksDataInsertionService2")
-	public @ResponseBody boolean getWorksDataInsertionService2() {
-	  try {
-			 return rwsWorksSchedulerService.getWorkDetails2();
-	  } catch (Exception e) {
-			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
-			return false;
-	  }
-	 
-	}
 	@PostMapping("/getNotGroundedWorkDetailsLocationWise")
 	public @ResponseBody List<IdNameVO> getNotGroundedWorkDetailsLocationWise(@RequestBody InputVO inputVO) {
 	  try {
