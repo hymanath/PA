@@ -14,6 +14,11 @@ public class EncVO {
 	private String errorMessage;
 	private Double totalRoadsLength=0.0;
 	private Long totalHabs=0l;
+	private Long districtId;
+	private String districtName;
+	private Long constituencyId;
+	private Long constituencyname;
+	
 	
 	private List<EncVO> subList = new ArrayList<EncVO>();
 
@@ -95,6 +100,38 @@ public class EncVO {
 
 	public void setTotalHabs(Long totalHabs) {
 		this.totalHabs = totalHabs;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public Long getConstituencyname() {
+		return constituencyname;
+	}
+
+	public void setConstituencyname(Long constituencyname) {
+		this.constituencyname = constituencyname;
 	}
 	
 	
