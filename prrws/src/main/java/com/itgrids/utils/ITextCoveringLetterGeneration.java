@@ -40,6 +40,8 @@ public class ITextCoveringLetterGeneration  {
 	inputVO.setLeadName("Forwarded for taking further necessary action ");
 	inputVO.setGroupName("NREGS Convergence");
 	inputVO.setEndValue("5");
+	inputVO.setDisplayType("AP MINISTER");
+	inputVO.setDeptCode("(PR,RD,RWS)");
 	List<Object[]> coveringLetrImages = null;
 	String endorseCode = "No.1/Min(PR,RD,ITE&C)/2017Dt.18.05.2017";
 	PmRequestEditVO petitionDetailsVO = new PmRequestEditVO();
@@ -79,13 +81,13 @@ public class ITextCoveringLetterGeneration  {
 	//representeeList.add(pmRequestVO3);
 	petitionDetailsVO.getReferDetailsList().addAll(representeeList);
 	petitionDetailsVO.setWorkName("requesting for sanction ...ost of Rs.150.00 Lakhs.");
-	String str1 = " Please find the enclosed representation recieved from #rname #ref #works #lead";
+	String str1 = " #min I am here with forwarding the representation  #rdate of #rname #rdesig #rconst #rdist #Addr requesting for sanction of #works #grant #cost #lead";
 	//String staticPath =IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/2018/1/24" ;//commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER);
 	//if(staticPath != null && staticPath.equalsIgnoreCase("FAILED"))
 		//throw new Exception("File path not available . Please check once file path.");
 //String datePath = commonMethodsUtilService.generateImagePathWithDateTime();
 //String fileName = datePath+"_"+inputVO.getEndValue()+".PDF";
-	String staticPath =IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/2018/1/24/";
+	String staticPath =IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/2018/2/8/";
 	String fileName = inputVO.getEndValue()+".PDF";
 	generateCOVERINGLETTER(inputVO,coveringLetrImages,endorseCode,petitionDetailsVO,str1,staticPath,fileName);
 }*/
@@ -131,7 +133,7 @@ public class ITextCoveringLetterGeneration  {
 							 str1 = str1.replace("#rname", "");
 						 }
 						 if(pmRequestVO.getDesignation() != null && !pmRequestVO.getDesignation().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdesig", ","+pmRequestVO.getDesignation());
+							 str1 = str1.replace("#rdesig", "("+pmRequestVO.getDesignation()+")");
 						 }else{
 							 str1 = str1.replace("#rdesig", "");
 						 }
@@ -243,15 +245,21 @@ public class ITextCoveringLetterGeneration  {
 			 }
 			 String grant ="";
 			 if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
-					grant = " under "+ inputVO.getGroupName();
+					//grant = " under "+ inputVO.getGroupName();
+					str1 = str1.replace("#grant", "&nbsp;under "+ inputVO.getGroupName());
+				}else{
+					str1 = str1.replace("#grant", "");
 				}
-			 if(estCost != ""){
-				 str1 = str1.replace("#cost", "&nbsp;"+grant+"&nbsp;With an Estimated Cost of Rs.<b>"+estCost+"</b>&nbsp;Lakhs ");
+			 
+			 if(estCost != "0.0"){
+				 str1 = str1.replace("#cost", "&nbsp;With an Estimated Cost of Rs.<b>"+estCost+".</b>&nbsp;Lakhs ");
 			 }else{
-				 str1 = str1.replace("#cost", "");
+				 str1 = str1.replace("#cost", ".");
 			 }
-			 if(inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().size()>0){
-				 str1 = str1.replace("#works", "&nbsp;"+inputVO.getSchemeIdsList().size()+"");
+			 if(inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().size()==1l){
+				 str1 = str1.replace("#works", "&nbsp;"+inputVO.getSchemeIdsList().size()+" work");
+			 }if(inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().size()>1l){
+				 str1 = str1.replace("#works", "&nbsp;"+inputVO.getSchemeIdsList().size()+" works");
 			 }else{
 				 str1 = str1.replace("#works", "");
 			 }
@@ -295,6 +303,12 @@ public class ITextCoveringLetterGeneration  {
 						headerImg = objects[2].toString();
 					}
 				}
+			}
+			
+			if(inputVO.getPageId() != null && inputVO.getPageId().longValue()== 398l){
+				toAddrImg = "to_address1.png";
+			}else if(inputVO.getPageId() != null && inputVO.getPageId().longValue()== 381l){
+				toAddrImg = "to_address.png";
 			}
 			StringBuffer str = new StringBuffer();
 			str.append("<html>");
@@ -359,6 +373,9 @@ public class ITextCoveringLetterGeneration  {
 			String endorsmentNO = inputVO.getEndValue();
 			OutputStream file = new FileOutputStream(new File(staticPath+fileName));
 			Document document = new Document();
+			/*Font subtitleFont = FontFactory.getFont("Times Roman", 12, BaseColor.BLACK);
+	        Paragraph subTitle = new Paragraph(str1.toString(), subtitleFont);
+	        document.add(subTitle);*/
 			PdfWriter.getInstance(document, file);
 			document.open();
 			HTMLWorker htmlWorker = new HTMLWorker(document);

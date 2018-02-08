@@ -43,7 +43,7 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	private String mobileNo;
 	private Long pmDeptDesginationId;
 	private Long pmDepartmentId;
-	private String pmDepartmentName;
+	private String pmDepartmentName="";
 	private String insertedDate;
 	private String subWorkDesc;
 	private String petitionDesc;

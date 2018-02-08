@@ -289,16 +289,22 @@ function buildPetitionDetailsView(result){
 																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > ASSIGNED TO</u> : '+result.historyList[h].subList1[j].subList1[k].assignedToOfficerName+' ('+result.historyList[h].subList1[j].subList1[k].assignedToDesignation+')</h5>';
 																	str+='</div>';
 															}
-										
+										var ofcDesigLoca = "";
+										if(result.historyList[h].subList1[j].subList1[k].pmOfficerDesgId == 19){
+												ofcDesigLoca = result.historyList[h].subList1[j].subList1[k].officerName;
+											}
 														
 														str+='<div class="col-sm-3 pull-right">';
 															str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8;">';
-																str+='<h5 class="font_weight" style="color:#1283C8">By&nbsp;:'+result.historyList[h].subList1[j].subList1[k].designation+'</h5><h5 class="font_weight f_10 m_top5">'+result.historyList[h].subList1[j].subList1[k].officerName+'</h5>';
+																str+='<h5 class="font_weight" style="color:#1283C8;text-transform:uppercase;"> UPDATED BY&nbsp;:'+result.historyList[h].subList1[j].subList1[k].designation+'</h5>';
+																if(ofcDesigLoca != ""){
+																str+='<h5 class="font_weight f_10 m_top5">'+ofcDesigLoca+'</h5>';
+																}
 															str+='</div>';
 														str+='</div>';
 														str+='<div class="col-sm-2 pull-right">';
 														str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8; height:48px;">';
-															str+='<h5 class="pull-right"> <span style="color:#1283C8" >Date & Time </span>'+result.historyList[h].subList1[j].timeStr+' @ '+result.historyList[h].subList1[j].subList1[k].timeStr+'</h5>';
+															str+='<h5 class="pull-right"> <span style="color:#1283C8" >DATE & TIME </span>'+result.historyList[h].subList1[j].timeStr+' @ '+result.historyList[h].subList1[j].subList1[k].timeStr+'</h5>';
 														str+='</div>';
 														str+='</div>';
 														
@@ -1386,7 +1392,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	
 	 $("#coveringLetterGenerator").html("");
 	 $("#remarkIdErr").html("");
-	 
+	 $("#ajaxcallImageId").html("");
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
 	var petionId = $(this).attr("attr_petition_id")
@@ -2099,6 +2105,9 @@ function endorsingSubWorksAndAssigningToOfficer(){
 				}
 		}
 	}
+	if($('#actionTypeStr').val() == ""){
+		$('#actionTypeStr').val("COMPLETED");
+	}
 	//formData.append("petitionId", petitionId);
 $.ajax({
 			url: $("#endorsingSubWorksId").attr("action"),
@@ -2196,7 +2205,7 @@ $.ajax({
 
 function generateCoveringLetterForPetition(){
 	//$('#endorsWorksId').hide();
-	$('#coveringLetterPthErr').html("<span style='color:green;'> Please wait Covering Letter is generating...</span>");
+	
 	
 	var flag = false;
 	$('#endorsementNoErr').html('');
@@ -2207,7 +2216,8 @@ function generateCoveringLetterForPetition(){
 	var leadIdValue = $("#leadId").val();
 	var grantIdValue = $("#grantId").val();
 	var statusId = $("#statusChangeId").val();
-	  
+	 var assignToIdValue = $("#assignToId").val();
+	var officerIdValue = $("#officerId").val();
 	if(statusId == 1){
 		if(endorsementId == 0 || endorsementId == '' || endorsementId == null || endorsementId.trim().length == 0){
 			   $('#endorsementNoErr').html("<h5 style='color:red;'>Endosment no is required</h5>");
@@ -2227,6 +2237,19 @@ function generateCoveringLetterForPetition(){
 		}else{
 			 $('#grantIdErr').html("");
 		} */
+		  if(assignToIdValue == null || assignToIdValue==0){
+			$('#assignToIdErr').html("<h5 style='color:red;'>Please select assign to</h5>");
+			flag =true ; 
+		 }else{
+			 $('#assignToIdErr').html("");
+		 }
+		 
+		 if(officerIdValue == null || officerIdValue==0){
+			 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer name</h5>");
+			 flag = true ; 
+		 }else{
+			  $('#officerIdErr').html(""); 
+		 } 
 	}
 	
 
@@ -2275,7 +2298,7 @@ function generateCoveringLetterForPetition(){
 				schemeIdsListArr.push(selectdWorksArr[i]);
 		}
 	}
- 
+ $('#coveringLetterPthErr').html("<span style='color:green;'> Please wait Covering Letter is generating...</span>");
 var json = {
    pageId :petitionId,//petitionId
    schemeIdsList:schemeIdsListArr,//subWorkIds
@@ -2283,7 +2306,8 @@ var json = {
    groupName:grantId ,
 	endValue:endorsementNO,//endorsmentNo
 	pType:"viewPage",
-	type:"COVERING LETTER"
+	type:"COVERING LETTER",
+	pageId:officerIdValue
   }           
  $.ajax({              
   type:'POST',    
@@ -2298,7 +2322,7 @@ var json = {
 	  $("#coverLetterPath").val("");
 	  $('#endorsementNoErr').html("");
 	  $('#coveringLetterPthErr').html("");
-	 if(result !=null){
+	 if(result !=null && result.exceptionMsg != "Exist"){
 		  $('#endorsementNoErr').html("<span style='color:green;'> covering letter generated successfully...</span>");
 		 var str='';
 		 var scanCopySpl = result.exceptionMsg.split("."); 
@@ -2343,9 +2367,12 @@ var json = {
 	$("#coveringLetterGenerator").html(str);
 	$(".fancyboxView").fancybox({live: false});
 	$('#endorsementNoErr').html("");
-	 }
+	 }else if(result.exceptionMsg == "Exist"){
+		 $('#endorsementNoErr').html("");
+		 $('#endorsementNoErr').html("<h5 style='color:red;'>This endorsment no exist</h5>");
+		}
 	
-	$('#endorsementNoErr').html("");
+	
  }); 
 }
 
@@ -2771,11 +2798,14 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 												}
 											}
 										}
-										
+										var ofcDesigLoca = "";
+										if(result.petitionHistoryList[i].subList1[j].subList1[m].pmOfficerDesgId == 19){
+												ofcDesigLoca = "("+result.petitionHistoryList[i].subList1[j].subList1[m].officerName+")";
+											}
 										str+='<div class="col-sm-3 pull-right">';
 										str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
-											str+='<h5 class="font_weight" ><span style="color:#1283C8"> By </span>  : '+result.petitionHistoryList[i].subList1[j].subList1[m].designation+'</h5>';
-											str+='<h5 class="font_weight m_top5" style="text-align: center;">'+result.petitionHistoryList[i].subList1[j].subList1[m].officerName+'</h5>';
+											str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">UPDATED BY </span>  : <br>'+result.petitionHistoryList[i].subList1[j].subList1[m].designation+''+ofcDesigLoca+'<br>('+result.petitionHistoryList[i].subList1[j].subList1[m].pmDepartmentName+')</h5>';
+											//str+='<h5 class="font_weight m_top5" style="text-align: center;">'+result.petitionHistoryList[i].subList1[j].subList1[m].officerName+'</h5>';
 										str+='</div>';
 										
 																str+='</div>';
@@ -2920,10 +2950,16 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																					}
 																				}
 																			}
+																			var ofcDesigLoca="";
+											if(result.petitionHistoryList[i].subList1[j].subList1[m].pmOfficerDesgId == 19){
+												ofcDesigLoca = result.petitionHistoryList[i].subList1[j].subList1[m].officerName;
+											}
 																			str+='<div class="col-sm-3 pull-right">';
 																					str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
-																						str+='<h5 class="font_weight" ><span style="color:#1283C8">By </span>  : '+result.subList1[j].subList1[k].subList1[l].subList1[m].designation+'</h5>';
-																						str+='<h5 class="font_weight m_top5" style="text-align: center;">'+result.subList1[j].subList1[k].subList1[l].subList1[m].officerName+'</h5>';
+																						str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">UPDATED BY </span>  : '+result.subList1[j].subList1[k].subList1[l].subList1[m].designation+'</h5>';
+																						if(ofcDesigLoca != ""){
+																							str+='<h5 class="font_weight m_top5" style="text-align: center;">'+ofcDesigLoca+'</h5>';
+																						}
 																		
 																					str+='</div>';
 																				str+='</div>';

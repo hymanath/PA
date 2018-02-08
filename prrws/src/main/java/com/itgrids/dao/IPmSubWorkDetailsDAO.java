@@ -29,6 +29,6 @@ public interface IPmSubWorkDetailsDAO extends GenericDao<PmSubWorkDetails, Long>
 	public List<Object[]> getAllWorksLatesStatusDetails(Long petitionId);
 	public Object[] getMaxEndorsementAndTempEndorsementNos();
 	public int saveTempEndorseNo(Long petitionId,List<Long> subWorkDetailsIds,String tempEndorsNo,Long userId,Date updateTime);
-	
+	public String getMaxEndirseNoAndValidatingEndorseNo(String endorseNo);
 	
 }

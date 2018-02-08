@@ -207,7 +207,7 @@
 													<input type="text" class="form-control  clearCls" style="height:40px" id="emailId" placeholder="Please enter email">
 													<div class="error_colorCls" id="emailErrDivId"></div>
 												</div>	
-												<div class="col-sm-3" id="endorsmentNoDivid" >
+												<div class="col-sm-3" id="endorsmentNoDivid" style="display:none;">
 												<label> ENDORSMENT NO </label>
 													<input type="text"  onkeyUp="clearData();checkIsNumber(this.id,this.value);" class="form-control  clearCls" style="height:40px" id="endorsmentNoId" placeholder="Please enter endorsment number">
 													<div class="error_colorCls" id="endorsmentNoErrDivId"></div>

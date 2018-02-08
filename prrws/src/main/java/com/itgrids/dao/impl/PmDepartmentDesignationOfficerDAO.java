@@ -42,7 +42,8 @@ public class PmDepartmentDesignationOfficerDAO extends GenericDaoHibernate<PmDep
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.pmDepartmentDesignationOfficerId,model.pmDepartmentDesignationId, model.pmOfficer.name," +
 				"  model.pmOfficer.mobileNo,model.pmDepartmentDesignation.pmDepartment.department, " +
-				" model.pmDepartmentDesignation.pmOfficerDesignation.designation from PmDepartmentDesignationOfficer model" +
+				" model.pmDepartmentDesignation.pmOfficerDesignation.designation" +
+				",model.pmDepartmentDesignation.pmDepartment.shortName from PmDepartmentDesignationOfficer model" +
 				"  where model.pmDepartmentDesignation.pmOfficerDesignationId =:officerDesignationId and model.pmOfficerId =:pmDepartmentDesignationOfficerId and " +
 				" model.isActive ='Y' and model.pmOfficer.isActive ='Y' " +
 				" order by model.pmDepartmentDesignation.pmDepartment.department,model.pmDepartmentDesignation.pmOfficerDesignation.designation ");
