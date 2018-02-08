@@ -3211,5 +3211,134 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 }
 		 return query.list();
 	 }
-	 
+	 public List<Object[]> getDepartMentWiseBoards(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId,Long statusId,Long departMentId){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select ");
+		 sb.append(" distinct nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId," +
+		 		   " nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardName " +
+		 		   " from NominatedPost nominatedPost where " +
+				   " nominatedPost.isDeleted = 'N' " +
+				   " and nominatedPost.isExpired = 'N' " +
+				   " and nominatedPost.nominatedPostMember.isDeleted = 'N' " +
+				   " and nominatedPost.nominatedPostMember.nominatedPostPosition.isDeleted ='N' ");
+		 
+		 	if (locationType != null && locationValuesList != null && locationValuesList.size()>0) {
+		 			/*if (locationType == 2) {
+		 				//sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValue) ");
+		 				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		 			} else*/ if (locationType.longValue() == 3l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValue) ");
+					} else if (locationType.longValue() == 10l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
+					} else if (locationType.longValue() == 4l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValue) ");
+					} else if (locationType.longValue() == 5l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValue) ");
+					}else if (locationType.longValue() == 6l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:locationValue) ");
+					}else if (locationType.longValue() == 7l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValue) ");
+					}else if (locationType.longValue() == 8l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.ward.constituencyId in(:locationValue) ");
+					}		
+					
+		   }
+		 if(startDate != null && endDate != null){
+			 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
+		 }
+		 if(boardLevelId != null && boardLevelId.longValue()>0l){
+			 sb.append(" and nominatedPost.nominatedPostMember.boardLevel.boardLevelId =:boardLevelId ");
+		 }
+		 if(statusId != null && statusId.longValue()>0l){ 
+			 sb.append(" and nominatedPost.nominatedPostStatus.nominatedPostStatusId =:statusId ");
+		 }
+		 if(departMentId != null && departMentId.longValue()>0l){
+			 sb.append(" and nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId =:departMentId ");
+		 }
+		 //sb.append(" group by  nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
+		 		//" nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId,nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId ");
+		 Query query = getSession().createQuery(sb.toString());
+		 if (locationType != null && locationValuesList != null && locationValuesList.size()>0 ) {
+		   query.setParameterList("locationValue",locationValuesList);
+		 }
+		 if(startDate != null && endDate != null){
+			 query.setDate("startDate",startDate);
+			 query.setDate("endDate",endDate);
+		 }
+		 if(boardLevelId != null && boardLevelId.longValue()>0l){
+			 query.setParameter("boardLevelId", boardLevelId);
+		 }
+		 if(statusId != null && statusId.longValue()>0l){
+			 query.setParameter("statusId", statusId);
+		 }
+		 if(departMentId != null && departMentId.longValue()>0l){
+			 query.setParameter("departMentId", departMentId); 
+		 }
+		 return query.list();
+	 } 
+	 public List<Object[]> getBoardWisePositions(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId,Long statusId,Long boardId){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select ");
+		 sb.append(" distinct nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId," +
+		 		   " nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionName " +
+		 		   " from NominatedPost nominatedPost where " +
+				   " nominatedPost.isDeleted = 'N' " +
+				   " and nominatedPost.isExpired = 'N' " +
+				   " and nominatedPost.nominatedPostMember.isDeleted = 'N' " +
+				   " and nominatedPost.nominatedPostMember.nominatedPostPosition.isDeleted ='N' ");
+		 
+		 	if (locationType != null && locationValuesList != null && locationValuesList.size()>0) {
+		 			/*if (locationType == 2) {
+		 				//sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValue) ");
+		 				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		 			} else*/ if (locationType.longValue() == 3l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValue) ");
+					} else if (locationType.longValue() == 10l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
+					} else if (locationType.longValue() == 4l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValue) ");
+					} else if (locationType.longValue() == 5l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValue) ");
+					}else if (locationType.longValue() == 6l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:locationValue) ");
+					}else if (locationType.longValue() == 7l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValue) ");
+					}else if (locationType.longValue() == 8l) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.ward.constituencyId in(:locationValue) ");
+					}		
+					
+		   }
+		 if(startDate != null && endDate != null){
+			 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
+		 }
+		 if(boardLevelId != null && boardLevelId.longValue()>0l){
+			 sb.append(" and nominatedPost.nominatedPostMember.boardLevel.boardLevelId =:boardLevelId ");
+		 }
+		 if(statusId != null && statusId.longValue()>0l){
+			 sb.append(" and nominatedPost.nominatedPostStatus.nominatedPostStatusId =:statusId ");
+		 }
+		 if(boardId != null && boardId.longValue()>0l){
+			 sb.append(" and nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId =:boardId ");
+		 }
+		 //sb.append(" group by  nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
+		 		//" nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId,nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId ");
+		 Query query = getSession().createQuery(sb.toString());
+		 if (locationType != null && locationValuesList != null && locationValuesList.size()>0 ) {
+		   query.setParameterList("locationValue",locationValuesList);
+		 }
+		 if(startDate != null && endDate != null){
+			 query.setDate("startDate",startDate);
+			 query.setDate("endDate",endDate);
+		 }
+		 if(boardLevelId != null && boardLevelId.longValue()>0l){
+			 query.setParameter("boardLevelId", boardLevelId);
+		 }
+		 if(statusId != null && statusId.longValue()>0l){
+			 query.setParameter("statusId", statusId);
+		 }
+		 if(boardId != null && boardId.longValue()>0l){
+			 query.setParameter("boardId", boardId); 
+		 }
+		 return query.list();
+	 }
 }

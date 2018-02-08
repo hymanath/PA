@@ -17,4 +17,8 @@ public interface ICoreDashboardNominatedPostService
 	public List<List<UserTypeVO>> getUserTypeWiseNominatedPostDetailsCnt(InputVO inputVO);
 	public List<NominatedPostDetailsVO> getDepartMentAndBoardWisePositinsStatusCount(List<Long> locationValues,String fromDateStr, 
 			String toDateStr,Long locationTypeId,Long boardLevelId,Long statusId);
+	public List<NominatedPostDetailsVO> getDepartMentWiseBoards(List<Long> locationValues,String fromDateStr, 
+			String toDateStr,Long locationTypeId,Long boardLevelId,Long statusId,Long departmentId);
+	public List<NominatedPostDetailsVO> getBoardWisePositions(List<Long> locationValues,String fromDateStr, 
+			String toDateStr,Long locationTypeId,Long boardLevelId,Long statusId,Long boardId);
 }
