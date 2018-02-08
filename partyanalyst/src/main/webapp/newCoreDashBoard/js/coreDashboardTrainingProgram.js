@@ -9,9 +9,11 @@ var globalProgarmId=[];
 	//stateLevelCampDetails();
 	getTrainingCampBasicDetailsCntOverview();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
+	getBoothlevelTrainingCampBasicDetailsCntOverview();
 });
 $(document).on("click",".trainingIconRefresh",function(){
 	getTrainingCampBasicDetailsCntOverview();
+	getBoothlevelTrainingCampBasicDetailsCntOverview();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
 	var enrollmentYearId=$("#tdpTriningYearId").val();
 	if(enrollmentYearId == 4){
@@ -26,6 +28,7 @@ $(document).on("click",".trainingIconRefresh",function(){
 $("#tdpTriningYearId").on('change', function() {
 	//stateLevelCampDetails();
 	getTrainingCampBasicDetailsCntOverview();
+	getBoothlevelTrainingCampBasicDetailsCntOverview();
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
 	var enrollmentYearId=$("#tdpTriningYearId").val();
 	if(enrollmentYearId == 4){
@@ -85,7 +88,8 @@ var getDocumentWidth = $(document).width();
 					 userAccessLevelValuesArray : globalUserAccessLevelValues,
 					 stateId : globalStateId,
 					 dateStr : "01/01/2000",
-					 enrollmentYearIdsList :enrollmentYrIds
+					 enrollmentYearIdsList :enrollmentYrIds,
+					 type:""
 				  }
 		$.ajax({
 			type : 'POST',
@@ -95,16 +99,161 @@ var getDocumentWidth = $(document).width();
 		}).done(function(result){
 		  $("#programsDtlsCntTableId").html(' ');
 		 if(result != null){
-			 buildTrainingProgramBasicDetails(result,year);
+			 buildTrainingProgramBasicDetails(result,year,programIdArr);
+			 //buildTrainingProgramBasicDetailsForBooth(result,year);
 			 buildSpecialProgramLeaderIdWiseDetails(result);
 			 }else{
 				$("#programsDtlsCntTableId").html("NO DATA AVAILABLE");
 			 }
 		});
 	}
-  function buildTrainingProgramBasicDetails(result,year){
+	
+	function getBoothlevelTrainingCampBasicDetailsCntOverview()
+	{
+	 $("#boothProgramsDtlsCntTableId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 //$("#specialProgramLeaderId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+	 
+	 var programIdArr = [];//[6,7]
+	 var enrollmentYrIds = [];
+	 var boothenrollmentYrIds = [];
+	 enrollmentYrIds.push($("#tdpTriningYearId").val());
+	 var year = '';
+	 if(enrollmentYrIds != null && enrollmentYrIds.length>0){
+		 for(var i in enrollmentYrIds){
+			 if(parseInt(enrollmentYrIds[i]) == 4){
+				 programIdArr=[];
+				 programIdArr=[10];
+				 year = '16-18';  
+				 boothenrollmentYrIds.push(1);
+			 }
+			 
+		 }
+	 }
+	 var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	 
+		var jsObj ={ 
+					 programIdArr : programIdArr,
+		             userAccessLevelId : globalUserAccessLevelId,
+					 userAccessLevelValuesArray : globalUserAccessLevelValues,
+					 stateId : globalStateId,
+					 dateStr : "01/01/2000",
+					 enrollmentYearIdsList :boothenrollmentYrIds,
+					 type:"BoothCommittee"
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getTrainingCampBasicDetailsCntOverviewAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		  $("#boothProgramsDtlsCntTableId").html(' ');
+		 if(result != null){
+			 buildTrainingProgramBasicDetailsForBooth(result,year,programIdArr);
+			 //buildSpecialProgramLeaderIdWiseDetails(result);
+			 }else{
+				$("#boothProgramsDtlsCntTableId").html("NO DATA AVAILABLE");
+			 }
+		});
+	}
+function buildTrainingProgramBasicDetailsForBooth(result,year,programIdArr){
+	 var str='';
+	  str +=''
+	  str+='<h4 class="text-capital"><span class="headingColor">Seva Mitra Training Program - '+year+'</span>';
+	   '</span>';
+	 /*   str+='<span class="trainingIconExpand trainingExpandCls" attr_type="seve" attr_camp="'+programIdArr+'" style="background-color:#fff;font-size:10px;margin-left:5px;">';
+	   str+='<i class="glyphicon glyphicon-fullscreen"></i>';
+	   str+='</span>'; */
+	   str+='</h4>';
+	   
+		str+='<div class="panel-group leaderSkill m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
+			var stringArrType =['Booth Level'];
+		if(result != null){
+			for (var i in stringArrType){
+				str+='<div class="panel panel-default">';
+							str+='<div class="panel-heading" style="background: rgb(237, 238, 240);" role="tab" id="headingLeaderSkill'+4+'">';
+							if(i == 0){  
+								str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseboothLeaderSkill'+i+'" aria-controls="collapseboothLeaderSkill'+i+'">';
+							}else{
+								str+='<a role="button" class="collapsed collapseTraingIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseboothLeaderSkill'+i+'" aria-controls="collapseboothLeaderSkill'+i+'">';
+							}
+							   str+='<h4 class="text-capital f_14 text_bold">'+stringArrType[i]+'';
+						   if(stringArrType[i] == "Booth Level"){
+							   str+='<h5 style="margin-top:10px !important;" class="text_decoration_hover f_12"> <span data-toggle="tooltip" data-placement="top" title="Total Eligible">[T.E: <b>'+result.totalEligibleCount+']</span> &nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Total Attended">[T.A:<b>'+result.totalAttenedCount+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Invitee Attended">[I.A:<b>'+result.inviteeAttended+']</b></span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Non Invitee Attended">[N.I.A:<b>'+result.nonInviteeAttended+']</span>&nbsp&nbsp&nbsp<span data-toggle="tooltip" data-placement="top" title="Yet To Train">[Y.T.T:<b>'+result.totalNotAttenedCount+'] </span> </h5>'
+							}
+								str+='</h4>';
+								str+='</a>';
+								str+='</div>';
+							if(i == 0)
+							{
+							str+='<div id="collapseboothLeaderSkill'+i+'" class="panel-collapse collapse" aria-labelledby="headingLeaderSkill'+i+'" style="position:relative">';
+							}else{
+							str+='<div id="collapseboothLeaderSkill'+i+'" class="panel-collapse collapse" aria-labelledby="headingLeaderSkill'+i+'" style="position:relative">';
+							}
+							 str+='<div class="panel-body bg_ED " style="margin-top:0px;">';  
+					if($(window).width() < 300)
+					{
+						str+='<div class="table-responsive">';
+					}
+					str+='<table class="table tableTraining bg_ED table-condensed">';     
+						str+='<tbody>';
+							str+='<tr>';
+								str+='<td>';
+									str+='<p class="text-muted text-capitalize">Total eligible</p>';
+								str+='</td>';
+								str+='<td>';
+								str+='<p class="text-muted text-capitalize">Total Attended </p>';
+								str+='</td>';							
+								str+='<td>';
+									str+='<p class="text-muted text-capitalize" title="Invitee Attended">Invitee Attended</p>';
+								str+='</td>';
+								str+='<td>';
+											str+='<p class="text-muted text-capitalize" title="Non Invitee Attended">Non Invitee Attended </p>';
+								str+='</td>';
+								str+='<td>';
+											str+='<p class="text-muted text-capitalize" title="Yet TO Train">Yet To Train </p>';
+								str+='</td>';
+							str+='</tr>';
+								if(stringArrType[i] == "Booth Level"){
+									 str+='<tr>';
+										str+='<td>'+result.totalEligibleCount+'</td>';
+										str+='<td>'+result.totalAttenedCount+'</td>';
+										str+='<td>'+result.inviteeAttended +'&nbsp;<span class="font-10 text-danger"> ('+result.totalAttenedCountPer+')%</span></td>';
+										str+='<td>'+result.nonInviteeAttended+'</td>';
+										str+='<td>'+result.totalNotAttenedCount+'&nbsp;<span class="font-10 text-danger"> ('+result.totalNotAttenedCountPer+')%</span></td>';
+									str+='</tr>';
+									 str+='<tr>';
+										  str+='<tr>';
+										  str+='<td>1 Day</td>';
+											str+='<td>'+result.totalAttenedCount+'</td>';
+											str+='<td>'+result.inviteeAttended+'<span class="font-10 text-danger"> ('+result.totalAttenedCountPer+'%)</span></td>';
+											str+='<td>'+result.nonInviteeAttended+'</td>';
+											str+='<td>'+result.totalNotAttenedCount+'</td>';
+										  str+='</tr>';
+									str+='</tr>';
+								}
+								str+='</tbody>';
+							str+='</table>';  
+						if($(window).width() < 300)
+						{
+							str+='</div>';
+						}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			}	
+		 }
+		str+='</div>';
+		$("#boothProgramsDtlsCntTableId").html(str);
+}
+  function buildTrainingProgramBasicDetails(result,year,programIdArr){
 	  var str='';
-	  str+='<h4 class="text-capital"><span class="headingColor">Leadership Skills - '+year+'</span></h4>';
+	  str +=''
+	  str+='<h4 class="text-capital"><span class="headingColor">Leadership Skills - '+year+'</span>';
+	   '</span>';
+	   /* str+='<span class="trainingIconExpand trainingExpandCls leadericonCls" attr_type="leader" attr_camp="'+programIdArr+'" style="background-color:#fff;font-size:10px;margin-left:5px;">';
+	   str+='<i class="glyphicon glyphicon-fullscreen"></i>';
+	   str+='</span>'; */
+	   str+='</h4>';
 		str+='<div class="panel-group leaderSkill m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
 		
 	  var stringArrType =['Over-All Levels','village / ward Level','mandal / town / division Level'];
@@ -424,7 +573,8 @@ var globalUserWiseMemberRslt;
 					  stateId : globalStateId,
 					  dateStr : dateStr,
 					  enrollmentYrIds:enrollmentYrIds,
-					  programIdArr:programIdArr
+					  programIdArr:programIdArr,
+					  type:""
 				}
 		
 		$.ajax({
@@ -3831,3 +3981,65 @@ function buildTrainingCampFeedBackProgramWiseDetails(result){
 		});
 	}
 }
+$(document).on("click",".trainingExpandCls",function(){
+	$(".trainingIconExpand").find("i").addClass("glyphicon-fullscreen").removeClass(".glyphicon-resize-small");
+	$(this).find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
+	var type = $(this).attr("attr_type");
+	var programIdArr =[] ;
+	programIdArr.push($(this).attr('attr_camp'));
+	if(type == "seve"){
+		if($(this).find("i").hasClass("glyphicon-resize-small")){
+			$("[expand-block=training]").removeClass("col-md-6").addClass("col-md-12").css("transition"," ease-in-out, width 0.7s ease-in-out");;
+			$("[expand-block-inner=training]").addClass("col-md-6").removeClass("col-md-12").css("transition"," ease-in-out, width 0.7s ease-in-out");;
+		}
+		getUserTypeWiseTotalEligibleAndAttendedforBoothCnt(programIdArr,"BoothCommittee");
+	}else{
+		if($(this).find("i").hasClass("glyphicon-resize-small")){
+			$("[expand-block=training]").removeClass("col-md-6").addClass("col-md-12").css("transition"," ease-in-out, width 0.7s ease-in-out");;
+			$("[expand-block-inner=training]").addClass("col-md-6").removeClass("col-md-12").css("transition"," ease-in-out, width 0.7s ease-in-out");;
+			getUserTypeWiseTotalEligibleAndAttendedCnt();
+		}
+		
+	}
+
+});
+function getUserTypeWiseTotalEligibleAndAttendedforBoothCnt(programIdArr,type){
+		$(".hideCls").show();    
+	 	$("#clickInfoId").hide();
+	$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	   var enrollmentYrIds = [];
+	   var boothenrollmentYrIds=[];
+	   enrollmentYrIds.push($("#tdpTriningYearId").val());
+	
+		 if(enrollmentYrIds != null && enrollmentYrIds.length>0){
+			 for(var i in enrollmentYrIds){
+				 if(parseInt(enrollmentYrIds[i]) == 4){
+					boothenrollmentYrIds.push(1);
+				 }
+				
+			 }
+		 }
+	 var jsObj ={
+			          userAccessLevelId:globalUserAccessLevelId,
+					  userAccessLevelValuesArray:globalUserAccessLevelValues,
+					  activityMemberId : globalActivityMemberId,
+					  userTypeId : globalUserTypeId,
+					  stateId : globalStateId,
+					  dateStr : dateStr,
+					  enrollmentYrIds:boothenrollmentYrIds,
+					  programIdArr:programIdArr,
+					  type:type
+				}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getUserTypeWiseTotalEligibleAndAttendedCntAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		     $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(' ');
+			 buildgetUserTypeWiseTrainingProgramAttendedCountTopFiveStrongResults(result);
+			 globalUserWiseMemberRslt = result;
+		});
+ }
