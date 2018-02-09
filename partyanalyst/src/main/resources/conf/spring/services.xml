@@ -3791,6 +3791,7 @@
 	  <property name="activityLocationInfoDAO"  ref="activityLocationInfoDAO"></property>
 	  <property name="activityDocumentDAO"  ref="activityDocumentDAO"></property>
 	  <property name="activityConductedInfoDAO"  ref="activityConductedInfoDAO"></property>
+	  <property name="activityLocationParticipantInfoDAO"  ref="activityLocationParticipantInfoDAO"></property>
 	</bean>
 	<bean name="nominatedPostMainDashboardService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostMainDashboardService">
 		<property name="positionDAO" ref="positionDAO"></property>
@@ -3930,6 +3931,7 @@
 	 <property name="panchayatDAO" ref="panchayatDAO"/>
 	 <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO"/>
 	 <property name="activityQuestionnaireDAO" ref="activityQuestionnaireDAO"/>
+	 <property name="coreDashboardService" ref="coreDashboardService"></property>
 	</bean>
 	<bean name="attendanceCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.AttendanceCoreDashBoardService">
 		<property name="departmentDAO" ref="departmentDAO" />
