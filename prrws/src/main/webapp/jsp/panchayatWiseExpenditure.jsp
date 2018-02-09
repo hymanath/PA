@@ -77,7 +77,7 @@
 													<option value="Vermi Compost">Vermi Compost</option>
 													<option value="Solid Waste Management">Solid Waste Management</option>
 													<option value="Play fields">Play fields</option>
-													<option value="Burial Ground">Burial Ground</option>
+													<option value="Burial Grounds">Burial Grounds</option>
 													<option value="Timely Payment">Timely Payment</option>
 												</select>
 											</div>

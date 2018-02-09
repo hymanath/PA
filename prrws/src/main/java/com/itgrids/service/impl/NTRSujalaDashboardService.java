@@ -191,6 +191,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 		        		JSONArray mpArr = new JSONArray(Obj.get("motherPlants").toString());
 		        		returnvo.setDistrictList(getDistrictWiseMotherPlants(mpArr));
 		        		returnvo.setMotherPlantsList(getMotherPlantsList(mpArr));
+		        		returnvo.setRdusList(getTotalRDUSList(mpArr));
 		        	}
 		        }
 	        }
@@ -198,6 +199,47 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 			LOG.error("Exception occured at getNtrSujalaOverview() in  NTRSujalaDashboardService class",e);
 		}
 		return returnvo;
+	}
+	
+	public List<NTRSujalaOverviewVO> getTotalRDUSList(JSONArray finalArr){
+		List<NTRSujalaOverviewVO> returnList = new ArrayList<NTRSujalaOverviewVO>();
+		try {
+			if(finalArr != null && finalArr.length() > 0){
+				for (int i = 0; i < finalArr.length(); i++) {
+					JSONObject obj = new JSONObject(finalArr.get(i).toString());
+					if(obj.has("rdus")){
+	        			JSONArray rdusArr = new JSONArray(obj.get("rdus").toString());
+	        			if(rdusArr != null && rdusArr.length() > 0){
+	        				for (int j = 0; j < rdusArr.length(); j++) {
+								JSONObject rduObj = new JSONObject(rdusArr.get(j).toString());
+								if(rduObj != null && rduObj.length() > 0){
+									NTRSujalaOverviewVO rduvo = new NTRSujalaOverviewVO();
+									rduvo.setMpId(obj.getLong("motherPlantId"));
+									rduvo.setMpName(obj.getString("name"));
+									rduvo.setMandal(obj.has("mandal") ? obj.getString("mandal") : "");
+									rduvo.setDistrict(obj.has("district") ? obj.getString("district") : "");
+									
+									rduvo.setId(rduObj.getLong("rduId"));
+									rduvo.setName(rduObj.getString("name"));
+									rduvo.setLocation(rduObj.getString("location"));
+									rduvo.setLatitude(rduObj.getString("latitude"));
+									rduvo.setLongitude(rduObj.getString("longitude"));
+									rduvo.setWaterTankCapacity(rduObj.getLong("waterTankCapacity"));
+									rduvo.setMpSafeWaterDispenced(commonMethodsUtilService.seperateNumberByComma(Long.valueOf(rduObj.getString("waterDispencePerDay"))));
+									rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
+									rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
+									rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
+									returnList.add(rduvo);
+								}
+							}
+	        			}
+	        		}
+	        	}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getTotalRDUSList() in  NTRSujalaDashboardService class",e);
+		}
+		return returnList;
 	}
 	
 	public List<NTRSujalaOverviewVO> getDistrictWiseMotherPlants(JSONArray finalArr){

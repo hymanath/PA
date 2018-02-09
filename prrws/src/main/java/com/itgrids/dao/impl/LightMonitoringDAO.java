@@ -413,7 +413,8 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.lightsVendor.lightsVendorId,"
 				+ "model.lightsVendor.vendorName,"
-				+ "sum(model.totalPanels)"
+				+ "sum(model.totalPanels),"
+				+ " sum(model.totalLights)"
 				+ " from LightMonitoring model"
 				+ " where model.isDeleted ='N'"
 				+ " and model.panchayat.locationAddress.state.stateId = 1"
@@ -440,7 +441,8 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		}
 		sb.append(",model.lightsVendor.lightsVendorId,"
 				+ "sum(model.totalPanels),"
-				+ "model.lightsVendor.vendorName"
+				+ "model.lightsVendor.vendorName,"
+				+ "sum(model.totalLights)"
 				+ " from LightMonitoring model"
 				+ " where model.isDeleted ='N'"
 				+ " and model.panchayat.locationAddress.state.stateId = 1"

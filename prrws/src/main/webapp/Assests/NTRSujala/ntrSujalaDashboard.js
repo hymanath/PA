@@ -33,7 +33,8 @@ function getNTRSujalaOverviewDetails(){
 			buildNTRSujalaOverviewDetails(result);
 			buildMapDetails(result.districtList);
 			buildDistrictWiseMpDetails(result.districtList);
-			buildMotherPlantsOverviewDetails(result.motherPlantsList);
+			//buildMotherPlantsOverviewDetails(result.motherPlantsList);
+			//buildRDUsOverviewDetails(result.rdusList);
 		}else{
 			$("#overViewDetails").html('');
 			$("#mpWiseDetailsDivId").html('');
@@ -41,6 +42,15 @@ function getNTRSujalaOverviewDetails(){
 		}
 	});
 }
+$(document).on("click",".motherPlantsClass",function(){
+	var type = $(this).attr("attr_type");
+	buildMotherPlantsOverviewDetails(globalOverviewResult.motherPlantsList,type);
+});
+
+$(document).on("click",".rdusClass",function(){
+	var type = $(this).attr("attr_type");
+	buildRDUsOverviewDetails(globalOverviewResult.rdusList,type);
+});
 function buildNTRSujalaOverviewDetails(result){
 	var str='';
 	str+='<div class="row">';
@@ -56,8 +66,8 @@ function buildNTRSujalaOverviewDetails(result){
 						  str+='</div>';
 						  str+='<div class="media-body">';
 							str+='<h4 class="media-heading font_weight">Mother Plant</h4>';
-							str+='<h5 class="m_top5">One Mother Plant with attached Multiple RDUs is called one Cluster </h5>';
-								str+='<h3 class="pull-right bg_yash_color m_top5" data-toggle="modal" data-target="#mother_plants" style="cursor:pointer;text-decoration:underline;">'+result.totalMotherPlants+'</h3>';
+							str+='<h6 class="m_top5">One Mother Plant with attached Multiple RDUs is called one Cluster </h6>';
+								str+='<h3 class="pull-right bg_yash_color m_top5 motherPlantsClass" attr_type="total" data-toggle="modal" data-target="#mother_plants" style="cursor:pointer;text-decoration:underline;">'+result.totalMotherPlants+'</h3>';
 						  str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -70,11 +80,11 @@ function buildNTRSujalaOverviewDetails(result){
 									str+='<div class="row">';
 										str+='<div class="col-sm-6 m_top10">';
 											str+='<h5 class="good_color">Good</h5>';
-											str+='<h4 class="m_top20 good_color">'+result.activeMotherPlants+'</h4>';
+											str+='<h4 class="m_top20 good_color motherPlantsClass" attr_type="good" data-toggle="modal" data-target="#mother_plants" style="cursor:pointer;text-decoration:underline;">'+result.activeMotherPlants+'</h4>';
 										str+='</div>';
 										str+='<div class="col-sm-6 m_top10">';
 											str+='<h5 class="bad_color">Bad</h5>';
-											str+='<h4 class="m_top20 bad_color">'+result.inActiveMotherPlants+'</h4>';
+											str+='<h4 class="m_top20 bad_color motherPlantsClass" attr_type="bad" data-toggle="modal" data-target="#mother_plants" style="cursor:pointer;text-decoration:underline;">'+result.inActiveMotherPlants+'</h4>';
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
@@ -101,9 +111,9 @@ function buildNTRSujalaOverviewDetails(result){
 					str+='<div class="col-sm-3">';
 						str+='<h4 class="font_weight m_top10">Water Generated</h4>';
 						if(result.mpSafeWaterDispenced != null && result.mpSafeWaterDispenced != 'N/A' && result.mpSafeWaterDispenced > 0)
-							str+='<h3 class="bg_yash_color m_top30">'+result.mpSafeWaterDispenced+'<p class="pull-right m_top10" style="font-weight:normal;font-size:12px;">Lts Per Day</p></h3>';
+							str+='<h3 class="bg_yash_color m_top20">'+result.mpSafeWaterDispenced+'<p class="pull-right m_top10" style="font-weight:normal;font-size:12px;">Lts Per Day</p></h3>';
 						else
-							str+='<h3 class="bg_yash_color m_top30"> - <p class="pull-right m_top10" style="font-weight:normal;font-size:12px;">Lts Per Day</p></h3>';
+							str+='<h3 class="bg_yash_color m_top20"><img class="media-object toolTipCls" data-toggle="tooltip" data-placement="top" title="IOT device not fitted." src="Assests/images/not_applicable.png" alt="..." style="width:40px;height:40px;"><p class="pull-right m_top10" style="font-weight:normal;font-size:12px;"></p></h3>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
@@ -152,7 +162,7 @@ function buildNTRSujalaOverviewDetails(result){
 						  str+='</div>';
 						  str+='<div class="media-body">';
 							str+='<h4 class="media-heading font_weight m_top10">Agents</h4>';
-							str+='<h2 class="pull-right">-</h2>';
+							str+='<h2 class="pull-right"><img class="media-object" src="Assests/images/not_applicable.png" alt="..." style="width:40px;height:40px;"></h2>';
 						  str+='</div>';
 						
 							str+='<div class="col-sm-8 m_top10">';
@@ -190,13 +200,13 @@ function buildNTRSujalaOverviewDetails(result){
 						  str+='</div>';
 						  str+='<div class="media-body">';
 							str+='<h4 class="media-heading font_weight">RDU</h4>';
-							str+='<h5 class="m_top5">Remote Dispensing Unit</h5>';
+							str+='<h6 class="m_top5">Remote Dispensing Unit</h6>';
 						  str+='</div>';
 						str+='</div>';
 					str+='</div>';
 					str+='<div class="col-sm-4">';
 						str+='<div class="bg_yash_color_10">';
-							str+='<h3 class="m_top5 text-center">'+result.totalRDUs+'</h3>';
+							str+='<h3 class="m_top5 text-center rdusClass" attr_type="total" data-toggle="modal" data-target="#rdus_modal" style="cursor:pointer;text-decoration:underline;">'+result.totalRDUs+'</h3>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -213,7 +223,7 @@ function buildNTRSujalaOverviewDetails(result){
 						str+='<div class="col-sm-6 m_top20">';
 							str+='<div class="pad_10">';
 								str+='<h5 class="font_weight">Revenue Generated</h5>';
-								str+='<h3 class="m_top10"> - </h3>';
+								str+='<h3 class="m_top10"><img class="media-object" src="Assests/images/not_applicable.png" alt="..." style="width:40px;height:40px;"></h3>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -229,11 +239,11 @@ function buildNTRSujalaOverviewDetails(result){
 						str+='<div class="row">';
 							str+='<div class="col-sm-6 m_top20">';
 								str+='<h5 class="good_color">Good</h5>';
-								str+='<h4 class="m_top20 good_color">'+result.activeRDUs+'</h4>';
+								str+='<h4 class="m_top20 good_color " attr_type="good">'+result.activeRDUs+'</h4>';
 							str+='</div>';
 							str+='<div class="col-sm-6 m_top20">';
 								str+='<h5 class="bad_color">Bad</h5>';
-								str+='<h4 class="m_top20 bad_color">'+result.inActiveRDUs+'</h4>';
+								str+='<h4 class="m_top20 bad_color " attr_type="bad">'+result.inActiveRDUs+'</h4>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -270,7 +280,7 @@ function buildNTRSujalaOverviewDetails(result){
 	str+='</div>';
 	//row closed
 	$("#overViewDetails").html(str);
-	
+	$(".toolTipCls").tooltip();
 }
 function buildMapDetails(result){
 	var str='';
@@ -427,8 +437,8 @@ function buildMotherPlantWiseDetails(result){
 					if(result.mpSafeWaterDispenced != null && result.mpSafeWaterDispenced != 'N/A' && result.mpSafeWaterDispenced > 0)
 						str+='<h3 class="text-right">'+result.mpSafeWaterDispenced+'</h3>';
 					else
-						str+='<h3 class="text-right"> - </h3>';
-					str+='<h5 class="text-right">Lts Per Day</h5>';
+						str+='<h3 class="text-right m_top5" style="margin-left: 120px;"><img class="media-object" src="Assests/images/not_applicable.png" alt="..." style="width:25px;height:25px;"></h3>';
+					//str+='<h5 class="text-right">Lts Per Day</h5>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row m_top10">';
@@ -553,7 +563,7 @@ function buildMotherPlantWiseDetails(result){
 									str+='<div class="col-sm-4">';
 										str+='<div style="background-color: #86DBC6;padding: 5px;text-align: center;">';
 											str+='<h5 class="font_weight f_11 text-center">Revenue Generated</h5>';
-											str+='<h4 class="m_top10 text-center"> - </h4>';
+											str+='<h4 class="m_top10 text-center"><img class="media-object" src="Assests/images/not_applicable.png" alt="..." style="width:25px;height:25px;"></h4>';
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
@@ -574,16 +584,15 @@ function buildMotherPlantWiseDetails(result){
 
 function buildDistrictWiseMpDetails(result){
 	var str='';
-	str+='<div class="table-responsive">';
-		str+='<table class="table table-bordered table_Ntr_Custom">';
+	str+='<div class="">';
+		str+='<table class="table table-bordered table_Ntr_Custom districtWiseMpTableCls">';
 			str+='<thead>';
 				str+='<tr>';
 					str+='<th rowspan="3" class="default_white" style="min-width:20% !important;">Districts</th>';
-					str+='<th colspan="3" class="mother_pant_color">Mother Plants';
-					str+='</th>';
+					str+='<th colspan="3" class="mother_pant_color">Mother Plants</th>';
 					str+='<th colspan="3" class="rdu_pant_color">RDU</th>';
 					str+='<th colspan="3" class="customer_pant_color">Customers</th>';
-					str+='<th rowspan="3" class="default_white">Revenue</th>';
+					//str+='<th rowspan="3" class="default_white">Revenue</th>';
 				str+='</tr>';
 				str+='<tr>';
 					str+='<th rowspan="2" class="mother_pant_color">Name</th>';
@@ -603,7 +612,7 @@ function buildDistrictWiseMpDetails(result){
 			str+='<tbody>';
 			if(result != null && result.length > 0){
 				for(var i in result){
-					var rdusCount = result[i].subList.length;
+					/*var rdusCount = result[i].subList.length;
 					if(rdusCount > 1){
 						rdusCount = rdusCount + 1;
 						str+='<tr>';
@@ -655,17 +664,48 @@ function buildDistrictWiseMpDetails(result){
 								}
 							}
 						str+='</tr>';
+					}*/
+					if(result[i].subList != null && result[i].subList.length > 0){
+						for(var j in result[i].subList){
+							str+='<tr>';
+								str+='<td>'+result[i].name+'</td>';
+								str+='<td class="mother_pant_color motherPlantDetailsCls" attr_mp_id="'+result[i].subList[j].id+'" style="cursor:pointer;text-decoration:underline;">'+result[i].subList[j].name+'</td>';
+								if(result[i].subList[j].health != null && result[i].subList[j].health == 'OK')
+									str+='<td class="good_color mother_pant_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
+								else
+									str+='<td class="bad_color mother_pant_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
+								if(result[i].subList[j].waterQuality != null && result[i].subList[j].waterQuality == 'OK')
+									str+='<td class="good_color mother_pant_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i> Good </p></td>';
+								else
+									str+='<td class="bad_color mother_pant_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i> Bad </p></td>';
+								str+='<td class="rdu_pant_color">'+result[i].subList[j].totalRDUs+'</td>';
+								str+='<td class="rdu_pant_color">'+result[i].subList[j].activeRDUs+'</td>';
+								str+='<td class="rdu_pant_color">'+result[i].subList[j].inActiveRDUs+'</td>';
+								str+='<td class="customer_pant_color">'+result[i].subList[j].totalCustomers+'</td>';
+								str+='<td class="customer_pant_color">'+result[i].subList[j].activeCustomers+'</td>';
+								str+='<td class="customer_pant_color">'+result[i].subList[j].inActiveCustomers+'</td>';
+							str+='</tr>';
+						}
 					}
-					
 				}
 			}
 			str+='</tbody>';
 		str+='</table>';
 	str+='</div>';
 	$("#districtWiseMpDetailsId").html(str);
+	$(".districtWiseMpTableCls").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": 15,
+		"aaSorting": [],
+		"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]]
+	});
 }
 
-function buildMotherPlantsOverviewDetails(result){
+function buildMotherPlantsOverviewDetails(result,type){
 	var str='';
 	str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered table_Ntr_Custom1 motherPlantsTableCls">';
@@ -685,28 +725,82 @@ function buildMotherPlantsOverviewDetails(result){
 			str+='</thead>';
 			str+='<tbody>';
 			if(result != null && result.length > 0){
-				for(var i in result){
-					str+='<tr>';
-						str+='<td class="motherPlantDetailsCls" attr_mp_id="'+result[i].id+'" style="cursor:pointer;text-decoration:underline;color:#004F9E;">'+result[i].name+'</td>';
-						if(result[i].health != null && result[i].health == 'OK')
-							str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
-						else
-							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
-						if(result[i].waterQuality != null && result[i].waterQuality == 'OK')
-							str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
-						else
-							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
-						if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
-							str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
-						else
-							str+='<td> - </td>';
-						str+='<td>'+result[i].totalRDUs+'</td>';
-						str+='<td>'+result[i].totalCustomers+'</td>';
-						str+='<td>'+result[i].location+'</td>';
-						str+='<td>'+result[i].mandal+'</td>';
-						str+='<td>'+result[i].district+'</td>';
-						str+='<td>'+result[i].mobileNo+'</td>';
-					str+='</tr>';
+				if(type != null && type == "total"){
+					for(var i in result){
+						str+='<tr>';
+							str+='<td class="motherPlantDetailsCls" attr_mp_id="'+result[i].id+'" style="cursor:pointer;text-decoration:underline;color:#004F9E;">'+result[i].name+'</td>';
+							if(result[i].health != null && result[i].health == 'OK')
+								str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
+							else
+								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+							if(result[i].waterQuality != null && result[i].waterQuality == 'OK')
+								str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
+							else
+								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+							if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
+								str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
+							else
+								str+='<td> - </td>';
+							str+='<td>'+result[i].totalRDUs+'</td>';
+							str+='<td>'+result[i].totalCustomers+'</td>';
+							str+='<td>'+result[i].location+'</td>';
+							str+='<td>'+result[i].mandal+'</td>';
+							str+='<td>'+result[i].district+'</td>';
+							str+='<td>'+result[i].mobileNo+'</td>';
+						str+='</tr>';
+					}
+				}else if(type != null && type == "good"){
+					for(var i in result){
+						if(result[i].health != null && result[i].health == 'OK'){
+							str+='<tr>';
+								str+='<td class="motherPlantDetailsCls" attr_mp_id="'+result[i].id+'" style="cursor:pointer;text-decoration:underline;color:#004F9E;">'+result[i].name+'</td>';
+								if(result[i].health != null && result[i].health == 'OK')
+									str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
+								else
+									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+								if(result[i].waterQuality != null && result[i].waterQuality == 'OK')
+									str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
+								else
+									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+								if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
+									str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
+								else
+									str+='<td> - </td>';
+								str+='<td>'+result[i].totalRDUs+'</td>';
+								str+='<td>'+result[i].totalCustomers+'</td>';
+								str+='<td>'+result[i].location+'</td>';
+								str+='<td>'+result[i].mandal+'</td>';
+								str+='<td>'+result[i].district+'</td>';
+								str+='<td>'+result[i].mobileNo+'</td>';
+							str+='</tr>';
+						}
+					}
+				}else if(type != null && type == "bad"){
+					for(var i in result){
+						if(result[i].health != null && result[i].health != 'OK'){
+							str+='<tr>';
+								str+='<td class="motherPlantDetailsCls" attr_mp_id="'+result[i].id+'" style="cursor:pointer;text-decoration:underline;color:#004F9E;">'+result[i].name+'</td>';
+								if(result[i].health != null && result[i].health == 'OK')
+									str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
+								else
+									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+								if(result[i].waterQuality != null && result[i].waterQuality == 'OK')
+									str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
+								else
+									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+								if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
+									str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
+								else
+									str+='<td> - </td>';
+								str+='<td>'+result[i].totalRDUs+'</td>';
+								str+='<td>'+result[i].totalCustomers+'</td>';
+								str+='<td>'+result[i].location+'</td>';
+								str+='<td>'+result[i].mandal+'</td>';
+								str+='<td>'+result[i].district+'</td>';
+								str+='<td>'+result[i].mobileNo+'</td>';
+							str+='</tr>';
+						}
+					}
 				}
 			}
 			str+='</tbody>';
@@ -797,13 +891,16 @@ function buildMotherPlantAndRDUDetails(result){
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-4">';
+				str+='<div class="col-sm-5">';
 					str+='<h5 class=""><img src="Assests/images/RMD.png" style="width:25px;"/><span class="font_weight m_left_5">Remote Dispensing Units - '+result.subList.length+'</span></h5>';
 					str+='<div class="row">';
 						str+='<div class="col-sm-6 m_top10">';
 							str+='<div class="pad_5_F6F7FF">';
 								str+='<div class="border_left_width_water_tank">';
-									str+='<h5 class="m_left_5 f_12 font_weight">High Dispance RDU - '+result.highDispanceRDUName+'</h5>';
+									if(result.highDispanceRDUName.length > 10)
+										str+='<h5 class="m_left_5 f_12 font_weight">High Dispance RDU - <span class="toolTipCls" data-toggle="tooltip" data-placement="top" title="'+result.highDispanceRDUName+'">'+result.highDispanceRDUName.substr(0,10)+'..</span></h5>';
+									else
+										str+='<h5 class="m_left_5 f_12 font_weight">High Dispance RDU - <span>'+result.highDispanceRDUName+'</span></h5>';
 									str+='<h4 class="m_top10  m_left_5">'+result.highRDUDispanceLtrs+' Lts</h4>';
 								str+='</div>';
 							str+='</div>';
@@ -811,27 +908,30 @@ function buildMotherPlantAndRDUDetails(result){
 						str+='<div class="col-sm-6 m_top10">';
 							str+='<div class="pad_5_F6F7FF">';
 								str+='<div class="border_left_width_red">';
-									str+='<h5 class="m_left_5 f_12 font_weight">Low Dispance RDU - '+result.lowDispanceRDUName+'</h5>';
+									if(result.lowDispanceRDUName.length > 10)
+										str+='<h5 class="m_left_5 f_12 font_weight">Low Dispance RDU - <span class="toolTipCls" data-toggle="tooltip" data-placement="top" title="'+result.lowDispanceRDUName+'">'+result.lowDispanceRDUName.substr(0,10)+'..</h5>';
+									else
+										str+='<h5 class="m_left_5 f_12 font_weight">Low Dispance RDU - '+result.lowDispanceRDUName+'</h5>';
 									str+='<h4 class="m_top10  m_left_5">'+result.lowRDUDispanceLtrs+' Lts</h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-4">';
+				str+='<div class="col-sm-3">';
 					str+='<div class="row">';
-						str+='<div class="col-sm-6">';
+						str+='<div class="col-sm-8">';
 							str+='<h5 class=""><img src="Assests/images/water_icon.png" style="width:25px;"/><span class="font_weight m_left_5">Water Generated</span></h5>';
 							str+='<div class="pad_5_F6F7FF m_top10">';
 								str+='<div class="m_top_bottom">';
 									if(result.mpSafeWaterDispenced != null && result.mpSafeWaterDispenced != 'N/A' && result.mpSafeWaterDispenced > 0)
 										str+='<h4 class="m_left_5">'+result.mpSafeWaterDispenced+' Per&nbsp;Lts</h4>';
 									else
-										str+='<h4 class="m_left_5"> - Per&nbsp;Lts</h4>';
+										str+='<h4 class="m_left_5"><img class="media-object toolTipCls" data-toggle="tooltip" data-placement="top" title="IOT device not fitted." src="Assests/images/not_applicable.png" alt="..." style="width:25px;height:25px;"></h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-						str+='<div class="col-sm-3">';
+						str+='<div class="col-sm-4">';
 						str+='<h5 class=""><span class="font_weight m_left_5">Customers</span></h5>';
 						str+='<div class="pad_5_F6F7FF m_top20">';
 							str+='<div class="m_top_bottom">';
@@ -839,7 +939,7 @@ function buildMotherPlantAndRDUDetails(result){
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div class="col-sm-3">';
+					/*str+='<div class="col-sm-3">';
 						str+='<h5 class=""><span class="font_weight m_left_5">Revenue</span></h5>';
 						str+='<div class="pad_5_F6F7FF m_top20">';
 							str+='<div class="m_top_bottom_5">';
@@ -847,15 +947,15 @@ function buildMotherPlantAndRDUDetails(result){
 								str+='<h5 class="f_11">In Lac</h5>';
 							str+='</div>';
 						str+='</div>';
-					str+='</div>';
+					str+='</div>';*/
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	
-	str+='<div class="row">';
-	str+='<div class="scrollerDivCls">';
-	var k = 0;
+	/*str+='<div class="row">';
+		str+='<div class="scrollerDivCls">';
+		var k = 0;
 		if(result.subList != null && result.subList.length > 0){
 			for(var i in result.subList){
 				k=k+1;
@@ -923,14 +1023,55 @@ function buildMotherPlantAndRDUDetails(result){
 				str+='</div>';
 			}
 		}
-	str+='</div>';
+		str+='</div>';
+	str+='</div>';*/
+	
+	
+	str+='<div class="table-responsive m_top10">';
+		str+='<table class="table table-bordered table_Ntr_Custom1 mpWiseRdusCls">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th>RDU&nbsp;Location</th>';
+					str+='<th>Water&nbsp;Tank&nbsp;Capacity</th>';
+					str+='<th>Water&nbsp;Dispence</th>';
+					str+='<th>Customers Visit</th>';
+					str+='<th>Old Customers</th>';
+					str+='<th>New Customers</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			if(result.subList != null && result.subList.length > 0){
+				for(var i in result.subList){
+					str+='<tr>';
+						str+='<td class="motherPlantWaterTankDtsCls" attr_rdu_id="'+result.subList[i].id+'" style="cursor:pointer;text-decoration:underline;">'+result.subList[i].name+'</td>';
+						str+='<td>'+result.subList[i].waterTankCapacity+'</td>';
+						str+='<td>'+result.subList[i].mpSafeWaterDispenced+'</td>';
+						str+='<td>'+result.subList[i].totalCustomers+'</td>';
+						str+='<td>'+result.subList[i].oldCustomers+'</td>';
+						str+='<td>'+result.subList[i].newCustomers+'</td>';
+					str+='</tr>';
+				}
+			}
+			str+='</tbody>';
+		str+='</table>';
 	str+='</div>';
 	}
 	
 	$("#motherPlantsDetailsId").html(str);
-	if(result.subList.length>6){
+	$(".toolTipCls").tooltip();
+	$(".mpWiseRdusCls").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": 15,
+		"aaSorting": [],
+		"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]]
+	});
+	/*if(result.subList.length>6){
 		$(".scrollerDivCls").mCustomScrollbar({setHeight:'360px'});
-	}
+	}*/
 }
 $(document).on("click",".motherPlantLowLevelDtsCls",function(){
 	$("#mother_plants_Details_low_level").modal("show");
@@ -1189,3 +1330,53 @@ function buildMothePantRDUDetails(result){
       $("body").addClass("modal-open");
     },1000);
   });
+  
+function buildRDUsOverviewDetails(result){
+	var str='';
+	str+='<div class="table-responsive">';
+		str+='<table class="table table-bordered table_Ntr_Custom1 rdusTableCls">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th>Mother&nbsp;Plant</th>';
+					str+='<th>RDU&nbsp;Name</th>';
+					//str+='<th>Health</th>';
+					str+='<th>Location</th>';
+					str+='<th>Water&nbsp;Tank&nbsp;Capacity</th>';
+					str+='<th>Total Customers</th>';
+					str+='<th>Old Customers</th>';
+					str+='<th>New Customers</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].mpName+'</td>';
+						str+='<td>'+result[i].name+'</td>';
+						/*if(result[i].health != null && result[i].health == 'OK')
+							str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
+						else
+							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';*/
+						str+='<td>'+result[i].location+'</td>';
+						str+='<td>'+result[i].waterTankCapacity+'</td>';
+						str+='<td>'+result[i].totalCustomers+'</td>';
+						str+='<td>'+result[i].oldCustomers+'</td>';
+						str+='<td>'+result[i].newCustomers+'</td>';
+					str+='</tr>';
+				}
+			}
+			str+='</tbody>';
+		str+='</table>';
+	str+='</div>';
+	$("#rdusOverviewId").html(str);
+	$(".rdusTableCls").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": 15,
+		"aaSorting": [],
+		"aLengthMenu": [[15, 50, 100, -1], [15, 50, 100, "All"]]
+	});
+}
