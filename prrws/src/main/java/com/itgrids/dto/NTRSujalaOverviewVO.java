@@ -49,6 +49,9 @@ public class NTRSujalaOverviewVO {
 	private Long newCustomers = 0L;
 	private Long oldCustomers = 0L;
 	
+	private List<NTRSujalaOverviewVO> rdusList = new ArrayList<NTRSujalaOverviewVO>();
+	private Long mpId;
+	private String mpName;
 	
 	public Long getId() {
 		return id;
@@ -271,5 +274,23 @@ public class NTRSujalaOverviewVO {
 	}
 	public void setOldCustomers(Long oldCustomers) {
 		this.oldCustomers = oldCustomers;
+	}
+	public List<NTRSujalaOverviewVO> getRdusList() {
+		return rdusList;
+	}
+	public void setRdusList(List<NTRSujalaOverviewVO> rdusList) {
+		this.rdusList = rdusList;
+	}
+	public Long getMpId() {
+		return mpId;
+	}
+	public void setMpId(Long mpId) {
+		this.mpId = mpId;
+	}
+	public String getMpName() {
+		return mpName;
+	}
+	public void setMpName(String mpName) {
+		this.mpName = mpName;
 	}
 }
