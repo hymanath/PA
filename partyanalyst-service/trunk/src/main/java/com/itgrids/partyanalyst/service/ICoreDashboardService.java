@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
-import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
+import com.itgrids.partyanalyst.dto.AffiliatedVo;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -22,4 +22,5 @@ public interface ICoreDashboardService {
 	public List<IdAndNameVO> getActivityOverAllSummary(Long activityId,Long activityMemberId,Long stateId,Long userTypeId);
 	public List<IdAndNameVO> activitiesDistrictWiseCohort(List<Long> activityIdsLst,String fromDateStr,String toDateStr,Long scopeId,Long activityMemberId,Long stateId,Long userTypeId);
 	public List<EventDetailsVO> getDistrictWiseActivityCounts(Long districtId,Long activityScopeId, String searchType ,Long stateId,Long activityMemberId,Long userTypeId,String showType );
+	public List<AffiliatedVo> getAffilliatedMemberCount(String fromDateStr,String toDateStr,Long activityId,Long activityMemberId,String type);
 }
