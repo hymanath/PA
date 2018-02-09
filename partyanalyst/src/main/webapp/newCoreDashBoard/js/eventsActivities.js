@@ -1834,12 +1834,13 @@ function buildActivityEventBasicCntDtlsNew(result)
 						str1+='<div class="panel-heading" role="tab">';
 							str1+='<h4 class="panel-title">'+result[i].name+'';
 								str1+='<span class="activitesExpandIcon" attr_search_type="singleActivity"  attr_level_id="0" attr_activity_name="\''+result[i].name+'\'" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center" style="padding-top: 2px;padding-bottom: 2px;padding-left: 3px;padding-right: 4px;"></i></span>';
-								str1+='<a role="button" style="display:inline-block;float:right"	class="panelBlockCollapseIcon collapsed activitiesClass triggerJanmabhoomiCls" attr_activity_name="\''+result[i].name+'\'" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneActJ'+i+'" aria-expanded="true" aria-controls="collapseOneActJ'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
+								str1+='<a role="button" style="display:inline-block;float:right"	class="panelBlockCollapseIcon collapsed activitiesClass triggerJanmabhoomiCls" attr_activity_name="\''+result[i].name+'\'" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneActJ'+i+'" aria-expanded="true" aria-controls="collapseOneActJ'+i+'" attr_id="'+result[i].id+'"attr_divId="activityBodyId'+i+'"attr_divId_dalitha="activityBodyId'+i+'_'+i+'">';
 							str1+='</h4>';
 						str1+='</div>';
 								str1+='<div id="collapseOneActJ'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneActJ'+i+'">';
 									str1+='<div class="panel-body">';
 										str1+='<div id="activityBodyId'+i+'"></div>';
+										str1+='<div id="activityBodyId'+i+'_'+i+'" style="padding-top: 14px;"></div>';
 									str1+='</div>';
 								str1+='</div>';
 					str1+='</div>';
@@ -1864,7 +1865,12 @@ $(document).on("click",".activitiesClass",function(){
 	var activityName = $(this).attr("attr_activity_name");
 	$("#hiddenActivityId").val(activityId);
 	var divId = $(this).attr("attr_divId");
+	var dalithDivId =$(this).attr("attr_divId_dalitha");
 	$("#"+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$("#"+dalithDivId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	if(activityId != null && activityId ==38 ){
+		getActivityOverAllSummaryforDelithatejam(activityId,activityName,dalithDivId);
+	}
 	
 	var jsObj={
 		activityId:activityId,
@@ -1882,6 +1888,91 @@ $(document).on("click",".activitiesClass",function(){
 	});
 });
 
+function getActivityOverAllSummaryforDelithatejam(activityId,activityName,divId){
+	var jsObj={
+		activityId:activityId,
+		activityMemberId : globalActivityMemberId,
+	    //stateId : globalStateId,
+	    //userTypeId : globalUserTypeId,
+		fromDateStr:"",
+		toDateStr:""
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "getAffiliatedActivityCountAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+			buildActivityaffiliatedCounts(result,divId,activityName,activityId);
+	});
+}
+
+function buildActivityaffiliatedCounts(result,divId,activityName,activityId){
+	var str='';
+	var locationType='';
+	for(var i in result){
+		if(result[i].locationId==10){
+			locationType ="Parliament Level";
+		}else if(result[i].locationId==4){
+			locationType ="Constituency Level";
+		}else if(result[i].locationId==3){
+			locationType ="district Level";
+		}else if(result[i].locationId==2){
+			locationType ="State Level";
+		}			
+		str+='<h5 class="text-capital">'+locationType+' AFFILIATED MEMBER DETAILS</h5>';
+		str+='<table class="table bg_ED tablePaddingSyle table-bordered m_top10">';
+			str+='<tbody>';
+				str+='<tr>';
+					str+='<td rowspan="2">';
+						str+='<p class="text-muted text-capital">total Sc Population</p>';
+						str+='<h5 style="margin-top:25px !important;">'+result[i].totalMembers+'</h5>';
+					str+='</td>';
+					str+='<td>';
+						str+='<p class="text-muted text-capital">total Covered Sc Population</p>';
+						str+='<h5 style="margin-top:25px !important;">'+result[i].totalCovered+'&nbsp;&nbsp;';
+						if(result[i].totalMembers !=null && result[i].totalMembers >0){
+						str+='<small class="text-danger responsiveFont">'+parseFloat((result[i].totalCovered/result[i].totalMembers)*100).toFixed(2)+'%</small>';
+						}else{
+							str+='';
+						}str+='</h5>';
+						
+					str+='</td>';
+					str+='<td>';
+						str+='<p class="text-muted text-capital">total Registered</p>';
+						str+='<h5 style="margin-top:25px !important;">'+result[i].totalRegistration+'</h5>';
+					str+='</td>';
+					str+='<td>';
+						str+='<p class="text-muted text-capital">total Loan Applied</p>';
+						str+='<h5 style="margin-top:25px !important;">'+result[i].totalLoanApplied+'</h5>';
+					str+='</td>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<td>';
+						str+='<p class="text-muted text-capital">today Covered Sc Population</p>';
+						str+='<h5 style="margin-top:25px !important;">'+result[i].totalCovered+'&nbsp;&nbsp;';
+						/* if(result[i].totalMembers !=null && result[i].totalMembers >0){
+						str+='<small class="text-danger responsiveFont">'+parseFloat((result[i].totalCovered/result[i].totalMembers)*100).toFixed(2)+'%</small>';
+						}else{
+							str+='';
+						} */str+='</h5>';
+						
+					str+='</td>';
+					str+='<td>';
+						str+='<p class="text-muted text-capital">today Registered</p>';
+						str+='<h5 style="margin-top:25px !important;">'+result[i].totalRegistration+'</h5>';
+					str+='</td>';
+					str+='<td>';
+						str+='<p class="text-muted text-capital">today Loan Applied</p>';
+						str+='<h5 style="margin-top:25px !important;">'+result[i].totalLoanApplied+'</h5>';
+					str+='</td>';
+				str+='</tr>';
+			str+='</tbody>';
+		str+='</table>';
+	}
+	$("#"+divId).html(str);
+	$('[data-toggle="tooltip"]').tooltip();
+}
 function buildActivityCounts(result,divId,activityName,activityId)
 {
 	var str=' ';
