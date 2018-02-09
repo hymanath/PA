@@ -864,4 +864,15 @@ public class NregsDashboardController {
 		}
 		return statusVO;
 	}
+	@PostMapping("/getNregaComponentsData")
+	public @ResponseBody List<NregsDataVO> getNregaComponentsData(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getNregaComponentsData(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaComponentsData - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 }

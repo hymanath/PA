@@ -114,6 +114,7 @@ public class UserServiceImpl implements IUserService {
 				for (Object[] param : vendorList) {
 					userVO.setVendorId(Long.valueOf(param[0] != null ? param[0].toString():"0"));
 					userVO.setVendorName(param[1] != null ? param[1].toString():"");
+					userVO.setUserName(param[2] != null ? param[2].toString():"");
 				}
 			}
 		}
@@ -916,7 +917,7 @@ public class UserServiceImpl implements IUserService {
 	 * @return List<IdNameVO  
 	 */
 	public List<IdNameVO> getFavouriteComponents(IdNameVO inputVO) {
-		List<IdNameVO> resultList = new ArrayList<>(0);
+		List<IdNameVO> resultList = new ArrayList<IdNameVO>(0);
 		try {
 			List<Object[]> favouriteComponentObjList = favouriteComponentDAO.getFavouriteComponencts(inputVO);
 			if (favouriteComponentObjList != null && favouriteComponentObjList.size() > 0) {

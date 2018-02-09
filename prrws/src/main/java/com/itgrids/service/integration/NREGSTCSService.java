@@ -7949,4 +7949,101 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return statusVO;
 	}
+	/*
+	 * Date : 08/02/2018
+	 * Author : Srujana
+	 * @description : getNregaComponentsData
+	 */
+	public List<NregsDataVO> getNregaComponentsData(InputVO inputVO){
+		List<NregsDataVO> voList = new ArrayList<NregsDataVO>(0);
+		try {
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			String webServiceUrl = null;
+			String componentName =null;
+			//Timely Payment,IHHL,Vermi Compost,Farm Ponds,Solid Waste Management,Burial Grounds,Play Fields
+			if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Farm")){
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService_new/FarmPondData_new";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FarmPondService/FarmPondData
+				componentName = "Farm Ponds";
+			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("IHHL")){
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService_new/IHHLData_new";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/IHHLService/IHHLData
+				componentName = "IHHL";
+			}
+			else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Vermi")){
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/VermiService_new/VermiData_new";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/VermiService/VermiData
+				componentName = "Vermi Compost";
+			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Solid")){
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SolidWa" +
+						"steManagementServices/SolidWasteManagementData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/SWMService/SWMData
+				componentName = "Solid Waste Management";
+			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Play")){
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFieldsServices/PlayFieldsData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/PlayFields/PlayFieldsData
+				componentName = "Play Fields";
+			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Burial")){
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialGroundsServices/BurialGroundsData";//http://dbtrd.ap.gov.in/NregaDashBoardService/rest/BurialService/BurialData
+				componentName = "Burial Grounds";
+			}else if(inputVO.getDivType() != null && inputVO.getDivType().trim().toString().equalsIgnoreCase("Timely")){
+				webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/TimePaymentsServicesNew/TimePaymentsDataNew";
+				componentName = "Timely Payment";
+			}
+            String str = convertingInputVOToString(inputVO);
+			
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+	        
+	        if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUEID").toString().trim().length() > 0 ? jObj.getString("UNIQUEID") : "1").toString()));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setTarget(jObj.getLong("TARGET"));
+	 	    				vo.setGrounded(jObj.getString("GROUNDED"));
+	 	    				vo.setCompleted(jObj.getLong("COMPLETED"));
+	 	    				vo.setPercentage(jObj.getString("PERCENTAGE"));
+	 	    				vo.setUniqueCode(jObj.getString("UNIQUEID"));
+	 	    				String percValue = jObj.getString("PERCENTAGE");
+	 	    				if(inputVO.getType() != null && inputVO.getType().equalsIgnoreCase("red") && (Double.valueOf(percValue) < 60)){
+	 	    					voList.add(vo);
+	 	    				}else if(inputVO.getType() != null && inputVO.getType().equalsIgnoreCase("orange") && (Double.valueOf(percValue) >=60 && Double.valueOf(percValue) <90)){
+	 	    					voList.add(vo);
+	 	    				}else if(inputVO.getType() != null && inputVO.getType().equalsIgnoreCase("green") && (Double.valueOf(percValue) >=90 && Double.valueOf(percValue) <100)){
+	 	    					voList.add(vo);
+	 	    				}else if(inputVO.getType() != null && inputVO.getType().equalsIgnoreCase("gold") && (Double.valueOf(percValue)>=100)){
+	 	    					voList.add(vo);
+	 	    				}
+	 	    			}
+	 	    		}
+	 	    		List<Object[]> nregaComments= nregaComponentCommentsDAO.getNregaComponentCommentsByComponent(componentName);
+	 				if(nregaComments != null && nregaComments.size()>0){
+	 					for(Object[] param : nregaComments){
+	 						NregsDataVO matchedVo= getMatchedVoForUniqueCode(voList,commonMethodsUtilService.getStringValueForObject(param[3]));
+	 						if(matchedVo != null){
+	 							matchedVo.setStatus(commonMethodsUtilService.getStringValueForObject(param[0]));
+	 							matchedVo.setComments(commonMethodsUtilService.getStringValueForObject(param[1]));
+	 							matchedVo.setActionPlan(commonMethodsUtilService.getStringValueForObject(param[2]));
+	 							matchedVo.setStatusId(commonMethodsUtilService.getLongValueForObject(param[4]));
+	 							matchedVo.setComponentId(commonMethodsUtilService.getLongValueForObject(param[5]));
+	 						}
+	 					}
+	 				}
+	 	    		
+	 	    		
+	 	      }
+	 	      }
+		}catch(Exception e){
+			LOG.error("Exception raised at getNregaComponentsData - NREGSTCSService service", e);
+		}
+		return voList;
+	}
 }
