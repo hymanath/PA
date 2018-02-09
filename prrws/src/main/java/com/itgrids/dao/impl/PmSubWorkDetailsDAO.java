@@ -576,7 +576,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	}
 	public String getMaxEndirseNoAndValidatingEndorseNo(String endorseNo){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.workEndorsmentNo from PmSubWorkDetails model where model.isDeleted='N' and model.workEndorsmentNo is not null  ");
+		sb.append("select distinct model.workEndorsmentNo from PmSubWorkDetails model where model.isDeleted='N'" +
+				" and model.workEndorsmentNo is not null and model.petition.isDeleted='N' ");
 		if(endorseNo != null && !endorseNo.isEmpty()){
 			sb.append(" and model.workEndorsmentNo = :endorseNo ");
 		}

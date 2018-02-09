@@ -291,15 +291,15 @@ function buildPetitionDetailsView(result){
 															}
 										var ofcDesigLoca = "";
 										if(result.historyList[h].subList1[j].subList1[k].pmOfficerDesgId == 19){
-												ofcDesigLoca = result.historyList[h].subList1[j].subList1[k].officerName;
+												ofcDesigLoca = "("+result.historyList[h].subList1[j].subList1[k].officerName+")";
 											}
 														
 														str+='<div class="col-sm-3 pull-right">';
 															str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8;">';
-																str+='<h5 class="font_weight" style="color:#1283C8;text-transform:uppercase;"> UPDATED BY&nbsp;:'+result.historyList[h].subList1[j].subList1[k].designation+'</h5>';
-																if(ofcDesigLoca != ""){
+																str+='<h5 class="" style="text-transform:uppercase;"> <span style="color:#1283C8">UPDATED BY&nbsp;:</span><br>'+result.historyList[h].subList1[j].subList1[k].designation+''+ofcDesigLoca+'<br>('+result.historyList[h].subList1[j].subList1[k].pmDepartmentName+')</h5>';
+																/* if(ofcDesigLoca != ""){
 																str+='<h5 class="font_weight f_10 m_top5">'+ofcDesigLoca+'</h5>';
-																}
+																} */
 															str+='</div>';
 														str+='</div>';
 														str+='<div class="col-sm-2 pull-right">';
@@ -1927,7 +1927,13 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	var statusId = $("#statusChangeId").val();
 	var documentTypeId = $("#documentTypeId").val();
 	var coveringLetterPath=$('#coverLetterPath').val();
-		
+	
+		if($("#statusChangeDivId").is(':visible')){
+		  if(statusId == null || statusId ==0){
+			 $("#statusIdErrStr").html('<h5>Please select status </h5>');
+			 return;
+			}
+	}
 	if(statusId == 0){
 		if(remarksId == 0 || remarksId == '' || remarksId == null || remarksId.trim().length == 0){
 			//$('#remarkIdErr').html("<h5 style='color:red;'>Comment is required</h5>");
@@ -2369,7 +2375,7 @@ var json = {
 	$('#endorsementNoErr').html("");
 	 }else if(result.exceptionMsg == "Exist"){
 		 $('#endorsementNoErr').html("");
-		 $('#endorsementNoErr').html("<h5 style='color:red;'>This endorsment no exist</h5>");
+		 $('#endorsementNoErr').html("<h5 style='color:red;'>This endorsment No already generated</h5>");
 		}
 	
 	

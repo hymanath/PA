@@ -353,7 +353,7 @@
 				</div>
 				<div class="row m_top10" >
 					<div class="col-sm-12" id="statusChangeDivId">
-						<label><span id="forwardText">FORWARD FOR:</span> <span style="color:red;">*</span><span id="statusIdErrStr"></span></label>
+						<label><span id="forwardText">FORWARD FOR:</span> <span style="color:red;">*</span><span id="statusIdErrStr" style="color:red;"></span></label>
 						<select class="form-control chosen-select" id="statusChangeId">
 							<option value="0"> Select Action </option>
 						</select>
