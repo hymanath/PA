@@ -18745,5 +18745,15 @@
 				<param name="root">nominatedPostDetailsVOList</param>
 		</result>
 	</action>
+	<action name="getDepartMentWiseBoardsAction" class="coreDashboardAction" method="getDepartMentWiseBoards">
+		<result type="json" name="success">
+				<param name="root">nominatedPostDetailsVOList</param>
+		</result>
+	</action>
+	<action name="getBoardWisePositionsAction" class="coreDashboardAction" method="getBoardWisePositions">
+		<result type="json" name="success">
+				<param name="root">nominatedPostDetailsVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
