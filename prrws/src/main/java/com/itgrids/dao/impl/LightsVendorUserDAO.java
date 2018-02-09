@@ -19,7 +19,7 @@ public class LightsVendorUserDAO extends GenericDaoHibernate<LightsVendorUser, L
 	public List<Object[]> getVendorIdByUserId(Long userId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.lightsVendor.lightsVendorId,"
-				+ "model.lightsVendor.vendorName"
+				+ "model.lightsVendor.vendorName,model.user.username "
 				+ " from LightsVendorUser model"
 				+ " where model.isDeleted = 'N'"
 				+ " and model.user.isDeleted ='N' and model.user.isEnabled ='Y'"

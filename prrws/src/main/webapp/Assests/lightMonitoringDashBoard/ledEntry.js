@@ -14,6 +14,7 @@ setTimeout(function(){
 }, 1000);
 $("#dateRangePickerMGNF").daterangepicker({
   singleDatePicker: true,
+   maxDate: new Date(), 
   locale: {
 	format: 'YYYY-MM-DD'
   }
@@ -112,7 +113,8 @@ function getMandalsByDistrict(){
 		$("#mandalLoading").html('');
 		if(result != null && result.length > 0){
 			for(var i in result){
-				$("#mandalId").append("<option value="+result[i].id+">"+result[i].name+" </option>")
+				if(result[i].id != 545)
+				 $("#mandalId").append("<option value="+result[i].id+">"+result[i].name+" </option>")
 			}
 		}
 		$("#mandalId").trigger("chosen:updated");

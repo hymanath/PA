@@ -2583,6 +2583,10 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 	}
 	
 	if(projectDivId == 'Farm Ponds' || projectDivId == 'IHHL' || projectDivId == 'Vermi Compost' || projectDivId == 'Solid Waste Management' || projectDivId == 'Play fields' || projectDivId == 'Burial Ground' || projectDivId == 'Timely Payment'){
+		var redClor="red";
+		var oragneClor="orange";
+		var greenColor ="green";
+		var goldColor ="gold";
 		str1+='<h4 class="text-capital font_weight m_top20" style="margin-left: 15px;">'+projectDivId+' Achievement Comparision Summary From NOV-30th to Today</h4>';
 		str1+='<div class="table-responsive m_top20">';
 			str1+='<table class="table table_right_css">';
@@ -2605,10 +2609,26 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 					str1+='</tr>';
 					str1+='<tr>';
 						str1+='<th>As Of Today</th>';
-						str1+=' <td>'+result.mandalsInRed+'</td>';
-						str1+=' <td>'+result.mandalsInOrange+'</td>';
-						str1+=' <td>'+result.mandalsInGreen+'</td>';
-						str1+=' <td>'+result.mandalsInGold+'</td>';
+						if(result.mandalsInRed != null && result.mandalsInRed>0){
+						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+redClor+' style="cursor:pointer;">'+result.mandalsInRed+'</td>';
+						}else{
+							str1+=' <td>'+result.mandalsInRed+'</td>';
+						}
+						if(result.mandalsInOrange != null && result.mandalsInOrange>0){
+						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+oragneClor+' style="cursor:pointer;">'+result.mandalsInOrange+'</td>';
+						}else{
+							str1+=' <td>'+result.mandalsInOrange+'</td>';
+						}
+						if(result.mandalsInGreen != null && result.mandalsInGreen>0){
+						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+greenColor+' style="cursor:pointer;">'+result.mandalsInGreen+'</td>';
+						}else{
+							str1+=' <td>'+result.mandalsInGreen+'</td>';
+						}
+						if(result.mandalsInGold != null && result.mandalsInGold>0){
+						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+goldColor+' style="cursor:pointer;" >'+result.mandalsInGold+'</td>';
+						}else{
+							str1+=' <td>'+result.mandalsInGold+'</td>';
+						}
 					str1+='</tr>';
 				str1+='</tbody>';
 			str1+='</table>';
@@ -9495,3 +9515,131 @@ $(document).on("click","[attr_labr_budget_radioBtn]",function(){
 	} */
 	getNREGSLabourBudgetExpenditure(blockName,locationType,locationId,buildType)
 });
+$(document).on("click",".commentsBlockCls",function(e){
+	var divName = $(this).attr('attr_divName');
+	var locationType =$(this).attr('attr_location_Type');
+	var locationId = $(this).attr('attr_loaction_id');
+	var color =$(this).attr('attr_color');
+	getDepartmentCommentsDetails(divName,locationType,locationId,color);
+});
+function getDepartmentCommentsDetails(globalDivName,menuLocationType,menuLocationId,color){
+	$("#nregsPanExpModalId").modal("show");
+	$("#LabBudgtPanExBodyId").html(spinner);
+	var districtId = $("#selectedName").attr("attr_distId");
+	$("#larBudExpHeadingId").html(''+globalDivName+' Achievement Comparision  of '+color+' Color  Summary');
+	if(globalDivName == "Farm" || globalDivName == "Timely"){
+		var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			locationType: menuLocationType,
+			divType : globalDivName,
+			locationId : menuLocationId,
+			sublocaType : "mandal",
+			//districtId:districtId,
+			type : color,
+			program : "-1"
+		}
+	}else{
+	var json = {
+			year : "2017",
+			fromDate : glStartDate,
+			toDate : glEndDate,
+			locationType: menuLocationType,
+			divType : globalDivName,
+			locationId : menuLocationId,
+			sublocaType : "mandal",
+			//districtId:districtId,
+			type : color
+		}
+	}
+	$.ajax({
+		url: 'getNregaComponentsData',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(result) {
+			buildDepartmentCommentsDetails(result,globalDivName);
+		}
+	});
+}
+function buildDepartmentCommentsDetails(result,globalDivName){
+	var str='';
+		str+='<div class="row">';
+			str+='<div class="col-sm-12">';
+				str+='<div class="table-responsive">';
+					str+='<table class="table table-bordered" id="componentCommentId">';
+						str+='<thead>';
+							str+='<th>District</th>';
+							str+='<th>Assembly</th>';
+							str+='<th>Mandal</th>';
+							str+='<th>Target</th>';
+							str+='<th>Completed</th>';
+							str+='<th>Achivement Percentage</th>';
+							str+='<th>Status</th>';
+							str+='<th>Comment</th>';
+							str+='<th>Action Plan</th>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result){
+							str+='<tr>';
+								str+='<td>'+result[i].district+'</td>';
+								str+='<td>'+result[i].constituency+'</td>';
+								str+='<td>'+result[i].mandal+'</td>';
+								str+='<td>'+result[i].target+'</td>';
+								str+='<td>'+result[i].completed+'</td>';
+								str+='<td>'+result[i].percentage+'</td>';
+								if(result[i].status != null){
+								str+='<td>'+result[i].status+'</td>';
+								}else{
+									str+='<td>-</td>';
+								}	
+								if(result[i].comments != null){
+								str+='<td>'+result[i].comments+'</td>';
+								}else{
+									str+='<td>-</td>';
+								}
+								if(result[i].actionPlan != null){
+								str+='<td>'+result[i].actionPlan+'</td>';
+								}else{
+									str+='<td>-</td>';
+								}
+							str+='</tr>';
+						}
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#LabBudgtPanExBodyId").html(str);
+		$("#componentCommentId").dataTable({
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			 buttons: [
+				/* {
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o"></i>',
+					titleAttr: 'CSV',
+					title:	   'Labour Budget',
+					filename:  'Labour Budget'+moment().format("DD/MMMM/YYYY  HH:MM"),
+				},
+				{
+					extend:    'pdfHtml5',
+					text:      '<i class="fa fa-file-pdf-o"></i>',
+					titleAttr: 'PDF',
+					title:	   'Labour Budget',
+					filename:  'Labour Budget'+moment().format("DD/MMMM/YYYY  HH:MM"),
+					orientation: "landscape",
+					pageSize:'A3',
+					customize: function (doc) {
+						doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+					}
+				} */
+			] 
+		});
+}

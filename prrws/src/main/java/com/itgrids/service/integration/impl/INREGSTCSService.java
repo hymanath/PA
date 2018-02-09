@@ -90,4 +90,5 @@ public interface INREGSTCSService {
 	public List<NregsProjectsVO> getLocationWiseEmptyVacenciesDetails(InputVO inputVO);
 	public IdNameVO saveNregaComponentsWiseAchvPerc();
 	public IdNameVO saveNregaComponentsWiseAchvPercTillToday();
+	public List<NregsDataVO> getNregaComponentsData(InputVO inputVO);
 }
