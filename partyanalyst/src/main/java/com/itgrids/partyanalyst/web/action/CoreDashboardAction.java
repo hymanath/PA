@@ -20,6 +20,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AffiliatedVo;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.BoothInchargesVO;
 import com.itgrids.partyanalyst.dto.CadreBasicVO;
@@ -217,6 +218,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
 	List<NominatedPostDetailsVO> nominatedPostDetailsVOList;
+	List<AffiliatedVo> affiliatedMemberCountList;
 	//setters And Getters
 	
 	
@@ -1077,6 +1079,16 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setNominatedPostDetailsVOList(
 			List<NominatedPostDetailsVO> nominatedPostDetailsVOList) {
 		this.nominatedPostDetailsVOList = nominatedPostDetailsVOList;
+	}
+
+	
+	public List<AffiliatedVo> getAffiliatedMemberCountList() {
+		return affiliatedMemberCountList;
+	}
+
+	public void setAffiliatedMemberCountList(
+			List<AffiliatedVo> affiliatedMemberCountList) {
+		this.affiliatedMemberCountList = affiliatedMemberCountList;
 	}
 
 	//business methods
@@ -5734,6 +5746,16 @@ public String getDepartMentAndBoardWisePositinsStatusCount(){
     }
     return Action.SUCCESS;
   }
+
+	public String getAffilliatedMemberCount(){
+	    try{
+	      jObj = new JSONObject(getTask());
+	      affiliatedMemberCountList = coreDashboardService.getAffilliatedMemberCount(jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("activityId"),jObj.getLong("activityMemberId"),"main");
+	    }catch(Exception e){
+	      LOG.error("Exception raised at getDepartMentAndBoardWisePositinsStatusCount() of LocationDashboardAction{}", e);
+	    }
+	    return Action.SUCCESS;
+	}
 public String getDepartMentWiseBoards(){
     try{
       jObj = new JSONObject(getTask());
