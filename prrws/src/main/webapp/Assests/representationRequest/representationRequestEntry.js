@@ -1106,7 +1106,7 @@ function buildPetitionReferredMemberDetails(result,typeVal){
 					str+='<div class="bgColorCandidatesView candidateAddedView" attr_type='+typeVal+' attr_candidateId='+result[i].referrerCandidateId+' id="candidate'+typeVal+''+result[i].referrerCandidateId+'">';
 					
 					str+='<div class="row">';
-					str+='<div class="pull-right showRemoveIcon removeTooltipCls" title="Remove Referral Member" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;" data-toggle="tooltip" data-placement="top"><i class="glyphicon glyphicon-remove"></i></div>';
+					str+='<div class="pull-right showRemoveIcon removeTooltipCls" title="Remove Self Member" attr_type="'+typeVal+'"  attr_candidateId="'+result[i].referrerCandidateId+'" style="display:none;" data-toggle="tooltip" data-placement="top"><i class="glyphicon glyphicon-remove"></i></div>';
 					str+='<div class="representation-selected" id="candidateRemove'+typeVal+''+result[i].referrerCandidateId+'">Member Selected <span class="tooltipCls" data-toggle="tooltip" data-placement="top" title="Unselected Member"><i attr_candidateId='+result[i].referrerCandidateId+' attr_type='+typeVal+' class="glyphicon glyphicon-remove representation-remove ccccc" style="background-color: green; border-radius: 50%; cursor: pointer; font-size: 14px; padding: 5px;top:-3px;color:#fff" ></i></span></div>';
 					
 					if(result[i].petitionMemberVO.imagePath != null && result[i].petitionMemberVO.imagePath.length>0){
@@ -3531,7 +3531,10 @@ $(document).on("click",".showRemoveReferralIcon",function(){
 		$('.searchCandidateCls').show();
 		$("#candidateDetails"+typeVal+"DivId").html('');	
 	}
-	refCandCount=parseInt(refCandCount)-1; 
+	refCandReferralCount=parseInt(refCandReferralCount)-1; 
+	if(refCandReferralCount == undefined || refCandReferralCount == "undefined" || refCandReferralCount == null || parseInt(refCandReferralCount) == 0 ){
+		$("#rederralNameDivId").hide();
+	}
 	$('.refCandidatesCls').each(function(){
 		var value = $(this).val();
 		if(parseInt(value)==parseInt(candidateId)){
