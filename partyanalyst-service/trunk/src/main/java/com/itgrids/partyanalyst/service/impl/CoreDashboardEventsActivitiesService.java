@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.AffiliatedVo;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.EventLocationVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -66,8 +67,14 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	 private IPanchayatDAO panchayatDAO;
 	 private IActivityQuestionAnswerDAO activityQuestionAnswerDAO;
 	private IActivityQuestionnaireDAO activityQuestionnaireDAO;
+	private CoreDashboardService coreDashboardService;
 	 
-	 
+	public CoreDashboardService getCoreDashboardService() {
+		return coreDashboardService;
+	}
+	public void setCoreDashboardService(CoreDashboardService coreDashboardService) {
+		this.coreDashboardService = coreDashboardService;
+	}
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -2330,6 +2337,44 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 					mathedQuestionVo.getOptionList().add(optionVo2);
 					locationVo.getQuestionList().add(mathedQuestionVo);
 				}
+			}
+		}
+		List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
+		for (AffiliatedVo affiliatedVo : activityParticipatentCount) {
+			EventLocationVO locationVo =locationMap.get(affiliatedVo.getLocationId());
+			if(locationVo != null){
+				EventLocationVO questionVO = new EventLocationVO();
+				questionVO.setQuestionId(999l);
+				questionVO.setQuestionName("Affiliated Member Data");
+				
+				questionVO.setOptionId(999l);
+				questionVO.setOptionName("List Of Counts");
+				locationVo.getQuestionList().add(questionVO);
+				
+				EventLocationVO optionVo = new EventLocationVO();
+				EventLocationVO optionVo1 = new EventLocationVO();
+				EventLocationVO optionVo2 = new EventLocationVO();
+				EventLocationVO optionVo3 = new EventLocationVO();
+				
+				optionVo.setOptionId(991l);
+				optionVo.setOptionName("totalSCPOP");
+				optionVo.setCount(affiliatedVo.getTotalMembers());
+				questionVO.getOptionList().add(optionVo);
+				
+				optionVo1.setOptionId(992l);
+				optionVo1.setOptionName("coveredPOP");
+				optionVo1.setCount(affiliatedVo.getTotalCovered());
+				questionVO.getOptionList().add(optionVo1);
+
+				optionVo2.setOptionId(993l);
+				optionVo2.setOptionName("Registered");
+				optionVo2.setCount(affiliatedVo.getTotalRegistration());
+				questionVO.getOptionList().add(optionVo2);
+				
+				optionVo3.setOptionId(994l);
+				optionVo3.setOptionName("LoanApplied");
+				optionVo3.setCount(affiliatedVo.getTotalLoanApplied());
+				questionVO.getOptionList().add(optionVo3);
 			}
 		}
  		for (Long lcoationId : locationMap.keySet()) {
