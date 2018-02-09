@@ -4,17 +4,14 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -22,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IActivityConductedInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
+import com.itgrids.partyanalyst.dao.IActivityLocationParticipantInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberDAO;
@@ -37,10 +35,10 @@ import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
+import com.itgrids.partyanalyst.dto.AffiliatedVo;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
-import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.ActivityScope;
@@ -73,6 +71,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IActivityDocumentDAO activityDocumentDAO;
 	private IActivityConductedInfoDAO activityConductedInfoDAO;
+
+	private IActivityLocationParticipantInfoDAO activityLocationParticipantInfoDAO;
 	
 	
 	public IActivityConductedInfoDAO getActivityConductedInfoDAO() {
@@ -170,6 +170,14 @@ public class CoreDashboardService implements ICoreDashboardService{
 	public void setActivityInfoDocumentDAO(
 			IActivityInfoDocumentDAO activityInfoDocumentDAO) {
 		this.activityInfoDocumentDAO = activityInfoDocumentDAO;
+	}
+	
+	public IActivityLocationParticipantInfoDAO getActivityLocationParticipantInfoDAO() {
+		return activityLocationParticipantInfoDAO;
+	}
+	public void setActivityLocationParticipantInfoDAO(
+			IActivityLocationParticipantInfoDAO activityLocationParticipantInfoDAO) {
+		this.activityLocationParticipantInfoDAO = activityLocationParticipantInfoDAO;
 	}
 	//business methods.
 	public UserDataVO getUserBasicDetails(Long userId){
@@ -2148,5 +2156,62 @@ public EventDetailsVO getMatchedVOByIdForCounts(Long id,List<EventDetailsVO> lis
 		}
    	return returnvo;
    }
+@Override
+public List<AffiliatedVo> getAffilliatedMemberCount(String fromDateStr,String toDateStr, Long activityId, Long activityMemberId,String type) {
+	List<AffiliatedVo> finalList = new ArrayList<AffiliatedVo>();
+	try{
+		Long locationAccessLevelId = 0l;
+		Set<Long> locationValues = new HashSet<Long>(0);
+		if(type !=null && type.length() > 0 && type.equalsIgnoreCase("main")){
+		 List<Object[]> userAccLvlANdVals=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			if(userAccLvlANdVals != null && userAccLvlANdVals.size() > 0){
+				 locationAccessLevelId=(Long) userAccLvlANdVals.get(0)[0];
+				 for(Object[] param:userAccLvlANdVals){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+		   }
+			if(locationAccessLevelId == 4l){
+				locationAccessLevelId=10l;
+			}else if(locationAccessLevelId == 5l){
+				locationAccessLevelId=4l;
+			}
+		}else{
+			locationAccessLevelId=activityMemberId;
+		}
+			List<Object[]> activityParticipatentCount =activityLocationParticipantInfoDAO.getCoveredPeopleOfActivity(activityId,locationAccessLevelId,locationValues);
+			
+			// 0-totalMem1-totalcovered2-todaycovered,3-totreg,4-todayreg,5-totLoan,6todayLoanApp,7-locationname,8-locationID
+			if(type !=null && type.equalsIgnoreCase("table")){
+				for (Object[] objects : activityParticipatentCount) {
+					AffiliatedVo affiliatedVo= new AffiliatedVo();
+					affiliatedVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[7]));
+					affiliatedVo.setTotalMembers(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					affiliatedVo.setTotalCovered(commonMethodsUtilService.getLongValueForObject(objects[1]));
+					affiliatedVo.setTodayCovered(commonMethodsUtilService.getLongValueForObject(objects[2]));
+					affiliatedVo.setTotalRegistration(commonMethodsUtilService.getLongValueForObject(objects[3]));
+					affiliatedVo.setTodayRegistration(commonMethodsUtilService.getLongValueForObject(objects[4]));
+					affiliatedVo.setTotalLoanApplied(commonMethodsUtilService.getLongValueForObject(objects[5]));
+					affiliatedVo.setTodayLoanApplied(commonMethodsUtilService.getLongValueForObject(objects[6]));
+					finalList.add(affiliatedVo);
+				}
+			}else{
+				AffiliatedVo affiliatedVo= new AffiliatedVo();
+				affiliatedVo.setLocationId(locationAccessLevelId);
+				for (Object[] objects : activityParticipatentCount) {
+					affiliatedVo.setTotalMembers(affiliatedVo.getTotalMembers()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+					affiliatedVo.setTotalCovered(affiliatedVo.getTotalCovered()+commonMethodsUtilService.getLongValueForObject(objects[1]));
+					affiliatedVo.setTodayCovered(affiliatedVo.getTodayCovered()+commonMethodsUtilService.getLongValueForObject(objects[2]));
+					affiliatedVo.setTotalRegistration(affiliatedVo.getTotalRegistration()+commonMethodsUtilService.getLongValueForObject(objects[3]));
+					affiliatedVo.setTodayRegistration(affiliatedVo.getTodayRegistration()+commonMethodsUtilService.getLongValueForObject(objects[4]));
+					affiliatedVo.setTotalLoanApplied(affiliatedVo.getTotalLoanApplied()+commonMethodsUtilService.getLongValueForObject(objects[5]));
+					affiliatedVo.setTodayLoanApplied(affiliatedVo.getTodayLoanApplied()+commonMethodsUtilService.getLongValueForObject(objects[6]));
+				}
+				finalList.add(affiliatedVo);
+			}
+	}catch(Exception e){
+		LOG.error("Exception occurred at getAffilliatedMemberCount() of CoreDashboardService", e);
+	}
+	return finalList;
+}
 
 }
