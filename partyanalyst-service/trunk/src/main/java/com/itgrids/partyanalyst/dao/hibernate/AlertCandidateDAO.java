@@ -761,4 +761,25 @@ public List<String> getCategoryListForAlertAndDepartment(Long alertId,Long cnpDe
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getAlertInvolvedCandidateInfo(Long alertId){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select tdpCadre.firstname,tdpCadre.lastname,model.newsCandidate,model.organization " +
+				" from AlertCandidate model " +
+				" left join model.tdpCadre tdpCadre " +
+				" where " +
+				// " model.alert.isDeleted ='N' " +
+				" model.alertId=:alertId ");
+		
+		Query query = getSession().createQuery(str.toString());   
+		
+		query.setParameter("alertId", alertId);
+		
+		return query.list(); 
+		
+	}
+	
+	
 }
