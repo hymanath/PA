@@ -185,6 +185,18 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(inputVO.getStatusIds() != null && inputVO.getStatusIds().size()>0){
 			sb.append(" and model1.pmStatus.pmStatusId in (:statusIds) ");
 		}
+		if(inputVO.getGovtSchmeIdsList() != null && inputVO.getGovtSchmeIdsList().size()>0){
+			sb.append(" and model1.pmDepartment.pmDepartmentId in (:dashBrdDeptIds) ");
+		}
+		if(inputVO.getSourceIdsList() != null && inputVO.getSourceIdsList().size()>0){
+			sb.append(" and model1.pmSubject.pmSubjectId in (:dashBrdSubjIds) ");
+		}
+		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size()>0){
+			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:dashBrdRefDesigIds) ");
+		}
+		if(inputVO.getSubProgramIdsList() != null && inputVO.getSubProgramIdsList().size()>0){
+			sb.append(" and model.pmRefCandidateDesignation.pmRefCandidateDesignationId in (:dashBrdRefCanId) ");
+		}
 		Query query = getSession().createQuery(sb.toString());
 		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValues != null && searchLevelValues.size()>0){
 			query.setParameterList("searchLevelValues", searchLevelValues);
@@ -222,6 +234,18 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		}
 		if(petitionIdsList != null && petitionIdsList.size()>0){
 			query.setParameterList("petitionIdsList",petitionIdsList);
+		}
+		if(inputVO.getGovtSchmeIdsList() != null && inputVO.getGovtSchmeIdsList().size()>0){
+			query.setParameterList("dashBrdDeptIds", inputVO.getGovtSchmeIdsList());
+		}
+		if(inputVO.getSourceIdsList() != null && inputVO.getSourceIdsList().size()>0){
+			query.setParameterList("dashBrdSubjIds", inputVO.getSourceIdsList());
+		}
+		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size()>0){
+			query.setParameterList("dashBrdRefDesigIds", inputVO.getDesignationIds());
+		}
+		if(inputVO.getSubProgramIdsList() != null && inputVO.getSubProgramIdsList().size()>0){
+			query.setParameterList("dashBrdRefCanId", inputVO.getSubProgramIdsList());
 		}
 		return query.list();
 	}

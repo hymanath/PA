@@ -102,7 +102,7 @@ public class PmRepresenteeDesignationDAO extends GenericDaoHibernate<PmRepresent
 			sb.append(" and model1.pmStatus.pmStatusId in (:statusIds) ");
 		}
 		if(desigId != null && desigId.longValue() >0l){
-			sb.append(" and  distinct model.pmRepresenteeDesignation.pmDesignation.pmDesignationId =:desigId ");
+			sb.append(" and  model.pmRepresenteeDesignation.pmDesignation.pmDesignationId =:desigId ");
 		}
 		if(petitionIdsList != null && petitionIdsList.size() >0){
 			sb.append(" and model.petition.petitionId  in (:petitionIdsList ) ");
