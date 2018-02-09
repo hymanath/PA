@@ -5734,4 +5734,25 @@ public String getDepartMentAndBoardWisePositinsStatusCount(){
     }
     return Action.SUCCESS;
   }
+public String getDepartMentWiseBoards(){
+    try{
+      jObj = new JSONObject(getTask());
+       List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+       nominatedPostDetailsVOList = coreDashboardNominatedPostService.getDepartMentWiseBoards(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"),jObj.getLong("statusId"),jObj.getLong("departmentId"));
+    }catch(Exception e){
+      LOG.error("Exception raised at getDepartMentWiseBoards() of LocationDashboardAction{}", e);
+    }
+    return Action.SUCCESS;
+  }
+public String getBoardWisePositions(){
+    try{
+      jObj = new JSONObject(getTask());
+       List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
+       nominatedPostDetailsVOList = coreDashboardNominatedPostService.getBoardWisePositions(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"),jObj.getLong("statusId"),jObj.getLong("boardId"));
+    }catch(Exception e){
+      LOG.error("Exception raised at getDepartMentWiseBoards() of LocationDashboardAction{}", e);
+    }
+    return Action.SUCCESS;
+  }
+
 }
