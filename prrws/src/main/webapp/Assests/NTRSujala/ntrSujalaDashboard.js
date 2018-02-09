@@ -67,14 +67,14 @@ function buildNTRSujalaOverviewDetails(result){
 						  str+='<div class="media-body">';
 							str+='<h4 class="media-heading font_weight">Mother Plant</h4>';
 							str+='<h6 class="m_top5">One Mother Plant with attached Multiple RDUs is called one Cluster </h6>';
-								str+='<h3 class="pull-right bg_yash_color m_top5 motherPlantsClass" attr_type="total" data-toggle="modal" data-target="#mother_plants" style="cursor:pointer;text-decoration:underline;">'+result.totalMotherPlants+'</h3>';
+								str+='<h3 class="pull-right bg_yash_color_37 m_top_mp motherPlantsClass" attr_type="total" data-toggle="modal" data-target="#mother_plants" style="cursor:pointer;text-decoration:underline;">'+result.totalMotherPlants+'</h3>';
 						  str+='</div>';
 						str+='</div>';
 					str+='</div>';
 					str+='<div class="col-sm-4 border_right_yash">';
 						str+='<h4><img src="Assests/images/icon-healthStatus.png"/><span class="font_weight">Health Status</span></h4>';
-						str+='<div class="row">';
-							str+='<div class="col-sm-6 m_top20">';
+						str+='<div class="row row-flex">';
+							str+='<div class="col-sm-6 content">';
 								str+='<div class="bg_yash_color_10">';
 									str+='<h5 class="text-center">Plant Health</h5>';
 									str+='<div class="row">';
@@ -90,7 +90,7 @@ function buildNTRSujalaOverviewDetails(result){
 								str+='</div>';
 								//bgclose
 							str+='</div>';
-							str+='<div class="col-sm-6 m_top20">';
+							str+='<div class="col-sm-6 content">';
 								str+='<div class="bg_yash_color_10">';
 									str+='<h5 class="text-center">Water Quality</h5>';
 									str+='<div class="row">';
@@ -111,9 +111,9 @@ function buildNTRSujalaOverviewDetails(result){
 					str+='<div class="col-sm-3">';
 						str+='<h4 class="font_weight m_top10">Water Generated</h4>';
 						if(result.mpSafeWaterDispenced != null && result.mpSafeWaterDispenced != 'N/A' && result.mpSafeWaterDispenced > 0)
-							str+='<h3 class="bg_yash_color m_top20">'+result.mpSafeWaterDispenced+'<p class="pull-right m_top10" style="font-weight:normal;font-size:12px;">Lts Per Day</p></h3>';
+							str+='<h3 class="bg_yash_color_31 m_top_res">'+result.mpSafeWaterDispenced+'<p class="pull-right m_top10" style="font-weight:normal;font-size:12px;">Lts Per Day</p></h3>';
 						else
-							str+='<h3 class="bg_yash_color m_top20"><img class="media-object toolTipCls" data-toggle="tooltip" data-placement="top" title="IOT device not fitted." src="Assests/images/not_applicable.png" alt="..." style="width:40px;height:40px;"><p class="pull-right m_top10" style="font-weight:normal;font-size:12px;"></p></h3>';
+							str+='<h3 class="bg_yash_color_31 m_top_res"><img class="media-object toolTipCls" data-toggle="tooltip" data-placement="top" title="IOT device not fitted." src="Assests/images/not_applicable.png" alt="..." style="width:40px;height:40px;"><p class="pull-right m_top10" style="font-weight:normal;font-size:12px;"></p></h3>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
@@ -189,7 +189,7 @@ function buildNTRSujalaOverviewDetails(result){
 			//row closed
 		str+='</div>';
 		str+='<div class="col-sm-4">';
-			str+='<div class="pad_border">';
+			str+='<div class="pad_border" style="border-radius:5px 5px 0px 0px !important;">';
 				str+='<div class="row">';
 					str+='<div class="col-sm-8">';
 						str+='<div class="media">';
@@ -214,27 +214,27 @@ function buildNTRSujalaOverviewDetails(result){
 				str+='<hr style="margin-bottom: 0px;margin-top: 10px;"/>';
 				str+='<div class="row">';
 					str+='<div class="">';
-						str+='<div class="col-sm-6 m_top20">';
+						str+='<div class="col-sm-12 m_top20">';
 							str+='<div class="pad_10">';
 								str+='<h5 class="font_weight">Sell Water</h5>';
 								str+='<h3 class="m_top10">'+result.rduSellWater+' <span class="f_12">Lts</span></h3>';
 							str+='</div>';
 						str+='</div>';
-						str+='<div class="col-sm-6 m_top20">';
+						/*str+='<div class="col-sm-6 m_top20">';
 							str+='<div class="pad_10">';
 								str+='<h5 class="font_weight">Revenue Generated</h5>';
 								str+='<h3 class="m_top10"><img class="media-object" src="Assests/images/not_applicable.png" alt="..." style="width:40px;height:40px;"></h3>';
 							str+='</div>';
-						str+='</div>';
+						str+='</div>';*/
 					str+='</div>';
 					
 				//row closed
 			str+='</div>';
 		str+='</div>';
-		str+='<div class="pad_border m_top10">';
+		str+='<div class="pad_border pad_res" style="border-radius:0px 0px 5px 5px !important;">';
 			str+='<div class="row">';
-				str+='<div class="col-sm-6">';
-					str+='<div class="bg_yash_color" style="padding-top: 15px;padding-bottom: 15px;">';
+				str+='<div class="col-sm-5">';
+					str+='<div class="bg_yash_color_res">';
 						str+='<h5 class="text-center">Plant Health</h5>';
 						str+='<div class="row">';
 							str+='<div class="col-sm-6 m_top20">';
@@ -248,7 +248,7 @@ function buildNTRSujalaOverviewDetails(result){
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-6">';
+				str+='<div class="col-sm-7">';
 					str+='<div class="bg_yash_color_10" style="padding-top: 2px;padding-bottom: 2px;">';
 						str+='<div class="border_left_width_yash">';
 							str+='<h5 class="margin_left_8">High Dispance RDU</h5>';
@@ -417,7 +417,7 @@ function buildMotherPlantWiseDetails(result){
 	var str='';
 	str+='<div class="pad_5_fff" style="border-radius: 3px;">';
 		str+='<div class="row">';
-				str+='<div class="col-sm-7">';
+				str+='<div class="col-sm-12">';
 					str+='<div class="pad_yash_5">';
 						str+='<div class="media">';
 						  str+='<div class="media-left">';
@@ -432,14 +432,14 @@ function buildMotherPlantWiseDetails(result){
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-5">';
+				/*str+='<div class="col-sm-5">';
 					str+='<h5 class="font_weight text-right">Water Generated</h5>';
 					if(result.mpSafeWaterDispenced != null && result.mpSafeWaterDispenced != 'N/A' && result.mpSafeWaterDispenced > 0)
 						str+='<h3 class="text-right">'+result.mpSafeWaterDispenced+'</h3>';
 					else
 						str+='<h3 class="text-right m_top5" style="margin-left: 120px;"><img class="media-object" src="Assests/images/not_applicable.png" alt="..." style="width:25px;height:25px;"></h3>';
 					//str+='<h5 class="text-right">Lts Per Day</h5>';
-				str+='</div>';
+				str+='</div>';*/
 			str+='</div>';
 			str+='<div class="row m_top10">';
 				str+='<div class="col-sm-12">';
@@ -548,24 +548,24 @@ function buildMotherPlantWiseDetails(result){
 							str+='</div>';
 							str+='<div class="pad_5_border" style="background: #fff;border:none;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">';
 								str+='<div class="row">';
-									str+='<div class="col-sm-3">';
+									str+='<div class="col-sm-4">';
 										str+='<h5 class="font_weight f_11">Old Customers</h5>';
 										str+='<h4 class="m_top10">'+result.subList[i].oldCustomers+'</h4>';
 									str+='</div>';
-									str+='<div class="col-sm-3">';
+									str+='<div class="col-sm-4">';
 										str+='<h5 class="font_weight f_11">New Customers</h5>';
 										str+='<h4 class="m_top10">'+result.subList[i].newCustomers+'</h4>';
 									str+='</div>';
-									str+='<div class="col-sm-2">';
+									str+='<div class="col-sm-4">';
 										str+='<h5 class="font_weight f_11">Customers&nbsp;Visit</h5>';
 										str+='<h4 class="m_top10">'+result.subList[i].totalCustomers+'</h4>';
 									str+='</div>';
-									str+='<div class="col-sm-4">';
+									/*str+='<div class="col-sm-4">';
 										str+='<div style="background-color: #86DBC6;padding: 5px;text-align: center;">';
 											str+='<h5 class="font_weight f_11 text-center">Revenue Generated</h5>';
 											str+='<h4 class="m_top10 text-center"><img class="media-object" src="Assests/images/not_applicable.png" alt="..." style="width:25px;height:25px;"></h4>';
 										str+='</div>';
-									str+='</div>';
+									str+='</div>';*/
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
