@@ -4274,4 +4274,13 @@
 	  <bean id="itdpAppUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.ItdpAppUserDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	  <bean id="activityLocationParticipantInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationParticipantInfoDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	  <bean id="activityParticipantMemberTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityParticipantMemberTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	  <bean id="activityLocationParticipantDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationParticipantDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
