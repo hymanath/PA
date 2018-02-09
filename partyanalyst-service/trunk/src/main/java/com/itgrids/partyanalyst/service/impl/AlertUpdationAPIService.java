@@ -405,6 +405,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	public JSONObject saveAlertAssign(JSONObject playLoadObj){
 		JSONObject obj = new JSONObject();
 		try {
+			
 			if(playLoadObj.has("id")){
 				List<Long> alertIds = alertDAO.getAlertId(playLoadObj.getString("id"));
 				if(alertIds != null && alertIds.size() > 0){
@@ -442,8 +443,6 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 					
 					
 				}
-				
-				
 				
 			}
 			

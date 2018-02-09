@@ -18,6 +18,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
+import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
@@ -79,11 +80,13 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	private IAlertStatusDAO alertStatusDAO;
 	private IAlertCategoryDAO alertCategoryDAO;
 	private IAlertUpdationAPIService alertUpdationAPIService;
-	
-	
+	private IAlertCandidateDAO alertCandidateDAO;
 
 	public void setAlertUpdationAPIService(IAlertUpdationAPIService alertUpdationAPIService) {
 		this.alertUpdationAPIService = alertUpdationAPIService;
+	}
+	public void setAlertCandidateDAO(IAlertCandidateDAO alertCandidateDAO) {
+		this.alertCandidateDAO = alertCandidateDAO;
 	}
 
 	public void setAlertCategoryDAO(IAlertCategoryDAO alertCategoryDAO) {
@@ -210,12 +213,13 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 					 //String articleImageId = getZohoUploadDocumentId("C:/Program Files/Apache Software Foundation/Tomcat 6.0/webapps/NewsReaderImages/"+alert.getImageUrl());
 					
 					if(articleImageId !=null)
-						uploadArr.put(articleImageId);
+						uploadArr.put(articleImageId);						
 					 
 				 }else if(alert.getAlertCategoryId() == 3l){
 					 customJson.put("TV News Channel", alert.getTvNewsChannel().getChannelName());
 				 }
 				 customJson.put("Category Type Id", alert.getAlertCategoryTypeId());
+				 
 			 }else if(alert.getAlertCategoryId() == 1l){
 				 //0.documentId,1.documentPath
 					List<Object[]> uploadListObj = alertDocumentDAO.getDocumentsForAlert(alert.getAlertId());
@@ -229,6 +233,8 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 						contactId = alertUpdationAPIService.callForZohoContact(tdpCadreIdList);
 					}
 			 }
+			 
+			 
 				 
 			 if(uploadArr !=null && uploadArr.length()>0){
 				 jsObj.put("uploads", uploadArr);
@@ -243,6 +249,9 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 			
 			 // Custom Fields Adding
 			 jsObj.put("customFields", customJson);
+			
+			 // Involved candidates
+			setZohoAlertInvolvedCandidateDetails(alert.getAlertId(),customJson);
 			 
 			sendApiOfZohoAlert(jsObj,alert.getAlertId());
 			
@@ -250,6 +259,35 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 			LOG.error("Exception Occured in sendApiDetailsOfAlertToZoho() in AlertCreationAPIService", e);
 		}
 	 }
+	
+	public void setZohoAlertInvolvedCandidateDetails(Long alertId,JSONObject customJson){
+		try {
+			
+			if(alertId == null)
+				return;
+			
+			//0.firstName,2.news candidate,3.organization
+			List<Object[]> listObj = alertCandidateDAO.getAlertInvolvedCandidateInfo(alertId);
+			
+			if(listObj !=null && listObj.size()>0){
+				String involvedMembers=null;
+				for (Object[] objects : listObj) {
+					if(objects[0] !=null && !objects[0].toString().trim().isEmpty()){
+						involvedMembers = involvedMembers == null ? objects[0].toString().trim():involvedMembers+";"+objects[0].toString().trim();						
+					}else if(objects[2] !=null && !objects[2].toString().trim().isEmpty()){
+						involvedMembers = involvedMembers == null ? objects[2].toString().trim():involvedMembers+";"+objects[2].toString().trim();	
+					}else if(objects[3] !=null && !objects[3].toString().trim().isEmpty()){
+						involvedMembers = involvedMembers == null ? objects[3].toString().trim():involvedMembers+";"+objects[3].toString().trim();	
+					}
+				}
+				if(involvedMembers !=null)
+					customJson.put("Involved Members", involvedMembers);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in setZohoAlertInvolvedCandidateDetails() in AlertCreationAPIService", e);
+		}
+	}
 	 
 	 public JSONArray setUploadValuesToJsonArray(List<Object[]> uploadListObj,JSONArray uploadArr){
 		 try {
