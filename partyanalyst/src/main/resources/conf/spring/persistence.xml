@@ -1362,6 +1362,9 @@
 						 <value>com.itgrids.partyanalyst.model.AffiliatedMember</value>
 						 <value>com.itgrids.partyanalyst.model.AffiliateMemberType</value>
 						 <value>com.itgrids.partyanalyst.model.ITdpAppUser</value>
+						 <value>com.itgrids.partyanalyst.model.ActivityLocationParticipantInfo</value>
+						 <value>com.itgrids.partyanalyst.model.ActivityParticipantMemberType</value>
+						 <value>com.itgrids.partyanalyst.model.ActivityLocationParticipant</value>
 				  </list>
 			
 		</property>
