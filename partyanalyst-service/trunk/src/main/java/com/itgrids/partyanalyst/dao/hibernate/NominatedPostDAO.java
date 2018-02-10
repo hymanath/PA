@@ -2990,9 +2990,9 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 if(locationType == 3){
 		   sb.append(" nominatedPost.nominatedPostMember.address.district.districtId,nominatedPost.nominatedPostMember.address.district.districtName," );
 		 }else if(locationType == 4){
-			 sb.append(" nominatedPost.nominatedPostMember.address.constituency.constituencyId,nominatedPost.nominatedPostMember.address.constituency.name ");
+			 sb.append(" nominatedPost.nominatedPostMember.address.constituency.constituencyId,nominatedPost.nominatedPostMember.address.constituency.name, ");
 		 }else if(locationType == 5){
-			 sb.append(" nominatedPost.nominatedPostMember.address.tehsil.tehsilId,nominatedPost.nominatedPostMember.address.tehsil.tehsilName ");
+			 sb.append(" nominatedPost.nominatedPostMember.address.tehsil.tehsilId,nominatedPost.nominatedPostMember.address.tehsil.tehsilName, ");
 		 }else if(locationType == 10){
 			 sb.append(" nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId,nominatedPost.nominatedPostMember.address.parliamentConstituency.name, ");
 		 }
