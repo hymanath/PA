@@ -1840,7 +1840,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 								str1+='<div id="collapseOneActJ'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneActJ'+i+'">';
 									str1+='<div class="panel-body">';
 										str1+='<div id="activityBodyId'+i+'"></div>';
-										str1+='<div id="activityBodyId'+i+'_'+i+'" style="padding-top: 14px;"></div>';
+										//str1+='<div id="activityBodyId'+i+'_'+i+'" style="padding-top: 14px;"></div>';
 									str1+='</div>';
 								str1+='</div>';
 					str1+='</div>';
@@ -2896,16 +2896,13 @@ function districtWiseCohort(activityId){
 	   var dates=$('#daysListId').val();
 	  var fromDateStr='';
 	  var toDateStr='';
-	  
+	  fromDateStr=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+	  toDateStr=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 	 if(dates != null && dates.length>0){
 		 var dateArray=dates.split(" to ");
 		  fromDateStr=dateArray[0];
 		  toDateStr=dateArray[1];
-		  if(dateArray.length == 1)
-			{
-				fromDateStr=" ";
-				toDateStr=" ";
-			} 
+		 
 	 }
 	 
 	var  scopeId = 3;
@@ -3075,16 +3072,13 @@ function stateWiseCohort(activityId){
 	 var dates=$('#daysListId').val();
 	  var fromDateStr='';
 	  var toDateStr='';
-	  
+	  fromDateStr=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+	  toDateStr=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 	 if(dates != null && dates.length>0){
 		 var dateArray=dates.split(" to ");
 		  fromDateStr=dateArray[0];
 		  toDateStr=dateArray[1];
-		  if(dateArray.length == 1)
-			{
-				fromDateStr=" ";
-				toDateStr=" ";
-			} 
+		 
 	 }
 	var jsObj ={
 	   activityId : globalActivityIdsList,
