@@ -2339,7 +2339,7 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 				}
 			}
 		}
-		List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
+		/*List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
 		for (AffiliatedVo affiliatedVo : activityParticipatentCount) {
 			EventLocationVO locationVo =locationMap.get(affiliatedVo.getLocationId());
 			if(locationVo != null){
@@ -2376,7 +2376,7 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 				optionVo3.setCount(affiliatedVo.getTotalLoanApplied());
 				questionVO.getOptionList().add(optionVo3);
 			}
-		}
+		}*/
  		for (Long lcoationId : locationMap.keySet()) {
 			EventLocationVO vo=  locationMap.get(lcoationId);
 			if(vo != null && vo.getTotalCount()>0 ){
