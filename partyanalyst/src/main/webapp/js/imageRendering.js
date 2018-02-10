@@ -4,7 +4,7 @@ if(wurl.length == 3)
   wurl = url.substr(0,(url.indexOf(".in")+3));
 var glStartDate = moment().startOf('month').format("DD-MM-YYYY");
 var glEndDate = moment().format("DD-MM-YYYY");
-var spinner = '<div class="row"><div class="col-sm-12"><div style=" color: orange;font-size: 20px; font-weight:bold; text-align : center">LOADING ...</div></div>';
+var spinner1 = '<div class="row"><div class="col-sm-12"><div style=" color: orange;font-size: 20px; font-weight:bold; text-align : center">LOADING ...</div></div>';
 getAllLocations(2,'1');
 getAllNewsPapers();
 var districtName="";
@@ -124,7 +124,7 @@ function getAllNewsPapers(){
     });    
 }
 $(document).on("click","#submitId",function(){
-	$('#imageId').html(spinner);
+	$('#imageId').html(spinner1);
 	var district="";
 	var constituency=""
 	if(districtName=="ALL Districts"){
