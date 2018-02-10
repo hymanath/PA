@@ -2869,10 +2869,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
 	 	 
 	 	if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
- 			/*if (locationTypeId == 2) {
- 				//sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValues) ");
- 				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
- 			} else*/ if (locationTypeId == 3l) {
+ 			if (locationTypeId == 2) {
+ 				sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValues) ");
+ 				sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+ 			} else if (locationTypeId == 3l) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValues) ");
 			} else if (locationTypeId == 10) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
