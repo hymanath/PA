@@ -104,7 +104,7 @@
 <%@ page import="com.itgrids.dto.UserVO" %>
 <% 
 	UserVO userVo=(UserVO)session.getAttribute("User");
-	out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;&nbsp; "+userVo.getUserName()+"-"+userVo.getDesignation()+"</h4>"); 
+	out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;&nbsp; "+userVo.getUserName()+"</h4>"); 
 %>
 </header>
 <main>
@@ -271,10 +271,13 @@
 											</div>
 										</div>
 									</div> 
-									<div class="row" id="summaryId">
+									<div class="row m_top10">
+										<div class="">
+											<div id="summaryId"></div>
+										</div>
 									</div>
 									<div class="row m_top10">
-										<div class="col-sm-12">
+										<div class="col-sm-12" style="padding-left: 7px;padding-right: 7px;">
 											<div id="representationRequestEntryTable"></div>
 										</div>
 									</div>
@@ -313,7 +316,7 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title text-capital" id="endorseMentHeadingId"></h4> 
+				<h4 class="modal-title text-center font_weight" id="endorseMentHeadingId"></h4> 
 			</div>
 		</div>		
 	  </div>
@@ -336,7 +339,7 @@
 			<div class="col-sm-6">
 				<div class="row m_top10" id="actionChangeDivId" style="display:none;">
 					<div class="col-sm-12">
-						<label class="checkbox-inline actionChangeCls">
+						<label class="checkbox-inline actionChangeCls"  style="display:none" >
 						  <input type="checkbox" name="" id="inlineCheckbox1" value="COMPLETED" class="actionCls font_weight" checked> ACTION CHANGE 
 						</label>
 						<!--<label class="checkbox-inline">
@@ -345,7 +348,7 @@
 						-->
 					</div>
 				</div>
-				<div class="row m_top20" id="uploadFileDivCls">
+				<div class="row m_top20" id="uploadFileDivCls" style="display:none;">
 				  <div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
 					<h5 class="panel-title"> UPLOAD <span id="letterNameId"></span><span id="fileUploadIdErr"></span></h5>
 					<span id="uploadFile"></span>
@@ -427,11 +430,18 @@
 				<input type="text" class="form-control" id="referranceNoId" placeholder="Endorsment NO" name="refNo"/>
 			</div>
 		</div>
+		<div class="row m_top20" id="finalApproDocDiv" style="display:none;">
+		  <div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
+			<h5 class="panel-title"> UPLOAD REF. DOCUMENT <span id="finalapproveUploadIdErr"></span></h5>
+			<span id="finalapproveFile"></span>
+		  </div>
+		</div>
+				
 		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
 		<input type="hidden" class="form-control" id="petitionsId"  name="petitionId"/>
 		<div class="row m_top10" id="commentsDivId" style="display:none;">
 			<div class="col-sm-12">
-				<label>Comment<span style="color:red;"></span><span id="remarkIdErr"></span></label>
+				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 		</div>
