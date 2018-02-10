@@ -17,7 +17,6 @@
 <link href="coreApi/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
-<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 <link href="D2D_Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
 <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
@@ -147,7 +146,7 @@
 		<li expand-icon="prajaSankaplaYatra" right-nav="true">Category Wise News</li>
 		<li expand-icon="EMCoverageTime" right-nav="true">EM Coverage Time</li>
 		<li expand-icon="kaizala" right-nav="true">kaizala</li>
-		<li expand-icon="nominatedPost" right-nav="true">Nominated Post</li>
+		<li expand-icon="nominatedPost" right-nav="true" class="nominatedSideMenuCls">Nominated Post</li>
 		<li expand-icon="pressmeet" right-nav="true">Press Meet</li>
 		<li expand-icon="newsLetters" right-nav="true">Press Meet</li>
 		<li expand-icon="tours" right-nav="true">Tours</li>
@@ -4560,13 +4559,13 @@
        </div>
 		<!-- Attendance End-->
 		<!-- Nominated Post Start-->
-		<!--<div class="col-md-6 col-xs-12 col-sm-12 newNominatedPostBlock" expand-block="nominatedPost">
+		<div class="col-md-6 col-xs-12 col-sm-12 newNominatedPostBlock" expand-block="nominatedPost">
 			 <div class="panel panel-default panelNewCustom">
                 <div class="panel-heading">
 					<div class="row">
 						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="nominatedPost">
 							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
+								<img src="newCoreDashBoard/img/icon-nominatedpost.png" class="iconClass"/>
 								Nominated Posts</small>
 							</h4>
 						</div>
@@ -4582,7 +4581,7 @@
                 </div>
                 <div class="panel-body">
 					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock m_top10" expand-block-inner="nominatedPost">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" expand-block-inner="nominatedPost">
 							<div id="levelWiseNominatedPostDivId"></div>
 						</div>
 					
@@ -4626,7 +4625,7 @@
 					
 				</div>
 			</div>
-		</div>-->
+		</div>
 		<!-- Nominated Post End-->
 	</div>
 	<div class="row">
@@ -5703,6 +5702,26 @@
 </div>
 <!-- Model For End PrajaSankalpaYatra -->
 
+<div class="modal" tabindex="-1" role="dialog" id="nominatedPostDetailsModalId">
+  <div class="modal-dialog modal-lg" style="width:85%;">       
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title text-capital"><span id="nominatedPostHeadingId"></span> Details</h4>
+	  </div>
+	  <div class="modal-body">
+			<div class="row">
+				<div class="col-md-12 col-xs-12 col-sm-12">
+				   <div id="nominatedPostDetailsDivId"></div>
+				</div>
+			</div>
+	  </div>
+	  <div class="modal-footer">     
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	  </div>
+	</div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
@@ -6288,7 +6307,6 @@ var globalImages;
 	});
 	getLoggedInUserStructure();
 	onLoadCalls();
-	
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();
 		//Preemeet
@@ -6296,7 +6314,6 @@ var globalImages;
 		onLoadEmCoverageTimeCalls();
 		onloadPrajaSankaplaYatraCalls();
 		onloadKaizalaCalls1();
-		onloadNominatedCalls();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		var URLArr = windowUrl.split('/');
@@ -6304,6 +6321,9 @@ var globalImages;
 	 var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
 	  if(finalURL =="dailyMonthlyPartyActivities")
 	  {
+		  
+		$(".nominatedSideMenuCls").hide();
+		$(".newNominatedPostBlock").remove();
 		//ALL BLOCKS
 		$("#mainHeadinId").html("KALA VENKATA RAO");
 		getRescentArticleTime();		
@@ -6372,7 +6392,7 @@ var globalImages;
 	  else  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking")
 	  {
 	    $("#mainHeadinId").html("KALA VENKATA RAO");
-		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.rightNavigationMenu").remove();
+		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.rightNavigationMenu,.newNominatedPostBlock").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
@@ -6391,7 +6411,7 @@ var globalImages;
 		getPartySpecialMeetingsMainTypeOverview(0);
 	  }else  if(finalURL =="partyLeadersDashboardAction")//finalURL =="coreDashboardAction1"
 	  {
-		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.rightNavigationMenu").remove();
+		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.rightNavigationMenu,.newNominatedPostBlock").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
@@ -6410,7 +6430,7 @@ var globalImages;
 		//getAlertDtlsBasedOnSelection('default');
 	  }else if(finalURL == "govtPartyCoreDashboardAction")
 	  {
-		  $(".debatesBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile,.birthdayHideShowCls").remove();
+		  $(".debatesBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile,.birthdayHideShowCls,.newNominatedPostBlock").remove();
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		globalUserAccessLevelId = 2;
 		globalUserAccessLevelValues.push(1);
@@ -6421,6 +6441,74 @@ var globalImages;
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
 		getRescentNewsBulletinTime();
+	  }else if(finalURL =="partyC0reDashboardAction")
+	  {
+		//ALL BLOCKS
+		$(".nominatedSideMenuCls").show();
+		$("#mainHeadinId").html("KALA VENKATA RAO");
+		getRescentArticleTime();		
+		//committeeBasicCall();
+		
+		//training program call
+		/*var idStr = $("#hideProgramId").attr("attr_prorgam_id_arr");
+		var programIdArr = [];
+		var arr = idStr.split(","); 
+		for(var i in arr){
+			programIdArr.push(arr[i]);
+		} 
+		console.log($("#hideProgramId").attr("attr_prorgam_id_arr"));      
+		stateLevelCampDetails();
+		stateLevelCampDetailsRepresentativeWise(programIdArr);
+		getStateLevelCampCount(programIdArr); */   
+				
+		//getTrainingCampProgramOverviewDtls();   
+		//Meeting
+		onloadNominatedCalls();
+		getTrainingCampBasicDetailsCntOverview(); 
+		getBoothlevelTrainingCampBasicDetailsCntOverview();
+        getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
+		getPartyMeetingTypeByPartyMeetingMainType();
+		getStateLevelMeetingsByMeetingType();
+		getSpecialMeetingsByMeetingType();
+		getMultiLocationWiseMeetingGroupsData();
+		//events
+		getEventBasicCntDtls();
+		//news please dont remove
+		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
+		//getNewsBasicCounts();
+		commonNewsBasicCalls();
+		getAllNewsPapers();
+		//getPaperWiseNewsBasicCounts();
+		//Debates
+		getPartyWiseTotalDebateDetails();      
+        //cadreRegistration
+		cadreRegistrationBasicCall(globalActivityMemberId);
+		//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
+        /* Tours Default Call */
+       // getToursBasicOverviewCountDetails();     
+		//getDesigWiseMemberDtls();  
+		/*New Tours implementation Default Call */
+		getToursBasicOverviewDtls();
+     	/*Electronic Media Calls*/
+		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
+		getAllTvChannels();
+		getAllTvChannels1();
+		getRescentNewsBulletinTime();
+		/* Alert Default Call */
+		//getAlertOverviewDetails();  
+		getAlertDtlsBasedOnSelection('default');
+		/* Insurance Calls */
+		globalInsuranceCalls();
+		/* Activities Default Call */
+		getActivitiesDetails();
+		getAttendanceOverViewForPartyOffice();
+		getAttendanceOverViewForPartyOfficeWise();
+		getSettingActivities();
+		//getSettingEvents();
+		//onloadPrajaSankaplaYatraCalls();
+		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
+		$("#attendanceId").html('TODAY ('+datStr+')');
+		
 	  }
 	  else{
 		   $("#mainHeadinId").html("KALA VENKATA RAO");

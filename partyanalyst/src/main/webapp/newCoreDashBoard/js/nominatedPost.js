@@ -141,9 +141,9 @@ function getUserTypeWiseNominatedPostDetailsCnt(){
 	var jsObj ={
 		 "fromDateStr" : " ",
 		 "toDateStr" : " ",
-		 "activityMemberId" :44,
-		 "stateId" : 1,
-		 "userTypeId" :2 
+		 "activityMemberId" :globalActivityMemberId,
+		 "stateId" : globalStateId,
+		 "userTypeId" :globalUserTypeId
 	  }
 	$.ajax({
 		type : 'POST',
@@ -548,33 +548,40 @@ function locationNominatedWiseDate(locationTypeVal)
 		if(locationTypeVal == "department"){
 			getDepartmentWisePostAndApplicationDetails(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal);
 		}else{
-			getNominatedPostLocationWiseBoardLevelCount(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal)
-			//getNominatedPostStateWiseCount()
+			if(levelWiseNominatedArr[i].name == "state"){
+				getNominatedPostStateWiseCount(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal)
+			}else{
+				getNominatedPostLocationWiseBoardLevelCount(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal)
+			}
+			
+			
 		}
 		
 	}
 }
-function getNominatedPostLocationWiseBoardLevelCount(locationTypeId,divId,locationTypeVal){ 
+function getNominatedPostStateWiseCount(locationTypeId,divId,locationTypeVal){ 
+	$("#nominated"+locationTypeVal+divId).html(spinner);
 	var jsObj ={
-			 "locationValuesArr" : [],
-			 "fromDateStr" : " ",
-			 "toDateStr" : " ",
-			 "locationTypeId" : locationTypeId,
-			 "boardLevelId":locationTypeId
-			 
-		  }
+				 "fromDateStr" : " ",
+				 "toDateStr" : " "
+			  }
 	$.ajax({
 		type : 'POST',
-		url : 'getNominatedPostLocationWiseBoardLevelCountAction.action',
+		url : 'getNominatedPostStateWiseCountAction.action',
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeVal);
+		}else{
+			$("#nominated"+locationTypeVal+divId).html("No Data Available");
 		}
+		
 	});
 }
- function getDepartmentWisePostAndApplicationDetails(locationTypeId,divId,locationTypeVal){   
+
+function getDepartmentWisePostAndApplicationDetails(locationTypeId,divId,locationTypeVal){
+		$("#nominated"+locationTypeVal+divId).html(spinner);
 		var jsObj ={
 			 "locationValuesArr" : [],
 			 "fromDateStr" : " ",
@@ -592,16 +599,47 @@ function getNominatedPostLocationWiseBoardLevelCount(locationTypeId,divId,locati
 		}).done(function(result){
 			if(result !=null && result.length>0){
 				buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeVal);
+			}else{
+				$("#nominated"+locationTypeVal+divId).html("No Data Available");
 			}
 		});
-	}
+}
+function getNominatedPostLocationWiseBoardLevelCount(locationTypeId,divId,locationTypeVal){ 
+	$("#nominated"+locationTypeVal+divId).html(spinner);
+	var jsObj ={
+			 "locationValuesArr" : [],
+			 "fromDateStr" : " ",
+			 "toDateStr" : " ",
+			 "locationTypeId" : locationTypeId,
+			 "boardLevelId":locationTypeId
+			 
+		  }
+	$.ajax({
+		type : 'POST',
+		url : 'getNominatedPostLocationWiseBoardLevelCountAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationTypeVal,locationTypeId);
+		}else{
+			$("#nominated"+locationTypeVal+divId).html("No Data Available");
+		}
+	});
+}
+ 
 function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeVal){
 	var str='';
 	str+='<div class="table-responsive">';
 				str+='<table class="table table-bordered table-condensed tableStyleLed table_alignment table-noborder dataTableNomi'+locationTypeVal+divId+'" style="width:100%">';
 					str+='<thead style="background-color:#edeef0">';
 						str+='<tr>';
+						if(locationTypeVal == "location"){
+							str+='<th class="font_weight">State</th>';
+						}else{
 							str+='<th class="font_weight">Department</th>';
+						}
+							
 							str+='<th class="font_weight">Total Posts</th>';
 							str+='<th class="font_weight">G.O Issued</th>';
 							str+='<th class="font_weight">Open Posts</th>';
@@ -613,13 +651,24 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 					str+='<tbody>';
 						for(var i in result){
 								str+='<tr>';
-									str+='<td>'+result[i].name+'</td>';
-									str+='<td>'+result[i].totalCount+'</td>';
-									str+='<td>'+result[i].goIsuuedCnt+'</td>';
-									str+='<td>'+result[i].openCnt+'</td>';
-									str+='<td>'+result[i].expireOneMnth	+'</td>';
-									str+='<td>'+result[i].expireTwoMnth+'</td>';
-									str+='<td>'+result[i].expireThreMnth+'</td>';
+									if(locationTypeVal == "location"){
+										str+='<td>'+result[i].locationName+'</td>';
+										str+='<td>'+result[i].totalPosts+'</td>';
+										str+='<td>'+result[i].goIsuuedCount+'</td>';
+										str+='<td>'+result[i].openCount+'</td>';
+										str+='<td>'+result[i].expireOneMonth+'</td>';
+										str+='<td>'+result[i].exprireTwoMnth+'</td>';
+										str+='<td>'+result[i].expireThreeMnth+'</td>';
+									}else{
+										str+='<td>'+result[i].name+'</td>';
+										str+='<td>'+result[i].totalCount+'</td>';
+										str+='<td>'+result[i].goIsuuedCnt+'</td>';
+										str+='<td>'+result[i].openCnt+'</td>';
+										str+='<td>'+result[i].expireOneMnth	+'</td>';
+										str+='<td>'+result[i].expireTwoMnth+'</td>';
+										str+='<td>'+result[i].expireThreMnth+'</td>';
+									}
+									
 								str+='</tr>';
 						}
 					str+='</tbody>';
@@ -633,41 +682,108 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 				
 			});
 			 
-}	
-$(document).on("click",".KaizalaRefresh",function(){
-	onloadNominatedCalls();
-});
-
-//Calls
-function getNominatedPostStateWiseCount()
-{ 
-
-
-	var jsObj ={
-				 "fromDateStr" : " ",
-				 "toDateStr" : " "
-			  }
-	$.ajax({
-		type : 'POST',
-		url : 'getNominatedPostStateWiseCountAction.action',
-		dataType : 'json',
-		data : {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		//alert(78);
-		
-	});
 }
-
- function getDepartMentAndBoardWisePositinsStatusCount()//location Table Ciunt Click
-{ 
-
+function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationTypeVal,locationTypeId){
+	var str='';
+	str+='<div class="table-responsive">';
+				str+='<table class="table table-bordered table-condensed tableStyleLed table_alignment table-noborder dataTableNomiL'+locationTypeVal+divId+'" style="width:100%">';
+					str+='<thead style="background-color:#edeef0">';
+						str+='<tr>';
+							str+='<th class="font_weight" rowspan="2" style="background-color:#EFF0F1 !important;">District</th>';
+							for(var i in result[0].levelList){
+								if(result[0].levelList[i].locationName =="District"){
+									str+='<th class="font_weight" colspan="3" style="background-color:#EDECE0 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
+								}else if(result[0].levelList[i].locationName =="Assembly"){
+									str+='<th class="font_weight" colspan="3" style="background-color:#E3E4F0 !important;">COnstituency Level Posts</th>';
+								}else if(result[0].levelList[i].locationName =="Mandal"){
+									str+='<th class="font_weight" colspan="3" style="background-color:#F0E6D7 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
+								}else if(result[0].levelList[i].locationName =="Village"){
+									str+='<th class="font_weight" colspan="3" style="background-color:#ECF7F4 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
+								}
+								
+							}
+						str+='</tr>';
+						str+='<tr>';
+						for(var i in result[0].levelList){
+								if(result[0].levelList[i].locationName =="District"){
+									str+='<th class="font_weight" style="background-color:#EDECE0 !important;">Total Posts</th>';
+									str+='<th class="font_weight" style="background-color:#EDECE0 !important;">Open Posts</th>';
+									str+='<th class="font_weight" style="background-color:#EDECE0 !important;">Completed/ G.O Issued</th>';
+								}else if(result[0].levelList[i].locationName =="Assembly"){
+									str+='<th class="font_weight" style="background-color:#E3E4F0 !important;">Total Posts</th>';
+									str+='<th class="font_weight" style="background-color:#E3E4F0 !important;">Open Posts</th>';
+									str+='<th class="font_weight" style="background-color:#E3E4F0 !important;">Completed/ G.O Issued</th>';
+								}else if(result[0].levelList[i].locationName =="Mandal"){
+									str+='<th class="font_weight" style="background-color:#F0E6D7 !important;">Total Posts</th>';
+									str+='<th class="font_weight" style="background-color:#F0E6D7 !important;">Open Posts</th>';
+									str+='<th class="font_weight" style="background-color:#F0E6D7 !important;">Completed/ G.O Issued</th>';
+								}else if(result[0].levelList[i].locationName =="Village"){
+									str+='<th class="font_weight" style="background-color:#ECF7F4 !important;">Total Posts</th>';
+									str+='<th class="font_weight" style="background-color:#ECF7F4 !important;">Open Posts</th>';
+									str+='<th class="font_weight" style="background-color:#ECF7F4 !important;">Completed/ G.O Issued</th>';
+								}
+								
+								
+							}
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result){
+							var colorObj={"District":"#EDECE0","Assembly":"#E3E4F0","Mandal":"#F0E6D7","Village":"#ECF7F4"};
+								str+='<tr>';
+									str+='<td>'+result[i].board+'</td>';
+									for(var j in result[i].levelList){
+										if(result[i].levelList[j].totalPosts !=null && result[i].levelList[j].totalPosts>0){
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="0" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="total Posts">'+result[i].levelList[j].totalPosts+'</td>';
+										}else{
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
+										}
+										
+										if(result[i].levelList[j].openCount !=null && result[i].levelList[j].openCount>0){
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="2" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="open Posts">'+result[i].levelList[j].openCount+'</td>';
+										}else{
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
+										}
+										if(result[i].levelList[j].goIsuuedCount !=null && result[i].levelList[j].goIsuuedCount>0){
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="4" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="Completed/G.O Issued Posts">'+result[i].levelList[j].goIsuuedCount+'</td>';
+										}else{
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
+										}
+									}
+								str+='</tr>';
+						}
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+			$("#nominated"+locationTypeVal+divId).html(str);
+			$(".dataTableNomiL"+locationTypeVal+divId).dataTable({
+				"iDisplayLength": 10,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				
+			});
+	
+}
+$(document).on("click",".postWiseDetailsCls",function(){
+	$("#nominatedPostDetailsModalId").modal("show");
+	
+	var statusId=$(this).attr("attr_status_id");
+	var locationTypeId=$(this).attr("attr_locationTypeid");
+	var boardLevelId=$(this).attr("attr_boardLevelId");
+	var name=$(this).attr("attr_name");
+	var levelName=$(this).attr("attr_level_name");
+	$("#nominatedPostHeadingId").html(name+levelName);
+	getDepartMentAndBoardWisePositinsStatusCount(statusId,locationTypeId,boardLevelId);
+});
+ function getDepartMentAndBoardWisePositinsStatusCount(statusId,locationTypeId,boardLevelId){ 
+	$("#nominatedPostDetailsDivId").html(spinner);
 	var jsObj ={
-	             "locationValuesArr" : [17],
+	             "locationValuesArr" : [],
 				 "fromDateStr" : " ",
 				 "toDateStr" : " ",
-				 "locationTypeId" : 3,
-				 "boardLevelId":3,
-				 "statusId" :1
+				 "locationTypeId" :locationTypeId,
+				 "boardLevelId":boardLevelId,
+				 "statusId" :statusId
 				 
 			  }
 	$.ajax({
@@ -676,10 +792,64 @@ function getNominatedPostStateWiseCount()
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildDepartMentAndBoardWisePositinsStatusCount(result);
+		}
+	});
+}
+function buildDepartMentAndBoardWisePositinsStatusCount(result){
+	var str='';
+	str+='<div class="table-responsive">';
+				str+='<table class="table table-bordered table-condensed tableStyleLed table_alignment table-noborder dataTableNomiPopup" style="width:100%">';
+					str+='<thead style="background-color:#edeef0">';
+						str+='<tr>';
+							str+='<th class="font_weight">Department</th>';
+							str+='<th class="font_weight" >Total Open Posts</th>';
+							str+='<th class="font_weight">Board / Corporation</th>';
+							str+='<th class="font_weight">Open Posts</th>';
+							str+='<th class="font_weight">Positions/ Posts</th>';
+						str+='</tr>';
+						
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result){
+							
+							
+								for(var j in result[i].list){
+									str+='<tr>';
+									str+='<td>'+result[i].name+'</td>';
+									str+='<td>'+result[i].count+'</td>';	
+									str+='<td>'+result[i].list[j].board+'</td>';
+									str+='<td>'+result[i].list[j].openCnt+'</td>';
+									str+='<td>';
+									str+='<ul class="list-inline">';
+									for(var k in result[i].list[j].subList){
+										str+='<li style="margin-left:10px;"><h5 style="padding:10px;background-color:#f0f0f0;border:1px solid #ddd;border-radius:5px;">'+result[i].list[j].subList[k].position+' - '+result[i].list[j].subList[k].positionCount+'</h5></li>';
+									}
+									str+='</ul>';
+									str+='</td>';
+									str+='</tr>';
+								}
+								
+								
+							
+						}
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+			
+			
+	$("#nominatedPostDetailsDivId").html(str);
+	$(".dataTableNomiPopup").dataTable({
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 		
 	});
-}	
-
+}
+$(document).on("click",".KaizalaRefresh",function(){
+	onloadNominatedCalls();
+});
 /*getDepartMentWiseBoards();
 function getDepartMentWiseBoards()
 { 
