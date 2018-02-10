@@ -30,7 +30,14 @@ public class PmRequestEditVO {
 	private Long statusId;
 	private String actionType;
 	private String worksStatus;
+	private Long worksStatusId;
 	
+	public Long getWorksStatusId() {
+		return worksStatusId;
+	}
+	public void setWorksStatusId(Long worksStatusId) {
+		this.worksStatusId = worksStatusId;
+	}
 	public String getWorksStatus() {
 		return worksStatus;
 	}

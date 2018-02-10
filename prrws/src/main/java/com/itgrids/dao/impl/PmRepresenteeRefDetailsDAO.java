@@ -197,6 +197,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(inputVO.getSubProgramIdsList() != null && inputVO.getSubProgramIdsList().size()>0){
 			sb.append(" and model.pmRefCandidateDesignation.pmRefCandidateDesignationId in (:dashBrdRefCanId) ");
 		}
+		
+		sb.append(" order by model1.petitionId, model1.petition.insertedTime desc ");
+		
 		Query query = getSession().createQuery(sb.toString());
 		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValues != null && searchLevelValues.size()>0){
 			query.setParameterList("searchLevelValues", searchLevelValues);

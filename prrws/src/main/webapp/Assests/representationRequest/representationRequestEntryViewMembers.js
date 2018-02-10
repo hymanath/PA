@@ -2302,17 +2302,19 @@ function petitionWiseRepresenteeDetails(result){
 		str+='</div>';
 		str+='<div id="collapseTwo" class="panel-collapse collapse in">';
 		str+='<div class="panel-body">';
-		str+='<div class="table-responsive">';
+		if($(window).width>800){
+			str+='<div class="table-responsive">';
+		}
 			str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
 				str+='<thead>';
 					str+='<tr>';
-						str+='<th title="Representation Date" >REPR.&nbsp;DATE</th>';
-						str+='<th title="Endorsment No" >ENDORS&nbsp;NO</th>';
-						str+='<th title="Endorsment Date" >ENDORS&nbsp;DATE</th>';
-						str+='<th title="Representee Name" >REPRESENTEE&nbsp;NAME</th>';
-						str+='<th title="Referrer Name" >REF.&nbsp;NAME</th>';
-						str+='<th title="Referreer Designation" >REF.&nbsp;DESIGNATION</th>';				
-						str+='<th style="min-width:200px !important;"  title="Work Description" >WORK&nbsp;DESC.</th>';
+						str+='<th><span title="Representation Date" class="tooltipCls" data-toggle="tooltip">REPR.&nbsp;DATE</span></th>';
+						str+='<th><span title="Endorsment No" class="tooltipCls" data-toggle="tooltip">ENDORS&nbsp;NO</span></th>';
+						str+='<th><span title="Endorsment Date" class="tooltipCls" data-toggle="tooltip">ENDORS&nbsp;DATE</span></th>';
+						str+='<th><span title="Representee Name" class="tooltipCls" data-toggle="tooltip">REPRESENTEE&nbsp;NAME</span></th>';
+						str+='<th><span title="Referrer Name" class="tooltipCls" data-toggle="tooltip">REF.&nbsp;NAME</span></th>';
+						str+='<th><span title="Referreer Designation" class="tooltipCls" data-toggle="tooltip">REF.&nbsp;DESIGNATION</span></th>';				
+						str+='<th><span style="min-width:200px !important;"  title="Work Description" class="tooltipCls" data-toggle="tooltip">WORK&nbsp;DESC</span></th>';
 						//str+='<th>No&nbsp;of&nbsp;Works</th>';
 						str+='<th>ESTIMATION COST (in Lakhs)</th>';
 						str+='<th>STATUS</th>';
@@ -2362,7 +2364,12 @@ function petitionWiseRepresenteeDetails(result){
 							str+='<td style="text-align:center;"> - </td>';
 						}
 						if (result[i].workName != null && result[i].workName != ""){
-							str+='<td>'+result[i].workName+'</td>';
+							if(result[i].workName !=null && result[i].workName.length>50){
+								str+='<td><span class="tooltipCls" data-toggle="tooltip" title="'+result[i].workName+'">'+result[i].workName.substring(0,50)+'...</span></td>';
+							}else{
+								str+='<td>'+result[i].workName+'</td>';
+							}
+							
 						}
 						else{
 							str+='<td style="text-align:center;"> - </td>';
@@ -2404,7 +2411,10 @@ function petitionWiseRepresenteeDetails(result){
 							var filledWorksCount = 0;
 							if(result[i].subList != 'undefined' && result[i].subList != null && result[i].subList.length>0) 
 								filledWorksCount = result[i].subList.length;
-							str+='<td class="text-center"><i class=" viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i> <span title="Entered works count " >'+filledWorksCount+' </span>/ <span title="Total works count " >'+result[i].noOfWorks+' </span> </td>';
+							str+='<td>';
+								str+='<h4 class="viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"><span title="Entered works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer" class="tooltipCls">'+filledWorksCount+' </span> / <span class="tooltipCls" title="Total works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer">'+result[i].noOfWorks+' </span></h4>';
+							str+='</td>';
+							//str+='<td class="text-center"><i class="viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i> <span title="Entered works count " >'+filledWorksCount+' </span>/ <span title="Total works count " >'+result[i].noOfWorks+' </span> </td>';
 						}else{
 							str+='<td> - </td>';
 						}
@@ -2433,7 +2443,10 @@ function petitionWiseRepresenteeDetails(result){
 					}
 				str+='</tbody>';
 			str+='</table>';
-			str+='</div>';
+			if($(window).width>800){
+				str+='</div>';
+			}
+			
 			str+='</div>';
 		str+='</div>';	
 	str+='</div>';
@@ -2446,7 +2459,7 @@ function petitionWiseRepresenteeDetails(result){
 		"autoWidth": true,
 		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 		"iDisplayLength": 10,
-		"aaSorting": [],
+		"aaSorting": [[ 0, "desc" ]],
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 	});
   }
