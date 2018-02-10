@@ -185,10 +185,31 @@ public class LocationWiseCasteInfoService implements ILocationWiseCasteInfoServi
 						casteVO.setCastgroup(commonMethodsUtilService.getStringValueForObject(objects[1]));
 						casteMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]),casteVO);
 					}					
-					casteVO.setTotalVoters(casteVO.getTotalVoters()+(Long) objects[4]);
+					if(casteVO.getTotalVoters() != null)
+						casteVO.setTotalVoters(casteVO.getTotalVoters()+commonMethodsUtilService.getLongValueForObject(objects[4]));
+					else
+						casteVO.setTotalVoters(commonMethodsUtilService.getLongValueForObject(objects[4]));
+					
+					if(casteVO.getVoterPercentage() != null)
+						casteVO.setVoterPercentage(casteVO.getVoterPercentage()+commonMethodsUtilService.getDoubleValueForObject(objects[5]));
+					else
+						casteVO.setVoterPercentage(commonMethodsUtilService.getDoubleValueForObject(objects[5]));
+					
+					if(casteVO.getMaleVoters() != null)
+						casteVO.setMaleVoters(casteVO.getMaleVoters()+commonMethodsUtilService.getLongValueForObject(objects[6]));
+					else
+						casteVO.setMaleVoters(commonMethodsUtilService.getLongValueForObject(objects[6]));
+					
+					if(casteVO.getFemaleVoters() != null)
+						casteVO.setFemaleVoters(casteVO.getFemaleVoters()+commonMethodsUtilService.getLongValueForObject(objects[7]));
+					else
+						casteVO.setFemaleVoters(commonMethodsUtilService.getLongValueForObject(objects[7]));
+					/*
+					casteVO.setTotalVoters(casteVO.getTotalVoters()+commonMethodsUtilService.getLongValueForObject(objects[4]));
 					casteVO.setVoterPercentage(casteVO.getVoterPercentage()+(Double) objects[5]);
 					casteVO.setMaleVoters(casteVO.getMaleVoters()+(Long) objects[6]);
 					casteVO.setFemaleVoters(casteVO.getFemaleVoters()+(Long) objects[7]);
+					*/
 					totalVoterCount=totalVoterCount+commonMethodsUtilService.getLongValueForObject(objects[4]);
 				}
 			}
