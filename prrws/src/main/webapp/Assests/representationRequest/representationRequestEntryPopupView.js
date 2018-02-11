@@ -999,6 +999,23 @@ function buildPetitionDetailsView(result){
 														}
 														str+='</div>';
 													str+='</div>';
+												}else if(result.subWorksList[i].subWorksList[j].status == "Not Possible" || result.subWorksList[i].subWorksList[j].status == "Look for Next Year" || result.subWorksList[i].subWorksList[j].status == "Completed" || result.subWorksList[i].subWorksList[j].status == "Partially Completed" ){
+													str+='<div class="row">';
+														str+='<div class="col-sm-3">';
+															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
+														str+='</div>';
+														str+='<div class="col-sm-6">';
+															//str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>'+result.subWorksList[i].subWorksList[j].status+'</span>';
+															str+='<span class="pull-right pending_color"><i class="fa fa-check round_status_pending" aria-hidden="true"></i> '+result.subWorksList[i].subWorksList[j].status+'</span>';
+														str+='</div>';
+														str+='<div class="col-sm-3">';
+															//str+='<h5 class="pull-right">';
+															//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+															//str+='</label>';
+															//str+='</h5>';
+														//str+='</div>';
+													str+='</div>';
 												}else{
 													str+='<div class="row">';
 														str+='<div class="col-sm-3">';
@@ -1008,13 +1025,13 @@ function buildPetitionDetailsView(result){
 															//str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>'+result.subWorksList[i].subWorksList[j].status+'</span>';
 															str+='<span class="pull-right pending_color"><i class="fa fa-check round_status_pending" aria-hidden="true"></i> '+result.subWorksList[i].subWorksList[j].status+'</span>';
 														str+='</div>';
-														//str+='<div class="col-sm-3">';
-															//str+='<h5 class="pull-right">';
-															//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-															//str+='</label>';
-															//str+='</h5>';
-														//str+='</div>';
+														str+='<div class="col-sm-3">';
+															str+='<h5 class="pull-right">';
+															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+															str+='</label>';
+															str+='</h5>';
+														str+='</div>';
 													str+='</div>';
 												}
 											 str+='</div>';
@@ -1874,11 +1891,48 @@ $(document).on("change","#statusChangeId",function(){
 		$("#uploadFileDivCls").show();
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
-	}/* else if(statusId != 1){
+	} 
+	if(glDesignationId == 23){
+		if(statusId == 6){
+			$('#actionTypeStr').val("ASSIGNED");
+			$("#uploadFileDivCls").hide();
+			$("#uploadFile").html('');
+		}
+		else if(statusId != 6){
+			$("#uploadFileDivCls").show();
+			$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+			initializeSingleUploadDocument("uploadEndorsementDocId");
+			$('#actionTypeStr').val("COMPLETED");
+		} 
+	}else if(glDesignationId == 94 || glDesignationId == 95 || glDesignationId == 96 || glDesignationId == 97 || glDesignationId == 98){
+		if(statusId == 6){
+			$('#actionTypeStr').val("ASSIGNED");
+			$("#uploadFileDivCls").hide();
+			$("#uploadFile").html('');
+		}
+		else if(statusId != 6){
+			$("#uploadFileDivCls").show();
+			$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
+			initializeSingleUploadDocument("uploadEndorsementDocId");
+			$('#actionTypeStr').val("COMPLETED");
+		} 
+	}
+	
+	if(statusId == 14 || statusId == 15 ){
 		$("#uploadFileDivCls").show();
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
-	} */
+		$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
+		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+		$("#assignOfficerDivId").show();
+		$("#assignDesignationDivId").show();
+		$('#actionTypeStr').val("COMPLETED");
+		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
+	}else if(statusId == 3){
+		$('#actionTypeStr').val("COMPLETED");
+			$("#uploadFileDivCls").hide();
+			$("#uploadFile").html('');
+	}		
 });	
 $(document).on("click",".docsViewCls",function(){
 	$("#docsViewModalId").html('');
