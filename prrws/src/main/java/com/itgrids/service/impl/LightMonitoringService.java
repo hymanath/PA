@@ -1573,8 +1573,10 @@ public class LightMonitoringService  implements ILightMonitoring{
 						Map<Long,LightMonitoringVO> vendorMap = ccmsCuntMap.get(lctnId);
 						if(vendorMap != null){
 							LightMonitoringVO ccmsvo = vendorMap.get(vo.getLightVendorId());
-							vo.setTotalPanels(ccmsvo.getTotalPanels());
-							vo.setLightCount(vo.getLightCount()+ccmsvo.getTotalLights());
+							if(ccmsvo != null){
+								vo.setTotalPanels(ccmsvo.getTotalPanels());
+								vo.setLightCount(vo.getLightCount()+ccmsvo.getTotalLights());
+							}
 						}
 					}
 				}
