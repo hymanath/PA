@@ -2560,9 +2560,9 @@ function levelWiseSBData(divId)
 							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBArr[i]+'">';
 								if(i == 0)
 								{
-									collapse+='<a role="button" class="collapseDebatesIcon '+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+									collapse+='<a role="button" class="collapseDebatesIcon '+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"   data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
 								}else{
-									collapse+='<a role="button" class="collapseDebatesIcon collapsed '+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+									collapse+='<a role="button" class="collapseDebatesIcon collapsed '+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  overview-level-new='+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+' data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
 								}
 								if(levelWiseSBArr[i] == "state" || levelWiseSBArr[i] == "district" || levelWiseSBArr[i] == "constituency")
 									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview</h4>';
@@ -2596,6 +2596,7 @@ function levelWiseSBData(divId)
 	setTimeout(function(){ 
 		for(var i in levelWiseSBArr){
 			getSettingActivitiesJBMData(levelWiseSBArr[i],divId);
+			$("[overview-level-new]").trigger("click");
 		}	
 	
 	}, 1000);
@@ -2904,13 +2905,13 @@ function buildActivityEventdata(result,locationId,divId){
 					//title		:  "ENC WORKS DASHBOARD",
 					//filename	:  locationId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				}
-			]/* ,
+			] ,
 			"scrollX": true,
 			"scrollX": true,
 			"scrollCollapse": true,
 			"fixedColumns":   {
 				"leftColumns": 1,
-			} */
+			}
 		});
 	}else{
 		$("#candidatesResultsDT").dataTable({
@@ -2928,7 +2929,9 @@ function buildActivityEventdata(result,locationId,divId){
 			}
 		});
 	}
-	
+	$("."+divId+locationId).trigger("click");
+	//alert($(".dataTable"+divIdd).closest("[overview-level-new]").trigger("click");)
+	//$("[overview-level-new]").trigger("click");
 
 }
 $(document).on("click",".generateExcelcdfdf",function(){
