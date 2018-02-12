@@ -2339,11 +2339,15 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 				}
 			}
 		}
-		/*List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
+		List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
 		for (AffiliatedVo affiliatedVo : activityParticipatentCount) {
 			EventLocationVO locationVo =locationMap.get(affiliatedVo.getLocationId());
 			if(locationVo != null){
-				EventLocationVO questionVO = new EventLocationVO();
+				locationVo.setTotalPopulation(affiliatedVo.getTotalMembers());
+				locationVo.setCoveredPopulation(affiliatedVo.getTotalCovered());
+				locationVo.setTotalRegistered(affiliatedVo.getTotalRegistration());
+				locationVo.setTotalLoanApplied(affiliatedVo.getTotalLoanApplied());
+				/*EventLocationVO questionVO = new EventLocationVO();
 				questionVO.setQuestionId(999l);
 				questionVO.setQuestionName("Affiliated Member Data");
 				
@@ -2357,12 +2361,12 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 				EventLocationVO optionVo3 = new EventLocationVO();
 				
 				optionVo.setOptionId(991l);
-				optionVo.setOptionName("totalSCPOP");
+				optionVo.setOptionName("total SC Population");
 				optionVo.setCount(affiliatedVo.getTotalMembers());
 				questionVO.getOptionList().add(optionVo);
 				
 				optionVo1.setOptionId(992l);
-				optionVo1.setOptionName("coveredPOP");
+				optionVo1.setOptionName("covered Population");
 				optionVo1.setCount(affiliatedVo.getTotalCovered());
 				questionVO.getOptionList().add(optionVo1);
 
@@ -2374,9 +2378,9 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 				optionVo3.setOptionId(994l);
 				optionVo3.setOptionName("LoanApplied");
 				optionVo3.setCount(affiliatedVo.getTotalLoanApplied());
-				questionVO.getOptionList().add(optionVo3);
+				questionVO.getOptionList().add(optionVo3);*/
 			}
-		}*/
+		}
  		for (Long lcoationId : locationMap.keySet()) {
 			EventLocationVO vo=  locationMap.get(lcoationId);
 			if(vo != null && vo.getTotalCount()>0 ){
