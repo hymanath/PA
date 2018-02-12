@@ -1840,7 +1840,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 								str1+='<div id="collapseOneActJ'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneActJ'+i+'">';
 									str1+='<div class="panel-body">';
 										str1+='<div id="activityBodyId'+i+'"></div>';
-										//str1+='<div id="activityBodyId'+i+'_'+i+'" style="padding-top: 14px;"></div>';
+										str1+='<div id="activityBodyId'+i+'_'+i+'" style="padding-top: 14px;"></div>';
 									str1+='</div>';
 								str1+='</div>';
 					str1+='</div>';
@@ -1920,8 +1920,8 @@ function buildActivityaffiliatedCounts(result,divId,activityName,activityId){
 		}else if(result[i].locationId==2){
 			locationType ="State Level";
 		}			
-		str+='<h5 class="text-capital">'+locationType+' AFFILIATED MEMBER DETAILS</h5>';
-		str+='<table class="table bg_ED tablePaddingSyle table-bordered m_top10">';
+		//str+='<h5 class="text-capital">'+locationType+' AFFILIATED MEMBER DETAILS</h5>';
+		str+='<table class="table bg_ED tablePaddingSyle table-bordered m_top10" style="border-style: solid; border-width: medium;">';
 			str+='<tbody>';
 				str+='<tr>';
 					str+='<td rowspan="2">';
@@ -1950,21 +1950,21 @@ function buildActivityaffiliatedCounts(result,divId,activityName,activityId){
 				str+='<tr>';
 					str+='<td>';
 						str+='<p class="text-muted text-capital">today Covered Sc Population</p>';
-						str+='<h5 style="margin-top:25px !important;">'+result[i].totalCovered+'&nbsp;&nbsp;';
-						/* if(result[i].totalMembers !=null && result[i].totalMembers >0){
-						str+='<small class="text-danger responsiveFont">'+parseFloat((result[i].totalCovered/result[i].totalMembers)*100).toFixed(2)+'%</small>';
+						str+='<h5 style="margin-top:25px !important;">'+result[i].todayCovered+'&nbsp;&nbsp;';
+						 if(result[i].totalCovered !=null && result[i].totalCovered >0){
+						str+='<small class="text-danger responsiveFont">'+parseFloat((result[i].todayCovered/result[i].totalCovered)*100).toFixed(2)+'%</small>';
 						}else{
 							str+='';
-						} */str+='</h5>';
+						} str+='</h5>';
 						
 					str+='</td>';
 					str+='<td>';
 						str+='<p class="text-muted text-capital">today Registered</p>';
-						str+='<h5 style="margin-top:25px !important;">'+result[i].totalRegistration+'</h5>';
+						str+='<h5 style="margin-top:25px !important;">'+result[i].todayRegistration+'</h5>';
 					str+='</td>';
 					str+='<td>';
 						str+='<p class="text-muted text-capital">today Loan Applied</p>';
-						str+='<h5 style="margin-top:25px !important;">'+result[i].totalLoanApplied+'</h5>';
+						str+='<h5 style="margin-top:25px !important;">'+result[i].todayLoanApplied+'</h5>';
 					str+='</td>';
 				str+='</tr>';
 			str+='</tbody>';
@@ -1986,7 +1986,7 @@ function buildActivityCounts(result,divId,activityName,activityId)
 		
 		
 			
-			str+='<table class="table bg_ED tablePaddingSyle table-bordered m_top10">';
+			str+='<table class="table bg_ED tablePaddingSyle table-bordered m_top10" style="border-style: solid; border-width: medium;">';
 				str+='<tbody>';
 					str+='<tr>';
 						
@@ -2634,7 +2634,7 @@ function buildActivityEventdata(result,locationId,divId){
 	var tableView='';
 	tableView+='<div class="table-responsive">';
 		tableView+='<table class="table table-bordered dataTable1'+locationId+'" id="" style="width:100%;border:1px solid lightgrey">';
-			tableView+='<thead class="text-capital">';
+			tableView+='<thead class="text-capital" style="background-color:#f2f2f2;">';
 				tableView+='<tr>';
 					if(locationId == 'district'){
 						tableView+='<th rowspan =2>District</th>';
@@ -2645,6 +2645,11 @@ function buildActivityEventdata(result,locationId,divId){
 						tableView+='<th rowspan =2>Parliment Constituency</th>';
 					}
 					tableView+='<th rowspan ="2">Total Panchayaths/ Wards</th>';
+					tableView+='<th rowspan ="2">Total SC Population</th>';
+					tableView+='<th rowspan ="2">Covered SC Population</th>';
+					tableView+='<th rowspan ="2">%</th>';
+					tableView+='<th rowspan ="2">Total Registered count</th>';
+					tableView+='<th rowspan="2">Total Loan Applied Count</th>';
 					tableView+='<th colspan="2">Info Cell Conducted</th>';
 					//tableView+='<th rowspan="2">Conducted%</th>';
 					for(var i in result[0].questionList){
@@ -2704,6 +2709,15 @@ function buildActivityEventdata(result,locationId,divId){
 					}
 					tableView+='<td>'+result[i].locationName+'</td>';
 					tableView+='<td>'+result[i].totalCount+'</td>';
+					tableView+='<td>'+result[i].totalPopulation+'</td>';
+					tableView+='<td>'+result[i].coveredPopulation+'</td>';
+					if(result[i].totalPopulation != null && result[i].totalPopulation >0){
+						tableView+='<td>'+parseFloat((result[i].coveredPopulation/result[i].totalPopulation)*100).toFixed(2)+'%</td>';
+					}else{
+					tableView+='<td>-</td>'
+					}
+					tableView+='<td>'+result[i].totalRegistered+'</td>';
+					tableView+='<td>'+result[i].totalLoanApplied+'</td>';
 					tableView+='<td>'+result[i].conductedCount+'</td>';
 					tableView+='<td>'+parseFloat((result[i].conductedCount/result[i].totalCount)*100).toFixed(2)+'%</td>';
 					for(var j in result[i].questionList){
@@ -2765,6 +2779,11 @@ function buildActivityEventdata(result,locationId,divId){
 						tableView+='<th rowspan =2>Parliment Constituency</th>';
 					}
 					tableView+='<th rowspan ="2">Total Panchayaths/ Wards</th>';
+					tableView+='<th rowspan ="2">Total SC Population</th>';
+					tableView+='<th rowspan ="2">Covered SC Population</th>';
+					tableView+='<th rowspan ="2">%</th>';
+					tableView+='<th rowspan ="2">Total Registered count</th>';
+					tableView+='<th rowspan="2">Total Loan Applied Count</th>';
 					tableView+='<th colspan="2">Info Cell Conducted</th>';
 					//tableView+='<th rowspan="2">Conducted%</th>';
 					for(var i in result[0].questionList){
@@ -2817,6 +2836,15 @@ function buildActivityEventdata(result,locationId,divId){
 					}
 					tableView+='<td>'+result[i].locationName+'</td>';
 					tableView+='<td>'+result[i].totalCount+'</td>';
+					tableView+='<td>'+result[i].totalPopulation+'</td>';
+					tableView+='<td>'+result[i].coveredPopulation+'</td>';
+					if(result[i].totalPopulation != null && result[i].totalPopulation >0){
+						tableView+='<td>'+parseFloat((result[i].coveredPopulation/result[i].totalPopulation)*100).toFixed(2)+'%</td>';
+					}else{
+					tableView+='<td>-</td>'
+					}
+					tableView+='<td>'+result[i].totalRegistered+'</td>';
+					tableView+='<td>'+result[i].totalLoanApplied+'</td>';
 					tableView+='<td>'+result[i].conductedCount+'</td>';
 					tableView+='<td>'+parseFloat((result[i].conductedCount/result[i].totalCount)*100).toFixed(2)+'%</td>';
 					for(var j in result[i].questionList){
@@ -2859,8 +2887,8 @@ function buildActivityEventdata(result,locationId,divId){
 		tableView+='</table>';
 		
 	$("#"+locationId).html(tableView);
-	
-	$(".dataTable1"+locationId).dataTable({
+	if(locationId !="district"){
+		$(".dataTable1"+locationId).dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
 			"order": [ 0, 'asc' ],
@@ -2876,8 +2904,31 @@ function buildActivityEventdata(result,locationId,divId){
 					//title		:  "ENC WORKS DASHBOARD",
 					//filename	:  locationId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
 				}
-			]
+			]/* ,
+			"scrollX": true,
+			"scrollX": true,
+			"scrollCollapse": true,
+			"fixedColumns":   {
+				"leftColumns": 1,
+			} */
 		});
+	}else{
+		$("#candidatesResultsDT").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			"scrollX":        true,
+			"scrollCollapse": false,
+			"fixedColumns":   {
+				"leftColumns": 1,
+			}
+		});
+	}
+	
 
 }
 $(document).on("click",".generateExcelcdfdf",function(){
