@@ -262,7 +262,7 @@ function buildMyActionsDetails(result){
 												str+='<div class="col-sm-2 petition_border">';
 												str+='	<div class="">';
 													str+='<p>'+result.statusList[i].subList[j].name.toUpperCase()+'</p>';
-													str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subWorkIds.length+'</a></h5>';
+													str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].subWorkIds.length+'</a></h5>';
 													//var convertToAmt = result.statusList[i].subList[j].estimationCost*100000;
 													//var crores = (convertToAmt/10000000).toFixed(3);
 													//str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
