@@ -92,7 +92,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" select model.petition.petitionId,model.petition.endorsmentNo,date(model1.endorsmentDate)," +//0,1,2
 				" model.petition.estimationCost,model.pmRepresentee.name,model.pmRefCandidate.name," +//3,4,5
 				"model.petition.noOfWorks,model2.pmDesignation.designation," +//6,7
-				" date(model.petition.insertedTime),date(model1.updatedTime),model1.pmStatus.pmStatusId" +//8,9,10
+				" date(model.petition.representationDate),date(model1.updatedTime),model1.pmStatus.pmStatusId" +//8,9,10
 				",model.petition.workName,model1.costEstimation,model1.grievanceDescrption,model1.workEndorsmentNo,model1.pmSubWorkDetailsId " +//11,12,13,14,15
 				" ,model1.pmStatus.status,date(model1.endorsmentDate) ,model.petition.pmStatusId " +//16,17,18
 				"from PmRepresenteeRefDetails as model,PmSubWorkDetails as model1" +
@@ -130,7 +130,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append("  and model1.pmSubject.parentPmSubjectId is null " );
 		sb.append("and  model2.pmRefCandidateDesignationId=model.pmRefCandidateDesignation.pmRefCandidateDesignationId" +
 				" and  model1.pmDepartment.isDeleted='N' " +
-				"and model1.pmSubject.isDeleted='N'  ");
+				"and model1.pmSubject.isDeleted='N' and model2.isDeleted='N' ");
 		
 		if(petitionIdsList != null && petitionIdsList.size()>0){
 			sb.append(" and model.petition.petitionId in (:petitionIdsList)  ");
