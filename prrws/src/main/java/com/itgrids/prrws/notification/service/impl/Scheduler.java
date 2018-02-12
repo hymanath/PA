@@ -13,6 +13,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.service.IConstituencyWiseWorkStatusService;
 import com.itgrids.service.IItcDashboardService;
 import com.itgrids.service.ILightMonitoring;
+import com.itgrids.service.ISolidWasteManagementService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
@@ -36,6 +37,8 @@ public class Scheduler {
     private IConstituencyWiseWorkStatusService constituencyWiseWorkStatusService;
     @Autowired
     private INREGSTCSService nregstcsService;
+    @Autowired
+    private ISolidWasteManagementService  solidWasteManagementService;
     
 	
 	//@Scheduled(cron = "0 30 2,14 * * * ")
@@ -184,4 +187,19 @@ public class Scheduler {
 		else 
 			return;
 	}
+	
+	
+	@Scheduled(cron ="0 */30 * ? * *")
+	public void runTheRfidSchedulerInEveryDay()	{
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			LOG.error("Cron Job For SWM Dashboard Started");
+			solidWasteManagementService.saveRfidTrackingOverAllTargets();
+			LOG.error("Cron Job For SWM Dashboard Completed");
+		}
+		else 
+			return;
+	}
+	
+	
 }
