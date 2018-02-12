@@ -17,7 +17,7 @@ var globalActionName='';
 var assignedBy='';
 var assignedTo='';
 var globalActionId='';
-
+/*
 $(document).on("click",".actionCls",function(){
 	var isSelected=false;
 	$(this).each(function(){
@@ -94,7 +94,7 @@ $(document).on("click",".actionCls",function(){
 		
 	}
 }); 
-
+*/
 $(document).on("click",".viewBtnCls",function(){
 	var petionId = $(this).attr("attr_petiotion_id");
 	var endorsNo = $(this).attr("attr_enrorsNo");
@@ -207,11 +207,13 @@ function buildPetitionDetailsView(result){
 	 if(glDesignationId != 23 && glDesignationId != 2 && glDesignationId != 86){
 		 //$("#uploadFileDivCls").show();
 	 }
-	 
+	 if(glDesignationId == 93 || glDesignationId == 94 || glDesignationId == 95 || glDesignationId == 96 || glDesignationId == 97 || glDesignationId == 98){
+		 $("#letterNameId").html(" MEMO / LETTER ")
+	 }
 	var str='';
 	
 	var statusId = result.statusId;
-	console.log(statusId);
+	
 	str+='<div class="pad_pink_bg">';
 		str+='<div class="row">';
 			str+='<div class="col-sm-4">';
@@ -958,6 +960,7 @@ function buildPetitionDetailsView(result){
 														str+='</div>';
 													str+='</div>';
 												}else if(result.subWorksList[i].subWorksList[j].status == "Pending Endorsement"){
+													globalActionName = result.subWorksList[i].subWorksList[j].status;
 													str+='<div class="row">';
 														str+='<div class="col-sm-3">';
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
@@ -978,6 +981,7 @@ function buildPetitionDetailsView(result){
 														str+='</div>';
 													str+='</div>';
 												}else if(result.subWorksList[i].subWorksList[j].status == "Final Approval" || result.subWorksList[i].subWorksList[j].status == "Action Memo" || result.subWorksList[i].subWorksList[j].status == "Detailed Report"){
+													globalActionName = result.subWorksList[i].subWorksList[j].status;
 													str+='<div class="row">';
 														str+='<div class="col-sm-3">';
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
@@ -1017,6 +1021,7 @@ function buildPetitionDetailsView(result){
 														//str+='</div>';
 													str+='</div>';
 												}else{
+													globalActionName = result.subWorksList[i].subWorksList[j].status;
 													str+='<div class="row">';
 														str+='<div class="col-sm-3">';
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
@@ -1513,8 +1518,8 @@ $(document).on("click",".updateStatusChangeCls",function(){
 				nextStatusId=6;
 			else if(globalStatusArr[i].key == 6)
 				nextStatusId=7;
-			else if(globalStatusArr[i].key == 7)
-				nextStatusId=3;
+			//else if(globalStatusArr[i].key == 7)
+				//nextStatusId=3;
 			else if(globalStatusArr[i].key == 3)
 				nextStatusId=8;
 			else if(globalStatusArr[i].key == 4)
@@ -1575,7 +1580,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	if(globalReviewStatus == "ASSIGNED"){
 		if(!$('#inlineCheckbox2').is(":checked")){
 			//$(".actionChangeCls").hide();
-			 $("#statusChangeDivId").hide();
+			 $("#statusChangeDivId").show();
 			 $("#fileUploadDiv").show();
 			 $("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 			 initializeSingleUploadDocument("uploadEndorsementDocId");	
@@ -1651,7 +1656,7 @@ $(document).on("change","#assignTypeId",function(){
 		//$('#actionTypeStr').val('ASSIGNED');
 		
 		$('#endorsWorksId').html('Assign');
-		$("#statusChangeDivId").hide();
+		$("#statusChangeDivId").show();
 		$("#assighTypeId").show();
 		$("#commentsDivId").show();
 		$("#assignOfficerDivId").show();
@@ -1893,7 +1898,11 @@ $(document).on("change","#statusChangeId",function(){
 		initializeSingleUploadDocument("uploadEndorsementDocId");
 	} 
 	if(glDesignationId == 23){
-		if(statusId == 6){
+		$('#actionTypeStr').val("ASSIGNED");
+		$("#uploadFileDivCls").hide();
+		$("#uploadFile").html('');
+		
+		/*if(statusId == 6){
 			$('#actionTypeStr').val("ASSIGNED");
 			$("#uploadFileDivCls").hide();
 			$("#uploadFile").html('');
@@ -1903,7 +1912,7 @@ $(document).on("change","#statusChangeId",function(){
 			$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 			initializeSingleUploadDocument("uploadEndorsementDocId");
 			$('#actionTypeStr').val("COMPLETED");
-		} 
+		} */
 	}else if(glDesignationId == 94 || glDesignationId == 95 || glDesignationId == 96 || glDesignationId == 97 || glDesignationId == 98){
 		if(statusId == 6){
 			$('#actionTypeStr').val("ASSIGNED");
@@ -2201,13 +2210,13 @@ function endorsingSubWorksAndAssigningToOfficer(){
 				if($("#nextStatusId").val()==6){
 					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
 						formData.append("statusType", "COVERING LETTER");
-				}else if($("#nextStatusId").val()==7){
+				}else if($("#nextStatusId").val()==7 || $("#nextStatusId").val()==10 || $("#nextStatusId").val()==11 || $("#nextStatusId").val()==12 ){
 					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
 						formData.append("statusType", "ACTION COPY");
 				}else if($("#nextStatusId").val()==3){
 					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
 						formData.append("statusType", "DETAILED REPORT");
-				}else if($("#nextStatusId").val()==8){
+				}else{
 					if(formData.get('statusType') == null || formData.get('statusType') == undefined || formData.get('statusType') == 'undefined')
 						formData.append("statusType", "OTHER REPORT");
 				}

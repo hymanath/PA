@@ -21,7 +21,7 @@ public class PmDepartmentDesignationHierarchyDAO extends GenericDaoHibernate<PmD
 		super(PmDepartmentDesignationHierarchy.class);
 	}
 	
-	public List<Object[]> getSubDesignationDetailsForParentDeptDesignations(List<Long> deptDesignationIdsList,List<Long> deptIdsList){
+	public List<Object[]> getSubDesignationDetailsForParentDeptDesignations(List<Long> deptDesignationIdsList,List<Long> deptIdsList, String actionType){
 		if(deptDesignationIdsList != null && deptDesignationIdsList.size()>0){
 			StringBuilder str = new StringBuilder();
 		
@@ -39,6 +39,7 @@ public class PmDepartmentDesignationHierarchyDAO extends GenericDaoHibernate<PmD
 				str.append(" and model.subPmDepartmentDesignation.pmDepartmentId in (:deptIdsList)  ");
 			}
 			//str.append(" and model.isActive='Y' and  model.subPmDepartmentDesignation.isDeleted='N' order by  model.subPmDepartmentDesignation.pmOfficerDesignation.designation ");
+			//str.append(" and model.actionType =:actionType ");
 			str.append(" and    model.subPmDepartmentDesignation.isDeleted='N' order by  model.orderNo ");
 			Query query = getSession().createQuery(str.toString());
 			if(deptDesignationIdsList != null && deptDesignationIdsList.size() >0){
@@ -47,6 +48,7 @@ public class PmDepartmentDesignationHierarchyDAO extends GenericDaoHibernate<PmD
 			if(deptIdsList != null && deptIdsList.size() >0){
 				query.setParameterList("deptIdsList", deptIdsList);
 			}
+			//query.setParameter("actionType", actionType);
 			return query.list();
 		}
 		return  null;

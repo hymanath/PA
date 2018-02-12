@@ -2159,7 +2159,7 @@ function checkIsNumber(id,value){
 }
 function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 	var selStatusId = $("#statusId").val();
-	alert(statusId)
+	//alert(statusId)
 	var statusIds = [];
 	if(selStatusId != null && selStatusId.length >0){
 		statusIds=selStatusId;

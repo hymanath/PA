@@ -3496,7 +3496,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			try {
 				List<Long> deptDesignationIdsList = pmOfficerUserDAO.getPmDeptDesignationIdByUserId(userId);
 				if(commonMethodsUtilService.isListOrSetValid(deptDesignationIdsList)){
-					List<Object[]> childDeptDesignationsList = pmDepartmentDesignationHierarchyDAO.getSubDesignationDetailsForParentDeptDesignations(deptDesignationIdsList,deptIdsList);
+					List<Object[]> childDeptDesignationsList = pmDepartmentDesignationHierarchyDAO.getSubDesignationDetailsForParentDeptDesignations(deptDesignationIdsList,deptIdsList,"FORWARD");
 					if(commonMethodsUtilService.isListOrSetValid(childDeptDesignationsList)){
 						for (Object[] param : childDeptDesignationsList) {
 							//returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])+" - "+commonMethodsUtilService.getStringValueForObject(param[2])));
@@ -3613,9 +3613,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						boolean alreadyUpdaeted=false; // only once documents should be tracked for petition, but for works multiple times.
 						for (Long subWorkId : workIds) {
 							pmSubWorkDetails = pmSubWorkDetailsDAO.get(subWorkId);
-							if(inputVO.getActionType() != null && inputVO.getActionType().equalsIgnoreCase("ASSIGNED")){
+							/*if(inputVO.getActionType() != null && inputVO.getActionType().equalsIgnoreCase("ASSIGNED")){
 								inputVO.setStatusId(pmSubWorkDetails.getPmStatusId());
-							}
+							}*/
 							if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L){
 								
 								endorsmentNo = pmSubWorkDetails.getWorkEndorsmentNo();
@@ -3649,6 +3649,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 												}
 											}else{// if not status change existing status will be there.
 												inputVO.setStatusId(pmSubWorkDetails.getPmStatusId());
+											}
+											
+											if(inputVO.getStatusId().longValue() ==3L || inputVO.getStatusId().longValue() ==4L || inputVO.getStatusId().longValue() ==5L || inputVO.getStatusId().longValue() ==8L){
+												pmSubWorkDetails.setPmStatusId(8L);
 											}
 												pmSubWorkDetailsDAO.save(pmSubWorkDetails);
 										}
@@ -3809,7 +3813,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					if(inputVO.getPetitionId() != null && inputVO.getPetitionId().longValue()>0L && inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L){
 						Petition petition = pititionDAO.get(inputVO.getPetitionId());
 						if(petition != null){
-							if(inputVO.getStatusId().longValue() ==4L || inputVO.getStatusId().longValue() ==5L || inputVO.getStatusId().longValue() ==8L){
+							if(inputVO.getStatusId().longValue() ==3L || inputVO.getStatusId().longValue() ==4L || inputVO.getStatusId().longValue() ==5L || inputVO.getStatusId().longValue() ==8L){
 								petition.setPmStatusId(8L);
 								List<Object[]> list = pmSubWorkDetailsDAO.getAllWorksLatesStatusDetails(inputVO.getPetitionId());
 								List<Long> statusIdsList = new ArrayList<Long>();
@@ -3912,7 +3916,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmTrackingVO.setPetitionId(petitonId);
 						if(statusId == 6L)
 							pmTrackingVO.setRemarks("Uploaded covering letter");
-						else if(statusId == 7L)
+						else if(statusId == 7L || statusId == 10L || statusId == 11L || statusId == 12L)// for joint secretories
 							pmTrackingVO.setRemarks("uploaded action memo document");
 						else if(statusId == 3L)
 							pmTrackingVO.setRemarks("Uploaded detailed report document");
@@ -4274,6 +4278,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								String userName =commonMethodsUtilService.getStringValueForObject(param[8]);
 								Long statusId = commonMethodsUtilService.getLongValueForObject(param[9]);
 								String stautus=commonMethodsUtilService.getStringValueForObject(param[10]);
+										actionName =stautus;
 								Long officerId = commonMethodsUtilService.getLongValueForObject(param[11]);
 								String officerName=commonMethodsUtilService.getStringValueForObject(param[12]);
 								String mobileNo=commonMethodsUtilService.getStringValueForObject(param[13]);
