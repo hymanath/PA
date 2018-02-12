@@ -214,7 +214,7 @@ function buildMyActionsDetails(result){
 																str+='<p>Representations</p>';
 																str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].petitionIds.length+'</a></h4>';
 																var convertToAmt = result.statusList[i].estimationCost*100000;
-																var crores = (convertToAmt/10000000).toFixed(3);
+																var crores = (convertToAmt/10000000).toFixed(2);
 																str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 															str+='</div>';
 														str+='</div>';
@@ -344,7 +344,7 @@ function buildCompleteOrStatusOverviewDetails(result){
 															str+='<p>Representations</p>';
 															str+='<h4><b>'+result.petitionIds.length+'</b></h4>';
 															var convertToAmt = result.estimationCost*100000;
-															var crores = (convertToAmt/10000000).toFixed(3);
+															var crores = (convertToAmt/10000000).toFixed(2);
 															str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
 														str+='</div>';
 													str+='</div>';
@@ -663,9 +663,16 @@ function getReferralWiseOverviewDetails(desigId){
 							str+='<tr style="text-align:center;">';
 								str+='<td><h5><b>'+result.referrerList[i].referrerName+'</b><h5><p>'+result.referrerList[i].desigName+'</p></td>';
 								
-								str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].petitionIds.length+'</a></td>';
-								
-								str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].subWorkIds.length+'</a></td>';
+								if(result.referrerList[i].petitionIds.length >0){
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].petitionIds.length+'</a></td>';
+								}else{
+									str+='<td>-</td>';
+								}
+								if(result.referrerList[i].subWorkIds.length >0){
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].subWorkIds.length+'</a></td>';
+								}else{
+									str+='<td>-</td>';
+								}
 								
 								for(var j in result.referrerList[i].statusList){
 										var statusIds= '';
@@ -676,15 +683,23 @@ function getReferralWiseOverviewDetails(desigId){
 										}if(result.referrerList[i].statusList[j].id == 3){
 											statusIds='4,8';
 										}
-									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].petitionIds.length+'</a></td>';
+										
+										if(result.referrerList[i].statusList[j].petitionIds.length >0){
+											str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].petitionIds.length+'</a></td>';
+										}else{
+											str+='<td>-</td>';
+										}
 									
-									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].subWorkIds.length+'</a></td>';
-									
+									if(result.referrerList[i].statusList[j].subWorkIds.length >0){
+										str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].subWorkIds.length+'</a></td>';
+									}else{
+										str+='<td>-</td>';
+									}
 								}
 									//for(var j in result.referrerList[i].statusList){
 									if(typeof(result.referrerList[i].estimationCost) != "undefined"){
 										var convertToAmt = result.referrerList[i].estimationCost*100000;
-										var crores = (convertToAmt/10000000).toFixed(3);
+										var crores = (convertToAmt/10000000).toFixed(2);
 										str+='<td><b>'+crores+'</b></td>';
 									}else{
 										str+='<td><b>-</b></td>';

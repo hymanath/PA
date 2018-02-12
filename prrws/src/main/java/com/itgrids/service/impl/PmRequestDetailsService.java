@@ -2688,6 +2688,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						//}
 					}
 				}
+				Map<Long,String> countMap = new HashMap<Long,String>();
 				List<Object[]> objectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"",petitionsIdsList);
 				if(commonMethodsUtilService.isListOrSetValid(objectList)){
 					
@@ -2701,19 +2702,20 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}
 						statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
 						statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						countMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[4]));
 						//statusVO.setNoOfWorks(statusVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						returnVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
 						//returnVO.setNoOfWorks(returnVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						returnVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 						String estimationCost = commonMethodsUtilService.getStringValueForObject(param[4]);
-						if(returnVO.getEstimationCost() != null && returnVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
-							BigDecimal decmial= new BigDecimal(returnVO.getEstimationCost());
+						if(statusVO.getEstimationCost() != null && statusVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+							//BigDecimal decmial= new BigDecimal(returnVO.getEstimationCost());
 							BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
 							BigDecimal decmial1= new BigDecimal(estimationCost);
-							BigDecimal totalCost = decmial.add(decmial1);
+							//BigDecimal totalCost = decmial.add(decmial1);
 							BigDecimal totalCost1 = decmial2.add(decmial1);
 							statusVO.setEstimationCost(totalCost1.toString());
-							returnVO.setEstimationCost(totalCost.toString());
+							//returnVO.setEstimationCost(totalCost.toString());
 						}
 					}
 				}
@@ -2735,9 +2737,19 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						//setOthersDataToLastIndexOfList(entry.getValue().getDeptList());
 						returnVO.getStatusList().add(entry.getValue());
 					}
+				}
+				if(commonMethodsUtilService.isMapValid(countMap)){
+					for (Map.Entry<Long, String> entry : countMap.entrySet()) {
+						String estimationCost = commonMethodsUtilService.getStringValueForObject(entry.getValue());
+						if(estimationCost != ""){
+							BigDecimal decmial= new BigDecimal(returnVO.getEstimationCost());
+							BigDecimal decmial1= new BigDecimal(estimationCost);
+							BigDecimal totalCost = decmial.add(decmial1);
+							returnVO.setEstimationCost(totalCost.toString());
+						}
+					}
 					
 				}
-				
 				List<Long> inProgressStatusIds = IConstants.PETITION_IN_PROGRESS_IDS;
 				RepresenteeViewVO inProgressVO = statuMap.get(2l);
 				Map<Long,RepresenteeViewVO> inprogreeReferMap = new HashMap<Long,RepresenteeViewVO>();

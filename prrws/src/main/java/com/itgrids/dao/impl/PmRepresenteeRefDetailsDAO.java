@@ -91,12 +91,12 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		String filterType = inputVO.getFilterType();
 		sb.append(" select model.petition.petitionId,model.petition.endorsmentNo,date(model1.endorsmentDate)," +//0,1,2
 				" model.petition.estimationCost,model.pmRepresentee.name,model.pmRefCandidate.name," +//3,4,5
-				"model.petition.noOfWorks,model2.pmDesignation.designation," +//6,7
+				"model.petition.noOfWorks,model.pmRefCandidateDesignation.pmDesignation.designation," +//6,7
 				" date(model.petition.representationDate),date(model1.updatedTime),model1.pmStatus.pmStatusId" +//8,9,10
 				",model.petition.workName,model1.costEstimation,model1.grievanceDescrption,model1.workEndorsmentNo,model1.pmSubWorkDetailsId " +//11,12,13,14,15
 				" ,model1.pmStatus.status,date(model1.endorsmentDate) ,model.petition.pmStatusId " +//16,17,18
-				"from PmRepresenteeRefDetails as model,PmSubWorkDetails as model1" +
-				",PmRefCandidateDesignation model2 ");
+				"from PmRepresenteeRefDetails as model,PmSubWorkDetails as model1");
+				//sb.append(",PmRefCandidateDesignation model2 ");
 		
 		if(filterType != null && (filterType.equalsIgnoreCase("work") || 
 				filterType.equalsIgnoreCase("department") || filterType.equalsIgnoreCase("subject")) && searchLevelId != null && searchLevelId.longValue()>0L){
@@ -124,13 +124,13 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		}
 		
 		sb.append(" where   model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " );
-		sb.append(" and  model.pmRefCandidateDesignation.isDeleted = 'N' and model1.petition.isDeleted='N' ");
+		/*sb.append(" and  model.pmRefCandidateDesignation.isDeleted = 'N' and model1.petition.isDeleted='N' ");
 		sb.append("  and model.pmRefCandidate.isDeleted = 'N' and model.pmRepresentee.isDeleted = 'N'  ");
 		sb.append(" and model2.pmRefCandidateId=model.pmRefCandidateId "); 
 		sb.append("  and model1.pmSubject.parentPmSubjectId is null " );
 		sb.append("and  model2.pmRefCandidateDesignationId=model.pmRefCandidateDesignation.pmRefCandidateDesignationId" +
 				" and  model1.pmDepartment.isDeleted='N' " +
-				"and model1.pmSubject.isDeleted='N' and model2.isDeleted='N' ");
+				"and model1.pmSubject.isDeleted='N' and model2.isDeleted='N' ");*/
 		
 		if(petitionIdsList != null && petitionIdsList.size()>0){
 			sb.append(" and model.petition.petitionId in (:petitionIdsList)  ");
