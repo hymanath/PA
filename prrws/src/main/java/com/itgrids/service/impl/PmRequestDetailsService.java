@@ -3122,11 +3122,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								leadVO.getStatusList().addAll(setLeadStatusTemplate(statusIds));
 								leadVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
 								leadVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
-								leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+								//leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+								leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 								leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 								leadMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), leadVO);
 						}else{
-							leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+							//leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+							leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 							leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 						}
 					}else{
@@ -3136,11 +3138,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						    	leadVO.getStatusList().addAll(setLeadStatusTemplate(statusIds));
 						    	leadVO.setId(0L);
 						    	leadVO.setName("OTHERS");
-						    	leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						    	//leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						    	leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 						    	leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 						    	leadMap.put(0l, leadVO);
 						    }else{
-						  	  	leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						  	  	//leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+						    	leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 						  	    leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 						    }
 					   }
@@ -3155,7 +3159,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							RepresenteeViewVO completedVO = getMatchVO(leadVO.getStatusList(), 2l);
 							if(completedVO != null){
 								completedVO.setName("Completed");
-								completedVO.setNoOfWorks(completedVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+								//completedVO.setNoOfWorks(completedVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+								completedVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 								completedVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 								if(completedVO.getEstimationCost() != null && completedVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
 									BigDecimal decmial= new BigDecimal(completedVO.getEstimationCost());
@@ -3168,7 +3173,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							RepresenteeViewVO inprogressVO = getMatchVO(leadVO.getStatusList(), 1l);
 							if(inprogressVO != null){
 								inprogressVO.setName("Pending");
-								inprogressVO.setNoOfWorks(inprogressVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+								//inprogressVO.setNoOfWorks(inprogressVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
+								inprogressVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 								inprogressVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 								if(inprogressVO.getEstimationCost() != null && inprogressVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
 									BigDecimal decmial= new BigDecimal(inprogressVO.getEstimationCost());
@@ -4010,8 +4016,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 							map.put(id, refDesigCan);
 						}
-						refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[6]));
-						refDesigCan.setNoOfWorks(refDesigCan.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+						refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						//refDesigCan.setNoOfWorks(refDesigCan.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
 						refDesigCan.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
 						String estimationCost = commonMethodsUtilService.getStringValueForObject(objects[8]);
 						if(refDesigCan.getEstimationCost() != null && refDesigCan.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
@@ -4090,7 +4096,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							refDesigCan.setName(commonMethodsUtilService.getStringValueForObject(objects[7]));
 							map.put(commonMethodsUtilService.getLongValueForObject(objects[6]), refDesigCan);
 						}
-						refDesigCan.setNoOfWorks(refDesigCan.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+						//refDesigCan.setNoOfWorks(refDesigCan.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+						refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						refDesigCan.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
 						Long statusId = commonMethodsUtilService.getLongValueForObject(objects[2]);
 						if(pendingIds.contains(statusId)){
@@ -4102,7 +4109,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						} 
 						RepresenteeViewVO statusVO = getMatchVO(refDesigCan.getStatusList(),statusId);
 						if(statusVO != null){
-							statusVO.setNoOfWorks(statusVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+							//statusVO.setNoOfWorks(statusVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+							statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 							statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
 						//if(statusId.longValue() == 3l){
 							String estimationCost = commonMethodsUtilService.getStringValueForObject(objects[8]);
