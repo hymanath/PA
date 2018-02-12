@@ -25,7 +25,10 @@ public class EventLocationVO {
 	private Long parlimentId;
 	private String districtName;
 	private String parliamentName;
-	
+	private Long totalPopulation=0l;
+	private Long coveredPopulation=0l;
+	private Long totalRegistered=0l;
+	private Long totalLoanApplied=0l;
 	
 	public Long getLocationId() {
 		return locationId;
@@ -128,6 +131,30 @@ public class EventLocationVO {
 	}
 	public void setParliamentName(String parliamentName) {
 		this.parliamentName = parliamentName;
+	}
+	public Long getTotalPopulation() {
+		return totalPopulation;
+	}
+	public void setTotalPopulation(Long totalPopulation) {
+		this.totalPopulation = totalPopulation;
+	}
+	public Long getCoveredPopulation() {
+		return coveredPopulation;
+	}
+	public void setCoveredPopulation(Long coveredPopulation) {
+		this.coveredPopulation = coveredPopulation;
+	}
+	public Long getTotalRegistered() {
+		return totalRegistered;
+	}
+	public void setTotalRegistered(Long totalRegistered) {
+		this.totalRegistered = totalRegistered;
+	}
+	public Long getTotalLoanApplied() {
+		return totalLoanApplied;
+	}
+	public void setTotalLoanApplied(Long totalLoanApplied) {
+		this.totalLoanApplied = totalLoanApplied;
 	}
 	
 	
