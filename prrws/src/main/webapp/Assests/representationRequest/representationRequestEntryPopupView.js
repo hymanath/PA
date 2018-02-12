@@ -2376,7 +2376,7 @@ function generateCoveringLetterForPetition(){
 	 
 	 var  schemeIdsListArr =[];
 	   var endorsementNO="";
-	   var petitionId=0;
+	   //var petitionId=0;
 	   var formData = new FormData();
 	   formData.append("petitionId",glPetitionId);
 	   $('#endorsingSubWorksId input').each(
@@ -2389,9 +2389,9 @@ function generateCoveringLetterForPetition(){
 				if(text=='text' || text=='hidden'){
 					var name = $('#'+id+'').attr('name');
 					formData.append(name, $('#'+id+'').val());
-					if(name=="petitionId")
+					/* if(name=="petitionId")
 						petitionId = $('#'+id+'').val();
-					else if(name=="endorsementNO")
+					else */ if(name=="endorsementNO")
 						endorsementNO = $('#'+id+'').val();
 				}else if(text=='radio'){
 					if($('#'+id+'').is(':checked')){
@@ -2417,15 +2417,15 @@ function generateCoveringLetterForPetition(){
 		}
 	}
  $('#coveringLetterPthErr').html("<span style='color:green;'> Please wait Covering Letter is generating...</span>");
-var json = {
-   pageId :petitionId,//petitionId
+ var json = {
+   pageId :glPetitionId,//petitionId
    schemeIdsList:schemeIdsListArr,//subWorkIds
    leadName:leadId,
    groupName:grantId ,
 	endValue:endorsementNO,//endorsmentNo
 	pType:"viewPage",
 	type:"COVERING LETTER",
-	pageId:officerIdValue
+	filterId:officerIdValue
   }           
  $.ajax({              
   type:'POST',    

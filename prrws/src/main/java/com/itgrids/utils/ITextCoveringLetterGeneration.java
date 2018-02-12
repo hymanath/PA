@@ -305,9 +305,9 @@ public class ITextCoveringLetterGeneration  {
 				}
 			}
 			
-			if(inputVO.getPageId() != null && inputVO.getPageId().longValue()== 398l){
+			if(inputVO.getFilterId() != null && inputVO.getFilterId().longValue()== 398l){
 				toAddrImg = "to_address1.png";
-			}else if(inputVO.getPageId() != null && inputVO.getPageId().longValue()== 381l){
+			}else if(inputVO.getFilterId() != null && inputVO.getFilterId().longValue()== 381l){
 				toAddrImg = "to_address.png";
 			}
 			StringBuffer str = new StringBuffer();
