@@ -20,6 +20,7 @@ public class PmDepartmentDesignationHierarchy {
 	private Long subPmDepartmentDesignationId;
 	private String isActive;
 	private Long orderNo;
+	private String actionType;
 	
 	private PmDepartmentDesignation pmDepartmentDesignation;
 	private  PmDepartmentDesignation subPmDepartmentDesignation;
@@ -82,4 +83,14 @@ public class PmDepartmentDesignationHierarchy {
 			PmDepartmentDesignation subPmDepartmentDesignation) {
 		this.subPmDepartmentDesignation = subPmDepartmentDesignation;
 	}
+	
+	@Column(name="action_type")
+	public String getActionType() {
+		return actionType;
+	}
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
+	}
+	
+	
 }

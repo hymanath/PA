@@ -7,5 +7,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.model.PmDepartmentDesignationHierarchy;
 
 public interface IPmDepartmentDesignationHierarchyDAO extends GenericDao<PmDepartmentDesignationHierarchy, Long> {
-	public List<Object[]> getSubDesignationDetailsForParentDeptDesignations(List<Long> deptDesignationIdsList,List<Long> deptIdsList);
+	public List<Object[]> getSubDesignationDetailsForParentDeptDesignations(List<Long> deptDesignationIdsList,List<Long> deptIdsList, String actionType);
 }
