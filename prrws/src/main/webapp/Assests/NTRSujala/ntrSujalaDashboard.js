@@ -693,7 +693,7 @@ function buildMotherPlantsOverviewDetails(result,type){
 					str+='<th>Name</th>';
 					str+='<th>Health</th>';
 					str+='<th>Water&nbsp;Quality</th>';
-					str+='<th>Water&nbsp;Generation&nbsp;Lts</th>';
+					//str+='<th>Water&nbsp;Generation&nbsp;Lts</th>';
 					str+='<th>Connected&nbsp;RDU&nbsp;s</th>';
 					str+='<th>Customers</th>';
 					str+='<th>Location</th>';
@@ -716,10 +716,10 @@ function buildMotherPlantsOverviewDetails(result,type){
 								str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 							else
 								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
-							if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
+							/*if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
 								str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
 							else
-								str+='<td> - </td>';
+								str+='<td> - </td>';*/
 							str+='<td>'+result[i].totalRDUs+'</td>';
 							str+='<td>'+result[i].totalCustomers+'</td>';
 							str+='<td>'+result[i].location+'</td>';
@@ -870,7 +870,7 @@ function buildMotherPlantAndRDUDetails(result){
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-5">';
+				str+='<div class="col-sm-6">';
 					str+='<h5 class=""><img src="Assests/images/RMD.png" style="width:25px;"/><span class="font_weight m_left_5">Remote Dispensing Units - '+result.subList.length+'</span></h5>';
 					str+='<div class="row">';
 						str+='<div class="col-sm-6 m_top10">';
@@ -897,9 +897,9 @@ function buildMotherPlantAndRDUDetails(result){
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<div class="row">';
-						str+='<div class="col-sm-8">';
+				str+='<div class="col-sm-2">';
+					//str+='<div class="row">';
+						/*str+='<div class="col-sm-8">';
 							str+='<h5 class=""><img src="Assests/images/water_icon.png" style="width:25px;"/><span class="font_weight m_left_5">Water Generated</span></h5>';
 							str+='<div class="pad_5_F6F7FF m_top10">';
 								str+='<div class="m_top_bottom">';
@@ -909,15 +909,15 @@ function buildMotherPlantAndRDUDetails(result){
 										str+='<h4 class="m_left_5"><img class="media-object toolTipCls" data-toggle="tooltip" data-placement="top" title="IOT device not fitted." src="Assests/images/not_applicable.png" alt="..." style="width:25px;height:25px;"></h4>';
 								str+='</div>';
 							str+='</div>';
-						str+='</div>';
-						str+='<div class="col-sm-4">';
+						str+='</div>';*/
+						//str+='<div class="col-sm-4">';
 						str+='<h5 class=""><span class="font_weight m_left_5">Customers</span></h5>';
 						str+='<div class="pad_5_F6F7FF m_top20">';
 							str+='<div class="m_top_bottom">';
 								str+='<h4 class="">'+result.totalCustomers+'</h4>';
 							str+='</div>';
 						str+='</div>';
-					str+='</div>';
+					//str+='</div>';
 					/*str+='<div class="col-sm-3">';
 						str+='<h5 class=""><span class="font_weight m_left_5">Revenue</span></h5>';
 						str+='<div class="pad_5_F6F7FF m_top20">';
@@ -927,7 +927,7 @@ function buildMotherPlantAndRDUDetails(result){
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';*/
-				str+='</div>';
+				//str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
