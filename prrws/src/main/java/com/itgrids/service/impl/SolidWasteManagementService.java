@@ -1,6 +1,8 @@
 package com.itgrids.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,14 +11,19 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jettison.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itgrids.dao.IWebServiceDataDAO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.SolidWasteManagementVO;
+import com.itgrids.dto.WebServiceDataVO;
+import com.itgrids.model.WebServiceData;
 import com.itgrids.service.ISolidWasteManagementService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.DateUtilService;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
@@ -30,6 +37,10 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 
 	@Autowired
 	private CommonMethodsUtilService commonMethodsUtilService;
+	@Autowired
+	private DateUtilService dateUtilService;
+	@Autowired
+	private  IWebServiceDataDAO  iWebServiceDataDAO;
 	
 	/*
 	 * Date : 7/11/2017
@@ -87,6 +98,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		 	    				solidWasteManagementVO.setTricycle(!jObj.getString("tricycle").equalsIgnoreCase("null") ?jObj.getLong("tricycle") : 0l);
 		 	    				solidWasteManagementVO.setEvehicle(!jObj.getString("evehicle").equalsIgnoreCase("null") ?jObj.getLong("evehicle") : 0l);
 		 	    				solidWasteManagementVO.setBlocks(!jObj.getString("blocks").equalsIgnoreCase("null") ?jObj.getLong("blocks") : 0l);
+		 	    			    finalList.add(solidWasteManagementVO);
 		 	    				//locationMap.put(jObj.getString("name"), solidWasteManagementVO);
 		 	    				// finalList.add(solidWasteManagementVO);
 		 	    			     // finalList.addAll(locationMap.values());
@@ -218,7 +230,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			Map<Long,SolidWasteManagementVO> locationMap= new HashMap<Long, SolidWasteManagementVO>();
 			WebResource webResource = null;				
 					webResource = commonMethodsUtilService.getWebResourceObject("http://pris.ap.gov.in/api/swm/index.php?getSwmInfo=1&districtId="+inputVO.getDistrictId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
-				    ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+ 				    ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 		    
 	        	if(response.getStatus() != 200){
 	        		throw new  RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -241,7 +253,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 										locationMap.put(1L, solidWasteManagementVO);
 	        						}
 	        					}else if(inputVO.getLocationType().equalsIgnoreCase("district")){
-	        						solidWasteManagementVO = locationMap.get(jObj.getLong("districtID"));	        						
+ 	        						solidWasteManagementVO = locationMap.get(jObj.getLong("districtID"));	        						
 	        						if(solidWasteManagementVO == null){
 	        							solidWasteManagementVO = new SolidWasteManagementVO();
 	        							solidWasteManagementVO.setLocationId(jObj.getLong("districtID"));
@@ -292,14 +304,13 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	        			   }	        	
 	        			   finalList.addAll(locationMap.values());
 						
-	        		     	}
+	        		    }
 	        			}
 	            		} catch ( JSONException e) {
 	        		 	   LOG.error("Exception raised at getSolidInfoLocationWise - SolidWasteManagementService service", e);
 	           			}
 	        		return  finalList;	
-	        	}
-	
+	}
 	public static double round(double value, int places) {
 	    if (places < 0) throw new IllegalArgumentException();
 
@@ -308,8 +319,80 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	    long tmp = Math.round(value);
 	    return (double) tmp / factor;
 	}
-}
-	
+
+	@Override
+	public WebServiceDataVO saveRfidTrackingOverAllTargets() {
+		
+		WebServiceDataVO webServiceDataVO =new WebServiceDataVO();
+		
+		String  jsonList = getRfidTrackingOverAllTargetsData();
+		 if(!jsonList.equals("<br />"));
+		 if(!jsonList.equals("<b>Notice</b>:  Undefined index: districtId in <b>/var/www/html/api/swm/index.php</b> on line <b>68</b><br />"));
+		
+			try{			
+	    	   WebServiceData model = new WebServiceData();
+	    	   model.setWebserviceId(127L);
+	    	  // model.setInputData(inputVO.getInputData());
+	    	   model.setResponceData(jsonList);
+	    	  // model.setDataDate("05-12-2017");
+	    	   model.setInsertedTime(dateUtilService.getCurrentDateAndTime());    	   
+	    	   WebServiceData  rfidData =  iWebServiceDataDAO.save(model);
+	    	  	    	  
+	    	   if(rfidData != null){
+	    		   webServiceDataVO.setStatus("success");
+	    	   }else{
+	    		   webServiceDataVO.setStatus("failure");
+	    	   }
+			   }catch (Exception e) {
+				LOG.error("Exception occured at saveRfidTrackingOverAllTargets() in SolidWasteManagementService class",e);
+				webServiceDataVO.setStatus("failure");
+		    }
+			return  webServiceDataVO;
+		    }
+		
+		
+	 public String   getRfidTrackingOverAllTargetsData() {
+		 String output =null;
+			try {
+				Date fromDate = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");	
+				String dateStr = sdf.format(fromDate);
+				WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://pris.ap.gov.in/api/swm/index.php?getSwmInfo=1district=0&fromDate="+dateStr+"&toDate="+dateStr+"");
+		        ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+			    if(response.getStatus() != 200){
+		        	throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	    }else{
+		 	    	   output = response.getEntity(String.class);
+		 	    	 if(output != null && !output.isEmpty()){
+		 	    	 }
+		 	    }
+			}catch (Exception e) {
+				LOG.error("Exception occured at getRfidTrackingOverAllTargetsData() in  SolidWasteManagementService class",e);
+			}
+		 return output;
+		 
+	 }
+	 /*public List<WebServiceDataVO> getRfidTrackingOverAllTargetsData(WebServiceDataVO inputVO){
+			List<WebServiceDataVO> returnList = new ArrayList<WebServiceDataVO>(0);
+			try {
+				
+				List<Object[]> rfidList = iWebServiceDataDAO.getRfidTrackingOverAllTargetsData(inputVO.getWebserviceId());
+				 if(rfidList!=null && rfidList.size()>0 && !rfidList.isEmpty()){					
+					// String    output = 
+				  
+				}
+		  
+		  }catch (Exception e) {
+			LOG.error("Exception occured at getRfidTrackingOverAllTargetsData() in  SolidWasteManagementService class",e);
+		  }
+			return returnList;
+			
+      }*/
+      }
+
+
+
+ 
 	
 
 
