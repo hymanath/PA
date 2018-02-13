@@ -2913,7 +2913,7 @@ function buildActivityEventdata(result,locationId,divId){
 				"leftColumns": 1,
 			}
 		});
-	}else if(locationId !="constituency" && locationId !="district" ){
+	}else if(locationId !="parliament" && locationId !="district" ){
 		$(".dataTable1"+locationId).dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
