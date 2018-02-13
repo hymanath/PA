@@ -2888,7 +2888,7 @@ function buildActivityEventdata(result,locationId,divId){
 		tableView+='</table>';
 		
 	$("#"+locationId).html(tableView);
-	if(locationId !="district"){
+	if(locationId !="district" && locationId !="constituency"){
 		$(".dataTable1"+locationId).dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
@@ -2913,8 +2913,33 @@ function buildActivityEventdata(result,locationId,divId){
 				"leftColumns": 1,
 			}
 		});
+	}else if(locationId !="constituency" && locationId !="district" ){
+		$(".dataTable1"+locationId).dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [],
+			"order": [ 0, 'asc' ],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			buttons: [
+				{
+					//extend		:'csvHtml5',
+					text		:'<i class="fa fa-file-text-o generateExcelcdfdf" attr_id="exportExcel'+locationId+'"></i>',
+					titleAttr	: 'CSV',
+					//title		:  "ENC WORKS DASHBOARD",
+					//filename	:  locationId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				}
+			] ,
+			"scrollX": true,
+			"scrollX": true,
+			"scrollCollapse": true,
+			"fixedColumns":   {
+				"leftColumns": 2,
+			}
+		});
 	}else{
-		$("#candidatesResultsDT").dataTable({
+		$(".dataTable1"+locationId).dataTable({
 			"paging":   false,
 			"info":     false,
 			"searching": false,
@@ -2929,9 +2954,9 @@ function buildActivityEventdata(result,locationId,divId){
 			}
 		});
 	}
-	$("."+divId+locationId).trigger("click");
-	//alert($(".dataTable"+divIdd).closest("[overview-level-new]").trigger("click");)
-	//$("[overview-level-new]").trigger("click");
+	if(locationId !="district"){
+		$("."+divId+locationId).trigger("click");
+	}
 
 }
 $(document).on("click",".generateExcelcdfdf",function(){
