@@ -51,7 +51,8 @@ function getLevelWisePostsOverView(){
 		 "fromDateStr" : " ",
 		 "toDateStr" : " ",
 		 "locationTypeId" : 2,
-		 "boardLevelId": 2
+		 "boardLevelId": 2,
+		 "activityMemberId" :globalActivityMemberId
 		 
 	  }
 	$.ajax({
@@ -563,7 +564,8 @@ function getNominatedPostStateWiseCount(locationTypeId,divId,locationTypeVal){
 	$("#nominated"+locationTypeVal+divId).html(spinner);
 	var jsObj ={
 				 "fromDateStr" : " ",
-				 "toDateStr" : " "
+				 "toDateStr" : " ",
+				 "activityMemberId" :globalActivityMemberId
 			  }
 	$.ajax({
 		type : 'POST',
@@ -589,7 +591,8 @@ function getDepartmentWisePostAndApplicationDetails(locationTypeId,divId,locatio
 			 "locationTypeId" :locationTypeId,
 			 "year" : " ",
 			 "boardLevelId":locationTypeId,
-			 "deptId": 0
+			 "deptId": 0,
+			 "activityMemberId" :globalActivityMemberId
 		  }
 		$.ajax({
 			type : 'POST',
@@ -611,7 +614,8 @@ function getNominatedPostLocationWiseBoardLevelCount(locationTypeId,divId,locati
 			 "fromDateStr" : " ",
 			 "toDateStr" : " ",
 			 "locationTypeId" : locationTypeId,
-			 "boardLevelId":locationTypeId
+			 "boardLevelId":locationTypeId,
+			 "activityMemberId" :globalActivityMemberId
 			 
 		  }
 	$.ajax({
@@ -636,16 +640,25 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 						str+='<tr>';
 						if(locationTypeVal == "location"){
 							str+='<th class="font_weight">State</th>';
-						}else{
-							str+='<th class="font_weight">Department</th>';
-						}
-							
 							str+='<th class="font_weight">Total Posts</th>';
 							str+='<th class="font_weight">G.O Issued</th>';
+							str+='<th class="font_weight">Finalized Posts</th>';
 							str+='<th class="font_weight">Open Posts</th>';
 							str+='<th class="font_weight">Expire in 1Month</th>';
 							str+='<th class="font_weight">Expire in 2Month</th>';
 							str+='<th class="font_weight">Expire in 3Month</th>';
+						}else{
+							str+='<th class="font_weight">Department</th>';
+							str+='<th class="font_weight">Total Posts</th>';
+							str+='<th class="font_weight">G.O Issued</th>';
+							//str+='<th class="font_weight">Finalized Posts</th>';
+							str+='<th class="font_weight">Open Posts</th>';
+							str+='<th class="font_weight">Expire in 1Month</th>';
+							str+='<th class="font_weight">Expire in 2Month</th>';
+							str+='<th class="font_weight">Expire in 3Month</th>';
+						}
+							
+							
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
@@ -655,6 +668,7 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 										str+='<td>'+result[i].locationName+'</td>';
 										str+='<td>'+result[i].totalPosts+'</td>';
 										str+='<td class="statusClickCls"  attr_type="goIssued" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2">'+result[i].goIsuuedCount+'</td>';
+										str+='<td>'+result[i].finalizedPost+'</td>';
 										str+='<td class="statusClickCls"  attr_type="open" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2" attr_board_statusIds="0">'+result[i].openCount+'</td>';
 										str+='<td>'+result[i].expireOneMonth+'</td>';
 										str+='<td>'+result[i].exprireTwoMnth+'</td>';
@@ -738,23 +752,23 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 									str+='<td>'+result[i].board+'</td>';
 									for(var j in result[i].levelList){
 										if(result[i].levelList[j].totalPosts !=null && result[i].levelList[j].totalPosts>0){
-											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="0" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="total Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].totalPosts+'</td>';
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="0" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+result[i].levelList[j].levelValue+' attr_level_name="total Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].totalPosts+'</td>';
 										}else{
 											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
 										}
 										
 										if(result[i].levelList[j].openCount !=null && result[i].levelList[j].openCount>0){
-											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="1" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="open Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].openCount+'</td>';
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="1" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+result[i].levelList[j].levelValue+' attr_level_name="open Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].openCount+'</td>';
 										}else{
 											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
 										}
 										if(result[i].levelList[j].finalizedPost !=null && result[i].levelList[j].finalizedPost>0){
-											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="2" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="open Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].finalizedPost+'</td>';
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="2" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+result[i].levelList[j].levelValue+' attr_level_name="open Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].finalizedPost+'</td>';
 										}else{
 											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
 										}
 										if(result[i].levelList[j].goIsuuedCount !=null && result[i].levelList[j].goIsuuedCount>0){
-											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="4" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="Completed/G.O Issued Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].goIsuuedCount+'</td>';
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="4" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+result[i].levelList[j].levelValue+' attr_level_name="Completed/G.O Issued Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].goIsuuedCount+'</td>';
 										}else{
 											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
 										}
@@ -797,7 +811,8 @@ $(document).on("click",".postWiseDetailsCls",function(){
 				 "toDateStr" : " ",
 				 "locationTypeId" :locationTypeId,
 				 "boardLevelId":boardLevelId,
-				 "statusId" :statusId
+				 "statusId" :statusId,
+				 "activityMemberId" :globalActivityMemberId
 				 
 			  }
 	$.ajax({
@@ -828,11 +843,10 @@ function buildDepartMentAndBoardWisePositinsStatusCount(result){
 					str+='<tbody>';
 						for(var i in result){
 							
-							
 								for(var j in result[i].list){
 									str+='<tr>';
 									str+='<td>'+result[i].name+'</td>';
-									str+='<td>'+result[i].count+'</td>';	
+									str+='<td>'+result[i].count+'</td>';
 									str+='<td>'+result[i].list[j].board+'</td>';
 									str+='<td>'+result[i].list[j].boardCunt+'</td>';
 									str+='<td>';
@@ -952,7 +966,8 @@ function getBoardWisePositions()
       "locationTypeId"		:2,
       "year"				:"",
       "boardLevelId"		:boardLevelId,
-	  "deptId"				:deptId
+	  "deptId"				:deptId,
+	  "activityMemberId" :globalActivityMemberId
 	  }
     $.ajax({   
       type:'GET',
@@ -1072,7 +1087,7 @@ function getBoardWisePositions()
 function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex){
 	  $("#openPostDetailsModalDivId").html(spinner)
 	  var statusIds=[];
-	  if(statusId == 0){
+	  if(statusId == 0 || statusId == null){
 		  statusIds.push(3,4)
 	  }else{
 		 statusIds.push(statusId); 
