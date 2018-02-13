@@ -264,8 +264,7 @@ public class ITextCoveringLetterGeneration  {
 				 str1 = str1.replace("#works", "");
 			 }
 			 if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0")){
-				 str1 = str1.replace("#lead", "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-				 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+				 str1 = str1.replace("#lead", "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
 				 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
 				 		"**"+inputVO.getLeadName()+"**");
 			 }else{
@@ -334,16 +333,16 @@ public class ITextCoveringLetterGeneration  {
 						str.append("</header><br><br>");
 						str.append("<table>");
 							str.append("<tr align='center'>");
-								str.append("<td ><font size='3'><u>"+endorseCode+"</u></font></td><br>");
+								str.append("<td face='COURIER' size='3'><u>"+endorseCode+"</u></td><br>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td><b>Sir,</b></td>");
+								str.append("<td face='COURIER' size='3'>Sir,</td>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+str1+"</p></td><br><br>");
+								str.append("<td><p size='3' face='COURIER'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+str1+"</p></td><br><br>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+								str.append("<td face='COURIER' size='3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
 										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
 										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
 										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
@@ -378,6 +377,7 @@ public class ITextCoveringLetterGeneration  {
 	        document.add(subTitle);*/
 			PdfWriter.getInstance(document, file);
 			document.open();
+			//Font code = new Font(FontFamily.COURIER, 40, Font.NORMAL, BaseColor.RED);
 			HTMLWorker htmlWorker = new HTMLWorker(document);
 			htmlWorker.parse(new StringReader(str.toString()));
 			document.close();
