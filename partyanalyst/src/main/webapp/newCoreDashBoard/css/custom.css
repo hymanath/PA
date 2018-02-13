@@ -3266,7 +3266,7 @@ background-color:#FFE08E !important;
 .collapseNominatedIcon.collapsed::before {
     content: "\2b";
 }
-.postWiseDetailsCls{
+.postWiseDetailsCls,.statusClickCls{
 	cursor:pointer;
 	text-decoration:underline;
 }
