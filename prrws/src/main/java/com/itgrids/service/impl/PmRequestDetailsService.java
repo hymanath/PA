@@ -1507,14 +1507,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 			}
 			if(commonMethodsUtilService.isListOrSetValid(finalList)){
-				finalList.get(0).getStatusList().addAll(getStatusList(null));
-				setStatusSummeryDetails(searchData,finalList.get(0).getStatusList());
-				
 				Collections.sort(finalList, new Comparator<RepresenteeViewVO>() {
 					public int compare(RepresenteeViewVO o1,RepresenteeViewVO o2) {
 						return o2.getPetitionId().compareTo(o1.getPetitionId());
 					}
 				});
+				finalList.get(0).getStatusList().addAll(getStatusList(null));
+				setStatusSummeryDetails(searchData,finalList.get(0).getStatusList());
 			}
 		}catch (Exception e) {
 			e.printStackTrace();

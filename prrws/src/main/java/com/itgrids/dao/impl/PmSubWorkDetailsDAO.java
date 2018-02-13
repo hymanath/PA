@@ -284,27 +284,27 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		//sb.append(",round(sum(model.costEstimation),2) " );//4
 		
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
-			sb.append(", model1.pmRefCandidateDesignation.pmDesignation.pmDesignationId" +//5
-					" ,model1.pmRefCandidateDesignation.pmDesignation.designation" + //6
-					",model1.pmRefCandidateDesignation.pmDesignation.preferrableOrderNO  ");//7
+			sb.append(", model2.pmDesignation.pmDesignationId" +//5
+					" ,model2.pmDesignation.designation" + //6
+					",model2.pmDesignation.preferrableOrderNO  ");//7
 		//}/*else if(type != null && (type.equalsIgnoreCase("overallStatus") || type.equalsIgnoreCase("status"))){
 			/*sb.append(", model.pmStatus.pmStatusId," +//8
 					" model.pmStatus.status ");//9
 */		//}*/else if(type != null && (type.equalsIgnoreCase("statusSubject") || type.equalsIgnoreCase("subject"))){
-			sb.append(", model.pmSubject.pmSubjectId," +//8
-					" model.pmSubject.subject," + //9
-					" model.pmSubject.preferrableOrderNO ");//10
+			sb.append(", pmSubject.pmSubjectId," +//8
+					" pmSubject.subject," + //9
+					" pmSubject.preferrableOrderNO ");//10
 		//}else if(type != null && (type.equalsIgnoreCase("statusDept") || type.equalsIgnoreCase("department"))){
-			sb.append(",model.pmDepartment.pmDepartmentId," +//11
-					" model.pmDepartment.department," +//12
-					" model.pmDepartment.preferrableOrderNO ");//13
+			sb.append(",pmDepartment.pmDepartmentId," +//11
+					" pmDepartment.department," +//12
+					" pmDepartment.preferrableOrderNO ");//13
 		//}else{
 			//sb.append(",'','','' ");
 		//}
 		
 		sb.append("  from PmSubWorkDetails model,PmRepresenteeRefDetails model1 " );
-				//sb.append(" , PmRefCandidateDesignation model2 " );
-				// "  left join  model.pmDepartment pmDepartment left join model.pmSubject pmSubject ");
+				sb.append(" left join model1.pmRefCandidateDesignation model2 " );
+		sb.append("  left join  model.pmDepartment pmDepartment left join model.pmSubject pmSubject ");
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
 			sb.append("  where model.isDeleted='N'  and model1.isDeleted='N' " );
 					sb.append("and  model1.petition.petitionId=model.petition.petitionId and model1.petition.isDeleted='N' " );
@@ -317,7 +317,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		sb.append(" and  model.pmSubject.parentPmSubjectId is null ");*/
 		
 		if(deptIds != null && deptIds.size() >0){
-			 sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIds) ");
+			 sb.append(" and pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
 		if(startDate != null && endDate != null){
 			 sb.append(" and date(model.insertedTime) between :startDate and :endDate "); 
