@@ -5666,8 +5666,9 @@ public String getIndividualCandidateDesignationWiseTourComplainceDetails(){
 public String getLevelWisePostsOverView(){
     try{
       jObj = new JSONObject(getTask());
+      Long activityMemberId = jObj.getLong("activityMemberId");
        List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
-       nominatedPostCandList = coreDashboardNominatedPostService.getLevelWisePostsOverView(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"));
+       nominatedPostCandList = coreDashboardNominatedPostService.getLevelWisePostsOverView(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"),activityMemberId);
     }catch(Exception e){
       LOG.error("Exception raised at getLevelWisePostsOverView() of LocationDashboardAction{}", e);
     }
@@ -5676,9 +5677,10 @@ public String getLevelWisePostsOverView(){
 public String getDepartmentWisePostAndApplicationDetails(){
     try{
       jObj = new JSONObject(getTask());
+      Long activityMemberId = jObj.getLong("activityMemberId");
        List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
        nominatedPostDetailsVOList = coreDashboardNominatedPostService.getDepartmentWisePostAndApplicationDetails(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),
-       		jObj.getLong("deptId"));
+       		jObj.getLong("deptId"),activityMemberId);
     }catch(Exception e){
       LOG.error("Exception raised at getDepartmentWisePostAndApplicationDetails() of LocationDashboardAction{}", e);
     }
@@ -5697,8 +5699,9 @@ public List<Long> convertJsonStringList(JSONArray jsonArray){
 public String getNominatedPostLocationWiseBoardLevelCount(){
     try{
       jObj = new JSONObject(getTask());
+      Long activityMemberId = jObj.getLong("activityMemberId");
        List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
-       nominatedPostCandList = coreDashboardNominatedPostService.getNominatedPostLocationWiseBoardLevelCount(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"));
+       nominatedPostCandList = coreDashboardNominatedPostService.getNominatedPostLocationWiseBoardLevelCount(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"),activityMemberId);
     }catch(Exception e){
       LOG.error("Exception raised at getNominatedPostLocationWiseBoardLevelCount() of LocationDashboardAction{}", e);
     }
@@ -5707,7 +5710,8 @@ public String getNominatedPostLocationWiseBoardLevelCount(){
 public String getNominatedPostStateWiseCount(){
     try{
       jObj = new JSONObject(getTask()); 
-      nominatedPostCandList = coreDashboardNominatedPostService.getNominatedPostStateWiseCount(jObj.getString("fromDateStr"),jObj.getString("toDateStr"));
+      Long activityMemberId = jObj.getLong("activityMemberId");
+      nominatedPostCandList = coreDashboardNominatedPostService.getNominatedPostStateWiseCount(jObj.getString("fromDateStr"),jObj.getString("toDateStr"),activityMemberId);
     }catch(Exception e){
       LOG.error("Exception raised at getNominatedPostStateWiseCount() of LocationDashboardAction{}", e);
     }
@@ -5739,8 +5743,9 @@ public String getUserTypeWiseNominatedPostDetailsCnt(){
 public String getDepartMentAndBoardWisePositinsStatusCount(){
     try{
       jObj = new JSONObject(getTask());
+      Long activityMemberId = jObj.getLong("activityMemberId");
        List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
-       nominatedPostDetailsVOList = coreDashboardNominatedPostService.getDepartMentAndBoardWisePositinsStatusCount(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"),jObj.getLong("statusId"));
+       nominatedPostDetailsVOList = coreDashboardNominatedPostService.getDepartMentAndBoardWisePositinsStatusCount(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getLong("boardLevelId"),jObj.getLong("statusId"),activityMemberId);
     }catch(Exception e){
       LOG.error("Exception raised at getDepartMentAndBoardWisePositinsStatusCount() of LocationDashboardAction{}", e);
     }
