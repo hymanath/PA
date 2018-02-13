@@ -307,7 +307,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				// "  left join  model.pmDepartment pmDepartment left join model.pmSubject pmSubject ");
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
 			sb.append("  where model.isDeleted='N'  and model1.isDeleted='N' " );
-					sb.append("and  model1.petition.petitionId=model.petition.petitionId " );
+					sb.append("and  model1.petition.petitionId=model.petition.petitionId and model1.petition.isDeleted='N' " );
 							/*sb.append(" model1.pmRefCandidateDesignation.pmRefCandidateDesignationId=model2.pmRefCandidateDesignationId  " +
 					"  and model2.pmRefCandidateId=model1.pmRefCandidateId and model1.petition.isDeleted='N' ");
 		sb.append(" and model2.isDeleted='N' and model1.pmRepresentee.isDeleted = 'N'  " +
@@ -475,7 +475,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		sb.append(" ,PmRepresenteeRefDetails model1" );
 		//sb.append(" ,PmRefCandidateDesignation model2 ");
 		sb.append(" where model1.petition.petitionId=model.petition.petitionId and model1.isDeleted='N'" +
-				"  and model.isDeleted='N' ");
+				"  and model.isDeleted='N' and model1.petition.isDeleted='N' ");
 				/*sb.append(" and model1.petition.petitionId=model.petition.petitionId  ");
 		sb.append(" and model1.isDeleted='N'  and model2.pmRefCandidateId=model1.pmRefCandidateId  " +
 				"and model1.petition.isDeleted='N' and  model2.pmRefCandidateDesignationId=model1.pmRefCandidateDesignation.pmRefCandidateDesignationId ");

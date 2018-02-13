@@ -2701,14 +2701,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							statuMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), statusVO);
 						}
 						statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
-						statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						//statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 						countMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[4]));
 						//statusVO.setNoOfWorks(statusVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						returnVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
 						//returnVO.setNoOfWorks(returnVO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
 						returnVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
-						String estimationCost = commonMethodsUtilService.getStringValueForObject(param[4]);
-						if(statusVO.getEstimationCost() != null && statusVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+						String estimationCost ="0.0";
+						 estimationCost = commonMethodsUtilService.getStringValueForObject(param[4]);
+						if(!statusVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[0]))
+								&& estimationCost != ""){
+							statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 							//BigDecimal decmial= new BigDecimal(returnVO.getEstimationCost());
 							BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
 							BigDecimal decmial1= new BigDecimal(estimationCost);
@@ -2758,8 +2761,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(commonMethodsUtilService.isMapValid(statuMap)){
 					for(Map.Entry<Long,RepresenteeViewVO> entry :statuMap.entrySet()){
 						if(inProgressStatusIds.contains(entry.getKey()) && inProgressVO != null ){
-							inProgressVO.setNoOfWorks(inProgressVO.getNoOfWorks()+entry.getValue().getNoOfWorks());
+							if(!inProgressVO.getSubWorkIds().containsAll(entry.getValue().getSubWorkIds())){
+								inProgressVO.getSubWorkIds().addAll(entry.getValue().getSubWorkIds());
+								inProgressVO.setEstimationCost(Double.valueOf(Double.valueOf(entry.getValue().getEstimationCost())+Double.valueOf(inProgressVO.getEstimationCost())).toString());
+							}
 							inProgressVO.getPetitionIds().addAll(entry.getValue().getPetitionIds());
+							
 							if(entry.getValue().getReferrerList() != null && entry.getValue().getReferrerList().size() >0){
 								for (RepresenteeViewVO refferVO : entry.getValue().getReferrerList()) {
 									RepresenteeViewVO inprogressrefMap = inprogreeReferMap.get(refferVO.getId());
@@ -2772,7 +2779,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									//inprogressrefMap.setNoOfWorks(inprogressrefMap.getNoOfWorks()+refferVO.getNoOfWorks());
 									inprogressrefMap.getSubWorkIds().addAll(refferVO.getSubWorkIds());
 									inprogressrefMap.getPetitionIds().addAll(refferVO.getPetitionIds());
-									//inprogressrefMap.setEstimationCost(Long.valueOf(Long.valueOf(inprogressrefMap.getEstimationCost())+Long.valueOf(refferVO.getEstimationCost())).toString());
+									inprogressrefMap.setEstimationCost(Double.valueOf(Double.valueOf(inprogressrefMap.getEstimationCost())+Double.valueOf(refferVO.getEstimationCost())).toString());
 								}
 							}
 							if(entry.getValue().getSubList() != null && entry.getValue().getSubList().size() >0){
@@ -2787,7 +2794,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									//inprogressSubMapVO.setNoOfWorks(inprogressSubMapVO.getNoOfWorks()+subjVO.getNoOfWorks());
 									inprogressSubMapVO.getSubWorkIds().addAll(subjVO.getSubWorkIds());
 									inprogressSubMapVO.getPetitionIds().addAll(subjVO.getPetitionIds());
-									//inprogressSubMapVO.setEstimationCost(Long.valueOf(Long.valueOf(inprogressSubMapVO.getEstimationCost())+Long.valueOf(subjVO.getEstimationCost())).toString());
+									inprogressSubMapVO.setEstimationCost(Double.valueOf(Double.valueOf(inprogressSubMapVO.getEstimationCost())+Double.valueOf(subjVO.getEstimationCost())).toString());
 								}
 							}
 							if(entry.getValue().getReferrerList() != null && entry.getValue().getReferrerList().size() >0){
@@ -2802,7 +2809,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									//inprogressDeptMapVO.setNoOfWorks(inprogressDeptMapVO.getNoOfWorks()+deptVO1.getNoOfWorks());
 									inprogressDeptMapVO.getSubWorkIds().addAll(deptVO1.getSubWorkIds());
 									inprogressDeptMapVO.getPetitionIds().addAll(deptVO1.getPetitionIds());
-									//inprogressDeptMapVO.setEstimationCost(Long.valueOf(Long.valueOf(inprogressDeptMapVO.getEstimationCost())+Long.valueOf(deptVO1.getEstimationCost())).toString());
+									inprogressDeptMapVO.setEstimationCost(Double.valueOf(Double.valueOf(inprogressDeptMapVO.getEstimationCost())+Double.valueOf(deptVO1.getEstimationCost())).toString());
 								}
 							}
 						}else if(entry.getKey().longValue() != 2l){
@@ -2921,13 +2928,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						 VO.setId(id);
 						 VO.setName(name);
 						 VO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
-						 VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						// VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 						// VO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
-						 String estimationCost = commonMethodsUtilService.getStringValueForObject(param[4]);
-							if(VO.getEstimationCost() != null && VO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+						 String estimationCost ="0.0";
+						  estimationCost = commonMethodsUtilService.getStringValueForObject(param[4]);
+							if(!VO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[0]))
+									&& estimationCost != ""){
 								BigDecimal decmial= new BigDecimal(VO.getEstimationCost());
 								BigDecimal decmial1= new BigDecimal(estimationCost);
 								BigDecimal totalCost = decmial.add(decmial1);
+								VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 								VO.setEstimationCost(totalCost.toString());
 							}
 					}
@@ -3017,12 +3027,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						VO.setName(name);
 						VO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
 						//VO.setNoOfWorks(VO.getNoOfWorks().longValue()+commonMethodsUtilService.getLongValueForObject(param[0]));
-						VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
-						String estimationCost = commonMethodsUtilService.getStringValueForObject(param[4]);
-						if(VO.getEstimationCost() != null && VO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+						//VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						String estimationCost ="0.0";
+						 estimationCost = commonMethodsUtilService.getStringValueForObject(param[4]);
+						if(!VO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[0]))
+								&& estimationCost != ""){
 							BigDecimal decmial= new BigDecimal(VO.getEstimationCost());
 							BigDecimal decmial1= new BigDecimal(estimationCost);
 							BigDecimal totalCost = decmial.add(decmial1);
+							VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 							VO.setEstimationCost(totalCost.toString());
 						}
 					}
@@ -3135,12 +3148,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								leadVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
 								leadVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
 								//leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
-								leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+								//leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 								leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 								leadMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), leadVO);
 						}else{
 							//leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
-							leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+							//leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 							leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 						}
 					}else{
@@ -3151,17 +3164,20 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						    	leadVO.setId(0L);
 						    	leadVO.setName("OTHERS");
 						    	//leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
-						    	leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						    	//leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 						    	leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 						    	leadMap.put(0l, leadVO);
 						    }else{
 						  	  	//leadVO.setNoOfWorks(leadVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
-						    	leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						    	//leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 						  	    leadVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
 						    }
 					   }
-						 String estimationCost = commonMethodsUtilService.getStringValueForObject(param[6]);
-							if(leadVO.getEstimationCost() != null && leadVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+						 String estimationCost = "0.0";
+						  estimationCost = commonMethodsUtilService.getStringValueForObject(param[6]);
+							if(!leadVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[0]))
+									&& estimationCost != ""){
+								leadVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 								BigDecimal decmial= new BigDecimal(leadVO.getEstimationCost());
 								BigDecimal decmial1= new BigDecimal(estimationCost);
 								BigDecimal totalCost = decmial.add(decmial1);
@@ -3172,9 +3188,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							if(completedVO != null){
 								completedVO.setName("Completed");
 								//completedVO.setNoOfWorks(completedVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
-								completedVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+								//completedVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 								completedVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
-								if(completedVO.getEstimationCost() != null && completedVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+								if(!completedVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[0]))
+										&& estimationCost != ""){
+									completedVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 									BigDecimal decmial= new BigDecimal(completedVO.getEstimationCost());
 									BigDecimal decmial1= new BigDecimal(estimationCost);
 									BigDecimal totalCost = decmial.add(decmial1);
@@ -3186,9 +3204,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							if(inprogressVO != null){
 								inprogressVO.setName("Pending");
 								//inprogressVO.setNoOfWorks(inprogressVO.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(param[0]));
-								inprogressVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+								//inprogressVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 								inprogressVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
-								if(inprogressVO.getEstimationCost() != null && inprogressVO.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+								if(!inprogressVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[0]))
+										&& estimationCost != ""){
+									inprogressVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 									BigDecimal decmial= new BigDecimal(inprogressVO.getEstimationCost());
 									BigDecimal decmial1= new BigDecimal(estimationCost);
 									BigDecimal totalCost = decmial.add(decmial1);
@@ -4028,11 +4048,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 							map.put(id, refDesigCan);
 						}
-						refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						//refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						//refDesigCan.setNoOfWorks(refDesigCan.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
 						refDesigCan.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
 						String estimationCost = commonMethodsUtilService.getStringValueForObject(objects[8]);
-						if(refDesigCan.getEstimationCost() != null && refDesigCan.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+						if(!refDesigCan.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(objects[0])) && estimationCost != ""){
+							refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 							BigDecimal decmial= new BigDecimal(refDesigCan.getEstimationCost());
 							BigDecimal decmial1= new BigDecimal(estimationCost);
 							BigDecimal totalCost = decmial.add(decmial1);
@@ -4109,7 +4130,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							map.put(commonMethodsUtilService.getLongValueForObject(objects[6]), refDesigCan);
 						}
 						//refDesigCan.setNoOfWorks(refDesigCan.getNoOfWorks()+commonMethodsUtilService.getLongValueForObject(objects[0]));
-						refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						//refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						refDesigCan.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
 						Long statusId = commonMethodsUtilService.getLongValueForObject(objects[2]);
 						if(pendingIds.contains(statusId)){
@@ -4125,8 +4146,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 							statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(objects[1]));
 						//if(statusId.longValue() == 3l){
-							String estimationCost = commonMethodsUtilService.getStringValueForObject(objects[8]);
-							if(refDesigCan.getEstimationCost() != null && refDesigCan.getEstimationCost() != "" && estimationCost != null && estimationCost != ""){
+							String estimationCost ="0.0";
+							 estimationCost = commonMethodsUtilService.getStringValueForObject(objects[8]);
+							if(!refDesigCan.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(objects[0]))
+									&& estimationCost != ""){
+								refDesigCan.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 								BigDecimal decmial= new BigDecimal(refDesigCan.getEstimationCost());
 								BigDecimal decmial1= new BigDecimal(estimationCost);
 								BigDecimal totalCost = decmial.add(decmial1);
