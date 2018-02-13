@@ -229,6 +229,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 									rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
 									rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
 									rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
+									rduvo.setHealth(rduObj.getString("rduStatus"));
 									returnList.add(rduvo);
 								}
 							}
@@ -306,6 +307,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 											rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
 											rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
 											rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
+											rduvo.setHealth(rduObj.getString("rduStatus"));
 											mpvo.getSubList().add(rduvo);
 										}
 									}
@@ -365,6 +367,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 											rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
 											rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
 											rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
+											rduvo.setHealth(rduObj.getString("rduStatus"));
 											mpvo.getSubList().add(rduvo);
 										}
 									}
@@ -441,6 +444,7 @@ public class NTRSujalaDashboardService implements INTRSujalaDashboardService{
 									rduvo.setOldCustomers(rduObj.getLong("oldCustomers"));
 									rduvo.setNewCustomers(rduObj.getLong("newCustomers"));
 									rduvo.setTotalCustomers(rduvo.getOldCustomers()+rduvo.getNewCustomers());
+									rduvo.setHealth(rduObj.getString("rduStatus"));
 									mpvo.getSubList().add(rduvo);
 								}
 							}

@@ -241,7 +241,7 @@
 				
 			</div>
 		</div>
-		<div class="pad_white_bg" style="border: 1px solid #ccc;border-radius: 0px !important;">
+		<!--<div class="pad_white_bg" style="border: 1px solid #ccc;border-radius: 0px !important;">
 			<div class="row">
 				<div class="col-sm-7">
 					<div class="row">
@@ -264,11 +264,11 @@
 					<div id="mpWiseDetailsDivId"></div>
 				</div>
 			</div>
-		</div>
+		</div>-->
 		<div class="row m_top20">
 			<div class="col-sm-12">
 				<div class="panel panel-default">
-					 <div class="panel-heading" style="display:none;">
+					 <div class="panel-heading" style="display:block;">
 						<h3 class="panel-title font_weight">District Wise Mother Plant Details</h3>
 					</div>
 					<div class="panel-body" style="">
@@ -321,7 +321,7 @@
 							</div>
 						</div>
 						<div class="col-sm-1">
-							<h5 class="motherPlantLowLevelDtsCls"><i style="color: #ccc;font-size: 25px;cursor:pointer;" class="glyphicon glyphicon-resize-full"></i></h5>
+							<h5 class="motherPlantLowLevelDtsCls"><i style="color: #ccc;font-size: 25px;cursor:pointer;" class="glyphicon glyphicon-resize-full" title="Click Here to get Last 30 Days MotherPlant Details"></i></h5>
 						</div>
 						<div class="col-sm-7">
 							<div class="pull-right" style="margin-right:20px;">

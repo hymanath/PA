@@ -15,7 +15,7 @@ $(".chosen-select").chosen();
 
 function getNTRSujalaOverviewDetails(){
 	$("#overViewDetails").html(spinner);
-	$("#mpWiseDetailsDivId").html(spinner);
+	//$("#mpWiseDetailsDivId").html(spinner);
 	$("#districtWiseMpDetailsId").html(spinner);
 	var json = {};
 	$.ajax({                
@@ -31,7 +31,7 @@ function getNTRSujalaOverviewDetails(){
 		if(result !=null){
 			globalOverviewResult = result;
 			buildNTRSujalaOverviewDetails(result);
-			buildMapDetails(result.districtList);
+			//buildMapDetails(result.districtList);
 			buildDistrictWiseMpDetails(result.districtList);
 			//buildMotherPlantsOverviewDetails(result.motherPlantsList);
 			//buildRDUsOverviewDetails(result.rdusList);
@@ -194,11 +194,11 @@ function buildNTRSujalaOverviewDetails(result){
 								str+='<div class="row">';
 									str+='<div class="col-sm-6 m_top20">';
 										str+='<h5 class="good_color" style="float:left; margin-right:20px;">Good</h5>';
-										str+='<h5 class="good_color " attr_type="good">'+result.activeRDUs+'</h5>';
+										str+='<h5 class="good_color rdusClass" attr_type="good" attr_type="total" data-toggle="modal" data-target="#rdus_modal" style="cursor:pointer;text-decoration:underline;">'+result.activeRDUs+'</h5>';
 									str+='</div>';
 									str+='<div class="col-sm-6 m_top20">';
 										str+='<h5 class="bad_color" style="float:left; margin-right:20px;">Bad</h5>';
-										str+='<h5 class="bad_color" attr_type="bad">'+result.inActiveRDUs+'</h5>';
+										str+='<h5 class="bad_color rdusClass" attr_type="bad" attr_type="total" data-toggle="modal" data-target="#rdus_modal" style="cursor:pointer;text-decoration:underline;">'+result.inActiveRDUs+'</h5>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -221,7 +221,7 @@ function buildNTRSujalaOverviewDetails(result){
 						str+='<div class="border_left_width_yash pad_5">';
 							str+='<div class="row">';
 								str+='<div class="col-sm-4">';
-									str+='<h5 class="">High Dispance RDU</h5>';
+									str+='<h5 class="">High Dispence RDU</h5>';
 								str+='</div>';
 								str+='<div class="col-sm-3">';
 									str+='<h4 class="">'+result.highRDUDispanceLtrs+'<span class="f_12"> Lts</span></h4>';
@@ -238,7 +238,7 @@ function buildNTRSujalaOverviewDetails(result){
 						str+='<div class="border_left_width_yash pad_5">';
 							str+='<div class="row">';
 								str+='<div class="col-sm-4">';
-									str+='<h5 class="">Low Dispance RDU</h5>';
+									str+='<h5 class="">Low Dispence RDU</h5>';
 								str+='</div>';
 								str+='<div class="col-sm-3">';
 									str+='<h4 class="">'+result.lowRDUDispanceLtrs+'<span class="f_12"> Lts</span></h4>';
@@ -674,9 +674,10 @@ function buildDistrictWiseMpDetails(result){
 	$("#districtWiseMpDetailsId").html(str);
 	$(".districtWiseMpTableCls").dataTable({
 		"paging":   true,
-		"info":     false,
+		"info":     true,
 		"searching": true,
 		"autoWidth": true,
+		"order": [[ 7, "desc" ]],
 		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 		"iDisplayLength": 15,
 		"aaSorting": [],
@@ -741,10 +742,10 @@ function buildMotherPlantsOverviewDetails(result,type){
 									str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 								else
 									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
-								if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
+								/*if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
 									str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
 								else
-									str+='<td> - </td>';
+									str+='<td> - </td>';*/
 								str+='<td>'+result[i].totalRDUs+'</td>';
 								str+='<td>'+result[i].totalCustomers+'</td>';
 								str+='<td>'+result[i].location+'</td>';
@@ -767,10 +768,10 @@ function buildMotherPlantsOverviewDetails(result,type){
 									str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 								else
 									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
-								if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
+								/*if(result[i].mpSafeWaterDispenced != null && result[i].mpSafeWaterDispenced != 'N/A' && result[i].mpSafeWaterDispenced > 0)
 									str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
 								else
-									str+='<td> - </td>';
+									str+='<td> - </td>';*/
 								str+='<td>'+result[i].totalRDUs+'</td>';
 								str+='<td>'+result[i].totalCustomers+'</td>';
 								str+='<td>'+result[i].location+'</td>';
@@ -788,7 +789,7 @@ function buildMotherPlantsOverviewDetails(result,type){
 	$("#motherPlantsOverviewId").html(str);
 	$(".motherPlantsTableCls").dataTable({
 		"paging":   true,
-		"info":     false,
+		"info":     true,
 		"searching": true,
 		"autoWidth": true,
 		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
@@ -870,33 +871,40 @@ function buildMotherPlantAndRDUDetails(result){
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-6">';
-					str+='<h5 class=""><img src="Assests/images/RMD.png" style="width:25px;"/><span class="font_weight m_left_5">Remote Dispensing Units - '+result.subList.length+'</span></h5>';
-					str+='<div class="row">';
-						str+='<div class="col-sm-6 m_top10">';
-							str+='<div class="pad_5_F6F7FF">';
-								str+='<div class="border_left_width_water_tank">';
-									if(result.highDispanceRDUName.length > 10)
-										str+='<h5 class="m_left_5 f_12 font_weight">High Dispance RDU - <span class="toolTipCls" data-toggle="tooltip" data-placement="top" title="'+result.highDispanceRDUName+'">'+result.highDispanceRDUName.substr(0,10)+'..</span></h5>';
-									else
-										str+='<h5 class="m_left_5 f_12 font_weight">High Dispance RDU - <span>'+result.highDispanceRDUName+'</span></h5>';
-									str+='<h4 class="m_top10  m_left_5">'+result.highRDUDispanceLtrs+' Lts</h4>';
+				if(result.subList != null && result.subList.length > 0){
+					str+='<div class="col-sm-6">';
+						str+='<h5 class=""><img src="Assests/images/RMD.png" style="width:25px;"/><span class="font_weight m_left_5">Remote Dispensing Units - '+result.subList.length+'</span></h5>';
+						str+='<div class="row">';
+							str+='<div class="col-sm-6 m_top10">';
+								str+='<div class="pad_5_F6F7FF">';
+									str+='<div class="border_left_width_water_tank">';
+									if(result.highDispanceRDUName != null && result.highDispanceRDUName.length > 0){
+										if(result.highDispanceRDUName.length > 10)
+											str+='<h5 class="m_left_5 f_12 font_weight">High Dispence RDU - <span class="toolTipCls" data-toggle="tooltip" data-placement="top" title="'+result.highDispanceRDUName+'">'+result.highDispanceRDUName.substr(0,10)+'..</span></h5>';
+										else
+											str+='<h5 class="m_left_5 f_12 font_weight">High Dispence RDU - <span>'+result.highDispanceRDUName+'</span></h5>';
+										str+='<h4 class="m_top10  m_left_5">'+result.highRDUDispanceLtrs+' Lts</h4>';
+									}
+									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-						str+='</div>';
-						str+='<div class="col-sm-6 m_top10">';
-							str+='<div class="pad_5_F6F7FF">';
-								str+='<div class="border_left_width_red">';
-									if(result.lowDispanceRDUName.length > 10)
-										str+='<h5 class="m_left_5 f_12 font_weight">Low Dispance RDU - <span class="toolTipCls" data-toggle="tooltip" data-placement="top" title="'+result.lowDispanceRDUName+'">'+result.lowDispanceRDUName.substr(0,10)+'..</h5>';
-									else
-										str+='<h5 class="m_left_5 f_12 font_weight">Low Dispance RDU - '+result.lowDispanceRDUName+'</h5>';
-									str+='<h4 class="m_top10  m_left_5">'+result.lowRDUDispanceLtrs+' Lts</h4>';
+							str+='<div class="col-sm-6 m_top10">';
+								str+='<div class="pad_5_F6F7FF">';
+									str+='<div class="border_left_width_red">';
+									if(result.lowDispanceRDUName != null && result.lowDispanceRDUName.length > 0){
+										if(result.lowDispanceRDUName.length > 10)
+											str+='<h5 class="m_left_5 f_12 font_weight">Low Dispence RDU - <span class="toolTipCls" data-toggle="tooltip" data-placement="top" title="'+result.lowDispanceRDUName+'">'+result.lowDispanceRDUName.substr(0,10)+'..</h5>';
+										else
+											str+='<h5 class="m_left_5 f_12 font_weight">Low Dispence RDU - '+result.lowDispanceRDUName+'</h5>';
+										str+='<h4 class="m_top10  m_left_5">'+result.lowRDUDispanceLtrs+' Lts</h4>';
+									}
+									str+='</div>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-				str+='</div>';
+				}
+				
 				str+='<div class="col-sm-2">';
 					//str+='<div class="row">';
 						/*str+='<div class="col-sm-8">';
@@ -1011,6 +1019,7 @@ function buildMotherPlantAndRDUDetails(result){
 			str+='<thead>';
 				str+='<tr>';
 					str+='<th>RDU&nbsp;Location</th>';
+					str+='<th>Health</th>';
 					str+='<th>Water&nbsp;Tank&nbsp;Capacity</th>';
 					str+='<th>Water&nbsp;Dispence</th>';
 					str+='<th>Customers Visit</th>';
@@ -1022,7 +1031,11 @@ function buildMotherPlantAndRDUDetails(result){
 			if(result.subList != null && result.subList.length > 0){
 				for(var i in result.subList){
 					str+='<tr>';
-						str+='<td class="motherPlantWaterTankDtsCls" attr_rdu_id="'+result.subList[i].id+'" style="cursor:pointer;text-decoration:underline;">'+result.subList[i].name+'</td>';
+						str+='<td class="motherPlantWaterTankDtsCls" attr_rdu_id="'+result.subList[i].id+'" style="cursor:pointer;text-decoration:underline;" title="Click Here to get Last 30 Days RDU Details">'+result.subList[i].name+'</td>';
+						if(result.subList[i].health != null && result.subList[i].health == 'OK')
+							str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
+						else
+							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
 						str+='<td>'+result.subList[i].waterTankCapacity+'</td>';
 						str+='<td>'+result.subList[i].mpSafeWaterDispenced+'</td>';
 						str+='<td>'+result.subList[i].totalCustomers+'</td>';
@@ -1040,7 +1053,7 @@ function buildMotherPlantAndRDUDetails(result){
 	$(".toolTipCls").tooltip();
 	$(".mpWiseRdusCls").dataTable({
 		"paging":   true,
-		"info":     false,
+		"info":     true,
 		"searching": true,
 		"autoWidth": true,
 		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
@@ -1151,7 +1164,7 @@ function buildMotherPlantLowLevelDetails(result){
 							str+='<div class="col-sm-6 m_top10">';
 								str+='<div class="pad_5_F6F7FF">';
 									str+='<div class="border_left_width_water_tank">';
-										str+='<h5 class="m_left_5 f_12 font_weight">High Dispance RDU - '+result.subList[i].highDispanceRDUName+'</h5>';
+										str+='<h5 class="m_left_5 f_12 font_weight">High Dispence RDU - '+result.subList[i].highDispanceRDUName+'</h5>';
 										str+='<h4 class="m_top10  m_left_5">'+result.subList[i].highDispanceRDUCount+' Lts</h4>';
 									str+='</div>';
 								str+='</div>';
@@ -1159,7 +1172,7 @@ function buildMotherPlantLowLevelDetails(result){
 							str+='<div class="col-sm-6 m_top10">';
 								str+='<div class="pad_5_F6F7FF">';
 									str+='<div class="border_left_width_red">';
-										str+='<h5 class="m_left_5 f_12 font_weight">Low Dispance RDU - '+result.subList[i].lowDispanceRDUName+'</h5>';
+										str+='<h5 class="m_left_5 f_12 font_weight">Low Dispence RDU - '+result.subList[i].lowDispanceRDUName+'</h5>';
 										str+='<h4 class="m_top10  m_left_5">'+result.subList[i].lowDispanceRDUCount+' Lts</h4>';
 									str+='</div>';
 								str+='</div>';
@@ -1310,7 +1323,7 @@ function buildMothePantRDUDetails(result){
     },1000);
   });
   
-function buildRDUsOverviewDetails(result){
+function buildRDUsOverviewDetails(result,type){
 	var str='';
 	str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered table_Ntr_Custom1 rdusTableCls">';
@@ -1318,7 +1331,7 @@ function buildRDUsOverviewDetails(result){
 				str+='<tr>';
 					str+='<th>Mother&nbsp;Plant</th>';
 					str+='<th>RDU&nbsp;Name</th>';
-					//str+='<th>Health</th>';
+					str+='<th>Health</th>';
 					str+='<th>Location</th>';
 					str+='<th>Water&nbsp;Tank&nbsp;Capacity</th>';
 					str+='<th>Total Customers</th>';
@@ -1328,20 +1341,57 @@ function buildRDUsOverviewDetails(result){
 			str+='</thead>';
 			str+='<tbody>';
 			if(result != null && result.length > 0){
-				for(var i in result){
-					str+='<tr>';
-						str+='<td>'+result[i].mpName+'</td>';
-						str+='<td>'+result[i].name+'</td>';
-						/*if(result[i].health != null && result[i].health == 'OK')
-							str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
-						else
-							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';*/
-						str+='<td>'+result[i].location+'</td>';
-						str+='<td>'+result[i].waterTankCapacity+'</td>';
-						str+='<td>'+result[i].totalCustomers+'</td>';
-						str+='<td>'+result[i].oldCustomers+'</td>';
-						str+='<td>'+result[i].newCustomers+'</td>';
-					str+='</tr>';
+				if(type != null && type == 'total'){
+					for(var i in result){
+						str+='<tr>';
+							str+='<td>'+result[i].mpName+'</td>';
+							str+='<td>'+result[i].name+'</td>';
+							if(result[i].health != null && result[i].health == 'OK')
+								str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
+							else
+								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+							str+='<td>'+result[i].location+'</td>';
+							str+='<td>'+result[i].waterTankCapacity+'</td>';
+							str+='<td>'+result[i].totalCustomers+'</td>';
+							str+='<td>'+result[i].oldCustomers+'</td>';
+							str+='<td>'+result[i].newCustomers+'</td>';
+						str+='</tr>';
+					}
+				}
+				else if(type != null && type == 'good'){
+					for(var i in result){
+						if(result[i].health != null && result[i].health == 'OK'){
+							str+='<tr>';
+								str+='<td>'+result[i].mpName+'</td>';
+								str+='<td>'+result[i].name+'</td>';
+								if(result[i].health != null && result[i].health == 'OK')
+									str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
+								else
+									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+								str+='<td>'+result[i].location+'</td>';
+								str+='<td>'+result[i].waterTankCapacity+'</td>';
+								str+='<td>'+result[i].totalCustomers+'</td>';
+								str+='<td>'+result[i].oldCustomers+'</td>';
+								str+='<td>'+result[i].newCustomers+'</td>';
+							str+='</tr>';
+						}
+					}
+				}
+				else if(type != null && type == 'bad'){
+					for(var i in result){
+						if(result[i].health != null && result[i].health != 'OK'){
+							str+='<tr>';
+								str+='<td>'+result[i].mpName+'</td>';
+								str+='<td>'+result[i].name+'</td>';
+								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+								str+='<td>'+result[i].location+'</td>';
+								str+='<td>'+result[i].waterTankCapacity+'</td>';
+								str+='<td>'+result[i].totalCustomers+'</td>';
+								str+='<td>'+result[i].oldCustomers+'</td>';
+								str+='<td>'+result[i].newCustomers+'</td>';
+							str+='</tr>';
+						}
+					}
 				}
 			}
 			str+='</tbody>';
@@ -1350,7 +1400,7 @@ function buildRDUsOverviewDetails(result){
 	$("#rdusOverviewId").html(str);
 	$(".rdusTableCls").dataTable({
 		"paging":   true,
-		"info":     false,
+		"info":     true,
 		"searching": true,
 		"autoWidth": true,
 		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
