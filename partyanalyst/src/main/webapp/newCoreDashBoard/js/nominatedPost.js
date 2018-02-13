@@ -75,17 +75,6 @@ function buildLevelWisePostsOverView(result){
 			str+='<table class="table table-responsive borderless">';
 				str+='<tr>';
 					str+='<td class="border-top0">';
-							str+='<div class="pad_yash_8">';
-								str+='<h5>Received <br>Applications</h5>';
-								if(result[i].recivedCount !=null && result[i].recivedCount>0){
-									str+='<h5 class="m_top10 font_weight">'+result[i].recivedCount+'</h5>';
-								}else{
-									str+='<h5 class="m_top10 font_weight"> - </h5>';
-								}
-								
-							str+='</div>';
-					str+='</td>';
-					str+='<td class="border-top0">';
 						str+='<div class="pad_yash_8">';
 							str+='<h5>Total&nbsp;Posts</h5>';
 							if(result[i].totalPosts !=null && result[i].totalPosts>0){
@@ -97,10 +86,21 @@ function buildLevelWisePostsOverView(result){
 						str+='</div>';
 					str+='</td>';
 					str+='<td class="border-top0">';
+							str+='<div class="pad_yash_8">';
+								str+='<h5> Received Applications</h5>';
+								if(result[i].recivedCount !=null && result[i].recivedCount>0){
+									str+='<h5 class="m_top10 font_weight " >'+result[i].recivedCount+'</h5>';
+								}else{
+									str+='<h5 class="m_top10 font_weight"> - </h5>';
+								}
+								
+							str+='</div>';
+					str+='</td>';
+					str+='<td class="border-top0">';
 						str+='<div class="pad_yash_8">';
 							str+='<h5>Open&nbsp;Posts</h5>';
 							if(result[i].openPostPer !=null && result[i].openPostPer>0){
-								str+='<h5 class="m_top25 font_weight">'+result[i].openCount+' <small style="color:green">'+result[i].openPostPer.toFixed(1)+'%</small></h5>';
+								str+='<h5 class="m_top25 font_weight statusClickCls"  attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="open" attr_department_name="'+result[i].board+' Level" attr_department_id="0">'+result[i].openCount+' <small style="color:green">'+result[i].openPostPer.toFixed(1)+'%</small></h5>';
 							}else{
 								str+='<h5 class="m_top25 font_weight"> - </h5>';
 							}
@@ -111,7 +111,7 @@ function buildLevelWisePostsOverView(result){
 						str+='<div class="pad_yash_8">';
 							str+='<h5>Finalized <br>Posts</h5>';
 							if(result[i].finalizedPer !=null && result[i].finalizedPer>0){
-								str+='<h5 class="m_top10 font_weight">'+result[i].finalizedPost+' <small style="color:green">'+result[i].finalizedPer.toFixed(1)+'%</small></h5>';
+								str+='<h5 class="m_top10 font_weight statusClickCls"   attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="finalIssed" attr_department_name="'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="2">'+result[i].finalizedPost+' <small style="color:green">'+result[i].finalizedPer.toFixed(1)+'%</small></h5>';
 							}else{
 								str+='<h5 class="m_top10 font_weight"> - </h5>';
 							}
@@ -122,7 +122,7 @@ function buildLevelWisePostsOverView(result){
 						str+='<div class="pad_yash_8">';
 							str+='<h5>Completed/ <br>G.O Issued</h5>';
 							if(result[i].goIssuedPer !=null && result[i].goIssuedPer>0){
-								str+='<h5 class="m_top10 font_weight">'+result[i].goIsuuedCount+' <small style="color:green">'+result[i].goIssuedPer.toFixed(1)+'%</small></h5>';
+								str+='<h5 class="m_top10 font_weight statusClickCls"  attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name="'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="0">'+result[i].goIsuuedCount+' <small style="color:green">'+result[i].goIssuedPer.toFixed(1)+'%</small></h5>';
 							}else{
 								str+='<h5 class="m_top10 font_weight"> - </h5>';
 							}
@@ -520,7 +520,7 @@ function locationNominatedWiseDate(locationTypeVal)
 					}else{
 						collapse+='<a role="button" class="collapseNominatedIcon collapsed '+locationTypeVal+levelWiseNominatedArr[i].id+'"  data-toggle="collapse" data-parent="#accordion'+locationTypeVal+levelWiseNominatedArr[i].id+'" href="#collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'" level_name="'+locationTypeVal+levelWiseNominatedArr[i].name+'" aria-expanded="true" aria-controls="collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'">';
 					}
-					collapse+='<h4 class="panel-title text-capital" style="color:#fff;">'+levelWiseNominatedArr[i].name+' Wise Overview</h4>';
+					collapse+='<h4 class="panel-title text-capital" style="color:#fff;">'+levelWiseNominatedArr[i].name+' Level Overview</h4>';
 						
 					collapse+='</a>';
 				collapse+='</div>';
@@ -545,7 +545,7 @@ function locationNominatedWiseDate(locationTypeVal)
 	}
 	$("#levelWiseNominatedDetailsDivId").html(collapse);
 	for(var i in levelWiseNominatedArr){
-		if(locationTypeVal == "department"){
+		if(locationTypeVal == "department"){//srujana
 			getDepartmentWisePostAndApplicationDetails(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal);
 		}else{
 			if(levelWiseNominatedArr[i].name == "state"){
@@ -643,9 +643,9 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 							str+='<th class="font_weight">Total Posts</th>';
 							str+='<th class="font_weight">G.O Issued</th>';
 							str+='<th class="font_weight">Open Posts</th>';
-							str+='<th class="font_weight">Expair in 1Month</th>';
-							str+='<th class="font_weight">Expair in 2Month</th>';
-							str+='<th class="font_weight">Expair in 3Month</th>';
+							str+='<th class="font_weight">Expire in 1Month</th>';
+							str+='<th class="font_weight">Expire in 2Month</th>';
+							str+='<th class="font_weight">Expire in 3Month</th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
@@ -654,8 +654,8 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 									if(locationTypeVal == "location"){
 										str+='<td>'+result[i].locationName+'</td>';
 										str+='<td>'+result[i].totalPosts+'</td>';
-										str+='<td>'+result[i].goIsuuedCount+'</td>';
-										str+='<td>'+result[i].openCount+'</td>';
+										str+='<td class="statusClickCls"  attr_type="goIssued" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2">'+result[i].goIsuuedCount+'</td>';
+										str+='<td class="statusClickCls"  attr_type="open" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2" attr_board_statusIds="0">'+result[i].openCount+'</td>';
 										str+='<td>'+result[i].expireOneMonth+'</td>';
 										str+='<td>'+result[i].exprireTwoMnth+'</td>';
 										str+='<td>'+result[i].expireThreeMnth+'</td>';
@@ -692,13 +692,13 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 							str+='<th class="font_weight" rowspan="2" style="background-color:#EFF0F1 !important;">District</th>';
 							for(var i in result[0].levelList){
 								if(result[0].levelList[i].locationName =="District"){
-									str+='<th class="font_weight" colspan="3" style="background-color:#EDECE0 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
+									str+='<th class="font_weight" colspan="4" style="background-color:#EDECE0 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
 								}else if(result[0].levelList[i].locationName =="Assembly"){
-									str+='<th class="font_weight" colspan="3" style="background-color:#E3E4F0 !important;">COnstituency Level Posts</th>';
+									str+='<th class="font_weight" colspan="4" style="background-color:#E3E4F0 !important;">Constituency Level Posts</th>';
 								}else if(result[0].levelList[i].locationName =="Mandal"){
-									str+='<th class="font_weight" colspan="3" style="background-color:#F0E6D7 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
+									str+='<th class="font_weight" colspan="4" style="background-color:#F0E6D7 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
 								}else if(result[0].levelList[i].locationName =="Village"){
-									str+='<th class="font_weight" colspan="3" style="background-color:#ECF7F4 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
+									str+='<th class="font_weight" colspan="4" style="background-color:#ECF7F4 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
 								}
 								
 							}
@@ -708,18 +708,22 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 								if(result[0].levelList[i].locationName =="District"){
 									str+='<th class="font_weight" style="background-color:#EDECE0 !important;">Total Posts</th>';
 									str+='<th class="font_weight" style="background-color:#EDECE0 !important;">Open Posts</th>';
+									str+='<th class="font_weight" style="background-color:#EDECE0 !important;">Final Review</th>';
 									str+='<th class="font_weight" style="background-color:#EDECE0 !important;">Completed/ G.O Issued</th>';
 								}else if(result[0].levelList[i].locationName =="Assembly"){
 									str+='<th class="font_weight" style="background-color:#E3E4F0 !important;">Total Posts</th>';
 									str+='<th class="font_weight" style="background-color:#E3E4F0 !important;">Open Posts</th>';
+									str+='<th class="font_weight" style="background-color:#E3E4F0 !important;">Final Review</th>';
 									str+='<th class="font_weight" style="background-color:#E3E4F0 !important;">Completed/ G.O Issued</th>';
 								}else if(result[0].levelList[i].locationName =="Mandal"){
 									str+='<th class="font_weight" style="background-color:#F0E6D7 !important;">Total Posts</th>';
 									str+='<th class="font_weight" style="background-color:#F0E6D7 !important;">Open Posts</th>';
+									str+='<th class="font_weight" style="background-color:#F0E6D7 !important;">Final Review</th>';
 									str+='<th class="font_weight" style="background-color:#F0E6D7 !important;">Completed/ G.O Issued</th>';
 								}else if(result[0].levelList[i].locationName =="Village"){
 									str+='<th class="font_weight" style="background-color:#ECF7F4 !important;">Total Posts</th>';
 									str+='<th class="font_weight" style="background-color:#ECF7F4 !important;">Open Posts</th>';
+									str+='<th class="font_weight" style="background-color:#ECF7F4 !important;">Final Review</th>';
 									str+='<th class="font_weight" style="background-color:#ECF7F4 !important;">Completed/ G.O Issued</th>';
 								}
 								
@@ -734,18 +738,23 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 									str+='<td>'+result[i].board+'</td>';
 									for(var j in result[i].levelList){
 										if(result[i].levelList[j].totalPosts !=null && result[i].levelList[j].totalPosts>0){
-											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="0" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="total Posts">'+result[i].levelList[j].totalPosts+'</td>';
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="0" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="total Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].totalPosts+'</td>';
 										}else{
 											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
 										}
 										
 										if(result[i].levelList[j].openCount !=null && result[i].levelList[j].openCount>0){
-											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="2" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="open Posts">'+result[i].levelList[j].openCount+'</td>';
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="1" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="open Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].openCount+'</td>';
+										}else{
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
+										}
+										if(result[i].levelList[j].finalizedPost !=null && result[i].levelList[j].finalizedPost>0){
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="2" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="open Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].finalizedPost+'</td>';
 										}else{
 											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
 										}
 										if(result[i].levelList[j].goIsuuedCount !=null && result[i].levelList[j].goIsuuedCount>0){
-											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="4" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="Completed/G.O Issued Posts">'+result[i].levelList[j].goIsuuedCount+'</td>';
+											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;" class="postWiseDetailsCls" attr_name="'+result[i].board+'" attr_status_id="4" attr_locationTypeid="'+locationTypeId+'" attr_boardLevelId='+locationTypeId+' attr_level_name="Completed/G.O Issued Posts" attr_levelId ="'+result[i].boardLevelId+'">'+result[i].levelList[j].goIsuuedCount+'</td>';
 										}else{
 											str+='<td style="background-color:'+colorObj[result[i].levelList[j].locationName]+' !important;"> - </td>';
 										}
@@ -772,13 +781,18 @@ $(document).on("click",".postWiseDetailsCls",function(){
 	var boardLevelId=$(this).attr("attr_boardLevelId");
 	var name=$(this).attr("attr_name");
 	var levelName=$(this).attr("attr_level_name");
+	var levelId =$(this).attr("attr_levelId");
 	$("#nominatedPostHeadingId").html(name+levelName);
-	getDepartMentAndBoardWisePositinsStatusCount(statusId,locationTypeId,boardLevelId);
+	getDepartMentAndBoardWisePositinsStatusCount(statusId,locationTypeId,boardLevelId,levelId);
 });
- function getDepartMentAndBoardWisePositinsStatusCount(statusId,locationTypeId,boardLevelId){ 
+ function getDepartMentAndBoardWisePositinsStatusCount(statusId,locationTypeId,boardLevelId,levelId){
+	 var locationValuesArr =[];
+	 if(levelId != null && levelId>0){
+	   locationValuesArr.push(levelId);
+	 }
 	$("#nominatedPostDetailsDivId").html(spinner);
 	var jsObj ={
-	             "locationValuesArr" : [],
+	             "locationValuesArr" : locationValuesArr,
 				 "fromDateStr" : " ",
 				 "toDateStr" : " ",
 				 "locationTypeId" :locationTypeId,
@@ -820,7 +834,7 @@ function buildDepartMentAndBoardWisePositinsStatusCount(result){
 									str+='<td>'+result[i].name+'</td>';
 									str+='<td>'+result[i].count+'</td>';	
 									str+='<td>'+result[i].list[j].board+'</td>';
-									str+='<td>'+result[i].list[j].openCnt+'</td>';
+									str+='<td>'+result[i].list[j].boardCunt+'</td>';
 									str+='<td>';
 									str+='<ul class="list-inline">';
 									for(var k in result[i].list[j].subList){
@@ -897,3 +911,252 @@ function getBoardWisePositions()
 		
 	});
 }*/
+ $(document).on("click",".statusClickCls",function(){
+	
+	var deptId =  $(this).attr("attr_department_id");
+		var boardLevelId =  $(this).attr("attr_boardLevelId");
+		var type =  $(this).attr("attr_type");
+		var departmentName =  $(this).attr("attr_department_name");
+		var statusIds =  $(this).attr("attr_board_statusIds");
+		if(type == "open"){
+			$("#departmentPostModal").modal("show");
+			$("#departmentPostModal .modal-dialog").css("width","95%");
+			$("#TitleId").html(departmentName+  "  Open Posts Details");
+			$("#openPostDetailsModalDivId").html(spinner)
+			getDepartmentWiseOpenPostAndApplicationDetails(deptId,boardLevelId,type);
+		}else if(type == "goIssued"){
+			$("#departmentPostModal").modal("show");
+			$("#departmentPostModal .modal-dialog").css("width","95%");
+			$("#TitleId").html(departmentName + "  G.O Issued Positions");
+			getLevelWiseGoIssuedPostions(boardLevelId,statusIds,0,10);
+		}else if(type == "finalIssued"){
+			$("#departmentPostModal").modal("show");
+			$("#departmentPostModal .modal-dialog").css("width","95%");
+			$("#TitleId").html(departmentName + "  Final Review Positions");
+			getLevelWiseGoIssuedPostions(boardLevelId,statusIds,0,10);
+		}else if(type == "department"){
+			$("#boardWiseModal").modal("show");
+			$("#boardWiseModal .modal-dialog").css("width","95%");
+			$("#boardTitleId").html(departmentName+" Details");
+			$(".paginationCls").html("");
+			$("#departmentDetailsModalDivId").html(spinner)
+			getDepartmentWiseOpenPostAndApplicationDetails(deptId,0,type);
+		}
+	
+}); 
+  function getDepartmentWiseOpenPostAndApplicationDetails(deptId,boardLevelId,type){
+	var jsObj={
+	  "fromDateStr" 		:"",
+      "toDateStr"			:"",
+      "locationValuesArr"	:[1],
+      "locationTypeId"		:2,
+      "year"				:"",
+      "boardLevelId"		:boardLevelId,
+	  "deptId"				:deptId
+	  }
+    $.ajax({   
+      type:'GET',
+      url:'getDepartmentWisePostAndApplicationDetailsAction.action',  
+      dataType: 'json',
+      data: {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			 buildDepartmentWiseOpenPostAndApplicationDetails(result,type);
+		}else{
+			if(type == "open"){
+			$("#openPostDetailsModalDivId").html("No Data Available");
+			}else{
+				$("#departmentDetailsModalDivId").html("No Data Available");
+				
+			}
+		}
+    }); 
+  }
+	 function buildDepartmentWiseOpenPostAndApplicationDetails(result,type){
+		var str='';
+		
+		str+='<div class="table-responsive">';
+			if(type == "open"){
+				str+='<table class="table table-condensed tableOpenPostCss" id="dataTableOpenPostId">';
+			}else{
+				str+='<table class="table table-condensed tableOpenPostCss" id="dataTabledeptPostId">';
+			}
+			
+				str+='<thead>';
+					str+='<tr>';
+						if(type == "open"){
+							str+='<th rowspan="2" class="openPostDeptColor" style="vertical-align:middle;">Department</th>';
+						}else{
+							str+='<th rowspan="2" class="openPostDeptColor" style="vertical-align:middle;">Board/ Corporation</th>';
+						}
+						
+						str+='<th colspan="3" class="openPostColor text-center">Posts</th>';
+						str+='<th colspan="3" class="openPostAppColor text-center">Applications</th>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th class="openPostColor text-center">Total</th>';
+						str+='<th class="openPostColor text-center">Finalized/ G.O Issueed</th>';
+						str+='<th class="openPostColor text-center">Open</th>';
+						
+						str+='<th class="openPostAppColor text-center">Recieved</th>';
+						str+='<th class="openPostAppColor text-center">Shortlisted</th>';
+						str+='<th class="openPostAppColor text-center">Ready for Final Review</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+							if(type =="open"){
+								str+='<td attr_department_name="'+result[i].name+'" attr_department_id="'+result[i].id+'"  class="statusClickCls"  attr_type="department" style="color: #337ab7;font-weight:normaltext-decoration:none;cursor:pointer;">'+result[i].name+'</td>';
+							}else{
+								str+='<td>'+result[i].name+'</td>';
+							}
+							
+							
+							if(result[i].totalCount !=null && result[i].totalCount>0){
+								str+='<td class="openPostColor text-center">'+result[i].totalCount+'</td>';
+							}else{
+								str+='<td class="openPostColor text-center"> - </td>';
+							}
+							if(result[i].finalOrGOCnt !=null && result[i].finalOrGOCnt>0){
+								str+='<td class="openPostColor text-center">'+result[i].finalOrGOCnt+'</td>';
+							}else{
+								str+='<td class="openPostColor text-center"> - </td>';
+							}
+							
+							if(result[i].openCnt !=null && result[i].openCnt>0){
+								str+='<td class="openPostColor text-center">'+result[i].openCnt+'</td>';
+							}else{
+								str+='<td class="openPostColor text-center"> - </td>';
+							}
+							
+							if(result[i].receivedCnt !=null && result[i].receivedCnt>0){
+								str+='<td class="openPostAppColor text-center">'+result[i].receivedCnt+'</td>';
+							}else{
+								str+='<td class="openPostAppColor text-center"> - </td>';
+							}
+							if(result[i].shorlistedCnt !=null && result[i].shorlistedCnt>0){
+								str+='<td class="openPostAppColor text-center">'+result[i].shorlistedCnt+'</td>';
+							}else{
+								str+='<td class="openPostAppColor text-center"> - </td>';
+							}
+							
+							if(result[i].readyToFinalCnt !=null && result[i].readyToFinalCnt>0){
+								str+='<td class="openPostAppColor text-center">'+result[i].readyToFinalCnt+'</td>';
+							}else{
+								str+='<td class="openPostAppColor text-center"> - </td>';
+							}
+						str+='</tr>';
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		if(type == "open"){
+			$("#openPostDetailsModalDivId").html(str);
+				$("#dataTableOpenPostId").dataTable({
+				"iDisplayLength": 15,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
+		}else{
+			$("#departmentDetailsModalDivId").html(str);
+			$("#dataTabledeptPostId").dataTable({
+				"iDisplayLength": 15,
+				"aaSorting": [],
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			});
+		}
+		
+	} 
+  
+function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex){
+	  $("#openPostDetailsModalDivId").html(spinner)
+	  var statusIds=[];
+	  if(statusId == 0){
+		  statusIds.push(3,4)
+	  }else{
+		 statusIds.push(statusId); 
+	  }
+	 var totalPosCount = 0; 
+	var jsObj={
+      fromDateStr 		:"",
+      toDateStr			:"",
+      locationValuesArr	:[1],
+      locationTypeId	:2,
+      year				:"",
+      boardLevelId		:boardLevelId, 
+	  statusIds			:statusIds, // 3-complered 4 goIsuued
+	  startIndex:startIndex,
+	  endIndex:endIndex
+     
+    }
+    $.ajax({   
+      type:'GET',
+      url:'getLevelWiseGoIssuedPostionsAction.action',  
+      dataType: 'json',
+      data: {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			return LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId);
+		}else{
+			$(".paginationId").html("");
+			$("#openPostDetailsModalDivId").html("No Data Available");
+		}
+		
+    });
+}
+function LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId){
+		if(startIndex == 0){
+			totalPosCount=result[0].postCount;
+		}
+		var str='';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-condensed tableStyledGoIssued" id="dataTablegoIssuedPostId">';
+				str+='<thead class="bg-E9">';
+					str+='<tr>';
+						str+='<th class="text-center">Department</th>';
+						str+='<th class="text-center">Board/ Corporation</th>';
+						str+='<th class="text-center">Position Level</th>';
+						str+='<th class="text-center">Image</th>';
+						str+='<th class="text-center">Name</th>';
+						str+='<th class="text-center">Gender</th>';
+						str+='<th class="text-center">Caste Category</th>';
+						str+='<th class="text-center">G.O Validity</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td>'+result[i].department+'</td>';
+							str+='<td>'+result[i].board+'</td>';
+							str+='<td>'+result[i].position+'</td>';
+							str+='<td><img src="https://mytdp.com/images/cadre_images/'+result[i].image+'" class="img-border" alt="profile" onerror="setDefaultImage(this);" style="width:50px;height:50px;"/></td>';
+							str+='<td>'+result[i].candidateName+'</td>';
+							str+='<td>'+result[i].gender+'</td>';
+							str+='<td>'+result[i].casteCategory+'</td>';
+							if(result[i].date !=null && result[i].date.length>0){
+								str+='<td>'+result[i].date+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							
+						str+='</tr>';
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		if(startIndex == 0 && totalPosCount > 10){
+			$(".paginationId").pagination({
+				items: totalPosCount,
+				itemsOnPage: 10,
+				cssStyle: 'light-theme',
+				hrefTextPrefix: '#pages-',
+				onPageClick: function(pageNumber) { 
+					var num=(pageNumber-1)*10;
+					getLevelWiseGoIssuedPostions(boardLevelId,statusId,num,10)
+				}
+				
+			});
+		}
+		$("#openPostDetailsModalDivId").html(str);		
+	}
