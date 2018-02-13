@@ -2654,10 +2654,10 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 			   " and nominatedPostApplication.nominatedPostMember.isDeleted = 'N' ");
 	 	 
 	 	if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
- 			/*if (locationTypeId == 2) {
+ 			if (locationTypeId == 2) {
  				sb.append(" and nominatedPostApplication.nominatedPostMember.address.state.stateId in(:locationValues) ");
  				//sb.append(" and nominatedPostApplication.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
- 			} else*/ if (locationTypeId == 3) {
+ 			} else if (locationTypeId == 3) {
 				sb.append(" and nominatedPostApplication.nominatedPostMember.address.district.districtId in(:locationValues) ");
 			} else if (locationTypeId == 10) {
 				sb.append(" and nominatedPostApplication.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
@@ -2703,7 +2703,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 	 
 	 	 Query query = getSession().createQuery(sb.toString());
 	 	 
-	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 && locationTypeId.longValue() != 2){
+	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 ){
 	 		  query.setParameterList("locationValues", locationValues);
 	 	  }
 	 	

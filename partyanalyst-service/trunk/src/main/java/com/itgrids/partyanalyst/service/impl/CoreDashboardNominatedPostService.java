@@ -368,6 +368,20 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 				startDate = sdf.parse(fromDateStr);
 				endDate = sdf.parse(toDateStr);
 			}
+			if(locationTypeId != null && locationTypeId.longValue() ==4l){
+			List<Object[]> constituencysList = constituencyDAO.getAllConstituencys();
+			if(constituencysList != null && constituencysList.size()>0l){
+				for(Object[] param : constituencysList){
+					NominatedPostCandidateDtlsVO deptVO =new NominatedPostCandidateDtlsVO();
+		            deptVO.setBoardLevelId(commonMethodsUtilService.getLongValueForObject(param[0]));
+		            deptVO.setBoard(commonMethodsUtilService.getStringValueForObject(param[1]));
+		            deptVO.setLevelList(getAllBoardLevelList(boardLevelId));
+		            finalList.add(deptVO);
+				}
+			}
+			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostLocationWiseBoardLevelCount(locationValues,startDate,endDate,locationTypeId,boardLevelId);
+			  finalList = getConstituencyWiseNominatedPostDetails(finalList,nominatedPostList);
+			}else{
 			Map<Long,NominatedPostCandidateDtlsVO> levelMap= new HashMap<Long,NominatedPostCandidateDtlsVO>();
 		    //0-districtId,1-districtName,2-statusId,3-statusName,4-count,5-boardLevel,6-boardLevelName
 			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostLocationWiseBoardLevelCount(locationValues,startDate,endDate,locationTypeId,boardLevelId);
@@ -387,18 +401,19 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 			        NominatedPostCandidateDtlsVO matchedBoardVo = getMatchVO(deptVO.getLevelList(),commonMethodsUtilService.getLongValueForObject(param[5]));
 			        if(matchedBoardVo != null){
 		            if(statusId.longValue() == 1l){
-		            	matchedBoardVo.setOpenCount(matchedBoardVo.getOpenCount()+commonMethodsUtilService.getLongValueForObject(param[2])); 
+		            	matchedBoardVo.setOpenCount(matchedBoardVo.getOpenCount()+commonMethodsUtilService.getLongValueForObject(param[4])); 
 		            }else if(statusId.longValue() == 4l || statusId.longValue() == 3l){
-		            	matchedBoardVo.setGoIsuuedCount(matchedBoardVo.getGoIsuuedCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+		            	matchedBoardVo.setGoIsuuedCount(matchedBoardVo.getGoIsuuedCount()+commonMethodsUtilService.getLongValueForObject(param[4]));
 		            }else if(statusId.longValue() == 2l){
-		            	matchedBoardVo.setFinalizedPost(matchedBoardVo.getFinalizedPost()+commonMethodsUtilService.getLongValueForObject(param[2]));
+		            	matchedBoardVo.setFinalizedPost(matchedBoardVo.getFinalizedPost()+commonMethodsUtilService.getLongValueForObject(param[4]));
 		            }
-		            matchedBoardVo.setTotalPosts(matchedBoardVo.getTotalPosts()+commonMethodsUtilService.getLongValueForObject(param[2]));
+		            matchedBoardVo.setTotalPosts(matchedBoardVo.getTotalPosts()+commonMethodsUtilService.getLongValueForObject(param[4]));
 			        }
 				}
 			}
 			if(levelMap != null && levelMap.size()>0){
 				finalList.addAll(levelMap.values());
+			}
 			}
 			
 			
@@ -422,7 +437,7 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			Log.error("Exception raised in getLevelWisePostsOverView method of LocationDashboardService"+e);
+			Log.error("Exception raised in getAllBoardLevelList method of LocationDashboardService"+e);
 		}
 		return levelList;
 	}
@@ -669,7 +684,7 @@ public List<NominatedPostCandidateDtlsVO> getLevelLocationWiseCounts(InputVO inp
 		}
 	}catch(Exception e ){
 		e.printStackTrace();
-		Log.error("Exception raised in getUserTypeWiseNominatedPostCandidateDetails method of LocationDashboardService"+e);
+		Log.error("Exception raised in getLevelLocationWiseCounts method of LocationDashboardService"+e);
 	}
 	return returnsList;
 	
@@ -678,7 +693,7 @@ public List<NominatedPostCandidateDtlsVO> getLevelLocationWiseNominatedPostCount
 	List<NominatedPostCandidateDtlsVO> returnList = new ArrayList<NominatedPostCandidateDtlsVO>(0);
 	try {
 		Map<String,NominatedPostCandidateDtlsVO> levelLocationMap = new LinkedHashMap<String,NominatedPostCandidateDtlsVO>();
-		String[] levelArr = {"state","district","parliament","constituency"};
+		String[] levelArr = {"state","district","constituency","Mandal"};
 		for (int i = 0; i < levelArr.length; i++) {
 			//setAllLevelValuesToMap(levelArr[i], levelLocationMap,inputVO.getLevelId(),inputVO.getLevelValues(),inputVO.getFromDateStr(),inputVO.getToDateStr(),overallTotal);
 			setAllLevelValuesToMap(levelArr[i], levelLocationMap,inputVO);
@@ -711,6 +726,8 @@ public void setAllLevelValuesToMap(String levelStr,Map<String,NominatedPostCandi
 			keyLevelId = "4-";
 		else if(levelStr != null && levelStr.trim().equalsIgnoreCase("constituency"))
 			keyLevelId = "5-";
+		else if(levelStr != null && levelStr.trim().equalsIgnoreCase("Mandal"))
+			keyLevelId = "6-";
 		// //0-stateId,1-stateName,2-count,3-boardLevelId,4-boardLevel
 		List<Object[]> totalList = nominatedPostDAO.getLocationWiseNominatedPostCount(levelStr,inputVO.getLevelId(),inputVO.getLevelValues(),startDate,endDate);
 		if(totalList != null && !totalList.isEmpty()){
@@ -952,5 +969,43 @@ public List<NominatedPostDetailsVO> getBoardWisePositions(List<Long> locationVal
 		LOG.error("Exception raised in getBoardWisePositions() method of CoreDashboardNominatedPostService", e);	
 	}
 	return returnsList;
+}
+public NominatedPostCandidateDtlsVO getMatchedLocationVo(List<NominatedPostCandidateDtlsVO> voList ,Long id){
+	if(voList != null && voList.size() > 0){
+		for (NominatedPostCandidateDtlsVO boardVo : voList) {
+			if(boardVo.getBoardLevelId().equals(id))
+				return boardVo;
+		}
+	}
+	return null;
+}
+public List<NominatedPostCandidateDtlsVO> getConstituencyWiseNominatedPostDetails(List<NominatedPostCandidateDtlsVO> finalList,List<Object[]> nominatedPostList){
+	try{
+	if(nominatedPostList != null && nominatedPostList.size()>0){
+		for(Object[] param : nominatedPostList){
+			Long statusId = commonMethodsUtilService.getLongValueForObject(param[2]);
+			NominatedPostCandidateDtlsVO deptVO = getMatchedLocationVo(finalList,commonMethodsUtilService.getLongValueForObject(param[0]));
+	        if(deptVO != null){
+	        	NominatedPostCandidateDtlsVO matchedBoardVo = getMatchVO(deptVO.getLevelList(),commonMethodsUtilService.getLongValueForObject(param[5]));
+		        if(matchedBoardVo != null){
+	            if(statusId.longValue() == 1l){
+	            	matchedBoardVo.setOpenCount(matchedBoardVo.getOpenCount()+commonMethodsUtilService.getLongValueForObject(param[4])); 
+	            }else if(statusId.longValue() == 4l || statusId.longValue() == 3l){
+	            	matchedBoardVo.setGoIsuuedCount(matchedBoardVo.getGoIsuuedCount()+commonMethodsUtilService.getLongValueForObject(param[4]));
+	            }else if(statusId.longValue() == 2l){
+	            	matchedBoardVo.setFinalizedPost(matchedBoardVo.getFinalizedPost()+commonMethodsUtilService.getLongValueForObject(param[4]));
+	            }
+	            matchedBoardVo.setTotalPosts(matchedBoardVo.getTotalPosts()+commonMethodsUtilService.getLongValueForObject(param[4]));
+		        }
+	        	
+	        }
+		}
+		
+	}
+	}catch(Exception e){
+		LOG.error("Exception raised in getConstituencyWiseNominatedPostDetails() method of CoreDashboardNominatedPostService", e);	
+	}
+	return finalList;
+	
 }
 }

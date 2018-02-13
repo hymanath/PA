@@ -2871,8 +2871,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 	if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
  			if (locationTypeId == 2) {
  				sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValues) ");
- 				sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
- 			} else if (locationTypeId == 3l) {
+ 				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+ 			} else  if (locationTypeId == 3l) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValues) ");
 			} else if (locationTypeId == 10) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
@@ -2912,7 +2912,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 	 
 	 	 Query query = getSession().createQuery(sb.toString());
 	 	 
-	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){
+	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 ){
 	 		  query.setParameterList("locationValues", locationValues);
 	 	  }
 	 	
@@ -3070,7 +3070,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 if(startDate != null && endDate != null){
 			 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
 		 }
-		 sb.append(" and nominatedPost.nominatedPostStatus.nominatedPostStatusId not in(2) ");
+		 sb.append(" and nominatedPost.nominatedPostStatus.nominatedPostStatusId not in(2) " );
+		 sb.append(" and  nominatedPost.nominatedPostMember.boardLevelId in(2) ");
 		 sb.append(" group by nominatedPost.nominatedPostStatus.nominatedPostStatusId,nominatedPost.nominatedPostMember.address.state.stateId "); 
 		 sb.append(" order by nominatedPost.nominatedPostStatus.nominatedPostStatusId ");
 		 Query query = getSession().createQuery(sb.toString());
@@ -3100,22 +3101,22 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 				   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
 		 
 		 if(levelId != null && levelId.longValue() > 0L && levelValues != null && !levelValues.isEmpty()){
-		 			if (levelId.longValue() == 2) {
+		 			if (levelId.longValue() == 2l) {
 		 				sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:levelValues) ");
 		 				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-		 			} else if(levelId.longValue() == 3) {
+		 			} else if(levelId.longValue() == 3l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:levelValues) ");
-					} else if (levelId == 10) {
+					} else if (levelId.longValue() == 4l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:levelValues) ");
-					} else if(levelId.longValue() == 4) {
+					} else if(levelId.longValue() == 5l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:levelValues) ");
-					} else if (levelId == 5) {
+					} else if (levelId.longValue() == 6l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:levelValues) ");
-					}else if (levelId == 6) {
+					}else if (levelId.longValue() == 8l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:levelValues) ");
-					}else if (levelId == 7) {
+					}else if (levelId.longValue() == 7l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:levelValues) ");
-					}else if (levelId == 8) {
+					}else if (levelId.longValue() == 9l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.ward.constituencyId in(:levelValues) ");
 					}		
 					
@@ -3124,6 +3125,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
 		 }
 		 sb.append(" and nominatedPost.nominatedPostMember.boardLevel.boardLevelId  not in(6,8) ");
+		 sb.append(" and nominatedPost.nominatedPostStatus.nominatedPostStatusId  in(1) ");
 		 /*if(boardLevelId != null && boardLevelId.longValue()>0l){
 			 sb.append(" and nominatedPost.nominatedPostMember.boardLevel.boardLevelId >=:boardLevelId ");
 		 }*/
