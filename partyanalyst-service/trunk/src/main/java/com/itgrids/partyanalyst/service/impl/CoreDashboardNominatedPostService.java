@@ -169,11 +169,25 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 		this.tehsilDAO = tehsilDAO;
 	}
-	public List<NominatedPostCandidateDtlsVO> getLevelWisePostsOverView(List<Long> locationValues,String fromDateStr,String toDateStr,Long locationTypeId,Long boardLevelId){
+	public List<NominatedPostCandidateDtlsVO> getLevelWisePostsOverView(List<Long> locationValues,String fromDateStr,String toDateStr,Long locationTypeId,Long boardLevelId,Long activityMemberId){
 		List<NominatedPostCandidateDtlsVO> finalList =new ArrayList<NominatedPostCandidateDtlsVO>();
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
+			Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+			 Long userAccessLevelId=0l;
+			 Set<Long> locationValuesSet= null;
+			 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+				   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+				   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				  locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+					 if(locationValuesSet == null){
+						 locationValuesSet = new java.util.HashSet<Long>();
+						 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+					 }
+					 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+				}
+			   }
 			Date startDate = null;
 			Date endDate = null;
 			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
@@ -182,7 +196,7 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 			}
 			Long total=0l;
 			Map<Long,NominatedPostCandidateDtlsVO> levelMap= new HashMap<Long,NominatedPostCandidateDtlsVO>();
-			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostLocationStatusBasedWiseCount(locationValues,startDate,endDate,locationTypeId,boardLevelId);
+			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostLocationStatusBasedWiseCount(locationValuesSet,startDate,endDate,userAccessLevelId,boardLevelId);
 			if(nominatedPostList != null && nominatedPostList.size()>0){
 				for(Object[] param : nominatedPostList){
 					Long levelId = commonMethodsUtilService.getLongValueForObject(param[3]); 
@@ -256,10 +270,25 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 		return finalList;
 	}
 
-	public List<NominatedPostDetailsVO> getDepartmentWisePostAndApplicationDetails(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLevelId,Long deptId){
+	public List<NominatedPostDetailsVO> getDepartmentWisePostAndApplicationDetails(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLevelId,Long deptId,Long activityMemberId){
 		List<NominatedPostDetailsVO> returnsList = new ArrayList<NominatedPostDetailsVO>();
 		try{
-			
+			Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+			 Long userAccessLevelId=0l;
+			 Set<Long> locationValuesSet= null;
+			 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+				   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+				   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				  locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+					 if(locationValuesSet == null){
+						 locationValuesSet = new java.util.HashSet<Long>();
+						 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+					 }
+					 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+				}
+			   }
+			  //new ArrayList<Long>(locationValuesSet)
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date startDate = null;
 			Date endDate = null;
@@ -284,7 +313,7 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 				levelValues= tehsilDAO.getAllTehsilIds(locationValues);
 			}
 			Map<Long,NominatedPostDetailsVO> deptMap = new HashMap<Long,NominatedPostDetailsVO>();
-			List<Object[]> postsList = nominatedPostDAO.getDepartmentWisePostDetails(levelValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId);
+			List<Object[]> postsList = nominatedPostDAO.getDepartmentWisePostDetails(new ArrayList<Long>(locationValuesSet), startDate, endDate, userAccessLevelId, year, boardLevelId, deptId);
 			//List<Object[]> applicationList = nominatedPostApplicationDAO.getDepartmentWiseApplicationDetails(locationValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId);
 			if(commonMethodsUtilService.isListOrSetValid(postsList)){
 				for (Object[] param : postsList) {
@@ -313,7 +342,7 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 			}
 			
 			
-			List<Object[]> expirePostList = nominatedPostGovtOrderDAO.getNominatedPostExpireDetails(locationValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId);
+			List<Object[]> expirePostList = nominatedPostGovtOrderDAO.getNominatedPostExpireDetails(new ArrayList<Long>(locationValuesSet), startDate, endDate, userAccessLevelId, year, boardLevelId, deptId);
 			if(commonMethodsUtilService.isListOrSetValid(expirePostList)){
 				for (Object[] param : expirePostList) {
 					NominatedPostDetailsVO deptVO = deptMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -357,11 +386,26 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 		return returnsList;
 	}
 	
-	public List<NominatedPostCandidateDtlsVO> getNominatedPostLocationWiseBoardLevelCount(List<Long> locationValues,String fromDateStr,String toDateStr,Long locationTypeId,Long boardLevelId){
+	public List<NominatedPostCandidateDtlsVO> getNominatedPostLocationWiseBoardLevelCount(List<Long> locationValues,String fromDateStr,String toDateStr,Long locationTypeId,Long boardLevelId,Long activityMemberId){
 		List<NominatedPostCandidateDtlsVO> finalList =new ArrayList<NominatedPostCandidateDtlsVO>();
 		try{
+			Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+			 Long userAccessLevelId=0l;
+			 Set<Long> locationValuesSet= null;
+			 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+				   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+				   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				  locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+					 if(locationValuesSet == null){
+						 locationValuesSet = new java.util.HashSet<Long>();
+						 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+					 }
+					 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+				}
+			   }
+			  //new ArrayList<Long>(locationValuesSet)
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
 			Date startDate = null;
 			Date endDate = null;
 			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
@@ -379,12 +423,12 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 		            finalList.add(deptVO);
 				}
 			}
-			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostLocationWiseBoardLevelCount(locationValues,startDate,endDate,locationTypeId,boardLevelId);
+			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostLocationWiseBoardLevelCount(new ArrayList<Long>(locationValuesSet),startDate,endDate,userAccessLevelId,boardLevelId,"constituency");
 			  finalList = getConstituencyWiseNominatedPostDetails(finalList,nominatedPostList);
 			}else{
 			Map<Long,NominatedPostCandidateDtlsVO> levelMap= new HashMap<Long,NominatedPostCandidateDtlsVO>();
 		    //0-districtId,1-districtName,2-statusId,3-statusName,4-count,5-boardLevel,6-boardLevelName
-			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostLocationWiseBoardLevelCount(locationValues,startDate,endDate,locationTypeId,boardLevelId);
+			List<Object[]> nominatedPostList = nominatedPostDAO.getNominatedPostLocationWiseBoardLevelCount(new ArrayList<Long>(locationValuesSet),startDate,endDate,userAccessLevelId,boardLevelId,"district");
 			if(nominatedPostList != null && nominatedPostList.size()>0){
 				for(Object[] param : nominatedPostList){
 					Long levelId = commonMethodsUtilService.getLongValueForObject(param[0]); 
@@ -453,11 +497,10 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 		return null;
 	}
 	
-	public List<NominatedPostCandidateDtlsVO> getNominatedPostStateWiseCount(String fromDateStr,String toDateStr){
+	public List<NominatedPostCandidateDtlsVO> getNominatedPostStateWiseCount(String fromDateStr,String toDateStr,Long activityMemberId){
 		List<NominatedPostCandidateDtlsVO> returnsList = new ArrayList<NominatedPostCandidateDtlsVO>();
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
 			Date startDate = null;
 			Date endDate = null;
 			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
@@ -693,7 +736,7 @@ public List<NominatedPostCandidateDtlsVO> getLevelLocationWiseNominatedPostCount
 	List<NominatedPostCandidateDtlsVO> returnList = new ArrayList<NominatedPostCandidateDtlsVO>(0);
 	try {
 		Map<String,NominatedPostCandidateDtlsVO> levelLocationMap = new LinkedHashMap<String,NominatedPostCandidateDtlsVO>();
-		String[] levelArr = {"state","district","constituency","Mandal"};
+		String[] levelArr = {"state","district","parliament","constituency"};
 		for (int i = 0; i < levelArr.length; i++) {
 			//setAllLevelValuesToMap(levelArr[i], levelLocationMap,inputVO.getLevelId(),inputVO.getLevelValues(),inputVO.getFromDateStr(),inputVO.getToDateStr(),overallTotal);
 			setAllLevelValuesToMap(levelArr[i], levelLocationMap,inputVO);
@@ -827,7 +870,7 @@ public Double calculatePercantage(Long subCount,Long totalCount){
 }
 
 public List<NominatedPostDetailsVO> getDepartMentAndBoardWisePositinsStatusCount(List<Long> locationValues,String fromDateStr, 
-		String toDateStr,Long locationTypeId,Long boardLevelId,Long statusId){
+		String toDateStr,Long locationTypeId,Long boardLevelId,Long statusId,Long activityMemberId){
 	List<NominatedPostDetailsVO> returnsList = new ArrayList<NominatedPostDetailsVO>();
 	try{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -838,9 +881,16 @@ public List<NominatedPostDetailsVO> getDepartMentAndBoardWisePositinsStatusCount
 			startDate = sdf.parse(fromDateStr);
 			endDate = sdf.parse(toDateStr);
 		}
+		List<Long> statusIdsList =new ArrayList<Long>();
+		if(statusId.longValue() == 4l){
+			statusIdsList.add(3l);
+			statusIdsList.add(4l);
+		}else if(statusId != 0){
+			statusIdsList.add(statusId);
+		}
 		Map<Long,NominatedPostDetailsVO> deptMap = new HashMap<Long,NominatedPostDetailsVO>();
 		//0-departId,1-deptName,2-count,3-boardId,4-boardName,5-positionId,6-positionName
-		List<Object[]> postionDetails = nominatedPostDAO.getDepartMentAndBoardWisePositinsStatusCount(locationValues,startDate,endDate,locationTypeId,boardLevelId,statusId);
+		List<Object[]> postionDetails = nominatedPostDAO.getDepartMentAndBoardWisePositinsStatusCount(locationValues,startDate,endDate,locationTypeId,boardLevelId,statusIdsList);
 		if(postionDetails != null && postionDetails.size()>0l){
 			for(Object[] param : postionDetails){
 				NominatedPostDetailsVO vo = deptMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
