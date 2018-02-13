@@ -283,19 +283,19 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 			/*if (locationTypeId == 2) {
 				//sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValues) ");
 				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-			} else*/ if (locationTypeId == 3) {
+			} else*/ if (locationTypeId == 3l) {
 				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.district.districtId in(:locationValues) ");
-			} else if (locationTypeId == 10) {
+			} else if (locationTypeId == 4l) {
 				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
-			} else if (locationTypeId == 4) {
+			} else if (locationTypeId == 5l) {
 				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValues) ");
-			} else if (locationTypeId == 5) {
+			} else if (locationTypeId == 6l) {
 				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValues) ");
-			}else if (locationTypeId == 6) {
+			}else if (locationTypeId == 8l) {
 				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostnominatedPostMember.address.panchayat.panchayatId in(:locationValues) ");
-			}else if (locationTypeId == 7) {
+			}else if (locationTypeId == 7l) {
 				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValues) ");
-			}else if (locationTypeId == 8) {
+			}else if (locationTypeId == 9l) {
 				sb.append(" and nominatedPostGovt.nominatedPost.nominatedPostMember.address.ward.constituencyId in(:locationValues) ");
 			}		
 		}

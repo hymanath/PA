@@ -2874,17 +2874,17 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
  				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
  			} else  if (locationTypeId == 3l) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValues) ");
-			} else if (locationTypeId == 10) {
+			} else if (locationTypeId == 4l) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValues) ");
-			} else if (locationTypeId == 4) {
+			} else if (locationTypeId == 5l) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValues) ");
-			} else if (locationTypeId == 5) {
+			} else if (locationTypeId == 6l) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValues) ");
-			}else if (locationTypeId == 6) {
+			}else if (locationTypeId == 8l) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:locationValues) ");
-			}else if (locationTypeId == 7) {
+			}else if (locationTypeId == 7l) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValues) ");
-			}else if (locationTypeId == 8) {
+			}else if (locationTypeId == 9l) {
 				sb.append(" and nominatedPost.nominatedPostMember.address.ward.constituencyId in(:locationValues) ");
 			}		
 		}
@@ -2929,7 +2929,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 		query.setParameter("deptId", deptId);
 	 	 return query.list();
 	  }
-	 public List<Object[]> getNominatedPostLocationStatusBasedWiseCount(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId){
+	 
+	 public List<Object[]> getNominatedPostLocationStatusBasedWiseCount(Set<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId){
 		 StringBuilder sb = new StringBuilder();
 		 sb.append(" select " +
 		 		   " nominatedPost.nominatedPostStatus.nominatedPostStatusId, " +
@@ -2946,17 +2947,17 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 		 			} else*/ if (locationType == 3) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValue) ");
-					} else if (locationType == 10) {
-						sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
 					} else if (locationType == 4) {
-						sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValue) ");
+						sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
 					} else if (locationType == 5) {
+						sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValue) ");
+					} else if (locationType == 6) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValue) ");
-					}else if (locationType == 6) {
+					}else if (locationType == 8) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:locationValue) ");
 					}else if (locationType == 7) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValue) ");
-					}else if (locationType == 8) {
+					}else if (locationType == 9) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.ward.constituencyId in(:locationValue) ");
 					}		
 					
@@ -2984,12 +2985,16 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 }
 		 return query.list();
 	 }
-	 public List<Object[]> getNominatedPostLocationWiseBoardLevelCount(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId){
+	 public List<Object[]> getNominatedPostLocationWiseBoardLevelCount(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId,String type){
 		 StringBuilder sb = new StringBuilder();
 		 sb.append(" select  " );
-		 if(locationType == 3){
+		 if(locationType == 2l){
+			 if(type != null && type.equalsIgnoreCase("district")){
 		   sb.append(" nominatedPost.nominatedPostMember.address.district.districtId,nominatedPost.nominatedPostMember.address.district.districtName," );
-		 }else if(locationType == 4){
+			 }else if(type != null && type.equalsIgnoreCase("constituency")){
+				 sb.append(" nominatedPost.nominatedPostMember.address.constituency.constituencyId,nominatedPost.nominatedPostMember.address.constituency.name, "); 
+			 }
+		 }else if(locationType == 3){
 			 sb.append(" nominatedPost.nominatedPostMember.address.constituency.constituencyId,nominatedPost.nominatedPostMember.address.constituency.name, ");
 		 }else if(locationType == 5){
 			 sb.append(" nominatedPost.nominatedPostMember.address.tehsil.tehsilId,nominatedPost.nominatedPostMember.address.tehsil.tehsilName, ");
@@ -3008,19 +3013,20 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 			/*if (locationType == 2) {
 		 				//sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValue) ");
 		 				//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-		 			} else*/ if (locationType == 3) {
-						sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValue) ");
-					} else if (locationType == 10) {
+		 			} else*/ if (locationType == 2l) {
+		 				sb.append(" and nominatedPost.nominatedPostMember.address.state.stateId in(:locationValue) ");
+						//sb.append(" and nominatedPost.nominatedPostMember.address.district.districtId in(:locationValue) ");
+					} else if (locationType == 4l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.parliamentConstituency.constituencyId in(:locationValue) ");
-					} else if (locationType == 4) {
+					} else if (locationType == 3l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.constituency.constituencyId in(:locationValue) ");
-					} else if (locationType == 5) {
+					} else if (locationType == 6l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.tehsil.tehsilId in(:locationValue) ");
-					}else if (locationType == 6) {
+					}else if (locationType == 8l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.panchayat.panchayatId in(:locationValue) ");
 					}else if (locationType == 7) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in(:locationValue) ");
-					}else if (locationType == 8) {
+					}else if (locationType == 9l) {
 						sb.append(" and nominatedPost.nominatedPostMember.address.ward.constituencyId in(:locationValue) ");
 					}		
 					
@@ -3033,8 +3039,12 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			 sb.append(" and nominatedPost.nominatedPostMember.boardLevel.boardLevelId >=:boardLevelId ");
 		 }
 		 sb.append(" group by nominatedPost.nominatedPostStatus.nominatedPostStatusId,nominatedPost.nominatedPostMember.boardLevel.boardLevelId "); 
-		 if(locationType == 3){
-			 sb.append(" ,nominatedPost.nominatedPostMember.address.district.districtId ");
+		 if(locationType == 2){
+			 if(type != null && type.equalsIgnoreCase("district")){
+			  sb.append(" ,nominatedPost.nominatedPostMember.address.district.districtId ");
+			  } else if(type != null && type.equalsIgnoreCase("constituency")){
+			  sb.append(" ,nominatedPost.nominatedPostMember.address.constituency.constituencyId ");
+			 }
 		 }else if(locationType == 4){
 			 sb.append(" ,nominatedPost.nominatedPostMember.address.constituency.constituencyId ");
 		 }else if(locationType == 5){
@@ -3044,10 +3054,10 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 }
 		 sb.append(" order by nominatedPost.nominatedPostStatus.nominatedPostStatusId ");
 		 Query query = getSession().createQuery(sb.toString());
-		 if (locationType != null && locationValuesList != null && locationValuesList.size()>0 && locationType !=2l) {
+		 if (locationType != null && locationValuesList != null && locationValuesList.size()>0) {
 		   query.setParameterList("locationValue",locationValuesList);
 		 }
-		// query.setParameterList("locationValue",locationValuesList);
+		//query.setParameterList("locationValue",locationValuesList);
 		 if(startDate != null && endDate != null){
 			 query.setDate("startDate",startDate);
 			 query.setDate("endDate",endDate);
@@ -3151,7 +3161,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 return query.list();
 	 }
 	 //0-departId,1-deptName,2-count,3-boardId,4-boardName,5-positionId,6-positionName
-	 public List<Object[]> getDepartMentAndBoardWisePositinsStatusCount(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId,Long statusId){
+	 public List<Object[]> getDepartMentAndBoardWisePositinsStatusCount(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId,List<Long> statusIdsList){
 		 StringBuilder sb = new StringBuilder();
 		 sb.append(" select  " );
 		 sb.append(" nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId , " +
@@ -3192,8 +3202,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 if(boardLevelId != null && boardLevelId.longValue()>0l){
 			 sb.append(" and nominatedPost.nominatedPostMember.boardLevel.boardLevelId =:boardLevelId ");
 		 }
-		 if(statusId != null && statusId.longValue()>0l){
-			 sb.append(" and nominatedPost.nominatedPostStatus.nominatedPostStatusId =:statusId ");
+		 if(statusIdsList != null && statusIdsList.size()>0){
+			 sb.append(" and nominatedPost.nominatedPostStatus.nominatedPostStatusId in(:statusIdsList) ");
 		 }
 		 sb.append(" group by  nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
 		 		" nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId,nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId ");
@@ -3208,8 +3218,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 if(boardLevelId != null && boardLevelId.longValue()>0l){
 			 query.setParameter("boardLevelId", boardLevelId);
 		 }
-		 if(statusId != null && statusId.longValue()>0l){
-			 query.setParameter("statusId", statusId);
+		 if(statusIdsList != null && statusIdsList.size()>0){
+			 query.setParameterList("statusIdsList", statusIdsList);
 		 }
 		 return query.list();
 	 }
