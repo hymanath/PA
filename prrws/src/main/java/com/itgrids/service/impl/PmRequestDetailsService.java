@@ -4423,7 +4423,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									else if(subWorkStatusId.longValue() == 6L){
 										statusWiseMap.put("ENDORSED",statusWiseMap.get("ENDORSED")+1L);
 									}
-									else if(subWorkStatusId.longValue() == 3L || subWorkStatusId.longValue() == 7L){
+									else if(IConstants.PETITION_IN_PROGRESS_IDS.contains(subWorkStatusId.longValue())){
 									//	statusWiseMap.put("IN-PROGRESS",statusWiseMap.get("IN-PROGRESS")+1L);
 										statusWiseMap.put("ENDORSED",statusWiseMap.get("ENDORSED")+1L);
 									}else if(subWorkStatusId.longValue() == 4L || subWorkStatusId.longValue() == 5L || subWorkStatusId.longValue() == 8L){
