@@ -55,7 +55,7 @@ $(document).on("click",".actionCls",function(){
 				 $("#assighTypeId").hide();
 				 $("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 				 initializeSingleUploadDocument("uploadEndorsementDocId");	
-				 $("#endorsWorksId").html('Forward For Review')
+				 $("#endorsWorksId").html('Save Details')
 				 $('#actionTypeStr').val('REVIEW');
 			}
 		}else{
@@ -338,7 +338,7 @@ function buildPetitionDetailsView(result){
 														/*else if(globalActionId != 1 )
 															$("#endorseMentHeadingId").html(" <span style='color:"+colorCode[1]+"'> Present Status : </span>"+globalActionName+" Pending  ,  <b class='text-success'> Assigned By </b>:"+result.historyList[h].subList1[j].subList1[k].designation+" ") ;*/
 														else
-															$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"  Pending  , <b class='text-success'> Assigned By </b>:"+result.historyList[h].subList1[j].subList1[k].designation+" ");
+															$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"    , <b class='text-success'> Updated By </b>:"+result.historyList[h].subList1[j].subList1[k].designation+" ");
 														
 													str+='</div>';
 												str+='</div>';
@@ -1459,7 +1459,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	/*else if(globalActionId != 1 )
 		$("#endorseMentHeadingId").html(" <span style='color:"+colorCode[1]+"'> Present Status : </span>"+globalActionName+" Pending  ,  <b class='text-success'> Assigned By </b>:"+assignedBy+" ") ;*/
 	else
-		$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"  Pending  , <b class='text-success'> Assigned By </b>:"+assignedBy+" ");
+		$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"    , <b class='text-success'> Updated By </b>:"+assignedBy+" ");
 	
 	 $("#coveringLetterGenerator").html(""); 
 	 $("#remarkIdErr").html("");
@@ -1584,7 +1584,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 			 $("#fileUploadDiv").show();
 			 $("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 			 initializeSingleUploadDocument("uploadEndorsementDocId");	
-			 $("#endorsWorksId").html('Forward For Review')
+			 $("#endorsWorksId").html('Save Details')
 			 $('#actionTypeStr').val('REVIEW');
 		}
 	 }else{
