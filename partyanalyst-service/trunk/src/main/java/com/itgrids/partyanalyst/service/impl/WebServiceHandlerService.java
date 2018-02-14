@@ -5797,4 +5797,22 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVo;
 	}
+	public AlertVO getJalavaniDashBoardPrintMediaDetailsInfo(JalavaniAlertsInputVO inputvo){
+		AlertVO alertVo = new AlertVO();
+		try{
+			alertVo = alertManagementSystemService.getJalavaniDashBoardPrintMediaDetailsInfo(inputvo);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavaniDashBoardPrintMediaDetailsInfo  method in WebServiceHandlerService",e);
+    	}
+    	return alertVo;
+	}
+	public AlertVO getJalavaniDashBoardElectronicMediaDetailsInfo(JalavaniAlertsInputVO inputvo){
+		AlertVO alertVo = new AlertVO();
+		try{
+			alertVo = alertManagementSystemService.getJalavaniDashBoardElectronicMediaDetailsInfo(inputvo);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavaniDashBoardElectronicMediaDetails  method in WebServiceHandlerService",e);
+    	}
+    	return alertVo;
+	}
 }
