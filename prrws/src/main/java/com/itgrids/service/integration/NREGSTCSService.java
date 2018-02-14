@@ -6997,11 +6997,390 @@ public class NREGSTCSService implements INREGSTCSService{
 						}
 					}
 				}
+				setColorsForExpenditure(returnList);
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getManWorksExpenditureDetails - NREGSTCSService service", e);
 		}
 		return returnList;
+	}
+	
+	/*
+	 * Date : 13/02/2018 
+	 * Author :SRAVANTH
+	 * @description : setColorsForExpenditure
+	 */
+	public void setColorsForExpenditure(List<NregsDataVO> returnList){
+		try {
+			String overAllPersonDaysIsHigh = "0.0";
+			String overAllPersonDaysIsLow = "9999999.99";
+			String overAllWageIsHigh = "0.0";
+			String overAllWageIsLow = "9999999.99";
+			String overAllMaterialIsHigh = "0.0";
+			String overAllMaterialIsLow = "9999999.99";
+			String overAllTotalIsHigh = "0.0";
+			String overAllTotalIsLow = "9999999.99";
+			
+			if(returnList != null && !returnList.isEmpty()){
+				for (int i = 0; i < returnList.size(); i++) {
+					NregsDataVO vo = returnList.get(i);
+					//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+						//PersonDays High
+						if(Double.valueOf(vo.getPerDays1516()) >= Double.valueOf(overAllPersonDaysIsHigh)){
+							overAllPersonDaysIsHigh = vo.getPerDays1516();
+							vo.setPersonDaysIsHigh("15-16");
+							vo.setOverAllPersonDaysIsHigh("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllPersonDaysIsHigh("FALSE");
+								}
+							}
+						}
+						if(Double.valueOf(vo.getPerDays1617()) >= Double.valueOf(overAllPersonDaysIsHigh)){
+							overAllPersonDaysIsHigh = vo.getPerDays1617();
+							vo.setPersonDaysIsHigh("16-17");
+							vo.setOverAllPersonDaysIsHigh("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllPersonDaysIsHigh("FALSE");
+								}
+							}
+						}
+						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(vo.getPerDays1718()) >= Double.valueOf(overAllPersonDaysIsHigh)){
+								overAllPersonDaysIsHigh = vo.getPerDays1718();
+								vo.setPersonDaysIsHigh("17-18");
+								vo.setOverAllPersonDaysIsHigh("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllPersonDaysIsHigh("FALSE");
+									}
+								}
+							}
+						}
+						
+						//Wage High
+						if(Double.valueOf(vo.getWageExp1516()) >= Double.valueOf(overAllWageIsHigh)){
+							overAllWageIsHigh = vo.getWageExp1516();
+							vo.setWageIsHigh("15-16");
+							vo.setOverAllWageIsHigh("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllWageIsHigh("FALSE");
+								}
+							}
+						}
+						if(Double.valueOf(vo.getWageExp1617()) >= Double.valueOf(overAllWageIsHigh)){
+							overAllWageIsHigh = vo.getWageExp1617();
+							vo.setWageIsHigh("16-17");
+							vo.setOverAllWageIsHigh("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllWageIsHigh("FALSE");
+								}
+							}
+						}
+						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(vo.getWageExp1718()) >= Double.valueOf(overAllWageIsHigh)){
+								overAllWageIsHigh = vo.getWageExp1718();
+								vo.setWageIsHigh("17-18");
+								vo.setOverAllWageIsHigh("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllWageIsHigh("FALSE");
+									}
+								}
+							}
+						}
+						
+						//Material High
+						if(Double.valueOf(vo.getMatExp1516()) >= Double.valueOf(overAllMaterialIsHigh)){
+							overAllMaterialIsHigh = vo.getMatExp1516();
+							vo.setMaterialIsHigh("15-16");
+							vo.setOverAllMaterialIsHigh("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllMaterialIsHigh("FALSE");
+								}
+							}
+						}
+						if(Double.valueOf(vo.getMatExp1617()) >= Double.valueOf(overAllMaterialIsHigh)){
+							overAllMaterialIsHigh = vo.getMatExp1617();
+							vo.setMaterialIsHigh("16-17");
+							vo.setOverAllMaterialIsHigh("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllMaterialIsHigh("FALSE");
+								}
+							}
+						}
+						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(vo.getMatExp1718()) >= Double.valueOf(overAllMaterialIsHigh)){
+								overAllMaterialIsHigh = vo.getMatExp1718();
+								vo.setMaterialIsHigh("17-18");
+								vo.setOverAllMaterialIsHigh("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllMaterialIsHigh("FALSE");
+									}
+								}
+							}
+						}
+						
+						//Total High
+						if(Double.valueOf(vo.getTotal1516()) >= Double.valueOf(overAllTotalIsHigh)){
+							overAllTotalIsHigh = vo.getTotal1516();
+							vo.setTotalIsHigh("15-16");
+							vo.setOverAllTotalIsHigh("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllTotalIsHigh("FALSE");
+								}
+							}
+						}
+						if(Double.valueOf(vo.getTotal1617()) >= Double.valueOf(overAllTotalIsHigh)){
+							overAllTotalIsHigh = vo.getTotal1617();
+							vo.setTotalIsHigh("16-17");
+							vo.setOverAllTotalIsHigh("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllTotalIsHigh("FALSE");
+								}
+							}
+						}
+						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(vo.getTotal1718()) >= Double.valueOf(overAllTotalIsHigh)){
+								overAllTotalIsHigh = vo.getTotal1718();
+								vo.setTotalIsHigh("17-18");
+								vo.setOverAllTotalIsHigh("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllTotalIsHigh("FALSE");
+									}
+								}
+							}
+						}
+						
+						
+						//PersonDays Low
+						if(Double.valueOf(vo.getPerDays1516()) <= Double.valueOf(overAllPersonDaysIsLow)){
+							overAllPersonDaysIsLow = vo.getPerDays1516();
+							vo.setPersonDaysIsLow("15-16");
+							vo.setOverAllPersonDaysIsLow("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllPersonDaysIsLow("FALSE");
+								}
+							}
+						}
+						if(Double.valueOf(vo.getPerDays1617()) <= Double.valueOf(overAllPersonDaysIsLow)){
+							overAllPersonDaysIsLow = vo.getPerDays1617();
+							vo.setPersonDaysIsLow("16-17");
+							vo.setOverAllPersonDaysIsLow("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllPersonDaysIsLow("FALSE");
+								}
+							}
+						}
+						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(vo.getPerDays1718()) <= Double.valueOf(overAllPersonDaysIsLow)){
+								overAllPersonDaysIsLow = vo.getPerDays1718();
+								vo.setPersonDaysIsLow("17-18");
+								vo.setOverAllPersonDaysIsLow("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllPersonDaysIsLow("FALSE");
+									}
+								}
+							}
+						}
+						
+						//Wage Low
+						if(Double.valueOf(vo.getWageExp1516()) <= Double.valueOf(overAllWageIsLow)){
+							overAllWageIsLow = vo.getWageExp1516();
+							vo.setWageIsLow("15-16");
+							vo.setOverAllWageIsLow("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllWageIsLow("FALSE");
+								}
+							}
+						}
+						if(Double.valueOf(vo.getWageExp1617()) <= Double.valueOf(overAllWageIsLow)){
+							overAllWageIsLow = vo.getWageExp1617();
+							vo.setWageIsLow("16-17");
+							vo.setOverAllWageIsLow("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllWageIsLow("FALSE");
+								}
+							}
+						}
+						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(vo.getWageExp1718()) <= Double.valueOf(overAllWageIsLow)){
+								overAllWageIsLow = vo.getWageExp1718();
+								vo.setWageIsLow("17-18");
+								vo.setOverAllWageIsLow("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllWageIsLow("FALSE");
+									}
+								}
+							}
+						}
+						
+						//Material Low
+						if(Double.valueOf(vo.getMatExp1516()) <= Double.valueOf(overAllMaterialIsLow)){
+							overAllMaterialIsLow = vo.getMatExp1516();
+							vo.setMaterialIsLow("15-16");
+							vo.setOverAllMaterialIsLow("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllMaterialIsLow("FALSE");
+								}
+							}
+						}
+						if(Double.valueOf(vo.getMatExp1617()) <= Double.valueOf(overAllMaterialIsLow)){
+							overAllMaterialIsLow = vo.getMatExp1617();
+							vo.setMaterialIsLow("16-17");
+							vo.setOverAllMaterialIsLow("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllMaterialIsLow("FALSE");
+								}
+							}
+						}
+						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(vo.getMatExp1718()) <= Double.valueOf(overAllMaterialIsLow)){
+								overAllMaterialIsLow = vo.getMatExp1718();
+								vo.setMaterialIsLow("17-18");
+								vo.setOverAllMaterialIsLow("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllMaterialIsLow("FALSE");
+									}
+								}
+							}
+						}
+						
+						//Total Low
+						if(Double.valueOf(vo.getTotal1516()) <= Double.valueOf(overAllTotalIsLow)){
+							overAllTotalIsLow = vo.getTotal1516();
+							vo.setTotalIsLow("15-16");
+							vo.setOverAllTotalIsLow("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllTotalIsLow("FALSE");
+								}
+							}
+						}
+						if(Double.valueOf(vo.getTotal1617()) <= Double.valueOf(overAllTotalIsLow)){
+							overAllTotalIsLow = vo.getTotal1617();
+							vo.setTotalIsLow("16-17");
+							vo.setOverAllTotalIsLow("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllTotalIsLow("FALSE");
+								}
+							}
+						}
+						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(vo.getTotal1718()) <= Double.valueOf(overAllTotalIsLow)){
+								overAllTotalIsLow = vo.getTotal1718();
+								vo.setTotalIsLow("17-18");
+								vo.setOverAllTotalIsLow("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllTotalIsLow("FALSE");
+									}
+								}
+							}
+						}
+					//}
+				}
+					
+				
+				//Previous Years Comparision
+				for (NregsDataVO nregsDataVO : returnList) {
+					//if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("February") && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
+						//Person Days
+						if(Double.valueOf(nregsDataVO.getPerDays1617()) >= Double.valueOf(nregsDataVO.getPerDays1516()))
+							nregsDataVO.setPerDays1617IsHigh("TRUE");
+						else
+							nregsDataVO.setPerDays1617IsHigh("FALSE");
+						if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("February") && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(nregsDataVO.getPerDays1718()) >= Double.valueOf(nregsDataVO.getPerDays1617()))
+								nregsDataVO.setPerDays1718IsHigh("TRUE");
+							else
+								nregsDataVO.setPerDays1718IsHigh("FALSE");
+						}
+						
+						//Wage
+						if(Double.valueOf(nregsDataVO.getWageExp1617()) >= Double.valueOf(nregsDataVO.getWageExp1516()))
+							nregsDataVO.setWageExp1617IsHigh("TRUE");
+						else
+							nregsDataVO.setWageExp1617IsHigh("FALSE");
+						if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("February") && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(nregsDataVO.getWageExp1718()) >= Double.valueOf(nregsDataVO.getWageExp1617()))
+								nregsDataVO.setWageExp1718IsHigh("TRUE");
+							else
+								nregsDataVO.setWageExp1718IsHigh("FALSE");
+						}
+						
+						//Material
+						if(Double.valueOf(nregsDataVO.getMatExp1617()) >= Double.valueOf(nregsDataVO.getMatExp1516()))
+							nregsDataVO.setMatExp1617IsHigh("TRUE");
+						else
+							nregsDataVO.setMatExp1617IsHigh("FALSE");
+						if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("February") && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(nregsDataVO.getMatExp1718()) >= Double.valueOf(nregsDataVO.getMatExp1617()))
+								nregsDataVO.setMatExp1718IsHigh("TRUE");
+							else
+								nregsDataVO.setMatExp1718IsHigh("FALSE");
+						}
+						
+						//Total
+						if(Double.valueOf(nregsDataVO.getTotal1617()) >= Double.valueOf(nregsDataVO.getTotal1516()))
+							nregsDataVO.setTotal1617IsHigh("TRUE");
+						else
+							nregsDataVO.setTotal1617IsHigh("FALSE");
+						if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("February") && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
+							if(Double.valueOf(nregsDataVO.getTotal1718()) >= Double.valueOf(nregsDataVO.getTotal1617()))
+								nregsDataVO.setTotal1718IsHigh("TRUE");
+							else
+								nregsDataVO.setTotal1718IsHigh("FALSE");
+						}
+					//}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at setColorsForExpenditure - NREGSTCSService service", e);
+		}
 	}
 
 	/*

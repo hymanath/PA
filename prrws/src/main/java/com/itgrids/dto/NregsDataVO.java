@@ -173,7 +173,178 @@ public class NregsDataVO implements Serializable{
 	private String thisFinYear; 
 	private String type;
 	
+	private String overAllPersonDaysIsHigh;
+	private String overAllPersonDaysIsLow;
+	private String overAllWageIsHigh;
+	private String overAllWageIsLow;
+	private String overAllMaterialIsHigh;
+	private String overAllMaterialIsLow;
+	private String overAllTotalIsHigh;
+	private String overAllTotalIsLow;
 	
+	private String perDays1617IsHigh;
+	private String wageExp1617IsHigh;
+	private String matExp1617IsHigh;
+	private String total1617IsHigh;
+	private String perDays1718IsHigh;
+	private String wageExp1718IsHigh;
+	private String matExp1718IsHigh;
+	private String total1718IsHigh;
+	
+	private String personDaysIsHigh;
+	private String personDaysIsLow;
+	private String wageIsHigh;
+	private String wageIsLow;
+	private String materialIsHigh;
+	private String materialIsLow;
+	private String totalIsHigh;
+	private String totalIsLow;
+	
+	
+	public String getPersonDaysIsHigh() {
+		return personDaysIsHigh;
+	}
+	public void setPersonDaysIsHigh(String personDaysIsHigh) {
+		this.personDaysIsHigh = personDaysIsHigh;
+	}
+	public String getPersonDaysIsLow() {
+		return personDaysIsLow;
+	}
+	public void setPersonDaysIsLow(String personDaysIsLow) {
+		this.personDaysIsLow = personDaysIsLow;
+	}
+	public String getWageIsHigh() {
+		return wageIsHigh;
+	}
+	public void setWageIsHigh(String wageIsHigh) {
+		this.wageIsHigh = wageIsHigh;
+	}
+	public String getWageIsLow() {
+		return wageIsLow;
+	}
+	public void setWageIsLow(String wageIsLow) {
+		this.wageIsLow = wageIsLow;
+	}
+	public String getMaterialIsHigh() {
+		return materialIsHigh;
+	}
+	public void setMaterialIsHigh(String materialIsHigh) {
+		this.materialIsHigh = materialIsHigh;
+	}
+	public String getMaterialIsLow() {
+		return materialIsLow;
+	}
+	public void setMaterialIsLow(String materialIsLow) {
+		this.materialIsLow = materialIsLow;
+	}
+	public String getTotalIsHigh() {
+		return totalIsHigh;
+	}
+	public void setTotalIsHigh(String totalIsHigh) {
+		this.totalIsHigh = totalIsHigh;
+	}
+	public String getTotalIsLow() {
+		return totalIsLow;
+	}
+	public void setTotalIsLow(String totalIsLow) {
+		this.totalIsLow = totalIsLow;
+	}
+	public String getOverAllPersonDaysIsHigh() {
+		return overAllPersonDaysIsHigh;
+	}
+	public void setOverAllPersonDaysIsHigh(String overAllPersonDaysIsHigh) {
+		this.overAllPersonDaysIsHigh = overAllPersonDaysIsHigh;
+	}
+	public String getOverAllPersonDaysIsLow() {
+		return overAllPersonDaysIsLow;
+	}
+	public void setOverAllPersonDaysIsLow(String overAllPersonDaysIsLow) {
+		this.overAllPersonDaysIsLow = overAllPersonDaysIsLow;
+	}
+	public String getOverAllWageIsHigh() {
+		return overAllWageIsHigh;
+	}
+	public void setOverAllWageIsHigh(String overAllWageIsHigh) {
+		this.overAllWageIsHigh = overAllWageIsHigh;
+	}
+	public String getOverAllWageIsLow() {
+		return overAllWageIsLow;
+	}
+	public void setOverAllWageIsLow(String overAllWageIsLow) {
+		this.overAllWageIsLow = overAllWageIsLow;
+	}
+	public String getOverAllMaterialIsHigh() {
+		return overAllMaterialIsHigh;
+	}
+	public void setOverAllMaterialIsHigh(String overAllMaterialIsHigh) {
+		this.overAllMaterialIsHigh = overAllMaterialIsHigh;
+	}
+	public String getOverAllMaterialIsLow() {
+		return overAllMaterialIsLow;
+	}
+	public void setOverAllMaterialIsLow(String overAllMaterialIsLow) {
+		this.overAllMaterialIsLow = overAllMaterialIsLow;
+	}
+	public String getOverAllTotalIsHigh() {
+		return overAllTotalIsHigh;
+	}
+	public void setOverAllTotalIsHigh(String overAllTotalIsHigh) {
+		this.overAllTotalIsHigh = overAllTotalIsHigh;
+	}
+	public String getOverAllTotalIsLow() {
+		return overAllTotalIsLow;
+	}
+	public void setOverAllTotalIsLow(String overAllTotalIsLow) {
+		this.overAllTotalIsLow = overAllTotalIsLow;
+	}
+	public String getPerDays1617IsHigh() {
+		return perDays1617IsHigh;
+	}
+	public void setPerDays1617IsHigh(String perDays1617IsHigh) {
+		this.perDays1617IsHigh = perDays1617IsHigh;
+	}
+	public String getWageExp1617IsHigh() {
+		return wageExp1617IsHigh;
+	}
+	public void setWageExp1617IsHigh(String wageExp1617IsHigh) {
+		this.wageExp1617IsHigh = wageExp1617IsHigh;
+	}
+	public String getMatExp1617IsHigh() {
+		return matExp1617IsHigh;
+	}
+	public void setMatExp1617IsHigh(String matExp1617IsHigh) {
+		this.matExp1617IsHigh = matExp1617IsHigh;
+	}
+	public String getTotal1617IsHigh() {
+		return total1617IsHigh;
+	}
+	public void setTotal1617IsHigh(String total1617IsHigh) {
+		this.total1617IsHigh = total1617IsHigh;
+	}
+	public String getPerDays1718IsHigh() {
+		return perDays1718IsHigh;
+	}
+	public void setPerDays1718IsHigh(String perDays1718IsHigh) {
+		this.perDays1718IsHigh = perDays1718IsHigh;
+	}
+	public String getWageExp1718IsHigh() {
+		return wageExp1718IsHigh;
+	}
+	public void setWageExp1718IsHigh(String wageExp1718IsHigh) {
+		this.wageExp1718IsHigh = wageExp1718IsHigh;
+	}
+	public String getMatExp1718IsHigh() {
+		return matExp1718IsHigh;
+	}
+	public void setMatExp1718IsHigh(String matExp1718IsHigh) {
+		this.matExp1718IsHigh = matExp1718IsHigh;
+	}
+	public String getTotal1718IsHigh() {
+		return total1718IsHigh;
+	}
+	public void setTotal1718IsHigh(String total1718IsHigh) {
+		this.total1718IsHigh = total1718IsHigh;
+	}
 	public String getType() {
 		return type;
 	}
