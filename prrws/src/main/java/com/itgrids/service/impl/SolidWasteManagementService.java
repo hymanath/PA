@@ -247,7 +247,8 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	                	   solidWasteManagementVO.setTrackingPer(solidWasteManagementVO.getTrackingPer()+rfidData.getTrackingPer());
 	                	   solidWasteManagementVO.setGpCnt(solidWasteManagementVO.getGpCnt()+rfidData.getGpCnt());
 	                	   solidWasteManagementVO.setBlockNo(solidWasteManagementVO.getBlockNo()+rfidData.getBlockNo());            	   
-	                          
+	                	   solidWasteManagementVO.setTarget(solidWasteManagementVO.getTarget()+rfidData.getTarget());   
+	                	   solidWasteManagementVO.setAchieve(solidWasteManagementVO.getAchieve()+rfidData.getAchieve());
 	                   } 
 	        }			
 	 	catch (JSONException e) {
@@ -364,8 +365,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		 
 		
 			try{
-				Long webserviceId = webServiceDataDAO.getLatestDataId();
-				
+			  Long webserviceId = webServiceDataDAO.getLatestDataId();				
 	    	   WebServiceData model = new WebServiceData();
 	    	   model.setWebserviceId(127L);
 	    	  // model.setInputData(inputVO.getInputData());
@@ -373,12 +373,10 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	    	   model.setIsDeleted("N");
 	    	  // model.setDataDate("05-12-2017");
 	    	   model.setInsertedTime(dateUtilService.getCurrentDateAndTime());   
-	    	  
 	    	   WebServiceData  rfidData =  webServiceDataDAO.save(model);
-	    	   
 	    	   WebServiceData data = webServiceDataDAO.get(webserviceId);
 	    	   data.setIsDeleted("Y");
-	    	   webServiceDataDAO.save(data);
+	    	    webServiceDataDAO.save(data);
 	    	   if(rfidData != null){
 	    		   webServiceDataVO.setStatus("success");
 	    	   }else{
@@ -387,8 +385,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			   }catch (Exception e) {
 				LOG.error("Exception occured at saveRfidTrackingOverAllTargets() in SolidWasteManagementService class",e);
 				webServiceDataVO.setStatus("failure");
-		    
-		 }
+		    }
 			return  webServiceDataVO;
 		    }
 		
@@ -406,8 +403,8 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		 	    }else{
 		 	    	   output = response.getEntity(String.class);
 		 	    	 if(output != null && !output.isEmpty()){
-		 	    		JSONArray finalArray = new JSONArray(output);
-		 	    		return finalArray.toString();
+		 	    		//JSONArray finalArray = new JSONArray(output);
+		 	    		//return finalArray.toString();
 		 	    	 }
 		 	    }
 			}catch (Exception e) {
@@ -499,15 +496,11 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 				        					if(jObj.has("averageTarget") && jObj.getLong("averageTarget") >0 ){
 				        					solidWasteManagementVO.setAverageTarget(jObj.getLong("averageTarget")+solidWasteManagementVO.getAverageTarget());
 				        					}
-				        					if(jObj.has("target") && jObj.getLong("target") >0 ){
-					        					solidWasteManagementVO.setTarget(jObj.getLong("target")+solidWasteManagementVO.getTarget());
-					        				}
 				        					if(jObj.has("achieve") && jObj.getLong("achieve") >0 ){
 					        					solidWasteManagementVO.setAchieve(jObj.getLong("achieve")+solidWasteManagementVO.getAchieve());
 					        				}
 				        					solidWasteManagementVO.setInTimePer(solidWasteManagementVO.getTarget()>0  ? round((solidWasteManagementVO.getInTime()*100.00)/solidWasteManagementVO.getTarget(),2):0.00);
 				        					solidWasteManagementVO.setOutTimePer(solidWasteManagementVO.getTarget()>0  ? round((solidWasteManagementVO.getOutTime()*100.00)/solidWasteManagementVO.getTarget(),2):0.00);
-				        					//solidWasteManagementVO.setTotalTime(solidWasteManagementVO.getInTime()+solidWasteManagementVO.getOutTime());
 				        					solidWasteManagementVO.setTrackingPer(solidWasteManagementVO.getTarget()>0  ? round(((solidWasteManagementVO.getAchieve()*100.00)/solidWasteManagementVO.getTarget()),2):0.00);
 				        					solidWasteManagementVO.setAvertrackingPer(solidWasteManagementVO.getAverageTarget()>0  ? round(((solidWasteManagementVO.getAverageTime()*100.00)/solidWasteManagementVO.getAverageTarget()),2):0.00);
 				        					if (jObj.has("gpID") && jObj.get("gpID").toString().length() > 0) {
