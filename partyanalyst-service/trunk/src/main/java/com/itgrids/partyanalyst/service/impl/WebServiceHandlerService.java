@@ -108,6 +108,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.JalavaniAlertsInputVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
@@ -5786,5 +5787,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		{
 			Log.error(e);
 		}
+	}
+	public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputvo){
+		AlertVO alertVo = new AlertVO();
+		try{
+			alertVo = alertManagementSystemService.getJalavaniDashBoardViewInfo(inputvo);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavaniDashBoardViewInfo  method in WebServiceHandlerService1",e);
+    	}
+    	return alertVo;
 	}
 }
