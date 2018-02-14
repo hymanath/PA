@@ -186,7 +186,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 				for(var i in result){
 					if(distId == result[i].id){
 					$("#onclickDistName").html(result[i].name+" OVERVIEW");
-					$("#swmModalContent #rfidTaggedHouses").html(result[i].rfidTags);
+					$("#swmModalContent #rfidTaggedHouses").html(result[i].totalRfidTags);
 					$("#swmModalContent  #registeredFarmers").html(result[i].farmers);
 					$("#swmModalContent  #mgnrgsId").html(result[i].mgnres);
 					$("#swmModalContent  #prId").html(result[i].pr);
@@ -198,8 +198,11 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 					$("#swmModalContent  #trycycleId").html(result[i].tricycle);
 					$("#swmModalContent  #evehicleId").html(result[i].evehicle);
 					var totRegvehicles = result[i].tractor+result[i].auto+result[i].tricycle+result[i].evehicle;
+					var achieveper=result[i].achieve;
+					var targetper=result[i].target;
+					var  achievetargetper=achieveper/targetper*100;
 					$("#swmModalContent  #totalRegVehicles").html(totRegvehicles);
-					$("#swmModalContent  #gpId").html("<span style='font-size:12px'>NO DATA</span>");
+					//$("#swmModalContent  #gpId").html("<span style='font-size:12px'>NO DATA</span>");
 					$("#swmModalContent  #blocksId").html(result[i].blocks);
 					$("#swmModalContent  #solidWasteId").html(result[i].houseCollecion);
 					$("#swmModalContent  #farmerCattleDung").html(result[i].farmerCollection);
@@ -212,7 +215,9 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 					$("#swmModalContent  #tenkgcount").html(result[i].tenkg);
 					$("#swmModalContent  #twentyfivekgCount").html(result[i].twentyFivekg);
 					$("#swmModalContent  #fiftykgCount").html(result[i].fiftykg);
-					$("#swmModalContent  #rfidTracking").html(result[i].rfidTracking);
+					$("#swmModalContent  #gpId").html(result[i].gpCnt);
+					$("#swmModalContent  #blocksId").html(result[i].blockNo);
+					$("#swmModalContent  #trackingId").html(achievetargetper.toFixed(2)+' %');
 					}
 				} 
 				
@@ -236,14 +241,21 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 				table+='<thead>';
 					table+='<tr>';
 					if(isState){
-							table+='<th class="font_sz">STATE</th>';
-							table+='<th class="font_sz">RFID TAGGED HOUSES</th>';
-							table+='<th class="font_sz" >TODAY RFID TRACKING</th>';
-							table+='<th class="font_sz">REGISTERED FARMERS</th>';
-							table+='<th class="font_sz" >SWM COLLECTION (TONS)</th>';
-							table+='<th class="font_sz" >NADAP - PITS (TONS)</th>';
-							table+='<th class="font_sz">VERMI - PITS (TONS)</th>';
-							table+='<th class="font_sz">VERMI - STOCK (TONS)</th>';
+							table+='<th class="font_sz" rowspan="2">STATE</th>';
+							table+='<th class="font_sz" rowspan="2">TOTAL RFID TAGGED HOUSES</th>';
+							table+='<th class="font_sz" colspan="4" style="text-align:center;">TODAY RFID ACHIEVED</th>';
+							table+='<th class="font_sz" rowspan="2">REGISTERED FARMERS</th>';
+							table+='<th class="font_sz" rowspan="2">SWM COLLECTION (TONS)</th>';
+							table+='<th class="font_sz" rowspan="2">NADAP - PITS (TONS)</th>';
+							table+='<th class="font_sz" rowspan="2">VERMI - PITS (TONS)</th>';
+							table+='<th class="font_sz" rowspan="2">VERMI - STOCK (TONS)</th>';
+					table+='</tr>';
+					table+='<tr>';
+							table+='<th class="font_sz">TODAY TARGET</th>';
+							table+='<th class="font_sz">ACHIEVED</th>';
+							table+='<th class="font_sz">ACHIEVED IN TIME</th>';
+							table+='<th class="font_sz">ACHIEVED OUT TIME</th>';
+							//table+='<th class="font_sz">OUT OF TARGET</th>';
 					table+='</tr>';
 					}else{
 						if(blockid == 'districtBodyId'){
@@ -253,8 +265,8 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 						}else if(blockid == 'mandalBodyId'){
 							table+='<th rowspan="2" class="font_sz">MANDALS</th>';
 						}
-							table+='<th class="font_sz" rowspan="2">RFID TAGGED HOUSES</th>';
-							table+='<th class="font_sz" colspan="4" style="text-align:center;">RFID TRACKING</th>';
+							table+='<th class="font_sz" rowspan="2">TOTAL RFID TAGGED HOUSES</th>';
+							table+='<th class="font_sz" colspan="4" style="text-align:center;">TODAY RFID ACHIEVED</th>';
 							table+='<th class="font_sz" rowspan="2">REGISTERED FARMERS</th>';
 							table+='<th class="font_sz" rowspan="2">SWM COLLECTION (TONS)</th>';
 							table+='<th class="font_sz" rowspan="2">NADAP - PITS (TONS)</th>';
@@ -262,10 +274,11 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							table+='<th class="font_sz" rowspan="2">VERMI - STOCK (TONS)</th>';
 					table+='</tr>';
 						table+='<tr>';
-							table+='<th class="font_sz">TODAY RFID TRACKING</th>';
-							table+='<th class="font_sz">IN TIME</th>';
-							table+='<th class="font_sz">OUT TIME</th>';
-							table+='<th class="font_sz">OUT OF TARGET</th>';
+							table+='<th class="font_sz">TODAY TARGET</th>';
+							table+='<th class="font_sz">ACHIEVED</th>';
+							table+='<th class="font_sz">ACHIEVED IN TIME</th>';
+							table+='<th class="font_sz">ACHIEVED OUT TIME</th>';
+						//	table+='<th class="font_sz">OUT OF TARGET</th>';
 					table+='</tr>';	
 					}
 					
@@ -274,46 +287,63 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 				if(isState){	
 						//var rfidTags = 0.0;
 						var farmers =  0.0;
-						var trackingPer=0.0;
+						var trackingPer= 0.0;
 						//var rfidTracking =  0.0;
 						var swmCollection =  0.0;
 						var nadap =  0.0;
 						var vermi =  0.0;
 						var vermiStock =  0.0;
-						var totalRfidTags=0;
+						var totalRfidTags = 0;
 						var inTime =0;
 						var outTime= 0;
 						var outOfTarget =0;
-					
-						for(var i in result)
+					    var achivements=0;
+						var target=0;
+						var inTimePer=0;
+						var outTimePer=0;
+						var   achieve=0;
+						var targetAchievePer=0.0;
+						var inTime =0;
+						var targetinTimePer=0.0;
+						for(var i in result)							
 						{
-							//rfidTags = parseFloat(rfidTags)+parseFloat(result[i].rfidTags);
+							totalRfidTags=parseFloat(totalRfidTags)+parseFloat(result[i].totalRfidTags);
+							target=parseFloat(target)+parseFloat(result[i].target);
+							achieve=parseFloat(achieve)+parseFloat(result[i].achieve);
+							inTimePer=parseFloat(inTimePer)+parseFloat(result[i].inTimePer);
+							outTimePer=parseFloat(outTimePer)+parseFloat(result[i].outTimePer);							
 							farmers = parseFloat(farmers)+parseFloat(result[i].farmers);
-							trackingPer = parseFloat(trackingPer)+parseFloat(result[i].trackingPer);
+							//trackingPer = parseFloat(trackingPer)+parseFloat(result[i].trackingPer);
 							swmCollection = parseFloat(swmCollection)+parseFloat(result[i].swmCollection);
 							nadap = parseFloat(nadap)+parseFloat(result[i].nadap);
 							vermi = parseFloat(vermi)+parseFloat(result[i].vermi);
 						    vermiStock = parseFloat(vermiStock)+parseFloat(result[i].vermiStock);
-							totalRfidTags=totalRfidTags+result[i].totalRfidTags
-							inTime =inTime+result[i].inTime;
-							outTime=outTime+result[i].outTime;
-							outOfTarget=outOfTarget+result[i].outOfTarget;
+							inTime = parseFloat(inTime)+parseFloat(result[i].inTime);						
+							//inTime =inTime+result[i].inTime;
+							//outTime=outTime+result[i].outTime;
+							//outOfTarget=outOfTarget+result[i].outOfTarget;
+							
 							isState=true;
-						}				
+						}
+						targetinTimePer=(inTime/target)*100;
+						targetAchievePer=(achieve/target)*100;	
 						table+='<tr>';
 							table+='<td class="text-capital">Andhra Pardesh</td>';
 							table+='<td>'+totalRfidTags+'</td>'; 
-							table+='<td style="background-color:#FFC0CB;">'+trackingPer+'%</td>';
+							table+='<td style="background-color:#D90022; color:#fff;">'+target+'</td>';
+							table+='<td style="background-color:#FFC0CB;">'+targetAchievePer.toFixed(2)+'%</td>';
+							table+='<td style="background-color:#92DD5A;">'+targetinTimePer.toFixed(2)+'%</td>';
+							table+='<td style="background-color:#1076F1; color:#fff;">'+outTimePer+'%</td>';
+							//table+='<td style="background-color:#FFA600;">'+result[i].outOfTarget+'</td>';
 							table+='<td>'+farmers+'</td>';
 							table+='<td>'+swmCollection.toFixed(2)+'</td>';
 							table+='<td>'+nadap.toFixed(2)+'</td>';
 							table+='<td>'+vermi.toFixed(2)+'</td>';
 							table+='<td>'+vermiStock.toFixed(2)+'</td>';
 						table+='</tr>';
-				}else{
-					
+				    }else{					
 					for(var i in result)
-					{					
+					{			
 						if(blockid == 'districtBodyId'){
 							table+='<tr attr_onclick_distname="'+blockid+'">';
 						}else if(blockid == 'constituencyBodyId'){
@@ -324,10 +354,11 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'" attr_onclick_distname="'+blockid+'" style="cursor: pointer" class="text-capital" data-toggle="modal" data-target="#swmModal">'+result[i].name+'<i class="fa fa-info-circle pull-right" aria-hidden="true" title="Click for '+result[i].name+' Details" attr_onclick_distname="'+blockid+'" attr_dist_id="'+result[i].id+'" style="cursor: pointer"></i></td>';
 							table+='<td attr_dist_rfid="'+result[i].totalRfidTags+'">'+result[i].totalRfidTags+'</td>'; 
 							//table+='<td>0</td>';
+							table+='<td style="background-color:#D90022; color:#fff;">'+result[i].target+'</td>';
 							table+='<td style="background-color:#FFC0CB;">'+result[i].trackingPer+'%</td>';
-							table+='<td style="background-color:#92DD5A;">'+result[i].inTime+'%</td>';
-							table+='<td style="background-color:#1076F1;">'+result[i].outTime+'%</td>';
-							table+='<td style="background-color:#FFA600;">'+result[i].outOfTarget+'</td>';
+							table+='<td style="background-color:#92DD5A;">'+result[i].inTimePer+'%</td>';
+							table+='<td style="background-color:#1076F1; color:#fff;">'+result[i].outTimePer+'%</td>';
+//							table+='<td style="background-color:#FFA600;">'+result[i].outOfTarget+'</td>';
 							/* table+='<td>0</td>';
 							table+='<td>0</td>';
 							table+='<td>0</td>';
@@ -345,10 +376,10 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 			table+='</table>';
 		table+='</div>';
 		$("#"+blockid).html(table);
-		$("#"+blockid+"dataTableId").dataTable({
+		$("#"+blockid+"dataTableId").dataTable({ 
 			"iDisplayLength": 15,
-			"aaSorting": [],
-			"order": [ 0, 'asc' ],
+			"aaSorting" : [[ 1, "desc"] ],
+			//"order": [ 0, 'asc' ],
 			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 			"<'row'<'col-sm-12'tr>>" +
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -419,7 +450,7 @@ $(document).on('click','[attr_onclick_distname]',function(){
 	$("#swmModalContent  #tenkgcount").html(spinner);
 	$("#swmModalContent  #twentyfivekgCount").html(spinner);
 	$("#swmModalContent  #fiftykgCount").html(spinner);
-	$("#swmModalContent  #rfidTracking").html(spinner);
+	$("#swmModalContent  #trackingId").html(spinner);
 }) 
 function getSolidWasteManagementOverAllCounts(locId,locationType){
 	$("#rfidTaggedHouses").html(spinner);
@@ -448,7 +479,8 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#tenkgcount").html(spinner);
 			$("#twentyfivekgCount").html(spinner);
 			$("#fiftykgCount").html(spinner);
-			$("#rfidTracking").html(spinner);
+			//$("#rfidTracking").html(spinner);
+			$("#trackingId").html(spinner);
 	var json = {
 		fromDate : startDate,
 		toDate : endDate,
@@ -481,6 +513,12 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#trycycleId").html(result.tricycle);
 			$("#evehicleId").html(result.evehicle);
 			var totRegvehicles = result.tractor+result.auto+result.tricycle+result.evehicle;
+			var achieve=0;
+			achieve=(result.achieve);
+			var target=0;
+			target=(result.target);
+			var achieverfid=0;
+			achieverfid= (achieve/target*100);
 			$("#totalRegVehicles").html(totRegvehicles);
 			$("#gpId").html(result.gpCnt);
 			$("#blocksId").html(result.blockNo);
@@ -495,7 +533,7 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#tenkgcount").html(result.tenkg);
 			$("#twentyfivekgCount").html(result.twentyFivekg);
 			$("#fiftykgCount").html(result.fiftykg);
-			$("#trackingId").html(result.trackingPer);
+			$("#trackingId").html(achieverfid.toFixed(2)+' %');
 			
 		}
 	});

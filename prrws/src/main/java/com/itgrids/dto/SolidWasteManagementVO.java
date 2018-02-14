@@ -37,7 +37,7 @@ public class SolidWasteManagementVO {
 	private Long averageInTime=0L;
 	private Long averageOutTime=0L;
 	private Long achieve=0L;
-	private Long target=0L;
+	private Long target = 0L;
 	private Long totalRfidTags=0L;
 	private Double trackingPer =0.00; 
 	private Long totalTime =0L;  

@@ -6,6 +6,5 @@ import com.itgrids.model.WebServiceData;
 
 public interface IWebServiceDataDAO extends GenericDao<WebServiceData, Long>{
 	public String getRfidTrackingOverAllTargetsData(Long webserviceId) ;
-
 	public Long getLatestDataId();
 }
