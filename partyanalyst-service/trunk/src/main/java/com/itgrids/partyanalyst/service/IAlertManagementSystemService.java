@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,6 +22,7 @@ import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.JalavaniAlertsInputVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationAlertVO;
@@ -260,5 +260,6 @@ public interface IAlertManagementSystemService {
 	 public List<AlertVO> getOverAllIvrDetails(String fromDateStr,String toDateStr,Long entityType,List<Long> questionsList,String type);
 	 public List<IdNameVO> getIvrSurveyDates(String fromDateStr,String toDateStr,Long entityType);
 	 public List<IdNameVO> getIvrSurveyQuestions(String fromDateStr,String toDateStr,Long entityType);
+	 public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputVo);
 	 
 }        

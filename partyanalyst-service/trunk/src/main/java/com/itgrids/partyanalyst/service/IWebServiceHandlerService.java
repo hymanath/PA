@@ -44,12 +44,11 @@ import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
-import com.itgrids.partyanalyst.dto.GrivenceStatusVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
-import com.itgrids.partyanalyst.dto.InsuranceStatusCountsVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.JalavaniAlertsInputVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
@@ -305,4 +304,5 @@ public interface IWebServiceHandlerService {
     public List<ActivityDetailsVO> getDocumentDtlsByLocation(Long activityScopeId, Long activityLocationInfoId);
     public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValue);
     public AffiliatedMemberVO saveAffiliatedMemberDetails(JSONObject jobj);
+    public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputvo);
 }
