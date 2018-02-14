@@ -76,9 +76,9 @@ public interface IConstants {
     public static final Long[] AP_PARLIAMENT_IDS_LIST = {504L,509L,466L,508L,464L,463L,500L,479L,494L,473L,483L,507L,493L,474L,467L,497L,495L,506L,478L,501L,482L,491L,476L,465L,472L};
     public static final List<Long> PETITION_IN_PROGRESS_IDS =Arrays.asList(3l,6l,7l,10l,11l,12l,13l,14l,15l);
     public static final Long[] PR_RD_EOFFICE_DEPT_IDS = {1448L,1466L,1424L,729L,2798L};
-    public static final List<Long> PETITION_COMPLETED_IDS = Arrays.asList(4l,5l,8l,9l);
+    public static final List<Long> PETITION_COMPLETED_IDS = Arrays.asList(4l,5l,8l,9L);
     public static final Long DEFAULT_PETITION_ASSIGNED_USER_ID = 21L;// Nara Lokesh
-    public static final List<Long> DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS=Arrays.asList(2L,86L,92L);//2 Minister, 86 - OSD, 23 - principal secretory ,92 data entry operator
+    public static final List<Long> PETITIONS_DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS=Arrays.asList(2L,86L,92L);//2 Minister, 86 - OSD, 23 - principal secretory ,92 data entry operator
     public static final List<Long> PETITIONS_STATE_LEVEL_DESIGNATION_IDS=Arrays.asList(2L,86L,23L,94L,95L,93L,96L,97L,84L);//,87L);// 87 - HODs
     public static final List<Long> PETITIONS_DISTRICT_LEVEL_DESIGNATION_IDS=Arrays.asList(19L,80L,79L,90L,88L,9L);
     public static final List<Long> FINAL_APPROVED_ACCESS_DESIGNAION_IDS=Arrays.asList(23L);
