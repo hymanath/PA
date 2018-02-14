@@ -4013,8 +4013,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficer.getPmPetitionAssignedOfficerId());
 						updatePetitionTracking(pmTrackingVO,updatedTime);
 						
-						//pmTrackingVO.setPmSubWorkDetailsId(null);
-						//updatePetitionTracking(pmTrackingVO,updatedTime);
+						pmTrackingVO.setPmSubWorkDetailsId(null);
+						updatePetitionTracking(pmTrackingVO,updatedTime);
 					}
 				}
 				status.setExceptionMsg("SUCCESS");
