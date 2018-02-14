@@ -217,7 +217,11 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 					 
 				 }else if(alert.getAlertCategoryId() == 3l){
 					 customJson.put("TV News Channel", alert.getTvNewsChannel().getChannelName());
+					 String timing = getBulletinPointTiming(alert.getAlertCategoryTypeId());
+					 if(timing !=null && !timing.trim().isEmpty())
+						 customJson.put("Timing",timing);
 				 }
+				 
 				 customJson.put("Category Type Id", alert.getAlertCategoryTypeId());
 				 
 			 }else if(alert.getAlertCategoryId() == 1l){
@@ -259,6 +263,33 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 			LOG.error("Exception Occured in sendApiDetailsOfAlertToZoho() in AlertCreationAPIService", e);
 		}
 	 }
+	
+	public String getBulletinPointTiming(Long bulletinId){
+		try {
+			
+			 WebResource webResource = commonMethodsUtilService.getWebResourceObject(IConstants.COMMUNITY_NEWS_PORTAL_PATH+"webservice/getBulletinPointTime/"+bulletinId);
+
+				WebResource.Builder builder = webResource.getRequestBuilder();
+			
+				ClientResponse response = builder.get(ClientResponse.class);
+				
+				if (response.getStatus() != 200) {
+					throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+				} else {
+					String output = response.getEntity(String.class);
+					if (output != null && !output.isEmpty()) {
+						JSONObject returnJson = new JSONObject(output);
+						if(returnJson !=null && returnJson.has("Timing")){
+							return returnJson.getString("Timing");
+						}
+					}
+				}
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getBulletinPointTiming() in AlertCreationAPIService", e);
+		}
+		return null;
+	}
 	
 	public void setZohoAlertInvolvedCandidateDetails(Long alertId,JSONObject customJson){
 		try {
