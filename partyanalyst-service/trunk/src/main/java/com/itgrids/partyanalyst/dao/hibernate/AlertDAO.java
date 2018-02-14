@@ -11157,4 +11157,27 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 		}
 		 	return  query.list();
 	 	}
+	 	public Long getCountOfAlertsForAlertWiseCategory(Date fromDate,Date toDate,Long typeId){
+	 		StringBuilder str = new StringBuilder();
+			str.append("SELECT count(distinct model.alertId) from Alert model " +
+					" WHERE model.isDeleted ='N'  " +
+							" and model.govtDepartmentId =:govtDeptId ");
+				if(typeId !=null && typeId.longValue()>0){
+		 			str.append("  and model.alertCategoryId =:typeId ");
+		 		}
+		 		if(fromDate !=null && toDate !=null){
+		 			str.append(" and date(model.createdTime) between :fromDate and :toDate  ");
+		 		}
+		 		str.append(" GROUP BY model.alertCategoryId ");
+		 	Query query = getSession().createQuery(str.toString());
+		 	query.setParameter("govtDeptId",49l);
+			 	if(typeId !=null && typeId.longValue()>0){
+		 			query.setParameter("typeId",typeId);
+		 		}
+		 		if(fromDate !=null && toDate !=null){
+		 			query.setParameter("fromDate",fromDate);
+		 			query.setParameter("toDate",toDate);
+		 		}
+		 	return  (Long) query.uniqueResult();
+	 	}
 }
