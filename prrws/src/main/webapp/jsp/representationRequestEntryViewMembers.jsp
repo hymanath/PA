@@ -104,7 +104,7 @@
 <%@ page import="com.itgrids.dto.UserVO" %>
 <% 
 	UserVO userVo=(UserVO)session.getAttribute("User");
-	out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;&nbsp; "+userVo.getUserName()+"</h4>"); 
+	out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;&nbsp; "+userVo.getUserName()+"-"+userVo.getDesignation()+"</h4>"); 
 %>
 </header>
 <main>
@@ -350,8 +350,9 @@
 				</div>
 				<div class="row m_top20" id="uploadFileDivCls" style="display:none;">
 				  <div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
-					<h5 class="panel-title"> UPLOAD <span id="letterNameId"></span><span id="fileUploadIdErr"></span></h5>
+					<h5 class="panel-title"> UPLOAD <span id="letterNameId"></span></h5>
 					<span id="uploadFile"></span>
+					<span id="fileUploadIdErr" style="color:red;"></span>
 				  </div>
 				</div>
 				<div class="row m_top10" >

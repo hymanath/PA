@@ -1931,7 +1931,8 @@ function getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr){
 	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
 	
  var json = {
-	 deptIdsList : selectedDeptIdsArr
+	 deptIdsList : selectedDeptIdsArr,
+	 statusId : $('option:selected', '#statusChangeId').attr('attr_next_status_id')
 	}           
 $.ajax({              
 	type:'POST',    
@@ -1981,7 +1982,8 @@ function getDeptDesignationOfficerDetail(onChangeValue){
  var json = {
 		//deptDesignationId : deptDesignationId,
 		pmDeptDesignationOfficerId : deptDesignationId,
-		deptIdsList : departmentSelectArr
+		deptIdsList : departmentSelectArr,
+		statusId : $('option:selected', '#statusChangeId').attr('attr_next_status_id')
 	}           
 $.ajax({              
 	type:'POST',    
@@ -2425,9 +2427,9 @@ function petitionWiseRepresenteeDetails(result){
 								 alreadyGiven=true;
 								str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
 							}
-							if(!alreadyGiven && (userId == 25 || userId == 26 || userId == 27 || userId == 28)){
-								str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
-							}
+							//if(!alreadyGiven && (userId == 25 || userId == 26 || userId == 27 || userId == 28)){
+							//	str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
+							//}
 							
 						//24 - userId - admin_user
 						//if(userId == 24){

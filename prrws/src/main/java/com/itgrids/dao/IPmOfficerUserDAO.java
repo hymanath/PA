@@ -12,4 +12,5 @@ public interface IPmOfficerUserDAO extends GenericDao<PmOfficerUser, Long> {
 	public List<Object[]> getPmDeptIdByUserId(Long userId);
 	public List<Long> getPmDeptStatusIdByUserIdsLst(Long userId,String isDashboard);
 	public List<Long> getPmDeptDesignationIdByUserId(Long userId);
+	public List<Object[]> getPmOffceDetailsByUserIdsList(List<Long> userIdsList);
 }

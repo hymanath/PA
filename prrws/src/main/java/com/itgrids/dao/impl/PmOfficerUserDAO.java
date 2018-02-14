@@ -94,4 +94,21 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getPmOffceDetailsByUserIdsList(List<Long> userIdsList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.pmDepartmentDesignation.pmDepartment.pmDepartmentId,");// 0-deptId
+		sb.append(" model.pmDepartmentDesignation.pmDepartment.department,");//1-deptName
+		sb.append( "model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId,");//2-designtionId
+		sb.append("model.pmDepartmentDesignation.pmOfficerDesignation.designation, ");//3-designtionName
+		sb.append("model.pmOfficer.pmOfficerId,model.pmOfficer.name, model.pmOfficer.mobileNo, ");//4-officerId,5-name,6-mobileNo
+		sb.append(" model2.pmDepartmentDesignationOfficerId , model.pmDepartmentDesignationId," +//7-deptdesiofficerId,8- deptdesigId
+				" model2.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId ");//9-pmOfficerDesignationId
+		sb.append(",model.userId "); // 10-userId
+		sb.append("   from PmOfficerUser model,PmDepartmentDesignationOfficer model2 where model.isActive ='Y' and model.userId in (:userIdsList) and " +
+				" model.pmOfficerId = model2.pmOfficerId and model.pmOfficer.isActive='Y' and model2.isActive='Y' group by model.userId ");
+		Query query = getSession().createQuery(sb.toString());//
+		query.setParameterList("userIdsList", userIdsList);
+		return query.list();
+	}
 }
