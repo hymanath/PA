@@ -712,7 +712,7 @@ function buildMotherPlantsOverviewDetails(result,type){
 							if(result[i].health != null && result[i].health == 'OK')
 								str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 							else
-								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;'+result[i].health+' </p></td>';
 							if(result[i].waterQuality != null && result[i].waterQuality == 'OK')
 								str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 							else
@@ -763,7 +763,7 @@ function buildMotherPlantsOverviewDetails(result,type){
 								if(result[i].health != null && result[i].health == 'OK')
 									str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 								else
-									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;'+result[i].health+' </p></td>';
 								if(result[i].waterQuality != null && result[i].waterQuality == 'OK')
 									str+='<td class="good_color"><p><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 								else
@@ -829,7 +829,7 @@ function buildMotherPlantAndRDUDetails(result){
 								if(result.health != null && result.health == "OK")
 									str+='<h5 class="good_color m_top15 text-center">Good</h5>';
 								else
-									str+='<h5 class="bad_color m_top15 text-center">Bad</h5>';
+									str+='<h5 class="bad_color m_top15 text-center">'+result.health+'</h5>';
 							str+='</div>';
 						str+='</div>';
 						str+='<div class="col-sm-8 m_top10">';
@@ -1035,7 +1035,7 @@ function buildMotherPlantAndRDUDetails(result){
 						if(result.subList[i].health != null && result.subList[i].health == 'OK')
 							str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 						else
-							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+							str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;'+result.subList[i].health+' </p></td>';
 						str+='<td>'+result.subList[i].waterTankCapacity+'</td>';
 						str+='<td>'+result.subList[i].mpSafeWaterDispenced+'</td>';
 						str+='<td>'+result.subList[i].totalCustomers+'</td>';
@@ -1334,6 +1334,7 @@ function buildRDUsOverviewDetails(result,type){
 					str+='<th>Health</th>';
 					str+='<th>Location</th>';
 					str+='<th>Water&nbsp;Tank&nbsp;Capacity</th>';
+					str+='<th>Water&nbsp;Dispence</th>';
 					str+='<th>Total Customers</th>';
 					str+='<th>Old Customers</th>';
 					str+='<th>New Customers</th>';
@@ -1349,9 +1350,10 @@ function buildRDUsOverviewDetails(result,type){
 							if(result[i].health != null && result[i].health == 'OK')
 								str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 							else
-								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;'+result[i].health+' </p></td>';
 							str+='<td>'+result[i].location+'</td>';
 							str+='<td>'+result[i].waterTankCapacity+'</td>';
+							str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
 							str+='<td>'+result[i].totalCustomers+'</td>';
 							str+='<td>'+result[i].oldCustomers+'</td>';
 							str+='<td>'+result[i].newCustomers+'</td>';
@@ -1364,12 +1366,14 @@ function buildRDUsOverviewDetails(result,type){
 							str+='<tr>';
 								str+='<td>'+result[i].mpName+'</td>';
 								str+='<td>'+result[i].name+'</td>';
-								if(result[i].health != null && result[i].health == 'OK')
+								str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;'+result[i].health+'</p></td>';
+								/*if(result[i].health != null && result[i].health == 'OK')
 									str+='<td class="good_color"><p ><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Good </p></td>';
 								else
-									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+									str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';*/
 								str+='<td>'+result[i].location+'</td>';
 								str+='<td>'+result[i].waterTankCapacity+'</td>';
+								str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
 								str+='<td>'+result[i].totalCustomers+'</td>';
 								str+='<td>'+result[i].oldCustomers+'</td>';
 								str+='<td>'+result[i].newCustomers+'</td>';
@@ -1383,9 +1387,10 @@ function buildRDUsOverviewDetails(result,type){
 							str+='<tr>';
 								str+='<td>'+result[i].mpName+'</td>';
 								str+='<td>'+result[i].name+'</td>';
-								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Bad </p></td>';
+								str+='<td class="bad_color"><p ><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;'+result[i].health+' </p></td>';
 								str+='<td>'+result[i].location+'</td>';
 								str+='<td>'+result[i].waterTankCapacity+'</td>';
+								str+='<td>'+result[i].mpSafeWaterDispenced+'</td>';
 								str+='<td>'+result[i].totalCustomers+'</td>';
 								str+='<td>'+result[i].oldCustomers+'</td>';
 								str+='<td>'+result[i].newCustomers+'</td>';
