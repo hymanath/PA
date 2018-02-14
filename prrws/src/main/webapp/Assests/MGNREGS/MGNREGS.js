@@ -9015,6 +9015,8 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 			var perDays1617 = 0.0;var wageExp1617 = 0.0;var matExp1617 = 0.0;var total1617 = 0.0;
 			var perDays1718 = 0.0;var wageExp1718 = 0.0;var matExp1718 = 0.0;var total1718 = 0.0;
 			
+			var perDays1617Perc = 0.0;var wageExp1617Perc = 0.0;var matExp1617Perc = 0.0;var total1617Perc = 0.0;
+			
 			str+='<div class="table-responsive m_top10">';
 				str+='<table class="table table-bordered dataTable'+divIdd+'" style="width:100%">';
 					str+='<thead class="text-capitalize">';
@@ -9509,32 +9511,36 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 						}
 					}
 					str+='<tr>';
-						str+='<td style="background-color:#3F8EC8;color:#FFFFFF">Total</td>';
-						str+='<td>'+perDays1516.toFixed(2)+'</td>';
-						str+='<td>'+wageExp1516.toFixed(2)+'</td>';
-						str+='<td>'+matExp1516.toFixed(2)+'</td>';
-						str+='<td>'+total1516.toFixed(2)+'</td>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF;font-size:16px;"><b>Total</b></td>';
+						str+='<td style="font-size:16px;"><b>'+perDays1516.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+wageExp1516.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+matExp1516.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+total1516.toFixed(2)+'</b></td>';
 						if(parseFloat(perDays1617) >= parseFloat(perDays1516))
-							str+='<td style="background-color:#FDFF00;">'+perDays1617.toFixed(2)+'</td>';
+							str+='<td style="background-color:#FDFF00;font-size:16px;"><b>'+perDays1617.toFixed(2)+'</b></td>';
 						else
-							str+='<td style="background-color:#FD0200;">'+perDays1617.toFixed(2)+'</td>';
+							str+='<td style="background-color:#FD0200;font-size:16px;"><b>'+perDays1617.toFixed(2)+'</b></td>';
 						
 						if(parseFloat(wageExp1617) >= parseFloat(wageExp1516))
-							str+='<td style="background-color:#FDFF00;">'+wageExp1617.toFixed(2)+'</td>';
+							str+='<td style="background-color:#FDFF00;font-size:16px;"><b>'+wageExp1617.toFixed(2)+'</b></td>';
 						else
-							str+='<td style="background-color:#FD0200;">'+wageExp1617.toFixed(2)+'</td>';
+							str+='<td style="background-color:#FD0200;font-size:16px;"><b>'+wageExp1617.toFixed(2)+'</b></td>';
 						
 						if(parseFloat(matExp1617) >= parseFloat(matExp1516))
-							str+='<td style="background-color:#FDFF00;">'+matExp1617.toFixed(2)+'</td>';
+							str+='<td style="background-color:#FDFF00;font-size:16px;"><b>'+matExp1617.toFixed(2)+'</b></td>';
 						else
-							str+='<td style="background-color:#FD0200;">'+matExp1617.toFixed(2)+'</td>';
+							str+='<td style="background-color:#FD0200;font-size:16px;"><b>'+matExp1617.toFixed(2)+'</b></td>';
 						
 						if(parseFloat(total1617) >= parseFloat(total1516))
-							str+='<td style="background-color:#FDFF00;">'+total1617.toFixed(2)+'</td>';
+							str+='<td style="background-color:#FDFF00;font-size:16px;"><b>'+total1617.toFixed(2)+'</b></td>';
 						else
-							str+='<td style="background-color:#FD0200;">'+total1617.toFixed(2)+'</td>';
+							str+='<td style="background-color:#FD0200;font-size:16px;"><b>'+total1617.toFixed(2)+'</b></td>';
 						
-						if(parseFloat(perDays1718) >= parseFloat(perDays1617))
+						str+='<td style="font-size:16px;"><b>'+perDays1718.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+wageExp1718.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+matExp1718.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+total1718.toFixed(2)+'</b></td>';
+						/*if(parseFloat(perDays1718) >= parseFloat(perDays1617))
 							str+='<td style="background-color:#FDFF00;">'+perDays1718.toFixed(2)+'</td>';
 						else
 							str+='<td style="background-color:#FD0200;">'+perDays1718.toFixed(2)+'</td>';
@@ -9549,7 +9555,28 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 						if(parseFloat(total1718) >= parseFloat(total1617))
 							str+='<td style="background-color:#FDFF00;">'+total1718.toFixed(2)+'</td>';
 						else
-							str+='<td style="background-color:#FD0200;">'+total1718.toFixed(2)+'</td>';
+							str+='<td style="background-color:#FD0200;">'+total1718.toFixed(2)+'</td>';*/
+					str+='</tr>';
+					
+					perDays1617Perc = ((parseFloat(perDays1617)/parseFloat(perDays1516))*100.00)-100.00;
+					wageExp1617Perc = ((parseFloat(wageExp1617)/parseFloat(wageExp1516))*100.00)-100.00;
+					matExp1617Perc = ((parseFloat(matExp1617)/parseFloat(matExp1516))*100.00)-100.00;
+					total1617Perc = ((parseFloat(total1617)/parseFloat(total1516))*100.00)-100.00;
+					
+					str+='<tr>';
+						str+='<td style="background-color:#3F8EC8;color:#FFFFFF;font-size:16px;"><b>Growth</b></td>';
+						str+='<td></td>';
+						str+='<td></td>';
+						str+='<td></td>';
+						str+='<td></td>';
+						str+='<td style="font-size:16px;"><b>'+perDays1617Perc.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+wageExp1617Perc.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+matExp1617Perc.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+total1617Perc.toFixed(2)+'</b></td>';
+						str+='<td></td>';
+						str+='<td></td>';
+						str+='<td></td>';
+						str+='<td></td>';
 					str+='</tr>';
 					str+='</tbody>';
 					
