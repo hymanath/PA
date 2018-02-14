@@ -11067,4 +11067,94 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		query.setParameter("alertTicketId", alertTicketId);
 	 		return query.list();
 	 	}
+	 	public List<Object[]> getTotalAlertCounts(Date fromDate,Date toDate,Long typeId){//top view counts
+	 		StringBuilder str = new StringBuilder();
+			str.append("select model.alertCategory.alertCategoryId," +
+						" model.alertCategory.category," +
+						" count(model.alertId) " +
+		 				" from Alert model" +
+		 				" where model.isDeleted='N' " +
+		 				" and model.govtDepartmentId =:govtDeptId " );
+				if(typeId !=null && typeId.longValue()>0){
+		 			str.append("  and model.alertCategoryId =:typeId ");
+		 		}else{
+		 			str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
+		 		}
+		 		if(fromDate !=null && toDate !=null){
+		 			str.append(" and  date(model.createdTime) between :fromDate and :toDate ");
+		 		}
+		 		str.append(" group by model.alertCategoryId ");
+		 	Query query = getSession().createQuery(str.toString());
+		 		query.setParameter("govtDeptId",49l);
+		 		if(typeId !=null && typeId.longValue()>0){
+		 			query.setParameter("typeId",typeId);
+		 		}else{
+		 			query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+		 		}
+		 		if(fromDate !=null && toDate !=null){
+		 			query.setParameter("fromDate",fromDate);
+		 			query.setParameter("toDate",toDate);
+		 		}
+		 	return  query.list();
+	 	}
+	 	public List<Object[]> getAlertsMonthWiseOverview(Date fromDate,Date toDate,Long typeId){
+	 		StringBuilder str = new StringBuilder();
+			str.append("select month(model.createdTime),count(distinct model.alertId) " +
+					" from Alert model " +
+					" where model.isDeleted='N' " +
+					" and model.govtDepartmentId =:govtDeptId ");
+			
+				if(typeId !=null && typeId.longValue()>0){
+		 			str.append("  and model.alertCategoryId =:typeId ");
+		 		}else{
+		 			str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
+		 		}
+		 		if(fromDate !=null && toDate !=null){
+		 			str.append(" and date(model.createdTime) between :fromDate and :toDate ");
+		 		}
+		 		str.append(" group by month(model.createdTime) ");
+		 	Query query = getSession().createQuery(str.toString());
+		 		query.setParameter("govtDeptId",49l);
+		 		if(typeId !=null && typeId.longValue()>0){
+		 			query.setParameter("typeId",typeId);
+		 		}else{
+		 			query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+		 		}
+		 		if(fromDate !=null && toDate !=null){
+		 			query.setParameter("fromDate",fromDate);
+		 			query.setParameter("toDate",toDate);
+		 		}
+		 	return  query.list();
+	 	}
+	 	public List<Object[]> getAlertsStatusOverView(Date fromDate,Date toDate,Long typeId){
+	 		//statusId-0,status-1,statusColor-2,count-3
+	 		StringBuilder str = new StringBuilder();
+			str.append("SELECT model.alertStatus.alertStatusId,model.alertStatus.alertStatus," +
+					" model.alertStatus.color,count(distinct model.alertId) from Alert model " +
+					" WHERE model.isDeleted ='N'  " +
+					" and model.alertTypeId  in ("+IConstants.GOVT_ALERT_TYPE_ID+") " +
+							" and model.alertStatus.alertStatusId !=1 " +
+							" and model.govtDepartmentId =:govtDeptId ");
+				if(typeId !=null && typeId.longValue()>0){
+		 			str.append("  and model.alertCategoryId =:typeId ");
+		 		}else{
+		 			str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
+		 		}
+		 		if(fromDate !=null && toDate !=null){
+		 			str.append(" and date(model.createdTime) between :fromDate and :toDate  ");
+		 		}
+		 		str.append(" GROUP BY model.alertStatus.alertStatusId order by model.alertStatus.alertStatusId ");
+		 	Query query = getSession().createQuery(str.toString());
+		 	query.setParameter("govtDeptId",49l);
+			 	if(typeId !=null && typeId.longValue()>0){
+		 			query.setParameter("typeId",typeId);
+		 		}else{
+		 			query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+		 		}
+		 		if(fromDate !=null && toDate !=null){
+		 			query.setParameter("fromDate",fromDate);
+		 			query.setParameter("toDate",toDate);
+		 		}
+		 	return  query.list();
+	 	}
 }
