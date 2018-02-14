@@ -110,8 +110,16 @@ public class AlertVO {
 	
 	private Long notifiedCount=0l;
 	private Long actionInProgressCount=0l;
-    
+	private List<AlertVO> list = new ArrayList<AlertVO>(0);
+	private Long count1 = 0l;
 	
+	
+	public List<AlertVO> getList() {
+		return list;
+	}
+	public void setList(List<AlertVO> list) {
+		this.list = list;
+	}
 	public Long getNotifiedCount() {
 		return notifiedCount;
 	}
