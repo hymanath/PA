@@ -73,6 +73,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.JalavaniAlertsInputVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.ManualAttendanceVO;
@@ -161,8 +162,16 @@ public class WebServiceHandler {
 	
 	private AmsAppLoginVO  amsAppLoginVO ;
 	private DistrictOfficeViewAlertVO districtOfficeViewAlertVO;
+	private List<AlertVO> alertVoList;
 	
-	
+	public List<AlertVO> getAlertVoList() {
+		return alertVoList;
+	}
+
+	public void setAlertVoList(List<AlertVO> alertVoList) {
+		this.alertVoList = alertVoList;
+	}
+
 	public DistrictOfficeViewAlertVO getDistrictOfficeViewAlertVO() {
 		return districtOfficeViewAlertVO;
 	}
@@ -3713,4 +3722,12 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
+	@POST
+    @Path("/getJalavaniDashBoardViewInfo")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputVo){
+		
+		return  webServiceHandlerService.getJalavaniDashBoardViewInfo(inputVo);
+    }
 }
