@@ -112,7 +112,8 @@ public class InputVO implements Serializable {
 	private String pType;
 	private List<Long>designationIds;
 	private Long lightVendorId;
-	private Long componentId;
+	private Long componentId;	
+	private Long   WebserviceId;
 	
 	public Long getPageId() {
 		return pageId;
@@ -725,6 +726,11 @@ public class InputVO implements Serializable {
 	public void setComponentId(Long componentId) {
 		this.componentId = componentId;
 	}
-	
+	public Long getWebserviceId() {
+		return WebserviceId;
+	}
+	public void setWebserviceId(Long webserviceId) {
+		WebserviceId = webserviceId;
+	}
 	
 }
