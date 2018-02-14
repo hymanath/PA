@@ -2160,6 +2160,7 @@ public EventDetailsVO getMatchedVOByIdForCounts(Long id,List<EventDetailsVO> lis
 public List<AffiliatedVo> getAffilliatedMemberCount(String fromDateStr,String toDateStr, Long activityId, Long activityMemberId,String type) {
 	List<AffiliatedVo> finalList = new ArrayList<AffiliatedVo>();
 	try{
+		activityLocationParticipantInfoDAO.callProcedureofactivitySp();
 		Long locationAccessLevelId = 0l;
 		Set<Long> locationValues = new HashSet<Long>(0);
 		if(type !=null && type.length() > 0 && type.equalsIgnoreCase("main")){
@@ -2178,6 +2179,7 @@ public List<AffiliatedVo> getAffilliatedMemberCount(String fromDateStr,String to
 		}else{
 			locationAccessLevelId=activityMemberId;
 		}
+		
 			List<Object[]> activityParticipatentCount =activityLocationParticipantInfoDAO.getCoveredPeopleOfActivity(activityId,locationAccessLevelId,locationValues);
 			
 			// 0-totalMem1-totalcovered2-todaycovered,3-totreg,4-todayreg,5-totLoan,6todayLoanApp,7-locationname,8-locationID

@@ -11,4 +11,6 @@ public interface IActivityLocationParticipantInfoDAO extends GenericDao<Activity
 	
 	public List<Object[]> getCoveredPeopleOfActivity(Long activityId,Long locationScope, Set<Long> locationValues);
 
+	public void callProcedureofactivitySp();
+
 }
