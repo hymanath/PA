@@ -2388,11 +2388,11 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			;//$('#refCandidatesErr').html('Please add Self member details.');		
 	}
 	else if(refCandCount == undefined || refCandCount == "undefined" || refCandCount == null || parseInt(refCandCount) == 0 ){
-		flag = false;
+		//flag = false;
 		if(typeVal =='represent' || typeVal =='representee')
-			$('#refCandidatesErr').html('Please add atleast one referral details.');
+			;//$('#refCandidatesErr').html('Please add atleast one referral details.');
 		else 
-			$('#refCandidatesErr').html('Please add Self member details.');
+			;//$('#refCandidatesErr').html('Please add Self member details.');
 		
 	}
 	
