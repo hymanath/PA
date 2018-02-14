@@ -261,5 +261,6 @@ public interface IAlertManagementSystemService {
 	 public List<IdNameVO> getIvrSurveyDates(String fromDateStr,String toDateStr,Long entityType);
 	 public List<IdNameVO> getIvrSurveyQuestions(String fromDateStr,String toDateStr,Long entityType);
 	 public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputVo);
-	 
+	 public AlertVO getJalavaniDashBoardPrintMediaDetailsInfo(JalavaniAlertsInputVO inputvo);
+	 public AlertVO getJalavaniDashBoardElectronicMediaDetailsInfo(JalavaniAlertsInputVO inputvo);
 }        
