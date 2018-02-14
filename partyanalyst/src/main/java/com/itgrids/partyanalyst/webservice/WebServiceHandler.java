@@ -3730,4 +3730,21 @@ public class WebServiceHandler {
 		
 		return  webServiceHandlerService.getJalavaniDashBoardViewInfo(inputVo);
     }
+	@POST
+    @Path("/getJalavaniDashBoardPrintMediaDetailsInfo")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getJalavaniDashBoardPrintMediaDetailsInfo(JalavaniAlertsInputVO inputVo){
+		
+		return  webServiceHandlerService.getJalavaniDashBoardPrintMediaDetailsInfo(inputVo);
+    }
+	@POST
+    @Path("/getJalavaniDashBoardElectronicMediaDetails")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getJalavaniDashBoardElectronicMediaDetailsInfo(JalavaniAlertsInputVO inputVo){
+		
+		return  webServiceHandlerService.getJalavaniDashBoardElectronicMediaDetailsInfo(inputVo);
+    }
+	
 }
