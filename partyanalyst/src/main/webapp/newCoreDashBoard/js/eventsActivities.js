@@ -1939,19 +1939,23 @@ function buildActivityaffiliatedCounts(result,divId,activityName,activityId){
 						
 					str+='</td>';
 					str+='<td>';
-						str+='<p class="text-muted text-capital">total Registered</p>';
+						str+='<p class="text-muted text-capital">Total Active Dalitha Youth Registered</p>';
 						str+='<h5 style="margin-top:25px !important;">'+result[i].totalRegistration+'</h5>';
 					str+='</td>';
 					str+='<td>';
-						str+='<p class="text-muted text-capital">total Loan Applied</p>';
+						str+='<p class="text-muted text-capital">total Sc Loan Applied</p>';
 						str+='<h5 style="margin-top:25px !important;">'+result[i].totalLoanApplied+'</h5>';
 					str+='</td>';
 				str+='</tr>';
 				str+='<tr>';
 					str+='<td>';
 						str+='<p class="text-muted text-capital">today Covered Sc Population</p>';
-						str+='<h5 style="margin-top:25px !important;">'+result[i].todayCovered+'&nbsp;&nbsp;';
-						 if(result[i].totalCovered !=null && result[i].totalCovered >0){
+						if(result[i].todayCovered !=null && result[i].todayCovered >0){
+							str+='<h5 style="margin-top:35px !important;">'+result[i].todayCovered+'&nbsp;&nbsp;';
+						}else{
+							str+='<h5 style="margin-top:35px !important;">'+result[i].todayRegistration+'&nbsp;&nbsp;';
+						}
+						if(result[i].totalCovered !=null && result[i].totalCovered >0){
 						str+='<small class="text-danger responsiveFont">'+parseFloat((result[i].todayCovered/result[i].totalCovered)*100).toFixed(2)+'%</small>';
 						}else{
 							str+='';
@@ -1959,11 +1963,11 @@ function buildActivityaffiliatedCounts(result,divId,activityName,activityId){
 						
 					str+='</td>';
 					str+='<td>';
-						str+='<p class="text-muted text-capital">today Registered</p>';
+						str+='<p class="text-muted text-capital">today Active Dalitha Youth Registered</p>';
 						str+='<h5 style="margin-top:25px !important;">'+result[i].todayRegistration+'</h5>';
 					str+='</td>';
 					str+='<td>';
-						str+='<p class="text-muted text-capital">today Loan Applied</p>';
+						str+='<p class="text-muted text-capital">today Sc Loan Applied</p>';
 						str+='<h5 style="margin-top:25px !important;">'+result[i].todayLoanApplied+'</h5>';
 					str+='</td>';
 				str+='</tr>';
@@ -2649,8 +2653,8 @@ function buildActivityEventdata(result,locationId,divId){
 					tableView+='<th rowspan ="2">Total SC Population</th>';
 					tableView+='<th rowspan ="2">Covered SC Population</th>';
 					tableView+='<th rowspan ="2">%</th>';
-					tableView+='<th rowspan ="2">Total Registered count</th>';
-					tableView+='<th rowspan="2">Total Loan Applied Count</th>';
+					tableView+='<th rowspan ="2">Active Dalitha Youth Registered count</th>';
+					tableView+='<th rowspan="2">SC Loan Applied Count</th>';
 					tableView+='<th colspan="2">Info Cell Conducted</th>';
 					//tableView+='<th rowspan="2">Conducted%</th>';
 					for(var i in result[0].questionList){
