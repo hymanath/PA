@@ -60,4 +60,10 @@ public class ActivityLocationParticipantInfoDAO extends GenericDaoHibernate<Acti
 		return query.list();
 		
 	}
+
+	@Override
+	public void callProcedureofactivitySp() {
+		Query query = getSession().createSQLQuery("call activity_sp()");
+		query.executeUpdate();
+	}
 }
