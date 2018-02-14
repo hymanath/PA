@@ -11,4 +11,5 @@ public interface IPmPetitionAssignedOfficerDAO extends GenericDao<PmPetitionAssi
 	public List<Long> getAssingedOfficerStatusIdsList(List<Long> deptDesignationIdsList);
 	public List<Object[]> getActionTypeDetailsForDeptDesiOfficerId(List<Long> deptDesignationOfficerIdsList,Long petitionId);
 	public List<Object[]> getPetitionAssignedPrinciplSecretoryDetails(Long petitionId);
+	public List<Object[]> getOfficerDetailsForOfficerIdsList(List<Long> assignedToOfficerIdsList);
 }

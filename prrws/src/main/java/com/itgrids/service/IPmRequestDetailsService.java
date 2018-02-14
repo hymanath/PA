@@ -22,7 +22,7 @@ public interface IPmRequestDetailsService {
 	public ResponseVO saveRepresentRequestDetails(PmRequestVO pmRequestVO);
 	public List<RepresentationRequestVO> getPetitionReferredMemberDetails(RepresentationRequestVO dataVo);
 	public PmRequestEditVO setPmRepresenteeDataToResultView(Long petitionId,String pageType,Long userId);
-	public List<RepresenteeViewVO> getStatusList(List<Long> statusId);
+	public List<RepresenteeViewVO> getStatusList(Long userId, List<Long> statusId);
 	public UserVO getPmOffceUserDetails(Long userId, UserVO userVO);
 	
 	public CadreRegistrationVO getRegistrationPersonDetails(Map<String,String> inputMap);
@@ -32,8 +32,8 @@ public interface IPmRequestDetailsService {
 	public ResultStatus updatePetitionsStatusDetails(Long userId,String petitionIdsArr, String remark, Long statusId);
 	public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate);
 	public ResultStatus updatePetitionsStatusDetails(Long userId,List<Long> petitionIdsList, List<Long> subWorkIdsList,String remark,Long statusId);
-	public List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(List<Long> deptIdsList , Long userId);
-	public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId ,List<Long> deptIdsList, Long userId);
+	public List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(List<Long> deptIdsList ,Long statusId, Long userId);
+	public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId ,List<Long> deptIdsList,Long statusId, Long userId);
 	public ResultStatus generateCoveringLetterForPetition(InputVO inputVO);
 	public ResultStatus endorsingSubWorksAndAssigningToOfficer(RepresenteeViewVO inputVO);
 	public RepresenteeViewVO getReferralWiseOverviewDetails(InputVO inputVO);

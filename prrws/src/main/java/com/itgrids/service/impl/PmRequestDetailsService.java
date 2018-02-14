@@ -1512,7 +1512,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						return o2.getPetitionId().compareTo(o1.getPetitionId());
 					}
 				});
-				finalList.get(0).getStatusList().addAll(getStatusList(null));
+				finalList.get(0).getStatusList().addAll(getStatusList(inputVO.getLocationId(),null));
 				setStatusSummeryDetails(searchData,finalList.get(0).getStatusList());
 			}
 		}catch (Exception e) {
@@ -1614,19 +1614,39 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	
 	@SuppressWarnings("static-access")
-	public List<RepresenteeViewVO> getStatusList(List<Long> statId){
+	public List<RepresenteeViewVO> getStatusList(Long userId,List<Long> statId){
 		List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
 		try {
-			
-			//List<PmStatus> list = pmStatusDAO.getAll();
-			 List<Object[]> statusList = pmStatusDAO.getPmStatusList( statId);
+			boolean isAccessDashboard=false;
+			 List<Object[]> statusList =null;
+			List<Long> pmDeptDesignationOfficerIdsList = new ArrayList<>();
+			if(userId != null && userId.longValue()>0L){
+				List<Object[]> list = pmOfficerUserDAO.getPmOffceUserDetails(userId);
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					for (Object[] param : list) {
+						if(!pmDeptDesignationOfficerIdsList.contains(commonMethodsUtilService.getLongValueForObject(param[9])))
+							pmDeptDesignationOfficerIdsList.add(commonMethodsUtilService.getLongValueForObject(param[9]));
+						if(!isAccessDashboard){
+							if(IConstants.PETITIONS_DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS.contains(commonMethodsUtilService.getLongValueForObject(param[9]))){
+								isAccessDashboard=true;
+							}
+						}
+						if(isAccessDashboard)
+							break;
+					}
+				}	
+			}
+			if(!isAccessDashboard){
+				statusList = pmDeptDesignationPrePostStatusDetailsDAO.getMyPreStatusDetail(pmDeptDesignationOfficerIdsList);
+			}else{
+				statusList = pmStatusDAO.getPmStatusList(statId); 
+			}
 			 Map<Long,KeyValueVO> statusMap = new LinkedHashMap<Long,KeyValueVO>();
 			 if(commonMethodsUtilService.isListOrSetValid(statusList)){
 				for (Object[] param : statusList) {
 					statusMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1])));
 				} 
 			 }
-			 
 			if(commonMethodsUtilService.isMapValid(statusMap)){
 				for (Long statusId : statusMap.keySet()) {
 					KeyValueVO vo1 = statusMap.get(statusId);
@@ -2209,7 +2229,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 										}
 									}
 								}
-								postStatusIdsList = pmDeptDesignationPrePostStatusDetailsDAO.getItSelfandPoststatusDetail(statusIdsList,userVO.getDesignationId());
+								if(commonMethodsUtilService.isListOrSetValid(statusIdsList))
+									postStatusIdsList = pmDeptDesignationPrePostStatusDetailsDAO.getItSelfandPoststatusDetail(statusIdsList,userVO.getDesignationId());
 							}
 						}
 						for (Long statusId : statusMap.keySet()) {
@@ -2644,7 +2665,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					if(commonMethodsUtilService.isListOrSetValid(list)){
 						for (Object[] param : list) {
 							if(!isAccessDashboard){
-								if(IConstants.DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS.contains(commonMethodsUtilService.getLongValueForObject(param[9]))){
+								if(IConstants.PETITIONS_DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS.contains(commonMethodsUtilService.getLongValueForObject(param[9]))){
 									isAccessDashboard=true;
 								}
 							}
@@ -3528,16 +3549,31 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 		}
 		
-		public List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(List<Long> deptIdsList , Long userId){
+		public List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(List<Long> deptIdsList ,Long statusId, Long userId){
 			 List<KeyValueVO>  returnList = new ArrayList<KeyValueVO>();
 			try {
 				List<Long> deptDesignationIdsList = pmOfficerUserDAO.getPmDeptDesignationIdByUserId(userId);
 				if(commonMethodsUtilService.isListOrSetValid(deptDesignationIdsList)){
 					List<Object[]> childDeptDesignationsList = pmDepartmentDesignationHierarchyDAO.getSubDesignationDetailsForParentDeptDesignations(deptDesignationIdsList,deptIdsList,"FORWARD");
 					if(commonMethodsUtilService.isListOrSetValid(childDeptDesignationsList)){
+						List<Long> desingationIdsList = new ArrayList<>();
+						List<Long> statusIdsList = new ArrayList<>();
+						statusIdsList.add(statusId);
+						
 						for (Object[] param : childDeptDesignationsList) {
-							//returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1])+" - "+commonMethodsUtilService.getStringValueForObject(param[2])));
-							returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]))));
+							desingationIdsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						}
+						List<Long> statusAssignedDesignationIdsList = null;
+						if(commonMethodsUtilService.isListOrSetValid(desingationIdsList)){
+							statusAssignedDesignationIdsList = pmDeptDesignationPrePostStatusDetailsDAO.getAssignedDesignationsForStatusIdsList(statusIdsList);
+						}
+						for (Object[] param : childDeptDesignationsList) {
+							if(commonMethodsUtilService.isListOrSetValid(statusAssignedDesignationIdsList)){
+								if(statusAssignedDesignationIdsList.contains(commonMethodsUtilService.getLongValueForObject(param[0])))
+									returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]))));
+							}else{
+								returnList.add(new KeyValueVO(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]))));
+							}
 						}
 					}
 				}
@@ -3549,7 +3585,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return returnList;
 		}
 		
-		public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId ,List<Long> deptIdsList, Long userId){
+		public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId ,List<Long> deptIdsList,Long statusId, Long userId){
 			 List<KeyValueVO>  returnList = new ArrayList<KeyValueVO>();
 			try {
 				List<Long> deptDesignationIdsList = new ArrayList<>();//pmOfficerUserDAO.getPmDeptDesignationIdByUserId(userId);
@@ -3561,16 +3597,19 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						for (Object[] param : deptDesignationOfficerDetails) {
 							Long pmDepartmentDesignationOfficerId = commonMethodsUtilService.getLongValueForObject(param[0]);
 							String officerName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
-							String mobileNo = commonMethodsUtilService.getStringValueForObject(param[2]);
-							String dept =  "";//commonMethodsUtilService.getStringValueForObject(param[3]);
-							String designation = commonMethodsUtilService.getStringValueForObject(param[4]);
+							//String mobileNo = commonMethodsUtilService.getStringValueForObject(param[2]);
+							//String dept =  "";//commonMethodsUtilService.getStringValueForObject(param[3]);
+							//String designation = commonMethodsUtilService.getStringValueForObject(param[4]);
 							
-							String finalName = dept+"   "+officerName+"-"+mobileNo+" ("+designation+") ";
+							/*
+							 * String finalName = dept+"   "+officerName+"-"+mobileNo+" ("+designation+") ";
 							if(mobileNo.isEmpty())
 								finalName = dept+"   "+officerName+" ("+designation+")";
 							if(officerName.equalsIgnoreCase(designation))
 								finalName = officerName+"   ("+designation+")";
-							returnList.add(new KeyValueVO(pmDepartmentDesignationOfficerId,finalName));
+							*
+							*/
+							returnList.add(new KeyValueVO(pmDepartmentDesignationOfficerId,officerName));
 						}
 					}
 				}
@@ -3891,7 +3930,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}else if(inputVO.getStatusId().longValue() ==6L){
 								if(petition.getPmStatusId() != null && petition.getPmStatusId().longValue() !=2L){
 									petition.setPmStatusId(2L); // in progress
-									
+									//petition.setPmStatusId(inputVO.getStatusId());
 									PetitionTrackingVO pititionTrackingVO = new PetitionTrackingVO();
 									pititionTrackingVO.setPmActionTypeId(inputVO.getActionTypeId());
 									pititionTrackingVO.setActionType(inputVO.getActionType());
@@ -4180,83 +4219,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		 * @Date 27-01-2018
 		 */
 		public List<PetitionHistoryVO> getPetitionTrackingHistoryDetails(PetitionTrackingVO dataVO){
-			 List<PetitionHistoryVO> petitionHistoryVOLst  = new ArrayList<PetitionHistoryVO>() ;
-			 Map<String,Map<String,PetitionHistoryVO>> dateHistoryMap = new HashMap<String,Map<String,PetitionHistoryVO>>();
-			 Map<String,PetitionHistoryVO> subInnerMap = null;
-			  
-			 try {
-			 List<Object[]> historyDtlsList = null;
-			 if(!commonMethodsUtilService.isListOrSetValid(dataVO.getSubworkIdsList()))
-			 historyDtlsList = pmTrackingDAO.getPetitionTrackingHistoryDetails(dataVO.getPetitionId(),null);
-			 else if(commonMethodsUtilService.isListOrSetValid(dataVO.getSubworkIdsList()))
-			 historyDtlsList =pmTrackingDAO.getPetitionTrackingHistoryDetails(null,dataVO.getSubworkIdsList());
-			 if(commonMethodsUtilService.isListOrSetValid(historyDtlsList)){
-			 for (Object[] param : historyDtlsList) {
-				 
-				 String historyDateTime = commonMethodsUtilService.getStringValueForObject(param[22]);
-				 
-				 String date = historyDateTime.substring(0,10).toString();
-				 String time = historyDateTime.substring(11, 17).toString();
-				 
-				  subInnerMap = dateHistoryMap.get(date);
-				 if(subInnerMap == null)         
-						 subInnerMap = new HashMap<String,PetitionHistoryVO>();
-						 
-						 dateHistoryMap.put(date, subInnerMap);
-						 PetitionHistoryVO timeInnerVO = subInnerMap.get(time);
-						 if(timeInnerVO == null){
-							 timeInnerVO = new PetitionHistoryVO();
-							 timeInnerVO.setTimeStr(time);
-							 timeInnerVO.setPmTrackingId(commonMethodsUtilService.getLongValueForObject(param[0]));
-							 timeInnerVO.setPetitionId(commonMethodsUtilService.getLongValueForObject(param[1]));
-							 timeInnerVO.setPmSubWorkDetailsId(commonMethodsUtilService.getLongValueForObject(param[2]));
-							 timeInnerVO.setTrackingActionId(commonMethodsUtilService.getLongValueForObject(param[3]));
-							 timeInnerVO.setActionName(commonMethodsUtilService.getStringValueForObject(param[4]));
-							 timeInnerVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[5]));
-							 timeInnerVO.setStautus(commonMethodsUtilService.getStringValueForObject(param[6]));
-							 timeInnerVO.setRemarks(commonMethodsUtilService.getStringValueForObject(param[7]));
-							 timeInnerVO.setDocumentId(commonMethodsUtilService.getLongValueForObject(param[8]));
-							 timeInnerVO.setPath(commonMethodsUtilService.getStringValueForObject(param[9]));
-							 timeInnerVO.setPmDeptDesgOfficerId(commonMethodsUtilService.getLongValueForObject(param[10]));
-							 timeInnerVO.setPmDeptDesgId(commonMethodsUtilService.getLongValueForObject(param[11]));
-							 timeInnerVO.setPmDepartmentId(commonMethodsUtilService.getLongValueForObject(param[12]));
-							 timeInnerVO.setPmDepartment(commonMethodsUtilService.getStringValueForObject(param[13]));
-							 timeInnerVO.setPmOfficerId(commonMethodsUtilService.getLongValueForObject(param[14]));
-							 timeInnerVO.setPmOfficerName(commonMethodsUtilService.getStringValueForObject(param[15]));
-							 timeInnerVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[16]));
-							 subInnerMap.put(timeInnerVO.getTimeStr(), timeInnerVO);
-						 }
-				         
-			    }
-			 }
-			 
-			 //while iterating
-			 if(dateHistoryMap != null && dateHistoryMap.size() >0){
-				 
-				 for(Map.Entry<String, Map<String,PetitionHistoryVO>> entrySet : dateHistoryMap.entrySet()){
-					 PetitionHistoryVO vo = new PetitionHistoryVO();
-					 vo.setDatestr(entrySet.getKey());
-					 Map<String,PetitionHistoryVO> subMap = entrySet.getValue();
-					 if(subMap != null && subMap.size() >0){
-						 List<PetitionHistoryVO> timeList = new ArrayList<PetitionHistoryVO>();
-						 for(Map.Entry<String, PetitionHistoryVO> subEntrySet : subMap.entrySet()){
-							if(subEntrySet != null){
-								PetitionHistoryVO PetitionHistoryVO = subEntrySet.getValue();
-								   timeList.add(PetitionHistoryVO);
-							}
-						 }
-						 vo.setSubList1(timeList);
-						 
-					 }
-					 petitionHistoryVOLst.add(vo);
-			     }
-			   }
-			 
-			 }catch (Exception e) {
-			 LOG.error("Exception raised into PmRequestDetailsService of getPetitionTrackingDetails() ",e);
-			 }
-			    return petitionHistoryVOLst;
-			 }
+			return null;
+		}
 		
 		public List<RepresenteeViewVO> getBriefLeads(Long userId,List<Long> deptIds){
 			List<RepresenteeViewVO> returnList = new ArrayList<RepresenteeViewVO>();
@@ -4304,6 +4268,38 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 historyList =pmTrackingDAO.getPetitionAndWorkWiseHistoryDetails(null,dataVO.getSubworkIdsList());
 					
 					if(commonMethodsUtilService.isListOrSetValid(historyList)){
+						List<Long> userIdsList = new ArrayList<>();
+						List<Long> assignedToOfficerIdsList = new ArrayList<>();
+						Map<Long,String> userOfficerNameMap = new HashMap<>();
+						Map<Long,String> assignedToOfficerNameMap = new HashMap<>();
+						for (Object[] param : historyList) {
+							if(!userIdsList.contains(commonMethodsUtilService.getLongValueForObject(param[7])))
+								userIdsList.add(commonMethodsUtilService.getLongValueForObject(param[7]));
+							
+							if(!assignedToOfficerIdsList.contains(commonMethodsUtilService.getLongValueForObject(param[21])))
+								assignedToOfficerIdsList.add(commonMethodsUtilService.getLongValueForObject(param[21]));
+						}
+						
+						if(commonMethodsUtilService.isListOrSetValid(userIdsList)){
+							//pmOfficerUserDAO.getOfficerDetailsByUserIdsList(userIdsList);
+							
+							List<Object[]> list = pmOfficerUserDAO.getPmOffceDetailsByUserIdsList(userIdsList);
+							if(commonMethodsUtilService.isListOrSetValid(list)){
+								for (Object[] userObj : list) {
+										//String officerName = commonMethodsUtilService.getStringValueForObject(userObj[3])+" "+commonMethodsUtilService.getStringValueForObject(userObj[5]);
+										userOfficerNameMap.put(commonMethodsUtilService.getLongValueForObject(userObj[10]), commonMethodsUtilService.getStringValueForObject(userObj[5]));
+								}
+							}
+						}
+						
+						if(commonMethodsUtilService.isListOrSetValid(assignedToOfficerIdsList)){
+							List<Object[]> list = pmPetitionAssignedOfficerDAO.getOfficerDetailsForOfficerIdsList(assignedToOfficerIdsList);
+							if(commonMethodsUtilService.isListOrSetValid(list)){
+								for (Object[] param : list) {
+									assignedToOfficerNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1])+" "+ commonMethodsUtilService.getStringValueForObject(param[2]));
+								}
+							}
+						}
 						for (Object[] param : historyList) {
 							Long petitinId =commonMethodsUtilService.getLongValueForObject(param[0]);
 							Long workId=commonMethodsUtilService.getLongValueForObject(param[1]);
@@ -4323,10 +4319,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								String stautus=commonMethodsUtilService.getStringValueForObject(param[10]);
 										actionName =stautus;
 								Long officerId = commonMethodsUtilService.getLongValueForObject(param[11]);
-								String officerName=commonMethodsUtilService.getStringValueForObject(param[12]);
+								//String officerName=commonMethodsUtilService.getStringValueForObject(param[12]);
+								String officerName = "";//userOfficerNameMap.get(insertedUserId);
 								String mobileNo=commonMethodsUtilService.getStringValueForObject(param[13]);
 								Long pmOfficerdesgId = commonMethodsUtilService.getLongValueForObject(param[14]);
-								String designation=commonMethodsUtilService.getStringValueForObject(param[15]);
+								String designation=userOfficerNameMap.get(insertedUserId);//commonMethodsUtilService.getStringValueForObject(param[15]);
 								String deptName = commonMethodsUtilService.getStringValueForObject(param[16]);
 								String deptShortName = commonMethodsUtilService.getStringValueForObject(param[17]);
 								String subWorkDesc = commonMethodsUtilService.getStringValueForObject(param[18]);
@@ -4344,7 +4341,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								String dateStr = dateTimeStr.substring(0, 11).trim(); //2018-01-28 17:15:46 --> 2018-01-28
 								String timeStr = dateTimeStr.substring(11, 16).trim(); //2018-01-28 17:15:46 --> 17:15
 								if(assignedToDeptDesiOfficeId != null && assignedToDeptDesiOfficeId.longValue()>0L && assignedToDesignation.isEmpty()){
-									PmPetitionAssignedOfficer pmPetitionAssignedOfficer = pmPetitionAssignedOfficerDAO.get(assignedToDeptDesiOfficeId);
+									PmPetitionAssignedOfficer pmPetitionAssignedOfficer = null;//pmPetitionAssignedOfficerDAO.get(assignedToDeptDesiOfficeId);
 									if(pmPetitionAssignedOfficer != null){
 										if(pmPetitionAssignedOfficer.getPmDepartmentDesignation() != null){
 											if(pmPetitionAssignedOfficer.getPmDepartmentDesignation().getPmOfficerDesignation() != null){
@@ -4370,6 +4367,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								if(deptShortName != null && !deptShortName.isEmpty())
 									deptName = deptShortName ;
 								
+								assignedToDesignation = assignedToOfficerNameMap.get(assignedToDeptDesiOfficeId);
 								//List<PetitionHistoryVO> historyWorkList = new LinkedList<PetitionHistoryVO>();
 								Map<String,Map<String,List<PetitionHistoryVO>>> dateStrMap = new LinkedHashMap<String,Map<String,List<PetitionHistoryVO>>>();
 								Map<String,List<PetitionHistoryVO>> timeMap = new LinkedHashMap<String,List<PetitionHistoryVO>>();
@@ -4395,7 +4393,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								historyVO.setInsertedUserId(insertedUserId);
 								historyVO.setUserName(userName);
 								historyVO.setStatusId(statusId);
-								historyVO.setStautus(stautus);
+								
+								//if(IConstants.PETITION_IN_PROGRESS_IDS.contains(statusId))
+								//	historyVO.setStautus("Inprogress");
+								//else
+									historyVO.setStautus(stautus);
+								
 								historyVO.setOfficerId(officerId);
 								historyVO.setOfficerName(officerName);
 								historyVO.setPmOfficerDesgId(pmOfficerdesgId);
@@ -4465,6 +4468,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				
 					List<PetitionHistoryVO> petitionHistoryVOList = new ArrayList<PetitionHistoryVO>(0);
 					List<Object[]> actionsList = pmTrackingActionDAO.getActionsList();
+					List<Object[]> statusList = pmStatusDAO.getPmStatusList(null);
+					Map<Long,String> statsMap = new HashMap<>();
+					if(commonMethodsUtilService.isListOrSetValid(statusList)){
+						for (Object[] param : statusList) {
+							statsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+						}
+					}
+					
 					if(commonMethodsUtilService.isMapValid(newHistoryMap)){
 						for (Long workId : newHistoryMap.keySet()) {
 							PetitionHistoryVO workVO = new PetitionHistoryVO();
@@ -4510,7 +4521,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 													}else if(!timeVO.getPmDepartmentName().contains(hVO.getPmDepartmentName())){
 														timeVO.setPmDepartmentName(","+hVO.getPmDepartmentName());
 													}*/
-													List<Object[]> ofcrDeptIds =pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptAndOffId(hVO.getPmOfficerDesgId(),hVO.getOfficerId());
+													List<Object[]> ofcrDeptIds =null;//pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptAndOffId(hVO.getPmOfficerDesgId(),hVO.getOfficerId());
 													if(commonMethodsUtilService.isListOrSetValid(ofcrDeptIds)){
 														for (Object[] objects : ofcrDeptIds) {
 															if(timeVO.getPmDepartmentName() == "" || timeVO.getPmDepartmentName().isEmpty()){
@@ -4540,7 +4551,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 														for (PetitionHistoryVO actionVO : timeVO.getSubList1()) {
 															if(actionVO != null && actionVO.getActionId().longValue()==hVO.getActionId()){
 																actionVO.setRemarks(hVO.getRemarks());
-																
+																//actionVO.setActionName(statsMap.get(hVO.getStatusId()));
 																if(actionVO.getActionId().longValue() == 2L){
 																	actionVO.setStatusId(hVO.getStatusId());
 																	actionVO.setStautus(hVO.getStautus());
@@ -4590,7 +4601,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																		if(fileVO == null){
 																			workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),"http://www.mydepartments.in/PRRWS/"+hVO.getPath().trim()));
 																		}
-																	}else if(hVO.getStatusId() == 3L && (hVO.getRemarks().contains("UPLOADED DETAILED DOCUMENT(S)") || hVO.getRemarks().contains("Uploaded detailed report document"))){
+																	}else if(hVO.getStatusId() == 3L || (hVO.getRemarks().contains("UPLOADED DETAILED DOCUMENT(S)") || hVO.getRemarks().contains("Uploaded detailed report document"))){
 																		PetitionHistoryVO workDocVO = new PetitionHistoryVO();
 																		PetitionHistoryVO workDocVO1 =  getMatchedActionVO(5L,actionVO.getSubList1());
 																		if(workDocVO1 != null){
@@ -4743,7 +4754,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								if(!pmDeptDesignationOfficerIdsList.contains(commonMethodsUtilService.getLongValueForObject(param[7])))
 									pmDeptDesignationOfficerIdsList.add(commonMethodsUtilService.getLongValueForObject(param[7]));
 								if(!isAccessDashboard){
-									if(IConstants.DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS.contains(commonMethodsUtilService.getLongValueForObject(param[9]))){
+									if(IConstants.PETITIONS_DASHBOARD_ACCESS_OFFICER_DESIGNATION_IDS.contains(commonMethodsUtilService.getLongValueForObject(param[9]))){
 										isAccessDashboard=true;
 									}
 								}

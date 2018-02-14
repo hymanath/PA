@@ -1011,6 +1011,8 @@ public class CommonMethodsUtilService {
 		 */
 			
 		public String toConvertStringToTitleCase(String inputStr) {
+			if(inputStr == null)
+				return "";
 				StringBuilder camelCase = new StringBuilder();
 		         boolean nextCamelCase = true;
 				  String inputLowerStr=inputStr.toLowerCase();
