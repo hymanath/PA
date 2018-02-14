@@ -3520,7 +3520,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				pmTracking.setPmActionTypeId(pmTrackingVO.getPmActionTypeId());
 				pmTracking.setActionType(pmTrackingVO.getActionType());
 				//pmTracking.setPmDepartmentDesignationOfficerId(pmTrackingVO.getPmDeptDesignationOfficerId());
-				pmTracking.setDocumentId(pmTrackingVO.getDocumentId());
+				if(pmTrackingVO.getDocumentId() != null && pmTrackingVO.getDocumentId().longValue()>0L){
+					pmTracking.setDocumentId(pmTrackingVO.getDocumentId());
+					pmTracking.setPmTrackingActionId(4L);// file upload
+				}
 				pmTracking.setInsertedUserId(pmTrackingVO.getUserId());
 				pmTracking.setUpdateUserId(pmTrackingVO.getUserId());
 				pmTracking.setPmDocumentTypeId(pmTrackingVO.getPmDocumentTypeId());
@@ -3921,7 +3924,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									if(document != null){
 										pititionTrackingVO.setDocumentId(document.getDocumentId());
 										//pititionTrackingVO.setPmTrackingActionId(4L);//Upload file
-										pititionTrackingVO.setPmDocumentTypeId(4l);
+										if(inputVO.getDocumentTypeId() != null && inputVO.getDocumentTypeId().longValue()>0L)
+											pititionTrackingVO.setPmDocumentTypeId(inputVO.getDocumentTypeId());
+										else
+											pititionTrackingVO.setPmDocumentTypeId(4l);
 									}
 									if(pmPetitionAssignedOfficer != null)
 										pititionTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficer.getPmPetitionAssignedOfficerId());
@@ -3992,9 +3998,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmTrackingVO.setPetitionId(petitonId);
 						if(statusId == 6L)
 							pmTrackingVO.setRemarks("Uploaded covering letter");
-						else if(statusId == 7L || statusId == 10L || statusId == 11L || statusId == 12L)// for joint secretories
+						else if(statusId == 7L || statusId == 10L || statusId == 11L || statusId == 12L|| statusId == 13L)// for joint secretories
 							pmTrackingVO.setRemarks("uploaded action memo document");
-						else if(statusId == 3L)
+						else if(statusId == 14L)
 							pmTrackingVO.setRemarks("Uploaded detailed report document");
 						pmTrackingVO.setActionType(inputVO.getActionType());
 						if(pmTrackingVO.getRemarks() != null && !pmTrackingVO.getRemarks().isEmpty())
@@ -4007,9 +4013,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficer.getPmPetitionAssignedOfficerId());
 						updatePetitionTracking(pmTrackingVO,updatedTime);
 						
-						pmTrackingVO.setPmSubWorkDetailsId(null);
-						updatePetitionTracking(pmTrackingVO,updatedTime);
-						
+						//pmTrackingVO.setPmSubWorkDetailsId(null);
+						//updatePetitionTracking(pmTrackingVO,updatedTime);
 					}
 				}
 				status.setExceptionMsg("SUCCESS");
