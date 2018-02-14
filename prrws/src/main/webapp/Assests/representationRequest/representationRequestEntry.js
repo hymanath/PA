@@ -2317,9 +2317,9 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			$('#saveButtonId').show();
 			flag = false;
 		}else if(parseInt(repMobileNo.trim().length) <10 || parseInt(repMobileNo.trim().length) >10 || parseInt(repMobileNo.trim().length) !=10){
-			$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid mobile no.</h5>");
+			//$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid mobile no.</h5>");
 			$('#saveButtonId').show();
-			flag = false;
+			//flag = false;
 		}else{
 			$('#mobileNumberErr'+typeVal+'').html("");
 		}
@@ -2342,14 +2342,14 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			$("#districtErr"+typeVal+'').html("");
 		}
 		if(repCostituencyId == 0 || repCostituencyId == null || repCostituencyId == ''){
-			$("#constituencyErr"+typeVal+'').html("<h5 style='color:red;'>Please select  constituency.</h5>");
+			//$("#constituencyErr"+typeVal+'').html("<h5 style='color:red;'>Please select  constituency.</h5>");
 			$('#saveButtonId').show();
 			//flag = false;
 		}else{
 			$("#constituencyErr"+typeVal+'').html("");
 		}
 		if(repTehsilId == 0 || repTehsilId == null || repTehsilId == ''){
-			$("#mandalErr"+typeVal+'').html("<h5 style='color:red;'>Please select  mandal/munci.</h5>");
+			//$("#mandalErr"+typeVal+'').html("<h5 style='color:red;'>Please select  mandal/munci.</h5>");
 			$('#saveButtonId').show();
 			//flag = false;
 		}else{
@@ -2381,12 +2381,11 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 	});
 	
 	if(totalRefCount == undefined || totalRefCount == "undefined" || totalRefCount == null || parseInt(totalRefCount) == 0 ){
-		flag = false;
+		//flag = false;
 		if(typeVal =='represent' || typeVal =='representee')
-			$('#refCandidatesErr').html('Please add atleast one referral details.');
+			;//$('#refCandidatesErr').html('Please add atleast one referral details.');
 		else 
-			$('#refCandidatesErr').html('Please add Self member details.');
-		
+			;//$('#refCandidatesErr').html('Please add Self member details.');		
 	}
 	else if(refCandCount == undefined || refCandCount == "undefined" || refCandCount == null || parseInt(refCandCount) == 0 ){
 		flag = false;

@@ -3662,9 +3662,9 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 					$('#nameErr'+typeVal+'').html("");
 				}
 				if(repMobileNo == undefined || repMobileNo == "undefined" || repMobileNo.trim() == '' || repMobileNo == null){
-					$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  mobile no.</h5>");
-					$('#saveButtonId').show();
-					flag = false;
+					//$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter  mobile no.</h5>");
+					//$('#saveButtonId').show();
+					//flag = false;
 				}else if(parseInt(repMobileNo.trim().length) <10 || parseInt(repMobileNo.trim().length) >10 || parseInt(repMobileNo.trim().length) !=10){
 					$('#mobileNumberErr'+typeVal+'').html("<h5 style='color:red;'>Please enter valid mobile no.</h5>");
 					$('#saveButtonId').show();
@@ -3691,16 +3691,16 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 					$("#districtErr"+typeVal+'').html("");
 				}
 				if(repCostituencyId == 0 || repCostituencyId == null || repCostituencyId == ''){
-					$("#constituencyErr"+typeVal+'').html("<h5 style='color:red;'>Please select  constituency.</h5>");
-					$('#saveButtonId').show();
-					flag = false;
+					//$("#constituencyErr"+typeVal+'').html("<h5 style='color:red;'>Please select  constituency.</h5>");
+					//$('#saveButtonId').show();
+					//flag = false;
 				}else{
 					$("#constituencyErr"+typeVal+'').html("");
 				}
 				if(repTehsilId == 0 || repTehsilId == null || repTehsilId == ''){
-					$("#mandalErr"+typeVal+'').html("<h5 style='color:red;'>Please select  mandal/munci.</h5>");
-					$('#saveButtonId').show();
-					flag = false;
+					//$("#mandalErr"+typeVal+'').html("<h5 style='color:red;'>Please select  mandal/munci.</h5>");
+					//$('#saveButtonId').show();
+					//flag = false;
 				}else{
 					$("#mandalErr"+typeVal+'').html("");
 				}
@@ -3731,11 +3731,11 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			});
 			
 			if(totalRefCount == undefined || totalRefCount == "undefined" || totalRefCount == null || parseInt(totalRefCount) == 0 ){
-				flag = false;
+				//flag = false;
 				if(typeVal =='REPRESENT' || typeVal =='REPRESENTEE')
-					$('#refCandidatesErr').html('Please add atleast one referral details.');
+					;//$('#refCandidatesErr').html('Please add atleast one referral details.');
 				else 
-					$('#refCandidatesErr').html('Please add Self member details.');
+					;//$('#refCandidatesErr').html('Please add Self member details.');
 				
 			}
 			/*
