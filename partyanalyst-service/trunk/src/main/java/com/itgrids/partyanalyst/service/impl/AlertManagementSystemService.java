@@ -94,6 +94,7 @@ import com.itgrids.partyanalyst.dto.GovtOfficerSmsDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.JalavaniAlertsInputVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationAlertVO;
@@ -16476,5 +16477,107 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return finalList;
 	}
-	
+	public List<AlertVO> getMonthSkeleton(){
+		List<AlertVO> voList = new ArrayList<AlertVO>(0);
+		List<Long> monthIds = IConstants.MONTH_IDS;
+		String[] months = IConstants.MONTH_NAMES;
+		List<String> monthNames =new ArrayList<String>();
+		for (String monthName : months) {
+			monthNames.add(monthName);
+		}
+		if(monthIds != null && monthIds.size() > 0){
+			for (int i=0;i<monthIds.size();i++) {
+				AlertVO vo = new AlertVO();
+				vo.setSmTypeId(monthIds.get(i));
+				vo.setSmType(monthNames.get(i));
+				voList.add(vo);
+			}
+		}
+		return voList;
+	}
+	public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputVo){
+		AlertVO finalVo = new AlertVO();
+		try {
+			Date startDate = null;Date endDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(inputVo.getFromDateStr() != null && inputVo.getToDateStr() != null){
+				startDate = sdf.parse(inputVo.getFromDateStr());
+				endDate = sdf.parse(inputVo.getToDateStr());
+			}
+			Long totalCallCenterCalls = alertCallerRelationDAO.totalCallCenterCallForRwsDept(startDate,endDate);//total call center calls count
+			
+			List<Object[]> totalAlertcountsList =alertDAO.getTotalAlertCounts(startDate, endDate,0l);//totalAlerts counts for categorywise(callcenter,PM,EMN)
+			finalVo.setCount(totalCallCenterCalls);
+			
+			if(totalAlertcountsList !=null && totalAlertcountsList.size()>0){
+				for (Object[] objects : totalAlertcountsList){
+					AlertVO vo = new AlertVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					vo.setAlertCnt(commonMethodsUtilService.getLongValueForObject(objects[2]));
+					
+					finalVo.getSubList1().add(vo);
+				}
+			}
+			finalVo.getSubList2().addAll(getMonthSkeleton());
+			List<Object[]> monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,0l);
+			if(monthObjList !=null && monthObjList.size() >0){
+				for (Object[] objects : monthObjList) {
+					AlertVO matchedMonthVO = getmatchedMonthVo(finalVo.getSubList2(),commonMethodsUtilService.getLongValueForObject(objects[0]));
+					if(matchedMonthVO != null){
+						matchedMonthVO.setLocationCnt((Long)objects[1]);
+					}
+				}
+			}
+			//status cade pending 
+			List<AlertStatus> allStatus = alertStatusDAO.getAll();
+			getAlertStatusWiseSkelton(allStatus,finalVo);
+			//statusId-0,status-1,statusColor-2,count-3
+			List<Object[]> statusList = alertDAO.getAlertsStatusOverView(startDate, endDate,0l);
+			if(statusList !=null && statusList.size() >0){
+				for (Object[] objects : statusList) {
+					AlertVO matchedColorVo = getmatchedStatusVo(finalVo.getList(),commonMethodsUtilService.getLongValueForObject(objects[0]));
+					if(matchedColorVo !=null){
+						matchedColorVo.setColor(objects[2].toString());
+						matchedColorVo.setStatusCount((Long)objects[3]);
+					}
+				}
+			}
+			
+		}catch (Exception e){
+			LOG.error("Error occured getJalavaniDashBoardViewInfo() method of AlertManagementSystemService",e);
+		}
+		return finalVo;
+	}
+	 public void getAlertStatusWiseSkelton(List<AlertStatus> allStatus,AlertVO finalVo){
+ 		 for (AlertStatus alertStatus : allStatus) {
+			if(alertStatus.getAlertStatusId() > 1l){
+				AlertVO subVO = new AlertVO();
+				subVO.setStatusId(alertStatus.getAlertStatusId());
+				subVO.setStatus(alertStatus.getAlertStatus());
+				
+				finalVo.getList().add(subVO);
+			}
+		}
+ 	 }
+	 public AlertVO getmatchedStatusVo(List<AlertVO> finalVOList,Long statusId){
+			if(finalVOList != null && finalVOList.size() > 0){
+				for (AlertVO alertVO : finalVOList){
+					if(alertVO.getStatusId() != null && alertVO.getStatusId().equals(statusId)){
+						return alertVO;
+					}
+				}
+			}
+			return null;
+		}
+	public AlertVO getmatchedMonthVo(List<AlertVO> finalVOList,Long monthId){
+		if(finalVOList != null && finalVOList.size() > 0){
+			for (AlertVO vo : finalVOList) {
+				if(vo.getSmTypeId() != null && vo.getSmTypeId().equals(monthId)){
+					return vo;
+				}
+			}
+		}
+		return null;
+	}
 }

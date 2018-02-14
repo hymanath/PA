@@ -1373,4 +1373,6 @@ public interface IConstants {
 	public static final String ZOHO_IOS_STATIC_MOBILE_NO="9676696760";
 	public static final String DALITHA_TEJAM_IMG_FOLDER = "dalitha_tejam";
 	public static final Long DALITHA_TEJAM_PUBLICATION_ID=24l;
+	public static final List<Long> CATEGORY_IDS=Arrays.asList(4l,2l,3l);
+	public static final List<Long> MONTH_IDS=Arrays.asList(1l,2l,3l,4l,5l,6l,7l,8l,9l,10l,11l,12l);
 }
