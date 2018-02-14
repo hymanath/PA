@@ -12,6 +12,9 @@ public interface ISolidWasteManagementService
 	public SolidWasteManagementVO getSolidWasteManagementOverAllCounts(InputVO inputVO);
 	public List<SolidWasteManagementVO> getRfidTrackingOverAllTargets(InputVO inputVO);
 	public  WebServiceDataVO saveRfidTrackingOverAllTargets(); 
+	 public List<SolidWasteManagementVO> getRfidTrackingOverAllTargetsData(InputVO  inputVO);
+	
+	
 	
 	
 }

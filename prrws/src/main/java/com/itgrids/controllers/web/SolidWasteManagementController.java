@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.SolidWasteManagementVO;
+import com.itgrids.dto.WebServiceDataVO;
 import com.itgrids.service.ISolidWasteManagementService;
 
 //import com.itgrids.service.IBioMetricService;
@@ -61,19 +63,47 @@ public class SolidWasteManagementController {
 			}
 			return solidWasteManagementVO;
 		}
-	   @PostMapping("/getRfidTrackingOverAllTargets")
-		public @ResponseBody List<SolidWasteManagementVO> getRfidTrackingOverAllTargets(@RequestBody InputVO inputVO)
+	   @PostMapping("/getRfidTrackingOverAllTargetsData")
+		public @ResponseBody List<SolidWasteManagementVO> getRfidTrackingOverAllTargetsData(@RequestBody InputVO inputVO)
 		{
 			
 			List<SolidWasteManagementVO> solidWasteManagementVO=null;
 			try {
-				solidWasteManagementVO = solidWasteManagementService.getRfidTrackingOverAllTargets(inputVO);
+				solidWasteManagementVO = solidWasteManagementService.getRfidTrackingOverAllTargetsData(inputVO);
 				
 			} catch (Exception e) {
 				LOG.error("Exception raised at  getSolidInfoLocationWise - SolidWasteManagementController controller", e);
 			}
 			return solidWasteManagementVO;
 		}
+
 	   
-	   
+	/*  @RequestMapping(value = "/saveRfidTrackingOverAllTargets", method = RequestMethod.POST)
+	   public WebServiceDataVO saveItcWebServiceJsonData() {
+
+		   WebServiceDataVO resultStatus = null;
+
+	   	try {
+	   		resultStatus = solidWasteManagementService.saveRfidTrackingOverAllTargets();
+	   		
+	   	}catch (Exception e) {
+	   		
+	   		resultStatus.setStatus("failure");
+	   		LOG.error("Exception Occured in saveRfidTrackingOverAllTargets() in SolidWasteManagementController class.",e);
+	   	}
+	   	return resultStatus;
+	   }*/
+	   @RequestMapping(value = "/saveRfidTrackingOverAllTargets", method = RequestMethod.POST)
+	   public WebServiceDataVO saveRfidTrackingOverAllTargets(){
+		   WebServiceDataVO resultStatus = new WebServiceDataVO();
+		   try {
+		   		resultStatus = solidWasteManagementService.saveRfidTrackingOverAllTargets();
+		   		
+		   	}catch (Exception e) {
+		   		
+		   		resultStatus.setStatus("failure");
+		   		LOG.error("Exception Occured in saveRfidTrackingOverAllTargets() in SolidWasteManagementController class.",e);
+		   	}
+			return resultStatus;
+	   }
 }

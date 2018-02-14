@@ -393,11 +393,11 @@
 									</div>
 									<div class="col-sm-12 p_top_bottom m_top_bottom" style="border:1px solid lightgrey">
 										<div class="row">
-											<!--<h5 style="padding: 15px"><b>BLOCKED GP'S</b></h5>
+											<h5 style="padding: 15px"><b>BLOCKED GP'S</b></h5>
 											<div class="col-sm-4 gp_block">
 												<div class="well well_block" style="margin-top:10px">
-													<h5><b>GP</b></h5>
-													<h4><b id="gpId"></b></h4>
+													<h5>GP</h5>
+													<h4 id="gpId"><b ></b></h4>
 												</div>
 											</div>
 											<div class="col-sm-4" style="padding:20px">
@@ -405,21 +405,39 @@
 											</div>
 											<div class="col-sm-4 pull-right gp_block">
 												<div class="well well_block" style="margin-top:10px">
-													<h5><b>BLOCKS</b></h5>
+													<h5>BLOCKS</h5>
 													<h4><b id="blocksId"></b></h4>
 												</div>
-											</div>-->
-											<div class="col-sm-12" style="">
-												<h4 style="padding:15px;color:#fff;background-color:#00A85A">RFID TRACKING<i class="glyphicon glyphicon-ok pull-right" style="color:#00A85A;background-color:#fff;padding:5px;border-radius:14px;margin-top:-5px;margin-left:5px"></i><span class="pull-right">%</span><span id="rfidTracking" class="pull-right"></span></h4>
 											</div>
-										</div>
+											<div class="col-sm-12">
+												<h5><b>RFID TRACKING <br/></b></h5>
+												<div class="row text-center">
+													<div class="col-md-6">
+														<div class="well well_block" style="margin-top:10px">
+															<h6 class="tot_vehicles"><b>TODAY RFID TRACKING</b></h6>
+															<h4><b id="trackingId" style="color:#D90022;"></b></h4>
+														</div>
+													</div>
+													<!--<div class="col-sm-12 col-md-6">
+														<div class="well well_block" style="margin-top:10px">
+															<h6 class="tot_vehicles"><b>TODAY AVERAGE TRACKING</b></h6>
+															<h4><b id="averageTrackingId" style="color:#D90022;"></b></h4>
+														</div>
+													</div>-->
+													
+													
+											 </div>
+												
+												<!--<h4 style="padding:15px;color:#fff;background-color:#00A85A">RFID TRACKING<i class="glyphicon glyphicon-ok pull-right" style="color:#00A85A;background-color:#fff;padding:5px;border-radius:14px;margin-top:-5px;margin-left:5px"></i><span class="pull-right">%</span><span id="rfidTracking" class="pull-right"></span></h4>-->
+											</div> 
 										</div>
 									</div>
+								</div>
 							</div>
 							<div class="col-sm-6">
 								<div  class="row swm_blocks" style="border: 1px solid lightgrey;padding:15px">
 								<h4 style="padding:10px" class="headingcls"><img src="Assests/icons/swm/Group 2187.png"><b style="padding-left:10px">SWM-VERMI COMPOST (TROUGH-PIT)</b></h4>
-								<div class="col-sm-12 p_top_bottom m_top_bottom" style="border:1px solid lightgrey">
+								<div class="col-sm-12 p_top_bottom20 m_top_bottom" style="border:1px solid lightgrey">
 									<h5 style="display:inline-block;"><b>TOTAL SWM COLLECTION<br/><span style="font-size:10px;float:right">TON'S</span></b></h5>
 									<div class="clearfix"></div>
 									<div class="col-sm-6 col-md-4 swm_collection">
@@ -457,7 +475,7 @@
 									</div>
 								</div>
 								<h5><b>STAGE-I</b></h5>
-								<div class="col-sm-12  m_top_bottom" style="border:1px solid lightgrey">
+								<div class="col-sm-12 m_top_bottom20 p_top_bottom20" style="border:1px solid lightgrey;">
 									<div class="row">
 										<div class="col-sm-8">
 											<p class="m_top20"><img src="Assests/icons/swm/Group 2338.png"><b style="padding-left:20px">NADAP - PITS</b></p>
@@ -471,7 +489,7 @@
 										</div>
 								</div>
 								<h5><b>STAGE-II</b></h5>
-								<div class="col-sm-12  m_top_bottom" style="border:1px solid lightgrey">
+								<div class="col-sm-12  m_top_bottom20 p_top_bottom20" style="border:1px solid lightgrey">
 									<div class="row">
 										<div class="col-sm-8">
 											<p class="m_top20"><img src="Assests/icons/swm/Group 2337.png"><b style="padding-left:20px">VERMI - PITS</b></p>
@@ -485,7 +503,7 @@
 										</div>
 								</div>
 								<h5><b>STAGE-III</b></h5>
-								<div class="col-sm-12  m_top_bottom" style="border:1px solid lightgrey">
+								<div class="col-sm-12  m_top_bottom p_top_bottom20" style="border:1px solid lightgrey">
 									<div class="row">
 										<div class="col-sm-8">
 											<p class="m_top20"><img src="Assests/icons/swm/Group 2336.png"><b style="padding-left:20px">VERMI STOCK</b></p>
@@ -499,7 +517,7 @@
 										</div>
 								</div>
 								<h5><b>PACKAGE STOCK DETAILS</b></h5>
-								<div class="col-sm-12  m_top_bottom" style="border:1px solid lightgrey">
+								<div class="col-sm-12  m_top_bottom20" style="border:1px solid lightgrey">
 									<div class="row">
 											<table class="table">
 												<tr>

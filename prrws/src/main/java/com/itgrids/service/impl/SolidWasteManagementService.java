@@ -11,11 +11,11 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.codehaus.jettison.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.JsonArray;
 import com.itgrids.dao.IWebServiceDataDAO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.SolidWasteManagementVO;
@@ -40,7 +40,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	@Autowired
 	private DateUtilService dateUtilService;
 	@Autowired
-	private  IWebServiceDataDAO  iWebServiceDataDAO;
+	private  IWebServiceDataDAO  webServiceDataDAO;
 	
 	/*
 	 * Date : 7/11/2017
@@ -52,11 +52,11 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		try {
 			WebResource webResource = null;
 			Map<String ,SolidWasteManagementVO> locationMap= new HashMap<String, SolidWasteManagementVO>();
-				if(inputVO.getSubFilterType() != null && !inputVO.getSubFilterType().trim().isEmpty())
+				if(inputVO.getLocationType() !=null && inputVO.getLocationType().equalsIgnoreCase("district"))
 					webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&subFilterType="+inputVO.getSubFilterType()+"&subFilterId="+inputVO.getSubFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
-				else if(inputVO.getFilterType() != null && !inputVO.getFilterType().trim().isEmpty())
-					webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
-				else	
+				else if(inputVO.getLocationType() !=null && inputVO.getLocationType().equalsIgnoreCase("constituency"))
+					webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="+inputVO.getLocationId()+"&locationType=assembly&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+				else if(inputVO.getLocationType() !=null && inputVO.getLocationType().equalsIgnoreCase("mandal"))
 					webResource = commonMethodsUtilService.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
 				
 			    ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
@@ -99,7 +99,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		 	    				solidWasteManagementVO.setEvehicle(!jObj.getString("evehicle").equalsIgnoreCase("null") ?jObj.getLong("evehicle") : 0l);
 		 	    				solidWasteManagementVO.setBlocks(!jObj.getString("blocks").equalsIgnoreCase("null") ?jObj.getLong("blocks") : 0l);
 		 	    			    finalList.add(solidWasteManagementVO);
-		 	    				//locationMap.put(jObj.getString("name"), solidWasteManagementVO);
+		 	    			    //locationMap.put(jObj.getString("name"), solidWasteManagementVO);
 		 	    				// finalList.add(solidWasteManagementVO);
 		 	    			     // finalList.addAll(locationMap.values());
 	        			          /*}else{
@@ -161,6 +161,31 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	        	finalList = new ArrayList<SolidWasteManagementVO>(locationMap.values());
 	        }
 	        	*/
+	       List<SolidWasteManagementVO>   data = getRfidTrackingOverAllTargetsData(inputVO);
+	       for (SolidWasteManagementVO rfidData : data) {
+	    	   for (SolidWasteManagementVO finalVo : finalList) {
+	    		   if(finalVo.getId().trim().toString().equalsIgnoreCase(rfidData.getLocationId().toString().trim())){
+	    			   finalVo.setTotalRfidTags(rfidData.getTotalRfidTags());	
+	    			   finalVo.setBlockNo(rfidData.getBlockNo());
+	    			   finalVo.setInTime(rfidData.getInTime());
+	    			   finalVo.setOutTime(rfidData.getOutTime());
+	    			   finalVo.setOutOfTarget(rfidData.getOutOfTarget());
+	    			   finalVo.setTarget(rfidData.getTarget());
+	    			   finalVo.setAchieve(rfidData.getAchieve());
+	    			   finalVo.setAverageInTime(rfidData.getAverageInTime());
+	    			   finalVo.setAverageOutTime(rfidData.getAverageOutTime());
+	    			   finalVo.setAverageTarget(rfidData.getAverageTarget());
+	    			  // finalVo.setTotalTime(rfidData.getInTime());
+	    			   finalVo.setTrackingPer(rfidData.getTrackingPer());
+	    			   finalVo.setAvertrackingPer(rfidData.getAvertrackingPer());
+	    			   finalVo.setInTimePer(rfidData.getInTimePer());
+	    			   finalVo.setOutTimePer(rfidData.getOutTimePer());
+   					   finalVo.setGpCnt(rfidData.getGpCnt()+1);   					
+	    		   }
+				
+			}
+			
+		}
 		}catch (JSONException e) {
 	        		 	   LOG.error("Exception raised at getSolidInfoLocationWise - SolidWasteManagementService service", e);
 	           			}
@@ -213,16 +238,24 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	 	    				solidWasteManagementVO.setBlocks(!jObj.getString("blocks").equalsIgnoreCase("null") ? solidWasteManagementVO.getBlocks()+jObj.getLong("blocks") : solidWasteManagementVO.getBlocks());
 	 	    				solidWasteManagementVO.setRfidTracking(!jObj.getString("rfidTracking").equalsIgnoreCase("null") ? solidWasteManagementVO.getRfidTracking()+jObj.getLong("rfidTracking") : solidWasteManagementVO.getRfidTracking());
 	 	    				}
-	 	    			   
-	 	    		       }
-	 	    	           }
-	 	         }}     	 	    				
+	 	    			    }
+	 	    	            }
+	 	               }
+	                  List<SolidWasteManagementVO>   data = getRfidTrackingOverAllTargetsData(inputVO);
+	                   for (SolidWasteManagementVO rfidData : data) {
+	                	   solidWasteManagementVO.setTotalRfidTags(solidWasteManagementVO.getTotalRfidTags()+rfidData.getTotalRfidTags());
+	                	   solidWasteManagementVO.setTrackingPer(solidWasteManagementVO.getTrackingPer()+rfidData.getTrackingPer());
+	                	   solidWasteManagementVO.setGpCnt(solidWasteManagementVO.getGpCnt()+rfidData.getGpCnt());
+	                	   solidWasteManagementVO.setBlockNo(solidWasteManagementVO.getBlockNo()+rfidData.getBlockNo());            	   
+	                          
+	                   } 
+	        }			
 	 	catch (JSONException e) {
 			LOG.error("Exception raised at getDrainsInfobyLocation - DrainsService service", e);
 		}	
 		return solidWasteManagementVO;
 	}
-	@Override
+	/*@Override
 	public List<SolidWasteManagementVO> getRfidTrackingOverAllTargets(InputVO inputVO) {
 		List<SolidWasteManagementVO> finalList = new ArrayList<SolidWasteManagementVO>(0);
 	   //SolidWasteManagementVO solidWasteManagementVO=new SolidWasteManagementVO();
@@ -319,25 +352,33 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	    long tmp = Math.round(value);
 	    return (double) tmp / factor;
 	}
-
+*/
 	@Override
 	public WebServiceDataVO saveRfidTrackingOverAllTargets() {
 		
 		WebServiceDataVO webServiceDataVO =new WebServiceDataVO();
 		
-		String  jsonList = getRfidTrackingOverAllTargetsData();
-		 if(!jsonList.equals("<br />"));
-		 if(!jsonList.equals("<b>Notice</b>:  Undefined index: districtId in <b>/var/www/html/api/swm/index.php</b> on line <b>68</b><br />"));
+		  String  jsonList = getRfidTrackingOverAllTargetsData();		
+		  jsonList = jsonList.replaceAll("\\<.*?\\>", "");
+		  jsonList = jsonList.replaceAll("Notice:  Undefined index: districtId in /var/www/html/api/swm/index.php on line 68", "");
+		 
 		
-			try{			
+			try{
+				Long webserviceId = webServiceDataDAO.getLatestDataId();
+				
 	    	   WebServiceData model = new WebServiceData();
 	    	   model.setWebserviceId(127L);
 	    	  // model.setInputData(inputVO.getInputData());
 	    	   model.setResponceData(jsonList);
+	    	   model.setIsDeleted("N");
 	    	  // model.setDataDate("05-12-2017");
-	    	   model.setInsertedTime(dateUtilService.getCurrentDateAndTime());    	   
-	    	   WebServiceData  rfidData =  iWebServiceDataDAO.save(model);
-	    	  	    	  
+	    	   model.setInsertedTime(dateUtilService.getCurrentDateAndTime());   
+	    	  
+	    	   WebServiceData  rfidData =  webServiceDataDAO.save(model);
+	    	   
+	    	   WebServiceData data = webServiceDataDAO.get(webserviceId);
+	    	   data.setIsDeleted("Y");
+	    	   webServiceDataDAO.save(data);
 	    	   if(rfidData != null){
 	    		   webServiceDataVO.setStatus("success");
 	    	   }else{
@@ -346,7 +387,8 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			   }catch (Exception e) {
 				LOG.error("Exception occured at saveRfidTrackingOverAllTargets() in SolidWasteManagementService class",e);
 				webServiceDataVO.setStatus("failure");
-		    }
+		    
+		 }
 			return  webServiceDataVO;
 		    }
 		
@@ -364,6 +406,8 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		 	    }else{
 		 	    	   output = response.getEntity(String.class);
 		 	    	 if(output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		return finalArray.toString();
 		 	    	 }
 		 	    }
 			}catch (Exception e) {
@@ -372,26 +416,131 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		 return output;
 		 
 	 }
-	 /*public List<WebServiceDataVO> getRfidTrackingOverAllTargetsData(WebServiceDataVO inputVO){
-			List<WebServiceDataVO> returnList = new ArrayList<WebServiceDataVO>(0);
+	 public List<SolidWasteManagementVO> getRfidTrackingOverAllTargetsData(InputVO  inputVO){
+		 List<SolidWasteManagementVO> finalList = new ArrayList<SolidWasteManagementVO>(0);
 			try {
-				
-				List<Object[]> rfidList = iWebServiceDataDAO.getRfidTrackingOverAllTargetsData(inputVO.getWebserviceId());
-				 if(rfidList!=null && rfidList.size()>0 && !rfidList.isEmpty()){					
-					// String    output = 
-				  
-				}
-		  
-		  }catch (Exception e) {
-			LOG.error("Exception occured at getRfidTrackingOverAllTargetsData() in  SolidWasteManagementService class",e);
-		  }
-			return returnList;
-			
-      }*/
-      }
+				Map<Long,SolidWasteManagementVO> locationMap= new HashMap<Long, SolidWasteManagementVO>();
+				String rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(inputVO.getWebserviceId());
+				 if(rfidList!=null && rfidList.length()>0){
+							 String jsonData=rfidList; 
+							 if(jsonData != null && !jsonData.isEmpty()){
+				        			JSONArray finalArray = new JSONArray(jsonData);
+				        			if(finalArray!=null && finalArray.length()>0){
+				        				for(int i=0;i<finalArray.length();i++){
+				        					JSONObject jObj = (JSONObject) finalArray.get(i);
+				        					SolidWasteManagementVO solidWasteManagementVO= null;
+							 
+				        					if(inputVO.getLocationType().equalsIgnoreCase("state")){
+				        						solidWasteManagementVO = locationMap.get(1l);	        						
+				        						if(solidWasteManagementVO == null){
+				        							solidWasteManagementVO = new SolidWasteManagementVO();
+				        							solidWasteManagementVO.setLocationId(1L);
+ 				        							solidWasteManagementVO.setLocationName("Andra Pradesh");
+				        							
+													locationMap.put(1L, solidWasteManagementVO);
+				        						}
+				        					}else if(inputVO.getLocationType().equalsIgnoreCase("district")){
+			 	        						solidWasteManagementVO = locationMap.get(jObj.getLong("districtID"));	        						
+				        						if(solidWasteManagementVO == null){
+				        							solidWasteManagementVO = new SolidWasteManagementVO();
+				        							solidWasteManagementVO.setLocationId(jObj.getLong("districtID"));
+				        							solidWasteManagementVO.setLocationName(jObj.getString("district").trim());
+													locationMap.put(jObj.getLong("districtID"), solidWasteManagementVO);
+				        						}
+				        					}else if(inputVO.getLocationType().equalsIgnoreCase("constituency")){
+				        						solidWasteManagementVO = locationMap.get(jObj.getLong("constituencyID"));
+												if(solidWasteManagementVO == null){
+													solidWasteManagementVO = new SolidWasteManagementVO();
+													solidWasteManagementVO.setLocationId(jObj.getLong("constituencyID"));
+													solidWasteManagementVO.setLocationName(jObj.getString("constituencyName"));
+													locationMap.put(jObj.getLong("constituencyID"), solidWasteManagementVO);
+												}
+											}else if(inputVO.getLocationType().equalsIgnoreCase("mandal")){
+				        						solidWasteManagementVO = locationMap.get(jObj.getLong("mandalID"));
+												if(solidWasteManagementVO == null){
+													solidWasteManagementVO = new SolidWasteManagementVO();
+													solidWasteManagementVO.setLocationId(jObj.getLong("mandalID"));
+													solidWasteManagementVO.setLocationName(jObj.getString("mandal"));
+													locationMap.put(jObj.getLong("mandalID"), solidWasteManagementVO);
+												}
+											}else if(inputVO.getLocationType().equalsIgnoreCase("panchayat")){
+				        						solidWasteManagementVO = locationMap.get(jObj.getLong("gpID"));
+												if(solidWasteManagementVO == null){
+													solidWasteManagementVO = new SolidWasteManagementVO();
+													solidWasteManagementVO.setLocationId(jObj.getLong("gpID"));
+													solidWasteManagementVO.setLocationName(jObj.getString("gp"));
+													locationMap.put(jObj.getLong("gpID"), solidWasteManagementVO);
+												}
+											}
+				        					if(jObj.has("totalRfidTags") && jObj.getLong("totalRfidTags") >0 ){
+				        						solidWasteManagementVO.setTotalRfidTags(jObj.getLong("totalRfidTags")+solidWasteManagementVO.getTotalRfidTags());	
+				        					}
+				        					if(jObj.has("blockNo") && jObj.getLong("blockNo") >0 ){
+				        					solidWasteManagementVO.setBlockNo(jObj.getLong("blockNo")+solidWasteManagementVO.getBlockNo());
+				        					}
+				        					if(jObj.has("inTime") && jObj.getLong("inTime") >0 ){
+				        					solidWasteManagementVO.setInTime(jObj.getLong("inTime")+solidWasteManagementVO.getInTime());
+				        					}
+				        					if(jObj.has("outTime") && jObj.getLong("outTime") >0 ){
+				        					solidWasteManagementVO.setOutTime(jObj.getLong("outTime") +solidWasteManagementVO.getOutTime());
+				        					}
+				        					if(jObj.has("outOfTarget") && jObj.getLong("outOfTarget") >0 ){
+				        					solidWasteManagementVO.setOutOfTarget(jObj.getLong("outOfTarget")+solidWasteManagementVO.getOutOfTarget());
+				        					}
+				        					if(jObj.has("target") && jObj.getLong("target") >0 ){
+				        					solidWasteManagementVO.setTarget(jObj.getLong("target")+solidWasteManagementVO.getTarget());
+				        					}
+				        					if(jObj.has("averageInTime") && jObj.getLong("averageInTime") >0 ){
+				        					solidWasteManagementVO.setAverageInTime(jObj.getLong("averageInTime")+solidWasteManagementVO.getAverageInTime());
+				        					}
+				        					if(jObj.has("averageOutTime") && jObj.getLong("averageOutTime") >0 ){
+				        					solidWasteManagementVO.setAverageOutTime(jObj.getLong("averageOutTime")+solidWasteManagementVO.getAverageOutTime());
+				        					}
+				        					if(jObj.has("averageTarget") && jObj.getLong("averageTarget") >0 ){
+				        					solidWasteManagementVO.setAverageTarget(jObj.getLong("averageTarget")+solidWasteManagementVO.getAverageTarget());
+				        					}
+				        					if(jObj.has("target") && jObj.getLong("target") >0 ){
+					        					solidWasteManagementVO.setTarget(jObj.getLong("target")+solidWasteManagementVO.getTarget());
+					        				}
+				        					if(jObj.has("achieve") && jObj.getLong("achieve") >0 ){
+					        					solidWasteManagementVO.setAchieve(jObj.getLong("achieve")+solidWasteManagementVO.getAchieve());
+					        				}
+				        					solidWasteManagementVO.setInTimePer(solidWasteManagementVO.getTarget()>0  ? round((solidWasteManagementVO.getInTime()*100.00)/solidWasteManagementVO.getTarget(),2):0.00);
+				        					solidWasteManagementVO.setOutTimePer(solidWasteManagementVO.getTarget()>0  ? round((solidWasteManagementVO.getOutTime()*100.00)/solidWasteManagementVO.getTarget(),2):0.00);
+				        					//solidWasteManagementVO.setTotalTime(solidWasteManagementVO.getInTime()+solidWasteManagementVO.getOutTime());
+				        					solidWasteManagementVO.setTrackingPer(solidWasteManagementVO.getTarget()>0  ? round(((solidWasteManagementVO.getAchieve()*100.00)/solidWasteManagementVO.getTarget()),2):0.00);
+				        					solidWasteManagementVO.setAvertrackingPer(solidWasteManagementVO.getAverageTarget()>0  ? round(((solidWasteManagementVO.getAverageTime()*100.00)/solidWasteManagementVO.getAverageTarget()),2):0.00);
+				        					if (jObj.has("gpID") && jObj.get("gpID").toString().length() > 0) {
+				        					solidWasteManagementVO.setGpCnt(solidWasteManagementVO.getGpCnt()+1);   					
+				        				   }  
+				        				   }
+				        		         }
+							            }							      
+				        			   finalList.addAll(locationMap.values());
+						              }
+					 
+				            		} catch ( JSONException e) {
+				        		 	   LOG.error("Exception raised at getSolidInfoLocationWise - SolidWasteManagementService service", e);
+				           			}
+				        		return  finalList;	
+				           }
+                           
+	 
+public static double round(double value, int places) {
+    if (places < 0) throw new IllegalArgumentException();
 
+    long factor = (long) Math.pow(10, places);
+    value = value * factor;
+    long tmp = Math.round(value);
+    return (double) tmp / factor;
+}
 
-
+@Override
+public List<SolidWasteManagementVO> getRfidTrackingOverAllTargets(InputVO inputVO) {
+	// TODO Auto-generated method stub
+	return null;
+}
+}
  
 	
 

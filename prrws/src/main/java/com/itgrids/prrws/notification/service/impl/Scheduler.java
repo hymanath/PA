@@ -40,7 +40,7 @@ public class Scheduler {
     @Autowired
     private ISolidWasteManagementService  solidWasteManagementService;
     
-	
+
 	//@Scheduled(cron = "0 30 2,14 * * * ")
     //run scheduler every 15 minutes
 	@Scheduled(cron ="0 0/15 * ? * *")
@@ -188,8 +188,8 @@ public class Scheduler {
 			return;
 	}
 	
-	
-	@Scheduled(cron ="0 */30 * ? * *")
+    
+	@Scheduled(cron ="0 0 0/2 * * ?")
 	public void runTheRfidSchedulerInEveryDay()	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
 		{	
@@ -200,6 +200,4 @@ public class Scheduler {
 		else 
 			return;
 	}
-	
-	
 }

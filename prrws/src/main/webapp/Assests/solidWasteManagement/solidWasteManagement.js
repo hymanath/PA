@@ -130,7 +130,7 @@ function levelWiseOverview()
 		}else if(levelWiseOverviewArr[i] == "constituency"){
 			getAllDistricts(levelWiseOverviewArr[i]+'SelectDist');
 			
-			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"assembly","1-06-2017","30-07-2017",0,"district",0,"");
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"constituency","1-06-2017","30-07-2017",0,"district",0,"");
 			
 		}else if(levelWiseOverviewArr[i] == "mandal"){
 			//SelectCons
@@ -180,6 +180,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 		if(result != null && result.length > 0)
 		{
 			if(distId ==0){
+				
 				buildTable(result,blockid);
 			}else if(distId>0){
 				for(var i in result){
@@ -231,61 +232,86 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 		}
 		
 		table+='<div class="table-responsive">';
-			table+='<table class="table table-bordered" id="'+blockid+'dataTableId">';
+			table+='<table class="table table-bordered" id="'+blockid+'dataTableId" style="width:100%">';
 				table+='<thead>';
+					table+='<tr>';
 					if(isState){
-						table+='<th>STATE</th>';
+							table+='<th class="font_sz">STATE</th>';
+							table+='<th class="font_sz">RFID TAGGED HOUSES</th>';
+							table+='<th class="font_sz" >TODAY RFID TRACKING</th>';
+							table+='<th class="font_sz">REGISTERED FARMERS</th>';
+							table+='<th class="font_sz" >SWM COLLECTION (TONS)</th>';
+							table+='<th class="font_sz" >NADAP - PITS (TONS)</th>';
+							table+='<th class="font_sz">VERMI - PITS (TONS)</th>';
+							table+='<th class="font_sz">VERMI - STOCK (TONS)</th>';
+					table+='</tr>';
+					}else{
+						if(blockid == 'districtBodyId'){
+							table+='<th rowspan="2" class="font_sz">DISTRICTS</th>';
+						}else if(blockid == 'constituencyBodyId'){
+							table+='<th rowspan="2" class="font_sz">CONSTITUENCY</th>';
+						}else if(blockid == 'mandalBodyId'){
+							table+='<th rowspan="2" class="font_sz">MANDALS</th>';
+						}
+							table+='<th class="font_sz" rowspan="2">RFID TAGGED HOUSES</th>';
+							table+='<th class="font_sz" colspan="4" style="text-align:center;">RFID TRACKING</th>';
+							table+='<th class="font_sz" rowspan="2">REGISTERED FARMERS</th>';
+							table+='<th class="font_sz" rowspan="2">SWM COLLECTION (TONS)</th>';
+							table+='<th class="font_sz" rowspan="2">NADAP - PITS (TONS)</th>';
+							table+='<th class="font_sz" rowspan="2">VERMI - PITS (TONS)</th>';
+							table+='<th class="font_sz" rowspan="2">VERMI - STOCK (TONS)</th>';
+					table+='</tr>';
+						table+='<tr>';
+							table+='<th class="font_sz">TODAY RFID TRACKING</th>';
+							table+='<th class="font_sz">IN TIME</th>';
+							table+='<th class="font_sz">OUT TIME</th>';
+							table+='<th class="font_sz">OUT OF TARGET</th>';
+					table+='</tr>';	
 					}
-					if(blockid == 'districtBodyId'){
-						table+='<th>DISTRICTS</th>';
-					}else if(blockid == 'constituencyBodyId'){
-						table+='<th>CONSTITUENCY</th>';
-					}else if(blockid == 'mandalBodyId'){
-						table+='<th>MANDALS</th>';
-					}
-					//table+='<th>District</th>';
-					table+='<th>RFID TAGGED HOUSES</th>';
-					table+='<th>REGISTERED FARMERS</th>';
-					table+='<th>RFID TRACKING</th>';
-					table+='<th>SWM COLLECTION (TONS)</th>';
-					table+='<th>NADAP - PITS (TONS)</th>';
-					table+='<th>VERMI - PITS (TONS)</th>';
-					table+='<th>VERMI - STOCK (TONS)</th>';
+					
 				table+='</thead>';
 				table+='<tbody>';
-					
 				if(isState){	
-						var rfidTags = 0.0;
+						//var rfidTags = 0.0;
 						var farmers =  0.0;
-						var rfidTracking =  0.0;
+						var trackingPer=0.0;
+						//var rfidTracking =  0.0;
 						var swmCollection =  0.0;
 						var nadap =  0.0;
 						var vermi =  0.0;
 						var vermiStock =  0.0;
+						var totalRfidTags=0;
+						var inTime =0;
+						var outTime= 0;
+						var outOfTarget =0;
 					
 						for(var i in result)
 						{
-							rfidTags = parseFloat(rfidTags)+parseFloat(result[i].rfidTags);
+							//rfidTags = parseFloat(rfidTags)+parseFloat(result[i].rfidTags);
 							farmers = parseFloat(farmers)+parseFloat(result[i].farmers);
-							rfidTracking = parseFloat(rfidTracking)+parseFloat(result[i].rfidTracking);
+							trackingPer = parseFloat(trackingPer)+parseFloat(result[i].trackingPer);
 							swmCollection = parseFloat(swmCollection)+parseFloat(result[i].swmCollection);
 							nadap = parseFloat(nadap)+parseFloat(result[i].nadap);
 							vermi = parseFloat(vermi)+parseFloat(result[i].vermi);
-							//vermiStock = parseFloat(rfidTags)+parseFloat(result[i].vermiStock);
-							vermiStock = parseFloat(vermiStock)+parseFloat(result[i].vermiStock);
+						    vermiStock = parseFloat(vermiStock)+parseFloat(result[i].vermiStock);
+							totalRfidTags=totalRfidTags+result[i].totalRfidTags
+							inTime =inTime+result[i].inTime;
+							outTime=outTime+result[i].outTime;
+							outOfTarget=outOfTarget+result[i].outOfTarget;
 							isState=true;
 						}				
 						table+='<tr>';
 							table+='<td class="text-capital">Andhra Pardesh</td>';
-							table+='<td>'+rfidTags+'</td>';
+							table+='<td>'+totalRfidTags+'</td>'; 
+							table+='<td style="background-color:#FFC0CB;">'+trackingPer+'%</td>';
 							table+='<td>'+farmers+'</td>';
-							table+='<td>'+rfidTracking+'</td>';
 							table+='<td>'+swmCollection.toFixed(2)+'</td>';
 							table+='<td>'+nadap.toFixed(2)+'</td>';
 							table+='<td>'+vermi.toFixed(2)+'</td>';
 							table+='<td>'+vermiStock.toFixed(2)+'</td>';
 						table+='</tr>';
 				}else{
+					
 					for(var i in result)
 					{					
 						if(blockid == 'districtBodyId'){
@@ -296,17 +322,25 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							table+='<tr attr_onclick_distname="'+blockid+'">';
 						}
 							table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'" attr_onclick_distname="'+blockid+'" style="cursor: pointer" class="text-capital" data-toggle="modal" data-target="#swmModal">'+result[i].name+'<i class="fa fa-info-circle pull-right" aria-hidden="true" title="Click for '+result[i].name+' Details" attr_onclick_distname="'+blockid+'" attr_dist_id="'+result[i].id+'" style="cursor: pointer"></i></td>';
-							table+='<td attr_dist_rfid="'+result[i].rfidTags+'">'+result[i].rfidTags+'</td>';
-							table+='<td attr_dist_farmer="'+result[i].farmers+'">'+result[i].farmers+'</td>';
-							table+='<td attr_dist_rfidTracking="'+result[i].rfidTracking+'">'+result[i].rfidTracking+'</td>';
+							table+='<td attr_dist_rfid="'+result[i].totalRfidTags+'">'+result[i].totalRfidTags+'</td>'; 
+							//table+='<td>0</td>';
+							table+='<td style="background-color:#FFC0CB;">'+result[i].trackingPer+'%</td>';
+							table+='<td style="background-color:#92DD5A;">'+result[i].inTime+'%</td>';
+							table+='<td style="background-color:#1076F1;">'+result[i].outTime+'%</td>';
+							table+='<td style="background-color:#FFA600;">'+result[i].outOfTarget+'</td>';
+							/* table+='<td>0</td>';
+							table+='<td>0</td>';
+							table+='<td>0</td>';
+							table+='<td>0</td>'; */
+							table+='<td attr_dist_rfidTracking="'+result[i].farmers+'">'+result[i].farmers+'</td>';
 							table+='<td attr_dist_swmCollection="'+result[i].swmCollection+'">'+result[i].swmCollection.toFixed(2)+'</td>';
 							table+='<td attr_dist_nadap="'+result[i].nadap+'">'+result[i].nadap.toFixed(2)+'</td>';
 							table+='<td attr_dist_vermi="'+result[i].vermi+'">'+result[i].vermi.toFixed(2)+'</td>';
 							table+='<td attr_dist_vermiStock="'+result[i].vermiStock+'">'+result[i].vermiStock.toFixed(2)+'</td>';					
 						table+='</tr>';
 					}
-				}					
-				
+					
+				}
 				table+='</tbody>';
 			table+='</table>';
 		table+='</div>';
@@ -435,7 +469,7 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 		if(result != null){
 			console.log(result);
 			//alert(result.rfidTags);
-			$("#rfidTaggedHouses").html(result.rfidTags);
+			$("#rfidTaggedHouses").html(result.totalRfidTags);
 			$("#registeredFarmers").html(result.farmers);
 			$("#mgnrgsId").html(result.mgnres);
 			$("#prId").html(result.pr);
@@ -448,8 +482,8 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#evehicleId").html(result.evehicle);
 			var totRegvehicles = result.tractor+result.auto+result.tricycle+result.evehicle;
 			$("#totalRegVehicles").html(totRegvehicles);
-			$("#gpId").html("<span>No data available</span>");
-			$("#blocksId").html(result.blocks);
+			$("#gpId").html(result.gpCnt);
+			$("#blocksId").html(result.blockNo);
 			$("#solidWasteId").html(result.houseCollecion.toFixed(2));
 			$("#farmerCattleDung").html(result.farmerCollection.toFixed(2));
 			$("#totSwmId").html(result.swmCollection.toFixed(2));
@@ -461,7 +495,7 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#tenkgcount").html(result.tenkg);
 			$("#twentyfivekgCount").html(result.twentyFivekg);
 			$("#fiftykgCount").html(result.fiftykg);
-			$("#rfidTracking").html(result.rfidTracking);
+			$("#trackingId").html(result.trackingPer);
 			
 		}
 	});
