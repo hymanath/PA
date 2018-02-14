@@ -260,7 +260,7 @@ public class PmRequestDetailsController {
 				return null;
 			}
 			//Long statusId = Long.valueOf(inputMap.get("statusId"));
-	       return pmRequestDetailsService.getStatusList(inputVO.getStatusIds());
+	       return pmRequestDetailsService.getStatusList(userId,inputVO.getStatusIds());
 	    }
 	    @RequestMapping(value ="/getRegistrationPersonDetails",method = RequestMethod.POST)
 	    public @ResponseBody CadreRegistrationVO getRegistrationPersonDetails(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
@@ -378,7 +378,7 @@ public class PmRequestDetailsController {
 		    	return null;
 		    }
 		   // if(dataVo.getPmStatusId() != null && dataVo.getPmStatusId().longValue() == 1l){
-		    	return pmRequestDetailsService.getLoginUserAccessSubDeptDesignationDetail(dataVo.getDeptIdsList(),userId);
+		    	return pmRequestDetailsService.getLoginUserAccessSubDeptDesignationDetail(dataVo.getDeptIdsList(),dataVo.getStatusId(),userId);
 		   /* }else{
 		    	return pmRequestDetailsService.getLoginUserAccessStatusWiseDeptDesignations(dataVo.getDeptIdsList(),userId,dataVo.getPmStatusId());
 		    }*/
@@ -395,7 +395,7 @@ public class PmRequestDetailsController {
 		    }else{
 		    	return null;
 		    }
-		    return pmRequestDetailsService.getDeptDesignationOfficerDetail(dataVo.getPmDeptDesignationOfficerId(),dataVo.getDeptIdsList() , userId);
+		    return pmRequestDetailsService.getDeptDesignationOfficerDetail(dataVo.getPmDeptDesignationOfficerId(),dataVo.getDeptIdsList() ,dataVo.getStatusId(), userId);
 	    }
 	    @RequestMapping(value ="/generateCoveringLetterForPetition",method = RequestMethod.POST)
 	    public @ResponseBody ResultStatus generateCoveringLetterForPetition(@RequestBody InputVO inputVO,HttpServletRequest request ) {
