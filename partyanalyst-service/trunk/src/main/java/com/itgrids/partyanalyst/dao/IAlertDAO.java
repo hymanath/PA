@@ -199,4 +199,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public int updateZohoAlertDetails(String ticketId,Long alertId);
 	public String getAlertTicketId(Long alertId);
 	public List<Long> getAlertId(String alertTicketId);
+	public List<Object[]> getTotalAlertCounts(Date fromDate,Date toDate,Long typeId);
+	public List<Object[]> getAlertsMonthWiseOverview(Date fromDate,Date toDate,Long typeId);
+	public List<Object[]> getAlertsStatusOverView(Date fromDate,Date toDate,Long typeId);
 }
