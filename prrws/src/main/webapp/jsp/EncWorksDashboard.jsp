@@ -244,12 +244,12 @@
 					<div class="white-block" style="padding:10px;">	
 						<div class="row">
 							<div class="col-sm-5">
-							<h4 style="padding:5px"><span class="chartTitleAlign">ADMIN SANCTIONED WORK DETAILS</span></h4><br/>
+							<h4 style="padding:5px"><span class="chartTitleAlign">Admin Sanctioned Work Details</span></h4><br/>
 								<div class="chart2" id="enclocationWiseChart2" style="height:315px;"></div>
 								<div id="datatable3"style="display:none"></div>
 							</div>
 							<div class="col-sm-7">
-							<h4 style="padding:5px"><span class="chartTitleAlign">STATUS WISE WORK DETAILS</span></h4><br/>
+							<h4 style="padding:5px"><span class="chartTitleAlign">Status Wise Work Details</span></h4><br/>
 								<div class="chart2" id="enclocationWiseChart" style="height:315px;"></div>
 								<div id="datatable1"style="display:none"></div>
 							</div>
@@ -299,11 +299,11 @@
 										<div class="white-block" style="padding:10px;">
 											<div class="row">
 												<div class="col-sm-3">
-													<h4 style="padding:5px"><span class="chartTitleAlign">FINANCIAL YEAR DETAILS</span></h4><br/>
+													<h4 style="padding:5px"><span class="chartTitleAlign">Financial Year Details</span></h4><br/>
 													<div class="chart2 m_top20" id="TargetNAcheievementDetailsTotal" style="height:315px;"></div>
 												</div>
 												<div class="col-sm-8">
-													<h4 style="padding:5px"><span class="chartTitleAlign">QUARTER WISE DETAILS</span></h4><br/>
+													<h4 style="padding:5px"><span class="chartTitleAlign">Quarter Wise Details</span></h4><br/>
 													<div class="chart2 m_top20" id="quaterWiseTargetAchievement" style="height:315px;"></div>
 												</div>
 											</div>
