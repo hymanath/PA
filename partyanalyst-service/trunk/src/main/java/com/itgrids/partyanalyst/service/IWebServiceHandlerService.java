@@ -305,7 +305,5 @@ public interface IWebServiceHandlerService {
     public List<AffiliatedMemberVO> searchAffiliatedMemberDetails(String searchType,String searchValue,String locationType, Long locationValue);
     public AffiliatedMemberVO saveAffiliatedMemberDetails(JSONObject jobj);
     public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputvo);
-    public AlertVO getJalavaniDashBoardPrintMediaDetailsInfo(JalavaniAlertsInputVO inputvo);
-    public AlertVO getJalavaniDashBoardElectronicMediaDetailsInfo(JalavaniAlertsInputVO inputvo);
     public AlertVO getJalavaniCategoryWiseDetailsInfo(JalavaniAlertsInputVO inputvo);
 }
