@@ -19,6 +19,11 @@ public class EncWorksVO {
 	private String mandalName;
 	private List<EncWorksVO> subList = new ArrayList<EncWorksVO>();
 	private Long groundedCount=0l;
+	private Long nonTechinicalSanctioned=0l;
+	private Long notEntrusted=0l;
+	private Long NotGroundedExceededCount=0l;
+	private Long ongoingExceededCount=0l;
+	private Long completedExceededCount=0l;
 	
 	
 	public Long getLocationId() {
@@ -113,6 +118,36 @@ public class EncWorksVO {
 	}
 	public void setTotalWorksEntrusted(Long totalWorksEntrusted) {
 		this.totalWorksEntrusted = totalWorksEntrusted;
+	}
+	public Long getNonTechinicalSanctioned() {
+		return nonTechinicalSanctioned;
+	}
+	public void setNonTechinicalSanctioned(Long nonTechinicalSanctioned) {
+		this.nonTechinicalSanctioned = nonTechinicalSanctioned;
+	}
+	public Long getNotEntrusted() {
+		return notEntrusted;
+	}
+	public void setNotEntrusted(Long notEntrusted) {
+		this.notEntrusted = notEntrusted;
+	}
+	public Long getNotGroundedExceededCount() {
+		return NotGroundedExceededCount;
+	}
+	public void setNotGroundedExceededCount(Long notGroundedExceededCount) {
+		NotGroundedExceededCount = notGroundedExceededCount;
+	}
+	public Long getOngoingExceededCount() {
+		return ongoingExceededCount;
+	}
+	public void setOngoingExceededCount(Long ongoingExceededCount) {
+		this.ongoingExceededCount = ongoingExceededCount;
+	}
+	public Long getCompletedExceededCount() {
+		return completedExceededCount;
+	}
+	public void setCompletedExceededCount(Long completedExceededCount) {
+		this.completedExceededCount = completedExceededCount;
 	}
 	
 	
