@@ -280,7 +280,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 					if (output != null && !output.isEmpty()) {
 						JSONObject returnJson = new JSONObject(output);
 						if(returnJson !=null && returnJson.has("Timing")){
-							return returnJson.getString("Timing");
+							return returnJson.getString("Timing")+" Min";
 						}
 					}
 				}
