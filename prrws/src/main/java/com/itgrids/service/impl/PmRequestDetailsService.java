@@ -19,6 +19,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.print.attribute.SetOfIntegerSyntax;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
@@ -4353,7 +4354,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								String subWorkDesc = commonMethodsUtilService.getStringValueForObject(param[18]);
 								String petitionDesc = commonMethodsUtilService.getStringValueForObject(param[19]);
 								Long documentId = commonMethodsUtilService.getLongValueForObject(param[20]);
-								
+								String officerDesigName =commonMethodsUtilService.getStringValueForObject(param[15]);
 								Long assignedToDeptDesiOfficeId = commonMethodsUtilService.getLongValueForObject(param[21]);
 								String assignedToDesignation = commonMethodsUtilService.getStringValueForObject(param[22]);
 								String assignedToDesignationShortName = commonMethodsUtilService.getStringValueForObject(param[23]);
@@ -4421,8 +4422,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								//if(IConstants.PETITION_IN_PROGRESS_IDS.contains(statusId))
 								//	historyVO.setStautus("Inprogress");
 								//else
-									historyVO.setStautus(stautus);
-								
+								historyVO.setStautus(stautus);
+								historyVO.setOfficerDesig(officerDesigName);
 								historyVO.setOfficerId(officerId);
 								historyVO.setOfficerName(officerName);
 								historyVO.setPmOfficerDesgId(pmOfficerdesgId);
@@ -4563,7 +4564,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 													timeVO.setSubWorkDesc(hVO.getSubWorkDesc());
 													timeVO.setPetitionDesc(hVO.getPetitionDesc());
 													timeVO.setOfficerName(hVO.getOfficerName());
-													
+													timeVO.setOfficerDesig(hVO.getOfficerDesig());
 													timeVO.setAssignedToDesignation(hVO.getAssignedToDesignation());
 													timeVO.setAssignedToOfficerName(hVO.getAssignedToOfficerName());
 													timeVO.setShortName(timeVO.getShortName());
@@ -4655,6 +4656,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																		if(fileVO == null){
 																			workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),"http://www.mydepartments.in/PRRWS/"+hVO.getPath().trim()));
 																		}
+																	}else if(hVO.getStatusId().longValue() == 15L){
+																		PetitionHistoryVO workDocVO = new PetitionHistoryVO();
+																		PetitionHistoryVO workDocVO1 =  getMatchedActionVO(4L,actionVO.getSubList1());
+																		if(workDocVO1 != null){
+																			workDocVO = workDocVO1;//actionVO.getSubList1().get(0);
+																		}else{
+																			workDocVO.setId(7L);
+																			workDocVO.setName("DETAILED REPORT REVIEW");
+																			actionVO.getSubList1().add(workDocVO);
+																		}
+																		//workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),"http://www.mydepartments.in/PRRWS/"+hVO.getPath().trim()));
+																		KeyValueVO fileVO =  getMatchedActionVO1(hVO.getId(),workDocVO.getFilesList());
+																		if(fileVO == null){
+																			workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),"http://www.mydepartments.in/PRRWS/"+hVO.getPath().trim()));
+																		}
 																	}else if(hVO.getStatusId() == 8L){
 																		PetitionHistoryVO workDocVO = new PetitionHistoryVO();
 																		PetitionHistoryVO workDocVO1 =  getMatchedActionVO(6L,actionVO.getSubList1());
@@ -4662,14 +4678,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																			workDocVO = workDocVO1;//actionVO.getSubList1().get(0);
 																		}else{
 																			workDocVO.setId(6L);
-																			workDocVO.setName(hVO.getDocumentType()+"  DOCUMENT");
+																			workDocVO.setName(hVO.getDocumentType());
 																			actionVO.getSubList1().add(workDocVO);
 																		}
 																		KeyValueVO fileVO =  getMatchedActionVO1(hVO.getId(),workDocVO.getFilesList());
 																		if(fileVO == null){
 																			workDocVO.getFilesList().add(new KeyValueVO(hVO.getId(),"http://www.mydepartments.in/PRRWS/"+hVO.getPath().trim()));
 																		}
-																		
 																	}
 																}break;
 															}

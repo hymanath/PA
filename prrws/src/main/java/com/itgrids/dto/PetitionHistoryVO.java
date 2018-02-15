@@ -55,6 +55,7 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	private String assignedToOfficerMobile;
     private String shortName;
     private String documentType;
+    private String officerDesig;
     
     private List<KeyValueVO> petitionsFilesList = new ArrayList<KeyValueVO>(0);
     private List<KeyValueVO> refaralFilesList = new ArrayList<KeyValueVO>(0);
@@ -69,6 +70,12 @@ public class PetitionHistoryVO implements java.io.Serializable{
 	}
 	
 	
+	public String getOfficerDesig() {
+		return officerDesig;
+	}
+	public void setOfficerDesig(String officerDesig) {
+		this.officerDesig = officerDesig;
+	}
 	public List<KeyValueVO> getPetitionsFilesList() {
 		return petitionsFilesList;
 	}
