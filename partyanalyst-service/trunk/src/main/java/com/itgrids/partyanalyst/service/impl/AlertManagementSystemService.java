@@ -16529,7 +16529,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					}
 				}
 			}
-			//status cade pending 
+			//status code 
 			List<AlertStatus> allStatus = alertStatusDAO.getAll();
 			getAlertStatusWiseSkelton(allStatus,finalVo);
 			//statusId-0,status-1,statusColor-2,count-3
@@ -16580,7 +16580,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return null;
 	}
-	public AlertVO getJalavaniDashBoardPrintMediaDetailsInfo(JalavaniAlertsInputVO inputVo){
+	public AlertVO getJalavaniCategoryWiseDetailsInfo(JalavaniAlertsInputVO inputVo){
 		AlertVO finalVo = new AlertVO();
 		try {
 			Date startDate = null;Date endDate = null;
@@ -16589,14 +16589,49 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				startDate = sdf.parse(inputVo.getFromDateStr());
 				endDate = sdf.parse(inputVo.getToDateStr());
 			}
-			Long totalPMAlertsCount = alertDAO.getCountOfAlertsForAlertWiseCategory(startDate,endDate,2l);//total Print media alerts count
-			finalVo.setCount(totalPMAlertsCount);
+			Long totalAlertsCntBySearchType=0l;
+			List<Object[]> monthObjList =null;
+			List<Object[]> statusList=null;
 			
-			//Print media wise status 
+			if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("print")){
+				totalAlertsCntBySearchType = alertDAO.getCountOfAlertsForAlertWiseCategory(startDate, endDate, 2l);//total PRINT MEDIA alerts count
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("electronic")){
+				totalAlertsCntBySearchType = alertDAO.getCountOfAlertsForAlertWiseCategory(startDate, endDate, 3l);//total ELECTRONIC MEDIA alerts count
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("callcenter")){
+				totalAlertsCntBySearchType = alertDAO.getCountOfAlertsForAlertWiseCategory(startDate, endDate, 4l);//total ELECTRONIC MEDIA alerts count
+			}
+			
+			finalVo.setCount(totalAlertsCntBySearchType);
+			
+			finalVo.getSubList2().addAll(getMonthSkeleton());
+			
+			if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("print")){
+				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,2l);
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("electronic")){
+				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,3l);
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("callcenter")){
+				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,4l);
+			}
+			
+			if(monthObjList !=null && monthObjList.size() >0){
+				for (Object[] objects : monthObjList) {
+					AlertVO matchedMonthVO = getmatchedMonthVo(finalVo.getSubList2(),commonMethodsUtilService.getLongValueForObject(objects[0]));
+					if(matchedMonthVO != null){
+						matchedMonthVO.setLocationCnt((Long)objects[1]);
+					}
+				}
+			}
+			//status code
 			List<AlertStatus> allStatus = alertStatusDAO.getAll();
 			getAlertStatusWiseSkelton(allStatus,finalVo);
 			//statusId-0,status-1,statusColor-2,count-3
-			List<Object[]> statusList = alertDAO.getAlertsStatusOverView(startDate, endDate,2l);
+			if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("print")){
+				statusList = alertDAO.getAlertsStatusOverView(startDate, endDate,2l);
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("electronic")){
+				statusList = alertDAO.getAlertsStatusOverView(startDate, endDate,3l);
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("callcenter")){
+				statusList = alertDAO.getAlertsStatusOverView(startDate, endDate,4l);
+			}
 			if(statusList !=null && statusList.size() >0){
 				for (Object[] objects : statusList) {
 					AlertVO matchedColorVo = getmatchedStatusVo(finalVo.getList(),commonMethodsUtilService.getLongValueForObject(objects[0]));
@@ -16606,65 +16641,25 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					}
 				}
 			}
-			//Print media alerts wise monthly overview
-			finalVo.getSubList2().addAll(getMonthSkeleton());
-			List<Object[]> monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,2l);
-			if(monthObjList !=null && monthObjList.size() >0){
-				for (Object[] objects : monthObjList) {
-					AlertVO matchedMonthVO = getmatchedMonthVo(finalVo.getSubList2(),commonMethodsUtilService.getLongValueForObject(objects[0]));
-					if(matchedMonthVO != null){
-						matchedMonthVO.setLocationCnt((Long)objects[1]);
-					}
-				}
-			}
 			
+			/*if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("callcenter")){
+				//ivr code
+				List<Object[]> totalAlertcountsList =alertDAO.getTotalAlertCounts(startDate, endDate,4l);//Ivr  feed back for jalavani
+					if(totalAlertcountsList !=null && totalAlertcountsList.size()>0){
+					for (Object[] objects : totalAlertcountsList){
+						AlertVO vo = new AlertVO();
+						vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						vo.setAlertCnt(commonMethodsUtilService.getLongValueForObject(objects[2]));
+						
+						finalVo.getSubList1().add(vo);
+					}
+				} 
+			}
+			*/
 		}catch (Exception e){
-			LOG.error("Error occured getJalavaniDashBoardPrintMediaDetailsInfo() method of AlertManagementSystemService",e);
+			LOG.error("Error occured getJalavaniCategoryWiseDetailsInfo() method of AlertManagementSystemService",e);
 		}
 		return finalVo;
 	}
-	public AlertVO getJalavaniDashBoardElectronicMediaDetailsInfo(JalavaniAlertsInputVO inputVo){
-		AlertVO finalVo = new AlertVO();
-		try {
-			Date startDate = null;Date endDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			if(inputVo.getFromDateStr() != null && inputVo.getToDateStr() != null){
-				startDate = sdf.parse(inputVo.getFromDateStr());
-				endDate = sdf.parse(inputVo.getToDateStr());
-			}
-			Long totalEMAlertsCount =  alertDAO.getCountOfAlertsForAlertWiseCategory(startDate,endDate,3l); //total Electronic media alerts count
-			finalVo.setCount(totalEMAlertsCount);
-			
-			//Electronic media wise status 
-			List<AlertStatus> allStatus = alertStatusDAO.getAll();
-			getAlertStatusWiseSkelton(allStatus,finalVo);
-			//statusId-0,status-1,statusColor-2,count-3
-			List<Object[]> statusList = alertDAO.getAlertsStatusOverView(startDate, endDate,3l);
-			if(statusList !=null && statusList.size() >0){
-				for (Object[] objects : statusList) {
-					AlertVO matchedColorVo = getmatchedStatusVo(finalVo.getList(),commonMethodsUtilService.getLongValueForObject(objects[0]));
-					if(matchedColorVo !=null){
-						matchedColorVo.setColor(objects[2].toString());
-						matchedColorVo.setStatusCount((Long)objects[3]);
-					}
-				}
-			}
-			//Electronic media alerts wise monthly overview
-			finalVo.getSubList2().addAll(getMonthSkeleton());
-			List<Object[]> monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,3l);
-			if(monthObjList !=null && monthObjList.size() >0){
-				for (Object[] objects : monthObjList) {
-					AlertVO matchedMonthVO = getmatchedMonthVo(finalVo.getSubList2(),commonMethodsUtilService.getLongValueForObject(objects[0]));
-					if(matchedMonthVO != null){
-						matchedMonthVO.setLocationCnt((Long)objects[1]);
-					}
-				}
-			}
-			
-		}catch (Exception e){
-			LOG.error("Error occured getJalavaniDashBoardElectronicMediaDetailsInfo() method of AlertManagementSystemService",e);
-		}
-		return finalVo;
-	}
-
 }

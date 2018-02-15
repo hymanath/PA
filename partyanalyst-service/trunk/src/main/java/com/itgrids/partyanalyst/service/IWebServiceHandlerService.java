@@ -307,4 +307,5 @@ public interface IWebServiceHandlerService {
     public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputvo);
     public AlertVO getJalavaniDashBoardPrintMediaDetailsInfo(JalavaniAlertsInputVO inputvo);
     public AlertVO getJalavaniDashBoardElectronicMediaDetailsInfo(JalavaniAlertsInputVO inputvo);
+    public AlertVO getJalavaniCategoryWiseDetailsInfo(JalavaniAlertsInputVO inputvo);
 }
