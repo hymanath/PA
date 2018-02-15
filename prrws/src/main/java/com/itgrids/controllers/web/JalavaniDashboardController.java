@@ -1,5 +1,8 @@
 package com.itgrids.controllers.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -13,13 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.itgrids.dto.AlertVO;
 import com.itgrids.dto.JalavaniAlertsInputVO;
-import com.itgrids.dto.LocationVO;
 import com.itgrids.service.IJalavaniDashboardService;
 
 @EnableAutoConfiguration
