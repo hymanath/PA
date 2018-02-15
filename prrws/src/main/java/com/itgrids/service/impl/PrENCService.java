@@ -364,22 +364,27 @@ public class PrENCService implements IPrENCService {
 									if(workVo != null){
 										workVo.setAdminSanctionCount(workVo.getAdminSanctionCount()+json.getLong("TOT_WORKS"));
 										workVo.setTechnicallySanctionedCount(workVo.getTechnicallySanctionedCount()+json.getLong("TOT_WORKS_TECHSANC"));
+										workVo.setNonTechinicalSanctioned(workVo.getNonTechinicalSanctioned()+(workVo.getAdminSanctionCount()-workVo.getTechnicallySanctionedCount()));
 										workVo.setCompletedCount(workVo.getCompletedCount()+json.getLong("TOTWORKSCOMPLETED"));
 										workVo.setNotGrounded(workVo.getNotGrounded()+json.getLong("TOT_WORKS_NOTGROUNDED"));
 										workVo.setUnderProcessCount(workVo.getUnderProcessCount()+json.getLong("TOT_WORKS_ONGOING"));
 										workVo.setGroundedCount(workVo.getGroundedCount()+json.getLong("GROUNDED"));
 										workVo.setTotalWorksEntrusted(workVo.getTotalWorksEntrusted()+json.getLong("TOT_WORKS_ENTRUST"));
+										workVo.setNotEntrusted(workVo.getNotEntrusted()+(workVo.getTechnicallySanctionedCount()-workVo.getTotalWorksEntrusted()));
 									}
 								}else if(inputVO.getLocationType().equalsIgnoreCase("s")){
 									workVo = locationMap.get(1l);
 									if(workVo!=null){
 										workVo.setAdminSanctionCount(workVo.getAdminSanctionCount()+json.getLong("TOT_WORKS"));
 										workVo.setTechnicallySanctionedCount(workVo.getTechnicallySanctionedCount()+json.getLong("TOT_WORKS_TECHSANC"));
+										workVo.setNonTechinicalSanctioned(workVo.getNonTechinicalSanctioned()+(workVo.getAdminSanctionCount()-workVo.getTechnicallySanctionedCount()));
 										workVo.setCompletedCount(workVo.getCompletedCount()+json.getLong("TOTWORKSCOMPLETED"));
 										workVo.setNotGrounded(workVo.getNotGrounded()+json.getLong("TOT_WORKS_NOTGROUNDED"));
 										workVo.setUnderProcessCount(workVo.getUnderProcessCount()+json.getLong("TOT_WORKS_ONGOING"));
 										workVo.setGroundedCount(workVo.getGroundedCount()+json.getLong("GROUNDED"));
 										workVo.setTotalWorksEntrusted(workVo.getTotalWorksEntrusted()+json.getLong("TOT_WORKS_ENTRUST"));
+										workVo.setNotEntrusted(workVo.getNotEntrusted()+(workVo.getTechnicallySanctionedCount()-workVo.getTotalWorksEntrusted()));
+
 									}
 								}
 								
@@ -392,11 +397,14 @@ public class PrENCService implements IPrENCService {
 								if(workVo != null){
 									workVo.setAdminSanctionCount(workVo.getAdminSanctionCount()+json.getLong("TOT_WORKS"));
 									workVo.setTechnicallySanctionedCount(workVo.getTechnicallySanctionedCount()+json.getLong("TOT_WORKS_TECHSANC"));
+									workVo.setNonTechinicalSanctioned(workVo.getNonTechinicalSanctioned()+(workVo.getAdminSanctionCount()-workVo.getTechnicallySanctionedCount()));
 									workVo.setCompletedCount(workVo.getCompletedCount()+json.getLong("TOTWORKSCOMPLETED"));
 									workVo.setNotGrounded(workVo.getNotGrounded()+json.getLong("TOT_WORKS_NOTGROUNDED"));
 									workVo.setUnderProcessCount(workVo.getUnderProcessCount()+json.getLong("TOT_WORKS_ONGOING"));
 									workVo.setGroundedCount(workVo.getGroundedCount()+json.getLong("GROUNDED"));
 									workVo.setTotalWorksEntrusted(workVo.getTotalWorksEntrusted()+json.getLong("TOT_WORKS_ENTRUST"));
+									workVo.setNotEntrusted(workVo.getNotEntrusted()+(workVo.getTechnicallySanctionedCount()-workVo.getTotalWorksEntrusted()));
+
 								}
 							}
 							Map<Long, EncWorksVO> assemblyListMap= new HashMap<Long, EncWorksVO>();
@@ -412,11 +420,13 @@ public class PrENCService implements IPrENCService {
 									}
 									encVo.setAdminSanctionCount(encVo.getAdminSanctionCount()+vo.getAdminSanctionCount());
 									encVo.setTechnicallySanctionedCount(encVo.getTechnicallySanctionedCount()+vo.getTechnicallySanctionedCount());
+									encVo.setNonTechinicalSanctioned(encVo.getNonTechinicalSanctioned()+vo.getNonTechinicalSanctioned());
 									encVo.setCompletedCount(encVo.getCompletedCount()+vo.getCompletedCount());
 									encVo.setNotGrounded(encVo.getNotGrounded()+vo.getNotGrounded());
 									encVo.setUnderProcessCount(encVo.getUnderProcessCount()+vo.getUnderProcessCount());
 									encVo.setGroundedCount(encVo.getGroundedCount()+vo.getGroundedCount());
 									encVo.setTotalWorksEntrusted(encVo.getTotalWorksEntrusted()+vo.getTotalWorksEntrusted());
+									encVo.setNotEntrusted(encVo.getNotEntrusted()+vo.getNotEntrusted());
 								}
 							}
 							finalList.addAll(assemblyListMap.values());
@@ -877,6 +887,144 @@ public class PrENCService implements IPrENCService {
 		} catch (Exception e) {
 			LOG.error("Exception Occured in calculatingPercentage() method, Exception - ",e);
 		}
+	}
+	
+	public EncWorksVO getLocationWiseWorksgraphInformation(InputVO inputVO) {
+		EncWorksVO finalVo= new EncWorksVO();
+		try{
+			EncWorksVO workVo= new EncWorksVO();
+			EncWorksVO technicalVo= new EncWorksVO();
+			EncWorksVO entrustedVo= new EncWorksVO();
+			EncWorksVO ongoingVo= new EncWorksVO();
+			EncWorksVO completedVo= new EncWorksVO();
+			EncWorksVO notGroundedVo= new EncWorksVO();
+			finalVo.setLocationId(1l);
+			finalVo.setLocationName("Andra Pradesh");
+			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus",null);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+				if (output != null && !output.isEmpty()) {
+					JSONArray resultArray= new JSONArray(output);
+					JSONObject Obj = resultArray.getJSONObject(0);
+					JSONArray array = Obj.getJSONArray("result");
+					for (int i = 0; i < array.length(); i++) {
+						JSONObject json = array.getJSONObject(i);
+						workVo.setAdminSanctionCount(workVo.getAdminSanctionCount()+json.getLong("TOT_WORKS"));
+						workVo.setTechnicallySanctionedCount(workVo.getTechnicallySanctionedCount()+json.getLong("TOT_WORKS_TECHSANC"));
+						workVo.setNonTechinicalSanctioned(workVo.getNonTechinicalSanctioned()+(workVo.getAdminSanctionCount()-workVo.getTechnicallySanctionedCount()));
+						workVo.setCompletedCount(workVo.getCompletedCount()+json.getLong("TOTWORKSCOMPLETED"));
+						workVo.setNotGrounded(workVo.getNotGrounded()+json.getLong("TOT_WORKS_NOTGROUNDED"));
+						workVo.setUnderProcessCount(workVo.getUnderProcessCount()+json.getLong("TOT_WORKS_ONGOING"));
+						workVo.setGroundedCount(workVo.getGroundedCount()+json.getLong("GROUNDED"));
+						workVo.setTotalWorksEntrusted(workVo.getTotalWorksEntrusted()+json.getLong("TOT_WORKS_ENTRUST"));
+						workVo.setNotEntrusted(workVo.getNotEntrusted()+(workVo.getTechnicallySanctionedCount()-workVo.getTotalWorksEntrusted()));
+
+					}
+					Date date = new Date();
+					
+					finalVo.setAdminSanctionCount(workVo.getAdminSanctionCount());
+					technicalVo.setLocationName("technicallSanctioned");
+					technicalVo.setNotGrounded(workVo.getTechnicallySanctionedCount());
+					technicalVo.setNotGroundedExceededCount(workVo.getAdminSanctionCount()-workVo.getTechnicallySanctionedCount());
+					finalVo.getSubList().add(technicalVo);
+					
+					entrustedVo.setLocationName("entrusted");
+					entrustedVo.setNotGrounded(workVo.getTotalWorksEntrusted());
+					entrustedVo.setNotGroundedExceededCount(workVo.getTechnicallySanctionedCount()-workVo.getTotalWorksEntrusted());
+					finalVo.getSubList().add(entrustedVo);
+					
+					List<Object[]> statusList = encWorksDAO.getExceedWorksBystatus(date, "ongoing");
+					List<Object[]> completedStatusList = encWorksDAO.getExceedWorksBystatus(date, "completed");
+					if(commonMethodsUtilService.isListOrSetValid(completedStatusList)){
+						statusList.addAll(completedStatusList);
+					}
+					for (Object[] objects : statusList) {
+						if(commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase("Grounded")){
+							ongoingVo.setLocationName("Grounded");
+							ongoingVo.setNotGrounded(workVo.getGroundedCount());
+							ongoingVo.setNotGroundedExceededCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							finalVo.getSubList().add(ongoingVo);
+						}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase("Completed")){
+							completedVo.setLocationName("Completed");
+							completedVo.setNotGrounded(workVo.getCompletedCount());
+							completedVo.setNotGroundedExceededCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							finalVo.getSubList().add(completedVo);
+						}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase("Not Grounded")){
+							notGroundedVo.setLocationName("Not Grounded");
+							notGroundedVo.setNotGrounded(workVo.getNotGrounded());
+							notGroundedVo.setNotGroundedExceededCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							finalVo.getSubList().add(notGroundedVo);
+						} 
+						
+					}
+					
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getLocationWiseWorksgraphInformation() method, Exception - ",e);
+		}
+		
+		return finalVo;
+	}
+
+	@Override
+	public List<IdNameVO> getLocationWiseNotGroundedWorks(InputVO inputVO) {
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			Map<String, IdNameVO> workDetailsMap = new HashMap<String, IdNameVO>();
+			DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			Date fromDate=null, toDate= null;
+			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
+				fromDate = sdf.parse(inputVO.getFromDateStr());
+				toDate= sdf.parse(inputVO.getToDateStr());
+			}
+			List<Object[]> worksdata = encWorksDAO.getWorksData(fromDate,toDate,"not Grounded");
+			
+			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
+			
+			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
+				// 0-workid, 1-workName,2-schemeId,3-schemeName, 4-agrementAmount,5-mandalId,6-mandalName,7-districtId,8-districtName,9-constituencyId,10-constituencyname
+				//11-targetDate,12-status,13-groundedDate/completionDate, 15-no of days
+				for (Object[] param : worksdata) {
+					IdNameVO workDetailsVO = new IdNameVO();
+					workDetailsVO.setWrokIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
+					workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[7]));
+					workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
+					workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[9]));
+					workDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[10]));
+					workDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[5]));
+					workDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[6]));
+					workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[4]));
+					workDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[11]));
+					workDetailsVO.setWorkStatus(commonMethodsUtilService.getStringValueForObject(param[12]));
+					workDetailsVO.setGroundedDate(commonMethodsUtilService.getStringValueForObject(param[13]));
+					
+					if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().equalsIgnoreCase("Grounded")){
+						workDetailsVO.setCompletionDate(currentDate);
+					}else if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().equalsIgnoreCase("completed") && 
+							commonMethodsUtilService.getStringValueForObject(param[14]) != null){
+						workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[14]));
+					}
+					
+					workDetailsVO.setNoOfDays(commonMethodsUtilService.getLongValueForObject(param[15]));
+                    workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
+                    workDetailsMap.put(workDetailsVO.getWrokIdStr(),workDetailsVO);
+				}
+			}
+			Map<String,IdNameVO> resultMap = prepareWrokDtlsLocationWise2(inputVO,workDetailsMap);
+			if (resultMap != null && resultMap.size() > 0 ) {
+				finalList.addAll(new ArrayList<>(resultMap.values()));
+				calculatingPercentage(finalList);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at PrEncService - getEncTargetsAchievement", e);
+		}
+		return finalList;
 	}
    
 }
