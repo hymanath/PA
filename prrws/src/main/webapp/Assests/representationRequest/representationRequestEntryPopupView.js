@@ -314,16 +314,17 @@ function buildPetitionDetailsView(result){
 																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > ASSIGNED TO</u> : '+result.historyList[h].subList1[j].subList1[k].assignedToOfficerName+' ('+result.historyList[h].subList1[j].subList1[k].assignedToDesignation+')</h5>';
 																	str+='</div>';
 															}
-										var ofcDesigLoca = "";
-										if(result.historyList[h].subList1[j].subList1[k].pmOfficerDesgId == 19){
-												ofcDesigLoca = "";//result.historyList[h].subList1[j].subList1[k].officerName;
+										var officerDesig = "";
+										var ofcrDesigId = result.historyList[h].subList1[j].subList1[k].pmOfficerDesgId ;
+										if(ofcrDesigId != 86 && ofcrDesigId != 23 && ofcrDesigId != 94 &&  ofcrDesigId != 95
+										&& ofcrDesigId != 96 && ofcrDesigId != 97 && ofcrDesigId != 98){
+												officerDesig = result.historyList[h].subList1[j].subList1[k].officerDesig;
 											}
-														
 														str+='<div class="col-sm-3 pull-right">';
 															str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8;">';
 																str+='<h5 class="font_weight" style="color:#1283C8;text-transform:uppercase;"> UPDATED BY&nbsp;:<br>'+result.historyList[h].subList1[j].subList1[k].designation+'</h5>';
-																if(ofcDesigLoca != ""){
-																str+='<h5 class="font_weight f_10 m_top5">'+ofcDesigLoca+'</h5>';
+																if(officerDesig != ""){
+																	str+='<h5 class="font_weight f_10 m_top5">'+officerDesig+'</h5>';
 																}
 															str+='</div>';
 														str+='</div>';
@@ -338,7 +339,7 @@ function buildPetitionDetailsView(result){
 														/*else if(globalActionId != 1 )
 															$("#endorseMentHeadingId").html(" <span style='color:"+colorCode[1]+"'> Present Status : </span>"+globalActionName+" Pending  ,  <b class='text-success'> Assigned By </b>:"+result.historyList[h].subList1[j].subList1[k].designation+" ") ;*/
 														else
-															$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"    , <b class='text-success'> Updated By </b>:"+result.historyList[h].subList1[j].subList1[k].designation+" ");
+															$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"    , <b class='text-success'> Updated By </b>:"+result.historyList[h].subList1[j].subList1[k].designation+"&nbsp;"+result.historyList[h].subList1[j].subList1[k].officerDesig+" ");
 														
 													str+='</div>';
 												str+='</div>';
@@ -2960,14 +2961,16 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 												}
 											}
 										}
-										var ofcDesigLoca = "";
-										if(result.petitionHistoryList[i].subList1[j].subList1[m].pmOfficerDesgId == 19){
-												ofcDesigLoca = "("+result.petitionHistoryList[i].subList1[j].subList1[m].officerName+")";
+										var officerDesig = "";
+										var ofcrDesigId = result.petitionHistoryList[i].subList1[j].subList1[m].pmOfficerDesgId ;
+										if(ofcrDesigId != 86 && ofcrDesigId != 23 && ofcrDesigId != 94 &&   ofcrDesigId != 95
+										&& ofcrDesigId != 96 && ofcrDesigId != 97 && ofcrDesigId != 98){
+												officerDesig = "("+result.petitionHistoryList[i].subList1[j].subList1[m].officerDesig+")";
 											}
 										str+='<div class="col-sm-3 pull-right">';
 										str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
 											//str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">UPDATED BY </span>  : <br>'+result.petitionHistoryList[i].subList1[j].subList1[m].designation+''+ofcDesigLoca+'<br>('+result.petitionHistoryList[i].subList1[j].subList1[m].pmDepartmentName+')</h5>';
-											str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">UPDATED BY </span> : '+result.petitionHistoryList[i].subList1[j].subList1[m].designation+'</h5>';
+											str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">UPDATED BY </span> : '+result.petitionHistoryList[i].subList1[j].subList1[m].designation+'<br>'+officerDesig+'</h5>';
 										str+='</div>';
 										
 																str+='</div>';
@@ -3112,15 +3115,17 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																					}
 																				}
 																			}
-																			var ofcDesigLoca="";
-											if(result.petitionHistoryList[i].subList1[j].subList1[m].pmOfficerDesgId == 19){
-												ofcDesigLoca = result.petitionHistoryList[i].subList1[j].subList1[m].officerName;
+																			var officerDesig="";
+											var ofcrDesigId =result.petitionHistoryList[i].subList1[j].subList1[m].pmOfficerDesgId ;
+												if(ofcrDesigId != 86 && ofcrDesigId != 23 && ofcrDesigId != 94 &&  ofcrDesigId != 95
+										&& ofcrDesigId != 96 && ofcrDesigId != 97 && ofcrDesigId != 98){
+												officerDesig = result.petitionHistoryList[i].subList1[j].subList1[m].officerDesig;
 											}
 																			str+='<div class="col-sm-3 pull-right">';
 																					str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
 																						str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">UPDATED BY </span>  : <br>'+result.subList1[j].subList1[k].subList1[l].subList1[m].designation+'</h5>';
-																						if(ofcDesigLoca != ""){
-																							str+='<h5 class="font_weight m_top5" style="text-align: center;">'+ofcDesigLoca+'</h5>';
+																						if(officerDesig != ""){
+																							str+='<h5 class="font_weight m_top5" style="text-align: center;">'+officerDesig+'</h5>';
 																						}
 																		
 																					str+='</div>';

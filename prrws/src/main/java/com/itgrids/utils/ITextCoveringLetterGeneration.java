@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.dto.InputVO;
@@ -45,6 +46,7 @@ public class ITextCoveringLetterGeneration  {
 	List<Object[]> coveringLetrImages = null;
 	String endorseCode = "No.1/Min(PR,RD,ITE&C)/2017Dt.18.05.2017";
 	PmRequestEditVO petitionDetailsVO = new PmRequestEditVO();
+	petitionDetailsVO.setRepresentationdate("14-2-2018");
 	List<PmRequestVO> representeeList = new ArrayList<PmRequestVO>();
 	PmRequestVO pmRequestVO2 = new PmRequestVO();
 	pmRequestVO2.setName("Bandla Ashok");
@@ -81,7 +83,7 @@ public class ITextCoveringLetterGeneration  {
 	//representeeList.add(pmRequestVO3);
 	petitionDetailsVO.getReferDetailsList().addAll(representeeList);
 	petitionDetailsVO.setWorkName("requesting for sanction ...ost of Rs.150.00 Lakhs.");
-	String str1 = " #min I am here with forwarding the representation  #rdate of #rname #rdesig #rconst #rdist #Addr requesting for sanction of #works #grant #cost #lead";
+	String str1 = " #min I am here with forwarding the representation  #rdate of #rname#rdesig#rconst#rdist#Addr requesting for sanction of #works#grant#cost ";
 	//String staticPath =IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/2018/1/24" ;//commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER);
 	//if(staticPath != null && staticPath.equalsIgnoreCase("FAILED"))
 		//throw new Exception("File path not available . Please check once file path.");
@@ -94,11 +96,15 @@ public class ITextCoveringLetterGeneration  {
 	public static String generateCOVERINGLETTER(InputVO inputVO,List<Object[]> coveringLetrImages,String endorseCode,PmRequestEditVO petitionDetailsVO,String str1,String staticPath,String fileName){
 		String fileUrl = "";
 		try {
+			//Font customFont = Font.createFont(Font.DEFAULTSIZE, new File("Fonts\\Albertus MT Light.ttf")).deriveFont(12f);
+			//Font customFont = Font.createFont(Font.DEFAULTSIZE, new File("Fonts\\Albertus MT Light.ttf")).deriveFont(12f);
 			String sysPath = "D:/Tomcat 7.0/webapps/PRRWS-1.0/";
 			String logo ="";
 			//D:/Tomcat 7.0/webapps/PRRWS-1.0/Assests/images/petition images/Group 1.png
 			String deptDetailsImg ="";
 			String addrDetailsImg ="";
+			//"sign.png",to_address.png,header.png
+			
 			String sign ="";
 			String toAddrImg ="";
 			String headerImg ="";
@@ -107,7 +113,7 @@ public class ITextCoveringLetterGeneration  {
 			if(inputVO.getDisplayType() != null && (inputVO.getDisplayType().equalsIgnoreCase("AP MINISTER") || inputVO.getDisplayType().equalsIgnoreCase("MINISTER"))){
 				str1=str1.replace("#min", "");
 			}else{
-				str1=str1.replace("#min", "As direced by Hon'ble Minister, ");
+				str1=str1.replace("#min", "As directed by Hon'ble Minister, ");
 			}
 			String depts =inputVO.getDeptCode();
 			depts = inputVO.getDeptCode().replace("(", "");
@@ -120,30 +126,30 @@ public class ITextCoveringLetterGeneration  {
  				if(petitionDetailsVO.getRepresentationdate() != null && !petitionDetailsVO.getRepresentationdate().equalsIgnoreCase("")){
  					 String[] strArr = petitionDetailsVO.getRepresentationdate().split("-");
  					 String dateFormat = strArr[0]+"."+strArr[1]+"."+strArr[2];
-					 str1 = str1.replace("#rdate", "Dated: &nbsp;&nbsp;<b>"+dateFormat+"</b>");
+					 str1 = str1.replace("#rdate","Dated:<b>"+dateFormat+"</b>");
 				 }else{
-					 str1 = str1.replace("#rdate", "");
+					 str1 = str1.replace("#rdate","");
 				 }
 				if(petitionDetailsVO.getRepresenteeDetailsList() != null && petitionDetailsVO.getRepresenteeDetailsList().size()>0){
 					//representeeList.addAll(petitionDetailsVO.getRepresenteeDetailsList());
 					for (PmRequestVO pmRequestVO : petitionDetailsVO.getRepresenteeDetailsList()) {
 						 if(pmRequestVO.getName() != null && !pmRequestVO.getName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rname", pmRequestVO.getName());
+							 str1 = str1.replace("#rname",pmRequestVO.getName());
 						 }else{
-							 str1 = str1.replace("#rname", "");
+							 str1 = str1.replace("#rname","");
 						 }
 						 if(pmRequestVO.getDesignation() != null && !pmRequestVO.getDesignation().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdesig", "("+pmRequestVO.getDesignation()+")");
+							 str1 = str1.replace("#rdesig","("+pmRequestVO.getDesignation()+")");
 						 }else{
-							 str1 = str1.replace("#rdesig", "");
+							 str1 = str1.replace("#rdesig","");
 						 }
 						 if(pmRequestVO.getAddressVO().getAssemblyName() != null && !pmRequestVO.getAddressVO().getAssemblyName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rconst",","+pmRequestVO.getAddressVO().getAssemblyName()+"&nbsp;Constitueny");
+							 str1 = str1.replace("#rconst",","+pmRequestVO.getAddressVO().getAssemblyName()+" Constitueny");
 						 }else{
 							 str1 = str1.replace("#rconst","");
 						 }
 						 if(pmRequestVO.getAddressVO().getDistrictName() != null && !pmRequestVO.getAddressVO().getDistrictName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdist",","+pmRequestVO.getAddressVO().getDistrictName()+"&nbsp;&nbsp;District");
+							 str1 = str1.replace("#rdist",","+pmRequestVO.getAddressVO().getDistrictName()+" District");
 						 }else{
 							 str1 = str1.replace("#rdist","");
 						 }
@@ -151,44 +157,6 @@ public class ITextCoveringLetterGeneration  {
 				}
  			}
  			
- 			
-				//representeeList.clear();
- 			/*if(petitionDetailsVO != null){
- 				referrals = new StringBuilder();
-				if(petitionDetailsVO.getReferDetailsList() != null && petitionDetailsVO.getReferDetailsList().size()>0){
-					for (PmRequestVO pmRequestVO : petitionDetailsVO.getReferDetailsList()) {
-						int index = petitionDetailsVO.getReferDetailsList().indexOf(pmRequestVO);
-						int no = 1;
-						int index1=index+no;
-						if(pmRequestVO.getName() != null && !pmRequestVO.getName().equalsIgnoreCase("")){
-							referrals.append("<br> "+index1+")&nbsp;&nbsp; "+pmRequestVO.getName());
-							 //str1 = str1.replace("#refname","<br> "+index1+". "+pmRequestVO.getName());
-						 }else{
-							// str1 = str1.replace("#refname","");
-						 }
-						if(pmRequestVO.getDesignation() != null && !pmRequestVO.getDesignation().equalsIgnoreCase("")){
-							referrals.append(","+pmRequestVO.getDesignation());
-							// str1 = str1.replace("#refdesig", ","+pmRequestVO.getDesignation());
-						 }else{
-							 //str1 = str1.replace("#refdesig", "");
-						 }
-						if(pmRequestVO.getCandidateAddressVO().getAssemblyName() != null && !pmRequestVO.getCandidateAddressVO().getAssemblyName().equalsIgnoreCase("")){
-							referrals.append(","+pmRequestVO.getCandidateAddressVO().getAssemblyName()+"(Const)");
-							//str1 = str1.replace("#refconst",","+pmRequestVO.getCandidateAddressVO().getAssemblyName());
-						 }else{
-							 //str1 = str1.replace("#refconst", "");
-						 }
-						referrals.append(".");
-						//str1 = str1.replace("#refComma", ".");
-					}
-				}
-				
-			}
- 			if(referrals != null){
-				 str1 = str1.replace("#ref", " <br><b>Referred By :</b> :"+referrals+"<br>");
-			 }else{
-				 str1 = str1.replace("#ref", "");
-			 }*/
  			 String estCost ="0.0";
 			List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>();
 			StringBuilder works = new StringBuilder();
@@ -222,23 +190,6 @@ public class ITextCoveringLetterGeneration  {
 									BigDecimal totalCost = decmial.add(decmial1);
 									estCost = totalCost.toString();
 								}
-								/*if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
-									grant = " under "+ inputVO.getGroupName();
-								}
-								if(!pmSubwork1.getAddressVO().getPanchayatName().isEmpty()){
-									villageName= pmSubwork1.getAddressVO().getPanchayatName()+"&nbsp;&nbsp;Village and ";
-								}
-								if(!pmSubwork1.getAddressVO().getDistrictName().isEmpty()){
-									dist= pmSubwork1.getAddressVO().getDistrictName()+"&nbsp;&nbsp;District";
-									}
-								if(!pmSubwork1.getAddressVO().getTehsilName().isEmpty()){
-									tehsil= pmSubwork1.getAddressVO().getPanchayatName()+"&nbsp;&nbsp;Mandal , ";
-									}
-								if(!pmSubwork1.getAddressVO().getAssemblyName().isEmpty()){
-									consti= pmSubwork1.getAddressVO().getAssemblyName()+"&nbsp;&nbsp;Constituency of ";
-									}*/
-							// works.append(index1+")&nbsp;&nbsp;"+pmSubwork1.getSubSubject()+"&nbsp;in&nbsp;"+villageName+""+tehsil+""+consti+""+dist+""+grant+""+estCost+".<br>");
-							 //works.append(".");
 						 }
 					}
 				}
@@ -246,38 +197,31 @@ public class ITextCoveringLetterGeneration  {
 			 String grant ="";
 			 if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
 					//grant = " under "+ inputVO.getGroupName();
-					str1 = str1.replace("#grant", "&nbsp;under "+ inputVO.getGroupName());
+					str1 = str1.replace("#grant","under "+ inputVO.getGroupName());
 				}else{
-					str1 = str1.replace("#grant", "");
+					str1 = str1.replace("#grant","");
 				}
-			 
+			// estCost = "4.50";
 			 if(estCost != "0.0"){
-				 str1 = str1.replace("#cost", "&nbsp;With an Estimated Cost of Rs.<b>"+estCost+".</b>&nbsp;Lakhs ");
+				 str1 = str1.replace("#cost","With an Estimated Cost of Rs.<b>"+estCost+".</b>Lakhs ");
 			 }else{
-				 str1 = str1.replace("#cost", ".");
+				 str1 = str1.replace("#cost",".");
 			 }
 			 if(inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().size()==1l){
-				 str1 = str1.replace("#works", "&nbsp;"+inputVO.getSchemeIdsList().size()+" work");
+				 str1 = str1.replace("#works",""+inputVO.getSchemeIdsList().size()+" work");
 			 }if(inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().size()>1l){
-				 str1 = str1.replace("#works", "&nbsp;"+inputVO.getSchemeIdsList().size()+" works");
+				 str1 = str1.replace("#works",""+inputVO.getSchemeIdsList().size()+" works");
 			 }else{
-				 str1 = str1.replace("#works", "");
+				 str1 = str1.replace("#works","");
 			 }
+			 String leadName = "";
 			 if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0")){
-				 str1 = str1.replace("#lead", "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-				 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-				 		"**"+inputVO.getLeadName()+"**");
+				 leadName = inputVO.getLeadName();
 			 }else{
 				 if(inputVO.getReportType() != null & !inputVO.getReportType().isEmpty()){
-					 str1 = str1.replace("#lead", "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-						 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-						 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-						 		"Comment : **"+inputVO.getReportType()+"**");
+					 leadName="Comment : "+inputVO.getReportType()+"";
 				 }else{
-					 str1 = str1.replace("#lead", "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-						 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-						 		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-						 		"**Forwarded forTaking necessary action as per Rules**");
+					 leadName = "Forwarded forTaking necessary action as per Rules";
 				 }
 			 }
 			 /*if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
@@ -332,30 +276,26 @@ public class ITextCoveringLetterGeneration  {
 							str.append("</table>");
 						str.append("</header><br><br>");
 						str.append("<table>");
-							str.append("<tr align='center'>");
-								str.append("<td face='COURIER' size='3'><u>"+endorseCode+"</u></td><br>");
+							str.append("<tr>");
+								str.append("<td face='Courier' size='3' align='center'><u>"+endorseCode+"</u></td><br>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td face='COURIER' size='3'>Sir,</td>");
+								str.append("<td face='Courier' size='3'>Sir,</td>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td><p size='3' face='COURIER'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+str1+"</p></td><br><br>");
+								str.append("<td ><p size='3' face='Courier' style='line-height:200%'>&nbsp;&nbsp;"+str1+"</p></td>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td face='COURIER' size='3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-										"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+							str.append("<td ><p size='3' face='Courier' align='center'>"+leadName+"</p></td><br>");
+						str.append("</tr>");
+							str.append("<tr>");
+								str.append("<td face='Courier' size='3' align='right'>" +
 										"Yours faithfully,</td>");
 							str.append("</tr>");
-						str.append("</table>");
-						str.append("<table>");
+						
 							str.append("<tr>");
 								str.append("<td>");
-									str.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+sign.toString()+"' width='80px' height='50px'>");
+									str.append("<p><img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+sign.toString()+"' width='80px' height='50px' align='right'/></p>");
 								str.append("</td>");
 							str.append("</tr>");
 							str.append("<tr>");
@@ -370,8 +310,10 @@ public class ITextCoveringLetterGeneration  {
 			
 			 fileUrl = staticPath.replace(IConstants.STATIC_CONTENT_FOLDER_URL,"")+fileName;
 			String endorsmentNO = inputVO.getEndValue();
+			
 			OutputStream file = new FileOutputStream(new File(staticPath+fileName));
-			Document document = new Document();
+			Document document = new Document(PageSize.A4,70,40, 10, 10);
+			//document.setMargins(70, 50, 10, 10); 
 			/*Font subtitleFont = FontFactory.getFont("Times Roman", 12, BaseColor.BLACK);
 	        Paragraph subTitle = new Paragraph(str1.toString(), subtitleFont);
 	        document.add(subTitle);*/
