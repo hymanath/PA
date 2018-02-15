@@ -2590,8 +2590,8 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		    		" where  model.isDeleted ='N' and  model.isExpired ='N' ");
 		    
 		    if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
-	 			if (locationTypeId == 2) {
-	 				//sb.append(" and model.nominatedPostMember.address.state.stateId in(:locationValue) ");
+	 			if (locationTypeId == 2l) {
+	 				sb.append(" and model.nominatedPostMember.address.state.stateId in(:locationValue) ");
 	 				//sb.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
 	 			} else if (locationTypeId == 3) {
 					sb.append(" and model.address.district.districtId in(:locationValue) ");
@@ -2619,7 +2619,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		     sb.append(" and model.applicationStatus.applicationStatusId not in(8,2,4) ");
 		       sb.append(" group by model.nominatedPostMember.boardLevelId");
 		       Query query = getSession().createQuery(sb.toString());
-		       if (locationTypeId != null && locationValues != null && locationValues.size()>0 && locationTypeId !=2l) {
+		       if (locationTypeId != null && locationValues != null && locationValues.size()>0 ) {
 		          query.setParameterList("locationValue",locationValues);
 		       }
 		      // query.setParameterList("locationValue",locationValues);
