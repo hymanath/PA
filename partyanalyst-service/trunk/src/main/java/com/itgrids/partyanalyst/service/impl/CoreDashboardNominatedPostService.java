@@ -227,7 +227,7 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 		            total=total+commonMethodsUtilService.getLongValueForObject(param[2]);
 				}
 			}
-			List<Object[]> recivedApplicationsCount = nominatedPostApplicationDAO.getLocationWiseApplicationCount(locationValues,startDate,endDate,locationTypeId,boardLevelId); 
+			List<Object[]> recivedApplicationsCount = nominatedPostApplicationDAO.getLocationWiseApplicationCount(new ArrayList<Long>(locationValuesSet),startDate,endDate,locationTypeId,boardLevelId); 
 			if(recivedApplicationsCount != null && recivedApplicationsCount.size()>0){
 				for(Object[] param : recivedApplicationsCount){
 					Long levelId = commonMethodsUtilService.getLongValueForObject(param[1]); 
@@ -434,6 +434,7 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 					Long levelId = commonMethodsUtilService.getLongValueForObject(param[0]); 
 					Long statusId = commonMethodsUtilService.getLongValueForObject(param[2]);
 					String levelName = commonMethodsUtilService.getStringValueForObject(param[1]);
+					Long boardLvlId =commonMethodsUtilService.getLongValueForObject(param[5]);
 					NominatedPostCandidateDtlsVO deptVO = levelMap.get(levelId);
 			        if(deptVO == null){
 			            deptVO =new NominatedPostCandidateDtlsVO();
@@ -442,7 +443,10 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 			            deptVO.setLevelList(getAllBoardLevelList(boardLevelId));
 			            levelMap.put(levelId, deptVO);
 			          }
-			        NominatedPostCandidateDtlsVO matchedBoardVo = getMatchVO(deptVO.getLevelList(),commonMethodsUtilService.getLongValueForObject(param[5]));
+			        if(boardLvlId == 5l || boardLvlId ==6l){
+			        	boardLvlId =5l;
+			        }
+			        NominatedPostCandidateDtlsVO matchedBoardVo = getMatchVO(deptVO.getLevelList(),boardLvlId);
 			        if(matchedBoardVo != null){
 		            if(statusId.longValue() == 1l){
 		            	matchedBoardVo.setOpenCount(matchedBoardVo.getOpenCount()+commonMethodsUtilService.getLongValueForObject(param[4])); 
@@ -474,8 +478,15 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 			List<Object[]> boardLevelList=boardLevelDAO.getAllBoardLevels(boardLevelId);
 			for(Object[] param : boardLevelList){
 				NominatedPostCandidateDtlsVO vo= new NominatedPostCandidateDtlsVO();
-				vo.setLevelValue(commonMethodsUtilService.getLongValueForObject(param[0]));
-				vo.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				Long boardLvlId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				 if(boardLvlId == 5l || boardLvlId ==6l){
+			        	boardLvlId =5l;
+			        	vo.setLevelValue(5l);
+						vo.setLocationName("Mandal/Muncipality/Corporation");
+			        }else{
+				    vo.setLevelValue(commonMethodsUtilService.getLongValueForObject(param[0]));
+				    vo.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+			        }
 				levelList.add(vo);
 			}
 			
@@ -1034,9 +1045,13 @@ public List<NominatedPostCandidateDtlsVO> getConstituencyWiseNominatedPostDetail
 	if(nominatedPostList != null && nominatedPostList.size()>0){
 		for(Object[] param : nominatedPostList){
 			Long statusId = commonMethodsUtilService.getLongValueForObject(param[2]);
+			Long boardLvlId = commonMethodsUtilService.getLongValueForObject(param[5]);
+			if(boardLvlId == 5l || boardLvlId ==6l){
+	        	boardLvlId =5l;
+	        }
 			NominatedPostCandidateDtlsVO deptVO = getMatchedLocationVo(finalList,commonMethodsUtilService.getLongValueForObject(param[0]));
 	        if(deptVO != null){
-	        	NominatedPostCandidateDtlsVO matchedBoardVo = getMatchVO(deptVO.getLevelList(),commonMethodsUtilService.getLongValueForObject(param[5]));
+	        	NominatedPostCandidateDtlsVO matchedBoardVo = getMatchVO(deptVO.getLevelList(),boardLvlId);
 		        if(matchedBoardVo != null){
 	            if(statusId.longValue() == 1l){
 	            	matchedBoardVo.setOpenCount(matchedBoardVo.getOpenCount()+commonMethodsUtilService.getLongValueForObject(param[4])); 

@@ -3034,7 +3034,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 if(startDate != null && endDate != null){
 			 sb.append(" and (date(nominatedPost.updatedTime) between :startDate and :endDate) ");
 		 }
-		 sb.append(" and nominatedPost.nominatedPostMember.boardLevel.boardLevelId  not in(1,2,6,8) ");
+		 sb.append(" and nominatedPost.nominatedPostMember.boardLevel.boardLevelId  not in(1,2,8) ");
 		 if(boardLevelId != null && boardLevelId.longValue()>0l){
 			 sb.append(" and nominatedPost.nominatedPostMember.boardLevel.boardLevelId >=:boardLevelId ");
 		 }
