@@ -11,7 +11,8 @@ function onloadCalls(){
 	levelWiseOverview();
 	getLocationWiseWorksInformation("state","s","graph");
 	getLocationWiseWorkTargetsNacheivements("state","s","graph");
-	getLocationWiseExceededWorkDetails("state","state","graph")
+	getLocationWiseExceededWorkDetails("state","state","graph");
+	getLocationWiseNotGroundedExceededWorkDetails("state","state","graph");
 	
 }
 
@@ -55,6 +56,7 @@ function levelWiseOverview()
 								collapse+='<ul class="list-inline switch-btn workWiseDetailsCls">';
 									collapse+='<li attr_type="works" attr_location_type="'+levelWiseOverviewArr[i]+'">Complete Work OverView</li>';
 									collapse+='<li class="active" attr_type="exceed" attr_location_type="'+levelWiseOverviewArr[i]+'">Exceed Works OverView</li>';
+									collapse+='<li attr_type="notGrounded" attr_location_type="'+levelWiseOverviewArr[i]+'">NotGrounded Exceed Works OverView</li>';
 									collapse+='<li attr_type="targets" attr_location_type="'+levelWiseOverviewArr[i]+'">Target&Achivements OverView</li>';
 								collapse+='</ul>';
 							collapse+='</div>';
@@ -101,18 +103,21 @@ function levelWiseOverview()
 }
 
 function getLocationWiseWorksInformation(blockId,locationType,type){
+	var url="";
 	if(type=='graph'){
 		$("#enclocationWiseChart").html(spinner);
+		$("#enclocationWiseChart2").html(spinner);
+		url="getLocationWiseWorksgraphInformation";
 	}else{
 		$("#"+blockId).html(spinner);
-		
+		url="getLocationWiseWorksInformation";
 	}
 		var json = {
 			locationType:locationType
 		}
 		$.ajax({                
 			type:'POST',    
-			url: 'getLocationWiseWorksInformation',
+			url: url,
 			dataType: 'json',
 			data : JSON.stringify(json),
 			beforeSend :   function(xhr){
@@ -120,7 +125,7 @@ function getLocationWiseWorksInformation(blockId,locationType,type){
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-		 	if(result !=null && result.length>0){
+		 	if(result !=null){
 				if(type=='graph'){
 					buildLocationWiseWorksGraph(result)
 				}
@@ -220,85 +225,156 @@ function locationwiseTableBlocks(result,blockId,locationType){
 }
 
 function buildLocationWiseWorksGraph(result){
+	var str='';
+	var str1='';
+	str+='<table id="datatable">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th></th>';
+				str+='<th>OverAll Works</th>';
+				str+='<th>Exceed Works</th>';
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result.subList){
+			if(result.subList[i].locationName !="entrusted" && result.subList[i].locationName !="technicallSanctioned"){
+				str+='<tr>';
+					str+='<th>'+result.subList[i].locationName+'</th>';
+					str+='<td>'+result.subList[i].notGrounded+'</td>';
+					str+='<td>'+result.subList[i].notGroundedExceededCount+'</td>';
+				str+='</tr>';
+			}
+			
+		}
+			
+		str+='</tbody>';
+	str+='</table>';
 
+	str1+='<table id="datatable2">';
+		str1+='<thead>';
+			str1+='<tr>';
+				str1+='<th></th>';
+				str1+='<th>sanctioned Works</th>';
+				str1+='<th>Pending Works</th>';
+			str1+='</tr>';
+		str1+='</thead>';
+		str1+='<tbody>';
+		for(var i in result.subList){
+			if(result.subList[i].locationName =="entrusted" || result.subList[i].locationName=="technicallSanctioned"){
+				str1+='<tr>';
+					str1+='<th>'+result.subList[i].locationName+'</th>';
+					str1+='<td>'+result.subList[i].notGrounded+'</td>';
+					str1+='<td>'+result.subList[i].notGroundedExceededCount+'</td>';
+				str1+='</tr>';
+			}
+			
+		}
+			
+		str1+='</tbody>';
+	str1+='</table>';
+	$("#datatable1").html(str);
+	$("#datatable3").html(str1);
+	
 	$("#enclocationWiseChart").highcharts({
+		colors:['#16af18','red'],
+		data: {
+			table: 'datatable'
+		},
 		chart: {
 			type: 'column'
 		},
 		title: {
 			text: ''
 		},
-	   
+		plotOptions: {
+			column: {
+				//colorByPoint: true
+				dataLabels: {
+					useHTML:true,
+					enabled: true,
+					formatter: function() {
+						if(this.y == 0){
+							return null;
+						}else{
+							return '<span>'+this.y+'</span>';
+						}
+						
+					}
+				}
+			}/* ,
+			series: {
+				pointWidth: 10
+			} */
+		},
 		xAxis: {
 			min: 0,
 			gridLineWidth: 0,
-			minorGridLineWidth: 0,
-			type: 'category'
+			minorGridLineWidth: 0
 		},
 		yAxis: {
 			min: 0,
 			gridLineWidth: 0,
 			minorGridLineWidth: 0,
 			allowDecimals: false,
-			min: 0,
 			title: {
-				text: ''
+				text: 'Units'
 			}
-
 		},
-		legend: {
-			enabled: false
+		tooltip: {
+			formatter: function () {
+				return '<b>' + this.series.name + '</b><br/>' +
+					this.point.y + '';
+			}
+		}
+	});
+	$("#enclocationWiseChart2").highcharts({
+		colors:['#16af18','red'],
+		data: {
+			table: 'datatable2'
+		},
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: ''
 		},
 		plotOptions: {
-			series: {
-				borderWidth: 0,
+			column: {
+				//colorByPoint: true
 				dataLabels: {
+					useHTML:true,
 					enabled: true,
-					format: '{point.y}'
+					formatter: function() {
+						if(this.y == 0){
+							return null;
+						}else{
+							return '<span>'+this.y+'</span>';
+						}
+						
+					}
 				}
 			}
 		},
-
-		tooltip: {
-			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0
 		},
-
-		series: [{
-			name: 'Works',
-			colorByPoint: true,
-			data: [{
-				name: 'Admin Sanctioned',
-				y: result[0].adminSanctionCount,
-				color:'#5fc24f'
-				
-			}, {
-				name: 'Techincal Sancationed',
-				y: result[0].technicallySanctionedCount,
-				color:'#418CF0	'
-			},{
-				name: 'Entrusted',
-				y: result[0].totalWorksEntrusted,
-				color:'#FFBF00'
-				
-			},{
-				name: 'Grounded',
-				y: result[0].groundedCount,
-				color:'#ACFA58'
-			},{
-				name: 'UnderProcess',
-				y: result[0].underProcessCount,
-				color:'#FA5858'
-			},{
-				name:'Completed',
-				y:result[0].completedCount,
-				color:'#009999'
-			},{
-				name: 'Not Grounded',
-				y: result[0].notGrounded,
-				color:'#DF013A'
-			}]
-		}]
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			allowDecimals: false,
+			title: {
+				text: 'Units'
+			}
+		},
+		tooltip: {
+			formatter: function () {
+				return '<b>' + this.series.name + '</b><br/>' +
+					this.point.y + '';
+			}
+		}
 	});
 }
 
@@ -389,8 +465,19 @@ function buildGraph(result)	{
 			},
 			plotOptions: {
 				column: {
-					stacking: 'normal',
-					 pointPadding: 0.2,
+					//colorByPoint: true
+					dataLabels: {
+						useHTML:true,
+						enabled: true,
+						formatter: function() {
+							if(this.y == 0){
+								return null;
+							}else{
+								return '<span>'+this.y+'</span>';
+							}
+							
+						}
+					}
 				}
 			},
 			series: [{
@@ -436,10 +523,22 @@ function buildGraph(result)	{
 						//'Total: ' + this.point.stackTotal + '<br/>' +
 				}
 			},
+			
 			plotOptions: {
 				column: {
-					stacking: 'normal',
-					pointPadding: 0.2,
+					//colorByPoint: true
+					dataLabels: {
+						useHTML:true,
+						enabled: true,
+						formatter: function() {
+							if(this.y == 0){
+								return null;
+							}else{
+								return '<span>'+this.y+'</span>';
+							}
+							
+						}
+					}
 				}
 			},
 			series: [{
@@ -629,22 +728,9 @@ function buildGraphforExceededWorks(response){
 	  for(var j in response[i].subList){
 			var tempArr = [];
 			statusNamesArr.push(response[i].subList[j].name);
-			dataArr.push({"y":response[i].subList[j].count,"extra":""+response[i].subList[j].ongoingPWSExceededCount+"-"+response[i].subList[j].completedPWSExceededCount});
+			dataArr.push({"y":response[i].subList[j].count,color: "#EE6CA9","extra":""+response[i].subList[j].ongoingPWSExceededCount+"-"+response[i].subList[j].completedPWSExceededCount});
 			totalCount=totalCount+response[i].subList[j].count;
 			
-			if(response[i].subList[j].name == "In Time"){
-				colors.push('#14BAAD')
-			}else if(response[i].subList[j].name == "1-30 Days"){
-				colors.push('#FC5049')
-			}else if(response[i].subList[j].name == "31-60 Days"){
-				colors.push('#FC5059')
-			}else if(response[i].subList[j].name == "91-180 Days"){
-				colors.push('#FC5068')
-			}else if(response[i].subList[j].name == "181-365 Days"){
-				colors.push('#FC5079')
-			}else{
-				colors.push('#FFBF14')
-			}
 		}
 	}
 	$("#ExceededWorkDetailsGraph").highcharts({
@@ -683,14 +769,30 @@ function buildGraphforExceededWorks(response){
 		},
 		plotOptions: {
 			column: {
-				stacking: 'normal'
+				//colorByPoint: true
+				dataLabels: {
+					useHTML:true,
+					enabled: true,
+					color: '#000',
+				align: 'center',
+					formatter: function() {
+						if(this.y == 0){
+							return null;
+						}else{
+							var pcnt = (this.y / totalCount) * 100;
+							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+						}
+						
+					}
+				}
 			}
 		},
 		series: [{
 			name: '',
 			data: dataArr,
-			showInLegend: false,
+			showInLegend: false
 		}]
+		
 	});
 }
  function buildExceededWorksBlocks(result,blockId,locationType){
@@ -700,19 +802,27 @@ function buildGraphforExceededWorks(response){
 				table+='<thead>';
 					table+='<tr>';
 						if(blockId == 'statelevelBlockId'){
-							table+='<th>STATE</th>';
+							table+='<th rowspan="2">STATE</th>';
 						}else if(blockId == 'districtlevelBlockId'){
-							table+='<th>DISTRICTS</th>';
+							table+='<th rowspan="2">DISTRICTS</th>';
 						}else if(blockId == 'constituencylevelBlockId'){
-							table+='<th>CONSTITUENCY</th>';
+							table+='<th rowspan="2">CONSTITUENCY</th>';
 						}else if(blockId == 'mandallevelBlockId'){
-							table+='<th>MANDALS</th>';
+							table+='<th rowspan="2">MANDALS</th>';
 						}
-						table+='<th>TOTAL WORKS</th>';
+						table+='<th rowspan="2">TOTAL WORKS</th>';
 						for(var i in result[0].subList){
-							table+='<th>'+result[0].subList[i].name+'</th>';
+							table+='<th colspan="2">'+result[0].subList[i].name+'</th>';			
 						}
 					table+='</tr>';
+					table+='<tr>';
+						for(var i in result[0].subList){
+							table+='<th>works</th>';
+							table+='<th><span class="colspanLenIncstate"><i class="fa fa-inr m_top5" style="font-size:12px" aria-hidden="true"></i> In Crores</span></th>';
+							
+						}
+					table+='</tr>';
+					
 				table+='</thead>';
 				table+='<tbody>';
 					for(var i in result){
@@ -721,6 +831,7 @@ function buildGraphforExceededWorks(response){
 							table+='<td>'+result[i].count+'</td>';
 							for(var j in result[i].subList){		
 								table+='<td>'+result[i].subList[j].count+'</td>';
+								table+='<td>'+parseFloat(result[i].subList[j].sanctionedAmount/10000000).toFixed(2)+'</td>';
 							}
 						table+='</tr>';
 					}
@@ -756,7 +867,7 @@ function buildGraphforExceededWorks(response){
 					pageSize	: 'A3',
 					customize	: function (doc) {
 								doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-								}
+						}
 				}
 			]
 		});
@@ -810,5 +921,143 @@ $(document).on("click",".workWiseDetailsCls li",function(e){
 			getLocationWiseWorkTargetsNacheivements(locationType+'levelBlockId','m','table');
 			
 		}
+	}else if(type == "notGrounded"){
+		if(locationType == "state"){
+			getLocationWiseNotGroundedExceededWorkDetails(locationType+'levelBlockId','state','table');
+		}
+		else if(locationType == "district"){
+			getLocationWiseNotGroundedExceededWorkDetails(locationType+'levelBlockId','district','table');
+		}
+		else if(locationType == "constituency"){
+			getLocationWiseNotGroundedExceededWorkDetails(locationType+'levelBlockId','constituency','table');
+		}
+		else if(locationType == "mandal"){
+			getLocationWiseNotGroundedExceededWorkDetails(locationType+'levelBlockId','mandal','table');
+			
+		}
 	}
+});
+
+function getLocationWiseNotGroundedExceededWorkDetails(blockId,locationType,type){
+	if(type=='graph'){
+		$("#NotGroundedExceededWorkDetailsGraph").html(spinner);
+	}else{
+		$("#"+blockId).html(spinner);
+		
+	}
+		var json = {
+			locationType:locationType,
+			frodateStr:"",
+			toDateStr:"",
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getLocationWiseNotGroundedWorks',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+		 	if(result !=null && result.length>0){
+				if(type=='graph'){
+					buildNotGroundedGraphforExceededWorks(result)
+				}
+				buildExceededWorksBlocks(result,blockId,locationType);
+			}else{
+				if(type=='graph'){
+					$("#NotGroundedExceededWorkDetailsGraph").html("NO DATA AVAILABLE");
+				}else{
+					$('#'+blockId).html("NO DATA AVAILABLE");
+				}
+			}
+		});
+}
+function buildNotGroundedGraphforExceededWorks(response){
+	
+	var dataArr = [];
+	var totalCount=0;
+	var statusnotGroundNamesArr=[];
+	var colors1 = []
+	for(var i in response){
+		for(var j in response[i].subList){
+			if(response[i].subList[j].name != "In Time"){
+				var tempArr = [];
+				statusnotGroundNamesArr.push(response[i].subList[j].name);
+				dataArr.push({"y":response[i].subList[j].count,color: "#C61379","extra":""+response[i].subList[j].ongoingPWSExceededCount+"-"+response[i].subList[j].completedPWSExceededCount});
+				totalCount=totalCount+response[i].subList[j].count;
+			}
+		}
+	}
+	$("#NotGroundedExceededWorkDetailsGraph").highcharts({
+		chart: {
+			type: 'column'
+			
+		},
+		title: {
+			text: null
+		},
+		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: statusnotGroundNamesArr,
+			
+		},
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			allowDecimals: false,
+			min: 0,
+			title: {
+				text: null
+			}
+		},
+		
+		tooltip: {
+			formatter: function () {
+				var value = (this.point.extra).split("-");
+				return '<b>' + this.x + '</b><br/>' +
+					'Not grounded Exceeded : ' + this.y + '';
+			}
+		},
+		plotOptions: {
+			column: {
+				//colorByPoint: true
+				dataLabels: {
+					useHTML:true,
+					enabled: true,
+					color: '#000',
+				align: 'center',
+					formatter: function() {
+						if(this.y == 0){
+							return null;
+						}else{
+							var pcnt = (this.y / totalCount) * 100;
+							return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+						}
+						
+					}
+				}
+			}
+		},
+		series: [{
+			name: '',
+			data: dataArr,
+			showInLegend: false
+		}]
+	});
+}
+/*  $(document).ready(function() {
+	alert(1);
+        $('#showmenu').click(function() {
+             $('.menu').slideToggle("fast");
+			getLocationWiseWorkTargetsNacheivements("state","s","graph");
+        });
+    });  */
+
+$(".collapseClick").click(function(){
+	getLocationWiseWorkTargetsNacheivements("state","s","graph");
 });
