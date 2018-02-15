@@ -15,4 +15,6 @@ public interface IEncWorksDAO extends GenericDao<EncWorks,Long>{
 
 	public EncWorks findOneByworkId(Long workId);
 
+	public List<Object[]> getExceedWorksBystatus(Date date, String type);
+
 }

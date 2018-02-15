@@ -19,5 +19,9 @@ public interface IPrENCService {
 	public List<EncTargetsVO> getEncTargetsAchievement(InputVO inputVO);
 
 	public List<IdNameVO> getExceededEncWorks(InputVO inputVO);
+	
+	public EncWorksVO getLocationWiseWorksgraphInformation(InputVO inputVO);
+
+	public List<IdNameVO> getLocationWiseNotGroundedWorks(InputVO inputVO);
 
 }

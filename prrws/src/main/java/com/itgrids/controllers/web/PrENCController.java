@@ -116,5 +116,28 @@ public class PrENCController {
 		return returnList;
 
 	}
+	@PostMapping("/getLocationWiseWorksgraphInformation")
+	public @ResponseBody EncWorksVO  getLocationWiseWorksgraphInformation(@RequestBody InputVO inputVO){
+		EncWorksVO returnList = null;
+		try {
+			returnList = prENCService.getLocationWiseWorksgraphInformation(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNtrJalaSiriAbstract - PrENCController", e);
+		}
+		return returnList;
+	}
+
+	@PostMapping("/getLocationWiseNotGroundedWorks")
+	public @ResponseBody List<IdNameVO>  getLocationWiseNotGroundedWorks(@RequestBody InputVO inputVO){
+		List<IdNameVO> returnList = null;
+		try {
+			returnList = prENCService.getLocationWiseNotGroundedWorks(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNtrJalaSiriAbstract - PrENCController", e);
+		}
+		return returnList;
+	}
 }
 	
