@@ -6980,17 +6980,17 @@ public class NREGSTCSService implements INREGSTCSService{
 							vo.setPanchayat(jObj.getString("PANCHAYAT"));
 							vo.setThisMonth(jObj.getString("MONTH"));
 							vo.setPerDays1516(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("PER_DAYS_1516")));
-							vo.setWageExp1516(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("WAGE_EXP_1516")));
-							vo.setMatExp1516(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("MAT_EXP_1516")));
-							vo.setTotal1516(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1516")));
+							vo.setWageExp1516(convertRupeesIntocroresFrDoubleValue(jObj.getString("WAGE_EXP_1516")));
+							vo.setMatExp1516(convertRupeesIntocroresFrDoubleValue(jObj.getString("MAT_EXP_1516")));
+							vo.setTotal1516(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1516")));
 							vo.setPerDays1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("PER_DAYS_1617")));
-							vo.setWageExp1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("WAGE_EXP_1617")));
-							vo.setMatExp1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("MAT_EXP_1617")));
-							vo.setTotal1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1617")));
+							vo.setWageExp1617(convertRupeesIntocroresFrDoubleValue(jObj.getString("WAGE_EXP_1617")));
+							vo.setMatExp1617(convertRupeesIntocroresFrDoubleValue(jObj.getString("MAT_EXP_1617")));
+							vo.setTotal1617(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1617")));
 							vo.setPerDays1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("PER_DAYS_1718")));
-							vo.setWageExp1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("WAGE_EXP_1718")));
-							vo.setMatExp1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("MAT_EXP_1718")));
-							vo.setTotal1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1718")));
+							vo.setWageExp1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("WAGE_EXP_1718")));
+							vo.setMatExp1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("MAT_EXP_1718")));
+							vo.setTotal1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1718")));
 							/*vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00) / Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 							vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());*/
 							returnList.add(vo);
@@ -7413,10 +7413,10 @@ public class NREGSTCSService implements INREGSTCSService{
 									&& inputVO.getMonthType().trim().equalsIgnoreCase(jObj.getString("MONTH"))) {
 								vo.setUniqueId(Long.valueOf((jObj.getString("UNIQUE_ID").toString().trim().length() > 0 ? jObj.getString("UNIQUE_ID") : "1").toString()));
 								// vo.setMatExp1617(jObj.getLong("MAT_EXP_1617"));
-								vo.setTotal1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1617")));
-								vo.setWageExp1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("WAGE_EXP_1718")));
-								vo.setMatExp1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("MAT_EXP_1718")));
-								vo.setTotal1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1718")));
+								vo.setTotal1617(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1617")));
+								vo.setWageExp1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("WAGE_EXP_1718")));
+								vo.setMatExp1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("MAT_EXP_1718")));
+								vo.setTotal1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1718")));
 								vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00)/ Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 								vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 								if (vo.getPercentage() != null && vo.getPercentage().contains("-")) {
@@ -7459,8 +7459,8 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    				 JSONObject jObj = (JSONObject) finalArray.get(i);
 			 	    				if (inputVO.getMonthType() != null
 											&& inputVO.getMonthType().trim().equalsIgnoreCase(jObj.getString("MONTH"))) {
-			 	    					vo.setTotal1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1617")));
-				 	    				 vo.setTotal1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1718")));
+			 	    					vo.setTotal1617(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1617")));
+				 	    				 vo.setTotal1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1718")));
 				 	    				 vo.setType("district");
 				 	    				 vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00)/ Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				 	    				 vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -7502,8 +7502,8 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				 JSONObject jObj = (JSONObject) finalArray.get(i);
 		 	    				if (inputVO.getMonthType() != null
 										&& inputVO.getMonthType().trim().equalsIgnoreCase(jObj.getString("MONTH"))) {
-		 	    					vo.setTotal1617(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1617")));
-			 	    				 vo.setTotal1718(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("TOT_1718")));
+		 	    					vo.setTotal1617(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1617")));
+			 	    				 vo.setTotal1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1718")));
 			 	    				 vo.setType("state");
 			 	    				 vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00)/ Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			 	    				 vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -7926,6 +7926,20 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return returnVal;
 	}
+	
+	public String convertRupeesIntocroresFrDoubleValue(String value){
+		String returnVal = null;
+		try {
+			if(value != null){
+				returnVal = new BigDecimal(Double.valueOf(value)/10000000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				returnVal = returnVal;
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at convertRupeesIntoLakhesFrDoubleValue - NREGSTCSService service", e);
+		}
+		return returnVal;
+	}
+	
 	/*
 	 * Date : 16/12/2017
 	 * Author :Nandhini

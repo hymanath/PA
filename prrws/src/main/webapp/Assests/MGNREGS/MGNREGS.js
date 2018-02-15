@@ -982,7 +982,7 @@ function projectData(divId,levelId,locationId)
 									}else if(divId == 'Expenditure')
 									{
 										if(dataArr[i] == 'state' || dataArr[i] == 'district' || dataArr[i] == 'constituency' || dataArr[i] == 'mandal' || dataArr[i] == 'panchayat')
-											collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Expenditure(In Lakhs)</h4>';
+											collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - Expenditure (Person Days In Lakhs , Expenditure in Crores.)</h4>';
 									}else{
 										collapse+='<h4 class="panel-title text-capitalize">'+dataArr[i]+' level overview - '+divId+'</h4>';
 									}
