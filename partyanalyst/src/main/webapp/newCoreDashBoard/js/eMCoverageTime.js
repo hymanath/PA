@@ -279,16 +279,16 @@ function getCandidateAndPartyWiseNewsChannals(type,categoryId,isParticipated,cha
 	
 	$.ajax({	
 		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDateEM+"/"+currentToDateEM+"/"+categoryId+"/"+type+"/"+isParticipated+"/"+channelIds
-		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDateEM+"/"+currentToDateEM+"/"+categoryId+"/"+type+"/"+isParticipated+"/"+channelIds
+		//url: "http://192.168.11.194:8080/CommunityNewsPortal/webservice/getCandidateAndPartyWiseNewsChannals/"+currentFromDateEM+"/"+currentToDateEM+"/"+categoryId+"/"+type+"/"+isParticipated+"/"+channelIds
 	}).then(function(result){
 		if(result != null && result.length > 0){
-			getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated);
+			getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated,channelIds);
 		}else{
 			$("#EMCoverageTimeSummaryDivId").html("No Data Available");
 		}
 	});
 }
-function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
+function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated,channelIds){
 	var str="";
 	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered" id="dataTableCanAndPartyWiseNewsChannel" style="width:100%">';
@@ -362,7 +362,7 @@ function getCandidateAndPartyWiseNewsChannelsBuilding(result,isParticipated){
 						str+='<td class=""> -</td>';
 					}
 					if(result[i].coreDashBoardVOList[j].totalNegative !=null && result[i].coreDashBoardVOList[j].totalNegative>0){
-						str+='<td class=""><a class="emctClickCls" attr_benefit_id="1" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="right" class="emToolTipCls2"  data-toogle="tooltip" style="cursor: pointer;" title="Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsPrimeNegativeCoveredTime+' Non&nbsp;Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].coreDashBoardVOList[j].overalIsNotPrimedescription+'</span></a></td>';
+						str+='<td class=""><a class="emctClickCls" attr_benefit_id="2" attr_candidateId="'+result[i].coreDashBoardVOList[j].organizationId+'" attr_channelId="'+channalId+'" attr_participate="'+isParticipated+'" attr_partId="'+result[i].coreDashBoardVOList[j].organizationId+'" style="cursor:pointer;"><span data-placement="right" class="emToolTipCls2"  data-toogle="tooltip" style="cursor: pointer;" title="Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsPrimeNegativeCoveredTime+' Non&nbsp;Prime&nbsp;Time&nbsp;:&nbsp;'+result[i].coreDashBoardVOList[j].totalIsNotPrimeNegativeCoveredTime+'">'+result[i].coreDashBoardVOList[j].overalIsNotPrimedescription+'</span></a></td>';
 					}else{
 						str+='<td class=""> -</td>';
 					}
@@ -410,7 +410,7 @@ function getDayWiseCandidateCoverageTime(type,categoryId,isParticipated,channelI
 	}); 
 	$.ajax({	
 		url: wurl+"/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDateEM+"/"+currentToDateEM+"/"+isParticipated+"/"+channelIds
-		//url: "http://192.168.11.194:8086/CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDateEM+"/"+currentToDateEM+"/"+isParticipated+"/"+channelIds
+		//url: "http://192.168.11.194:8080//CommunityNewsPortal/webservice/getDayWiseCandidateCoverageTime/"+categoryId+"/"+type+"/"+currentFromDateEM+"/"+currentToDateEM+"/"+isParticipated+"/"+channelIds
 	}).then(function(result){
 		if(result != null && result.length > 0){
 			buildDayWiseCandidateCoverageTime(result);
@@ -680,6 +680,16 @@ $(document).on("click",".emctClickCls",function(){
 		var benefitId = $(this).attr("attr_benefit_id"); 
 		var candidateId = $(this).attr("attr_candidateId");
 		var channelId = $(this).attr("attr_channelId");
+		if(channelId == 0){
+			var channelId=[1,2,3,5,6,7]; 
+			$(".newsChannelSelectAllClsEmn").each(function(){
+		   if($(this).is(":checked")){
+			channelId.push($(this).val());
+		   }
+	      });
+		}else{
+			var channelId = $(this).attr("attr_channelId");
+		}
 		var participate = $(this).attr("attr_participate");
 		var partyId =$(this).attr("attr_partId");
 		if(type == "party"){
