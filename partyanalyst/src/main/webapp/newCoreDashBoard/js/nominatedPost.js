@@ -471,7 +471,7 @@ function buildNominatedgetUserTypeWiseTopFivePoor(result){
 									name: 'District Level Posts',
 									data: districtLevelCountArr
 								},{
-									name: 'Constotuency Level Posts',
+									name: 'Constituency Level Posts',
 									data: constituencyLevelNameArray
 								},{
 									name: 'Mandal Level Posts',
@@ -546,7 +546,7 @@ function locationNominatedWiseDate(locationTypeVal)
 	}
 	$("#levelWiseNominatedDetailsDivId").html(collapse);
 	for(var i in levelWiseNominatedArr){
-		if(locationTypeVal == "department"){//srujana
+		if(locationTypeVal == "department"){
 			getDepartmentWisePostAndApplicationDetails(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal);
 		}else{
 			if(levelWiseNominatedArr[i].name == "state"){
@@ -646,12 +646,12 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 							str+='<th class="font_weight">Open Posts</th>';
 							str+='<th class="font_weight">Expire in 1Month</th>';
 							str+='<th class="font_weight">Expire in 2Month</th>';
-							str+='<th class="font_weight">Expire in 3Month</th>';
+							str+='<th class="font_weight">Expire in 3Month</th>'; 
 						}else{
 							str+='<th class="font_weight">Department</th>';
 							str+='<th class="font_weight">Total Posts</th>';
 							str+='<th class="font_weight">G.O Issued</th>';
-							//str+='<th class="font_weight">Finalized Posts</th>';
+							str+='<th class="font_weight">Finalized Posts</th>';
 							str+='<th class="font_weight">Open Posts</th>';
 							str+='<th class="font_weight">Expire in 1Month</th>';
 							str+='<th class="font_weight">Expire in 2Month</th>';
@@ -677,6 +677,7 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 										str+='<td>'+result[i].name+'</td>';
 										str+='<td>'+result[i].totalCount+'</td>';
 										str+='<td>'+result[i].goIsuuedCnt+'</td>';
+										str+='<td>'+result[i].finalizedCnt+'</td>';
 										str+='<td>'+result[i].openCnt+'</td>';
 										str+='<td>'+result[i].expireOneMnth	+'</td>';
 										str+='<td>'+result[i].expireTwoMnth+'</td>';
@@ -709,7 +710,7 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 									str+='<th class="font_weight" colspan="4" style="background-color:#EDECE0 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
 								}else if(result[0].levelList[i].locationName =="Assembly"){
 									str+='<th class="font_weight" colspan="4" style="background-color:#E3E4F0 !important;">Constituency Level Posts</th>';
-								}else if(result[0].levelList[i].locationName =="Mandal"){
+								}else if(result[0].levelList[i].locationName =="Mandal/Muncipality/Corporation"){
 									str+='<th class="font_weight" colspan="4" style="background-color:#F0E6D7 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
 								}else if(result[0].levelList[i].locationName =="Village"){
 									str+='<th class="font_weight" colspan="4" style="background-color:#ECF7F4 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
@@ -729,7 +730,7 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 									str+='<th class="font_weight" style="background-color:#E3E4F0 !important;">Open Posts</th>';
 									str+='<th class="font_weight" style="background-color:#E3E4F0 !important;">Final Review</th>';
 									str+='<th class="font_weight" style="background-color:#E3E4F0 !important;">Completed/ G.O Issued</th>';
-								}else if(result[0].levelList[i].locationName =="Mandal"){
+								}else if(result[0].levelList[i].locationName =="Mandal/Muncipality/Corporation"){
 									str+='<th class="font_weight" style="background-color:#F0E6D7 !important;">Total Posts</th>';
 									str+='<th class="font_weight" style="background-color:#F0E6D7 !important;">Open Posts</th>';
 									str+='<th class="font_weight" style="background-color:#F0E6D7 !important;">Final Review</th>';
@@ -747,7 +748,7 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 					str+='</thead>';
 					str+='<tbody>';
 						for(var i in result){
-							var colorObj={"District":"#EDECE0","Assembly":"#E3E4F0","Mandal":"#F0E6D7","Village":"#ECF7F4"};
+							var colorObj={"District":"#EDECE0","Assembly":"#E3E4F0","Mandal/Muncipality/Corporation":"#F0E6D7","Village":"#ECF7F4"};
 								str+='<tr>';
 									str+='<td>'+result[i].board+'</td>';
 									for(var j in result[i].levelList){
@@ -877,6 +878,10 @@ function buildDepartMentAndBoardWisePositinsStatusCount(result){
 }
 $(document).on("click",".KaizalaRefresh",function(){
 	onloadNominatedCalls();
+});
+$(document).on("click",".nominatedRefresh",function(){
+	onloadNominatedCalls();
+	getUserTypeWiseNominatedPostDetailsCnt();
 });
 /*getDepartMentWiseBoards();
 function getDepartMentWiseBoards()

@@ -4571,7 +4571,7 @@
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="nominatedPost">
 							<span class="nominatedIconRefresh pull-right">
-								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+								<i class="glyphicon glyphicon-refresh nominatedRefresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
 							</span> 
 							<span class="nominatedIconExpand pull-right mainExpandCls" expand-icon="nominatedPost">
 								<i class="glyphicon glyphicon-fullscreen"></i>
@@ -4813,6 +4813,11 @@
 					</div>
 				</div>
 			</div>
+			<div class="row paginationCls">
+					<div class="col-md-12 m_top20">
+						<div class="paginationId"></div>
+					</div>
+				</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
