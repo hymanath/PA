@@ -8706,9 +8706,71 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	Query query = getSession().createQuery("select model.alertCallCenterTypeId,model.type from AlertCallCenterType model ");
     	return query.list();
     }
-    public List<Object[]> getTotalAlertGroupByStatusForCentralAreaMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,List<Long> constIds){
+    public List<Object[]> getTotalAlertGroupByStatusForCentralAreaMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,List<Long> constIds,Long tdpCadreId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select alertStatus.alertStatusId, alertStatus.alertStatus, count(distinct model.alertId) " +
+		
+		
+		queryStr.append(" select " +
+				" alertstatu9_.alert_status_id as statusId, alertstatu9_.alert_status as status, count(distinct alert0_.alert_id) as count ");
+		queryStr.append(" from " +
+				" alert alert0_  left outer join user_address useraddres1_ on alert0_.address_id=useraddres1_.user_address_id "+
+		  "  left outer join state state2_ on useraddres1_.state_id=state2_.state_id left outer join district district3_ on useraddres1_.district_id=district3_.district_id " +
+		  "  left outer join constituency constituen4_ on useraddres1_.constituency_id=constituen4_.constituency_id " +
+		  "  left outer join tehsil tehsil5_ on useraddres1_.tehsil_id=tehsil5_.tehsil_id " +
+		  "  left outer join local_election_body localelect6_ on useraddres1_.local_election_body=localelect6_.local_election_body_id " +
+		  "  left outer join panchayat panchayat7_ on useraddres1_.panchayat_id=panchayat7_.panchayat_id " +
+		  "  left outer join constituency constituen8_ on useraddres1_.ward=constituen8_.constituency_id " +
+		  "  left outer join alert_status alertstatu9_ on alert0_.alert_status_id=alertstatu9_.alert_status_id " );
+		  
+		queryStr.append(" where  alert0_.is_deleted='N'  " );
+		
+		if(constIds != null && constIds.size() > 0l){
+			queryStr.append(" and (constituen4_.constituency_id in (:constIds)) ");
+		}
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and (date(alert0_.created_time) between :fromDate and :toDate ) ");
+		}
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and state2_.state_id = 1 ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and state2_.state_id = 36 ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and state2_.state_id in (1,36) ");
+			}
+		}
+		
+		if(alertTypeId !=null && alertTypeId > 0L){
+			queryStr.append(" and alert0_.alert_type_id =:alertTypeId ");
+		}
+		if(tdpCadreId !=null){
+			queryStr.append(" and alert0_.alert_id not in ( select distinct alert_id from alert_candidate where tdp_cadre_id = :tdpCadreId ) ");
+		}
+		
+		queryStr.append(" group by alert0_.alert_status_id order by alert0_.alert_status_id ");
+		
+		
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("statusId", Hibernate.LONG)
+				.addScalar("status", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG);
+		
+		if(constIds != null && constIds.size() > 0l){
+			query.setParameterList("constIds", constIds);
+		}
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(alertTypeId !=null && alertTypeId > 0L){
+			query.setParameter("alertTypeId", alertTypeId);
+		}
+		
+		if(tdpCadreId !=null){
+			query.setParameter("tdpCadreId", tdpCadreId);
+		}
+		
+		/*queryStr.append("select alertStatus.alertStatusId, alertStatus.alertStatus, count(distinct model.alertId) " +
 						" from Alert model " +
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
@@ -8719,6 +8781,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" left join userAddress.panchayat panchayat  " +
 						" left join userAddress.ward ward  ");
 		queryStr.append(" left join model.alertStatus alertStatus ");
+		
 		
 		queryStr.append(" where model.isDeleted = 'N'");
 		
@@ -8741,6 +8804,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(alertTypeId !=null && alertTypeId > 0L){
 			queryStr.append(" and model.alertTypeId = :alertTypeId ");
 		}
+		
+		
+		
 		queryStr.append(" group by model.alertStatus.alertStatusId order by model.alertStatus.alertStatusId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		
@@ -8754,9 +8820,12 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(alertTypeId !=null && alertTypeId > 0L){
 			query.setParameter("alertTypeId", alertTypeId);
 		}
+		
+		*/
+		
 		return query.list(); 
 	}
-    public List<Object[]> getTotalAlertGroupByStatusThenCategoryForCentralAreaMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,List<Long> consIds){
+    public List<Object[]> getTotalAlertGroupByStatusThenCategoryForCentralAreaMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,List<Long> consIds,Long tdpCadreId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
 						" alertStatus.alertStatusId, " +
@@ -8799,6 +8868,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(alertTypeId !=null && alertTypeId > 0L){
 			queryStr.append(" and model.alertTypeId = :alertTypeId ");
 		}
+		
+		if(tdpCadreId !=null){
+			queryStr.append(" and model.alertId not in (select distinct model.alertId from AlertCandidate model where model.tdpCadreId = :tdpCadreId) ");
+		}
+		
 		queryStr.append(" group by alertStatus.alertStatusId, alertCategory.alertCategoryId " +
 						" order by alertStatus.alertStatusId, alertCategory.alertCategoryId ");
 		Query query = getSession().createQuery(queryStr.toString());
@@ -8814,9 +8888,12 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(alertTypeId !=null && alertTypeId > 0L){
 			query.setParameter("alertTypeId", alertTypeId);
 		}
+		if(tdpCadreId !=null){
+			query.setParameter("tdpCadreId", tdpCadreId);
+		}
 		return query.list(); 
 	}
-    public List<Object[]> getLocationLevelWiseAlertsDataForCentralAreaMembers(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,List<Long> consIds)
+    public List<Object[]> getLocationLevelWiseAlertsDataForCentralAreaMembers(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,List<Long> consIds,Long tdpCadreId)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select " +
@@ -8932,6 +9009,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(inputVO.getCategoryId() != null && inputVO.getCategoryId().longValue()>0L)
 			str.append(" and alertCategory.alertCategoryId = :alertCategoryId");
 		
+		
+		if(tdpCadreId !=null){
+			str.append(" and model.alertId not in (select distinct model.alertId from AlertCandidate model where model.tdpCadreId = :tdpCadreId) ");
+		}
+		
 		Query query = getSession().createQuery(str.toString());
 		if(sourceIds != null && sourceIds.size() > 0)
 			query.setParameterList("sourceIds", sourceIds);
@@ -8956,6 +9038,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		if(consIds != null && consIds.size() > 0l)
 			query.setParameterList("consIds", consIds);
+		
+		if(tdpCadreId !=null){
+			query.setParameter("tdpCadreId", tdpCadreId);			
+		}
+		
 		return query.list();
 	}
 public List<Object[]> getTotalAlertsDateWise(Date fromDate,Date toDate,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds){
