@@ -82,5 +82,8 @@ public interface IConstants {
     public static final List<Long> PETITIONS_STATE_LEVEL_DESIGNATION_IDS=Arrays.asList(2L,86L,23L,94L,95L,93L,96L,97L,84L);//,87L);// 87 - HODs
     public static final List<Long> PETITIONS_DISTRICT_LEVEL_DESIGNATION_IDS=Arrays.asList(19L,80L,79L,90L,88L,9L);
     public static final List<Long> FINAL_APPROVED_ACCESS_DESIGNAION_IDS=Arrays.asList(23L);
+  //public static final String PDF_FONT_PATH = "C:/Windows/Fonts/14530.TTF";
+    public static final String PDF_FONT_PATH = "/usr/share/fonts/14530.TTF";
+    public static final String PDF_FONT = "Albertus MT Lt";
     
 }
