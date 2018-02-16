@@ -126,7 +126,7 @@ public class ITextCoveringLetterGeneration  {
  				if(petitionDetailsVO.getRepresentationdate() != null && !petitionDetailsVO.getRepresentationdate().equalsIgnoreCase("")){
  					 String[] strArr = petitionDetailsVO.getRepresentationdate().split("-");
  					 String dateFormat = strArr[0]+"."+strArr[1]+"."+strArr[2];
-					 str1 = str1.replace("#rdate","Dated:<b>"+dateFormat+"</b>");
+					 str1 = str1.replace("#rdate"," Dated: <b>"+dateFormat+"</b>");
 				 }else{
 					 str1 = str1.replace("#rdate","");
 				 }
@@ -144,12 +144,12 @@ public class ITextCoveringLetterGeneration  {
 							 str1 = str1.replace("#rdesig","");
 						 }
 						 if(pmRequestVO.getAddressVO().getAssemblyName() != null && !pmRequestVO.getAddressVO().getAssemblyName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rconst",","+pmRequestVO.getAddressVO().getAssemblyName()+" Constitueny");
+							 str1 = str1.replace("#rconst",", "+pmRequestVO.getAddressVO().getAssemblyName()+" Constitueny");
 						 }else{
 							 str1 = str1.replace("#rconst","");
 						 }
 						 if(pmRequestVO.getAddressVO().getDistrictName() != null && !pmRequestVO.getAddressVO().getDistrictName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdist",","+pmRequestVO.getAddressVO().getDistrictName()+" District");
+							 str1 = str1.replace("#rdist",", "+pmRequestVO.getAddressVO().getDistrictName()+" District");
 						 }else{
 							 str1 = str1.replace("#rdist","");
 						 }
