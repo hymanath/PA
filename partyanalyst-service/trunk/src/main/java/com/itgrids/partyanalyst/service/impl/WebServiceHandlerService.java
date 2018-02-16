@@ -5806,5 +5806,23 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVo;
 	}
+	public List<AlertVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputvo){
+		List<AlertVO> alertVoList = new ArrayList<AlertVO>(0);
+		try{
+			alertVoList = alertManagementSystemService.getJalavanilocationAndStatusDetailsInfo(inputvo);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavanilocationAndStatusDetailsInfo  method in WebServiceHandlerService1",e);
+    	}
+    	return alertVoList;
+	}
+	public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputvo){
+		List<AlertVO> alertVoList = new ArrayList<AlertVO>(0);
+		try{
+			alertVoList = alertManagementSystemService.getAlertsMonthlyOverviewInfoBySearchType(inputvo);
+    	}catch(Exception e){
+    		log.error("Exception raised in getAlertsMonthlyOverviewInfoBySearchType  method in WebServiceHandlerService1",e);
+    	}
+    	return alertVoList;
+	}
 	
 }
