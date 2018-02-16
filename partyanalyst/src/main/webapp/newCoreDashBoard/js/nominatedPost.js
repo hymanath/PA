@@ -2,12 +2,12 @@ var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><
 levelWiseNominatedArr=[{name:'state',id:'2'},{name:'district',id:'3'},{name:'constituency',id:'4'}];
 function onloadNominatedCalls(){
 	getLevelWisePostsOverView();
-	if($(".moreAttNominatedBlocksIcon").hasClass("expandBlockNominated")){
+	//if($(".moreAttNominatedBlocksIcon").hasClass("expandBlockNominated")){
 		$("[role='tabCummulativeNomi1'] li").removeClass("active");
 		$("[role='tabCummulativeNomi1'] li:nth-child(1)").addClass("active");
-		 locationNominatedWiseDate('department');
+		 locationNominatedWiseDate('location');
 		
-	 }
+	 //}
 }
 $(document).on("click",".nominatedIconExpand",function(){
 	if($(this).find("i").hasClass("glyphicon glyphicon-resize-small" )){
@@ -24,7 +24,7 @@ $(document).on("click",".moreAttNominatedBlocksIcon",function(){
 		$(".deptLocNominatedCls").show(); 
 		$("[role='tabCummulativeNomi1'] li").removeClass("active");
 		$("[role='tabCummulativeNomi1'] li:nth-child(1)").addClass("active");
-		locationNominatedWiseDate('department');
+		locationNominatedWiseDate('location');
 		
 });
 $(document).on("click",".expandBlockNominated",function(){
@@ -291,7 +291,7 @@ function buildNominatedgetUserTypeWiseTopFiveStrong(result){
 									name: 'District Level Posts',
 									data: districtLevelCountArr
 								},{
-									name: 'Constotuency Level Posts',
+									name: 'Constituency Level Posts',
 									data: constituencyLevelNameArray
 								},{
 									name: 'Mandal Level Posts',
@@ -664,12 +664,12 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 					str+='<tbody>';
 						for(var i in result){
 								str+='<tr>';
-									if(locationTypeVal == "location"){
+									if(locationTypeVal == "location"){ 
 										str+='<td>'+result[i].locationName+'</td>';
 										str+='<td>'+result[i].totalPosts+'</td>';
-										str+='<td class="statusClickCls"  attr_type="goIssued" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2">'+result[i].goIsuuedCount+'</td>';
-										str+='<td>'+result[i].finalizedPost+'</td>';
-										str+='<td class="statusClickCls"  attr_type="open" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2" attr_board_statusIds="0">'+result[i].openCount+'</td>';
+										str+='<td class="statusClickCls"  attr_type="goIssued" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2" attr_board_statusIds="4">'+result[i].goIsuuedCount+'</td>';
+										str+='<td class="statusClickCls"  attr_type="finalIssued" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2" attr_board_statusIds="3">'+result[i].finalizedPost+'</td>';
+										str+='<td class="statusClickCls"  attr_type="open" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2" attr_board_statusIds="1">'+result[i].openCount+'</td>';
 										str+='<td>'+result[i].expireOneMonth+'</td>';
 										str+='<td>'+result[i].exprireTwoMnth+'</td>';
 										str+='<td>'+result[i].expireThreeMnth+'</td>';
@@ -692,7 +692,7 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 			$("#nominated"+locationTypeVal+divId).html(str);
 			$(".dataTableNomi"+locationTypeVal+divId).dataTable({
 				"iDisplayLength": 10,
-				"aaSorting": [],
+				"aaSorting": [[4,'desc']],
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 				
 			});
@@ -779,10 +779,11 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 					str+='</tbody>';
 				str+='</table>';
 			str+='</div>';
+			//oTable.fnSort( [[2,"asc"], [3,"asc"]] );
 			$("#nominated"+locationTypeVal+divId).html(str);
 			$(".dataTableNomiL"+locationTypeVal+divId).dataTable({
 				"iDisplayLength": 10,
-				"aaSorting": [],
+				"aaSorting": [[6,'desc']],
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 				
 			});
@@ -876,9 +877,6 @@ function buildDepartMentAndBoardWisePositinsStatusCount(result){
 		
 	});
 }
-$(document).on("click",".KaizalaRefresh",function(){
-	onloadNominatedCalls();
-});
 $(document).on("click",".nominatedRefresh",function(){
 	onloadNominatedCalls();
 	getUserTypeWiseNominatedPostDetailsCnt();
@@ -942,16 +940,19 @@ function getBoardWisePositions()
 			$("#departmentPostModal .modal-dialog").css("width","95%");
 			$("#TitleId").html(departmentName+  "  Open Posts Details");
 			$("#openPostDetailsModalDivId").html(spinner)
+			$(".paginationId").html("");
 			getDepartmentWiseOpenPostAndApplicationDetails(deptId,boardLevelId,type);
 		}else if(type == "goIssued"){
 			$("#departmentPostModal").modal("show");
 			$("#departmentPostModal .modal-dialog").css("width","95%");
 			$("#TitleId").html(departmentName + "  G.O Issued Positions");
+			$(".paginationId").html("");
 			getLevelWiseGoIssuedPostions(boardLevelId,statusIds,0,10);
 		}else if(type == "finalIssued"){
 			$("#departmentPostModal").modal("show");
 			$("#departmentPostModal .modal-dialog").css("width","95%");
 			$("#TitleId").html(departmentName + "  Final Review Positions");
+			$(".paginationId").html("");
 			getLevelWiseGoIssuedPostions(boardLevelId,statusIds,0,10);
 		}else if(type == "department"){
 			$("#boardWiseModal").modal("show");
@@ -959,6 +960,7 @@ function getBoardWisePositions()
 			$("#boardTitleId").html(departmentName+" Details");
 			$(".paginationCls").html("");
 			$("#departmentDetailsModalDivId").html(spinner)
+			$(".paginationId").html("");
 			getDepartmentWiseOpenPostAndApplicationDetails(deptId,0,type);
 		}
 	
