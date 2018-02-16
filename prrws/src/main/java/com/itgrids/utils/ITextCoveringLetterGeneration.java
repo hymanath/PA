@@ -204,7 +204,7 @@ public class ITextCoveringLetterGeneration  {
 				}
 			// estCost = "4.50";
 			 if(estCost != "0.0"){
-				 str1 = str1.replace("#cost","with an estimated cost of Rs.<b>"+estCost+"</b>&nbspLakhs ");
+				 str1 = str1.replace("#cost","with an estimated cost of Rs.<b>"+estCost+"</b>&nbsp;Lakhs ");
 			 }else{
 				 str1 = str1.replace("#cost","");
 			 }
