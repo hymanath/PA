@@ -39,7 +39,7 @@ public class ITextCoveringLetterGeneration  {
 	
 	/*public static void main(String a[]){
 	InputVO inputVO = new InputVO();
-	inputVO.setLeadName("Forwarded for taking further necessary action ");
+	inputVO.setLeadName("Forwarded for Taking necessary action as per rules");
 	inputVO.setGroupName("NREGS Convergence");
 	inputVO.setEndValue("8");
 	inputVO.setDisplayType("OSD");
@@ -140,7 +140,7 @@ public class ITextCoveringLetterGeneration  {
 					//representeeList.addAll(petitionDetailsVO.getRepresenteeDetailsList());
 					for (PmRequestVO pmRequestVO : petitionDetailsVO.getRepresenteeDetailsList()) {
 						 if(pmRequestVO.getName() != null && !pmRequestVO.getName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rname"," Sri. "+pmRequestVO.getName());
+							 str1 = str1.replace("#rname",""+pmRequestVO.getName());
 						 }else{
 							 str1 = str1.replace("#rname","");
 						 }
@@ -211,7 +211,7 @@ public class ITextCoveringLetterGeneration  {
 			 if(estCost != "0.0"){
 				 str1 = str1.replace("#cost","with an estimated cost of Rs.&nbsp;<b>"+estCost+"</b>&nbsp;Lakhs. ");
 			 }else{
-				 str1 = str1.replace("#cost","");
+				 str1 = str1.replace("#cost",".");
 			 }
 			 if(inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().size()==1l){
 				 str1 = str1.replace("#works",""+inputVO.getSchemeIdsList().size()+" work");
