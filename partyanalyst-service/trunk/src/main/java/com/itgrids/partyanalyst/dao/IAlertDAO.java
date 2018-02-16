@@ -203,4 +203,6 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getAlertsMonthWiseOverview(Date fromDate,Date toDate,Long typeId);
 	public List<Object[]> getAlertsStatusOverView(Date fromDate,Date toDate,Long typeId);
 	public Long getCountOfAlertsForAlertWiseCategory(Date fromDate,Date toDate,Long typeId);
+	public List<Object[]> getAlertAndStatusWiseCountsForDist(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId);
+	public List<Object[]> getjalavaniIvrSurveyDeatails(Date fromDate,Date toDate);
 }
