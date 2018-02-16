@@ -1722,52 +1722,21 @@
 										<label>Category Name</label>
 										<select class="form-control chosen-select" id="categoryId">
 											<option value="0">Select Category</option>
+											<option value="1156" selected="selected">TELUGU DESAM -  DALITA TEJAM</option>
 											<option value="1051" selected="selected">PRAJA SANKALPA YATRA</option>
 											<option value="1109">JANMABOOMI - MAA URU 2018</option>
-											<option value="1115">COMMON PEOPLE VS GOVT-JB 2018</option>
-											<option value="1116">COMMON PEOPLE VS TDP-JB 2018</option>
-											<option value="1118">TDP VS GOVT-JB 2018</option>
-											<option value="1119">TDP VS BJP-JB 2018</option>
-											<option value="1120">TDP VS TDP-JB 2018</option>
-											<option value="1121">TDP VS YSRCP-JB 2018</option>
-											<option value="1122">YSRCP VS GOVT-JB 2018</option>
-											<option value="1117">OTHER PARTIES-JB 2018</option>
-											<option value="1123">PENSIONS-JB 2018</option>
-											<option value="1124">RATION-JB 2018</option>
-											<option value="1125">HOUSING-JB 2018</option>
-											<option value="1126">RUNAMAFI-JB 2018</option>
-											<option value="1127">UPADHIHAMI-JB 2018</option>
-											<option value="1128">MARUGUDODLU BILLS-JB 2018</option>
-											<option value="1050">COUNTER ON PRAJA SANKALPA YATRA</option>
-											<option value="1063">KAPU RESERVATIONS - 5%</option>
-											<option value="710">GADAPA GADAPAKU YSRCP - 2016</option>
-											<option value="691">JANA CHAITANYA YATRA</option>
-											<option value="943">NANDYALA BYE ELECTION</option>
 											<option value="695">JANMABOOMI - MAA URU</option>
-											<option value="721">VANAM-MANAM 2016</option>
-											<option value="1030">YSR KUTUMBAM</option>
-											<option value="925">NAVA NIRMANA DEEKSHA</option>
 											<option value="688">NEERU - CHETTU </option>
 											<option value="472">AGAINST TDP</option>
 											<option value="483">TDP PROGRAMMES</option>
-											<option value="493">YS JAGAN</option>
-											<option value="494">ANTI JAGAN</option>
 											<option value="672">CHANDRANNA RAITHU YATRA</option>
-											<option value="689">MANA MATTI - MANA NEERU</option>
 											<option value="762">CHANDRANNA BHEEMA</option>
 											<option value="772">NTR AROGYA SREE</option>
 											<option value="773">NTR SRUJALA</option>
 											<option value="774">NTR JALASIRI</option>
 											<option value="787">CHANDRANNA DALITABATA</option>
 											<option value="788">MANA URU MANA MLA</option>
-											<option value="825">YUVA YATRA</option>
-											<option value="872">PRAJA CHAITANYA YATRA</option>
-											<option value="888">NEERU - PRAGATHI</option>
-											<option value="936">ERUVAKA PROGRAMME</option>
 											<option value="948">INTINTIKI TDP</option>
-											<option value="950">VANAM - MANAM - 2017</option>
-											<option value="971">ANNA CANTEENS</option>
-											<option value="1008">JAGAN PADAYATRA</option>
 											<option value="1039">MEE INTIKI MEE MLA</option>
 										</select>
 									</div>
