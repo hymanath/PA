@@ -3821,6 +3821,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 													resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),inputVO.getId(), endorsmentNo,inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
 											}
 											
+											if(commonMethodsUtilService.isListOrSetValid(inputVO.getFilesList())){
+												for (MultipartFile file : inputVO.getFilesList()) {
+													document = null;//saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,inputVO.getId(),null);
+													if(document != null)
+														resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),
+																inputVO.getId(), endorsmentNo,inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
+												}
+											}
 										}else if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && inputVO.getStatusId().longValue() != 6L){
 											String status="";
 											if(commonMethodsUtilService.isListOrSetValid(inputVO.getFilesList())){
@@ -4030,6 +4038,23 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmTrackingVO.setPmSubWorkDetailsId(null);
 						updatePetitionTracking(pmTrackingVO,updatedTime);
 					}
+					
+					PmSubWorkCoveringLetter pmSubWorkCoveringLetter = new PmSubWorkCoveringLetter();
+					
+					pmSubWorkCoveringLetter.setPetitionId(petitonId);
+					pmSubWorkCoveringLetter.setEndorsmentNo(endorsmentNo);
+					pmSubWorkCoveringLetter.setPmSubWorkDetailsId(null);
+					pmSubWorkCoveringLetter.setDocumentId(documentId);
+					pmSubWorkCoveringLetter.setReportType(reportType);
+					pmSubWorkCoveringLetter.setIsDeleted("N");
+					if(documentTypeId != null && documentTypeId.longValue() >0l){
+						pmSubWorkCoveringLetter.setDocumentTypeId(documentTypeId);
+					}/*else{
+						pmSubWorkCoveringLetter.setDocumentTypeId(4l);
+					}*/
+					pmSubWorkCoveringLetter.setRefNo(refNo);
+					pmSubWorkCoveringLetter = pmSubWorkCoveringLetterDAO.save(pmSubWorkCoveringLetter);
+					
 				}
 				status.setExceptionMsg("SUCCESS");
 			} catch (Exception e) {
