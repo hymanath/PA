@@ -150,12 +150,12 @@ public class ITextCoveringLetterGeneration  {
 							 str1 = str1.replace("#rdesig","");
 						 }
 						 if(pmRequestVO.getAddressVO().getAssemblyName() != null && !pmRequestVO.getAddressVO().getAssemblyName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rconst"," "+pmRequestVO.getAddressVO().getAssemblyName()+" constituency");
+							 str1 = str1.replace("#rconst"," "+pmRequestVO.getAddressVO().getAssemblyName()+" constituency,");
 						 }else{
 							 str1 = str1.replace("#rconst","");
 						 }
 						 if(pmRequestVO.getAddressVO().getDistrictName() != null && !pmRequestVO.getAddressVO().getDistrictName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdist",", "+pmRequestVO.getAddressVO().getDistrictName()+" district");
+							 str1 = str1.replace("#rdist",""+pmRequestVO.getAddressVO().getDistrictName()+" district");
 						 }else{
 							 str1 = str1.replace("#rdist","");
 						 }
