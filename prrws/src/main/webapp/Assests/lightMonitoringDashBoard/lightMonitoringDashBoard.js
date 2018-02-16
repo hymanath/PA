@@ -31,6 +31,7 @@ function onLoadCalls()
 	getBasicLedOverviewDetails();
 	getCompanyWiseLightMonitoringDtls();
 	menuWiseDetails();
+	getTimePeriodWiseLightsDetaisl();
 }
 
 $(document).on("click",".menuDataCollapse",function(){
@@ -221,7 +222,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
 	var str='';
 	str+='<div class="col-sm-12">';
 				str+='<div class="dropdown">';
-			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-top:-27px;color: #8341D7;margin-right:10px;" id="surveyDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Survey Details Location Wise">&#9432;</span>';
+			str+='<span class="pull-right dropdown-toggle tooltipWattCls" style="font-weight: 600; cursor: pointer; font-size: 18px;margin-top:-27px;color: #8341D7;margin-right:10px;display:none;" id="surveyDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-container="body" title="Survey Details Location Wise">&#9432;</span>';
 				str+='<div class="dropdown-menu pull-right bg_ED arrow_box_bottom verticalScrollBar arrow_box_top_led" aria-labelledby="surveyDropdownMenu" style="margin-right: -10px">';
 				str+='<div class="poles_block">';
 					str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
@@ -404,7 +405,7 @@ function buildBasicLedOverviewDetails(result)
 	
 			str+='<div class="col-sm-12">';
 			
-				str+='<div class="col-sm-2 m_top5 addRemoveClass">';
+				str+='<div class="col-sm-3 m_top5 addRemoveClass">';
 				str+='<div class="media">';
 					str+='<div class="media-left">';
 						str+='<img src="Assests/icons/CCMS_Box_icon.png" alt="poles_icon">';
@@ -416,7 +417,7 @@ function buildBasicLedOverviewDetails(result)
 				str+='</div>';
 			str+='</div>';
 			
-			str+='<div class="col-sm-2 m_top5">';
+			str+='<div class="col-sm-3 m_top5">';
 					str+='<div class="media">';
 						str+='<div class="media-left">';
 							str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon">';
@@ -428,7 +429,7 @@ function buildBasicLedOverviewDetails(result)
 					str+='</div>';
 			str+='</div>';
 			
-			str+='<div class="col-sm-2 m_top5">';
+			/* str+='<div class="col-sm-2 m_top5">';
 				str+='<div class="media">';
 					str+='<div class="media-left">';
 						str+='<img src="Assests/icons/Operational_LED_Light_Icon.png" alt="poles_icon">';
@@ -438,9 +439,9 @@ function buildBasicLedOverviewDetails(result)
 						str+='<h3>'+result[0].workingLights+'</h3>';
 					str+='</div>';
 				str+='</div>';
-			str+='</div>';
+			str+='</div>'; */
 			
-			str+='<div class="col-sm-2 m_top5">';
+			/* str+='<div class="col-sm-2 m_top5">';
 				str+='<div class="media">';
 					str+='<div class="media-left">';
 						str+='<img src="Assests/icons/Non_Operational_LED_Light_Ico.png" alt="poles_icon">';
@@ -450,9 +451,9 @@ function buildBasicLedOverviewDetails(result)
 						str+='<h3>'+result[0].notWorkingLights+'</h3>';
 					str+='</div>';
 				str+='</div>';
-			str+='</div>';	
+			str+='</div>'; */	
 			
-			str+='<div class="col-sm-2">';
+			str+='<div class="col-sm-3">';
 					str+='<div class="lightsBlock backgroundImgLED">';
 						str+='<img src="Assests/icons/On_Off_light_icon.png" style="height: 39px; width: 40px;margin-left: 19px;">';
 						str+='<p style="font-weight: 800; font-size: 10px;">ON/OFF LIGHTS</p>';
@@ -527,6 +528,29 @@ function projectData(divId,levelId)
 		dataArr = ['mandal','panchayat'];
 		
 	}
+	collapse+='<section>';
+	//collapse+='<div class="row m_top10">';
+			collapse+='<div class="col-sm-12">';
+				collapse+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+					collapse+='<div class="panel panel-default panel-black">';
+						collapse+='<div class="panel-heading" role="tab" id="headingLED">';
+							collapse+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordion" href="#collapseLED" aria-expanded="true" aria-controls="collapseLED">';
+							collapse+='<h4 class="panel-title text-capital">LED PROGRESS</h4>';
+								
+							collapse+='</a>';
+						collapse+='</div>';
+						collapse+='<div id="collapseLED" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLED">';
+							collapse+='<div class="panel-body">';
+								collapse+='<div id="ledProgressDivId"></div>';
+								collapse+='<div id="ledNewInstalledDivId"></div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+				collapse+='</div>';
+		collapse+='</div>';
+		collapse+='</div>';
+	collapse+='</section>';
+	
 	collapse+='<section>';
 			collapse+='<div class="col-sm-12">';
 				for(var i in dataArr)
@@ -727,19 +751,19 @@ function tableView(result,divId,locType)
 					}						
 					
 				}
-				if(divId != 'mandal' && divId!='panchayat'){
+				/* if(divId != 'mandal' && divId!='panchayat'){
 				  tableView+='<th class="text-center"><img src="Assests/icons/mandals_icon.png" class="imageWidthLed"><br/>TOTAL <br/> MANDALS</th>';	
 				}
 				if (divId!='panchayat') {
 					tableView+='<th class="text-center"><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"><br/>MANDALS<br/> STARTED</th>';
 				    tableView+='<th class="text-center"><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"><br/>TOTAL<br/> GPs</th>';
 				}
-				tableView+='<th class="text-center"><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>GPs STARTED</th>';
+				tableView+='<th class="text-center"><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"><br/>GPs STARTED</th>'; */
 				//tableView+='<th><img src="Assests/icons/Poles_icon.png" class="imageWidthLed"><br/>TOTAL POLES SURVEYED</th>';
 				tableView+='<th class="text-center"><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"><br/>TOTAL CCMS-BOX <br/> INSTALLED</th>';
 				tableView+='<th class="text-center"><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed" style="height: 35px;"><br/>TOTAL LED <br/>LIGHTS</th>';
-				tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/Non_Operational_LED_Light_Ico.png" class="" style="width: 28px; height: 35px;"><br/>NON <br/>OPERATIONAL&nbsp;</th>';
-				tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/Operational_LED_Light_Icon.png" class="" style="width: 28px; height: 35px;"><br/>OPERATIONAL&nbsp;</th>';
+				//tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/Non_Operational_LED_Light_Ico.png" class="" style="width: 28px; height: 35px;"><br/>NON <br/>OPERATIONAL&nbsp;</th>';
+				//tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/Operational_LED_Light_Icon.png" class="" style="width: 28px; height: 35px;"><br/>OPERATIONAL&nbsp;</th>';
 				tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/On_light_icon.png" class="imageWidthLed" style="width: 40px; height: 40px;"><br/>ON&nbsp;</th>';
 				tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/Off_Light_Icon.png" class="imageWidthLed" style="width: 33px; height: 33px;"><br/>OFF&nbsp;</th>';
 				tableView+='<th class="text-center">WATTAGE<br/>&nbsp;</th>';
@@ -812,7 +836,7 @@ function tableView(result,divId,locType)
 							
 							
 						}
-						if(divId == 'district' || divId=="constituency"){
+						/* if(divId == 'district' || divId=="constituency"){
 						 tableView+='<td>'+result[i].totalMandals+'</td>';	
 						}
 						if (divId!='panchayat') {
@@ -836,12 +860,12 @@ function tableView(result,divId,locType)
 							}
 						}else{
 							tableView+='<td>'+result[i].subList[j].surveyStartedtotalGps+'</td>';
-						}
+						} */
 						//tableView+='<td>'+result[i].subList[j].totalPoles+'</td>';
 						tableView+='<td>'+result[i].subList[j].totalPanels+'</td>';
 						tableView+='<td>'+result[i].subList[j].totalLedLIghtInstalledCount+'</td>';
-						tableView+='<td>'+result[i].subList[j].notWorkingLights+'</td>';
-						tableView+='<td>'+result[i].subList[j].workingLights+'</td>';
+						//tableView+='<td>'+result[i].subList[j].notWorkingLights+'</td>';
+						//tableView+='<td>'+result[i].subList[j].workingLights+'</td>';
 						tableView+='<td>'+result[i].subList[j].onLights+'</td>';
 						tableView+='<td>'+result[i].subList[j].offLights+'</td>';
 						tableView+='<td>';
@@ -1264,13 +1288,22 @@ function buildCompanyWiseLightMonitoringDtls(result){
 								str+='</div>';
 								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h6 style="color:#827C13;font-size: 13px; font-weight: bold;">TOTAL LIGHTS</h6>';
+										str+='<h4 class="m_top10">'+result.eeslVO.totalLights+'</h4>';
+									str+='</div>';
+								str+='</div>';
+								/* str+='<div class="col-sm-4 media m_top5">';
+									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/Poles_icon.png" alt="poles_icon">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL POLES</h5>';
 										str+='<h4 class="m_top10">'+result.eeslVO.totalPoles+'</h4>';
 									str+='</div>';
-								str+='</div>';
+								str+='</div>'; */
 								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/On_Off_light_icon.png" alt="poles_icon">';
@@ -1282,7 +1315,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 								str+='</div>';
 							str+='</div>';
 							
-							str+='<div class="row m_top5">';
+							/*str+='<div class="row m_top5">';
 								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon" style="width: 25px; height: 35px;">';
@@ -1310,7 +1343,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<h4>'+result.eeslVO.notWorkingLights+'</h4>';
 									str+='</div>';
 								str+='</div>';
-							str+='</div>';
+							str+='</div>';*/
 						  str+='</div>';
 					str+='</div>';
 					str+='<div class="dropdown">';
@@ -1338,6 +1371,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 						str+='</div>';
 						str+='</div>';
 					str+='</div>';
+					
 					str+='</div>';
 					/* str+='<div class="row poles_block" style="padding:10px;border-bottom:1px solid grey">';
 						str+='<ul class="nav navbar-nav" style="float:none;">';
@@ -1359,7 +1393,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 						str+='</ul>';
 					str+='</div>'; */
 					
-					str+='<div class="row m_top10" style="padding:10px;">';
+					/*str+='<div class="row m_top10" style="padding:10px;">';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="district" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="EESL" class="companyTypeCls">'+result.eeslVO.surveyStartedtotalDistricts+'</h3>';
@@ -1376,7 +1410,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 							str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="EESL" class="companyTypeCls">'+result.eeslVO.surveyStartedtotalGps+'</h3>';
 						str+='</div>';
-					str+='</div>';
+					str+='</div>';*/
 			}else{
 				  var str1 = getRequiredTemplate('EESL');
 				  str = str+''+str1;
@@ -1418,13 +1452,22 @@ function buildCompanyWiseLightMonitoringDtls(result){
 								str+='</div>';
 								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
+										str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon" style="width: 25px; height: 35px;">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h6 style="color:#827C13;font-size: 13px; font-weight: bold;">TOTAL LIGHTS</h6>';
+										str+='<h4 class="m_top10">'+result.nredcapVO.totalLights+'</h4>';
+									str+='</div>';
+								str+='</div>';
+								/*str+='<div class="col-sm-4 media m_top5">';
+									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/Poles_icon.png" alt="poles_icon">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 style="color:#669FF5;font-size: 13px; font-weight: bold;">TOTAL POLES</h5>';
 										str+='<h4 class="m_top10">'+result.nredcapVO.totalPoles+'</h4>';
 									str+='</div>';
-								str+='</div>';
+								str+='</div>';*/
 								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/On_Off_light_icon.png" alt="poles_icon">';
@@ -1435,7 +1478,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="row m_top5">';
+							/* str+='<div class="row m_top5">';
 								str+='<div class="col-sm-4 media m_top5">';
 									str+='<div class="media-left">';
 										str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon" style="width: 25px; height: 35px;">';
@@ -1463,7 +1506,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 										str+='<h4>'+result.nredcapVO.notWorkingLights+'</h4>';
 									str+='</div>';
 								str+='</div>';
-							str+='</div>';
+							str+='</div>'; */
 						  str+='</div>';
 					str+='</div>';
 					str+='<div class="dropdown">';
@@ -1511,7 +1554,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 							}
 						str+='</ul>';
 					str+='</div>'; */
-					str+='<div class="row m_top10" style="padding:10px;">';
+					/* str+='<div class="row m_top10" style="padding:10px;">';
 						str+='<div class="col-sm-3">';
 							str+='<h6><b>NO OF <span style="color:#827C13;">DISTRICTS</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="district" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="NREDCAP" class="companyTypeCls">'+result.nredcapVO.surveyStartedtotalDistricts+'</h3>';
@@ -1528,7 +1571,7 @@ function buildCompanyWiseLightMonitoringDtls(result){
 							str+='<h6><b>NO OF <span style="color:#F45CB5;">GRAM PANCHAYAT</span><br/>SURVEY STARTED</b></h6>';
 							str+='<h3 attr_location_type="panchayat" style="cursor:pointer;color:rgb(51, 122, 183)" attr_result_type="surveryStartedLocation" attr_company_type="NREDCAP" class="companyTypeCls">'+result.nredcapVO.surveyStartedtotalGps+'</h3>';
 						str+='</div>';
-					str+='</div>';
+					str+='</div>'; */
 			}else{
 				var str1 = getRequiredTemplate('NREDCAP');
 				str = str+''+str1;
@@ -1983,7 +2026,7 @@ var json={}
 
 }
 /* End */
-$(document).on('click','#statePopupClick',function(){
+/* $(document).on('click','#statePopupClick',function(){
 	var stateClick = $(this).attr("attr_click");
 	$("#surveryStartedLocationDtlsModelDivId").modal("show");
 	if(stateClick == 'stateclick'){
@@ -1992,13 +2035,14 @@ $(document).on('click','#statePopupClick',function(){
 	}
 	getTimePeriodWiseLightsDetaisl();
 	
-});
-
+}); */
 
 function getTimePeriodWiseLightsDetaisl(){
-  $("#surveyStartedLocationDtlsDivId").html(spinner);
+  $("#ledProgressDivId").html(spinner);
+ // $("#surveyStartedLocationDtlsDivId").html(spinner);
  // $("#statewiseVendorDetails").html(spinner);
-  $("#newAddedLightsSummary").html(spinner);
+ // $("#ledProgressDivId").html(spinner);
+  //$("#newAddedLightsSummary").html(spinner);
   var locationType="";
   var locationValuesArr=[];
   locationValuesArr.push(globallocId);
@@ -2099,7 +2143,8 @@ function bulidStateWiseClickData(result){
 		str+='</div>';
 	str+='</div>';
 	
-	$("#surveyStartedLocationDtlsDivId").html(str);
+	$("#ledProgressDivId").html(str);
+	//$("#surveyStartedLocationDtlsDivId").html(str);
 }
 
 function buildnewAddedLightsDetails(result){
@@ -2262,7 +2307,8 @@ function buildnewAddedLightsDetails(result){
 		str+='</tbody>';
 	str+='</table>';
 	str+='</div>';
-	$("#newAddedLightsSummary").html(str);
+	$("#ledNewInstalledDivId").html(str);
+	//$("#newAddedLightsSummary").html(str);
 }
 
  window.setInterval(function(){
