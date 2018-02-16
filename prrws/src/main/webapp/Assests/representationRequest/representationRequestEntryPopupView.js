@@ -213,6 +213,11 @@ function buildPetitionDetailsView(result){
 	var str='';
 	
 	var statusId = result.statusId;
+	candidateReferralDoc=[];
+	projectDocuments=[];
+	coveringLetterDoc=[];
+	detailedReportDoc=[];
+	historyLetterArr=[];
 	
 	str+='<div class="pad_pink_bg">';
 		str+='<div class="row">';
@@ -852,12 +857,13 @@ function buildPetitionDetailsView(result){
 											str+='</div>';
 										str+='</div>';
 										str+='<div class="col-sm-3">';
-										for(var k in result.subWorksList[i].reportTypeFilesList){
-											if(result.subWorksList[i].reportTypeFilesList[k].key == "COVERING LETTER"){
-												if(result.subWorksList[i].reportTypeFilesList[k].filesList !=null && result.subWorksList[i].reportTypeFilesList[k].filesList.length>0){
+										mainWorkCoveringDocuments=[];
+										for(var k in result.reportTypeFilesList){
+											if(result.reportTypeFilesList[k].key == "COVERING LETTER"){
+												if(result.reportTypeFilesList[k].filesList !=null && result.reportTypeFilesList[k].filesList.length>0){
 													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
 													
-													mainWorkCoveringDocuments.push(result.subWorksList[i].reportTypeFilesList[k].filesList[0]);
+													mainWorkCoveringDocuments.push(result.reportTypeFilesList[k].filesList[0]);
 												}else{
 													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
 												}
@@ -1689,6 +1695,8 @@ $(document).on("change","#statusChangeId",function(){
 		$("#documentTypeId").val('0')
 		$("#documentTypeId").trigger("chosen:updated");
 		$("#fileUploadIdDiv").hide();
+		//$("#uploadCoveringLetterFile").html('');
+		
 	$('#nextStatusId').val(0);
 	if(nextStatusId != null && nextStatusId>0)
 		$('#nextStatusId').val(nextStatusId);
@@ -1718,6 +1726,8 @@ $(document).on("change","#statusChangeId",function(){
 		 
 		$("#officerId").html('');
 		$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+		//$("#uploadCoveringLetterFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadCoveringLetterFileDocId" class="m_top10"/>');
+		//initializeSingleUploadDocument("uploadCoveringLetterFileDocId");
 		
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 		//$('.saveEnable').attr('data-toggle', 'tooltip');
