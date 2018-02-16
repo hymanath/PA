@@ -2587,25 +2587,25 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 		 StringBuilder sb = new StringBuilder();
 		    sb.append(" select count(model.nominatedPostApplicationId),model.boardLevelId,model.boardLevel.level " +
 		    		" from NominatedPostApplication model " +
-		    		" where  model.isDeleted ='N' and  model.isExpired ='N' ");
+		    		" where  model.isDeleted ='N' and  model.isExpired ='N' and  model.nominatedPostMember.isDeleted ='N' ");
 		    
 		    if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
 	 			if (locationTypeId == 2l) {
 	 				sb.append(" and model.nominatedPostMember.address.state.stateId in(:locationValue) ");
 	 				//sb.append(" and model.nominatedPostMember.address.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
-	 			} else if (locationTypeId == 3) {
+	 			} else if (locationTypeId == 3l) {
 					sb.append(" and model.address.district.districtId in(:locationValue) ");
-				} else if (locationTypeId == 10) {
+				} else if (locationTypeId == 10l) {
 					sb.append(" and model.address.parliamentConstituency.constituencyId in(:locationValue) ");
-				} else if (locationTypeId == 4) {
+				} else if (locationTypeId == 4l) {
 					sb.append(" and model.address.constituency.constituencyId in(:locationValue) ");
-				} else if (locationTypeId == 5) {
+				} else if (locationTypeId == 5l) {
 					sb.append(" and model.address.tehsil.tehsilId in(:locationValue) ");
-				}else if (locationTypeId == 6) {
+				}else if (locationTypeId == 6l) {
 					sb.append(" and model.address.panchayat.panchayatId in(:locationValue) ");
-				}else if (locationTypeId == 7) {
+				}else if (locationTypeId == 7l) {
 					sb.append(" and model.address.localElectionBody.localElectionBodyId in(:locationValue) ");
-				}else if (locationTypeId == 8) {
+				}else if (locationTypeId == 8l) {
 					sb.append(" and model.address.ward.constituencyId in(:locationValue) ");
 				}		
 				

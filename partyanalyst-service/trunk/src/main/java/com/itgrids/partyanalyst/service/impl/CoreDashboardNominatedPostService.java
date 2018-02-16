@@ -227,7 +227,7 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 		            total=total+commonMethodsUtilService.getLongValueForObject(param[2]);
 				}
 			}
-			List<Object[]> recivedApplicationsCount = nominatedPostApplicationDAO.getLocationWiseApplicationCount(new ArrayList<Long>(locationValuesSet),startDate,endDate,locationTypeId,boardLevelId); 
+			List<Object[]> recivedApplicationsCount = nominatedPostApplicationDAO.getLocationWiseApplicationCount(new ArrayList<Long>(locationValuesSet),startDate,endDate,userAccessLevelId,boardLevelId); 
 			if(recivedApplicationsCount != null && recivedApplicationsCount.size()>0){
 				for(Object[] param : recivedApplicationsCount){
 					Long levelId = commonMethodsUtilService.getLongValueForObject(param[1]); 
@@ -404,7 +404,6 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 					 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
 				}
 			   }
-			  //new ArrayList<Long>(locationValuesSet)
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date startDate = null;
 			Date endDate = null;
@@ -945,6 +944,16 @@ public List<NominatedPostDetailsVO> getDepartMentAndBoardWisePositinsStatusCount
 				boardVo.setBoard(commonMethodsUtilService.getStringValueForObject(param[4]));
 				boardVo.setBoardCunt(commonMethodsUtilService.getLongValueForObject(param[2]));
 				matchedVo.getList().add(boardVo);
+				NominatedPostDetailsVO matchPositionVo = getMatchedPositionVo(boardVo.getSubList() ,commonMethodsUtilService.getLongValueForObject(param[5]));
+				if(matchPositionVo != null){
+					matchPositionVo.setPositionCount(matchPositionVo.getPositionCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+				}else{
+					NominatedPostDetailsVO	positionVo = new NominatedPostDetailsVO();
+					positionVo.setPositionId(commonMethodsUtilService.getLongValueForObject(param[5]));
+					positionVo.setPosition(commonMethodsUtilService.getStringValueForObject(param[6]));
+					positionVo.setPositionCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					boardVo.getSubList().add(positionVo);
+				}
 				}
 				
 				}
