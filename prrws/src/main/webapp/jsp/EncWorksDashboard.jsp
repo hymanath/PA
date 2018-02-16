@@ -226,7 +226,8 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-3">
-					Note: Amount in crores
+					Note: Population In Thousands &
+						  Length in KMS
 				</div>
 				
 			</div>
@@ -243,79 +244,25 @@
 					</div>
 					<div class="white-block" style="padding:10px;">	
 						<div class="row">
-							<div class="col-sm-5">
-							<h4 style="padding:5px"><span class="chartTitleAlign">Admin Sanctioned Work Details</span></h4><br/>
-								<div class="chart2" id="enclocationWiseChart2" style="height:315px;"></div>
-								<div id="datatable3"style="display:none"></div>
-							</div>
-							<div class="col-sm-7">
-							<h4 style="padding:5px"><span class="chartTitleAlign">Status Wise Work Details</span></h4><br/>
+							<div class="col-sm-6">
+								<h4 style="padding:5px"><span class="chartTitleAlign">WORKS DETAILS</span></h4><br/>
 								<div class="chart2" id="enclocationWiseChart" style="height:315px;"></div>
-								<div id="datatable1"style="display:none"></div>
 							</div>
-							<!-- <div class="col-sm-6">
+							<div class="col-sm-6">
 								<h4 style="padding:5px;" ><span class="chartTitleAlign">EXCEEDED WORK DETAILS</span></h4><br/>
 								<div class="chart2" id="ExceededWorkDetailsGraph" style="height:315px;"></div>
 								
-							</div> -->
+							</div>
+							
+							
+						
 						</div>
-
+						
+						<div id="graphTable" style="display:none;"></div>
+						<div id="graphTable2" style="display:none;"></div>
 					</div>
 				</div>
 				<div class="col-sm-12">
-					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
-						<div class="row">
-							<div class="col-sm-3">
-								<h4 ><span class="chartTitleAlign">EXCEEDED WORK DETAILS</span></h4>
-							</div>
-						</div>
-						
-					</div>
-					<div class="white-block" style="padding:10px;">	
-						<div class="row">
-							<div class="col-sm-6">
-								<h4 style="padding:5px"><span class="chartTitleAlign">Ongoing Exceed Work Details</span></h4><br/>
-								<div class="chart2" id="ExceededWorkDetailsGraph" style="height:315px;"></div>
-								
-							</div>
-							<div class="col-sm-6">
-								<h4 style="padding:5px"><span class="chartTitleAlign">Not Grounded Exceed Work Details</span></h4><br/>
-								<div class="chart2" id="NotGroundedExceededWorkDetailsGraph" style="height:315px;"></div>
-								
-							</div>
-						</div>
-					</div>
-					<div class="row m_top10">
-						<div class="col-sm-12">
-						  <div class="panel-group" id="accordionEX1">
-							  <div class="panel panel-default panel-black">
-								<div class="panel-heading" id="headingEX1">
-									<a role="button" class="panelCollapseIcon collapsed collapseClick" data-toggle="collapse" data-parent="#accordionEX1" href="#collapseEX1" aria-expanded="true" aria-controls="collapseEX1">
-										<h4 class="panel-title text-capital">TARGETS AND ACHIEVEMENTS</h4>
-									</a>	
-								</div>
-								<div id="collapseEX1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
-								  <div class="panel-body">
-										<div class="white-block" style="padding:10px;">
-											<div class="row">
-												<div class="col-sm-3">
-													<h4 style="padding:5px"><span class="chartTitleAlign">Financial Year Details</span></h4><br/>
-													<div class="chart2 m_top20" id="TargetNAcheievementDetailsTotal" style="height:315px;"></div>
-												</div>
-												<div class="col-sm-8">
-													<h4 style="padding:5px"><span class="chartTitleAlign">Quarter Wise Details</span></h4><br/>
-													<div class="chart2 m_top20" id="quaterWiseTargetAchievement" style="height:315px;"></div>
-												</div>
-											</div>
-										</div>
-								  </div>
-								</div>
-							  </div>
-						  </div>
-						</div>
-				  </div>
-				</div>
-				<!-- <div class="col-sm-12">
 					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
 						<div class="row">
 							<div class="col-sm-3">
@@ -337,7 +284,7 @@
 							</div>
 					</div>
 				</div>
-			</div> -->
+			</div>
 		</div>
 	</section>
 	<section>
@@ -368,6 +315,6 @@
 <script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/encDashBoard/EncWorksDashboard.js" type="text/javascript"></script>
-<script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 </body>
+</html>
 </html>
