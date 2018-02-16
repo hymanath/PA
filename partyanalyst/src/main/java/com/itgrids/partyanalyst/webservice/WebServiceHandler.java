@@ -3738,4 +3738,18 @@ public class WebServiceHandler {
 		
 		return  webServiceHandlerService.getJalavaniCategoryWiseDetailsInfo(inputVo);
     }
+	@POST
+    @Path("/getJalavanilocationAndStatusDetailsInfo")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getJalavanilocationAndStatusDetailsInfo(inputVo);
+    }
+	@POST
+    @Path("/getAlertsMonthlyOverviewInfoBySearchType")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getAlertsMonthlyOverviewInfoBySearchType(inputVo);
+    }
 }
