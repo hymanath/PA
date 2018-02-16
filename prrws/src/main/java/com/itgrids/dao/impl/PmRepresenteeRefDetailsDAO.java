@@ -158,7 +158,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		}else if(filterType != null && filterType.equalsIgnoreCase("mobile") && filterValue != null && !filterValue.isEmpty()){
 			sb.append(" and model.pmRepresentee.mobileNo =:filterValue ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("endorsmentNO") && filterValue != null && !filterValue.isEmpty()){
-			sb.append(" and model1.workEndorsmentNo =:filterValue ");
+			//sb.append(" and model1.workEndorsmentNo =:filterValue ");
+			sb.append(" and model.petition.endorsmentNo =:filterValue ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("department") && filterValue != null && !filterValue.isEmpty()){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:filterValue) ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("subject") && filterValue != null && !filterValue.isEmpty()){
