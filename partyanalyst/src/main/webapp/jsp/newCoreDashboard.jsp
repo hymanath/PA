@@ -4608,8 +4608,8 @@
 					</div>
 					<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 deptLocNominatedCls" expand-block-more="nominatedPost" style="display:none;">
 						<ul class="list-inline pull-right activeUlCls deptLocChnageCls" role='tabCummulativeNomi1'>
-							<li class="active" attr_location_type="department">Department wise</li>
-							<li class="" attr_location_type="location">Location Level Wise</li>
+							<li class="active" attr_location_type="location">Location Level Wise</li>
+							<li class="" attr_location_type="department">Department wise</li>
 						</ul>
 					</div>          
 					
