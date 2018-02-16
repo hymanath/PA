@@ -41,11 +41,12 @@ public class ITextCoveringLetterGeneration  {
 	InputVO inputVO = new InputVO();
 	inputVO.setLeadName("Forwarded for taking further necessary action ");
 	inputVO.setGroupName("NREGS Convergence");
-	inputVO.setEndValue("7");
+	inputVO.setEndValue("8");
 	inputVO.setDisplayType("OSD");
-	inputVO.setDeptCode("(PR,RD,RWS)");
+	inputVO.setDeptCode("(PR,RD,RWS,ITE&C)");
 	List<Object[]> coveringLetrImages = null;
-	String endorseCode = "No.1/Min(PR,RD,ITE&C)/2017 Dt.18.05.2018";
+	String endorseCode = "Entd No. 234567/OSD(PR,RD,RWS,ITE&C)/2018, Dt:18.05.2018";
+	//String endorseCode = "Entd No. 234567/Min(PR,RD,RWS,ITE&C)/2018, Dt:18.05.2018";
 	PmRequestEditVO petitionDetailsVO = new PmRequestEditVO();
 	petitionDetailsVO.setRepresentationdate("18-05-2018");
 	List<PmRequestVO> representeeList = new ArrayList<PmRequestVO>();
@@ -107,6 +108,9 @@ public class ITextCoveringLetterGeneration  {
 			//"sign2.png",to_address.png,header1.png
 			//"sign.png",to_address.png,header.png
 			
+			/*String sign ="sign2.png";
+			String toAddrImg ="to_address.png";
+			String headerImg ="emptyheader.png";*/
 			String sign ="";
 			String toAddrImg ="";
 			String headerImg ="";
@@ -136,17 +140,17 @@ public class ITextCoveringLetterGeneration  {
 					//representeeList.addAll(petitionDetailsVO.getRepresenteeDetailsList());
 					for (PmRequestVO pmRequestVO : petitionDetailsVO.getRepresenteeDetailsList()) {
 						 if(pmRequestVO.getName() != null && !pmRequestVO.getName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rname",pmRequestVO.getName());
+							 str1 = str1.replace("#rname"," Sri. "+pmRequestVO.getName());
 						 }else{
 							 str1 = str1.replace("#rname","");
 						 }
 						 if(pmRequestVO.getDesignation() != null && !pmRequestVO.getDesignation().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdesig","("+pmRequestVO.getDesignation()+")");
+							 str1 = str1.replace("#rdesig",", "+pmRequestVO.getDesignation()+" ");
 						 }else{
 							 str1 = str1.replace("#rdesig","");
 						 }
 						 if(pmRequestVO.getAddressVO().getAssemblyName() != null && !pmRequestVO.getAddressVO().getAssemblyName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rconst",", "+pmRequestVO.getAddressVO().getAssemblyName()+" constitueny");
+							 str1 = str1.replace("#rconst"," "+pmRequestVO.getAddressVO().getAssemblyName()+" constituency");
 						 }else{
 							 str1 = str1.replace("#rconst","");
 						 }
@@ -205,7 +209,7 @@ public class ITextCoveringLetterGeneration  {
 				}
 			 //estCost = "4.50";
 			 if(estCost != "0.0"){
-				 str1 = str1.replace("#cost","with an estimated cost of Rs.<b>"+estCost+"</b>&nbsp;Lakhs. ");
+				 str1 = str1.replace("#cost","with an estimated cost of Rs.&nbsp;<b>"+estCost+"</b>&nbsp;Lakhs. ");
 			 }else{
 				 str1 = str1.replace("#cost","");
 			 }
@@ -218,12 +222,12 @@ public class ITextCoveringLetterGeneration  {
 			 }
 			 String leadName = "";
 			 if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0")){
-				 leadName = inputVO.getLeadName();
+				 leadName = "&nbsp;"+inputVO.getLeadName();
 			 }else{
 				 if(inputVO.getReportType() != null & !inputVO.getReportType().isEmpty()){
 					 leadName="Comment : "+inputVO.getReportType()+"";
 				 }else{
-					 leadName = "Forwarded forTaking necessary action as per Rules";
+					 leadName = "&nbsp;Forwarded for Taking necessary action as per rules";
 				 }
 			 }
 			 /*if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
@@ -265,7 +269,7 @@ public class ITextCoveringLetterGeneration  {
 									str.append("<td>");
 										//str.append("<img src='"+deptDetailsImg+"' width='500px' height='100px'>");
 									str.append("<img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+headerImg.toString()+"' width='500px' height='75px'>");
-										//str.append("<img src='http://www.mydepartments.in/PRRWS/Assests/images/petition images/dept_details.png' width='150px' height='90px'>");
+										//str.append("<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/Assests/images/petition images/headerImg.png' width='150px' height='90px'>");
 										//str.append("<img src='"+IConstants.STATIC_CONTENT_FOLDER_URL+"/"+deptDetailsImg.toString()+"' width='150px' height='90px'>");
 									str.append("</td>");
 									/*str.append("<td>");
@@ -279,30 +283,36 @@ public class ITextCoveringLetterGeneration  {
 						str.append("</header><br><br>");
 						str.append("<table>");
 						str.append("<tr>");
+						str.append("<td>");
+						str.append("</td>");
+						str.append("</tr><br><br>");
+						str.append("<tr>");
 						str.append("<td align='center'><u><font size='3' face='Albertus MT Lt'>"+endorseCode+"</font></u></td><br>");
 					str.append("</tr>");
 					str.append("<tr>");
-						str.append("<td><font size='3' face='Albertus MT Lt'>Sir,</font></td>");
+						str.append("<td><font size='4' face='Albertus MT Lt'>Sir,</font></td>");
 					str.append("</tr>");
 					str.append("<tr>");
-						str.append("<td align='justify'><p style='line-height:200%'><font size='3' face='Albertus MT Lt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+str1+"</font></p></td>");
+						str.append("<td align='justify'><p style='line-height:200%'><font size='4' face='Albertus MT Lt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+str1+"</font></p><br/><br/></td>");
 					str.append("</tr>");
 					str.append("<tr>");
-					str.append("<td ><p><font size='3' face='Albertus MT Lt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+leadName+"</font></p></td><br>");
+					str.append("<td ><p><font size='4' face='Albertus MT Lt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+leadName+". </font></p></td><br>");
 				str.append("</tr>");
-					str.append("<tr>");
+					/*str.append("<tr>");
 						str.append("<td align='right'>" +
-								"<font size='3' face='Albertus MT Lt'>Yours faithfully,<br/><br/></font></td>");
+								"<font size='4' face='Albertus MT Lt'>&nbsp;Yours faithfully,<br/><br/></font></td>");
 							str.append("</tr>");
-						
+						*/
 							str.append("<tr>");
-								str.append("<td>");
-									str.append("<p><img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+sign.toString()+"' width='75px' height='8px' align='right'/></p>");
+								str.append("<td >");
+									str.append("<p><img align='right' src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+sign.toString()+"' width='95px' height='70px' /></p>");
+								//str.append("<p><img align='right' src='D:/Tomcat 7.0/webapps/PRRWS-1.0/Assests/images/petition images/"+sign.toString()+"' width='85px' height='50px' /></p>");
 								str.append("</td>");
 							str.append("</tr>");
 							str.append("<tr>");
 								str.append("<td>");
-									str.append("<img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+toAddrImg.toString()+"' width='170px' height='70px'>");
+									str.append("<img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+toAddrImg.toString()+"' width='180px' height='90px'>");
+								//str.append("<img src='D:/Tomcat 7.0/webapps/PRRWS-1.0/Assests/images/petition images/"+toAddrImg.toString()+"' width='180px' height='90px'>");
 								str.append("</td>");
 							str.append("</tr>");
 						str.append("</table>");
