@@ -84,7 +84,7 @@ public class ITextCoveringLetterGeneration  {
 	//representeeList.add(pmRequestVO3);
 	petitionDetailsVO.getReferDetailsList().addAll(representeeList);
 	petitionDetailsVO.setWorkName("requesting for sanction ...ost of Rs.150.00 Lakhs.");
-	String str1 = " #min I am here with forwarding the representation  #rdate of #rname#rdesig#rconst#rdist#Addr requesting for sanction of #works#grant#cost ";
+	String str1 = " #min I am here with forwarding the representation  #rdate of #rname#rdesig#rconst#rdist#Addr requesting for sanction of #works #grant #cost ";
 	//String staticPath =IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/2018/1/24" ;//commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER);
 	//if(staticPath != null && staticPath.equalsIgnoreCase("FAILED"))
 		//throw new Exception("File path not available . Please check once file path.");
@@ -145,12 +145,12 @@ public class ITextCoveringLetterGeneration  {
 							 str1 = str1.replace("#rdesig","");
 						 }
 						 if(pmRequestVO.getAddressVO().getAssemblyName() != null && !pmRequestVO.getAddressVO().getAssemblyName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rconst",", "+pmRequestVO.getAddressVO().getAssemblyName()+" Constitueny");
+							 str1 = str1.replace("#rconst",", "+pmRequestVO.getAddressVO().getAssemblyName()+" constitueny");
 						 }else{
 							 str1 = str1.replace("#rconst","");
 						 }
 						 if(pmRequestVO.getAddressVO().getDistrictName() != null && !pmRequestVO.getAddressVO().getDistrictName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdist",", "+pmRequestVO.getAddressVO().getDistrictName()+" District");
+							 str1 = str1.replace("#rdist",", "+pmRequestVO.getAddressVO().getDistrictName()+" district");
 						 }else{
 							 str1 = str1.replace("#rdist","");
 						 }
@@ -204,9 +204,9 @@ public class ITextCoveringLetterGeneration  {
 				}
 			// estCost = "4.50";
 			 if(estCost != "0.0"){
-				 str1 = str1.replace("#cost","With an Estimated Cost of Rs.<b>"+estCost+".</b>Lakhs ");
+				 str1 = str1.replace("#cost","with an estimated cost of Rs.<b>"+estCost+"</b>&nbspLakhs ");
 			 }else{
-				 str1 = str1.replace("#cost",".");
+				 str1 = str1.replace("#cost","");
 			 }
 			 if(inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().size()==1l){
 				 str1 = str1.replace("#works",""+inputVO.getSchemeIdsList().size()+" work");
@@ -263,7 +263,7 @@ public class ITextCoveringLetterGeneration  {
 								str.append("<tr>");
 									str.append("<td>");
 										//str.append("<img src='"+deptDetailsImg+"' width='500px' height='100px'>");
-									str.append("<img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+headerImg.toString()+"' width='500px' height='100px'>");
+									str.append("<img src='http://www.mydepartments.in/PRRWS/Petition_Documents/Logos/"+headerImg.toString()+"' width='500px' height='90px'>");
 										//str.append("<img src='http://www.mydepartments.in/PRRWS/Assests/images/petition images/dept_details.png' width='150px' height='90px'>");
 										//str.append("<img src='"+IConstants.STATIC_CONTENT_FOLDER_URL+"/"+deptDetailsImg.toString()+"' width='150px' height='90px'>");
 									str.append("</td>");
@@ -277,21 +277,21 @@ public class ITextCoveringLetterGeneration  {
 							str.append("</table>");
 						str.append("</header><br><br>");
 						str.append("<table>");
-							str.append("<tr>");
-								str.append("<td align='center'><u><font size='3' face='Albertus MT Lt'>"+endorseCode+"</font></u></td><br>");
-							str.append("</tr>");
-							str.append("<tr>");
-								str.append("<td><font size='3' face='Albertus MT Lt'>Sir,</font></td>");
-							str.append("</tr>");
-							str.append("<tr>");
-								str.append("<td><p style='line-height:200%'><font size='3' face='Albertus MT Lt'>&nbsp;&nbsp;"+str1+"</font></p></td>");
-							str.append("</tr>");
-							str.append("<tr>");
-							str.append("<td ><p  align='center'><font size='3' face='Albertus MT Lt'>"+leadName+"</font></p></td><br>");
-						str.append("</tr>");
-							str.append("<tr>");
-								str.append("<td align='right'>" +
-										"<font size='3' face='Albertus MT Lt'>Yours faithfully,</font></td>");
+						str.append("<tr>");
+						str.append("<td align='center'><u><font size='3' face='Albertus MT Lt'>"+endorseCode+"</font></u></td><br>");
+					str.append("</tr>");
+					str.append("<tr>");
+						str.append("<td><font size='3' face='Albertus MT Lt'>Sir,</font></td>");
+					str.append("</tr>");
+					str.append("<tr>");
+						str.append("<td><p style='line-height:200%'><font size='3' face='Albertus MT Lt'>&nbsp;&nbsp;"+str1+"</font></p></td>");
+					str.append("</tr>");
+					str.append("<tr>");
+					str.append("<td ><p  align='center'><font size='3' face='Albertus MT Lt'>"+leadName+"</font></p></td><br>");
+				str.append("</tr>");
+					str.append("<tr>");
+						str.append("<td align='right'>" +
+								"<font size='3' face='Albertus MT Lt'>Yours faithfully,</font></td>");
 							str.append("</tr>");
 						
 							str.append("<tr>");
