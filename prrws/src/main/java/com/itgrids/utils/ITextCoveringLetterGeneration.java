@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -277,20 +278,20 @@ public class ITextCoveringLetterGeneration  {
 						str.append("</header><br><br>");
 						str.append("<table>");
 							str.append("<tr>");
-								str.append("<td face='Courier' size='3' align='center'><u>"+endorseCode+"</u></td><br>");
+								str.append("<td align='center'><u><font size='3' face='Albertus MT Lt'>"+endorseCode+"</font></u></td><br>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td face='Courier' size='3'>Sir,</td>");
+								str.append("<td><font size='3' face='Albertus MT Lt'>Sir,</font></td>");
 							str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td ><p size='3' face='Courier' style='line-height:200%'>&nbsp;&nbsp;"+str1+"</p></td>");
+								str.append("<td><p style='line-height:200%'><font size='3' face='Albertus MT Lt'>&nbsp;&nbsp;"+str1+"</font></p></td>");
 							str.append("</tr>");
 							str.append("<tr>");
-							str.append("<td ><p size='3' face='Courier' align='center'>"+leadName+"</p></td><br>");
+							str.append("<td ><p  align='center'><font size='3' face='Albertus MT Lt'>"+leadName+"</font></p></td><br>");
 						str.append("</tr>");
 							str.append("<tr>");
-								str.append("<td face='Courier' size='3' align='right'>" +
-										"Yours faithfully,</td>");
+								str.append("<td align='right'>" +
+										"<font size='3' face='Albertus MT Lt'>Yours faithfully,</font></td>");
 							str.append("</tr>");
 						
 							str.append("<tr>");
@@ -313,6 +314,7 @@ public class ITextCoveringLetterGeneration  {
 			
 			OutputStream file = new FileOutputStream(new File(staticPath+fileName));
 			Document document = new Document(PageSize.A4,70,40, 10, 10);
+			FontFactory.register(IConstants.PDF_FONT_PATH,IConstants.PDF_FONT);
 			//document.setMargins(70, 50, 10, 10); 
 			/*Font subtitleFont = FontFactory.getFont("Times Roman", 12, BaseColor.BLACK);
 	        Paragraph subTitle = new Paragraph(str1.toString(), subtitleFont);
