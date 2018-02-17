@@ -817,29 +817,29 @@ public void setAllLevelValuesToMap(String levelStr,Map<String,NominatedPostCandi
 					overallTotal=overallTotal+vo.getTotalPosts();
 					levelLocationMap.put(key, vo);
 				}else{
-				NominatedPostCandidateDtlsVO matchedVo = levelLocationMap.get(key);
-				if(matchedVo != null){
+				//NominatedPostCandidateDtlsVO matchedVo = levelLocationMap.get(key);
+				//if(matchedVo != null){
 					if(committeeId != null && committeeId.longValue() == 1l){
-						matchedVo.setCentralPosts(matchedVo.getCentralPosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setCentralPosts(vo.getCentralPosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					}
 					if(committeeId != null && committeeId.longValue() == 2l){
-						matchedVo.setStatePosts(matchedVo.getStatePosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setStatePosts(vo.getStatePosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					}
 					if(committeeId != null && committeeId.longValue() == 3l){
-						matchedVo.setDistrictPosts(matchedVo.getDistrictPosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setDistrictPosts(vo.getDistrictPosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					}
 					if(committeeId != null && committeeId.longValue() == 4l){
-						matchedVo.setConstncyPosts(matchedVo.getConstncyPosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setConstncyPosts(vo.getConstncyPosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					}
 					if(committeeId != null && committeeId.longValue() == 5l){
-						matchedVo.setMandalPosts(matchedVo.getMandalPosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setMandalPosts(vo.getMandalPosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					}
 					if(committeeId != null && committeeId.longValue() == 7l){
-						matchedVo.setVillagePosts(matchedVo.getVillagePosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setVillagePosts(vo.getVillagePosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					}
-					matchedVo.setTotalPosts(matchedVo.getTotalPosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					vo.setTotalPosts(vo.getTotalPosts()+Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					overallTotal = overallTotal+vo.getTotalPosts();
-				}
+				//}
 				//vo.setOveralTotal(overallTotal);
 			}
 			}
