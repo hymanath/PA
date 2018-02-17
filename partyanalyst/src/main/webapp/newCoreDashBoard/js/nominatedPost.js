@@ -1084,7 +1084,7 @@ function getBoardWisePositions()
 			$("#departmentDetailsModalDivId").html(str);
 			$("#dataTabledeptPostId").dataTable({
 				"iDisplayLength": 15,
-				"aaSorting": [],
+				"aaSorting": [[3,'desc']],
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
 			});
 		}
