@@ -1874,24 +1874,12 @@
 								<label>Select Category</label>
 								<select class="form-control chosen-select" id="categoryEmId">
 									<option value="0">All</option>
+									<option value="1175">REACTION ON CENTRAL BUDGET - 2018</option>
+									<option value="757">SPECIAL STATUS</option>
+									<option value="1156">TELUGU DESAM -  DALITA TEJAM</option>
 									<option value="1109">JANMABOOMI - MAA URU 2018</option>
-									<option value="1115">COMMON PEOPLE VS GOVT-JB 2018</option>
-									<option value="1116">COMMON PEOPLE VS TDP-JB 2018</option>
-									<option value="1118">TDP VS GOVT-JB 2018</option>
-									<option value="1119">TDP VS BJP-JB 2018</option>
-									<option value="1120">TDP VS TDP-JB 2018</option>
-									<option value="1121">TDP VS YSRCP-JB 2018</option>
-									<option value="1122">YSRCP VS GOVT-JB 2018</option>
-									<option value="1117">OTHER PARTIES-JB 2018</option>
-									<option value="1123">PENSIONS-JB 2018</option>
-									<option value="1124">RATION-JB 2018</option>
-									<option value="1125">HOUSING-JB 2018</option>
-									<option value="1126">RUNAMAFI-JB 2018</option>
-									<option value="1127">UPADHIHAMI-JB 2018</option>
-									<option value="1128">MARUGUDODLU BILLS-JB 2018</option>
 									<option value="1051">Praja sankalpa yatra</option>
 									<option value="1050">Counter on praja sankalpa yatra</option>
-									<option value="1063">Kapu reservations - 5%</option>
 								</select>
 							</div>
 						</div>	
