@@ -517,9 +517,9 @@ function locationNominatedWiseDate(locationTypeVal)
 				collapse+='<div class="panel-heading" role="tab" id="heading'+locationTypeVal+levelWiseNominatedArr[i].id+'" style="background-color:#5F6A73;">';
 					if(i == 0)
 					{
-						collapse+='<a role="button" class="collapseNominatedIcon '+locationTypeVal+levelWiseNominatedArr[i].id+'"  data-toggle="collapse" data-parent="#accordion'+locationTypeVal+levelWiseNominatedArr[i].id+'" href="#collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'" aria-expanded="true" level_name="'+locationTypeVal+levelWiseNominatedArr[i].name+'" aria-controls="collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'">';
+						collapse+='<a role="button" class="collapseNominatedIcon '+locationTypeVal+levelWiseNominatedArr[i].id+'"   data-toggle="collapse" data-parent="#accordion'+locationTypeVal+levelWiseNominatedArr[i].id+'" href="#collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'" aria-expanded="true" level_name="'+locationTypeVal+levelWiseNominatedArr[i].name+'" aria-controls="collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'">';
 					}else{
-						collapse+='<a role="button" class="collapseNominatedIcon collapsed '+locationTypeVal+levelWiseNominatedArr[i].id+'"  data-toggle="collapse" data-parent="#accordion'+locationTypeVal+levelWiseNominatedArr[i].id+'" href="#collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'" level_name="'+locationTypeVal+levelWiseNominatedArr[i].name+'" aria-expanded="true" aria-controls="collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'">';
+						collapse+='<a role="button" class="collapseNominatedIcon '+locationTypeVal+levelWiseNominatedArr[i].id+'"  overview-level-new='+locationTypeVal+levelWiseNominatedArr[i].id+' data-toggle="collapse" data-parent="#accordion'+locationTypeVal+levelWiseNominatedArr[i].id+'" href="#collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'" level_name="'+locationTypeVal+levelWiseNominatedArr[i].name+'" aria-expanded="true" aria-controls="collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'">';
 					}
 					collapse+='<h4 class="panel-title text-capital" style="color:#fff;">'+levelWiseNominatedArr[i].name+' Level Overview</h4>';
 						
@@ -529,7 +529,7 @@ function locationNominatedWiseDate(locationTypeVal)
 				{
 					collapse+='<div id="collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+locationTypeVal+levelWiseNominatedArr[i].id+'">';
 				}else{
-					collapse+='<div id="collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+locationTypeVal+levelWiseNominatedArr[i].id+'">';
+					collapse+='<div id="collapse'+locationTypeVal+levelWiseNominatedArr[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+locationTypeVal+levelWiseNominatedArr[i].id+'">';
 				}
 				
 					collapse+='<div class="panel-body">';
@@ -546,19 +546,24 @@ function locationNominatedWiseDate(locationTypeVal)
 	}
 	$("#levelWiseNominatedDetailsDivId").html(collapse);
 	for(var i in levelWiseNominatedArr){
+		
 		if(locationTypeVal == "department"){
 			getDepartmentWisePostAndApplicationDetails(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal);
+			
 		}else{
 			if(levelWiseNominatedArr[i].name == "state"){
 				getNominatedPostStateWiseCount(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal)
 			}else{
+				//$("[overview-level-new]").trigger("click");
 				getNominatedPostLocationWiseBoardLevelCount(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal)
+				
 			}
 			
 			
 		}
 		
 	}
+	
 }
 function getNominatedPostStateWiseCount(locationTypeId,divId,locationTypeVal){ 
 	$("#nominated"+locationTypeVal+divId).html(spinner);
@@ -693,7 +698,12 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 			$(".dataTableNomi"+locationTypeVal+divId).dataTable({
 				"iDisplayLength": 10,
 				"aaSorting": [[4,'desc']],
-				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+				 "scrollX": true,
+				"scrollCollapse": true,
+				"fixedColumns":   {
+					"leftColumns": 1,
+				} 
 				
 			});
 			 
@@ -704,7 +714,7 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 				str+='<table class="table table-bordered table-condensed tableStyleLed table_alignment table-noborder dataTableNomiL'+locationTypeVal+divId+'" style="width:100%">';
 					str+='<thead style="background-color:#edeef0">';
 						str+='<tr>';
-							str+='<th class="font_weight" rowspan="2" style="background-color:#EFF0F1 !important;">District</th>';
+							str+='<th class="font_weight" rowspan="2" style="background-color:#EFF0F1 !important;min-width:100px !important;">District</th>';
 							for(var i in result[0].levelList){
 								if(result[0].levelList[i].locationName =="District"){
 									str+='<th class="font_weight" colspan="4" style="background-color:#EDECE0 !important;">'+result[0].levelList[i].locationName+' Level Posts</th>';
@@ -784,10 +794,16 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 			$(".dataTableNomiL"+locationTypeVal+divId).dataTable({
 				"iDisplayLength": 10,
 				"aaSorting": [[6,'desc']],
-				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+				 "scrollX": true,
+				"scrollCollapse": true,
+				"fixedColumns":   {
+					"leftColumns": 1,
+				} 
 				
 			});
-	
+		
+		//$("."+locationTypeVal+locationTypeId).trigger("click");
 }
 $(document).on("click",".postWiseDetailsCls",function(){
 	$("#nominatedPostDetailsModalId").modal("show");
