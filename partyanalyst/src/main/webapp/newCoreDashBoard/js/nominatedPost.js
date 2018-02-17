@@ -793,7 +793,7 @@ function buildNominatedPostLocationWiseBoardLevelCount(result,divId,locationType
 			$("#nominated"+locationTypeVal+divId).html(str);
 			$(".dataTableNomiL"+locationTypeVal+divId).dataTable({
 				"iDisplayLength": 10,
-				"aaSorting": [[6,'desc']],
+				"aaSorting": [[2,'desc']],
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
 				 "scrollX": true,
 				"scrollCollapse": true,
