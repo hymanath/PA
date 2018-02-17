@@ -1421,7 +1421,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 						vendorVO.setLightVendorId(vendorId);
 						vendorVO.setLightVendorName(param[1] != null ? param[1].toString():"");
 						vendorVO.setTotalPanels(Long.valueOf(param[2] != null ? param[2].toString():"0"));
-						vendorVO.setLightCount(Long.valueOf(param[3] != null ? param[3].toString():"0"));;
+						//vendorVO.setLightCount(Long.valueOf(param[3] != null ? param[3].toString():"0"));;
 						vendorMap.put(vendorId, vendorVO);
 					}
 				}
@@ -1434,9 +1434,9 @@ public class LightMonitoringService  implements ILightMonitoring{
 					vendorId = Long.valueOf(param[0] != null ? param[0].toString():"0");
 					LightMonitoringVO vendorVO = vendorMap.get(vendorId);
 					if(vendorVO != null){
-						//vendorVO.setLightCount(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+						vendorVO.setLightCount(Long.valueOf(param[1] != null ? param[1].toString():"0"));
 						vendorVO.setTeamCount(Long.valueOf(param[2] != null ? param[2].toString():"0"));
-						vendorVO.setLightCount(vendorVO.getLightCount()+Long.valueOf(param[1] != null ? param[1].toString():"0"));
+						//vendorVO.setLightCount(vendorVO.getLightCount()+Long.valueOf(param[1] != null ? param[1].toString():"0"));
 					}
 				}
 				
@@ -1513,7 +1513,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 								vo.setPanchayatName(param[3] != null ? param[3].toString():"");
 							}
 							vo.setTotalPanels(count);
-							vo.setTotalLights(Long.valueOf(param[7] != null ? param[7].toString():"0"));
+							//vo.setTotalLights(Long.valueOf(param[7] != null ? param[7].toString():"0"));
 							vendorMap.put(vendorId, vo);
 							ccmsCuntMap.put(locationId, vendorMap);
 						}else{
@@ -1529,7 +1529,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 									vo.setPanchayatName(param[3] != null ? param[3].toString():"");
 								}
 								vo.setTotalPanels(count);
-								vo.setTotalLights(Long.valueOf(param[7] != null ? param[7].toString():"0"));
+								//vo.setTotalLights(Long.valueOf(param[7] != null ? param[7].toString():"0"));
 								vendorMap.put(vendorId, vo);
 							}else{
 								vo.setTotalPanels(vo.getTotalPanels()+count);
@@ -1538,7 +1538,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 					}
 				}
 				
-				/*if(ccmsCuntMap != null && !ccmsCuntMap.isEmpty()){
+				if(ccmsCuntMap != null && !ccmsCuntMap.isEmpty()){
 					for (Entry<Long, Map<Long, LightMonitoringVO>> entry : ccmsCuntMap.entrySet()) {
 						 Map<Long, LightMonitoringVO> vendorMap = entry.getValue();
 						 for (Entry<Long, LightMonitoringVO> vendorEntry : vendorMap.entrySet()) {
@@ -1561,9 +1561,9 @@ public class LightMonitoringService  implements ILightMonitoring{
 							 }
 						 }
 					}
-				}*/
+				}
 				
-				if(returnList != null && !returnList.isEmpty()){
+				/*if(returnList != null && !returnList.isEmpty()){
 					for (LightMonitoringVO vo : returnList) {
 						Long lctnId = 0L;
 						if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("district"))
@@ -1580,7 +1580,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 						}
 					}
 				}
-			
+			*/
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDashBoardLevelWiseVendorDetails - LightMonitoringService service",e);
 		}
