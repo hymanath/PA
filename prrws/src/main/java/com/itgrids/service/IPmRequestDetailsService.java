@@ -46,4 +46,5 @@ public interface IPmRequestDetailsService {
 	public List<KeyValueVO> getPmDocumentTypeList();
 	public List<KeyValueVO> getPmActionTypeList();
 	public Map<Long,List<Long>> getAssignedPetitionforPetitionDeptDesignationOfficer(Long userId,Long pmDeptDesignationOfficerId);
+	public ResultStatus uploadCoveringLetter(RepresenteeViewVO inputVO);
 }

@@ -114,6 +114,7 @@ public class ITextCoveringLetterGeneration  {
 			String sign ="";
 			String toAddrImg ="";
 			String headerImg ="";
+			
 			//List<PmRequestVO> representeeList = new ArrayList<PmRequestVO>();
 			StringBuilder referrals = null;
 			if(inputVO.getDisplayType() != null && (inputVO.getDisplayType().equalsIgnoreCase("AP MINISTER") || inputVO.getDisplayType().equalsIgnoreCase("MINISTER"))){
@@ -253,7 +254,9 @@ public class ITextCoveringLetterGeneration  {
 					}
 				}
 			}
-			
+			if(inputVO.getPath() != null && !inputVO.getPath().equalsIgnoreCase("withHeader")){
+				headerImg ="emptyheader.png";
+			}
 			if(inputVO.getFilterId() != null && inputVO.getFilterId().longValue()== 398l){
 				toAddrImg = "to_address1.png";
 			}else if(inputVO.getFilterId() != null && inputVO.getFilterId().longValue()== 381l){

@@ -9,4 +9,5 @@ import com.itgrids.model.PmSubWorkCoveringLetter;
 public interface IPmSubWorkCoveringLetterDAO extends GenericDao<PmSubWorkCoveringLetter, Long> {
 	public List<String> getCoveringLetterDetailsByEndorsmentNo(String endorsmenNo);
 	public List<Object[]> getSubWorkWiseRequiredDocumentsDetailsByPetitionId(Long petiotionId);
+	public int disableExistingCoveringLettersForPetition(Long petitionId,String reporttype);
 }

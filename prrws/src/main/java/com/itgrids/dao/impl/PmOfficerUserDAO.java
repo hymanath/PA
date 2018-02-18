@@ -48,7 +48,7 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 				  + " where model.userId =:userId " 
 				  +"  and model.pmDepartmentDesignation.isDeleted = 'N'"
 				  + " and model.pmDepartmentDesignation.pmDepartment.isDeleted = 'N' " +
-				  " and model.insertedUser.isEnabled='Y' and model.insertedUser.isDeleted = 'N' ");
+				  " and model.insertedUser.isEnabled='Y' and model.insertedUser.isDeleted = 'N' order by dept.orderNo asc ");
 		
 		Query query = getSession().createQuery(sb.toString());//
 		if(userId != null && userId.longValue() >0l){

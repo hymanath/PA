@@ -433,6 +433,7 @@ public class PmRequestDetailsController {
 	    
 	    @RequestMapping(value ="/endorsingSubWorksAndAssigningToOfficer",method = RequestMethod.POST)
 	    public @ResponseBody ResultStatus endorsingSubWorksAndAssigningToOfficer(@ModelAttribute RepresenteeViewVO inputVO,HttpServletRequest request ) {
+	    	ResultStatus resultStatus = new ResultStatus();
 	    	HttpSession session=request.getSession();
 			UserVO userVO = (UserVO) session.getAttribute("USER"); 
 			Long userId =null;
@@ -442,7 +443,13 @@ public class PmRequestDetailsController {
 		    	return null;
 		    }
 			inputVO.setId(userId);
-	    	return pmRequestDetailsService.endorsingSubWorksAndAssigningToOfficer(inputVO);
+			 if(inputVO.getDataType() != null && inputVO.getDataType().equalsIgnoreCase("upload")){
+				resultStatus = pmRequestDetailsService.uploadCoveringLetter(inputVO);
+			}else{
+				resultStatus = pmRequestDetailsService.endorsingSubWorksAndAssigningToOfficer(inputVO);
+			}
+			
+	    	return resultStatus;
 	    }
 	    
 	    @RequestMapping(value ="/getReferralWiseOverviewDetails",method = RequestMethod.POST)

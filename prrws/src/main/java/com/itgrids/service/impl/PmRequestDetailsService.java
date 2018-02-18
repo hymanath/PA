@@ -19,7 +19,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.print.attribute.SetOfIntegerSyntax;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
@@ -684,7 +683,23 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 						}
 					}
-				}
+				}/*else{
+					if(commonMethodsUtilService.isListOrSetValid(pmRepresenteeList)){
+						for (PmRepresenteeDesignation pmRepresenteeDesignation : pmRepresenteeList) {
+							PmRepresenteeRefDetails petitionRefferer = new PmRepresenteeRefDetails(); 
+							petitionRefferer.setPetitionId(petitionId);
+							petitionRefferer.setPmRepresenteeId(pmRepresenteeId);
+							petitionRefferer.setPmRepresenteeDesignationId(pmRepresenteeDesignation.getPmRepresenteeDesignationId());
+							petitionRefferer.setIsDeleted("N");
+							petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							petitionRefferer.setInsertedUserId(pmRequestVO.getUserId());
+							petitionRefferer.setUpdatedUserId(pmRequestVO.getUserId());
+							petitionRefferer.setOrderNo(1L);
+							petitionRefferer = pmRepresenteeRefDetailsDAO.save(petitionRefferer);
+						}
+					}
+				}*/
 				
 			}
 		} catch (Exception e) {
@@ -3108,7 +3123,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								String dept = deptVO.getDeptName().concat(commonMethodsUtilService.getStringValueForObject(objects[3]));
 								deptVO.setDeptName(dept);
 							}else{
-								String dept = deptVO.getDeptName().concat(","+commonMethodsUtilService.getStringValueForObject(objects[3]));
+								String dept ="";
+								if(commonMethodsUtilService.getStringValueForObject(objects[3]).equalsIgnoreCase("RWS")){
+									 dept = deptVO.getDeptName().concat("&"+commonMethodsUtilService.getStringValueForObject(objects[3]));
+								}else{
+									 dept = deptVO.getDeptName().concat(","+commonMethodsUtilService.getStringValueForObject(objects[3]));
+								}
 								deptVO.setDeptName(dept);
 							}
 							if(deptVO.getDepDesigIds() == null){
@@ -5008,6 +5028,106 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				LOG.error("exception raised into PmRequestDetailsService of assingThePetitiontoOfficers()",e);
 			}
 			return isAssigned;
+		}
+		
+		public ResultStatus uploadCoveringLetter(RepresenteeViewVO inputVO){
+			ResultStatus resultStatus = new ResultStatus();
+			try {
+				if(commonMethodsUtilService.isListOrSetValid(inputVO.getFilesList())){
+					for (MultipartFile file : inputVO.getFilesList()) {
+						Document	document = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,inputVO.getId(),null);
+						if(document != null){
+							resultStatus = uploadCoveringLetter(document.getDocumentId(),inputVO);
+							//resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),
+									//inputVO.getId(), endorsmentNo,inputVO.getPetitionId(),inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in PmRequestDetailsService @ uploadCoveringLetter() "+e.getMessage());
+				resultStatus.setExceptionMsg("FAIL");
+			}
+			return resultStatus;
+		}
+		
+		public ResultStatus uploadCoveringLetter(Long documentId,RepresenteeViewVO inputVO){
+			//public ResultStatus saveCoveringLetterDocument(Date updatedTime,RepresenteeViewVO inputVO,PmPetitionAssignedOfficer pmPetitionAssignedOfficer,String remarks,List<Long> subWorkIds,
+					//Long documentId,Long userId,String endorsmentNo,Long petitonId,String reportType,Long statusId,Long documentTypeId,String refNo){
+				ResultStatus status=new ResultStatus();
+				try {
+					Date updatedTime=dateUtilService.getCurrentDateAndTime();
+					if(documentId != null && documentId.longValue()>0L && commonMethodsUtilService.isListOrSetValid(inputVO.getWorkIds())){
+						int updatedId = 0;
+						if(inputVO.getStatusType() != null && inputVO.getStatusType().equalsIgnoreCase("COVERING LETTER")){
+							updatedId = pmSubWorkCoveringLetterDAO.disableExistingCoveringLettersForPetition(inputVO.getPetitionId(),inputVO.getStatusType());
+						}
+						for (Long subWorkId : inputVO.getWorkIds()) {
+							PmSubWorkCoveringLetter pmSubWorkCoveringLetter = new PmSubWorkCoveringLetter();
+							
+							pmSubWorkCoveringLetter.setPetitionId(inputVO.getPetitionId());
+							pmSubWorkCoveringLetter.setEndorsmentNo(inputVO.getEndorsementNO());
+							pmSubWorkCoveringLetter.setPmSubWorkDetailsId(subWorkId);
+							pmSubWorkCoveringLetter.setDocumentId(documentId);
+							pmSubWorkCoveringLetter.setReportType(inputVO.getStatusType());
+							pmSubWorkCoveringLetter.setIsDeleted("N");
+							if(inputVO.getDocumentTypeId() != null && inputVO.getDocumentTypeId().longValue() >0l){
+								pmSubWorkCoveringLetter.setDocumentTypeId(inputVO.getDocumentTypeId());
+							}/*else{
+								pmSubWorkCoveringLetter.setDocumentTypeId(4l);
+							}*/
+							pmSubWorkCoveringLetter.setRefNo(inputVO.getRefNo());
+							pmSubWorkCoveringLetter = pmSubWorkCoveringLetterDAO.save(pmSubWorkCoveringLetter);
+							/*PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
+							pmTrackingVO.setPmStatusId(statusId);// PENDING ACTION MEMO 
+							pmTrackingVO.setUserId(userId);
+							pmTrackingVO.setPetitionId(petitonId);
+							if(statusId == 6L)
+								pmTrackingVO.setRemarks("Uploaded covering letter");
+							else if(statusId == 7L || statusId == 10L || statusId == 11L || statusId == 12L|| statusId == 13L)// for joint secretories
+								pmTrackingVO.setRemarks("uploaded action memo document");
+							else if(statusId == 14L)
+								pmTrackingVO.setRemarks("Uploaded detailed report document");
+							pmTrackingVO.setActionType(inputVO.getActionType());
+							if(pmTrackingVO.getRemarks() != null && !pmTrackingVO.getRemarks().isEmpty())
+								pmTrackingVO.setRemarks(pmTrackingVO.getRemarks()+" , "+remarks);
+							pmTrackingVO.setPmDocumentTypeId(documentTypeId);
+							pmTrackingVO.setPmTrackingActionId(4L);//FILE UPLOAD
+							pmTrackingVO.setDocumentId(documentId);
+							pmTrackingVO.setPmSubWorkDetailsId(subWorkId);
+							if(pmPetitionAssignedOfficer != null)
+								pmTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficer.getPmPetitionAssignedOfficerId());
+							updatePetitionTracking(pmTrackingVO,updatedTime);
+							
+							pmTrackingVO.setPmSubWorkDetailsId(null);
+							updatePetitionTracking(pmTrackingVO,updatedTime);*/
+						}
+						
+						PmSubWorkCoveringLetter pmSubWorkCoveringLetter = new PmSubWorkCoveringLetter();
+						
+						pmSubWorkCoveringLetter.setPetitionId(inputVO.getPetitionId());
+						pmSubWorkCoveringLetter.setEndorsmentNo(inputVO.getEndorsementNO());
+						pmSubWorkCoveringLetter.setPmSubWorkDetailsId(null);
+						pmSubWorkCoveringLetter.setDocumentId(documentId);
+						pmSubWorkCoveringLetter.setReportType(inputVO.getStatusType());
+						pmSubWorkCoveringLetter.setIsDeleted("N");
+						if(inputVO.getDocumentTypeId() != null && inputVO.getDocumentTypeId().longValue() >0l){
+							pmSubWorkCoveringLetter.setDocumentTypeId(inputVO.getDocumentTypeId());
+						}/*else{
+							pmSubWorkCoveringLetter.setDocumentTypeId(4l);
+						}*/
+						pmSubWorkCoveringLetter.setRefNo(inputVO.getRefNo());
+						pmSubWorkCoveringLetter = pmSubWorkCoveringLetterDAO.save(pmSubWorkCoveringLetter);
+						
+					}
+					status.setExceptionMsg("SUCCESS");
+				} catch (Exception e) {
+					e.printStackTrace();
+					LOG.error("Exception Occured in PmRequestDetailsService @ uploadCoveringLetter() "+e.getMessage());
+					status.setExceptionMsg("FAIL");
+				}
+				return status;
+			
 		}
 		
 }
