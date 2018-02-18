@@ -1,9 +1,7 @@
 package com.itgrids.dao.impl;
 
 import java.util.List;
-import java.util.Map;
 
-import org.appfuse.dao.SearchException;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -41,6 +39,15 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 		}
 		return null;			
 	}
-	
+	public int disableExistingCoveringLettersForPetition(Long petitionId,String reporttype){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" update PmSubWorkCoveringLetter model set model.isDeleted ='Y'  "
+				+ "where model.petitionId =:petitionId and model.reportType = :reporttype ");
+		Query query=getSession().createQuery(sb.toString());
+		
+		query.setParameter("petitionId", petitionId);
+		query.setParameter("reporttype", reporttype);
+		return query.executeUpdate();
+	}	
 	
 }
