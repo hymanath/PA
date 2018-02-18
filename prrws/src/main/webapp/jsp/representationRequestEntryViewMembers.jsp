@@ -335,7 +335,24 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row m_top10" id="endorseDivId" style="display:none;" >
+					<div class="col-sm-12">
+						<!--<label class="checkbox-inline">
+						  <input type="checkbox" name="endorseChck" id="inlineCheckbox1" value="endorse" class="font_weight uploadFuncCls" checked> ENDORSE 
+						</label>-->
+						<label class="checkbox-inline">
+						  <input type="checkbox" name="endorseChck" id="inlineCheckbox2" value="upload" class="font_weight uploadFuncCls"> UPLOAD COVERING LETTER
+						</label>
+					</div>
+		</div>
+		<div class="row m_top20" id="uploadCoverFileDivCls" style="display:none;">
+				  <div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;">
+					<h5 class="panel-title"> UPLOAD COVERING LETTER</h5>
+					<span id="uploadCoverFile"></span>
+					<span id="fileCoverUploadIdErr" style="color:red;"></span>
+				  </div>
+		</div>
+		<div class="row" id="endorseFunctionDivId">
 			<div class="col-sm-6">
 				<div class="row m_top10" id="actionChangeDivId" style="display:none;">
 					<div class="col-sm-12">
@@ -440,13 +457,23 @@
 				
 		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
 		<input type="hidden" class="form-control" id="petitionsId"  name="petitionId"/>
+		<input type="hidden" class="form-control" id="hiddenEndorseNo"  name="workName"/>
 		<div class="row m_top10" id="commentsDivId" style="display:none;">
 			<div class="col-sm-12">
 				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
 				<textarea class="form-control" rows="3" id="remarksId" name="remark"></textarea>
 			</div>
 		</div>
-		
+		<div class="row m_top10" id="coverLetterLableDivId" style="display:none;">
+					<div class="col-sm-12">
+						<label class="checkbox-inline">
+						  <input type="radio" id="" value="withHeader" class="coverLtrLableCls" name="radioBtn" > WITH HEADER 
+						</label>
+						<label class="checkbox-inline">
+						  <input type="radio" id="" value="withOutHeader" class="coverLtrLableCls" name="radioBtn" checked> WITHOUT HEADER
+						</label>
+					</div>
+		</div>
 		<div class="row m_top20" id="fileUploadIdDiv" style="display:none;">
 			<div class="col-sm-6 col-sm-offset-2 text-center" style="border: 2px dashed #ccc;padding: 10px;">
 				<button type="button" class="btn btn-success" id="coverLetterId" onclick="generateCoveringLetterForPetition()">Generate Cover Letter</button>
@@ -559,6 +586,8 @@ $(document).on("click",".closeSecondModal",function(){
   if(glDesignationId != 2 && glDesignationId!=86){
 	  $("#actionChangeDivId").show();
   }
+  
+  
   var searchBy= '${param.searchBy}';
   var desigId= '${param.desigId}';
   var statusId= '${param.statusId}';

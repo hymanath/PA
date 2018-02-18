@@ -2470,3 +2470,55 @@ function petitionWiseRepresenteeDetails(result){
 	 $('body').addClass("modal-open");
 	}, 500);
 	});
+$(document).on("click",".uploadFuncCls",function(){
+	$("#statusChangeId").val('0');
+	$('#nextStatusId').val("");
+	//$("#statusChangeId").trigger("chosen:updated");
+	$('.uploadFuncCls').not(this).removeAttr('checked');
+	$("#coverLetterPath").val('');
+	$("#coveringLetterGenerator").html(""); 
+				 $("#remarkIdErr").html("");
+				 $("#ajaxcallImageId").html("");
+				 $("#fileUploadIdDiv").hide();//uploadFileDivCls
+				$("#fileUploadDiv").hide();
+				$("#commentsDivId").show();
+				$("#leadDivId").hide();
+				$("#grantDivId").hide();
+				$("#assignOfficerDivId").hide();
+				$("#assignDesignationDivId").hide();
+				$("#endorsementDivId").hide();
+				
+				$("#endorsmentNo").val('');
+				$("#remarksId").val('');
+				$("#leadId").html('');
+				$("#leadId").html('<option value="0"> SELECT LEAD </option>');
+				$("#leadId").trigger("chosen:updated");
+				$("#grantId").html('');
+				$("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
+				$("#grantId").trigger("chosen:updated");
+				$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
+				$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+				$("#finalapproveFile").html('');
+				$("#statusChangeDivId").show();
+	if($(this).is(":checked")){
+		$("#uploadCoverFileDivCls").show();
+		$("#uploadCoverFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadCoveringDocId" class="m_top10"/>');
+			initializeSingleUploadDocument("uploadCoveringDocId");
+		$("#endorseFunctionDivId").hide();
+	}else{
+		$("#endorseFunctionDivId").show();
+		$("#uploadCoverFileDivCls").hide();
+	}
+	
+	/* if($(this).val() == "endorse"){
+		alert($(this).val())
+		$("#endorseFunctionDivId").show();
+		$("#uploadCoverFileDivCls").hide();
+	}else{
+		alert($(this).val());
+		$("#uploadCoverFileDivCls").show();
+		$("#uploadCoverFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadCoveringDocId" class="m_top10"/>');
+			initializeSingleUploadDocument("uploadCoveringDocId");
+		$("#endorseFunctionDivId").hide();
+	} */
+	});
