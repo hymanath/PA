@@ -24,42 +24,65 @@ import com.itgrids.service.IJalavaniDashboardService;
 @Controller
 @RequestMapping("/")
 public class JalavaniDashboardController {
-	private static final Logger LOG = Logger.getLogger(JalavaniDashboardController.class);
-	
+	private static final Logger LOG = Logger
+			.getLogger(JalavaniDashboardController.class);
+
 	@Autowired
 	private IJalavaniDashboardService jalavaniDashboardService;
-	
+
 	@GetMapping("/jalavaniAlertsDashBoard")
-	public String SurveyDashBoardPage(ModelMap model,HttpSession session) {
+	public String SurveyDashBoardPage(ModelMap model, HttpSession session) {
 		return "jalavaniAlertsDashBoard";
 	}
+
 	@PostMapping("/getJalavaniDashBoardOverview")
-	public @ResponseBody AlertVO getJalavaniDashBoardOverview(@RequestBody JalavaniAlertsInputVO inputVO){
+	public @ResponseBody
+	AlertVO getJalavaniDashBoardOverview(
+			@RequestBody JalavaniAlertsInputVO inputVO) {
 		AlertVO returnVo = null;
 		try {
 			returnVo = jalavaniDashboardService.getJalavaniDashBoardOverview(inputVO);
-		} catch (Exception e){
-			LOG.error("Exception raised at getJalavaniDashBoardOverview - JalavaniDashboardController controller", e);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getJalavaniDashBoardOverview - JalavaniDashboardController controller",e);
 		}
 		return returnVo;
 	}
+
 	@PostMapping("/getJalavaniCategoryWiseDetailsInfo")
-	public @ResponseBody AlertVO getJalavaniCategoryWiseDetailsInfo(@RequestBody JalavaniAlertsInputVO inputVO){
+	public @ResponseBody
+	AlertVO getJalavaniCategoryWiseDetailsInfo(
+			@RequestBody JalavaniAlertsInputVO inputVO) {
 		AlertVO returnVo = null;
 		try {
 			returnVo = jalavaniDashboardService.getJalavaniCategoryWiseDetailsInfo(inputVO);
-		} catch (Exception e){
-			LOG.error("Exception raised at getJalavaniCategoryWiseDetailsInfo - JalavaniDashboardController controller", e);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getJalavaniCategoryWiseDetailsInfo - JalavaniDashboardController controller",e);
 		}
 		return returnVo;
 	}
+
 	@PostMapping("/getArticlesMonthlyOverviewInfoBySearchType")
-	public @ResponseBody List<AlertVO> getArticlesMonthlyOverviewInfoBySearchType(@RequestBody JalavaniAlertsInputVO inputVO){
+	public @ResponseBody
+	List<AlertVO> getArticlesMonthlyOverviewInfoBySearchType(
+			@RequestBody JalavaniAlertsInputVO inputVO) {
 		List<AlertVO> returnList = new ArrayList<AlertVO>(0);
 		try {
 			returnList = jalavaniDashboardService.getArticlesMonthlyOverviewInfoBySearchType(inputVO);
-		} catch (Exception e){
-			LOG.error("Exception raised at getArticlesMonthlyOverviewInfoBySearchType - JalavaniDashboardController controller", e);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getArticlesMonthlyOverviewInfoBySearchType - JalavaniDashboardController controller",e);
+		}
+		return returnList;
+	}
+
+	@PostMapping("/getJalavanilocationAndStatusDetailsInfo")
+	public @ResponseBody
+	List<AlertVO> getJalavanilocationAndStatusDetailsInfo(
+			@RequestBody JalavaniAlertsInputVO inputVO) {
+		List<AlertVO> returnList = new ArrayList<AlertVO>(0);
+		try {
+			returnList = jalavaniDashboardService.getJalavanilocationAndStatusDetailsInfo(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getJalavanilocationAndStatusDetailsInfo - JalavaniDashboardController controller",e);
 		}
 		return returnList;
 	}

@@ -13,7 +13,14 @@ public class JalavaniAlertsInputVO implements Serializable{
 	private Long locationTypeId;
 	private Long subLocationId;
 	private Long alertCategoryId;
+	private String newsType;
 	
+	public String getNewsType() {
+		return newsType;
+	}
+	public void setNewsType(String newsType) {
+		this.newsType = newsType;
+	}
 	public String getType() {
 		return type;
 	}
