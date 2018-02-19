@@ -4153,11 +4153,9 @@
 	 <property name="transactionTemplate" ref="transactionTemplate" />
 	 <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
 	 <property name="tabLogInAuthDAO" ref="tabLogInAuthDAO" />
-	 <property name="activityMemberRelationDAO" ref="activityMemberRelationDAO"></property>
 	 
 	 <property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO" />
 	 <property name="selfAppraisalDesignationTargetDAO" ref="selfAppraisalDesignationTargetDAO" />
-	 <property name="selfAppraisalCandidateDayTourDAO" ref="selfAppraisalCandidateDayTourDAO"></property>
 	 <property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
 	 <property name="selfAppraisalCandidateDetailsNewDAO" ref="selfAppraisalCandidateDetailsNewDAO"></property>
 	 <property name="selfAppraisalCandidateDocumentDAO" ref="selfAppraisalCandidateDocumentDAO"></property>
