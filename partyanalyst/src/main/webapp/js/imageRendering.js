@@ -422,8 +422,8 @@ $(document).on("change","#wordCloudConstituency",function(){
 });
 
 function getOverAllDetailsOfAnArticle(articleId){
-		$("#myModalShowNew").modal('show');
-			$("#myModalShowNew").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#myModalShowNews").modal('show');
+			$("#myModalShowNews").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 			$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
 			//url: "http://localhost:8446/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
@@ -829,7 +829,7 @@ function getOverAllDetailsOfAnArticle(articleId){
 						str+='</div>';
 					 str+='</div>';
 					 
-					$("#myModalShowNew").html(str);
+					$("#myModalShowNews").html(str);
 					
 		        
 		});
