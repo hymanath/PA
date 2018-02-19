@@ -70,7 +70,7 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 				resultVO.setSubList1(new ArrayList<PartyMeetingExceptionalReportVO>(constituenyDtlsMap.values()));
 				//sorting list
 				if (resultVO.getSubList1() != null && resultVO.getSubList1().size() > 0) {
-					java.util.Collections.sort(resultVO.getSubList2(), meetingDecendingCountWiseSorting);
+					java.util.Collections.sort(resultVO.getSubList1(), meetingDecendingCountWiseSorting);
 				}
 				//calculating overall percentage
 				resultVO.setConductedPercentage(calculatePercantage(resultVO.getConductedCount(),resultVO.getTotalCount()));
@@ -84,7 +84,7 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 		     	public int compare(PartyMeetingExceptionalReportVO location2, PartyMeetingExceptionalReportVO location1) {
 		     	Double per2 = location2.getPercentage();
 		     	Double per1 = location1.getPercentage();
-		     	//ascending order of percantages.
+		     	//ascending order of percentage.
 		     	 return per1.compareTo(per2);
 		     	}
 	};
