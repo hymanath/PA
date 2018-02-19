@@ -8557,6 +8557,52 @@ public List<LocationWiseBoothDetailsVO> getAllParliamentConstituencyByAllLevels(
 		}
 		return resultList;
 	}
+	@Override
+	public List<LocationWiseBoothDetailsVO> getAllConstituenciesByDistrictforWordCloud(String districtName) {
+		List<LocationWiseBoothDetailsVO> idNameVOList = new ArrayList<LocationWiseBoothDetailsVO>();
+		try {
+			List<String> VISHAKAPATNAM_NAMES=Arrays.asList("Visakhapatnam","Visakhapatnam Rural");
+			if (districtName.compareTo(VISHAKAPATNAM_NAMES.get(1)) != 0) {
+				List<Object[]> constituencyList = constituencyDAO.getAllConstituenciesInADistrictBYName(districtName);
+				if (constituencyList != null && constituencyList.size() > 0) {
+					for (Object[] objects : constituencyList) {
+						LocationWiseBoothDetailsVO idNameVO = new LocationWiseBoothDetailsVO();
+						idNameVO.setLocationId((Long) objects[0]);
+						idNameVO.setLocationName(WordUtils.capitalizeFully(objects[1].toString()));
+						idNameVO.setName("Constituency");
+						idNameVOList.add(idNameVO);
+					}
+				}
+			}
+			if (VISHAKAPATNAM_NAMES.contains(districtName)) {
+				List<Object[]> constituencyDistrictList = districtConstituenciesDAO.getAllConstituenciesInADistrictBYName(VISHAKAPATNAM_NAMES.get(1));
+				if (districtName.compareTo(VISHAKAPATNAM_NAMES.get(0)) == 0) {
+					for (Object[] param : constituencyDistrictList) {
+						for (int i = 0; i <= idNameVOList.size() - 1; i++) {
+							if (idNameVOList.get(i).getLocationId().compareTo(commonMethodsUtilService.getLongValueForObject(param[0])) == 0) {
+								idNameVOList.remove(i);
+							}
+						}
+
+					}
+				} else if (districtName.compareTo(VISHAKAPATNAM_NAMES.get(1)) == 0) {
+					if (constituencyDistrictList != null && constituencyDistrictList.size() > 0) {
+						for (Object[] objects : constituencyDistrictList) {
+							LocationWiseBoothDetailsVO idNameVO = new LocationWiseBoothDetailsVO();
+							idNameVO.setLocationId((Long) objects[0]);
+							idNameVO.setLocationName(WordUtils.capitalizeFully(objects[1].toString()));
+							idNameVO.setName("Constituency");
+							idNameVOList.add(idNameVO);
+						}
+					}
+				}
+
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getAllConstituencysForADistrict", e);
+		}
+		return idNameVOList;
+	}
 	
 }
 

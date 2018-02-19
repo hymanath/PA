@@ -2360,6 +2360,21 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 	
 		return query.list();
 	}
+
+	@Override
+	public List<Object[]> getAllConstituenciesInADistrictBYName(String districtName) {
+
+		if(districtName != null && districtName.length()>0L){
+			return getHibernateTemplate().find("select distinct model.constituencyId,model.name from Constituency model where model.district.districtName =? and " +
+				"  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null order by model.name",districtName);
+		}else if(districtName == null || districtName.length() == 0L){
+			return getHibernateTemplate().find("select distinct model.constituencyId,model.name from Constituency model where " +
+					"  model.electionScope.electionScopeId = 2 and model.deformDate is null and (model.district.districtId between 11 and 23 ) " +
+					" order by model.name ");
+		}
+		return null;
+			
+	}
 }
 
 	

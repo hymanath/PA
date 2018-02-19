@@ -96,4 +96,5 @@ public interface ILocationDashboardService {
 	public List<KeyValueVO> getLocationWiseElectionDetails(String locationType);
 	public List<ConstituencyCadreVO> getCategoryWiseGenderCount(Long locationScopeId,List<Long> locationValuesList,List<Long> enrollmentYearIdsList);
 	public List<IdNameVO> getElectionYearWisePartyList(List<Long> electionScopeIdsLst,List<String> subTypes,List<Long> yearList);
+	public List<LocationWiseBoothDetailsVO> getAllConstituenciesByDistrictforWordCloud(String districtName);
 	}
