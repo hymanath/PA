@@ -18770,5 +18770,10 @@
 				<param name="root">nominatedPostDetailsVOList</param>
 		</result>
 	</action>
+	<action name="getPartyMeetingExceptionReportMeetingLevelWiseAction" class="coreDashboardAction" method="getPartyMeetingExceptionReportMeetingLevelWise">
+		<result type="json" name="success">
+				<param name="root">partyMeetingExceptionalReportVO</param>
+		</result>
+	</action>
  </package>
 </struts>

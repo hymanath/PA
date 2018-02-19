@@ -3,8 +3,8 @@
 	{    
 	 	var jsObj = { 
 					 partyMeetingLevel : "Constituency",
-					 fromDate : "01-01-2018",
-					 toDate : "31-01-2018",
+					 fromDate : "01/01/2018",
+					 toDate : "31/01/2018",
 					 partyMeetingTypeIds:[15],
 					 
 				  }

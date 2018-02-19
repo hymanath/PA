@@ -1717,6 +1717,7 @@
 	    <property name="coreDashboardInsuranceService" ref="coreDashboardInsuranceService"></property>
 	    <property name="kaizalaInfoService" ref="kaizalaInfoService"></property> 
 	    <property name="coreDashboardNominatedPostService" ref="coreDashboardNominatedPostService"></property>
+	    <property name="partyMeetingExceptionalReportService" ref="partyMeetingExceptionalReportService"></property>
 	</bean>
 	
 	<bean id="leadersBirthdayAction" class="com.itgrids.partyanalyst.web.action.LeadersBirthdayAction" singleton="false">

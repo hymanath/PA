@@ -4701,9 +4701,14 @@
             <property name="constituencyDAO" ref="constituencyDAO"></property>
             <property name="tehsilDAO" ref="tehsilDAO"></property>			
     	 </bean>
+		 
     	 <bean name="trainingCampExceptionalReportService" class="com.itgrids.partyanalyst.exceptionalReport.service.impl.TrainingCampExceptionalReportService">
             <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
-            <property name="dateUtilService" ref="commonMethodsUtilService"></property>
+            <property name="dateUtilService" ref="dateUtilService"></property>
             <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
+    	 </bean>
+		 
+    	  <bean name = "partyMeetingExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.PartyMeetingExceptionalReportService">
+    	   <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
     	 </bean>
 </beans>			
