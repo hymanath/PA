@@ -272,7 +272,7 @@
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-								<input class="form-control" type="text" id="dateRangePicker"/>
+								<input class="form-control" type="text" id="singleDateRangePicker"/>
 							</div>
 						</div>
 					</div>
