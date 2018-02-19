@@ -1827,7 +1827,7 @@
 		<!-- <property name="alertUpdationAPIService" ref="alertUpdationAPIService" /> -->
 	</bean>
 	<bean id="imageRenderingAction" class="com.itgrids.partyanalyst.web.action.ImageRenderingAction" singleton="false">
-		<!-- <property name="alertUpdationAPIService" ref="alertUpdationAPIService" /> -->
+		 <property name="locationDashboardService" ref="locationDashboardService" /> 
 	</bean>
 </beans>	
 	
