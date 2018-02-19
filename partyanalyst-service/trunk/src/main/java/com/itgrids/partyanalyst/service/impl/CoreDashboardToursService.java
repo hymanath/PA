@@ -66,16 +66,12 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	private TransactionTemplate transactionTemplate = null;
 	private ICadreSurveyUserDAO cadreSurveyUserDAO;
 	private ITabLogInAuthDAO tabLogInAuthDAO;
-	private IActivityMemberRelationDAO activityMemberRelationDAO;
 	//New Dao
 	private ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO;
 	private ISelfAppraisalDesignationTargetDAO selfAppraisalDesignationTargetDAO;
-	private ISelfAppraisalCandidateDayTourDAO selfAppraisalCandidateDayTourDAO;
-	
 	private ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO;
 	private ISelfAppraisalCandidateDetailsNewDAO selfAppraisalCandidateDetailsNewDAO;
 	private ISelfAppraisalCandidateDocumentDAO selfAppraisalCandidateDocumentDAO;
-	 
 	private ISelfAppraisalDesignationProgramTargetDAO selfAppraisalDesignationProgramTargetDAO;
 	private ISelfAppraisalCandidateProgramDetailsDAO selfAppraisalCandidateProgramDetailsDAO;
 	
@@ -136,25 +132,9 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			ISelfAppraisalDesignationDAO selfAppraisalDesignationDAO) {
 		this.selfAppraisalDesignationDAO = selfAppraisalDesignationDAO;
 	}
-	public void setActivityMemberRelationDAO(
-			IActivityMemberRelationDAO activityMemberRelationDAO) {
-		this.activityMemberRelationDAO = activityMemberRelationDAO;
-	}
-	public void setSelfAppraisalCandidateLocationNewDAO(
-			ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO) {
-		this.selfAppraisalCandidateLocationNewDAO = selfAppraisalCandidateLocationNewDAO;
-	}
 	public void setSelfAppraisalDesignationTargetDAO(
 			ISelfAppraisalDesignationTargetDAO selfAppraisalDesignationTargetDAO) {
 		this.selfAppraisalDesignationTargetDAO = selfAppraisalDesignationTargetDAO;
-	}
-	public void setSelfAppraisalCandidateDayTourDAO(
-			ISelfAppraisalCandidateDayTourDAO selfAppraisalCandidateDayTourDAO) {
-		this.selfAppraisalCandidateDayTourDAO = selfAppraisalCandidateDayTourDAO;
-	}
-	public void setSelfAppraisalToursMonthDAO(
-			ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO) {
-		this.selfAppraisalToursMonthDAO = selfAppraisalToursMonthDAO;
 	}
 	public void setSelfAppraisalCandidateDetailsNewDAO(
 			ISelfAppraisalCandidateDetailsNewDAO selfAppraisalCandidateDetailsNewDAO) {
@@ -172,6 +152,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			ISelfAppraisalCandidateProgramDetailsDAO selfAppraisalCandidateProgramDetailsDAO) {
 		this.selfAppraisalCandidateProgramDetailsDAO = selfAppraisalCandidateProgramDetailsDAO;
 	}
+	/*presently these service are not used .It has written based on old requirement .Now requirement has completely changed so below service
+	 * are being used for that */
 	public ToursBasicVO getToursBasicOverviewCountDetails(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId){
 		
 		ToursBasicVO resultVO = new ToursBasicVO();
@@ -1764,7 +1746,7 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 
 	}
 	
-   /*New Tours Service Based on New Screen Change */
+   /*New Tours Service Based on New Screen Change*/
   /*
    * Author : Santosh Kumar Verma
    */
