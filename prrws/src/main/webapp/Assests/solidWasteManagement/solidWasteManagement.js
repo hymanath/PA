@@ -1,9 +1,9 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var levelWiseOverviewArr = ['state','district','constituency','mandal']
 
-var startDate = moment().subtract(1,"month").format("DD-MM-YYYY");
-var endDate = moment().format("DD-MM-YYYY");
-
+//var startDate = moment().subtract(1,"month").format("DD-MM-YYYY");
+var startDate = moment().format("DD-MM-YYYY");
+var endDate =startDate;
 onLoadCalls()
 function onLoadCalls()
 {
@@ -38,11 +38,9 @@ $(document).on("contextmenu",function(){
 	return false;
 }); 
 
-
-
-$("#dateRangePicker").daterangepicker({
+/* $("#dateRangePicker").daterangepicker({
 	opens:'left',
-	startDate: moment().subtract(1,"month"),
+	startDate: moment(),
 	endDate: moment(),
 	locale: {
         format: "DD-MM-YYYY",
@@ -59,6 +57,23 @@ $("#dateRangePicker").daterangepicker({
 $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	startDate = picker.startDate.format("DD-MM-YYYY");
 	endDate = picker.endDate.format("DD-MM-YYYY");
+	onLoadCalls();
+}); */
+
+$("#singleDateRangePicker").daterangepicker({
+		opens: 'left',
+		startDate: startDate,
+		endDate: startDate,
+		singleDatePicker:true,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		}
+	});
+$('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+	
+/* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
+	glEndDate = picker.endDate.format('DD-MM-YYYY'); */
+	var selectDate = picker.endDate.format('DD-MM-YYYY');
 	onLoadCalls();
 });
 
@@ -533,7 +548,13 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#tenkgcount").html(result.tenkg);
 			$("#twentyfivekgCount").html(result.twentyFivekg);
 			$("#fiftykgCount").html(result.fiftykg);
-			$("#trackingId").html(achieverfid.toFixed(2)+' %');
+			if(target !=null && target > 0){
+				$("#trackingId").html(achieverfid.toFixed(2)+' %');
+			}else{
+				$("#trackingId").html('-');
+			}
+				
+			
 			
 		}
 	});
