@@ -2659,7 +2659,7 @@
    </bean> 
    
     <bean name="dateUtilService" class="com.itgrids.partyanalyst.utils.DateUtilService" > </bean>
-     <bean name="commonMethodsUtilService" class="com.itgrids.partyanalyst.utils.CommonMethodsUtilService" > </bean>
+    <bean name="commonMethodsUtilService" class="com.itgrids.partyanalyst.utils.CommonMethodsUtilService" > </bean>
    
    <bean name="fieldVoterDataService" class="com.itgrids.partyanalyst.service.impl.FieldVoterDataService" >
    	<property name="fieldVoterDataDAO" ref="fieldVoterDataDAO"></property>
@@ -4700,5 +4700,10 @@
             <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
             <property name="constituencyDAO" ref="constituencyDAO"></property>
             <property name="tehsilDAO" ref="tehsilDAO"></property>			
+    	 </bean>
+    	 <bean name="coreDashboardNominatedPostService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardNominatedPostService">
+            <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+            <property name="dateUtilService" ref="commonMethodsUtilService"></property>
+            <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
     	 </bean>
 </beans>			
