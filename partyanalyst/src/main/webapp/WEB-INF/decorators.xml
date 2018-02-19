@@ -762,6 +762,7 @@
 		<pattern>/myCoreDashb0ardAction*</pattern>
 		<pattern>/partyC0reDashboardAction*</pattern>
 		<pattern>/imageRenderingAction*</pattern>
+		<pattern>/exceptionalReportsAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">

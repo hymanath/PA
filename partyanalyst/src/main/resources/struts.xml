@@ -18706,6 +18706,11 @@
 		<result name="input" type="redirect">loginAction.action</result>
 		<result name="error" type="redirect">loginAction.action</result>
 	</action>
+	<action name="exceptionalReportsAction" class="coreDashboardAction" method="sessionCheckingForMyCoreDashBoard">
+		<result name="success">/jsp/exceptionalReports.jsp</result>
+		<result name="input" type="redirect">loginAction.action</result>
+		<result name="error" type="redirect">loginAction.action</result>
+	</action>
 	<action name="imageRenderingAction" class="imageRenderingAction" method="imageRendering" >
 		<result name="success">/jsp/imageRendering.jsp</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
