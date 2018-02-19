@@ -22,6 +22,24 @@
 <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+<script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/8896ACD5-F0B9-0F4A-9DE1-BAFB8390D32D/main.js" charset="UTF-8"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" integrity="sha256-dsOXGNHAo/syFnazt+KTBsCQeRmlcW1XKL0bCK4Baec="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.4/d3.layout.cloud.min.js" integrity="sha256-+U6evHIlf3gdG4NC/P4v3g4JpbLdSdYHAu/z0w2nZ4I="
+	crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js" integrity="sha256-8E6QUcFg1KTnpEU8TFGhpTGHw5fJqB9vCms3OhAYLqw="
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0="
+	crossorigin="anonymous" />
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<link href="newCoreDashBoard/css/wordCloud.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 .eventsheader , #statewiseoverviewPanel,#locationsPopup
 {
@@ -4589,110 +4607,283 @@
 	</div>
 	<div class="row">
 		<!-----------News Letters Start----------->
-		<!-- <div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="newsLetters">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="newsLetters">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/news.png" class="iconClass" style="background-color:none;"/>
-									newsLetters
-							</h4>
+		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="newsLetters">
+				<div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="newsLetters">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/news.png" class="iconClass" style="background-color:none;"/>
+										Word Cloud News (Today)
+								</h4>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="newsLetters">
+								<span class="newsLettersRefresh pull-right">
+									<i class="glyphicon glyphicon-refresh"></i>
+								</span>
+								<span class="wordCloudIconExpand pull-right mainExpandCls" expand-icon="newsLetters">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+							</div>  
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="newsLetters">
-							<span class="newsLettersRefresh pull-right">
-								<i class="glyphicon glyphicon-refresh"></i>
-							</span>
-						</div>     
 					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="newsLetters">
+					<div class="container-fluid">
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-12 responsive" expand-block-inner="newsLetters">
+									<div id="chart" style="margin-left: -29px;">
+										<svg id="svg">
+										</svg>
+									</div>
+									<div class="row align-items-center col-sm-12" style="border:0.5px solid black;margin-left: 0px; margin-right: 0px;">
+										<div class="col-sm-3">
+											<label for="crit" style="margin-top: 4px; class="label-padding">Critical</label>
+											<div id="crit" class="box-color critical"></div>
+										</div>
+										<div class="col-sm-3">
+											<label for="neg" style="margin-top: 4px; class="label-padding">Negative</label>
+											<div id="neg"  class="box-color negative"></div>
+										</div>
+										<div class="col-sm-3">
+											<label for="pos" style="margin-top: 4px; class="label-padding">Positive</label>
+											<div id="pos" class="box-color positive"></div>
+										</div>
+										<div class="col-sm-3">
+											<label for="neu" style="margin-top: 4px; class="label-padding">Neutral</label>
+											<div id="neu" class="box-color neutral"></div>
+										</div>
+									</div>
+									<div class="empty-alert">
+										<div class="alert alert-danger" role="alert">
+											Results are empty!
+										</div>
+									</div>
+									<div class="error-alert">
+										<div class="alert alert-danger" role="alert">
+											Error in server!
+										</div>
+									</div>
+									<div class="data-sent-alert">
+										<div class="alert alert-success" role="alert">
+											<div class="row">
+												<div class="col-10">
+													Request sent!
+												</div>
+												<div class="col-2">
+													<div class="loader-2"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="data-processing-alert">
+										<div class="alert alert-primary" role="alert">
+											<div class="row">
+												<div class="col-10">
+													Data received and processing word cloud!
+												</div>
+												<div class="col-2">
+													<div class="loader"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="card headline-div">
+										<div class="card-header" style="background-color: blanchedalmond;">
+											<div class="row">
+												<div class="col-sm-6" style="padding-left: 33px;">
+													News Article Titles
+												</div>
+												<div class="col-sm-6 offset-4">
+													<i class="fa fa-times close-button" onclick="closeDiv()"style="padding-top: 3px;padding-left:136px"></i>
+												</div>
+											</div>
+										</div>
+										<ul class="list-group list-group-flush headline-div-content">
+										</ul>
+									</div>
+								</div>
 							
-							<div class="row m_top10">
-								<div class="col-sm-6">
-									<label>From Date</label>
-									<span class="input-group dateRangePickerCls" style="margin-right:23px;">
-										<input type="text" id="dateRangeFromDateNewsId" class="form-control" style="width: 221px; height: 33px;"/>
-										<span class="input-group-addon">
-											<i class="glyphicon glyphicon-calendar"></i>
-										</span>
-									</span>
+								<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="newsLetters">
+									<div class="row m_top10">	
+										<div class="col-sm-6 offset-1">
+											<label for="startDate">Start Date</label>
+											<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
+												<input type="text" id="startDate" class="form-control" />
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+												</span>
+											</span>
+										</div>
+										<div class="col-sm-6">
+											<label for="endDate">End Date</label>
+												<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
+													<input type="text" id="endDate" class="form-control" />
+													<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+												</span>
+											</span>
+										</div>
+									</div>
+									<div class="row m_top10">
+										<div class="col-sm-6">
+											<label for="wordCloudDistrict">District</label>
+											<!--<div class="multiselect">
+												<div class="selectBox" onclick="showCheckboxes()">
+													<select id="district" class="form-control">
+														<option>Select a district</option>
+													</select>
+													<div class="overSelect" id="overSelect"></div>
+												</div>
+												<div id="checkboxes"></div>
+											</div>-->
+											<select class="form-control chosen-select" multiple="multiple" id="wordCloudDistrict">
+											</select>
+										</div>
+										<div class="col-sm-6">
+											<label for="wordCloudConstituency">Constituency</label>
+											<!--<div class="multiselect">
+												<div class="selectBox" onclick="showCheckboxes1()">
+													<select id="constituency" class="form-control">
+														<option>Select a constituency</option>
+													</select>
+													<div class="overSelect"></div>
+												</div>
+												<div id="checkboxes1">
+												</div>
+											</div>-->
+											<select class="form-control chosen-select" multiple="multiple" id="wordCloudConstituency">
+											</select>
+										</div>
+									</div>
+								<div class="row m_top10">
+									<div class="col-sm-6">
+										<label for="newspapers">Newspaper</label>
+										<!--<div class="multiselect">
+											<div class="selectBox" onclick="showCheckboxes2()">
+												<select id="newspapers" class="form-control">
+													<option>Select a Newspaper</option>
+												</select>
+												<div class="overSelect"></div>
+											</div>
+											<div id="checkboxes2"></div>
+										</div>-->
+										<label>News Paper</label>
+									<select class="form-control chosen-select" multiple="multiple" id="newspapers">
+										</select>
+									</div>
+									<div class="col-sm-6">
+										<label>Edition Type</label>
+										<select class="form-control chosen-select" multiple="multiple" id="editionType">
+											<option value ="0" selected> ALL Editions </option>
+											<option> Main </option>
+											<option> District </option>
+											<option> Online </option>
+										</select>
+									</div>
 								</div>
-								<div class="col-sm-6">
-									<label>To Date</label>
-									<span class="input-group dateRangePickerCls" style="margin-right:23px;">
-										<input type="text" id="dateRangeToDateNewsId" class="form-control" style="width: 221px; height: 33px;" />
-										<span class="input-group-addon">
-											<i class="glyphicon glyphicon-calendar"></i>
-										</span>
-									</span>
-								</div>	
+								<div class="row m_top10">
+									<div class="col-sm-6">	
+										<div class="submit-button">
+											<div class="text-center">
+												<button class="btn btn-primary" style="margin-top: 22px;" onclick="fetchDataForWordCloud('fromPage')">Submit</button>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="row m_top10">
-								<div class="col-sm-6">
-									<label>State</label>
-									<select class="form-control chosen-select" id="newsLetterStateId">
-										<option value="Andhra Pradesh" selected> Andhra Pradesh </option>
-									</select>
-								</div>
-								<div class="col-sm-6">
-									<label>District</label>
-									<select class="form-control chosen-select" id="newsLetterDistrictId">
-										
-									</select>
-								</div>
+							</div>
+						</div>
+						
+					</div>
+					<!--<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="newsLetters">
 								
-							</div>
-							<div class="row m_top10">
-								<div class="col-sm-6">
-									<label>Constitency</label>
-									<select class="form-control chosen-select" id="newsLetterConstituencyId">
-										
-									</select>
+								<div class="row m_top10">
+									<div class="col-sm-6">
+										<label>From Date</label>
+										<span class="input-group dateRangePickerCls" style="margin-right:23px;">
+											<input type="text" id="dateRangeFromDateNewsId" class="form-control" style="width: 221px; height: 33px;"/>
+											<span class="input-group-addon">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</span>
+										</span>
+									</div>
+									<div class="col-sm-6">
+										<label>To Date</label>
+										<span class="input-group dateRangePickerCls" style="margin-right:23px;">
+											<input type="text" id="dateRangeToDateNewsId" class="form-control" style="width: 221px; height: 33px;" />
+											<span class="input-group-addon">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</span>
+										</span>
+									</div>	
 								</div>
-								<!--<div class="col-sm-4">
-									<label>Parliament</label>
-									<select class="form-control chosen-select" id="newsLetterParliamentId">
-										<option value="" selected>Parliament</option>
-										<option> Rajahmundry </option>
-										<option> Visakhapatnam </option>
-										<option> Vijayawada </option>
-										<option> Rajampet </option>
-										<option> Warangal </option>
-									</select>
+								<div class="row m_top10">
+									<div class="col-sm-6">
+										<label>State</label>
+										<select class="form-control chosen-select" id="newsLetterStateId">
+											<option value="Andhra Pradesh" selected> Andhra Pradesh </option>
+										</select>
+									</div>
+									<div class="col-sm-6">
+										<label>District</label>
+										<select class="form-control chosen-select" id="newsLetterDistrictId">
+											
+										</select>
+									</div>
+									
 								</div>
-								<div class="col-sm-6">
-									<label>News Paper</label>
-									<select class="form-control chosen-select" multiple="multiple" id="newsLetternewsPaperId">
-										
-									</select>
+								<div class="row m_top10">
+									<div class="col-sm-6">
+										<label>Constitency</label>
+										<select class="form-control chosen-select" id="newsLetterConstituencyId">
+											
+										</select>
+									</div>
+									<!--<div class="col-sm-4">
+										<label>Parliament</label>
+										<select class="form-control chosen-select" id="newsLetterParliamentId">
+											<option value="" selected>Parliament</option>
+											<option> Rajahmundry </option>
+											<option> Visakhapatnam </option>
+											<option> Vijayawada </option>
+											<option> Rajampet </option>
+											<option> Warangal </option>
+										</select>
+									</div>
+									<div class="col-sm-6">
+										<label>News Paper</label>
+										<select class="form-control chosen-select" multiple="multiple" id="newsLetternewsPaperId">
+											
+										</select>
+									</div>
 								</div>
-							</div>
-							<div class="row m_top10">
-								<div class="col-sm-6">
-									<label>Edition Type</label>
-									<select class="form-control chosen-select" multiple="multiple" id="newsLetterEditionId">
-										<option> Main </option>
-										<option> District </option>
-										<option> Online </option>
-									</select>
+								<div class="row m_top10">
+									<div class="col-sm-6">
+										<label>Edition Type</label>
+										<select class="form-control chosen-select" multiple="multiple" id="newsLetterEditionId">
+											<option> Main </option>
+											<option> District </option>
+											<option> Online </option>
+										</select>
+									</div>
+									<div class="col-sm-6" style="border-top-width: 0px; padding-top: 9px; padding-left: 73px;">
+										<button type="button" id="submitId" class="btn btn-default btn-md m_top10">Submit</button>
+									</div>
 								</div>
-								<div class="col-sm-6" style="border-top-width: 0px; padding-top: 9px; padding-left: 73px;">
-									<button type="button" id="submitId" class="btn btn-default btn-md m_top10">Submit</button>
+								<div class="row m_top20">
+									<div class="img-responsive" id ="imageId"></div>
 								</div>
-							</div>
-							<div class="row m_top20">
-								<div class="img-responsive" id ="imageId"></div>
 							</div>
 						</div>
 					</div>
 				</div>
+				<!--------News Letters End----------->
 			</div>
-			<!--------News Letters End----------->
 		</div>
-	
 	</div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
 <input type="hidden" id="alertEditionTypeHiddenId"></input>  
@@ -5409,7 +5600,8 @@
 			<div id="myModalShowNewId"></div>
 		</div>
 	</div>  
-</div>      
+</div>
+<div class="modal fade" id="myModalShowNews"></div>      
 <!-- Tour Details Modal -->
 <div class="modal" tabindex="-1" role="dialog" id="tourDetailsModalId">
 		  <div class="modal-dialog modal-lg" style="width:90%;">       
@@ -5766,6 +5958,7 @@
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
+<script src="js/imageRendering.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/debates.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newsCoreDashBoard.js" type="text/javascript"></script>
@@ -5795,7 +5988,7 @@
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
-<script src="js/imageRendering.js" type="text/javascript"></script>
+
 <script type="text/javascript">
  $(document).on("change","#categorySelId",function(){
 		getPrintMediaOverAllPSYCounts("OverAll","printMedia",$(this).val());
