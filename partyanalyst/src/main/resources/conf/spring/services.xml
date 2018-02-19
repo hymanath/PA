@@ -4710,5 +4710,6 @@
 		 
     	  <bean name = "partyMeetingExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.PartyMeetingExceptionalReportService">
     	   <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+    	   <property name="partyMeetingStatusDAO" ref = "partyMeetingStatusDAO"></property>
     	 </bean>
 </beans>			
