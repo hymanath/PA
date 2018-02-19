@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.NominatedPostCandidateDtlsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingExceptionalReportVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
@@ -66,6 +67,8 @@ import com.itgrids.partyanalyst.dto.TrainingCampSurveyVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.exceptionalReport.service.IPartyMeetingExceptionalReportService;
+import com.itgrids.partyanalyst.exceptionalReport.service.impl.PartyMeetingExceptionalReportService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAttendanceCoreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -196,6 +199,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String tabUserDetails;
 	private ResultStatus 						partyMeetingStatus;
 	
+	
 	/**
 	 * Ending Payment Gateway required parameters
 	 * 
@@ -219,6 +223,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
 	List<NominatedPostDetailsVO> nominatedPostDetailsVOList;
 	List<AffiliatedVo> affiliatedMemberCountList;
+	private IPartyMeetingExceptionalReportService partyMeetingExceptionalReportService;
+	private PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO;
 	//setters And Getters
 	
 	
@@ -1089,6 +1095,17 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setAffiliatedMemberCountList(
 			List<AffiliatedVo> affiliatedMemberCountList) {
 		this.affiliatedMemberCountList = affiliatedMemberCountList;
+	}
+	public void setPartyMeetingExceptionalReportService(IPartyMeetingExceptionalReportService partyMeetingExceptionalReportService) {
+		this.partyMeetingExceptionalReportService = partyMeetingExceptionalReportService;
+	}
+	public PartyMeetingExceptionalReportVO getPartyMeetingExceptionalReportVO() {
+		return partyMeetingExceptionalReportVO;
+	}
+
+	public void setPartyMeetingExceptionalReportVO(
+			PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO) {
+		this.partyMeetingExceptionalReportVO = partyMeetingExceptionalReportVO;
 	}
 
 	//business methods
@@ -5781,5 +5798,26 @@ public String getBoardWisePositions(){
     }
     return Action.SUCCESS;
   }
-
+public String getPartyMeetingExceptionReportMeetingLevelWise(){
+	try {
+		LOG.info("Entered into getPartyMeetingExceptionReportMeetingLevelWiseAction()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		JSONArray partyMeetingTypeIdArr = jObj.getJSONArray("partyMeetingTypeIds");  
+		List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+		if(partyMeetingTypeIdArr != null && partyMeetingTypeIdArr.length() > 0){
+			for (int i = 0; i < partyMeetingTypeIdArr.length(); i++){
+				partyMeetingTypeIds.add(Long.parseLong(partyMeetingTypeIdArr.getString(i)));          
+			}  
+		}
+		InputVO inputVO = new InputVO();
+		inputVO.setLocationLevel(jObj.getString("partyMeetingLevel"));
+		inputVO.setFromDateStr(jObj.getString("fromDate"));
+		inputVO.setToDateStr(jObj.getString("toDate"));
+		inputVO.setPartyMeetingtypeIds(partyMeetingTypeIds);
+		partyMeetingExceptionalReportVO = partyMeetingExceptionalReportService.getPartyMeetingExceptionReportMeetingLevelWise(inputVO);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getPartyMeetingExceptionReportMeetingLevelWise() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }
