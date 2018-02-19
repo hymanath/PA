@@ -16825,8 +16825,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			}
 		}
 	}
-	public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo){//monthLuy over for PM and Em
-		 List<AlertVO> finalList = new ArrayList<AlertVO>();
+	public AlertVO getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo){//monthLuy over for PM and Em
+		 AlertVO finalVo = new AlertVO();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			Date startDate = null,endDate = null;
@@ -16834,27 +16834,27 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				startDate = sdf.parse(vo.getFromDateStr());
 				endDate = sdf.parse( vo.getToDateStr());
 			}
-			finalList.addAll(getMonthSkeleton());
+			finalVo.getSubList2().addAll(getMonthSkeleton());
 			List<Object[]> monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,vo.getAlertCategoryId());
 			if(monthObjList !=null && monthObjList.size() >0){
 				for (Object[] objects : monthObjList) {
-					AlertVO matchedMonthVO = getmatchedMonthVo(finalList,commonMethodsUtilService.getLongValueForObject(objects[0]));
+					AlertVO matchedMonthVO = getmatchedMonthVo(finalVo.getSubList2(),commonMethodsUtilService.getLongValueForObject(objects[0]));
 					if(matchedMonthVO != null){
 						matchedMonthVO.setLocationCnt((Long)objects[1]);
 					}
 				}
 			}
-			if(finalList != null && finalList.size() >0){
-				for (AlertVO finalVo : finalList){
-					finalVo.setCount(finalVo.getLocationCnt()+finalVo.getLocationCnt());
+			if(finalVo.getSubList2() != null && finalVo.getSubList2().size() >0){
+				for (AlertVO monthVo : finalVo.getSubList2()){
+					finalVo.setCount(finalVo.getCount()+monthVo.getLocationCnt());
 				}
-				for (AlertVO finalVo : finalList) {
-					finalVo.setPercentage(calculatePercantage(finalVo.getLocationCnt(), finalVo.getLocationCnt()));
+				for (AlertVO monthVo : finalVo.getSubList2()) {
+					monthVo.setStatusPercent(calculatePercantage(monthVo.getLocationCnt(), finalVo.getCount()));
 				}
 			}
 		}catch (Exception e){
 			Log.error("Exception raised at getAlertsMonthlyOverviewInfoBySearchType", e);
 		}
-		return finalList;
+		return finalVo;
 	}
 }
