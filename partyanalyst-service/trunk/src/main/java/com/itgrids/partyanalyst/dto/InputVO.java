@@ -32,6 +32,8 @@ public class InputVO {
 	private Long userTypeId = 0L;
 	private Long stateId = 0L;
 	private Long overalCount=0l;
+	private List<Long> partyMeetingtypeIds;
+	private List<Long> partyMeetingLevelIds;
 	
 	public Long getUserTypeId() {
 		return userTypeId;
@@ -172,4 +174,17 @@ public class InputVO {
 	public void setOveralCount(Long overalCount) {
 		this.overalCount = overalCount;
 	}
+	public List<Long> getPartyMeetingtypeIds() {
+		return partyMeetingtypeIds;
+	}
+	public void setPartyMeetingtypeIds(List<Long> partyMeetingtypeIds) {
+		this.partyMeetingtypeIds = partyMeetingtypeIds;
+	}
+	public List<Long> getPartyMeetingLevelIds() {
+		return partyMeetingLevelIds;
+	}
+	public void setPartyMeetingLevelIds(List<Long> partyMeetingLevelIds) {
+		this.partyMeetingLevelIds = partyMeetingLevelIds;
+	}
+	
 }
