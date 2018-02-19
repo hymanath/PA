@@ -2,7 +2,7 @@
  function getPartyMeetingExceptionReportMeetingLevelWise()
 	{    
 	 	var jsObj = { 
-					 partyMeetingLevel : "Constituency",
+					 partyMeetingLevel : "mandalTownDivision",
 					 fromDate : "01/01/2018",
 					 toDate : "31/01/2018",
 					 partyMeetingTypeIds:[15],
