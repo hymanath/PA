@@ -107,7 +107,13 @@ public class AlertVO implements java.io.Serializable{
 	private List<AlertVO> list = new ArrayList<AlertVO>(0);
 	private Long count1 = 0l;
 	
-	
+
+	public Long getCount1() {
+		return count1;
+	}
+	public void setCount1(Long count1) {
+		this.count1 = count1;
+	}
 	public List<AlertVO> getList() {
 		return list;
 	}
