@@ -22,12 +22,10 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
-import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDAO;
-import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDayTourDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDocumentDAO;
@@ -151,6 +149,10 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 	public void setSelfAppraisalCandidateProgramDetailsDAO(
 			ISelfAppraisalCandidateProgramDetailsDAO selfAppraisalCandidateProgramDetailsDAO) {
 		this.selfAppraisalCandidateProgramDetailsDAO = selfAppraisalCandidateProgramDetailsDAO;
+	}
+	public void setSelfAppraisalCandidateLocationNewDAO(
+			ISelfAppraisalCandidateLocationNewDAO selfAppraisalCandidateLocationNewDAO) {
+		this.selfAppraisalCandidateLocationNewDAO = selfAppraisalCandidateLocationNewDAO;
 	}
 	/*presently these service are not used .It has written based on old requirement .Now requirement has completely changed so below service
 	 * are being used for that */
