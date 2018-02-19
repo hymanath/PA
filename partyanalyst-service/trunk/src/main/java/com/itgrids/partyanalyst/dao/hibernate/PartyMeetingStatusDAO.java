@@ -6,9 +6,11 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.model.PartyMeetingStatus;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -1308,5 +1310,59 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 				}
 				return query.list();
 	}
-	
+
+	public List<Object[]> getPartyMeetingStatusWiseCount(InputVO inputVO) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("constituency")) {
+			queryStr.append(" c.constituency_id as constituenyId,c.name as constituenyName ");
+			queryStr.append(",d.district_id as districtId,d.district_name as districtName ");
+			queryStr.append(",pc.constituency_id as parliamentId,pc.name as parliamentName ");
+		} else if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("parliament")) {
+			queryStr.append(" pc.constituency_id as parliamentId,c.name as parliamentName ");
+		}
+		queryStr.append(",pms.meeting_status meetingStatus,count(*) total  ");
+		queryStr.append(" from party_meeting_status pms ");
+		queryStr.append(" join party_meeting pm on pms.party_meeting_id = pm.party_meeting_id ");
+		queryStr.append(" join user_address ua on ua.user_address_id = pm.meeting_address_id ");
+		queryStr.append(" join district d on d.district_id = ua.district_id");
+		queryStr.append(" left join constituency c on c.constituency_id = ua.constituency_id");
+		queryStr.append(" left join constituency pc on ua.parliament_constituency_id = pc.constituency_id ");
+		queryStr.append(" where pm.is_active = 'Y' ");
+		queryStr.append(" and pm.party_meeting_type_id in (:partyMeetingTypeIds) ");
+		queryStr.append(" and pm.party_meeting_level_id in (:partyMeetingLevelIds)");
+		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			queryStr.append(" and (pm.start_date between :fromDate and :toDate) ");
+		}
+		queryStr.append(" and pms.meeting_status in ('Y','N','NU','M')");
+		if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("constituency")) {
+			queryStr.append(" group by c.constituency_id,pms.meeting_status ");
+		} else if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("parliament")) {
+			queryStr.append(" group by pc.constituency_id,pms.meeting_status ");
+		}
+		
+		SQLQuery sqlQuery = getSession().createSQLQuery(queryStr.toString());
+		
+		if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("constituency")) {
+			sqlQuery.addScalar("constituenyId", Hibernate.LONG);
+			sqlQuery.addScalar("constituenyName", Hibernate.STRING);
+			sqlQuery.addScalar("districtId", Hibernate.LONG);
+			sqlQuery.addScalar("districtName", Hibernate.STRING);
+			sqlQuery.addScalar("parliamentId", Hibernate.LONG);
+			sqlQuery.addScalar("parliamentName", Hibernate.STRING);
+		} else if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("parliament")) {
+			sqlQuery.addScalar("parliamentId", Hibernate.LONG);
+			sqlQuery.addScalar("parliamentName", Hibernate.STRING);
+		}
+		sqlQuery.addScalar("meetingStatus", Hibernate.STRING);
+		sqlQuery.addScalar("total", Hibernate.LONG);
+		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
+			sqlQuery.setDate("fromDate", inputVO.getFromDate());
+			sqlQuery.setDate("toDate", inputVO.getToDate());
+		}
+		sqlQuery.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingtypeIds());
+		sqlQuery.setParameterList("partyMeetingLevelIds",inputVO.getPartyMeetingLevelIds());
+		return sqlQuery.list();
+
+	}
 }
