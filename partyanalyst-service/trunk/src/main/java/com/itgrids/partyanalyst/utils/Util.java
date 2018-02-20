@@ -3,7 +3,7 @@
 
 package com.itgrids.partyanalyst.utils;
 
-import java.security.MessageDigest;import java.security.NoSuchAlgorithmException;import javax.mail.internet.AddressException;import javax.mail.internet.InternetAddress;
+import java.math.BigDecimal;import java.security.MessageDigest;import java.security.NoSuchAlgorithmException;import java.text.SimpleDateFormat;import java.util.ArrayList;import java.util.Date;import java.util.List;import javax.mail.internet.AddressException;import javax.mail.internet.InternetAddress;
 
 // Referenced classes of package com.clovetech.esgtms.util:
 //            TimeUtils
@@ -80,5 +80,5 @@ public class Util
                 result.append(content[i]);
 
         return result.toString();
-    }
+    }    public static List<Date> getDates(String startDateString,String endDateString,SimpleDateFormat sdf){      	List<Date> datesList = new ArrayList<Date>();      	Date startDate = null;      	Date endDate = null;      	try{      		if(startDateString != null && !startDateString.isEmpty()){     	    	 startDate = sdf.parse(startDateString);      		}    	   	    if(endDateString != null && !endDateString.isEmpty()){    	   	    	 endDate = sdf.parse(endDateString);    	   	    }    		}catch(Exception e){    			e.printStackTrace();    		}    	    datesList.add(0,startDate);    	    datesList.add(1,endDate);    	    return datesList;      }    public static Double calculatePercantage(Long subCount,Long totalCount){		Double d=0.0d;		if(subCount.longValue()>0l && totalCount.longValue()==0l)		System.out.println("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);		if(totalCount.longValue() > 0l){			 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 		}		return d;	}
 }

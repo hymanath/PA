@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingExceptionalReportVO;
 import com.itgrids.partyanalyst.exceptionalReport.service.IPartyMeetingExceptionalReportService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.Util;
 
 public class PartyMeetingExceptionalReportService implements IPartyMeetingExceptionalReportService {
 
@@ -33,19 +34,19 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 		this.partyMeetingStatusDAO = partyMeetingStatusDAO;
 	}
 
-	/**
+	   /**
 	   * @param InputVO inputVO
 	   * @return PartyMeetingExceptionalReportVO 
 	   * @author Santosh Kumar Verma 
 	   * @Description :This Service Method is used to get party meeting location level wise report. 
-	   *  @since 19-FEB-2018
+	   * @Date 19-FEB-2018
 	   */
 		public PartyMeetingExceptionalReportVO getPartyMeetingExceptionReportMeetingLevelWise(InputVO inputVO) {
 			PartyMeetingExceptionalReportVO resultVO = new PartyMeetingExceptionalReportVO();
 			try {
 				//preparing input parameter
 				List<Long> partyMeetingLevelIds = getPartyMeetingLevelIds(inputVO);
-				List<Date> dateList = getDates(inputVO.getFromDateStr(), inputVO.getToDateStr(), new SimpleDateFormat("dd/MM/yyyy"));
+				List<Date> dateList = Util.getDates(inputVO.getFromDateStr(), inputVO.getToDateStr(), new SimpleDateFormat("dd/MM/yyyy"));
 				inputVO.setPartyMeetingLevelIds(partyMeetingLevelIds);
 				inputVO.setFromDate(dateList.get(0));
 				inputVO.setToDate(dateList.get(1));
@@ -71,8 +72,8 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 					java.util.Collections.sort(resultVO.getSubList1(), meetingDecendingCountWiseSorting);
 				}
 				//calculating overall percentage
-				resultVO.setConductedPercentage(calculatePercantage(resultVO.getConductedCount(),resultVO.getTotalCount()));
-				resultVO.setNotConductedPercentage(calculatePercantage(resultVO.getNotConductedCount(),resultVO.getTotalCount()));
+				resultVO.setConductedPercentage(Util.calculatePercantage(resultVO.getConductedCount(),resultVO.getTotalCount()));
+				resultVO.setNotConductedPercentage(Util.calculatePercantage(resultVO.getNotConductedCount(),resultVO.getTotalCount()));
 			} catch (Exception e) {
 				LOG.error("Exception occurred  at getPartyMeetingExceptionReportMeetingLevelWise() in PartyMeetingExceptionalReportService class",e);
 			}
@@ -104,6 +105,12 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 						   partyMeetingStatus = commonMethodsUtilService.getStringValueForObject(param[6]);
 						   totalMeetingCnt = commonMethodsUtilService.getLongValueForObject(param[7]);
 					   }
+					   //in the case of constituency level meeting we are sending only not conducted constituency name
+					   if (inputVO.getLocationLevel().equalsIgnoreCase("constituency") && inputVO.getResultType().equalsIgnoreCase("constituency")) {
+    					   if (!partyMeetingStatus.equalsIgnoreCase("N")) {
+    						   continue;
+    					   }
+    				   }
 					   if (!locationMap.containsKey(locationId)) {
 						   PartyMeetingExceptionalReportVO locationVO = new PartyMeetingExceptionalReportVO();
 						   locationVO.setAddressVO(getAddressDetails(param, inputVO.getResultType()));
@@ -142,7 +149,7 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 						// calculating overall meeting count
 						resultVO.setTotalCount(resultVO.getTotalCount()+ entry.getValue().getTotalCount());	
 					}
-					entry.getValue().setPercentage(calculatePercantage(entry.getValue().getNotConductedCount(), entry.getValue().getTotalCount()));
+					entry.getValue().setPercentage(Util.calculatePercantage(entry.getValue().getNotConductedCount(), entry.getValue().getTotalCount()));
 				}
 			}
 		} catch (Exception e) {
@@ -189,33 +196,5 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 			LOG.error("Exception occurred  at getPartyMeetingLevelIds() in PartyMeetingExceptionalReportService class",e);
 		}
 		return partyMeetingLevelIds;
-	}
-	public Double calculatePercantage(Long subCount,Long totalCount){
-		Double d=0.0d;
-		if(subCount.longValue()>0l && totalCount.longValue()==0l)
-		LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
-
-		if(totalCount.longValue() > 0l){
-			 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
-		}
-		return d;
-	}
-	public List<Date> getDates(String startDateString, String endDateString,SimpleDateFormat sdf) {
-		List<Date> datesList = new ArrayList<Date>();
-		Date startDate = null;
-		Date endDate = null;
-		try {
-			if (startDateString != null && !startDateString.isEmpty()) {
-				startDate = sdf.parse(startDateString);
-			}
-			if (endDateString != null && !endDateString.isEmpty()) {
-				endDate = sdf.parse(endDateString);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		datesList.add(0, startDate);
-		datesList.add(1, endDate);
-		return datesList;
 	}
 }

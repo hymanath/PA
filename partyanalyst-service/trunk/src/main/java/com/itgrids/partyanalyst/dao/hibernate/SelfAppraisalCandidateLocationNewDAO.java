@@ -8,8 +8,8 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
+import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.model.SelfAppraisalCandidateLocationNew;
-import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<SelfAppraisalCandidateLocationNew, Long> implements
@@ -340,5 +340,58 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 		   query.setParameter("tdpCadreId", tdpCadreId);
 		   return query.list();  
 	   }
-      
+    //Exceptional Report Query
+	public List<Object[]> getAllTourCandiateDetails(InputVO inputVO) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select  "
+				+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId," // 0
+				+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.designation,"// 1
+				+ " SACL.selfAppraisalCandidate.selfAppraisalCandidateId,"//2
+				+ " SACL.selfAppraisalCandidate.tdpCadre.tdpCadreId,"//3
+				+ " SACL.selfAppraisalCandidate.tdpCadre.firstname,"//4
+				+ " district.districtId,"//5
+				+ " district.districtName, "//6
+				+ " constituency.constituencyId,"//7
+				+ " constituency.name, "//8
+				+ " parliamentConstituency.constituencyId,"//9
+				+ " parliamentConstituency.name "//10
+				+ " from "
+				+ " SelfAppraisalCandidateLocationNew SACL "
+				+ " left join SACL.userAddress.district district "
+				+ " left join SACL.userAddress.constituency constituency "
+				+ " left join SACL.userAddress.parliamentConstituency parliamentConstituency "
+				+ " where "
+				+ " SACL.selfAppraisalCandidate.isActive = 'Y' and SACL.isDeleted='N' and "
+				+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and "
+				+ " SACL.userAddress.state.stateId = :stateId ");
+
+		queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId,"
+				+ " SACL.selfAppraisalCandidate.selfAppraisalCandidateId, "
+				+ " SACL.locationScopeId,SACL.locationValue ");
+		queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("stateId", inputVO.getStateId());
+		return query.list();
+	}
+	 //Exceptional Report Query
+	public List<Object[]> getDeisgnationWiseTourCandidate(InputVO inputVO) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select  "
+				+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId,"//0
+				+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.designation,"//1
+				+ " count(distinct SACL.selfAppraisalCandidate.selfAppraisalCandidateId) "//2
+				+ " from "
+				+ " SelfAppraisalCandidateLocationNew SACL "
+				+ " where "
+				+ " SACL.selfAppraisalCandidate.isActive = 'Y' and SACL.isDeleted='N' and "
+				+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and "
+				+ " SACL.userAddress.state.stateId = :stateId ");
+
+		queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId ");
+		queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
+
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("stateId", inputVO.getStateId());
+		return query.list();
+	}
 }
