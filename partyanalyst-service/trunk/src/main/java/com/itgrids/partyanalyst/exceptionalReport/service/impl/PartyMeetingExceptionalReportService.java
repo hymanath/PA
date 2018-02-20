@@ -24,14 +24,12 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 	private final static Logger LOG = Logger.getLogger(PartyMeetingExceptionalReportService.class);
 	
 	private CommonMethodsUtilService commonMethodsUtilService;
-	
 	private IPartyMeetingStatusDAO partyMeetingStatusDAO;
 	
 	public void setCommonMethodsUtilService(CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-    public void setPartyMeetingStatusDAO(
-			IPartyMeetingStatusDAO partyMeetingStatusDAO) {
+    public void setPartyMeetingStatusDAO(IPartyMeetingStatusDAO partyMeetingStatusDAO) {
 		this.partyMeetingStatusDAO = partyMeetingStatusDAO;
 	}
 
