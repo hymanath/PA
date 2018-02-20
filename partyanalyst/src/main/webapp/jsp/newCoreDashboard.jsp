@@ -166,7 +166,7 @@
 		<li expand-icon="kaizala" right-nav="true">kaizala</li>
 		<li expand-icon="nominatedPost" right-nav="true" class="nominatedSideMenuCls">Nominated Post</li>
 		<li expand-icon="pressmeet" right-nav="true">Press Meet</li>
-		<li expand-icon="newsLetters" right-nav="true">Press Meet</li>
+		<li expand-icon="newsLetters" right-nav="true">Word Cloud</li>
 		<li expand-icon="tours" right-nav="true">Tours</li>
 		<li expand-icon="meetings" right-nav="true">meetings</li>
 		<li expand-icon="cadre" right-nav="true">membership</li>
@@ -4618,7 +4618,7 @@
 								</h4>
 							</div>
 							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="newsLetters">
-								<span class="newsLettersRefresh pull-right">
+								<span class="newsLettersRefresh pull-right"  onclick="refreshWordCloudfunction();">
 									<i class="glyphicon glyphicon-refresh"></i>
 								</span>
 								<span class="wordCloudIconExpand pull-right mainExpandCls" expand-icon="newsLetters">
