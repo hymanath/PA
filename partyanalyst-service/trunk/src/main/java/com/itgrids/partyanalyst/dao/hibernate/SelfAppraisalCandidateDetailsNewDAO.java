@@ -630,4 +630,55 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
             }
 		   return query.list();  
 	   }
+     //Exceptional Report Query
+	public List<Long> getUniqueCandidateTourSubmittedByTimePeriod(List<Long> monthYearIds, String timePeriod) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct SACD.tdpCadre.tdpCadreId " 
+				+ " from SelfAppraisalCandidateDetailsNew SACD "
+				+ " where SACD.isDeleted='N'  ");
+		if (monthYearIds != null && monthYearIds.size() > 0) {
+			queryStr.append(" and SACD.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
+		}
+		if (timePeriod != null && timePeriod.equalsIgnoreCase("before15days")) {
+			queryStr.append(" and day(SACD.updatedTime) <= :days");	
+		} else if (timePeriod != null && timePeriod.equalsIgnoreCase("after15days")) {
+			queryStr.append(" and day(SACD.updatedTime) > :days");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+
+		if (monthYearIds != null && monthYearIds.size() > 0) {
+			query.setParameterList("monthYearIds", monthYearIds);
+		}
+		if (timePeriod != null) {
+			query.setParameter("days", 15);
+		}
+		return query.list();
+	}
+	//Exceptional Report Query
+	public List<Object[]> getDesignationWiseTourSubmittedCandidateByTimePeriod(List<Long> monthYearIds, String timePeriod) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.selfAppraisalDesignationId," + // 0
+				"  count(distinct model.selfAppraisalCandidateId)");// 2
+		queryStr.append(" from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' "
+				+ " and model.selfAppraisalDesignation.isActive='Y' ");
+		if (monthYearIds != null && monthYearIds.size() > 0) {
+			queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
+		}
+		if (timePeriod != null && timePeriod.equalsIgnoreCase("before15days")) {
+			queryStr.append(" and day(model.updatedTime) <= :days");
+		} else if (timePeriod != null && timePeriod.equalsIgnoreCase("after15days")) {
+			queryStr.append(" and day(model.updatedTime) > :days");
+		}
+		queryStr.append(" group by model.selfAppraisalDesignation.selfAppraisalDesignationId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if (monthYearIds != null && monthYearIds.size() > 0) {
+			query.setParameterList("monthYearIds", monthYearIds);
+		}
+		if (timePeriod != null) {
+			query.setParameter("days", 15);
+		}
+		return query.list();
+	}
+	 
 }
