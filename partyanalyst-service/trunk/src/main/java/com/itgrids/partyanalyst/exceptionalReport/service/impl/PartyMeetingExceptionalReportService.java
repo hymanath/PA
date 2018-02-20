@@ -104,12 +104,6 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 						   partyMeetingStatus = commonMethodsUtilService.getStringValueForObject(param[6]);
 						   totalMeetingCnt = commonMethodsUtilService.getLongValueForObject(param[7]);
 					   }
-					   //in the case of constituency level meeting we are sending only not conducted constituency name
-					   if (inputVO.getLocationLevel().equalsIgnoreCase("constituency") && inputVO.getResultType().equalsIgnoreCase("constituency")) {
-    					   if (!partyMeetingStatus.equalsIgnoreCase("N")) {
-    						   continue;
-    					   }
-    				   }
 					   if (!locationMap.containsKey(locationId)) {
 						   PartyMeetingExceptionalReportVO locationVO = new PartyMeetingExceptionalReportVO();
 						   locationVO.setAddressVO(getAddressDetails(param, inputVO.getResultType()));
