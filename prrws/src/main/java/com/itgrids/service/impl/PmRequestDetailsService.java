@@ -45,6 +45,7 @@ import com.itgrids.dao.IPmPetitionAssignedOfficerDAO;
 import com.itgrids.dao.IPmPetitionDocumentDAO;
 import com.itgrids.dao.IPmPetitionTypeDAO;
 import com.itgrids.dao.IPmRefCandidateDAO;
+import com.itgrids.dao.IPmRefCandidateDepartmentDAO;
 import com.itgrids.dao.IPmRefCandidateDesignationDAO;
 import com.itgrids.dao.IPmRepresenteeDAO;
 import com.itgrids.dao.IPmRepresenteeDesignationDAO;
@@ -191,6 +192,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	private IPmActionTypeDAO pmActionTypeDAO;
 	@Autowired
 	private IPmDeptDesignationPrePostStatusDetailsDAO pmDeptDesignationPrePostStatusDetailsDAO;
+	@Autowired
+	private IPmRefCandidateDepartmentDAO pmRefCandidateDepartmentDAO;
 	
 	/*@Autowired
 	private IPmDepartmentDesignationStatusDAO pmDepartmentDesignationStatusDAO;*/
@@ -1565,7 +1568,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					RepresenteeViewVO vo = mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(vo == null){
 						vo = new RepresenteeViewVO();
-						vo.setPetitionStatusId(commonMethodsUtilService.getLongValueForObject(param[18]));
+						vo.setPetitionStatusId(commonMethodsUtilService.getLongValueForObject(param[17]));
 						vo.setDesigName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						vo.getDesigList().add(commonMethodsUtilService.getStringValueForObject(param[7]));
 						//vo.set
@@ -1617,8 +1620,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					subWorkVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[16]));
 					subWorkVO.setEndorsementNO(commonMethodsUtilService.getStringValueForObject(param[14]));
 					subWorkVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[10]));
-					if(param[17] != null)
-						subWorkVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[17]).substring(0, 10));
+					if(param[2] != null)
+						subWorkVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
 				}
 			}
 			
@@ -3191,7 +3194,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					leadMap = new HashMap<Long,RepresenteeViewVO>();
 					for (Object[] param : leadObjects) {
 						 Long leadId = commonMethodsUtilService.getLongValueForObject(param[1]);
-						 if(leadId.longValue() == 12L || leadId.longValue() == 3L || leadId.longValue() == 2L||leadId.longValue() == 4L || leadId.longValue() == 10L || leadId.longValue() == 9L||leadId.longValue() == 6L||leadId.longValue() == 5L){
+						 if(leadId.longValue() == 12L || leadId.longValue() == 3L || leadId.longValue() == 2L||leadId.longValue() == 4L 
+								 || leadId.longValue() == 10L || leadId.longValue() == 9L||leadId.longValue() == 6L||leadId.longValue() == 5L
+								 ||leadId.longValue() == 23L){
 							leadVO=leadMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
 							if(leadVO == null){
 								leadVO =new RepresenteeViewVO();
@@ -3405,10 +3410,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(saveStatus != 0){
 					inputVO.setEndValue(saveTempEndorseNo.toString());
 				}*/
+				
 				String str1 = pmRequiredFileFormatTextDAO.getCoverLetterMessage(inputVO.getDesignationIds());
 				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getDeptCode(),dateUtilService.getCurrentDateAndTime());
 				inputVO.setCategory(endorseStr);
 				PmRequestEditVO petitionDetailsVO =setPmRepresenteeDataToResultView(inputVO.getPageId(),inputVO.getpType(),inputVO.getBlockLevelId());
+				List<Long> refCandIds =null;
+				Map<Long,String> refCanDepts = getRefCandidateDepartments(refCandIds);
 				String staticPath = commonMethodsUtilService.createInnerFolders(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER+"/Covering_Letter");
 							if(staticPath != null && staticPath.equalsIgnoreCase("FAILED"))
 								throw new Exception("File path not available . Please check once file path.");
@@ -5128,6 +5136,29 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 				return status;
 			
+		}
+		
+		public Map<Long,String> getRefCandidateDepartments(List<Long> refCandIds){
+			Map<Long,String> refCandDeptMap = new HashMap<Long,String>();
+			try {
+				List<Object[]> refCanDepartments = pmRefCandidateDepartmentDAO.getPmRefCandidateDepartments(refCandIds);
+				
+				if(commonMethodsUtilService.isListOrSetValid(refCanDepartments)){
+					for (Object[] objects : refCanDepartments) {
+						String deptName = refCandDeptMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						/*if(deptName == "" && commonMethodsUtilService.getLongValueForObject(objects[0]) != 0l){
+							refCandDeptMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), commonMethodsUtilService.getStringValueForObject(objects[2]));
+						}else */if(deptName != "" && commonMethodsUtilService.getLongValueForObject(objects[0]) != 0l){
+							deptName = ","+deptName;
+						}
+						refCandDeptMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), deptName);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in PmRequestDetailsService @ getRefCandidateDepartments() "+e.getMessage());
+			}
+			return refCandDeptMap;
 		}
 		
 }
