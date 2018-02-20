@@ -18780,5 +18780,20 @@
 				<param name="root">partyMeetingExceptionalReportVO</param>
 		</result>
 	</action>
+	<action name="getOverallTrainingCampReport" class="coreDashboardAction" method="getOverallTrainingCampReport">
+		<result type="json" name="success">
+				<param name="root">trainingCampProgramVO</param>
+		</result>
+	</action>
+	<action name="getListOfParliamentsWithPoorPerformance" class="coreDashboardAction" method="getListOfParliamentsWithPoorPerformance">
+		<result type="json" name="success">
+				<param name="root">trainingCampProgramVOList</param>
+		</result>
+	</action>
+	<action name="getListOfAssemblyWithPoorPerformance" class="coreDashboardAction" method="getListOfAssemblyWithPoorPerformance">
+		<result type="json" name="success">
+				<param name="root">trainingCampProgramVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
