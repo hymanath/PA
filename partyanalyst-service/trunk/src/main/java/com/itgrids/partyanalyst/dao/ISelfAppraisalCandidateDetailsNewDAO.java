@@ -26,4 +26,7 @@ public interface ISelfAppraisalCandidateDetailsNewDAO extends GenericDao<SelfApp
  public List<Object[]> getProgramVistedLeaderDetails(Long stateId,Long userAccessLevelId,Set<Long> locationValueSet,Long userTypeId,List<Long> monthYearIds,List<Long> designationIds);
  public List<Object[]> getCandiateComment(Long tdpCadreId);
  public List<Object[]> getUniqueTourSubmittedCandiate(Set<Long> tdpCadreIdSet,List<Long> monthYearIds);
+ //exceptional report DAO
+ public List<Long> getUniqueCandidateTourSubmittedByTimePeriod(List<Long> monthYearIds, String timePeriod);
+ public List<Object[]> getDesignationWiseTourSubmittedCandidateByTimePeriod(List<Long> monthYearIds,String timePeriod);
  }
