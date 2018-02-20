@@ -68,7 +68,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.exceptionalReport.service.IPartyMeetingExceptionalReportService;
-import com.itgrids.partyanalyst.exceptionalReport.service.impl.PartyMeetingExceptionalReportService;
+import com.itgrids.partyanalyst.exceptionalReport.service.ITrainingCampExceptionalReportService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAttendanceCoreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -223,6 +223,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
 	List<NominatedPostDetailsVO> nominatedPostDetailsVOList;
 	List<AffiliatedVo> affiliatedMemberCountList;
+	private ITrainingCampExceptionalReportService trainingCampExceptionalReportService;
 	private IPartyMeetingExceptionalReportService partyMeetingExceptionalReportService;
 	private PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO;
 	//setters And Getters
@@ -1095,6 +1096,11 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setAffiliatedMemberCountList(
 			List<AffiliatedVo> affiliatedMemberCountList) {
 		this.affiliatedMemberCountList = affiliatedMemberCountList;
+	}
+	
+	public void setTrainingCampExceptionalReportService(
+			ITrainingCampExceptionalReportService trainingCampExceptionalReportService) {
+		this.trainingCampExceptionalReportService = trainingCampExceptionalReportService;
 	}
 	public void setPartyMeetingExceptionalReportService(IPartyMeetingExceptionalReportService partyMeetingExceptionalReportService) {
 		this.partyMeetingExceptionalReportService = partyMeetingExceptionalReportService;
@@ -5798,6 +5804,33 @@ public String getBoardWisePositions(){
     }
     return Action.SUCCESS;
   }
+	public String getOverallTrainingCampReport(){
+		try{
+			jObj = new JSONObject(getTask());
+			trainingCampProgramVO = trainingCampExceptionalReportService.getOverallTrainingCampReport(jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("stateId"),jObj.getInt("size"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getOverallTrainingCampReport() of LocationDashboardAction{}", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getListOfParliamentsWithPoorPerformance(){
+		try{
+			jObj = new JSONObject(getTask());
+			trainingCampProgramVOList = trainingCampExceptionalReportService.getListOfParliamentsWithPoorPerformance(jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("stateId"),jObj.getInt("size"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getListOfParliamentsWithPoorPerformance() of LocationDashboardAction{}", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getListOfAssemblyWithPoorPerformance(){
+		try{
+			jObj = new JSONObject(getTask());
+			trainingCampProgramVOList = trainingCampExceptionalReportService.getListOfAssemblyWithPoorPerformance(jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("stateId"),jObj.getInt("size"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getListOfAssemblyWithPoorPerformance() of LocationDashboardAction{}", e);
+		}
+		return Action.SUCCESS;
+	}
 public String getPartyMeetingExceptionReportMeetingLevelWise(){
 	try {
 		LOG.info("Entered into getPartyMeetingExceptionReportMeetingLevelWiseAction()  of CoreDashboardAction");
