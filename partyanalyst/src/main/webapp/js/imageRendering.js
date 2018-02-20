@@ -2,7 +2,7 @@ var url = window.location.href;
 var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
   wurl = url.substr(0,(url.indexOf(".in")+3));
-var glStartDate = moment().startOf('month').format("YYYY-MM-DD");
+var glStartDate = moment().format("YYYY-MM-DD");
 var glEndDate = moment().format("YYYY-MM-DD");
 getAllLocations(2,'1','onload');
 populateNewspapers();
@@ -20,12 +20,28 @@ $("#startDate").daterangepicker({
 		
 	});
 $("#endDate").daterangepicker({
+	startDate: glEndDate,
         singleDatePicker: true,
 		locale: {
 		  format: 'YYYY-MM-DD'
 		},
 		
 	})
+	
+$('#startDate').on('apply.daterangepicker', function(ev, picker) {
+	
+/* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
+	glEndDate = picker.endDate.format('DD-MM-YYYY'); */
+	glStartDate = picker.endDate.format('YYYY-MM-DD');
+	//checkIsDataExist(selectDate);
+});
+$('#endDate').on('apply.daterangepicker', function(ev, picker) {
+	
+/* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
+	glEndDate = picker.endDate.format('DD-MM-YYYY'); */
+	glEndDate = picker.endDate.format('YYYY-MM-DD');
+	//checkIsDataExist(selectDate);
+});
 
 var width = 509
 var height = 449
@@ -237,7 +253,7 @@ function buildResultforWordCloud(levelTypeId,result,type){
 	}else if(levelTypeId =="wordCloudConstituency"){
 		optionStr+='<option value="0" selected>ALL constituencies</option>';
 	}if(levelTypeId =="newspapers"){
-		optionStr+='<option value="0" selected>ALL NewsPapers</option>';
+		optionStr+='<option value="0" selected>ALL NewsPapers(Excepted Sakshi)</option>';
 	}
 	if(levelTypeId =="newspapers"){
 		for(var i in result){
