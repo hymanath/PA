@@ -1174,7 +1174,9 @@ public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locatio
 		}else if(locationScopeId ==4l){
 			sb.append(" ,ua.constituency_id as locationId ");
 		}else if(locationScopeId ==10l){
-			sb.append(" ,parliament_constituency_id as locationId ");
+			sb.append(" ,ua.parliament_constituency_id as locationId ");
+		}else if(locationScopeId ==2l){
+			sb.append(" ,ua.state_id as locationId ");
 		}
 	}
 	sb.append(" from activity_question_answer AQA left Join activity_option AO on AO.activity_option_id = AQA.activity_option_id," +
@@ -1207,7 +1209,9 @@ public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locatio
 		}else if(locationScopeId ==4l){
 			sb.append(" ,ua.constituency_id ");
 		}else if(locationScopeId ==10l){
-			sb.append(" ,parliament_constituency_id");
+			sb.append(" ,ua.parliament_constituency_id");
+		}else if(locationScopeId ==2l){
+			sb.append(" ,ua.state_id");
 		}
 	}
 	Query query = getSession().createSQLQuery(sb.toString()).addScalar("questionId",Hibernate.LONG)

@@ -3383,6 +3383,8 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 						"model.address.constituency.district.districtName ");
 			}else if(locationScopeId ==10l){
 				sb.append(" ,model.address.parliamentConstituency.constituencyId, model.address.parliamentConstituency.name ");
+			}else if(locationScopeId ==2l){
+				sb.append(" ,model.address.state.stateId, model.address.state.stateName ");
 			}
 		}
 		sb.append(" from ActivityLocationInfo model where ");
@@ -3432,6 +3434,8 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 				sb.append(" ,model.address.constituency.constituencyId ");
 			}else if(locationScopeId ==10l){
 				sb.append(" ,model.address.parliamentConstituency.constituencyId");
+			}else if(locationScopeId ==2l){
+				sb.append(" ,model.address.state.stateId");
 			}
 		}
 		sb.append(" from ActivityLocationInfo model where model.activityScope.activityScopeId=:activityScopeId group by model.ivrStatus ");
@@ -3441,6 +3445,8 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 				sb.append("  ,model.address.district.districtId");
 			}else if(locationScopeId ==4l){
 				sb.append(" ,model.address.constituency.constituencyId");
+			}else if(locationScopeId ==2l){
+				sb.append(" ,model.address.state.stateId");
 			}else if(locationScopeId ==10l){
 				sb.append(" ,model.address.parliamentConstituency.constituencyId");
 			}
