@@ -9,6 +9,7 @@ public class TrainingCampProgramVO {
 
 	private Long id;
 	private String name;
+	private String constituency;
 	private Long totalEligibleCount=0l;
 	private Long totalAttenedCount=0l;
 	private Long totalNotAttenedCount=0l;
@@ -308,6 +309,12 @@ public class TrainingCampProgramVO {
 	}
 	public void setBoothVO(TrainingCampProgramVO boothVO) {
 		BoothVO = boothVO;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
 	}
 	
 	
