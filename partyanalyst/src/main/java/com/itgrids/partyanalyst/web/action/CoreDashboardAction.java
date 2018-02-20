@@ -68,6 +68,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.exceptionalReport.service.IPartyMeetingExceptionalReportService;
+import com.itgrids.partyanalyst.exceptionalReport.service.ITourExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITrainingCampExceptionalReportService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAttendanceCoreDashBoardService;
@@ -226,6 +227,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ITrainingCampExceptionalReportService trainingCampExceptionalReportService;
 	private IPartyMeetingExceptionalReportService partyMeetingExceptionalReportService;
 	private PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO;
+	private ITourExceptionalReportService tourExceptionalReportService;
 	//setters And Getters
 	
 	
@@ -1112,6 +1114,10 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setPartyMeetingExceptionalReportVO(
 			PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO) {
 		this.partyMeetingExceptionalReportVO = partyMeetingExceptionalReportVO;
+	}
+    
+	public void setTourExceptionalReportService(ITourExceptionalReportService tourExceptionalReportService) {
+		this.tourExceptionalReportService = tourExceptionalReportService;
 	}
 
 	//business methods
@@ -5849,7 +5855,21 @@ public String getPartyMeetingExceptionReportMeetingLevelWise(){
 		inputVO.setPartyMeetingtypeIds(partyMeetingTypeIds);
 		partyMeetingExceptionalReportVO = partyMeetingExceptionalReportService.getPartyMeetingExceptionReportMeetingLevelWise(inputVO);
 	} catch (Exception e) {
-		LOG.error("Exception raised at getPartyMeetingExceptionReportMeetingLevelWise() method of CoreDashBoard", e);
+		LOG.error("Exception raised at getPartyMeetingExceptionReportMeetingLevelWise() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+public String getDesignationWiseTourSubmittedOverviewDtls(){
+	try {
+		LOG.info("Entered into getDesignationWiseTourSubmittedOverviewDtls()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		InputVO inputVO = new InputVO();
+		inputVO.setStateId(jObj.getLong("stateId"));
+		inputVO.setFromDateStr(jObj.getString("fromDate"));
+		inputVO.setToDateStr(jObj.getString("toDate"));
+		tourOverviewDtlsVO = tourExceptionalReportService.getDesignationWiseTourSubmittedOverviewDtls(inputVO);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getDesignationWiseTourSubmittedOverviewDtls() method of CoreDashBoardAction", e);
 	}
 	return Action.SUCCESS;
 }

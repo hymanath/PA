@@ -18795,5 +18795,10 @@
 				<param name="root">trainingCampProgramVOList</param>
 		</result>
 	</action>
+	<action name="getDesignationWiseTourSubmittedOverviewDtlsAction" class="coreDashboardAction" method="getDesignationWiseTourSubmittedOverviewDtls">
+		<result type="json" name="success">
+				<param name="root">tourOverviewDtlsVO</param>
+		</result>
+	</action>
  </package>
 </struts>

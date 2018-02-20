@@ -4708,8 +4708,15 @@
             <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
     	 </bean>
 		 
-    	  <bean name = "partyMeetingExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.PartyMeetingExceptionalReportService">
-    	   <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
-    	   <property name="partyMeetingStatusDAO" ref = "partyMeetingStatusDAO"></property>
-    	 </bean>
+   	  <bean name = "partyMeetingExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.PartyMeetingExceptionalReportService">
+   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	   	<property name="partyMeetingStatusDAO" ref = "partyMeetingStatusDAO"></property>
+   	 </bean>
+   	  <bean name = "tourExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.TourExceptionalReportService">
+   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	  	 <property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO"></property>
+   	  	 <property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
+   	  	 <property name="selfAppraisalCandidateDetailsNewDAO" ref="selfAppraisalCandidateDetailsNewDAO"></property>
+   	 </bean>
+    	 
 </beans>			
