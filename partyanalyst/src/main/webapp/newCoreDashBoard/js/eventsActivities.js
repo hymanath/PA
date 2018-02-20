@@ -2551,7 +2551,8 @@ $(document).on("click",".acitivitiesMoreExpand",function(){
 
 function levelWiseSBData(divId)
 {
-	levelWiseSBArr=['district','parliament','constituency'];
+	levelWiseSBArr=['state','district','parliament','constituency'];
+	//levelWiseSBArr=['state'];
 	var collapse='';
 		collapse+='<section>';
 			collapse+='<div class="row">';
@@ -2615,6 +2616,8 @@ function getSettingActivitiesJBMData(locationId,divId){
 		locationTypeId =4
 	}else if(locationId == 'parliament'){
 		locationTypeId =10
+	}else if(locationId == 'state'){
+		locationTypeId =2
 	}
 
 	var jsObj={
@@ -2648,6 +2651,8 @@ function buildActivityEventdata(result,locationId,divId){
 						tableView+='<th rowspan =2>Assembly Constituency</th>';
 					}else if(locationId == 'parliament'){
 						tableView+='<th rowspan =2>Parliment Constituency</th>';
+					}else if(locationId == 'state'){
+						tableView+='<th rowspan =2>State</th>';
 					}
 					tableView+='<th rowspan ="2">Total Panchayaths/ Wards</th>';
 					tableView+='<th rowspan ="2">Total SC Population</th>';
@@ -2958,7 +2963,7 @@ function buildActivityEventdata(result,locationId,divId){
 			}
 		});
 	}
-	if(locationId !="district"){
+	if(locationId !="state"){
 		$("."+divId+locationId).trigger("click");
 	}
 
