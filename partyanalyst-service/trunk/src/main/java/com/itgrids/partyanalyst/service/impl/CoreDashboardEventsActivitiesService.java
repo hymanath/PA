@@ -2339,46 +2339,31 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 				}
 			}
 		}
-		List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
-		for (AffiliatedVo affiliatedVo : activityParticipatentCount) {
-			EventLocationVO locationVo =locationMap.get(affiliatedVo.getLocationId());
-			if(locationVo != null){
-				locationVo.setTotalPopulation(affiliatedVo.getTotalMembers());
-				locationVo.setCoveredPopulation(affiliatedVo.getTotalCovered());
-				locationVo.setTotalRegistered(affiliatedVo.getTotalRegistration());
-				locationVo.setTotalLoanApplied(affiliatedVo.getTotalLoanApplied());
-				/*EventLocationVO questionVO = new EventLocationVO();
-				questionVO.setQuestionId(999l);
-				questionVO.setQuestionName("Affiliated Member Data");
+		
+		if( locationScopeId !=2l){
+			List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
+			for (AffiliatedVo affiliatedVo : activityParticipatentCount) {
+				EventLocationVO locationVo =locationMap.get(affiliatedVo.getLocationId());
+				if(locationVo != null){
+					locationVo.setTotalPopulation(affiliatedVo.getTotalMembers());
+					locationVo.setCoveredPopulation(affiliatedVo.getTotalCovered());
+					locationVo.setTotalRegistered(affiliatedVo.getTotalRegistration());
+					locationVo.setTotalLoanApplied(affiliatedVo.getTotalLoanApplied());
+				}
 				
-				questionVO.setOptionId(999l);
-				questionVO.setOptionName("List Of Counts");
-				locationVo.getQuestionList().add(questionVO);
+			}
+		}else{
+			locationScopeId=3l;
+			List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
+			for (AffiliatedVo affiliatedVo : activityParticipatentCount) {
+				EventLocationVO locationVo =locationMap.get(1l);
+				if(locationVo != null){
+					locationVo.setTotalPopulation(locationVo.getTotalPopulation()+affiliatedVo.getTotalMembers());
+					locationVo.setCoveredPopulation(locationVo.getConductedCount()+affiliatedVo.getTotalCovered());
+					locationVo.setTotalRegistered(locationVo.getTotalRegistered()+affiliatedVo.getTotalRegistration());
+					locationVo.setTotalLoanApplied(locationVo.getTotalPopulation()+affiliatedVo.getTotalLoanApplied());
+				}
 				
-				EventLocationVO optionVo = new EventLocationVO();
-				EventLocationVO optionVo1 = new EventLocationVO();
-				EventLocationVO optionVo2 = new EventLocationVO();
-				EventLocationVO optionVo3 = new EventLocationVO();
-				
-				optionVo.setOptionId(991l);
-				optionVo.setOptionName("total SC Population");
-				optionVo.setCount(affiliatedVo.getTotalMembers());
-				questionVO.getOptionList().add(optionVo);
-				
-				optionVo1.setOptionId(992l);
-				optionVo1.setOptionName("covered Population");
-				optionVo1.setCount(affiliatedVo.getTotalCovered());
-				questionVO.getOptionList().add(optionVo1);
-
-				optionVo2.setOptionId(993l);
-				optionVo2.setOptionName("Registered");
-				optionVo2.setCount(affiliatedVo.getTotalRegistration());
-				questionVO.getOptionList().add(optionVo2);
-				
-				optionVo3.setOptionId(994l);
-				optionVo3.setOptionName("LoanApplied");
-				optionVo3.setCount(affiliatedVo.getTotalLoanApplied());
-				questionVO.getOptionList().add(optionVo3);*/
 			}
 		}
  		for (Long lcoationId : locationMap.keySet()) {
