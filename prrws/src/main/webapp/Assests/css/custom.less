@@ -937,7 +937,7 @@ header
 }
 .white-block
 {
-	background-color: @white_color;
+	background-color: @white_color !important;
 }
 .nav-tabs-custom
 {
@@ -3550,10 +3550,6 @@ table.DTFC_Cloned thead,table.DTFC_Cloned tfoot{background-color:white}div.DTFC_
 	background-color: #666666;
 	color: #fff !important;
 }
-.pad_5
-{
-	padding: 5px;
-}
 .panelHeading
 {
 	color:#333;
@@ -4169,4 +4165,256 @@ strong {
 .content {
   height: 100%;
   padding: 20px 12px 5px;
+}
+
+
+
+
+.tabs-left {
+  border-right: 1px solid #ddd;
+}
+.tabs-left li 
+{
+  float: none;
+  margin-bottom: 2px;
+}
+.tabs-left>li {
+  margin-right: -1px;
+}
+.tabs-left>li.active>a,
+.tabs-left>li.active>a:hover,
+.tabs-left>li.active>a:focus 
+{
+  border-bottom-color: #ddd;
+  border-right-color: transparent;
+}
+.tabs-left>li>a 
+{
+  border-radius: 4px 0 0 4px;
+  margin-right: 0;
+  display:block;
+}
+nav select {
+  display: none;
+}
+
+.margin_left0 {
+	margin-left:0px;
+}
+.m_top_bottom20 
+{
+	margin-top:20px;
+	margin-bottom:20px;
+}
+.p_lr20 
+{
+	padding-left:20px;
+	padding-right:20px;
+}
+.NoClr {
+	color:#51C2A3; 
+	margin-left:10px;
+}
+.margin_bottom5{
+	margin-bottom:5px !important;
+}
+.table_customStl {
+	thead {
+		tr {
+			th:nth-child(1) {
+				background-color:#F5F5F5;
+			}
+			th:nth-child(2) {
+				background-color:#BDD4EE;
+				color:#539FD7;
+			}
+			th:nth-child(3) {
+				background-color:#F6C0D8;
+				color:#EB69AA;
+			}
+			th:nth-child(4) {
+				background-color:#FCDBAD;
+				color:#FDBD19;
+			}
+			th:nth-child(5) {
+				background-color:#B6CAC1;
+				color:#4A8E77;
+			}
+			th:nth-child(6) {
+				background-color:#C2E6E0;
+				color:#7AD0C8;
+			}
+			th:nth-child(7) {
+				background-color:#BEBFE0;
+				color:#7174B6;
+			}
+		}
+	}	
+	tbody {
+		tr {
+			td:nth-child(1) {
+				background-color:#fff;
+			}
+			td:nth-child(2) {
+				background-color:#DFEBF7;
+			}
+			td:nth-child(3) {
+				background-color:#FBE0EC;
+			}
+			td:nth-child(4) {
+				background-color:#FDEED6;
+			}
+			td:nth-child(5) {
+				background-color:#DAE4DF;
+			}
+			td:nth-child(6) {
+				background-color:#E2F3F1;
+			}
+			td:nth-child(7) {
+				background-color:#fff;
+			}
+		}
+	}
+}
+.ARI {
+	opacity:0.5;
+}
+.pad13 
+{
+	padding:13px;
+}
+.pad_2 
+{
+	padding:2px;
+	border:1px solid grey;
+}
+.border_white 
+{
+	 border:4px solid white;
+}
+.border_Block 
+{
+	border:1px solid #E3E4E4; 
+	border-right:none;
+}
+.col-half{
+    margin-left:4.166666667%
+}
+.pad3 
+{
+	padding:3px;
+}
+@media (max-width: 768px) 
+{
+  .marl 
+  {
+	margin-left:5px;
+  }
+}
+
+div[expand-main='true'] {
+  .channel-name {
+    width: 34px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    margin: 0px 3px;
+  }
+  .location-name {
+    width: 34px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    margin: 0px 3px;
+  }
+  .status-name {
+    width: 34px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    margin: 0px 3px;
+  }
+  .alert-title {
+    margin: 0px 3px;
+    width: 100px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  td {
+    .alert-title {
+      margin: 0px 3px;
+      width: 50px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: inline-block;
+      white-space: nowrap;
+    }
+  }
+  table 
+  {
+    tr 
+	{
+      td 
+	  {
+        &:nth-child(4) {
+          display: none;
+        }
+        &:nth-child(5) {
+          display: none;
+        }
+        padding: 8px 3px !important;
+      }
+    }
+    thead 
+	{
+      th 
+	  {
+        &:nth-child(4) {
+          display: none;
+        }
+        &:nth-child(5) {
+          display: none;
+        }
+        padding: 8px 3px !important;
+      }
+    }
+  }
+}
+.myfontStyle 
+{
+	color: #4a5863 !important;
+	font-family: "Roboto", sans-serif;
+	font-size: 13px;
+	font-weight: 500;
+}
+.box_shad 
+{
+	box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.4);
+}
+.arrow-icon 
+{
+	font-size: 20px;
+    position: relative;
+    top: -5px;
+    cursor: pointer;
+}
+.icon-name
+{
+	background-color: #61BCFE;
+	border-radius: 50%;
+	height: 30px;
+	width: 30px;
+	display: block;
+	text-align: center;
+	padding-top: 5px;
+	color: #fff;
+}
+.over 
+{
+	overflow:hidden;
 }
