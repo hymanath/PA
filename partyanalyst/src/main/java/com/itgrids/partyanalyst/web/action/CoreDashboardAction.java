@@ -20,6 +20,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ActivityExceptionalReportVO;
 import com.itgrids.partyanalyst.dto.AffiliatedVo;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.BoothInchargesVO;
@@ -67,6 +68,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampSurveyVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.exceptionalReport.service.IActivityExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.IPartyMeetingExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITourExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITrainingCampExceptionalReportService;
@@ -224,10 +226,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
 	List<NominatedPostDetailsVO> nominatedPostDetailsVOList;
 	List<AffiliatedVo> affiliatedMemberCountList;
+	
 	private ITrainingCampExceptionalReportService trainingCampExceptionalReportService;
 	private IPartyMeetingExceptionalReportService partyMeetingExceptionalReportService;
-	private PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO;
 	private ITourExceptionalReportService tourExceptionalReportService;
+	private IActivityExceptionalReportService activityExceptionalReportService;
+
+	private PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO;
+	private ActivityExceptionalReportVO activityExceptionalReportVO;
 	//setters And Getters
 	
 	
@@ -1119,6 +1125,16 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setTourExceptionalReportService(ITourExceptionalReportService tourExceptionalReportService) {
 		this.tourExceptionalReportService = tourExceptionalReportService;
 	}
+   public void setActivityExceptionalReportService(IActivityExceptionalReportService activityExceptionalReportService) {
+		this.activityExceptionalReportService = activityExceptionalReportService;
+	}
+  public ActivityExceptionalReportVO getActivityExceptionalReportVO() {
+	return activityExceptionalReportVO;
+  }
+
+  public void setActivityExceptionalReportVO(ActivityExceptionalReportVO activityExceptionalReportVO) {
+	this.activityExceptionalReportVO = activityExceptionalReportVO;
+  }
 
 	//business methods
 	public String execute(){
@@ -5885,6 +5901,34 @@ public String getNotSubmittedCandidateDetailsByFilter(){
 		tourOverviewDtlsList = tourExceptionalReportService.getNotSubmittedCandidateDetailsByFilter(inputVO);
 	} catch (Exception e) {
 		LOG.error("Exception raised at getNotSubmittedCandidateDetailsByFilter() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+public String getActivityPerformanceDetailsLocationWise(){
+	try {
+		LOG.info("Entered into getActivityPerformanceDetailsLocationWise()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		InputVO inputVO = new InputVO();
+		inputVO.setActivityScopeId(jObj.getLong("activityScopeId"));
+		inputVO.setFromDateStr(jObj.getString("fromDate"));
+		inputVO.setToDateStr(jObj.getString("toDate"));
+		activityExceptionalReportVO = activityExceptionalReportService.getActivityPerformanceDetailsLocationWise(inputVO);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getActivityPerformanceDetailsLocationWise() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+public String getActivityAttendedAndImageCoveredDetails(){
+	try {
+		LOG.info("Entered into getActivityPerformanceDetailsLocationWise()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		InputVO inputVO = new InputVO();
+		inputVO.setActivityScopeId(jObj.getLong("activityScopeId"));
+		inputVO.setFromDateStr(jObj.getString("fromDate"));
+		inputVO.setToDateStr(jObj.getString("toDate"));
+		activityExceptionalReportVO = activityExceptionalReportService.getActivityAttendedAndImageCoveredDetails(inputVO);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getActivityAttendedAndImageCoveredDetails() method of CoreDashBoardAction", e);
 	}
 	return Action.SUCCESS;
 }
