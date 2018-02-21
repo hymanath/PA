@@ -1,31 +1,20 @@
 alert(1);
-getOverallTrainingCampReport();
+
 getListOfParliamentsWithPoorPerformance();
 getListOfAssemblyWithPoorPerformance();    
 
-function getOverallTrainingCampReport(){  
-	var jsObj = { 
-		fromDateStr : "01/01/2017",
-		toDateStr : "01/01/2018",
-		stateId : 1,
-		size:5
-	}
-	$.ajax({
-		type : 'POST',      
-		url : 'getOverallTrainingCampReport.action',
-		dataType : 'json',
-		data : {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		console.log(result);
-	});
-}
 
 function getListOfParliamentsWithPoorPerformance(){  
 	var jsObj = { 
 		fromDateStr : "01/01/2017",
 		toDateStr : "01/01/2018",
 		stateId : 1,
-		size:5
+		size : 5,
+		tdpCommitteeLevelIds : [5,6,7,8,9],
+		enrollmentYearIds : [4],
+		trainingCampProgramIds : [8],   
+		locationLevelId : 2,
+		locationLevelValues : []
 	}
 	$.ajax({
 		type : 'POST',      
@@ -43,7 +32,12 @@ function getListOfAssemblyWithPoorPerformance(){
 		fromDateStr : "01/01/2017",
 		toDateStr : "01/01/2018",
 		stateId : 1,
-		size:5
+		size : 5,
+		tdpCommitteeLevelIds : [5,6,7,8,9],
+		enrollmentYearIds : [4],
+		trainingCampProgramIds : [8,9,10],
+		locationLevelId : 2,
+		locationLevelValues : []
 	}
 	$.ajax({
 		type : 'POST',
