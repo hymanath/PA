@@ -144,12 +144,13 @@ public class ActivityExceptionalReportService implements IActivityExceptionalRep
 		ActivityExceptionalReportVO resultVO = new ActivityExceptionalReportVO();
 		 try {
 			 //activity attended member details
+			 List<Object[]> constituencyObjLst = activityLocationInfoDAO.getLocationWiseActiviyDetailsByType(inputVO.getActivityScopeId(), "constituency", "total");
 			 List<Object[]> activityAttendedDtlsObjLst = activityLocationInfoDAO.getMPPChairmanMayorAttenedDetatils(inputVO.getActivityScopeId());
-			 resultVO.setSubList1(prepareRequiredData(activityAttendedDtlsObjLst));
+			 resultVO.setSubList1(prepareRequiredData(constituencyObjLst,activityAttendedDtlsObjLst));
 			 Collections.sort(resultVO.getSubList1(), activityAttendedMemberAscendingCountWiseSorting);
 			 //image covered location details
 			 List<Object[]> coveredImageDtlsObjList = activityInfoDocumentDAO.getCoveredImagedConstitiency(inputVO.getActivityScopeId());
-			 resultVO.setSubList2(prepareRequiredData(coveredImageDtlsObjList));
+			 resultVO.setSubList2(prepareRequiredData(constituencyObjLst,coveredImageDtlsObjList));
 			 Collections.sort(resultVO.getSubList2(), activityAttendedMemberAscendingCountWiseSorting);
 		 } catch (Exception e) {
 			 LOG.error("Exception occurred  at getActivityAttendedAndImageCoveredDetails() in ActivityExceptionalReportService class",e);
@@ -164,18 +165,25 @@ public class ActivityExceptionalReportService implements IActivityExceptionalRep
      	 return count2.compareTo(count1);
      	}
 	};
-	private List<ActivityExceptionalReportVO> prepareRequiredData(List<Object[]> objList) {
+	private List<ActivityExceptionalReportVO> prepareRequiredData(List<Object[]> objList,List<Object[]> objList1) {
 		List<ActivityExceptionalReportVO> finalList = new ArrayList<ActivityExceptionalReportVO>(0);
 		 try {
 			  if (objList != null && objList.size() > 0) {
 				  for (Object[] param : objList) {
 					ActivityExceptionalReportVO locationVO = new ActivityExceptionalReportVO();
-					 locationVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[1]));
+					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					Object[] matchObjArr = getMatchObjectArr(objList1, locationVO.getLocationId());
+					 if (matchObjArr != null ) {
+						 locationVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(matchObjArr[0]));
+					 }
 					 AddressVO addressVO = new AddressVO();
-					 addressVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[0]));
-		   			 addressVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[1]));
-		   			 addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[2]));
-		   			 addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					 addressVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[1]));
+		   			 addressVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[2]));
+		   			 addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[3]));
+		   			 addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[4]));
+		   			 addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[5]));
+		   			 addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[6]));
 		   			 locationVO.setAddressVO(addressVO);
 		   			finalList.add(locationVO);
 				}
