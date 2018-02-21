@@ -6,10 +6,17 @@ import java.util.List;
 import java.util.Set;
 
 public class TrainingCampProgramVO {
-
+	
+	private Long overAllEligibleCount;
+	private Long asOfNowTrained;
+	private Long yetToTrain;
+	private Double asOfNowTrainedPer;
+	private Double yetToTrainPer;
 	private Long id;
 	private String name;
 	private String constituency;
+	private Long parliamentId;
+	private String parliament;
 	private Long totalEligibleCount=0l;
 	private Long totalAttenedCount=0l;
 	private Long totalNotAttenedCount=0l;
@@ -315,6 +322,48 @@ public class TrainingCampProgramVO {
 	}
 	public void setConstituency(String constituency) {
 		this.constituency = constituency;
+	}
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public String getParliament() {
+		return parliament;
+	}
+	public void setParliament(String parliament) {
+		this.parliament = parliament;
+	}
+	public Long getOverAllEligibleCount() {
+		return overAllEligibleCount;
+	}
+	public void setOverAllEligibleCount(Long overAllEligibleCount) {
+		this.overAllEligibleCount = overAllEligibleCount;
+	}
+	public Long getAsOfNowTrained() {
+		return asOfNowTrained;
+	}
+	public void setAsOfNowTrained(Long asOfNowTrained) {
+		this.asOfNowTrained = asOfNowTrained;
+	}
+	public Long getYetToTrain() {
+		return yetToTrain;
+	}
+	public void setYetToTrain(Long yetToTrain) {
+		this.yetToTrain = yetToTrain;
+	}
+	public Double getAsOfNowTrainedPer() {
+		return asOfNowTrainedPer;
+	}
+	public void setAsOfNowTrainedPer(Double asOfNowTrainedPer) {
+		this.asOfNowTrainedPer = asOfNowTrainedPer;
+	}
+	public Double getYetToTrainPer() {
+		return yetToTrainPer;
+	}
+	public void setYetToTrainPer(Double yetToTrainPer) {
+		this.yetToTrainPer = yetToTrainPer;
 	}
 	
 	

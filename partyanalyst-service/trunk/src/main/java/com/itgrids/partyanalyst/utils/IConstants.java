@@ -1377,6 +1377,13 @@ public interface IConstants {
 	public static final List<Long> MONTH_IDS=Arrays.asList(1l,2l,3l,4l,5l,6l,7l,8l,9l,10l,11l,12l);
 	public static final String COMMUNITY_NEWS_PORTAL_PATH="http://www.mytdp.com/CommunityNewsPortal/";
 	
+	public static final List<Long> SVV_CENTER_LOCATION_LIST=Arrays.asList(11l,12l,13l);
+	public static final List<Long> EWK_CENTER_LOCATION_LIST=Arrays.asList(14L,15L,16L);
+	public static final List<Long> GPN_CENTER_LOCATION_LIST=Arrays.asList(17L,18L,19L);
+	public static final List<Long> AKKC_CENTER_LOCATION_LIST=Arrays.asList(20L,21L,22L,23L);
+	
+	public static final List<Long> TRAINING_CAMP_ID   = Arrays.asList(1l,2L,3L,4L);
+	
 	public static final Long ACTIVITY_OPTION_ID = 22l;
 	public static final Long MPP_CHAIRMAN_MAYOR_PARTICIPATEDORNOT_QUESIONNAIRE_ID=27l;
 }

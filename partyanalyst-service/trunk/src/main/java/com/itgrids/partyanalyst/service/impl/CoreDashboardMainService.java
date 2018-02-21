@@ -8546,7 +8546,7 @@ public void initializeTrainingCampMap(Map<Long,Map<Long,Set<String>>> campIdAndC
 		Map<Long,Set<String>> cadreIdAndListOfAttendedDate = null;
 		Set<String> attendedDateList = null;
 		
-		Set<Long> batchIdList = null;
+		Set<Long> batchIdList = null;//[1, 470, 10882056, 2017-07-10]
 		int campIdPosition = 0;
 		int cadreIdPosition = 0;
 		int datePosition = 0;

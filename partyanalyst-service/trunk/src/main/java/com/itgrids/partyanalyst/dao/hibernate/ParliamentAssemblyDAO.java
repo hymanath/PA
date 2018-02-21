@@ -101,7 +101,10 @@ public class ParliamentAssemblyDAO extends GenericDaoHibernate<ParliamentAssembl
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getParliamntIdByConsIds(List<Long> constituencyIds){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select distinct  model.parliamentAssembly.constituencyId,model.parliamentAssembly.name,model.assembly.constituencyId " +
+		sb.append(" select distinct  " +
+				" model.parliamentAssembly.constituencyId, " +
+				" model.parliamentAssembly.name, " +
+				" model.assembly.constituencyId " +
 	 				" from ParliamentAssembly model  ");
 		if(constituencyIds != null && constituencyIds.size()>0){
 			sb.append(" where model.assembly.constituencyId in (:constituencyIds)");

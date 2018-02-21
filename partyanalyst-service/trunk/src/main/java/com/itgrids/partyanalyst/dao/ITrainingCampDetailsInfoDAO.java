@@ -15,4 +15,5 @@ public interface ITrainingCampDetailsInfoDAO extends GenericDao<TrainingCampDeta
 	public List<Object[]> getTrainingCampEligibleAndAttendedCntByLocationType(Long locationScopeId,List<Long> locationValues,Long stateId,Long userTypeId,Long activityMemberId,String locationType);
 	public int pushTrainginCampDataLocationWiseByCommitteeLevel();
 	public List<Object[]> getBoothlevelEligibleCandidates(List<Long> enrollmentYearIds, Long locationScopeId, List<Long> locationValesList,List<Long> programIdList);
+	public List<Object[]> getInviteesList(Long locationScopeId,List<Long> tdpCommitteeLevelIds,List<Long> trainingCampProgramIds);
 }
