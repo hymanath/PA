@@ -2681,6 +2681,7 @@ function buildActivityEventdata(result,locationId,divId){
 						}
 						
 					}
+					tableView+='<th rowspan ="2">ఈ కార్యక్రమం లో ఎమ్మెల్యే/ఇంచార్జి హాజరు అయిన  రోజులు  </th>';
 				tableView+='</tr>';
 				tableView+='<tr>';
 					tableView+='<th>Total Count</th>';
@@ -2771,6 +2772,7 @@ function buildActivityEventdata(result,locationId,divId){
 						}
 						
 					}
+					tableView+='<td>'+result[i].count+'</td>';
 					tableView+='</tr>';
 				}
 			tableView+='</tbody>';
