@@ -35,6 +35,7 @@ public class InputVO {
 	private List<Long> partyMeetingtypeIds;
 	private List<Long> partyMeetingLevelIds;
 	private Long noOfMonth;
+	private Long activityScopeId;
 	
 	public Long getUserTypeId() {
 		return userTypeId;
@@ -192,6 +193,12 @@ public class InputVO {
 	}
 	public void setNoOfMonth(Long noOfMonth) {
 		this.noOfMonth = noOfMonth;
+	}
+	public Long getActivityScopeId() {
+		return activityScopeId;
+	}
+	public void setActivityScopeId(Long activityScopeId) {
+		this.activityScopeId = activityScopeId;
 	}
 	
 }

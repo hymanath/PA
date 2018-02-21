@@ -1376,4 +1376,7 @@ public interface IConstants {
 	public static final List<Long> CATEGORY_IDS=Arrays.asList(4l,2l,3l);
 	public static final List<Long> MONTH_IDS=Arrays.asList(1l,2l,3l,4l,5l,6l,7l,8l,9l,10l,11l,12l);
 	public static final String COMMUNITY_NEWS_PORTAL_PATH="http://www.mytdp.com/CommunityNewsPortal/";
+	
+	public static final Long ACTIVITY_OPTION_ID = 22l;
+	public static final Long MPP_CHAIRMAN_MAYOR_PARTICIPATEDORNOT_QUESIONNAIRE_ID=27l;
 }

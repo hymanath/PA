@@ -83,7 +83,7 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 		     	public int compare(PartyMeetingExceptionalReportVO location2, PartyMeetingExceptionalReportVO location1) {
 		     	Double per2 = location2.getPercentage();
 		     	Double per1 = location1.getPercentage();
-		     	//ascending order of percentage.
+		     	//descending  order of percentage.
 		     	 return per1.compareTo(per2);
 		     	}
 	};

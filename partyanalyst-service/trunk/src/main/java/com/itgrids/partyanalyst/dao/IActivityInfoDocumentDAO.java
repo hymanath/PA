@@ -57,4 +57,5 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public List<Object[]> getWardNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId, Long mandalOrMuncId,Date startDate,Date endDate);
 	public List<Object[]> getDocumentsCuntForScopeId(Long activityScopeId,List<Long> mandalIdList,List<Long> muncipIdsList);
 	public List<Object[]> getDocuemntDtlsByLocation(Long activityScopeId,Long activityLocationInfoId);
+	public List<Object[]> getCoveredImagedConstitiency(Long activityScopeId);
 }
