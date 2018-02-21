@@ -3458,4 +3458,45 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 		}
 		return query.list();
 	}
+
+
+	@Override
+	public List<Object[]> getInchargeMLAAttendCount(Long activityScopeId,Long locationScopeId) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select  COUNT(DISTINCT model.activityLocationInfo.conductedDate),COUNT(*) ");
+		
+		if(locationScopeId !=null && locationScopeId > 0l ){
+			if(locationScopeId ==3l){
+				sb.append(" ,model.activityLocationInfo.address.district.districtId ");
+			}else if(locationScopeId ==4l){
+				sb.append(" ,model.activityLocationInfo.address.constituency.constituencyId ");
+			}else if(locationScopeId ==10l){
+				sb.append(" ,model.activityLocationInfo.address.parliamentConstituency.constituencyId ");
+			}else if(locationScopeId ==2l){
+				sb.append(" ,model.activityLocationInfo.address.state.stateId ");
+			}
+		}
+		
+		sb.append(" from ActivityQuestionAnswer model where " +
+				" model.activityQuestionnaireId= 27  AND model.activityLocationInfo.conductedDate IS NOT NULL" +
+				" and model.isDeleted ='N' and model.activityOptionId=22 and model.activityLocationInfo.activityScopeId=:activityScopeId");
+		if(locationScopeId !=null && locationScopeId > 0l ){
+			if(locationScopeId ==3l){
+				sb.append(" group by model.activityLocationInfo.address.district.districtId");
+			}else if(locationScopeId ==4l){
+				sb.append(" group by model.activityLocationInfo.address.constituency.constituencyId");
+			}else if(locationScopeId ==2l){
+				sb.append(" group by model.activityLocationInfo.address.state.stateId");
+			}else if(locationScopeId ==10l){
+				sb.append(" group by model.activityLocationInfo.address.parliamentConstituency.constituencyId");
+			}
+		}
+		sb.append(" ORDER BY COUNT(DISTINCT model.activityLocationInfo.conductedDate) , COUNT(*)");	
+		Query query = getSession().createQuery(sb.toString());
+		if(activityScopeId != null && activityScopeId >0){
+			query.setParameter("activityScopeId", activityScopeId);
+		}
+		return query.list();
+	}
 }

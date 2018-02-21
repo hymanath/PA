@@ -2340,6 +2340,15 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 			}
 		}
 		
+		List<Object[]> inchargeMLAUniqueCountList= activityLocationInfoDAO.getInchargeMLAAttendCount(activityScopeId,locationScopeId);
+	
+		for (Object[] objects : inchargeMLAUniqueCountList) {
+			EventLocationVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
+			if(locationVo != null){
+				locationVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+			}
+		}
+		
 		if( locationScopeId !=2l){
 			List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
 			for (AffiliatedVo affiliatedVo : activityParticipatentCount) {
