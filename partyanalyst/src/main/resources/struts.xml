@@ -18800,5 +18800,11 @@
 				<param name="root">tourOverviewDtlsVO</param>
 		</result>
 	</action>
+	<action name="getNotSubmittedCandidateDetailsByFilterAction" class="coreDashboardAction" method="getNotSubmittedCandidateDetailsByFilter">
+		<result type="json" name="success">
+				<param name="root">tourOverviewDtlsList</param>
+		</result>
+	</action>
+	
  </package>
 </struts>

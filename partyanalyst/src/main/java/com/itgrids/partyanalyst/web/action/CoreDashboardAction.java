@@ -5873,4 +5873,20 @@ public String getDesignationWiseTourSubmittedOverviewDtls(){
 	}
 	return Action.SUCCESS;
 }
+public String getNotSubmittedCandidateDetailsByFilter(){
+	try {
+		LOG.info("Entered into getDesignationWiseTourSubmittedOverviewDtls()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		InputVO inputVO = new InputVO();
+		inputVO.setStateId(jObj.getLong("stateId"));
+		inputVO.setFromDateStr(jObj.getString("fromDate"));
+		inputVO.setToDateStr(jObj.getString("toDate"));
+		inputVO.setNoOfMonth(jObj.getLong("noOfMonth"));
+		tourOverviewDtlsList = tourExceptionalReportService.getNotSubmittedCandidateDetailsByFilter(inputVO);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getNotSubmittedCandidateDetailsByFilter() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+
 }
