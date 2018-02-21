@@ -1569,15 +1569,12 @@ public List<Object[]> getWardNamesLocationsInfocoveredLocationsByScopeId(Long ac
 	public List<Object[]> getCoveredImagedConstitiency(Long activityScopeId) {
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append(" select ");
-		 queryStr.append(" constituency.constituencyId, constituency.name ");
-		 queryStr.append(" ,parliament.constituencyId, parliament.name ");
-		 queryStr.append(",count(distinct model.activityDocument.activityDocumentId) ");
+		 queryStr.append("  count(distinct model.activityDocument.activityDocumentId) ");
+		 queryStr.append(" ,model.userAddress.constituency.constituencyId  ");
 		 queryStr.append(" from ActivityInfoDocument model " +
-				         " left join model.userAddress.parliamentConstituency parliament "+
-		 		         " left join model.userAddress.constituency constituency "+
-		 		         " where model.isDeleted='N' " +
+				         " where model.isDeleted='N' " +
 		 		         " and model.activityDocument.activityScopeId=:activityScopeId");
-		 queryStr.append(" group by constituency.constituencyId");
+		 queryStr.append(" group by model.userAddress.constituency.constituencyId");
 		 Query query = getSession().createQuery(queryStr.toString());
 		 query.setParameter("activityScopeId", activityScopeId);
 		 return query.list();

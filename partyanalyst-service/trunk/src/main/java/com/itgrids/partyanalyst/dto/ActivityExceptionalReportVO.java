@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ActivityExceptionalReportVO {
 
-	private Long totalCount;
+	private Long totalCount = 0l;
 	private Long notConductedCount;
 	private Double percentage = 0d;
 	private AddressVO addressVO;

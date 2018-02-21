@@ -3531,20 +3531,17 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 	public List<Object[]> getMPPChairmanMayorAttenedDetatils(Long activityScopeId) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select ");
-		sb.append(" constituency.constituencyId, constituency.name ");
-		sb.append(" ,parliament.constituencyId, parliament.name ");
-		sb.append(" ,count(distinct model.conductedDate) ");
+		sb.append(" count(distinct model.conductedDate), ");
+		sb.append(" model.address.constituency.constituencyId ");
 		sb.append(" from ActivityLocationInfo model ");
-		sb.append(" left join model.address.parliamentConstituency parliament "
-				+ " left join model.address.constituency constituency "
-				+ ",ActivityQuestionAnswer model1 "
+		sb.append(" ,ActivityQuestionAnswer model1 "
 				+ " where "
 				+ " model.activityLocationInfoId=model1.activityLocationInfoId "
 				+ " and model1.activityQuestionnaireId="+IConstants.MPP_CHAIRMAN_MAYOR_PARTICIPATEDORNOT_QUESIONNAIRE_ID+"" 
 			    + " and model1.activityOptionId = "+IConstants.ACTIVITY_OPTION_ID + ""
 				+ " and model1.isDeleted = 'N' ");
 		sb.append(" and model.activityScope.activityScopeId =:activityScopeId ");
-		sb.append(" group by constituency.constituencyId");
+		sb.append(" group by model.address.constituency.constituencyId");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("activityScopeId", activityScopeId);
 		return query.list();
