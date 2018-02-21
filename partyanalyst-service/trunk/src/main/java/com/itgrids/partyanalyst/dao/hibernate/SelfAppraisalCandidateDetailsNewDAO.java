@@ -680,5 +680,21 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		}
 		return query.list();
 	}
-	 
+	//Exceptional Report Query
+	public List<Object[]> getNoOfMonthTourSubmittedCandidateWise(List<Long> monthYearIds) {
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.selfAppraisalCandidateId," + // 0
+				"  count(distinct model.selfAppraisalToursMonthId)");// 2
+		queryStr.append(" from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' "
+				+ " and model.selfAppraisalDesignation.isActive='Y' ");
+		if (monthYearIds != null && monthYearIds.size() > 0) {
+			queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
+		}
+		queryStr.append(" group by model.selfAppraisalCandidateId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if (monthYearIds != null && monthYearIds.size() > 0) {
+			query.setParameterList("monthYearIds", monthYearIds);
+		}
+		return query.list();
+	}
 }

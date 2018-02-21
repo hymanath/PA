@@ -23,6 +23,7 @@ public class ToursOverviewDtlsvO {
 	private AddressVO addressVO;
 	private Long candidateId;
 	private Long designationId;
+	private Long notSubmittedNoOfMonth = 0l;
 	
 	private List<ToursOverviewDtlsvO> subList1;
 	private List<ToursOverviewDtlsvO> subList2;
@@ -150,4 +151,12 @@ public class ToursOverviewDtlsvO {
 	public void setTotalUniqueCandidateCount(Long totalUniqueCandidateCount) {
 		this.totalUniqueCandidateCount = totalUniqueCandidateCount;
 	}
+	public Long getNotSubmittedNoOfMonth() {
+		return notSubmittedNoOfMonth;
+	}
+	public void setNotSubmittedNoOfMonth(Long notSubmittedNoOfMonth) {
+		this.notSubmittedNoOfMonth = notSubmittedNoOfMonth;
+	}
+	
+	
 }
