@@ -130,6 +130,14 @@ public class ITextCoveringLetterGeneration  {
 				str1=str1.replace("#Addr", " addressed to Hon'ble Minister for "+depts.replace(")", "")+" ");
 			}
  			if(petitionDetailsVO != null){
+ 				
+ 				if(petitionDetailsVO.getGrievanceDescription() != null && !petitionDetailsVO.getGrievanceDescription().equalsIgnoreCase("")){
+ 					petitionDetailsVO.setGrievanceDescription(petitionDetailsVO.getGrievanceDescription().replace(".", ""));
+					 str1 = str1.replace("#workName",petitionDetailsVO.getGrievanceDescription());
+				 }else{
+					 str1 = str1.replace("#workName","");
+				 }
+ 				
  				if(petitionDetailsVO.getRepresentationdate() != null && !petitionDetailsVO.getRepresentationdate().equalsIgnoreCase("")){
  					 String[] strArr = petitionDetailsVO.getRepresentationdate().split("-");
  					 String dateFormat = strArr[0]+"."+strArr[1]+"."+strArr[2];
@@ -151,12 +159,12 @@ public class ITextCoveringLetterGeneration  {
 							 str1 = str1.replace("#rdesig","");
 						 }
 						 if(pmRequestVO.getAddressVO().getAssemblyName() != null && !pmRequestVO.getAddressVO().getAssemblyName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rconst"," "+pmRequestVO.getAddressVO().getAssemblyName()+" constituency,");
+							 str1 = str1.replace("#rconst"," "+pmRequestVO.getAddressVO().getAssemblyName()+" Constituency, ");
 						 }else{
 							 str1 = str1.replace("#rconst","");
 						 }
 						 if(pmRequestVO.getAddressVO().getDistrictName() != null && !pmRequestVO.getAddressVO().getDistrictName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdist",""+pmRequestVO.getAddressVO().getDistrictName()+" district");
+							 str1 = str1.replace("#rdist",""+pmRequestVO.getAddressVO().getDistrictName()+" District");
 						 }else{
 							 str1 = str1.replace("#rdist","");
 						 }
@@ -210,7 +218,7 @@ public class ITextCoveringLetterGeneration  {
 				}
 			 //estCost = "4.50";
 			 if(estCost != "0.0"){
-				 str1 = str1.replace("#cost","with an estimated cost of Rs.&nbsp;<b>"+estCost+"</b>&nbsp;Lakhs. ");
+				 str1 = str1.replace("#cost","With an Estimated Cost of Rs.&nbsp;<b>"+estCost+"</b>&nbsp;Lakhs. ");
 			 }else{
 				 str1 = str1.replace("#cost",".");
 			 }

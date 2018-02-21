@@ -2504,9 +2504,9 @@ $(document).on("click",".uploadFuncCls",function(){
 		$("#uploadCoverFileDivCls").show();
 		$("#uploadCoverFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadCoveringDocId" class="m_top10"/>');
 			initializeSingleUploadDocument("uploadCoveringDocId");
-		$("#endorseFunctionDivId").hide();
+		//$("#endorseFunctionDivId").hide();
 	}else{
-		$("#endorseFunctionDivId").show();
+		//$("#endorseFunctionDivId").show();
 		$("#uploadCoverFileDivCls").hide();
 	}
 	

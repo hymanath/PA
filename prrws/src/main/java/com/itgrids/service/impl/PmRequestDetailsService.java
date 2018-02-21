@@ -1937,12 +1937,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		return returnVO;
 	}
 	
-	public Map<String,List<PetitionsWorksVO>> getPetitionsSubWorksDetails(Long petitionId,String pageType){
+	public Map<String,List<PetitionsWorksVO>> getPetitionsSubWorksDetails(Long petitionId,String pageType,List<Long> userAccesseDeptIds){
 		Map<String,List<PetitionsWorksVO>> petitionSubWorksMap = new LinkedHashMap<String,List<PetitionsWorksVO>>(0);
 		SimpleDateFormat ymdFormat = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat dmyFormat = new SimpleDateFormat("dd-MM-yyyy");
 		try {
-			List<Object[]> subWorksList = pmSubWorkDetailsDAO.getPetitionSubWorksDetails(petitionId);
+			List<Object[]> subWorksList = pmSubWorkDetailsDAO.getPetitionSubWorksDetails(petitionId,userAccesseDeptIds);
 			List<Long> workIdsList = new ArrayList<Long>(0);
 			if(commonMethodsUtilService.isListOrSetValid(subWorksList)){
 				for (Object[] param : subWorksList) {
@@ -2203,10 +2203,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			 if(pageType != null && pageType.equalsIgnoreCase("viewPage")){
 				 pageType = null;
 			 }
+			 
+			 KeyValueVO UserVO = getDeptIdsListBYUserIds(userId);
+			 List<Long> deptIds = UserVO.getDeptIdsList();
+				
 			 Map<Long,KeyValueVO> petitionFilesListMap = getPmPetitionDocumentsByPetition(petitionId);
 			 Map<Long,List<KeyValueVO>> refFilesListMap =getPmRepresenteeRefDocumentsByPetition(petitionId);
 			 PmRequestEditVO petitionVO = getPetitionBasicDetails(petitionId,pageType,petitionFilesListMap,refFilesListMap);
-			 Map<String,List<PetitionsWorksVO>> petitionSubWorksMap = getPetitionsSubWorksDetails(petitionId,pageType);
+			 Map<String,List<PetitionsWorksVO>> petitionSubWorksMap = getPetitionsSubWorksDetails(petitionId,pageType,deptIds);
 			 Map<Long,List<PetitionFileVO>> petitionRequiredFilesMap =  getPetitionsRequiredFilesMap(petitionId);
 			 KeyValueVO assignedWorksStatusVO = getAssignedPetitionOfficersStatusDetails(petitionId,userId);
 			 List<KeyValueVO> allFilesList = new ArrayList<KeyValueVO>(0);
