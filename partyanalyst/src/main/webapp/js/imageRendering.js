@@ -291,8 +291,8 @@ function callfetchFunction(type){
 function populateNewspapers(type){
 	$.ajax({
 		type : 'GET', 
-		//url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
-      url: "http://localhost:8446/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+		url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+      //url: "http://localhost:8446/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
     }).then(function(result){
 	return buildResultforWordCloud('newspapers',result,type);
       
