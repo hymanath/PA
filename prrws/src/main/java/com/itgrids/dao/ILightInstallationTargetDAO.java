@@ -10,4 +10,5 @@ import com.itgrids.model.LightInstallationTarget;
 public interface ILightInstallationTargetDAO extends GenericDao<LightInstallationTarget,Long> {
 
 	public List<Object[]> getLedTargetVendorWise(Date date);
+	public List<Object[]> getVendorWiseLedTargetDetails(Date toDate);
 }

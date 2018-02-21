@@ -56,6 +56,15 @@ public class LightMonitoringVO implements Serializable{
     private Long teamCount = 0L;
     private Long totalVillages = 0L;
     private String workDate;
+    private Long targetCount = 0L;
+    private String isDayTime;
+    private Long eeslCount = 0L;
+    private Long nredcapCount = 0L;
+    private Long eeslFittedCount = 0L;
+    private Long nredcapFittedCount = 0L;
+    private Long eeslnewCount = 0L;
+    private Long nredcapNewCount = 0L;
+    
     
     public LightMonitoringVO() {
 		
@@ -364,7 +373,53 @@ public class LightMonitoringVO implements Serializable{
 	}
 	public void setWorkDate(String workDate) {
 		this.workDate = workDate;
-	} 
-	
-	
+	}
+	public Long getTargetCount() {
+		return targetCount;
+	}
+	public void setTargetCount(Long targetCount) {
+		this.targetCount = targetCount;
+	}
+	public String getIsDayTime() {
+		return isDayTime;
+	}
+	public void setIsDayTime(String isDayTime) {
+		this.isDayTime = isDayTime;
+	}
+	public Long getEeslCount() {
+		return eeslCount;
+	}
+	public void setEeslCount(Long eeslCount) {
+		this.eeslCount = eeslCount;
+	}
+	public Long getNredcapCount() {
+		return nredcapCount;
+	}
+	public void setNredcapCount(Long nredcapCount) {
+		this.nredcapCount = nredcapCount;
+	}
+	public Long getEeslFittedCount() {
+		return eeslFittedCount;
+	}
+	public void setEeslFittedCount(Long eeslFittedCount) {
+		this.eeslFittedCount = eeslFittedCount;
+	}
+	public Long getNredcapFittedCount() {
+		return nredcapFittedCount;
+	}
+	public void setNredcapFittedCount(Long nredcapFittedCount) {
+		this.nredcapFittedCount = nredcapFittedCount;
+	}
+	public Long getEeslnewCount() {
+		return eeslnewCount;
+	}
+	public void setEeslnewCount(Long eeslnewCount) {
+		this.eeslnewCount = eeslnewCount;
+	}
+	public Long getNredcapNewCount() {
+		return nredcapNewCount;
+	}
+	public void setNredcapNewCount(Long nredcapNewCount) {
+		this.nredcapNewCount = nredcapNewCount;
+	}
 }

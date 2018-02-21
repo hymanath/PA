@@ -16,4 +16,5 @@ public interface ILightMonitoringDetailsDAO extends GenericDao<LightMonitoringDe
 	public List<Object[]> getAllVendorDetailsByLevelType(String levelType,Date fromDate,Date toDate);
 	public List<Object[]> getVendorDetailsForLocation(String levelType,Date fromDate,Date toDate,Long locationValue,Long vendorId);
 
+	public List<Object[]> getLocationWiseDetails(String locationType,String filterType,List<Long> filterValues,Date fromDate,Date toDate,List<Long> lightsVendorIds);
 }
