@@ -4706,6 +4706,11 @@
             <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
             <property name="dateUtilService" ref="dateUtilService"></property>
             <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
+            <property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO"></property>
+            <property name="trainingCampDetailsInfoDAO" ref="trainingCampDetailsInfoDAO"></property>
+            <property name="constituencyDAO" ref="constituencyDAO"></property>
+            <property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
+            <property name="trainingCampDAO" ref="trainingCampDAO"></property>
     	 </bean>
 		 
    	  <bean name = "partyMeetingExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.PartyMeetingExceptionalReportService">

@@ -5826,28 +5826,97 @@ public String getBoardWisePositions(){
     }
     return Action.SUCCESS;
   }
-	public String getOverallTrainingCampReport(){
-		try{
-			jObj = new JSONObject(getTask());
-			trainingCampProgramVO = trainingCampExceptionalReportService.getOverallTrainingCampReport(jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("stateId"),jObj.getInt("size"));
-		}catch(Exception e){
-			LOG.error("Exception raised at getOverallTrainingCampReport() of LocationDashboardAction{}", e);
-		}
-		return Action.SUCCESS;
-	}
 	public String getListOfParliamentsWithPoorPerformance(){
 		try{
 			jObj = new JSONObject(getTask());
-			trainingCampProgramVOList = trainingCampExceptionalReportService.getListOfParliamentsWithPoorPerformance(jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("stateId"),jObj.getInt("size"));
+			String fromDateStr = jObj.getString("fromDateStr");
+			String toDateStr = jObj.getString("toDateStr");
+			Long stateId = jObj.getLong("stateId");
+			int size = jObj.getInt("size");
+			
+			List<Long> tdpCommitteeLevelIds = new ArrayList<Long>();
+			JSONArray tdpCommitteeLevelIdArr = jObj.getJSONArray("tdpCommitteeLevelIds");
+			if(tdpCommitteeLevelIdArr != null &&  tdpCommitteeLevelIdArr.length() > 0){
+				for( int i=0 ; i<tdpCommitteeLevelIdArr.length() ; i++){
+					tdpCommitteeLevelIds.add(Long.valueOf(tdpCommitteeLevelIdArr.getString(i))); 
+				}
+			}
+			
+			List<Long> enrollmentYearIdList = new ArrayList<Long>();
+			JSONArray enrollmentYearIdArr = jObj.getJSONArray("enrollmentYearIds");
+			if(enrollmentYearIdArr!=null &&  enrollmentYearIdArr.length()>0){
+				for( int i=0;i<enrollmentYearIdArr.length();i++){
+					enrollmentYearIdList.add(Long.valueOf(enrollmentYearIdArr.getString(i))); 
+				}
+			}
+			
+			List<Long> trainingCampProgramIdList = new ArrayList<Long>();
+			JSONArray trainingCampProgramIdArr = jObj.getJSONArray("trainingCampProgramIds");
+			if(trainingCampProgramIdArr != null &&  trainingCampProgramIdArr.length()>0){
+				for( int i=0 ; i<trainingCampProgramIdArr.length() ; i++){
+					trainingCampProgramIdList.add(Long.valueOf(trainingCampProgramIdArr.getString(i))); 
+				}
+			}
+			
+			Long locationLevelId = jObj.getLong("locationLevelId");
+			
+			List<Long> locationLevelValueList = new ArrayList<Long>();
+			JSONArray locationLevelValuesArr = jObj.getJSONArray("locationLevelValues");
+			if(locationLevelValuesArr != null &&  locationLevelValuesArr.length()>0){
+				for( int i=0 ; i<locationLevelValuesArr.length() ; i++){
+					locationLevelValueList.add(Long.valueOf(locationLevelValuesArr.getString(i))); 
+				}
+			}
+			trainingCampProgramVOList = trainingCampExceptionalReportService.getListOfParliamentsWithPoorPerformance(fromDateStr,toDateStr,stateId,size,tdpCommitteeLevelIds,trainingCampProgramIdList,enrollmentYearIdList,locationLevelId,locationLevelValueList);
 		}catch(Exception e){
 			LOG.error("Exception raised at getListOfParliamentsWithPoorPerformance() of LocationDashboardAction{}", e);
 		}
 		return Action.SUCCESS;
 	}
+	//getListOfAssemblyWithPoorPerformance(String startDate,String endDate, Long stateId,int size,List<Long> tdpCommitteeLevelIds,List<Long> trainingCampProgramIds,List<Long> enrollmentYearIds,Long locationLevelId, List<Long> locationLevelValues )
 	public String getListOfAssemblyWithPoorPerformance(){
 		try{
 			jObj = new JSONObject(getTask());
-			trainingCampProgramVOList = trainingCampExceptionalReportService.getListOfAssemblyWithPoorPerformance(jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("stateId"),jObj.getInt("size"));
+			String fromDateStr = jObj.getString("fromDateStr");
+			String toDateStr = jObj.getString("toDateStr");
+			Long stateId = jObj.getLong("stateId");
+			int size = jObj.getInt("size");
+			
+			List<Long> tdpCommitteeLevelIds = new ArrayList<Long>();
+			JSONArray tdpCommitteeLevelIdArr = jObj.getJSONArray("tdpCommitteeLevelIds");
+			if(tdpCommitteeLevelIdArr != null &&  tdpCommitteeLevelIdArr.length() > 0){
+				for( int i=0 ; i<tdpCommitteeLevelIdArr.length() ; i++){
+					tdpCommitteeLevelIds.add(Long.valueOf(tdpCommitteeLevelIdArr.getString(i))); 
+				}
+			}
+			
+			List<Long> enrollmentYearIdList = new ArrayList<Long>();
+			JSONArray enrollmentYearIdArr = jObj.getJSONArray("enrollmentYearIds");
+			if(enrollmentYearIdArr!=null &&  enrollmentYearIdArr.length()>0){
+				for( int i=0;i<enrollmentYearIdArr.length();i++){
+					enrollmentYearIdList.add(Long.valueOf(enrollmentYearIdArr.getString(i))); 
+				}
+			}
+			
+			List<Long> trainingCampProgramIdList = new ArrayList<Long>();
+			JSONArray trainingCampProgramIdArr = jObj.getJSONArray("trainingCampProgramIds");
+			if(trainingCampProgramIdArr != null &&  trainingCampProgramIdArr.length()>0){
+				for( int i=0 ; i<trainingCampProgramIdArr.length() ; i++){
+					trainingCampProgramIdList.add(Long.valueOf(trainingCampProgramIdArr.getString(i))); 
+				}
+			}
+			
+			Long locationLevelId = jObj.getLong("locationLevelId");
+			
+			List<Long> locationLevelValueList = new ArrayList<Long>();
+			JSONArray locationLevelValuesArr = jObj.getJSONArray("locationLevelValues");
+			if(locationLevelValuesArr != null &&  locationLevelValuesArr.length()>0){
+				for( int i=0 ; i<locationLevelValuesArr.length() ; i++){
+					locationLevelValueList.add(Long.valueOf(locationLevelValuesArr.getString(i))); 
+				}
+			}
+			
+			trainingCampProgramVOList = trainingCampExceptionalReportService.getListOfAssemblyWithPoorPerformance(fromDateStr,toDateStr,stateId,size,tdpCommitteeLevelIds,trainingCampProgramIdList,enrollmentYearIdList,locationLevelId,locationLevelValueList);
 		}catch(Exception e){
 			LOG.error("Exception raised at getListOfAssemblyWithPoorPerformance() of LocationDashboardAction{}", e);
 		}
