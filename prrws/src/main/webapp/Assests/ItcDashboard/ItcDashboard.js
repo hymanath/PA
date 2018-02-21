@@ -3007,7 +3007,7 @@ function buildCMeoDBStatusCountDetails(result){
 						str+='<th>Status</th>';
 						str+='<th>Approval File Id</th>';
 						str+='<th>Address</th>';
-						str+='<th>Appication Filled Date</th>';
+						str+='<th>Application Filled Date</th>';
 						str+='<th>Recieved Date</th>';
 						str+='<th>Approval Date</th>';
 						str+='<th>PermApproval Date</th>';
