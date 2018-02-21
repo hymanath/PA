@@ -51,7 +51,26 @@ public class TrainingCampDetailsInfoDAO extends GenericDaoHibernate<TrainingCamp
     		 query.setParameterList("programIdList", programIdList);
     	  }
     	 return query.list();
-    }
+      }
+      public List<Object[]> getInviteesList(Long locationScopeId,List<Long> tdpCommitteeLevelIds,List<Long> trainingCampProgramIds){
+    	  StringBuilder sb = new StringBuilder();
+    	  sb.append(" select " +
+    	  		" model.locationValue, constituency.name, sum(model.eligible) " +
+    	  		" from " +
+    	  		" TrainingCampDetailsInfo model, Constituency constituency " +
+    	  		" where " +
+    	  		" model.locationScopeId = :locationScopeId and " +
+    	  		" model.tdpCommitteeLevelId in (:tdpCommitteeLevelIds) and " +
+    	  		" model.trainingCampProgram.trainingCampProgramId is not null and " +
+    	  		" model.trainingCampProgram.trainingCampProgramId in (:trainingCampProgramIds) and " +
+    	  		" model.locationValue = constituency.constituencyId " +
+    	  		" group by model.locationValue ");
+    	  Query query = getSession().createQuery(sb.toString());
+    	  query.setParameter("locationScopeId", locationScopeId);
+    	  query.setParameterList("tdpCommitteeLevelIds", tdpCommitteeLevelIds);
+    	  query.setParameterList("trainingCampProgramIds", trainingCampProgramIds);
+    	  return query.list();
+      }
       public List<Object[]> getTrainingCampProgramEligibleAndAttendedMemberCommitteeLevelWise(Long locationScopeId,List<Long> locationValues,Date toDate,List<Long> enrollmentYearIds,List<Long> programIdList,List<Long> tdpCommitteeLevelIds){
     	  StringBuilder queryStr = new StringBuilder();
     	  queryStr.append(" select model.tdpCommitteeLevelId," +//0
