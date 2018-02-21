@@ -72,4 +72,5 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locationType,Long locationId);
 	public List<Object[]> getLocationwiseCoductedCount(Long activityId,Long scopeId,String type);
 	public List<Object[]> getIvrStatusForLocation(Long activityScopeId,Long locationScopeId);
+	public List<Object[]> getInchargeMLAAttendCount(Long activityScopeId,Long locationScopeId);
 }
