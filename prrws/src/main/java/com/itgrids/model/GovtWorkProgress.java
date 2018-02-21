@@ -23,10 +23,12 @@ public class GovtWorkProgress {
 	private Double completedPercentage;
 	private Long updatedBy;
 	private Date updatedTime;
+	private String isCompleted;
 	
 	private GovtWork govtWork;
 	private GovtWorkStatus govtWorkStatus;
 	private MobileAppUser updatedByUser;
+	
 	
 	@Id
 	@Column(name="govt_work_progress_id")
@@ -111,6 +113,14 @@ public class GovtWorkProgress {
 	}
 	public void setUpdatedByUser(MobileAppUser updatedByUser) {
 		this.updatedByUser = updatedByUser;
+	}
+	
+	@Column(name="is_completed")
+	public String getIsCompleted() {
+		return isCompleted;
+	}
+	public void setIsCompleted(String isCompleted) {
+		this.isCompleted = isCompleted;
 	}
 	
 	

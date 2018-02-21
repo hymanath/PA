@@ -31,6 +31,7 @@ public class Constituency{
 	private Long rwsConstituencyId;
 	private RwsConstituency rwsConstituency;
 	private Long encConstituencyId;
+	private State state;
 	
 	@Id
 	@Column(name="constituency_id")
@@ -141,6 +142,15 @@ public class Constituency{
 	}
 	public void setEncConstituencyId(Long encConstituencyId) {
 		this.encConstituencyId = encConstituencyId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "state_id", insertable = false, updatable = false)
+	public State getState() {
+		return state;
+	}
+	public void setState(State state) {
+		this.state = state;
 	}
 		
 	

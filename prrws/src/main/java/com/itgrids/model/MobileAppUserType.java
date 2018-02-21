@@ -11,17 +11,17 @@ import javax.persistence.Table;
 @Table(name = "mobile_app_user_type")
 public class MobileAppUserType {
 	
-	private String mobileAppUserTypeId;
+	private Long mobileAppUserTypeId;
 	private String userType;
 	private String description;
 	
 	@Id
 	@Column(name="mobile_app_user_type_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	public String getMobileAppUserTypeId() {
+	public Long getMobileAppUserTypeId() {
 		return mobileAppUserTypeId;
 	}
-	public void setMobileAppUserTypeId(String mobileAppUserTypeId) {
+	public void setMobileAppUserTypeId(Long mobileAppUserTypeId) {
 		this.mobileAppUserTypeId = mobileAppUserTypeId;
 	}
 	

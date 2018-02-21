@@ -86,4 +86,8 @@ public interface IConstants {
     public static final String PDF_FONT_PATH = "/usr/share/fonts/14530.TTF";
     public static final String PDF_FONT = "Albertus MT Lt";
     
+    public static final String GOVT_WORK_DOCS ="govt_works";
+    public static final Long UGDFINISHSTATUSID=12l;
+    public static final List<Long> GOVTWORKFINISHSTATUSIDS = Arrays.asList(12l);
+
 }

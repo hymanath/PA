@@ -1,11 +1,23 @@
 package com.itgrids.controllers.web;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.DocumentVO;
+import com.itgrids.dto.GovtMainWorkVO;
+import com.itgrids.dto.GovtWorksVO;
+import com.itgrids.dto.MobileAppInputVO;
+import com.itgrids.dto.MobileAppLoginVO;
+import com.itgrids.dto.ResultStatus;
+import com.itgrids.dto.WorkStatusVO;
 import com.itgrids.service.IUnderGroundDrainageService;
 
 @EnableAutoConfiguration
@@ -17,4 +29,122 @@ public class UnderGroundDrainageController {
 	@Autowired
 	private IUnderGroundDrainageService underGroundDrainageService;
 	
+	@RequestMapping(value = "/mobileAppLogin", method = RequestMethod.POST)
+	public @ResponseBody  MobileAppLoginVO   saveRealtimeStatusByVillages(@RequestBody MobileAppInputVO inputVO){
+		MobileAppLoginVO VO = new MobileAppLoginVO();
+		try {
+			if(inputVO != null){
+				if(inputVO.getUserName() != null && inputVO.getPassword() != null){
+					VO = underGroundDrainageService.checkLogin(inputVO); 
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised while checking the login", e);
+			VO.setStatus("failure");
+		}
+		return VO;
+	}
+	
+	/*@RequestMapping(value = "/getUserWorkTypesWork", method = RequestMethod.POST)
+	public @ResponseBody  List<GovtWorksVO>   getUserWorkTypesWork(@RequestBody MobileAppInputVO inputVO){
+		try {
+			if(inputVO != null){
+				if(inputVO.getUserId() != null && inputVO.getWorkTypeId() != null){
+					return underGroundDrainageService.getWorkDetailsOfMobileAppUser(inputVO.getUserId(),inputVO.getWorkTypeId()); 
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised while checking the login", e);
+		}
+		return null;
+	}*/
+	
+	@RequestMapping(value = "/getUserWorkTypesMainWorks", method = RequestMethod.POST)
+	public @ResponseBody  List<GovtMainWorkVO>   getUserWorkTypesMainWorks(@RequestBody MobileAppInputVO inputVO){
+		try {
+			if(inputVO != null){
+				if(inputVO.getUserId() != null && inputVO.getWorkTypeId() != null){
+					return underGroundDrainageService.getUsersGovtMainWorks(inputVO.getUserId(),inputVO.getWorkTypeId()); 
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised while checking the login", e);
+		}
+		return null;
+	}
+	
+	
+	
+	@RequestMapping(value="/saveWorkDetails", method=RequestMethod.POST)
+	public @ResponseBody ResultStatus saveWorkDetails(@RequestBody GovtWorksVO govtWorksVO){
+		try {
+			return underGroundDrainageService.saveWorkDetails(govtWorksVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised while saving the govt works details", e);
+		}
+		return null;
+	} 
+	
+	@RequestMapping(value="/getAllGovtWorksOfGovtMainWork", method=RequestMethod.POST)
+	public @ResponseBody List<GovtWorksVO> getAllGovtWorksOfGovtMainWork(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getAllGovtWorksOfGovtMainWork(inputVO.getUserId(),inputVO.getMainWorkId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while fetcheg the all govt works of govt main work", e);
+		}
+		return null;
+	} 
+	
+	@RequestMapping(value="/getAllTheStatusOfGovtWork", method=RequestMethod.POST)
+	public @ResponseBody List<WorkStatusVO> getAllTheStatusOfGovtWork(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getAllTheStatusOfGovtWork(inputVO.getWorkId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while fetcheg the all status of govtwork", e);
+		}
+		return null;
+	} 
+	
+	@RequestMapping(value="/updateWorkStatus", method=RequestMethod.POST)
+	public @ResponseBody ResultStatus updateWorkStatus(@RequestBody List<WorkStatusVO> WorkStatusVOList){
+		try {
+			return underGroundDrainageService.updateWorkStatus(WorkStatusVOList);
+		} catch (Exception e) {
+			LOG.error("Exception raised while updating the govt works status details", e);
+		}
+		return null;
+	} 
+	
+	@RequestMapping(value="/updateWorkStatusDocuments", method=RequestMethod.POST)
+	public @ResponseBody List<DocumentVO> updateWorkStatusDocuments(@RequestBody List<WorkStatusVO> WorkStatusVOList){
+		try {
+			return underGroundDrainageService.updateWorkStatusDocuments(WorkStatusVOList);
+		} catch (Exception e) {
+			LOG.error("Exception raised while updating the govt works status updateWorkStatusDocuments", e);
+		}
+		return null;
+	} 
+	
+	@RequestMapping(value="/getStatusWiseDayReport", method=RequestMethod.POST)
+	public @ResponseBody List<WorkStatusVO> getStatusWiseDayReport(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getStatusWiseDayReport(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting the status wise daily kilometers ", e);
+		}
+		return null;
+	}
+	
+	//web dashboard services -- start
+	@RequestMapping(value="/getWorkTypeWiseCompletedDetails", method=RequestMethod.POST)
+	public @ResponseBody List<GovtMainWorkVO> getWorkTypeWiseCompletedDetails(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getWorkTypeWiseCompletedDetails(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting the status wise daily kilometers ", e);
+		}
+		return null;
+	}
+
+	//web dashboard services -- end	
 }

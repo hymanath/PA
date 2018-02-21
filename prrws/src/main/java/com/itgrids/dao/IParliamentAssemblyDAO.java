@@ -45,4 +45,5 @@ public interface IParliamentAssemblyDAO extends GenericDao<ParliamentAssembly,Lo
 	public List<Object[]> getParliamentWiseConstituency(Long locationId,String locationType);
 	public List<Object[]> getParliamentIds(Long parliamentId);
 	public List<Object[]> getParliamentIdsByConstituencyList(List<Long> parliamentIdsList);
+	public List<Object[]> getParliamentOfConstituency(Long constId);
 }

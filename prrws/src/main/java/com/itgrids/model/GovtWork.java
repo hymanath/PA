@@ -17,6 +17,7 @@ import javax.persistence.Table;
 @Table(name = "govt_work")
 public class GovtWork {
 	private Long govtWorkId;
+	private Long govtMainWorkId;
 	private Long govtWorkTypeId;
 	private String workName;
 	private String workZoneName;
@@ -26,11 +27,11 @@ public class GovtWork {
 	private Long locationValue;
 	private Long locationAddressId;
 	private Long govtWorkStatusId;
-	private Double compledPercentage;
+	private Double completedPercentage;
 	private String lattitude;
 	private String longitude;
 	private Long createdBy;
-	private Date createdIime;
+	private Date createdTime;
 	private Long updatedBy;
 	private Date updatedTime;
 	private String isDeleted;
@@ -42,7 +43,7 @@ public class GovtWork {
 	private GovtWorkStatus govtWorkStatus;
 	private MobileAppUser createdByUser;
 	private MobileAppUser updatedByUser;
-	
+	private GovtMainWork govtMainWork;
 	
 	@Id
 	@Column(name="govt_work_id")
@@ -52,6 +53,14 @@ public class GovtWork {
 	}
 	public void setGovtWorkId(Long govtWorkId) {
 		this.govtWorkId = govtWorkId;
+	}
+	
+	@Column(name="govt_main_work_id")
+	public Long getGovtMainWorkId() {
+		return govtMainWorkId;
+	}
+	public void setGovtMainWorkId(Long govtMainWorkId) {
+		this.govtMainWorkId = govtMainWorkId;
 	}
 	
 	@Column(name="govt_work_type_id")
@@ -126,12 +135,12 @@ public class GovtWork {
 		this.govtWorkStatusId = govtWorkStatusId;
 	}
 	
-	@Column(name="compled_percentage")
-	public Double getCompledPercentage() {
-		return compledPercentage;
+	@Column(name="completed_percentage")
+	public Double getCompletedPercentage() {
+		return completedPercentage;
 	}
-	public void setCompledPercentage(Double compledPercentage) {
-		this.compledPercentage = compledPercentage;
+	public void setCompletedPercentage(Double completedPercentage) {
+		this.completedPercentage = completedPercentage;
 	}
 	
 	@Column(name="created_by")
@@ -143,11 +152,11 @@ public class GovtWork {
 	}
 	
 	@Column(name="created_time")
-	public Date getCreatedIime() {
-		return createdIime;
+	public Date getCreatedTime() {
+		return createdTime;
 	}
-	public void setCreatedIime(Date createdIime) {
-		this.createdIime = createdIime;
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
 	}
 	
 	@Column(name="updated_by")
@@ -242,6 +251,15 @@ public class GovtWork {
 	}
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_main_work_id", insertable = false, updatable = false)
+	public GovtMainWork getGovtMainWork() {
+		return govtMainWork;
+	}
+	public void setGovtMainWork(GovtMainWork govtMainWork) {
+		this.govtMainWork = govtMainWork;
 	}
 	
 	
