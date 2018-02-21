@@ -18806,5 +18806,15 @@
 		</result>
 	</action>
 	
+	<action name="getActivityPerformanceDetailsLocationWiseAction" class="coreDashboardAction" method="getActivityPerformanceDetailsLocationWise">
+		<result type="json" name="success">
+				<param name="root">activityExceptionalReportVO</param>
+		</result>
+	</action>
+	<action name="getActivityAttendedAndImageCoveredDetailsAction" class="coreDashboardAction" method="getActivityAttendedAndImageCoveredDetails">
+		<result type="json" name="success">
+				<param name="root">activityExceptionalReportVO</param>
+		</result>
+	</action>
  </package>
 </struts>

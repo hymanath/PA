@@ -10,6 +10,7 @@
 
 <script src="exceptionalReport/partyMeetingExceptionalReport.js" type="text/javascript"></script>
 <script src="exceptionalReport/tourExceptionalReport.js" type="text/javascript"></script>
+<script src="exceptionalReport/activityExceptionalReport.js" type="text/javascript"></script>
 <script type="text/javascript">
 </script>
 </body>

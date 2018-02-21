@@ -4712,11 +4712,16 @@
    	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
    	   	<property name="partyMeetingStatusDAO" ref = "partyMeetingStatusDAO"></property>
    	 </bean>
-   	  <bean name = "tourExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.TourExceptionalReportService">
+   	 <bean name = "tourExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.TourExceptionalReportService">
    	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
    	  	 <property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO"></property>
    	  	 <property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
    	  	 <property name="selfAppraisalCandidateDetailsNewDAO" ref="selfAppraisalCandidateDetailsNewDAO"></property>
+   	 </bean>
+   	 <bean name = "activityExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.ActivityExceptionalReportService">
+   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	  	 <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO"></property>
+   	  	 <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
    	 </bean>
     	 
 </beans>			
