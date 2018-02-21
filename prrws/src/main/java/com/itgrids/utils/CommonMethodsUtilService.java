@@ -2,8 +2,10 @@ package com.itgrids.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -28,18 +30,19 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-
-import sun.misc.BASE64Encoder;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
+
+import sun.misc.BASE64Encoder;
 
 @Service
 public class CommonMethodsUtilService {
@@ -1250,4 +1253,40 @@ public class CommonMethodsUtilService {
 		      return amountStr;  
 		     
 		    }
+		
+		public boolean convertBase64StringToImage(String imageDataString,String imagePath)
+		 {
+			 try{
+				 byte[] imageByteArray = Base64.decodeBase64(imageDataString);
+				 FileOutputStream imageOutFile = new FileOutputStream(imagePath);
+				 imageOutFile.write(imageByteArray);
+				 imageOutFile.close();
+				 return true;
+			 }catch(Exception e)
+			 {
+				 LOG.error(e);
+				 return false;
+			 }
+		 }
+		
+	public List<String> getMonthYearBetweenDates(Date fromDate,Date toDate){
+		List<String> returnList = new ArrayList<String>(0);
+		try {
+			DateFormat formater = new SimpleDateFormat("MM-yyyy");
+			Calendar beginCalendar = Calendar.getInstance();
+	        Calendar finishCalendar = Calendar.getInstance();
+	        
+            beginCalendar.setTime(fromDate);
+            finishCalendar.setTime(toDate);
+            
+            while (beginCalendar.before(finishCalendar)) {
+                // add one month to date per loop
+                returnList.add(formater.format(beginCalendar.getTime()).toUpperCase());
+                beginCalendar.add(Calendar.MONTH, 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return returnList;
+	}
 }

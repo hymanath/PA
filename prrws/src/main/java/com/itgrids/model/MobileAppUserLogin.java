@@ -23,6 +23,10 @@ public class MobileAppUserLogin {
 	private String loginStatus;
 	private Date loginTime;
 	private String imeiNo;
+	private String appVersion;
+	private String lattitude;
+	private String longitude;
+	private String latLongAccuracy;
 	
 	private MobileAppUser mobileAppUser;
 
@@ -100,4 +104,42 @@ public class MobileAppUserLogin {
 	public void setMobileAppUser(MobileAppUser mobileAppUser) {
 		this.mobileAppUser = mobileAppUser;
 	}
+	
+	@Column(name="app_version")
+	public String getAppVersion() {
+		return appVersion;
+	}
+
+	public void setAppVersion(String appVersion) {
+		this.appVersion = appVersion;
+	}
+
+	@Column(name="lattitude")
+	public String getLattitude() {
+		return lattitude;
+	}
+
+	public void setLattitude(String lattitude) {
+		this.lattitude = lattitude;
+	}
+
+	@Column(name="longitude")
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	@Column(name="lat_long_accuracy")
+	public String getLatLongAccuracy() {
+		return latLongAccuracy;
+	}
+
+	public void setLatLongAccuracy(String latLongAccuracy) {
+		this.latLongAccuracy = latLongAccuracy;
+	}
+	
+	
 }

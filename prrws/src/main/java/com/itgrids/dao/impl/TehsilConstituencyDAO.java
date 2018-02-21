@@ -111,4 +111,12 @@ public class TehsilConstituencyDAO  extends GenericDaoHibernate<TehsilConstituen
 	    	   return query.list();
 	}
 
+	public List<Object[]> getConstituencyOfTehsil(Long tehsilId){
+		//0-tehsilId,1-tehsilName,2-contId,3-contName
+		Query query = getSession().createQuery(" select model.tehsilId,model.tehsil.tehsilName,model.constituencyId,model.constituency.name "
+				+ " from TehsilConstituency model "
+				+ " where model.tehsilId=:tehsilId ");
+		query.setParameter("tehsilId", tehsilId);
+		return query.list();
+	}
 }

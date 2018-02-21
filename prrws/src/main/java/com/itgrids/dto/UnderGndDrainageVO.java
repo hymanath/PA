@@ -1,8 +1,5 @@
 package com.itgrids.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UnderGndDrainageVO {
 	
 	private Long id;

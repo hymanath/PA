@@ -445,4 +445,11 @@ public class DistrictDAO extends GenericDaoHibernate<District, Long> implements 
 		query.setParameter("locationIdStr", locationIdStr);
 		return (Long) query.uniqueResult();
 	}
+	
+	public Object[] getDistrictDetails(Long districtId){
+		Query query = getSession().createQuery(" select model.districtId,model.districtName,model.stateId,model.state.stateName "
+				+ " from District model where model.districtId=:districtId ");
+		query.setParameter("districtId", districtId);
+		return (Object[]) query.uniqueResult();
+	}
 }

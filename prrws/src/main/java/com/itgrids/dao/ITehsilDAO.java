@@ -45,4 +45,5 @@ public interface ITehsilDAO extends GenericDao<Tehsil,Long>  {
 	public List<Object[]> getMgnregsTehsilMappingCode(Long tehsiId);
 	public List<Object[]> getEncMandals();
 	public List<Object[]> getTehsilsFrDistrict(Long districtId);
+	public Object[] getTehsilDetails(Long tehsilId);
 }
