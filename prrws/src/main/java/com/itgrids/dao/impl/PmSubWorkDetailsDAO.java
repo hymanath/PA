@@ -23,7 +23,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		super(PmSubWorkDetails.class);
 	}
 	
-	public List<Object[]> getPetitionSubWorksDetails(Long petitionId){
+	public List<Object[]> getPetitionSubWorksDetails(Long petitionId,List<Long> userAccesseDeptIds){
 		StringBuilder str = new StringBuilder();
 		str.append(" select  model.petitionId, model.costEstimation, model.grievanceDescrption, model.eOfficeId , pmSubject.pmSubjectId, pmSubSubject.pmSubjectId , " +//0,1,2,3,4,5
 				" pmLead.pmLeadId,pmBriefLead.pmBriefLeadId,pmGrant.pmGrantId,pmStatus.pmStatusId,pmDepartment.pmDepartmentId,pmWorkType.pmWorkTypeId, " +//6,7,8,9,10,11
@@ -52,9 +52,18 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				" left join model.pmStatus pmStatus " +
 				" left join model.pmDepartment pmDepartment " +
 				" left join model.pmWorkType pmWorkType " +
-				" where model.petitionId =:petitionId and model.isDeleted='N' ORDER BY model.pmSubWorkDetailsId ");
+				" where model.petitionId =:petitionId and model.isDeleted='N' ");
+		if(userAccesseDeptIds != null && userAccesseDeptIds.size()>0){
+			str.append(" and model.pmDepartmentId in (:userAccesseDeptIds) ");
+		}
+		
+		str.append(" ORDER BY model.pmSubWorkDetailsId  ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("petitionId", petitionId);
+		if(userAccesseDeptIds != null && userAccesseDeptIds.size()>0){
+			query.setParameterList("userAccesseDeptIds", userAccesseDeptIds);
+		}
+		
 		return query.list();
 	}
 	

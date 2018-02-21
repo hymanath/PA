@@ -812,7 +812,256 @@ function buildPetitionDetailsView(result){
 			str+='</div>';
 		str+='</div>';
 		
+		str+='<div class="row m_top10">';
+				str+='<div class="col-sm-12" style="padding: 10px;">';
+					str+='<div class="col-sm-2 pull-right">';
+						str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+							str+='<span style="margin-left: 0px;margin-right: 25px;">CLASSICAL VIEW </span><input type="checkbox" id="inlineCheckbox1" value="1" class="tableTypeCls" style="margin-top: 2px;" checked >';
+						str+='</label>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-2 pull-right">';
+						str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+							str+='<span style="margin-left: 0px;margin-right: 25px;">GRID VIEW </span><input type="checkbox" id="inlineCheckbox1" value="2" class="tableTypeCls" style="margin-top: 2px;" >';
+						str+='</label>';
+					str+='</div>';
+					
+				str+='</div>';
+		str+='</div>';	
+		
 		str+='<div class="row m_top20">';
+			str+='<div class="col-sm-12">';
+		for(var i in result.subWorksList){
+			str+='<div id="classicalViewDiv">';	
+				str+='<div class="panel-group" id="accordionView1'+i+'">';
+					str+='<div class="panel panel-default panel-blue">';
+						str+='<div class="panel-heading" id="headingView1'+i+'">';
+							if(i==0){
+								str+='<a role="button" class="panelCollapseIcon"  data-toggle="collapse" data-parent="#accordionView1'+i+'" href="#collapseView1'+i+'" aria-expanded="true" aria-controls="collapseView1'+i+'">';
+							}else{
+								str+='<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionView1'+i+'" href="#collapseView1'+i+'" aria-expanded="true" aria-controls="collapseView1'+i+'">';
+							}
+							
+							if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
+								endorseMenNo =result.subWorksList[i].endorsmentNo;
+								str+='<h4 class="panel-title text-capital " >Endorsed - '+result.subWorksList[i].endorsmentNo+'</h4>';
+							}else{
+								endorseMenNo='';
+								str+='<h4 class="panel-title text-capital">Pending Endorsed</h4>';
+							}
+						 	str+='</a>';
+						 str+='</h4>';
+						str+='</div>';
+						if(i==0){
+							str+='<div id="collapseView1'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingView1'+i+'">';
+						}else{
+							str+='<div id="collapseView1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingView1'+i+'">';
+						}
+						
+											
+						 str+='<div class="panel-body" style="background-color: #F7F7F7;">';
+						  if(result.subWorksList[i].endorsmentNo !=null && result.subWorksList[i].endorsmentNo !=0){
+									str+='<div class="row">';
+										str+='<div class="col-sm-9">';
+											str+='<div class="pad_white_bg border_yash">';
+												str+='<div class="row">';
+													str+='<div class="col-sm-3">';
+														str+='<h5 class="font_weight">Endorsment ID</h5>';
+														str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].endorsmentNo+'</h5>';
+													str+='</div>';
+													str+='<div class="col-sm-3">';
+														str+='<h5 class="font_weight">No of works</h5>';
+														str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].noOfWorks+'</h5>';
+													str+='</div>';
+													str+='<div class="col-sm-6">';
+														str+='<h5 class="font_weight">Endorsment Date</h5>';
+														str+='<h5 class="font_weight m_top10">'+result.subWorksList[i].endorsmentDate+'</h5>';
+													str+='</div>';
+												str+='</div>';
+											str+='</div>';
+										str+='</div>';
+										str+='<div class="col-sm-3">';
+										mainWorkCoveringDocuments=[];
+										for(var k in result.reportTypeFilesList){
+											if(result.reportTypeFilesList[k].key == "COVERING LETTER"){
+												if(result.reportTypeFilesList[k].filesList !=null && result.reportTypeFilesList[k].filesList.length>0){
+													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
+													
+													mainWorkCoveringDocuments.push(result.reportTypeFilesList[k].filesList[0]);
+												}else{
+													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
+												}
+											}
+										}
+										str+='</div>';
+									str+='</div>';
+								}
+							 str+='</div>';	
+							 
+							 
+							 var totalWorksToUpdate=result.subWorksList[i].subWorksList.length;
+								for(var j in result.subWorksList[i].subWorksList){
+									if(result.subWorksList[i].subWorksList[j].status == "Completed"){
+										totalWorksToUpdate = parseInt(totalWorksToUpdate)-parseInt(1);
+									}
+								}
+								
+								str+='<div class="row m_top10">';
+										str+='<div class="col-sm-12">';
+											str+='<div class="col-sm-2 pull-right">';
+												if(glDesignationId != null && parseInt(glDesignationId) == 92){
+													;
+												}else{
+													str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+												}
+											str+='</div>';
+											str+='<div class="col-sm-2 pull-right">';
+												if(glDesignationId != null && parseInt(glDesignationId) == 92){
+													;
+												}else{
+													if(parseInt(totalWorksToUpdate) >0){
+														str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+													}
+												}
+											str+='</div>';
+											str+='<div class="col-sm-2 pull-right">';
+												str+='<h5>';
+												if(glDesignationId != null && parseInt(glDesignationId) == 92){
+													;
+												}else{
+													str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+														str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span><input type="checkbox" id="inlineCheckbox1" value="" class="workStatusClassicalViewSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+													str+='</label>';
+													
+												}
+												str+='</h5>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+									
+							str+='<table class="table table_customRep table-bordered  m_top25" id="workDetails1Tab" >';
+								str+='<thead>';
+									str+='<tr>';
+											str+='<th style="text-align:center" > <input type="checkbox" name="" id="" class="workStatusClassicalViewSelectedAllCls" value="0" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"/>&nbspSELECT&nbsp;ALL&nbsp</th>';
+											str+='<th style="text-align:center" >DISTRICT</th>';
+											str+='<th style="text-align:center" >CONSTITUENCY</th>';
+											str+='<th style="text-align:center" >MANDAL/ MUNCIPALITY</th>';
+											str+='<th style="text-align:center" >PANCHAYAT</th>';
+											str+='<th style="text-align:center" >DEPARTMENT</th>';
+											str+='<th style="text-align:center" >SUBJECT</th>';
+											str+='<th style="text-align:center" >SUB-SUBJECT</th>';
+											str+='<th style="text-align:center" >GRANT</th>';
+											str+='<th style="text-align:center" >BUDGENT</th>';
+											str+='<th style="text-align:center" >STATUS</th>';
+											str+='<th style="text-align:center;width: 250px;" class="descriptionCls"  >DESCRIPTION</th>';
+									str+='</tr>';
+								str+='</thead>';
+							str+='<tbody>';
+							
+							for(var j in result.subWorksList[i].subWorksList){
+								str+='<tr>';
+									str+='<td  style="text-align:center" > <input type="checkbox" name="" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls ClassicalViewCheckbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"/></td>';
+									if(typeof result.subWorksList[i].subWorksList[j].addressVO.districtName != 'undefined' && result.subWorksList[i].subWorksList[j].addressVO.districtName != null && result.subWorksList[i].subWorksList[j].addressVO.districtName.length>0)
+										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].addressVO.districtName+'</td>';
+									else
+										str+='<td  style="text-align:center" > - </td>';
+									if(typeof result.subWorksList[i].subWorksList[j].addressVO.assemblyName != 'undefined' && result.subWorksList[i].subWorksList[j].addressVO.assemblyName != null && result.subWorksList[i].subWorksList[j].addressVO.assemblyName.length>0)
+										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].addressVO.assemblyName+'</td>';
+									else
+										str+='<td  style="text-align:center" > - </td>';
+									if(typeof result.subWorksList[i].subWorksList[j].addressVO.tehsilName != 'undefined' && result.subWorksList[i].subWorksList[j].addressVO.tehsilName != null && result.subWorksList[i].subWorksList[j].addressVO.tehsilName.length>0)
+										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].addressVO.tehsilName+'</td>';
+									else
+										str+='<td  style="text-align:center" > - </td>';
+									if(typeof result.subWorksList[i].subWorksList[j].addressVO.panchayatName != 'undefined' && result.subWorksList[i].subWorksList[j].addressVO.panchayatName != null && result.subWorksList[i].subWorksList[j].addressVO.panchayatName.length>0)
+										str+='<td>'+result.subWorksList[i].subWorksList[j].addressVO.panchayatName+'</td>';
+									else
+										str+='<td> - </td>';
+									if(typeof result.subWorksList[i].subWorksList[j].deptName != 'undefined' && result.subWorksList[i].subWorksList[j].deptName != null && result.subWorksList[i].subWorksList[j].deptName.length>0)
+										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].deptName+'</td>';
+									else
+										str+='<td  style="text-align:center" > - </td>';
+									if(typeof result.subWorksList[i].subWorksList[j].subject != 'undefined' && result.subWorksList[i].subWorksList[j].subject != null && result.subWorksList[i].subWorksList[j].subject.length>0)
+										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].subject+'</td>';
+									else
+										str+='<td  style="text-align:center" > - </td>';
+									if(typeof result.subWorksList[i].subWorksList[j].subSubject != 'undefined' && result.subWorksList[i].subWorksList[j].subSubject != null && result.subWorksList[i].subWorksList[j].subSubject.length>0)
+										str+='<td>'+result.subWorksList[i].subWorksList[j].subSubject+'</td>';
+									else
+										str+='<td> - </td>';
+									if(typeof result.subWorksList[i].subWorksList[j].grantName != 'undefined' && result.subWorksList[i].subWorksList[j].grantName != null && result.subWorksList[i].subWorksList[j].grantName.length>0)
+										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].grantName+'</td>';
+									else
+										str+='<td  style="text-align:center" > - </td>';
+									if(typeof result.subWorksList[i].subWorksList[j].estimateCost != 'undefined' && result.subWorksList[i].subWorksList[j].estimateCost != null && result.subWorksList[i].subWorksList[j].estimateCost.length>0)
+										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].estimateCost+'</td>';
+									else
+										str+='<td  style="text-align:center" > - </td>';
+									if(typeof result.subWorksList[i].subWorksList[j].status != 'undefined' && result.subWorksList[i].subWorksList[j].status != null && result.subWorksList[i].subWorksList[j].status.length>0)
+										str+='<td  style="text-align:center;" >'+result.subWorksList[i].subWorksList[j].status+'</td>';
+									else
+										str+='<td  style="text-align:center;" > - </td>';
+									
+									
+									if(typeof result.subWorksList[i].subWorksList[j].workName != 'undefined' && result.subWorksList[i].subWorksList[j].workName != null && result.subWorksList[i].subWorksList[j].workName.length>0){
+										if(result.subWorksList[i].subWorksList[j].workName !=null && result.subWorksList[i].subWorksList[j].workName.length>50){
+											str+='<td><span class="tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].workName+'">'+result.subWorksList[i].subWorksList[j].workName.substring(0,50)+'...</span></td>';
+										}else{
+											str+='<td>'+result.subWorksList[i].subWorksList[j].workName+'</td>';
+										}
+										
+									}
+									else{
+										str+='<td style="text-align:center;"> - </td>';
+									}
+									
+								str+='</tr>';
+							}
+							str+='</tbody>';
+						str+='</table>';
+						
+						str+='<div class="row m_top10">';
+							str+='<div class="col-sm-12">';
+								str+='<div class="col-sm-2 pull-right">';
+									if(glDesignationId != null && parseInt(glDesignationId) == 92){
+										;
+									}else{
+										str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+									}
+								str+='</div>';
+								str+='<div class="col-sm-2 pull-right">';
+									if(glDesignationId != null && parseInt(glDesignationId) == 92){
+										;
+									}else{
+										if(parseInt(totalWorksToUpdate) >0){
+											str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+										}
+									}
+								str+='</div>';
+								str+='<div class="col-sm-2 pull-right">';
+									str+='<h5>';
+									if(glDesignationId != null && parseInt(glDesignationId) == 92){
+										;
+									}else{
+										str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+											str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span><input type="checkbox" id="inlineCheckbox1" value="" class="workStatusClassicalViewSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+										str+='</label>';
+										
+									}
+									str+='</h5>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						
+					str+='</div>';
+				str+='</div>';			
+				str+='</div>';			
+			}
+			str+='</div>';
+		str+='</div>';		
+			
+		
+		str+='<div class="row m_top20" id="gridViewdiv" style="display:none;">';
 			str+='<div class="col-sm-12">';
 		for(var i in result.subWorksList){
 			var endorseMenNo='';
@@ -893,7 +1142,7 @@ function buildPetitionDetailsView(result){
 												if(glDesignationId != null && parseInt(glDesignationId) == 92){
 													;
 												}else{
-													str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+													//str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
 												}
 											str+='</div>';
 											str+='<div class="col-sm-2 pull-right">';
@@ -901,7 +1150,7 @@ function buildPetitionDetailsView(result){
 													;
 												}else{
 													if(parseInt(totalWorksToUpdate) >0){
-														str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+														//str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
 													}
 												}
 											str+='</div>';
@@ -910,35 +1159,17 @@ function buildPetitionDetailsView(result){
 												if(glDesignationId != null && parseInt(glDesignationId) == 92){
 													;
 												}else{
-													str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-														str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span><input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-													str+='</label>';
+													//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+													//	str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span><input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+													//str+='</label>';
 													
 												}
 													
 												str+='</h5>';
-												
-												
 											str+='</div>';
-										
-									//ara
-											
-												
-												
-											
 										str+='</div>';
 									str+='</div>';
 									
-								/* //row closed
-								str+='<div class="row">';
-								str+='<div class="col-sm-12">';
-								str+='<h5 class="pull-right">';
-									str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-										str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-									str+='</label>';
-									str+='</h5>';
-								str+='</div>';
-								str+='</div>'; */
 								
 								var workCount = 0;
 								str+='<div class="row">';
@@ -965,7 +1196,6 @@ function buildPetitionDetailsView(result){
 																;
 															}else{
 																str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
 																str+='</label>';
 															}
 															str+='</h5>';
@@ -985,9 +1215,9 @@ function buildPetitionDetailsView(result){
 															if(glDesignationId != null && parseInt(glDesignationId) == 92){
 																;
 															}else{
-																str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-																str+='</label>';
+																//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+																//str+='</label>';
 															}
 															str+='</h5>';
 														str+='</div>';
@@ -1007,9 +1237,9 @@ function buildPetitionDetailsView(result){
 															if(glDesignationId != null && parseInt(glDesignationId) == 92){
 																;
 															}else{
-																str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																	str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-																str+='</label>';
+																//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+																//	str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+																//str+='</label>';
 															}
 															str+='</h5>';
 														}
@@ -1021,16 +1251,11 @@ function buildPetitionDetailsView(result){
 															str+='<h3 class="panel-title">WORK No - '+workCount+'</h3>';
 														str+='</div>';
 														str+='<div class="col-sm-6">';
-															//str+='<span class="pull-right pending_color"> <i class="fa fa-pause round_status_pending" aria-hidden="true"></i>'+result.subWorksList[i].subWorksList[j].status+'</span>';
+															
 															str+='<span class="pull-right pending_color"><i class="fa fa-check round_status_pending" aria-hidden="true"></i> '+result.subWorksList[i].subWorksList[j].status+'</span>';
 														str+='</div>';
 														str+='<div class="col-sm-3">';
-															//str+='<h5 class="pull-right">';
-															//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-															//str+='</label>';
-															//str+='</h5>';
-														//str+='</div>';
+															
 													str+='</div>';
 												}else{
 													globalActionName = result.subWorksList[i].subWorksList[j].status;
@@ -1044,9 +1269,9 @@ function buildPetitionDetailsView(result){
 														str+='</div>';
 														str+='<div class="col-sm-3">';
 															str+='<h5 class="pull-right">';
-															str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-															str+='</label>';
+															//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+															//	str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT</span> <input type="checkbox" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls checkbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+															//str+='</label>';
 															str+='</h5>';
 														str+='</div>';
 													str+='</div>';
@@ -1229,22 +1454,6 @@ function buildPetitionDetailsView(result){
 														str+='</div>';
 														
 													str+='</div>';
-													//row closed
-												//	if(result.subWorksList[i].subWorksList.length != null && result.subWorksList[i].subWorksList.length <= 1){
-														
-													//}else{
-														//if(parseInt(totalWorksToUpdate)>1 && endorseMenNo !=''){
-															//str+='<div class="row">';
-															//str+='<div class="col-sm-12">';
-															//str+='<h5 class="pull-right" id="selectAllCls">';
-																//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-																	//str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span> <input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-																//str+='</label>';
-																//str+='</h5>';
-															//str+='</div>';
-															//str+='</div>';	
-														//}
-													//}
 													
 													str+='<div class="pad_light_yash_bg m_top10 border_yash border_radius_5">';
 														str+='<div class="row">';
@@ -1277,130 +1486,7 @@ function buildPetitionDetailsView(result){
 													str+='</div>';
 													str+='</div>';
 												str+='</div>';
-/*for(var h in result.subWorksList[i].subWorksList[j].historyList){
 
-			if(h ==0){
-				str+='<div class="row m_top20">';
-				str+='<div class="col-sm-12">';
-					str+='<h5 class="font_weight">WORK LATEST HISTORY</h5>';
-					str+='<div class="table-desig-scroll">';
-					str+='<div style="" class="m_top10">';
-					//for(var i in result.historyList[h].petitionHistoryList){
-					//	if(i==0){
-							if(result.subWorksList[i].subWorksList[j].historyList[h].subList1 !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1 != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1.length>0){
-								for(var s in result.subWorksList[i].subWorksList[j].historyList[h].subList1){
-									//alert(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].workId);
-									if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].workId==result.subWorksList[i].subWorksList[j].workId){
-									if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1 !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1 != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1.length>0){
-										for(var k in result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1){
-											if(k==0){
-												if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1 !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1 != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1.length>0){
-													for(var p in result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1){
-														if(p==0){
-														str+='<div class="pad_light_yash_bg " style="border: 1px solid #ccc;border-radius: 5px;">';
-															str+='<div class="row">';
-																str+='<div class="">';
-																	str+='<div class="col-sm-5">';
-																		str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8;">';
-																			str+='<h5 class="font_weight" style="color:#1283C8"> By: '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].designation+'</h5><h5 class="font_weight f_10 m_top5">'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].officerName+'</h5>';
-																		str+='</div>';
-																	str+='</div>';
-																	
-																	if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1 !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1 != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1.length>0){
-																		for(var l in result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1){
-																			if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].actionId == 4){
-																				
-																				if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1 !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1 != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1.length>0){
-																					for(var m in result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1){
-																						
-																						str+='<div class="col-sm-3">';
-																							str+='<div style=""><p class=" pull-right docsViewCls" attr_docs="historyDocs" attr_name="workLatestHistory'+m+''+p+'" attr_candidate_id="" style="color:#1283C8;cursor:pointer;margin-right: 30px;margin-top: 10px"><i class="fa fa-file-text" aria-hidden="true"></i> <u>'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1[m].name+' </u></p></div>';
-																						str+='</div>';
-																						
-																						var obj ={
-																							filesArr:result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[l].subList1[m].filesList,
-																							name:"workLatestHistory"+m+""+p+""
-																						}
-																						historyDocsArr.push(obj);
-																					}
-																				}
-																			}
-																		}
-																	}
-																	
-																	str+='</div>';
-																//str+='</div>';
-																str+='<div class="col-sm-12 m_top5">';
-																	str+='<b>Remarks : </b>';
-																	str+='<h5>'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].subList1[0].remarks+'</h5>';
-																str+='</div>';
-																str+='<div class="col-sm-12 m_top15 ">';
-																	if(result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation !='undefined' && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation != null && result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation.length>0)
-																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > ASSIGNED TO</u> : '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToOfficerName+' ('+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].assignedToDesignation+')</h5>';
-																
-																	str+='<h5 class="pull-right">  <span style="color:#1283C8"> Date & Time</span>:'+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].timeStr+' @ '+result.subWorksList[i].subWorksList[j].historyList[h].subList1[s].subList1[k].subList1[p].timeStr+'</h5>';
-																str+='</div>';
-															str+='</div>';
-														str+='</div>';
-														break;
-														}
-													}
-												}
-											}
-										}
-									}
-									}
-								}
-							}
-						//}
-					//}
-						
-				str+='</div>';		
-				str+='</div>';		
-					
-				str+='</div>';
-			str+='</div>';
-		}
-	//}
-													/*if(h ==0){
-														str+='<div class="pad_light_yash_bg m_top10 border_yash border_radius_5">';
-														str+='<div class="row">';
-															str+='<div class="col-sm-12">';
-																str+='<h5 class="text-capital font_weight">Latest History</h5>';
-																str+='<div class="row m_top10">';
-																	str+='<div class="col-sm-6">';
-																		str+='<h5>Time : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].timeStr+'</b></h5>';
-																	str+='</div>';
-																	str+='<div class="col-sm-6">';
-																		str+='<h5>User : '+result.subWorksList[i].subWorksList[j].historyList[h].userName+'<b></b></h5>';
-																	str+='</div>';
-																str+='</div>';
-																str+='<div class="row m_top5">';
-																	str+='<div class="col-sm-12">';
-																		if(result.subWorksList[i].subWorksList[j].historyList[h].remarks !=null && result.subWorksList[i].subWorksList[j].historyList[h].remarks.length>25){
-																			str+='<h5 class="tooltipCls" data-toggle="tooltip" title="'+result.subWorksList[i].subWorksList[j].historyList[h].remarks+'">Remarks : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].remarks.substring(0,25)+'...</b></h5>';
-																		}else{
-																			str+='<h5>Remarks : <b>'+result.subWorksList[i].subWorksList[j].historyList[h].remarks+'</b></h5>';
-																		}
-																		
-																	str+='</div>';
-																	str+='</div>';
-																	str+='<div class="row m_top5">';
-																	str+='<div class="col-sm-6">';
-																		if(result.subWorksList[i].subWorksList[j].historyList[h].filesList !=null && result.subWorksList[i].subWorksList[j].historyList[h].filesList.length>0){
-																			//historyLetterArr=result.subWorksList[i].subWorksList[j].historyList[h].filesList;
-																			historyLetterArr=[];
-																			str+='<h5 class="docsViewCls" attr_docs="historyLetter"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i>files</h5>';
-																		}
-																		
-																	str+='</div>';
-																str+='</div>';
-																
-															str+='</div>';
-														str+='</div>';
-														str+='</div>';
-													}*/
-		//}
 											  str+='</div>';
 											str+='</div>';
 										str+='</div>';
@@ -1415,7 +1501,7 @@ function buildPetitionDetailsView(result){
 												if(glDesignationId != null && parseInt(glDesignationId) == 92){
 													;
 												}else{
-													str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+													//str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
 												}
 											str+='</div>';
 											str+='<div class="col-sm-2 pull-right">';
@@ -1423,7 +1509,7 @@ function buildPetitionDetailsView(result){
 													;
 												}else{
 													if(parseInt(totalWorksToUpdate) >0){
-														str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+														//str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
 													}
 												}
 											str+='</div>';
@@ -1432,9 +1518,9 @@ function buildPetitionDetailsView(result){
 												if(glDesignationId != null && parseInt(glDesignationId) == 92){
 													;
 												}else{
-													str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
-														str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span><input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
-													str+='</label>';
+													//str+='<label class="checkbox-inline" style="background-color: #fff;padding: 5px;border: 1px solid #ddd;">';
+													//	str+='<span style="margin-left: 0px;margin-right: 25px;">SELECT ALL</span><input type="checkbox" id="inlineCheckbox1" value="" class="workStatusSelectedAllCls" style="margin-top: 2px;" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'">';
+													//str+='</label>';
 												}
 												str+='</h5>';
 												
@@ -1461,7 +1547,17 @@ function buildPetitionDetailsView(result){
 			
 	$("#representeeViewId").html(str);
 	$(".tooltipCls").tooltip();
-	
+	$("#workDetails1Tab").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": -1,
+		"aaSorting": [[ 8, "desc" ]],
+		"aLengthMenu": [[500, 100, 200, -1], [500, 100, 200, "All"]]
+	});
+	$('.dataTables_wrapper').addClass(" m_top25");
 }
 $(document).on("click",".updateStatusChangeCls",function(){
 	
@@ -1517,7 +1613,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 			departmentSelectArr.push($(this).attr("attr_department_id"));
 		}
 	});
-	
+	console.log(selectdWorksArr);
 	if(selectdWorksArr.length == 0){
 		alert("Please select atleast one work to update.");
 		return ;
@@ -2372,6 +2468,18 @@ $.ajax({
      });
  }	
  
+ $(document).on("click",".workStatusClassicalViewSelectedAllCls",function(){
+	var endorsNo = $(this).attr("attr_enrorsNo");
+	
+	if($(this).is(":checked")){
+		$(".workStatusClassicalViewSelectedAllCls").prop("checked",true);
+		$(".ClassicalViewCheckbox"+endorsNo).prop("checked",true);
+	}else{
+		$(".workStatusClassicalViewSelectedAllCls").prop("checked",false);
+		$(".ClassicalViewCheckbox"+endorsNo).prop("checked",false);
+	}
+ });
+ 
  $(document).on("click",".workStatusSelectedAllCls",function(){
 	var endorsNo = $(this).attr("attr_enrorsNo");
 	if($(this).is(":checked")){
@@ -2380,10 +2488,13 @@ $.ajax({
 		$(".checkbox"+endorsNo).prop("checked",false);
 	}
  });
+ 
  $(document).on('click','.viewCommentsCls',function(){
 	var totalWorks = $(this).attr("attr_total_works");
 	var enrorsNo = $(this).attr("attr_enrorsNo");
-	
+	$('#endorseDivId').hide();
+	$('.uploadCoverFileDivCls').hide();
+	 
 	selectdWorksArr=[];
 	$(".workStatusUpdateCls").each(function(){
 		if($(this).is(":checked")){
@@ -2413,7 +2524,7 @@ $.ajax({
 	$("#saveBtnId").show();
 	
 	$("#endorseMentModalDivId").modal("show");
-	
+	 
 	$('#endorsWorksId').show();
 	$('#endorsWorksId').html("Save Details");
 	
@@ -2627,6 +2738,9 @@ $(document).on('click','.petitionWiseViewCommentsCls',function(){
  $("#endorseMentModalDivId").modal("show");
  
  $('#endorsWorksId').show();
+ $('#endorseDivId').hide();
+ $('.uploadCoverFileDivCls').hide();
+ $('#endorseDivId').hide();
  $('#endorsWorksId').html("Save Details");
  
 })
@@ -3260,5 +3374,39 @@ function getPmDocumentTypeList(){
 		$("#documentTypeId").trigger('chosen:updated');
 	});	
 	}
+
+$(document).on("click",".selectCls",function(){
+	$('.workSelectCls').prop('checked',false);
+	if($(this).is(":checked")){
+		$('.workSelectCls').prop('checked',true);
+	};
+});
+
+$(document).on("click",".tableTypeCls",function(){
+	var value=$(this).val();
+	
+	if($(this).is(":checked")){
+		$('.tableTypeCls').prop('checked',false);
+		$(this).prop('checked',true);
+	}
+	var isSelected=false;
+	$('.tableTypeCls').each(function(){
+		if($(this).is(":checked")){
+			isSelected=true;
+		}
+	});
+	
+	if(!isSelected){
+		$(this).prop('checked',true);
+	}
+	
+	$('#gridViewdiv').hide();
+	$('#classicalViewDiv').hide();
+	if(value == 2)
+		$('#gridViewdiv').show();
+	else if(value == 1)
+		$('#classicalViewDiv').show();
+	
+});
 
 	
