@@ -271,8 +271,11 @@
 			</div>
 		</div>
 		<div class="row m_top10">
-			<div id="esslAndNredcapDivId"></div>
+			<div id="esslAndNredcapDivId" class="tabViewCls"></div>
+			
 		</div>
+		<div id="esslAndNredcapDivId1" class="mobileViewCls" style="display:none;"></div>
+		
 		<div class="row m_top10">
 			<div id="projectData"></div>
 		</div>

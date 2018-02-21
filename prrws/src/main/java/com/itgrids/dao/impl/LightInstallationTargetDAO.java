@@ -24,4 +24,13 @@ public class LightInstallationTargetDAO extends GenericDaoHibernate<LightInstall
 		  query.setParameter("todayDate", toDate);
 		 return query.list();
 	}
+	
+	public List<Object[]> getVendorWiseLedTargetDetails(Date toDate){
+		Query query = getSession().createQuery("select model.lightsVendorId,sum(model.ledTarget)"
+		 							+ " from LightInstallationTarget model"
+		 							+ " where date(model.targetDate) <= :todayDate"
+		 							+ " group by model.lightsVendorId");
+		query.setParameter("todayDate", toDate);
+		return query.list();
+	}
 }

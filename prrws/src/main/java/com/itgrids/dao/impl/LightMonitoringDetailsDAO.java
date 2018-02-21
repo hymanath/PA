@@ -185,4 +185,58 @@ public class LightMonitoringDetailsDAO extends GenericDaoHibernate<LightMonitori
 		return query.list();
 	}
 	
+	public List<Object[]> getLocationWiseDetails(String locationType,String filterType,List<Long> filterValues,Date fromDate,Date toDate,List<Long> lightsVendorIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select");
+		if(locationType.equalsIgnoreCase("district"))
+			sb.append(" model.panchayat.locationAddress.district.districtId,model.panchayat.locationAddress.district.districtName,");
+		else if(locationType.equalsIgnoreCase("constituency"))
+			sb.append(" model.panchayat.locationAddress.constituency.constituencyId,model.panchayat.locationAddress.constituency.name,");
+		else if(locationType.equalsIgnoreCase("parliament"))
+			sb.append(" model.panchayat.locationAddress.parliament.constituencyId,model.panchayat.locationAddress.parliament.name,");
+		else if(locationType.equalsIgnoreCase("mandal"))
+			sb.append(" model.panchayat.locationAddress.tehsil.tehsilId,model.panchayat.locationAddress.tehsil.tehsilName,");
+		else if(locationType.equalsIgnoreCase("panchayat"))
+			sb.append(" model.panchayat.locationAddress.panchayat.panchayatId,model.panchayat.locationAddress.panchayat.panchayatName,");
+		sb.append(" model.lightsVendor.lightsVendorId,sum(model.lightsFitted),sum(model.teamWorked)"
+				+ " from LightMonitoringDetails model"
+				+ " where ");
+		if(lightsVendorIds != null && !lightsVendorIds.isEmpty())
+			sb.append(" model.lightsVendor.lightsVendorId in (:lightsVendorIds)");
+		if(fromDate != null && toDate != null)
+			sb.append(" and date(model.workDate) between :fromDate and :toDate");
+		if(filterType != null && filterType.trim().length() > 0 && filterValues != null && filterValues.size() > 0){
+			if(filterType.equalsIgnoreCase("district"))
+				sb.append(" and model.panchayat.locationAddress.district.districtId in (:filterValues) ");
+			else if(filterType.equalsIgnoreCase("parliament"))
+				sb.append(" and model.panchayat.locationAddress.parliament.constituencyId in (:filterValues) ");
+			else if(filterType.equalsIgnoreCase("constituency"))
+				sb.append(" and model.panchayat.locationAddress.constituency.constituencyId in (:filterValues) ");
+			else if(filterType.equalsIgnoreCase("mandal"))
+				sb.append(" and model.panchayat.locationAddress.tehsil.tehsilId in (:filterValues) ");
+			else if(filterType.equalsIgnoreCase("panchayat"))
+				sb.append(" and model.panchayat.locationAddress.panchayat.panchayatId in (:filterValues) ");
+		}
+		if(locationType.equalsIgnoreCase("district"))
+			sb.append(" group by model.panchayat.locationAddress.district.districtId,model.lightsVendor.lightsVendorId");
+		else if(locationType.equalsIgnoreCase("constituency"))
+			sb.append(" group by model.panchayat.locationAddress.constituency.constituencyId,model.lightsVendor.lightsVendorId");
+		else if(locationType.equalsIgnoreCase("parliament"))
+			sb.append(" group by model.panchayat.locationAddress.parliament.constituencyId,model.lightsVendor.lightsVendorId");
+		else if(locationType.equalsIgnoreCase("mandal"))
+			sb.append(" group by model.panchayat.locationAddress.tehsil.tehsilId,model.lightsVendor.lightsVendorId");
+		else if(locationType.equalsIgnoreCase("panchayat"))
+			sb.append(" group by model.panchayat.locationAddress.panchayat.panchayatId,model.lightsVendor.lightsVendorId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(lightsVendorIds != null && !lightsVendorIds.isEmpty())
+			query.setParameterList("lightsVendorIds", lightsVendorIds);
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		if(filterType != null && filterType.trim().length() > 0 && filterValues != null && filterValues.size() > 0)
+			query.setParameterList("filterValues", filterValues);
+		return query.list();
+	}
 }
