@@ -1,9 +1,13 @@
 package com.itgrids.partyanalyst.exceptionalReport.service.impl;
 
+import io.jsonwebtoken.lang.Collections;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,15 +16,18 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.google.gdata.data.introspection.Collection;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalToursMonthDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.InputVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingExceptionalReportVO;
 import com.itgrids.partyanalyst.dto.ToursOverviewDtlsvO;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITourExceptionalReportService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.Util;
+import com.sun.research.ws.wadl.Link;
 
 public class TourExceptionalReportService implements ITourExceptionalReportService {
 
@@ -48,7 +55,7 @@ public class TourExceptionalReportService implements ITourExceptionalReportServi
 			ISelfAppraisalCandidateDetailsNewDAO selfAppraisalCandidateDetailsNewDAO) {
 		this.selfAppraisalCandidateDetailsNewDAO = selfAppraisalCandidateDetailsNewDAO;
 	}
-	 /**
+	  /**
 	   * @param InputVO inputVO
 	   * @return ToursOverviewDtlsvO 
 	   * @author Santosh Kumar Verma 
@@ -133,11 +140,17 @@ public class TourExceptionalReportService implements ITourExceptionalReportServi
 					if (totalTourSubmittedCadreIds != null && totalTourSubmittedCadreIds.size() > 0) {
 						if (!totalTourSubmittedCadreIds.contains(cadreId)) {
 							//setting not submitted candidate details
-							resultVO.getSubList1().add(getCandidateDetails(param));
+							ToursOverviewDtlsvO candidateVO = getMatchVO(resultVO.getSubList1(), cadreId);
+							 if (candidateVO == null ) {
+								 resultVO.getSubList1().add(getCandidateDetails(param));	 
+							 }
 						}
 					} else {
 						//setting not submitted candidate details
-						resultVO.getSubList1().add(getCandidateDetails(param));
+						ToursOverviewDtlsvO candidateVO = getMatchVO(resultVO.getSubList1(), cadreId);
+						 if (candidateVO == null ) {
+							 resultVO.getSubList1().add(getCandidateDetails(param));	 
+						 }
 					}
 				}
 				resultVO.setTotalUniqueCandidateCount(Long.valueOf(tempCadreIdSet.size()));// total unique candidate
@@ -175,7 +188,7 @@ public class TourExceptionalReportService implements ITourExceptionalReportServi
 			addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[10]));
 
 		} catch (Exception e) {
-			LOG.error("Exception occurred  at setAddressDetails() in PartyMeetingExceptionalReportService class",e);
+			LOG.error("Exception occurred  at setAddressDetails() in TourExceptionalReportService class",e);
 		}
 		return addressVO;
 	}
@@ -195,7 +208,7 @@ public class TourExceptionalReportService implements ITourExceptionalReportServi
 			}
 
 		} catch (Exception e) {
-			LOG.error("Exception occurred  at getDesignationWiseCandidateDtls() in PartyMeetingExceptionalReportService class",e);
+			LOG.error("Exception occurred  at getDesignationWiseCandidateDtls() in TourExceptionalReportService class",e);
 		}
 		return designationMap;
 	}
@@ -214,8 +227,100 @@ public class TourExceptionalReportService implements ITourExceptionalReportServi
 				}
 			 }
 		} catch (Exception e) {
-			LOG.error("Exception occurred  at setSubmittedCandidateDetails() in PartyMeetingExceptionalReportService class",e);
+			LOG.error("Exception occurred  at setSubmittedCandidateDetails() in TourExceptionalReportService class",e);
 		}
+	}
+	public ToursOverviewDtlsvO getMatchVO(List<ToursOverviewDtlsvO> list,Long cadreId) {
+		try {
+			 if (list == null || list.size() == 0) 
+				 return null;
+			 for (ToursOverviewDtlsvO toursOverviewDtlsvO : list) {
+				 if (toursOverviewDtlsvO.getCandidateId().equals(cadreId)) {
+					 return toursOverviewDtlsvO;
+				 }
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred  at getMatchVO() in TourExceptionalReportService class",e);
+		}
+		return null;
+	}
+	 /**
+	   * @param InputVO inputVO
+	   * @return ToursOverviewDtlsvO 
+	   * @author Santosh Kumar Verma 
+	   * @Description :This Service Method is used to get not submitted candidate list by time period filter . 
+	   * @Date 20-FEB-2018
+	   */
+	public List<ToursOverviewDtlsvO> getNotSubmittedCandidateDetailsByFilter(InputVO inputVO) {
+		List<ToursOverviewDtlsvO> finalList = new ArrayList<ToursOverviewDtlsvO>(0);
+		try{
+			List<Date> datesList = Util.getDates(inputVO.getFromDateStr(), inputVO.getToDateStr(),new SimpleDateFormat("dd/MM/yyyy"));
+    		inputVO.setFromDate(datesList.get(0));
+    		inputVO.setToDate(datesList.get(1));
+    		List<Long> monthyearIds =  getMonthYearIds(inputVO.getFromDate(), inputVO.getToDate());
+			List<Object[]> candidateObjLst = selfAppraisalCandidateLocationNewDAO.getAllTourCandiateDetails(inputVO);
+			Map<Long,ToursOverviewDtlsvO> candidateMap = getCandidateDetails(candidateObjLst,inputVO);
+			if (monthyearIds != null && monthyearIds.size() > 0) {
+				List<Object[]> submittedCandidateObjList = selfAppraisalCandidateDetailsNewDAO.getNoOfMonthTourSubmittedCandidateWise(monthyearIds);
+				setNoOfMonthTourSubmittedDtls(submittedCandidateObjList, candidateMap);
+			}
+			if (candidateMap != null && candidateMap.size() > 0) {
+				Iterator<Long> iterator = candidateMap.keySet().iterator();
+				while (iterator.hasNext()) {
+					ToursOverviewDtlsvO candidateVO = candidateMap.get(iterator.next());
+					if (candidateVO != null && !(candidateVO.getNotSubmittedNoOfMonth() >= inputVO.getNoOfMonth())) {
+						iterator.remove();
+					}
+				}
+			//final list
+		     finalList.addAll(candidateMap.values());
+		     java.util.Collections.sort(finalList, tourNoOfMonthNotSubmittedDecendingSorting);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred  at getNotSubmittedCandidateDetailsByFilter() in TourExceptionalReportService class",e);
+		}
+		return finalList;
+	}
+	public static Comparator<ToursOverviewDtlsvO> tourNoOfMonthNotSubmittedDecendingSorting = new Comparator<ToursOverviewDtlsvO>() {
+     	public int compare(ToursOverviewDtlsvO location2, ToursOverviewDtlsvO location1) {
+     	Long count2 = location2.getNotSubmittedNoOfMonth();
+     	Long count1 = location1.getNotSubmittedNoOfMonth();
+     	//ascending order of percentage.
+     	 return count1.compareTo(count2);
+     	}
+    };
+	public void setNoOfMonthTourSubmittedDtls(List<Object[]> objList,Map<Long, ToursOverviewDtlsvO> candidateMap) {
+		try {
+			if (objList != null && objList.size() > 0) {
+				for (Object[] param : objList) {
+					ToursOverviewDtlsvO candidateVO = candidateMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if (candidateVO != null) {
+						candidateVO.setNotSubmittedNoOfMonth(candidateVO.getNotSubmittedNoOfMonth()- commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			LOG.error("Exception occurred  at setNoOfMonthTourSubmittedDtls() in TourExceptionalReportService class",e);
+		}
+	}
+	public Map<Long,ToursOverviewDtlsvO> getCandidateDetails(List<Object[]> objList,InputVO inputVO) {
+		Map<Long,ToursOverviewDtlsvO> candidateMap = new LinkedHashMap<Long, ToursOverviewDtlsvO>(0);
+		 try {
+			  if (objList != null && objList.size() > 0) {
+				  int noOfMonth = getMonthsDifference(inputVO.getFromDate(), inputVO.getToDate());
+				  for (Object[] param : objList) {
+					 ToursOverviewDtlsvO candidateVO = getCandidateDetails(param);
+					 candidateVO.setNotSubmittedNoOfMonth(Long.valueOf(noOfMonth));
+					 candidateMap.put(candidateVO.getCandidateId(), candidateVO);
+				 }
+			  }
+		 } catch (Exception e) {
+			 LOG.error("Exception occurred  at getCandidateDetails() in TourExceptionalReportService class",e);
+		 }
+		 return candidateMap;
 	}
 	private List<Long> getMonthYearIds(Date fromDate,Date toDate) {
 		List<Long> monthYearIds = new ArrayList<Long>(0);
@@ -229,5 +334,14 @@ public class TourExceptionalReportService implements ITourExceptionalReportServi
 		 }
 		 return monthYearIds;
 	}
+	 public static final int getMonthsDifference(Date date1, Date date2) {
+		    if(date1 == null || date2 == null)
+		    	return 0;
+		    @SuppressWarnings("deprecation")
+			int m1 = date1.getYear() * 12 + date1.getMonth();
+		    @SuppressWarnings("deprecation")
+			int m2 = date2.getYear() * 12 + date2.getMonth();
+		    return m2 - m1 + 1;
+	 }
 	
 }

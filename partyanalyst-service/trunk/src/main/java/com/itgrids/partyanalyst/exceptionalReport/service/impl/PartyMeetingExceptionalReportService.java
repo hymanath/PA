@@ -34,51 +34,51 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 		this.partyMeetingStatusDAO = partyMeetingStatusDAO;
 	}
 
-	   /**
-	   * @param InputVO inputVO
-	   * @return PartyMeetingExceptionalReportVO 
-	   * @author Santosh Kumar Verma 
-	   * @Description :This Service Method is used to get party meeting location level wise report. 
-	   * @Date 19-FEB-2018
-	   */
-		public PartyMeetingExceptionalReportVO getPartyMeetingExceptionReportMeetingLevelWise(InputVO inputVO) {
-			PartyMeetingExceptionalReportVO resultVO = new PartyMeetingExceptionalReportVO();
-			try {
-				//preparing input parameter
-				List<Long> partyMeetingLevelIds = getPartyMeetingLevelIds(inputVO);
-				List<Date> dateList = Util.getDates(inputVO.getFromDateStr(), inputVO.getToDateStr(), new SimpleDateFormat("dd/MM/yyyy"));
-				inputVO.setPartyMeetingLevelIds(partyMeetingLevelIds);
-				inputVO.setFromDate(dateList.get(0));
-				inputVO.setToDate(dateList.get(1));
-				
-				//parliament wise data
-				inputVO.setResultType("parliament");
-				List<Object[]>  objList1 = partyMeetingStatusDAO.getPartyMeetingStatusWiseCount(inputVO);
-				Map<Long,PartyMeetingExceptionalReportVO> parliamentDtlsMap = getLocationWiseMeetingCounductedDtls(objList1, inputVO);
-				calculatePercentage(parliamentDtlsMap, resultVO,inputVO.getResultType());
-				resultVO.setSubList2(new ArrayList<PartyMeetingExceptionalReportVO>(parliamentDtlsMap.values()));
-				//sorting list
-				if (resultVO.getSubList2() != null && resultVO.getSubList2().size() > 0) {
-					java.util.Collections.sort(resultVO.getSubList2(), meetingDecendingCountWiseSorting);
-				}
-				//constituency wise data
-				inputVO.setResultType("constituency");
-				List<Object[]>  objList2 = partyMeetingStatusDAO.getPartyMeetingStatusWiseCount(inputVO);
-				Map<Long,PartyMeetingExceptionalReportVO> constituenyDtlsMap = getLocationWiseMeetingCounductedDtls(objList2, inputVO);
-				calculatePercentage(constituenyDtlsMap, resultVO,inputVO.getResultType());
-				resultVO.setSubList1(new ArrayList<PartyMeetingExceptionalReportVO>(constituenyDtlsMap.values()));
-				//sorting list
-				if (resultVO.getSubList1() != null && resultVO.getSubList1().size() > 0) {
-					java.util.Collections.sort(resultVO.getSubList1(), meetingDecendingCountWiseSorting);
-				}
-				//calculating overall percentage
-				resultVO.setConductedPercentage(Util.calculatePercantage(resultVO.getConductedCount(),resultVO.getTotalCount()));
-				resultVO.setNotConductedPercentage(Util.calculatePercantage(resultVO.getNotConductedCount(),resultVO.getTotalCount()));
-			} catch (Exception e) {
-				LOG.error("Exception occurred  at getPartyMeetingExceptionReportMeetingLevelWise() in PartyMeetingExceptionalReportService class",e);
+   /**
+   * @param InputVO inputVO
+   * @return PartyMeetingExceptionalReportVO 
+   * @author Santosh Kumar Verma 
+   * @Description :This Service Method is used to get party meeting location level wise report. 
+   * @Date 19-FEB-2018
+   */
+	public PartyMeetingExceptionalReportVO getPartyMeetingExceptionReportMeetingLevelWise(InputVO inputVO) {
+		PartyMeetingExceptionalReportVO resultVO = new PartyMeetingExceptionalReportVO();
+		try {
+			//preparing input parameter
+			List<Long> partyMeetingLevelIds = getPartyMeetingLevelIds(inputVO);
+			List<Date> dateList = Util.getDates(inputVO.getFromDateStr(), inputVO.getToDateStr(), new SimpleDateFormat("dd/MM/yyyy"));
+			inputVO.setPartyMeetingLevelIds(partyMeetingLevelIds);
+			inputVO.setFromDate(dateList.get(0));
+			inputVO.setToDate(dateList.get(1));
+			
+			//parliament wise data
+			inputVO.setResultType("parliament");
+			List<Object[]>  objList1 = partyMeetingStatusDAO.getPartyMeetingStatusWiseCount(inputVO);
+			Map<Long,PartyMeetingExceptionalReportVO> parliamentDtlsMap = getLocationWiseMeetingCounductedDtls(objList1, inputVO);
+			calculatePercentage(parliamentDtlsMap, resultVO,inputVO.getResultType());
+			resultVO.setSubList2(new ArrayList<PartyMeetingExceptionalReportVO>(parliamentDtlsMap.values()));
+			//sorting list
+			if (resultVO.getSubList2() != null && resultVO.getSubList2().size() > 0) {
+				java.util.Collections.sort(resultVO.getSubList2(), meetingDecendingCountWiseSorting);
 			}
-			return resultVO;
+			//constituency wise data
+			inputVO.setResultType("constituency");
+			List<Object[]>  objList2 = partyMeetingStatusDAO.getPartyMeetingStatusWiseCount(inputVO);
+			Map<Long,PartyMeetingExceptionalReportVO> constituenyDtlsMap = getLocationWiseMeetingCounductedDtls(objList2, inputVO);
+			calculatePercentage(constituenyDtlsMap, resultVO,inputVO.getResultType());
+			resultVO.setSubList1(new ArrayList<PartyMeetingExceptionalReportVO>(constituenyDtlsMap.values()));
+			//sorting list
+			if (resultVO.getSubList1() != null && resultVO.getSubList1().size() > 0) {
+				java.util.Collections.sort(resultVO.getSubList1(), meetingDecendingCountWiseSorting);
+			}
+			//calculating overall percentage
+			resultVO.setConductedPercentage(Util.calculatePercantage(resultVO.getConductedCount(),resultVO.getTotalCount()));
+			resultVO.setNotConductedPercentage(Util.calculatePercantage(resultVO.getNotConductedCount(),resultVO.getTotalCount()));
+		} catch (Exception e) {
+			LOG.error("Exception occurred  at getPartyMeetingExceptionReportMeetingLevelWise() in PartyMeetingExceptionalReportService class",e);
 		}
+		return resultVO;
+	}
 	public static Comparator<PartyMeetingExceptionalReportVO> meetingDecendingCountWiseSorting = new Comparator<PartyMeetingExceptionalReportVO>() {
 		     	public int compare(PartyMeetingExceptionalReportVO location2, PartyMeetingExceptionalReportVO location1) {
 		     	Double per2 = location2.getPercentage();
@@ -123,7 +123,7 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 						   locationVO.setTotalCount(locationVO.getTotalCount()+totalMeetingCnt);
 						   if (partyMeetingStatus.equalsIgnoreCase("Y")) {
 							   locationVO.setConductedCount(locationVO.getConductedCount()+totalMeetingCnt); 
-							} else if (partyMeetingStatus.equalsIgnoreCase("N") || partyMeetingStatus.equalsIgnoreCase("M")) {
+							} else if (partyMeetingStatus.equalsIgnoreCase("N") || partyMeetingStatus.equalsIgnoreCase("NU")) {
 							   locationVO.setNotConductedCount(locationVO.getNotConductedCount()+totalMeetingCnt);
 							  
 						   }

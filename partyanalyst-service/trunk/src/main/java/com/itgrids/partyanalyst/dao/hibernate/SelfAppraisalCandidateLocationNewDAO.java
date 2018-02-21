@@ -366,8 +366,7 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 				+ " SACL.userAddress.state.stateId = :stateId ");
 
 		queryStr.append(" group by SACL.selfAppraisalCandidate.selfAppraisalDesignation.selfAppraisalDesignationId,"
-				+ " SACL.selfAppraisalCandidate.selfAppraisalCandidateId, "
-				+ " SACL.locationScopeId,SACL.locationValue ");
+				+ " SACL.selfAppraisalCandidate.selfAppraisalCandidateId ");
 		queryStr.append(" order by SACL.selfAppraisalCandidate.selfAppraisalDesignation.orderNo ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("stateId", inputVO.getStateId());

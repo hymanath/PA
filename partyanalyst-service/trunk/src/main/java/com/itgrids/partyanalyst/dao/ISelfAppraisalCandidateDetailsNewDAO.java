@@ -29,4 +29,5 @@ public interface ISelfAppraisalCandidateDetailsNewDAO extends GenericDao<SelfApp
  //exceptional report DAO
  public List<Long> getUniqueCandidateTourSubmittedByTimePeriod(List<Long> monthYearIds, String timePeriod);
  public List<Object[]> getDesignationWiseTourSubmittedCandidateByTimePeriod(List<Long> monthYearIds,String timePeriod);
+ public List<Object[]> getNoOfMonthTourSubmittedCandidateWise(List<Long> monthYearIds);
  }
