@@ -158,6 +158,7 @@
 	<div class="backgroundBlock hidden-xs"></div>
 	<ul class="hidden-xs">
 		<li expand-icon="alerts" right-nav="true">Alerts</li>
+		<li expand-icon="newsLetters" right-nav="true">Word Cloud</li>
 		<li expand-icon="debates" right-nav="true">debates</li>
 		<li expand-icon="news" right-nav="true">News - Print Media</li>
 		<li expand-icon="electronic" right-nav="true">News - electronic media</li>
@@ -166,7 +167,6 @@
 		<li expand-icon="kaizala" right-nav="true">kaizala</li>
 		<li expand-icon="nominatedPost" right-nav="true" class="nominatedSideMenuCls">Nominated Post</li>
 		<li expand-icon="pressmeet" right-nav="true">Press Meet</li>
-		<li expand-icon="newsLetters" right-nav="true">Word Cloud</li>
 		<li expand-icon="tours" right-nav="true">Tours</li>
 		<li expand-icon="meetings" right-nav="true">meetings</li>
 		<li expand-icon="cadre" right-nav="true">membership</li>
@@ -351,310 +351,505 @@
 							<div id="locationWiseAlertDivId" class="row"></div>
 						</div>    
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 districtAltCtnCls" expand-block-right="alerts" style="display:none;">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-6 pull-right">
-											<ul class="activeUlCls alertFilterCls list-inline pull-right">
-											    <li class="" style="background:#ddd;">Detailed</li>
-												<li class="active optionsCls" onClick="getAlertDetails('1')" attr_id="1" style="margin-left: -7px;">Overview</li>
-												<li class="optionsCls" onClick="getAlertDetails('2')" attr_id="2" style="margin-left: -5px;">Status</li> 
-												<li class="optionsCls" onClick="getAlertDetails('3')" attr_id="3" style="margin-left: -6px;">Publication</li>  
-												<li class="optionsCls" onClick="getAlertDetails('4')" attr_id="4">Comparison</li>  
-												<!--<li  id="alertSettingsId"><i class="fa fa-gears" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></li>-->
-											</ul>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10 districtAltCtnCls" expand-block-right="alerts" style="display:none;">
+						<div class="panel panel-default panelNew">
+							<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-6 pull-right">
+										<ul class="activeUlCls alertFilterCls list-inline pull-right">
+											<li class="" style="background:#ddd;">Detailed</li>
+											<li class="active optionsCls" onClick="getAlertDetails('1')" attr_id="1" style="margin-left: -7px;">Overview</li>
+											<li class="optionsCls" onClick="getAlertDetails('2')" attr_id="2" style="margin-left: -5px;">Status</li> 
+											<li class="optionsCls" onClick="getAlertDetails('3')" attr_id="3" style="margin-left: -6px;">Publication</li>  
+											<li class="optionsCls" onClick="getAlertDetails('4')" attr_id="4">Comparison</li>  
+											<!--<li  id="alertSettingsId"><i class="fa fa-gears" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></li>-->
+										</ul>
+									</div>
+									<div class="col-md-3 col-xs-12 col-sm-6 locImptLevelDivCls">
+										<label class="checkbox-inline">
+										  <input type="checkbox" id="impactAlertsId" value="option2" checked onClick="getAlertDetails('1')" class="checkedAlertsCls">Impact Wise
+										</label>
+										<label class="checkbox-inline">
+										  <input type="checkbox" id="locationAlertsId" value="option1" onClick="getLocationWiseAlertDetails()" class="checkedAlertsCls">Location Wise 
+										</label>
+									</div>
+							   </div>
+							</div>
+							
+							<div class="panel-body alertImpctLevelBlcock">  
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12 stateImpactLevelBlockCls">
+									   <div class="panel panel-default panelNew">
+										<div class="panel-heading">
+											<h4 class="panel-title"><span class="headingColor" id="stateOverviewHeadingId">state overview - impact alerts</span></h4>
 										</div>
-										<div class="col-md-3 col-xs-12 col-sm-6 locImptLevelDivCls">
-											<label class="checkbox-inline">
-											  <input type="checkbox" id="impactAlertsId" value="option2" checked onClick="getAlertDetails('1')" class="checkedAlertsCls">Impact Wise
-											</label>
-											<label class="checkbox-inline">
-											  <input type="checkbox" id="locationAlertsId" value="option1" onClick="getLocationWiseAlertDetails()" class="checkedAlertsCls">Location Wise 
-											</label>
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-md-12 col-xs-12 col-sm-12">
+													  <!-- Nav tabs -->
+													  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+														<li role="presentation" onClick="stateLevelHighchartBuildingFunction();"  class="active impactLevelCls collapseHIghChartViewCls"><a href="#stateOvervwGraph" aria-controls="stateOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+														<li role="presentation" onClick="stateLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls"><a href="#stateOvervwTable" aria-controls="stateOvervwTable" role="tab" data-toggle="tab">
+															<i class="fa fa-table"></i>
+														</a></li>
+													  </ul>
+												</div>
+													<div class="col-md-12 col-xs-12 col-sm-12">
+													  <!-- Tab panes -->
+													  <div class="tab-content">
+														<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls" id="stateOvervwGraph">
+															<div id="stateImpactLevelHighChartDivId" style="height:250px;"></div>
+														</div>
+														<div role="tabpanel" class="tab-pane collapseTblViewCls" id="stateOvervwTable">
+															<div id="stateImpactLevelTblDivId"></div>
+														</div>
+													  </div>
+													</div>
+												</div>
+											</div>
 										</div>
-								   </div>
-								</div>
-								
-								<div class="panel-body alertImpctLevelBlcock">  
-								   <div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12 stateImpactLevelBlockCls">
-										   <div class="panel panel-default panelNew">
+									</div>
+									
+									
+									
+									<div class="col-md-12 col-xs-12 col-sm-12 districtImpactLevelBlockCls">
+										<div class="panel panel-default panelNew">
 											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor" id="stateOverviewHeadingId">state overview - impact alerts</span></h4>
+												<h4 class="panel-title"><span class="headingColor" id="districtOverviewHeadingId">District overview - impact alerts</span></h4>
+											</div>
+											<div class="panel-body">
+												<div class="row" >
+													<div class="col-md-8 col-xs-12 col-sm-8">
+														<ul class="list-inline activeUlCls districtUl">
+															<li class="descendingConstituencyCls active" onClick="getSortedDistrictInRequiredFormat('Decending')">
+																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+															</li>
+															<li class="ascendingConstituencyCls" onClick="getSortedDistrictInRequiredFormat('Ascending')">
+																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+															</li>
+															<li class="atozDistrictSortingCls" onClick="getSortedDistrictInRequiredFormat('AlphabeticalAscending')">
+																A-Z
+															</li>
+															<li class="ztoaDistrictSortingCls" onClick="getSortedDistrictInRequiredFormat('AlphabeticalDescending')">
+																Z-A
+															</li>
+															<li>
+																<select class="form-control" id="districtSelectBoxId" onChange="getSortedDistrictInRequiredFormat('Search')">
+																 <option value="0">Select District </option>
+																</select>
+															</li>
+														</ul>
+													</div>
+													<div class="col-md-4 col-xs-12 col-sm-4">
+														<!-- Nav tabs -->
+														<ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+															<li role="presentation" onClick="districtLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls districtCollapseHIghChartViewCls"><a href="#districtOvervwGraph" aria-controls="districtOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+															<li role="presentation" onClick="districtLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls districtCollapseTblViewCls">
+																<a href="#districtOvervwTable" aria-controls="districtOvervwTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a>
+															</li>
+														</ul>
+													</div>
+													<div class="col-md-12 col-xs-12 col-sm-12">
+														<!-- Tab panes -->
+														<div class="tab-content">
+															<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls districtCollapseHIghChartViewCls" id="districtOvervwGraph">
+																<div id="districtImpactLevelHighChartDivId" style="height:650px;"></div>
+															</div>
+															<div role="tabpanel" class="tab-pane collapseTblViewCls districtCollapseTblViewCls" id="districtOvervwTable">
+																<div id="districtImpactLevelTblDivId"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<!--swadhin-->
+									
+									<div class="col-md-12 col-xs-12 col-sm-12 parliamentImpactLevelBlockCls">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor" id="parliamentOverviewHeadingId">Parliament overview - impact alerts</span></h4>
+											</div>
+											<div class="panel-body">
+												<div class="row" >
+													<div class="col-md-8 col-xs-12 col-sm-8">
+														<ul class="list-inline activeUlCls parliamentUl">
+															<li class="descendingConstituencyCls active" onClick="getSortedParliamentInRequiredFormat('Decending')">
+																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+															</li>
+															<li class="ascendingConstituencyCls" onClick="getSortedParliamentInRequiredFormat('Ascending')">
+																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+															</li>
+															<li class="atozParliamentSortingCls" onClick="getSortedParliamentInRequiredFormat('AlphabeticalAscending')">
+																A-Z
+															</li>
+															<li class="ztoaParliamentSortingCls" onClick="getSortedParliamentInRequiredFormat('AlphabeticalDescending')">
+																Z-A
+															</li>
+															<li>
+																<select class="form-control" id="parliamentSelectBoxId" onChange="getSortedParliamentInRequiredFormat('Search')">
+																	<option value="0">Select Parliament </option>
+																</select>
+															</li>
+														</ul>
+													</div>
+													<div class="col-md-4 col-xs-12 col-sm-4">
+														<!-- Nav tabs -->
+														<ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+															<li role="presentation" onClick="parliamentLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls parliamentCollapseHIghChartViewCls"><a href="#parliamentOvervwGraph" aria-controls="parliamentOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+															<li role="presentation" onClick="parliamentLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls parliamentCollapseTblViewCls">
+																<a href="#parliamentOvervwTable" aria-controls="parliamentOvervwTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a>
+															</li>
+														</ul>
+													</div>
+													<div class="col-md-12 col-xs-12 col-sm-12">
+														<!-- Tab panes -->
+														<div class="tab-content">
+															<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls parliamentCollapseHIghChartViewCls" id="parliamentOvervwGraph">
+																<div id="parliamentImpactLevelHighChartDivId" style="height:650px;"></div>
+															</div>
+															<div role="tabpanel" class="tab-pane collapseTblViewCls parliamentCollapseTblViewCls" id="parliamentOvervwTable">
+																<div id="parliamentImpactLevelTblDivId"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									
+									
+									
+									<div class="col-md-12 col-xs-12 col-sm-12 gmcImpactLevelBlockCls">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor" id="corpOverviewHeadingId">CORP-GMC overview - impact alerts</span></h4>
 											</div>
 											<div class="panel-body">
 												<div class="row">
 													<div class="col-md-12 col-xs-12 col-sm-12">
 														  <!-- Nav tabs -->
 														  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
-															<li role="presentation" onClick="stateLevelHighchartBuildingFunction();"  class="active impactLevelCls collapseHIghChartViewCls"><a href="#stateOvervwGraph" aria-controls="stateOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
-															<li role="presentation" onClick="stateLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls"><a href="#stateOvervwTable" aria-controls="stateOvervwTable" role="tab" data-toggle="tab">
+															<li role="presentation" onClick="gmcLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls"><a href="#corpGmcOvervwGraph" aria-controls="corpGmcOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+															<li role="presentation" onClick="gmcLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls"><a href="#corpGmcOvervwTable" aria-controls="corpGmcOvervwTable" role="tab" data-toggle="tab">
 																<i class="fa fa-table"></i>
 															</a></li>
 														  </ul>
 													</div>
-														<div class="col-md-12 col-xs-12 col-sm-12">
+													<div class="col-md-12 col-xs-12 col-sm-12">
+														<!-- Tab panes -->
+														<div class="tab-content">
+															<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls" id="corpGmcOvervwGraph">
+																<div id="gmcImpactLevelHighChartDivId" style="height:250px;"></div>
+															</div>
+															<div role="tabpanel" class="tab-pane collapseTblViewCls" id="corpGmcOvervwTable">
+																<div id="gmcImpactLevelTblDivId"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 constituencyImpactLevelBlockCls">
+										<div class="panel panel-default panelNew">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor" id="constituencyOverviewHeadingId">Constituency overview - impact alerts</span></h4>
+												</div>
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-md-8 col-xs-12 col-sm-8">
+														<ul class="list-inline activeUlCls  constituencyUl">
+																<li class="descendingConstituencyCls active" onClick="getSortedConstituencyInRequiredFormat('Decending')">
+																	<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+																</li >
+																<li class="ascendingConstituencyCls" onClick="getSortedConstituencyInRequiredFormat('Ascending')">
+																	<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+																</li>
+																<li class="atozConstituecySortingCls" onClick="getSortedConstituencyInRequiredFormat('AlphabeticalAscending')">
+																	A-Z
+																</li>
+																<li class="ztozConstituecySortingCls" onClick="getSortedConstituencyInRequiredFormat('AlphabeticalDescending')">
+																	Z-A
+																</li>
+																<li class="ascendingSortingByConstituencyIdCls" onClick="getSortedConstituencyInRequiredFormat('locationIdAscendingOrder')">
+																	constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+																</li>
+																<li class="ascendingSortingByConstituencyIdCls" onClick="getSortedConstituencyInRequiredFormat('locationIdDescendingOrder')">
+																	constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+																</li>
+																<li>
+																<select class="form-control" id="constituencySeletBoxId" onChange="getSortedConstituencyInRequiredFormat('Search')">
+																	<option value="0">Select Constitency </option>
+																</select>
+																</li>
+															</ul>
+													</div>
+													<div class="col-md-4 col-xs-12 col-sm-4">
+														  <!-- Nav tabs -->
+														  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
+															<li role="presentation" onClick="constituencyLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls constituencyHighChartViewCls"><a href="#constituencyOvervwGraph" aria-controls="constituencyOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
+															<li role="presentation" onClick="constituencyTblBuildingFunction();" class="impactLevelCls collapseTblViewCls constituencyCollapseTblViewCls"><a href="#constituencyOvervwTable" aria-controls="constituencyOvervwTable" role="tab" data-toggle="tab">
+																<i class="fa fa-table"></i>
+															</a></li>
+														  </ul>
+													</div>
+													<div class="col-md-12 col-xs-12 col-sm-12">
 														  <!-- Tab panes -->
-														  <div class="tab-content">
-															<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls" id="stateOvervwGraph">
-																<div id="stateImpactLevelHighChartDivId" style="height:250px;"></div>
+														<div class="tab-content">
+															<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls constituencyHighChartViewCls" id="constituencyOvervwGraph">
+																<div id="constituencyLevelHighChartDivId" style="height:450px;"></div>
 															</div>
-															<div role="tabpanel" class="tab-pane collapseTblViewCls" id="stateOvervwTable">
-																<div id="stateImpactLevelTblDivId"></div>
-															</div>
-														  </div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										
-										
-										
-										<div class="col-md-12 col-xs-12 col-sm-12 districtImpactLevelBlockCls">
-											<div class="panel panel-default panelNew">
-												<div class="panel-heading">
-													<h4 class="panel-title"><span class="headingColor" id="districtOverviewHeadingId">District overview - impact alerts</span></h4>
-												</div>
-												<div class="panel-body">
-													<div class="row" >
-														<div class="col-md-8 col-xs-12 col-sm-8">
-															<ul class="list-inline activeUlCls districtUl">
-																<li class="descendingConstituencyCls active" onClick="getSortedDistrictInRequiredFormat('Decending')">
-																	<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-																</li>
-																<li class="ascendingConstituencyCls" onClick="getSortedDistrictInRequiredFormat('Ascending')">
-																	<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-																</li>
-																<li class="atozDistrictSortingCls" onClick="getSortedDistrictInRequiredFormat('AlphabeticalAscending')">
-																	A-Z
-																</li>
-																<li class="ztoaDistrictSortingCls" onClick="getSortedDistrictInRequiredFormat('AlphabeticalDescending')">
-																	Z-A
-																</li>
-																<li>
-																	<select class="form-control" id="districtSelectBoxId" onChange="getSortedDistrictInRequiredFormat('Search')">
-																	 <option value="0">Select District </option>
-																	</select>
-																</li>
-															</ul>
-														</div>
-														<div class="col-md-4 col-xs-12 col-sm-4">
-															<!-- Nav tabs -->
-															<ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
-																<li role="presentation" onClick="districtLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls districtCollapseHIghChartViewCls"><a href="#districtOvervwGraph" aria-controls="districtOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
-																<li role="presentation" onClick="districtLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls districtCollapseTblViewCls">
-																	<a href="#districtOvervwTable" aria-controls="districtOvervwTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a>
-																</li>
-															</ul>
-														</div>
-														<div class="col-md-12 col-xs-12 col-sm-12">
-															<!-- Tab panes -->
-															<div class="tab-content">
-																<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls districtCollapseHIghChartViewCls" id="districtOvervwGraph">
-																	<div id="districtImpactLevelHighChartDivId" style="height:650px;"></div>
-																</div>
-																<div role="tabpanel" class="tab-pane collapseTblViewCls districtCollapseTblViewCls" id="districtOvervwTable">
-																	<div id="districtImpactLevelTblDivId"></div>
-																</div>
+															<div role="tabpanel" class="tab-pane collapseTblViewCls constituencyCollapseTblViewCls" id="constituencyOvervwTable">
+																<div id="constituencyLevelTblDivId"></div>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										
-										<!--swadhin-->
-										
-										<div class="col-md-12 col-xs-12 col-sm-12 parliamentImpactLevelBlockCls">
-											<div class="panel panel-default panelNew">
-												<div class="panel-heading">
-													<h4 class="panel-title"><span class="headingColor" id="parliamentOverviewHeadingId">Parliament overview - impact alerts</span></h4>
-												</div>
-												<div class="panel-body">
-													<div class="row" >
-														<div class="col-md-8 col-xs-12 col-sm-8">
-															<ul class="list-inline activeUlCls parliamentUl">
-																<li class="descendingConstituencyCls active" onClick="getSortedParliamentInRequiredFormat('Decending')">
-																	<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-																</li>
-																<li class="ascendingConstituencyCls" onClick="getSortedParliamentInRequiredFormat('Ascending')">
-																	<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-																</li>
-																<li class="atozParliamentSortingCls" onClick="getSortedParliamentInRequiredFormat('AlphabeticalAscending')">
-																	A-Z
-																</li>
-																<li class="ztoaParliamentSortingCls" onClick="getSortedParliamentInRequiredFormat('AlphabeticalDescending')">
-																	Z-A
-																</li>
-																<li>
-																	<select class="form-control" id="parliamentSelectBoxId" onChange="getSortedParliamentInRequiredFormat('Search')">
-																		<option value="0">Select Parliament </option>
-																	</select>
-																</li>
-															</ul>
-														</div>
-														<div class="col-md-4 col-xs-12 col-sm-4">
-															<!-- Nav tabs -->
-															<ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
-																<li role="presentation" onClick="parliamentLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls parliamentCollapseHIghChartViewCls"><a href="#parliamentOvervwGraph" aria-controls="parliamentOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
-																<li role="presentation" onClick="parliamentLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls parliamentCollapseTblViewCls">
-																	<a href="#parliamentOvervwTable" aria-controls="parliamentOvervwTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a>
-																</li>
-															</ul>
-														</div>
-														<div class="col-md-12 col-xs-12 col-sm-12">
-															<!-- Tab panes -->
-															<div class="tab-content">
-																<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls parliamentCollapseHIghChartViewCls" id="parliamentOvervwGraph">
-																	<div id="parliamentImpactLevelHighChartDivId" style="height:650px;"></div>
-																</div>
-																<div role="tabpanel" class="tab-pane collapseTblViewCls parliamentCollapseTblViewCls" id="parliamentOvervwTable">
-																	<div id="parliamentImpactLevelTblDivId"></div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
+									</div>
+									
+									<div class="row m_top20">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<h4 class="panel-title groupAssignCls"><span class="headingColor text-capital">Alert Assigned Group Members - Status</span></h4>
+											<div id="groupAssignAlertDlsDivId" class="row m_top20"></div>     
 										</div>
-										
-										
-										
-										
-										<div class="col-md-12 col-xs-12 col-sm-12 gmcImpactLevelBlockCls">
-											<div class="panel panel-default panelNew">
-												<div class="panel-heading">
-													<h4 class="panel-title"><span class="headingColor" id="corpOverviewHeadingId">CORP-GMC overview - impact alerts</span></h4>
-												</div>
-												<div class="panel-body">
-													<div class="row">
-														<div class="col-md-12 col-xs-12 col-sm-12">
-															  <!-- Nav tabs -->
-															  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
-																<li role="presentation" onClick="gmcLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls"><a href="#corpGmcOvervwGraph" aria-controls="corpGmcOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
-																<li role="presentation" onClick="gmcLevelTblBuildingFunction();" class="impactLevelCls collapseTblViewCls"><a href="#corpGmcOvervwTable" aria-controls="corpGmcOvervwTable" role="tab" data-toggle="tab">
-																	<i class="fa fa-table"></i>
-																</a></li>
-															  </ul>
-														</div>
-														<div class="col-md-12 col-xs-12 col-sm-12">
-															<!-- Tab panes -->
-															<div class="tab-content">
-																<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls" id="corpGmcOvervwGraph">
-																	<div id="gmcImpactLevelHighChartDivId" style="height:250px;"></div>
-																</div>
-																<div role="tabpanel" class="tab-pane collapseTblViewCls" id="corpGmcOvervwTable">
-																	<div id="gmcImpactLevelTblDivId"></div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 constituencyImpactLevelBlockCls">
-											<div class="panel panel-default panelNew">
-													<div class="panel-heading">
-														<h4 class="panel-title"><span class="headingColor" id="constituencyOverviewHeadingId">Constituency overview - impact alerts</span></h4>
-													</div>
-												<div class="panel-body">
-													<div class="row">
-														<div class="col-md-8 col-xs-12 col-sm-8">
-															<ul class="list-inline activeUlCls  constituencyUl">
-																	<li class="descendingConstituencyCls active" onClick="getSortedConstituencyInRequiredFormat('Decending')">
-																		<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-																	</li >
-																	<li class="ascendingConstituencyCls" onClick="getSortedConstituencyInRequiredFormat('Ascending')">
-																		<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-																	</li>
-																	<li class="atozConstituecySortingCls" onClick="getSortedConstituencyInRequiredFormat('AlphabeticalAscending')">
-																		A-Z
-																	</li>
-																	<li class="ztozConstituecySortingCls" onClick="getSortedConstituencyInRequiredFormat('AlphabeticalDescending')">
-																		Z-A
-																	</li>
-																	<li class="ascendingSortingByConstituencyIdCls" onClick="getSortedConstituencyInRequiredFormat('locationIdAscendingOrder')">
-																		constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
-																	</li>
-																	<li class="ascendingSortingByConstituencyIdCls" onClick="getSortedConstituencyInRequiredFormat('locationIdDescendingOrder')">
-																		constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
-																	</li>
-																	<li>
-																	<select class="form-control" id="constituencySeletBoxId" onChange="getSortedConstituencyInRequiredFormat('Search')">
-																		<option value="0">Select Constitency </option>
-																	</select>
-																	</li>
-																</ul>
-														</div>
-														<div class="col-md-4 col-xs-12 col-sm-4">
-															  <!-- Nav tabs -->
-															  <ul class="nav nav-tabs navTabsAlerts pull-right" role="tablist">
-																<li role="presentation" onClick="constituencyLevelHighchartBuildingFunction();" class="active impactLevelCls collapseHIghChartViewCls constituencyHighChartViewCls"><a href="#constituencyOvervwGraph" aria-controls="constituencyOvervwGraph" role="tab" data-toggle="tab"><i class="fa fa-line-chart"></i></a></li>
-																<li role="presentation" onClick="constituencyTblBuildingFunction();" class="impactLevelCls collapseTblViewCls constituencyCollapseTblViewCls"><a href="#constituencyOvervwTable" aria-controls="constituencyOvervwTable" role="tab" data-toggle="tab">
-																	<i class="fa fa-table"></i>
-																</a></li>
-															  </ul>
-														</div>
-														<div class="col-md-12 col-xs-12 col-sm-12">
-															  <!-- Tab panes -->
-															<div class="tab-content">
-																<div role="tabpanel" class="tab-pane active collapseHIghChartViewCls constituencyHighChartViewCls" id="constituencyOvervwGraph">
-																	<div id="constituencyLevelHighChartDivId" style="height:450px;"></div>
-																</div>
-																<div role="tabpanel" class="tab-pane collapseTblViewCls constituencyCollapseTblViewCls" id="constituencyOvervwTable">
-																	<div id="constituencyLevelTblDivId"></div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										
-										<div class="row m_top20">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<h4 class="panel-title groupAssignCls"><span class="headingColor text-capital">Alert Assigned Group Members - Status</span></h4>
-												<div id="groupAssignAlertDlsDivId" class="row m_top20"></div>     
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> 
+					<div class="col-md-12 col-xs-12 col-sm-12  alertComparisonblock" expand-block-right="alerts" style="display:none;">
+						<div class="panel panel-default panelNew">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-12">
+									 <div id="childUserTypeDetailsDivForAlerts"></div>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body alertComBlockCls">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<div id="alertChildActivityMemberDivId"> </div>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<div class="bg_ED pad_15 m_top20"> 
+												<div id="userTypeWiseChildDtlsTabForAlertId"></div>
+											<div class="row impactLevelWiseComparisonBlockCls">
+												<div id="candidateLocationAlertDtlsStatusWiseDivId" class="m_top20"></div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div> 
-						<div class="col-md-12 col-xs-12 col-sm-12  alertComparisonblock" expand-block-right="alerts" style="display:none;">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12">
-											 <div id="childUserTypeDetailsDivForAlerts"></div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body alertComBlockCls">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-											 <div id="alertChildActivityMemberDivId"> </div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20"> 
-												 <div id="userTypeWiseChildDtlsTabForAlertId"></div>
-													<div class="row impactLevelWiseComparisonBlockCls">
-													<div id="candidateLocationAlertDtlsStatusWiseDivId" class="m_top20"></div>
-														
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
 						</div>
 					</div>
 				</div>
 			</div>
-	 <!--Alerts End -->
-	 	<!-- Training Start -->
+		</div>
+	 <!--Alerts End -->	
+		<!-----------News Letters Start----------->
+		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="newsLetters">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="newsLetters">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/news.png" class="iconClass" style="background-color:none;"/>
+									Word Cloud News (Today)
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="newsLetters">
+							<span class="newsLettersRefresh pull-right"  onclick="refreshWordCloudfunction();">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</span>
+							<span class="wordCloudIconExpand pull-right mainExpandCls" expand-icon="newsLetters">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+						</div>  
+					</div>
+				</div>
+				<div class="container-fluid">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-12 responsive" expand-block-inner="newsLetters">
+								<div id="chart" style="margin-left: -29px;">
+									<svg id="svg">
+									</svg>
+								</div>
+								<div class="row align-items-center col-sm-12" style="border:0.5px solid black;margin-left: 0px; margin-right: 0px;">
+									<div class="col-sm-3">
+										<label for="crit" style="margin-top: 4px; class="label-padding">Critical</label>
+										<div id="crit" class="box-color critical"></div>
+									</div>
+									<div class="col-sm-3">
+										<label for="neg" style="margin-top: 4px; class="label-padding">Negative</label>
+										<div id="neg"  class="box-color negative"></div>
+									</div>
+									<div class="col-sm-3">
+										<label for="pos" style="margin-top: 4px; class="label-padding">Positive</label>
+										<div id="pos" class="box-color positive"></div>
+									</div>
+									<div class="col-sm-3">
+										<label for="neu" style="margin-top: 4px; class="label-padding">Neutral</label>
+										<div id="neu" class="box-color neutral"></div>
+									</div>
+								</div>
+								<div class="empty-alert">
+									<div class="alert alert-danger" role="alert">
+										Results are empty!
+									</div>
+								</div>
+								<div class="error-alert">
+									<div class="alert alert-danger" role="alert">
+										Error in server!
+									</div>
+								</div>
+								<div class="data-sent-alert">
+									<div class="alert alert-success" role="alert">
+										<div class="row">
+											<div class="col-10">
+												Request sent!
+											</div>
+											<div class="col-2">
+												<div class="loader-2"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="data-processing-alert">
+									<div class="alert alert-primary" role="alert">
+										<div class="row">
+											<div class="col-10">
+												Data received and processing word cloud!
+											</div>
+											<div class="col-2">
+												<div class="loader"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="card headline-div">
+									<div class="card-header" style="background-color: blanchedalmond;">
+										<div class="row">
+											<div class="col-sm-6" style="padding-left: 33px;">
+												News Article Titles
+											</div>
+											<div class="col-sm-6 offset-4">
+												<i class="fa fa-times close-button" onclick="closeDiv()"style="padding-top: 3px;padding-left:136px"></i>
+											</div>
+										</div>
+									</div>
+									<ul class="list-group list-group-flush headline-div-content">
+									</ul>
+								</div>
+							</div>
+							
+							<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="newsLetters">
+								<div class="row m_top10">	
+									<div class="col-sm-6 offset-1">
+										<label for="startDate">Start Date</label>
+										<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
+											<input type="text" id="startDate" class="form-control" />
+											<span class="input-group-addon">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</span>
+										</span>
+									</div>
+									<div class="col-sm-6">
+										<label for="endDate">End Date</label>
+											<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
+												<input type="text" id="endDate" class="form-control" />
+												<span class="input-group-addon">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</span>
+										</span>
+									</div>
+								</div>
+								<div class="row m_top10">
+									<div class="col-sm-6">
+										<label for="wordCloudDistrict">District</label>
+										<!--<div class="multiselect">
+											<div class="selectBox" onclick="showCheckboxes()">
+												<select id="district" class="form-control">
+													<option>Select a district</option>
+												</select>
+												<div class="overSelect" id="overSelect"></div>
+											</div>
+											<div id="checkboxes"></div>
+										</div>-->
+										<select class="form-control chosen-select" multiple="multiple" id="wordCloudDistrict">
+										</select>
+									</div>
+									<div class="col-sm-6">
+										<label for="wordCloudConstituency">Constituency</label>
+										<!--<div class="multiselect">
+											<div class="selectBox" onclick="showCheckboxes1()">
+												<select id="constituency" class="form-control">
+													<option>Select a constituency</option>
+												</select>
+												<div class="overSelect"></div>
+											</div>
+											<div id="checkboxes1">
+											</div>
+										</div>-->
+										<select class="form-control chosen-select" multiple="multiple" id="wordCloudConstituency">
+										</select>
+									</div>
+								</div>
+								<div class="row m_top10">
+									<div class="col-sm-6">
+										<label for="newspapers">Newspaper</label>
+										<!--<div class="multiselect">
+											<div class="selectBox" onclick="showCheckboxes2()">
+												<select id="newspapers" class="form-control">
+													<option>Select a Newspaper</option>
+												</select>
+												<div class="overSelect"></div>
+											</div>
+											<div id="checkboxes2"></div>
+										</div>-->
+										<label>News Paper</label>
+									<select class="form-control chosen-select" multiple="multiple" id="newspapers">
+										</select>
+									</div>
+									<div class="col-sm-6">
+										<label>Edition Type</label>
+										<select class="form-control chosen-select" multiple="multiple" id="editionType">
+											<option value ="0" selected> ALL Editions </option>
+											<option> Main </option>
+											<option> District </option>
+											<option> Online </option>
+										</select>
+									</div>
+								</div>
+								<div class="row m_top10">
+									<div class="col-sm-6">	
+										<div class="submit-button">
+											<div class="text-center">
+												<button class="btn btn-primary" style="margin-top: 22px;" onclick="fetchDataForWordCloud('fromPage')">Submit</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--------News Letters End----------->
+	</div>
+	
+	<div class="row">
+		<!-- Training Start -->
 		<div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock" expand-block="training">
 			<div class="panel panel-default panelNewCustom panel1">
 				<div class="panel-heading">
@@ -743,106 +938,104 @@
 								<div id="campWiseTrainingId" class="m_top10"></div>
 							</div>
 						</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock" expand-block-right="training">
-								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<h4><span id="clickInfoId" class="text-capital headingColor pad_custom" style="font-size:18px;display:none;"></span> </h4>  
-									</div>
-									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-										<ul class="activeUlCls list-inline hideCls">
-											<li class="liCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-											<li class="liCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
-										</ul>
-									</div> 
+						<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock" expand-block-right="training">
+							<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<h4><span id="clickInfoId" class="text-capital headingColor pad_custom" style="font-size:18px;display:none;"></span> </h4>  
 								</div>
-								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId" class="m_top20"></div>     
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12">
-									<i data-placement="top" data-toggle="tooltip"  expand-block-right="training" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more" style="cursor:pointer;"></i>  
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks hdCls"  expand-block-more="training">
-									<ul class="list-inline pull-right activeUlCls trainingMoreDetailedCls">
-										<li class="trainingDetailed" attr_type="feedback">FeedBack</li>
-										<li id="" class="" attr_type="detailed">Detailed</li>
-										<li class="" attr_type="comparision">Comparison</li>
+								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+									<ul class="activeUlCls list-inline hideCls">
+										<li class="liCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+										<li class="liCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
 									</ul>
-							</div> 
-							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls"  expand-block-more="training">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<h4 class="text-capitalize text-muted">training programs</h4>
-										<br>
-										<div id="programsDivId"></div>
-										<!--<ul class="trainingsUl">
-											<li>
-												<div id="leadershipSkills" class="chartLi trainingGraphWidth"></div>
-											</li>
-											<li>
-												<div id="officialSpokespersons" class="chartLi trainingGraphWidth"></div>
-											</li>
-										</ul>-->
-									</div>
+								</div> 
+							</div>
+							<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId" class="m_top20"></div>     
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<i data-placement="top" data-toggle="tooltip"  expand-block-right="training" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more" style="cursor:pointer;"></i>  
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks hdCls"  expand-block-more="training">
+							<ul class="list-inline pull-right activeUlCls trainingMoreDetailedCls">
+								<li class="trainingDetailed" attr_type="feedback">FeedBack</li>
+								<li id="" class="" attr_type="detailed">Detailed</li>
+								<li class="" attr_type="comparision">Comparison</li>
+							</ul>
+						</div> 
+						<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls"  expand-block-more="training">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<h4 class="text-capitalize text-muted">training programs</h4>
+									<br>
+									<div id="programsDivId"></div>
+									<!--<ul class="trainingsUl">
+										<li>
+											<div id="leadershipSkills" class="chartLi trainingGraphWidth"></div>
+										</li>
+										<li>
+											<div id="officialSpokespersons" class="chartLi trainingGraphWidth"></div>
+										</li>
+									</ul>-->
 								</div>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls"  expand-block-more="training">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-md-8 col-xs-12 col-sm-6">
-												<span class="headingColor text-capitalize">training program cohort</span>
-											</div>
-											<!--<div class="col-md-4 col-xs-12 col-sm-6">
-												<ul class="activeUlCls list-inline">
-													<li class="active trainingProgramCohortLiCls" attr_li_value="all">All</li>
-													<li class="trainingProgramCohortLiCls" attr_li_value="attended">Attended</li>
-													<li class="trainingProgramCohortLiCls" attr_li_value="notAttended">Yet to train</li>
-												</ul>
-											</div>-->
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls"  expand-block-more="training">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-md-8 col-xs-12 col-sm-6">
+											<span class="headingColor text-capitalize">training program cohort</span>
 										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="districtWiseProgramCntDivId"></div>
-												<div id="districtWiseProgramsCntDivId"></div>
-											</div>
-											<!--<div class="col-md-12 col-xs-12 col-sm-12">
-												<h4 class="text-capitalize">Leadership SKills</h4>
-												<div id="leadershipSkillsDis" class="chartLi"></div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<h4 class="text-capitalize">official Spokes Person</h4>
-												<div id="officialSpokesPerDis" class="chartLi"></div>
-											</div>-->
-										</div>
-										
+										<!--<div class="col-md-4 col-xs-12 col-sm-6">
+											<ul class="activeUlCls list-inline">
+												<li class="active trainingProgramCohortLiCls" attr_li_value="all">All</li>
+												<li class="trainingProgramCohortLiCls" attr_li_value="attended">Attended</li>
+												<li class="trainingProgramCohortLiCls" attr_li_value="notAttended">Yet to train</li>
+											</ul>
+										</div>-->
 									</div>
 								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="districtWiseProgramCntDivId"></div>
+											<div id="districtWiseProgramsCntDivId"></div>
+										</div>
+										<!--<div class="col-md-12 col-xs-12 col-sm-12">
+											<h4 class="text-capitalize">Leadership SKills</h4>
+											<div id="leadershipSkillsDis" class="chartLi"></div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<h4 class="text-capitalize">official Spokes Person</h4>
+											<div id="officialSpokesPerDis" class="chartLi"></div>
+										</div>-->
+									</div>
+									
+								</div>
 							</div>
-						
-							<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingComparisonBlock"  expand-block-more="training">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-7 col-md-12">
-											 <div id="childUserTypeDetailsDivForTrainingProgram"></div>
-											</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingComparisonBlock"  expand-block-more="training">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-xs-12 col-sm-7 col-md-12">
+										 <div id="childUserTypeDetailsDivForTrainingProgram"></div>
 										</div>
 									</div>
-									<div class="panel-body">
-										<div class="row">
+								</div>
+								<div class="panel-body">
+									<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12">
 											 <div id="trainingChildActivityMemberDivId"> </div>
 											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20"> 
-												 <div id="userTypeWiseChildDtlsTabId"></div>
-													<div class="row">
-														<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div class="bg_ED pad_15 m_top20"> 
+												<div id="userTypeWiseChildDtlsTabId"></div>
+												<div class="row">
+													<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
 															<!--<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations</span></b>-->
-															<div class="row m_top20">
-															  <div id="poorPerformancTrainingPrograLocationsDivId"></div>
-															</div>
+														<div class="row m_top20">
+														  <div id="poorPerformancTrainingPrograLocationsDivId"></div>
 														</div>
 													</div>
 												</div>
@@ -851,552 +1044,549 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingFeedBackBlock" expand-block-more="training" style="display:none;">
-								<div class="row" style="display:none;">
-									<div class="col-sm-4">
-										<select class="form-control chosen-select" id="trainingCampLevelId">
-											<option value="all">Over-All Levels</option>
-											<option value="mandal">Mandal / Town / Ddivision Level</option>
-											<option value="village">Village / Ward Level</option>
-										</select>
-									</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingFeedBackBlock" expand-block-more="training" style="display:none;">
+							<div class="row" style="display:none;">
+								<div class="col-sm-4">
+									<select class="form-control chosen-select" id="trainingCampLevelId">
+										<option value="all">Over-All Levels</option>
+										<option value="mandal">Mandal / Town / Ddivision Level</option>
+										<option value="village">Village / Ward Level</option>
+									</select>
 								</div>
-								<div class="row m_top10">
-									<div class="col-sm-12">
-										<div id="trainingCampInfoDetailsDivId"></div>
-									</div>
+							</div>
+							<div class="row m_top10">
+								<div class="col-sm-12">
+									<div id="trainingCampInfoDetailsDivId"></div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 			<!-- Training End-->
-	</div>
-	
-	<div class="row">
-	 		<!--  NEWS BLOCK START-->
-			<div class="col-md-6 col-xs-12 col-sm-12 newsBlock" expand-block="news">
-				<div class="panel panel-default panelNewCustom panel2">
-					<div class="panel-heading">
+		<!--  NEWS BLOCK START-->
+		<div class="col-md-6 col-xs-12 col-sm-12 newsBlock" expand-block="news">
+			<div class="panel panel-default panelNewCustom panel2">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="news">
+							<h4 class="panel-title text-capital" style="width:440px;">    
+								<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+								Print Media News - <small class="text-muted" id="currentViewing"></small>  
+							</h4>  
+							
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12 m_XsTop10" expand-block-heading1="news">
+							<span class="settingsIcon settingsIconNews pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="notesIconNews pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForNews(5);"></i>
+							</span>   
+							<span class="newsIconExpand pull-right" expand-icon="news">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="newsRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForNews hide" expand-block-date="news" style="width:200px;">
+								<input type="text" id="dateRangeIdForNews" style="width:180px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+							
+						</div>
+					</div>
+					
+					<div class="notesDropDown notesArrow documentCloseClass" >
+						<h4 class="text-capital">notes
+							<span class="pull-right">
+								<i class="glyphicon glyphicon-list-alt"></i>
+							</span>
+						</h4>
+						<div id="notesNewsId"></div>
+						<hr/>
+						<div id="newsUpId" style="color:red;"></div>
+						<label>Create Notes</label>  
+						<textarea class="form-control notesAreaNews"></textarea>
+						<button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>
+					</div>
+					<div class="newsBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;" >
+						<i class="glyphicon glyphicon-remove newsSetClose pull-right"></i>
 						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="news">
-								<h4 class="panel-title text-capital" style="width:440px;">    
-									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-									Print Media News - <small class="text-muted" id="currentViewing"></small>  
-								</h4>  
-								
+							<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+								<li role="presentation" class="active text-capital"><a href="#Editions" aria-controls="Editions" role="tab" data-toggle="tab">Editions</a></li>
+								<li role="presentation" class="text-capital"><a href="#impactScopeIdPM" aria-controls="impactScopeIdPM" role="tab" data-toggle="tab">Impact Scope</a></li>
+							  </ul>
 							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12 m_XsTop10" expand-block-heading1="news">
-								<span class="settingsIcon settingsIconNews pull-right">
-									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-								</span>
-								<span class="notesIconNews pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForNews(5);"></i>
-								</span>   
-								<span class="newsIconExpand pull-right" expand-icon="news">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-								<span class="newsRefresh pull-right">
-									<i class="glyphicon glyphicon-refresh"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-								</span>
-								<span class="input-group pull-right dateRangePickerClsForNews hide" expand-block-date="news" style="width:200px;">
-									<input type="text" id="dateRangeIdForNews" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-								
+							<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+							  <div class="tab-content navTabsSettingsContent">
+								<div role="tabpanel" class="tab-pane active" id="Editions">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;"> Select Publication </h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="">
+										<ul class="settingsUl" id="newsPapersUlId"></ul>
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="impactScopeIdPM">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;"> Select Impact </h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="">
+										<ul class="settingsUl">
+											<li>
+												<label class="checkbox-inline">
+													<input type="checkbox" value="0" id="impactSelectAllId" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+												</label>
+											</li>
+											<li>
+												<label class="checkbox-inline">
+													<input type="checkbox" value="1" class="impactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">State</h5></div>
+												</label>
+											</li>
+											<li>												
+												<label class="checkbox-inline">
+													<input type="checkbox" value="2" class="impactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">District</h5></div>
+												</label>	
+											</li>	
+											<li>
+												<label class="checkbox-inline">
+													<input type="checkbox" value="3" class="impactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
+												</label>
+											</li>
+											<li>
+												<label class="checkbox-inline">
+												<input type="checkbox" value="4" class="impactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Parliament</h5></div>
+												</label>
+											</li>	
+											<li>
+												<label class="checkbox-inline">
+													<input type="checkbox" value="5" class="impactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal</h5></div>
+												</label>
+											</li>
+											<li>
+												<label class="checkbox-inline">
+													<input type="checkbox" value="6" class="impactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Panchayat</h5></div>
+												</label>
+											</li>
+											<li>
+												<label class="checkbox-inline">
+													<input type="checkbox" value="8" class="impactCheckCls" checked>
+													<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Municipality/Corporation</h5></div>
+												</label>	
+											</li>	
+										</ul>
+									</div>
+								</div>
+							  </div>
+							  
+							</div>
+							<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
+								<button type="button" class="btn btn-success filtersSubmitDivId">Get Details</button>
 							</div>
 						</div>
 						
-						<div class="notesDropDown notesArrow documentCloseClass" >
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
-							</h4>
-							<div id="notesNewsId"></div>
-							<hr/>
-							<div id="newsUpId" style="color:red;"></div>
-							<label>Create Notes</label>  
-							<textarea class="form-control notesAreaNews"></textarea>
-							<button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>
-						</div>
-						<div class="newsBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;" >
-							<i class="glyphicon glyphicon-remove newsSetClose pull-right"></i>
-							<div class="row">
-								<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
-								  <ul class="nav nav-tabs navTabsSettings" role="tablist">
-									<li role="presentation" class="active text-capital"><a href="#Editions" aria-controls="Editions" role="tab" data-toggle="tab">Editions</a></li>
-									<li role="presentation" class="text-capital"><a href="#impactScopeIdPM" aria-controls="impactScopeIdPM" role="tab" data-toggle="tab">Impact Scope</a></li>
-								  </ul>
-								</div>
-								<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
-								  <div class="tab-content navTabsSettingsContent">
-									<div role="tabpanel" class="tab-pane active" id="Editions">
-										<h4 class="text-capital pad_5" style="color:#99A0A5;"> Select Publication </h4>
-										<hr style ="margin-bottom:0px;" />
-										<div class="">
-											<ul class="settingsUl" id="newsPapersUlId"></ul>
-										</div>
-									</div>
-									<div role="tabpanel" class="tab-pane" id="impactScopeIdPM">
-										<h4 class="text-capital pad_5" style="color:#99A0A5;"> Select Impact </h4>
-										<hr style ="margin-bottom:0px;" />
-										<div class="">
-											<ul class="settingsUl">
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="0" id="impactSelectAllId" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-													</label>
-												</li>
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="1" class="impactCheckCls" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">State</h5></div>
-													</label>
-												</li>
-												<li>												
-													<label class="checkbox-inline">
-														<input type="checkbox" value="2" class="impactCheckCls" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">District</h5></div>
-													</label>	
-												</li>	
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="3" class="impactCheckCls" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Constituency</h5></div>
-													</label>
-												</li>
-												<li>
-													<label class="checkbox-inline">
-													<input type="checkbox" value="4" class="impactCheckCls" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Parliament</h5></div>
-													</label>
-												</li>	
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="5" class="impactCheckCls" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Mandal</h5></div>
-													</label>
-												</li>
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="6" class="impactCheckCls" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Panchayat</h5></div>
-													</label>
-												</li>
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox" value="8" class="impactCheckCls" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Municipality/Corporation</h5></div>
-													</label>	
-												</li>	
-											</ul>
-										</div>
-									</div>
-								  </div>
-								  
-								</div>
-								<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
-									<button type="button" class="btn btn-success filtersSubmitDivId">Get Details</button>
-								</div>
-							</div>
-							
-							
-						</div>
 						
 					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<h5 class="module_OwnerCss">Module Owner : Peddi Rama Rao</h5>
-							</div>
-							
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-								<h5 class="updatedDate pull-right" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" id="lastUpdatedId"></h5>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock" expand-block-inner="news">
-								<div id="newsBlockMainId"></div>
-								<div class="editionWiseBlock" style="display:none;">
-								<h4 class="text-capital m_top10"><span class="headingColor" style="margin-right:5px">Edition Wise Unique Counts</span></h4>
-								<div class="row" id="PaperWiseBlockInDivId"></div>
-								<div class="row">
-									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
-										<table class="table table-condensed tableNews " id="mainPaperDivId">
-										</table>
-									</div>
-									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 pad_left0">
-										<table class="table table-condensed tableNews " id="distPaperDivId">
-										</table>
-									</div>
+					
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 class="module_OwnerCss">Module Owner : Peddi Rama Rao</h5>
+						</div>
+						
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<h5 class="updatedDate pull-right" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" id="lastUpdatedId"></h5>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 newsBlock" expand-block-inner="news">
+							<div id="newsBlockMainId"></div>
+							<div class="editionWiseBlock" style="display:none;">
+							<h4 class="text-capital m_top10"><span class="headingColor" style="margin-right:5px">Edition Wise Unique Counts</span></h4>
+							<div class="row" id="PaperWiseBlockInDivId"></div>
+							<div class="row">
+								<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
+									<table class="table table-condensed tableNews " id="mainPaperDivId">
+									</table>
 								</div>
-							
-							</div>
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 newsHiddenBlock" expand-block-right="news">
-								<div class="row">
-									<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-6 col-sm-offset-6">
-										<ul class="activeUlCls list-inline pull-right">
-												<li class="active newsliCls" attr_value="1"><i class="fa fa-arrow-up"></i>&nbsp;top 5 Positive</li>
-												<li class="newsliCls" attr_value="2"> <i class="fa fa-arrow-down"></i>&nbsp;Top 5 Negative</li>
-											</ul>
-									</div>
-									 <div id="userTypeWiseNewsForTopFiveStrongAndPoorDiv"></div>
-									
-									
+								<div class="col-md-6 col-xs-12 col-sm-12 m_top10 pad_left0">
+									<table class="table table-condensed tableNews " id="distPaperDivId">
+									</table>
 								</div>
+							</div>
+						
+						</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 newsHiddenBlock" expand-block-right="news">
+							<div class="row">
+								<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-6 col-sm-offset-6">
+									<ul class="activeUlCls list-inline pull-right">
+											<li class="active newsliCls" attr_value="1"><i class="fa fa-arrow-up"></i>&nbsp;top 5 Positive</li>
+											<li class="newsliCls" attr_value="2"> <i class="fa fa-arrow-down"></i>&nbsp;Top 5 Negative</li>
+										</ul>
+								</div>
+								 <div id="userTypeWiseNewsForTopFiveStrongAndPoorDiv"></div>
+								
 								
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12">
-								<i data-placement="top" data-toggle="tooltip" expand-block-right="news" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
-							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-12 newsHiddenMoreBlock" expand-block-more="news">
-								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
-											<li class="text-capital newsComparisonHeading">Comparison</li>
-											<li class="text-capital a viewsLiClass" id="comparisonPartyLiId" attr_div_id="comparisonPartyMainDivId">Party</li><!--Teja-->
-											<li class="text-capital a viewsLiClass" id="comparisonGovernmentLiId" attr_div_id="comparisonGovernamentMainDivId">Government</li>
-										</ul>
-										
-										<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
-											<li class="text-capital newsComparisonHeading">Detailed</li>
-											<li class="active text-capital a viewsLiClass" id="detailedPartyLiId" attr_div_id="detailedPartyMainDivId">Party</li>
-											<li class="text-capital a viewsLiClass" id="detailedGovernmentLiId" attr_div_id="detailedGovernamentMainDivId">Government</li>
-										</ul>
-										
-									</div>
-									<div id="detailedPartyMainDivId" class="mainBuildingDivClass">
-										<!-- News 1 Block-->
-										<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-											<div class="panel panel-default panelNew mainEditionCls">
-												<div class="panel-heading">
-													<h4 class="panel-title"><span class="headingColor">Main Edition Parties Overview</span></h4>
-												</div>
-												<div class="panel-body" >
-													<div id="mainEditiongraphId"></div>
-												</div>
-											</div>
-										</div>-->
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-											<div class="panel panel-default panelNew mainEditionCls">
-												<div class="panel-heading">
-													<h4 class="panel-title"><span class="headingColor">District Edition Parties Overview</span></h4>
-												</div>
-												<div class="panel-body verticalScrollBar" >
-													<div id="districtWiseNewsReport"></div>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-											<div class="panel panel-default panelNew">
-												<div class="panel-heading">
-													<h4 class="panel-title"><span class="headingColor">News Type Analysis</span></h4>
-												</div>
-												<div class="panel-body">
-												<div id ="newsTypeAnalysisDiv"></div>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<div class="panel panel-default panelNew">
-											<div class="panel-heading">
-												<div class="row">
-													<div class="col-md-8 col-xs-7 col-sm-7">
-														<h4 class="panel-title"><span class="headingColor">Party Vs Publication</span></h4>
-													</div>
-													<div class="col-md-4 col-xs-5 col-sm-5">
-														<div class="pull-right">
-															<ul class="list-inline  activeUlCls">
-																<li class="active partyDistrictWiseDiv" attr_search_type="party">Parties district wise</li>
-																<li class="partyDistrictWiseDiv" attr_search_type="publication">Publication Wise</li>
-															</ul>
-														</div>
-													</div>
-												</div>
-												
-											</div>
-											<div class="panel-body">
-												<div class="row">
-													<div id="partyWiseDetailsDiv"></div>
-													<!--<div id="publicationWiseDetailsDiv"></div>-->
-												</div>
-											</div>
-										</div>
-									</div>
+							
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<i data-placement="top" data-toggle="tooltip" expand-block-right="news" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
+						</div>	
+						<div class="col-md-12 col-xs-12 col-sm-12 newsHiddenMoreBlock" expand-block-more="news">
+							<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
+										<li class="text-capital newsComparisonHeading">Comparison</li>
+										<li class="text-capital a viewsLiClass" id="comparisonPartyLiId" attr_div_id="comparisonPartyMainDivId">Party</li><!--Teja-->
+										<li class="text-capital a viewsLiClass" id="comparisonGovernmentLiId" attr_div_id="comparisonGovernamentMainDivId">Government</li>
+									</ul>
 									
+									<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
+										<li class="text-capital newsComparisonHeading">Detailed</li>
+										<li class="active text-capital a viewsLiClass" id="detailedPartyLiId" attr_div_id="detailedPartyMainDivId">Party</li>
+										<li class="text-capital a viewsLiClass" id="detailedGovernmentLiId" attr_div_id="detailedGovernamentMainDivId">Government</li>
+									</ul>
+									
+								</div>
+								<div id="detailedPartyMainDivId" class="mainBuildingDivClass">
+									<!-- News 1 Block-->
+									<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew mainEditionCls">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">Main Edition Parties Overview</span></h4>
+											</div>
+											<div class="panel-body" >
+												<div id="mainEditiongraphId"></div>
+											</div>
+										</div>
+									</div>-->
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew mainEditionCls">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">District Edition Parties Overview</span></h4>
+											</div>
+											<div class="panel-body verticalScrollBar" >
+												<div id="districtWiseNewsReport"></div>
+											</div>
+										</div>
+									</div>
 									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 										<div class="panel panel-default panelNew">
 											<div class="panel-heading">
-												<div class="row">
-													<div class="col-md-8 col-xs-7 col-sm-7">
-														<h4 class="panel-title"><span class="headingColor">Category Activities</span></h4>
-													</div>
-													<div class="col-md-4 col-xs-5 col-sm-5">
-														<div class="pull-right">
-															<ul class="list-inline  activeUlCls">
-																<li class="active categoryDistrictWiseDiv" attr_search_type="location">location wise</li>
-																<li class="categoryDistrictWiseDiv" attr_search_type="publication">Publication Wise</li>
-															</ul>
-														</div>
-													</div>
-												</div>
-												
+												<h4 class="panel-title"><span class="headingColor">News Type Analysis</span></h4>
 											</div>
 											<div class="panel-body">
-												<div class="row">
-													<div id="categoryActiviesDetailsDiv"></div>
-													<!--<div id="publicationWiseDetailsDiv"></div>-->
-												</div>
+											<div id ="newsTypeAnalysisDiv"></div>
 											</div>
 										</div>
 									</div>
-									
-									</div>
-									<div id="detailedGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
-										<!--2nd block-->
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-											<div class="panel panel-default panelNew">
-												<div class="panel-heading">
-													<h4 class="panel-title"><span class="headingColor">Departments Wise Districts Overview</span></h4>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<div class="panel panel-default panelNew">
+										<div class="panel-heading">
+											<div class="row">
+												<div class="col-md-8 col-xs-7 col-sm-7">
+													<h4 class="panel-title"><span class="headingColor">Party Vs Publication</span></h4>
 												</div>
-												<div class="panel-body verticalScrollBarPM">
-												<div id="districtWiseNewsReportGovtDetailed"></div>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-											<div class="panel panel-default panelNew">
-												<div class="panel-heading">
-													<h4 class="panel-title"><span class="headingColor">top trending tracked issues</span></h4>
-												</div>
-												<div class="panel-body">
-													<div id="topTrendingTracked"></div>
-												</div>
-												
-											</div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-											<div class="panel panel-default panelNew">
-												<div class="panel-heading">
-													<h4 class="panel-title"><span class="headingColor">Problems Detailed Overview</span></h4>
-												</div>
-												<div class="panel-body">
-												<div class="row">
-													<div class="col-md-12 col-xs-12 col-sm-12">
-														<h4>STATE WISE</h4>
-														<div id="stateWiseArticleRelatedToProblem"></div>
-													</div>
-												</div>
-												<!--<div id="problemsDetailedOverview1"></div>-->
-												<div class="row">
-													<div class="col-md-12 col-xs-12 col-sm-12">
-														<h4>DISTRICT WISE</h4>
-														<div id="districtWiseArticleRelatedToProblem"></div>
-													</div>
-												</div>
-												<div id="problemsDetailedOverview"></div>
-												</div>
-												
-											</div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-											<div class="panel panel-default panelNew">
-												<div class="panel-heading">
-													<h4 class="panel-title"><span class="headingColor">Analysis on Problem</span></h4>
-												</div>
-												<div class="panel-body">
-												<div id="overAllAnalysisDetailsBlock"></div>
-												<div id="problemsDetailedOverviewSubLevel" style="display:none"></div>
-												</div>
-												
-											</div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<div class="panel panel-default panelNew">
-											<div class="panel-heading">
-												<div class="row">
-													<div class="col-md-8 col-xs-7 col-sm-7">
-														<h4 class="panel-title"><span class="headingColor">Category Activities</span></h4>
-													</div>
-													<div class="col-md-4 col-xs-5 col-sm-5">
-														<div class="pull-right">
-															<ul class="list-inline  activeUlCls">
-																<li class="active govtcategoryDistrictWiseDiv" attr_search_type="location">location wise</li>
-																<li class="govtcategoryDistrictWiseDiv" attr_search_type="publication">Publication Wise</li>
-															</ul>
-														</div>
-													</div>
-												</div>
-												
-											</div>
-											<div class="panel-body">
-												<div class="row">
-													<div id="govtCategoryActiviesDetailsDiv"></div>
-													<!--<div id="publicationWiseDetailsDiv"></div>-->
-												</div>
-											</div>
-										</div>
-									</div>
-									</div>
-									
-									 <div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
-										
-										<div class="col-md-12 col-xs-12 col-sm-12 childCls" >
-											<div class="panel panel-default panelNew">
-												<!--<div class="panel-heading">
-													<div class="row">
-														<div id="userTypeStrId"></div>
-													 </div>
-												</div>-->
-												<div class="panel-heading">
-													<div class="row">
-														<div class="col-xs-12 col-sm-8 col-md-12">
-														   <div id="userTypeStrId"></div>
-														</div>   
-													</div>
-												</div>
-												<div class="panel-body">
-													<div class="row">
-														<div class="col-md-5 col-xs-12 col-sm-6 pull-right">
-															<ul class="list-inline listIcon">
-																<li>
-																	<span class="tdpColor"></span>
-																	<img src="newCoreDashBoard/img/TDP.png" style="width:25px;" alt="tdp icon"/>
-																	TDP
-																</li>
-																<li>
-																	<span class="ysrcColor"></span>
-																	<img src="newCoreDashBoard/img/YSRC.png" style="width:25px;" alt="tdp icon"/> 
-																	YSRC
-																</li>
-																<li>
-																	<span class="incColor"></span>
-																	<img src="newCoreDashBoard/img/INC.png" style="width:25px;" alt="tdp icon"/> 
-																	INC
-																</li>
-																<li>
-																	<span class="bjpColor"></span>
-																	<img src="newCoreDashBoard/img/BJP.png" style="width:25px;" alt="tdp icon"/> 
-																	BJP
-																</li>
-															</ul>
-														</div>
-														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-															<div id="partyWiseComparisionBlock"></div>
-														</div>
-														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-															<div class="bg_ED pad_15 newsOnLoadShow" style="display:none">
-																<div id="partyComparisionSubLevelMemberDetailsDiv" class="row"></div>
-																<div class="panel panel-default panelNew m_top20">
-																	<div class="panel-heading">
-																		<h4 class="panel-title">NEWS TYPE ANALYSIS</h4>
-																		<p><span id="selectedMemberNameNews"></span> - <span id="selectedUserTypeNews"></span></p>
-																	</div>
-																	<div class="panel-body">
-																		<div id="PartyComparisionNewsTypeAnalysisDiv" class="row"></div>
-																		<div id="ComparisionPartyDistrictWiseNewsReport" class="row"></div>
-																	</div>
-																</div>
-																<div class="panel panel-default panelNew m_top20">
-																	<div class="panel-heading">
-																		<div class="row">
-																			<div class="col-md-6 col-sm-6 col-xs-12">
-																				<h4 class="panel-title">PARTY Vs PUBLICATION</h4>
-																				<p><span id="selectedMemberNameNewsParty"></span> - <span id="selectedUserTypeNewsParty"></span></p>
-																			</div>
-																			<div class="col-md-6 col-sm-6 col-xs-12">
-																				<div id="partiesWiseSelection"></div>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="panel-body">
-																		<div id="partyAndPublication" class="row"></div>
-																		<div id="CompaisionPartyAndPublicationWiseDetailsDiv" class="row"></div>
-																		<div id="partyComparisonPartyWisePoorL" class="row"></div>
-																	</div>
-																</div>
-															</div>
-														</div>
+												<div class="col-md-4 col-xs-5 col-sm-5">
+													<div class="pull-right">
+														<ul class="list-inline  activeUlCls">
+															<li class="active partyDistrictWiseDiv" attr_search_type="party">Parties district wise</li>
+															<li class="partyDistrictWiseDiv" attr_search_type="publication">Publication Wise</li>
+														</ul>
 													</div>
 												</div>
 											</div>
 											
 										</div>
-									</div>
-									
-									
-									<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<input type="radio" class="radioTypeCls" name="comparisonGovtRadioBtn" value="Cumulative" checked="checked" /> Cumulative
-										<input type="radio" class="radioTypeCls" name="comparisonGovtRadioBtn" value="Detailed"/> Detailed
-									</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-											<div id="comparisonGovtMinistriesInfo"></div>
+										<div class="panel-body">
+											<div class="row">
+												<div id="partyWiseDetailsDiv"></div>
+												<!--<div id="publicationWiseDetailsDiv"></div>-->
+											</div>
 										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreDetailsBlockNews" style="display:none">
-											<div class="bg_ED pad_15">
+									</div>
+								</div>
+								
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<div class="panel panel-default panelNew">
+										<div class="panel-heading">
+											<div class="row">
+												<div class="col-md-8 col-xs-7 col-sm-7">
+													<h4 class="panel-title"><span class="headingColor">Category Activities</span></h4>
+												</div>
+												<div class="col-md-4 col-xs-5 col-sm-5">
+													<div class="pull-right">
+														<ul class="list-inline  activeUlCls">
+															<li class="active categoryDistrictWiseDiv" attr_search_type="location">location wise</li>
+															<li class="categoryDistrictWiseDiv" attr_search_type="publication">Publication Wise</li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											
+										</div>
+										<div class="panel-body">
+											<div class="row">
+												<div id="categoryActiviesDetailsDiv"></div>
+												<!--<div id="publicationWiseDetailsDiv"></div>-->
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								</div>
+								<div id="detailedGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
+									<!--2nd block-->
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">Departments Wise Districts Overview</span></h4>
+											</div>
+											<div class="panel-body verticalScrollBarPM">
+											<div id="districtWiseNewsReportGovtDetailed"></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">top trending tracked issues</span></h4>
+											</div>
+											<div class="panel-body">
+												<div id="topTrendingTracked"></div>
+											</div>
+											
+										</div>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">Problems Detailed Overview</span></h4>
+											</div>
+											<div class="panel-body">
+											<div class="row">
+												<div class="col-md-12 col-xs-12 col-sm-12">
+													<h4>STATE WISE</h4>
+													<div id="stateWiseArticleRelatedToProblem"></div>
+												</div>
+											</div>
+											<!--<div id="problemsDetailedOverview1"></div>-->
+											<div class="row">
+												<div class="col-md-12 col-xs-12 col-sm-12">
+													<h4>DISTRICT WISE</h4>
+													<div id="districtWiseArticleRelatedToProblem"></div>
+												</div>
+											</div>
+											<div id="problemsDetailedOverview"></div>
+											</div>
+											
+										</div>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">Analysis on Problem</span></h4>
+											</div>
+											<div class="panel-body">
+											<div id="overAllAnalysisDetailsBlock"></div>
+											<div id="problemsDetailedOverviewSubLevel" style="display:none"></div>
+											</div>
+											
+										</div>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<div class="panel panel-default panelNew">
+										<div class="panel-heading">
+											<div class="row">
+												<div class="col-md-8 col-xs-7 col-sm-7">
+													<h4 class="panel-title"><span class="headingColor">Category Activities</span></h4>
+												</div>
+												<div class="col-md-4 col-xs-5 col-sm-5">
+													<div class="pull-right">
+														<ul class="list-inline  activeUlCls">
+															<li class="active govtcategoryDistrictWiseDiv" attr_search_type="location">location wise</li>
+															<li class="govtcategoryDistrictWiseDiv" attr_search_type="publication">Publication Wise</li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											
+										</div>
+										<div class="panel-body">
+											<div class="row">
+												<div id="govtCategoryActiviesDetailsDiv"></div>
+												<!--<div id="publicationWiseDetailsDiv"></div>-->
+											</div>
+										</div>
+									</div>
+								</div>
+								</div>
+								
+								 <div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
+									
+									<div class="col-md-12 col-xs-12 col-sm-12 childCls" >
+										<div class="panel panel-default panelNew">
+											<!--<div class="panel-heading">
 												<div class="row">
-													<div id="ministerSubLevelDetailsDiv"></div>
-													<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-														<div class="panel panel-default panelNew">
-															<div class="panel-heading">
-																<h4 class="panel-title"><span class="headingColor text-capitalize">Departments Wise Districts Overview</span></h4>
-															</div>
-															<div class="panel-body">
-																<div id="comparisonGovtDeptDOverview"></div>
-															</div>
-														</div>
+													<div id="userTypeStrId"></div>
+												 </div>
+											</div>-->
+											<div class="panel-heading">
+												<div class="row">
+													<div class="col-xs-12 col-sm-8 col-md-12">
+													   <div id="userTypeStrId"></div>
+													</div>   
+												</div>
+											</div>
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-md-5 col-xs-12 col-sm-6 pull-right">
+														<ul class="list-inline listIcon">
+															<li>
+																<span class="tdpColor"></span>
+																<img src="newCoreDashBoard/img/TDP.png" style="width:25px;" alt="tdp icon"/>
+																TDP
+															</li>
+															<li>
+																<span class="ysrcColor"></span>
+																<img src="newCoreDashBoard/img/YSRC.png" style="width:25px;" alt="tdp icon"/> 
+																YSRC
+															</li>
+															<li>
+																<span class="incColor"></span>
+																<img src="newCoreDashBoard/img/INC.png" style="width:25px;" alt="tdp icon"/> 
+																INC
+															</li>
+															<li>
+																<span class="bjpColor"></span>
+																<img src="newCoreDashBoard/img/BJP.png" style="width:25px;" alt="tdp icon"/> 
+																BJP
+															</li>
+														</ul>
 													</div>
 													<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-														<div class="panel panel-default panelNew">
-															<div class="panel-heading">
-																<h4 class="panel-title"><span class="headingColor text-capitalize">top trending tracked issues</span></h4>
-															</div>
-															<div class="panel-body">
-																<div id="comparisonGovtTopTrend"></div>
-															</div>
-															
-														</div>
+														<div id="partyWiseComparisionBlock"></div>
 													</div>
 													<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-														<div class="panel panel-default panelNew">
-															<div class="panel-heading">
-																<h4 class="panel-title"><span class="headingColor text-capitalize">Problems Detailed Overview</span></h4>
-															</div>
-															<div class="panel-body">
-															<div class="row">
-																<div class="col-md-12 col-xs-12 col-sm-12">
-																	<h4>STATE WISE</h4>
-																	<div id="compareStateWiseArticleRelatedToProblem"></div>
+														<div class="bg_ED pad_15 newsOnLoadShow" style="display:none">
+															<div id="partyComparisionSubLevelMemberDetailsDiv" class="row"></div>
+															<div class="panel panel-default panelNew m_top20">
+																<div class="panel-heading">
+																	<h4 class="panel-title">NEWS TYPE ANALYSIS</h4>
+																	<p><span id="selectedMemberNameNews"></span> - <span id="selectedUserTypeNews"></span></p>
+																</div>
+																<div class="panel-body">
+																	<div id="PartyComparisionNewsTypeAnalysisDiv" class="row"></div>
+																	<div id="ComparisionPartyDistrictWiseNewsReport" class="row"></div>
 																</div>
 															</div>
-															<div class="row">
-																<div class="col-md-12 col-xs-12 col-sm-12">
-																	<h4>DISTRICT WISE</h4>
-																	<div id="compareDistrictWiseArticleRelatedToProblem"></div>
-																	<!--<div id="comparisonGovtProblemsStateLevelOverview"></div>-->
-																	<div id="comparisonGovtProblemsDistrictLevelOverview"></div>
-																	
+															<div class="panel panel-default panelNew m_top20">
+																<div class="panel-heading">
+																	<div class="row">
+																		<div class="col-md-6 col-sm-6 col-xs-12">
+																			<h4 class="panel-title">PARTY Vs PUBLICATION</h4>
+																			<p><span id="selectedMemberNameNewsParty"></span> - <span id="selectedUserTypeNewsParty"></span></p>
+																		</div>
+																		<div class="col-md-6 col-sm-6 col-xs-12">
+																			<div id="partiesWiseSelection"></div>
+																		</div>
+																	</div>
 																</div>
-															</div>
+																<div class="panel-body">
+																	<div id="partyAndPublication" class="row"></div>
+																	<div id="CompaisionPartyAndPublicationWiseDetailsDiv" class="row"></div>
+																	<div id="partyComparisonPartyWisePoorL" class="row"></div>
+																</div>
 															</div>
 														</div>
 													</div>
-													<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-														<div class="panel panel-default panelNew">
-															<div class="panel-heading">
-																<h4 class="panel-title"><span class="headingColor">Analysis on Problem</span></h4>
-															</div>
-															<div class="panel-body">
-															<div id="comparisonGovtProblemsOverAllAnalysis"></div>
-															<div id="comparisonGovtProblemsOverAllSubLevelAnalysis" style="display:none;"></div>
-															</div>
-															
+												</div>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+								
+								
+								<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<input type="radio" class="radioTypeCls" name="comparisonGovtRadioBtn" value="Cumulative" checked="checked" /> Cumulative
+									<input type="radio" class="radioTypeCls" name="comparisonGovtRadioBtn" value="Detailed"/> Detailed
+								</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+										<div id="comparisonGovtMinistriesInfo"></div>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreDetailsBlockNews" style="display:none">
+										<div class="bg_ED pad_15">
+											<div class="row">
+												<div id="ministerSubLevelDetailsDiv"></div>
+												<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+													<div class="panel panel-default panelNew">
+														<div class="panel-heading">
+															<h4 class="panel-title"><span class="headingColor text-capitalize">Departments Wise Districts Overview</span></h4>
 														</div>
+														<div class="panel-body">
+															<div id="comparisonGovtDeptDOverview"></div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+													<div class="panel panel-default panelNew">
+														<div class="panel-heading">
+															<h4 class="panel-title"><span class="headingColor text-capitalize">top trending tracked issues</span></h4>
+														</div>
+														<div class="panel-body">
+															<div id="comparisonGovtTopTrend"></div>
+														</div>
+														
+													</div>
+												</div>
+												<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+													<div class="panel panel-default panelNew">
+														<div class="panel-heading">
+															<h4 class="panel-title"><span class="headingColor text-capitalize">Problems Detailed Overview</span></h4>
+														</div>
+														<div class="panel-body">
+														<div class="row">
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<h4>STATE WISE</h4>
+																<div id="compareStateWiseArticleRelatedToProblem"></div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<h4>DISTRICT WISE</h4>
+																<div id="compareDistrictWiseArticleRelatedToProblem"></div>
+																<!--<div id="comparisonGovtProblemsStateLevelOverview"></div>-->
+																<div id="comparisonGovtProblemsDistrictLevelOverview"></div>
+																
+															</div>
+														</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+													<div class="panel panel-default panelNew">
+														<div class="panel-heading">
+															<h4 class="panel-title"><span class="headingColor">Analysis on Problem</span></h4>
+														</div>
+														<div class="panel-body">
+														<div id="comparisonGovtProblemsOverAllAnalysis"></div>
+														<div id="comparisonGovtProblemsOverAllSubLevelAnalysis" style="display:none;"></div>
+														</div>
+														
 													</div>
 												</div>
 											</div>
@@ -1408,8 +1598,11 @@
 					</div>
 				</div>
 			</div>
-			<!-- NEWS BLOCK END-->
-			<!-- Electronic Media Start -->
+		</div>
+		<!-- NEWS BLOCK END-->
+	</div>
+	<div class="row">
+		<!-- Electronic Media Start -->
 		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock" expand-block="electronic">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -1693,118 +1886,118 @@
 			</div>
 		</div>
 	<!-- Electronic Media End -->
-	</div>
-	<div class="row">
 		<!-- Praja Sankalpam Yatra News  Start --> 
-			 <div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="prajaSankaplaYatra">
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="prajaSankaplaYatra">
-								<h4 class="panel-title text-capital">
-									<div>
-										<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-										<span id="prajaSankalpaYatraDivId">Category Wise News-</span> 
-										<small id="prajaHeadDate" class="text-muted" style="color:#3F3733"></small>
-									</div>
-								</h4>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="prajaSankaplaYatra">
-								<span class="prajaSankaplaYatraIconExpand pull-right" expand-icon="prajaSankaplaYatra">
-									<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
-								</span>
-								<span class="cadreSettings pull-right refreshPrajaSankalpaCls"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
-								
-								<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="prajaSankaplaYatra" style="width:200px;">
-										<input type="text" id="dateRangePrajaSankalpaId" style="width:180px" class="form-control" />
-										<span class="input-group-addon">
-											<i class="glyphicon glyphicon-calendar"></i>
-										</span>
-								</span>
-							</div>     
+		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="prajaSankaplaYatra">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="prajaSankaplaYatra">
+							<h4 class="panel-title text-capital">
+								<div>
+									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+									<span id="prajaSankalpaYatraDivId">Category Wise News-</span> 
+									<small id="prajaHeadDate" class="text-muted" style="color:#3F3733"></small>
+								</div>
+							</h4>
 						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="prajaSankaplaYatra">
+							<span class="prajaSankaplaYatraIconExpand pull-right" expand-icon="prajaSankaplaYatra">
+								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+							</span>
+							<span class="cadreSettings pull-right refreshPrajaSankalpaCls"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
+							
+							<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="prajaSankaplaYatra" style="width:200px;">
+									<input type="text" id="dateRangePrajaSankalpaId" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+							</span>
+						</div>     
 					</div>
-					<div class="panel-body">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<h5 class="module_OwnerCss">Module Owner : K Rajesh</h5>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<h5 class="module_OwnerCss">Module Owner : K Rajesh</h5>
+					</div>
+					<div class="row m_top10">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="prajaSankaplaYatra">
+							<div class="row">
+								<div class="col-sm-12">
+									<h4 style="font-weight:bold" id="categoryName"></h4>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<label>Category Name</label>
+									<select class="form-control chosen-select" id="categoryId">
+										<option value="0">Select Category</option>
+										<option value="1175" selected="selected">REACTION ON CENTRAL BUDGET - 2018</option>
+										<option value="757">SPECIAL STATUS</option>
+										<option value="1156">TELUGU DESAM -  DALITA TEJAM</option>
+										<option value="1051">PRAJA SANKALPA YATRA</option>
+										<option value="1109">JANMABOOMI - MAA URU 2018</option>
+										<option value="695">JANMABOOMI - MAA URU</option>
+										<option value="688">NEERU - CHETTU </option>
+										<option value="472">AGAINST TDP</option>
+										<option value="483">TDP PROGRAMMES</option>
+										<option value="672">CHANDRANNA RAITHU YATRA</option>
+										<option value="762">CHANDRANNA BHEEMA</option>
+										<option value="772">NTR AROGYA SREE</option>
+										<option value="773">NTR SRUJALA</option>
+										<option value="774">NTR JALASIRI</option>
+										<option value="787">CHANDRANNA DALITABATA</option>
+										<option value="788">MANA URU MANA MLA</option>
+										<option value="948">INTINTIKI TDP</option>
+										<option value="1039">MEE INTIKI MEE MLA</option>
+									</select>
+								</div>
+							</div>
+							<div class="row m_top10">
+								<div class="col-sm-12">
+									<div id="overAllPrintMediaNewsDivId"></div>
+								</div>
+							</div>
 						</div>
-						<div class="row m_top10">
-							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="prajaSankaplaYatra">
-								<div class="row">
-									<div class="col-sm-12">
-										<h4 style="font-weight:bold" id="categoryName"></h4>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-6">
-										<label>Category Name</label>
-										<select class="form-control chosen-select" id="categoryId">
-											<option value="0">Select Category</option>
-											<option value="1175" selected="selected">REACTION ON CENTRAL BUDGET - 2018</option>
-											<option value="757">SPECIAL STATUS</option>
-											<option value="1156">TELUGU DESAM -  DALITA TEJAM</option>
-											<option value="1051">PRAJA SANKALPA YATRA</option>
-											<option value="1109">JANMABOOMI - MAA URU 2018</option>
-											<option value="695">JANMABOOMI - MAA URU</option>
-											<option value="688">NEERU - CHETTU </option>
-											<option value="472">AGAINST TDP</option>
-											<option value="483">TDP PROGRAMMES</option>
-											<option value="672">CHANDRANNA RAITHU YATRA</option>
-											<option value="762">CHANDRANNA BHEEMA</option>
-											<option value="772">NTR AROGYA SREE</option>
-											<option value="773">NTR SRUJALA</option>
-											<option value="774">NTR JALASIRI</option>
-											<option value="787">CHANDRANNA DALITABATA</option>
-											<option value="788">MANA URU MANA MLA</option>
-											<option value="948">INTINTIKI TDP</option>
-											<option value="1039">MEE INTIKI MEE MLA</option>
-										</select>
-									</div>
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-12">
-										<div id="overAllPrintMediaNewsDivId"></div>
-									</div>
-								</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="prajaSankaplaYatra" style="display:none;" >
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="overAllElectronicMediaNewsDivId"></div>
+								 </div>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="prajaSankaplaYatra" style="display:none;" >
-								<div class="row">
-									<div class="col-sm-12">
-										<div id="overAllElectronicMediaNewsDivId"></div>
-									 </div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="prajaSankaplaYatra" style="display: none;">
+							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreNewsPrajaSankalpaBlocksIcon" title="Click here for more"></i>
+						</div>	
+						<div class="col-md-12 col-xs-12 col-sm-12 moreNewsprajaSankaplaBlocksDetailed m_top10"  expand-block-more="prajaSankaplaYatra" style="display:none;">
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="activeUlCls list-inline pull-right" role='tabCummulative'>
+										<li class="removeActiveP active" attr_value="print">Print Media</li>
+										<li class="removeActiveP" attr_value="electronic">Electronic Media</li>
+									</ul>
 								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="prajaSankaplaYatra" style="display: none;">
-								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreNewsPrajaSankalpaBlocksIcon" title="Click here for more"></i>
-							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-12 moreNewsprajaSankaplaBlocksDetailed m_top10"  expand-block-more="prajaSankaplaYatra" style="display:none;">
-								<div class="row">
-									<div class="col-sm-12">
-										<ul class="activeUlCls list-inline pull-right" role='tabCummulative'>
-											<li class="removeActiveP active" attr_value="print">Print Media</li>
-											<li class="removeActiveP" attr_value="electronic">Electronic Media</li>
-										</ul>
-									</div>
-									<div class="col-sm-12 publicationWisePartiesCls">
-										<div id="publicationWisePartiesDivId"></div>
-									</div>
-									<div class="col-sm-12 districtWisePartiesCls">
-										<div id="districtWisePartiesDivId"></div>
-									</div>
-									<div class="col-sm-12 ChannelWisePartyCls" style="display:none;">
-										<div id="ChannelWisePartyDivId"></div>
-									</div>
-									<div class="col-sm-12 districtWiseChannelCls" style="display:none;">
-										<div id="districtWiseChannelDivId"></div>
-									</div>
-								</div> 
-							</div>
+								<div class="col-sm-12 publicationWisePartiesCls">
+									<div id="publicationWisePartiesDivId"></div>
+								</div>
+								<div class="col-sm-12 districtWisePartiesCls">
+									<div id="districtWisePartiesDivId"></div>
+								</div>
+								<div class="col-sm-12 ChannelWisePartyCls" style="display:none;">
+									<div id="ChannelWisePartyDivId"></div>
+								</div>
+								<div class="col-sm-12 districtWiseChannelCls" style="display:none;">
+									<div id="districtWiseChannelDivId"></div>
+								</div>
+							</div> 
 						</div>
 					</div>
 				</div>
-			</div> 
-	<!-- Praja Sankalpam Yatra News  END --> 
-	<!-- EM Coverage Time start -->
+			</div>
+		</div> 
+	<!-- Praja Sankalpam Yatra News  END --> 	
+	</div>
+	<div class="row">
+		<!-- EM Coverage Time start -->
 		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="EMCoverageTime">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -1923,275 +2116,274 @@
 			</div>
 		</div>
 		<!-- EM Coverage Time End -->
-		
-	</div>
-	<div class="row">
 		<!-- DEBATES PROGRAM BLOCK -->
-			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock" expand-block="debates">
-				<div class="panel panel-default panelNewCustom panel2">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="debates">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
-									debates - <small class="text-muted debatesDate">today</small>
-									<!--<label class="radio-inline">
-								<input  name="stateSelection" value="0" checked type="radio" class="radioStateCls"/>All
-							   </label>
-							  <label class="radio-inline">
-								<input  name="stateSelection" value="1" type="radio" class="radioStateCls"/>AP
-							  </label>
-							  <label class="radio-inline">
-								<input name="stateSelection" value="36" type="radio" class="radioStateCls"/>TS
-							 </label>
-							 <label class="radio-inline">
-								<input  name="stateSelection" value="2" type="radio" class="radioStateCls"/>Others
-							 </label>-->
-								</h4>
-								<div class="col-md-3 col-sm-3 col-xs-12">
-								
-							</div>
-							</div>
-							
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="debates">
-								<span class="debatesSettingsIcon pull-right">
-								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-								 </span>
-								<span class="notesIconDebates pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForDebates(3);"></i>
-								</span>
-								<span class="debatesIconExpand pull-right" expand-icon="debates">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-								<span class="debatesRefresh pull-right">
-								   <i class="glyphicon glyphicon-refresh"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-								</span>
-								<span class="input-group pull-right dateRangePickerClsForDebates hide" expand-block-date="debates" style="width:200px;">
-									<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-								<div class="debatesSettingsBody" style="display:none;top:15px;">
-									<div class="row">
-										<div class="col-sm-12">
-										 <i class="glyphicon glyphicon-remove debatesSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;"></i>
-											<h4 class="panel-title text-center" id="headingId" >Debate Location</h4>
-										</div>
-										<div class="col-sm-6">
-											<!-- Nav tabs -->
-											<ul class="nav nav-tabs tabViewSelectionDebates" role="tablist">
-												<li class="active" role="presentation" id="debatesTabViewDebateId"><a href="#debatesTabViewDebate" aria-controls="debatesTabViewDebate" role="tab" data-toggle="tab">Debate</a></li>
-												<li role="presentation" id="debatesTabViewParticipantId"><a href="#debatesTabViewParticipant" aria-controls="debatesTabViewParticipant" role="tab" data-toggle="tab">Debate Participant</a></li>
-											</ul>
-										</div>
-										<!-- Tab panes -->
-										<div class="col-sm-6">
-											<div class="tab-content">
-												<div role="tabpanel" class="tab-pane active" id="debatesTabViewDebate">
-													<ul class="debatesViewList">
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" id="debatesAP" class="radioStateCls debateradioCls" name="debatesRadio"  value="1" checked />AP
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox"  id="debatesTS" class="radioStateCls debateradioCls" name="debatesRadio"  value="36" checked />TS
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox"  class="radioStateCls debateradioCls" name="debatesRadio" value="2" />Others
-															</label>
-														</li>
-													</ul>
-												</div>
-												<div role="tabpanel" class="tab-pane" id="debatesTabViewParticipant">
-													<ul class="debatesViewList">
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" id="debatesParticipantAP" class="radioStateCls1 debateradioCls" name="debatesParticipantRadio" value="1" checked />AP
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" id="debatesParticipantTS" class="radioStateCls1 debateradioCls" name="debatesParticipantRadio"  value="36" checked />TS
-															</label>
-														</li>
-														<!--<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" name="debatesParticipantRadio" checked/>AP
-															</label>
-														</li>-->
-													</ul>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					   <div class="notesDropDown notesArrow">
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
+		<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock" expand-block="debates">
+			<div class="panel panel-default panelNewCustom panel2">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="debates">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
+								debates - <small class="text-muted debatesDate">today</small>
+								<!--<label class="radio-inline">
+							<input  name="stateSelection" value="0" checked type="radio" class="radioStateCls"/>All
+						   </label>
+						  <label class="radio-inline">
+							<input  name="stateSelection" value="1" type="radio" class="radioStateCls"/>AP
+						  </label>
+						  <label class="radio-inline">
+							<input name="stateSelection" value="36" type="radio" class="radioStateCls"/>TS
+						 </label>
+						 <label class="radio-inline">
+							<input  name="stateSelection" value="2" type="radio" class="radioStateCls"/>Others
+						 </label>-->
 							</h4>
-							<div id="notesDebatesId"></div>
-							<hr/>
-							<div id="debateUpId" style="color:red;"></div>
-							<label>Create Notes</label>
-							<textarea class="form-control notesAreaDebates"></textarea>
-							<button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>
-						</div> 	
-					
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<h5 class="module_OwnerCss">Module Owner : Anil</h5>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock" expand-block-inner="debates">
-								
-								
+							<div class="col-md-3 col-sm-3 col-xs-12">
+							
+						</div>
+						</div>
+						
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="debates">
+							<span class="debatesSettingsIcon pull-right">
+							   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							 </span>
+							<span class="notesIconDebates pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForDebates(3);"></i>
+							</span>
+							<span class="debatesIconExpand pull-right" expand-icon="debates">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="debatesRefresh pull-right">
+							   <i class="glyphicon glyphicon-refresh"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForDebates hide" expand-block-date="debates" style="width:200px;">
+								<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+							<div class="debatesSettingsBody" style="display:none;top:15px;">
 								<div class="row">
-									<div id="partyWiseTotalDebateDetails"></div>
-								</div>
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock" expand-block-right="debates">
-								<div class="row">
-									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-										<h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
+									<div class="col-sm-12">
+									 <i class="glyphicon glyphicon-remove debatesSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;"></i>
+										<h4 class="panel-title text-center" id="headingId" >Debate Location</h4>
 									</div>
-									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-										<ul class="activeUlCls list-inline debateSpokesCls">
-											<li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-											<li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+									<div class="col-sm-6">
+										<!-- Nav tabs -->
+										<ul class="nav nav-tabs tabViewSelectionDebates" role="tablist">
+											<li class="active" role="presentation" id="debatesTabViewDebateId"><a href="#debatesTabViewDebate" aria-controls="debatesTabViewDebate" role="tab" data-toggle="tab">Debate</a></li>
+											<li role="presentation" id="debatesTabViewParticipantId"><a href="#debatesTabViewParticipant" aria-controls="debatesTabViewParticipant" role="tab" data-toggle="tab">Debate Participant</a></li>
 										</ul>
 									</div>
-									<div id="SpokesPersonWiseDebate"></div>
-									
-									<div class="col-xs-12 col-sm-12 col-md-12">
-										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
-									</div>	
+									<!-- Tab panes -->
+									<div class="col-sm-6">
+										<div class="tab-content">
+											<div role="tabpanel" class="tab-pane active" id="debatesTabViewDebate">
+												<ul class="debatesViewList">
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" id="debatesAP" class="radioStateCls debateradioCls" name="debatesRadio"  value="1" checked />AP
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox"  id="debatesTS" class="radioStateCls debateradioCls" name="debatesRadio"  value="36" checked />TS
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox"  class="radioStateCls debateradioCls" name="debatesRadio" value="2" />Others
+														</label>
+													</li>
+												</ul>
+											</div>
+											<div role="tabpanel" class="tab-pane" id="debatesTabViewParticipant">
+												<ul class="debatesViewList">
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" id="debatesParticipantAP" class="radioStateCls1 debateradioCls" name="debatesParticipantRadio" value="1" checked />AP
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" id="debatesParticipantTS" class="radioStateCls1 debateradioCls" name="debatesParticipantRadio"  value="36" checked />TS
+														</label>
+													</li>
+													<!--<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" name="debatesParticipantRadio" checked/>AP
+														</label>
+													</li>-->
+												</ul>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="row debatesMoreHiddenBlock" expand-block-more="debates">
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
-									<div class="panel panel-default panelNew">
-										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
-											
-												<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
-											
-										</div>
-									
-											<div class="panel-body collapse in" id="collapseOneBodyId">
-												<div class="row">
-													<div id="scaleBasedPerformanceCohort"></div>
-												</div>
-											</div>
-									
-									</div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingTwo">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">role based performance cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-									  <div class="panel-body">
-										<div class="row">
-												<div id="roleBasedPerformanceCohort"></div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingFive">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
-										</a>
-									</div>
-									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-									  <div class="panel-body">
-										<div class="row">
-											<div id="candidateRolesBuildId"></div>
-										</div>
-										<div class="row m_top20">
-											<div class="col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingThree">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="candidateOverAllPerformanceCohort" style="overflow:auto;"></div>
-											</div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingFour">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">channel vs parties</span></h4>
-										</a>
-									</div>
-									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="channelAndPartyWiseDetails" style="overflow:auto;"></div>
-											</div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <!--srujana-->
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingSix">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
-										   overall performance</span></h4>
-										</a>
-									</div>
-									<div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="designationWiseTotalDebateDetails" style="overflow:auto;"></div>
-											</div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <!-- end-->
+					</div>
+				   <div class="notesDropDown notesArrow">
+						<h4 class="text-capital">notes
+							<span class="pull-right">
+								<i class="glyphicon glyphicon-list-alt"></i>
+							</span>
+						</h4>
+						<div id="notesDebatesId"></div>
+						<hr/>
+						<div id="debateUpId" style="color:red;"></div>
+						<label>Create Notes</label>
+						<textarea class="form-control notesAreaDebates"></textarea>
+						<button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>
+					</div> 	
+				
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 class="module_OwnerCss">Module Owner : Anil</h5>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock" expand-block-inner="debates">
+							
+							
+							<div class="row">
+								<div id="partyWiseTotalDebateDetails"></div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock" expand-block-right="debates">
+							<div class="row">
+								<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+									<h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
 								</div>
+								<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+									<ul class="activeUlCls list-inline debateSpokesCls">
+										<li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+										<li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+									</ul>
+								</div>
+								<div id="SpokesPersonWiseDebate"></div>
+								
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
+								</div>	
+							</div>
+						</div>
+					</div>
+					<div class="row debatesMoreHiddenBlock" expand-block-more="debates">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
+										
+											<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
+										
+									</div>
+								
+										<div class="panel-body collapse in" id="collapseOneBodyId">
+											<div class="row">
+												<div id="scaleBasedPerformanceCohort"></div>
+											</div>
+										</div>
+								
+								</div>
+							  <div class="panel panel-default panelNew">
+								<div class="panel-heading" role="tab" id="headingTwo">
+									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">role based performance cohort</span></h4>
+									</a>
+								</div>
+								<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+								  <div class="panel-body">
+									<div class="row">
+											<div id="roleBasedPerformanceCohort"></div>
+									</div>
+								  </div>
+								</div>
+							  </div>
+							  <div class="panel panel-default panelNew">
+								<div class="panel-heading" role="tab" id="headingFive">
+									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+									   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
+									</a>
+								</div>
+								<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+								  <div class="panel-body">
+									<div class="row">
+										<div id="candidateRolesBuildId"></div>
+									</div>
+									<div class="row m_top20">
+										<div class="col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
+									</div>
+								  </div>
+								</div>
+							  </div>
+							  <div class="panel panel-default panelNew">
+								<div class="panel-heading" role="tab" id="headingThree">
+									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+									   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
+									</a>
+								</div>
+								<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+								  <div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="candidateOverAllPerformanceCohort" style="overflow:auto;"></div>
+										</div>
+									</div>
+								  </div>
+								</div>
+							  </div>
+							  <div class="panel panel-default panelNew">
+								<div class="panel-heading" role="tab" id="headingFour">
+									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+									   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">channel vs parties</span></h4>
+									</a>
+								</div>
+								<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+								  <div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="channelAndPartyWiseDetails" style="overflow:auto;"></div>
+										</div>
+									</div>
+								  </div>
+								</div>
+							  </div>
+							  <!--srujana-->
+							  <div class="panel panel-default panelNew">
+								<div class="panel-heading" role="tab" id="headingSix">
+									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+									   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
+									   overall performance</span></h4>
+									</a>
+								</div>
+								<div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+								  <div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="designationWiseTotalDebateDetails" style="overflow:auto;"></div>
+										</div>
+									</div>
+								  </div>
+								</div>
+							  </div>
+							  <!-- end-->
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- DEBATES PROGRAM BLOCK END-->
-			<!--Press Meet block Start-->
-			<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
-			   <div class="panel panel-default panelNewCustom ">
-				  <div class="panel-heading">
-					 <div class="row">
+		</div>
+		<!-- DEBATES PROGRAM BLOCK END-->	
+	</div>
+	<div class="row">
+		<!--Press Meet block Start-->
+		<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
+			<div class="panel panel-default panelNewCustom ">
+				<div class="panel-heading">
+					<div class="row">
 						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="pressmeet">
 						   <h4 class="panel-title text-capital" style="width:440px;">    
 							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
@@ -2206,9 +2398,9 @@
 						   <i class="glyphicon glyphicon-fullscreen"></i>
 						   </span>
 						</div>
-					 </div>
-				  </div>
-				  <div class="panel-body">
+					</div>
+				</div>
+				<div class="panel-body">
 					<div class="row">
 						<div class="col-sm-12">
 							<h5 class="module_OwnerCss">Module Owner : Anil</h5>
@@ -2222,7 +2414,7 @@
 							</span>
 						</span>	
 					</div>	
-					 <div class="row">
+					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 pressmeetBlock" expand-block-inner="pressmeet">
 						   <div class="row">
 							  <div id="partyWisePressMeetDetails"></div>
@@ -2275,29 +2467,29 @@
 										</div>
 									</div>
 								</div>
-							  <div class="panel panel-default panelNew">
+								<div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingsthree">
 										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapsethree" aria-expanded="false" aria-controls="collapsethree">
 										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
 										</a>
 									</div>
 									<div id="collapsethree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsthree">
-									  <div class="panel-body">
-										<div class="row">
-										
-										  <div class="col-md-12 col-xs-12 col-sm-12">
-										  <ul class=" activeUlCls edtionTypescls list-inline pull-right">
-										   <li class="active" id="0"> Both Edition </li>
-										   <li id="1" > Main Edition </li>
-										  <li id="2"> District Edtion</li>
-										 
-										  </ul>
-										  </div>
-											<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="candidatePressMeetPerformanceId"></div>
+										<div class="panel-body">
+											<div class="row">
+											
+											  <div class="col-md-12 col-xs-12 col-sm-12">
+												  <ul class=" activeUlCls edtionTypescls list-inline pull-right">
+												   <li class="active" id="0"> Both Edition </li>
+												   <li id="1" > Main Edition </li>
+												  <li id="2"> District Edtion</li>
+												 
+												  </ul>
+											  </div>
+													<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="candidatePressMeetPerformanceId"></div>
+											</div>
 										</div>
-									  </div>
 									</div>
-								  </div> 
+								</div> 
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingsFour">
 										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapsesFour" aria-expanded="false" aria-controls="collapsesFour">
@@ -2320,319 +2512,22 @@
 										</div>
 									  </div>
 									</div>
-								 </div>
-									<div class="panel panel-default panelNew">
-										 <div class="panel-heading" role="tab" id="headingfive">
-											 <a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseFives" aria-expanded="false" aria-controls="collapseFives">
-											 <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
-											 overall performance</span></h4>
-											 </a>
-										 </div>
-										 <div id="collapseFives" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfive">
-											 <div class="panel-body">
-												 <div class="row">
-													 <div class="col-md-12 col-xs-12 col-sm-12">
-														<div id="designationWiseTotalPressMeetDetails" style="overflow:auto;"></div>
-													 
-													 </div>
-												 </div>
-											 </div>
-										 </div>
-									   </div>
-							</div>
-						</div>
-					 </div>
-				  </div>
-			   </div>
-			</div>
-			<!---PressMeet End--->
-	</div>
-	<div class="row">
-		
-	<!-- TOURS START -->
-	        <!-- tour New Jsp Code -->
-					<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="tours">
-						<div class="panel panel-default panelNewCustom">
-							<div class="panel-heading">
-								<div class="row">
-									<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="tours">
-										<h4 class="panel-title text-capital">
-											<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
-											TOURS <small class="text-muted"><span id="toursNewHeadingId">  </span></small>
-										</h4>
-									</div>
-									<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="tours">
-										<span class="NewTourExpand pull-right" expand-icon="tours">
-											<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
-										</span>
-										<span class="input-group pull-right hideShowNewToursDateRangeCls hide" expand-block-date="tours" style="width:200px;">
-												<input type="text" id="tourNewDateRangePickerId" style="width:180px" class="form-control" />
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
-											</span>
-										<span class="toursRefresh pull-right">
-											<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
-										</span>
-									</div>     
 								</div>
-							</div>
-							<div class="panel-body">
-							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-										<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock m_top20" expand-block-inner="tours">
-								    <div class="row">
-									  <div id="tourUniquememberSubmittedDltsDivId"></div>
-									</div>
-									<div class="row">
-										<div id="tourOverviewNewDivId"></div>
-									</div>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-12 NewTourExpandCls m_top10"  expand-block-right="tours" style="display:none;" >
-									<div class="row">
-										 <h4><span class="headingColor text-capital">TOUR COMPLAINCE</span></h4>
-											<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-													<ul class="activeUlCls tourNewComplainceFilterCls list-inline hideCls">
-														<li class="tourComplainceCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
-														<li class="tourComplainceCls " attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
-													</ul>
-											</div> 
-										 <div id="buildgDesignationWiseToursTopFiveComplainceDivId"></div>
-									</div>
-									
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-12 NewToursHiddenBlock"  expand-block-right="tours" style="display: none;">
-									<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreNewToursBlocksIcon" title="Click here for more"></i>
-								</div>	
-								<!--<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreNewToursBlocks" style="display:none;">
-									<ul class="list-inline pull-right activeUlCls">
-										<li class="active toursNewDetailedBlock">Detailed</li>
-									</ul>
-								</div>!-->
-								<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10"  expand-block-more="tours" style="display:none;">
-									<h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance - leaders</h4><br><br>	
-									<div id="toursPerformanceDivId"></div>
-								</div>
-										
-							</div>
-						</div>
-						</div>
-				 </div>
-			<!-- TOURS END -->  
-		
-			<!--Meetings Start -->
-			<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock" expand-block="meetings">  
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="meetings">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
-									meetings - <small class="text-muted" id="dateMeetingHeadingId"></small>
-								</h4>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="meetings">
-								<span class="notesIconMeeting pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForMeetings(2);"></i>
-								</span>
-								<span class="meetingsIconExpand pull-right" expand-icon="meetings">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-								<span class="meetingsRefresh pull-right" attr_meeting_type="committeeMeeting" attr_refresh_status="false">
-									<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
-								</span>
-								<span class="input-group pull-right dateRangePickerClsForMeetings hide" expand-block-date="meetings" style="width:200px;">
-									<input type="text" id="dateRangeIdForMeetings" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-							</div>
-						</div>
-						<div class="notesDropDown notesArrow" >
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
-							</h4>
-							<div id="notesMeetingId"></div>
-							<hr/>
-							<div id="meetingsUpId" style="color:red;"></div>
-							<label>Create Notes</label>
-							<textarea class="form-control notesAreaMeetings"></textarea>
-							<button class="btn btn-default btnCustomCreateMeetings btn-sm "  onClick="savingDashboardCommentForMeetings(2);">create</button>
-						</div>
-					</div>   
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12">
-										<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-								<h6 id="lastMeetingUpdatedIdTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12" expand-block-inner="meetings">
-								<div class="row">
-									<div class="col-sm-6 col-xs-12 col-md-6">
-										<h4 class="display:inline-block">
-											<span class="headingColor text-capital">committee meetings</span>
-										</h4>
-									</div>
-									<div class="col-sm-6 col-xs-12 col-md-6">
-										<div style="position:relative;">
-											<span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
-											<span class="mainMeetingsIcon" style="background-color:#fff;margin-left:5px;" expand-icon-inner="meetings" expand_event_name="mainMeetings">
-												<i class="glyphicon glyphicon-fullscreen"></i>
-											</span>
-											<span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
-											<div class="settingsDropDown" id="committeeTypeDivId">
-												
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div id="meetingBasicCountDivId"></div>
-								</div>
-								
-								<div class="panelBlock m_top20" >
-									<h4>
-										<span class="headingColor text-capitalize">state level meetings</span>
-										<span class="stateLevelMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
-										<!--<span class="stateLevelMeetingsExpand" id="stateLevelMeetingsExpandId" attr_main_type_meeting_id="2" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>-->
-										<span style="color:red;font-size:15px;" id="stateLevelMeetingErrorId"></span>
-									</h4>
-									<div class="settingsStateLevelMeetingDropDown " style="left:0px;">
-										<ul class="list-inline">
-											<li><label><input type="checkbox" class="selectAllStateLevelMeeting"/>&nbsp&nbspSelect All</label></li>
-										</ul>
-										<div id="stateLevelMeetingDivId"></div>
-										<button type="button" attr_main_type_meeting_id="2"  class="btn btn-success stateLevelMeetingBtnCls">Get Details</button>
-									</div>
-									 <div class="row">
-										<div id="stateLevelMeetingBasicCnt"></div>
-									 </div>
-									
-								</div>
-								<div id="customMeetingsDiv"></div>
-								
-								<div class="panelBlock m_top20">
-									<div class="row">
-										<div class="col-md-7 col-xs-12 col-sm-7" style="padding-right:0px;">
-											<h4>
-												<span class="headingColor text-capitalize">special meetings</span>
-												<span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
-												<!--<span style="background-color:#fff;margin-left:5px;" attr_main_type_meeting_id="3" class="specialMeetings" id="specialMeetingsExpandId"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="color:red;font-size:15px;" id="specialMeetingErrorId"></span>-->
-												
-												<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
-											</h4>
-										</div>
-										<div class="col-md-5 col-xs-12 col-sm-5" style="padding-right:0px;">
-											<span class="pull-right specialMeetingsCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
-										</div>
-										<div class="specialMeetingDropDown " style="left:0px;top:30px;">
-											<ul class="list-inline">
-												<li><label><input type="checkbox" class="selectAllSpecialMeeting"/>&nbsp&nbspSelect All</label></li>
-											</ul>
-											<div id="specialMeetingDivId"></div>
-											<button type="button" onclick="specialMeetingBtncls()" attr_main_type_meeting_id="3"  class="btn btn-success specialMeetingBtncls">Get Details</button>
-										</div>
-									</div>
-									<div class="row specialMeetingsCollapseBody" style="display:none">
-										<div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="cursor:pointer; margin-top: 15px; ">
-											<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew  defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
-											<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="" >last month</button>
-										</div>
-										<div id="specialMeetingBasicCnt" class="m_top10"></div>
-									</div>
-								</div>
-								
-								<!--<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<div class="panel-group" id="accordionMultiLocation" role="tablist" aria-multiselectable="true">
-											<div class="panel panel-default panelNew">
-												<div class="panel-heading pad_10" role="tab" id="headingMultiLocation">
-													<h4 class="panel-title" style="display: inline-block">
-														<span class="headingColor text-capital">multi Location meetings</span>
-														<span style="background-color: #fff;" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" class="multicLocationMeetingCls" expand-icon-inner="meetings" expand_event_name="multiLocation">
-															<i class="glyphicon glyphicon-fullscreen"></i>
-														</span>
-														<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="getMultiLocationWiseMeetingGroupsData();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
-														<!--<button class="btn btn-xs btn-mini btn-success getModalImagesCls" attr_Meeting_level_id="3" attr_Meeting_id="513359"> view </button>
-													</h4>  
-													<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordionMultiLocation" href="#collapseMultiLocation" aria-expanded="true" aria-controls="collapseMultiLocation">
-													</a>
-												</div>
-												<div id="collapseMultiLocation" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingMultiLocation">
-												  <div class="panel-body b_top0 pad_5">
-													<div id="MultiLocationWiseMeetingGroupsData"></div>  
-												  </div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>-->
-								
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12" expand-block-right="meetings" style="display:none">
-								<div class="row">
-									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-										<ul class="activeUlCls list-inline meetingFilterCls">
-											<li class="meetingLiCls active" attr_value="strong">top 5 strong</li>
-											<li class="meetingLiCls" attr_value="poor">last 5 poor</li>
-										</ul>
-									</div>
-									<div id="userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId"></div>
-									<div id="stateLevelMeetingBlockId"></div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock" expand-block-right="meetings">
-								<i data-placement="top" data-toggle="tooltip"  party_meetingId="0" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more" expand-block-right="meetings"></i>
-							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocksList" expand-block-more="meetings" style="display:none;">
-								<ul class="list-inline pull-right activeUlCls">
-									<li class="active multiMetingDetailedBlock" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Detailed</li>
-									<li class="multiLocation">Comparison</li>
-									<!--<li class="multiLocation">multiLocation</li>-->
-								</ul>
-							</div>
-							
-							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 detailedMeetngsBlkId" style="display:none" expand-block-more="meetings" >
-								<ul class="list-inline pull-right activeUlCls">
-									<li class="active attendedMetngs" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Attended</li>
-									<li class="meetingBased" attr_levelId="0" attr_group_id="1"  attr_sessionId="0">Meetings Based</li>
-									<!--<li class="multiLocation">multiLocation</li>-->
-								</ul>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 multiLocationMeetingsCLs" expand-block-more="meetings" style="display:none">
-								<ul class="list-inline pull-right activeUlCls">
-									<li class="active multiMetingDetailedBlock">Detailed</li>
-									<li class="multiLocation">Comparison</li>
-								</ul>
-								
-							</div>
-							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed"  expand-block-more="meetings"></div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 meetingPerformancCls moreMeetingsBlocksDetailed"  expand-block-more="meetings" style="display:none">
 								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-md-8 col-xs-12 col-sm-6">
-												<span class="headingColor text-capitalize">meetings performance cohort</span>
+									<div class="panel-heading" role="tab" id="headingfive">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseFives" aria-expanded="false" aria-controls="collapseFives">
+											<h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
+										overall performance</span></h4>
+										</a>
+									</div>
+									<div id="collapseFives" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfive">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-md-12 col-xs-12 col-sm-12">
+													<div id="designationWiseTotalPressMeetDetails" style="overflow:auto;"></div>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="panel-body">
-										<div id="districtWiseSpecialMeetingsGraph"></div>
-										<div id="partyMeetingOverviewTabDiv"></div>
-										<div id="cmtMemberDtlsTableId"></div>
-										<div id="childUserTypeDetailsDivIdForMeetingMultiLocation"></div>
-										<div id="childActivityMemberDivIdForMeetingMultiLocation" class="m_top20"></div>
-										<div id="directChildActivityMeetingMemberDivMultiLocation" class="m_top20"></div>
-										<div id="topPoorLocationsMeetingDiv" class="m_top20"></div>
-										<div id="userAccessLevelLocationDivId"></div>
-										<div id="districtWisePartyMeetingTypeDivId"></div>
 									</div>
 								</div>
 							</div>
@@ -2640,351 +2535,639 @@
 					</div>
 				</div>
 			</div>
-			
-			<!--Meetings End-->
-		</div>	
-		<div class="row">
-		<!-- Kaizala  Start --> 
-			<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="kaizala">
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="kaizala">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/logoKaizala.png" class="iconClass" style="background-color:none;"/>
-										Kaizala
-								</h4>
+		</div>
+		<!---PressMeet End--->
+	<!-- TOURS START -->
+	<!-- tour New Jsp Code -->
+		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="tours">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="tours">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
+								TOURS <small class="text-muted"><span id="toursNewHeadingId">  </span></small>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="tours">
+							<span class="NewTourExpand pull-right" expand-icon="tours">
+								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+							</span>
+							<span class="input-group pull-right hideShowNewToursDateRangeCls hide" expand-block-date="tours" style="width:200px;">
+									<input type="text" id="tourNewDateRangePickerId" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							<span class="toursRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+							</span>
+						</div>     
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock m_top20" expand-block-inner="tours">
+							<div class="row">
+							  <div id="tourUniquememberSubmittedDltsDivId"></div>
 							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="kaizala">
-								<span class="KaizalaRefresh pull-right">
-									<i class="glyphicon glyphicon-refresh"></i>
+							<div class="row">
+								<div id="tourOverviewNewDivId"></div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 NewTourExpandCls m_top10"  expand-block-right="tours" style="display:none;" >
+							<div class="row">
+								 <h4><span class="headingColor text-capital">TOUR COMPLAINCE</span></h4>
+									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+											<ul class="activeUlCls tourNewComplainceFilterCls list-inline hideCls">
+												<li class="tourComplainceCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+												<li class="tourComplainceCls " attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+											</ul>
+									</div> 
+								 <div id="buildgDesignationWiseToursTopFiveComplainceDivId"></div>
+							</div>
+							
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 NewToursHiddenBlock"  expand-block-right="tours" style="display: none;">
+							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreNewToursBlocksIcon" title="Click here for more"></i>
+						</div>	
+						<!--<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreNewToursBlocks" style="display:none;">
+							<ul class="list-inline pull-right activeUlCls">
+								<li class="active toursNewDetailedBlock">Detailed</li>
+							</ul>
+						</div>!-->
+						<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10"  expand-block-more="tours" style="display:none;">
+							<h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance - leaders</h4><br><br>	
+							<div id="toursPerformanceDivId"></div>
+						</div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- TOURS END -->  
+	</div>	
+	<div class="row">
+		<!--Meetings Start -->
+		<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock" expand-block="meetings">  
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="meetings">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
+								meetings - <small class="text-muted" id="dateMeetingHeadingId"></small>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="meetings">
+							<span class="notesIconMeeting pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForMeetings(2);"></i>
+							</span>
+							<span class="meetingsIconExpand pull-right" expand-icon="meetings">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="meetingsRefresh pull-right" attr_meeting_type="committeeMeeting" attr_refresh_status="false">
+								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForMeetings hide" expand-block-date="meetings" style="width:200px;">
+								<input type="text" id="dateRangeIdForMeetings" style="width:180px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-								<span class="kaizalaIconExpand pull-right" expand-icon="kaizala">
-									<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
-								</span>
-								
-							</div>     
+							</span>
 						</div>
 					</div>
-					<div class="panel-body">
+					<div class="notesDropDown notesArrow" >
+						<h4 class="text-capital">notes
+							<span class="pull-right">
+								<i class="glyphicon glyphicon-list-alt"></i>
+							</span>
+						</h4>
+						<div id="notesMeetingId"></div>
+						<hr/>
+						<div id="meetingsUpId" style="color:red;"></div>
+						<label>Create Notes</label>
+						<textarea class="form-control notesAreaMeetings"></textarea>
+						<button class="btn btn-default btnCustomCreateMeetings btn-sm "  onClick="savingDashboardCommentForMeetings(2);">create</button>
+					</div>
+				</div>   
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+									<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<h6 id="lastMeetingUpdatedIdTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12" expand-block-inner="meetings">
+							<div class="row">
+								<div class="col-sm-6 col-xs-12 col-md-6">
+									<h4 class="display:inline-block">
+										<span class="headingColor text-capital">committee meetings</span>
+									</h4>
+								</div>
+								<div class="col-sm-6 col-xs-12 col-md-6">
+									<div style="position:relative;">
+										<span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
+										<span class="mainMeetingsIcon" style="background-color:#fff;margin-left:5px;" expand-icon-inner="meetings" expand_event_name="mainMeetings">
+											<i class="glyphicon glyphicon-fullscreen"></i>
+										</span>
+										<span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
+										<div class="settingsDropDown" id="committeeTypeDivId">
+											
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div id="meetingBasicCountDivId"></div>
+							</div>
+							
+							<div class="panelBlock m_top20" >
+								<h4>
+									<span class="headingColor text-capitalize">state level meetings</span>
+									<span class="stateLevelMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
+									<!--<span class="stateLevelMeetingsExpand" id="stateLevelMeetingsExpandId" attr_main_type_meeting_id="2" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>-->
+									<span style="color:red;font-size:15px;" id="stateLevelMeetingErrorId"></span>
+								</h4>
+								<div class="settingsStateLevelMeetingDropDown " style="left:0px;">
+									<ul class="list-inline">
+										<li><label><input type="checkbox" class="selectAllStateLevelMeeting"/>&nbsp&nbspSelect All</label></li>
+									</ul>
+									<div id="stateLevelMeetingDivId"></div>
+									<button type="button" attr_main_type_meeting_id="2"  class="btn btn-success stateLevelMeetingBtnCls">Get Details</button>
+								</div>
+								 <div class="row">
+									<div id="stateLevelMeetingBasicCnt"></div>
+								 </div>
+								
+							</div>
+							<div id="customMeetingsDiv"></div>
+							
+							<div class="panelBlock m_top20">
+								<div class="row">
+									<div class="col-md-7 col-xs-12 col-sm-7" style="padding-right:0px;">
+										<h4>
+											<span class="headingColor text-capitalize">special meetings</span>
+											<span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
+											<!--<span style="background-color:#fff;margin-left:5px;" attr_main_type_meeting_id="3" class="specialMeetings" id="specialMeetingsExpandId"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="color:red;font-size:15px;" id="specialMeetingErrorId"></span>-->
+											
+											<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
+										</h4>
+									</div>
+									<div class="col-md-5 col-xs-12 col-sm-5" style="padding-right:0px;">
+										<span class="pull-right specialMeetingsCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
+									</div>
+									<div class="specialMeetingDropDown " style="left:0px;top:30px;">
+										<ul class="list-inline">
+											<li><label><input type="checkbox" class="selectAllSpecialMeeting"/>&nbsp&nbspSelect All</label></li>
+										</ul>
+										<div id="specialMeetingDivId"></div>
+										<button type="button" onclick="specialMeetingBtncls()" attr_main_type_meeting_id="3"  class="btn btn-success specialMeetingBtncls">Get Details</button>
+									</div>
+								</div>
+								<div class="row specialMeetingsCollapseBody" style="display:none">
+									<div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="cursor:pointer; margin-top: 15px; ">
+										<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew  defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
+										<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="" >last month</button>
+									</div>
+									<div id="specialMeetingBasicCnt" class="m_top10"></div>
+								</div>
+							</div>
+							
+							<!--<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<div class="panel-group" id="accordionMultiLocation" role="tablist" aria-multiselectable="true">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading pad_10" role="tab" id="headingMultiLocation">
+												<h4 class="panel-title" style="display: inline-block">
+													<span class="headingColor text-capital">multi Location meetings</span>
+													<span style="background-color: #fff;" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" class="multicLocationMeetingCls" expand-icon-inner="meetings" expand_event_name="multiLocation">
+														<i class="glyphicon glyphicon-fullscreen"></i>
+													</span>
+													<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="getMultiLocationWiseMeetingGroupsData();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
+													<!--<button class="btn btn-xs btn-mini btn-success getModalImagesCls" attr_Meeting_level_id="3" attr_Meeting_id="513359"> view </button>
+												</h4>  
+												<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordionMultiLocation" href="#collapseMultiLocation" aria-expanded="true" aria-controls="collapseMultiLocation">
+												</a>
+											</div>
+											<div id="collapseMultiLocation" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingMultiLocation">
+											  <div class="panel-body b_top0 pad_5">
+												<div id="MultiLocationWiseMeetingGroupsData"></div>  
+											  </div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>-->
+							
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12" expand-block-right="meetings" style="display:none">
+							<div class="row">
+								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+									<ul class="activeUlCls list-inline meetingFilterCls">
+										<li class="meetingLiCls active" attr_value="strong">top 5 strong</li>
+										<li class="meetingLiCls" attr_value="poor">last 5 poor</li>
+									</ul>
+								</div>
+								<div id="userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId"></div>
+								<div id="stateLevelMeetingBlockId"></div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock" expand-block-right="meetings">
+							<i data-placement="top" data-toggle="tooltip"  party_meetingId="0" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more" expand-block-right="meetings"></i>
+						</div>	
+						<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocksList" expand-block-more="meetings" style="display:none;">
+							<ul class="list-inline pull-right activeUlCls">
+								<li class="active multiMetingDetailedBlock" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Detailed</li>
+								<li class="multiLocation">Comparison</li>
+								<!--<li class="multiLocation">multiLocation</li>-->
+							</ul>
+						</div>
+						
+						<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 detailedMeetngsBlkId" style="display:none" expand-block-more="meetings" >
+							<ul class="list-inline pull-right activeUlCls">
+								<li class="active attendedMetngs" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Attended</li>
+								<li class="meetingBased" attr_levelId="0" attr_group_id="1"  attr_sessionId="0">Meetings Based</li>
+								<!--<li class="multiLocation">multiLocation</li>-->
+							</ul>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 multiLocationMeetingsCLs" expand-block-more="meetings" style="display:none">
+							<ul class="list-inline pull-right activeUlCls">
+								<li class="active multiMetingDetailedBlock">Detailed</li>
+								<li class="multiLocation">Comparison</li>
+							</ul>
+							
+						</div>
+						<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed"  expand-block-more="meetings"></div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20 meetingPerformancCls moreMeetingsBlocksDetailed"  expand-block-more="meetings" style="display:none">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-md-8 col-xs-12 col-sm-6">
+											<span class="headingColor text-capitalize">meetings performance cohort</span>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div id="districtWiseSpecialMeetingsGraph"></div>
+									<div id="partyMeetingOverviewTabDiv"></div>
+									<div id="cmtMemberDtlsTableId"></div>
+									<div id="childUserTypeDetailsDivIdForMeetingMultiLocation"></div>
+									<div id="childActivityMemberDivIdForMeetingMultiLocation" class="m_top20"></div>
+									<div id="directChildActivityMeetingMemberDivMultiLocation" class="m_top20"></div>
+									<div id="topPoorLocationsMeetingDiv" class="m_top20"></div>
+									<div id="userAccessLevelLocationDivId"></div>
+									<div id="districtWisePartyMeetingTypeDivId"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Meetings End-->
+		<!-- Kaizala  Start --> 
+		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="kaizala">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="kaizala">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/logoKaizala.png" class="iconClass" style="background-color:none;"/>
+									Kaizala
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="kaizala">
+							<span class="KaizalaRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</span>
+							<span class="kaizalaIconExpand pull-right" expand-icon="kaizala">
+								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+							</span>
+							
+						</div>     
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="overAllKaizalaBlockId"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="kaizala" style="display:none;" >
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="activeUlCls list-inline pull-right kaizalaLicls" role='tabCummulativeKai'>
+										<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+										<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+									</ul>
+								</div>
+							 </div>
+							 <div class="row">
+								<div class="col-sm-12">
+									<div class="verticalScrollBarKaizala">
+										<div id="userTypeWiseKaizalaDiv"></div>
+									</div>
+								</div>
+							 </div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="kaizala" style="display: none;">
+							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morekaizalaBlocksIcon" title="Click here for more"></i>
+						</div>	
+						<div class="col-md-12 col-xs-12 col-sm-12 morekaizalaBlocksDetailed m_top10"  expand-block-more="kaizala" style="display:none;">
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="levelWiseDetailsDivId"></div>
+								</div>
+							 </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Kaizala  END --> 		
+	</div>	
+	<div class="row">
+		<!--Events Start -->
+		<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="events">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
+								events and activities <small class="text-muted"><span id="dateEventsHeadingId">  - OVERALL (TILL NOW) </span></small>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="events">
+							<span class="notesIconEvents pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
+							</span>
+							<span class="eventsIconExpand pull-right" expand-icon="events">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+						<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshEventsActivities();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
+							<span class="input-group pull-right dateRangePickerClsForEvents hide" expand-block-date="events" style="width:200px;">
+								<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+					<div class="notesDropDown notesArrow" >
+						<h4 class="text-capital">notes
+							<span class="pull-right">
+								<i class="glyphicon glyphicon-list-alt"></i>
+							</span>
+						</h4>
+						<div id="notesEventsId"></div>
+						<hr/>
+						<div id="eventsUpId" style="color:red;"></div>
+						<label>Create Notes</label>
+						<textarea class="form-control notesAreaEvents"></textarea>
+						<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
 						</div>
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
+						<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20" expand-block-inner="events">
+							<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
+							<h4><span class="headingColor text-capital">events</span>
+							<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
+							<div id="mainEventsList" class="m_top20"></div>
+							<div id="janmabhoomiEventDivId" class=""></div>
+							<h4 style="margin-top:20px !important;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span>
+								<span class="pull-right activitiesCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
+							</h4>
+								<div id="activityEventsListNew" class="activitiesCollapseBody" style="display:none"></div>
+			
+							<!--<div style="border : 1px solid #333; padding : 5px">-->
+								<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
+								<!--<div id="activityEventsListNew" class="m_top20"></div>-->
+							<!--</div>-->
+						</div>
+						<!--Acivites Block
+						
+						
+						<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20">
+						<div style="border : 1px solid #333; padding : 5px">
+							<h4><span class="headingColor text-capital">activities</span></h4>
+							<div id="activityEventsListNew" class="m_top20"></div>
+						<!--</div>
+						</div>-->
+						<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock" expand-block-right="events">
+							<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
+							<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
+									<ul class="activeUlCls list-inline hideCls">
+										<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 </li>
+										<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;poor 5</li>
+									</ul>
+							</div> 
+							<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" expand-block-right="events" style="display: none;">
+							<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
+						</div>
+						<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId" expand-block-more="events">
+							
+							<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
+								<li class="text-capital activeLICls" attr_typeId="1">Detailed </li>
+								<li class="text-capital activeLICls" attr_typeId="2">Comparison</li>
+							</ul>
+						</div>
+						<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks" expand-block-more="events">
+						
+							<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
+								<li class="text-capital settingsIconAct">
+									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+								</li>
+							</ul>
+							<div class="actBlockDropDown notesArrow documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
+								<i class="glyphicon glyphicon-remove actSetClose pull-right"></i>
 								<div class="row">
+									<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+									  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+										<li role="presentation" class="active text-capital"><a href="#eventsSettings" aria-controls="eventsSettings" role="tab" data-toggle="tab">Events</a></li>
+										<li role="presentation" class="text-capital"><a href="#actSettings" aria-controls="actSettings" role="tab" data-toggle="tab">Activities</a></li>
+									  </ul>
+									</div>
+									<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+									  <div class="tab-content navTabsSettingsContent">
+										<div role="tabpanel" class="tab-pane active" id="eventsSettings">
+											<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS  </h4>
+											<hr style ="margin-bottom:0px;margin-top:0px;" />
+											<div class="">
+												<ul class="evntsSettingsUl">
+													<!--<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li>-->
+												</ul>
+											</div>
+										</div>
+										<div role="tabpanel" class="tab-pane" id="actSettings">
+											<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS  </h4>
+											<hr style ="margin-bottom:0px;" />
+											<div class="">
+												<ul class="activitySettingsUl">
+													<!-- <li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li> -->
+												</ul>
+											</div>
+										</div>
+									  </div>
+									  
+									</div>
+									<!--<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
+										<button type="button" class="btn btn-success">Get Details</button>
+									</div>-->
+								</div>
+								
+								
+							</div>
+						</div>
+						<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
+							<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
+								<li class="text-capital detailedEvent">Detailed</li>
+								<li class="text-capital comparisonActivity">Comparison</li>
+							</ul>
+						</div> -->
+						<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10" expand-block-more="events">
+							<div class="panel panel-default panelNew">
+								<div class="panel-body">
+									<div id="eventsGraphBlock"></div>
+									<div id="eventsGraphBlock1"></div>
+								</div>
+							</div>
+							<div class="panel panel-default panelNew m_top20">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<span class="headingColor text-capitalize activitiesH4"> Cohort</span>
+									</h4>
+								</div>
+								<div class="panel-body">
+									<div id="eventsDistWiseCohort"></div>
+									 <div id="eventsDistWiseCohort1"></div>
+									<div id="eventsDistWiseCohort2"></div>
+								</div>
+							</div>								
+							<div class="panel panel-default panelNew m_top20">
+								<div class="row" id="accordion">
 									<div class="col-sm-12">
-										<div id="overAllKaizalaBlockId"></div>
+										<div id="levelWiseOverviewId"></div>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="kaizala" style="display:none;" >
-								<div class="row">
-									<div class="col-sm-12">
-										<ul class="activeUlCls list-inline pull-right kaizalaLicls" role='tabCummulativeKai'>
-											<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
-											<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
-										</ul>
-									</div>
-								 </div>
-								 <div class="row">
-									<div class="col-sm-12">
-										<div class="verticalScrollBarKaizala">
-											<div id="userTypeWiseKaizalaDiv"></div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" expand-block-more="events" style="display:none" id="evntCmpBLockId">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12">
+										  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
 										</div>
 									</div>
-								 </div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="kaizala" style="display: none;">
-								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morekaizalaBlocksIcon" title="Click here for more"></i>
-							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-12 morekaizalaBlocksDetailed m_top10"  expand-block-more="kaizala" style="display:none;">
-								<div class="row">
-									<div class="col-sm-12">
-										<div id="levelWiseDetailsDivId"></div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											 <div id="childEvnetMemberDivId"> </div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div class="bg_ED pad_15 m_top20">
+											   <div id="directChildMemberForEventDivId"></div>
+											   <div class="row">
+													 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+														<div class="row m_top20">
+														 <div id="topPoorLocationsEventDivId"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
-								 </div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" expand-block-more="events" style="display:none" id="activtyBlckDivId">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12">
+										  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForActivity"></div>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											 <div id="childActivityMemberDivId"> </div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div class="bg_ED pad_15 m_top20">
+											   <div id="directChildMemberForActivityDivId"></div>
+											   <div class="row">
+													 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+														<div class="row m_top20">
+														 <div id="topPoorLocationsActivityDivId"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-	<!-- Kaizala  END --> 
-		<!--Events Start -->
-			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="events">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
-									events and activities <small class="text-muted"><span id="dateEventsHeadingId">  - OVERALL (TILL NOW) </span></small>
-								</h4>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="events">
-								<span class="notesIconEvents pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
-								</span>
-								<span class="eventsIconExpand pull-right" expand-icon="events">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-							<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshEventsActivities();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
-								<span class="input-group pull-right dateRangePickerClsForEvents hide" expand-block-date="events" style="width:200px;">
-									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-							</div>
-						</div>
-						<div class="notesDropDown notesArrow" >
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
-							</h4>
-							<div id="notesEventsId"></div>
-							<hr/>
-							<div id="eventsUpId" style="color:red;"></div>
-							<label>Create Notes</label>
-							<textarea class="form-control notesAreaEvents"></textarea>
-							<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
-						</div>
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20" expand-block-inner="events">
-								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
-								<h4><span class="headingColor text-capital">events</span>
-								<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
-								<div id="mainEventsList" class="m_top20"></div>
-								<div id="janmabhoomiEventDivId" class=""></div>
-								<h4 style="margin-top:20px !important;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span>
-									<span class="pull-right activitiesCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
-								</h4>
-									<div id="activityEventsListNew" class="activitiesCollapseBody" style="display:none"></div>
-				
-								<!--<div style="border : 1px solid #333; padding : 5px">-->
-									<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
-									<!--<div id="activityEventsListNew" class="m_top20"></div>-->
-								<!--</div>-->
-							</div>
-							<!--Acivites Block
-							
-							
-							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20">
-							<div style="border : 1px solid #333; padding : 5px">
-								<h4><span class="headingColor text-capital">activities</span></h4>
-								<div id="activityEventsListNew" class="m_top20"></div>
-							<!--</div>
-							</div>-->
-							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock" expand-block-right="events">
-								<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
-								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
-										<ul class="activeUlCls list-inline hideCls">
-											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 </li>
-											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;poor 5</li>
-										</ul>
-								</div> 
-								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" expand-block-right="events" style="display: none;">
-								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
-							</div>
-							<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId" expand-block-more="events">
-								
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
-									<li class="text-capital activeLICls" attr_typeId="1">Detailed </li>
-									<li class="text-capital activeLICls" attr_typeId="2">Comparison</li>
-								</ul>
-							</div>
-							<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks" expand-block-more="events">
-							
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
-									<li class="text-capital settingsIconAct">
-										<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-									</li>
-								</ul>
-								<div class="actBlockDropDown notesArrow documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
-									<i class="glyphicon glyphicon-remove actSetClose pull-right"></i>
-									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
-										  <ul class="nav nav-tabs navTabsSettings" role="tablist">
-											<li role="presentation" class="active text-capital"><a href="#eventsSettings" aria-controls="eventsSettings" role="tab" data-toggle="tab">Events</a></li>
-											<li role="presentation" class="text-capital"><a href="#actSettings" aria-controls="actSettings" role="tab" data-toggle="tab">Activities</a></li>
-										  </ul>
-										</div>
-										<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
-										  <div class="tab-content navTabsSettingsContent">
-											<div role="tabpanel" class="tab-pane active" id="eventsSettings">
-												<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS  </h4>
-												<hr style ="margin-bottom:0px;margin-top:0px;" />
-												<div class="">
-													<ul class="evntsSettingsUl">
-														<!--<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>-->
-													</ul>
-												</div>
-											</div>
-											<div role="tabpanel" class="tab-pane" id="actSettings">
-												<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS  </h4>
-												<hr style ="margin-bottom:0px;" />
-												<div class="">
-													<ul class="activitySettingsUl">
-														<!-- <li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li>
-														<li>
-															<label class="checkbox-inline">
-																<input type="checkbox" value="0" checked>
-																<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-															</label>
-														</li> -->
-													</ul>
-												</div>
-											</div>
-										  </div>
-										  
-										</div>
-										<!--<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
-											<button type="button" class="btn btn-success">Get Details</button>
-										</div>-->
-									</div>
-									
-									
-								</div>
-							</div>
-							<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
-								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
-									<li class="text-capital detailedEvent">Detailed</li>
-									<li class="text-capital comparisonActivity">Comparison</li>
-								</ul>
-							</div> -->
-							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10" expand-block-more="events">
-								<div class="panel panel-default panelNew">
-									<div class="panel-body">
-										<div id="eventsGraphBlock"></div>
-										<div id="eventsGraphBlock1"></div>
-									</div>
-								</div>
-								<div class="panel panel-default panelNew m_top20">
-									<div class="panel-heading">
-										<h4 class="panel-title">
-											<span class="headingColor text-capitalize activitiesH4"> Cohort</span>
-										</h4>
-									</div>
-									<div class="panel-body">
-										<div id="eventsDistWiseCohort"></div>
-										 <div id="eventsDistWiseCohort1"></div>
-										<div id="eventsDistWiseCohort2"></div>
-									</div>
-								</div>								
-								<div class="panel panel-default panelNew m_top20">
-									<div class="row" id="accordion">
-										<div class="col-sm-12">
-											<div id="levelWiseOverviewId"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" expand-block-more="events" style="display:none" id="evntCmpBLockId">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12">
-											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												 <div id="childEvnetMemberDivId"> </div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20">
-												   <div id="directChildMemberForEventDivId"></div>
-												   <div class="row">
-														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-															<div class="row m_top20">
-															 <div id="topPoorLocationsEventDivId"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" expand-block-more="events" style="display:none" id="activtyBlckDivId">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12">
-											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForActivity"></div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												 <div id="childActivityMemberDivId"> </div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20">
-												   <div id="directChildMemberForActivityDivId"></div>
-												   <div class="row">
-														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-															<div class="row m_top20">
-															 <div id="topPoorLocationsActivityDivId"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>	
-	
+		</div>	
 		<!--Events End -->
-		
-			
-	</div>	
-	<div class="row">
 		<!-- Committees Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock" expand-block="committees">
         	<div class="panel panel-default panelNewCustom panel1">
@@ -3285,7 +3468,9 @@
             </div>
         </div>
 		<!-- Committees End-->
-	
+		
+	</div>
+	<div class="row">
 		<!-- Booth Committees Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 boothCommitteesBlock" expand-block="boothCommittees">
         	<div class="panel panel-default panelNewCustom panel1">
@@ -3574,12 +3759,6 @@
             </div>
         </div>
 		<!-- Booth Committees End-->
-		
-			
-		
-		
-	</div>
-	<div class="row">
 		<!-- Cadre Insurance Start-->
 			<div class="col-md-6 col-xs-12 col-sm-6 cadreInsuranceBlock" expand-block="cadreInsurance">
 				<div class="panel panel-default panelNewCustom">
@@ -4032,8 +4211,10 @@
 				</div>
 			</div>
 			<!-- Cadre Insurance End-->
-			
-			<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock" expand-block="cadre">  
+	</div>
+	<div class="row">
+		<!-- Cadre Registration -->	
+		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock" expand-block="cadre">  
         	<div class="panel panel-default panelNewCustom">
             	<div class="panel-heading">
                 	<div class="row">
@@ -4397,10 +4578,7 @@
             </div>
         </div>
 		<!---------Cadre Registration End--->
-	</div>
-	<div class="row">
-	
-	<!-- Attendance Start-->
+		<!-- Attendance Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock" expand-block="attendance">
             <div class="panel panel-default panelNewCustom">
                 <div class="panel-heading">
@@ -4533,8 +4711,10 @@
                     </div>
                 </div>
             </div>
-       </div>
+		</div>
 		<!-- Attendance End-->
+	</div>
+	<div class="row">
 		<!-- Nominated Post Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 newNominatedPostBlock" expand-block="nominatedPost">
 			 <div class="panel panel-default panelNewCustom">
@@ -4604,286 +4784,6 @@
 			</div>
 		</div>
 		<!-- Nominated Post End-->
-	</div>
-	<div class="row">
-		<!-----------News Letters Start----------->
-		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="newsLetters">
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="newsLetters">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/news.png" class="iconClass" style="background-color:none;"/>
-										Word Cloud News (Today)
-								</h4>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="newsLetters">
-								<span class="newsLettersRefresh pull-right"  onclick="refreshWordCloudfunction();">
-									<i class="glyphicon glyphicon-refresh"></i>
-								</span>
-								<span class="wordCloudIconExpand pull-right mainExpandCls" expand-icon="newsLetters">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-							</div>  
-						</div>
-					</div>
-					<div class="container-fluid">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-sm-12 responsive" expand-block-inner="newsLetters">
-									<div id="chart" style="margin-left: -29px;">
-										<svg id="svg">
-										</svg>
-									</div>
-									<div class="row align-items-center col-sm-12" style="border:0.5px solid black;margin-left: 0px; margin-right: 0px;">
-										<div class="col-sm-3">
-											<label for="crit" style="margin-top: 4px; class="label-padding">Critical</label>
-											<div id="crit" class="box-color critical"></div>
-										</div>
-										<div class="col-sm-3">
-											<label for="neg" style="margin-top: 4px; class="label-padding">Negative</label>
-											<div id="neg"  class="box-color negative"></div>
-										</div>
-										<div class="col-sm-3">
-											<label for="pos" style="margin-top: 4px; class="label-padding">Positive</label>
-											<div id="pos" class="box-color positive"></div>
-										</div>
-										<div class="col-sm-3">
-											<label for="neu" style="margin-top: 4px; class="label-padding">Neutral</label>
-											<div id="neu" class="box-color neutral"></div>
-										</div>
-									</div>
-									<div class="empty-alert">
-										<div class="alert alert-danger" role="alert">
-											Results are empty!
-										</div>
-									</div>
-									<div class="error-alert">
-										<div class="alert alert-danger" role="alert">
-											Error in server!
-										</div>
-									</div>
-									<div class="data-sent-alert">
-										<div class="alert alert-success" role="alert">
-											<div class="row">
-												<div class="col-10">
-													Request sent!
-												</div>
-												<div class="col-2">
-													<div class="loader-2"></div>
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div class="data-processing-alert">
-										<div class="alert alert-primary" role="alert">
-											<div class="row">
-												<div class="col-10">
-													Data received and processing word cloud!
-												</div>
-												<div class="col-2">
-													<div class="loader"></div>
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div class="card headline-div">
-										<div class="card-header" style="background-color: blanchedalmond;">
-											<div class="row">
-												<div class="col-sm-6" style="padding-left: 33px;">
-													News Article Titles
-												</div>
-												<div class="col-sm-6 offset-4">
-													<i class="fa fa-times close-button" onclick="closeDiv()"style="padding-top: 3px;padding-left:136px"></i>
-												</div>
-											</div>
-										</div>
-										<ul class="list-group list-group-flush headline-div-content">
-										</ul>
-									</div>
-								</div>
-							
-								<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="newsLetters">
-									<div class="row m_top10">	
-										<div class="col-sm-6 offset-1">
-											<label for="startDate">Start Date</label>
-											<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
-												<input type="text" id="startDate" class="form-control" />
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
-											</span>
-										</div>
-										<div class="col-sm-6">
-											<label for="endDate">End Date</label>
-												<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
-													<input type="text" id="endDate" class="form-control" />
-													<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
-											</span>
-										</div>
-									</div>
-									<div class="row m_top10">
-										<div class="col-sm-6">
-											<label for="wordCloudDistrict">District</label>
-											<!--<div class="multiselect">
-												<div class="selectBox" onclick="showCheckboxes()">
-													<select id="district" class="form-control">
-														<option>Select a district</option>
-													</select>
-													<div class="overSelect" id="overSelect"></div>
-												</div>
-												<div id="checkboxes"></div>
-											</div>-->
-											<select class="form-control chosen-select" multiple="multiple" id="wordCloudDistrict">
-											</select>
-										</div>
-										<div class="col-sm-6">
-											<label for="wordCloudConstituency">Constituency</label>
-											<!--<div class="multiselect">
-												<div class="selectBox" onclick="showCheckboxes1()">
-													<select id="constituency" class="form-control">
-														<option>Select a constituency</option>
-													</select>
-													<div class="overSelect"></div>
-												</div>
-												<div id="checkboxes1">
-												</div>
-											</div>-->
-											<select class="form-control chosen-select" multiple="multiple" id="wordCloudConstituency">
-											</select>
-										</div>
-									</div>
-								<div class="row m_top10">
-									<div class="col-sm-6">
-										<label for="newspapers">Newspaper</label>
-										<!--<div class="multiselect">
-											<div class="selectBox" onclick="showCheckboxes2()">
-												<select id="newspapers" class="form-control">
-													<option>Select a Newspaper</option>
-												</select>
-												<div class="overSelect"></div>
-											</div>
-											<div id="checkboxes2"></div>
-										</div>-->
-										<label>News Paper</label>
-									<select class="form-control chosen-select" multiple="multiple" id="newspapers">
-										</select>
-									</div>
-									<div class="col-sm-6">
-										<label>Edition Type</label>
-										<select class="form-control chosen-select" multiple="multiple" id="editionType">
-											<option value ="0" selected> ALL Editions </option>
-											<option> Main </option>
-											<option> District </option>
-											<option> Online </option>
-										</select>
-									</div>
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-6">	
-										<div class="submit-button">
-											<div class="text-center">
-												<button class="btn btn-primary" style="margin-top: 22px;" onclick="fetchDataForWordCloud('fromPage')">Submit</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							</div>
-						</div>
-						
-					</div>
-					<!--<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="newsLetters">
-								
-								<div class="row m_top10">
-									<div class="col-sm-6">
-										<label>From Date</label>
-										<span class="input-group dateRangePickerCls" style="margin-right:23px;">
-											<input type="text" id="dateRangeFromDateNewsId" class="form-control" style="width: 221px; height: 33px;"/>
-											<span class="input-group-addon">
-												<i class="glyphicon glyphicon-calendar"></i>
-											</span>
-										</span>
-									</div>
-									<div class="col-sm-6">
-										<label>To Date</label>
-										<span class="input-group dateRangePickerCls" style="margin-right:23px;">
-											<input type="text" id="dateRangeToDateNewsId" class="form-control" style="width: 221px; height: 33px;" />
-											<span class="input-group-addon">
-												<i class="glyphicon glyphicon-calendar"></i>
-											</span>
-										</span>
-									</div>	
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-6">
-										<label>State</label>
-										<select class="form-control chosen-select" id="newsLetterStateId">
-											<option value="Andhra Pradesh" selected> Andhra Pradesh </option>
-										</select>
-									</div>
-									<div class="col-sm-6">
-										<label>District</label>
-										<select class="form-control chosen-select" id="newsLetterDistrictId">
-											
-										</select>
-									</div>
-									
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-6">
-										<label>Constitency</label>
-										<select class="form-control chosen-select" id="newsLetterConstituencyId">
-											
-										</select>
-									</div>
-									<!--<div class="col-sm-4">
-										<label>Parliament</label>
-										<select class="form-control chosen-select" id="newsLetterParliamentId">
-											<option value="" selected>Parliament</option>
-											<option> Rajahmundry </option>
-											<option> Visakhapatnam </option>
-											<option> Vijayawada </option>
-											<option> Rajampet </option>
-											<option> Warangal </option>
-										</select>
-									</div>
-									<div class="col-sm-6">
-										<label>News Paper</label>
-										<select class="form-control chosen-select" multiple="multiple" id="newsLetternewsPaperId">
-											
-										</select>
-									</div>
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-6">
-										<label>Edition Type</label>
-										<select class="form-control chosen-select" multiple="multiple" id="newsLetterEditionId">
-											<option> Main </option>
-											<option> District </option>
-											<option> Online </option>
-										</select>
-									</div>
-									<div class="col-sm-6" style="border-top-width: 0px; padding-top: 9px; padding-left: 73px;">
-										<button type="button" id="submitId" class="btn btn-default btn-md m_top10">Submit</button>
-									</div>
-								</div>
-								<div class="row m_top20">
-									<div class="img-responsive" id ="imageId"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!--------News Letters End----------->
-			</div>
-		</div>
 	</div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
 <input type="hidden" id="alertEditionTypeHiddenId"></input>  
