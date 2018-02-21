@@ -79,13 +79,14 @@ public class ActivityExceptionalReportService implements IActivityExceptionalRep
 					 locationVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[0]));
 					 locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[1]));
 					 locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					 locationVO.setNotConductedCount(locationVO.getTotalCount());//default
 					 //set not conducted activity location
 					 Object[] matchObjArr = getMatchObjectArr(conductedObjList, locationVO.getLocationId());
 					 if (matchObjArr != null ) {
 						 Long conductedCount = commonMethodsUtilService.getLongValueForObject(matchObjArr[0]);
 						 locationVO.setNotConductedCount(locationVO.getTotalCount() - conductedCount);
-						 locationVO.setPercentage(Util.calculatePercantage(locationVO.getNotConductedCount(), locationVO.getTotalCount()));
 					 }
+					 locationVO.setPercentage(Util.calculatePercantage(locationVO.getNotConductedCount(), locationVO.getTotalCount()));
 					 //setting address
 					 locationVO.setAddressVO(getAddressDetails(param, locationType));
 					 locationMap.put(locationVO.getLocationId(), locationVO);
