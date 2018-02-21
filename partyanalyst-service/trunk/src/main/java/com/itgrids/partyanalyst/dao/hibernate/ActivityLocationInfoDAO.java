@@ -3499,4 +3499,54 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 		}
 		return query.list();
 	}
+	public List<Object[]> getLocationWiseActiviyDetailsByType(Long activityScopeId, String locationLevel, String type) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select ");
+		sb.append(" count(distinct model.activityLocationInfoId) ");
+		if (locationLevel != null && locationLevel.equalsIgnoreCase("constituency")) {
+			sb.append(" ,constituency.constituencyId, constituency.name ");
+			sb.append(" ,district.districtId, district.districtName ");
+		} 
+		sb.append(" ,parliamentConstituency.constituencyId, parliamentConstituency.name ");
+		sb.append(" from ActivityLocationInfo model ");
+		if (locationLevel != null && locationLevel.equalsIgnoreCase("constituency")) {
+			sb.append(" left join model.address.district district"
+					+ " left join model.address.constituency constituency");
+		}
+		sb.append(" left join model.address.parliamentConstituency parliamentConstituency");
+		sb.append(" where model.activityScope.activityScopeId =:activityScopeId ");
+		if (type != null && type.length() > 0 && type.equalsIgnoreCase("conducted")) {
+			sb.append(" and model.updatedStatus ='UPDATED' and model.conductedDate is not null ");
+		}
+		if (locationLevel != null && locationLevel.equalsIgnoreCase("constituency")) {
+			sb.append(" group by constituency.constituencyId");
+		} else if (locationLevel != null && locationLevel.equalsIgnoreCase("parliament")) {
+			sb.append(" group by parliamentConstituency.constituencyId");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("activityScopeId", activityScopeId);
+		return query.list();
+	}
+
+	public List<Object[]> getMPPChairmanMayorAttenedDetatils(Long activityScopeId) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select ");
+		sb.append(" constituency.constituencyId, constituency.name ");
+		sb.append(" ,parliament.constituencyId, parliament.name ");
+		sb.append(" ,count(distinct model.conductedDate) ");
+		sb.append(" from ActivityLocationInfo model ");
+		sb.append(" left join model.address.parliamentConstituency parliament "
+				+ " left join model.address.constituency constituency "
+				+ ",ActivityQuestionAnswer model1 "
+				+ " where "
+				+ " model.activityLocationInfoId=model1.activityLocationInfoId "
+				+ " and model1.activityQuestionnaireId="+IConstants.MPP_CHAIRMAN_MAYOR_PARTICIPATEDORNOT_QUESIONNAIRE_ID+"" 
+			    + " and model1.activityOptionId = "+IConstants.ACTIVITY_OPTION_ID + ""
+				+ " and model1.isDeleted = 'N' ");
+		sb.append(" and model.activityScope.activityScopeId =:activityScopeId ");
+		sb.append(" group by constituency.constituencyId");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("activityScopeId", activityScopeId);
+		return query.list();
+	}
 }
