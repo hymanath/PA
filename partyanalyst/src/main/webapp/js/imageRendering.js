@@ -4,8 +4,11 @@ if(wurl.length == 3)
   wurl = url.substr(0,(url.indexOf(".in")+3));
 var glStartDate = moment().format("YYYY-MM-DD");
 var glEndDate = moment().format("YYYY-MM-DD");
-getAllLocations(2,'1','onload');
-populateNewspapers();
+onLoadCalls();
+function onLoadCalls(){
+	getAllLocations(2,'1','onload');
+	populateNewspapers('onload');
+}
 var newsPaper=[];
 var editionType=[];
 var districts = [];
@@ -117,11 +120,6 @@ function drawWordCloud(data) {
 			const obj = _.find(data, (value, key) => {
 				return evt.target.innerHTML === key
 			})
-			// let article_data = "<pre>"
-			// _.forEach(obj.titles, val => {<div class="col-2">
-			//     article_data = article_data + val + "\n"
-			// })
-			// article_data = article_data + "</pre>"
 			let article_data = ''
 			_.forEach(obj.titles, (val, index) => {
 				switch (obj.article_senti[index]) {
@@ -144,7 +142,6 @@ function drawWordCloud(data) {
 }
 
 function getArticleId(id) {
-    //url = "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+id;
 	getOverAllDetailsOfAnArticle(id);
 }   
 
@@ -153,64 +150,63 @@ function closeDiv() {
 }
 
 function fetchDataForWordCloud(type) {
-var districtIdEmpty = $("#wordCloudDistrict").val();
-var districtIdEmpty1 = $("#newspapers").val();
-var districtIdEmpty2 = $("#editionType").val();
-if(districtIdEmpty == 0){
-	districtNames=globalDistricts;
-}
-if(districtIdEmpty1 == 0){
-	newspaperNames=globalNewsPapres;
-}	
-if(districtIdEmpty2 == 0){
-	editionTypes=globalEditionType;
-}		
-$("#svg").html("");
-   document.getElementsByClassName("btn-primary")[0].disabled = "true";
-    document.getElementsByClassName("headline-div")[0].style.display = "none";
-    document.getElementsByClassName("headline-div-content")[0].innerHTML = '';
+	var districtIdEmpty = $("#wordCloudDistrict").val();
+	var districtIdEmpty1 = $("#newspapers").val();
+	var districtIdEmpty2 = $("#editionType").val();
+	if(districtIdEmpty == 0){
+		districtNames=globalDistricts;
+	}
+	if(districtIdEmpty1 == 0){
+		newspaperNames=globalNewsPapres;
+	}	
+	if(districtIdEmpty2 == 0){
+		editionTypes=globalEditionType;
+	}		
+	$("#svg").html("");
+	   document.getElementsByClassName("btn-primary")[0].disabled = "true";
+		document.getElementsByClassName("headline-div")[0].style.display = "none";
+		document.getElementsByClassName("headline-div-content")[0].innerHTML = '';
 
-if(type =="fromPage"){
-	districts= $.unique(districts);
-    var requestObj = { "Constituency": constituencies, "News_Paper": newspaperNames, "Distrtict": districtNames,"Edition_Type":editionTypes, "start_date": glStartDate, "end_date": glEndDate };
-}else{
-var requestObj = { "Constituency": constituencies,"News_Paper": globalNewsPapres, "Distrtict": globalDistricts, "Edition_Type":globalEditionType,"start_date": glStartDate, "end_date": glEndDate };
+	if(type =="fromPage"){
+		districts= $.unique(districts);
+		var requestObj = { "Constituency": constituencies, "News_Paper": newspaperNames, "Distrtict": districtNames,"Edition_Type":editionTypes, "start_date": glStartDate, "end_date": glEndDate };
+	}else{
+		var requestObj = { "Constituency": constituencies,"News_Paper": globalNewsPapres, "Distrtict": globalDistricts, "Edition_Type":globalEditionType,"start_date": glStartDate, "end_date": glEndDate };
 
-}
-
-    console.log(requestObj)
-    document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
-    const url = 'http://139.59.3.60:8000/wordcloud/'
-    fetch(url, { method: 'post', body: JSON.stringify(requestObj) })
-        .then((res) => {
-            //console.log(res)
-            document.getElementsByClassName("data-sent-alert")[0].style.display = "none";
-            document.getElementsByClassName("data-processing-alert")[0].style.display = "block";
-            return res.json();
-        })
-        .then(res => {
-            //console.log(res)
-            if (_.isEmpty(res.received_data)) {
-                document.getElementsByClassName("data-processing-alert")[0].style.display = "none";
-                document.getElementsByClassName("empty-alert")[0].style.display = "block";
-                setTimeout(() => {
-                    document.getElementsByClassName("empty-alert")[0].style.display = "none";
-                    document.getElementsByClassName("btn-primary")[0].disabled = "";
-                }, 2000)
-            } else {
-                drawWordCloud(res.received_data);
-            }
-        })
-        .catch(function (error) {
-           // console.log(error);
-            document.getElementsByClassName("data-processing-alert")[0].style.display = "none";
-            document.getElementsByClassName("data-sent-alert")[0].style.display = "none";
-            document.getElementsByClassName("error-alert")[0].style.display = "block";
-            setTimeout(() => {
-                document.getElementsByClassName("error-alert")[0].style.display = "none";
-                document.getElementsByClassName("btn-primary")[0].disabled = "";
-            }, 2000);
-        });
+	}
+		console.log(requestObj)
+		document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
+		const url = 'http://139.59.3.60:8000/wordcloud/'
+		fetch(url, { method: 'post', body: JSON.stringify(requestObj) })
+			.then((res) => {
+				//console.log(res)
+				document.getElementsByClassName("data-sent-alert")[0].style.display = "none";
+				document.getElementsByClassName("data-processing-alert")[0].style.display = "block";
+				return res.json();
+			})
+			.then(res => {
+				//console.log(res)
+				if (_.isEmpty(res.received_data)) {
+					document.getElementsByClassName("data-processing-alert")[0].style.display = "none";
+					document.getElementsByClassName("empty-alert")[0].style.display = "block";
+					setTimeout(() => {
+						document.getElementsByClassName("empty-alert")[0].style.display = "none";
+						document.getElementsByClassName("btn-primary")[0].disabled = "";
+					}, 2000)
+				} else {
+					drawWordCloud(res.received_data);
+				}
+			})
+			.catch(function (error) {
+			   // console.log(error);
+				document.getElementsByClassName("data-processing-alert")[0].style.display = "none";
+				document.getElementsByClassName("data-sent-alert")[0].style.display = "none";
+				document.getElementsByClassName("error-alert")[0].style.display = "block";
+				setTimeout(() => {
+					document.getElementsByClassName("error-alert")[0].style.display = "none";
+					document.getElementsByClassName("btn-primary")[0].disabled = "";
+				}, 2000);
+			});
 }
   
 function getAllLocations(levelId,levelValue,type){
@@ -256,6 +252,7 @@ function buildResultforWordCloud(levelTypeId,result,type){
 		optionStr+='<option value="0" selected>ALL NewsPapers(Excepted Sakshi)</option>';
 	}
 	if(levelTypeId =="newspapers"){
+		globalNewsPapres=[];
 		for(var i in result){
 			optionStr+='<option>'+result[i].paperName+'</option>';
 			if(result[i].paperId !=8){
@@ -263,6 +260,7 @@ function buildResultforWordCloud(levelTypeId,result,type){
 			}
 		}
 	}else {
+		globalDistricts=[];
 		for(var i in result){
 			optionStr+='<option>'+result[i].locationName+'</option>';
 			if(levelTypeId=="wordCloudDistrict"){
@@ -280,18 +278,23 @@ function buildResultforWordCloud(levelTypeId,result,type){
 		$('#'+levelTypeId).trigger('chosen:updated');
 	}
 	$('#'+levelTypeId).trigger("chosen:updated");
+	callfetchFunction(type);
+}
+function callfetchFunction(type){
 	if(type !='onchange' && type !==undefined && type !== 'undefined'){
-		fetchDataForWordCloud("") 
+		$("#svg").html("");
+		if(globalDistricts != null && globalDistricts.length>0 && globalNewsPapres !=null && globalNewsPapres.length>0){
+			fetchDataForWordCloud("") ;
+		}
 	}
 }
-
-function populateNewspapers(){
+function populateNewspapers(type){
 	$.ajax({
 		type : 'GET', 
-		url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
-     // url: "http://localhost:8446/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+		//url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+      url: "http://localhost:8446/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
     }).then(function(result){
-		return buildResultforWordCloud('newspapers',result,"onchange");
+	return buildResultforWordCloud('newspapers',result,type);
       
     });    
 }
@@ -851,6 +854,7 @@ function getOverAllDetailsOfAnArticle(articleId){
 	});
 }
 function refreshWordCloudfunction(){
-	getAllLocations(2,'1','onload');
-	populateNewspapers();
+	document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
+	getAllLocations(2,'1','onchange');
+	populateNewspapers('onload');
 }
