@@ -24,6 +24,7 @@ $("#dateRangePickerRanges").daterangepicker({
 	opens:'left',
 	startDate: globalStartDate,
 	endDate: globalEndDate,
+	maxDate: new Date(), 
 	locale: {
         format: "YYYY-MM-DD",
 	},
