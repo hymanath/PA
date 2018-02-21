@@ -1,6 +1,6 @@
 
-getActivityPerformanceDetailsLocationWise();
-getActivityAttendedAndImageCoveredDetails();
+getActivityPerformanceDetailsLocationWise();//first two block
+getActivityAttendedAndImageCoveredDetails();//Last two block
 
 function getActivityPerformanceDetailsLocationWise() {
 	var jsObj = {
@@ -9,6 +9,7 @@ function getActivityPerformanceDetailsLocationWise() {
 		toDate : "31/01/2018"
 	}
 	$.ajax({
+
 		type : 'POST',
 		url : 'getActivityPerformanceDetailsLocationWiseAction.action',
 		dataType : 'json',
