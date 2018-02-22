@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,8 +49,143 @@ public class RepresenteeViewVO {
 	private Long documentTypeId;
 	private String refNo;
 	private String dataType;
+	private String subjectName;
+	private String subSubjectname;
+	private String deptName;
+	private String leadName;
+	private List<String> hasCoverLtr = new ArrayList<String>() ;
+	private List<String> hasActionCopy = new ArrayList<String>();
+	private List<String> hasDetailedReport= new ArrayList<String>();
+	private List<String> hasFinalCopy= new ArrayList<String>();
+	private List<String> hasOthersCopy= new ArrayList<String>();
+	private List<String> hasWorkDocs= new ArrayList<String>();
+	private List<String> hasRepRefDocs= new ArrayList<String>();
+	private String workType;
+	private String grantName;
+	private Set<Long> documentIds = new TreeSet<Long>();
+	private String representDesig;
+	private String officerName;
+	private String ofcrDesig;
+	private String ofcrDept;
+	private String lastUpdatedTime="";
 	
 	
+	
+	public List<String> getHasRepRefDocs() {
+		return hasRepRefDocs;
+	}
+	public void setHasRepRefDocs(List<String> hasRepRefDocs) {
+		this.hasRepRefDocs = hasRepRefDocs;
+	}
+	public String getOfficerName() {
+		return officerName;
+	}
+	public void setOfficerName(String officerName) {
+		this.officerName = officerName;
+	}
+	public String getOfcrDesig() {
+		return ofcrDesig;
+	}
+	public void setOfcrDesig(String ofcrDesig) {
+		this.ofcrDesig = ofcrDesig;
+	}
+	public String getOfcrDept() {
+		return ofcrDept;
+	}
+	public void setOfcrDept(String ofcrDept) {
+		this.ofcrDept = ofcrDept;
+	}
+	public String getLastUpdatedTime() {
+		return lastUpdatedTime;
+	}
+	public void setLastUpdatedTime(String lastUpdatedTime) {
+		this.lastUpdatedTime = lastUpdatedTime;
+	}
+	public String getRepresentDesig() {
+		return representDesig;
+	}
+	public void setRepresentDesig(String representDesig) {
+		this.representDesig = representDesig;
+	}
+	public Set<Long> getDocumentIds() {
+		return documentIds;
+	}
+	public void setDocumentIds(Set<Long> documentIds) {
+		this.documentIds = documentIds;
+	}
+	public String getWorkType() {
+		return workType;
+	}
+	public void setWorkType(String workType) {
+		this.workType = workType;
+	}
+	public String getGrantName() {
+		return grantName;
+	}
+	public void setGrantName(String grantName) {
+		this.grantName = grantName;
+	}
+	
+	public List<String> getHasCoverLtr() {
+		return hasCoverLtr;
+	}
+	public void setHasCoverLtr(List<String> hasCoverLtr) {
+		this.hasCoverLtr = hasCoverLtr;
+	}
+	public List<String> getHasActionCopy() {
+		return hasActionCopy;
+	}
+	public void setHasActionCopy(List<String> hasActionCopy) {
+		this.hasActionCopy = hasActionCopy;
+	}
+	public List<String> getHasDetailedReport() {
+		return hasDetailedReport;
+	}
+	public void setHasDetailedReport(List<String> hasDetailedReport) {
+		this.hasDetailedReport = hasDetailedReport;
+	}
+	public List<String> getHasFinalCopy() {
+		return hasFinalCopy;
+	}
+	public void setHasFinalCopy(List<String> hasFinalCopy) {
+		this.hasFinalCopy = hasFinalCopy;
+	}
+	public List<String> getHasOthersCopy() {
+		return hasOthersCopy;
+	}
+	public void setHasOthersCopy(List<String> hasOthersCopy) {
+		this.hasOthersCopy = hasOthersCopy;
+	}
+	public List<String> getHasWorkDocs() {
+		return hasWorkDocs;
+	}
+	public void setHasWorkDocs(List<String> hasWorkDocs) {
+		this.hasWorkDocs = hasWorkDocs;
+	}
+	public String getLeadName() {
+		return leadName;
+	}
+	public void setLeadName(String leadName) {
+		this.leadName = leadName;
+	}
+	public String getSubjectName() {
+		return subjectName;
+	}
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
+	}
+	public String getSubSubjectname() {
+		return subSubjectname;
+	}
+	public void setSubSubjectname(String subSubjectname) {
+		this.subSubjectname = subSubjectname;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
 	public String getDataType() {
 		return dataType;
 	}

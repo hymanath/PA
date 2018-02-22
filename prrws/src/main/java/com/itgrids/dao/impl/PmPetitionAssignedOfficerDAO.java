@@ -1,6 +1,7 @@
 package com.itgrids.dao.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -67,6 +68,23 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 				"  order by model.insertedTime desc ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("assignedToOfficerIdsList", assignedToOfficerIdsList);
+		return query.list();
+	}
+	
+	public List<Object[]> getLatestUpdatedDetailsOfPetition(Set<Long> petitionIds){
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.pmPetitionAssignedOfficerId, model.pmDepartmentDesignationOfficer.pmOfficer.name," +//0,1
+				" model.pmDepartmentDesignation.pmOfficerDesignation.designation" +//2
+				",model.pmDepartmentDesignation.pmDepartment.shortName " +//3
+				",model.petition.petitionId,model.insertedTime ,model.pmSubWorkDetailsId " +//4,5,6
+				"from PmPetitionAssignedOfficer model where model.isDeleted='N'  " );
+		if(petitionIds != null && petitionIds.size() >0)
+				str.append("and model.petition.petitionId in (:petitionIds) ");
+				
+		str.append(" group by model.petition.petitionId order by   model.insertedTime desc ");
+		Query query = getSession().createQuery(str.toString());
+		if(petitionIds != null && petitionIds.size() >0)
+		query.setParameterList("petitionIds", petitionIds);
 		return query.list();
 	}
 }

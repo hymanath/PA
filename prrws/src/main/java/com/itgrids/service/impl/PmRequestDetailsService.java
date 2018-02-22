@@ -1517,7 +1517,140 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			Long maxPending = commonMethodsUtilService.getLongValueForObject(inputVO.getEndValue());
 			
 			//Map<Long,RepresenteeViewVO> statusSummeryMap = new HashMap<Long,RepresenteeViewVO>();
-			
+			List<Object[]> documentsList = pmSubWorkCoveringLetterDAO.getAllTypeOfDocumentsForPetition(mapData.keySet(),null);
+			if(commonMethodsUtilService.isListOrSetValid(documentsList)){
+				for (Object[] param : documentsList) {
+					RepresenteeViewVO petitionVO = mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(petitionVO != null){
+						if(commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("COVERING LETTER")){
+							if(!petitionVO.getDocumentIds().contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
+								petitionVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+								petitionVO.getHasCoverLtr().add(commonMethodsUtilService.getStringValueForObject(param[5]));
+							}
+						}else if(commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("ACTION COPY")){
+							if(!petitionVO.getDocumentIds().contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
+								petitionVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+								petitionVO.getHasActionCopy().add(commonMethodsUtilService.getStringValueForObject(param[5]));
+							}
+						}else if(commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("DETAILED REPORT")){
+							if(!petitionVO.getDocumentIds().contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
+								petitionVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+								petitionVO.getHasDetailedReport().add(commonMethodsUtilService.getStringValueForObject(param[5]));
+							}
+						}else if(commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("OTHER REPORT")){
+							if(commonMethodsUtilService.getLongValueForObject(param[2]) == 0l){
+								if(!petitionVO.getDocumentIds().contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
+									petitionVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+									petitionVO.getHasOthersCopy().add(commonMethodsUtilService.getStringValueForObject(param[5]));
+								}
+							}else if(commonMethodsUtilService.getLongValueForObject(param[2]) != 0l){
+								if(!petitionVO.getDocumentIds().contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
+									petitionVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+									petitionVO.getHasFinalCopy().add(commonMethodsUtilService.getStringValueForObject(param[5]));
+							  }
+							}
+						RepresenteeViewVO subWorkVO = getMatchVO(petitionVO.getSubList(), commonMethodsUtilService.getLongValueForObject(param[3]));
+						if(subWorkVO != null){
+							if(commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("COVERING LETTER")){
+								if(!subWorkVO.getDocumentIds().contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
+									subWorkVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+									subWorkVO.getHasCoverLtr().add(commonMethodsUtilService.getStringValueForObject(param[5]));
+								}
+							}else if(commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("ACTION COPY")){
+								if(!subWorkVO.getDocumentIds().contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
+									subWorkVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+									subWorkVO.getHasActionCopy().add(commonMethodsUtilService.getStringValueForObject(param[5]));
+								}
+							}else if(commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("DETAILED REPORT")){
+								if(!subWorkVO.getDocumentIds().contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
+									subWorkVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+									subWorkVO.getHasDetailedReport().add(commonMethodsUtilService.getStringValueForObject(param[5]));
+								}
+							}else if(commonMethodsUtilService.getStringValueForObject(param[1]).equalsIgnoreCase("OTHER REPORT")){
+								if(commonMethodsUtilService.getLongValueForObject(param[2]) == 0l){
+									if(!subWorkVO.getDocumentIds().contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
+										subWorkVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+										subWorkVO.getHasOthersCopy().add(commonMethodsUtilService.getStringValueForObject(param[5]));
+									}
+								}else if(commonMethodsUtilService.getLongValueForObject(param[2]) != 0l){
+									if(!subWorkVO.getDocumentIds().contains(commonMethodsUtilService.getLongValueForObject(param[4]))){
+										subWorkVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+										subWorkVO.getHasFinalCopy().add(commonMethodsUtilService.getStringValueForObject(param[5]));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			List<Object[]> latestPetionUpdatedList = pmPetitionAssignedOfficerDAO.getLatestUpdatedDetailsOfPetition(mapData.keySet());
+			if(commonMethodsUtilService.isListOrSetValid(latestPetionUpdatedList)){
+				for (Object[] param : latestPetionUpdatedList) {
+					RepresenteeViewVO vo = mapData.get(commonMethodsUtilService.getLongValueForObject(param[4]));
+					if(vo != null){
+						if(commonMethodsUtilService.getStringValueForObject(param[1]) != ""){
+							if(vo.getOfficerName() == null)
+								vo.setOfficerName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							else if(!vo.getOfficerName().contains(commonMethodsUtilService.getStringValueForObject(param[1])))
+								vo.setOfficerName(vo.getOfficerName()+","+commonMethodsUtilService.getStringValueForObject(param[1]));
+						}
+						if(commonMethodsUtilService.getStringValueForObject(param[2]) != ""){
+							if(vo.getOfcrDesig() == null)
+								vo.setOfcrDesig(commonMethodsUtilService.getStringValueForObject(param[2]));
+							else if(!vo.getOfcrDesig().contains(commonMethodsUtilService.getStringValueForObject(param[2])))
+								vo.setOfcrDesig(vo.getOfcrDesig()+","+commonMethodsUtilService.getStringValueForObject(param[2]));
+						}
+						if(commonMethodsUtilService.getStringValueForObject(param[3]) != ""){
+							if(vo.getOfcrDept() == null)
+								vo.setOfcrDept(commonMethodsUtilService.getStringValueForObject(param[3]));
+							else if(!vo.getOfcrDept().contains(commonMethodsUtilService.getStringValueForObject(param[3])))
+								vo.setOfcrDept(vo.getOfcrDept()+","+commonMethodsUtilService.getStringValueForObject(param[3]));
+						}
+						//if(Date.parse(commonMethodsUtilService.getStringValueForObject(param[5])) >Date.parse(vo.getLastUpdatedTime())){
+							vo.setLastUpdatedTime(commonMethodsUtilService.getStringValueForObject(param[5]).substring(0, 10));
+						//}
+						RepresenteeViewVO subWorkVO = getMatchVO(vo.getSubList(), commonMethodsUtilService.getLongValueForObject(param[6]));
+						if(subWorkVO != null){
+						if(commonMethodsUtilService.getStringValueForObject(param[1]) != ""){
+							subWorkVO.setOfficerName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						}
+						if(commonMethodsUtilService.getStringValueForObject(param[2]) != ""){
+							subWorkVO.setOfcrDesig(commonMethodsUtilService.getStringValueForObject(param[2]));
+						}
+						if(commonMethodsUtilService.getStringValueForObject(param[3]) != ""){
+							subWorkVO.setOfcrDept(commonMethodsUtilService.getStringValueForObject(param[3]));
+						}
+						//if(Date.parse(commonMethodsUtilService.getStringValueForObject(param[5])) >Date.parse(subWorkVO.getLastUpdatedTime())){
+							subWorkVO.setLastUpdatedTime(commonMethodsUtilService.getStringValueForObject(param[5]).substring(0, 10));
+						//}
+					}
+					}
+				}
+			}
+			List<Object[]> repRefDocumentsList = pmRepresenteeRefDocumentDAO.getRepresenteeRefDocuments(mapData.keySet());
+			if(commonMethodsUtilService.isListOrSetValid(repRefDocumentsList)){
+				for (Object[] param : repRefDocumentsList) {
+					RepresenteeViewVO petitionVO = mapData.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+					if(petitionVO != null){
+						if(!petitionVO.getHasRepRefDocs().contains(commonMethodsUtilService.getStringValueForObject(param[1]))){
+							//petitionVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+							petitionVO.getHasRepRefDocs().add(commonMethodsUtilService.getStringValueForObject(param[1]));
+						}
+					}
+				}
+			}
+			List<Object[]> workDocsList = pmPetitionDocumentDAO.getWorkDocuments(mapData.keySet());
+			if(commonMethodsUtilService.isListOrSetValid(repRefDocumentsList)){
+				for (Object[] param : repRefDocumentsList) {
+					RepresenteeViewVO petitionVO = mapData.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+					if(petitionVO != null){
+						if(!petitionVO.getHasWorkDocs().contains(commonMethodsUtilService.getStringValueForObject(param[1]))){
+							//petitionVO.getDocumentIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+							petitionVO.getHasWorkDocs().add(commonMethodsUtilService.getStringValueForObject(param[1]));
+						}
+					}
+				}
+			}
 			for (Map.Entry<Long, RepresenteeViewVO> entry : mapData.entrySet()) {
 				if(minPending.longValue() >0l &&  maxPending.longValue() >0l && entry.getValue().getStatusType().equalsIgnoreCase("pending")){
 					finalList.add(entry.getValue());
@@ -1534,7 +1667,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				finalList.get(0).getStatusList().addAll(getStatusList(inputVO.getLocationId(),null));
 				setStatusSummeryDetails(searchData,finalList.get(0).getStatusList());
 			}
-		}catch (Exception e) {
+		}
+	}catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception Occured in PmRequestDetailsService @ getRepresentativeSearchWiseDetails() "+e.getMessage());
 		}
@@ -1600,14 +1734,33 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					 dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[8]),commonMethodsUtilService.getStringValueForObject(param[9]));
 					commonMethodsUtilService.getLongValueForObject(param[10]);
 					vo.setWorkName(commonMethodsUtilService.getStringValueForObject(param[11]));
-					//RepresenteeViewVO vo =mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(commonMethodsUtilService.getStringValueForObject(param[18]) != ""){
+						if(vo.getSubjectName() == null)
+							vo.setSubjectName(commonMethodsUtilService.getStringValueForObject(param[18]));
+						else if(!vo.getSubjectName().contains(commonMethodsUtilService.getStringValueForObject(param[18])))
+							vo.setSubjectName(vo.getSubjectName()+","+commonMethodsUtilService.getStringValueForObject(param[18]));
+					}
+					
+					if(commonMethodsUtilService.getStringValueForObject(param[19]) != ""){
+						if(vo.getSubSubjectname() == null)
+							vo.setSubSubjectname(commonMethodsUtilService.getStringValueForObject(param[19]));
+						else if(!vo.getSubSubjectname().contains(commonMethodsUtilService.getStringValueForObject(param[19])))
+							vo.setSubSubjectname(vo.getSubSubjectname()+","+commonMethodsUtilService.getStringValueForObject(param[19]));
+					}
+					vo.setLeadName(commonMethodsUtilService.getStringValueForObject(param[20]));
+					if(commonMethodsUtilService.getStringValueForObject(param[21]) != ""){
+						if(vo.getDeptName() == null)
+							vo.setDeptName(commonMethodsUtilService.getStringValueForObject(param[21]));
+						else if(!vo.getDeptName().contains(commonMethodsUtilService.getStringValueForObject(param[21])))
+							vo.setDeptName(vo.getDeptName()+","+commonMethodsUtilService.getStringValueForObject(param[21]));
+					}
+					vo.setDataType(commonMethodsUtilService.getStringValueForObject(param[22]));
+					vo.setGrantName(commonMethodsUtilService.getStringValueForObject(param[23]));
+					vo.setWorkType(commonMethodsUtilService.getStringValueForObject(param[24]));
+					vo.setRepresentDesig(commonMethodsUtilService.getStringValueForObject(param[25]));
 					if(param[8] != null){
 						vo.setRaisedDate(commonMethodsUtilService.getStringValueForObject(param[8]).substring(0, 10));
 					}
-					/*if(statusId.longValue() != 0l && !statusIds.contains(statusId) && petionPendingDays.longValue()>=minPending.longValue()
-							&& petionPendingDays.longValue() <= maxPending.longValue() && vo != null){
-						vo.setStatusType("pending");
-					}*/
 					Long subWorkId = commonMethodsUtilService.getLongValueForObject(param[15]);
 					RepresenteeViewVO subWorkVO = getMatchVO(vo.getSubList(), subWorkId);
 					if(subWorkVO == null){
@@ -1620,6 +1773,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					subWorkVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[16]));
 					subWorkVO.setEndorsementNO(commonMethodsUtilService.getStringValueForObject(param[14]));
 					subWorkVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[10]));
+					subWorkVO.setSubjectName(commonMethodsUtilService.getStringValueForObject(param[18]));
+					subWorkVO.setSubSubjectname(commonMethodsUtilService.getStringValueForObject(param[19]));
+					subWorkVO.setLeadName(commonMethodsUtilService.getStringValueForObject(param[20]));
+					subWorkVO.setDeptName(commonMethodsUtilService.getStringValueForObject(param[21]));
+					subWorkVO.setDataType(commonMethodsUtilService.getStringValueForObject(param[22]));
+					subWorkVO.setGrantName(commonMethodsUtilService.getStringValueForObject(param[23]));
+					subWorkVO.setWorkType(commonMethodsUtilService.getStringValueForObject(param[24]));
+					subWorkVO.setRepresentDesig(commonMethodsUtilService.getStringValueForObject(param[25]));
 					if(param[2] != null)
 						subWorkVO.setEndorsmentDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
 				}

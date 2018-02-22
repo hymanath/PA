@@ -1,6 +1,7 @@
 package com.itgrids.dao.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -42,5 +43,18 @@ public class PmPetitionDocumentDAO extends GenericDaoHibernate<PmPetitionDocumen
 		query.setParameterList("petitiionDocIds", petitiionDocIds);
 		query.setParameter("updatedUserId", userId);
 		return query.executeUpdate();
+	}
+	
+	public List<Object[]> getWorkDocuments(Set<Long> petitionIds){
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.pmPetitionDocumentId, model.document.path,model.petitionId  from PmPetitionDocument model " +
+				"where  model.isDeleted='N' ");
+		
+		if(petitionIds != null && petitionIds.size()>0)
+			str.append(" and model.petitionId in (:petitionIds) ");
+		Query query =getSession().createQuery(str.toString());
+		if(petitionIds != null && petitionIds.size()>0)
+			query.setParameterList("petitionIds", petitionIds);
+		return query.list();
 	}
 }

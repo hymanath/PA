@@ -1,6 +1,7 @@
 package com.itgrids.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -12,4 +13,5 @@ public interface IPmPetitionAssignedOfficerDAO extends GenericDao<PmPetitionAssi
 	public List<Object[]> getActionTypeDetailsForDeptDesiOfficerId(List<Long> deptDesignationOfficerIdsList,Long petitionId);
 	public List<Object[]> getPetitionAssignedPrinciplSecretoryDetails(Long petitionId);
 	public List<Object[]> getOfficerDetailsForOfficerIdsList(List<Long> assignedToOfficerIdsList);
+	public List<Object[]> getLatestUpdatedDetailsOfPetition(Set<Long> petitionIds);
 }

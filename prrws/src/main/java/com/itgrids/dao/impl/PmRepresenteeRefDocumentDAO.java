@@ -2,6 +2,7 @@ package com.itgrids.dao.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -46,5 +47,16 @@ public class PmRepresenteeRefDocumentDAO extends GenericDaoHibernate<PmRepresent
 		query.setParameter("updatedTime", updatedTime);
 		query.setParameter("userId", userId);
 		return query.executeUpdate();
+	}
+	public List<Object[]> getRepresenteeRefDocuments(Set<Long> petitionIds){
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.pmRepresenteeRefDetailsId, model.document.path,model.pmRepresenteeRefDetails.petitionId from PmRepresenteeRefDocument model " +
+				" where  model.isDeleted ='N'  ");
+		if(petitionIds != null && petitionIds.size() >0)
+		str.append(" and model.pmRepresenteeRefDetails.petitionId  in (:petitionIds) ");
+		Query query =getSession().createQuery(str.toString());
+		if(petitionIds != null && petitionIds.size() >0)
+		query.setParameterList("petitionIds", petitionIds);
+		return query.list();
 	}
 }
