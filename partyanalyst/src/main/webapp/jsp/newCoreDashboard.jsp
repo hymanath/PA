@@ -2351,7 +2351,6 @@
 								  </div>
 								</div>
 							  </div>
-							  <!--srujana-->
 							  <div class="panel panel-default panelNew">
 								<div class="panel-heading" role="tab" id="headingSix">
 									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
@@ -2369,14 +2368,40 @@
 								  </div>
 								</div>
 							  </div>
-							  <!-- end-->
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingSeveen">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseSeveen" aria-expanded="false" aria-controls="collapseSeveen">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Caste Group Cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseSeveen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeveen">
+									  <div class="panel-body">
+									  <div class="row">
+											<div id="candidateCasteBuildId">
+											  <ul class="activeUlCls list-inline pull-right candidateCasteCls">	
+				                               <li class="active" style="margin-right:3px;" class="casteAnalsisCls" attr_casteId="0"> Spokes persons Caste Analysis</li>
+											   <li style="margin-right:3px;" class="casteAnalsisCls" attr_casteId="1"> Caste Overview</li>
+											  </ul>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="casteAnalysisDivId" style="overflow:auto;"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="casteOverViewDivId" style="overflow:auto;"></div>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<!-- DEBATES PROGRAM BLOCK END-->	
+			<!-- DEBATES PROGRAM BLOCK END-->
 	</div>
 	<div class="row">
 		<!--Press Meet block Start-->
