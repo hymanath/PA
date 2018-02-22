@@ -36,9 +36,7 @@ public class JalavaniDashboardController {
 	}
 
 	@PostMapping("/getJalavaniDashBoardOverview")
-	public @ResponseBody
-	AlertVO getJalavaniDashBoardOverview(
-			@RequestBody JalavaniAlertsInputVO inputVO) {
+	public @ResponseBody AlertVO getJalavaniDashBoardOverview(@RequestBody JalavaniAlertsInputVO inputVO) {
 		AlertVO returnVo = null;
 		try {
 			returnVo = jalavaniDashboardService.getJalavaniDashBoardOverview(inputVO);
@@ -49,9 +47,7 @@ public class JalavaniDashboardController {
 	}
 
 	@PostMapping("/getJalavaniCategoryWiseDetailsInfo")
-	public @ResponseBody
-	AlertVO getJalavaniCategoryWiseDetailsInfo(
-			@RequestBody JalavaniAlertsInputVO inputVO) {
+	public @ResponseBody AlertVO getJalavaniCategoryWiseDetailsInfo(@RequestBody JalavaniAlertsInputVO inputVO) {
 		AlertVO returnVo = null;
 		try {
 			returnVo = jalavaniDashboardService.getJalavaniCategoryWiseDetailsInfo(inputVO);
@@ -62,9 +58,7 @@ public class JalavaniDashboardController {
 	}
 
 	@PostMapping("/getArticlesMonthlyOverviewInfoBySearchType")
-	public @ResponseBody
-	List<AlertVO> getArticlesMonthlyOverviewInfoBySearchType(
-			@RequestBody JalavaniAlertsInputVO inputVO) {
+	public @ResponseBody List<AlertVO> getArticlesMonthlyOverviewInfoBySearchType(@RequestBody JalavaniAlertsInputVO inputVO) {
 		List<AlertVO> returnList = new ArrayList<AlertVO>(0);
 		try {
 			returnList = jalavaniDashboardService.getArticlesMonthlyOverviewInfoBySearchType(inputVO);
@@ -75,9 +69,7 @@ public class JalavaniDashboardController {
 	}
 
 	@PostMapping("/getJalavanilocationAndStatusDetailsInfo")
-	public @ResponseBody
-	List<AlertVO> getJalavanilocationAndStatusDetailsInfo(
-			@RequestBody JalavaniAlertsInputVO inputVO) {
+	public @ResponseBody List<AlertVO> getJalavanilocationAndStatusDetailsInfo(@RequestBody JalavaniAlertsInputVO inputVO) {
 		List<AlertVO> returnList = new ArrayList<AlertVO>(0);
 		try {
 			returnList = jalavaniDashboardService.getJalavanilocationAndStatusDetailsInfo(inputVO);
