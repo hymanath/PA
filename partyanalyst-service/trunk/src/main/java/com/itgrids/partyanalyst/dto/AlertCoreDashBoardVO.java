@@ -20,6 +20,7 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private String officerMobileNo;
 	
 	private Long totalCount=0l;
+	
 	private Long count=0l;
 	
 	private Double countPerc=0.0;
@@ -52,7 +53,7 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long noOfAlertCreated = 0L;
 	private String relatedTo;
 	private String problem;
-	private Long pendingCount = 0L;
+	
 	private Long reopenCount = 0l;
 	private Long totalAgent = 0L;
 	private String totalTime;
@@ -67,6 +68,22 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long designationId;
 	private Long locationId;
 	private Long orderNo;
+	private String constituency;
+	private Long constituencyId;
+	private String parliament;
+	private Long pendingCount = 0L;
+	private Long completedCount = 0L;
+	private Long actionInProgress;
+	private Long actionNotRequired;
+	private Long duplicate;
+	private Long lastMonthCompleted;
+	
+	private Double pendingCountPer;
+	private Double completedCountPer;
+	private Double actionInProgressPer;
+	private Double actionNotRequiredPer;
+	private Double duplicatePer;
+	private Double lastMonthCompletedPer;
 	
 	private List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
 	
@@ -512,6 +529,118 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setCreatedTime(String createdTime) {
 		this.createdTime = createdTime;
+	}
+
+	public Long getCompletedCount() {
+		return completedCount;
+	}
+
+	public void setCompletedCount(Long completedCount) {
+		this.completedCount = completedCount;
+	}
+
+	public String getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public String getParliament() {
+		return parliament;
+	}
+
+	public void setParliament(String parliament) {
+		this.parliament = parliament;
+	}
+
+	public Long getActionInProgress() {
+		return actionInProgress;
+	}
+
+	public void setActionInProgress(Long actionInProgress) {
+		this.actionInProgress = actionInProgress;
+	}
+
+	public Long getActionNotRequired() {
+		return actionNotRequired;
+	}
+
+	public void setActionNotRequired(Long actionNotRequired) {
+		this.actionNotRequired = actionNotRequired;
+	}
+
+	public Long getDuplicate() {
+		return duplicate;
+	}
+
+	public void setDuplicate(Long duplicate) {
+		this.duplicate = duplicate;
+	}
+
+	public Long getLastMonthCompleted() {
+		return lastMonthCompleted;
+	}
+
+	public void setLastMonthCompleted(Long lastMonthCompleted) {
+		this.lastMonthCompleted = lastMonthCompleted;
+	}
+
+	public Double getPendingCountPer() {
+		return pendingCountPer;
+	}
+
+	public void setPendingCountPer(Double pendingCountPer) {
+		this.pendingCountPer = pendingCountPer;
+	}
+
+	public Double getCompletedCountPer() {
+		return completedCountPer;
+	}
+
+	public void setCompletedCountPer(Double completedCountPer) {
+		this.completedCountPer = completedCountPer;
+	}
+
+	public Double getActionInProgressPer() {
+		return actionInProgressPer;
+	}
+
+	public void setActionInProgressPer(Double actionInProgressPer) {
+		this.actionInProgressPer = actionInProgressPer;
+	}
+
+	public Double getActionNotRequiredPer() {
+		return actionNotRequiredPer;
+	}
+
+	public void setActionNotRequiredPer(Double actionNotRequiredPer) {
+		this.actionNotRequiredPer = actionNotRequiredPer;
+	}
+
+	public Double getDuplicatePer() {
+		return duplicatePer;
+	}
+
+	public void setDuplicatePer(Double duplicatePer) {
+		this.duplicatePer = duplicatePer;
+	}
+
+	public Double getLastMonthCompletedPer() {
+		return lastMonthCompletedPer;
+	}
+
+	public void setLastMonthCompletedPer(Double lastMonthCompletedPer) {
+		this.lastMonthCompletedPer = lastMonthCompletedPer;
 	}	
 	
     	
