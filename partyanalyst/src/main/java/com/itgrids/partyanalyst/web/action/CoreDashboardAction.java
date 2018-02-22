@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.exceptionalReport.service.IActivityExceptionalReportService;
+import com.itgrids.partyanalyst.exceptionalReport.service.ICommitteeExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.IPartyMeetingExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITourExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITrainingCampExceptionalReportService;
@@ -231,6 +232,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private IPartyMeetingExceptionalReportService partyMeetingExceptionalReportService;
 	private ITourExceptionalReportService tourExceptionalReportService;
 	private IActivityExceptionalReportService activityExceptionalReportService;
+	private ICommitteeExceptionalReportService committeeExceptionalReportService;
 
 	private PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO;
 	private ActivityExceptionalReportVO activityExceptionalReportVO;
@@ -1135,6 +1137,9 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
   public void setActivityExceptionalReportVO(ActivityExceptionalReportVO activityExceptionalReportVO) {
 	this.activityExceptionalReportVO = activityExceptionalReportVO;
   }
+   public void setCommitteeExceptionalReportService(ICommitteeExceptionalReportService committeeExceptionalReportService) {
+	this.committeeExceptionalReportService = committeeExceptionalReportService;
+}
 
 	//business methods
 	public String execute(){

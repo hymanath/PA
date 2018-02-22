@@ -4728,5 +4728,8 @@
    	  	 <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO"></property>
    	  	 <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
    	 </bean>
+   	 <bean name = "committeeExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.CommitteeExceptionalReportService">
+   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	 </bean>
     	 
 </beans>			
