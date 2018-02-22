@@ -15,7 +15,7 @@ function getActivityPerformanceDetailsLocationWise() {
 		dataType : 'json',
 		data : {task : JSON.stringify(jsObj)}
 	}).done(function(result) {
-		console.log(result);
+		
 	});
 }
 function getActivityAttendedAndImageCoveredDetails() {
@@ -31,6 +31,6 @@ function getActivityAttendedAndImageCoveredDetails() {
 		dataType : 'json',
 		data : {task : JSON.stringify(jsObj)}
 	}).done(function(result) {
-		console.log(result);
+		
 	});
 }

@@ -18831,5 +18831,15 @@
    			<param name="root">codeDebateVoList</param>
    		</result>
 	</action>
+	<action name="getCommiteeOverviewPerformanceDetailsAction" class="coreDashboardAction" method="getCommiteeOverviewPerformanceDetails">
+		<result type="json" name="success">
+				<param name="root">committeeDataVO</param>
+		</result>
+	</action>
+	<action name="getBoothInchargeCommitteePerformanceDetailsAction" class="coreDashboardAction" method="getBoothInchargeCommitteePerformanceDetails">
+		<result type="json" name="success">
+				<param name="root">committeeDataVO</param>
+		</result>
+	</action>
  </package>
 </struts>
