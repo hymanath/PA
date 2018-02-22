@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.model.TdpCommittee;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -3114,5 +3115,45 @@ public List<Object[]> getCommitteeMembersAddedStatusDetails(List<Long> enrollmen
 		query.setParameterList("locationValuesList", locationValuesList);
 	return query.list();
 }
+  public List<Object[]> getLocationWiseTdpCommitteeDetails(InputVO inputVO) {
+	   StringBuilder queryBuilder = new StringBuilder();
+	   queryBuilder.append("select ");
+	   queryBuilder.append(" count(distinct model.tdpCommitteeId),");
+	   if (inputVO.getLocationLevel().equalsIgnoreCase("constituency")) {
+		 	queryBuilder.append(" constituency.constituencyId ");
+	    	queryBuilder.append(",constituency.name ");
+	     	queryBuilder.append(",district.districtId ");
+	    	queryBuilder.append(",district.districtName, ");
+	    }
+	 	queryBuilder.append(" parliamentConstituency.constituencyId ");
+    	queryBuilder.append(",parliamentConstituency.name ");
+   
+	    queryBuilder.append(" from TdpCommittee model " +
+	    					" left join model.userAddress.constituency constituency " +
+	    					" left join model.userAddress.district district " +
+	    					" left join model.userAddress.parliamentConstituency parliamentConstituency " +
+	    		            " where model.tdpCommitteeEnrollmentId =:tdpCommitteeEnrollmentId" +
+	    		            " and model.tdpCommitteeLevelId in (:tdpCommitteeLevelIds)" +
+	    		            " and model.userAddress.state.stateId=:stateId ");
+	    if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("completedCommittee")) {
+	    	queryBuilder.append(" and model.isCommitteeConfirmed='Y'");
+	    }
+	    if (inputVO.getTdpBasicCommitteeIds() != null && inputVO.getTdpBasicCommitteeIds().size() > 0) {
+	    	queryBuilder.append(" and model.tdpBasicCommitteeId in (:tdpBasicCommitteeIds) ");
+	    }
+	    if (inputVO.getLocationLevel().equalsIgnoreCase("constituency")) {
+		 	queryBuilder.append(" group by  constituency.constituencyId ");
+	    } else if (inputVO.getLocationLevel().equalsIgnoreCase("parliament")) {
+	    	queryBuilder.append(" group by parliamentConstituency.constituencyId");
+	    }
+	     Query query = getSession().createQuery(queryBuilder.toString());
+	     query.setParameter("tdpCommitteeEnrollmentId", inputVO.getTdpCommitteeEnrollmentId());
+	     query.setParameterList("tdpCommitteeLevelIds", inputVO.getTdpCommitteeLevelIds());
+	     query.setParameter("stateId", inputVO.getStateId());
+	     if (inputVO.getTdpBasicCommitteeIds() != null && inputVO.getTdpBasicCommitteeIds().size() > 0) {
+	    	 query.setParameterList("tdpBasicCommitteeIds", inputVO.getTdpBasicCommitteeIds());
+		 }
+	     return query.list();   
+  }
 	
 }
