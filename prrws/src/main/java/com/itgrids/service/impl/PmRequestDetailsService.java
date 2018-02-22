@@ -5416,7 +5416,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					for (Object[] objects : refCanDepartments) {
 						String deptName =  commonMethodsUtilService.getStringValueForObject(objects[2]);
 						if(refCandDeptMap.get(commonMethodsUtilService.getLongValueForObject(objects[0])) != null){
-							deptName = ","+deptName;
+							deptName = deptName+","+deptName;
 						}
 						refCandDeptMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), deptName);
 					}
