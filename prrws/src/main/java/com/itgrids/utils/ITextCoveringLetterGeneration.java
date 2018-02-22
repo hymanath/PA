@@ -161,7 +161,12 @@ public class ITextCoveringLetterGeneration  {
 							 str1 = str1.replace("#rname","");
 						 }
 						 if(pmRequestVO.getDesignation() != null && !pmRequestVO.getDesignation().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdesig",", "+pmRequestVO.getDesignation()+" ");
+							 if(pmRequestVO.getDesignation().toUpperCase().contains("MINISTER")){
+								 pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace("State Minister", " Hon'ble Minister "));
+								 str1 = str1.replace("#rdesig",","+pmRequestVO.getDesignation()+" ");
+							 }else{
+								 str1 = str1.replace("#rdesig",", "+pmRequestVO.getDesignation()+" ");
+							 }
 						 }else{
 							 str1 = str1.replace("#rdesig","");
 						 }
