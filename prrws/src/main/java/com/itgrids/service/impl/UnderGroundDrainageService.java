@@ -220,20 +220,45 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 	
 	public List<GovtMainWorkVO> getUsersGovtMainWorks(Long userId,Long workTypeId){
 		List<GovtMainWorkVO> mainWorksVOList = new ArrayList<GovtMainWorkVO>(0);
-		//0-mainWorkId,1-mainWorkName,2-totalKms,3-locationScopeId,4-locationValue,5-locationAddressId,6-count,7-workLength
-		List<Object[]> objList = govtWorkDAO.getUsersGovtMainWorks(userId,workTypeId);
-		if(objList != null && objList.size() > 0){
-			for (Object[] objects : objList) {
+		
+		//0-workId,1-name,2-kms
+		List<Object[]> objList1 = govtMainWorkDAO.getAllMainWorksForUser(userId,workTypeId);
+		if(objList1 != null && objList1.size() > 0){
+			for (Object[] objects : objList1) {
 				GovtMainWorkVO vo = new GovtMainWorkVO();
 				vo.setGovtMainWorkId(objects[0] != null ? Long.parseLong(objects[0].toString()):null);
 				vo.setGovtMainWork(objects[1] != null ? objects[1].toString():null);
 				vo.setTotalKms(objects[2] != null ? Double.parseDouble(objects[2].toString()):null);
-				vo.setLocationScopeId(objects[3] != null ? Long.parseLong(objects[3].toString()):null);
-				vo.setLocationValue(objects[4] != null ? Long.parseLong(objects[4].toString()):null);
-				vo.setLocationAddressId(objects[5] != null ? Long.parseLong(objects[5].toString()):null);
-				vo.setWorksCount(objects[6] != null ? Long.parseLong(objects[6].toString()):null);
-				vo.setProgressKms(objects[7] != null ? Double.parseDouble(objects[7].toString()):null);
 				mainWorksVOList.add(vo);
+			}
+		}
+		
+		//0-mainWorkId,1-mainWorkName,2-totalKms,3-locationScopeId,4-locationValue,5-locationAddressId,6-count,7-workLength
+		List<Object[]> objList = govtWorkDAO.getUsersGovtMainWorks(userId,workTypeId);
+		if(objList != null && objList.size() > 0){
+			for (Object[] objects : objList) {
+				
+				GovtMainWorkVO vo = getmatchedMainWorkVO(mainWorksVOList,Long.parseLong(objects[0].toString()));
+				if(vo != null){
+					vo.setLocationScopeId(objects[3] != null ? Long.parseLong(objects[3].toString()):null);
+					vo.setLocationValue(objects[4] != null ? Long.parseLong(objects[4].toString()):null);
+					vo.setLocationAddressId(objects[5] != null ? Long.parseLong(objects[5].toString()):null);
+					vo.setWorksCount(objects[6] != null ? Long.parseLong(objects[6].toString()):null);
+					vo.setProgressKms(objects[7] != null ? Double.parseDouble(objects[7].toString()):null);
+				}else{
+					vo = new GovtMainWorkVO();
+					vo.setGovtMainWorkId(objects[0] != null ? Long.parseLong(objects[0].toString()):null);
+					vo.setGovtMainWork(objects[1] != null ? objects[1].toString():null);
+					vo.setTotalKms(objects[2] != null ? Double.parseDouble(objects[2].toString()):null);
+					vo.setLocationScopeId(objects[3] != null ? Long.parseLong(objects[3].toString()):null);
+					vo.setLocationValue(objects[4] != null ? Long.parseLong(objects[4].toString()):null);
+					vo.setLocationAddressId(objects[5] != null ? Long.parseLong(objects[5].toString()):null);
+					vo.setWorksCount(objects[6] != null ? Long.parseLong(objects[6].toString()):null);
+					vo.setProgressKms(objects[7] != null ? Double.parseDouble(objects[7].toString()):null);
+					mainWorksVOList.add(vo);
+				}
+				
+				
 			}
 			
 			if(mainWorksVOList != null && mainWorksVOList.size() > 0){
@@ -252,6 +277,16 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			}
 		}
 		return mainWorksVOList;
+	}
+	
+	public GovtMainWorkVO getmatchedMainWorkVO(List<GovtMainWorkVO> voList,Long id){
+		if(voList != null && voList.size() > 0){
+			for (GovtMainWorkVO govtMainWorkVO : voList) {
+				if(govtMainWorkVO.getGovtMainWorkId().equals(id))
+					return govtMainWorkVO;
+			}
+		}
+		return null;
 	}
 	
 	public void getTheLocationsOfMObileAppUser(MobileAppLoginVO finalVO,Long mobileAppUserId){

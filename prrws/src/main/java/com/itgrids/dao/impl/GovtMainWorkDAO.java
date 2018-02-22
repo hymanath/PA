@@ -24,4 +24,14 @@ public class GovtMainWorkDAO extends GenericDaoHibernate<GovtMainWork, Long> imp
 				+ " group by model.govtWorkTypeId ");
 		return query.list();
 	}
+	
+	public List<Object[]> getAllMainWorksForUser(Long userId,Long govtWorkTypeId){
+		//0-workId,1-name,2-kms
+		Query query = getSession().createQuery(" select model.govtMainWork.govtMainWorkId,model.govtMainWork.govtMainWorkName,model.govtMainWork.approvedKm "
+				+ " from GovtMainWorkUser model "
+				+ " where model.userId=:userId and model.govtMainWork.govtWorkTypeId=:govtWorkTypeId ");
+		query.setParameter("userId", userId);
+		query.setParameter("govtWorkTypeId", govtWorkTypeId);
+		return query.list();
+	}
 }
