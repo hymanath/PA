@@ -27,6 +27,10 @@ public class CommitteeDataVO implements Serializable{
 	private Double completedPerc = 0.0;
 	private Double notStartedPerc = 0.0;
 	
+	private AddressVO addressVO;
+	private Long notCompletedCommitteeCount = 0l;
+	private Double notCompletedCommitteePer = 0.0d;
+	
 	private String locationLevelName;
 	
 	public Long getCompletedCount() {
@@ -124,6 +128,24 @@ public class CommitteeDataVO implements Serializable{
 	}
 	public void setRequiredName(String requiredName) {
 		this.requiredName = requiredName;
+	}
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
+	}
+	public Long getNotCompletedCommitteeCount() {
+		return notCompletedCommitteeCount;
+	}
+	public void setNotCompletedCommitteeCount(Long notCompletedCommitteeCount) {
+		this.notCompletedCommitteeCount = notCompletedCommitteeCount;
+	}
+	public Double getNotCompletedCommitteePer() {
+		return notCompletedCommitteePer;
+	}
+	public void setNotCompletedCommitteePer(Double notCompletedCommitteePer) {
+		this.notCompletedCommitteePer = notCompletedCommitteePer;
 	}
 	
 }

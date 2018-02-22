@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothInchargeCommitteeDAO;
+import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.model.BoothInchargeCommittee;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -207,6 +208,39 @@ public class BoothInchargeCommitteeDAO extends GenericDaoHibernate<BoothIncharge
 		if(levelId != null && levelId.longValue() > 0L && levelValues != null && !levelValues.isEmpty())
 			query.setParameterList("levelValues", levelValues);
 		
+		return query.list();
+	}
+
+	public List<Object[]> getLocationWiseBoothInchargeCommitteeDetails(InputVO inputVO) {
+		StringBuilder queryBuilder = new StringBuilder();
+		queryBuilder.append("select ");
+		queryBuilder.append(" count(distinct model.boothInchargeCommitteeId),");
+		if (inputVO.getLocationLevel().equalsIgnoreCase("constituency")) {
+			queryBuilder.append(" constituency.constituencyId ");
+			queryBuilder.append(",constituency.name ");
+			queryBuilder.append(",district.districtId ");
+			queryBuilder.append(",district.districtName, ");
+		}
+		queryBuilder.append(" parliamentConstituency.constituencyId ");
+		queryBuilder.append(",parliamentConstituency.name ");
+
+		queryBuilder.append(" from BoothInchargeCommittee model "
+						+ " left join model.address.constituency constituency "
+						+ " left join model.address.district district "
+						+ " left join model.address.parliamentConstituency parliamentConstituency "
+						+ " where model.isDeleted='N' and model.boothInchargeEnrollmentId =:boothInchargeEnrollmentId"
+						+ " and model.address.state.stateId=:stateId ");
+		if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("completedCommittee")) {
+			queryBuilder.append(" and model.isConfirmed='Y'");
+		}
+		if (inputVO.getLocationLevel().equalsIgnoreCase("constituency")) {
+			queryBuilder.append(" group by  constituency.constituencyId ");
+		} else if (inputVO.getLocationLevel().equalsIgnoreCase("parliament")) {
+			queryBuilder.append(" group by parliamentConstituency.constituencyId");
+		}
+		Query query = getSession().createQuery(queryBuilder.toString());
+		query.setParameter("boothInchargeEnrollmentId",inputVO.getBoothInchargeEnrollmentId());
+		query.setParameter("stateId", inputVO.getStateId());
 		return query.list();
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.model.TdpCommittee;
 
 public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
@@ -95,4 +96,5 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
      public List<Object[]> getCommitteeCandidatesByLevelWiseDetails(List<Long> roleIds,List<Long> committeeIds,Long basicCommoteeId,Long enrollmentId,List<Long> enrollmentYears);
      public List<Object[]> getAvailableCommitteeDetails(String type , List<Long> enrollmentYearIdsList, Long committeeLevelId,List<Long> basicCommitteeTypeIdsList,List<Long> committeeTypeIdsList,Long locationScopeId,List<Long> locationValuesList);
      public List<Object[]> getCommitteeMembersAddedStatusDetails(List<Long> enrollmentYearIdsList, Long committeeLevelId,List<Long> basicCommitteeTypeIdsList,List<Long> committeeTypeIdsList,Long locationScopeId,List<Long> locationValuesList);
+     public List<Object[]> getLocationWiseTdpCommitteeDetails(InputVO inputVO);
 }

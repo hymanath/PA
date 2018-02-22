@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.model.BoothInchargeCommittee;
 
 public interface IBoothInchargeCommitteeDAO extends GenericDao<BoothInchargeCommittee, Long>{
@@ -18,4 +19,5 @@ public interface IBoothInchargeCommitteeDAO extends GenericDao<BoothInchargeComm
 	public List<Object[]> getCommitteeFinalizedBoothsListforUnlock(List<Long> assemblyIdsList);
 	
 	public List<Object[]> getLocationWiseBoothCommitteeDetails(Long levelId,List<Long> levelValues);
+	public List<Object[]> getLocationWiseBoothInchargeCommitteeDetails(InputVO inputVO);
 }

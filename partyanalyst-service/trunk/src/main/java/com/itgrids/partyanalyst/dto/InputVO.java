@@ -36,6 +36,10 @@ public class InputVO {
 	private List<Long> partyMeetingLevelIds;
 	private Long noOfMonth;
 	private Long activityScopeId;
+	private Long tdpCommitteeEnrollmentId;
+	private List<Long> tdpCommitteeLevelIds;
+	private List<Long> tdpBasicCommitteeIds;
+
 	
 	public Long getUserTypeId() {
 		return userTypeId;
@@ -200,5 +204,22 @@ public class InputVO {
 	public void setActivityScopeId(Long activityScopeId) {
 		this.activityScopeId = activityScopeId;
 	}
-	
+	public Long getTdpCommitteeEnrollmentId() {
+		return tdpCommitteeEnrollmentId;
+	}
+	public void setTdpCommitteeEnrollmentId(Long tdpCommitteeEnrollmentId) {
+		this.tdpCommitteeEnrollmentId = tdpCommitteeEnrollmentId;
+	}
+	public List<Long> getTdpCommitteeLevelIds() {
+		return tdpCommitteeLevelIds;
+	}
+	public void setTdpCommitteeLevelIds(List<Long> tdpCommitteeLevelIds) {
+		this.tdpCommitteeLevelIds = tdpCommitteeLevelIds;
+	}
+	public List<Long> getTdpBasicCommitteeIds() {
+		return tdpBasicCommitteeIds;
+	}
+	public void setTdpBasicCommitteeIds(List<Long> tdpBasicCommitteeIds) {
+		this.tdpBasicCommitteeIds = tdpBasicCommitteeIds;
+	}
 }
