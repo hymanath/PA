@@ -11404,4 +11404,78 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		}
 	 	return query.list();
  	}
+	public List<Object[]> getAssignedCandidateWisePendingAlerts(Date startDate,Date endDate,Long stateId,List<Long> alertTypeIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select " +
+			      " ALTASS.tdp_cadre_id as tdpCadreId, " +//0
+			      " TC.first_name as tdpCadreName, " +//1
+			      " ALTSTS.alert_status_id as alertStatusId, " +//2
+			      " DIST.district_name as districtName, " +//3
+			      " CON.name as conName, " +//4
+			      " count(DISTINCT ALTASS.alert_id) as count, " +//5
+			      " CON.constituency_id as constituencyId, " +//6
+			      " PAR.constituency_id as parliamentId, " +//7
+			      " PAR.name as parliamentName " +//8
+			      " from alert_assigned ALTASS " +
+			      " left outer join tdp_cadre TC on (ALTASS.tdp_cadre_id = TC.tdp_cadre_id and TC.is_deleted = 'N') " +
+			      " left outer join user_address UA on UA.user_address_id = TC.address_id " +
+			      " left outer join district DIST on (DIST.district_id = UA.district_id and UA.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+")) " +
+			      " left outer join constituency CON on CON.constituency_id = UA.constituency_id" +
+			      " left outer join constituency PAR on PAR.constituency_id = UA.parliament_constituency_id, alert ALT, alert_status ALTSTS " +
+			      " where " +
+			      " ALT.is_deleted = 'N' AND (date(ALT.created_time) between :startDate and :endDate) AND ALT.alert_type_id in (:alertTypeIds) AND " +
+			      " ALTASS.alert_id = ALT.alert_id AND " +
+			      " ALT.alert_status_id = ALTSTS.alert_status_id " +
+			      " group by ALTASS.tdp_cadre_id,ALTSTS.alert_status_id ");
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("tdpCadreId", Hibernate.LONG)
+				.addScalar("tdpCadreName", Hibernate.STRING)
+				.addScalar("alertStatusId",  Hibernate.LONG)
+				.addScalar("districtName", Hibernate.STRING)
+				.addScalar("conName", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG)
+				.addScalar("constituencyId", Hibernate.LONG)
+				.addScalar("parliamentId", Hibernate.LONG)
+				.addScalar("parliamentName", Hibernate.STRING);
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		query.setParameterList("alertTypeIds", alertTypeIds);
+		return query.list();
+	}
+	public List<Object[]> getOverAllAlertDtls(Date startDate,Date endDate,Long stateId,List<Long> alertTypeIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select AS1.alert_status_id as alertStatusId,AS1.alert_status as status ,count(distinct A.alert_id) as count from alert A,alert_status AS1,user_address UA where A.is_deleted = 'N' ");
+		sb.append(" and A.alert_status_id = AS1.alert_status_id and A.alert_type_id in (:alertTypeIds) and A.address_id = UA.user_address_id ");
+		sb.append(" and UA.state_id = :stateId ");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(A.created_time) between :startDate and :endDate ");
+		}
+		sb.append(" group by A.alert_status_id ");
+		Query query = getSession().createSQLQuery(sb.toString()).addScalar("alertStatusId", Hibernate.LONG).addScalar("status", Hibernate.STRING).addScalar("count", Hibernate.LONG);
+		query.setParameter("stateId", stateId);
+		query.setParameterList("alertTypeIds", alertTypeIds);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		return query.list();
+	}
+	public Long getOverAllLastMonthComp(Date pastDate,Date endDate,Long stateId,List<Long> alertTypeIds,String range){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(distinct A.alert_id) as count from alert A,alert_status AS1,user_address UA where A.is_deleted = 'N' ");
+		sb.append(" and A.alert_status_id = AS1.alert_status_id and A.alert_type_id in (:alertTypeIds) and A.address_id = UA.user_address_id ");
+		sb.append(" and UA.state_id = :stateId and A.alert_status_id = 4 ");
+		sb.append(" and date(A.created_time) between :pastDate and :endDate ");
+		if(range != null && range.trim().equalsIgnoreCase("lastMonth")){
+			sb.append(" and date(A.updated_time) between :pastDate and :endDate ");
+		}
+		sb.append(" group by A.alert_status_id ");
+		Query query = getSession().createSQLQuery(sb.toString()).addScalar("count", Hibernate.LONG);
+		query.setParameter("stateId", stateId);
+		query.setParameterList("alertTypeIds", alertTypeIds);
+		query.setDate("pastDate", pastDate);
+		query.setDate("endDate", endDate);
+		return (Long) query.uniqueResult();
+	}
+	
 }

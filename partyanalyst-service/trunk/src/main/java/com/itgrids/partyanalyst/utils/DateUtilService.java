@@ -500,17 +500,7 @@ public class DateUtilService {
 		}
 		return null;
 	}
-	public static void main(String[] args) throws ParseException{
-		String dateStr1 = "01/04/2017";
-		String dateStr2 = "10/06/2017";
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		
-		Date d1 = sdf.parse(dateStr1);
-		Date d2 = sdf.parse(dateStr2);
-		Map<String,List<String>> dateList = getTotalWeeksMap(d1,d2);
-		
-		System.out.println(dateList);
-	}
+	
 	public String addMultipleTimes(List<String> dateListStr){
 	    long hr = 0l;
 	    long mm = 0l;
@@ -659,6 +649,19 @@ public class DateUtilService {
 			}
 	    }
 	    return dateStrList;
+	}
+public static void main(String[] args) throws ParseException{
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, -1);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getMinimalDaysInFirstWeek());	
+		Date pastDate = calendar.getTime();
+		//System.out.println(sdf.format(pastDate));
+		calendar.setTime(pastDate);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		Date endDate = calendar.getTime();
+		//System.out.println(sdf.format(endDate));
+		
 	}
 
 }
