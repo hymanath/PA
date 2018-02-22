@@ -18816,5 +18816,20 @@
 				<param name="root">activityExceptionalReportVO</param>
 		</result>
 	</action>
+	<action name="getCasteCategoryWisePartyDetailsAction" class="coreDashboardAction" method="getCasteCategoryWisePartyDetails">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
+	<action name="getOveralCandidateCasteDetailsAction" class="coreDashboardAction" method="getOveralCandidateCasteDetails">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
+	<action name="getCasteCategoryWisePartyDetailsClickAction" class="coreDashboardAction" method="getCasteCategoryWisePartyDetailsClick">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
  </package>
 </struts>
