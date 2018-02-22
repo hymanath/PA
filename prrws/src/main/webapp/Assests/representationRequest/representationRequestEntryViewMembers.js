@@ -10,7 +10,7 @@ var currentToDate=moment().add(38,"year").format("DD-MM-YYYY");
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/cadreDetailsAction")));
 wurl = wurl.replace("/PartyAnalyst","");
-
+var allCheckedColumnsArr=[];
 
 function locationLevelRefresh(){
 	
@@ -1085,6 +1085,24 @@ function getRepresentativeSearchDetails1(value){
 	$("#representationRequestEntryTable").html(spinner);
 	$("#petitionSubWorkRadioDivId").hide();
 	$("#errMsgId").html("");
+	
+	$(".menuCls-table").hide();
+		var allColumnArr= ["RepresentationDate", "EndorsmentNo", "EndorsmentDate", "RepresenteeType", "RepresenteeName", "RepresenteeDesignation", "ReferrerName", "ReferreerDesignation", "WorkDescription", "EstimationCost", "Status", "noofWorks", "Department", "LeadName", "Subject", "SubSubject", "GrantName", "WorkType", "HasCoveringLtr", "HasActionCopy", "HasDetailedReport", "HasFinalCopy", "HasOthersCopy", "HasWorkCopy", "WithWhome", "LastUpdatedTime"];
+		for(var i in allColumnArr){
+			$("."+allColumnArr[i]).hide();
+		}
+		
+		allCheckedColumnsArr=[];
+		$(".getColumnCls").each(function(){
+			if($(this).is(":checked")){
+				allCheckedColumnsArr.push($(this).val());
+			}	
+		}); 
+		for(var i in allCheckedColumnsArr){
+			$("."+allCheckedColumnsArr[i]).show();
+		}
+		console.log(allCheckedColumnsArr);
+		
    var startDate = currentFromDate;
    var endDate = currentToDate;
 	var radioTypeVal = value;
@@ -2294,33 +2312,307 @@ $(document).on("click",".petitionSubWorkRadoCls",function(){
 		}
 	}
 });
+$(document).on("click",".menu-cls-table",function(e){
+	e.stopPropagation();
+	$(".menuCls-table").toggle();
+});
 
 function petitionWiseRepresenteeDetails(result){
+	
+	 var  RepresentationDate=false;
+	 var  EndorsmentNo=false; 
+	 var  EndorsmentDate=false; 
+	 var  RepresenteeType=false; 
+	 var  RepresenteeName=false; 
+	 var  RepresenteeDesignation=false; 
+	 var  ReferrerName=false; 
+	 var  ReferreerDesignation=false; 
+	 var  WorkDescription=false; 
+	 var  EstimationCost=false; 
+	 var  Status=false; 
+	 var  noofWorks=false; 
+	 var  Department=false; 
+	 var  LeadName=false; 
+	 var  Subject=false; 
+	 var  SubSubject=false; 
+	 var  GrantName=false; 
+	 var  WorkType=false; 
+	 var  HasCoveringLtr=false; 
+	 var  HasActionCopy=false; 
+	 var  HasDetailedReport=false; 
+	 var  HasFinalCopy=false; 
+	 var  HasOthersCopy=false; 
+	 var  HasWorkCopy=false; 
+	 var  WithWhome=false; 
+	 var  LastUpdatedTime=false;
+	 
 	var str='';
 	str+='<div class="panel panel-default" style="margin-top:-8px;">';
-		str+='<div class="panel-heading" style="background-color:#344650; color:#fff;" data-toggle="collapse">';
+		str+='<div class="panel-heading" style="background-color:#344650; color:#fff;">';
 			str+='<h4 class="panel-title">';
 			str+='<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"> REPRESENTATIONS DETAILS </a></h4>';
+			/*str+='<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"> REPRESENTATIONS DETAILS </a> <i class="fa fa-gears menu-cls-table pull-right" style="position:relative;color:#fff"></i></h4>';
+			str+='<div class="menuCls-table">';
+				str+='<div class="arrow_box_top">';
+					str+='<div class="row">';
+					str+='<div class="col-sm-12">';
+					
+						str+='<ul style="padding-top:0px;padding-left: 20px;padding-bottom:0px;padding-right:0px;" >';
+							str+='<li>';
+								str+='<label class="checkbox-inline">';
+								str+='<input value="selectAll" class="getColumnAllCls" id="" type="checkbox">';
+									str+='<div style="margin-top: 3px;"><h5 class="text-capital font_weight" style="color:#54616C;">Select All</h5></div>';
+								str+='</label>';
+							str+='</li>';
+						str+='</ul>';
+					
+					str+='</div>';
+					str+='</div>';
+					str+='<div class="row">';
+					str+='<div class="col-sm-12">';
+					
+						str+='<div class="scrollTableColCls">';
+						str+='<ul style="padding-top:0px;padding-left: 20px;padding-bottom:0px;padding-right:0px;" class="line_heightCls m_top10">';
+						str+='<li class="">';
+							str+='<label class="checkbox-inline">';
+								str+='<input id="checkbox1" name="name1" type="checkbox" class="getColumnCls" value="RepresentationDate" checked/>';	
+								str+='<div style="margin-top: 3px;"><h5 class="text-capital font_weight" style="color:#54616C;"> Representation Date</h5></div>';
+							str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EndorsmentNo" checked> Endorsment No</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EndorsmentDate" checked> Endorsment Date</h5>';	
+						str+='</label class="checkbox-inline">';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeType" checked> Representee Type</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeName" checked> Representee Name</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeDesignation" checked> Representee DESIGNATION</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="ReferrerName" checked>Referrer Name</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="ReferreerDesignation" checked>Referreer Designation</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkDescription" checked>Work Description</h5>';	
+						str+='</label>';
+						str+='</li>';
+						 str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks">No&nbsp;of&nbsp;Works</h5>';	
+						str+='</label>'; 
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EstimationCost" checked>ESTIMATION COST (in Lakhs)</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Status" checked>STATUS</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks" checked>NO OF WORKS</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Department">DEPARTMENT</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LeadName">LEAD NAME</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Subject">SUBJECT</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="SubSubject">SUB SUBJECT</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="GrantName">GRANT NAME</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkType">WORK TYPE</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasCoveringLtr">HAS COVERING LTR</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasActionCopy">HAS ACTION COPY</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasDetailedReport">HAS DETAILED REPORT</h5>';	
+						str+='</label>';
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasFinalCopy">HAS FINAL COPY</h5>';	
+						str+='</label>'
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasOthersCopy">HAS OTHERS COPY</h5>';	
+						str+='</label>'
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasWorkCopy">HAS WORK DOCS</h5>';	
+						str+='</label>'
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WithWhome">WITH WHOME</h5>';	
+						str+='</label>'
+						str+='</li>';
+						str+='<li>';
+						str+='<label class="checkbox-inline">';
+							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LastUpdatedTime">LAST UPDATED TIME</h5>';	
+						str+='</label>'
+						str+='</li>';
+						str+='</ul>'
+					str+='</div>';
+					str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="row">';
+						str+='<div class="col-sm-12">';
+							str+='<button type="button" class="btn btn-primary btn-sm selectedColumnsTableCls">Submit</button>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';*/
+			str+='</div>';
 		str+='</div>';
+		
 		str+='<div id="collapseTwo" class="panel-collapse collapse in">';
 		str+='<div class="panel-body">';
-		if($(window).width>800){
+		//if($(window).width>800){
 			str+='<div class="table-responsive">';
-		}
+		//}
+		
 			str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
 				str+='<thead>';
 					str+='<tr>';
-						str+='<th><span title="Representation Date" class="tooltipCls" data-toggle="tooltip">REPR.&nbsp;DATE</span></th>';
-						str+='<th><span title="Endorsment No" class="tooltipCls" data-toggle="tooltip">ENDORS&nbsp;NO</span></th>';
-						str+='<th><span title="Endorsment Date" class="tooltipCls" data-toggle="tooltip">ENDORS&nbsp;DATE</span></th>';
-						str+='<th><span title="Representee Name" class="tooltipCls" data-toggle="tooltip">REPRESENTEE&nbsp;NAME</span></th>';
-						str+='<th><span title="Referrer Name" class="tooltipCls" data-toggle="tooltip">REF.&nbsp;NAME</span></th>';
-						str+='<th><span title="Referreer Designation" class="tooltipCls" data-toggle="tooltip">REF.&nbsp;DESIGNATION</span></th>';				
-						str+='<th><span style="min-width:200px !important;"  title="Work Description" class="tooltipCls" data-toggle="tooltip">WORK&nbsp;DESC</span></th>';
-						//str+='<th>No&nbsp;of&nbsp;Works</th>';
-						str+='<th>ESTIMATION COST (in Lakhs)</th>';
-						str+='<th>STATUS</th>';
-						str+='<th>NO OF WORKS</th>';
+					for(var n in allCheckedColumnsArr){
+						if(allCheckedColumnsArr[n].trim() =='RepresentationDate'){
+							RepresentationDate =true;
+							str+='<th  class="RepresentationDate"><span title="Representation Date" class="tooltipCls" data-toggle="tooltip">REPR.DATE</span></th>';
+						}else if(allCheckedColumnsArr[n].trim() =='EndorsmentNo'){
+							EndorsmentNo =true;
+							str+='<th class="EndorsmentNo"><span title="Endorsment No" class="tooltipCls" data-toggle="tooltip">ENDORS NO</span></th>';
+						}else if(allCheckedColumnsArr[n].trim() =='EndorsmentDate'){
+							EndorsmentDate =true;
+							str+='<th class="EndorsmentDate" ><span title="Endorsment Date" class="tooltipCls" data-toggle="tooltip">ENDORS DATE</span></th>';
+						}else if(allCheckedColumnsArr[n].trim() =='RepresenteeType'){
+							RepresenteeType =true;
+							str+='<th  class="RepresenteeType" ><span title="Representee Type" class="tooltipCls" data-toggle="tooltip">REP Type</span></th>';
+						}else if(allCheckedColumnsArr[n].trim() =='RepresenteeName'){
+							RepresenteeName =true;
+							str+='<th class="RepresenteeName" ><span title="Representee Name" class="tooltipCls" data-toggle="tooltip">REPRESENTEE NAME</span></th>';
+						}else if(allCheckedColumnsArr[n].trim() =='RepresenteeDesignation'){
+							RepresenteeDesignation =true;
+							str+='<th class="RepresenteeDesignation" ><span title="Representee Designation" class="tooltipCls" data-toggle="tooltip">REP. DESIGNATION</span></th>';
+					/*	}else if(allCheckedColumnsArr[n].trim() =='ReferrerName'){
+							ReferrerName =true;
+							str+='<th class="ReferrerName" ><span title="Referrar Name" class="tooltipCls" data-toggle="tooltip">REF NAME</span></th>';
+						}else if(allCheckedColumnsArr[n].trim() =='ReferreerDesignation'){
+							ReferreerDesignation =true;
+							str+='<th class="ReferreerDesignation" ><span title="Referrar Designation" class="tooltipCls" data-toggle="tooltip">REF DESIGNATION</span></th>';*/
+						}else if(allCheckedColumnsArr[n].trim() =='WorkDescription'){
+							WorkDescription =true;
+							str+='<th  class="WorkDescription" ><span style="min-width:200px !important;"  title="Work Description" class="tooltipCls" data-toggle="tooltip">WORK DESC</span></th>';
+						}else if(allCheckedColumnsArr[n].trim() =='EstimationCost'){
+							EstimationCost =true;
+							str+='<th  class="EstimationCost" >ESTIMATION COST (in Lakhs)</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='Status'){
+							Status =true;
+							str+='<th class="Status" >STATUS</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='noofWorks'){
+							noofWorks =true;
+							str+='<th  class="noofWorks" >NO OF WORKS</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='Department'){
+							Department =true;
+							str+='<th  class="Department">DEPARTMENT</th>';	//columnShowHide	
+						}else if(allCheckedColumnsArr[n].trim() =='Subject'){
+							SubSubject =true;
+							str+='<th  class="SubSubject ">SUB_SUBJECT</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='Subject'){
+							SubSubject =true;
+							str+='<th  class="SubSubject ">SUB_SUBJECT</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='GrantName'){
+							GrantName =true;
+							str+='<th  class="GrantName ">GRANT NAME</th>';	
+						}else if(allCheckedColumnsArr[n].trim() =='LeadName'){
+							LeadName =true;
+							str+='<th  class="LeadName ">LEAD NAME</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='WorkType'){
+							WorkType =true;
+							str+='<th  class="WorkType ">WORK TYPE</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='HasWorkCopy'){
+							HasWorkCopy =true;
+							str+='<th  class="HasWorkCopy ">HAS WORK DOCS</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='HasCoveringLtr'){
+							HasCoveringLtr =true;
+							str+='<th  class="HasCoveringLtr ">HAS COVERING LTR</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='HasActionCopy'){
+							HasActionCopy =true;
+							str+='<th  class="HasActionCopy ">HAS ACTION COPY</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='HasDetailedReport'){
+							HasDetailedReport =true;
+							str+='<th  class="HasDetailedReport ">HAS DETAILED REPORT</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='HasFinalCopy'){
+							HasFinalCopy =true;
+							str+='<th  class="HasFinalCopy ">HAS FINAL COPY</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='HasOthersCopy'){
+							HasOthersCopy =true;
+							str+='<th  class="HasOthersCopy ">HAS OTHERS COPY</th>';						
+						}else if(allCheckedColumnsArr[n].trim() =='WithWhome'){
+							WithWhome =true;
+							str+='<th  class="WithWhome ">WITH WHOME</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='LastUpdatedTime'){
+							LastUpdatedTime =true;
+							str+='<th  class="LastUpdatedTime ">LAST UPDATED TIME</th>';
+						}
+					}
 						str+='<th>ACTION</th>';
 					str+='</tr>';
 				str+='</thead>';
@@ -2333,58 +2625,85 @@ function petitionWiseRepresenteeDetails(result){
 												
 					var endorsmentNo='';
 					str+='<tr>';
+					  if(RepresentationDate){
 						if(result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined"){
-							str+='<td style="text-align:center;">'+result[i].raisedDate+'</td>';
+							str+='<td style="text-align:center;" class="RepresentationDate ">'+result[i].raisedDate+'</td>';
 						}else{
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td style="text-align:center;" class="RepresentationDate "> - </td>';
 						}
+					  }
+					  if(EndorsmentNo){
 						if(result[i].endorsementNO != null && result[i].endorsementNO != 0){
-							str+='<td style="text-align:center;">'+result[i].endorsementNO+'</td>';
+							str+='<td style="text-align:center;" class="EndorsmentNo">'+result[i].endorsementNO+'</td>';
 							endorsmentNo=result[i].endorsementNO;
 						}else{
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td style="text-align:center;" class="EndorsmentNo"> - </td>';
 						}
+					  }
+					  if(EndorsmentDate){
 						if(result[i].endorsmentDate != null && result[i].endorsmentDate != ""){
-							str+='<td style="text-align:center;">'+result[i].endorsmentDate+'</td>';
+							str+='<td style="text-align:center;" class="EndorsmentDate">'+result[i].endorsmentDate+'</td>';
 						}else{
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td style="text-align:center;" class="EndorsmentDate"> - </td>';
 						}
+					  }
+					  if(RepresenteeType){
+						if(result[i].dataType != null && result[i].dataType != ""){
+							str+='<td style="text-align:center;" class="RepresenteeType">'+result[i].dataType+'</td>';
+						}else{
+							str+='<td style="text-align:center;" class="RepresenteeType"> - </td>';
+						}
+					  }
+					  if(RepresenteeName){
 						if (result[i].name != null && typeof(result[i].name) != "undefined"){
-							str+='<td style="text-align:center;">'+result[i].name+'</td>';
+							str+='<td style="text-align:center;" class="RepresenteeName">'+result[i].name+'</td>';
 						}else{
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td style="text-align:center;" class="RepresenteeName"> - </td>';
 						}
-						
-						if (result[i].referrerName != null && typeof(result[i].referrerName) != "undefined"){
-							str+='<td style="text-align:center;">'+result[i].referrerName+'</td>';
+					  }
+					  if(RepresenteeDesignation){
+						if (result[i].representDesig != null && typeof(result[i].representDesig) != "undefined"){
+							str+='<td style="text-align:center;" class="RepresenteeDesignation">'+result[i].representDesig+'</td>';
 						}else{
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td style="text-align:center;" class="RepresenteeDesignation"> - </td>';
+						}
+					/*	if (result[i].referrerName != null && typeof(result[i].referrerName) != "undefined"){
+							str+='<td style="text-align:center;" class="ReferrerName">'+result[i].referrerName+'</td>';
+						}else{
+							str+='<td style="text-align:center;" class="ReferrerName"> - </td>';
 						}
 						if (result[i].desigName != null && typeof(result[i].desigName) != "undefined"){
-							str+='<td style="text-align:center;">'+result[i].desigName+'</td>';
+							str+='<td style="text-align:center;" class="ReferreerDesignation">'+result[i].desigName+'</td>';
 						}else{
-							str+='<td style="text-align:center;"> - </td>';
-						}
+							str+='<td style="text-align:center;" class="ReferreerDesignation"> - </td>';
+						}*/
+						
+					  }
+					  if(WorkDescription){
 						if (result[i].workName != null && result[i].workName != ""){
-							if(result[i].workName !=null && result[i].workName.length>50){
-								str+='<td><span class="tooltipCls" data-toggle="tooltip" title="'+result[i].workName+'">'+result[i].workName.substring(0,50)+'...</span></td>';
-							}else{
-								str+='<td>'+result[i].workName+'</td>';
-							}
+							//if(result[i].workName !=null && result[i].workName.length>50){
+								//str+='<td class="WorkDescription" ><span class="tooltipCls" data-toggle="tooltip" title="'+result[i].workName+'">'+result[i].workName.substring(0,50)+'...</span></td>';
+							//}else{
+								str+='<td class="WorkDescription" >'+result[i].workName+'</td>';
+							//}
 							
 						}
 						else{
-							str+='<td style="text-align:center;"> - </td>';
+							str+='<td style="text-align:center;" class="WorkDescription" > - </td>';
 						}
 						/* if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined")
 							str+='<td>'+result[i].noOfWorks+'</td>';
 						else
 							str+='<td> - </td>'; */
-						if (result[i].estimationCost != "" && result[i].estimationCost != "0"){
+					
+						
+					  }
+					  if(EstimationCost){
+						  if (result[i].estimationCost != "" && result[i].estimationCost != "0"){
 							var estCost = parseFloat(result[i].estimationCost);
-							str+='<td style="text-align:center;">'+estCost.toFixed(4)+'</td>';
+							str+='<td style="text-align:center;" class="EstimationCost">'+estCost.toFixed(4)+'</td>';
 						}else{
-							str+='<td style="text-align:center;">-</td>';
+							str+='<td style="text-align:center;" class="EstimationCost">-</td>';
 						}
 						/*if (result[i].statusType != "" && typeof(result[i].statusType) != "undefined" ){
 							str+='<td style="text-align:center;">'+result[i].statusType+'</td>';
@@ -2398,28 +2717,144 @@ function petitionWiseRepresenteeDetails(result){
 						}
 						*/
 						
+					  }
+					  if(Status){
 						if (result[i].petitionStatusId != null && result[i].petitionStatusId == 1){
-							str+='<td style="text-align:center;"> PENDING ENODRSEMENT </td>';
+							str+='<td style="text-align:center;" class="Status"> PENDING ENODRSEMENT </td>';
 						}else if (result[i].petitionStatusId != null && result[i].petitionStatusId == 2){
-							str+='<td style="text-align:center;"> IN-PROGRESS </td>';
+							str+='<td style="text-align:center;" class="Status"> IN-PROGRESS </td>';
 						}else if (result[i].petitionStatusId != null && result[i].petitionStatusId == 8){
-							str+='<td style="text-align:center;"> COMPLETED </td>';
+							str+='<td style="text-align:center;" class="Status"> COMPLETED </td>';
 						}
 						else{
-							str+='<td style="text-align:center;">-</td>';
+							str+='<td style="text-align:center;" class="Status">-</td>';
 						}
+					  }
+					  if(noofWorks){
 							
 						if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined"){
 							var filledWorksCount = 0;
 							if(result[i].subList != 'undefined' && result[i].subList != null && result[i].subList.length>0) 
 								filledWorksCount = result[i].subList.length;
-							str+='<td>';
-								str+='<h4 class="viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"><span title="Entered works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer" class="tooltipCls">'+filledWorksCount+' </span> / <span class="tooltipCls" title="Total works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer">'+result[i].noOfWorks+' </span></h4>';
+							str+='<td class="noofWorks" >';
+								str+='<h4 class="viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"><span title="Entered works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer" class="tooltipCls">'+filledWorksCount+'</span> (<span class="tooltipCls" title="Total works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer">'+result[i].noOfWorks+'</span>)</h4>';
 							str+='</td>';
 							//str+='<td class="text-center"><i class="viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i> <span title="Entered works count " >'+filledWorksCount+' </span>/ <span title="Total works count " >'+result[i].noOfWorks+' </span> </td>';
 						}else{
-							str+='<td> - </td>';
+							str+='<td class="noofWorks" > - </td>';
 						}
+					  }
+					  if(Department){
+						if (result[i].deptName != null && result[i].deptName != ""){
+							str+='<td style="text-align:center;" class="Department ">'+result[i].deptName+'</td>';
+						}else{
+							str+='<td style="text-align:center;" class="Department ">-</td>';
+						}
+					  }
+					  if(Subject){
+						
+						if(result[i].subjectName != null && result[i].subjectName != ""){
+							str+='<td style="text-align:center;" class="Subject ">'+result[i].subjectName+'</td>';
+						}else{
+							str+='<td style="text-align:center;" class="Subject "> - </td>';
+						}
+					  }
+					  if(SubSubject){
+						if(result[i].subSubjectname != null && result[i].subSubjectname != ""){
+							str+='<td style="text-align:center;" class="SubSubject ">'+result[i].subSubjectname+'</td>';
+						}else{
+							str+='<td style="text-align:center;" class="SubSubject "> - </td>';
+						}
+					  }
+					  if(GrantName){
+						if(result[i].grantName != null && result[i].grantName != ""){
+							str+='<td style="text-align:center;" class="GrantName ">'+result[i].grantName+'</td>';
+						}else{
+							str+='<td style="text-align:center;" class="GrantName "> - </td>';
+						}
+					  }
+					  if(WorkType){
+						if(result[i].workType != null && result[i].workType != ""){
+							str+='<td style="text-align:center;" class="WorkType ">'+result[i].workType+'</td>';
+						}else{
+							str+='<td style="text-align:center;" class="WorkType "> - </td>';
+						}
+					  }
+					  if(LeadName){
+						
+						if (result[i].leadName != null && result[i].leadName != ""){
+							str+='<td style="text-align:center;" class="LeadName ">'+result[i].leadName+'</td>';
+						}else{
+							str+='<td style="text-align:center;" class="LeadName ">-</td>';
+						}
+					  }
+					  if(HasWorkCopy){
+						
+						/////////
+						if(result[i].hasWorkDocs != null && result[i].hasWorkDocs.length>0){
+							//str+='<td style="text-align:center;" class="HasWorkCopy "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
+							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+						}else{
+							str+='<td style="text-align:center;" class="HasWorkCopy "> - </td>';
+						}
+					  }
+					  if(HasCoveringLtr){
+						if(result[i].hasCoverLtr != null && result[i].hasCoverLtr.length>0){
+							//str+='<td style="text-align:center;" class="HasCoveringLtr "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
+							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+						}else{
+							str+='<td style="text-align:center;" class="HasCoveringLtr "> - </td>';
+						}
+					  }
+					  if(HasActionCopy){
+						if(result[i].hasActionCopy != null && result[i].hasActionCopy.length>0){
+							//str+='<td style="text-align:center;" class="HasActionCopy "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
+							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+						}else{
+							str+='<td style="text-align:center;" class="HasActionCopy "> - </td>';
+						}
+					  }
+					  if(HasDetailedReport){
+						if(result[i].hasDetailedReport != null && result[i].hasDetailedReport.length>0){
+							//str+='<td style="text-align:center;" class="HasDetailedReport "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
+							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+						}else{
+							str+='<td style="text-align:center;" class="HasDetailedReport "> - </td>';
+						}
+					  }
+					  if(HasFinalCopy){
+						if(result[i].hasFinalCopy != null && result[i].hasFinalCopy.length>0){
+							//str+='<td style="text-align:center;" class="HasFinalCopy "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
+							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+						}else{
+							str+='<td style="text-align:center;" class="HasFinalCopy "> - </td>';
+						}
+					  }
+					  if(HasOthersCopy){
+						if(result[i].hasOthersCopy != null && result[i].hasOthersCopy.length>0){
+							//str+='<td style="text-align:center;" class="HasOthersCopy "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
+							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+						}else{
+							str+='<td style="text-align:center;" class="HasOthersCopy "> - </td>';
+						}
+					  }
+					  if(WithWhome){
+						
+						////
+						if(result[i].officerName != null && result[i].officerName != ""){
+							str+='<td style="text-align:center;" class="WithWhome ">'+result[i].officerName+'</td>';
+						}else{
+							str+='<td style="text-align:center;" class="WithWhome "> - </td>';
+						}
+					  }
+					  if(LastUpdatedTime){
+						if(result[i].lastUpdatedTime != null && result[i].lastUpdatedTime != ""){
+							str+='<td style="text-align:center;" class="LastUpdatedTime ">'+result[i].lastUpdatedTime+'</td>';
+						}else{
+							str+='<td style="text-align:center;" class="LastUpdatedTime "> - </td>';
+						}
+					  }
+					  
 							str+='<td class="text-center"><i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
 							
 							var alreadyGiven=false;
@@ -2445,9 +2880,9 @@ function petitionWiseRepresenteeDetails(result){
 					}
 				str+='</tbody>';
 			str+='</table>';
-			if($(window).width>800){
+			//if($(window).width>800){
 				str+='</div>';
-			}
+			//}
 			
 			str+='</div>';
 		str+='</div>';	
@@ -2460,10 +2895,27 @@ function petitionWiseRepresenteeDetails(result){
 		"searching": true,
 		"autoWidth": true,
 		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-		"iDisplayLength": 10,
+		"iDisplayLength": 500,
 		"aaSorting": [[ 0, "desc" ]],
-		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
+		"aLengthMenu": [[500,200,100 -1], [ 500,200,100, "All"]],
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
+					titleAttr: 'CSV',
+					exportOptions: {
+						columns: ':visible'
+					}
+				}
+			]
 	});
+	var Collength = $(".line_heightCls li").length;
+	if(Collength>8){
+		$(".scrollTableColCls").mCustomScrollbar({setHeight:'400px'});
+	}
   }
   $(document).on("click",".petitionModelClose",function(){
 	setTimeout(function(){
@@ -2522,3 +2974,37 @@ $(document).on("click",".uploadFuncCls",function(){
 		$("#endorseFunctionDivId").hide();
 	} */
 	});
+	 $(document).on("click",".getColumnAllCls",function(){
+		
+		var chekedVal = $(this).val();
+		if(chekedVal == "selectAll"){
+			if($(this).is(":checked")){
+				$(".getColumnCls").prop("checked",true);
+			}else{
+				$(".getColumnCls").prop("checked",false);
+			}
+			
+			
+		}
+	});
+	$(document).on("click",".selectedColumnsTableCls",function(){
+		$(".menuCls-table").hide();
+		var allColumnArr= ["RepresentationDate", "EndorsmentNo", "EndorsmentDate", "RepresenteeType", "RepresenteeName", "RepresenteeDesignation", "ReferrerName", "ReferreerDesignation", "WorkDescription", "EstimationCost", "Status", "noofWorks", "Department", "LeadName", "Subject", "SubSubject", "GrantName", "WorkType", "HasCoveringLtr", "HasActionCopy", "HasDetailedReport", "HasFinalCopy", "HasOthersCopy", "HasWorkCopy", "WithWhome", "LastUpdatedTime"];
+		for(var i in allColumnArr){
+			$("."+allColumnArr[i]).hide();
+		}
+		/*
+		allCheckedColumnsArr=[];
+		$(".getColumnCls").each(function(){
+			if($(this).is(":checked")){
+				allCheckedColumnsArr.push($(this).val());
+			}	
+		}); 
+		for(var i in allCheckedColumnsArr){
+			$("."+allCheckedColumnsArr[i]).show();
+		}
+		console.log(allCheckedColumnsArr);*/
+		$('#advanceSearchId').trigger('click');
+		
+	});	
+	

@@ -11,11 +11,11 @@
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/slick/slick.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
-<link href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" type="text/css" rel="stylesheet"/>
 <!-- for file uploader -->
 <link href="Assests/Plugins/dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="Assests/Plugins/dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />  
@@ -247,7 +247,180 @@
 											</div>
 											</div>
 											<div class="row m_top10">
-												<div class="col-sm-12">
+												<div class="col-sm-11">
+												<i class="fa fa-gears menu-cls-table pull-right" title="settings"  style="position:relative;"></i></h4>
+			<div class="menuCls-table">
+				<div class="arrow_box_top">
+					<div class="row">
+					<div class="col-sm-12">
+					
+						<ul style="padding-top:0px;padding-left: 20px;padding-bottom:0px;padding-right:0px;" >
+							<li>
+								<label class="checkbox-inline">
+								<input value="selectAll" class="getColumnAllCls" id="" type="checkbox">
+									<div style="margin-top: 3px;"><h5 class="text-capital font_weight" style="color:#54616C;">Select All</h5></div>
+								</label>
+							</li>
+						</ul>
+					
+					</div>
+					</div>
+					<div class="row">
+					<div class="col-sm-12">
+					
+						<div class="scrollTableColCls">
+						<ul style="padding-top:0px;padding-left: 20px;padding-bottom:0px;padding-right:0px;" class="line_heightCls m_top10">
+						<li class="">
+							<label class="checkbox-inline">
+								<input id="checkbox1" name="name1" type="checkbox" class="getColumnCls" value="RepresentationDate" checked/>	
+								<div style="margin-top: 3px;"><h5 class="text-capital font_weight" style="color:#54616C;"> Representation Date</h5></div>
+							</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EndorsmentNo" checked> Endorsment No</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EndorsmentDate" checked> Endorsment Date</h5>	
+						</label class="checkbox-inline">
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeType" checked> Representee Type</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeName" checked> Representee Name</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeDesignation" checked> Representee DESIGNATION</h5>	
+						</label>
+						</li>
+					<!--	<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="ReferrerName" checked>Referrer Name</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="ReferreerDesignation" checked>Referreer Designation</h5>	
+						</label>
+						</li>-->
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkDescription" checked>Work Description</h5>	
+						</label>
+						</li>
+						 <li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks">No&nbsp;of&nbsp;Works</h5>	
+						</label> 
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EstimationCost" checked>ESTIMATION COST (in Lakhs)</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Status" checked>STATUS</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks" checked>NO OF WORKS</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Department">DEPARTMENT</h5>	
+						</label>
+						</li>
+						
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Subject">SUBJECT</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="SubSubject">SUB SUBJECT</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="GrantName">GRANT NAME</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkType">WORK TYPE</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LeadName">LEAD NAME</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasCoveringLtr">HAS COVERING LTR</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasActionCopy">HAS ACTION COPY</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasDetailedReport">HAS DETAILED REPORT</h5>	
+						</label>
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasFinalCopy">HAS FINAL COPY</h5>	
+						</label>'
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasOthersCopy">HAS OTHERS COPY</h5>	
+						</label>'
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasWorkCopy">HAS WORK DOCS</h5>	
+						</label>'
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WithWhome">WITH WHOME</h5>	
+						</label>'
+						</li>
+						<li>
+						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LastUpdatedTime">LAST UPDATED TIME</h5>	
+						</label>'
+						</li>
+						</ul>'
+					</div>
+					</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<button type="button" class="btn btn-primary btn-sm selectedColumnsTableCls">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-1">
 													<button type ="button" class="btn btn-lg btn-success pull-right" id="advanceSearchId" style="cursor: pointer; font-weight: bold; border-radius: 0px;">SEARCH</button>
 												</div>		
 											</div>
@@ -545,6 +718,11 @@
 <script type="text/javascript" src="Assests/login/loginMenu.js"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/pdf.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>

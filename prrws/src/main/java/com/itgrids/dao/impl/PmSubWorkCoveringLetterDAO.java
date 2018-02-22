@@ -1,6 +1,7 @@
 package com.itgrids.dao.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -49,5 +50,27 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 		query.setParameter("reporttype", reporttype);
 		return query.executeUpdate();
 	}	
+	public List<Object[]> getAllTypeOfDocumentsForPetition(Set<Long> petiotionIds,String reportType){
+		if(petiotionIds != null){
+			StringBuilder str = new StringBuilder();
+			str.append(" select distinct  model.petitionId,model.reportType,model.documentTypeId,model.pmSubWorkDetails.pmSubWorkDetailsId,model.document.documentId,model.document.path from PmSubWorkCoveringLetter model " +
+					"where  " +
+					"  model.isDeleted ='N' ");
+			if(petiotionIds.size()>0)
+				str.append(" and model.petitionId in (:petiotionIds) ");
+			if(reportType != null){
+				str.append(" and model.reportType = :reportType ");
+			}
+			str.append(" group by model.petitionId,model.reportType,model.pmSubWorkDetails.pmSubWorkDetailsId ");
+			Query query = getSession().createQuery(str.toString());
+			if(reportType != null){
+				query.setParameter("reportType", reportType);
+			}
+			if(petiotionIds.size()>0)
+				query.setParameterList("petiotionIds", petiotionIds);
+			return query.list();
+		}
+		return null;			
+	}
 	
 }

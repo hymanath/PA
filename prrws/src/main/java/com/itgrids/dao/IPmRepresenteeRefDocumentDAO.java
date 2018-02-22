@@ -2,6 +2,7 @@ package com.itgrids.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -11,4 +12,5 @@ public interface IPmRepresenteeRefDocumentDAO extends GenericDao<PmRepresenteeRe
 	public List<Object[]> getPmRepresenteeRefDocumentByPetition(Long petitionId);
 	public List<Long> getPmRepresenteeRefDocumentIds(List<Long> representeeRefDetailsIds);
 	public int updatePmPmRepresenteeRefDocumens(List<Long> representeeRefDocIds,Date updatedTime,Long userId);
+	public List<Object[]> getRepresenteeRefDocuments(Set<Long> petitionIds);
 }
