@@ -1045,7 +1045,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					if(inputVO.getReportType() != null && inputVO.getReportType().equalsIgnoreCase("dayWise"))
 						matchedDateVO = getMatchedDateVO(vo.getDocumentList(),objects[2].toString());
 					else
-						matchedDateVO = getMatchedDateVO(vo.getDocumentList(),objects[2].toString()+"-"+objects[3].toString());
+						matchedDateVO = getMatchedDateVO(vo.getDocumentList(),((Integer)objects[2]<10?"0"+objects[2].toString():objects[2].toString())+"-"+objects[3].toString());
 					
 					if(matchedDateVO != null){
 						if(inputVO.getReportType() != null && inputVO.getReportType().equalsIgnoreCase("dayWise"))
