@@ -838,4 +838,75 @@ function rightSideExpandView()
     $(this).find('li.active .ARI').show();
     
   });
+  
+ 
+// Fileter calls keys setting 
+  
+	//getJalavanilocationAndStatusDetailsInfo("Alert","district",0);//completed
+	//getJalavanilocationAndStatusDetailsInfo("Alert","constituency",0);
+	//getJalavanilocationAndStatusDetailsInfo("Alert","mandal",0);
 
+	  //getJalavanilocationAndStatusDetailsInfo("Status","district",0);//completed
+	//getJalavanilocationAndStatusDetailsInfo("Status","constituency",0);
+	//getJalavanilocationAndStatusDetailsInfo("Status","mandal",0);
+	  
+	//getJalavanilocationAndStatusDetailsInfo("Alert","district",4);//completed
+	//getJalavanilocationAndStatusDetailsInfo("Alert","constituency",4);
+	//getJalavanilocationAndStatusDetailsInfo("Alert","mandal",4);
+
+	//getJalavanilocationAndStatusDetailsInfo("Status","district",4);//completed
+	//getJalavanilocationAndStatusDetailsInfo("Status","constituency",4);
+	//getJalavanilocationAndStatusDetailsInfo("Status","mandal",4);
+
+	getJalavanilocationAndStatusDetailsInfo("Alert","district",2,"PrintMedia");//
+	//getJalavanilocationAndStatusDetailsInfo("Alert","constituency",2,PrintMedia);
+	//getJalavanilocationAndStatusDetailsInfo("Alert","mandal",2,PrintMedia);
+
+	getJalavanilocationAndStatusDetailsInfo("Alert","district",3,"ElectronicMedia");//
+	//getJalavanilocationAndStatusDetailsInfo("Alert","constituency",3,ElectronicMedia);
+	//getJalavanilocationAndStatusDetailsInfo("Alert","mandal",3,ElectronicMedia);
+
+
+function getJalavanilocationAndStatusDetailsInfo(searchType,type,alertcategoryId,newsType){
+	var json={
+		fromDateStr:"01-01-2017",
+		toDateStr:"31-01-2018",
+		searchType:searchType,
+		type:type,
+		alertCategoryId:alertcategoryId,
+		newsType:newsType
+	}
+	$.ajax({                
+   type:'POST',    
+   url: 'getJalavanilocationAndStatusDetailsInfo',
+   dataType: 'json',
+   data : JSON.stringify(json),
+   beforeSend :   function(xhr){
+     xhr.setRequestHeader("Accept", "application/json");
+     xhr.setRequestHeader("Content-Type", "application/json");
+   }
+ }).done(function(result){
+});
+}
+//getArticlesMonthlyOverviewInfoBySearchType("news",2,"print");
+getArticlesMonthlyOverviewInfoBySearchType("alerts",2,"print");
+function getArticlesMonthlyOverviewInfoBySearchType(searchType,alertcategoryId,newsType){
+	var json={
+		fromDateStr:"01-01-2017",
+		toDateStr:"31-01-2018",
+		searchType:searchType,
+		alertCategoryId:alertcategoryId,
+		newsType:newsType
+	}
+	$.ajax({                
+   type:'POST',    
+   url: 'getArticlesMonthlyOverviewInfoBySearchType',
+   dataType: 'json',
+   data : JSON.stringify(json),
+   beforeSend :   function(xhr){
+     xhr.setRequestHeader("Accept", "application/json");
+     xhr.setRequestHeader("Content-Type", "application/json");
+   }
+ }).done(function(result){
+});
+}
