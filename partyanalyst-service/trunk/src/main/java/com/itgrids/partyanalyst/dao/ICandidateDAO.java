@@ -12,10 +12,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.CandidateColumnNames;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
-import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.Voter;
 
 /**
  * Interface for CandidateDAO.
@@ -111,4 +108,6 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{
 	List<Object[]> getElectionInformationLocationWiseDetailEarnedVoterShare(List<Long> electionYrs, Long locationTypeId, Long locationValue,
 			List<Long> electionScopeIds, Object object, List<String> subTypes,List<Long> parliamentIdsList, List<Long> partIds,String searchType, boolean localelecbody,boolean isMandalData);
 	public List<Object[]> getAssemblyPartyListforElection(List<Long> electionScopeIds,List<String> subTypeList,List<Long> yearList,Long constituencyId,Long lelevlId,List<Long> locationValue);
+	public List<Object[]> getOveralCandidateCasteDetails(String state,List<Long> debateParticipantLocationIdList);
+	public List<Object[]> getOveralCandidateCasteDetailsClick(String state,List<Long> debateParticipantLocationIdList,Long partyId,Long casteId,String type);
 }

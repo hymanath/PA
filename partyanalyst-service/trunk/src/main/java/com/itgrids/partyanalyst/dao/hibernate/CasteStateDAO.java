@@ -182,5 +182,17 @@ public List<Object[]> getAllCasteInfoDetails(){
 		query.setParameter("stateId", stateId);	
 		return query.list();
 	}
-	
+   public List<Object[]> getSubGroupOfCasteDetails(Long casteCategoryGroupId){
+	   StringBuilder str = new StringBuilder();
+	   str.append("select model.casteCategoryGroup.casteCategory.casteCategoryId, model.caste.casteId,model.caste.casteName from CasteState model   " );
+	   if(casteCategoryGroupId != null && casteCategoryGroupId.longValue()>0){
+		   str.append(" where model.casteCategoryGroup.casteCategory.casteCategoryId =:casteCategoryGroupId ");
+	   }
+	   Query query = getSession().createQuery(str.toString());
+	   if(casteCategoryGroupId != null && casteCategoryGroupId.longValue()>0){
+		query.setParameter("casteCategoryGroupId", casteCategoryGroupId);
+	   }
+			
+		return query.list();
+	}
 }

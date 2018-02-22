@@ -681,7 +681,7 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 				return query.list();
 	}
 	
-	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId){
+	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId,Long casteId,String type){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -752,6 +752,11 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 			str.append(" and model.candidate.state.stateId in (:debateParticipantLocationIdList) " );
 		}
 		}
+		if(casteId != null && casteId.longValue()>0 ){
+			str.append(" and model.candidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId =:casteId ");
+		}else if(casteId != null && type.equalsIgnoreCase("casteOthers")){
+			str.append(" and model.candidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId is null ");
+		}
 		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
 			str.append(" group by DS.debate.debateId ");
 		}else{
@@ -784,6 +789,9 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 			query.setParameter("designationId", designationId);
 		}else if(partyIds !=null && partyIds.size()>0L && !partyIds.contains(0L)){
 			query.setParameterList("partyIds", partyIds);
+		}
+		if(casteId != null && casteId.longValue()>0 ){
+			query.setParameter("casteId", casteId);
 		}
 		return query.list();
 	}
@@ -973,7 +981,7 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		}
 		return query.list();
 	}
-   public List<Object[]> getPartyWiseOthersDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId){
+   public List<Object[]> getPartyWiseOthersDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType,Long candidateId,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long roleId,Long designationId,Long casteId,String type){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -1004,6 +1012,11 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		str.append(" ,DebateParticipant model " +
 				" left join model.debate.address address " +
 				" left join address.state state ");
+		/*if(casteId != null && casteId.longValue()>0 && casteId.longValue() == 0){
+			str.append("  left join model.candidate candidate " +
+				" left join candidate.casteState casteState left join casteState.casteCategoryGroup  casteCategoryGroup " +
+				" left join casteCategoryGroup.casteCategory casteCategory ");
+		}*/
 		
 		str.append(" WHERE model.debateId = DS.debate.debateId  " +
 				" and model.debate.debateId = DOB.debate.debateId" +
@@ -1046,6 +1059,11 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 	        	str.append(" and model.candidate.state.stateId in (:debateParticipantLocationIdList) " );
 			}
 		}
+		if(casteId != null && casteId.longValue()>0 ){
+			str.append(" and model.candidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId =:casteId ");
+		}else if(casteId != null && type.equalsIgnoreCase("casteOthers")){
+			str.append(" and model.candidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId is null ");
+		}
 		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
 			str.append(" group by DS.debate.debateId ");
 		}else{
@@ -1076,6 +1094,9 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 			query.setParameter("designationId", designationId);
 		}else if(partyIds !=null && partyIds.size()>0l){
 			query.setParameterList("partyIds", partyIds);
+		}
+		if(casteId != null && casteId.longValue()>0 ){
+			query.setParameter("casteId", casteId);
 		}
 		return query.list();
 	} 
@@ -1823,4 +1844,195 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		}
 		return query.list();
 	}
+   public List<Object[]> getTotalDabtesCountsForPartyWiseCasteDetails(Date fromDate , Date toDate,String state,List<Long> debateLocationIdList)
+	{
+		StringBuilder str = new StringBuilder();		
+		 str.append("select distinct model1.party.partyId,model1.party.shortName,count(distinct model1.debate.debateId)" +
+		 		//", model1.candidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+		 		//" model1.candidate.casteState.casteCategoryGroup.casteCategory.categoryName  " +
+				" from DebateParticipant model1  " );
+				//" left join model1.candidate candidate " +
+				//" left join candidate.casteState casteState left join casteState.casteCategoryGroup  casteCategoryGroup " +
+				//" left join casteCategoryGroup.casteCategory casteCategory ");
+		 str.append(" where  model1.debate.isDeleted = 'N' " +
+				" and model1.party.isNewsPortal = 'Y' "  +
+				" and  model1.candidate.isDebateCandidate ='Y' ");
+		 
+	 	if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			str.append(" and model1.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			str.append(" and model1.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+		 
+		if(fromDate !=null && toDate !=null){
+			 str.append(" and date(model1.debate.startTime) >= :fromDate and date(model1.debate.endTime) <= :toDate ");
+		}
+		if(debateLocationIdList != null && debateLocationIdList.size()>0){
+			str.append(" and model1.debate.addressId in(:debateLocationIdList)  ");
+		}
+		str.append(" group by model1.party.partyId" +
+				//",model1.candidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId " +
+				" order by model1.party.newsOrderNo ");		
+		Query query = getSession().createQuery(str.toString());		
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
+       if(debateLocationIdList != null && debateLocationIdList.size()>0){
+       	 query.setParameterList("debateLocationIdList", debateLocationIdList);
+		}
+		return query.list();
+	}
+  
+   public List<Object[]> getTotalDabteParticipantCountsForPartyWiseCasteDetails(Date fromDate , Date toDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList)
+	{
+		StringBuilder str = new StringBuilder();		
+		 str.append("select distinct model1.party.partyId,model1.party.shortName,'',count(distinct model1.candidateId), " +
+		 		" casteCategory.casteCategoryId," +
+		 		" casteCategory.categoryName from " +
+				"  DebateParticipant model1 left join model1.candidate candidate " +
+				" left join candidate.casteState casteState left join casteState.casteCategoryGroup  casteCategoryGroup " +
+				" left join casteCategoryGroup.casteCategory casteCategory ");
+		 str.append(" where   model1.debate.isDeleted = 'N' " +
+				" and model1.party.isNewsPortal = 'Y'" +
+				" and  model1.candidate.isDebateCandidate ='Y' " );
+		 
+	 	if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			str.append(" and model1.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			str.append(" and model1.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+		 
+		if(fromDate !=null && toDate !=null){
+			 str.append(" and date(model1.debate.startTime) >= :fromDate and date(model1.debate.endTime) <= :toDate ");
+		}
+		if(debateLocationIdList != null && debateLocationIdList.size()>0){
+			str.append(" and model1.debate.addressId in(:debateLocationIdList)  ");
+		}
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
+			str.append(" and model1.debate.address.state.stateId in(:debateParticipantLocationIdList)  ");
+		}
+		str.append(" group by model1.party.partyId,casteCategory.casteCategoryId " +
+				" order by model1.party.newsOrderNo ");		
+		Query query = getSession().createQuery(str.toString());		
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
+      if(debateLocationIdList != null && debateLocationIdList.size()>0){
+      	 query.setParameterList("debateLocationIdList", debateLocationIdList);
+		}
+      if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
+    	  query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList); 
+      }
+		return query.list();
+	}
+   public List<Object[]> getTotalDabtesCountsForPartyWiseCasteDetailsClick(Date fromDate,Date toDate,String state,List<Long> debateLocationIdList,Long casteId,String type,Long partyId,List<Long> debateParticipantLocationIdList)
+  	{
+  		StringBuilder str = new StringBuilder();		
+  		 str.append("select distinct candidate.candidateId,candidate.lastname, " +
+  		 		  " DS.debate.debateId,model1.debate.startTime,model1.debate.endTime," +
+			      " DOB.observer.observerId,DOB.observer.observerName,model1.debate.channel.channelId," +
+			      " model1.debate.channel.channelName, " +
+			      " model1.partyId,model1.party.shortName" );
+  		//if(casteId != null && casteId.longValue()>0l)
+  		   str.append(",casteCategory.casteCategoryId,casteCategory.categoryName ");
+  		   if(!type.equalsIgnoreCase("others") && casteId.longValue()>0){
+  			   str.append(",casteState.caste.casteId,casteState.caste.casteName ");
+  		       }
+  		 str.append(" from DebateSubject DS,DebateObserver DOB, " +
+  				  "  DebateParticipant model1  left join model1.candidate candidate " );
+  		 str.append(" left join candidate.casteState casteState left join casteState.casteCategoryGroup  casteCategoryGroup " +
+  				 " left join casteCategoryGroup.casteCategory casteCategory ");
+  		 str.append(" where  model1.debate.isDeleted = 'N' and model1.debateId = DS.debate.debateId  " +
+  				" and model1.debate.debateId = DOB.debate.debateId " +
+  				" and model1.party.isNewsPortal = 'Y' " +
+  				" and  model1.candidate.isDebateCandidate ='Y' "); 
+  		 
+  	 	if(state !=null && state.trim().equalsIgnoreCase("ap")){
+  			str.append(" and model1.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+  		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+  			str.append(" and model1.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+  		}
+  		 
+  		if(fromDate !=null && toDate !=null){
+  			 str.append(" and date(model1.debate.startTime) >= :fromDate and date(model1.debate.endTime) <= :toDate ");
+  		}
+  		if(debateLocationIdList != null && debateLocationIdList.size()>0){
+  			str.append(" and model1.debate.addressId in(:debateLocationIdList)  ");
+  		}
+  		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
+			str.append(" and model1.debate.address.state.stateId in(:debateParticipantLocationIdList)  ");
+		}
+  		if(casteId != null && casteId.longValue()>0l){
+  			str.append(" and casteCategory.casteCategoryId =:casteId ");
+  		}else if(casteId.longValue() == 0l && type.equalsIgnoreCase("others")){
+  			str.append(" and casteCategory.casteCategoryId is null ");
+  		}
+  		if(partyId != null && partyId.longValue()>0l){
+  			str.append(" and model1.party.partyId =:partyId ");
+  		}
+  		//str.append(" group by model1.party.partyId,casteCategory.casteCategoryId " +
+  				//" order by model1.party.newsOrderNo ");		
+  		Query query = getSession().createQuery(str.toString());		
+  		if(fromDate !=null && toDate !=null){
+  			query.setParameter("fromDate", fromDate);
+  			query.setParameter("toDate", toDate);
+  		}
+  		
+         if(debateLocationIdList != null && debateLocationIdList.size()>0){
+         	 query.setParameterList("debateLocationIdList", debateLocationIdList);
+  		}
+         if(casteId != null && casteId.longValue()>0l){
+        	 query.setParameter("casteId", casteId); 
+         }
+         if(partyId != null && partyId.longValue()>0l){
+        	 query.setParameter("partyId", partyId); 
+         }
+         if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
+        	 query.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+         }
+  		return query.list();
+  	}
+   public List<Object[]> getCandidateGroupMatchedDetails(Long candidateId,String type,Long categoryId)
+ 	{
+ 		StringBuilder str = new StringBuilder();		
+ 		 str.append("select distinct candidate.candidateId,candidate.lastname, " +
+ 		 		  " DS.debate.debateId,model1.debate.startTime,model1.debate.endTime," +
+			      " DOB.observer.observerId,DOB.observer.observerName,model1.debate.channel.channelId," +
+			      " model1.debate.channel.channelName, " +
+			      " model1.partyId,model1.party.shortName" );
+ 		//if(casteId != null && casteId.longValue()>0l)
+ 		   str.append(",casteCategory.casteCategoryId,casteCategory.categoryName ");
+ 		   if(!type.equalsIgnoreCase("others")){
+ 			   str.append(",casteState.caste.casteId,casteState.caste.casteName ");
+ 		       }
+ 		 str.append(" from DebateSubject DS,DebateObserver DOB, " +
+ 				  "  DebateParticipant model1  left join model1.candidate candidate " );
+ 		 str.append(" left join candidate.casteState casteState left join casteState.casteCategoryGroup  casteCategoryGroup " +
+ 				 " left join casteCategoryGroup.casteCategory casteCategory ");
+ 		 str.append(" where  model1.debate.isDeleted = 'N' and model1.debateId = DS.debate.debateId  " +
+ 				" and model1.debate.debateId = DOB.debate.debateId " +
+ 				" and model1.party.isNewsPortal = 'Y' " +
+ 				" and  model1.candidate.isDebateCandidate ='Y' "); 
+ 		if(candidateId != null && candidateId.longValue()>0l){
+ 			str.append(" and candidate.candidateId =:candidateId ");
+ 		}
+ 		if(categoryId != null && categoryId.longValue()>0l){
+ 			str.append(" and casteCategory.casteCategoryId =:categoryId ");
+ 		}
+ 	 	
+ 					
+ 		Query query = getSession().createQuery(str.toString());		
+ 		
+ 		if(candidateId != null && candidateId.longValue()>0l){
+ 			query.setParameter("candidateId", candidateId); 
+ 		}
+ 		if(categoryId != null && categoryId.longValue()>0l){
+ 			query.setParameter("categoryId", categoryId); 
+ 		}
+ 		return query.list();
+ 	}
 }

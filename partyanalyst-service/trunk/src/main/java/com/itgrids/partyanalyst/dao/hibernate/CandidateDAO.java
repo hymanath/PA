@@ -1477,4 +1477,69 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getOveralCandidateCasteDetails(String state,List<Long> debateParticipantLocationIdList)
+	{
+		StringBuffer query = new StringBuffer();
+		
+		query.append(" select count(distinct model.candidateId),model.party.partyId, " +
+				" model.party.shortName,casteCategory.casteCategoryId,casteCategory.categoryName " +
+				"  from Candidate model left join model.casteState casteState " +
+				" left join casteState.casteCategoryGroup casteCategoryGroup left join casteCategoryGroup.casteCategory casteCategory " +
+				" where " );
+				//" model.isDebateCandidate = 'Y' ");
+		if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			query.append(" model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			query.append(" model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+			query.append(" and model.state.stateId in (:debateParticipantLocationIdList) ");
+		}
+		query.append(" group by model.party.partyId,casteCategory.casteCategoryId ");
+		Query queryObj = getSession().createQuery(query.toString());
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+			queryObj.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+		}
+		return queryObj.list();
+	}
+	
+	public List<Object[]> getOveralCandidateCasteDetailsClick(String state,List<Long> debateParticipantLocationIdList,Long partyId,Long casteId,String type)
+	{
+		StringBuffer query = new StringBuffer();
+		
+		query.append(" select model.candidateId,model.lastname,model.party.partyId, " +
+				" model.party.shortName,casteCategory.casteCategoryId,casteCategory.categoryName " +
+				"  from Candidate model left join model.casteState casteState " +
+				" left join casteState.casteCategoryGroup casteCategoryGroup left join casteCategoryGroup.casteCategory casteCategory " +
+				" where " );
+				//" model.isDebateCandidate = 'Y' ");
+		if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			query.append(" model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			query.append(" model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+			query.append(" and model.state.stateId in (:debateParticipantLocationIdList) ");
+		}
+		if(partyId != null && partyId.longValue()>0l){
+			query.append("and  model.party.partyId =:partyId ");
+		}
+        if(casteId != null && casteId.longValue()>0){
+        	query.append("and  casteCategory.casteCategoryId =:casteId ");
+		}else if(type != null && type.equalsIgnoreCase("others")){
+			query.append("and  casteCategory.casteCategoryId is null ");
+		}
+		Query queryObj = getSession().createQuery(query.toString());
+		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0){
+			queryObj.setParameterList("debateParticipantLocationIdList", debateParticipantLocationIdList);
+		}
+		if(partyId != null && partyId.longValue()>0l){
+			queryObj.setParameter("partyId", partyId);
+		}
+		if(casteId != null && casteId.longValue()>0){
+			queryObj.setParameter("casteId", casteId);
+		}
+		return queryObj.list();
+	}
 }
