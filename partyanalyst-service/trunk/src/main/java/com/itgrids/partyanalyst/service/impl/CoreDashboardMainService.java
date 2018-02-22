@@ -9615,8 +9615,8 @@ public Map<Long,CoreDebateVO> setDesignationLessValuesToMap(List<Object[]> ObjLi
 					 //casteGroupIds.add(VO.getCasteId());
 					debateIds.add(VO.getId());
 					finalList.add(VO);
-					if(commonMethodsUtilService.getStringValueForObject(obj[12]) != null){
-					List<Object[]> subCasteList = debateParticipantDAO.getCandidateGroupMatchedDetails(VO.getCandidateId(),type,VO.getCasteId());
+					if(commonMethodsUtilService.getStringValueForObject(obj[12]) != null && !commonMethodsUtilService.getStringValueForObject(obj[12]).isEmpty()){
+					List<Object[]> subCasteList = debateParticipantDAO.getCandidateGroupMatchedDetails(VO.getCandidateId(),type,VO.getCasteId(),partyId);
 					if(subCasteList != null && subCasteList.size()>0l){
 						for(Object[] param: subCasteList){
 						CoreDebateVO matchedVo =getMatchedCasteCandidateId(finalList,commonMethodsUtilService.getLongValueForObject(param[0]));

@@ -1996,7 +1996,7 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
          }
   		return query.list();
   	}
-   public List<Object[]> getCandidateGroupMatchedDetails(Long candidateId,String type,Long categoryId)
+   public List<Object[]> getCandidateGroupMatchedDetails(Long candidateId,String type,Long categoryId,Long partyId)
  	{
  		StringBuilder str = new StringBuilder();		
  		 str.append("select distinct candidate.candidateId,candidate.lastname, " +
@@ -2024,7 +2024,9 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
  			str.append(" and casteCategory.casteCategoryId =:categoryId ");
  		}
  	 	
- 					
+ 		if(partyId != null && partyId.longValue()>0){
+ 			str.append(" and model1.partyId =:partyId ");
+ 		}
  		Query query = getSession().createQuery(str.toString());		
  		
  		if(candidateId != null && candidateId.longValue()>0l){
@@ -2032,6 +2034,9 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
  		}
  		if(categoryId != null && categoryId.longValue()>0l){
  			query.setParameter("categoryId", categoryId); 
+ 		}
+ 		if(partyId != null && partyId.longValue()>0){
+ 			query.setParameter("partyId", partyId); 
  		}
  		return query.list();
  	}
