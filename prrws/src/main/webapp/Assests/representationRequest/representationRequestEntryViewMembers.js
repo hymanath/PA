@@ -1087,7 +1087,7 @@ function getRepresentativeSearchDetails1(value){
 	$("#errMsgId").html("");
 	
 	$(".menuCls-table").hide();
-		var allColumnArr= ["RepresentationDate", "EndorsmentNo", "EndorsmentDate", "RepresenteeType", "RepresenteeName", "RepresenteeDesignation", "ReferrerName", "ReferreerDesignation", "WorkDescription", "EstimationCost","noofWorks","Status", "Department", "LeadName", "Subject", "SubSubject", "GrantName", "WorkType", "HasCoveringLtr", "HasActionCopy", "HasDetailedReport", "HasFinalCopy", "HasOthersCopy", "HasWorkCopy", "WithWhome", "LastUpdatedTime"];
+		var allColumnArr= ["RepresentationDate", "EndorsmentNo", "EndorsmentDate", "RepresenteeType", "RepresenteeName", "RepresenteeDesignation", "ReferrerName", "ReferreerDesignation", "WorkDescription", "EstimationCost","noofWorks","Status", "Department", "LeadName", "Subject", "SubSubject", "GrantName", "WorkType", "HasCoveringLtr", "HasActionCopy", "HasDetailedReport", "HasFinalCopy", "HasOthersCopy", "HasWorkCopy","HasReprRefDocs", "WithWhome", "LastUpdatedTime"];
 		for(var i in allColumnArr){
 			$("."+allColumnArr[i]).hide();
 		}
@@ -2347,7 +2347,7 @@ function petitionWiseRepresenteeDetails(result){
 	 var  HasWorkCopy=false; 
 	 var  WithWhome=false; 
 	 var  LastUpdatedTime=false;
-	 
+	 var HasReprRefDocs =false;
 	var str='';
 	str+='<div class="panel panel-default" style="margin-top:-8px;">';
 		str+='<div class="panel-heading" style="background-color:#344650; color:#fff;">';
@@ -2575,9 +2575,9 @@ function petitionWiseRepresenteeDetails(result){
 							Department =true;
 							str+='<th  class="Department">DEPARTMENT</th>';	//columnShowHide	
 						}else if(allCheckedColumnsArr[n].trim() =='Subject'){
-							SubSubject =true;
-							str+='<th  class="SubSubject ">SUB_SUBJECT</th>';
-						}else if(allCheckedColumnsArr[n].trim() =='Subject'){
+							Subject =true;
+							str+='<th  class="Subject ">SUBJECT</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='SubSubject'){
 							SubSubject =true;
 							str+='<th  class="SubSubject ">SUB_SUBJECT</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='GrantName'){
@@ -2589,6 +2589,9 @@ function petitionWiseRepresenteeDetails(result){
 						}else if(allCheckedColumnsArr[n].trim() =='WorkType'){
 							WorkType =true;
 							str+='<th  class="WorkType ">WORK TYPE</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='HasReprRefDocs'){
+							HasReprRefDocs =true;
+							str+='<th  class="HasReprRefDocs ">HAS Repr Ref DOCS</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='HasWorkCopy'){
 							HasWorkCopy =true;
 							str+='<th  class="HasWorkCopy ">HAS WORK DOCS</th>';
@@ -2791,12 +2794,20 @@ function petitionWiseRepresenteeDetails(result){
 							str+='<td style="text-align:center;" class="LeadName ">-</td>';
 						}
 					  }
+						if(HasReprRefDocs){
+						if(result[i].hasRepRefDocs != null && result[i].hasRepRefDocs.length>0){
+							//str+='<td style="text-align:center;" class="HasReprRefDocs "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
+							str+='<td style="text-align:center;" class="HasReprRefDocs "> YES </td>';
+						}else{
+							str+='<td style="text-align:center;" class="HasReprRefDocs "> - </td>';
+						}
+					  }
 					  if(HasWorkCopy){
 						
 						/////////
 						if(result[i].hasWorkDocs != null && result[i].hasWorkDocs.length>0){
 							//str+='<td style="text-align:center;" class="HasWorkCopy "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
-							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+							str+='<td style="text-align:center;" class="HasWorkCopy "> YES </td>';
 						}else{
 							str+='<td style="text-align:center;" class="HasWorkCopy "> - </td>';
 						}
@@ -2804,7 +2815,7 @@ function petitionWiseRepresenteeDetails(result){
 					  if(HasCoveringLtr){
 						if(result[i].hasCoverLtr != null && result[i].hasCoverLtr.length>0){
 							//str+='<td style="text-align:center;" class="HasCoveringLtr "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
-							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+							str+='<td style="text-align:center;" class="HasCoveringLtr "> YES </td>';
 						}else{
 							str+='<td style="text-align:center;" class="HasCoveringLtr "> - </td>';
 						}
@@ -2812,7 +2823,7 @@ function petitionWiseRepresenteeDetails(result){
 					  if(HasActionCopy){
 						if(result[i].hasActionCopy != null && result[i].hasActionCopy.length>0){
 							//str+='<td style="text-align:center;" class="HasActionCopy "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
-							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+							str+='<td style="text-align:center;" class="HasActionCopy "> YES </td>';
 						}else{
 							str+='<td style="text-align:center;" class="HasActionCopy "> - </td>';
 						}
@@ -2820,7 +2831,7 @@ function petitionWiseRepresenteeDetails(result){
 					  if(HasDetailedReport){
 						if(result[i].hasDetailedReport != null && result[i].hasDetailedReport.length>0){
 							//str+='<td style="text-align:center;" class="HasDetailedReport "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
-							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+							str+='<td style="text-align:center;" class="HasDetailedReport "> YES </td>';
 						}else{
 							str+='<td style="text-align:center;" class="HasDetailedReport "> - </td>';
 						}
@@ -2828,7 +2839,7 @@ function petitionWiseRepresenteeDetails(result){
 					  if(HasFinalCopy){
 						if(result[i].hasFinalCopy != null && result[i].hasFinalCopy.length>0){
 							//str+='<td style="text-align:center;" class="HasFinalCopy "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
-							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+							str+='<td style="text-align:center;" class="HasFinalCopy "> YES </td>';
 						}else{
 							str+='<td style="text-align:center;" class="HasFinalCopy "> - </td>';
 						}
@@ -2836,7 +2847,7 @@ function petitionWiseRepresenteeDetails(result){
 					  if(HasOthersCopy){
 						if(result[i].hasOthersCopy != null && result[i].hasOthersCopy.length>0){
 							//str+='<td style="text-align:center;" class="HasOthersCopy "><h5><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i></h5></td>';
-							str+='<td style="text-align:center;" class="LeadName "> YES </td>';
+							str+='<td style="text-align:center;" class="HasOthersCopy "> YES </td>';
 						}else{
 							str+='<td style="text-align:center;" class="HasOthersCopy "> - </td>';
 						}

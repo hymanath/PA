@@ -364,6 +364,11 @@
 						</li>
 						<li>
 						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasReprRefDocs">HAS Repr Ref DOCS</h5>	
+						</label>'
+						</li>
+						<li>
+						<label class="checkbox-inline">
 							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasWorkCopy">HAS WORK DOCS</h5>	
 						</label>'
 						</li>
@@ -393,7 +398,7 @@
 						</label>'
 						</li>
 						
-						<li>
+						<!--<li>
 						<label class="checkbox-inline">
 							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WithWhome">WITH WHOME</h5>	
 						</label>'
@@ -402,7 +407,7 @@
 						<label class="checkbox-inline">
 							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LastUpdatedTime">LAST UPDATED TIME</h5>	
 						</label>'
-						</li>
+						</li>-->
 						</ul>'
 					</div>
 					</div>
@@ -410,7 +415,7 @@
 					
 					<div class="row">
 						<div class="col-sm-12">
-							<button type="button" class="btn btn-primary btn-sm selectedColumnsTableCls">Submit</button>
+							<button type="button" class="btn btn-primary btn-sm selectedColumnsTableCls">APPLY FILTERS</button>
 						</div>
 					</div>
 				</div>
