@@ -875,4 +875,15 @@ public class NregsDashboardController {
 		}
 		return levlWiseVOList;
 	}
+	@PostMapping("/saveFAVacanciesPanchayatData")
+	public @ResponseBody IdNameVO saveFAVacanciesPanchayatData(){
+		IdNameVO statusVO = null;
+		try {
+			statusVO = nregsTcsService.saveFAVacanciesPanchayatData();
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveFAVacanciesPanchayatData - NREGSController controller", e);
+		}
+		return statusVO;
+	}
 }

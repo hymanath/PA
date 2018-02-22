@@ -9,5 +9,6 @@ import com.itgrids.model.PrPanchayat;
 public interface IPrPanchayatDAO extends GenericDao<PrPanchayat, Long> {
 	
 	public List<Object[]> getpanchayatsFrTehsil(String tehsilId);
+	public List<Object[]> getPanchayatIdAndPrPanchayatId(String uniqueCode);
 
 }

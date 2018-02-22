@@ -54,6 +54,7 @@ import com.itgrids.model.NregaComponentComments;
 import com.itgrids.model.NregaComponentCommentsHistory;
 import com.itgrids.model.NregaComponentStatus;
 import com.itgrids.model.NregaFAType;
+import com.itgrids.model.NregaFAVacantPanchayat;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -8439,4 +8440,71 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return voList;
 	}
+	/*
+	 * Author : Nandhini.k
+	 * Date : 20/02/2018
+	 * @Description : Saving FA Vacancies Data
+	 */
+	public IdNameVO  saveFAVacanciesPanchayatData(){
+		IdNameVO statusVO = new IdNameVO();
+		try {
+			InputVO inputVO = new InputVO();
+			List<NregaFAVacantPanchayat> dataList = new ArrayList<NregaFAVacantPanchayat>(0);
+			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/mdServiceVacanciesServices";
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(),inputVO);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			} else {
+				String output = response.getEntity(String.class);
+
+				if (output != null && !output.isEmpty()) {
+					JSONArray finalArray = new JSONArray(output);
+					if (finalArray != null && finalArray.length() > 0) {
+						for (int i = 0; i < finalArray.length(); i++) {
+							NregaFAVacantPanchayat model = new NregaFAVacantPanchayat();
+							JSONObject jObj = (JSONObject) finalArray.get(i);
+								model.setPanchayatName(jObj.get("PNAME").toString());
+								model.setUniqueCode(jObj.get("PID").toString());
+								List<Object[]> panchaytIds = prPanchayatDAO.getPanchayatIdAndPrPanchayatId(model.getUniqueCode());
+								if(panchaytIds != null && !panchaytIds.isEmpty()){
+									for (Object[] param : panchaytIds) {
+										model.setPanchayatId(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+										model.setPrPanchayatId(Long.valueOf(param[1] != null ? param[1].toString():"0"));
+										model.setLocationAddressId(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+									}
+								}
+								model.setListTypeId(Long.valueOf(jObj.get("AFPD_LISTTYPEFY1213").toString()));
+								if(model.getListTypeId() != null && model.getListTypeId().longValue() == 4L){
+									model.setNregaFaTypeId(2L);
+									model.setNoOfVacant(2L);
+								}else{
+									model.setNregaFaTypeId(model.getListTypeId());
+									model.setNoOfVacant(1L);
+								}
+								model.setIsFilled("N");
+								model.setIsDeleted("N");
+								model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								
+							dataList.add(model);
+						}
+					}
+				}
+			}
+			
+			int status = nregaFAVacantPanchayatDAO.updateoldData();
+			
+			if(dataList != null && !dataList.isEmpty()){
+				for (NregaFAVacantPanchayat nregaFAVacantPanchayat : dataList) {
+					nregaFAVacantPanchayatDAO.save(nregaFAVacantPanchayat);
+				}
+			}
+						
+			statusVO.setName("SUCCESS");
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveFAVacanciesPanchayatData - NREGSTCSService service", e);
+		}
+		return statusVO;
+	}
+	
 }
