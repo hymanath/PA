@@ -524,6 +524,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 											petitionRefferer.setPmRefCandidateDesignationId(pmRefDesignation.getPmRefCandidateDesignationId());// ref and representee designation same. himself referrer
 											petitionRefferer.setPmRepresenteeId(pmRepRefDesignation.getPmRepresenteeId());
 											petitionRefferer.setPmRepresenteeDesignationId(pmRepRefDesignation.getPmRepresenteeDesignationId());
+											petitionRefferer.setPmRefCandidateId(4074L);//empty name
+											petitionRefferer.setPmRefCandidateDesignationId(4257L);//empty ref details
 											petitionRefferer.setIsDeleted("N");
 											petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 											petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -641,6 +643,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 										petitionRefferer.setPetitionId(petitionId);
 										petitionRefferer.setPmRepresenteeId(pmRepresenteeId);
 										petitionRefferer.setPmRepresenteeDesignationId(pmRepresenteeDesignation.getPmRepresenteeDesignationId());
+										petitionRefferer.setPmRefCandidateId(4074L);//empty name
+										petitionRefferer.setPmRefCandidateDesignationId(4257L);//empty ref details
 										petitionRefferer.setIsDeleted("N");
 										petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 										petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -686,13 +690,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 						}
 					}
-				}/*else{
+				}else{
 					if(commonMethodsUtilService.isListOrSetValid(pmRepresenteeList)){
 						for (PmRepresenteeDesignation pmRepresenteeDesignation : pmRepresenteeList) {
 							PmRepresenteeRefDetails petitionRefferer = new PmRepresenteeRefDetails(); 
 							petitionRefferer.setPetitionId(petitionId);
 							petitionRefferer.setPmRepresenteeId(pmRepresenteeId);
 							petitionRefferer.setPmRepresenteeDesignationId(pmRepresenteeDesignation.getPmRepresenteeDesignationId());
+							petitionRefferer.setPmRefCandidateId(4074L);//empty name
+							petitionRefferer.setPmRefCandidateDesignationId(4257L);//empty ref details
 							petitionRefferer.setIsDeleted("N");
 							petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -702,7 +708,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							petitionRefferer = pmRepresenteeRefDetailsDAO.save(petitionRefferer);
 						}
 					}
-				}*/
+				}
 				
 			}
 		} catch (Exception e) {
@@ -1951,6 +1957,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						 }
 						 
 						 representeeRefCandidateId = commonMethodsUtilService.getLongValueForObject(param[31]);
+						 
 						// if(returnVO.getRepresentationType().equalsIgnoreCase("REPRESENTEE")){
 							 PmRequestVO  representeeVO = new PmRequestVO();
 							 representeeVO.setRepresenteeId(commonMethodsUtilService.getLongValueForObject(param[30]));					
@@ -1987,7 +1994,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 }
 							 
 							 representeeVO.setAddressVO(addressVO);
-							 
+							
 							 AddressVO refAddressVO = setAddressDetailsToResultView(pageType,param[16],param[17],param[18],param[19],param[20],param[65]);
 							 refAddressVO.setStateName(commonMethodsUtilService.getCapitalStringValueForObject(param[43]));
 							 refAddressVO.setDistrictName(commonMethodsUtilService.getCapitalStringValueForObject(param[44]));
@@ -2010,13 +2017,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 }
 							 
 							 refAddressVO.setName(commonMethodsUtilService.getStringValueForObject(param[34]));
-							 
-							 representeeVO.setAddressVO(refAddressVO);
-							 
-							 
-							 representeeVO.getAddressVOList().add(refAddressVO);
+							 if(param[16] != null){
+								 representeeVO.setAddressVO(refAddressVO);
+								 representeeVO.getAddressVOList().add(refAddressVO);
+							 }
 							 returnVO.getRepresenteeDetailsList().add(representeeVO);
 						// }
+						 
 						 i=i+1;
 					}else{
 						PmRequestVO representeeVO = returnVO.getRepresenteeDetailsList().get(0);
@@ -2045,10 +2052,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								 refAddressVO.getConstituencyList().add(new KeyValueVO(refAddressVO.getAssemblyId(), refAddressVO.getAssemblyName()));
 							 }
 							 
-							 representeeVO.setAddressVO(refAddressVO);
-							 
-							 refAddressVO.setName(commonMethodsUtilService.getStringValueForObject(param[34]));
-							 representeeVO.getAddressVOList().add(refAddressVO);
+							 if(param[16] != null){
+								 representeeVO.setAddressVO(refAddressVO);
+								 refAddressVO.setName(commonMethodsUtilService.getStringValueForObject(param[34]));
+								 representeeVO.getAddressVOList().add(refAddressVO);
+							 }
 						}
 						else if(representeeVO != null && !representeeVO.getDesignation().contains(commonMethodsUtilService.getStringValueForObject(param[34])) && 
 								(!commonMethodsUtilService.getStringValueForObject(param[34]).toUpperCase().contains("MLC") && !commonMethodsUtilService.getStringValueForObject(param[34]).toUpperCase().contains("MINISTER") ) && 
@@ -2075,11 +2083,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 if(!commonMethodsUtilService.isListOrSetValid(refAddressVO.getConstituencyList())){
 								 refAddressVO.getConstituencyList().add(new KeyValueVO(refAddressVO.getAssemblyId(), refAddressVO.getAssemblyName()));
 							 }
-							 
-							 representeeVO.setAddressVO(refAddressVO);
-							 
-							 refAddressVO.setName(commonMethodsUtilService.getStringValueForObject(param[34]));
-							 representeeVO.getAddressVOList().add(refAddressVO);
+							 if(param[16] != null){
+								 representeeVO.setAddressVO(refAddressVO);
+								 refAddressVO.setName(commonMethodsUtilService.getStringValueForObject(param[34]));
+								 representeeVO.getAddressVOList().add(refAddressVO);
+							 }
 						}
 					}
 					
@@ -2157,7 +2165,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								 returnVO.getRepresenteeDetailsList().clear();
 								 returnVO.getRepresenteeDetailsList().add(refVO);
 							 }
-						 }else 
+						 }else if(refVO.getRefCandidateId().longValue() != 4074L)// default ref candidate Id
 							 returnVO.getReferDetailsList().add(refVO);
 					 }else{
 						 boolean isAvailable=false;
@@ -2190,7 +2198,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									 returnVO.getRepresenteeDetailsList().clear();
 									 returnVO.getRepresenteeDetailsList().add(refVO);
 								 }
-							 }else 
+							 }else if(refVO.getRefCandidateId().longValue() != 4074L)// default ref candidate Id
 								 returnVO.getReferDetailsList().add(refVO);
 						 }
 					 }
