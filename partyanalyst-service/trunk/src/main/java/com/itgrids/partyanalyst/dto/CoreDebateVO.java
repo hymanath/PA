@@ -35,7 +35,13 @@ public class CoreDebateVO implements Serializable {
 	private Long designationId;
 	private String partyName;
 	private Long debateBaseCandidateCount=0l;
-	
+	private Long casteId;
+	private String casteName;
+	private Long casteDebateCount=0l;
+	private Long casteCandidateCount =0l;
+	private Double debatePer=0.00;
+	private Double participantPer=0.00;
+	private String subCastName;
 	public Long getId() {
 		return id;
 	}
@@ -204,5 +210,48 @@ public class CoreDebateVO implements Serializable {
 	public void setDebateBaseCandidateCount(Long debateBaseCandidateCount) {
 		this.debateBaseCandidateCount = debateBaseCandidateCount;
 	}
+	public Long getCasteId() {
+		return casteId;
+	}
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
+	public String getCasteName() {
+		return casteName;
+	}
+	public void setCasteName(String casteName) {
+		this.casteName = casteName;
+	}
+	public Long getCasteDebateCount() {
+		return casteDebateCount;
+	}
+	public void setCasteDebateCount(Long casteDebateCount) {
+		this.casteDebateCount = casteDebateCount;
+	}
+	public Long getCasteCandidateCount() {
+		return casteCandidateCount;
+	}
+	public void setCasteCandidateCount(Long casteCandidateCount) {
+		this.casteCandidateCount = casteCandidateCount;
+	}
+	public Double getDebatePer() {
+		return debatePer;
+	}
+	public void setDebatePer(Double debatePer) {
+		this.debatePer = debatePer;
+	}
+	public Double getParticipantPer() {
+		return participantPer;
+	}
+	public void setParticipantPer(Double participantPer) {
+		this.participantPer = participantPer;
+	}
+	public String getSubCastName() {
+		return subCastName;
+	}
+	public void setSubCastName(String subCastName) {
+		this.subCastName = subCastName;
+	}
+	
 	
 }

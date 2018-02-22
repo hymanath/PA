@@ -80,7 +80,8 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private String isDebateCandidate;
 	private State state;
 	private Long stateId;
- 
+	private Long casteStateId;
+	private CasteState casteState;
 	// Constructors
 
 	
@@ -424,6 +425,26 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
 	}
+	@Column(name = "caste_state_id")
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "caste_state_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public CasteState getCasteState() {
+		return casteState;
+	}
+
+	public void setCasteState(CasteState casteState) {
+		this.casteState = casteState;
+	}
+	
 	
 	
 }
