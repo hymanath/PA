@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.itextpdf.text.Document;
@@ -14,7 +13,6 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.dto.InputVO;
-import com.itgrids.dto.PetitionsWorksVO;
 import com.itgrids.dto.PmRequestEditVO;
 import com.itgrids.dto.PmRequestVO;
 
@@ -23,7 +21,7 @@ public class ITextCoveringLetterGeneration  {
 	public static final String GHOST_SCRIPT_PATH = "C:\\Program Files\\gs\\gs9.21\\bin\\gswin64c.exe";
 	public static final String CSS = "table { border:1px solid red; }";
 	public static final int	   CUTOFF_LEVEL1 = 95;
-	
+	public static CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	/*public static void convertToImage(String indiDEST){
 		String output = indiDEST.replace(".pdf", ".jpg");
 		ProcessBuilder processBuilder = new ProcessBuilder(GHOST_SCRIPT_PATH,
@@ -122,6 +120,7 @@ public class ITextCoveringLetterGeneration  {
 			}else{
 				str1=str1.replace("#min", "As directed by Hon'ble Minister, ");
 			}
+			str1 = str1.trim();
 			String depts =inputVO.getDeptCode();
 			depts = inputVO.getDeptCode().replace("(", "");
 			if(inputVO.getDisplayType() != null && (inputVO.getDisplayType().equalsIgnoreCase("AP MINISTER") || inputVO.getDisplayType().equalsIgnoreCase("MINISTER"))){
@@ -129,15 +128,22 @@ public class ITextCoveringLetterGeneration  {
 			}else{
 				str1=str1.replace("#Addr", " addressed to Hon'ble Minister for "+depts.replace(")", "")+" ");
 			}
+			str1 = str1.trim();
  			if(petitionDetailsVO != null){
  				
  				if(petitionDetailsVO.getGrievanceDescription() != null && !petitionDetailsVO.getGrievanceDescription().equalsIgnoreCase("")){
- 					petitionDetailsVO.setGrievanceDescription(petitionDetailsVO.getGrievanceDescription().replace(".", ""));
+ 					String lastStr = petitionDetailsVO.getGrievanceDescription().substring(petitionDetailsVO.getGrievanceDescription().trim().length()-1, petitionDetailsVO.getGrievanceDescription().trim().length());
+ 					if(lastStr != null && lastStr.equalsIgnoreCase(".")){
+ 						petitionDetailsVO.setGrievanceDescription(petitionDetailsVO.getGrievanceDescription().substring(0, petitionDetailsVO.getGrievanceDescription().trim().length()-1));
+ 					}else{
+ 						petitionDetailsVO.setGrievanceDescription(petitionDetailsVO.getGrievanceDescription().substring(0, petitionDetailsVO.getGrievanceDescription().trim().length()));
+ 					}
+ 					
 					 str1 = str1.replace("#workName",petitionDetailsVO.getGrievanceDescription());
 				 }else{
 					 str1 = str1.replace("#workName","");
 				 }
- 				
+ 				str1 = str1.trim();
  				if(petitionDetailsVO.getRepresentationdate() != null && !petitionDetailsVO.getRepresentationdate().equalsIgnoreCase("")){
  					 String[] strArr = petitionDetailsVO.getRepresentationdate().split("-");
  					 String dateFormat = strArr[0]+"."+strArr[1]+"."+strArr[2];
@@ -145,6 +151,7 @@ public class ITextCoveringLetterGeneration  {
 				 }else{
 					 str1 = str1.replace("#rdate","");
 				 }
+ 				str1 = str1.trim();
 				if(petitionDetailsVO.getRepresenteeDetailsList() != null && petitionDetailsVO.getRepresenteeDetailsList().size()>0){
 					//representeeList.addAll(petitionDetailsVO.getRepresenteeDetailsList());
 					for (PmRequestVO pmRequestVO : petitionDetailsVO.getRepresenteeDetailsList()) {
@@ -158,35 +165,36 @@ public class ITextCoveringLetterGeneration  {
 						 }else{
 							 str1 = str1.replace("#rdesig","");
 						 }
-						 if(pmRequestVO.getAddressVO().getAssemblyName() != null && !pmRequestVO.getAddressVO().getAssemblyName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rconst"," "+pmRequestVO.getAddressVO().getAssemblyName()+" Constituency, ");
+						 if(!pmRequestVO.getDesignation().toUpperCase().contains("MINISTER")){
+							 
+							 if(!pmRequestVO.getDesignation().toUpperCase().contains("MLC")){
+								 if(pmRequestVO.getAddressVO().getAssemblyName() != null && !pmRequestVO.getAddressVO().getAssemblyName().equalsIgnoreCase("")){
+									 str1 = str1.replace("#rconst"," "+pmRequestVO.getAddressVO().getAssemblyName()+" Constituency, ");
+								 }else{
+									 str1 = str1.replace("#rconst","");
+								 }
+							 }else{
+								 str1 = str1.replace("#rconst","");
+							 }
+							 if(pmRequestVO.getAddressVO().getDistrictName() != null && !pmRequestVO.getAddressVO().getDistrictName().equalsIgnoreCase("")){
+								 str1 = str1.replace("#rdist",""+pmRequestVO.getAddressVO().getDistrictName()+" District ");
+							 }else{
+								 str1 = str1.replace("#rdist","");
+							 }
 						 }else{
 							 str1 = str1.replace("#rconst","");
-						 }
-						 if(pmRequestVO.getAddressVO().getDistrictName() != null && !pmRequestVO.getAddressVO().getDistrictName().equalsIgnoreCase("")){
-							 str1 = str1.replace("#rdist",""+pmRequestVO.getAddressVO().getDistrictName()+" District");
-						 }else{
 							 str1 = str1.replace("#rdist","");
 						 }
+						 
 					}
 				}
  			}
- 			
- 			 String estCost ="0.0";
-			List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>();
+ 			//str1 = str1.trim();
+ 			 String estCost ="0.00";
+			/*List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>();
 			StringBuilder works = new StringBuilder();
 			 if(petitionDetailsVO.getSubWorksList() != null && petitionDetailsVO.getSubWorksList().size()>0){
 				 for (PetitionsWorksVO pmSubwork : petitionDetailsVO.getSubWorksList()) {
-					/*PetitionsWorksVO works1 = new PetitionsWorksVO();
-					 works1.setWorkId(105060l);
-					 works1.setWorkName("Test Work Description1");
-					 worksList.add(works1);
-					 PetitionsWorksVO works2 = new PetitionsWorksVO();
-					 works2.setWorkId(105061l);
-					 works2.setWorkName("Test Work Description1");
-					 worksList.add(works2);
-					pmSubwork.getSubWorksList().addAll(worksList);*/
-					
 					 for (PetitionsWorksVO pmSubwork1 : pmSubwork.getSubWorksList()) {
 						 if(inputVO.getSchemeIdsList().contains(pmSubwork1.getWorkId())){
 							 int index =pmSubwork.getSubWorksList().indexOf(pmSubwork1);
@@ -208,24 +216,35 @@ public class ITextCoveringLetterGeneration  {
 						 }
 					}
 				}
-			 }
+			 }*/
+			 if(!petitionDetailsVO.getEstimateCost().isEmpty()){
+					BigDecimal decmial= new BigDecimal(petitionDetailsVO.getEstimateCost());
+					BigDecimal decmial1= new BigDecimal(estCost);
+					BigDecimal totalCost = decmial.add(decmial1);
+					estCost = totalCost.toString();
+					estCost = commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(Double.valueOf(estCost));
+				}
+			 
+			 
+			 str1 = str1.trim();
 			 String grant ="";
 			 if(inputVO.getGroupName() != null && !inputVO.getGroupName().equalsIgnoreCase("0")){
 					//grant = " under "+ inputVO.getGroupName();
-					str1 = str1.replace("#grant","under "+ inputVO.getGroupName());
+					str1 = str1.replace("#grant",". under "+ inputVO.getGroupName());
 				}else{
-					str1 = str1.replace("#grant","");
+					str1 = str1.replace("#grant",".");
 				}
-			 //estCost = "4.50";
-			 if(estCost != "0.0"){
-				 str1 = str1.replace("#cost","With an Estimated Cost of Rs.&nbsp;<b>"+estCost+"</b>&nbsp;Lakhs. ");
+			 str1 = str1.trim();
+			 //if(petitionDetailsVO.getEstimateCost() != null && ( !petitionDetailsVO.getEstimateCost().equalsIgnoreCase("0") && !petitionDetailsVO.getEstimateCost().trim().isEmpty()) ){
+			 if(!estCost.trim().equalsIgnoreCase("0.0") && !estCost.trim().equalsIgnoreCase("0.00")){
+				 str1 = str1.replace("#cost"," With an Estimated Cost of Rs.&nbsp;<b>"+estCost+"</b>&nbsp;Lakhs. ");
 			 }else{
-				 str1 = str1.replace("#cost",".");
+				 str1 = str1.replace("#cost"," .");
 			 }
-			 if(inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().size()==1l){
-				 str1 = str1.replace("#works",""+inputVO.getSchemeIdsList().size()+" work");
-			 }if(inputVO.getSchemeIdsList() != null && inputVO.getSchemeIdsList().size()>1l){
-				 str1 = str1.replace("#works",""+inputVO.getSchemeIdsList().size()+" works");
+			 if(petitionDetailsVO.getNoOfWorks() != null && petitionDetailsVO.getNoOfWorks().longValue()==1l){
+				 str1 = str1.replace("#works",""+petitionDetailsVO.getNoOfWorks()+" work");
+			 }if(petitionDetailsVO.getNoOfWorks() != null && petitionDetailsVO.getNoOfWorks().longValue()>1l){
+				 str1 = str1.replace("#works",""+petitionDetailsVO.getNoOfWorks()+" works");
 			 }else{
 				 str1 = str1.replace("#works","");
 			 }

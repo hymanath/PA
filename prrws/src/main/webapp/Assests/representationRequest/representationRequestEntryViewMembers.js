@@ -218,7 +218,7 @@ function representationRequestEntryTable(result){
 						str+='<th title="Referreer Designation" >REF.&nbsp;DESIGNATION</th>';				
 						str+='<th style="min-width:200px !important;"  title="Work Description" >WORK&nbsp;DESC.</th>';
 						//str+='<th>No&nbsp;of&nbsp;Works</th>';
-						str+='<th>BUDGET(in Lakhs)</th>';
+						str+='<th>Estimation Cost(in Lakhs)</th>';
 						str+='<th>STATUS</th>';
 						str+='<th>ACTION</th>';
 					str+='</tr>';
@@ -1087,7 +1087,7 @@ function getRepresentativeSearchDetails1(value){
 	$("#errMsgId").html("");
 	
 	$(".menuCls-table").hide();
-		var allColumnArr= ["RepresentationDate", "EndorsmentNo", "EndorsmentDate", "RepresenteeType", "RepresenteeName", "RepresenteeDesignation", "ReferrerName", "ReferreerDesignation", "WorkDescription", "EstimationCost", "Status", "noofWorks", "Department", "LeadName", "Subject", "SubSubject", "GrantName", "WorkType", "HasCoveringLtr", "HasActionCopy", "HasDetailedReport", "HasFinalCopy", "HasOthersCopy", "HasWorkCopy", "WithWhome", "LastUpdatedTime"];
+		var allColumnArr= ["RepresentationDate", "EndorsmentNo", "EndorsmentDate", "RepresenteeType", "RepresenteeName", "RepresenteeDesignation", "ReferrerName", "ReferreerDesignation", "WorkDescription", "EstimationCost","noofWorks","Status", "Department", "LeadName", "Subject", "SubSubject", "GrantName", "WorkType", "HasCoveringLtr", "HasActionCopy", "HasDetailedReport", "HasFinalCopy", "HasOthersCopy", "HasWorkCopy", "WithWhome", "LastUpdatedTime"];
 		for(var i in allColumnArr){
 			$("."+allColumnArr[i]).hide();
 		}
@@ -1284,6 +1284,8 @@ function buildSummeryDetails(result){
 }
 
 function getStatusList(onLoadstatusId){
+	if(onLoadstatusId == 0)
+		$('#advanceSearchId').trigger('click');
 	var selStatusId = $("#statusId").val();
 	var statusIds = [];
 	if(selStatusId != null && selStatusId.length >0){
@@ -1712,7 +1714,7 @@ function setPmRepresenteeDataToResultView(result,endorsNo){
 								str+='<td><b>Lead Details :</b> <span>'+result.subWorksList[j].subWorksList[k].leadName+'</span></td>';
 								str+='<td><b>Brief Lead:</b><span>'+result.subWorksList[j].subWorksList[k].briefLeadName+'</span></td>';
 								str+='<td><b>Grant Under :</b><span>'+result.subWorksList[j].subWorksList[k].grantName+'</span></td>';
-								str+='<td><b>Est Budget :</b><span>'+result.subWorksList[j].subWorksList[k].estimateCost+'</span></td>';
+								str+='<td><b>Est Cost :</b><span>'+result.subWorksList[j].subWorksList[k].estimateCost+'</span></td>';
 								str+='<td><b>eOffice ID :</b><span>'+result.subWorksList[j].subWorksList[k].eOfficeId+'</span></td>';
 							str+='</tbody>';
 						str+='</table>';
@@ -2563,12 +2565,12 @@ function petitionWiseRepresenteeDetails(result){
 						}else if(allCheckedColumnsArr[n].trim() =='EstimationCost'){
 							EstimationCost =true;
 							str+='<th  class="EstimationCost" >ESTIMATION COST (in Lakhs)</th>';
-						}else if(allCheckedColumnsArr[n].trim() =='Status'){
-							Status =true;
-							str+='<th class="Status" >STATUS</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='noofWorks'){
 							noofWorks =true;
 							str+='<th  class="noofWorks" >NO OF WORKS</th>';
+						}else if(allCheckedColumnsArr[n].trim() =='Status'){
+							Status =true;
+							str+='<th class="Status" >STATUS</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='Department'){
 							Department =true;
 							str+='<th  class="Department">DEPARTMENT</th>';	//columnShowHide	
@@ -2698,6 +2700,8 @@ function petitionWiseRepresenteeDetails(result){
 					
 						
 					  }
+					   
+					  
 					  if(EstimationCost){
 						  if (result[i].estimationCost != "" && result[i].estimationCost != "0"){
 							var estCost = parseFloat(result[i].estimationCost);
@@ -2716,7 +2720,19 @@ function petitionWiseRepresenteeDetails(result){
 							}
 						}
 						*/
-						
+					  }
+					  if(noofWorks){
+						if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined"){
+							var filledWorksCount = 0;
+							if(result[i].subList != 'undefined' && result[i].subList != null && result[i].subList.length>0) 
+								filledWorksCount = result[i].subList.length;
+							str+='<td class="noofWorks" >';
+								str+='<h4 class="viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"><span title="Entered works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer" class="tooltipCls">'+filledWorksCount+'</span> (<span class="tooltipCls" title="Total works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer">'+result[i].noOfWorks+'</span>)</h4>';
+							str+='</td>';
+							//str+='<td class="text-center"><i class="viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i> <span title="Entered works count " >'+filledWorksCount+' </span>/ <span title="Total works count " >'+result[i].noOfWorks+' </span> </td>';
+						}else{
+							str+='<td class="noofWorks" > - </td>';
+						}
 					  }
 					  if(Status){
 						if (result[i].petitionStatusId != null && result[i].petitionStatusId == 1){
@@ -2730,20 +2746,7 @@ function petitionWiseRepresenteeDetails(result){
 							str+='<td style="text-align:center;" class="Status">-</td>';
 						}
 					  }
-					  if(noofWorks){
-							
-						if (result[i].noOfWorks != null && typeof(result[i].noOfWorks) != "undefined"){
-							var filledWorksCount = 0;
-							if(result[i].subList != 'undefined' && result[i].subList != null && result[i].subList.length>0) 
-								filledWorksCount = result[i].subList.length;
-							str+='<td class="noofWorks" >';
-								str+='<h4 class="viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"><span title="Entered works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer" class="tooltipCls">'+filledWorksCount+'</span> (<span class="tooltipCls" title="Total works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer">'+result[i].noOfWorks+'</span>)</h4>';
-							str+='</td>';
-							//str+='<td class="text-center"><i class="viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i> <span title="Entered works count " >'+filledWorksCount+' </span>/ <span title="Total works count " >'+result[i].noOfWorks+' </span> </td>';
-						}else{
-							str+='<td class="noofWorks" > - </td>';
-						}
-					  }
+					 
 					  if(Department){
 						if (result[i].deptName != null && result[i].deptName != ""){
 							str+='<td style="text-align:center;" class="Department ">'+result[i].deptName+'</td>';
@@ -2989,7 +2992,7 @@ $(document).on("click",".uploadFuncCls",function(){
 	});
 	$(document).on("click",".selectedColumnsTableCls",function(){
 		$(".menuCls-table").hide();
-		var allColumnArr= ["RepresentationDate", "EndorsmentNo", "EndorsmentDate", "RepresenteeType", "RepresenteeName", "RepresenteeDesignation", "ReferrerName", "ReferreerDesignation", "WorkDescription", "EstimationCost", "Status", "noofWorks", "Department", "LeadName", "Subject", "SubSubject", "GrantName", "WorkType", "HasCoveringLtr", "HasActionCopy", "HasDetailedReport", "HasFinalCopy", "HasOthersCopy", "HasWorkCopy", "WithWhome", "LastUpdatedTime"];
+		var allColumnArr= ["RepresentationDate", "EndorsmentNo", "EndorsmentDate", "RepresenteeType", "RepresenteeName", "RepresenteeDesignation", "ReferrerName", "ReferreerDesignation", "WorkDescription", "EstimationCost",  "noofWorks","Status", "Department", "LeadName", "Subject", "SubSubject", "GrantName", "WorkType", "HasCoveringLtr", "HasActionCopy", "HasDetailedReport", "HasFinalCopy", "HasOthersCopy", "HasWorkCopy", "WithWhome", "LastUpdatedTime"];
 		for(var i in allColumnArr){
 			$("."+allColumnArr[i]).hide();
 		}

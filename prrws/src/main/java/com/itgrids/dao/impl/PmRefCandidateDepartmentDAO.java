@@ -24,10 +24,10 @@ public class PmRefCandidateDepartmentDAO extends GenericDaoHibernate<PmRefCandid
 	public List<Object[]> getPmRefCandidateDepartments(List<Long> refCandIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.pmRefCandidate.pmRefCandidateId ,model.pmDepartment.pmDepartmentId,model.pmDepartment.department " +
-				" from PmRefCandidateDepartment model  ");
+				" from PmRefCandidateDepartment model where model.isDeleted='N'  ");
 		
 		if(refCandIds != null && refCandIds.size() >0){
-			sb.append(" model.pmRefCandidate.pmRefCandidateId in (:refCandIds) ");
+			sb.append(" and model.pmRefCandidate.pmRefCandidateId in (:refCandIds) ");
 		}
 		
 		Query query = getSession().createQuery(sb.toString());
