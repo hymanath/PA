@@ -2786,7 +2786,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						 if(commonMethodsUtilService.isMapValid(ministryDetailsMap)){
 							 for (PmRequestVO repVO : petitionVO.getRepresenteeDetailsList()) {
 								 if(ministryDetailsMap.get(repVO.getRefCandidateId()) != null)
-									 repVO.setDesignation(repVO.getDesignation()+" ("+ministryDetailsMap.get(repVO.getRefCandidateId())+")");
+									 repVO.setDesignation(repVO.getDesignation()+" for "+ministryDetailsMap.get(repVO.getRefCandidateId())+"");
 								}
 						 }
 					 }
