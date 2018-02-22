@@ -4706,7 +4706,7 @@
             <property name="tehsilDAO" ref="tehsilDAO"></property>			
     	 </bean>
 		 
-    	 <bean name="trainingCampExceptionalReportService" class="com.itgrids.partyanalyst.exceptionalReport.service.impl.TrainingCampExceptionalReportService">
+		<bean name="trainingCampExceptionalReportService" class="com.itgrids.partyanalyst.exceptionalReport.service.impl.TrainingCampExceptionalReportService">
             <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
             <property name="dateUtilService" ref="dateUtilService"></property>
             <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
@@ -4715,27 +4715,36 @@
             <property name="constituencyDAO" ref="constituencyDAO"></property>
             <property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
             <property name="trainingCampDAO" ref="trainingCampDAO"></property>
-    	 </bean>
-		 
-   	  <bean name = "partyMeetingExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.PartyMeetingExceptionalReportService">
-   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
-   	   	<property name="partyMeetingStatusDAO" ref = "partyMeetingStatusDAO"></property>
-   	 </bean>
-   	 <bean name = "tourExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.TourExceptionalReportService">
-   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
-   	  	 <property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO"></property>
-   	  	 <property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
-   	  	 <property name="selfAppraisalCandidateDetailsNewDAO" ref="selfAppraisalCandidateDetailsNewDAO"></property>
-   	 </bean>
-   	 <bean name = "activityExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.ActivityExceptionalReportService">
-   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
-   	  	 <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO"></property>
-   	  	 <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
-   	 </bean>
-   	 <bean name = "committeeExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.CommitteeExceptionalReportService">
-   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
-   	  	 <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO"></property>
-   	  	 <property name="boothInchargeCommitteeDAO" ref ="boothInchargeCommitteeDAO"></property>
-   	 </bean>
-    	 
+		</bean>
+		<bean name="alertExceptionalReportService" class="com.itgrids.partyanalyst.exceptionalReport.service.impl.AlertExceptionalReportService">
+			<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+            <property name="dateUtilService" ref="dateUtilService"></property>
+            <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
+            <property name="alertDAO" ref="alertDAO"></property>
+		</bean>
+		<bean name="kaizalaExceptionReportService" class="com.itgrids.partyanalyst.exceptionalReport.service.impl.KaizalaExceptionReportService">
+			<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+            <property name="dateUtilService" ref="dateUtilService"></property>
+            <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
+		</bean>
+   	  	<bean name = "partyMeetingExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.PartyMeetingExceptionalReportService">
+   	  	 	<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	   		<property name="partyMeetingStatusDAO" ref = "partyMeetingStatusDAO"></property>
+   	 	</bean>
+   		 <bean name = "tourExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.TourExceptionalReportService">
+   	  	 	<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	  		<property name="selfAppraisalCandidateLocationNewDAO" ref="selfAppraisalCandidateLocationNewDAO"></property>
+   	  	 	<property name="selfAppraisalToursMonthDAO" ref="selfAppraisalToursMonthDAO"></property>
+   	  	 	<property name="selfAppraisalCandidateDetailsNewDAO" ref="selfAppraisalCandidateDetailsNewDAO"></property>
+   	 	</bean>
+   	 	<bean name = "activityExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.ActivityExceptionalReportService">
+   	  	 	<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	  	 	<property name="activityLocationInfoDAO" ref="activityLocationInfoDAO"></property>
+   	  	 	<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
+   	 	</bean>
+   	 	<bean name = "committeeExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.CommitteeExceptionalReportService">
+   	  	 	<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	  	 	<property name="tdpCommitteeDAO" ref="tdpCommitteeDAO"></property>
+   	  	 	<property name="boothInchargeCommitteeDAO" ref ="boothInchargeCommitteeDAO"></property>
+   	 	</bean>
 </beans>			

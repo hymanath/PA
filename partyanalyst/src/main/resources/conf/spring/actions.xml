@@ -1721,6 +1721,7 @@
 	    <property name="tourExceptionalReportService" ref="tourExceptionalReportService"></property>
 	    <property name="trainingCampExceptionalReportService" ref="trainingCampExceptionalReportService"></property>
 	    <property name="activityExceptionalReportService" ref="activityExceptionalReportService"></property>
+	    <property name="alertExceptionalReportService" ref="alertExceptionalReportService"></property>
 	    <property name="committeeExceptionalReportService" ref="committeeExceptionalReportService"></property>  
 	</bean>
 	

@@ -18816,6 +18816,16 @@
 				<param name="root">activityExceptionalReportVO</param>
 		</result>
 	</action>
+	<action name="getAssignedCandidateWisePendingAlerts" class="coreDashboardAction" method="getAssignedCandidateWisePendingAlerts">
+		<result type="json" name="success">
+				<param name="root">alertCoreDashBoardVOs</param>
+		</result>
+	</action>
+	<action name="getOverAllAlertsDetails" class="coreDashboardAction" method="getOverAllAlertsDetails">
+		<result type="json" name="success">
+				<param name="root">alertCoreDashBoardVOs</param>
+		</result>
+	</action>
 	<action name="getCasteCategoryWisePartyDetailsAction" class="coreDashboardAction" method="getCasteCategoryWisePartyDetails">
 		<result type="json" name="success">
    			<param name="root">codeDebateVoList</param>

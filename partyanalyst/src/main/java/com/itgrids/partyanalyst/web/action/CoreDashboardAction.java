@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ActivityExceptionalReportVO;
 import com.itgrids.partyanalyst.dto.AffiliatedVo;
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.BoothInchargesVO;
 import com.itgrids.partyanalyst.dto.CadreBasicVO;
@@ -69,6 +70,8 @@ import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.exceptionalReport.service.IActivityExceptionalReportService;
+import com.itgrids.partyanalyst.exceptionalReport.service.IAlertExceptionalReportService;
+import com.itgrids.partyanalyst.exceptionalReport.service.IKaizalaExceptionReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.ICommitteeExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.IPartyMeetingExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITourExceptionalReportService;
@@ -202,7 +205,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<TabLoginAuthVO> tabDetails;
 	private String tabUserDetails;
 	private ResultStatus 						partyMeetingStatus;
-	
+	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	
 	/**
 	 * Ending Payment Gateway required parameters
@@ -232,6 +235,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private IPartyMeetingExceptionalReportService partyMeetingExceptionalReportService;
 	private ITourExceptionalReportService tourExceptionalReportService;
 	private IActivityExceptionalReportService activityExceptionalReportService;
+	private IAlertExceptionalReportService alertExceptionalReportService;
+	private IKaizalaExceptionReportService kaizalaExceptionReportService;
 	private ICommitteeExceptionalReportService committeeExceptionalReportService;
 
 	private PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO;
@@ -241,6 +246,20 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	public List<Long> getProgramIdsList() {
 		return programIdsList;
+	}
+
+	public IKaizalaExceptionReportService getKaizalaExceptionReportService() {
+		return kaizalaExceptionReportService;
+	}
+
+	public void setKaizalaExceptionReportService(
+			IKaizalaExceptionReportService kaizalaExceptionReportService) {
+		this.kaizalaExceptionReportService = kaizalaExceptionReportService;
+	}
+
+	public void setAlertExceptionalReportService(
+			IAlertExceptionalReportService alertExceptionalReportService) {
+		this.alertExceptionalReportService = alertExceptionalReportService;
 	}
 
 	public KaizalaDashboardVO getKaizalaDashboardVO() {
@@ -1137,6 +1156,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
   public void setActivityExceptionalReportVO(ActivityExceptionalReportVO activityExceptionalReportVO) {
 	this.activityExceptionalReportVO = activityExceptionalReportVO;
   }
+  
+	public void setAlertCoreDashBoardVOs(
+		List<AlertCoreDashBoardVO> alertCoreDashBoardVOs) {
+	this.alertCoreDashBoardVOs = alertCoreDashBoardVOs;
+	}
+	
+	public List<AlertCoreDashBoardVO> getAlertCoreDashBoardVOs() {
+		return alertCoreDashBoardVOs;
+	}
    public void setCommitteeExceptionalReportService(ICommitteeExceptionalReportService committeeExceptionalReportService) {
 	this.committeeExceptionalReportService = committeeExceptionalReportService;
 }
@@ -6152,6 +6180,46 @@ public String getOveralCandidateCasteDetailsClick(){
 		LOG.error("Exception raised at getOveralCandidateCasteDetails() method of CoreDashBoardAction", e);
 	}
 	
+	return Action.SUCCESS;
+}
+public String getAssignedCandidateWisePendingAlerts(){
+	try{
+		jObj = new JSONObject(getTask());
+		String fromDateStr = jObj.getString("fromDateStr");
+		String toDateStr = jObj.getString("toDateStr");
+		Long stateId = jObj.getLong("stateId");
+		int size = jObj.getInt("size");		
+		List<Long> alertTypeIdList = new ArrayList<Long>();
+		JSONArray alertTypeIdArr = jObj.getJSONArray("alertTypeIds");
+		if(alertTypeIdArr!=null &&  alertTypeIdArr.length()>0){
+			for( int i=0;i<alertTypeIdArr.length();i++){
+				alertTypeIdList.add(Long.valueOf(alertTypeIdArr.getString(i))); 
+			}
+		}
+		alertCoreDashBoardVOs = alertExceptionalReportService.getAssignedCandidateWisePendingAlerts(fromDateStr,toDateStr,stateId,size,alertTypeIdList);
+	}catch(Exception e){
+		LOG.error("Exception raised at getAssignedCandidateWisePendingAlerts() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+public String getOverAllAlertsDetails(){
+	try{
+		jObj = new JSONObject(getTask());
+		String fromDateStr = jObj.getString("fromDateStr");
+		String toDateStr = jObj.getString("toDateStr");
+		Long stateId = jObj.getLong("stateId");
+		int size = jObj.getInt("size");		
+		List<Long> alertTypeIdList = new ArrayList<Long>();
+		JSONArray alertTypeIdArr = jObj.getJSONArray("alertTypeIds");
+		if(alertTypeIdArr!=null &&  alertTypeIdArr.length()>0){
+			for( int i=0;i<alertTypeIdArr.length();i++){
+				alertTypeIdList.add(Long.valueOf(alertTypeIdArr.getString(i))); 
+			}
+		}
+		alertCoreDashBoardVOs = alertExceptionalReportService.getOverAllAlertsDetails(fromDateStr,toDateStr,stateId,size,alertTypeIdList);
+	}catch(Exception e){
+		LOG.error("Exception raised at getAssignedCandidateWisePendingAlerts() method of CoreDashBoardAction", e);
+	}
 	return Action.SUCCESS;
 }
 }
