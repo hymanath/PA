@@ -73,18 +73,19 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 	
 	public List<Object[]> getLatestUpdatedDetailsOfPetition(Set<Long> petitionIds){
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.pmPetitionAssignedOfficerId, model.pmDepartmentDesignationOfficer.pmOfficer.name," +//0,1
-				" model.pmDepartmentDesignation.pmOfficerDesignation.designation" +//2
-				",model.pmDepartmentDesignation.pmDepartment.shortName " +//3
-				",model.petition.petitionId,model.insertedTime ,model.pmSubWorkDetailsId " +//4,5,6
-				"from PmPetitionAssignedOfficer model where model.isDeleted='N'  " );
-		if(petitionIds != null && petitionIds.size() >0)
-				str.append("and model.petition.petitionId in (:petitionIds) ");
-				
-		str.append(" group by model.petition.petitionId order by   model.insertedTime desc ");
-		Query query = getSession().createQuery(str.toString());
-		if(petitionIds != null && petitionIds.size() >0)
-		query.setParameterList("petitionIds", petitionIds);
-		return query.list();
+		if(petitionIds != null && petitionIds.size() >0){
+			str.append("select distinct model.pmPetitionAssignedOfficerId, model.pmDepartmentDesignationOfficer.pmOfficer.name," +//0,1
+					" model.pmDepartmentDesignation.pmOfficerDesignation.designation" +//2
+					",model.pmDepartmentDesignation.pmDepartment.shortName " +//3
+					",model.petition.petitionId,model.insertedTime ,model.pmSubWorkDetailsId " +//4,5,6
+					"from PmPetitionAssignedOfficer model where model.pmPetitionAssignedOfficerId  " +
+					"in (SELECT max(model2.pmPetitionAssignedOfficerId) from PmPetitionAssignedOfficer model2 " +
+					" where model2.petitionId in (:petitionIds) and model2.isDeleted='N' group by model2.petitionId)   " );
+			Query query = getSession().createQuery(str.toString());
+			query.setParameterList("petitionIds", petitionIds);
+			return query.list();
+		}
+		return null;
 	}
+	
 }
