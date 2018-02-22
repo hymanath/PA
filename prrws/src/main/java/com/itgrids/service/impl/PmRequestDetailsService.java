@@ -1583,6 +1583,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}
 				}
 			}
+			}
 			List<Object[]> latestPetionUpdatedList = pmPetitionAssignedOfficerDAO.getLatestUpdatedDetailsOfPetition(mapData.keySet());
 			if(commonMethodsUtilService.isListOrSetValid(latestPetionUpdatedList)){
 				for (Object[] param : latestPetionUpdatedList) {
@@ -1667,7 +1668,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				finalList.get(0).getStatusList().addAll(getStatusList(inputVO.getLocationId(),null));
 				setStatusSummeryDetails(searchData,finalList.get(0).getStatusList());
 			}
-		}
+		
 	}catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception Occured in PmRequestDetailsService @ getRepresentativeSearchWiseDetails() "+e.getMessage());
