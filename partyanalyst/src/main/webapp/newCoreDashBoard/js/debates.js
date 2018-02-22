@@ -2197,7 +2197,7 @@ function buildOveralCandidateCasteDetails(result)
 						str+='<th class="text-capital">Party</th>';
 						str+='<th class="text-capital">spokes persons</th>';
 						for(var i in result[0].coreDebateVOList){
-						str+='<th  class="text-capital" >'+result[0].coreDebateVOList[i].casteName+'</th>';
+						str+='<th  class="text-capital" >'+result[0].coreDebateVOList[i].casteName+'</br><p class="text-capital">spokes persons</p></th>';
 					    }
 					str+='</tr>';
 				str+='</thead>';
