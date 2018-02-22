@@ -86,7 +86,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    			}
 	 	    		}
 	 	      }
-	        //WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getjavalavaniOverViewDashBoardForPrintAndElectronicInfo");
+	        //WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/CommunityNewsPortal/webservice/getjavalavaniOverViewDashBoardForPrintAndElectronicInfo");
 			 WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/CommunityNewsPortal/webservice/getjavalavaniOverViewDashBoardForPrintAndElectronicInfo");
 			 ClientResponse response1 = webResource1.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 			   
@@ -151,7 +151,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    				}
 	 	    				
 	 	    				if(inputVO.getSearchType() !=null && inputVO.getSearchType().equalsIgnoreCase("print") || inputVO.getSearchType().equalsIgnoreCase("electronic")){
-	 	    					 //WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getjavalavaniPrintAndElectrincDetailsInfoBySearchType");
+	 	    					 //WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/CommunityNewsPortal/webservice/getjavalavaniPrintAndElectrincDetailsInfoBySearchType");
 	 	    					 WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/CommunityNewsPortal/webservice/getjavalavaniPrintAndElectrincDetailsInfoBySearchType");
 	 	    					 ClientResponse response1 = webResource1.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 	 	    					 
@@ -207,7 +207,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
     	List<AlertVO> returnList = new ArrayList<AlertVO>();
    	 try {
    		 if(inputVO.getSearchType() !=null && inputVO.getSearchType().equalsIgnoreCase("news")){
-   		//WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/webService/getArticlesMonthlyOverviewInfoBySearchType");
+   		//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/CommunityNewsPortal/webservice/getArticlesMonthlyOverviewInfoBySearchType");
 			 WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/CommunityNewsPortal/webservice/getArticlesMonthlyOverviewInfoBySearchType");
 			 ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 		        if (response.getStatus() != 200) {
@@ -241,23 +241,23 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
  	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
  	     }else{
  	    	String output = response.getEntity(String.class);
- 	    	if(output != null && !output.isEmpty()){
- 	    		JSONArray finalArray = new JSONArray(output);
- 	    		if(finalArray!=null && finalArray.length()>0){
- 	    			for(int i=0;i<finalArray.length();i++){
- 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
- 	    				AlertVO vo = new AlertVO();
- 	    				
- 	    				vo.setId(jObj.getLong("smTypeId"));
- 	    				vo.setName(jObj.getString("smType"));
- 	    				vo.setSatisfiedCount(jObj.getLong("locationCnt"));
- 	    				vo.setCount(jObj.getLong("count"));
- 	    				vo.setPercentage(jObj.getDouble("percentage"));
- 	    				returnList.add(vo);
- 	    			}
- 	    		}
- 	    	}
- 	    } 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				AlertVO vo = new AlertVO();
+	 	    				
+	 	    				vo.setId(jObj.getLong("smTypeId"));
+	 	    				vo.setName(jObj.getString("smType"));
+	 	    				vo.setSatisfiedCount(jObj.getLong("locationCnt"));
+	 	    				vo.setPercentage(jObj.getDouble("statusPercent"));
+	 	    				
+	 	    				returnList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+ 	     	} 
    		 }
    		 	
    	 } catch (Exception e ){
@@ -271,10 +271,9 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
    		 //WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getJalavanilocationAndStatusDetailsInfo");
 		 WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo");
 	     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
-	     AlertVO resultVo = new AlertVO();
-			 if (response.getStatus() != 200) {
+	     if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-		 	     } else {
+		 	     }else{
 		 	    	String output = response.getEntity(String.class);
 		 	    	if(output != null && !output.isEmpty()){
 		 	    		JSONArray finalArray = new JSONArray(output);
@@ -282,95 +281,83 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 			 	    		if(finalArray!=null && finalArray.length()>0){
 			 	    			for(int i=0;i<finalArray.length();i++){
 			 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+			 	    				AlertVO resultVo = new AlertVO();
 			 	    				
+			 	    				resultVo.setLocationId(jObj.getLong("id"));//locationId
+			 	    				resultVo.setLocationName(jObj.getString("name"));
+			 	    				resultVo.setCount(jObj.getLong("count"));
+			 	    				resultVo.setPercentage(jObj.getDouble("percentage"));
+			 	  
 			 	    				
-			 	    				resultVo.setId(jObj.getLong("statusId"));//locationId
-			 	    				resultVo.setName(jObj.getString("status"));
-			 	    				
-			 	    				JSONArray categoryArr = jObj.getJSONArray("subList1");
-	 		 	    				if(categoryArr != null && categoryArr.length() > 0){
-	 		 	    					for (int j = 0; j < categoryArr.length(); j++) {
-	 		 	    						AlertVO statusVo = new AlertVO();
-	 										JSONObject newsJson = (JSONObject) categoryArr.get(j);
-	 										statusVo.setId(newsJson.getLong("statusId"));
-	 										statusVo.setName(newsJson.getString("status"));
-	 										statusVo.setProposalAmount(newsJson.getLong("alertCnt"));
-	 										
-	 										resultVo.getSubList1().add(statusVo);
-	 									}
-	 		 	    				}
 			 	    				returnList.add(resultVo);
 			 	    			}
 			 	    		}
-			 	    		if(inputVO.getNewsType() !=null && inputVO.getNewsType().equalsIgnoreCase("print") || inputVO.getNewsType() !=null && inputVO.getNewsType().equalsIgnoreCase("electronic")){
-			 	    			//WebResource webResource2 = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/webService/getjavalavaniLocationWiseInfo");
+			 	    		if(inputVO.getNewsType() !=null && inputVO.getNewsType().equalsIgnoreCase("PrintMedia") || inputVO.getNewsType() !=null && inputVO.getNewsType().equalsIgnoreCase("ElectronicMedia")){
+			 	    			//WebResource webResource2 = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/CommunityNewsPortal/webservice/getjavalavaniLocationWiseInfo");
 			 	    			WebResource webResource2 = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/CommunityNewsPortal/webservice/getjavalavaniLocationWiseInfo");
 			 	    			ClientResponse response2 = webResource2.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
-				 	  		        if(response2.getStatus() != 200){
-				 	  		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response2.getStatus());
-				 	  		 	     }else{
-				 	  		 	    	String output2 = response2.getEntity(String.class);
-				 	  		 	    	if(output2 != null && !output2.isEmpty()){
-				 	  		 	    		JSONArray newsArray = new JSONArray(output2);
-				 	  		 	    		if(finalArray!=null && newsArray.length()>0){
-				 	  		 	    			for(int i=0;i<newsArray.length();i++){
-				 	  		 	    				JSONObject jObj = (JSONObject) newsArray.get(i);
-				 	  		 	    				AlertVO newsVO = new AlertVO();
-				 	  		 	    				if(resultVo.getId() == jObj.getLong("id")){
-				 	  		 	    				newsVO.setAlertTypeName(jObj.getString("name"));
-			 	  		 	    					newsVO.setSatisfiedCount(jObj.getLong("posCount"));
-			 	  		 	    					newsVO.setUnSatisfiedCount(jObj.getLong("negCount"));
-			 	  		 	    					newsVO.setCount(jObj.getLong("count"));
-			 	  		 	    					newsVO.setPercentage(jObj.getDouble("posPercent"));
-			 	  		 	    					newsVO.setStatusPercent(jObj.getDouble("negPercent"));
-			 	  		 	    					
-			 	  		 	    					resultVo.getSubList2().add(newsVO);
-				 	  		 	    				
+			 	  		        if(response2.getStatus() != 200){
+			 	  		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response2.getStatus());
+			 	  		 	     }else{
+			 	  		 	    	String output2 = response2.getEntity(String.class);
+			 	  		 	    	if(output2 != null && !output2.isEmpty()){
+			 	  		 	    		JSONArray newsArray = new JSONArray(output2);
+			 	  		 	    		if(finalArray!=null && newsArray.length()>0){
+			 	  		 	    			for(int i=0;i<newsArray.length();i++){
+			 	  		 	    				JSONObject jObj = (JSONObject) newsArray.get(i);
+				 	  		 	    				if(returnList !=null && returnList.size() >0){
+				 	  		 	    					for (AlertVO finalVo : returnList){
+															if(finalVo.getLocationId() == jObj.getLong("id")){
+																AlertVO newsVO = new AlertVO();
+							 	  		 	    				
+							 	  		 	    				newsVO.setAlertTypeName(jObj.getString("name"));
+						 	  		 	    					newsVO.setSatisfiedCount(jObj.getLong("posCount"));
+						 	  		 	    					newsVO.setUnSatisfiedCount(jObj.getLong("negCount"));
+						 	  		 	    					newsVO.setCount(jObj.getLong("count"));
+						 	  		 	    					newsVO.setPercentage(jObj.getDouble("posPercent"));
+						 	  		 	    					newsVO.setStatusPercent(jObj.getDouble("negPercent"));
+						 	  		 	    					
+						 	  		 	    				finalVo.getSubList1().add(newsVO);	
+															}
+														}
 				 	  		 	    				}
-				 	  		 	    			}
-				 	  		 	    		}
-				 	  		 	    	}
-				 	  		 	    } 
+			 	  		 	    				
+			 	  		 	    				}
+			 	  		 	    			}
+			 	  		 	    		}
+			 	  		 	    	}
 			 	    		}
-			 	    		
-			 	    	}else if(inputVO.getSearchType() !=null && inputVO.getSearchType().equalsIgnoreCase("Status")){
-			 	    		if(finalArray!=null && finalArray.length()>0){
-			 	    			for(int i=0;i<finalArray.length();i++){
-			 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-			 	    				
-			 	    				resultVo.setId(jObj.getLong("statusId"));//locationId
-			 	    				resultVo.setName(jObj.getString("status"));
-			 	    				
-			 	    				JSONArray statusArr = jObj.getJSONArray("subList1");
-	 		 	    				if(statusArr != null && statusArr.length() > 0){
-	 		 	    					for (int j = 0; j < statusArr.length(); j++) {
-	 		 	    						AlertVO statusVo = new AlertVO();
-	 										JSONObject newsJson = (JSONObject) statusArr.get(j);
-	 										statusVo.setId(newsJson.getLong("statusId"));
-	 										statusVo.setName(newsJson.getString("status"));
-	 										
-	 										JSONArray categoryArr = newsJson.getJSONArray("subList1");
-	 		 		 	    				if(categoryArr != null && categoryArr.length() > 0){
-	 		 		 	    					for (int k1 = 0; k1 < categoryArr.length(); k1++) {
-	 		 		 	    						AlertVO categoryVo = new AlertVO();
-	 		 										JSONObject newsJson1 = (JSONObject) statusArr.get(j);
-	 		 										
-	 		 										categoryVo.setId(newsJson1.getLong("statusId"));
-	 		 										categoryVo.setName(newsJson1.getString("status"));
-	 		 										categoryVo.setProposalAmount(newsJson1.getLong("alertCnt"));
-	 		 										
-	 		 										statusVo.getSubList1().add(categoryVo);
-	 		 		 	    					}
-	 		 		 	    				}
-	 										resultVo.getSubList1().add(statusVo);
-	 									}
-	 		 	    				}
-			 	    				returnList.add(resultVo);
-			 	    			}
-			 	    		}
-			 	    	}
+				 	  	 }else if(inputVO.getSearchType() !=null && inputVO.getSearchType().equalsIgnoreCase("Status")){
+				 	    		if(finalArray!=null && finalArray.length()>0){
+				 	    			for(int i=0;i<finalArray.length();i++){
+				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+				 	    				AlertVO resultVo = new AlertVO();
+				 	    				resultVo.setLocationId(jObj.getLong("statusId"));//locationId
+				 	    				resultVo.setLocationName(jObj.getString("status"));//locationName
+				 	    				
+				 	    				
+				 	    				JSONArray statusArr = jObj.getJSONArray("subList1");
+		 		 	    				if(statusArr != null && statusArr.length() > 0){
+		 		 	    					for (int j = 0; j < statusArr.length(); j++) {
+		 		 	    						AlertVO statusVo = new AlertVO();
+		 										JSONObject newsJson = (JSONObject) statusArr.get(j);
+		 										
+		 										statusVo.setStatusId(newsJson.getLong("statusId"));//statusId
+		 										statusVo.setStatus(newsJson.getString("status"));//Status
+		 										statusVo.setColor(newsJson.getString("color"));
+		 										statusVo.setAlertCnt(newsJson.getLong("alertCnt"));
+		 										statusVo.setPercentage(newsJson.getDouble("percentage"));
+				 										
+				 								resultVo.getSubList1().add(statusVo);
+		 		 	    					}
+		 		 	    					returnList.add(resultVo);
+		 		 		 	    		}
+				 	    			}
+				 	    		}
+						}
+		 	    		
 		 	    	}
-		 	    } 
+		 	     }
    	 } catch (Exception e ){
    		 LOG.error(" Exception occured at getJalavanilocationAndStatusDetailsInfo() in JalavaniDashboardService class ", e);
    	 }
