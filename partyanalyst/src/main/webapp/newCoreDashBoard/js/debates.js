@@ -38,6 +38,7 @@ function globalDebateCalls(type)
 			getRolesPerformanceOfCandidate(0);
 			getDebateRolesNew();
 			getDebateDesignationWiseTotalDebateDetails();
+			getCasteCategoryWisePartyDetails();
 		}
 	}
 }
@@ -151,11 +152,13 @@ $(document).ready(function(){
 	  {
 		  getScaleBasedPerformanceCohort();
 		  getCandidateOverAllPerformanceCohort();
+		  //getCasteCategoryWisePartyDetails();
 		  getChannelAndPartyWiseDetails();
 		  getRoleBasedPerformanceCohort();
 		  getRolesPerformanceOfCandidate(0);
 		  getDebateRolesNew();
 		  getDebateDesignationWiseTotalDebateDetails();
+		  getCasteCategoryWisePartyDetails();
 	  }
 	});
 });	
@@ -258,6 +261,45 @@ function buildPartyWiseTotalDebateDetails(result,debateLocationIdArry)
 		}
 
 }
+
+/* function getCasteCategoryWisePartyDetails(){
+		alert(459);
+		//$("#candidateOverAllPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var participantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               participantLocIdArry.push($(this).val());
+        }else{
+			participantLocIdArry.push(0);
+		}
+        
+      });
+	  var debateLocationIdArry =[];
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               debateLocationIdArry.push($(this).val());
+        }else{
+			debateLocationIdArry.push(0);
+		}
+        
+      });
+		var jsObj={
+			startDate: customStartDate ,
+			endDate: customEndDate,
+			state:globalState,
+			participantLocIdArry:participantLocIdArry,
+			debateLocationIdArry:debateLocationIdArry
+		}
+	    $.ajax({
+			type : 'POST',
+			url : 'getCasteCategoryWisePartyDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			alert(456);
+			//BuildCandidateOverAllPerformanceCohort(result,participantLocIdArry);
+		});
+	} */
 $(document).on("click","#collapseOneId",function(){
 	$("#collapseOneBodyId").collapse("toggle");
 	$(".arrowChange").find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
@@ -938,6 +980,7 @@ $(document).on("click",".moreDebatesBlocksIcon",function(){
 	getRolesPerformanceOfCandidate(0);
 	getDebateRolesNew();
 	getDebateDesignationWiseTotalDebateDetails();
+	getCasteCategoryWisePartyDetails();
 });
 
 $(document).on("click","#debateTopId",function(){
@@ -1251,7 +1294,8 @@ function getCoreDebateBasicDetailsOfPartyDetails(designationId,partyId,type,popu
 		participantLocIdArry:participantLocIdArry,
 		roleId:roleId,
 		designationId:designationId,
-		type : " "
+		casteId:0,
+		type : ""
 	}		
 	$.ajax({
 	 type: "POST",
@@ -1869,3 +1913,317 @@ $(document).on("click","#debatesTabViewDebateId",function(){
 $(document).on("click","#debatesTabViewParticipantId",function(){
 	 $("#headingId").html("Participant Location");                   
 });
+
+function getCasteCategoryWisePartyDetails(){
+		$("#casteAnalysisDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var participantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               participantLocIdArry.push($(this).val());
+        }else{
+			participantLocIdArry.push(0);
+		}
+        
+      });
+	  var debateLocationIdArry =[];
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               debateLocationIdArry.push($(this).val());
+        }else{
+			debateLocationIdArry.push(0);
+		}
+        
+      });
+	  
+		var jsObj={
+			startDate:customStartDate,
+		    endDate:customEndDate,
+			state:globalState,
+			participantLocIdArry:participantLocIdArry,
+			debateLocationIdArry:debateLocationIdArry
+		}
+	    $.ajax({
+			type : 'POST',
+			url : 'getCasteCategoryWisePartyDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+			buildCasteCategoryWisePartyDetails(result,debateLocationIdArry);
+			}else{
+			$("#casteAnalysisDivId").html('<h3>NO DATA AVAILABLE</h3>')
+		   }
+		});
+	}
+ function buildCasteCategoryWisePartyDetails(result,debateLocationIdArry)
+  {
+
+	var str='';
+	if(result !=null){
+			str+='<div class="table-responsive m_top20">';
+				str+='<table class="table table-bordered  dataTableSorting" id="debatesCasteWiseDtlsId">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th class="text-capital">Party</th>';
+						str+='<th class="text-capital">Debates</th>';
+						str+='<th class="text-capital">spokes persons</th>';
+						for(var i in result[0].coreDebateVOList){
+						str+='<th  class="text-capital" >'+result[0].coreDebateVOList[i].casteName+'</br><p class="text-capital">spokes persons</p></th>';
+					    }
+					str+='</tr>';
+				str+='</thead>';
+				
+				  str+='<tbody>';
+					for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].name+'</td>';
+						if(result[i].debateCount != null && result[i].debateCount>0){
+						str+='<td><span style="cursor:pointer;color:#337ab7" class="debateCasteWiseCls" attr_partyId='+result[i].id+'  attr_state_id ="'+debateLocationIdArry+'" attr_type="debate" attr_serchType="debates">'+result[i].debateCount+'</span></td>';
+						}else{
+						str+='<td><span style="color:#337ab7">'+result[i].debateCount+'</span></td>';	
+						}
+						if(result[i].candidateCount != null && result[i].candidateCount>0){
+						str+='<td><span style="cursor:pointer;color:#337ab7" class="debateCasteWiseCls" attr_partyId='+result[i].id+'  attr_state_id ="'+debateLocationIdArry+'" attr_type="candidate" attr_casteId="0" attr_serchType="candidates" >'+result[i].candidateCount+'</span></td>';
+						}else{
+						str+='<td><span style="color:#337ab7">'+result[i].candidateCount+'</span></td>';	
+						}
+						for(var j in result[i].coreDebateVOList){
+						if(result[i].coreDebateVOList[j].casteCandidateCount != null && result[i].coreDebateVOList[j].casteCandidateCount>0){
+						 str+='<td><span style="cursor:pointer;color:#337ab7" class="debateCasteWiseCls" attr_partyId='+result[i].id+'  attr_state_id ="'+debateLocationIdArry+'" attr_type="candidate" attr_casteId="'+result[i].coreDebateVOList[j].casteId+'" attr_casteName ="'+result[i].coreDebateVOList[j].casteName+'" attr_serchType="candidates" >'+result[i].coreDebateVOList[j].casteCandidateCount+'('+result[i].coreDebateVOList[j].participantPer+'%)</span></td>';
+						}else{
+						 str+='<td><span style="color:#337ab7" >'+result[i].coreDebateVOList[j].casteCandidateCount+'</span></td>';	
+						}
+					   } 
+					str+='</tr>';
+					}
+				 str+='</tbody>';
+				str+='</table>';	
+			str+='</div>';
+			
+		$("#casteAnalysisDivId").html(str);
+	}else{
+			$("#casteAnalysisDivId").html('<h3>NO DATA AVAILABLE</h3>')
+		}
+
+}
+$(document).on("click",".debateCasteWiseCls",function(){
+	var popupLocationId =[];
+	
+	var designationId=0;
+	var partyId = $(this).attr("attr_partyId");
+	var type = $(this).attr("attr_type");
+	var stateId =$(this).attr("attr_state_id");
+	var searchType = $(this).attr("attr_serchType");
+	var str = stateId;
+    var str_array = str.split(',');
+
+   for(var i = 0; i < str_array.length; i++) {
+	   popupLocationId.push(str_array[i]);
+   }
+   var casteId =$(this).attr("attr_casteId");
+   var casteType = "";
+   var casteName =$(this).attr("attr_casteName");
+   if(casteName == "others"){
+	   casteType = "others";
+   }
+   $("#debateModelDivId").modal("show");
+   $(".addClassClose").removeClass("closeModalDeb");
+   if(searchType == "candidates"){
+	getCasteCategoryWisePartyDetailsClick(casteId,casteType,type,popupLocationId,partyId);
+   }else if(searchType == "debates"){
+	  getCoreDebateBasicDetailsOfPartyDetails(designationId,partyId,type,popupLocationId); 
+   }
+
+});
+function getCasteCategoryWisePartyDetailsClick(casteId,casteType,type,popupLocationId,partyId){
+	$(".debateModelCls").html("");	
+	$(".debateModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var participantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               participantLocIdArry.push($(this).val());
+        }else{
+			participantLocIdArry.push(0);
+		}
+        
+      });
+	var jsObj={
+		    startDate:customStartDate,
+		    endDate:customEndDate,
+			state:globalState,
+			participantLocIdArry:participantLocIdArry,
+			debateLocationIdArry:popupLocationId,
+		    casteId:casteId,
+		    type : casteType,
+			partyId:partyId
+	}		
+	$.ajax({
+	 type: "POST",
+	 url: "getCasteCategoryWisePartyDetailsClickAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildCasteCategoryWisePartyDetailsClick(result,type,casteType,casteId);
+	});	
+}
+function buildCasteCategoryWisePartyDetailsClick(result,type,casteType,casteId){
+	var str = '';
+		if(result !=null && result.length>0){
+			str+= '<div class="table-responsive">';
+			str+= '<table class="table table-bordered table-condensed debateFirstBlockCls'+type+'">';
+				str+= '<thead style="background:#ccc">';
+				str+='<tr>';
+				if(type =="candidate"){
+					str+='<th>Candidate Name</th>';
+				}
+					str+='<th>Subject</th>';
+					str+='<th>Start Time</th>';
+					str+='<th>End Time</th>';
+					str+='<th>Observer</th>';
+					str+='<th>Channel</th>';
+				if(casteType != "others"){
+					str+='<th>Caste Group</th>';
+					str+='<th>Caste</th>';
+				}	
+				str+='</tr>';
+				str+= '</thead>';
+				str+= '<tbody>';					
+					for(var i in result){
+						str+='<tr>';
+							var name='';
+							var name='';
+							var subject='';
+							var candiName='';
+							if(result[i].debateSubject !=null && result[i].debateSubject.length>0){
+								for(var j in result[i].debateSubject){
+										name=name.concat(result[i].debateSubject);
+								}
+									subject=getTitleContent(name,30);
+									if(result[i].candidateName !=null && result[i].candidateName.length>0)
+										candiName=getTitleContent(result[i].candidateName,30);
+							}		
+						if(type =="candidate"){
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+'  style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
+						}							
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+'   style="cursor:pointer;"><a>'+subject+'</a></td>';
+							str+='<td>'+result[i].startTime+'</td>';
+							str+='<td>'+result[i].endTime+'</td>';
+							str+='<td>'+result[i].observerName+'</td>';
+							str+='<td>'+result[i].charecterName+'</td>';
+							if(casteType != "others"){
+								if(result[i].casteName != null){
+							          str+='<td>'+result[i].casteName+'</td>';
+								}else{
+									 str+='<td>-</td>';
+								}
+								if(result[i].subCastName != null){
+							        str+='<td>'+result[i].subCastName+'</td>';
+								}else{
+									 str+='<td>-</td>';
+								}
+							}
+						str+='</tr>';						
+					}
+					
+				str+= '</tbody>';
+			str+= '</table>';
+			str+= '</div>';
+			
+			
+			$(".debateModelCls").html(str);
+			$('.debateFirstBlockCls'+type).dataTable({
+				"iDisplayLength": 15,
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			 });
+		}
+		
+}
+$(document).on("click",".candidateCasteCls li",function(){
+		var id=$(this).attr("attr_casteId");
+		if(id == 0){
+		$("#casteOverViewDivId").html("");
+		 getCasteCategoryWisePartyDetails();
+		}else if(id == 1){
+			getOveralCandidateCasteDetails();
+			$("#casteAnalysisDivId").html("");
+		}
+			
+	 });
+	 function getOveralCandidateCasteDetails(){
+		$("#casteOverViewDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var participantLocIdArry =[];
+     $(".radioStateCls1").each(function(){
+        if($(this).prop('checked')==true){
+               participantLocIdArry.push($(this).val());
+        }else{
+			participantLocIdArry.push(0);
+		}
+        
+      });
+	  var debateLocationIdArry =[];
+     $(".radioStateCls").each(function(){
+        if($(this).prop('checked')==true){
+               debateLocationIdArry.push($(this).val());
+        }else{
+			debateLocationIdArry.push(0);
+		}
+        
+      });
+	  
+		var jsObj={
+			//startDate:customStartDate,
+		   // endDate:customEndDate,
+			state:globalState,
+			participantLocIdArry:participantLocIdArry,
+			debateLocationIdArry:debateLocationIdArry
+		}
+	    $.ajax({
+			type : 'POST',
+			url : 'getOveralCandidateCasteDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			buildOveralCandidateCasteDetails(result);
+		});
+	}
+function buildOveralCandidateCasteDetails(result)
+  {
+
+	var str='';
+	if(result !=null){
+			str+='<div class="table-responsive m_top20">';
+				str+='<table class="table table-bordered  dataTableSorting" id="casteOverViewTableId">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th class="text-capital">Party</th>';
+						str+='<th class="text-capital">spokes persons</th>';
+						for(var i in result[0].coreDebateVOList){
+						str+='<th  class="text-capital" >'+result[0].coreDebateVOList[i].casteName+'</th>';
+					    }
+					str+='</tr>';
+				str+='</thead>';
+				
+				  str+='<tbody>';
+					for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].name+'</td>';
+						//str+='<td><span style="cursor:pointer;color:#337ab7" >'+result[i].debateCount+'</span></td>';
+						str+='<td><span style="cursor:pointer;color:#337ab7" >'+result[i].candidateCount+'</span></td>';
+						for(var j in result[i].coreDebateVOList){
+						if(result[i].coreDebateVOList[j].candidateCount != null && result[i].coreDebateVOList[j].candidateCount>0){
+						 str+='<td><span style="cursor:pointer;color:#337ab7" >'+result[i].coreDebateVOList[j].candidateCount+'('+result[i].coreDebateVOList[j].participantPer+'%)</span></td>';
+						}else{
+						 str+='<td><span style="cursor:pointer;color:#337ab7" >'+result[i].coreDebateVOList[j].candidateCount+'</span></td>';	
+						}
+					   } 
+					str+='</tr>';
+					}
+				 str+='</tbody>';
+				str+='</table>';	
+			str+='</div>';
+			
+		$("#casteOverViewDivId").html(str);
+	}else{
+			$("#casteOverViewDivId").html('<h3>NO DATA AVAILABLE</h3>')
+		}
+
+}

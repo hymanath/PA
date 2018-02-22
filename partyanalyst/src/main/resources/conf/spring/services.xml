@@ -3882,6 +3882,10 @@
 	  <property name="constituencyDAO"  ref="constituencyDAO"></property>
 	  <property name="trainingCampDAO"  ref="trainingCampDAO"></property>
 	  <property name="trainingCampProgramDAO"  ref="trainingCampProgramDAO"></property>
+	  <property name="casteCategoryDAO"  ref="casteCategoryDAO"></property>
+	  <property name="candidateDAO"  ref="candidateDAO"></property>
+	  <property name="casteStateDAO"  ref="casteStateDAO"></property>
+	  
 	</bean>
 	
 	<bean name="newsCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.NewsCoreDashBoardService">

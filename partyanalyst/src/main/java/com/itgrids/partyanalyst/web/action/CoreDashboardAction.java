@@ -3369,7 +3369,7 @@ public String getCoreDebateBasicDetailsOfParty(){
 				debateParticipantLocationIdList.add(Long.parseLong(debateParticipantLocIdArry.getString(i)));          
 			}  
 		}
-		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getLong("candidateId"),debateLocationIdList,debateParticipantLocationIdList,jObj.getLong("roleId"),jObj.getLong("designationId"),jObj.getString("type"));
+		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"),jObj.getLong("candidateId"),debateLocationIdList,debateParticipantLocationIdList,jObj.getLong("roleId"),jObj.getLong("designationId"),jObj.getString("type"),jObj.getLong("casteId"));
 		
 	}catch(Exception e){
 		LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
@@ -6007,4 +6007,112 @@ public String getActivityAttendedAndImageCoveredDetails(){
 	return Action.SUCCESS;
 }
 
+public String getCasteCategoryWisePartyDetails(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask());
+		JSONArray participantLocIdArry = jObj.getJSONArray("participantLocIdArry");  
+		List<Long> participantLocationIdList = new ArrayList<Long>();
+		if(participantLocIdArry != null && participantLocIdArry.length() > 0){
+			for (int i = 0; i < participantLocIdArry.length(); i++){
+				participantLocationIdList.add(Long.parseLong(participantLocIdArry.getString(i)));          
+			}  
+		}
+		JSONArray debateLocationIdArry = jObj.getJSONArray("debateLocationIdArry");  
+		List<Long> debateLocationIdList = new ArrayList<Long>();
+		if(debateLocationIdArry != null && debateLocationIdArry.length() > 0){
+			for (int i = 0; i < debateLocationIdArry.length(); i++){
+				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getCasteCategoryWisePartyDetails(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList,participantLocationIdList);
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getCasteCategoryWisePartyDetails() method of CoreDashBoardAction", e);
+	}
+	
+	return Action.SUCCESS;
+}
+public String getOveralCandidateCasteDetails(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask());
+		JSONArray participantLocIdArry = jObj.getJSONArray("participantLocIdArry");  
+		List<Long> participantLocationIdList = new ArrayList<Long>();
+		if(participantLocIdArry != null && participantLocIdArry.length() > 0){
+			for (int i = 0; i < participantLocIdArry.length(); i++){
+				participantLocationIdList.add(Long.parseLong(participantLocIdArry.getString(i)));          
+			}  
+		}
+		JSONArray debateLocationIdArry = jObj.getJSONArray("debateLocationIdArry");  
+		List<Long> debateLocationIdList = new ArrayList<Long>();
+		if(debateLocationIdArry != null && debateLocationIdArry.length() > 0){
+			for (int i = 0; i < debateLocationIdArry.length(); i++){
+				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getOveralCandidateCasteDetails(jObj.getString("state"),debateLocationIdList,participantLocationIdList);
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getOveralCandidateCasteDetails() method of CoreDashBoardAction", e);
+	}
+	
+	return Action.SUCCESS;
+}
+public String getCasteCategoryWisePartyDetailsClick(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask());
+		JSONArray participantLocIdArry = jObj.getJSONArray("participantLocIdArry");  
+		List<Long> participantLocationIdList = new ArrayList<Long>();
+		if(participantLocIdArry != null && participantLocIdArry.length() > 0){
+			for (int i = 0; i < participantLocIdArry.length(); i++){
+				participantLocationIdList.add(Long.parseLong(participantLocIdArry.getString(i)));          
+			}  
+		}
+		JSONArray debateLocationIdArry = jObj.getJSONArray("debateLocationIdArry");  
+		List<Long> debateLocationIdList = new ArrayList<Long>();
+		if(debateLocationIdArry != null && debateLocationIdArry.length() > 0){
+			for (int i = 0; i < debateLocationIdArry.length(); i++){
+				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getCasteCategoryWisePartyDetailsClick(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("state"),debateLocationIdList,participantLocationIdList,jObj.getLong("casteId"),jObj.getString("type"),jObj.getLong("partyId"));
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getCasteCategoryWisePartyDetails() method of CoreDashBoardAction", e);
+	}
+	
+	return Action.SUCCESS;
+}
+public String getOveralCandidateCasteDetailsClick(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask());
+		JSONArray participantLocIdArry = jObj.getJSONArray("participantLocIdArry");  
+		List<Long> participantLocationIdList = new ArrayList<Long>();
+		if(participantLocIdArry != null && participantLocIdArry.length() > 0){
+			for (int i = 0; i < participantLocIdArry.length(); i++){
+				participantLocationIdList.add(Long.parseLong(participantLocIdArry.getString(i)));          
+			}  
+		}
+		JSONArray debateLocationIdArry = jObj.getJSONArray("debateLocationIdArry");  
+		List<Long> debateLocationIdList = new ArrayList<Long>();
+		if(debateLocationIdArry != null && debateLocationIdArry.length() > 0){
+			for (int i = 0; i < debateLocationIdArry.length(); i++){
+				debateLocationIdList.add(Long.parseLong(debateLocationIdArry.getString(i)));          
+			}  
+		}
+		codeDebateVoList = coreDashboardMainService.getOveralCandidateCasteDetailsClick(jObj.getString("state"),debateLocationIdList,participantLocationIdList,jObj.getLong("partyId"),jObj.getLong("casteId"),jObj.getString("type"));
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getOveralCandidateCasteDetails() method of CoreDashBoardAction", e);
+	}
+	
+	return Action.SUCCESS;
+}
 }
