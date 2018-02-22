@@ -29,6 +29,7 @@ public class PmRequestVO {
 	private AddressVO addressVO;
 	private AddressVO candidateAddressVO;
 	private AddressVO candidateNativeAddressVO ;
+	private List<AddressVO> addressVOList = new ArrayList<AddressVO>(0);
 	private List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>(0);
 	private List<PmRequestVO> referList= new ArrayList<PmRequestVO>(0);
 	private List<PmRequestVO> selfReferList= new ArrayList<PmRequestVO>(0);
@@ -50,7 +51,12 @@ public class PmRequestVO {
 	private String remarks;
 	private String saveType;
 	
-	
+	public List<AddressVO> getAddressVOList() {
+		return addressVOList;
+	}
+	public void setAddressVOList(List<AddressVO> addressVOList) {
+		this.addressVOList = addressVOList;
+	}
 	public String getSaveType() {
 		return saveType;
 	}

@@ -316,11 +316,6 @@
 							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkDescription" checked>Work Description</h5>	
 						</label>
 						</li>
-						 <li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks">No&nbsp;of&nbsp;Works</h5>	
-						</label> 
-						</li>
 						<li>
 						<label class="checkbox-inline">
 							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EstimationCost" checked>ESTIMATION COST (in Lakhs)</h5>	
@@ -328,12 +323,12 @@
 						</li>
 						<li>
 						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Status" checked>STATUS</h5>	
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks" checked>NO OF WORKS</h5>	
 						</label>
 						</li>
 						<li>
 						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks" checked>NO OF WORKS</h5>	
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Status" checked>STATUS</h5>	
 						</label>
 						</li>
 						<li>
@@ -369,6 +364,11 @@
 						</li>
 						<li>
 						<label class="checkbox-inline">
+							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasWorkCopy">HAS WORK DOCS</h5>	
+						</label>'
+						</li>
+						<li>
+						<label class="checkbox-inline">
 							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasCoveringLtr">HAS COVERING LTR</h5>	
 						</label>
 						</li>
@@ -392,11 +392,7 @@
 							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasOthersCopy">HAS OTHERS COPY</h5>	
 						</label>'
 						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasWorkCopy">HAS WORK DOCS</h5>	
-						</label>'
-						</li>
+						
 						<li>
 						<label class="checkbox-inline">
 							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WithWhome">WITH WHOME</h5>	

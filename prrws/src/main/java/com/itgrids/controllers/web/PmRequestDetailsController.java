@@ -76,7 +76,7 @@ public class PmRequestDetailsController {
 				}else{
 					return null;
 				}
-		    	 return pmRequestDetailsService.setPmRepresenteeDataToResultView(Long.valueOf(inputMap.get("petitionId")),String.valueOf(inputMap.get("pageType")),userId);
+		    	 return pmRequestDetailsService.setPmRepresenteeDataToResultView(Long.valueOf(inputMap.get("petitionId")),String.valueOf(inputMap.get("pageType")),userId,"report");
 	    }
 	   	@RequestMapping(value ="/getPetitionReferredMemberDetails",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresentationRequestVO> getPetitionReferredMemberDetails(@RequestBody RepresentationRequestVO dataVo ,HttpServletRequest request) {

@@ -331,7 +331,7 @@ function buildPetitionDetailsView(result){
 											}
 														str+='<div class="col-sm-3 pull-right">';
 															str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8;">';
-																str+='<h5 class="font_weight" style="color:#1283C8;text-transform:uppercase;"> UPDATED BY&nbsp;:<br>'+result.historyList[h].subList1[j].subList1[k].designation+'</h5>';
+																str+='<h5 class="font_weight" style="color:#1283C8;text-transform:uppercase;"> FORWARDED BY&nbsp;:<br>'+result.historyList[h].subList1[j].subList1[k].designation+'</h5>';
 																if(officerDesig != ""){
 																	str+='<h5 class="font_weight f_10 m_top5">'+officerDesig+'</h5>';
 																}
@@ -348,7 +348,7 @@ function buildPetitionDetailsView(result){
 														/*else if(globalActionId != 1 )
 															$("#endorseMentHeadingId").html(" <span style='color:"+colorCode[1]+"'> Present Status : </span>"+globalActionName+" Pending  ,  <b class='text-success'> Assigned By </b>:"+result.historyList[h].subList1[j].subList1[k].designation+" ") ;*/
 														else
-															$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"    , <b class='text-success'> Updated By </b>:"+result.historyList[h].subList1[j].subList1[k].designation+"&nbsp;"+result.historyList[h].subList1[j].subList1[k].officerDesig+" ");
+															$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"    , <b class='text-success'> FORWARDED BY </b>:"+result.historyList[h].subList1[j].subList1[k].designation+"&nbsp;"+result.historyList[h].subList1[j].subList1[k].officerDesig+" ");
 														
 													str+='</div>';
 												str+='</div>';
@@ -787,7 +787,7 @@ function buildPetitionDetailsView(result){
 													str+='<h4 class="font_weight m_top10">'+result.statusList[i].count+'</h4>';
 											str+='</div>';
 											}else{
-												str+='<div style="padding:5px;background-color:#F5F5F5;border:1px solid #d1ab66;">';
+											/*	str+='<div style="padding:5px;background-color:#F5F5F5;border:1px solid #d1ab66;">';
 													if(result.statusList[i].value !=null && result.statusList[i].value.length>20){
 														str+='<h5 class="tooltipCls" data-toggle="tooltip" title="'+result.statusList[i].value+'"><span class="rankingColor"><span style="top: -1px;position: relative;font-size: 12px;">'+statusList+'</span></span>'+result.statusList[i].value.substring(0,20)+'...</h5>';
 													}else{
@@ -796,7 +796,7 @@ function buildPetitionDetailsView(result){
 													
 													
 													str+='<h4 class="font_weight m_top10">'+result.statusList[i].count+'</h4>';
-											str+='</div>';
+											str+='</div>';*/
 											}
 											
 										str+='</div>';
@@ -949,9 +949,9 @@ function buildPetitionDetailsView(result){
 											str+='<th style="text-align:center" >PANCHAYAT</th>';
 											str+='<th style="text-align:center" >DEPARTMENT</th>';
 											str+='<th style="text-align:center" >SUBJECT</th>';
-											str+='<th style="text-align:center" >SUB-SUBJECT</th>';
-											str+='<th style="text-align:center" >GRANT</th>';
-											str+='<th style="text-align:center" >BUDGENT</th>';
+											//str+='<th style="text-align:center" >SUB-SUBJECT</th>';
+											//str+='<th style="text-align:center" >GRANT</th>';
+											str+='<th style="text-align:center" >EST. COST</th>';
 											str+='<th style="text-align:center" >STATUS</th>';
 											str+='<th style="text-align:center;width: 250px;" class="descriptionCls"  >DESCRIPTION</th>';
 									str+='</tr>';
@@ -985,14 +985,15 @@ function buildPetitionDetailsView(result){
 										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].subject+'</td>';
 									else
 										str+='<td  style="text-align:center" > - </td>';
-									if(typeof result.subWorksList[i].subWorksList[j].subSubject != 'undefined' && result.subWorksList[i].subWorksList[j].subSubject != null && result.subWorksList[i].subWorksList[j].subSubject.length>0)
+								/*	if(typeof result.subWorksList[i].subWorksList[j].subSubject != 'undefined' && result.subWorksList[i].subWorksList[j].subSubject != null && result.subWorksList[i].subWorksList[j].subSubject.length>0)
 										str+='<td>'+result.subWorksList[i].subWorksList[j].subSubject+'</td>';
 									else
-										str+='<td> - </td>';
-									if(typeof result.subWorksList[i].subWorksList[j].grantName != 'undefined' && result.subWorksList[i].subWorksList[j].grantName != null && result.subWorksList[i].subWorksList[j].grantName.length>0)
+										str+='<td> - </td>';*/
+									/*if(typeof result.subWorksList[i].subWorksList[j].grantName != 'undefined' && result.subWorksList[i].subWorksList[j].grantName != null && result.subWorksList[i].subWorksList[j].grantName.length>0)
 										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].grantName+'</td>';
 									else
 										str+='<td  style="text-align:center" > - </td>';
+									*/
 									if(typeof result.subWorksList[i].subWorksList[j].estimateCost != 'undefined' && result.subWorksList[i].subWorksList[j].estimateCost != null && result.subWorksList[i].subWorksList[j].estimateCost.length>0)
 										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].estimateCost+'</td>';
 									else
@@ -1326,7 +1327,7 @@ function buildPetitionDetailsView(result){
 																str+='</div>';
 																
 																str+='<div class="m_top15 margin_bottom">';
-																	str+='<h5 class="">Est Budget</h5>';
+																	str+='<h5 class="">Est Cost</h5>';
 																	if(result.subWorksList[i].subWorksList[j].estimateCostStr !=null && result.subWorksList[i].subWorksList[j].estimateCostStr>0){
 																		str+='<h5 class="font_weight m_top10"><i class="fa fa-inr" aria-hidden="true" style="color:green;"></i> '+result.subWorksList[i].subWorksList[j].estimateCostStr+' Lakhs</h5>';
 																	}else{
@@ -1567,7 +1568,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	/*else if(globalActionId != 1 )
 		$("#endorseMentHeadingId").html(" <span style='color:"+colorCode[1]+"'> Present Status : </span>"+globalActionName+" Pending  ,  <b class='text-success'> Assigned By </b>:"+assignedBy+" ") ;*/
 	else
-		$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"    , <b class='text-success'> Updated By </b>:"+assignedBy+" ");
+		$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"    , <b class='text-success'> FORWARDED BY </b>:"+assignedBy+" ");
 	if((glDesignationId == 2 || glDesignationId==86) && enrorsNo != null && enrorsNo>0){
 	  $("#endorseDivId").show();
 	  $("#hiddenEndorseNo").val(enrorsNo);
@@ -2506,11 +2507,15 @@ $.ajax({
 		alert("Please select atleast one work to update.");
 		return ;
 	}
+	
 	$("#remarksId").val('');
 	//$("#endorseMentHeadingId").html("Comment ");
 	$("#finalapproveFile").html('');
 	$("#remarkIdErr").html('');
+	$("#viewImageCss").html('');
+	$("#coverLetterLableDivId").hide();
 	$("#endorsementDivId").hide();
+	$("#coveringLetterGenerator").hide();
 	$("#fileUploadIdDiv").hide();
 	$("#totalWorkEditDivId").hide();
 	$("#statusChangeDivId").hide();
@@ -3148,7 +3153,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 										str+='<div class="col-sm-3 pull-right">';
 										str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
 											//str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">UPDATED BY </span>  : <br>'+result.petitionHistoryList[i].subList1[j].subList1[m].designation+''+ofcDesigLoca+'<br>('+result.petitionHistoryList[i].subList1[j].subList1[m].pmDepartmentName+')</h5>';
-											str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">UPDATED BY </span> : '+result.petitionHistoryList[i].subList1[j].subList1[m].designation+'<br>'+officerDesig+'</h5>';
+											str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">FORWARDED BY </span> : '+result.petitionHistoryList[i].subList1[j].subList1[m].designation+'<br>'+officerDesig+'</h5>';
 										str+='</div>';
 										
 																str+='</div>';
@@ -3301,7 +3306,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 											}
 																			str+='<div class="col-sm-3 pull-right">';
 																					str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
-																						str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">UPDATED BY </span>  : <br>'+result.subList1[j].subList1[k].subList1[l].subList1[m].designation+'</h5>';
+																						str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">FORWARDED BY </span>  : <br>'+result.subList1[j].subList1[k].subList1[l].subList1[m].designation+'</h5>';
 																						if(officerDesig != ""){
 																							str+='<h5 class="font_weight m_top5" style="text-align: center;">'+officerDesig+'</h5>';
 																						}

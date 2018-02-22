@@ -681,7 +681,7 @@ public class CommonMethodsUtilService {
 			    }
 		}  
 		  
-		public String percentageMergeintoTwoDecimalPlaces(Double perc){
+		public static String percentageMergeintoTwoDecimalPlaces(Double perc){
 			try {
 				 return new BigDecimal(perc).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 			} catch (Exception e) {
