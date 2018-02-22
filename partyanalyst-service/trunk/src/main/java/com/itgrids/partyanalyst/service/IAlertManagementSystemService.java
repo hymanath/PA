@@ -263,6 +263,6 @@ public interface IAlertManagementSystemService {
 	 public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputVo);
 	 public AlertVO getJalavaniCategoryWiseDetailsInfo(JalavaniAlertsInputVO inputVo);
 	 public List<AlertVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputVo);
-	 public AlertVO getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo);
+	 public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo);
 }        
 

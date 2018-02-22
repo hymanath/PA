@@ -5815,14 +5815,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
-	public AlertVO getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputvo){
-		AlertVO alertVo = new AlertVO();
+	public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputvo){
+		List<AlertVO> alertVoList = new ArrayList<AlertVO>(0);
 		try{
-			alertVo = alertManagementSystemService.getAlertsMonthlyOverviewInfoBySearchType(inputvo);
+			alertVoList = alertManagementSystemService.getAlertsMonthlyOverviewInfoBySearchType(inputvo);
     	}catch(Exception e){
     		log.error("Exception raised in getAlertsMonthlyOverviewInfoBySearchType  method in WebServiceHandlerService1",e);
     	}
-    	return alertVo;
+    	return alertVoList;
 	}
 	
 }

@@ -16709,53 +16709,32 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return finalVoList;
 	}
-	//0-distId,1-distname,categoryId-2,category-3,categoryCount-4
+	//0-distId,1-distname,categoryCount-4
 		public void setLocationWiseData(List<Object[]> objList,List<AlertVO> finalList){
 			if(objList !=null && objList.size() >0){
 				for (Object[] obj : objList){
-					AlertVO matchedVO = getmatchedStatusVo(finalList,(Long)obj[0]);
-					if(matchedVO == null){
-						matchedVO = new AlertVO();
-						matchedVO.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[0]));
-						matchedVO.setStatus(commonMethodsUtilService.getStringValueForObject(obj[1]));
-						
-						AlertVO categoryVo = new AlertVO();
-						categoryVo.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[2]));
-						categoryVo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[3]));
-						categoryVo.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[4]));
-						
-						matchedVO.getSubList1().add(categoryVo);
-						finalList.add(matchedVO);
-					}else{
-						AlertVO matchedCategoryVO = getmatchedStatusVo(matchedVO.getSubList1(),(Long)obj[2]);
-						if(matchedCategoryVO == null){
-							matchedCategoryVO = new AlertVO();
-							matchedCategoryVO.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[2]));
-							matchedCategoryVO.setStatus(commonMethodsUtilService.getStringValueForObject(obj[3]));
-							matchedCategoryVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[4]));
-							
-							matchedVO.getSubList1().add(matchedCategoryVO);
-						}else{
-							matchedCategoryVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[4]));
-						}
-				   }
+					AlertVO vo = new AlertVO();
+					
+					vo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					vo.setCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					
+					finalList.add(vo);
 				}
 			}
+			
+		Long totalCount =0l;
 			if(finalList !=null && finalList.size() >0){
 				for (AlertVO finalVo : finalList) {
-					if(finalVo.getSubList1() !=null && finalVo.getSubList1().size() >0){
-						for (AlertVO categoryVo : finalVo.getSubList1()) {
-							finalVo.setCount(finalVo.getCount()+categoryVo.getAlertCnt());
-						}
-						for (AlertVO categoryVo : finalVo.getSubList1()) {
-							categoryVo.setPercentage(calculatePercantage(categoryVo.getAlertCnt(), finalVo.getCount()));
-						}
-					}
+					totalCount = totalCount+finalVo.getCount();
 				}
-			}
+				for (AlertVO finalVo : finalList) {
+					finalVo.setPercentage(calculatePercantage(finalVo.getCount(),totalCount));
+				}
+			  }
 	}
 	public void setStatuWiseData(List<Object[]> objList,List<AlertVO> finalList){
-		//0-mandal,1-mandalname,statusId-2,statusName-3,statusColor-4,categoryId-5,category-6,categoryCount-7
+		//0-mandal,1-mandalname,statusId-2,statusName-3,statusColor-4,categoryCount-5
 		if(objList !=null && objList.size() >0){
 			for (Object[] obj : objList){
 				AlertVO matchedVO = getmatchedStatusVo(finalList,(Long)obj[0]);
@@ -16768,13 +16747,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					statusVo.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					statusVo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[3]));
 					statusVo.setColor(commonMethodsUtilService.getStringValueForObject(obj[4]));
+					statusVo.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[5]));
 					
-					AlertVO categoryVo = new AlertVO();
-					categoryVo.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[5]));
-					categoryVo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[6]));
-					categoryVo.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[7]));
-					
-					statusVo.getSubList1().add(categoryVo);
 					matchedVO.getSubList1().add(statusVo);
 					finalList.add(matchedVO);
 				}else{
@@ -16784,49 +16758,31 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						matchedStatusVO.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 						matchedStatusVO.setStatus(commonMethodsUtilService.getStringValueForObject(obj[3]));
 						matchedStatusVO.setColor(commonMethodsUtilService.getStringValueForObject(obj[4]));
-						
-						AlertVO categoryVo = new AlertVO();
-						categoryVo.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[5]));
-						categoryVo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[6]));
-						categoryVo.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[7]));
-						
-						matchedStatusVO.getSubList1().add(categoryVo);
+						matchedStatusVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[5]));
+					
 						matchedVO.getSubList1().add(matchedStatusVO);
 					}else{
-						AlertVO matchedCategoryVO = getmatchedStatusVo(matchedStatusVO.getSubList1(),(Long)obj[5]);
-						if(matchedCategoryVO ==null){
-							matchedCategoryVO = new AlertVO();
-							matchedCategoryVO.setStatusId(commonMethodsUtilService.getLongValueForObject(obj[5]));
-							matchedCategoryVO.setStatus(commonMethodsUtilService.getStringValueForObject(obj[6]));
-							matchedCategoryVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[7]));
-							
-							matchedStatusVO.getSubList1().add(matchedCategoryVO);
-						}else{
-							matchedCategoryVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[7]));
+						matchedStatusVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[5]));
 						}
 					}
 			   }
 			}
-		}
+		Long totalCount=0l;
 		if(finalList !=null && finalList.size() >0){
 			for (AlertVO finalVo : finalList) {
 				if(finalVo.getSubList1() !=null && finalVo.getSubList1().size() >0){
 					for (AlertVO statusVo : finalVo.getSubList1()) {
-						if(statusVo.getSubList1() !=null && statusVo.getSubList1().size() >0){
-							for (AlertVO categoryVo : statusVo.getSubList1()) {
-								statusVo.setCount(statusVo.getCount()+categoryVo.getAlertCnt());
-							}
-							for (AlertVO categoryVo : statusVo.getSubList1()) {
-								categoryVo.setPercentage(calculatePercantage(categoryVo.getAlertCnt(),statusVo.getCount()));
-							}
-						}
+						totalCount =totalCount+statusVo.getAlertCnt();
+					 }
+					for (AlertVO statusVo : finalVo.getSubList1()){
+						finalVo.setPercentage(calculatePercantage(statusVo.getAlertCnt(),totalCount));
 					}
 				}
-			}
+			}	
 		}
 	}
-	public AlertVO getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo){//monthLuy over for PM and Em
-		 AlertVO finalVo = new AlertVO();
+	public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo){//monthLy over for PM and Em
+		List<AlertVO> finalVOList = new ArrayList<AlertVO>(0);
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			Date startDate = null,endDate = null;
@@ -16834,27 +16790,28 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				startDate = sdf.parse(vo.getFromDateStr());
 				endDate = sdf.parse( vo.getToDateStr());
 			}
-			finalVo.getSubList2().addAll(getMonthSkeleton());
+			finalVOList.addAll(getMonthSkeleton());
 			List<Object[]> monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,vo.getAlertCategoryId());
 			if(monthObjList !=null && monthObjList.size() >0){
 				for (Object[] objects : monthObjList) {
-					AlertVO matchedMonthVO = getmatchedMonthVo(finalVo.getSubList2(),commonMethodsUtilService.getLongValueForObject(objects[0]));
+					AlertVO matchedMonthVO = getmatchedMonthVo(finalVOList,commonMethodsUtilService.getLongValueForObject(objects[0]));
 					if(matchedMonthVO != null){
 						matchedMonthVO.setLocationCnt((Long)objects[1]);
 					}
 				}
 			}
-			if(finalVo.getSubList2() != null && finalVo.getSubList2().size() >0){
-				for (AlertVO monthVo : finalVo.getSubList2()){
-					finalVo.setCount(finalVo.getCount()+monthVo.getLocationCnt());
+			Long totalCount =0l;
+			if(finalVOList != null && finalVOList.size() >0){
+				for (AlertVO monthVo : finalVOList){
+					totalCount=totalCount+monthVo.getLocationCnt();
 				}
-				for (AlertVO monthVo : finalVo.getSubList2()) {
-					monthVo.setStatusPercent(calculatePercantage(monthVo.getLocationCnt(), finalVo.getCount()));
+				for (AlertVO monthVo : finalVOList){
+					monthVo.setStatusPercent(calculatePercantage(monthVo.getLocationCnt(),totalCount));
 				}
 			}
 		}catch (Exception e){
 			Log.error("Exception raised at getAlertsMonthlyOverviewInfoBySearchType", e);
 		}
-		return finalVo;
+		return finalVOList;
 	}
 }
