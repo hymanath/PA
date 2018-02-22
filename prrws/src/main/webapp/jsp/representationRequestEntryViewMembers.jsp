@@ -398,7 +398,7 @@
 						</label>'
 						</li>
 						
-						<!--<li>
+						<li>
 						<label class="checkbox-inline">
 							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WithWhome">WITH WHOME</h5>	
 						</label>'
@@ -407,7 +407,7 @@
 						<label class="checkbox-inline">
 							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LastUpdatedTime">LAST UPDATED TIME</h5>	
 						</label>'
-						</li>-->
+						</li>
 						</ul>'
 					</div>
 					</div>
