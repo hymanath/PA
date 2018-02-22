@@ -200,4 +200,17 @@ public class Scheduler {
 		else 
 			return;
 	}
+	
+	@Scheduled(cron ="0 30 0 * * ?")
+	public void runTheSchedulerFrNregaFAVacanciesByEveryDayAT6AM()
+	{
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			LOG.error("Cron Job For E&D Started");
+			nregstcsService.saveFAVacanciesPanchayatData();
+			LOG.error("Cron Job For E&D Completed");
+		}
+		else 
+			return;
+	}
 }

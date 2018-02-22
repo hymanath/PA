@@ -1,5 +1,7 @@
 package com.itgrids.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +27,8 @@ public class NregaFAVacantPanchayat {
 	private Long locationAddressId;
 	private String isFilled;
 	private Long noOfVacant;
+	private  Date insertedTime;
+	private String isDeleted;
 	
 	private PrPanchayat prPanchayat;
 	private Panchayat panchayat;
@@ -147,5 +151,21 @@ public class NregaFAVacantPanchayat {
 	}
 	public void setLocationAddress(LocationAddress locationAddress) {
 		this.locationAddress = locationAddress;
+	}
+	
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }

@@ -43,7 +43,7 @@ public class NregaFAVacantPanchayatDAO extends GenericDaoHibernate<NregaFAVacant
 					+ " model.locationAddress.constituency.name,model.locationAddress.tehsil.tehsilName,model.locationAddress.panchayat.panchayatName");
 		
 		sb.append(" from NregaFAVacantPanchayat model"
-				+ " where model.isFilled = 'N'");
+				+ " where model.isFilled = 'N' and model.isDeleted = 'N'");
 		if(locationType != null && locationType.trim().equalsIgnoreCase("state") && locationId != null && locationId > 0L)
 			sb.append(" and model.locationAddress.state.stateId = :locationId");
 		else if(locationType != null && locationType.trim().equalsIgnoreCase("district") && locationId != null && locationId > 0L)
@@ -82,7 +82,7 @@ public class NregaFAVacantPanchayatDAO extends GenericDaoHibernate<NregaFAVacant
 		StringBuilder sb = new StringBuilder();
 		sb.append("select sum(model.noOfVacant)");
 		sb.append(" from NregaFAVacantPanchayat model"
-				+ " where model.isFilled = 'N'");
+				+ " where model.isFilled = 'N' and model.isDeleted = 'N'");
 		
 		if(locationType != null && locationType.trim().equalsIgnoreCase("state") && locationId != null && locationId > 0L)
 			sb.append(" and model.locationAddress.state.stateId = :locationId");
@@ -95,5 +95,9 @@ public class NregaFAVacantPanchayatDAO extends GenericDaoHibernate<NregaFAVacant
 		query.setParameter("locationId", locationId);
 		
 		return (Long) query.uniqueResult();
+	}
+	public int updateoldData(){
+		Query query = getSession().createQuery("update NregaFAVacantPanchayat model set model.isDeleted = 'Y' where model.isDeleted = 'N'");
+		return query.executeUpdate();
 	}
 }

@@ -10,4 +10,5 @@ public interface INregaFAVacantPanchayatDAO extends GenericDao<NregaFAVacantPanc
 
 	public List<Object[]> getLocationWiseEmptyVacencies(String locationType,Long locationId,String subLocationType);
 	public Long getLocationWiseEmptyVacencyCount(String locationType,Long locationId);
+	public int updateoldData();
 }
