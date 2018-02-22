@@ -60,6 +60,10 @@ public class CommitteeExceptionalReportService implements ICommitteeExceptionalR
 			  //Setting into resultVO
 			  resultVO.setSubList1(prepareCommiteeDetailsData(constituencyWisecommitteeDtlsObjLst, constituencyWisecompletedCommitteeObjLst, resultVO, inputVO.getLocationLevel()));
 			  Collections.sort(resultVO.getSubList1(),commiteeDecendingCountWiseSorting);
+			  //OvarAll percentage
+			  resultVO.setCompletedPerc(Util.calculatePercantage(resultVO.getCompletedCount(), resultVO.getTotalCount()));
+			  resultVO.setNotCompletedCommitteePer(Util.calculatePercantage(resultVO.getNotCompletedCommitteeCount(), resultVO.getTotalCount()));
+			  
 		 } catch (Exception e) {
 			 LOG.error("Exception occured at getCommiteeOverviewPerformanceDetails() in CommitteeExceptionalReportService class ",e);
 		 }
