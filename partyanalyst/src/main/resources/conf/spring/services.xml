@@ -4734,6 +4734,8 @@
    	 </bean>
    	 <bean name = "committeeExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.CommitteeExceptionalReportService">
    	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	  	 <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO"></property>
+   	  	 <property name="boothInchargeCommitteeDAO" ref ="boothInchargeCommitteeDAO"></property>
    	 </bean>
     	 
 </beans>			

@@ -1,5 +1,3 @@
-alert(1);
-
 getListOfParliamentsWithPoorPerformance();
 getListOfAssemblyWithPoorPerformance();    
 

@@ -6004,9 +6004,48 @@ public String getActivityAttendedAndImageCoveredDetails(){
 	} catch (Exception e) {
 		LOG.error("Exception raised at getActivityAttendedAndImageCoveredDetails() method of CoreDashBoardAction", e);
 	}
+	
 	return Action.SUCCESS;
 }
-
+public String getCommiteeOverviewPerformanceDetails(){
+	try {
+		LOG.info("Entered into getCommiteeOverviewPerformanceDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		JSONArray tdpBasicCommitteeIdsArr = jObj.getJSONArray("tdpBasicCommitteeIds");  
+		List<Long> tdpBasicCommitteeIds = new ArrayList<Long>();
+		if(tdpBasicCommitteeIdsArr != null && tdpBasicCommitteeIdsArr.length() > 0){
+			for (int i = 0; i < tdpBasicCommitteeIdsArr.length(); i++){
+				tdpBasicCommitteeIds.add(Long.parseLong(tdpBasicCommitteeIdsArr.getString(i)));          
+			}  
+		}
+		InputVO inputVO = new InputVO();
+		inputVO.setLocationLevel(jObj.getString("tdpCommitteeLevel"));
+		inputVO.setFromDateStr(jObj.getString("fromDate"));
+		inputVO.setToDateStr(jObj.getString("toDate"));
+		inputVO.setStateId(jObj.getLong("stateId"));
+		inputVO.setTdpBasicCommitteeIds(tdpBasicCommitteeIds);
+		inputVO.setTdpCommitteeEnrollmentId(jObj.getLong("tdpCommitteeEnrollmentId"));
+		committeeDataVO = committeeExceptionalReportService.getCommiteeOverviewPerformanceDetails(inputVO);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getCommiteeOverviewPerformanceDetails() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+public String getBoothInchargeCommitteePerformanceDetails(){
+	try {
+		LOG.info("Entered into getBoothInchargeCommitteePerformanceDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		InputVO inputVO = new InputVO();
+		inputVO.setFromDateStr(jObj.getString("fromDate"));
+		inputVO.setToDateStr(jObj.getString("toDate"));
+		inputVO.setStateId(jObj.getLong("stateId"));
+		inputVO.setBoothInchargeEnrollmentId(jObj.getLong("boothInchargeEnrollmentId"));
+		committeeDataVO = committeeExceptionalReportService.getBoothInchargeCommitteePerformanceDetails(inputVO);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getBoothInchargeCommitteePerformanceDetails() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
 public String getCasteCategoryWisePartyDetails(){
 	
 	try{
