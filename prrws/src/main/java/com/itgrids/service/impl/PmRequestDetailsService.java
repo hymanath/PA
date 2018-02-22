@@ -4195,6 +4195,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									updatePetitionTracking(pmTrackingVO,updatedTime); // works wise tracking 
 								}
 							}
+							}else{
+								if(inputVO.getStatusId() == null || inputVO.getStatusId().longValue()==0L){
+									PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
+									pmTrackingVO.setPmActionTypeId(inputVO.getActionTypeId());
+									pmTrackingVO.setActionType(inputVO.getActionType());
+									pmTrackingVO.setUserId(inputVO.getId());
+									pmTrackingVO.setPetitionId(inputVO.getPetitionId());
+									pmTrackingVO.setRemarks(inputVO.getRemark());
+									pmTrackingVO.setPmTrackingActionId(3L);//COMMENT 
+									if(document != null){
+										pmTrackingVO.setDocumentId(document.getDocumentId());
+										//pmTrackingVO.setPmDocumentTypeId(4l);
+									}
+									updatePetitionTracking(pmTrackingVO,updatedTime); // works wise tracking 
+								}
 							}
 						}
 					}else{
