@@ -1516,8 +1516,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			Long minPending = commonMethodsUtilService.getLongValueForObject(inputVO.getStartValue());
 			Long maxPending = commonMethodsUtilService.getLongValueForObject(inputVO.getEndValue());
 			
+			List<Object[]> documentsList = null;
 			//Map<Long,RepresenteeViewVO> statusSummeryMap = new HashMap<Long,RepresenteeViewVO>();
-			List<Object[]> documentsList = pmSubWorkCoveringLetterDAO.getAllTypeOfDocumentsForPetition(mapData.keySet(),null);
+			if(inputVO.getDivType() != null && inputVO.getDivType().equalsIgnoreCase("checked")){
+				documentsList = pmSubWorkCoveringLetterDAO.getAllTypeOfDocumentsForPetition(mapData.keySet(),null);
+			}
 			if(commonMethodsUtilService.isListOrSetValid(documentsList)){
 				for (Object[] param : documentsList) {
 					RepresenteeViewVO petitionVO = mapData.get(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -1584,7 +1587,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 			}
 			}
-			List<Object[]> latestPetionUpdatedList = pmPetitionAssignedOfficerDAO.getLatestUpdatedDetailsOfPetition(mapData.keySet());
+			List<Object[]> latestPetionUpdatedList = null;
+			if(inputVO.getAssetType() != null && inputVO.getAssetType().equalsIgnoreCase("checked")){
+				latestPetionUpdatedList = pmPetitionAssignedOfficerDAO.getLatestUpdatedDetailsOfPetition(mapData.keySet());
+			}
 			if(commonMethodsUtilService.isListOrSetValid(latestPetionUpdatedList)){
 				for (Object[] param : latestPetionUpdatedList) {
 					RepresenteeViewVO vo = mapData.get(commonMethodsUtilService.getLongValueForObject(param[4]));
@@ -1628,7 +1634,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}
 				}
 			}
-			List<Object[]> repRefDocumentsList = pmRepresenteeRefDocumentDAO.getRepresenteeRefDocuments(mapData.keySet());
+			List<Object[]> repRefDocumentsList = null;
+			if(inputVO.getViewType() != null && inputVO.getViewType().equalsIgnoreCase("checked")){
+				 repRefDocumentsList = pmRepresenteeRefDocumentDAO.getRepresenteeRefDocuments(mapData.keySet());
+			}
 			if(commonMethodsUtilService.isListOrSetValid(repRefDocumentsList)){
 				for (Object[] param : repRefDocumentsList) {
 					RepresenteeViewVO petitionVO = mapData.get(commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -1640,7 +1649,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}
 				}
 			}
-			List<Object[]> workDocsList = pmPetitionDocumentDAO.getWorkDocuments(mapData.keySet());
+			List<Object[]> workDocsList =null;
+			if(inputVO.getWorkStatus() != null && inputVO.getWorkStatus().equalsIgnoreCase("checked")){
+				workDocsList = pmPetitionDocumentDAO.getWorkDocuments(mapData.keySet());
+			}
 			if(commonMethodsUtilService.isListOrSetValid(repRefDocumentsList)){
 				for (Object[] param : repRefDocumentsList) {
 					RepresenteeViewVO petitionVO = mapData.get(commonMethodsUtilService.getLongValueForObject(param[2]));

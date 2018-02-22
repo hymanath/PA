@@ -790,6 +790,8 @@ $(document).on("click",".closeSecondModal",function(){
 	}
   if(searchBy != ''){
 	  onLoadClickDataDetails();
+	}else{
+		$('#advanceSearchId').trigger('click');
 	}
 /* if(statusId.length >0){
 	getStatusList(statusId);

@@ -1085,17 +1085,30 @@ function getRepresentativeSearchDetails1(value){
 	$("#representationRequestEntryTable").html(spinner);
 	$("#petitionSubWorkRadioDivId").hide();
 	$("#errMsgId").html("");
-	
+		var workStatus ="";
+		var viewType ="";
+		var divType="";
+		var assetType="";
 	$(".menuCls-table").hide();
 		var allColumnArr= ["RepresentationDate", "EndorsmentNo", "EndorsmentDate", "RepresenteeType", "RepresenteeName", "RepresenteeDesignation", "ReferrerName", "ReferreerDesignation", "WorkDescription", "EstimationCost","noofWorks","Status", "Department", "LeadName", "Subject", "SubSubject", "GrantName", "WorkType", "HasCoveringLtr", "HasActionCopy", "HasDetailedReport", "HasFinalCopy", "HasOthersCopy", "HasWorkCopy","HasReprRefDocs", "WithWhome", "LastUpdatedTime"];
 		for(var i in allColumnArr){
 			$("."+allColumnArr[i]).hide();
 		}
 		
+	
 		allCheckedColumnsArr=[];
 		$(".getColumnCls").each(function(){
 			if($(this).is(":checked")){
 				allCheckedColumnsArr.push($(this).val());
+				if($(this).val() =="HasWorkCopy"){
+					workStatus = "checked"
+				}else if($(this).val() =="HasReprRefDocs"){
+					viewType = "checked"
+				}else if($(this).val() =="HasCoveringLtr" || $(this).val() =="HasActionCopy" || $(this).val() =="HasDetailedReport" || $(this).val() =="HasFinalCopy" || $(this).val() =="HasOthersCopy"){
+					divType = "checked"
+				}else if($(this).val() =="WithWhome" || $(this).val() =="LastUpdatedTime"){
+					assetType = "checked"
+				}
 			}	
 		}); 
 		for(var i in allCheckedColumnsArr){
@@ -1217,7 +1230,12 @@ var json = {
 	govtSchmeIdsList:[],
 	sourceIdsList:[],
 	designationIds:[],
-	subProgramIdsList:[]
+	subProgramIdsList:[],
+	divType:divType,//cover,action,detailed,final and other docs
+	assetType:assetType,//with whome and latest updated time
+	workStatus:workStatus,//work docs
+	viewType:viewType//repRefDocs
+	
     }
   
   $.ajax({                
@@ -1284,8 +1302,7 @@ function buildSummeryDetails(result){
 }
 
 function getStatusList(onLoadstatusId){
-	if(onLoadstatusId == 0)
-		$('#advanceSearchId').trigger('click');
+	
 	var selStatusId = $("#statusId").val();
 	var statusIds = [];
 	if(selStatusId != null && selStatusId.length >0){
@@ -2708,7 +2725,7 @@ function petitionWiseRepresenteeDetails(result){
 					  if(EstimationCost){
 						  if (result[i].estimationCost != "" && result[i].estimationCost != "0"){
 							var estCost = parseFloat(result[i].estimationCost);
-							str+='<td style="text-align:center;" class="EstimationCost">'+estCost.toFixed(4)+'</td>';
+							str+='<td style="text-align:center;" class="EstimationCost">'+estCost.toFixed(2)+'</td>';
 						}else{
 							str+='<td style="text-align:center;" class="EstimationCost">-</td>';
 						}
