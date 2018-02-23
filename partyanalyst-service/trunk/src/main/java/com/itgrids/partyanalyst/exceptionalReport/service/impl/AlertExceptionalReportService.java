@@ -120,8 +120,56 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 				}
 			}
 			
+			Map<Long,String> cadreIdAndDesignationStr = new HashMap<Long,String>();
+			String designation = null;
+			
+			
+			List<Object[]> disignationList1 = null;
+			List<Object[]> disignationList2 = null;
 			if(cadreIds != null && cadreIds.size() > 0){
+				disignationList1 = alertDAO.getDesignationOfCadre(new ArrayList<Long>(cadreIds));
+				disignationList2 = alertDAO.getPositionOfCadre(new ArrayList<Long>(cadreIds));
+				if(disignationList1 != null && disignationList1.size() > 0){
+					for(Object[] param : disignationList1){
+						designation = cadreIdAndDesignationStr.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(designation == null){
+							if(commonMethodsUtilService.getStringValueForObject(param[1]).trim().length() > 1){
+								cadreIdAndDesignationStr.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]).trim());
+							}
+						}else{
+							if(commonMethodsUtilService.getStringValueForObject(param[1]).trim().length() > 1){
+								designation = designation + ",";
+								designation = designation + commonMethodsUtilService.getStringValueForObject(param[1]).trim();
+								cadreIdAndDesignationStr.put(commonMethodsUtilService.getLongValueForObject(param[0]), designation);
+							}
+						}
+					}
+				}
 				
+				
+				if(disignationList2 != null && disignationList2.size() > 0){
+					for(Object[] param : disignationList2){
+						designation = cadreIdAndDesignationStr.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(designation == null){
+							if(commonMethodsUtilService.getStringValueForObject(param[1]).trim().length() > 1){
+								cadreIdAndDesignationStr.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]).trim());
+							}
+						}else{
+							if(commonMethodsUtilService.getStringValueForObject(param[1]).trim().length() > 1){
+								designation = designation + ",";
+								designation = designation + commonMethodsUtilService.getStringValueForObject(param[1]).trim();
+								cadreIdAndDesignationStr.put(commonMethodsUtilService.getLongValueForObject(param[0]), designation);
+							}
+						}
+					}
+				}
+				
+			}
+			
+			if(alertCoreDashBoardVOs != null && alertCoreDashBoardVOs.size() > 0){
+				for(AlertCoreDashBoardVO param : alertCoreDashBoardVOs){
+					param.setDesignation(cadreIdAndDesignationStr.get(param.getId()));
+				}
 			}
 			
 			return alertCoreDashBoardVOs;

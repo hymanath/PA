@@ -11477,5 +11477,55 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		query.setDate("endDate", endDate);
 		return (Long) query.uniqueResult();
 	}
-	
+	public List<Object[]> getDesignationOfCadre(List<Long> tdpCadreIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select tcm.tdp_cadre_id as tdpCadreId ,CONCAT(tbc.name,'_', ");
+		sb.append(" if(tc.tdp_committee_level_id = 5,th.tehsil_name,if(tc.tdp_committee_level_id = 7,concat(leb.name,' Town'), ");
+		sb.append(" if(tc.tdp_committee_level_id=9,cc.name,if(tc.tdp_committee_level_id = 6,p.panchayat_name,if(tc.tdp_committee_level_id = 8,cc.name, ");
+		sb.append(" if(tc.tdp_committee_level_id = 11,d.district_name,if(tc.tdp_committee_level_id = 10,s.state_name,NULL))))))) ");
+		sb.append(" ,'_',tcl.tdp_committee_level,'_',tr.role) ");
+		sb.append("  as Committee_designation ");
+		sb.append(" from ");
+		sb.append(" tdp_basic_committee tbc,tdp_committee_level tcl, ");
+		sb.append(" tdp_committee_role tcr,tdp_committee_member tcm,tdp_roles tr,tdp_committee tc, tdp_cadre t, ");
+		sb.append(" user_address ua  ");
+		sb.append(" left outer join state s on ua.state_id = s.state_id ");
+		sb.append(" left outer join district d on ua.district_id = d.district_id ");
+		sb.append(" left outer join constituency c on ua.constituency_id = c.constituency_id ");
+		sb.append(" left outer join tehsil th on ua.tehsil_id = th.tehsil_id ");
+		sb.append(" left outer join local_election_body leb on ua.local_election_body=leb.local_election_body_id ");
+		sb.append(" left outer join constituency cc on ua.ward = cc.constituency_id ");
+		sb.append(" left outer join panchayat p on ua.panchayat_id = p.panchayat_id  ");
+		sb.append(" where ");
+		sb.append(" tc.tdp_basic_committee_id = tbc.tdp_basic_committee_id ");
+		sb.append(" and tc.tdp_committee_level_id = tcl.tdp_committee_level_id ");
+		sb.append(" and tc.address_id = ua.user_address_id ");
+		sb.append(" and tc.tdp_committee_enrollment_id = 2 ");
+		sb.append(" and tc.is_committee_confirmed='Y' ");
+		sb.append(" and tcm.is_active='Y' ");
+		sb.append(" and tc.tdp_committee_id = tcr.tdp_committee_id and tcr.tdp_committee_enrollment_id = 2 ");
+		sb.append(" and tcr.tdp_committee_role_id =tcm.tdp_committee_role_id  ");
+		sb.append(" and tcm.status = 'F' ");
+		sb.append(" and tcr.tdp_roles_id = tr.tdp_roles_id ");
+		sb.append(" and tcm.tdp_cadre_id = t.tdp_cadre_id and tc.state='AP' ");
+		sb.append(" and tcm.tdp_cadre_id in (:tdpCadreIds) ");
+		Query query = getSession().createSQLQuery(sb.toString()).addScalar("tdpCadreId", Hibernate.LONG).addScalar("Committee_designation", Hibernate.STRING);
+		query.setParameterList("tdpCadreIds", tdpCadreIds);
+		return query.list();
+	}
+	public List<Object[]> getPositionOfCadre(List<Long> tdpCadreIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select t.tdp_cadre_id as tdpCadreId,prt.position as designation");
+		sb.append(" from public_representative_type prt,representative_level rl, ");
+		sb.append(" tdp_cadre_enrollment_year tcey,tdp_cadre t,tdp_cadre_candidate tcc,public_representative pr ");
+		sb.append(" where tcey.tdp_cadre_id = t.tdp_cadre_id and t.is_deleted = 'N' and tcey.is_deleted = 'N' ");
+		sb.append(" and tcc.candidate_id = pr.candidate_id and tcc.tdp_cadre_id = t.tdp_cadre_id ");
+		sb.append(" and tcey.enrollment_year_id = 4 ");
+		sb.append(" and prt.public_representative_type_id = pr.public_representative_type_id ");
+		sb.append(" and rl.representative_level_id = pr.public_representative_type_id ");
+		sb.append(" and t.tdp_cadre_id in (:tdpCadreIds) ");
+		Query query = getSession().createSQLQuery(sb.toString()).addScalar("tdpCadreId", Hibernate.LONG).addScalar("designation", Hibernate.STRING);
+		query.setParameterList("tdpCadreIds", tdpCadreIds);
+		return query.list();
+	}
 }

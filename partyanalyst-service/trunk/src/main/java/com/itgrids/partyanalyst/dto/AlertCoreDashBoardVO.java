@@ -85,6 +85,8 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Double duplicatePer;
 	private Double lastMonthCompletedPer;
 	
+	
+	
 	private List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
 	
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
