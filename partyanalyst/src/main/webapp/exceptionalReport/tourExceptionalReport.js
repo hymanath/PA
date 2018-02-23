@@ -232,19 +232,19 @@ onloadTourCalls();
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 		    if(result !=null && result.length>0){
-				buildNotSubmittedCandidateDetailsByFilter(result);
+				buildNotSubmittedCandidateDetailsByFilter(result,months);
 			}else{
 				$("#toursSubmittedNoOfMonthsId").html("No Data Available");
 			}
 		});
 	}
 	
-	function buildNotSubmittedCandidateDetailsByFilter(result){
+	function buildNotSubmittedCandidateDetailsByFilter(result,months){
 		var str='';
 		
 			str+='<div class="row">';
 				str+='<div class="col-sm-12 m_top10">';
-					str+='<h5 class="text_bold text-capital" >Tours Not Submitted Candidates List</h5>';
+					str+='<h5 class="text_bold text-capital" > >='+months+' Month Tours Not Submitted Candidates List</h5>';
 					str+='<div class="table-responsive m_top10">';
 						str+='<table class="table details-overview">';
 							str+='<thead>';
