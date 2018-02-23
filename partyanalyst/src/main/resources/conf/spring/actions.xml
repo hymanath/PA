@@ -1722,7 +1722,8 @@
 	    <property name="trainingCampExceptionalReportService" ref="trainingCampExceptionalReportService"></property>
 	    <property name="activityExceptionalReportService" ref="activityExceptionalReportService"></property>
 	    <property name="alertExceptionalReportService" ref="alertExceptionalReportService"></property>
-	    <property name="committeeExceptionalReportService" ref="committeeExceptionalReportService"></property>  
+	    <property name="committeeExceptionalReportService" ref="committeeExceptionalReportService"></property>
+	    <property name="kaizalaExceptionReportService" ref="kaizalaExceptionReportService"></property>    
 	</bean>
 	
 	<bean id="leadersBirthdayAction" class="com.itgrids.partyanalyst.web.action.LeadersBirthdayAction" singleton="false">

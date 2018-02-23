@@ -18851,5 +18851,15 @@
 				<param name="root">committeeDataVO</param>
 		</result>
 	</action>
+	<action name="getConstituencyWisePoorPerformance" class="coreDashboardAction" method="getConstituencyWisePoorPerformance">
+		<result type="json" name="success">
+				<param name="root">exceptionalReportVOs</param>
+		</result>
+	</action>
+	<action name="getOverallReport" class="coreDashboardAction" method="getOverallReport">
+		<result type="json" name="success">
+				<param name="root">exceptionalReportVO</param>
+		</result>
+	</action>
  </package>
 </struts>
