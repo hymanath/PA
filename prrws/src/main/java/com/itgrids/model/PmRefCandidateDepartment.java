@@ -20,17 +20,18 @@ public class PmRefCandidateDepartment extends BaseModel implements Serializable{
 	
 	private Long PmRefCandidateDepartmentId;
 	private Long pmRefCandidateId;
-	private Long pmDepartmentId;
+	//private Long pmDepartmentId;
 	private String isDeleted;
 	private String isActive;
 	private Long insertedBy;
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date udpatedTime;
-	
+	private Long pmMinistryDepartmentId;
 	
 	private PmRefCandidate pmRefCandidate;
-	private PmDepartment pmDepartment;
+	//private PmDepartment pmDepartment;
+	private PmMinistryDepartment pmMinistryDepartment;
 	
 	@Id
 	@Column(name="pm_ref_candidate_department_id")
@@ -50,13 +51,13 @@ public class PmRefCandidateDepartment extends BaseModel implements Serializable{
 		this.pmRefCandidateId = pmRefCandidateId;
 	}
 	
-	@Column(name="pm_department_id")
+	/*@Column(name="pm_department_id")
 	public Long getPmDepartmentId() {
 		return pmDepartmentId;
 	}
 	public void setPmDepartmentId(Long pmDepartmentId) {
 		this.pmDepartmentId = pmDepartmentId;
-	}
+	}*/
 	
 	@Column(name="is_deleted")
 	public String getIsDeleted() {
@@ -115,7 +116,24 @@ public class PmRefCandidateDepartment extends BaseModel implements Serializable{
 		this.pmRefCandidate = pmRefCandidate;
 	}
 	
+	@Column(name="pm_ministry_department_id")
+	public Long getPmMinistryDepartmentId() {
+		return pmMinistryDepartmentId;
+	}
+	public void setPmMinistryDepartmentId(Long pmMinistryDepartmentId) {
+		this.pmMinistryDepartmentId = pmMinistryDepartmentId;
+	}
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_ministry_department_id", insertable = false, updatable = false)
+	public PmMinistryDepartment getPmMinistryDepartment() {
+		return pmMinistryDepartment;
+	}
+	public void setPmMinistryDepartment(PmMinistryDepartment pmMinistryDepartment) {
+		this.pmMinistryDepartment = pmMinistryDepartment;
+	}
+	
+	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pm_department_id", insertable = false, updatable = false)
 	public PmDepartment getPmDepartment() {
 		return pmDepartment;
@@ -123,6 +141,7 @@ public class PmRefCandidateDepartment extends BaseModel implements Serializable{
 	public void setPmDepartment(PmDepartment pmDepartment) {
 		this.pmDepartment = pmDepartment;
 	}
+	*/
 	
 	
 }
