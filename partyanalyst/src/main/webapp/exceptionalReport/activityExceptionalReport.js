@@ -10,8 +10,8 @@ function getActivityPerformanceDetailsLocationWise() {
 	$("#overAllAndTop5PoorParliamentDivId").html(spinner);
 	var jsObj = {
 		activityScopeId : 60,
-		fromDate : "01/01/2018",
-		toDate : "31/01/2018"
+		fromDate : "",
+		toDate : ""
 	}
 	$.ajax({
 
@@ -31,7 +31,7 @@ function buildActivityPerformanceDetailsLocationWise(result){
 	var str='';
 	str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top10">';
-			str+='<h5 class="text_bold text-capital" >Top 5 Parliaments with Poor Performance</h5>';
+			str+='<h5 class="text_bold text-capital" >Top 7 Parliaments with Poor Performance</h5>';
 			str+='<div class="table-responsive m_top10">';
 				str+='<table class="table details-overview">';
 					str+='<thead>';
@@ -53,7 +53,7 @@ function buildActivityPerformanceDetailsLocationWise(result){
 							str+='<td>'+result.subList2[i].percentage+'</td>';
 							str+='</tr>';
 							countVar =countVar+1;
-							if (countVar === 5) {
+							if (countVar === 7) {
 								break;
 							}
 						}
@@ -118,8 +118,8 @@ function getActivityAttendedAndImageCoveredDetails() {
 	$("#top10ConstituencyInchAndWhatsImageDivId").html(spinner);
 	var jsObj = {
 		activityScopeId : 60,
-		fromDate : "01/01/2018",
-		toDate : "31/01/2018"
+		fromDate : "",
+		toDate : ""
 
 	}
 	$.ajax({

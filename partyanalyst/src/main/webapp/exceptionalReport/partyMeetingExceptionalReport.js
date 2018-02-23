@@ -1,5 +1,40 @@
 var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
-onloadPartyMeeting();
+var customStartToursDateM = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
+var customEndToursDateM = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
+var dateHeadingStr1 = "Last Month&nbsp("+customStartToursDateM+"&nbspto&nbsp"+customEndToursDateM+")";
+$("#exceptionReportMeetingDateId").html(dateHeadingStr1);
+ onloadPartyMeeting();
+$("#meetingExDateRangePickerId").daterangepicker({
+	opens: 'left',
+	 startDate: customStartToursDateM,
+	 endDate:customEndToursDateM,  
+	locale: {
+	  format: 'DD/MM/YYYY'
+	},
+	ranges: { ////moment().endOf('Year')
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay1()), 'days'), moment().subtract(parseInt(getDay1()), 'days')],
+	   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay1()), 'days'), moment().subtract(parseInt(getDay1()), 'days')],
+	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+	   'This Month': [moment().startOf('month'), moment()],
+	   'This Year': [moment().startOf('Year'), moment()],
+	   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+	}
+});
+function getDay1(){
+	var date = new Date();
+	var dd = date.getDate(); 
+	return dd;
+}
+$('#meetingExDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+	   customStartToursDateM = picker.startDate.format('DD/MM/YYYY');
+	   customEndToursDateM = picker.endDate.format('DD/MM/YYYY');
+	   var dateHeadingStr2 = "("+customStartToursDateM+"&nbspto&nbsp"+customEndToursDateM+")";
+	    $("#exceptionReportMeetingDateId").html(dateHeadingStr2);
+	   onloadPartyMeeting();
+		 
+});
 function onloadPartyMeeting(){
 	
 	var levelWiseArr=[{id:'meetingBlocksConstituencyDivId',levelName:'Constituency',partyMeetingTypeId:'3'},{id:'meetingBlocksMandalDivId',levelName:'mandalTownDivision',partyMeetingTypeId:'15'},{id:'meetingBlocksVillageDivId',levelName:'villageWard',partyMeetingTypeId:'14'}]
@@ -48,8 +83,8 @@ function getLevelWisePartyMeetingExceptionReport(id,levelName,partyMeetingTypeId
 		
 	 	var jsObj = { 
 					 partyMeetingLevel :levelName,
-					 fromDate : "01/01/2018",
-					 toDate : "31/01/2018",
+					 fromDate : customStartToursDateM,
+					 toDate : customEndToursDateM,
 					 partyMeetingTypeIds:partyMeetingTypeIdsArr,
 					 
 				  }
@@ -66,7 +101,8 @@ function getLevelWisePartyMeetingExceptionReport(id,levelName,partyMeetingTypeId
 }
 function buildLevelWisePartyMeetingExceptionReport(result,id,levelName,partyMeetingTypeIds){
 	var str='';
-	str+='<div class="row">';
+	
+		str+='<div class="row ">';
 		str+='<div class="col-sm-12 m_top10">';
 			str+='<h4 class="text_bold text-capital" >'+levelName+' Level Meeting Details</h4>';
 		str+='</div>';
@@ -91,9 +127,9 @@ function buildLevelWisePartyMeetingExceptionReport(result,id,levelName,partyMeet
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
-		str+='<div class="row">';
+		str+='<div class="row pagebreak">';
 			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital" >Top 5 Parliaments with Poor Performance</h5>';
+				str+='<h5 class="text_bold text-capital" >Top 7 Parliaments with Poor Performance</h5>';
 				str+='<div class="table-responsive m_top10">';
 					str+='<table class="table details-overview">';
 						str+='<thead>';
@@ -114,7 +150,7 @@ function buildLevelWisePartyMeetingExceptionReport(result,id,levelName,partyMeet
 								str+='<td>'+result.subList2[i].percentage+'</td>';
 								str+='</tr>';
 								countVar =countVar+1;
-								if (countVar === 5) {
+								if (countVar === 7) {
 									break;
 								}
 							}
@@ -124,12 +160,12 @@ function buildLevelWisePartyMeetingExceptionReport(result,id,levelName,partyMeet
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
-	str+='<div class="row">';
+	str+='<div class="row pagebreak">';
 			str+='<div class="col-sm-12 m_top20">';
 				if(levelName != "Constituency"){
-					str+='<h5 class="text_bold text-capital" >Top 10 Assembly Constituency with Poor Performance</h5>';
+					str+='<h5 class="text_bold text-capital font_size24" >Top 10 Assembly Constituency with Poor Performance</h5>';
 				}else{
-					str+='<h5 class="text_bold text-capital" >Not Conducted Assembly Constituencies</h5>';
+					str+='<h5 class="text_bold text-capital font_size24" >Not Conducted Assembly Constituencies</h5>';
 				}
 				str+='<div class="table-responsive m_top10">';
 					str+='<table class="table details-overview">';
@@ -229,3 +265,6 @@ function getPdf(id)
 	}	
 }	
  
+ $(document).on("click",".meetingsExRRefresh",function(e){
+	onloadPartyMeeting();
+});
