@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dto.InputVO;
 import com.itgrids.partyanalyst.dto.InsuranceLagDaysVO;
 import com.itgrids.partyanalyst.dto.InsuranceSimpleVO;
 import com.itgrids.partyanalyst.dto.KaizalaDashboardVO;
+import com.itgrids.partyanalyst.dto.KaizalaExceptionalReportVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
@@ -226,6 +227,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<KeyValueVO> keyValueVOList;
 	private KaizalaDashboardVO kaizalaDashboardVO;
 	private List<EventLocationVO> jbDataList;
+	private List<KaizalaExceptionalReportVO> exceptionalReportVOs;
+	private KaizalaExceptionalReportVO exceptionalReportVO;
 
 	List<NominatedPostCandidateDtlsVO> nominatedPostCandList;
 	List<NominatedPostDetailsVO> nominatedPostDetailsVOList;
@@ -246,6 +249,24 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	public List<Long> getProgramIdsList() {
 		return programIdsList;
+	}
+
+	public List<KaizalaExceptionalReportVO> getExceptionalReportVOs() {
+		return exceptionalReportVOs;
+	}
+
+	public void setExceptionalReportVOs(
+			List<KaizalaExceptionalReportVO> exceptionalReportVOs) {
+		this.exceptionalReportVOs = exceptionalReportVOs;
+	}
+
+	public KaizalaExceptionalReportVO getExceptionalReportVO() {
+		return exceptionalReportVO;
+	}
+
+	public void setExceptionalReportVO(
+			KaizalaExceptionalReportVO exceptionalReportVO) {
+		this.exceptionalReportVO = exceptionalReportVO;
 	}
 
 	public IKaizalaExceptionReportService getKaizalaExceptionReportService() {
@@ -6219,6 +6240,30 @@ public String getOverAllAlertsDetails(){
 		alertCoreDashBoardVOs = alertExceptionalReportService.getOverAllAlertsDetails(fromDateStr,toDateStr,stateId,size,alertTypeIdList);
 	}catch(Exception e){
 		LOG.error("Exception raised at getAssignedCandidateWisePendingAlerts() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+public String getConstituencyWisePoorPerformance(){
+	try{
+		jObj = new JSONObject(getTask());
+		
+		Long stateId = jObj.getLong("stateId");
+		int size = jObj.getInt("size");	
+		String location = jObj.getString("location");
+		exceptionalReportVOs = kaizalaExceptionReportService.getConstituencyWisePoorPerformance(stateId,size,location);
+	}catch(Exception e){
+		LOG.error("Exception raised at getConstituencyWisePoorPerformance() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+public String getOverallReport(){
+	try{
+		jObj = new JSONObject(getTask());
+		
+		Long stateId = jObj.getLong("stateId");
+		exceptionalReportVO = kaizalaExceptionReportService.getOverallReport(stateId);
+	}catch(Exception e){
+		LOG.error("Exception raised at getOverallReport() method of CoreDashBoardAction", e);
 	}
 	return Action.SUCCESS;
 }

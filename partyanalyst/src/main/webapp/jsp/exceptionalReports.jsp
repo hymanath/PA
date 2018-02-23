@@ -13,7 +13,8 @@
 <script src="exceptionalReport/activityExceptionalReport.js" type="text/javascript"></script>
 <script src="exceptionalReport/trainingCampExceptionalReport.js" type="text/javascript"></script>  
 <script src="exceptionalReport/alertExceptionalReport.js" type="text/javascript"></script>         
-<script src="exceptionalReport/committeeExceptionalReport.js" type="text/javascript"></script>  
+<script src="exceptionalReport/committeeExceptionalReport.js" type="text/javascript"></script> 
+<script src="exceptionalReport/kaizalaExceptionalReport.js" type="text/javascript"></script> 
 <script type="text/javascript">
 </script>
 </body>

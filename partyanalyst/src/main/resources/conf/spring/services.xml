@@ -4726,6 +4726,8 @@
 			<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
             <property name="dateUtilService" ref="dateUtilService"></property>
             <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
+            <property name="kaizalaAnswerInfoDAO" ref = "kaizalaAnswerInfoDAO"></property>
+            <property name="constituencyDAO" ref = "constituencyDAO"></property>
 		</bean>
    	  	<bean name = "partyMeetingExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.PartyMeetingExceptionalReportService">
    	  	 	<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
