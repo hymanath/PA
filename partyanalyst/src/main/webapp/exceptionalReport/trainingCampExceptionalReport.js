@@ -7,10 +7,10 @@ function onloadTrainingCalls(){
 function getListOfParliamentsWithPoorPerformance(){
 		$("#overAllAndTop5ParliamentDivId").html(spinner);
 	var jsObj = { 
-		fromDateStr : "01/01/2017",
-		toDateStr : "01/01/2018",
+		fromDateStr : "",
+		toDateStr : "",
 		stateId : 1,
-		size : 5,
+		size : 7,
 		tdpCommitteeLevelIds : [5,6,7,8,9],
 		enrollmentYearIds : [4],
 		trainingCampProgramIds : [8],   
@@ -25,6 +25,8 @@ function getListOfParliamentsWithPoorPerformance(){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			buildListOfParliamentsWithPoorPerformance(result);
+		}else{
+			$("#overAllAndTop5ParliamentDivId").html("No Data Available");
 		}
 	});
 }
@@ -53,7 +55,7 @@ function buildListOfParliamentsWithPoorPerformance(result){
 	str+='</div>';
 	str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top20">';
-			str+='<h5 class="text_bold text-capital" >Top 5 Parliaments with Poor Performance</h5>';
+			str+='<h5 class="text_bold text-capital" >Top 7 Parliaments with Poor Performance</h5>';
 			str+='<div class="table-responsive m_top10">';
 				str+='<table class="table details-overview">';
 					str+='<thead>';
@@ -85,10 +87,10 @@ $("#overAllAndTop5ParliamentDivId").html(str);
 function getListOfAssemblyWithPoorPerformance(){
 $("#top5ConstituencyWithPoorPerDivId").html(spinner);    
 	var jsObj = { 
-		fromDateStr : "01/01/2017",
-		toDateStr : "01/01/2018",
+		fromDateStr : "",
+		toDateStr : "",
 		stateId : 1,
-		size : 5,
+		size : 10,
 		tdpCommitteeLevelIds : [5,6,7,8,9],
 		enrollmentYearIds : [4],
 		trainingCampProgramIds : [8,9,10],
@@ -103,6 +105,8 @@ $("#top5ConstituencyWithPoorPerDivId").html(spinner);
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			buildListOfAssemblyWithPoorPerformance(result);
+		}else{
+			$("#top5ConstituencyWithPoorPerDivId").html("No Data Available");    
 		}
 	});
 }
@@ -111,7 +115,7 @@ function buildListOfAssemblyWithPoorPerformance(result){
 	var str='';
 	str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top20">';
-			str+='<h5 class="text_bold text-capital">Top Assembly Constituencies with Poor Performance-Center Wise</h5>';
+			str+='<h5 class="text_bold text-capital">Top 10 Assembly Constituencies with Poor Performance-Center Wise</h5>';
 		str+='</div>';
 	str+='</div>';
 	for(var i in result){
@@ -130,15 +134,22 @@ function buildListOfAssemblyWithPoorPerformance(result){
 							str+='</tr>';
 						str+='</thead>';
 						str+='<tbody>';
-						for(var j in result[i].trainingProgramList){
+						if(result[i].trainingProgramList !=null && result[i].trainingProgramList.length>0){
+							for(var j in result[i].trainingProgramList){
+								str+='<tr>';
+									str+='<td>'+result[i].trainingProgramList[j].constituency+'</td>';
+									str+='<td>'+result[i].trainingProgramList[j].parliament+'</td>';
+									str+='<td>'+result[i].trainingProgramList[j].totalEligibleCount+'</td>';
+									str+='<td>'+result[i].trainingProgramList[j].totalNotAttenedCount+'</td>';
+									str+='<td>'+result[i].trainingProgramList[j].totalNotAttenedCountPer+'</td>';
+								str+='</tr>';
+							}
+						}else{
 							str+='<tr>';
-								str+='<td>'+result[i].trainingProgramList[j].constituency+'</td>';
-								str+='<td>'+result[i].trainingProgramList[j].parliament+'</td>';
-								str+='<td>'+result[i].trainingProgramList[j].totalEligibleCount+'</td>';
-								str+='<td>'+result[i].trainingProgramList[j].totalNotAttenedCount+'</td>';
-								str+='<td>'+result[i].trainingProgramList[j].totalNotAttenedCountPer+'</td>';
+								str+='<td colspan="5">No Data Available</td>';
 							str+='</tr>';
-						}	
+						}
+							
 						str+='</tbody>';
 					str+='</table>';
 			str+='</div>';
@@ -147,5 +158,7 @@ function buildListOfAssemblyWithPoorPerformance(result){
 }
 $("#top5ConstituencyWithPoorPerDivId").html(str);
 }
-
+$(document).on("click",".trainingCampExRRefresh",function(e){
+	onloadTrainingCalls();
+});
 	

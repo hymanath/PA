@@ -224,6 +224,137 @@ header
 				</div>
 			</div>
 		</div>
+		
+		<div class="row">
+				<div class="col-sm-12" id="mainDivHeaderId">
+					<div class="panel panel-default panelNewCustom">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-sm-9">
+									<h4 class="panel-title text-capital">
+										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
+											Committees
+									</h4>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-12 committeeblockOpen">
+									<span class="committeesExRefresh pull-right">
+										<i class="glyphicon glyphicon-refresh"></i>
+									</span>
+									 <span class="committeesExSettingsIcon pull-right">
+									   <i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+									 </span>
+									 <div class="debatesSettingsBody" style="display:none;top:15px;right: 39px;">
+										<div class="row">
+											<div class="col-sm-12">
+											 <i class="glyphicon glyphicon-remove committeesExSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;"></i>
+											 </div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<ul style="padding:0px;" class="list-inline line_heightCls">
+													<li>
+														<label class="checkbox-inline">
+															<h5><input type="checkbox" id="mandalTownDivision" value="mandalTownDivisionCommDivId" class="getCommLevelValCls" checked />Mandal Level Committee</h5>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<h5><input type="checkbox" id="villageWard"  value="villageWardCommDivId" class="getCommLevelValCls"  checked />Village Level Committee</h5>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<h5><input type="checkbox" id="boothComm"  value="boothCommDivId" class="getCommLevelValCls" checked />Booth Level Committee</h5>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<h5><input type="checkbox" id="affmandal"  value="affmandalTownDivision" class="getCommLevelValCls" checked />Affiliated Level Committee</h5>
+														</label>
+													</li>
+													
+												</ul>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12 m_top10">
+												<button type="button" class="btn btn-primary btn-sm commlevelWiseCls">Submit</button>
+											</div>
+										</div>
+									 </div>
+								</div>  
+							</div>
+						</div>
+						<div class="container-fluid">
+							<div class="panel-body">
+								<div id="mandalTownDivisionCommDivId"></div>
+								<div id="villageWardCommDivId"></div>
+								<div id="boothCommDivId"></div>
+								<div id="affmandalTownDivision"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-default panelNewCustom">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-sm-9">
+									<h4 class="panel-title text-capital">
+										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
+											Alert			
+									</h4>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-12">
+									<span class="alertExRRefresh pull-right">
+										<i class="glyphicon glyphicon-refresh"></i>
+									</span>
+								</div>  
+							</div>
+						</div>
+						<div class="container-fluid">
+							<div class="panel-body">
+								<div id="overAllAlertsDivId"></div>
+								<div id="assignedParliamentWiseAlertsDivId"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-default panelNewCustom">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-sm-9">
+									<h4 class="panel-title text-capital">
+										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
+											Kaizala			
+									</h4>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-12">
+									<span class="kaizalaExRRefresh pull-right">
+										<i class="glyphicon glyphicon-refresh"></i>
+									</span>
+								</div>  
+							</div>
+						</div>
+						<div class="container-fluid">
+							<div class="panel-body">
+								<div id="overAllKaizalaDivId"></div>
+								<div id="performanceKaizalaParliamentWiseDetailsDivId"></div>
+								<div id="performanceKaizalaConstituencyWiseDetailsDivId"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
 </section>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
