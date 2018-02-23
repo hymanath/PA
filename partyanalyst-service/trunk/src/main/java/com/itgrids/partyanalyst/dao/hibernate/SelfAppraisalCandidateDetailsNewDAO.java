@@ -635,7 +635,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct SACD.tdpCadre.tdpCadreId " 
 				+ " from SelfAppraisalCandidateDetailsNew SACD "
-				+ " where SACD.isDeleted='N'  ");
+				+ " where SACD.isDeleted='N' and SACD.selfAppraisalCandidate.isActive='Y'  ");
 		if (monthYearIds != null && monthYearIds.size() > 0) {
 			queryStr.append(" and SACD.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
 		}
@@ -661,7 +661,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		queryStr.append(" select model.selfAppraisalDesignationId," + // 0
 				"  count(distinct model.selfAppraisalCandidateId)");// 2
 		queryStr.append(" from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' "
-				+ " and model.selfAppraisalDesignation.isActive='Y' ");
+				+ " and model.selfAppraisalCandidate.isActive='Y' and model.selfAppraisalDesignation.isActive='Y' ");
 		if (monthYearIds != null && monthYearIds.size() > 0) {
 			queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
 		}
@@ -686,7 +686,7 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		queryStr.append(" select model.selfAppraisalCandidateId," + // 0
 				"  count(distinct model.selfAppraisalToursMonthId)");// 2
 		queryStr.append(" from SelfAppraisalCandidateDetailsNew model where model.isDeleted='N' "
-				+ " and model.selfAppraisalDesignation.isActive='Y' ");
+				+ " and model.selfAppraisalDesignation.isActive='Y' and model.selfAppraisalCandidate.isActive='Y' ");
 		if (monthYearIds != null && monthYearIds.size() > 0) {
 			queryStr.append(" and model.selfAppraisalToursMonth.selfAppraisalToursMonthId in(:monthYearIds) ");
 		}
