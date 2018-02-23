@@ -161,4 +161,3 @@ $("#top5ConstituencyWithPoorPerDivId").html(str);
 $(document).on("click",".trainingCampExRRefresh",function(e){
 	onloadTrainingCalls();
 });
-	

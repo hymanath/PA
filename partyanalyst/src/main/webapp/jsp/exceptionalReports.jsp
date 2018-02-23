@@ -14,6 +14,7 @@
 <link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="D2D_Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/css/print.css" rel="stylesheet" type="text/css"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
 .eventsheader
@@ -41,8 +42,8 @@ header
 </style>
 </head>
 <body>
-<div class="background-head" style="height:auto;"></div>
-<header>
+<div class="background-head headerDisPlayNone" style="height:auto;"></div>
+<header class="headerDisPlayNone">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6">
@@ -54,59 +55,43 @@ header
 		</div>
 	</div>
 </header>
-<div class="black-border">
+<div class="black-border headerDisPlayNone">
 	<div class="container">
 		<h3 class="text-center text-capital" style="color:#fff;padding:10px;">Exceptional Reports</h3>
 	</div>
 </div>
-<section>
+<div id="printableArea">
+<section id="printcontent">
 	<div class="container">
-		<!--<button class="btn btn-md btn-success exportToPdf" attr_id="mainDivHeaderId">Export PDF</button>-->
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="panel panel-default panelNewCustom">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-sm-9">
-									<h4 class="panel-title text-capital">
-										<img src="newCoreDashBoard/img/training.png" class="iconClass" style="background-color:none;"/>
-											Training Camp
-									</h4>
-								</div>
-								<div class="col-md-3 col-sm-3 col-xs-12">
-									<span class="trainingCampExRRefresh pull-right">
-										<i class="glyphicon glyphicon-refresh"></i>
-									</span>
-								</div>  
-							</div>
-						</div>
-						<div class="container-fluid">
-							<div class="panel-body">
-								<div id="overAllAndTop5ParliamentDivId"></div>
-								<div id="top5ConstituencyWithPoorPerDivId"></div>
-						</div>
-					</div>
-				</div>
+		<div class="row">
+			<div class="col-sm-12" >
+				<!--<button class="btn btn-md btn-success printViewCls pull-right headerDisPlayNone" attr_divId="printableArea">Print</button>-->
 			</div>
-		</div>
 		<div class="row">
 				<div class="col-sm-12" id="mainDivHeaderId">
 					<div class="panel panel-default panelNewCustom">
 						<div class="panel-heading">
 							<div class="row">
-								<div class="col-sm-9">
+								<div class="col-sm-6">
 									<h4 class="panel-title text-capital">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
-											Meetings
+											Meetings - <small class="text-muted"><span id="exceptionReportMeetingDateId">  </span></small>	
 									</h4>
 								</div>
-								<div class="col-md-3 col-sm-3 col-xs-12 meetingblockOpen">
+								<div class="col-md-6 col-sm-6 col-xs-12 meetingblockOpen headerDisPlayNone">
 									<span class="meetingsExRRefresh pull-right">
 										<i class="glyphicon glyphicon-refresh"></i>
 									</span>
+									
 									 <span class="MeetingsExSettingsIcon pull-right">
 									   <i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 									 </span>
+									 <span class="input-group pull-right dateRangePickerCls" style="width:200px;">
+										<input type="text" id="meetingExDateRangePickerId" style="width:200px" class="form-control" />
+											<span class="input-group-addon">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</span>
+									</span>
 									 <div class="debatesSettingsBody" style="display:none;top:15px;right: 39px;">
 										<div class="row">
 											<div class="col-sm-12">
@@ -154,78 +139,6 @@ header
 			</div>
 		</div>
 		<div class="row">
-				<div class="col-sm-12">
-					<div class="panel panel-default panelNewCustom">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-sm-9">
-									<h4 class="panel-title text-capital">
-										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
-											Dalitha Tejam			
-									</h4>
-								</div>
-								<div class="col-md-3 col-sm-3 col-xs-12">
-									<span class="dalithaExRRefresh pull-right">
-										<i class="glyphicon glyphicon-refresh"></i>
-									</span>
-								</div>  
-							</div>
-						</div>
-						<div class="container-fluid">
-							<div class="panel-body">
-								<div id="overAllAndTop5PoorParliamentDivId"></div>
-								<div id="top10ConstituencyInchAndWhatsImageDivId"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-				<div class="col-sm-12">
-					<div class="panel panel-default panelNewCustom">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-sm-9">
-									<h4 class="panel-title text-capital">
-										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
-											Tours <small class="text-muted"><span id="exceptionReportTourDateId">  </span></small>	
-									</h4>
-								</div>
-								<div class="col-md-3 col-sm-3 col-xs-12">
-									<span class="tourExRRefresh pull-right">
-										<i class="glyphicon glyphicon-refresh"></i>
-									</span>
-								</span>
-								</div>  
-							</div>
-						</div>
-						<div class="container-fluid">
-							<div class="panel-body">
-								<div id="overAllTourDetailsDivId"></div>
-								<div class="row">
-									<div class="pull-right m_top10">
-									    <div class ="col-md-9">
-											<span class="input-group pull-right" style="width:200px;">
-											<input type="text" id="tourNewExDateRangePickerId" style="width:180px" class="form-control" />
-											<span class="input-group-addon">
-											<i class="glyphicon glyphicon-calendar"></i>
-											</span>
-										</div>
-										<div class="col-sm-3">
-											<label>No Of Months</label>
-											<select class="form-control" id="noofMonthsId">
-											</select>
-										</div>
-									</div>
-								</div>
-								<div id="toursSubmittedNoOfMonthsId"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="row">
 				<div class="col-sm-12" id="mainDivHeaderId">
 					<div class="panel panel-default panelNewCustom">
 						<div class="panel-heading">
@@ -233,10 +146,10 @@ header
 								<div class="col-sm-9">
 									<h4 class="panel-title text-capital">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
-											Committees
+											Committees - <small class="text-muted">Over All</small>
 									</h4>
 								</div>
-								<div class="col-md-3 col-sm-3 col-xs-12 committeeblockOpen">
+								<div class="col-md-3 col-sm-3 col-xs-12 committeeblockOpen headerDisPlayNone">
 									<span class="committeesExRefresh pull-right">
 										<i class="glyphicon glyphicon-refresh"></i>
 									</span>
@@ -296,6 +209,110 @@ header
 				</div>
 			</div>
 		</div>
+		<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-default panelNewCustom">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-sm-9">
+									<h4 class="panel-title text-capital">
+										<img src="newCoreDashBoard/img/training.png" class="iconClass" style="background-color:none;"/>
+											Training Camp - <small class="text-muted">Over All</small>
+									</h4>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-12 headerDisPlayNone">
+									<span class="trainingCampExRRefresh pull-right">
+										<i class="glyphicon glyphicon-refresh"></i>
+									</span>
+								</div>  
+							</div>
+						</div>
+						<div class="container-fluid">
+							<div class="panel-body">
+								<div id="overAllAndTop5ParliamentDivId"></div>
+								<div id="top5ConstituencyWithPoorPerDivId"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-default panelNewCustom">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-sm-9">
+									<h4 class="panel-title text-capital">
+										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
+											Tours 
+									</h4>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-12 headerDisPlayNone">
+									<span class="tourExRRefresh pull-right">
+										<i class="glyphicon glyphicon-refresh"></i>
+									</span>
+								
+								</div>  
+							</div>
+						</div>
+						<div class="container-fluid">
+							<div class="panel-body" style="padding-left: 0px;padding-right: 0px;">
+							
+								<div id="overAllTourDetailsDivId"></div>
+								
+								<div class="row">
+									<div class="pull-right m_top10">
+									    <div class ="col-md-6 m_top10">
+											<span class="input-group pull-right dateRangePickerCls" style="width:200px;">
+											<input type="text" id="tourNewExDateRangePickerId" style="width:200px" class="form-control" />
+											<span class="input-group-addon">
+											<i class="glyphicon glyphicon-calendar"></i>
+											</span>
+											</span>
+										</div>
+										<div class="col-sm-4">
+											<label>No Of Months</label>
+											<select class="form-control" id="noofMonthsId">
+											</select>
+										</div>
+									</div>
+								</div>
+								<div id="toursSubmittedNoOfMonthsId"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-default panelNewCustom">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-sm-9">
+									<h4 class="panel-title text-capital">
+										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
+											Dalitha Tejam - <small class="text-muted">Over All</small>			
+									</h4>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-12 headerDisPlayNone">
+									<span class="dalithaExRRefresh pull-right">
+										<i class="glyphicon glyphicon-refresh"></i>
+									</span>
+								</div>  
+							</div>
+						</div>
+						<div class="container-fluid">
+							<div class="panel-body">
+								<div id="overAllAndTop5PoorParliamentDivId"></div>
+								<div id="top10ConstituencyInchAndWhatsImageDivId"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
 		
 		<div class="row">
 				<div class="col-sm-12">
@@ -305,10 +322,10 @@ header
 								<div class="col-sm-9">
 									<h4 class="panel-title text-capital">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
-											Alert			
+											Alert - <small class="text-muted">Over All</small>			
 									</h4>
 								</div>
-								<div class="col-md-3 col-sm-3 col-xs-12">
+								<div class="col-md-3 col-sm-3 col-xs-12 headerDisPlayNone">
 									<span class="alertExRRefresh pull-right">
 										<i class="glyphicon glyphicon-refresh"></i>
 									</span>
@@ -333,10 +350,10 @@ header
 								<div class="col-sm-9">
 									<h4 class="panel-title text-capital">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
-											Kaizala			
+											Kaizala - <small class="text-muted">Over All</small> 		
 									</h4>
 								</div>
-								<div class="col-md-3 col-sm-3 col-xs-12">
+								<div class="col-md-3 col-sm-3 col-xs-12 headerDisPlayNone">
 									<span class="kaizalaExRRefresh pull-right">
 										<i class="glyphicon glyphicon-refresh"></i>
 									</span>
@@ -353,9 +370,10 @@ header
 				</div>
 			</div>
 		</div>
-		
+	</div>	
 		
 </section>
+</div>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
@@ -372,6 +390,19 @@ header
 <script src="exceptionalReport/alertExceptionalReport.js" type="text/javascript"></script>         
 <script src="exceptionalReport/committeeExceptionalReport.js" type="text/javascript"></script>
 <script src="exceptionalReport/kaizalaExceptionalReport.js" type="text/javascript"></script> 
- 
+ <script type="text/javascript">
+ $(document).on("click",".printViewCls",function(){
+	printDiv();
+});
+function printDiv() {
+	 var printContents = document.getElementById('printableArea').innerHTML;
+	 var originalContents = document.getElementById("printcontent").innerHTML;
+	 document.title = "";
+     document.getElementById("printcontent").innerHTML = printContents;
+	 window.print();
+     document.getElementById("printcontent").innerHTML = originalContents;
+	 
+}
+ </script>
 </body>
 </html>

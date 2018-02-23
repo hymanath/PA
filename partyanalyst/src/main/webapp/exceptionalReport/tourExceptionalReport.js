@@ -57,7 +57,7 @@ onloadTourCalls();
 		
 		var fromDate =new Date(spiltStartDate); 
 		var toDate = new Date(spiltEndDate);
-		var months=0;
+		var months=1;
 			months = (toDate.getFullYear() - fromDate.getFullYear()) * 12;
 			months -= fromDate.getMonth();
 			months += toDate.getMonth();
@@ -65,7 +65,7 @@ onloadTourCalls();
 			months--;
 		}
 		 $("#noofMonthsId").html('');
-		for(var i=1;i<months;i++){
+		for(var i=0;i<months;i++){
 			$("#noofMonthsId").append("<option value='"+i+"'>"+i+"</option>"); 
 		}
 		 $("#noofMonthsId").chosen();
@@ -97,6 +97,8 @@ onloadTourCalls();
  
  function  buildDesignationWiseTourSubmittedOverviewDtls(result){
 	 var str='';
+	 str+='<div style="padding:8px;border:1px solid #d1ab66">';
+		str+='<h5 class="text_bold text-capital"><b>Last Month Tours Details</b></h5>';
 	 str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top10">';
 				str+='<div class="table-responsive m_top10">';
@@ -214,6 +216,8 @@ onloadTourCalls();
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
+		str+='</div>';
+		str+='</div>';
   $("#overAllTourDetailsDivId").html(str);
  }
  function getNotSubmittedCandidateDetailsByFilter(months)
@@ -244,7 +248,7 @@ onloadTourCalls();
 		
 			str+='<div class="row">';
 				str+='<div class="col-sm-12 m_top10">';
-					str+='<h5 class="text_bold text-capital" > >='+months+' Month Tours Not Submitted Candidates List</h5>';
+					str+='<h5 class="text_bold text-capital" > Greater Than '+months+' Month Tours Not Submitted Candidates List</h5>';
 					str+='<div class="table-responsive m_top10">';
 						str+='<table class="table details-overview">';
 							str+='<thead>';
