@@ -1369,6 +1369,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}
 			 
 			String type = jObj.getString("type");
+			
 			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtIds,catId,alertTypeId,editionId,constituencyId,alertStatusIds,locationLevel,isPublication,publicationIdStr,localElectionBodyId,type,parliamentId);   
 		}catch(Exception e) {    
 			LOG.error("Exception occured in getDistrictAndStateImpactLevelWiseAlertDtls() of CreateAlertAction",e);
@@ -3400,4 +3401,190 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}
 	
+	public String getIssueCategoryDetailsOfAlertType(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			keyValueVOList = alertService.getIssueCategoryDetailsOfAlertType(alertTypeId);	
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getAlertVerificationUsers in CreateAlertAction Class ",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getIssueCategoryDetailsOfAlert(){
+		try {
+			
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			Long editionTypeId = jObj.getLong("editionTypeId");
+			String searchType = jObj.getString("searchType");
+			JSONArray scopeIdsArr = jObj.getJSONArray("scopeIdsArr");
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < scopeIdsArr.length(); i++){
+				scopeIdList.add(Long.parseLong(scopeIdsArr.getString(i)));
+			}  
+			List<Long> alertStatusIds = new ArrayList<Long>(0);
+			JSONArray statusArray = jObj.getJSONArray("alertStatusArr"); 
+			for (int i = 0; i < statusArray.length(); i++){
+				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
+			}  
+			
+			resultList = alertService.getIssueCategoryDetailsOfAlert(activityMemberId,stateId,fromDate,toDate,alertTypeId,editionTypeId,scopeIdList,alertStatusIds,
+					searchType);
+			
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getIssueCategoryDetailsOfAlert in CreateAlertAction Class",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBriefIssueCategoryDetailsOfAlert(){
+		try {
+			
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			Long editionTypeId = jObj.getLong("editionTypeId");
+			Long issueCategoryId = jObj.getLong("issueCategoryId");
+			
+			JSONArray scopeIdsArr = jObj.getJSONArray("scopeIdsArr");
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < scopeIdsArr.length(); i++){
+				scopeIdList.add(Long.parseLong(scopeIdsArr.getString(i)));
+			}  
+			List<Long> alertStatusIds = new ArrayList<Long>(0);
+			JSONArray statusArray = jObj.getJSONArray("alertStatusArr"); 
+			for (int i = 0; i < statusArray.length(); i++){
+				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
+			}  
+			
+			alertCoreDashBoardVOs = alertService.getBriefIssueCategoryDetailsOfAlert(activityMemberId,stateId,fromDate,toDate,alertTypeId,editionTypeId,scopeIdList,alertStatusIds,
+					issueCategoryId);
+			
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getBriefIssueCategoryDetailsOfAlert in CreateAlertAction Class",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getStateWiseAlertIssueCategoryDetails(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			List<Long> scopeIdList = new ArrayList<Long>();
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			}  
+			Long alertId = jObj.getLong("alertIds");
+			Long editionId = jObj.getLong("editionIds");
+			List<Long> alertStatusIds = new ArrayList<Long>();
+			JSONArray statusArray = jObj.getJSONArray("alertStatusArr"); 
+			for (int i = 0; i < statusArray.length(); i++){
+				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
+			}  
+			Long districtId = jObj.getLong("districtId");
+			alertOverviewVO = alertService.getStateWiseAlertIssueCategoryDetails(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertId,editionId,alertStatusIds,districtId);   
+		}catch(Exception e) {  
+			LOG.error("Exception occured in getStateWiseAlertIssueCategoryDetails() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;  
+	}
+	public String getLocationAndIssueCategoryWiseAlerts(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			
+			List<Long> scopeIdList = new ArrayList<Long>(0);
+			List<Long> alertStatusIds = new ArrayList<Long>(0);
+			
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			String group = jObj.getString("group");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+			
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			}
+			Long alertId = jObj.getLong("alertIds");
+			Long editionId = jObj.getLong("editionIds");
+			String filterType = jObj.getString("filterType");
+			Long locationValue = jObj.getLong("locationValue");
+			
+			JSONArray statusArray = jObj.getJSONArray("alertStatusArr"); 
+			for (int i = 0; i < statusArray.length(); i++){
+				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
+			}  
+			String sortingType = jObj.getString("sortingType");
+			Long disctrictId = jObj.getLong("districtId");
+			resultList = alertService.getLocationAndIssueCategoryWiseAlerts(fromDate, toDate, stateId, scopeIdList, activityMemberId,group,alertId,editionId,filterType,locationValue,alertStatusIds,sortingType,disctrictId);    
+		}catch(Exception e) {  
+			LOG.error("Exception occured in getLocationAndIssueCategoryWiseAlerts() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;  
+	}
+	
+	public String getIssueCategoryWiseLocationAlertDetails(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			
+			List<Long> scopeIdList = new ArrayList<Long>(0);
+			List<Long> alertStatusIds = new ArrayList<Long>(0);
+			List<Long> issueCategoryIds = new ArrayList<Long>(0);
+			List<Long> districtIds = new ArrayList<Long>(0);
+			
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			
+			JSONArray distArr = jObj.getJSONArray("districtIdArr");
+			for (int i = 0; i < distArr.length(); i++){
+				districtIds.add(Long.parseLong(distArr.getString(i)));
+			} 
+			JSONArray jArray = jObj.getJSONArray("scopeIdsArr");
+		
+			for (int i = 0; i < jArray.length(); i++){
+				scopeIdList.add(Long.parseLong(jArray.getString(i)));
+			} 
+			Long alertTypeId = jObj.getLong("alertTypeId");
+			Long editionId = jObj.getLong("editionId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			String locationLevel = jObj.getString("locationLevel");
+			Long localElectionBodyId = jObj.getLong("locationElectionBodyId");
+			Long parliamentId = jObj.getLong("parliamentId");
+			
+			JSONArray statusArray = jObj.getJSONArray("alertStatusArr"); 
+			for (int i = 0; i < statusArray.length(); i++){
+				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
+			}
+			JSONArray issueCategoryArr = jObj.getJSONArray("issueCategoryArr"); 
+			for (int i = 0; i < issueCategoryArr.length(); i++){
+				issueCategoryIds.add(Long.parseLong(issueCategoryArr.getString(i)));
+			}
+			String type = jObj.getString("type");
+			
+			alertCoreDashBoardVOs = alertService.getIssueCategoryWiseLocationAlertDetails(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtIds,alertTypeId,editionId,constituencyId,alertStatusIds,locationLevel,localElectionBodyId,type,parliamentId,issueCategoryIds);   
+		}catch(Exception e) {    
+			LOG.error("Exception occured in getDistrictAndStateImpactLevelWiseAlertDtls() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;    
+	}
 }

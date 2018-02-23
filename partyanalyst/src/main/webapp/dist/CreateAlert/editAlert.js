@@ -5,6 +5,8 @@
 			var select = new Dropkick("#alertTypeId");
 			select.refresh();
 			
+			getIssueCategoryDetailsOfAlertType(result.alertTypeId,result.issueCategoryId);
+		
 			//alert alertImpactId 
 			$("#alertImpactId").val(result.alertImpactId);
 			var select = new Dropkick("#alertImpactId");

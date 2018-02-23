@@ -18780,6 +18780,7 @@
 				<param name="root">partyMeetingExceptionalReportVO</param>
 		</result>
 	</action>
+	
 	<action name="getOverallTrainingCampReport" class="coreDashboardAction" method="getOverallTrainingCampReport">
 		<result type="json" name="success">
 				<param name="root">trainingCampProgramVO</param>
@@ -18861,5 +18862,46 @@
 				<param name="root">exceptionalReportVO</param>
 		</result>
 	</action>
+	
+	
+	<action name="getIssueCategoryDetailsOfAlertTypeAction" class="createAlertAction" method="getIssueCategoryDetailsOfAlertType">
+		<result type="json" name="success">
+				<param name="root">keyValueVOList</param>
+		</result>
+	</action>
+	
+	<action name="getIssueCategoryDetailsOfAlertAction" class="createAlertAction" method="getIssueCategoryDetailsOfAlert">
+		<result type="json" name="success">
+				<param name="root">resultList</param>
+		</result>
+	</action>
+	
+	<action name="getBriefIssueCategoryDetailsOfAlertAction" class="createAlertAction" method="getBriefIssueCategoryDetailsOfAlert">
+		<result type="json" name="success">
+				<param name="root">alertCoreDashBoardVOs</param>
+		</result>
+	</action>
+	
+	<!-- IssueCategory Wise Details For CoreDashBoard -->
+	
+	<action name="getStateWiseAlertIssueCategoryDetailsAction" class="createAlertAction"  method="getStateWiseAlertIssueCategoryDetails">
+		<result type="json" name="success">    
+			<param name="root">alertOverviewVO</param>  
+		</result>  
+	</action>	
+	<action name="getLocationAndIssueCategoryWiseAlertsAction" class="createAlertAction"  method="getLocationAndIssueCategoryWiseAlerts">
+		<result type="json" name="success">    
+			<param name="root">resultList</param>
+		</result>
+	</action>	
+	<!-- Clickings -->
+	<action name="getIssueCategoryWiseLocationAlertDetailsAction" class="createAlertAction"  method="getIssueCategoryWiseLocationAlertDetails">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>
+		</result>
+	</action>
+	
+	<!-- IssueCategory Wise Details For CoreDashBoard End -->
+	
  </package>
 </struts>

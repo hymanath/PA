@@ -4283,4 +4283,11 @@
 	  <bean id="activityLocationParticipantDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationParticipantDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 
+	 <bean id="alertIssueCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertIssueCategoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="alertIssueCategoryRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertIssueCategoryRelationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
