@@ -208,4 +208,6 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getAssignedCandidateWisePendingAlerts(Date startDate,Date endDate,Long stateId,List<Long> alertTypeId);
 	public List<Object[]> getOverAllAlertDtls(Date pastDate,Date endDate,Long stateId,List<Long> alertTypeIds);
 	public Long getOverAllLastMonthComp(Date pastDate,Date endDate,Long stateId,List<Long> alertTypeIds,String range);
+	public List<Object[]> getDesignationOfCadre(List<Long> tdpCadreIds);
+	public List<Object[]> getPositionOfCadre(List<Long> tdpCadreIds);
 }
