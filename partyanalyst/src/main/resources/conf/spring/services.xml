@@ -3712,6 +3712,9 @@
         <property name="alertVerificationUserDAO" ref="alertVerificationUserDAO"></property>		
         <property name="alertCreationAPIService" ref="alertCreationAPIService"></property>
         <property name="alertUpdationAPIService" ref="alertUpdationAPIService"></property>
+        <property name="alertIssueCategoryDAO" ref="alertIssueCategoryDAO"></property>
+        <property name="alertIssueCategoryRelationDAO" ref="alertIssueCategoryRelationDAO"></property>
+        
 	</bean>            
 	<!-- Debate End -->
 	

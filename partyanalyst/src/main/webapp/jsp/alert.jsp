@@ -167,15 +167,21 @@
                 <div class="panel-body bg_EF">
                 	<div class="row">
                     	<div class="col-md-3 col-sm-6 col-xs-12">
-                        	<label>Select Alert Type</label><span class="text-danger">*</span>
+                        	<label>Alert Type</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="alertTypeId" name="alertVO.alertTypeId" onchange="updateStateDetails(this.value);">
-                            	<option value="0">Select Alert</option>
+                            	<option value="0">Select Alert Type</option>
                             </select>
                         </div>
 						<div class="col-md-3 col-sm-6 col-xs-12">
-                        	<label>Select Alert Impact</label><span class="text-danger">*</span>
+                        	<label>Alert Impact</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="alertImpactId" name="alertVO.alertImpactId">
                             	<option value="0">Select Alert Impact</option>
+                            </select>
+                        </div>
+						<div class="col-md-3 col-sm-6 col-xs-12">
+                        	<label>Issue Category</label><span class="text-danger">*</span>
+                            <select class="dropkickClass" id="issueCategoryId" name="alertVO.issueCategoryId">
+                            	<option value="0">Select Issue Category</option>
                             </select>
                         </div>
                     </div>
@@ -523,6 +529,7 @@
 
 <script type="text/javascript">
 	var globalAlertId ="${alertId}";
+	//$("#issueCategoryId").chosen();
 	if(globalAlertId > 0){
 		$("#hiddenAlertId").val(globalAlertId);        
 		$("#addThisalertId").html("EDIT ALERT");
@@ -756,7 +763,8 @@
 		}
 	}
 	google.setOnLoadCallback(onLoad);
-	$(".dropkickClass").dropkick()
+	$(".dropkickClass").dropkick();
+	
 function getCandidatesByName(){
 		var  CandidateName=$("#candidateNameId").val();
 		var jsObj =
@@ -830,7 +838,10 @@ function createAlert()
   //var categoryId=$("#alertCategory").val();
   var title=$("#alertTitleId").val().trim();
   var alertImpact =$("#alertImpactId").val();
-
+  var alertissueCategoryId =$("#issueCategoryId").val();
+  console.log(alertissueCategoryId);
+ 
+ 
   $("#errorDiv1").html('');
   $("#errorDiv1").css("color","red");
   $("#candidateId").val('');
@@ -844,10 +855,10 @@ function createAlert()
     $("#errorDiv1").html(" Please select Alert Impact ");
         return;
   }
- /* if(categoryId == 0){
-	  $("#errorDiv1").html(" Please select Alert Category ");
+  if(alertissueCategoryId == 0){
+	  $("#errorDiv1").html(" Please select Alert Issue Category ");
         return;
-  }*/
+  }
   if(alertSourceId==0)
   {
     $("#errorDiv1").html(" Please select Alert Source ");
@@ -1082,6 +1093,12 @@ function createAlert()
 		$("#alertImpactId").val(0);
 		var select = new Dropkick("#alertImpactId");
 		select.refresh();
+	
+		
+		$("#issueCategoryId").val(0);
+		var select = new Dropkick("#issueCategoryId");
+		select.refresh();
+		
 	}
 	function getAlertType(){
 		$("#alertTypeId").html('');
@@ -1105,7 +1122,33 @@ function createAlert()
 				  
 		});
 	}
-		
+	function getIssueCategoryDetailsOfAlertType(id,editIssueCategoryId){
+		$("#issueCategoryId").html('');
+		var jsObj ={
+			alertTypeId:id
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getIssueCategoryDetailsOfAlertTypeAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			$('#issueCategoryId').append('<option value="0"> Select Issue Category</option>');
+			if(result != null){
+				for(var i in result){
+					if(editIssueCategoryId !=null && editIssueCategoryId>0 && result[i].id == editIssueCategoryId){
+						$('#issueCategoryId').append('<option value='+editIssueCategoryId+' selected>'+result[i].name+'</option>');
+					}else{
+						$('#issueCategoryId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					}
+				}
+				$("#issueCategoryId").dropkick();
+				var select1 = new Dropkick("#issueCategoryId");
+				select1.refresh();
+				
+			}
+				  
+		});
+	}	
 	var loginUserId = "${sessionScope.USER.registrationID}";
 	function getAlertsource(){
 		$("#alertSourceId").html('');
@@ -1347,6 +1390,10 @@ function createAlert()
 			}
 		}
 		$("#"+uniqueId).remove();  
+	});
+	$(document).on("change","#alertTypeId",function(){
+			var id = $(this).val();
+			getIssueCategoryDetailsOfAlertType(id);
 	});
 	
 </script>

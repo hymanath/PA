@@ -359,7 +359,8 @@
 										<ul class="activeUlCls alertFilterCls list-inline pull-right">
 											<li class="" style="background:#ddd;">Detailed</li>
 											<li class="active optionsCls" onClick="getAlertDetails('1')" attr_id="1" style="margin-left: -7px;">Overview</li>
-											<li class="optionsCls" onClick="getAlertDetails('2')" attr_id="2" style="margin-left: -5px;">Status</li> 
+											<li class="optionsCls" onClick="getAlertDetails('2')" attr_id="2" style="margin-left: -5px;">Status</li>
+											<li class="optionsCls" onClick="getAlertDetails('5')" attr_id="5" style="margin-left: -5px;">Category</li> 
 											<li class="optionsCls" onClick="getAlertDetails('3')" attr_id="3" style="margin-left: -6px;">Publication</li>  
 											<li class="optionsCls" onClick="getAlertDetails('4')" attr_id="4">Comparison</li>  
 											<!--<li  id="alertSettingsId"><i class="fa fa-gears" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></li>-->

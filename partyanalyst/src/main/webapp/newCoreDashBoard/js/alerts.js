@@ -1,6 +1,9 @@
 	var globalEnrollementYearIdsForAlert = 0;
     /* Setting script code start */
 	 var impactLevelObj =  {"0":"All","1":"State","2":"District","3":"Constituency","8":"CORP-GMC","5":"Mandal/MUNICIPALITY","7":"Village/ward/PANCHAYAT","2":"State","3":"District","4":"Constituency","6":"Village/ward/HAMLET"};	//2 - State ,3-District,4-Constituency and 6-Village/Ward/Hamlet for location 
+	 
+	 var globalIssueCategoryArr=[1,2,3,4,5,6];
+	 
 	$(document).on("click",".alertSettingBlock",function(e){
 		$(this).closest(".alertsBlock").find(".basicAlertBlockDropDown").toggle();
 		e.stopPropagation();
@@ -411,7 +414,17 @@
 			 getGhmcImpactLevelAlertStatusWise("0");
 			 getConstituencyAlertStatusWise("Decending","0","0");
 			 getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
-		}else if(option =="3"){
+		}else if(option == "5"){
+			$(".locImptLevelDivCls").hide();
+			$(".impactLevelCls").attr("attr_level","Category");
+			 getStateImpactLevelAlertStatusWiseIssueCategory();
+			 getTotalAlertGroupByLocationThenStatusIssueCategory("Decending","0");
+			 getTotalAlertGroupByLocationThenStatusForParliamentIssueCategory("Decending","0","0");
+			 getGhmcImpactLevelAlertStatusWiseIssueCategory("0");
+			 getConstituencyAlertStatusWiseIssueCategory("Decending","0","0");
+			 getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
+		}
+		else if(option =="3"){
 			 $(".locImptLevelDivCls").hide();
 			$(".impactLevelCls").attr("attr_level","Publication");
 			getStateImpcatLevelAlertCntPublicationWise();
@@ -1176,6 +1189,245 @@
 				$(".districtImpactLevelBlockCls").hide();
 			}
 		});  
+	}
+	
+	function getTotalAlertGroupByLocationThenStatusIssueCategory(sortingType,districtId){
+		/*Hiding Block if impact Level is not selected*/
+		$(".districtImpactLevelBlockCls").show();
+		if(globalDistrictImpactLevelScopeArr == null || globalDistrictImpactLevelScopeArr.length == 0){
+			$(".districtImpactLevelBlockCls").hide();
+			return;
+		}
+		$("#districtImpactLevelHighChartDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		 }
+		 $("#districtOverviewHeadingId").html("District overview - impact alerts");
+  
+			var jsObj = { 
+			stateId : 			globalStateId,             
+			fromDate : 			customStartDateAlert,      
+			toDate : 			customEndDateAlert,  
+			scopeIdsArr : 		globalDistrictImpactLevelScopeArr,              
+			activityMemberId : 	globalActivityMemberId,       
+			group : 			"",
+			alertIds : 			alertId,
+			editionIds : 		editionId,
+			filterType : 	"District",
+			locationValue : districtId,
+			alertStatusArr : globalAlertStatusArr,
+			sortingType : sortingType,
+			districtId : 0
+			
+			
+		}                  
+		$.ajax({
+			type : 'POST',        
+			url : 'getLocationAndIssueCategoryWiseAlertsAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}    
+		}).done(function(result){
+			globalDistrictLevelRlst = result;
+			if(result != null && result.length > 0){
+			    buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWiseIssueCategory(result,"districtImpactLevelHighChartDivId",districtId,"District");	
+			}else{
+				$(".districtImpactLevelBlockCls").hide();
+			}
+		});  
+	}
+	
+	function buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWiseIssueCategory(result,divId,locationValue,locationType){
+		if(result != null && result.length > 10){
+			var highChartDivHight = result.length*40;
+			$("#"+divId).height(highChartDivHight);
+		}else{
+			$("#"+divId).height(400);		
+		}
+			
+		if(result != null && result.length > 0){
+			var locatinNameArr = [];
+			var str = '';
+			if(divId=="districtImpactLevelHighChartDivId"){
+				//  str+='<option value="-1">Select District</option>';	 
+			    str+='<option value="0">All</option>';	 
+			}else if(divId=="constituencyLevelHighChartDivId"){
+				//str+='<option value="-1">Select Constituency</option>'; 
+				str+='<option value="0">All</option>'; 
+			}else{
+				str+='<option value="0">All</option>'; 
+			}
+			for(var i in result){
+				locatinNameArr.push(result[i].name);
+				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+			}
+			if(locationValue == 0){ // Building district for searching first time only
+				if(divId=="districtImpactLevelHighChartDivId"){
+					$("#districtSelectBoxId").val(' ');
+					$("#districtSelectBoxId").html(str);
+				}else if(divId=="constituencyLevelHighChartDivId"){
+					$("#constituencySeletBoxId").val(' ');
+					$("#constituencySeletBoxId").html(str);  
+				}else{
+					$("#parliamentSelectBoxId").val(' ');
+					$("#parliamentSelectBoxId").html(str);  
+				}
+			}
+			var pendingAlertArr = [];
+			var notifiedAlertArr = [];
+			var actionInProgessAlertArr = [];
+			var completedAlertArr = [];
+			var unblTRslvAlertArr = [];
+			var actionNotRequiredAlertArr = [];
+			
+			 
+			for(var i in result){
+				for(var j in result[i].subList1){
+					if(result[i].subList1[j].statusTypeId==1){
+						pendingAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name}); 
+					}else if(result[i].subList1[j].statusTypeId==2){
+						notifiedAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}else if(result[i].subList1[j].statusTypeId==3){
+						actionInProgessAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}else if(result[i].subList1[j].statusTypeId==4){
+						completedAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}else if(result[i].subList1[j].statusTypeId==5){
+						unblTRslvAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}else if(result[i].subList1[j].statusTypeId==6){
+						actionNotRequiredAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}
+				}
+			}
+			var mainJosnObjArr = [];
+			if(pendingAlertArr != null && pendingAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Internal Bickerings',data:pendingAlertArr,color:"#A27FC2"});  
+			}
+			if(notifiedAlertArr != null && notifiedAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Corruption Charges',data:notifiedAlertArr,color:"#0175F3"});  
+			}
+			if(actionInProgessAlertArr != null && actionInProgessAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Misbehaviour',data:actionInProgessAlertArr,color:"#3EC3FF"});  
+			}
+			if(completedAlertArr != null && completedAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Anti Party Activities',data:completedAlertArr,color:"#049968"});  
+			}
+			if(unblTRslvAlertArr != null && unblTRslvAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Anti Government Activities',data:unblTRslvAlertArr,color:"#F21A98"});  
+			}
+			if(actionNotRequiredAlertArr != null && actionNotRequiredAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Others',data:actionNotRequiredAlertArr,color:"#FD6E07"});  
+			}
+			
+			var getWidth = $("#districtOvervwGraph").width();
+			$("#"+divId).css("width",getWidth);	
+			$("#"+divId).highcharts({
+				chart: {
+					type: 'bar'
+				},
+				title: {
+					text: ''
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locatinNameArr,
+					title: {
+						text: null
+					}
+				},
+				yAxis: {
+					min: 0,
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: '',
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify'
+					}, 
+					stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						},
+						formatter: function() {
+                        return  (this.total);
+                    },
+					}
+				},
+				tooltip: {
+					valueSuffix: ' ',
+					shared:true
+				},
+				plotOptions: {
+					bar: {
+					stacking: 'normal',
+						dataLabels: {
+							align: 'center',
+							x :5,
+							y:-3,
+							enabled: false,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,0);      
+								}
+							}
+						}
+					},
+					series: {
+							cursor: 'pointer',
+							point: {
+							events: {
+								click: function () {
+									var locationInfo = (this.extra).split("-");
+									var alertStatusId = locationInfo[0];
+									var locationId = locationInfo[1];
+									var totalAlertCnt = locationInfo[2];
+									var locationType = locationInfo[3];
+									var locationName = locationInfo[4];
+									 if(totalAlertCnt == 0){
+										return;  
+									 }
+									 
+									  getAlertIssueCategoryDetails(alertStatusId,locationId,totalAlertCnt,locationType,locationName);
+									
+								}
+							}
+						}
+					}
+				},
+				legend: {
+						reversed: false,
+						verticalAlign:'top'
+						},
+				credits: {
+					enabled: false
+				},
+				series: mainJosnObjArr
+			});
+		}else{
+			 $("#"+divId).html("NO DATA AVAILABLE.");
+		}
+		if(result != null && result.length > 10){ 
+			$("#constituencyOvervwGraph").mCustomScrollbar();//{setHeight:'600px'}
+			$("#constituencyOvervwGraph").css("height","655px");
+			//$("#constituencyOvervwGraph").mCustomScrollbar({setHeight:'655px'})
+		}else{
+			$("#constituencyOvervwGraph").css("height","auto");
+		}
 	}
 	
 	function buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWise(result,divId,locationValue,locationType){
@@ -2425,7 +2677,47 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 	  });	
 	}
 	
-	function buildStateImpactLevelHighChartStatusWiseRslt(result){
+	function getStateImpactLevelAlertStatusWiseIssueCategory(){
+		 $(".stateImpactLevelBlockCls").show();
+		$("#stateImpactLevelHighChartDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+		$("#stateOverviewHeadingId").html("State overview - impact alerts");
+		var jsObj={  
+			activityMemberId : 	globalActivityMemberId,      
+			stateId : 			globalStateId,           
+			fromDate:			customStartDateAlert,        
+			toDate :			customEndDateAlert,
+			scopeIdsArr:		globalImpactScopeArr,
+			alertIds : 			alertId,
+			editionIds : 		editionId,
+			alertStatusArr : globalAlertStatusArr,
+			districtId : 0
+		};
+		$.ajax({
+			type : 'GET',
+			url : 'getStateWiseAlertIssueCategoryDetailsAction.action',  
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}          
+		}).done(function(result){
+			globalStateLevelRslt = result;
+			$("#stateImpactLevelHighChartDivId").html(' ');
+			if(result !=null && result.statusList != null && result.statusList.length > 0){
+			   buildStateImpactLevelHighChartStatusWiseRslt(result,"Category");	
+			}else{
+			  $(".stateImpactLevelBlockCls").hide();	
+			}
+		    
+	  });	
+	}
+	
+	function buildStateImpactLevelHighChartStatusWiseRslt(result,tabType){
 			if(result !=null){
 				var statusList = result.statusList;
 			    var statusNameArr =[];
@@ -2548,7 +2840,12 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 										 if(totalAlertCnt == 0){
 											return;  
 										 }
-										locationAlertDetails(alertStatusId,locationId,totalAlertCnt,impactLevel,alertStatus);
+										 if(tabType == "Category"){
+											 getAlertIssueCategoryDetails(alertStatusId,locationId,totalAlertCnt,impactLevel,alertStatus);
+										 }else{
+											 locationAlertDetails(alertStatusId,locationId,totalAlertCnt,impactLevel,alertStatus);
+										 }
+										
 									}
 								}
 							}
@@ -3606,6 +3903,14 @@ function getTotalArticledetails(articleId){
 				 getGhmcImpactLevelAlertStatusWise("0");
 				 getConstituencyAlertStatusWise("Decending","0","0");
 				 getAssignGroupTypeAlertDtlsByImpactLevelWise(districtId);
+			}else if(locVal == "5"){
+				$(".impactLevelCls").attr("attr_level","Category");
+			 getStateImpactLevelAlertStatusWiseIssueCategory();
+			 getTotalAlertGroupByLocationThenStatusIssueCategory("Decending","0");
+			 getTotalAlertGroupByLocationThenStatusForParliamentIssueCategory("Decending","0","0");
+			 getGhmcImpactLevelAlertStatusWiseIssueCategory("0");
+			 getConstituencyAlertStatusWiseIssueCategory("Decending","0","0");
+			 getAssignGroupTypeAlertDtlsByImpactLevelWise(districtId);
 			}else if(locVal == "3"){
 				$(".impactLevelCls").attr("attr_level","Publication");
 				getStateImpcatLevelAlertCntPublicationWise();
@@ -3829,7 +4134,6 @@ function getTotalArticledetails(articleId){
 	} */
 	function locationAlertDetails(alertStatusId,locationIdStr,totalAlertCnt,loctionType,locationLevel){
 		//alert(111);
-		
 		var locationLevel = locationLevel;
 		var districtIdArr =[];
 		var constituencyId = 0;    
@@ -3954,9 +4258,7 @@ function getTotalArticledetails(articleId){
 			publicationId:0,
 			locationElectionBodyId:locationElectionBodyId,
 			parliamentId:parliamentId,
-			type : selectionType
-			
-		
+			type : selectionType				
 		}                  
 		$.ajax({
 			type : 'POST',                
@@ -4018,6 +4320,56 @@ function getTotalArticledetails(articleId){
 			}
 		});  
 	}
+	
+	function getConstituencyAlertStatusWiseIssueCategory(sortingType,constituencyId,districtId){
+		$(".constituencyImpactLevelBlockCls").show();	
+		if(globalConstituencyImpactScopeArr == null || globalConstituencyImpactScopeArr.length == 0){
+			$(".constituencyImpactLevelBlockCls").hide();
+			return;
+		}
+		$("#constituencyLevelHighChartDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+		$("#constituencyOverviewHeadingId").html("Constituency overview - impact alerts");
+		var jsObj = { 
+			stateId : 			globalStateId,             
+			fromDate : 			customStartDateAlert,      
+			toDate : 			customEndDateAlert,  
+			scopeIdsArr : 		globalConstituencyImpactScopeArr,              
+			activityMemberId : 	globalActivityMemberId,       
+			group : 			"",
+			alertIds : 			alertId,
+			editionIds : 		editionId,
+			filterType : 	"Constituency",
+			locationValue : constituencyId,
+			alertStatusArr : globalAlertStatusArr,
+			sortingType : sortingType,
+			districtId : districtId
+			
+		}                  
+		$.ajax({
+			type : 'POST',        
+			url : 'getLocationAndIssueCategoryWiseAlertsAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}    
+		}).done(function(result){
+			globalConstituencyLevelRlst = result;
+			$("#constituencyLevelHighChartDivId").html(' ');
+			if(result != null && result.length > 0){  
+				buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWiseIssueCategory(result,"constituencyLevelHighChartDivId",constituencyId,"Constituency"); 
+			}else{
+				$(".constituencyImpactLevelBlockCls").hide();
+			}
+		});  
+	}
+	
+	
 	function buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWise(result,locationType,divId){
 		var str='';
 	
@@ -4084,6 +4436,74 @@ function getTotalArticledetails(articleId){
 			});
 		}
 	}
+	
+	function buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWiseIssueCategory(result,locationType,divId){
+		var str='';
+	
+		str+='<div class="table-responsive">';
+		if(divId=="constituencyLevelTblDivId"){
+			str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="constituencyAlertDataTblId">'; 
+		}else if(divId=="districtImpactLevelTblDivId"){
+			str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="districtAlertDataTblId">';  
+		}else{
+			str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="parliamentAlertDataTblId">'; 
+		}
+		str+='<thead>';
+			str+='<th>'+locationType+'</th>';
+			str+='<th>Total</th>';
+			if(result != null && result.length > 0){
+				if(result[0].subList1 != null && result[0].subList1.length > 0){
+					for(var k in result[0].subList1){
+						str+='<th>'+result[0].subList1[k].statusType+'</th>';		 
+					}
+				}
+			}
+		str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+				str+='<td>'+result[i].name+'</td>';
+				if(result[i].totalAlertCnt > 0){
+					str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="locationAlertCls" attr_location_level="'+result[i].name+'" attr_location_type='+locationType+' attr_alert_count='+result[i].totalAlertCnt+' onClick="getAlertIssueCategoryDetails(0,\''+result[i].id+'\',\''+result[i].totalAlertCnt+'\',\''+locationType+'\',\''+result[i].name+'\');" attr_location_id = '+result[i].statusTypeId+' attr_alert_status_id="0">'+result[i].totalAlertCnt+'</td>'; 
+				}else{
+					str+='<td class="text-center">-</td>';      		
+				} 
+				if(result[i].subList1 != null && result[i].subList1.length > 0){
+					for(var j in result[i].subList1){
+						if(result[i].subList1[j].totalAlertCnt > 0){
+							str+='<td  style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" class="locationAlertCls" onClick="getAlertIssueCategoryDetails(\''+result[i].subList1[j].statusTypeId+'\',\''+result[i].id+'\',\''+result[i].subList1[j].totalAlertCnt+'\',\''+locationType+'\',\''+result[i].name+'\');" attr_location_type='+locationType+' attr_alert_count='+result[i].subList1[j].totalAlertCnt+' attr_location_level="'+result[i].name+'" attr_location_id = '+result[i].id+' attr_alert_status_id='+result[i].subList1[j].statusTypeId+'>'+result[i].subList1[j].totalAlertCnt+'</td>';      	
+						}else{
+							str+='<td class="text-center">-</td>';      	
+						} 
+					}	
+				}
+				str+='</tr>';
+			}
+			str+='</tbody>';
+			str+='</table>';
+			$("#"+divId).html(str);
+		str+='</div>';
+		if(divId=="constituencyLevelTblDivId"){
+			$("#constituencyAlertDataTblId").dataTable({
+				"aaSorting": [],
+				"iDisplayLength" : 15,
+				"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]			
+			});   	
+		}else if(divId == "districtImpactLevelTblDivId"){
+			$("#districtAlertDataTblId").dataTable({
+				"aaSorting": [],
+				"iDisplayLength" : 15,
+				"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]
+			});   	
+		}else{
+			$("#parliamentAlertDataTblId").dataTable({
+				"aaSorting": [],
+				"iDisplayLength" : 15,
+				"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]
+			});
+		}
+	}
+	
 	function getDistrictWisePublicationAlert(sortingType,districtId){
 		/*Hiding Block if impact Level is not selected*/
 		 $(".districtImpactLevelBlockCls").show();	
@@ -4571,6 +4991,7 @@ function getTotalArticledetails(articleId){
 		var isPublication = "true";
 		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,loctionType,isPublication,publicationId);
 	}	
+	
 	 $(document).on("click",".linkedArticlesClickId",function(){	 
 			var temp=$(this).attr('src');
 			$(this).attr('src',$(".mainImage").attr('src'));
@@ -4631,6 +5052,16 @@ function getTotalArticledetails(articleId){
 		   }else{
 			   getDistrictWisePublicationAlert(type,districtId);    
 		   }
+	  }else if(selectedLevel == "Category"){
+		  if(status =="Search"){
+			 getTotalAlertGroupByLocationThenStatusIssueCategory(type,districtId); 
+			 getGhmcImpactLevelAlertStatusWiseIssueCategory(districtId);
+			 getTotalAlertGroupByLocationThenStatusForParliamentIssueCategory(type,0,districtId);
+			 getConstituencyAlertStatusWiseIssueCategory(type,0,districtId);
+			 getAssignGroupTypeAlertDtlsByImpactLevelWise(districtId);
+		  }else{
+			getTotalAlertGroupByLocationThenStatusIssueCategory(type,districtId);  
+		  }		
 	  } 
  }
 
@@ -4654,7 +5085,9 @@ function getSortedParliamentInRequiredFormat(type){
 		getTotalAlertGroupByLocationThenStatusForParliament(type,parliamentId,districtId)
 	}else if(selectedLevel == "Publication"){
 		getParliamentWisePublicationAlert(type,parliamentId,districtId)  
-	} 
+	}else if(selectedLevel == "Category"){
+		getTotalAlertGroupByLocationThenStatusForParliamentIssueCategory(type,parliamentId,districtId) 
+	}  
 }
  
   function getSortedConstituencyInRequiredFormat(type){
@@ -4676,6 +5109,8 @@ function getSortedParliamentInRequiredFormat(type){
 		getConstituencyAlertStatusWise(type,constituencyId,districtId);
 	  }else if(selectedLevel == "Publication"){
 	    getConstituencyWisePublicationAlert(type,constituencyId,districtId);  
+	  }else if(selectedLevel == "Category"){
+		  getConstituencyAlertStatusWiseIssueCategory(type,constituencyId,districtId);
 	  } 
  }
  /*End */
@@ -4697,6 +5132,8 @@ var globalParliamentLevelRlst;
 		buildStateImpactLevelHighChartStatusWiseRslt(globalStateLevelRslt); 
 	  }else if(selectedLevel == "Publication"){
 	    buildStateOrGhmcImpactLevelHighChartRsltPublicationWise(globalStateLevelRslt,"stateImpactLevelHighChartDivId","StateImpactLevel");  
+	  }else if(selectedLevel == "Category"){
+		buildStateImpactLevelHighChartStatusWiseRslt(globalStateLevelRslt,"Category");   
 	  }
  }
   function stateLevelTblBuildingFunction(){
@@ -4708,6 +5145,8 @@ var globalParliamentLevelRlst;
 		buildStateImpactLevelTabularRsltStatusWise(globalStateLevelRslt,"stateImpactLevelTblDivId","StateImpactLevel");
 	  }else if(selectedLevel == "Publication"){
 		buildStateOrGhmcImpactLevelTabularRsltPublicationWise(globalStateLevelRslt,"stateImpactLevelTblDivId","StateImpactLevel");  
+	  }else if(selectedLevel == "Category"){
+		  buildStateImpactLevelTabularRsltStatusWise(globalStateLevelRslt,"stateImpactLevelTblDivId","StateImpactLevel","Category");
 	  }
  }
  
@@ -4721,6 +5160,8 @@ var globalParliamentLevelRlst;
 		buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWise(globalDistrictLevelRlst,"districtImpactLevelHighChartDivId",districtId,"District");
 	  }else if(selectedLevel == "Publication"){
 	   buildDistrictOrConstituencyImpactLevelHighChartRsltPublicationWise(globalDistrictLevelRlst,"districtImpactLevelHighChartDivId",districtId,"District");  
+	  }else if(selectedLevel == "Category"){
+		  buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWiseIssueCategory(globalDistrictLevelRlst,"districtImpactLevelHighChartDivId",districtId,"District");
 	  }
  }
   function districtLevelTblBuildingFunction(){
@@ -4732,6 +5173,8 @@ var globalParliamentLevelRlst;
 		buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWise(globalDistrictLevelRlst,"District","districtImpactLevelTblDivId");
 	  }else if(selectedLevel == "Publication"){
 		buildDistrictOrConstituencyImpactLevelTabularRsltPublicationWise(globalDistrictLevelRlst,"districtImpactLevelTblDivId","District");  
+	  }else if(selectedLevel == "Category"){
+		  buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWiseIssueCategory(globalDistrictLevelRlst,"District","districtImpactLevelTblDivId");
 	  }
  }
  function gmcLevelHighchartBuildingFunction(){
@@ -4742,6 +5185,8 @@ var globalParliamentLevelRlst;
 		buildCorpGmcImpactLevelHighChartRsltStatusWise1(globalCorpGmcLevelRlst);
 	  }else if(selectedLevel == "Publication"){
 	    buildStateOrGhmcImpactLevelHighChartRsltPublicationWise(globalCorpGmcLevelRlst,"gmcImpactLevelHighChartDivId","GHMCImpactLevel");	  
+	  }else if(selectedLevel == "Category"){
+		  buildCorpGmcImpactLevelHighChartRsltStatusWise1(globalCorpGmcLevelRlst,"Category");
 	  }
  }
   function gmcLevelTblBuildingFunction(){
@@ -4753,6 +5198,8 @@ var globalParliamentLevelRlst;
 		buildStateOrGhmcImpactLevelTabularRsltStatusWise(globalCorpGmcLevelRlst,"gmcImpactLevelTblDivId","GHMCImpactLevel"); 
 	  }else if(selectedLevel == "Publication"){
 		buildStateOrGhmcImpactLevelTabularRsltPublicationWise(globalCorpGmcLevelRlst,"gmcImpactLevelTblDivId","GHMCImpactLevel");  
+	  }else if(selectedLevel == "Category"){
+		  buildStateOrGhmcImpactLevelTabularRsltStatusWise(globalCorpGmcLevelRlst,"gmcImpactLevelTblDivId","GHMCImpactLevel","Category"); 
 	  }
  }
  function constituencyLevelHighchartBuildingFunction(){
@@ -4765,6 +5212,8 @@ var globalParliamentLevelRlst;
 		buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWise(globalConstituencyLevelRlst,"constituencyLevelHighChartDivId",constituencyId,"Constituency"); 
 	  }else if(selectedLevel == "Publication"){
 		buildDistrictOrConstituencyImpactLevelHighChartRsltPublicationWise(globalConstituencyLevelRlst,"constituencyLevelHighChartDivId",constituencyId,"Constituency");  
+	  }else if(selectedLevel == "Category"){
+		  buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWiseIssueCategory(globalConstituencyLevelRlst,"constituencyLevelHighChartDivId",constituencyId,"Constituency"); 
 	  }
  }
   function constituencyTblBuildingFunction(){
@@ -4776,7 +5225,10 @@ var globalParliamentLevelRlst;
 		 buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWise(globalConstituencyLevelRlst,"Constituency","constituencyLevelTblDivId"); 
 	  }else if(selectedLevel == "Publication"){
 		buildDistrictOrConstituencyImpactLevelTabularRsltPublicationWise(globalConstituencyLevelRlst,"constituencyLevelTblDivId","Constituency");  
-	  }
+	  }else if(selectedLevel == "Category"){
+		 buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWiseIssueCategory(globalConstituencyLevelRlst,"Constituency","constituencyLevelTblDivId");
+		
+	}
  }
 function getStateImpactandItsSubLevelAlert(selectionType){
 	    $(".stateImpactLevelBlockCls").show();
@@ -5831,7 +6283,58 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 			
       });	
 	}
-	function buildCorpGmcImpactLevelHighChartRsltStatusWise1(result){
+	
+	function getGhmcImpactLevelAlertStatusWiseIssueCategory(districtId){
+	   /*Hiding Block if impact Level is not selected*/
+	      $(".gmcImpactLevelBlockCls").show();	
+		if(globalCorpGhmcImpactScopeSArr == null || globalCorpGhmcImpactScopeSArr.length == 0){
+			$(".gmcImpactLevelBlockCls").hide();
+			 return;
+		}
+		$("#gmcImpactLevelHighChartDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertId == undefined){
+			alertId = 0;
+		}
+		var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionId == undefined){
+			editionId = 0;
+		}
+		
+		$("#corpOverviewHeadingId").html("CORP-GMC overview - impact alerts");
+		var jsObj={  
+			activityMemberId : 	globalActivityMemberId,      
+			stateId : 			globalStateId,           
+			fromDate:			customStartDateAlert,        
+			toDate :			customEndDateAlert,
+			scopeIdsArr:		globalCorpGhmcImpactScopeSArr,
+			alertIds : 			alertId,
+			editionIds : 		editionId,
+			alertStatusArr : globalAlertStatusArr,
+			districtId :districtId
+		};
+		$.ajax({
+			type : 'POST',
+			url : 'getStateWiseAlertIssueCategoryDetailsAction.action',  
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)}          
+		}).done(function(result){
+			globalCorpGmcLevelRlst = result;
+			// if(result.alertCount == 0){
+			  // $(".gmcImpactLevelBlockCls").hide();	
+			// }
+			if(result != null && result.categoryList != null && result.categoryList.length > 0){
+			  //buildCorpGmcImpactLevelHighChartRsltStatusWise(result);	
+			  buildCorpGmcImpactLevelHighChartRsltStatusWise1(result,"Category");
+			}else{
+			  $(".gmcImpactLevelBlockCls").hide();		
+			}
+			
+      });	
+	}
+	
+	
+	function buildCorpGmcImpactLevelHighChartRsltStatusWise1(result,tabType){
 		if(result != null && result.categoryList.length > 10){
 			var highChartDivHight = result.categoryList.length*40;
 			$("#gmcImpactLevelHighChartDivId").height(highChartDivHight);
@@ -6027,7 +6530,12 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 										return;  
 									 }
 									 
-									locationAlertDetails(alertStatusId,locationId,totalAlertCnt,locationType,locationName);
+									if(tabType == "Category"){
+										getAlertIssueCategoryDetails(alertStatusId,locationId,totalAlertCnt,locationType,locationName);
+									}else{
+										locationAlertDetails(alertStatusId,locationId,totalAlertCnt,locationType,locationName);
+									} 
+									
 								}
 							}
 						}
@@ -6199,7 +6707,7 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 				$("#gmcImpactLevelHighChartDivId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
 			}
 	}
-	function buildStateImpactLevelTabularRsltStatusWise(result,divId,locationType){
+	function buildStateImpactLevelTabularRsltStatusWise(result,divId,locationType,tabType){
 	  var str= '';
 	   if(result.statusList != null && result.statusList.length > 0){
 		   str+='<div class="table-responsive">';
@@ -6212,19 +6720,38 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 				str+='</thead>';
 				str+='<tbody>';
 				 str+='<tr>';
-				   if(result.alertCount >0){
-					 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="locationAlertDetails(0,0,\''+result.alertCount+'\',\''+locationType+'\',\''+result.name+'\');">'+result.alertCount+'</td>';  
-				   }else{
-					str+='<td style="text-align:center;">-</td>';   
-				   }
+				 
+				 if(tabType == "Category"){
+					 if(result.alertCount >0){
+					 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getAlertIssueCategoryDetails(0,0,\''+result.alertCount+'\',\''+locationType+'\',\''+result.name+'\');">'+result.alertCount+'</td>';  
+					}else{
+						str+='<td style="text-align:center;">-</td>';   
+					}
 				  
-				 for(var i in result.statusList){
-					 if(result.statusList[i].alertCount > 0){
-						 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="locationAlertDetails(\''+result.statusList[i].id+'\',0,\''+result.statusList[i].alertCount+'\',\''+locationType+'\',\''+result.statusList[i].name+'\');">'+result.statusList[i].alertCount+'</td>';
-					 }else{
-						str+='<td style="text-align:center">-</td>'; 
-					 }
-				}
+					 for(var i in result.statusList){
+						 if(result.statusList[i].alertCount > 0){
+							 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getAlertIssueCategoryDetails(\''+result.statusList[i].id+'\',0,\''+result.statusList[i].alertCount+'\',\''+locationType+'\',\''+result.statusList[i].name+'\');">'+result.statusList[i].alertCount+'</td>';
+						 }else{
+							str+='<td style="text-align:center">-</td>'; 
+						 }
+					}
+				 }else{					 
+					if(result.alertCount >0){
+					 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="locationAlertDetails(0,0,\''+result.alertCount+'\',\''+locationType+'\',\''+result.name+'\');">'+result.alertCount+'</td>';  
+					}else{
+					str+='<td style="text-align:center;">-</td>';   
+					}
+				  
+					 for(var i in result.statusList){
+						 if(result.statusList[i].alertCount > 0){
+							 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="locationAlertDetails(\''+result.statusList[i].id+'\',0,\''+result.statusList[i].alertCount+'\',\''+locationType+'\',\''+result.statusList[i].name+'\');">'+result.statusList[i].alertCount+'</td>';
+						 }else{
+							str+='<td style="text-align:center">-</td>'; 
+						 }
+					}					
+				 }
+				 
+				   
 				str+='</tr>';
 			str+='</table>';
 		str+='</div>'
@@ -6233,7 +6760,7 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 	   }
 	   $("#"+divId).html(str);
 	}
-	function buildStateOrGhmcImpactLevelTabularRsltStatusWise(result,divId,locationType){
+	function buildStateOrGhmcImpactLevelTabularRsltStatusWise(result,divId,locationType,tabType){
 		var str= '';
 	   if(result.categoryList != null && result.categoryList.length > 0){
 		   str+='<div class="table-responsive">';
@@ -6247,7 +6774,26 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 				str+='</thead>';
 				str+='<tbody>';
 				 
-				 for(var i in result.categoryList){
+				 if(tabType == "Category"){
+					 for(var i in result.categoryList){
+					 str+='<tr>';
+					str+='<td>'+result.categoryList[i].name+'</td>';
+					if(result.categoryList[i].alertCount >0){
+					 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getAlertIssueCategoryDetails(0,\''+result.categoryList[i].id+'\',\''+result.categoryList[i].alertCount+'\',\''+locationType+'\',\''+result.categoryList[i].name+'\');">'+result.categoryList[i].alertCount+'</td>';  
+				   }else{
+					str+='<td style="text-align:center;">-</td>';   
+				   }
+				   for(var j in result.categoryList[i].statusList){
+							if(result.categoryList[i].statusList[j].alertCount > 0){
+							 str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getAlertIssueCategoryDetails(\''+result.categoryList[i].statusList[j].id+'\',\''+result.categoryList[i].id+'\',\''+result.categoryList[i].statusList[j].alertCount+'\',\''+locationType+'\',\''+result.categoryList[i].statusList[j].name+'\');">'+result.categoryList[i].statusList[j].alertCount+'</td>';
+							}else{
+							str+='<td style="text-align:center">-</td>'; 
+							} 
+					 }
+					 str+='</tr>';
+					}
+				 }else{
+					 for(var i in result.categoryList){
 					 str+='<tr>';
 					str+='<td>'+result.categoryList[i].name+'</td>';
 					if(result.categoryList[i].alertCount >0){
@@ -6263,7 +6809,11 @@ function getStateImpactandItsSubLevelAlert(selectionType){
 							} 
 					 }
 					 str+='</tr>';
-				}
+					}
+					 
+				 }
+				 
+				 
 				   
 				  
 				/*  for(var i in result.categoryList){
@@ -7521,6 +8071,8 @@ function parliamentLevelHighchartBuildingFunction(){
 		buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWise(globalParliamentLevelRlst,"parliamentImpactLevelHighChartDivId",parliamentId,"Parliament"); 
 	}else if(selectedLevel == "Publication"){
 		buildDistrictOrConstituencyImpactLevelHighChartRsltPublicationWise(globalParliamentLevelRlst,"parliamentImpactLevelHighChartDivId",parliamentId,"Parliament");
+	}else if(selectedLevel == "Category"){
+		buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWiseIssueCategory(globalParliamentLevelRlst,"parliamentImpactLevelHighChartDivId",parliamentId,"Parliament");
 	}
 }
 function parliamentLevelTblBuildingFunction(){
@@ -7532,6 +8084,9 @@ function parliamentLevelTblBuildingFunction(){
 		buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWise(globalParliamentLevelRlst,"Parliament","parliamentImpactLevelTblDivId"); 
 	}else if(selectedLevel == "Publication"){  
 		buildDistrictOrConstituencyImpactLevelTabularRsltPublicationWise(globalParliamentLevelRlst,"parliamentImpactLevelTblDivId","Parliament");  
+	}else if(selectedLevel == "Category"){
+		buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWiseIssueCategory(globalParliamentLevelRlst,"Parliament","parliamentImpactLevelTblDivId"); 
+		
 	}
 }
 function getTotalAlertGroupByLocationThenStatusForParliament(sortingType,parliamentId,districtId){
@@ -7575,6 +8130,53 @@ function getTotalAlertGroupByLocationThenStatusForParliament(sortingType,parliam
 		//$("#parliamentImpactLevelHighChartDivId").html(' ');
 		if(result != null && result.length > 0){  
 			buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWise(result,"parliamentImpactLevelHighChartDivId",parliamentId,"Parliament"); 
+		}else{
+			$(".parliamentImpactLevelBlockCls").hide();
+		}
+	});  
+}
+
+function getTotalAlertGroupByLocationThenStatusForParliamentIssueCategory(sortingType,parliamentId,districtId){
+	$(".parliamentImpactLevelBlockCls").show();	
+	if(globalPaliamentImpactLevelScopeArr == null || globalPaliamentImpactLevelScopeArr.length == 0){
+		$(".parliamentImpactLevelBlockCls").hide();
+		return;
+	}
+	$("#parliamentImpactLevelHighChartDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+	if(alertId == undefined){
+		alertId = 0;
+	}
+	var editionId = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+	if(editionId == undefined){
+		editionId = 0;
+	}
+	$("#parliamentOverviewHeadingId").html("Parliament overview - impact alerts");         
+	var jsObj = { 
+		stateId : 			globalStateId,             
+		fromDate : 			customStartDateAlert,      
+		toDate : 			customEndDateAlert,  
+		scopeIdsArr : 		globalPaliamentImpactLevelScopeArr,              
+		activityMemberId : 	globalActivityMemberId,       
+		group : 			"",
+		alertIds : 			alertId,
+		editionIds : 		editionId,
+		filterType : 	"Parliament",
+		locationValue : parliamentId,
+		alertStatusArr : globalAlertStatusArr,
+		sortingType : sortingType,
+		districtId : districtId
+	}                  
+	$.ajax({
+		type : 'POST',        
+		url : 'getLocationAndIssueCategoryWiseAlertsAction.action',
+		dataType : 'json',      
+		data : {task:JSON.stringify(jsObj)}    
+	}).done(function(result){
+		globalParliamentLevelRlst = result;
+		//$("#parliamentImpactLevelHighChartDivId").html(' ');
+		if(result != null && result.length > 0){  
+			buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWiseIssueCategory(result,"parliamentImpactLevelHighChartDivId",parliamentId,"Parliament"); 
 		}else{
 			$(".parliamentImpactLevelBlockCls").hide();
 		}
@@ -7626,5 +8228,98 @@ function getParliamentWisePublicationAlert(sortingType,parliamentId,districtId){
 		}else{  
 		   $(".parliamentImpactLevelBlockCls").hide();   
 		}
-	});  
+	}); 	
+}
+
+//balu Clicking Scenario
+	function getAlertIssueCategoryDetails(issueCategoryId,locationIdStr,totalAlertCnt,locationType,locationLevel){
+		var locationLevel = locationLevel;
+		var districtIdArr =[];
+		var constituencyId = 0;    
+		 if(locationType=="Constituency"){
+			constituencyId = locationIdStr;  
+		}else if(locationType=="District"){
+		   districtIdArr = locationIdStr.split(",");	
+		}else if(locationType=="Parliament"){               
+			constituencyId = locationIdStr;
+		}else if(locationType=="GHMCImpactLevel"){
+			constituencyId = locationIdStr;
+		} 
+		getIssueCategoryWiseLocationAlertBriefDetails(districtIdArr,totalAlertCnt,constituencyId,issueCategoryId,locationLevel,locationType);
+	}
+	function getIssueCategoryWiseLocationAlertBriefDetails(districtIdArr,totalAlertCnt,constituencyId,issueCategoryId,locationLevel,locationType){
+		var locationElectionBodyId = 0;
+		$("#tourDocumentBodyId").html("");           
+		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
+		$("#alertCntTitId").html("TOTAL ALERTS - "+totalAlertCnt);        
+		$("#tourDocumentId").modal("show");
+		var scopeIdsArr = [];
+		var parliamentId = 0;		
+		 if(locationType != null && locationType=="Constituency"){
+			 scopeIdsArr = globalConstituencyImpactScopeArr;
+		 }else if(locationType=="District"){
+			  scopeIdsArr = globalDistrictImpactLevelScopeArr;
+		 }else if(locationType=="Parliament"){
+			  scopeIdsArr = globalPaliamentImpactLevelScopeArr;
+			  parliamentId = constituencyId;
+		 }else if(locationType=="StateImpactLevel")	{
+			 scopeIdsArr = globalImpactScopeArr;
+		 }else if(locationType=="GHMCImpactLevel"){
+			 var districtId = $("#districtSelectBoxId").val();
+			 if(districtId > 0){
+				districtIdArr.push(districtId); 
+			 }
+			  scopeIdsArr = globalCorpGhmcImpactScopeSArr; 
+			  locationElectionBodyId=constituencyId;
+			  constituencyId=0;
+		 }  
+		var alertTypeId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		if(alertTypeId == undefined){
+			alertTypeId = 0;
+		}
+		var editionIds = $("#alertEditionTypeHiddenId").attr("attr_alert_edition_id");
+		if(editionIds == undefined){
+			editionIds = 0;
+		}
+
+		alertStatusArr = globalAlertStatusArr;
+
+		var issueCategoryArr =[];
+		   if(issueCategoryId == 0){  //1,2,3,4,5,6
+			   issueCategoryArr = globalIssueCategoryArr;
+		   }else{
+			 issueCategoryArr.push(issueCategoryId);   
+		   }
+		   
+		
+		var jsObj = { 
+			stateId : globalStateId,             
+			fromDate : customStartDateAlert,        
+			toDate : customEndDateAlert,                  
+			scopeIdsArr : scopeIdsArr,              
+			activityMemberId : globalActivityMemberId,
+			districtIdArr : districtIdArr,
+			catId : 0,
+			alertTypeId : alertTypeId,
+			editionId : editionIds,
+			constituencyId:constituencyId,
+			alertStatusArr : alertStatusArr,
+			locationLevel : locationLevel,
+			locationElectionBodyId:locationElectionBodyId,
+			parliamentId:parliamentId,
+			issueCategoryArr:issueCategoryArr,
+			type : "impactScopeWise"
+		}                  
+		$.ajax({
+			type : 'POST',                
+			url : 'getIssueCategoryWiseLocationAlertDetailsAction.action',
+			dataType : 'json',      
+			data : {task:JSON.stringify(jsObj)}     
+		}).done(function(result){    
+            if(result != null && result.length > 0){
+				buildAlertDtls(result);    
+			}else{
+				$("#tourDocumentBodyId").html("NO DATA AVAILABLE.");	
+			}
+		}); 
 }    
