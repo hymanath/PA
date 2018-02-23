@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.exceptionalReport.service.impl;
 
-import io.jsonwebtoken.lang.Collections;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,18 +14,15 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import com.google.gdata.data.introspection.Collection;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalCandidateLocationNewDAO;
 import com.itgrids.partyanalyst.dao.ISelfAppraisalToursMonthDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.InputVO;
-import com.itgrids.partyanalyst.dto.PartyMeetingExceptionalReportVO;
 import com.itgrids.partyanalyst.dto.ToursOverviewDtlsvO;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITourExceptionalReportService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.Util;
-import com.sun.research.ws.wadl.Link;
 
 public class TourExceptionalReportService implements ITourExceptionalReportService {
 
@@ -103,7 +98,7 @@ public class TourExceptionalReportService implements ITourExceptionalReportServi
     		 //ovarlAll percentage
     		 resultVO.setSubmittedPer(Util.calculatePercantage(resultVO.getSubmittedCandiateCount(), resultVO.getTotalCandiateCount()));
     		 resultVO.setNotSubmittedPer(Util.calculatePercantage(resultVO.getNotSubmittedCandidateCount(), resultVO.getTotalCandiateCount()));
-    		  
+    		 resultVO.setUniqueNotSubmittedCount(resultVO.getTotalUniqueCandidateCount()-resultVO.getUniqueCandidateSubmittedCount());
     		
     	} catch (Exception e) {
     		LOG.error("Exception occured at getDesignationWiseTourSubmittedOverviewDtls() in TourExceptionalReportService class",e);
