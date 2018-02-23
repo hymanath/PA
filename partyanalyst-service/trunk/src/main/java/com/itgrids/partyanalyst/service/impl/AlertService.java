@@ -63,6 +63,8 @@ import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertFeedbackStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertGovtOfficerSmsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
+import com.itgrids.partyanalyst.dao.IAlertIssueCategoryDAO;
+import com.itgrids.partyanalyst.dao.IAlertIssueCategoryRelationDAO;
 import com.itgrids.partyanalyst.dao.IAlertIssueSubTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
@@ -168,6 +170,7 @@ import com.itgrids.partyanalyst.model.AlertDepartmentCommentNew;
 import com.itgrids.partyanalyst.model.AlertDocument;
 import com.itgrids.partyanalyst.model.AlertFeedbackStatus;
 import com.itgrids.partyanalyst.model.AlertGovtOfficerSmsDetails;
+import com.itgrids.partyanalyst.model.AlertIssueCategoryRelation;
 import com.itgrids.partyanalyst.model.AlertIssueType;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
@@ -301,8 +304,19 @@ private IAlertVerificationUserDAO alertVerificationUserDAO;
 private SmsCountrySmsService smsCountrySmsService;
 private IAlertCreationAPIService alertCreationAPIService;
 private IAlertUpdationAPIService alertUpdationAPIService;
+private IAlertIssueCategoryDAO alertIssueCategoryDAO;
+private IAlertIssueCategoryRelationDAO alertIssueCategoryRelationDAO;
 
 
+public void setAlertIssueCategoryRelationDAO(
+		IAlertIssueCategoryRelationDAO alertIssueCategoryRelationDAO) {
+	this.alertIssueCategoryRelationDAO = alertIssueCategoryRelationDAO;
+}
+
+public void setAlertIssueCategoryDAO(
+		IAlertIssueCategoryDAO alertIssueCategoryDAO) {
+	this.alertIssueCategoryDAO = alertIssueCategoryDAO;
+}
 
 public IAlertUpdationAPIService getAlertUpdationAPIService() {
 	return alertUpdationAPIService;
@@ -1140,7 +1154,8 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 				 alertTrackingVO.setAlertId(alert.getAlertId());
 				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
 				 
-				 saveAlertTrackingDetails(alertTrackingVO)	;	
+				 saveAlertTrackingDetails(alertTrackingVO);	
+				 saveIssueCategoryDetails(alert.getAlertId(),inputVO.getIssueCategoryId());
 				 
 				 rs = rs +" "+alert.getAlertId();
 				 
@@ -1171,6 +1186,29 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 	
 	return newResultStatus;
  }
+ //Balu 
+public String saveIssueCategoryDetails(Long alertId,Long categoryId){
+	String status=null;
+	try {
+		
+		if(categoryId !=null && categoryId.longValue()>0){
+			//for (Long category : categoryIds) {
+				AlertIssueCategoryRelation alertIssueCategroyRelation = new AlertIssueCategoryRelation();
+				alertIssueCategroyRelation.setAlertId(alertId);
+				alertIssueCategroyRelation.setAlertIssueCategoryId(categoryId);
+				alertIssueCategroyRelation.setIsDeleted("N");
+				
+				alertIssueCategoryRelationDAO.save(alertIssueCategroyRelation);
+			//}
+			status="success";
+		}
+		
+	} catch (Exception e) {
+		status="failure";
+		LOG.error("Exception Occured in saveIssueCategoryDetails() in AlertService Class ", e);
+	}
+	return status;
+}
  
 public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap){
 	
@@ -3254,6 +3292,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		
 	}
 	
+	// Save AlertIssueCategory Details
+	
 	Alert globalAlert=null;
 	public void updateAlertForNewsInUpdateStatus(final ActionableVO inputVO,final Alert oldAlert){
 		try {
@@ -3362,6 +3402,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 if(alert !=null){
 							 globalAlert = alert;
 						 }
+						 
+						 // Save Alert Issue Category 
+						 saveIssueCategoryDetails(alert.getAlertId(),inputVO.getActionableCategoryId());
 							
 						 
 						 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
@@ -3480,9 +3523,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 } catch (Exception e) {
 							 LOG.error("Exception Occured in sendApiDetailsOfAlertToZoho() in AlertService Class ", e);
 						 }		
-				 }
-				
-				
+				 }							
 			}
 		} catch (Exception e) {
 			LOG.error("error in updateAlertForNewsInUpdateStatus() method",e);
@@ -8024,6 +8065,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			List<Object[]> assignedCandidateList = alertAssignedDAO.getAssignedCandidateList(alertId);
 			List<Object[]> involvedCandidateList = alertCandidateDAO.getInvolveCandidateList(alertId);
 			List<Object[]> documentList = alertDocumentDAO.getDocumentsForAlert(alertId);
+			
+			
 			//this list c ontain only one element
 			if(alertDtlsList != null && alertDtlsList.size() > 0){
 				for(Object[] param : alertDtlsList){
@@ -8084,12 +8127,28 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			if(docList != null && docList.size() > 0){
 				alertVO.setDocList(docList);
 			}
+			
+			setAlertIssueCategory(alertId,alertVO);
+			
 			return alertVO;
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Error occured getAlertDetailsForEdit() method of AlertService{}");
 		}  
 		return null;
+	}
+	public void setAlertIssueCategory(Long alertId,AlertVO alertVO){
+		List<Long> issueCategoryList = null;
+		try {
+			 issueCategoryList = alertIssueCategoryRelationDAO.getAlertIssueCategoryList(alertId,alertVO.getAlertTypeId());
+			 
+			 if(issueCategoryList !=null && issueCategoryList.size()>0)
+				 alertVO.setIssueCategoryId(issueCategoryList.get(0));
+				 
+				 
+		} catch (Exception e) {
+			LOG.error("Error occured setAlertIssueCategory() method of AlertService{}");
+		}
 	}
 	
 	public String editAlert(final AlertVO inputVO,final Long userId, final Map<File,String> mapFiles)
@@ -8121,6 +8180,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 }  
 				 alert.setTitle(inputVO.getTitle());
 				 alert = alertDAO.save(alert);
+				 
+				 deleteIssueCategoryDetailsOfAlert(alert.getAlertId());
+				 //save Issue categorys
+				 saveIssueCategoryDetails(alert.getAlertId(),inputVO.getIssueCategoryId());
 				 
 				 UserAddress userAddress = alert.getUserAddress();
 				 
@@ -8408,6 +8471,22 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 
 			});
 	return resultStatus;
+	}
+	public String deleteIssueCategoryDetailsOfAlert(Long alertId){
+		String status=null;
+		try {
+			
+			List<Long> alertCategoryPrimeIds = alertIssueCategoryRelationDAO.getAlertIssueCategoryIdsList(alertId);
+			
+			int record = alertIssueCategoryRelationDAO.deleteIssueCategoryDetails(alertCategoryPrimeIds);
+			if(record>=1){
+				status ="success";
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured deleteIssueCategoryDetails() method of AlertService{}",e);
+		}
+		return status;
 	}
 	public String deleteAlert(Long alertId){
 		try{
@@ -9042,7 +9121,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  			int dataPosition=0;
  			if(detailsType != null && detailsType.trim().equalsIgnoreCase("overview")){
  				dataPosition = 3;
- 			}else if(detailsType != null && detailsType.trim().equalsIgnoreCase("status")){
+ 			}else if(detailsType != null && (detailsType.trim().equalsIgnoreCase("status") || detailsType.trim().equalsIgnoreCase("issueCategroy"))){
  				dataPosition = 4;
  				if(rtrnObjLst != null && rtrnObjLst.size() > 0){
 					for(Object[] param : rtrnObjLst){
@@ -9128,7 +9207,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  	 					}
  	 				}
  	 			}
- 			}else if(detailsType != null && detailsType.trim().equalsIgnoreCase("status")){
+ 			}else if(detailsType != null && (detailsType.trim().equalsIgnoreCase("status") || detailsType.trim().equalsIgnoreCase("issueCategroy"))){
  				if(parliamentIdAndStatusIdAndCountMap != null && parliamentIdAndStatusIdAndCountMap.size() > 0){
  	 				for(Entry<Long,Map<Long,Long>> outerParam : parliamentIdAndStatusIdAndCountMap.entrySet()){
  	 					for(Entry<Long,Long> innerParam : outerParam.getValue().entrySet()){
@@ -16216,4 +16295,616 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		 }
 		 return finalUserList;
 	}
+	public List<KeyValueVO> getIssueCategoryDetailsOfAlertType(Long alertTypeId){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try {
+			
+			//0.issueCategoryId,1.category
+			List<Object[]> issueCategoryListObj = alertIssueCategoryDAO.getIssueCategoryDetailsOfAlertType(alertTypeId);
+			if(issueCategoryListObj !=null && issueCategoryListObj.size()>0){
+				for (Object[] objects : issueCategoryListObj) {
+					KeyValueVO issuecategoryVo = new KeyValueVO();
+					
+					issuecategoryVo.setId((Long)objects[0]);
+					issuecategoryVo.setName(objects[1] !=null ? objects[1].toString():null);
+					
+					finalList.add(issuecategoryVo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured getIssueCategoryDetailsOfAlertType() method of AlertService{}");
+		}
+		return finalList;
+	}
+	
+	public List<AlertOverviewVO> getIssueCategoryDetailsOfAlert(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,
+			Long alertType, Long editionTypeId,List<Long> impactScopeIds,List<Long> alertStatusIds,String searchType){
+		List<AlertOverviewVO> finalList = new ArrayList<AlertOverviewVO>();
+		try {
+			
+			Long levelId=null;
+			List<Long> locationValues = new ArrayList<Long>();
+			
+			Date fromDate=null;
+			Date toDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.length() > 0l && toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				
+				   fromDate = sdf.parse(fromDateStr);
+				   toDate = sdf.parse(toDateStr);
+				 }
+		    	 List<Long> alertTypeIds = new ArrayList<Long>();
+		         List<Long> editionTypeList = new ArrayList<Long>();
+		         
+		         if(alertType != null){
+		        	 if(alertType.longValue() != 0L){
+		        		 alertTypeIds.add(alertType);
+		        	 }
+		         }
+		         if(editionTypeId != null){
+		        	 if(editionTypeId.longValue() == 1L){
+		        		 editionTypeList.add(editionTypeId);
+		        	 }else if(editionTypeId.longValue() == 2L){  
+		        		 editionTypeList.add(editionTypeId);
+		        		 editionTypeList.add(3L);
+		        	 }
+		         }
+			   	 List<Object[]> levelObjList=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+				 if(levelObjList != null && levelObjList.size() > 0){
+					 levelId=(Long) levelObjList.get(0)[0];
+					 for(Object[] param:levelObjList){
+						 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					 }
+				 }
+				//convert parliament into constituency.
+					if(levelId.longValue() == 4L){
+						List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(new ArrayList<Long>(locationValues));
+						levelId = 5L;
+						locationValues.clear();
+						locationValues.addAll(parliamentAssemlyIds);      
+					}
+			//0.categoryId,1.issuecategory,2.statusId,3.status,4.alertCount
+			List<Object[]> objList = alertIssueCategoryRelationDAO.getIssueCategoryDetailsOfAlerts(levelId, locationValues,stateId,fromDate, toDate, alertTypeIds,
+					editionTypeList, alertStatusIds, impactScopeIds,searchType);
+			
+			if(objList !=null && objList.size()>0 && searchType !=null && searchType.trim().equalsIgnoreCase("status")){
+				setIssueCategoryStatusData(objList,finalList,alertType);
+			}else{
+				setIssueCategoryData(objList,finalList);
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Error occured getIssueCategoryDetailsOfAlert() method of AlertService{}");
+		}
+		return finalList;
+	}
+	public void setIssueCategoryData(List<Object[]> objList,List<AlertOverviewVO> finalList){
+		try {
+			
+			if(objList !=null && objList.size()>0){
+				for (Object[] obj : objList) {
+					
+					AlertOverviewVO mainVo= getMatchedTypeVO((Long)obj[0],finalList);
+					if(mainVo == null){
+						mainVo = new AlertOverviewVO();
+						finalList.add(mainVo);
+					}
+					
+					mainVo.setId((Long)obj[0]);
+					mainVo.setName(obj[1] !=null ? obj[1].toString():null);
+					mainVo.setCompletedCnt(obj[2] !=null ? (Long)obj[2]:null);
+					
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured setIssueCategoryStatusData() method of AlertService{}");
+		}
+	}
+	
+	public void setIssueCategoryStatusData(List<Object[]> objList,List<AlertOverviewVO> finalList,Long alertTypeId){
+		
+		try {
+			
+			if(objList !=null && objList.size()>0){
+				
+				List<AlertOverviewVO> statusList = new ArrayList<AlertOverviewVO>(0);
+				
+				List<Object[]> rtrnObjLst = alertDepartmentStatusDAO.getAlertStatusByAlertType(alertTypeId);
+				  if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+					  for(Object[] param:rtrnObjLst){
+						  AlertOverviewVO statusVO = new AlertOverviewVO();
+						  statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						  statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						  statusList.add(statusVO);
+					  }
+				  }
+				
+				for (Object[] obj : objList) {
+
+					AlertOverviewVO mainVo= getMatchedTypeVO((Long)obj[0],finalList);
+					if(mainVo == null){
+						
+						mainVo = new AlertOverviewVO();
+						mainVo.setId((Long)obj[0]);
+						mainVo.setName(obj[1] !=null ? obj[1].toString():null);
+						
+						mainVo.setStatusList(new ArrayList<AlertOverviewVO>(statusList));
+						
+						finalList.add(mainVo);
+						
+					}
+					
+					AlertOverviewVO statusVo= getMatchedTypeVO((Long)obj[2],mainVo.getStatusList());
+					
+					if(statusVo !=null ){
+						statusVo.setId((Long)obj[0]);
+						statusVo.setName(obj[1] !=null ? obj[1].toString():null);
+						statusVo.setCompletedCnt(obj[2] !=null ? (Long)obj[2]:null);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured setIssueCategoryStatusData() method of AlertService{}");
+		}
+	}
+	
+	public AlertOverviewVO getMatchedTypeVO(Long typeId,List<AlertOverviewVO> finalList){
+		try {
+			if(finalList != null && finalList.size() > 0){
+	  			for(AlertOverviewVO param : finalList){
+	  				if(param.getId().equals(typeId)){
+	  					return param;
+	  				}
+	  			}
+	  		}
+		}catch (Exception e) {
+			LOG.error("Error occured getMatchedCategoryVO() method of AlertService{}");
+		}
+		return null;
+	}
+	
+	public List<AlertCoreDashBoardVO> getBriefIssueCategoryDetailsOfAlert(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,
+			Long alertType, Long editionTypeId,List<Long> impactScopeIds,List<Long> alertStatusIds,Long issueCategoryId){
+		List<AlertCoreDashBoardVO> finalList = new ArrayList<AlertCoreDashBoardVO>(0);
+		
+		try {
+			
+			Long levelId=null;
+			List<Long> locationValues = new ArrayList<Long>();
+			
+			Date fromDate=null;
+			Date toDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.length() > 0l && toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				
+				   fromDate = sdf.parse(fromDateStr);
+				   toDate = sdf.parse(toDateStr);
+				 }
+		    	 List<Long> alertTypeIds = new ArrayList<Long>();
+		         List<Long> editionTypeList = new ArrayList<Long>();
+		         
+		         if(alertType != null){
+		        	 if(alertType.longValue() != 0L){
+		        		 alertTypeIds.add(alertType);
+		        	 }
+		         }
+		         if(editionTypeId != null){
+		        	 if(editionTypeId.longValue() == 1L){
+		        		 editionTypeList.add(editionTypeId);
+		        	 }else if(editionTypeId.longValue() == 2L){  
+		        		 editionTypeList.add(editionTypeId);
+		        		 editionTypeList.add(3L);
+		        	 }
+		         }
+			   	 List<Object[]> levelObjList=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+				 if(levelObjList != null && levelObjList.size() > 0){
+					 levelId=(Long) levelObjList.get(0)[0];
+					 for(Object[] param:levelObjList){
+						 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					 }
+				 }
+				//convert parliament into constituency.
+				if(levelId.longValue() == 4L){
+					List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(new ArrayList<Long>(locationValues));
+					levelId = 5L;
+					locationValues.clear();
+					locationValues.addAll(parliamentAssemlyIds);      
+				}
+				
+				List<Object[]> alertList = alertIssueCategoryRelationDAO.getBriefIssueCategoryDetailsOfAlert(levelId, locationValues,stateId,fromDate, toDate, alertTypeIds,
+						editionTypeList, alertStatusIds, impactScopeIds,issueCategoryId);
+				
+				setAlertDtls(finalList, alertList);
+				
+				
+		} catch (Exception e) {
+			finalList=null;
+			LOG.error("Error occured getBriefIssueCategoryDetailsAlert() method of AlertService{}");
+		}
+		
+		return finalList;
+	}
+	
+	private List<Date> setDateFormat(String fromDateStr,String toDateStr,SimpleDateFormat sdf){
+		List<Date> datesList = new ArrayList<Date>(0);
+		try {
+		     if(fromDateStr != null && !fromDateStr.trim().isEmpty() && toDateStr != null && !toDateStr.trim().isEmpty()){
+		    	 datesList.add(sdf.parse(fromDateStr));
+		    	 datesList.add( sdf.parse(toDateStr));
+			 } 
+		} catch (Exception e) {
+			LOG.error("Error occured setDateFormat() method of AlertService{}");
+		}
+		return datesList;
+	}
+	
+	public AlertOverviewVO getStateWiseAlertIssueCategoryDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId,
+			Long editionTypeId,List<Long> alertStatusIds,Long districtId){
+		
+		 AlertOverviewVO resultVO = new AlertOverviewVO();
+		
+	 	 try{
+		 		List<Long> alertTypeList = new ArrayList<Long>(0);
+		 		List<Long> editionTypeList = new ArrayList<Long>(0);
+		 		Set<Long> locationValues = new HashSet<Long>(0);
+			    Long locationAccessLevelId =0l;
+
+			    /* Setting DateFormat*/
+			    Date fromDate=null,toDate=null;
+			    List<Date> dateObj = setDateFormat(fromDateStr,toDateStr,new SimpleDateFormat("dd/MM/yyyy"));
+		     
+			    if(dateObj !=null && dateObj.size()>0){
+			    	fromDate = dateObj.get(0);
+			    	toDate = dateObj.get(1);
+			    }
+			    
+		 		if(alertTypeId != null && alertTypeId.longValue()>0l){
+		 				alertTypeList.add(alertTypeId);
+		 		}
+		 		if(editionTypeId != null){
+		 			if(editionTypeId.longValue() == 1L){
+		 				editionTypeList.add(editionTypeId);
+		 			}else if(editionTypeId.longValue() == 2L){
+		 				editionTypeList.add(editionTypeId);
+		 				editionTypeList.add(3L);
+		 			}
+		 		}
+			   
+		 		// Get Login Member Location Details
+			   List<Object[]> accessLevelObj=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			   if(accessLevelObj != null && accessLevelObj.size() > 0){
+				 locationAccessLevelId=(Long) accessLevelObj.get(0)[0];
+				 for(Object[] param:accessLevelObj){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+			   }
+			   
+				//parliament - constituency.
+				if(locationAccessLevelId.longValue() == 4L){
+					List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(new ArrayList<Long>(locationValues));
+					locationAccessLevelId = 5L;
+					locationValues.clear();
+					locationValues.addAll(parliamentAssemlyIds);      
+				}
+				
+				//categoryId,name,color
+				List<Object[]> issueCategoryObj = alertIssueCategoryDAO.getIssueCategoryDetailsOfAlertType(alertTypeId);
+				
+				List<Object[]> rtrnStatusWiseCntObjLst = alertIssueCategoryRelationDAO.getStateWiseAlertIssueCategoryDetails(locationAccessLevelId, locationValues, stateId, impactLevelIds, fromDate, toDate,alertTypeList,editionTypeList,alertStatusIds,districtId);
+				  
+				  if(impactLevelIds != null && impactLevelIds.size() > 0 && impactLevelIds.size() == 1 &&  impactLevelIds.contains(8l)){
+					  if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
+							 // if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
+							 		for(Object[] param:rtrnStatusWiseCntObjLst){
+							 			Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+							 			Long locationId = commonMethodsUtilService.getLongValueForObject(param[3]);
+							 			AlertOverviewVO locationVO = getRequiredMatchVO(resultVO.getCategoryList(),locationId);
+							 			if(locationVO == null){
+							 				locationVO = new AlertOverviewVO();
+							 				locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[3]));
+							 				locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+							 				resultVO.getCategoryList().add(locationVO);
+							 				prepareRquiredTemplate(issueCategoryObj,locationVO.getStatusList());
+							 			}
+							 			AlertOverviewVO statusVO = getRequiredMatchVO(locationVO.getStatusList(),statusId);
+							 			if(statusVO != null){
+							 				statusVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+							 			}
+							 		}
+							 	//} 
+						  }
+				  }else {
+					  prepareRquiredTemplate(issueCategoryObj,resultVO.getStatusList());
+					  if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
+						 // if(rtrnStatusWiseCntObjLst != null && rtrnStatusWiseCntObjLst.size() > 0){
+						 		for(Object[] param:rtrnStatusWiseCntObjLst){
+						 			Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						 			AlertOverviewVO statusVO = getRequiredMatchVO(resultVO.getStatusList(),statusId);
+						 			if(statusVO != null){
+						 				statusVO.setAlertCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						 			}
+						 		}
+						 	//} 
+					  }
+				  }
+				  //Calculate overall alert
+				  if(impactLevelIds != null && impactLevelIds.size() > 0 && impactLevelIds.size() == 1 &&  impactLevelIds.contains(8l) && resultVO.getCategoryList() != null && resultVO.getCategoryList().size() >0){
+					  for(AlertOverviewVO locationVO :resultVO.getCategoryList()){
+					  if(locationVO.getStatusList() != null && locationVO.getStatusList().size() > 0){
+							for(AlertOverviewVO statusVO:locationVO.getStatusList()){
+								locationVO.setAlertCount(locationVO.getAlertCount().longValue()+statusVO.getAlertCount().longValue());
+							}
+						}
+					  }
+				  }else{
+						if(resultVO.getStatusList() != null && resultVO.getStatusList().size() > 0){
+							for(AlertOverviewVO statusVO:resultVO.getStatusList()){
+								resultVO.setAlertCount(resultVO.getAlertCount().longValue()+statusVO.getAlertCount().longValue());
+							}
+						}
+				  }
+		 }catch(Exception e){
+			 LOG.error("Exception occured  in getStateWiseAlertIssueCategoryDetails() in AlertService class ",e);  
+		 }
+		 return resultVO;	 
+	}
+	public List<AlertOverviewVO> getLocationAndIssueCategoryWiseAlerts(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId,Long editionId,String filterType,Long locationValue,List<Long> alertStatusIds,String sortingType,Long disctrictId){
+		LOG.info("Entered in getLocationAndIssueCategoryWiseAlerts() method of AlertService{}");
+		try{  
+			
+			 /* Setting DateFormat*/
+		    Date fromDate=null,toDate=null;
+		    List<Date> dateObj = setDateFormat(fromDateStr,toDateStr,new SimpleDateFormat("dd/MM/yyyy"));
+		     
+		    if(dateObj !=null && dateObj.size()>0){
+		    	fromDate = dateObj.get(0);
+		    	toDate = dateObj.get(1);
+		    }
+			
+			List<Long> alertTypeList = new ArrayList<Long>(0);
+			List<Long> editionList = new ArrayList<Long>(0);
+			AlertOverviewVO alertVO = null;  
+			List<AlertOverviewVO> alertVOs = null;
+			Long userAccessLevelId = null;
+			List<Long> userAccessLevelValues = new ArrayList<Long>(0);
+			Map<Long,Long> locationIdAndCountMap = new HashMap<Long,Long>(0);
+			
+			if(alertTypeId != null && alertTypeId.longValue()>0l){
+					alertTypeList.add(alertTypeId);
+			}
+			
+			if(editionId != null){
+			    if(editionId.longValue() == 1L){
+					editionList.add(editionId);
+				}else if(editionId.longValue() == 2L){
+					editionList.add(editionId);
+					editionList.add(3L);
+				}
+			}
+			
+			//get all the alert status for  building the template
+			
+			//categoryId,name,color
+			List<Object[]> issueCategoryObj = alertIssueCategoryDAO.getIssueCategoryDetailsOfAlertType(alertTypeId);
+			
+			List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
+			if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
+				userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+				for(Object[] param : accessLvlIdAndValuesList){
+					userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);
+				}
+			}
+			
+			//convert parliament into constituency.
+			if(userAccessLevelId.longValue() == 4L){
+				List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(userAccessLevelValues);
+				userAccessLevelId = 5L;
+				userAccessLevelValues.clear();
+				userAccessLevelValues.addAll(parliamentAssemlyIds);      
+			}
+			//String filterType,Long locationValue
+			String blockType="";
+			List<Long> locationValues = null;
+			if(filterType != null && filterType.trim().equalsIgnoreCase("Parliament") && locationValue != null && locationValue.longValue() > 0){
+				if(locationValue != null && locationValue.longValue() > 0L){
+					locationValues = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(locationValue);
+					locationValue = null;
+				}
+				blockType = filterType;
+			}
+			if(filterType != null && filterType.trim().equalsIgnoreCase("Parliament")){
+				blockType = filterType;
+				filterType = "Constituency";
+			}
+			//get alert status count and and create a map of LocationId and its corresponding  alert count
+			
+			List<Object[]> alertCountList = alertIssueCategoryRelationDAO.getTotalAlertOfLocationAndIssueCategory(fromDate, toDate, stateId, scopeIdList, "One", userAccessLevelId, userAccessLevelValues,alertTypeList,editionList,filterType,locationValue,disctrictId,alertStatusIds,locationValues);
+			
+			if(userAccessLevelId == 5L && blockType != null && blockType.trim().equalsIgnoreCase("Parliament") && locationValues != null && locationValues.size()> 0L){
+				filteredConstituencyList(alertCountList,locationValues);
+		          
+		      }
+			
+			List<Object[]> parliamentList=null;
+			if(blockType != null && blockType.trim().equalsIgnoreCase("Parliament")){
+				List<Long> constituencyIds = new ArrayList<Long>();
+				if(alertCountList != null && alertCountList.size() > 0){
+					for(Object[] param : alertCountList){
+						if(param[0] != null){
+							constituencyIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						}
+					}
+					parliamentList = parliamentAssemblyDAO.getParliamntIdByConsIds(constituencyIds);
+				}
+			}
+			
+			
+			if(blockType != null && blockType.trim().equalsIgnoreCase("Parliament")){
+				convertConstituencyDateIntoParliamentDateForToralAlert(alertCountList,parliamentList);
+			}
+			
+			if(alertCountList != null && alertCountList.size() > 0){
+				for(Object[] param : alertCountList){
+					if(param[0] != null)//{207=1, 203=1, 277=1, 282=1, 286=1, 285=1, 327=1, 155=1, 257=1, 157=1, 218=3, 334=1, 146=1, 215=1, 149=2, 305=1, 238=1, 306=1, 232=1, 163=1, 352=3, 353=1, 294=1, 178=1, 179=1, 298=2}
+						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}  
+			//get all the alert count group by status then category.
+			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
+			Map<Long,Long> statusIdAndCountMap = null;//new HashMap<Long, Long>();  
+			Map<Long,Map<Long,Long>> locationIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+			
+			List<Object[]> alertCountGrpByLocList = alertIssueCategoryRelationDAO.getTotalAlertOfLocationAndIssueCategory(fromDate, toDate, stateId, scopeIdList, "two", userAccessLevelId, userAccessLevelValues,alertTypeList,editionList,filterType,locationValue,disctrictId,alertStatusIds,locationValues);
+			
+			if(userAccessLevelId == 5L && blockType != null && blockType.trim().equalsIgnoreCase("Parliament") && locationValues != null && locationValues.size() > 0L){
+				filteredConstituencyList(alertCountGrpByLocList,locationValues);
+		          
+			}
+			
+			if(blockType != null && blockType.trim().equalsIgnoreCase("Parliament")){
+				convertConstituencyDateIntoParliamentDate(alertCountGrpByLocList,parliamentList,"issueCategroy");
+			}  
+			
+			if(alertCountGrpByLocList != null && alertCountGrpByLocList.size() > 0){
+				for(Object[] param : alertCountGrpByLocList){  
+					if(param[0] != null){
+						statusIdAndCountMap = locationIdAndStatusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(statusIdAndCountMap != null){
+							statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						}else{
+							statusIdAndCountMap = new HashMap<Long, Long>();
+							statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+							locationIdAndStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),statusIdAndCountMap);
+						}  
+						locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					}
+				}
+			}
+			//build final vo to sent to ui
+			List<AlertOverviewVO> finalList = new ArrayList<AlertOverviewVO>(0);
+			AlertOverviewVO innerListAlertVO = null;
+			if(locationIdAndStatusIdAndCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> entry : locationIdAndStatusIdAndCountMap.entrySet()){
+					statusIdAndCountMap = entry.getValue();
+					if(statusIdAndCountMap.size() > 0){
+						if(issueCategoryObj != null && issueCategoryObj.size() > 0){
+							alertVOs = new ArrayList<AlertOverviewVO>();
+							innerListAlertVO = new AlertOverviewVO();
+							for(Object[] param : issueCategoryObj){
+								alertVO = new AlertOverviewVO();
+								alertVO.setStatusTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								alertVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[1]));
+								alertVOs.add(alertVO);  
+							}
+						}
+						for(AlertOverviewVO param : alertVOs){
+							if(statusIdAndCountMap.get(param.getStatusTypeId()) != null){
+								param.setTotalAlertCnt(statusIdAndCountMap.get(param.getStatusTypeId()));  
+							}else{
+								param.setTotalAlertCnt(0l);  
+							}
+						}
+						innerListAlertVO.setSubList1(alertVOs);
+						if(locationIdAndNameMap.get(entry.getKey()) != null){
+							innerListAlertVO.setId(entry.getKey());
+							innerListAlertVO.setName(locationIdAndNameMap.get(entry.getKey()));
+							
+						}
+						if(locationIdAndCountMap.get(entry.getKey()) != null){
+							innerListAlertVO.setTotalAlertCnt(locationIdAndCountMap.get(entry.getKey()));
+						}
+						finalList.add(innerListAlertVO);     
+					}
+				}
+			}  
+			//Sorting list based on required parameter
+			if(finalList != null && finalList.size() > 0){
+				sortListByRequiredType(finalList,sortingType);	
+			}
+			return finalList; 
+		   
+		  }catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Error occured getLocationAndIssueCategoryWiseAlerts() method of AlertService{}");
+		 }
+		return null;
+	}
+	
+	//Clicking
+	public List<AlertCoreDashBoardVO> getIssueCategoryWiseLocationAlertDetails(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,
+			List<Long> districtIdList,Long alertTypeId, Long editionId,Long constituencyId,List<Long> alertStatusIds,
+			String locationLevel,Long localElectionBodyId,String type,Long parliamentId,List<Long> issueCategoryIds){
+			LOG.info("Entered in getIssueCategoryWiseLocationAlertDetails() method of AlertService{}");
+			try{  
+				Date fromDate = null;          
+				Date toDate = null; 
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+				List<Long> alertTypeList = new ArrayList<Long>();
+				List<Long> editionTypeList = new ArrayList<Long>();
+				if(alertTypeId != null){
+					if(alertTypeId.longValue() == 0L){
+					}else{
+						alertTypeList.add(alertTypeId);
+					}
+				}
+				if(editionId != null){
+					if(editionId.longValue() == 0L){
+						
+					}else if(editionId.longValue() == 1L){
+						editionTypeList.add(editionId);
+					}else if(editionId.longValue() == 2L){
+						editionTypeList.add(editionId);
+						editionTypeList.add(3L);
+					}
+				}
+				Long userAccessLevelId = null;
+				List<Long> userAccessLevelValues = new ArrayList<Long>();
+				List<Object[]> accessLvlIdAndValuesList = activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);  
+				if(accessLvlIdAndValuesList != null && accessLvlIdAndValuesList.size() > 0){
+					userAccessLevelId = accessLvlIdAndValuesList.get(0)[0] != null ? (Long)accessLvlIdAndValuesList.get(0)[0] : 0l;
+					for(Object[] param : accessLvlIdAndValuesList){
+						userAccessLevelValues.add(param[1] != null ? (Long)param[1] : 0l);  
+					}
+				}
+				//convert parliament into constituency.
+				if(userAccessLevelId.longValue() == 4L){
+					List<Long> parliamentAssemlyIds = parliamentAssemblyDAO.getAssemblyConstituencyforParliament(userAccessLevelValues);
+					userAccessLevelId = 5L;
+					userAccessLevelValues.clear();          
+					userAccessLevelValues.addAll(parliamentAssemlyIds);      
+				}
+				
+				List<Long> constituencyList = null;
+				if(parliamentId != null && parliamentId.longValue() > 0L){
+					constituencyList = parliamentAssemblyDAO.getConstituencyIdsByParliamntId(parliamentId);
+					districtIdList = null;
+					constituencyId = null;
+				}
+				
+				List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+				
+				List<Object[]> alertList = alertIssueCategoryRelationDAO.getIssueCategoryWiseLocationAlertDetails(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,alertTypeList,editionTypeList,constituencyId,alertStatusIds,localElectionBodyId,locationLevel,type,constituencyList,issueCategoryIds);
+				
+				setAlertDtls(alertCoreDashBoardVOs, alertList);
+				
+				return alertCoreDashBoardVOs;
+				
+				}catch(Exception e){  
+					e.printStackTrace();  
+					LOG.error("Error occured getIssueCategoryWiseLocationAlertDetails() method of AlertService{}");
+				}
+			return null;
+		}
+	
+	
 }

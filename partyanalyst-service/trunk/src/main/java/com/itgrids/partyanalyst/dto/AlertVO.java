@@ -113,6 +113,7 @@ public class AlertVO {
 	private List<AlertVO> list = new ArrayList<AlertVO>(0);
 	private Long count1 = 0l;
 	
+	 private Long issueCategoryId;
 	
 	public List<AlertVO> getList() {
 		return list;
@@ -692,6 +693,12 @@ public class AlertVO {
 	}
 	public void setHamletId(Long hamletId) {
 		this.hamletId = hamletId;
+	}
+	public Long getIssueCategoryId() {
+		return issueCategoryId;
+	}
+	public void setIssueCategoryId(Long issueCategoryId) {
+		this.issueCategoryId = issueCategoryId;
 	}
 	
 }

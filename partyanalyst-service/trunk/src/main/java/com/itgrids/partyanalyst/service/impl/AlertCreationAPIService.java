@@ -176,7 +176,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 				 alert = alertDAO.get(alertId);
 			 }
 			 
-			 if(alert==null && alert.getAlertTypeId() !=1l)
+			 if(alert==null || alert.getAlertTypeId() !=1l)
 				 return;
 			 
 			 JSONObject jsObj = new JSONObject();
@@ -192,8 +192,10 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 			 
 			 JSONObject customJson = new JSONObject();
 			 customJson.put("Alert ID", alert.getAlertId());
-			 customJson.put("Location Level",alert.getRegionScopes().getScope());
-			 customJson.put("Location", getLocationName(alert.getImpactLevelId(), alert.getImpactLevelValue()).getString("location"));
+			 customJson.put("Location Level",alert.getRegionScopes() !=null ? alert.getRegionScopes().getScope():null);
+			 JSONObject locationJson = getLocationName(alert.getImpactLevelId(), alert.getImpactLevelValue());
+			 if(locationJson.has("location"))
+				 customJson.put("Location", locationJson.getString("location"));
 			 
 			 //setLocationFields(customJson,alert.getImpactLevelId(),alert.getUserAddress());
 			 

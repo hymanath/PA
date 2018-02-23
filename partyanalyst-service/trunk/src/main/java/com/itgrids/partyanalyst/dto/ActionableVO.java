@@ -59,7 +59,7 @@ public class ActionableVO extends BaseModel implements Serializable{
 	
 	private Set<String> categoryList = new HashSet<String>(0);
 	private Long newsUserId ;
-	
+	private Long actionableCategoryId;
 	
 	public Date getInsertedTime() {
 		return insertedTime;
@@ -297,8 +297,12 @@ public class ActionableVO extends BaseModel implements Serializable{
 	public void setNewsUserId(Long newsUserId) {
 		this.newsUserId = newsUserId;
 	}
-	
-	
+	public Long getActionableCategoryId() {
+		return actionableCategoryId;
+	}
+	public void setActionableCategoryId(Long actionableCategoryId) {
+		this.actionableCategoryId = actionableCategoryId;
+	}
 	
 	
 }
