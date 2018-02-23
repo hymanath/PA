@@ -3866,7 +3866,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				//pmTracking.setPmDepartmentDesignationOfficerId(pmTrackingVO.getPmDeptDesignationOfficerId());
 				if(pmTrackingVO.getDocumentId() != null && pmTrackingVO.getDocumentId().longValue()>0L){
 					pmTracking.setDocumentId(pmTrackingVO.getDocumentId());
-					pmTracking.setPmTrackingActionId(4L);// file upload
+					if(pmTrackingVO.getPmTrackingActionId() != null && pmTrackingVO.getPmTrackingActionId().longValue() >0l){
+						pmTracking.setPmTrackingActionId(pmTrackingVO.getPmTrackingActionId());//edit page file upload
+					}else{
+						pmTracking.setPmTrackingActionId(4L);// file upload
+					}
 				}
 				pmTracking.setInsertedUserId(pmTrackingVO.getUserId());
 				pmTracking.setUpdateUserId(pmTrackingVO.getUserId());
@@ -4192,7 +4196,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 											if(document != null)
 												pmTrackingVO.setDocumentId(document.getDocumentId());
 											pmTrackingVO.setPmSubWorkDetailsId(subWorkId);
-											//updatePetitionTracking(pmTrackingVO); // works wise tracking 
+											//updatePetitionTracking(pmTrackingVO,updatedTime); // works wise tracking 
 											if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && !alreadyUpdaeted){
 												if(inputVO.getStatusId().longValue() ==4L && inputVO.getStatusId().longValue() ==5L && inputVO.getStatusId().longValue() ==8L)
 													pmTrackingVO.setPmStatusId(8L);
