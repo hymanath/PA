@@ -1,16 +1,22 @@
 var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
  var customStartToursDate = moment().subtract(parseInt(91)+parseInt(getDay()), 'days').format('DD/MM/YYYY')
  var customEndToursDate = moment().subtract(parseInt(getDay()), 'days').format('DD/MM/YYYY');
+ 
+ var lastMonthFromDateStr = moment().subtract(1,'month').startOf("month").format('DD/MM/YYYY')
+ var lastMonthToDateStr = moment().subtract(1,'month').endOf("month").format('DD/MM/YYYY');
+ var dateHeadingStr = "Last Month&nbsp("+lastMonthFromDateStr+"&nbspto&nbsp"+lastMonthToDateStr+")";
+ $("#exceptionReportTourDateId").html(dateHeadingStr);
+ 
+ $(document).on("click",".tourExRRefresh",function(){
+	 onloadTourCalls();
+ });
 onloadTourCalls();
  function onloadTourCalls(){
 	  getDesignationWiseTourSubmittedOverviewDtls();
 	  getNotSubmittedCandidateDetailsByFilter(2);
  }
- $("#noofMonthsId").html('');
- $("#noofMonthsId").append("<option value='1'>1</option>"); 
- $("#noofMonthsId").append("<option value='2' selected>2</option>");
- $("#noofMonthsId").chosen();
- $("#noofMonthsId").trigger("chosen:updated");
+ 
+ var dates=$("#tourNewDateRangePickerId").val();
  $("#tourNewExDateRangePickerId").daterangepicker({
 		opens: 'left',
 	     startDate: customStartToursDate,
@@ -35,6 +41,13 @@ onloadTourCalls();
 		return dd;
 	}
 	
+	 $("#noofMonthsId").html('');
+	 $("#noofMonthsId").append("<option value='1'>1</option>"); 
+	 $("#noofMonthsId").append("<option value='2' selected>2</option>");
+	 $("#noofMonthsId").append("<option value='3'>3</option>");
+	 $("#noofMonthsId").chosen();
+	 $("#noofMonthsId").trigger("chosen:updated");
+	
 	$('#tourNewExDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 	   customStartToursDate = picker.startDate.format('DD/MM/YYYY');
 	   customEndToursDate = picker.endDate.format('DD/MM/YYYY');
@@ -42,7 +55,7 @@ onloadTourCalls();
 	    var spiltStartDate = picker.startDate.format('YYYY/MM/DD');
 	    var spiltEndDate =  picker.endDate.format('YYYY/MM/DD');
 		
-		var fromDate =new Date(spiltStartDate); // Date picker (text fields)
+		var fromDate =new Date(spiltStartDate); 
 		var toDate = new Date(spiltEndDate);
 		var months=0;
 			months = (toDate.getFullYear() - fromDate.getFullYear()) * 12;
@@ -58,15 +71,15 @@ onloadTourCalls();
 		 $("#noofMonthsId").chosen();
 		$("#noofMonthsId").trigger("chosen:updated");
 		 getNotSubmittedCandidateDetailsByFilter(months);
-		 getDesignationWiseTourSubmittedOverviewDtls();
+		 
 	 });
  function getDesignationWiseTourSubmittedOverviewDtls()
 	{    
 		$("#overAllTourDetailsDivId").html(spinner);
 	 	var jsObj = { 
 	 				 stateId : "1",
-					 fromDate : customStartToursDate,
-					 toDate : customEndToursDate
+					 fromDate : lastMonthFromDateStr,
+					 toDate : lastMonthToDateStr
 				   }
 		$.ajax({
 			type : 'POST',
@@ -90,7 +103,7 @@ onloadTourCalls();
 					str+='<table class="table details-overview">';
 						str+='<thead>';
 							str+='<tr>';
-								str+='<th>Total</th>';
+								str+='<th>Total Unique Candidate</th>';
 								str+='<th>Submitted</th>';
 								str+='<th>Submitted<br/>(Before 15th Date)</th>';
 								str+='<th>Submitted<br/>(After 15th Date)</th>';
@@ -99,11 +112,11 @@ onloadTourCalls();
 						str+='</thead>';
 						str+='<tbody>';
 							str+='<tr>';
-								str+='<td>'+result.totalCandiateCount+'</td>';
-								str+='<td>'+result.submittedCandiateCount+'</td>';
+								str+='<td>'+result.totalUniqueCandidateCount+'</td>';
+								str+='<td>'+result.uniqueCandidateSubmittedCount+'</td>';
 								str+='<td>'+result.before15thDateTourSubmittedCoun+'</td>';
 								str+='<td>'+result.after15thDateTourSubmittedCoun+'</td>';
-								str+='<td>'+result.notSubmittedCandidateCount+'</td>';
+								str+='<td>'+result.uniqueNotSubmittedCount+'</td>';
 							str+='</tr>';
 							
 						str+='</tbody>';
@@ -151,7 +164,57 @@ onloadTourCalls();
 		str+='</div>';
 	str+='</div>';
 	
-	 $("#overAllTourDetailsDivId").html(str);
+	str+='<div class="row">';
+				str+='<div class="col-sm-12 m_top10">';
+					str+='<h5 class="text_bold text-capital"><b>Last Month Tours Not Submitted Candidates List</b></h5>';
+					str+='<div class="table-responsive m_top10">';
+						str+='<table class="table details-overview">';
+							str+='<thead>';
+								str+='<tr>';
+							    	str+='<th>District</th>';
+									str+='<th>Parliament</th>';
+									str+='<th>Constituency</th>';
+									str+='<th>Name</th>';
+									str+='<th>Designation</th>';
+								str+='</tr>';
+							str+='</thead>';
+							str+='<tbody>';
+								for(var i in result.subList1){
+									str+='<tr>';
+										if(result.subList1[i].addressVO.districtName !=null && result.subList1[i].addressVO.districtName.trim().  length>0){
+											str+='<td>'+result.subList1[i].addressVO.districtName+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										if(result.subList1[i].addressVO.parliamentName !=null && result.subList1[i].addressVO.parliamentName.trim().length>0){
+											str+='<td>'+result.subList1[i].addressVO.parliamentName+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										if(result.subList1[i].addressVO.constituencyName !=null && result.subList1[i].addressVO.constituencyName.trim().length>0){
+											str+='<td>'+result.subList1[i].addressVO.constituencyName+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										if(result.subList1[i].name !=null && result.subList1[i].name.trim().length>0){
+											str+='<td>'+result.subList1[i].name+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										if(result.subList1[i].designation !=null && result.subList1[i].designation.trim().length>0){
+											str+='<td>'+result.subList1[i].designation+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+									str+='</tr>';
+								}
+							
+							str+='</tbody>';
+						str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+  $("#overAllTourDetailsDivId").html(str);
  }
  function getNotSubmittedCandidateDetailsByFilter(months)
 	{    
@@ -186,6 +249,7 @@ onloadTourCalls();
 						str+='<table class="table details-overview">';
 							str+='<thead>';
 								str+='<tr>';
+							    	str+='<th>District</th>';
 									str+='<th>Parliament</th>';
 									str+='<th>Constituency</th>';
 									str+='<th>Name</th>';
@@ -196,6 +260,11 @@ onloadTourCalls();
 							str+='<tbody>';
 								for(var i in result){
 									str+='<tr>';
+										if(result[i].addressVO.districtName !=null && result[i].addressVO.districtName.trim().  length>0){
+											str+='<td>'+result[i].addressVO.districtName+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
 										if(result[i].addressVO.parliamentName !=null && result[i].addressVO.parliamentName.trim().length>0){
 											str+='<td>'+result[i].addressVO.parliamentName+'</td>';
 										}else{
@@ -216,7 +285,7 @@ onloadTourCalls();
 										}else{
 											str+='<td> - </td>';
 										}
-										if(result[i].notSubmittedNoOfMonth !=null && result[i].notSubmittedNoOfMonth.length>0){
+										if(result[i].notSubmittedNoOfMonth !=null && result[i].notSubmittedNoOfMonth>0){
 											str+='<td>'+result[i].notSubmittedNoOfMonth+'</td>';
 										}else{
 											str+='<td> - </td>';
