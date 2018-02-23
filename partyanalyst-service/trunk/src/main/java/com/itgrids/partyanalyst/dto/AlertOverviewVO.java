@@ -454,6 +454,31 @@ public class AlertOverviewVO {
 	public void setEnrollementIdList(List<AlertOverviewVO> enrollementIdList) {
 		this.enrollementIdList = enrollementIdList;
 	}
+	public void setStatusList(List<AlertOverviewVO> statusList) {
+		this.statusList = statusList;
+	}
+	public void setCategoryList(List<AlertOverviewVO> categoryList) {
+		this.categoryList = categoryList;
+	}
+	public void setSubList(List<AlertOverviewVO> subList) {
+		this.subList = subList;
+	}
+	public void setEditionList(List<AlertOverviewVO> editionList) {
+		this.editionList = editionList;
+	}
+	public void setAlertIdSet(Set<Long> alertIdSet) {
+		this.alertIdSet = alertIdSet;
+	}
+	public void setActionTypeList(List<AlertOverviewVO> actionTypeList) {
+		this.actionTypeList = actionTypeList;
+	}
+	public void setAlertCoreDashBoardVOs(
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs) {
+		this.alertCoreDashBoardVOs = alertCoreDashBoardVOs;
+	}
+	public void setList(List<String> list) {
+		this.list = list;
+	}
 	
 	
 }                                                          

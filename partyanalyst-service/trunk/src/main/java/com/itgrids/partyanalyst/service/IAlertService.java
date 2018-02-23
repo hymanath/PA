@@ -172,4 +172,21 @@ public interface IAlertService {
     public ResultStatus getSmsTdpCadreDetails();
     public List<AlertOverviewVO> getTdpCadreEnrollementYearIds();
     public List<AlertOverviewVO> getAlertVerificationUsers(Long verificationUserTypeId);
+    public List<KeyValueVO> getIssueCategoryDetailsOfAlertType(Long alertTypeId);
+    public List<AlertOverviewVO> getIssueCategoryDetailsOfAlert(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,
+			Long alertType, Long editionTypeId,List<Long> impactScopeIds,List<Long> alertStatusIds,String searchType);
+    public List<AlertCoreDashBoardVO> getBriefIssueCategoryDetailsOfAlert(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,
+			Long alertType, Long editionTypeId,List<Long> impactScopeIds,List<Long> alertStatusIds,Long issueCategoryId);
+    
+    // IssueCategory Wise Info For CoreDashBoard Alerts(Party)
+    public AlertOverviewVO getStateWiseAlertIssueCategoryDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId,
+			Long editionTypeId,List<Long> alertStatusIds,Long districtId);
+    public List<AlertOverviewVO> getLocationAndIssueCategoryWiseAlerts(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, 
+    		Long activityMemberId, String group,Long alertTypeId,Long editionId,String filterType,Long locationValue,
+    		List<Long> alertStatusIds,String sortingType,Long disctrictId);
+    //clicking
+    public List<AlertCoreDashBoardVO> getIssueCategoryWiseLocationAlertDetails(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,
+			List<Long> districtIdList,Long alertTypeId, Long editionId,Long constituencyId,List<Long> alertStatusIds,String locationLevel,
+			Long localElectionBodyId,String type,Long parliamentId,List<Long> issueCategoryIds);
+			
 }
