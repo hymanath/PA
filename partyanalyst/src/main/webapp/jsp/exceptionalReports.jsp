@@ -188,17 +188,12 @@ header
 								<div class="col-sm-9">
 									<h4 class="panel-title text-capital">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
-											Tours			
+											Tours <small class="text-muted"><span id="exceptionReportTourDateId">  </span></small>	
 									</h4>
 								</div>
 								<div class="col-md-3 col-sm-3 col-xs-12">
 									<span class="tourExRRefresh pull-right">
 										<i class="glyphicon glyphicon-refresh"></i>
-									</span>
-									<span class="input-group pull-right" style="width:200px;">
-										<input type="text" id="tourNewExDateRangePickerId" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
 								</span>
 								</div>  
@@ -209,7 +204,14 @@ header
 								<div id="overAllTourDetailsDivId"></div>
 								<div class="row">
 									<div class="pull-right m_top10">
-										<div class="col-sm-12">
+									    <div class ="col-md-9">
+											<span class="input-group pull-right" style="width:200px;">
+											<input type="text" id="tourNewExDateRangePickerId" style="width:180px" class="form-control" />
+											<span class="input-group-addon">
+											<i class="glyphicon glyphicon-calendar"></i>
+											</span>
+										</div>
+										<div class="col-sm-3">
 											<label>No Of Months</label>
 											<select class="form-control" id="noofMonthsId">
 											</select>
