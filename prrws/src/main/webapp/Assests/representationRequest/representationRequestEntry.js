@@ -872,7 +872,7 @@ $(document).on("click",".ccccc",function(){
 	return;
 });
 $(document).on("click",".showRemoveIcon",function(){
-	
+	$(".searchSelfReferralCandidateCls").attr("disabled","disabled");
 	if(!confirm('Are you sure want to remove this member ?'))
 		return;
 	
