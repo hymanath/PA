@@ -553,8 +553,8 @@ function getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles(globa
 
 		$.ajax({
 			type : 'GET',			
-			url: wurl+"/CommunityNewsPortal/webservice/getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalStIndex+"/"+globalEndIndex
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalStIndex+"/"+globalEndIndex
+			url: wurl+"/CommunityNewsPortal/webservice/getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalcategoryIdP
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDeptWiseAnalsisActOfImmediateForElectronicMediaInfoForArticles/"+globalStartDate+"/"+globalEndDate+"/"+globalorganizationId+"/"+globalStIndex+"/"+globalEndIndex+"/"+globalcategoryIdP
 		}).then(function(result){
 			var countByDate=0;
 			buildnewsBulletinPointBasicDetailsBulletinsOfOrganization(result,globalStIndex,countByDate);
