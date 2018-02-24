@@ -3,7 +3,7 @@ var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
 	wurl = url.substr(0,(url.indexOf(".in")+3));
 
-	var glStartDate = moment().startOf('month').format("DD-MM-YYYY");
+	var glStartDate = moment().format("DD-MM-YYYY");
 	var glEndDate = moment().format("DD-MM-YYYY");
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	
@@ -91,7 +91,13 @@ if(wurl.length == 3)
 			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+glStartDate+"/"+glEndDate+"/All"+"/"+globalDeptId
 		}).then(function(result){
 				if(result !=null && result.length>0){
-					buildOverAllPrintMediaDetails(result,"ElectronicMedia","overAllElectronicMediaDivId","overAllEle",0);
+					for(var i in result){
+						if(result[i].tdpCount !=null && result[i].tdpCount >0){
+							buildOverAllPrintMediaDetails(result,"ElectronicMedia","overAllElectronicMediaDivId","overAllEle",0);
+						}else{
+							$("#overAllElectronicMediaDivId").html("No Data Available");
+						}
+					}
 				}else{
 					$("#overAllElectronicMediaDivId").html("No Data Available");
 				}
@@ -275,11 +281,21 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 									 }
 								}else if(departmentType == "overAll"){
 									if(typeval == "PrintMedia"){
-										if(result[i].positiveCountMain != null && result[i].positiveCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')" attr_categoryId="0" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</a> - <a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles('+result[i].mainPositiveArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].positiveCountGrpMain+'</a> (<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
-										}else{
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
-										}
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">';
+											if(result[i].positiveCountMain !=null && result[i].positiveCountMain >0){
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</span>'; 
+											}else{
+												str+='<span>'+result[i].positiveCountMain+'</span>'; 
+											}
+											str+=' - ';
+											if(result[i].positiveCountGrpMain != null && result[i].positiveCountGrpMain !=""){
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles(('+result[i].mainPositiveArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].positiveCountGrpMain+'</span>';
+											}else{
+												str+='<span>'+result[i].positiveCountGrpMain+'</span>';
+											}
+											
+											str+='</h5>';
+											str+='<h5><span style="color:#EB2F2F">('+result[i].positivePerc.toFixed(0)+'%)</span></h5>';
 										
 									}
 								}else if(departmentType == "departmentEle"){
@@ -296,12 +312,20 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 									}
 								}else if(departmentType == "department"){
 									if(typeval == "PrintMediadepartment"+departmentId+""){
-										if(result[i].positiveCountMain !=null && result[i].positiveCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')" attr_categoryId="0" title="Click here to get individual articles" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</a> - <a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles('+result[i].mainPositiveArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].positiveCountGrpMain+'</a> (<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
-										}else{
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].positiveCountMain+'(<span style="color:#63C563">'+result[i].positivePerc.toFixed(0)+'%</span>)</h5>';
-										}
-										
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">';
+											if(result[i].positiveCountMain !=null && result[i].positiveCountMain >0){
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</span>'; 
+											}else{
+												str+='<span>'+result[i].positiveCountMain+'</span>'; 
+											}
+											str+=' - ';
+											if(result[i].positiveCountGrpMain != null && result[i].positiveCountGrpMain !=""){
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles(('+result[i].mainPositiveArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].positiveCountGrpMain+'</span>';
+											}else{
+												str+='<span>'+result[i].positiveCountGrpMain+'</span>';
+											}
+											str+='</h5>';
+											str+='<h5><span style="color:#EB2F2F">('+result[i].positivePerc.toFixed(0)+'%)</span></h5>';
 									}
 								} 
 								
@@ -322,12 +346,20 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 									}
 								}else if(departmentType == "overAll"){
 									if(typeval == "PrintMedia"){
-										if(result[i].negativCountMain != null && result[i].negativCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainNegativeArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].negativCountMain+'</a> - <a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles(('+result[i].mainNegativeArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].negativCountGrpMain+'</a> (<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
-										}else{
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
-										}
-										
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">';
+											if(result[i].negativCountMain !=null && result[i].negativCountMain >0){
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainNegativeArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].negativCountMain+'</span>'; 
+											}else{
+												str+='<span>'+result[i].negativCountMain+'</span>'; 
+											}
+											str+=' - ';
+											if(result[i].negativCountGrpMain != null && result[i].negativCountGrpMain !=""){
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles(('+result[i].mainNegativeArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].negativCountGrpMain+'</span>';
+											}else{
+												str+='<span>'+result[i].negativCountGrpMain+'</span>';
+											}
+											str+='</h5>';
+											str+='<h5><span style="color:#EB2F2F">('+result[i].negativePerc.toFixed(0)+'%)</span></h5>';
 									}
 								}else if(departmentType == "departmentEle"){
 									if(typeval == "ElectronicMediadepartment"+departmentId+""){
@@ -343,12 +375,20 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 									}
 								}else if(departmentType == "department"){
 									if(typeval == "PrintMediadepartment"+departmentId+""){
-										if(result[i].negativCountMain !=null && result[i].negativCountMain>0){
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;"><a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" title="Individual Articles('+result[i].mainNegativeArticlePerc+')" attr_categoryId="0" attr_group_type="individualArticles">'+result[i].negativCountMain+'</a> - <a class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles('+result[i].mainNegativeArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].negativCountGrpMain+'</a> (<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
-										}else{
-											str+='<h5 class="font_weight m_top5" style="font-size:12px;">'+result[i].negativCountMain+'(<span style="color:#EB2F2F">'+result[i].negativePerc.toFixed(0)+'%</span>)</h5>';
-										}
-										
+										str+='<h5 class="font_weight m_top5" style="font-size:12px;">';
+											if(result[i].negativCountMain !=null && result[i].negativCountMain >0){
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainNegativeArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].negativCountMain+'</span>'; 
+											}else{
+												str+='<span>'+result[i].negativCountMain+'</span>'; 
+											}
+											str+=' - ';
+											if(result[i].negativCountGrpMain != null && result[i].negativCountGrpMain !=""){
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles(('+result[i].mainNegativeArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].negativCountGrpMain+'</span>';
+											}else{
+												str+='<span>'+result[i].negativCountGrpMain+'</span>';
+											}
+											str+='</h5>';
+											str+='<h5><span style="color:#EB2F2F">('+result[i].negativePerc.toFixed(0)+'%)</span></h5>';
 									}
 								} 
 							str+='</div>';
