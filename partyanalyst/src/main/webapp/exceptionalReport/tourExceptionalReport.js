@@ -97,11 +97,11 @@ onloadTourCalls();
  
  function  buildDesignationWiseTourSubmittedOverviewDtls(result){
 	 var str='';
-	 str+='<div style="padding:8px;border:1px solid #d1ab66">';
-		str+='<h5 class="text_bold text-capital"><b>Last Month Tours Details</b></h5>';
+	 str+='<div class="tour_lastmonth_border">';
 	 str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top10">';
-				str+='<div class="table-responsive m_top10">';
+				str+='<h5 class="text_bold text-capital font_size24"><b>Last Month Tours Details</b></h5>';
+				str+='<div class="table-responsive">';
 					str+='<table class="table details-overview">';
 						str+='<thead>';
 							str+='<tr>';
@@ -127,10 +127,10 @@ onloadTourCalls();
 		str+='</div>';
 	str+='</div>';
 	
-	str+='<div class="row">';
+	str+='<div class="row ">';
 			str+='<div class="col-sm-12 m_top10">';
 				str+='<div class="table-responsive m_top10">';
-					str+='<table class="table details-overview">';
+					str+='<table class="table details-overview" id="dataTableId">';
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th>Designation</th>';
@@ -145,15 +145,19 @@ onloadTourCalls();
 						str+='<tbody>';
 						if(result.subList2 !=null && result.subList2.length>0){
 							for(var i in result.subList2){
-								str+='<tr>';
-									str+='<td>'+result.subList2[i].designation+'</td>';
-									str+='<td>'+result.subList2[i].totalCandiateCount+'</td>';
-									str+='<td>'+result.subList2[i].submittedCandiateCount+'</td>';
-									str+='<td>'+result.subList2[i].before15thDateTourSubmittedCoun+'</td>';
-									str+='<td>'+result.subList2[i].after15thDateTourSubmittedCoun+'</td>';
-									str+='<td>'+result.subList2[i].notSubmittedCandidateCount+'</td>';
-									str+='<td>'+result.subList2[i].notSubmittedPer+'</td>';
-								str+='</tr>';
+								if(result.subList2[i].notSubmittedCandidateCount !=null && result.subList2[i].notSubmittedCandidateCount>0){
+									str+='<tr>';
+										str+='<td>'+result.subList2[i].designation+'</td>';
+										str+='<td>'+result.subList2[i].totalCandiateCount+'</td>';
+										str+='<td>'+result.subList2[i].submittedCandiateCount+'</td>';
+										str+='<td>'+result.subList2[i].before15thDateTourSubmittedCoun+'</td>';
+										str+='<td>'+result.subList2[i].after15thDateTourSubmittedCoun+'</td>';
+										str+='<td>'+result.subList2[i].notSubmittedCandidateCount+'</td>';
+										str+='<td>'+result.subList2[i].notSubmittedPer+'</td>';
+									str+='</tr>';
+								}
+									
+								
 							}
 						}else{
 							str+='<tr>';
@@ -166,11 +170,11 @@ onloadTourCalls();
 		str+='</div>';
 	str+='</div>';
 	
-	str+='<div class="row">';
+	str+='<div class="row pagebreak">';
 				str+='<div class="col-sm-12 m_top10">';
-					str+='<h5 class="text_bold text-capital"><b>Last Month Tours Not Submitted Candidates List</b></h5>';
+					str+='<h5 class="text_bold text-capital font_size24"><b>Last Month Tours Not Submitted Candidates List</b></h5>';
 					str+='<div class="table-responsive m_top10">';
-						str+='<table class="table details-overview">';
+						str+='<table class="table details-overview-tour">';
 							str+='<thead>';
 								str+='<tr>';
 							    	str+='<th>District</th>';
@@ -219,6 +223,14 @@ onloadTourCalls();
 		str+='</div>';
 		str+='</div>';
   $("#overAllTourDetailsDivId").html(str);
+  $("#dataTableId").dataTable({
+		"paging":   false,
+		"info":     false,
+		"searching": false,
+		"autoWidth": true,
+		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"aaSorting": [[ 6, "desc" ]]
+	});
  }
  function getNotSubmittedCandidateDetailsByFilter(months)
 	{    
@@ -246,11 +258,11 @@ onloadTourCalls();
 	function buildNotSubmittedCandidateDetailsByFilter(result,months){
 		var str='';
 		
-			str+='<div class="row">';
+			str+='<div class="row pagebreak">';
 				str+='<div class="col-sm-12 m_top10">';
-					str+='<h5 class="text_bold text-capital" > Greater Than '+months+' Month Tours Not Submitted Candidates List</h5>';
+					str+='<h5 class="text_bold text-capital font_size24" > Greater Than '+months+' Month Tours Not Submitted Candidates List</h5>';
 					str+='<div class="table-responsive m_top10">';
-						str+='<table class="table details-overview">';
+						str+='<table class="table details-overview-tour">';
 							str+='<thead>';
 								str+='<tr>';
 							    	str+='<th>District</th>';
@@ -263,6 +275,7 @@ onloadTourCalls();
 							str+='</thead>';
 							str+='<tbody>';
 								for(var i in result){
+									if(result[i].notSubmittedNoOfMonth !=null && result[i].notSubmittedNoOfMonth>0){
 									str+='<tr>';
 										if(result[i].addressVO.districtName !=null && result[i].addressVO.districtName.trim().  length>0){
 											str+='<td>'+result[i].addressVO.districtName+'</td>';
@@ -295,6 +308,7 @@ onloadTourCalls();
 											str+='<td> - </td>';
 										}
 									str+='</tr>';
+									}
 								}
 							
 							str+='</tbody>';
