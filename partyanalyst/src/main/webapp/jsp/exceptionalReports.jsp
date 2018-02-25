@@ -65,15 +65,16 @@ header
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12" >
-				<!--<button class="btn btn-md btn-success printViewCls pull-right headerDisPlayNone" attr_divId="printableArea">Print</button>-->
+				<button class="btn btn-md btn-success printViewCls pull-right headerDisPlayNone" attr_divId="printableArea">Print</button>
+				<!--<button class="btn btn-md btn-success exportToPdf pull-right headerDisPlayNone" attr_id="printcontent">PDF</button>-->
 			</div>
 		<div class="row">
-				<div class="col-sm-12" id="mainDivHeaderId">
+				<div class="col-sm-12" id="">
 					<div class="panel panel-default panelNewCustom">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-sm-6">
-									<h4 class="panel-title text-capital">
+									<h4 class="panel-title text-capital font_size24">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
 											Meetings - <small class="text-muted"><span id="exceptionReportMeetingDateId">  </span></small>	
 									</h4>
@@ -128,13 +129,13 @@ header
 								</div>  
 							</div>
 						</div>
-						<div class="container-fluid">
-							<div class="panel-body">
-								<div id="meetingBlocksConstituencyDivId"></div>
-								<div id="meetingBlocksMandalDivId"></div>
-								<div id="meetingBlocksVillageDivId"></div>
+						
+						<div class="panel-body">
+							<div id="meetingBlocksConstituencyDivId"></div>
+							<div id="meetingBlocksMandalDivId"></div>
+							<div id="meetingBlocksVillageDivId"></div>
 						</div>
-					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -144,7 +145,7 @@ header
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-sm-9">
-									<h4 class="panel-title text-capital">
+									<h4 class="panel-title text-capital font_size24">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
 											Committees - <small class="text-muted">Over All</small>
 									</h4>
@@ -198,14 +199,12 @@ header
 								</div>  
 							</div>
 						</div>
-						<div class="container-fluid">
 							<div class="panel-body">
 								<div id="mandalTownDivisionCommDivId"></div>
 								<div id="villageWardCommDivId"></div>
 								<div id="boothCommDivId"></div>
 								<div id="affmandalTownDivision"></div>
 						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -215,7 +214,7 @@ header
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-sm-9">
-									<h4 class="panel-title text-capital">
+									<h4 class="panel-title text-capital font_size24">
 										<img src="newCoreDashBoard/img/training.png" class="iconClass" style="background-color:none;"/>
 											Training Camp - <small class="text-muted">Over All</small>
 									</h4>
@@ -242,7 +241,7 @@ header
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-sm-9">
-									<h4 class="panel-title text-capital">
+									<h4 class="panel-title text-capital font_size24">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
 											Tours 
 									</h4>
@@ -255,12 +254,11 @@ header
 								</div>  
 							</div>
 						</div>
-						<div class="container-fluid">
-							<div class="panel-body" style="padding-left: 0px;padding-right: 0px;">
+							<div class="panel-body">
 							
 								<div id="overAllTourDetailsDivId"></div>
 								
-								<div class="row">
+								<div class="row headerDisPlayNone">
 									<div class="pull-right m_top10">
 									    <div class ="col-md-6 m_top10">
 											<span class="input-group pull-right dateRangePickerCls" style="width:200px;">
@@ -279,7 +277,6 @@ header
 								</div>
 								<div id="toursSubmittedNoOfMonthsId"></div>
 						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -289,7 +286,7 @@ header
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-sm-9">
-									<h4 class="panel-title text-capital">
+									<h4 class="panel-title text-capital font_size24">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
 											Dalitha Tejam - <small class="text-muted">Over All</small>			
 									</h4>
@@ -301,12 +298,10 @@ header
 								</div>  
 							</div>
 						</div>
-						<div class="container-fluid">
 							<div class="panel-body">
 								<div id="overAllAndTop5PoorParliamentDivId"></div>
 								<div id="top10ConstituencyInchAndWhatsImageDivId"></div>
 						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -320,7 +315,7 @@ header
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-sm-9">
-									<h4 class="panel-title text-capital">
+									<h4 class="panel-title text-capital font_size24">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
 											Alert - <small class="text-muted">Over All</small>			
 									</h4>
@@ -332,23 +327,21 @@ header
 								</div>  
 							</div>
 						</div>
-						<div class="container-fluid">
 							<div class="panel-body">
 								<div id="overAllAlertsDivId"></div>
 								<div id="assignedParliamentWiseAlertsDivId"></div>
 						</div>
-					</div>
 				</div>
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="row pagebreak_before">
 				<div class="col-sm-12">
 					<div class="panel panel-default panelNewCustom">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-sm-9">
-									<h4 class="panel-title text-capital">
+									<h4 class="panel-title text-capital font_size24">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
 											Kaizala - <small class="text-muted">Over All</small> 		
 									</h4>
@@ -360,13 +353,11 @@ header
 								</div>  
 							</div>
 						</div>
-						<div class="container-fluid">
 							<div class="panel-body">
 								<div id="overAllKaizalaDivId"></div>
 								<div id="performanceKaizalaParliamentWiseDetailsDivId"></div>
 								<div id="performanceKaizalaConstituencyWiseDetailsDivId"></div>
 						</div>
-					</div>
 				</div>
 			</div>
 		</div>

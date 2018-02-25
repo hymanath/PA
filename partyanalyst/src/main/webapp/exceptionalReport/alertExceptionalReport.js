@@ -29,7 +29,7 @@ function buildAssignedCandidateWisePendingAlerts(result){
 	var str='';
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital" >Parliament Wise Assigned Alerts Pending candidates list</h5>';
+				str+='<h5 class="text_bold text-capital font_size24" >Parliament Wise Assigned Alerts Pending candidates list</h5>';
 				str+='<div class="table-responsive m_top10">';
 					str+='<table class="table details-overview1">';
 						str+='<thead>';
@@ -89,9 +89,9 @@ function buildOverAllAlertsDetails(result){
 	var str='';
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital" >OverAll Alerts</h5>';
+				str+='<h5 class="text_bold text-capital font_size24" >OverAll Alerts</h5>';
 				str+='<div class="table-responsive m_top10">';
-					str+='<table class="table details-overview">';
+					str+='<table class="table details-overview-tour">';
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th></th>';

@@ -31,7 +31,7 @@ function buildActivityPerformanceDetailsLocationWise(result){
 	var str='';
 	str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top10">';
-			str+='<h5 class="text_bold text-capital" >Top 7 Parliaments with Poor Performance</h5>';
+			str+='<h5 class="text_bold text-capital font_size24" >Top 7 Parliaments with Poor Performance</h5>';
 			str+='<div class="table-responsive m_top10">';
 				str+='<table class="table details-overview">';
 					str+='<thead>';
@@ -70,9 +70,9 @@ function buildActivityPerformanceDetailsLocationWise(result){
 	str+='</div>';
 str+='</div>';
 
-str+='<div class="row">';
+str+='<div class="row pagebreak">';
 		str+='<div class="col-sm-12 m_top10">';
-			str+='<h5 class="text_bold text-capital" >Top 10 - Assembly Constituencies with Poor Performance</h5>';
+			str+='<h5 class="text_bold text-capital font_size24" >Top 10 - Assembly Constituencies with Poor Performance</h5>';
 			str+='<div class="table-responsive m_top10">';
 				str+='<table class="table details-overview">';
 					str+='<thead>';
@@ -139,7 +139,7 @@ function buildActivityAttendedAndImageCoveredDetails(result){
 	var str='';
 		str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top10">';
-				str+='<h5 class="text_bold text-capital" >Top 10 -  MLA/Constituency Incharge with Poor Attendance</h5>';
+				str+='<h5 class="text_bold text-capital font_size24" >Top 10 -  MLA/Constituency Incharge with Poor Attendance</h5>';
 				str+='<div class="table-responsive m_top10">';
 					str+='<table class="table details-overview">';
 						str+='<thead>';
@@ -176,9 +176,9 @@ function buildActivityAttendedAndImageCoveredDetails(result){
 		str+='</div>';
 	str+='</div>';
 	
-	str+='<div class="row">';
+	str+='<div class="row pagebreak">';
 			str+='<div class="col-sm-12 m_top10">';
-				str+='<h5 class="text_bold text-capital" >Top 10 - Low Whatsapp Image Covered Assembly</h5>';
+				str+='<h5 class="text_bold text-capital font_size24" >Top 10 - Low Whatsapp Image Covered Assembly</h5>';
 				str+='<div class="table-responsive m_top10">';
 					str+='<table class="table details-overview">';
 						str+='<thead>';

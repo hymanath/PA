@@ -36,26 +36,26 @@ function buildListOfParliamentsWithPoorPerformance(result){
 	str+='<div class="row">';
 		str+='<div class="col-sm-4">';
 			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="">Overall Candidates to be trained</h4>';
-				str+='<h3 class="text_bold m_top10">'+OverallCandidatesTrained+'</h3>';
+				str+='<h4 class="font_size24">Overall Candidates to be trained</h4>';
+				str+='<h3 class="text_bold m_top10 font_size24">'+OverallCandidatesTrained+'</h3>';
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="col-sm-4">';
 			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="">As of now trained</h4>';
-				str+='<h3 class="text_bold m_top10">'+result[0].asOfNowTrained+' <small style="color:green;">'+result[0].asOfNowTrainedPer+' %</small></h3>';
+				str+='<h4 class="font_size24">As of now trained</h4>';
+				str+='<h3 class="text_bold m_top10 font_size24">'+result[0].asOfNowTrained+' <small style="color:green;">'+result[0].asOfNowTrainedPer+' %</small></h3>';
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="col-sm-4">';
 			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="">Yet to trained</h4>';
-				str+='<h3 class="text_bold m_top10">'+result[0].yetToTrain+' <small style="color:green;">'+result[0].yetToTrainPer+' %</small></h3>';
+				str+='<h4 class="font_size24">Yet to trained</h4>';
+				str+='<h3 class="text_bold m_top10 font_size24">'+result[0].yetToTrain+' <small style="color:green;">'+result[0].yetToTrainPer+' %</small></h3>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
-	str+='<div class="row">';
+	str+='<div class="row pagebreak">';
 		str+='<div class="col-sm-12 m_top20">';
-			str+='<h5 class="text_bold text-capital" >Top 7 Parliaments with Poor Performance</h5>';
+			str+='<h5 class="text_bold text-capital font_size24" >Top 7 Parliaments with Poor Performance</h5>';
 			str+='<div class="table-responsive m_top10">';
 				str+='<table class="table details-overview">';
 					str+='<thead>';
@@ -115,11 +115,18 @@ function buildListOfAssemblyWithPoorPerformance(result){
 	var str='';
 	str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top20">';
-			str+='<h5 class="text_bold text-capital">Top 10 Assembly Constituencies with Poor Performance-Center Wise</h5>';
+			str+='<h5 class="text_bold text-capital font_size24">Top 10 Assembly Constituencies with Poor Performance-Center Wise</h5>';
 		str+='</div>';
 	str+='</div>';
 	for(var i in result){
-		str+='<div class="row">';
+		if(result[i].name == "SVV CENTER" || result[i].name == "EWK CENTER"){
+			str+='<div class="row ">';
+		}else if(result[i].name == "GPN CENTER"){
+			str+='<div class="row pagebreak_before">';
+		}else{
+			str+='<div class="row pagebreak ">';
+		}
+		
 			str+='<div class="col-sm-12 m_top20">';
 				str+='<h5 class="text_bold">'+result[i].name+'</h5>';
 				str+='<div class="table-responsive m_top10">';

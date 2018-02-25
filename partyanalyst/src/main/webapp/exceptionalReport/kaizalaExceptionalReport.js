@@ -28,16 +28,19 @@ function getConstituencyWisePoorPerformance(typeval,id){
 }
 function buildConstituencyWisePoorPerformance(result,typeval,id){
 	var str='';
-	str+='<div class="row">';
-			str+='<div class="col-sm-12 m_top20">';
+	
 			if(typeval == "parliament"){
-				str+='<h5 class="text_bold text-capital" >Top 7 Parliaments with Poor Performance</h5>';
+				str+='<div class="row">';
+					str+='<div class="col-sm-12 m_top20">';
+				str+='<h5 class="text_bold text-capital font_size24" >Top 7 Parliaments with Poor Performance</h5>';
 			}else{
-				str+='<h5 class="text_bold text-capital" >Top 10 Assembly Constituencies with Poor Performance</h5>';
+				str+='<div class="row">';
+					str+='<div class="col-sm-12 m_top20">';
+				str+='<h5 class="text_bold text-capital font_size24" >Top 10 Assembly Constituencies with Poor Performance</h5>';
 			}
 				
 				str+='<div class="table-responsive m_top10">';
-					str+='<table class="table details-overview">';
+					str+='<table class="table details-overview-tour">';
 						str+='<thead>';
 							str+='<tr>';
 							if(typeval == "parliament"){
@@ -143,26 +146,26 @@ function buildOverallReport(result){
 	str+='<div class="row">';
 		str+='<div class="col-sm-3 m_top10">';
 			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="">Total Target</h4>';
-				str+='<h3 class="text_bold m_top10">'+result.target+'</h3>';
+				str+='<h4 class="font_size24">Total Target</h4>';
+				str+='<h3 class="text_bold m_top10 font_size24">'+result.target+'</h3>';
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="col-sm-3 m_top10">';
 			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="">Installed</h4>';
-				str+='<h3 class="text_bold m_top10">'+result.totalInstalled+'</h3>';
+				str+='<h4 class="font_size24">Installed</h4>';
+				str+='<h3 class="text_bold m_top10 font_size24">'+result.totalInstalled+'</h3>';
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="col-sm-3 m_top10">';
 			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="">Not Installed</h4>';
-				str+='<h3 class="text_bold m_top10">'+result.totalNotInstalled+'</h3>';
+				str+='<h4 class="font_size24">Not Installed</h4>';
+				str+='<h3 class="text_bold m_top10 font_size24">'+result.totalNotInstalled+'</h3>';
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="col-sm-3 m_top10">';
 			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="">No Smart Phone</h4>';
-				str+='<h3 class="text_bold m_top10">'+result.totalNotHavingSmartphone+'</h3>';
+				str+='<h4 class="font_size24">No Smart Phone</h4>';
+				str+='<h3 class="text_bold m_top10 font_size24">'+result.totalNotHavingSmartphone+'</h3>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';

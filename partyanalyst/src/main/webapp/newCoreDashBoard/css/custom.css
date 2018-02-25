@@ -3303,6 +3303,33 @@ background-color:#FFE08E !important;
 		font-weight:bold;
 		border-top:1px solid #d1ab66;
 }
+.details-overview-tour{
+		margin-bottom:0;
+		margin-top:10px;
+		border:1px solid #d1ab66;
+		background-color:#fff;	
+}
+.details-overview-tour thead tr th {
+	font-size:12px;
+	padding:15px 25px;
+	border-bottom:none;
+	font-weight:bold;
+	border-bottom:1px solid #d1ab66;
+	background-color:#fff;				
+}
+.details-overview-tour tbody tr td {
+	font-size:14px;
+	padding:15px 25px;
+	border-top:none;
+	font-weight:bold;
+}
+.details-overview-tour tfoot tr th{
+		font-size:14px;
+		padding:15px 25px;
+		border-bottom:none;
+		font-weight:bold;
+		border-top:1px solid #d1ab66;
+}
 .pad_d1ab66{
 	padding:10px;
 	border:1px solid #d1ab66;
@@ -3330,4 +3357,8 @@ background-color:#FFE08E !important;
 	padding:8px 17px;
 	border-top:none;
 	font-weight:bold;
+}
+.tour_lastmonth_border{
+	padding:8px;
+	border:1px solid #d1ab66
 }
