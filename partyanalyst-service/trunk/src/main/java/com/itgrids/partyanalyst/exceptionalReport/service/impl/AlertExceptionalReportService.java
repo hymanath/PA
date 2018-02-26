@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.exceptionalReport.service.impl;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,12 +11,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.exceptionalReport.service.IAlertExceptionalReportService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -265,6 +266,84 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 			}
 			alertCoreDashBoardVOs.add(alertCoreDashBoardVO1);
 			alertCoreDashBoardVOs.add(alertCoreDashBoardVO2);
+			return alertCoreDashBoardVOs;
+		}catch(Exception e){
+			LOG.error("Error occured getOverAllAlertsDetails() method of AlertExceptionalReportService{}");
+		}
+		return null;
+	}
+	public List<AlertCoreDashBoardVO> getDistrictWiseAlertsDetails(String startDate,String endDate, Long stateId,int size,List<Long> alertTypeIds){
+		try{
+			
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date stDate = null;
+			Date ndDate = null;
+			if(startDate != null && startDate.trim().length() == 10 && endDate != null && endDate.trim().length() == 10){
+				stDate = sdf.parse(startDate.trim());
+				ndDate = sdf.parse(endDate.trim());
+			}
+			
+			List<Object[]> districtWiseAlertCount = alertDAO.getDistrictWiseTotalAlerts(stDate,ndDate,stateId,alertTypeIds);
+			//create map for distId and statusId and count map
+			Map<Long,Map<Long,Long>> distIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+			Map<Long,Long> statusIdAndCountMap = null;
+			
+			Map<Long,String> distIdAndNameMap = new HashMap<Long,String>();
+			Map<Long,String> statusIdAndNameMap = new HashMap<Long,String>();
+			
+			if(districtWiseAlertCount != null && districtWiseAlertCount.size() > 0){
+				for(Object[] param : districtWiseAlertCount){
+					statusIdAndCountMap = distIdAndStatusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(statusIdAndCountMap == null){
+						statusIdAndCountMap = new HashMap<Long,Long>();
+						distIdAndStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusIdAndCountMap);
+					}
+					statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+					distIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					statusIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[3]));
+				}
+			}
+			
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+			
+			
+			
+			if(distIdAndStatusIdAndCountMap != null && distIdAndStatusIdAndCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> outerParam : distIdAndStatusIdAndCountMap.entrySet()){
+					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+					alertCoreDashBoardVO.setId(outerParam.getKey());
+					alertCoreDashBoardVO.setName(distIdAndNameMap.get(outerParam.getKey()));
+					if(outerParam != null && outerParam.getValue() != null && outerParam.getValue().size() > 0){
+						Long total = new Long(0L);
+						Long pending = 0L;
+						Long actionNotRequired = new Long(0L);
+						for(Entry<Long,Long> innerParam : outerParam.getValue().entrySet()){
+							total = total + commonMethodsUtilService.getLongValueForObject(innerParam.getValue());
+							if(innerParam != null && innerParam.getKey() != null && innerParam.getKey().longValue() == 1L){
+								pending = innerParam.getKey();
+							}
+							if(innerParam != null && innerParam.getKey() != null && (innerParam.getKey().longValue() == 6L || innerParam.getKey().longValue() == 7L)){
+								actionNotRequired = actionNotRequired + commonMethodsUtilService.getLongValueForObject(innerParam.getValue());
+							}
+							
+						}
+						alertCoreDashBoardVO.setTotalAlert(total);
+						alertCoreDashBoardVO.setPendingCount(pending);
+						alertCoreDashBoardVO.setActionRequired(total-actionNotRequired);
+					}
+					alertCoreDashBoardVOs.add(alertCoreDashBoardVO);
+				}
+			}
+			Collections.sort(alertCoreDashBoardVOs, new Comparator<AlertCoreDashBoardVO>(){
+				@Override
+				public int compare(AlertCoreDashBoardVO obj1,AlertCoreDashBoardVO obj2) {
+					Long value1 = obj1.getActionRequired();
+					Long value2 = obj2.getActionRequired();
+					return value2.compareTo(value1);
+				}
+			});
 			return alertCoreDashBoardVOs;
 		}catch(Exception e){
 			LOG.error("Error occured getOverAllAlertsDetails() method of AlertExceptionalReportService{}");
