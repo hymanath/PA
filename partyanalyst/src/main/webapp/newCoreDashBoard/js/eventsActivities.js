@@ -2609,15 +2609,19 @@ function levelWiseSBData(divId)
 }
 function getSettingActivitiesJBMData(locationId,divId){
 	$("#"+locationId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var locationTypeId =0;
+			var locationTypeId =0;var locationValue =0;
 	if(locationId == 'district'){
 		locationTypeId =3
+		locationValue=0;
 	}else if(locationId == 'constituency'){
 		locationTypeId =4
+		locationValue=0;
 	}else if(locationId == 'parliament'){
+		locationValue=0;
 		locationTypeId =10
 	}else if(locationId == 'state'){
 		locationTypeId =2
+		locationValue=1;
 	}
 
 	var jsObj={
@@ -2625,6 +2629,7 @@ function getSettingActivitiesJBMData(locationId,divId){
 	    toDate : '',
 		activityId:divId,
 		locationScopeId:locationTypeId,
+		locationValue:locationValue
 	}	
 	$.ajax({
 	 type: "POST",
