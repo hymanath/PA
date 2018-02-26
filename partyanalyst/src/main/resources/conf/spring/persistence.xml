@@ -1373,6 +1373,7 @@
 						 <value>com.itgrids.partyanalyst.model.ActivityLocationParticipantInfo</value>
 						 <value>com.itgrids.partyanalyst.model.ActivityParticipantMemberType</value>
 						 <value>com.itgrids.partyanalyst.model.ActivityLocationParticipant</value>
+						 <value>com.itgrids.partyanalyst.model.TrainingCampInviteeConstituency</value>
 				  </list>
 			
 		</property>

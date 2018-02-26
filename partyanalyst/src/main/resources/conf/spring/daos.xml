@@ -4290,4 +4290,7 @@
 	 <bean id="alertIssueCategoryRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertIssueCategoryRelationDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="trainingCampInviteeConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampInviteeConstituencyDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		

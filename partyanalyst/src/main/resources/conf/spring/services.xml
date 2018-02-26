@@ -4718,6 +4718,7 @@
             <property name="constituencyDAO" ref="constituencyDAO"></property>
             <property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
             <property name="trainingCampDAO" ref="trainingCampDAO"></property>
+            <property name="trainingCampInviteeConstituencyDAO" ref="trainingCampInviteeConstituencyDAO"></property>
 		</bean>
 		<bean name="alertExceptionalReportService" class="com.itgrids.partyanalyst.exceptionalReport.service.impl.AlertExceptionalReportService">
 			<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
