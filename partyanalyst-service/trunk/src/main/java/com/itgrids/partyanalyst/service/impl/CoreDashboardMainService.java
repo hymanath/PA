@@ -9573,6 +9573,7 @@ public Map<Long,CoreDebateVO> setDesignationLessValuesToMap(List<Object[]> ObjLi
 			Date endDate   =null;
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
 				startDate = sdf.parse(startDateStr);
 				endDate = sdf.parse(endDateStr);
@@ -9596,8 +9597,8 @@ public Map<Long,CoreDebateVO> setDesignationLessValuesToMap(List<Object[]> ObjLi
 					VO.setCandidateId(obj[0] !=null ? (Long)obj[0]:0l);
 					VO.setCandidateName(obj[1] !=null ? obj[1].toString():"");			
 					VO.setId(obj[2] !=null ? (Long)obj[2]:0l);
-					VO.setStartTime(obj[3] !=null ? sdf.format((Date)obj[3]):null);
-					VO.setEndTime(obj[4] !=null ? sdf.format((Date)obj[4]):null);
+					VO.setStartTime(obj[3] !=null ? sdf1.format((Date)obj[3]):null);
+					VO.setEndTime(obj[4] !=null ? sdf1.format((Date)obj[4]):null);
 					VO.setObserverId(obj[5] !=null ? (Long)obj[5]:0l);
 					VO.setObserverName(obj[6] !=null ? obj[6].toString():"");
 					VO.setCharecterId(obj[7] !=null ? (Long)obj[7]:0l);
@@ -9609,29 +9610,18 @@ public Map<Long,CoreDebateVO> setDesignationLessValuesToMap(List<Object[]> ObjLi
 					}
 					VO.setCasteId(obj[11] !=null ? (Long)obj[11]:0l);
 					VO.setCasteName(obj[12] !=null ? obj[12].toString():"");
-					 /*if(!type.equalsIgnoreCase("others") && casteId.longValue()>0){
-						 VO.setSubCastName(obj[14] !=null ? obj[14].toString():"");
-					 }*/
-					 //casteGroupIds.add(VO.getCasteId());
 					debateIds.add(VO.getId());
 					finalList.add(VO);
 					if(commonMethodsUtilService.getStringValueForObject(obj[12]) != null && !commonMethodsUtilService.getStringValueForObject(obj[12]).isEmpty()){
-					List<Object[]> subCasteList = debateParticipantDAO.getCandidateGroupMatchedDetails(VO.getCandidateId(),type,VO.getCasteId(),partyId);
-					if(subCasteList != null && subCasteList.size()>0l){
-						for(Object[] param: subCasteList){
-						CoreDebateVO matchedVo =getMatchedCasteCandidateId(finalList,commonMethodsUtilService.getLongValueForObject(param[0]));
-						if(matchedVo != null){
-							matchedVo.setSubCastName(param[14] !=null ? param[14].toString():"");
-						}
-						}
+					Object[] subCasteList = debateParticipantDAO.getCandidateGroupMatchedDetails(startDate,endDate,VO.getCandidateId(),type,VO.getCasteId(),partyId);
+					if(subCasteList != null){
+						VO.setSubCastName(subCasteList[14] !=null ? subCasteList[14].toString():"");
+					 }
 						
 					}
 				}
 				}	
 				
-			}
-			
-			//getMatchedCasteId(List<CoreDebateVO> returnList,Long casteId)
 			// here we are getting the main subjet of the debeate
 			Map<Long,List<String>> subjectsMap = new HashMap<Long, List<String>>();
 			

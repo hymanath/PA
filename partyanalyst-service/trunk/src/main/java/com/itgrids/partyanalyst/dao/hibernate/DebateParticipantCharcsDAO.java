@@ -819,7 +819,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 				" and model.characteristics.isDeleted = 'N' " +
 				" and model1.debateRoles.isDeleted ='N' " +
 				" and model.debateParticipant.party.isNewsPortal = 'Y' " +
-				" and model1.debateParticipant.debate.isDeleted = 'N' " );
+				" and model1.debateParticipant.debate.isDeleted = 'N' and model1.debateParticipant.candidate.isDebateCandidate = 'Y'" );
 		   if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 		 	  str.append(" and model.debateParticipant.debateId = model3.debateId ");
 		    }
@@ -1082,7 +1082,7 @@ public List<Object[]> getRoleBasedOthersPerformanceCohort(Date startDate,Date en
 			" and model.characteristics.isDeleted = 'N' " +
 			" and model1.debateRoles.isDeleted ='N' " +
 			" and model.debateParticipant.party.isNewsPortal = 'Y' " +
-			" and model1.debateParticipant.debate.isDeleted = 'N' " );
+			" and model1.debateParticipant.debate.isDeleted = 'N'  and model1.debateParticipant.candidate.isDebateCandidate = 'Y' " );
 	   if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 	 	  str.append(" and model.debateParticipant.debateId = model3.debateId ");
 	    }
