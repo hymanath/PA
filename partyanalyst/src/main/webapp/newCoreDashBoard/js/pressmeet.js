@@ -1384,7 +1384,7 @@ function getCasteWiseCandidateCounts(){
 	var str='';
 	if(result !=null){
 			str+='<div class="table-responsive m_top20">';
-				str+='<table class="table table-bordered dataTableSorting" >';
+				str+='<table class="table table-bordered " id="pressMeetCasteAnalysisTableId">';
 				str+='<thead>';
 					str+='<tr>';
 						str+='<th class="text-capital">Party</th>';
@@ -1420,8 +1420,8 @@ function getCasteWiseCandidateCounts(){
 				str+='</table>';	
 			str+='</div>';
 			//alert(str);
-		//$("#pressMeetCasteAnalysisDivId").html(str);
-		//$("#pressmetCasteWiseDtlsId").dataTable();
+		$("#pressMeetCasteAnalysisDivId").html(str);
+		$("#pressMeetCasteAnalysisTableId").dataTable();
 		/* $("#pressmetCasteWiseDtlsId").dataTable({
 				 "scrollX": true,
 				"scrollCollapse": true,

@@ -1961,7 +1961,7 @@ function getCasteCategoryWisePartyDetails(){
 	var str='';
 	if(result !=null){
 			str+='<div class="table-responsive m_top20">';
-				str+='<table class="table table-bordered dataTableSorting ">';
+				str+='<table class="table table-bordered dataTableSorting " id="debateCasteGroupDetailsId">';
 				str+='<thead>';
 					str+='<tr>';
 						str+='<th class="text-capital">Party</th>';
@@ -2001,6 +2001,7 @@ function getCasteCategoryWisePartyDetails(){
 			str+='</div>';
 			
 		$("#casteAnalysisDivId").html(str);
+		$("#debateCasteGroupDetailsId").dataTable();
 	}else{
 			$("#casteAnalysisDivId").html('<h3>NO DATA AVAILABLE</h3>')
 		}
