@@ -3364,7 +3364,7 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
  }
 	
 	@Override
-	public List<Object[]> getLocationwiseCoductedCount(Long activityScopeId,Long locationScopeId,String type) {
+	public List<Object[]> getLocationwiseCoductedCount(Long activityScopeId,Long locationScopeId,String type,Date fromDate, Date toDate,Long locationValue) {
 		StringBuilder sb = new StringBuilder();
 		
 		// 0-total,1-conduct,3-locationUId,4-locationName
@@ -3380,7 +3380,7 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 				sb.append(" ,model.address.district.districtId, model.address.district.districtName ");
 			}else if(locationScopeId ==4l){
 				sb.append(" ,model.address.constituency.constituencyId, model.address.constituency.name, model.address.constituency.district.districtId," +
-						"model.address.constituency.district.districtName ");
+						" model.address.constituency.district.districtName ");
 			}else if(locationScopeId ==10l){
 				sb.append(" ,model.address.parliamentConstituency.constituencyId, model.address.parliamentConstituency.name ");
 			}else if(locationScopeId ==2l){
@@ -3388,21 +3388,30 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 			}
 		}
 		sb.append(" from ActivityLocationInfo model where ");
-		if(locationScopeId !=null && locationScopeId > 0l ){
-			if (locationScopeId == 3l || locationScopeId == 4l) {
-				sb.append("model.address.district.districtId >10 ");
-			}else {
-				sb.append(" model.address.state.stateId=1");
+	
+		if(activityScopeId != null && activityScopeId >0){
+			sb.append(" model.activityScope.activityScopeId =:activityScopeId");
+		}
+		
+		if(locationScopeId !=null && locationScopeId > 0l && locationValue !=null && locationValue>0l ){
+			if (locationScopeId == 3l){
+				sb.append(" and model.address.district.districtId=:locationValue ");
+			}else if( locationScopeId == 4l) {
+				sb.append(" and model.address.constituency.constituencyId=:locationValue");
+			}else if(locationScopeId == 10l){
+				sb.append(" and model.address.state.stateId=1 and parliamentConstituency.constituencyId=:locationValue");
+			}else if(locationScopeId==2l){
+				sb.append(" and model.address.state.stateId=:locationValue");
 			}
 		}
 	
-		if(activityScopeId != null && activityScopeId >0){
-			sb.append(" and model.activityScope.activityScopeId =:activityScopeId");
-		}
+	
 		if(type != null && type.length() >0 && type.equalsIgnoreCase("conduct")){
 			sb.append(" and model.updatedStatus ='UPDATED' and model.conductedDate is not null ");
 		}
-		
+		if(fromDate !=null && toDate !=null){
+			sb.append(" and model.conductedDate between :fromDate and :toDate ");
+		}
 		if(locationScopeId !=null && locationScopeId > 0l ){
 			if(locationScopeId ==3l){
 				sb.append(" group by model.address.district.districtId");
@@ -3416,6 +3425,12 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 		if(activityScopeId != null && activityScopeId >0){
 			query.setParameter("activityScopeId", activityScopeId);
 		}
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}if(locationScopeId != null && locationScopeId.longValue()>0 && locationValue !=null && locationValue>0l){
+			query.setParameter("locationValue", locationValue);
+		}
 		  
 		return query.list();
 		
@@ -3423,7 +3438,7 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 
 
 	@Override
-	public List<Object[]> getIvrStatusForLocation(Long activityScopeId,Long locationScopeId) {
+	public List<Object[]> getIvrStatusForLocation(Long activityScopeId,Long locationScopeId, Date startDate, Date endDate,Long locationValue){
 		//0-count,2-status,3-question 4-qid,5-locationId
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(distinct model.activityLocationInfoId),model.ivrStatus, 'IVR Call Status (Conducted or Not)?',23 ");
@@ -3438,7 +3453,23 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 				sb.append(" ,model.address.state.stateId");
 			}
 		}
-		sb.append(" from ActivityLocationInfo model where model.activityScope.activityScopeId=:activityScopeId group by model.ivrStatus ");
+		sb.append(" from ActivityLocationInfo model where model.activityScope.activityScopeId=:activityScopeId" );
+		if(startDate !=null && endDate !=null){
+			sb.append(" and model.conductedDate between :startDate and :endDate");
+		}
+		if(locationScopeId !=null && locationScopeId > 0l && locationValue !=null && locationValue>0l){
+			if(locationScopeId ==3l){
+				sb.append(" and model.address.district.districtId=:locationValue ");
+			}else if(locationScopeId ==4l){
+				sb.append(" and model.address.constituency.constituencyId=:locationValue ");
+			}else if(locationScopeId ==10l){
+				sb.append(" and model.address.parliamentConstituency.constituencyId=:locationValue");
+			}else if(locationScopeId ==2l){
+				sb.append(" and model.address.state.stateId=:locationValue");
+			}
+		}
+		
+		sb.append("  group by model.ivrStatus ");
 		
 		if(locationScopeId !=null && locationScopeId > 0l ){
 			if(locationScopeId ==3l){
@@ -3456,12 +3487,19 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 		if(activityScopeId != null && activityScopeId >0){
 			query.setParameter("activityScopeId", activityScopeId);
 		}
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("enDate", endDate);
+		}
+		if(locationScopeId !=null && locationScopeId > 0l && locationValue !=null && locationValue>0l){
+			query.setParameter("locationValue", locationValue);
+		}
 		return query.list();
 	}
 
 
 	@Override
-	public List<Object[]> getInchargeMLAAttendCount(Long activityScopeId,Long locationScopeId) {
+	public List<Object[]> getInchargeMLAAttendCount(Long activityScopeId,Long locationScopeId,Date startDate,Date endDate) {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("select  COUNT(DISTINCT model.activityLocationInfo.conductedDate),COUNT(*) ");
@@ -3481,6 +3519,9 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 		sb.append(" from ActivityQuestionAnswer model where " +
 				" model.activityQuestionnaireId= 27  AND model.activityLocationInfo.conductedDate IS NOT NULL" +
 				" and model.isDeleted ='N' and model.activityOptionId=22 and model.activityLocationInfo.activityScopeId=:activityScopeId");
+		if(startDate !=null && endDate != null){
+			sb.append(" and model.insertedTime between :startDate and :endDate");
+		}
 		if(locationScopeId !=null && locationScopeId > 0l ){
 			if(locationScopeId ==3l){
 				sb.append(" group by model.activityLocationInfo.address.district.districtId");
@@ -3496,6 +3537,11 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 		Query query = getSession().createQuery(sb.toString());
 		if(activityScopeId != null && activityScopeId >0){
 			query.setParameter("activityScopeId", activityScopeId);
+		}
+		if(startDate !=null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+			
 		}
 		return query.list();
 	}
@@ -3546,4 +3592,5 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 		query.setParameter("activityScopeId", activityScopeId);
 		return query.list();
 	}
+
 }

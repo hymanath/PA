@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
@@ -1579,5 +1580,60 @@ public List<Object[]> getWardNamesLocationsInfocoveredLocationsByScopeId(Long ac
 		 query.setParameter("activityScopeId", activityScopeId);
 		 return query.list();
 	}
+
+	@Override
+	public List<Object[]> getlatestimages(Date fromDate, Date toDate,List<Long> locationScopeId, List<Long> locationValue, Long activityId) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT AID.activity_info_document_id as imageId,AD.path as path, UA.district_id as districtId, UA.constituency_id as constituencyId," +
+				" UA.panchayat_id as villageId, UA.tehsil_id as tehsilId, p.panchayat_name as villagename, t.tehsil_name as tehsilName ," +
+				" c.name as constituencyname, d.district_name as districtname FROM " +
+				" activity_info_document AID, activity_document AD,  activity_scope ASA, user_address UA  " +
+				" LEFT JOIN panchayat p ON p.panchayat_id = UA.panchayat_id " +
+				" LEFT JOIN tehsil t on  t.tehsil_id = p.tehsil_id " +
+				" left Join constituency c on c.constituency_id = UA.constituency_id" +
+				" left Join district d on d.district_id = UA.district_id");
+		sb.append(" WHERE AID.activity_document_id = AD.activity_document_id AND AD.activity_scope_id = ASA.activity_scope_id  " +
+				"  AND AID.activity_address_id = UA.user_address_id");
+		if(activityId !=null && activityId>0){
+			sb.append(" and ASA.activity_id	=:activityId");
+		}
+		if(fromDate !=null && toDate !=null && fromDate.toString().length()>0 && toDate.toString().length()>0){
+			sb.append(" and AID.inserted_time between :fromDate and :toDate ");
+		}
+		if(locationScopeId !=null && locationValue!=null){
+			if(locationScopeId.contains(2l)){
+				sb.append(" and UA.state_Id in(1) ");
+			}else if(locationScopeId.contains(3l)){
+				sb.append(" and UA.district_id in(:locationValue)");
+			}else if(locationScopeId.contains(4l)){
+				sb.append(" andUA.constituency_id in(:locationValue)");
+			}else if(locationScopeId.contains(5l)){
+				sb.append(" and  UA.tehsil_id in(:locationValue)");
+			}
+		}
+		sb.append(" order by AID.inserted_time desc limit 30");
+		 Query query = getSession().createSQLQuery(sb.toString()).addScalar("imageId", Hibernate.LONG)
+				 .addScalar("path",Hibernate.STRING)
+				 .addScalar("districtId", Hibernate.LONG)
+				 .addScalar("districtname",Hibernate.STRING)
+				 .addScalar("constituencyId", Hibernate.LONG)
+				 .addScalar("constituencyname",Hibernate.STRING)
+				 .addScalar("tehsilId", Hibernate.LONG)
+				 .addScalar("tehsilName",Hibernate.STRING)
+				 .addScalar("villageId", Hibernate.LONG)
+				 .addScalar("villagename",Hibernate.STRING);
+		
+		// if(locationScopeId != null)
+			//	query.setParameterList("locationValue", locationValue);
+			if(toDate != null && fromDate != null){
+				query.setParameter("fromDate", fromDate);
+				query.setParameter("toDate", toDate);
+			}
+			 query.setParameter("activityId", activityId);
+		 return query.list();
+	}
+	
+	
 }
 

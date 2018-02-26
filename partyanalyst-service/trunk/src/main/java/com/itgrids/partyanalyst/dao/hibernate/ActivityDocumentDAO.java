@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -7,6 +8,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IActivityDocumentDAO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.model.ActivityDocument;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -378,6 +380,54 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 			return query.list();
 		
 		
+	}
+
+	@Override
+	public List<Object[]> getLocationWiseCount(Long activityScopeId,Long locationScopeId, Date startDate, Date endDate) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(model.activityDocument.activityDocumentId) " );
+		if(locationScopeId !=null && locationScopeId.longValue()>0 ){
+			if(locationScopeId ==2l){
+				sb.append(" ,model.userAddress.state.stateId");
+			}else if(locationScopeId == 3l){
+				sb.append(" ,model.userAddress.district.districtId");
+			}else if(locationScopeId ==4l){
+				sb.append(" ,model.userAddress.constituency.constituencyId");
+			}else if(locationScopeId ==10l){
+				sb.append(" ,model.userAddress.parliamentConstituency.constituencyId");
+			}
+		}
+		sb.append(" from ActivityInfoDocument model where  model.isDeleted ='N'");
+		
+		if(activityScopeId !=null && activityScopeId.longValue()>0){
+			sb.append(" and model.activityDocument.activityScopeId =:activityScopeId ");
+		}
+		if(startDate !=null && endDate!=null){
+			sb.append(" and model.insertedTime between :startDate and :endDate");
+		}
+		
+		if(locationScopeId !=null && locationScopeId.longValue()>0 ){
+			if(locationScopeId ==2l){
+				sb.append(" group by model.userAddress.state.stateId");
+			}else if(locationScopeId == 3l){
+				sb.append(" group by model.userAddress.district.districtId");
+			}else if(locationScopeId ==4l){
+				sb.append(" group by model.userAddress.constituency.constituencyId");
+			}else if(locationScopeId ==10l){
+				sb.append(" group by model.userAddress.parliamentConstituency.constituencyId");
+			}
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(activityScopeId !=null && activityScopeId.longValue()>0){
+			query.setParameter("activityScopeId", activityScopeId);
+		}
+		if(startDate !=null && endDate!=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		return query.list();
+				
 	}
 
 }
