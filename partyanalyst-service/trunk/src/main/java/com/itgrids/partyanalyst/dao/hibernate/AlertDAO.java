@@ -11477,6 +11477,43 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		query.setDate("endDate", endDate);
 		return (Long) query.uniqueResult();
 	}
+	public List<Object[]> getDistrictWiseTotalAlerts(Date stDate, Date ndDate, Long stateId,List<Long>alertTypeIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select " +
+				" D.district_id as districtId, " +//0
+				" D.district_name as districtName, " +//1
+				" ALTSTS.alert_status_id as alertStatusId," +//2
+				" ALTSTS.alert_status as alertStatus, " +//3
+				" count(distinct ALT.alert_id) as count " +//4
+				" from alert ALT, alert_type ALTTYPE ,alert_status ALTSTS,user_address UA, state S, district D " +
+				" where ALT.is_deleted = 'N' and " +
+				" ALT.address_id = UA.user_address_id and " +
+				" UA.state_id = :stateId and  " +
+				" UA.district_id = D.district_id and " +
+				" D.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") and " +
+				" ALT.alert_type_id = ALTTYPE.alert_type_id and " +
+				" ALTTYPE.alert_type_id in (:alertTypeIds) and " +
+				" ALT.alert_status_id = ALTSTS.alert_status_id and " );
+		if(stDate != null && ndDate != null){
+			sb.append(" ALT.created_time between date(:stDate) and date(:ndDate) ");
+		}
+		sb.append(" group by D.district_id,ALTSTS.alert_status_id ");
+		SQLQuery query = getSession().createSQLQuery(sb.toString());
+		query.addScalar("districtId", Hibernate.LONG);
+		query.addScalar("districtName", Hibernate.STRING);
+		query.addScalar("alertStatusId", Hibernate.LONG);
+		query.addScalar("alertStatus", Hibernate.STRING);
+		query.addScalar("count", Hibernate.LONG);
+		
+		query.setParameter("stateId", stateId);
+		query.setParameterList("alertTypeIds", alertTypeIds);
+		if(stDate != null && ndDate != null){
+			query.setDate("stDate", stDate);
+			query.setDate("ndDate", ndDate);
+		}
+		return query.list();
+	}
+	
 	public List<Object[]> getDesignationOfCadre(List<Long> tdpCadreIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select tcm.tdp_cadre_id as tdpCadreId ,CONCAT(tbc.name,'_', ");

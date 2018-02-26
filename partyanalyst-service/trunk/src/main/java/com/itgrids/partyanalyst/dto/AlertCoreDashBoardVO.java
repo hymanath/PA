@@ -86,6 +86,8 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Double lastMonthCompletedPer;
 	
 	
+	private Long actionRequired;
+	
 	
 	private List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
 	
@@ -643,6 +645,14 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setLastMonthCompletedPer(Double lastMonthCompletedPer) {
 		this.lastMonthCompletedPer = lastMonthCompletedPer;
+	}
+
+	public Long getActionRequired() {
+		return actionRequired;
+	}
+
+	public void setActionRequired(Long actionRequired) {
+		this.actionRequired = actionRequired;
 	}	
 	
     	
