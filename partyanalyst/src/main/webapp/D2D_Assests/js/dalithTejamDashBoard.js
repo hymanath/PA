@@ -1,17 +1,51 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="d2d-loader"><div class="loader"></div><img src="D2D_Assests/images/login_logo.png"/></div></div></div>';
+var spinner_count = '<div class="row"><div class="col-sm-12"><img src="D2D_Assests/images/spinner.gif" style="width:20px;height:20px;"/></div></div>';
 var url = window.location.href;
 var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
   wurl = url.substr(0,(url.indexOf(".in")+3));
 var glStartDate = moment().subtract(6, 'days').format("DD-MM-YYYY");
 var glEndDate = moment().format("DD-MM-YYYY");
+$(".chosen-select").chosen();
 var activityId=38;
 var globallevelIds='';
 var globallevelValues='';
-getUserAccessLevelIdsAndValues();
 
-function getUserAccessLevelIdsAndValues()
-{
+$("#dateRangePickerAUM").daterangepicker({
+      opens: 'left',
+      startDate: glStartDate,
+      endDate: glEndDate,
+    locale: {
+      format: 'DD-MM-YYYY'
+    },
+	ranges: {
+		'Last 7 Days':[moment().subtract(6, 'days').format("DD/MM/YYYY"), moment().format("DD/MM/YYYY")],
+		'Today' : [moment(), moment()],
+		'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		//'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		//'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		'This Month': [moment().startOf('month'), moment()],
+		//'This Year': [moment().startOf('Year'), moment()]
+	}
+   
+});
+
+	var dates= $("#dateRangePickerAUM").val();
+    var pickerDates = glStartDate+' - '+glEndDate
+	if(dates == pickerDates)
+	{
+		$("#dateRangePickerAUM").val('Last 7 Days');
+		$("#newsDateId").html('Last 7 Days');
+	}
+  $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
+		glStartDate = picker.startDate.format('DD-MM-YYYY');
+		glEndDate = picker.endDate.format('DD-MM-YYYY');
+		$("#newsDateId").html(glStartDate+" / "+glEndDate);
+		onLoadCalls();
+  });
+ getUserAccessLevelIdsAndValues(); 
+ function getUserAccessLevelIdsAndValues(){
 	var jsObj={
 		
 	}
@@ -30,36 +64,17 @@ function getUserAccessLevelIdsAndValues()
 	
 	
 }
+ function onLoadCalls(){
+	getAllDistricts();
+	getActivityWiseCounts();
+	getActivityOverAllSummaryforDelithatejam();
+	getRecentImagesList(); 
+	DalithaTejamnews();
+	levelWiseSBData(activityId)
+}
 
-$("#dateRangePickerAUM").daterangepicker({
-      opens: 'left',
-      startDate: glStartDate,
-      endDate: glEndDate,
-    locale: {
-      format: 'DD-MM-YYYY'
-    },
-   /*  ranges: {
-        'All':[moment().subtract(6, 'days').format("DD-MM-YYYY"), moment().format("DD-MM-YYYY")],
-        'Today' : [moment(), moment()],
-		'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-        'This Month': [moment().startOf('month'), moment()]s
-       
-    } */
-});
-
- var dates= $("#dateRangePickerAUM").val();
-    var pickerDates = glStartDate+' - '+glEndDate
- 
-  $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
-    glStartDate = picker.startDate.format('DD-MM-YYYY')
-    glEndDate = picker.endDate.format('DD-MM-YYYY')
-	onLoadCalls();
-  });
-
-getAllDistricts();
 function getAllDistricts(){
-	$('#district').html("ALL districts");
+	$('#districtId').html("");
 	var jsObj={
 			"stateId":1
 		}
@@ -74,30 +89,154 @@ function getAllDistricts(){
 		
 }
 function buildResultforWordCloud(result){
-	var optionStr="";
 	
+	var optionStr="";
 	optionStr+='<option value="0" selected>ALL Districts</option>';
 	for(var i in result){
 		optionStr+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>';
 		
-	}$('#district').html(optionStr);
-
-}
+	}
 	
-function onLoadCalls(){
-	getRecentImagesList()
-	levelWiseSBData(activityId);
-	getActivityWiseCounts();
+	$('#districtId').html(optionStr);
+	$('#districtId').chosen();
+	$('#districtId').trigger("chosen:updated");
 }
-
+function getActivityWiseCounts(){
+	$("#totalVillagesCountId").html(spinner_count);
+	$("#totalyesCountId").html(spinner_count);
+	$("#totalMaybeCountId").html(spinner_count);
+	$("#totalNoCountId").html(spinner_count);
+	$("#todayVisitedCount").html(spinner_count);
+	var jsObj={
+		activityId:activityId,
+		activityMemberId : 44,
+	    stateId : 1,
+	    userTypeId : 2
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "getActivityOverAllSummaryAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null){
+			buildActivityCounts(result);
+		}
+	});
+}
+function buildActivityCounts(result){
+	if(result[0].apTotal !=null && result[0].apTotal>0){
+		$("#totalVillagesCountId").html(result[0].apTotal);
+	}else{
+		$("#totalVillagesCountId").html('-');
+	}
+	
+	if(result[0].yesCount !=null && result[0].yesCount>0){
+		$("#totalyesCountId").html(result[0].yesCount);
+	}else{
+		$("#totalyesCountId").html(' - ');
+	}
+	
+	if(result[0].totalImages !=null && result[0].totalImages>0){
+		$("#imagesCovered").html("<b>"+result[0].imagesCovered+"/"+result[0].totalImages+"</b>");
+	}else{
+		$("#imagesCovered").html(' - ');
+	}
+	
+	if(result[0].mayBecount !=null && result[0].mayBecount>0){
+		$("#totalMaybeCountId").html(result[0].mayBecount);
+	}else{
+		$("#totalMaybeCountId").html(' - ');
+	}
+	
+	if(result[0].noCount !=null && result[0].noCount>0){
+		$("#totalNoCountId").html(result[0].noCount);
+	}else{
+		$("#totalNoCountId").html(' - ');
+	}
+	if(result[0].noCount !=null && result[0].noCount>0){
+		$("#todayVisitedCount").html(result[0].yesCount);
+	}else{
+		$("#todayVisitedCount").html(' - ');
+	}
+	
+	
+}
+function getActivityOverAllSummaryforDelithatejam(){
+	$("#todayLoanAppliedCount").html(spinner_count);
+	$("#todayRegistration").html(spinner_count);
+	$("#totalLoanApplied").html(spinner_count);
+	$("#totalRegistered").html(spinner_count);
+	$("#totalSCPopulation").html(spinner_count);
+	$("#totalCoveredPopulation").html(spinner_count);
+	$("#notCovered").html(spinner_count);
+	var jsObj={
+		activityId:activityId,
+		activityMemberId : 44,
+	    fromDateStr:glStartDate,
+		toDateStr:glEndDate
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "getAffiliatedActivityCountAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			buildActivityaffiliatedCounts(result);
+		}
+	});
+}
+function buildActivityaffiliatedCounts(result){
+	if(result[0].todayLoanApplied !=null && result[0].todayLoanApplied>0){
+		$("#todayLoanAppliedCount").html(result[0].todayLoanApplied);
+	}else{
+		$("#todayLoanAppliedCount").html(' - ');
+	}
+	
+	if(result[0].todayRegistration !=null && result[0].todayRegistration>0){
+		$("#todayRegistration").html(result[0].todayRegistration);
+	}else{
+		$("#todayRegistration").html(' - ');
+	}
+	
+	if(result[0].totalLoanApplied !=null && result[0].totalLoanApplied>0){
+		$("#totalLoanApplied").html(result[0].totalLoanApplied);
+	}else{
+		$("#totalLoanApplied").html(' - ');
+	}
+	
+	if(result[0].totalRegistration !=null && result[0].totalRegistration>0){
+		$("#totalRegistered").html(result[0].totalRegistration);
+	}else{
+		$("#totalRegistered").html(' - ');
+	}
+	
+	if(result[0].totalMembers !=null && result[0].totalMembers>0){
+		$("#totalSCPopulation").html(result[0].totalMembers);
+	}else{
+		$("#totalSCPopulation").html(' - ');
+	}
+	
+	if(result[0].totalCovered !=null && result[0].totalCovered>0){
+		$("#totalCoveredPopulation").html(result[0].totalCovered);
+	}else{
+		$("#totalCoveredPopulation").html(' - ');
+	}
+	var totalNotCovered = result[0].totalMembers-result[0].totalCovered;
+	if(totalNotCovered !=null && totalNotCovered>0){
+		$("#notCovered").html(totalNotCovered);
+	}else{
+		$("#notCovered").html(' - ');
+	}
+	
+}
 function getRecentImagesList(){
-	$("#imagesSliderDivId").html(spinner);
+	$("#imagesSliderDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	
 	var jsObj={
     	levelIds		:globallevelIds,
 		levelValues		:globallevelValues,
-		startDateStr	:"01-02-2018",
-		endDateStr  	:moment().format("DD-MM-YYYY"),
+		startDateStr	:glStartDate,
+		endDateStr  	:glEndDate,
 		activityId		:activityId
     }
     $.ajax({
@@ -155,8 +294,10 @@ function getRecentImagesList(){
 							}else{
 								str+='<h5 class="m_top5">Panchayat: '+result[i].villageName+'</h5>';
 							}
+							if(result[i].boothNo !=null && result[i].boothNo>0){
+								str+='<h5 class="m_top5">'+result[i].boothNo+'</h5>';
+							}
 							
-							str+='<h5 class="m_top5">'+result[i].boothNo+'</h5>';
 							
 						}else{
 							if(result[i].lebName !=null && result[i].lebName.length>15){
@@ -166,7 +307,9 @@ function getRecentImagesList(){
 							}
 							//str+='<h5 class="m_top5">'+result[i].boothNo+'</h5>';
 							
-							str+='<h5 class="m_top5">'+result[i].boothNo+'</h5>';
+							if(result[i].boothNo !=null && result[i].boothNo>0){
+								str+='<h5 class="m_top5">'+result[i].boothNo+'</h5>';
+							}
 							
 						}
 					}
@@ -215,56 +358,214 @@ function getRecentImagesList(){
 	}
 	
 }
+function DalithaTejamnews(){
+	$("#dalithaTejamOnNewsDivId").html("<div class='spinner'><div class='dot1'></div><div class='dot2'></div></div>");
+	$.ajax({
+		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glStartDate+"/1156"
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glStartDate+"/1156"
+	}).then(function(result){
+		if(result !=null){
+			buildNewsModule(result);
+		}else{
+			$("#dalithaTejamOnNewsDivId").html("No Data Available");	
+		}
+	});
+}
+
+function buildNewsModule(result){
+	var str='';
+	
+	str+='<div class="row m_top10">';
+		str+='<div class="col-sm-6">';
+			str+='<div class="yash_color_news">';
+				str+='<h4 class="font_weight">TDP Party</h4>';
+				for(var i in result.coreDashBoardVOList){
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">MAIN EDITION</h5>';
+								str+='<h4 class="blue-text-news m_top10">'+result.coreDashBoardVOList[i].count+'</h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">POSITIVE</h5>';
+								str+='<h4 class="green-text-news m_top10">'+result.coreDashBoardVOList[i].positiveCountMain	+' </h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">NEGATIVE</h5>';
+								str+='<h4 class="red-text-news m_top10" >'+result.coreDashBoardVOList[i].negativCountMain+'</h4>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">DIST EDITION</h5>';
+								str+='<h4 class="blue-text-news m_top10">'+result.coreDashBoardVOList[i].totalCount+'</h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">POSITIVE</h5>';
+								str+='<h4 class="green-text-news m_top10" > '+result.coreDashBoardVOList[i].positiveCountDist+' <span class="small-font" >'+result.coreDashBoardVOList[i].positiveDistPerc+'%</span></h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">NEGATIVE</h5>';
+								str+='<h4 class="red-text-news m_top10" > '+result.coreDashBoardVOList[i].negativCountDist+' <span class="small-font" >'+result.coreDashBoardVOList[i].negativeDistPerc+'%</span></h4>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				}
+				
+				
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-sm-6">';
+			str+='<div class="yash_color_news">';
+				str+='<h4 class="font_weight">Other Party</h4>';
+				for(var i in result.coreDashBoardVOList1){
+					var totalmainOtherParty=0;
+					var totalmainOtherPartyPosCount=0;
+					var totalmainOtherPartyNegCount=0;
+					var totalDistOtherPartyCount=0;
+					var totalDistOtherPartyPosCount=0;
+					var totalDistOtherPartyNegCount=0;
+					
+					
+					
+					totalmainOtherParty = totalmainOtherParty+result.coreDashBoardVOList1[i].count;
+					totalmainOtherPartyPosCount = totalmainOtherPartyPosCount+result.coreDashBoardVOList1[i].positiveCountMain;
+					totalmainOtherPartyNegCount = totalmainOtherPartyNegCount+result.coreDashBoardVOList1[i].positiveCountMain;
+					
+					
+					totalDistOtherPartyCount = totalDistOtherPartyCount+result.coreDashBoardVOList1[i].totalCount;
+					totalDistOtherPartyPosCount = totalDistOtherPartyPosCount+result.coreDashBoardVOList1[i].positiveCountDist;
+					totalDistOtherPartyNegCount = totalDistOtherPartyNegCount+result.coreDashBoardVOList1[i].negativCountDist;
+					
+					var otherMediaMainPostivePercentage = parseFloat(totalmainOtherPartyPosCount/totalmainOtherParty).toFixed(2)+"%";
+					var otherMediaMainNegativePercentage = parseFloat(totalmainOtherPartyNegCount/totalmainOtherParty).toFixed(2)+"%";
+					
+					var otherMediaDistrictPostivePercentage = parseFloat(totalDistOtherPartyPosCount/totalDistOtherPartyCount).toFixed(2)+"%";
+					var otherMediaDistrictNegativePercentage = parseFloat(totalDistOtherPartyNegCount/totalDistOtherPartyCount).toFixed(2)+"%";
+					
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">MAIN EDITION</h5>';
+								str+='<h4 class="blue-text-news m_top10">'+totalmainOtherParty+'</h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">POSITIVE</h5>';
+								if(totalmainOtherPartyPosCount !=null && totalmainOtherPartyPosCount>0){
+									str+='<h4 class="green-text-news m_top10" > '+totalmainOtherPartyPosCount+' <span class="small-font">'+otherMediaMainPostivePercentage+'</span></h4>';
+								}else{
+									str+='<h4 class="green-text-news m_top10" > '+totalmainOtherPartyPosCount+'</h4>';
+								}
+								
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">NEGATIVE</h5>';
+								if(totalmainOtherPartyNegCount !=null && totalmainOtherPartyNegCount>0){
+									str+='<h4 class="red-text-news m_top10" >'+totalmainOtherPartyNegCount+' <span class="small-font">'+otherMediaMainNegativePercentage+'</span></h4>';
+								}else{
+									str+='<h4 class="red-text-news m_top10" > '+totalmainOtherPartyNegCount+'</h4>';
+								}
+								
+								
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">DIST EDITION</h5>';
+								str+='<h4 class="blue-text-news m_top10" >'+totalDistOtherPartyCount+'</h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">POSITIVE</h5>';
+								if(totalDistOtherPartyPosCount !=null && totalDistOtherPartyPosCount>0){
+									str+='<h4 class="green-text-news m_top10" >'+totalDistOtherPartyPosCount+' <span class="small-font" >'+otherMediaDistrictPostivePercentage+'</span></h4>';
+								}else{
+									str+='<h4 class="green-text-news m_top10" > '+totalDistOtherPartyPosCount+'</h4>';
+								}
+								
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">NEGATIVE</h5>';
+								if(totalDistOtherPartyPosCount !=null && totalDistOtherPartyPosCount>0){
+									str+='<h4 class="red-text-news m_top10" >'+totalDistOtherPartyPosCount+'<span class="small-font" >'+otherMediaDistrictNegativePercentage+'</span></h4>';
+								}else{
+									str+='<h4 class="red-text-news m_top10" > '+totalDistOtherPartyPosCount+'</h4>';
+								}
+								
+								
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				}
+				
+				
+			str+='</div>';
+		str+='</div>';
+		
+	str+='</div>';
+		
+			$("#dalithaTejamOnNewsDivId").html(str);
+}
 
 function levelWiseSBData(divId)
 {
 	levelWiseSBArr=['district','parliament','constituency'];
-	//levelWiseSBArr=['state'];
 	var collapse='';
-		collapse+='<section>';
-			collapse+='<div class="row">';
-			
-				for(var i in levelWiseSBArr)
+	for(var i in levelWiseSBArr)
+	{
+		collapse+='<div class="col-sm-12">';
+		collapse+='<div class="panel-group" id="accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" role="tablist" aria-multiselectable="true">';
+			collapse+='<div class="panel panel-default panel-gray" style="box-shadow:none;">';
+				collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBArr[i]+'">';
+					if(i == 0)
+					{
+						collapse+='<a role="button" class="panelCollapseIcon1 '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"   data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" >';
+					}else{
+						collapse+='<a role="button" class="panelCollapseIcon1 collapsed '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  overview-level-new='+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+' data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" >';
+					}
+					collapse+='<h5 class="text-capital" style="color:#000;">'+levelWiseSBArr[i]+' level overview</h5>';
+						
+					collapse+='</a>';
+				collapse+='</div>';
+				if(i == 0)
 				{
-					collapse+='<div class="col-sm-12">';
-					collapse+='<div class="panel-group" id="accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" role="tablist" aria-multiselectable="true">';
-						collapse+='<div class="panel panel-default panel-black">';
-							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBArr[i]+'">';
-								if(i == 0)
-								{
-									collapse+='<a role="button" class="collapseDebatesIcon '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"   data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
-								}else{
-									collapse+='<a role="button" class="collapseDebatesIcon collapsed '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  overview-level-new='+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+' data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
-								}
-								if(levelWiseSBArr[i] == "state" || levelWiseSBArr[i] == "district" || levelWiseSBArr[i] == "constituency")
-									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview</h4>';
-								else
-									collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview</h4>';
-									
-								collapse+='</a>';
-							collapse+='</div>';
-							if(i == 0)
-							{
-								collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
-							}else{
-								collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
-							}
-							
-								collapse+='<div class="panel-body">';
-									collapse+='<div id="'+levelWiseSBArr[i]+'"></div>';
-								collapse+='</div>';
-							collapse+='</div>';
-						collapse+='</div>';
-					collapse+='</div>';
-					collapse+='</div>';
+					collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+				}else{
+					collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
 				}
-			
+				
+					collapse+='<div class="panel-body">';
+						collapse+='<div id="'+levelWiseSBArr[i]+'"></div>';
+					collapse+='</div>';
+				collapse+='</div>';
 			collapse+='</div>';
-			collapse+='</section>';
+		collapse+='</div>';
+		collapse+='</div>';
+	}
+			
+			
 	
 	$("#levelWiseOverviewId").html(collapse);
-	
-	
 	setTimeout(function(){ 
 		for(var i in levelWiseSBArr){
 			getSettingActivitiesJBMData(levelWiseSBArr[i],divId);
@@ -272,8 +573,8 @@ function levelWiseSBData(divId)
 		}	
 	
 	}, 1000);
-	
 }
+
 function getSettingActivitiesJBMData(locationId,divId){
 	$("#"+locationId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 			var locationTypeId =0;var locationValue =0;
@@ -287,10 +588,9 @@ function getSettingActivitiesJBMData(locationId,divId){
 		locationValue=0;
 		locationTypeId =10
 	}
-
 	var jsObj={
-		fromDate : '',
-	    toDate : '',
+		fromDate :'',
+	    toDate :'',
 		activityId:divId,
 		locationScopeId:locationTypeId,
 		locationValue:locationValue
@@ -310,7 +610,7 @@ function getSettingActivitiesJBMData(locationId,divId){
 function buildActivityEventdata(result,locationId,divId){
 	var tableView='';
 	tableView+='<div class="table-responsive">';
-		tableView+='<table class="table table-bordered dataTable1'+locationId+'" id="" style="width:100%;border:1px solid lightgrey">';
+		tableView+='<table class="table table-bordered dataTable1'+locationId+' table_custom_data" id="" style="width:100%;border:1px solid lightgrey">';
 			tableView+='<thead class="text-capital" style="background-color:#f2f2f2;">';
 				tableView+='<tr>';
 					if(locationId == 'district'){
@@ -447,7 +747,6 @@ function buildActivityEventdata(result,locationId,divId){
 			tableView+='</tbody>';
 		tableView+='</table>';
 	tableView+='</div>';
-	
 	tableView+='<table class="table table-bordered" id="exportExcel'+locationId+'" style="width:100%;border:1px solid lightgrey;display:none;">';
 			tableView+='<thead class="text-capital">';
 				tableView+='<tr>';
@@ -568,8 +867,7 @@ function buildActivityEventdata(result,locationId,divId){
 		tableView+='</table>';
 		
 	$("#"+locationId).html(tableView);
-	if(locationId !="district" && locationId !="constituency"){
-		$(".dataTable1"+locationId).dataTable({
+	$(".dataTable1"+locationId).dataTable({
 			"iDisplayLength": 15,
 			"aaSorting": [],
 			"order": [ 0, 'asc' ],
@@ -592,227 +890,16 @@ function buildActivityEventdata(result,locationId,divId){
 			"fixedColumns":   {
 				"leftColumns": 1,
 			}
-		});
-	}else if(locationId !="parliament" && locationId !="district" ){
-		$(".dataTable1"+locationId).dataTable({
-			"iDisplayLength": 15,
-			"aaSorting": [],
-			"order": [ 0, 'asc' ],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
-			"<'row'<'col-sm-12'tr>>" +
-			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			buttons: [
-				{
-					//extend		:'csvHtml5',
-					text		:'<i class="fa fa-file-text-o generateExcelcdfdf" attr_id="exportExcel'+locationId+'"></i>',
-					titleAttr	: 'CSV',
-					//title		:  "ENC WORKS DASHBOARD",
-					//filename	:  locationId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-				}
-			] ,
-			"scrollX": true,
-			"scrollX": true,
-			"scrollCollapse": true,
-			"fixedColumns":   {
-				"leftColumns": 2,
-			}
-		});
-	}else{
-		$(".dataTable1"+locationId).dataTable({
-			"paging":   false,
-			"info":     false,
-			"searching": false,
-			"autoWidth": true,
-			"iDisplayLength": 10,
-			"aaSorting": [],
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			"scrollX":        true,
-			"scrollCollapse": false,
-			"fixedColumns":   {
-				"leftColumns": 1,
-			}
-		});
-	}
-	if(locationId !="district"){
-		$("."+divId+locationId).trigger("click");
-	}
+	});
 
 }
 $(document).on("click",".generateExcelcdfdf",function(){
 	var id = $(this).attr("attr_id");
-	tableToExcel(id, 'Activity DASHBOARD');
+	tableToExcel(id, 'DALITHA TEJAM DASHBOARD');
 });
-
-function getActivityWiseCounts(){
-	
-	$("#totalVillagesCountId").html(spinner);
-	$("#totalyesCountId").html(spinner);
-	$("#imagesCovered").html(spinner);
-	$("#totalMaybeCountId").html(spinner);
-	$("#totalNoCountId").html(spinner);
-	$("#todayVisitedCount").html(spinner);
-	var jsObj={
-		activityId:activityId,
-		activityMemberId : 44,
-	    stateId : 1,
-	    userTypeId : 2
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "getActivityOverAllSummaryAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result.length > 0)
-			buildActivityCounts(result);
-	});
-};
-
-function buildActivityCounts(result){
-	$("#totalVillagesCountId").html(result[0].apTotal);
-	$("#totalyesCountId").html(result[0].yesCount);
-	$("#imagesCovered").html(result[0].imagesCovered+"/"+result[0].totalImages);
-	$("#totalMaybeCountId").html(result[0].mayBecount);
-	$("#totalNoCountId").html(result[0].noCount);
-	$("#todayVisitedCount").html(result[0].yesCount);
-}
-
-getActivityOverAllSummaryforDelithatejam();
-function getActivityOverAllSummaryforDelithatejam(){
-	$("#todayLoanAppliedCount").html(spinner);
-	$("#todayRegistration").html(spinner);
-	$("#totalLoanApplied").html(spinner);
-	$("#totalRegistered").html(spinner);
-	$("#totalSCPopulation").html(spinner);
-	$("#totalCoveredPopulation").html(spinner);
-	$("#notCovered").html(spinner);
-	var jsObj={
-		activityId:activityId,
-		activityMemberId : 44,
-	    //stateId : globalStateId,
-	    //userTypeId : globalUserTypeId,
-		fromDateStr:"",
-		toDateStr:""
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "getAffiliatedActivityCountAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result.length > 0){
-			buildActivityaffiliatedCounts(result);
-		}else{
-			$("#todayLoanAppliedCount").html("NO DATA AVAILABLE");
-			$("#todayRegistration").html("NO DATA AVAILABLE");
-			$("#totalLoanApplied").html("NO DATA AVAILABLE");
-			$("#totalRegistered").html("NO DATA AVAILABLE");
-			$("#totalSCPopulation").html("NO DATA AVAILABLE");
-			$("#totalCoveredPopulation").html("NO DATA AVAILABLE");
-			$("#notCovered").html("NO DATA AVAILABLE");
-		}
-	});
-}
-
-function buildActivityaffiliatedCounts(result){
-	$("#todayLoanAppliedCount").html(result[0].todayLoanApplied);
-	$("#todayRegistration").html(result[0].todayRegistration);
-	$("#totalLoanApplied").html(result[0].totalLoanApplied);
-	$("#totalRegistered").html(result[0].totalRegistration);
-	$("#totalSCPopulation").html(result[0].totalMembers);
-	$("#totalCoveredPopulation").html(result[0].totalCovered);
-	$("#notCovered").html(result[0].totalMembers-result[0].totalCovered);
-}
-DalithaTejamnews();
-function DalithaTejamnews(){
-	$("#tdpMediaDistricttotalCount").html(spinner);
-	$("#tdpMediaDistrictPostiveCount").html(spinner);
-	$("#tdpMediaDistrictnegativeCount").html(spinner);
-	$("#tdpMediaDistrictpostivePercentage").html(spinner);
-	$("#tdpMediaDistrictnaegativePercentage").html(spinner);
-//var url1 =wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
-var url1="http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/01-02-2018/26-02-2018/1156"  
-$.ajax({
-		type : 'GET', 
-		url: url1
-    }).then(function(result){
-	if(result !=null){
-		return buildNewsModule(result);
-	}else{
-		$("#tdpMediaDistricttotalCount").html("-");
-		$("#tdpMediaDistrictPostiveCount").html("-");
-		$("#tdpMediaDistrictnegativeCount").html("-");
-		$("#tdpMediaDistrictpostivePercentage").html("-");
-		$("#tdpMediaDistrictnaegativePercentage").html("-");
-		$("#tdpMediaDistricttotalCount").html("-");
-		$("#tdpMediaDistrictPostiveCount").html("-");
-		$("#tdpMediaDistrictnegativeCount").html("-");
-		$("#tdpMediaDistrictpostivePercentage").html("-");
-		$("#tdpMediaDistrictnaegativePercentage").html("-");
-	}
-    });    
-}
-function buildNewsModule(result){
-var otherPartyResult=[]; var tdpPartyResult=[];
-	otherPartyResult =result.coreDashBoardVOList1;
-	tdpPartyResult =result.coreDashBoardVOList;
-	if(tdpPartyResult !=null && tdpPartyResult.length >0){
-	$("#tdpMediaDistricttotalCount").html(tdpPartyResult.count);
-	$("#tdpMediaDistrictPostiveCount").html(tdpPartyResult.positiveCountMain);
-	$("#tdpMediaDistrictnegativeCount").html(tdpPartyResult.negativCountMain);
-	$("#tdpMediaDistrictpostivePercentage").html(tdpPartyResult.positiveDistPerc+"%");
-	$("#tdpMediaDistrictnaegativePercentage").html(tdpPartyResult.negativeDistPerc+"%");
-
-	$("#tdpMediatotalCount").html(tdpPartyResult.totalCount);
-	$("#tdpMediaPostiveCount").html(tdpPartyResult.positiveCountDist);
-	$("#tdpMedianegativeCount").html(tdpPartyResult.negativCountDist);
-	$("#tdpMediapostivePercentage").html(tdpPartyResult.positiveDistPerc+"%");
-	$("#tdpMedianaegativePercentage").html(tdpPartyResult.negativeDistPerc+"%");
-
-	}else{
-		$("#tdpMediaDistricttotalCount").html("-");
-		$("#tdpMediaDistrictPostiveCount").html("-");
-		$("#tdpMediaDistrictnegativeCount").html("-");
-		$("#tdpMediaDistrictpostivePercentage").html("-");
-		$("#tdpMediaDistrictnaegativePercentage").html("-");
-		$("#tdpMediatotalCount").html("-");
-	$("#tdpMediaPostiveCount").html("-");
-	$("#tdpMedianegativeCount").html("-");
-	$("#tdpMediapostivePercentage").html("-");
-	$("#tdpMedianaegativePercentage").html("-");
-
-	}if(otherPartyResult !=null && otherPartyResult.length>0){
-		var totalnewsCount=0; var totalPosititveCount=0; var totalNegatieveCount=0; 
-		var totalDistrictCount=0; var districtPostiveCount=0; var districtNegativeCount=0;
-		for (var i in otherPartyResult){
-			totalnewsCount=totalnewsCount+otherPartyResult[i].count;
-			totalPosititveCount=totalPosititveCount+otherPartyResult[i].positiveCountMain;
-			totalNegatieveCount=totalNegatieveCount+otherPartyResult[i].negativCountMain;
-			totalDistrictCount=toatlCount+otherPartyResult[i].totalCount;
-			districtPostiveCount=districtPostiveCount+otherPartyResult[i].positiveCountDist;
-			districtNegativeCount=districtNegativeCount+otherPartyResult[i].negativCountDist;
-		}
-		$("#otherMediaDistricttotalCount").html(totalDistrictCount);
-	$("#otherMediaDistrictPostiveCount").html(districtPostiveCount);
-	$("#otherMediaDistrictnegativeCount").html(districtNegativeCount);
-	$("#otherMediaDistrictpostivePercentage").html(parseFloat(districtPostiveCount/totalDistrictCount).toFixed(2)+"%");
-	$("#otherMediaDistrictnaegativePercentage").html(parseFloat(districtNegativeCount/totalDistrictCount).toFixed(2)+"%");
-
-	$("#otherMediatotalCount").html(totalnewsCount);
-	$("#otherMediaPostiveCount").html(totalPosititveCount);
-	$("#otherMedianegativeCount").html(totalNegatieveCount);
-	$("#otherMediapostivePercentage").html(parseFloat(totalPosititveCount/totalnewsCount).toFixed(2)+"%");
-	$("#otherMedianaegativePercentage").html(parseFloat(totalNegatieveCount/totalnewsCount).toFixed(2)+"%");
-	}else{
-		$("#otherMediaDistricttotalCount").html("-");
-	$("#otherMediaDistrictPostiveCount").html("-");
-	$("#otherMediaDistrictnegativeCount").html("-");
-	$("#otherMediaDistrictpostivePercentage").html("-");
-	$("#otherMediaDistrictnaegativePercentage").html("-");
-
-	$("#otherMediatotalCount").html("-");
-	$("#otherMediaPostiveCount").html("-");
-	$("#otherMedianegativeCount").html("-");
-	$("#otherMediapostivePercentage").html("-");
-	$("#otherMedianaegativePercentage").html("-");
-	}
-}
+$(document).on("click",".refreshDalithaTejam",function(){
+	onLoadCalls();
+});
+$(document).on("change","#districtId",function(){
+	//onLoadCalls();
+});
