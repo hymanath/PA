@@ -69,9 +69,6 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 		else{
 			sb.append("select distinct model.debate.debateId,model.subject,model.debate.startTime from DebateSubject model ");	
 		}
-		if(stateId != null && stateId.longValue() > 0){
-		      sb.append(" , DebateParticipant model3 ");
-		    }
 		if(channelIds != null || candidateIds != null || partyIds != null)
 		{
 			sb.append(" , DebateParticipant model1 where model.debate.debateId = model1.debate.debateId and ");
@@ -80,15 +77,6 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 		{
 			sb.append(" where ");
 		}
-		 
-		if(stateId != null && stateId.longValue() > 0){
-		      sb.append("  model.debate.debateId = model3.debateId ");
-		    }
-		 if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 1L){
-		      sb.append(" and model3.candidate.state.stateId = " +IConstants.DEBATE_AP_STATE_ID+ " and ");
-		    }else if(stateId != null && stateId.longValue() > 0 && stateId.longValue() == 36L){
-		      sb.append(" and model3.candidate.state.stateId = "+IConstants.DEBATE_TS_STATE_ID+" and ");
-		    }
 		sb.append(" date(model.debate.startTime) >= :fromDate and date(model.debate.startTime) <= :toDate " +
 				" and model.debate.isDeleted = 'N' ");
 		if(channelIds != null && channelIds.size()>0)
@@ -104,7 +92,9 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 		{
 			sb.append(" and  model1.party.partyId in (:partyIds)  ");
 		}
-		
+		if(stateId != null && stateId.longValue() > 0){
+			sb.append(" and model.debate.address.state.stateId =:stateId ");
+		}
 		sb.append(" order by model.debate.startTime desc ");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("fromDate", fromDate);
@@ -126,7 +116,9 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 			query.setFirstResult(startIndex);
 			query.setMaxResults(maxIndex);
 		}
-		
+		if(stateId != null && stateId.longValue() > 0){
+			query.setParameter("stateId", stateId);
+		}
 		return query.list();
 	}
 	
