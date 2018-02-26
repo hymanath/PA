@@ -1445,7 +1445,7 @@ $(document).on("click",".pressmeetCasteGroupCls",function(){
 	$(".pressmeetModelCls").html("");	
 	$(".pressmeetModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({
-   url: wurl+"/CommunityNewsPortal/webservice/getCasteWiseCandidateCountsClick//"+fromDate+"/"+toDate+"/"+casteId+"/"+partyId+"/"+type+"/"+casteName+"/"
+   url: wurl+"/CommunityNewsPortal/webservice/getCasteWiseCandidateCountsClick/"+fromDate+"/"+toDate+"/"+casteId+"/"+partyId+"/"+type+"/"+casteName+"/"
      //url: "http://192.168.11.195:8080/CommunityNewsPortal/webservice/getCasteWiseCandidateCountsClick/"+fromDate+"/"+toDate+"/"+casteId+"/"+partyId+"/"+type+"/"+casteName+"/"
 	}).then(function(result){
      
