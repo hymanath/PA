@@ -1835,5 +1835,8 @@
 	<bean id="imageRenderingAction" class="com.itgrids.partyanalyst.web.action.ImageRenderingAction" singleton="false">
 		 <property name="locationDashboardService" ref="locationDashboardService" /> 
 	</bean>
+	<bean id="dalithTejamDashBoardAction" class="com.itgrids.partyanalyst.web.action.DalithaTejamDashBoardAction" singleton="false">
+		 <property name="dalithaTejamDashBoardService" ref="dalithaTejamDashBoardService" /> 
+	</bean>
 </beans>	
 	
