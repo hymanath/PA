@@ -1162,7 +1162,7 @@ public List<Object[]> getQuestionsPerc(Long activityId,Long activityScopeId){
 	}
 
 @Override
-public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locationScopeId) {
+public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locationScopeId,Date fromDate,Date toDate,Long locationValue) {
 	//0-qid,1-question,3-optionId,4-optionType,5-optionName 6-optionId,7-count, 8-memcount,9-locationId
 	StringBuilder sb = new StringBuilder();
 	sb.append("select AQS.activity_question_id as questionId,AQS.question as question, AOT.activity_option_type_id as optionTypeId, AOT.type as optionType," +
@@ -1190,14 +1190,27 @@ public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locatio
 			" AND AOT.activity_option_type_id = AQ.activity_option_type_id " +
 			" AND AQA.is_deleted = 'N'  AND ALI.conducted_date is not null " +
 			" AND ALI.updated_status ='UPDATED' ");
-	
-	if(locationScopeId !=null && locationScopeId > 0l ){
+	if(fromDate !=null && toDate !=null){
+		sb.append(" AND ALI.conducted_date between :fromDate and :toDate");
+	}
+	if(locationScopeId !=null && locationScopeId.longValue()>0l && locationValue !=null && locationValue.longValue()>0l){
+		if(locationScopeId ==3l){
+			sb.append(" and ua.district_id=:locationValue");
+		}else if(locationScopeId ==4l){
+			sb.append(" and ua.constituency_id=:locationValue ");
+		}else if(locationScopeId ==10l){
+			sb.append(" and ua.parliament_constituency_id=:locationValue ");
+		}else if(locationScopeId ==2l){
+			sb.append(" and ua.state_id=:locationValue ");
+		}
+	}
+	/*if(locationScopeId !=null && locationScopeId > 0l ){
 		if (locationScopeId == 3l|| locationScopeId == 4l ) {
 			sb.append(" AND ua.district_id >10 ");
 		} else {
 			sb.append(" AND ua.state_id =1");
 		}
-	}
+	}*/
 	if(activityScopeId != null && activityScopeId >0){
 		sb.append(" and AQ.activity_scope_id =:activityScopeId ");
 	}
@@ -1225,6 +1238,13 @@ public List<Object[]> getCountanswereddetails(Long activityScopeId, Long locatio
 			.addScalar("locationId",Hibernate.LONG);
 	
 	query.setParameter("activityScopeId", activityScopeId);
+	if(fromDate !=null && toDate !=null){
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+	}
+	if(locationScopeId !=null && locationScopeId.longValue()>0 && locationValue !=null && locationValue.longValue()>0){
+		query.setParameter("locationValue", locationValue);
+	}
 	return query.list();
 }
  public List<Object[]> getDayWiseQuestionAnswerDetails(Long activityLocationInfoId,Date activityDate){

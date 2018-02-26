@@ -70,9 +70,9 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getNotUpdatedForDistrict(Long activityScopeId,List<Long> distIds);
 	public List<Object[]> getActivityDetailsBasedOnLocation(String groupType,String filterType,List<Long> userAccessLevelValues,Long activityScopeId,Long constituencyId);
 	public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locationType,Long locationId);
-	public List<Object[]> getLocationwiseCoductedCount(Long activityId,Long scopeId,String type);
-	public List<Object[]> getIvrStatusForLocation(Long activityScopeId,Long locationScopeId);
+	public List<Object[]> getLocationwiseCoductedCount(Long activityId,Long scopeId,String type,Date fromDate, Date toDate, Long locationValue);
+	public List<Object[]> getIvrStatusForLocation(Long activityScopeId,Long locationScopeId, Date startDate, Date toDate, Long locationValue);
 	public List<Object[]> getLocationWiseActiviyDetailsByType(Long activityScopeId, String locationLevel, String type);
 	public List<Object[]> getMPPChairmanMayorAttenedDetatils(Long activityScopeId);
-	public List<Object[]> getInchargeMLAAttendCount(Long activityScopeId,Long locationScopeId);
+	public List<Object[]> getInchargeMLAAttendCount(Long activityScopeId,Long locationScopeId, Date startDate, Date endDate);
 }
