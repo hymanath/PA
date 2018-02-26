@@ -1317,9 +1317,9 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("constituency")) {
 			queryStr.append(" c.constituency_id as constituenyId,c.name as constituenyName ");
 			queryStr.append(",d.district_id as districtId,d.district_name as districtName ");
-			queryStr.append(",pc.constituency_id as parliamentId,pc.name as parliamentName ");
+			queryStr.append(",ua.parliament_constituency_id as parliamentId,pc.name as parliamentName ");
 		} else if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("parliament")) {
-			queryStr.append(" pc.constituency_id as parliamentId,c.name as parliamentName ");
+			queryStr.append(" ua.parliament_constituency_id as parliamentId,pc.name as parliamentName ");
 		}
 		queryStr.append(",pms.meeting_status meetingStatus,count(*) total  ");
 		queryStr.append(" from party_meeting_status pms ");
@@ -1338,7 +1338,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("constituency")) {
 			queryStr.append(" group by c.constituency_id,pms.meeting_status ");
 		} else if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("parliament")) {
-			queryStr.append(" group by pc.constituency_id,pms.meeting_status ");
+			queryStr.append(" group by ua.parliament_constituency_id,pms.meeting_status ");
 		}
 		
 		SQLQuery sqlQuery = getSession().createSQLQuery(queryStr.toString());
