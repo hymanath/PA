@@ -1,7 +1,8 @@
 var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
 onloadAlertCalls();
 function onloadAlertCalls(){
-	getAssignedCandidateWisePendingAlerts();
+	//getAssignedCandidateWisePendingAlerts();
+	getDistrictWiseAlertsDetails();
 	getOverAllAlertsDetails();
 }
 function getAssignedCandidateWisePendingAlerts(){  
@@ -29,17 +30,16 @@ function buildAssignedCandidateWisePendingAlerts(result){
 	var str='';
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital font_size24" >Parliament Wise Assigned Alerts Pending candidates list</h5>';
+				str+='<h5 class="text_bold text-capital font_size24" >District Wise Action Required Alerts</h5>';
 				str+='<div class="table-responsive m_top10">';
 					str+='<table class="table details-overview1">';
 						str+='<thead>';
 							str+='<tr>';
-								str+='<th>Name</th>';
-								str+='<th>Parliament</th>';
-								str+='<th>Constituency</th>';
-								str+='<th>Designation</th>';
+								str+='<th>District</th>';
 								str+='<th>Total Alerts</th>';
+								str+='<th>Action Required</th>';
 								str+='<th>Pending Alerts</th>';
+								str+='<th>%</th>';     
 								
 							str+='</tr>';
 						str+='</thead>';
@@ -47,11 +47,10 @@ function buildAssignedCandidateWisePendingAlerts(result){
 							for(var i in result){
 								str+='<tr>';
 									str+='<td>'+result[i].name+'</td>';
-									str+='<td>'+result[i].parliament+'</td>';
-									str+='<td>'+result[i].constituency+'</td>';
-									str+='<td>'+result[i].designation+'</td>';
-									str+='<td>'+result[i].totalCount+'</td>';
+									str+='<td>'+result[i].totalAlert+'</td>';
+									str+='<td>'+result[i].actionRequired+'</td>';
 									str+='<td>'+result[i].pendingCount+'</td>';
+									str+='<td>'+result[i].pendingCountPer+'</td>';
 								str+='</tr>';
 								
 							}
@@ -123,3 +122,25 @@ function buildOverAllAlertsDetails(result){
 	$("#overAllAlertsDivId").html(str);
 }
 
+
+function getDistrictWiseAlertsDetails(){  
+	var jsObj = { 
+		fromDateStr : "01/01/2010",
+		toDateStr : "01/01/2050",
+		stateId : 1,
+		size : 50,
+		alertTypeIds : [1]
+	}
+	$.ajax({
+		type : 'POST',      
+		url : 'getDistrictWiseAlertsDetails.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildAssignedCandidateWisePendingAlerts(result);
+		}else{
+			$("#assignedParliamentWiseAlertsDivId").html("No Data Available")
+		}
+	});
+}
