@@ -512,8 +512,8 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 			   str.append(" , Debate model3 ");
 		    }
 		str.append(" where model.debate.isDeleted = 'N' " +
-				" and model.party.isNewsPortal = 'Y' " );
-				//" and model.candidate.isDebateCandidate ='Y' " );
+				" and model.party.isNewsPortal = 'Y' " +
+				" and model.candidate.isDebateCandidate ='Y' " );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 			str.append(" and model.debateId = model3.debateId and model3.isDeleted = 'N' ");
 		    }
@@ -910,8 +910,8 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 			   str.append(" , Debate model3 ");
 		    }
 		str.append(" where model.debate.isDeleted = 'N' " +
-				" and model.party.isNewsPortal = 'Y' " );
-				//" and model.candidate.isDebateCandidate = 'Y' " );
+				" and model.party.isNewsPortal = 'Y' " +
+				" and model.candidate.isDebateCandidate = 'Y' " );
 		if(debateLocationIdList != null && debateLocationIdList.size() > 0){
 			str.append(" and model.debateId = model3.debateId and model3.isDeleted = 'N' ");
 		    }
@@ -1996,7 +1996,7 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
          }
   		return query.list();
   	}
-   public List<Object[]> getCandidateGroupMatchedDetails(Long candidateId,String type,Long categoryId,Long partyId)
+   public Object[] getCandidateGroupMatchedDetails(Date fromDate,Date toDate,Long candidateId,String type,Long categoryId,Long partyId)
  	{
  		StringBuilder str = new StringBuilder();		
  		 str.append("select distinct candidate.candidateId,candidate.lastname, " +
@@ -2027,6 +2027,10 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
  		if(partyId != null && partyId.longValue()>0){
  			str.append(" and model1.partyId =:partyId ");
  		}
+ 		if(fromDate !=null && toDate !=null){
+ 			 str.append(" and date(model1.debate.startTime) >= :fromDate and date(model1.debate.endTime) <= :toDate ");
+ 		}
+ 		str.append(" group by candidate.candidateId ");
  		Query query = getSession().createQuery(str.toString());		
  		
  		if(candidateId != null && candidateId.longValue()>0l){
@@ -2038,6 +2042,11 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
  		if(partyId != null && partyId.longValue()>0){
  			query.setParameter("partyId", partyId); 
  		}
- 		return query.list();
+ 		if(fromDate !=null && toDate !=null){
+  			query.setParameter("fromDate", fromDate);
+  			query.setParameter("toDate", toDate);
+  		}
+ 		return  (Object[]) query.uniqueResult();
  	}
+   
 }
