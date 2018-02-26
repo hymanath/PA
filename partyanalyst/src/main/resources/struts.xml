@@ -18912,6 +18912,10 @@
 	</action>
 	
 	<!-- IssueCategory Wise Details For CoreDashBoard End -->
-	
+	<action name="getDistrictWiseAlertsDetails" class="coreDashboardAction"  method="getDistrictWiseAlertsDetails">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>
+		</result>
+	</action>	
  </package>
 </struts>

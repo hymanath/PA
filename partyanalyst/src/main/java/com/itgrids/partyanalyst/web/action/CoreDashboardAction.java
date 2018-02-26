@@ -6267,4 +6267,24 @@ public String getOverallReport(){
 	}
 	return Action.SUCCESS;
 }
+public String getDistrictWiseAlertsDetails(){
+	try{
+		jObj = new JSONObject(getTask());
+		String fromDateStr = jObj.getString("fromDateStr");
+		String toDateStr = jObj.getString("toDateStr");
+		Long stateId = jObj.getLong("stateId");
+		int size = jObj.getInt("size");		
+		List<Long> alertTypeIdList = new ArrayList<Long>();
+		JSONArray alertTypeIdArr = jObj.getJSONArray("alertTypeIds");
+		if(alertTypeIdArr!=null &&  alertTypeIdArr.length()>0){
+			for( int i=0;i<alertTypeIdArr.length();i++){
+				alertTypeIdList.add(Long.valueOf(alertTypeIdArr.getString(i))); 
+			}
+		}
+		alertCoreDashBoardVOs = alertExceptionalReportService.getDistrictWiseAlertsDetails(fromDateStr,toDateStr,stateId,size,alertTypeIdList);
+	}catch(Exception e){
+		LOG.error("Exception raised at getAssignedCandidateWisePendingAlerts() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
 }
+}//public List<AlertCoreDashBoardVO> getDistrictWiseAlertsDetails(String startDate,String endDate, Long stateId,int size,List<Long> alertTypeIds)
