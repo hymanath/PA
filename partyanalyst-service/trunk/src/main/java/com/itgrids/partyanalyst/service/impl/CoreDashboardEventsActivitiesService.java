@@ -2210,7 +2210,7 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 	try{
 		
 		Date startDate=null, endDate=null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		if(fromDate!= null && toDate !=null && fromDate.length()>0 && toDate.length() >0){
 			startDate = sdf.parse(fromDate);
 			endDate = sdf.parse(toDate);
