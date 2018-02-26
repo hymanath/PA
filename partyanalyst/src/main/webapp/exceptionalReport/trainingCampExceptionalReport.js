@@ -93,7 +93,7 @@ $("#top5ConstituencyWithPoorPerDivId").html(spinner);
 		size : 10,
 		tdpCommitteeLevelIds : [5,6,7,8,9],
 		enrollmentYearIds : [4],
-		trainingCampProgramIds : [8,9,10],
+		trainingCampProgramIds : [8],        
 		locationLevelId : 2,
 		locationLevelValues : []
 	}
