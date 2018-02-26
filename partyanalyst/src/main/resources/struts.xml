@@ -18817,6 +18817,11 @@
 				<param name="root">activityExceptionalReportVO</param>
 		</result>
 	</action>
+		<action name="dalithTejamDashBoardAction" class="dalithTejamDashBoardAction" method="dalithTejamDashBoard" >
+		<result name="success">/jsp/dalithaTejamDashBoard.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src="imageRenderingAction"</result>		  	
+	</action>
 	<action name="getAssignedCandidateWisePendingAlerts" class="coreDashboardAction" method="getAssignedCandidateWisePendingAlerts">
 		<result type="json" name="success">
 				<param name="root">alertCoreDashBoardVOs</param>
@@ -18851,6 +18856,11 @@
 		<result type="json" name="success">
 				<param name="root">committeeDataVO</param>
 		</result>
+	</action>
+	<action name="getImagesFordalithatejamAction" class="dalithTejamDashBoardAction" method="getImagesFordalithatejam" >
+			<result type="json" name="success">
+				<param name="root">dalithaTejamList</param>
+			</result>  	
 	</action>
 	<action name="getConstituencyWisePoorPerformance" class="coreDashboardAction" method="getConstituencyWisePoorPerformance">
 		<result type="json" name="success">
