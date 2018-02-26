@@ -2205,10 +2205,17 @@ public static Comparator<UserTypeVO> eventConductedCuntDesc = new Comparator<Use
 	};
 
 @Override
-public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String toDate,Long locationScopeId,Long activityId) {
-	
+public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String toDate,Long locationScopeId,Long activityId,Long locationValue) {
 	List<EventLocationVO> finalList = new ArrayList<EventLocationVO>();
 	try{
+		
+		Date startDate=null, endDate=null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(fromDate!= null && toDate !=null && fromDate.length()>0 && toDate.length() >0){
+			startDate = sdf.parse(fromDate);
+			endDate = sdf.parse(toDate);
+		}
+		 
 		Map<Long,EventLocationVO> locationMap = new HashMap<Long,EventLocationVO>();
 		List<Object[]> activityScopeList= activityScopeDAO.getActivityScopeIdByActivityAndLevelId(activityId);
 		// 0-total,1-conduct,2-locationUId,3-locationName
@@ -2243,10 +2250,10 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 		}
 		
 		//totalCount
-		List<Object[]> VillageList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"total");
+		List<Object[]> VillageList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"total",startDate,endDate,locationValue);
 		
 		//conduct
-		List<Object[]> VillageConductedList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"conduct");
+		List<Object[]> VillageConductedList =activityLocationInfoDAO.getLocationwiseCoductedCount(activityScopeId,locationScopeId,"conduct",startDate,endDate,locationValue);
 		
 		
 		if(commonMethodsUtilService.isListOrSetValid(VillageList)){
@@ -2275,7 +2282,7 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 			
 		}
 		
-		List<Object[]> vilageanswerList = activityQuestionAnswerDAO.getCountanswereddetails(activityScopeId, locationScopeId);
+		List<Object[]> vilageanswerList = activityQuestionAnswerDAO.getCountanswereddetails(activityScopeId, locationScopeId,startDate,endDate,locationValue);
 		
 		//0-qid,1-question,2-optionId,3-optionType,4-optionName 5-optionId,6-count, 7-memcount,8-locationId
 		for (Object[] param : vilageanswerList) {
@@ -2298,7 +2305,7 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 					}
 				}
 		}
-		List<Object[]> ivrstatusData= activityLocationInfoDAO.getIvrStatusForLocation(activityScopeId,locationScopeId);
+		List<Object[]> ivrstatusData= activityLocationInfoDAO.getIvrStatusForLocation(activityScopeId,locationScopeId,startDate,endDate,locationValue);
 		//0-count,1-status,2-question 3-qid,4-locationId
 		for (Object[] objects : ivrstatusData) {
 			EventLocationVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[4]));
@@ -2340,7 +2347,7 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 			}
 		}
 		
-		List<Object[]> inchargeMLAUniqueCountList= activityLocationInfoDAO.getInchargeMLAAttendCount(activityScopeId,locationScopeId);
+		List<Object[]> inchargeMLAUniqueCountList= activityLocationInfoDAO.getInchargeMLAAttendCount(activityScopeId,locationScopeId,startDate,endDate);
 	
 		for (Object[] objects : inchargeMLAUniqueCountList) {
 			EventLocationVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
@@ -2349,8 +2356,15 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 			}
 		}
 		
+		List<Object[]> imagecountList = activityDocumentDAO.getLocationWiseCount(activityScopeId,locationScopeId,startDate,endDate);
+		for (Object[] objects : imagecountList) {
+			EventLocationVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
+			if(locationVo != null){
+				locationVo.setImageCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+			}
+		}
 		if( locationScopeId !=2l){
-			List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
+			 List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(fromDate,toDate,activityId,locationScopeId,"table");
 			for (AffiliatedVo affiliatedVo : activityParticipatentCount) {
 				EventLocationVO locationVo =locationMap.get(affiliatedVo.getLocationId());
 				if(locationVo != null){
@@ -2363,7 +2377,7 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 			}
 		}else{
 			locationScopeId=3l;
-			List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(null,null,activityId,locationScopeId,"table");
+			List<AffiliatedVo> activityParticipatentCount =coreDashboardService.getAffilliatedMemberCount(fromDate,toDate,activityId,locationScopeId,"table");
 			for (AffiliatedVo affiliatedVo : activityParticipatentCount) {
 				EventLocationVO locationVo =locationMap.get(1l);
 				if(locationVo != null){

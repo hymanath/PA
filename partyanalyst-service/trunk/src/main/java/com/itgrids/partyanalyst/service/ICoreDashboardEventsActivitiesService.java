@@ -23,5 +23,5 @@ public interface ICoreDashboardEventsActivitiesService {
  			Long partyMeetingMainTypeId,Long partyMeetingLevelId,Long meetingGrpId,String fromDateStr,String toDateStr);
     public List<Long> getPartyMeetingLevelIdsByAccessLevel(Long accessLevelId,List<Long> levelValues,Long stateId,Long partyMeetingMainTypeId,Long meetingGrpId,String fromDateStr,String toDateStr);
     
-    public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String toDate,Long locationScopeId,Long activityScopeId);
+    public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String toDate,Long locationScopeId,Long activityScopeId,Long locationValue);
 } 
