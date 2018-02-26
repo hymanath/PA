@@ -224,6 +224,7 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 					tempVO.setCountPerc(calculatePercantage(tempVO.getCount(),totalAlert));
 					tempList.add(tempVO);
 				}
+				tempVO = new AlertCoreDashBoardVO();
 				tempVO.setId(0L);
 				tempVO.setName("Last Month Completed");
 				tempVO.setCount(overAllLastMonthCompleted);
@@ -257,6 +258,7 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 					tempVO.setCountPerc(calculatePercantage(tempVO.getCount(),totalAlertLastMonth));
 					tempList.add(tempVO);
 				}
+				tempVO = new AlertCoreDashBoardVO();
 				tempVO.setId(0L);
 				tempVO.setName("Last Month Completed");
 				tempVO.setCount(lastMonthCompleted);
@@ -321,8 +323,8 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 						Long actionNotRequired = new Long(0L);
 						for(Entry<Long,Long> innerParam : outerParam.getValue().entrySet()){
 							total = total + commonMethodsUtilService.getLongValueForObject(innerParam.getValue());
-							if(innerParam != null && innerParam.getKey() != null && innerParam.getKey().longValue() == 1L){
-								pending = innerParam.getKey();
+							if(innerParam != null && innerParam.getKey() != null && innerParam.getKey().longValue() == 3L){
+								pending = innerParam.getValue();
 							}
 							if(innerParam != null && innerParam.getKey() != null && (innerParam.getKey().longValue() == 6L || innerParam.getKey().longValue() == 7L)){
 								actionNotRequired = actionNotRequired + commonMethodsUtilService.getLongValueForObject(innerParam.getValue());
@@ -332,6 +334,7 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 						alertCoreDashBoardVO.setTotalAlert(total);
 						alertCoreDashBoardVO.setPendingCount(pending);
 						alertCoreDashBoardVO.setActionRequired(total-actionNotRequired);
+						alertCoreDashBoardVO.setPendingCountPer(calculatePercantage(alertCoreDashBoardVO.getPendingCount(),alertCoreDashBoardVO.getActionRequired()));
 					}
 					alertCoreDashBoardVOs.add(alertCoreDashBoardVO);
 				}
