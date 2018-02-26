@@ -74,6 +74,7 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 			//calculating overall percentage
 			resultVO.setConductedPercentage(Util.calculatePercantage(resultVO.getConductedCount(),resultVO.getTotalCount()));
 			resultVO.setNotConductedPercentage(Util.calculatePercantage(resultVO.getNotConductedCount(),resultVO.getTotalCount()));
+			resultVO.setMayBePercentage(Util.calculatePercantage(resultVO.getMayBeCount(), resultVO.getTotalCount()));
 		} catch (Exception e) {
 			LOG.error("Exception occurred  at getPartyMeetingExceptionReportMeetingLevelWise() in PartyMeetingExceptionalReportService class",e);
 		}
@@ -125,7 +126,8 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 							   locationVO.setConductedCount(locationVO.getConductedCount()+totalMeetingCnt); 
 							} else if (partyMeetingStatus.equalsIgnoreCase("N") || partyMeetingStatus.equalsIgnoreCase("NU")) {
 							   locationVO.setNotConductedCount(locationVO.getNotConductedCount()+totalMeetingCnt);
-							  
+						   } else if (partyMeetingStatus.equalsIgnoreCase("M")) {
+							   locationVO.setMayBeCount(locationVO.getMayBeCount()+totalMeetingCnt); 
 						   }
 					   }
 				   }
@@ -146,6 +148,8 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 						resultVO.setConductedCount(resultVO.getConductedCount() + entry.getValue().getConductedCount());
 						// calculating overall not conducted meeting count
 						resultVO.setNotConductedCount(resultVO.getNotConductedCount() + entry.getValue().getNotConductedCount());
+						//calculating mayBe count 
+						resultVO.setMayBeCount(resultVO.getMayBeCount() + entry.getValue().getMayBeCount());
 						// calculating overall meeting count
 						resultVO.setTotalCount(resultVO.getTotalCount()+ entry.getValue().getTotalCount());	
 					}
