@@ -269,6 +269,9 @@
 				</div>
 			</div>
 			<div class="row m_top20">
+				<div id="leaderandlocationwiseOverviewId"></div>	
+			</div>
+			<div class="row m_top20">
 				<div id="levelWiseOverviewId"></div>	
 			</div>
 		</div>
