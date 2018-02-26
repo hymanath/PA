@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,300,300i,400,400i,500,500i,600,600i');
+
+* {
+	box-sizing: border-box;
+}
+*:focus {
+	outline: none;
+}
+body {
+	font-family: 'Montserrat', sans-serif;
+	background-image: url(../images/app_bg.png);
+	background-size: cover;
+}
+.login-form-bg
+{
+	background-image: url(../images/login_path_bg.png);
+	background-size: cover;
+	background-repeat:no-repeat;
+	padding:100px 30px 40px 40px	;
+}
+.form-control
+{
+	background-color: #EBECEE;
+	border-radius: 3px;	
+}
+.login-bg
+{
+	background-image: url(../images/login_path_bg.png);
+	background-repeat:no-repeat;
+	margin-top:20px;
+	height:100%;
+}
+.dtpLogoCss{
+	border-bottom: 1px solid rgb(255, 255, 255);
+	padding-bottom: 10px;
+	width: 200px;
+	height: 70px;
+}
+.login-block-inner
+{
+	margin-top:7rem;
+}
+.color-white{
+	color:#fff;
+}
+.btn-color{
+    background-color:#EB4680;
+    color:#fff;
+    width:100%;
+}
+.inputBoxCss{
+	 border-radius:0px !important;
+	 height: 30px !important;
+}
+@media (min-width: 600px) {
+	.login-bgC{
+		background-color: #384256;
+		padding-bottom: 70px;
+		padding-left: 70px;
+		padding-right: 25px;
+		padding-top: 60px;
+		-webkit-clip-path: polygon(38% 9%, 101% 0px, 103% 98%, 33% 92%);
+		clip-path: polygon(38% 9%, 101% 0px, 103% 98%, 33% 92%)
+	}
+}
+.f_12{
+	font-size:12px;
+}
+.pad_0{
+	padding:0px;
+}
+
+.inputBoxCss{
+	 border-radius:0px !important;
+	 height: 30px !important;
+}
+@media only screen and (max-width: 500px) {
+	.login-bgC{
+		background-color:#384256;
+		padding-bottom: 70px;
+		padding-left: 20px;
+		padding-right: 10px;
+		padding-top: 60px;
+	}
+}
+
+.m_top5
+{
+	margin-top:5px !important;
+}
+.m_top10
+{
+	margin-top:10px !important;
+}
+.m_top20
+{
+	margin-top:20px !important;
+}
+.m_top15{
+	margin-top:15px !important;
+}
