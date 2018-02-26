@@ -4752,4 +4752,8 @@
    	  	 	<property name="tdpCommitteeDAO" ref="tdpCommitteeDAO"></property>
    	  	 	<property name="boothInchargeCommitteeDAO" ref ="boothInchargeCommitteeDAO"></property>
    	 	</bean>
+   	 <bean name = "dalithaTejamDashBoardService" class = "com.itgrids.partyanalyst.service.impl.DalithaTejamDashBoardService">
+   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	  	 <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
+   	 </bean>
 </beans>			
