@@ -5740,7 +5740,7 @@ public String activitiesLocationWiseData(){
 		String toDate = jObj.getString("toDate");
 		Long locationScopeId = jObj.getLong("locationScopeId");
 		Long activityId= jObj.getLong("activityId");
-		jbDataList = coreDashboardEventsActivitiesService.activitiesLocationWiseData(fromDate, toDate,locationScopeId,activityId);
+		jbDataList = coreDashboardEventsActivitiesService.activitiesLocationWiseData(fromDate, toDate,locationScopeId,activityId,jObj.getLong("locationValue"));
 	} catch (Exception e) {
 		LOG.error("Exception raised at activitiesDistrictWiseCohort() method of CoreDashBoard", e);
 	}
