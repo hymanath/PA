@@ -2118,258 +2118,259 @@
 			</div>
 		</div>
 		<!-- EM Coverage Time End -->
+		<div class="row">
 		<!-- DEBATES PROGRAM BLOCK -->
-		<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock" expand-block="debates">
-			<div class="panel panel-default panelNewCustom panel2">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="debates">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
-								debates - <small class="text-muted debatesDate">today</small>
-								<!--<label class="radio-inline">
-							<input  name="stateSelection" value="0" checked type="radio" class="radioStateCls"/>All
-						   </label>
-						  <label class="radio-inline">
-							<input  name="stateSelection" value="1" type="radio" class="radioStateCls"/>AP
-						  </label>
-						  <label class="radio-inline">
-							<input name="stateSelection" value="36" type="radio" class="radioStateCls"/>TS
-						 </label>
-						 <label class="radio-inline">
-							<input  name="stateSelection" value="2" type="radio" class="radioStateCls"/>Others
-						 </label>-->
-							</h4>
-							<div class="col-md-3 col-sm-3 col-xs-12">
+			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock" expand-block="debates">
+				<div class="panel panel-default panelNewCustom panel2">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="debates">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
+									debates - <small class="text-muted debatesDate">today</small>
+									<!--<label class="radio-inline">
+								<input  name="stateSelection" value="0" checked type="radio" class="radioStateCls"/>All
+							   </label>
+							  <label class="radio-inline">
+								<input  name="stateSelection" value="1" type="radio" class="radioStateCls"/>AP
+							  </label>
+							  <label class="radio-inline">
+								<input name="stateSelection" value="36" type="radio" class="radioStateCls"/>TS
+							 </label>
+							 <label class="radio-inline">
+								<input  name="stateSelection" value="2" type="radio" class="radioStateCls"/>Others
+							 </label>-->
+								</h4>
+								<div class="col-md-3 col-sm-3 col-xs-12">
+								
+							</div>
+							</div>
 							
-						</div>
-						</div>
-						
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="debates">
-							<span class="debatesSettingsIcon pull-right">
-							   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							 </span>
-							<span class="notesIconDebates pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForDebates(3);"></i>
-							</span>
-							<span class="debatesIconExpand pull-right" expand-icon="debates">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-							<span class="debatesRefresh pull-right">
-							   <i class="glyphicon glyphicon-refresh"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
-							<span class="input-group pull-right dateRangePickerClsForDebates hide" expand-block-date="debates" style="width:200px;">
-								<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="debates">
+								<span class="debatesSettingsIcon pull-right">
+								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+								 </span>
+								<span class="notesIconDebates pull-right">
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForDebates(3);"></i>
 								</span>
-							</span>
-							<div class="debatesSettingsBody" style="display:none;top:15px;">
-								<div class="row">
-									<div class="col-sm-12">
-									 <i class="glyphicon glyphicon-remove debatesSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;"></i>
-										<h4 class="panel-title text-center" id="headingId" >Debate Location</h4>
+								<span class="debatesIconExpand pull-right" expand-icon="debates">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+								<span class="debatesRefresh pull-right">
+								   <i class="glyphicon glyphicon-refresh"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+								</span>
+								<span class="input-group pull-right dateRangePickerClsForDebates hide" expand-block-date="debates" style="width:200px;">
+									<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+								<div class="debatesSettingsBody" style="display:none;top:15px;">
+									<div class="row">
+										<div class="col-sm-12">
+										 <i class="glyphicon glyphicon-remove debatesSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;"></i>
+											<h4 class="panel-title text-center" id="headingId" >Debate Location</h4>
+										</div>
+										<div class="col-sm-6">
+											<!-- Nav tabs -->
+											<ul class="nav nav-tabs tabViewSelectionDebates" role="tablist">
+												<li class="active" role="presentation" id="debatesTabViewDebateId"><a href="#debatesTabViewDebate" aria-controls="debatesTabViewDebate" role="tab" data-toggle="tab">Debate</a></li>
+												<li role="presentation" id="debatesTabViewParticipantId"><a href="#debatesTabViewParticipant" aria-controls="debatesTabViewParticipant" role="tab" data-toggle="tab">Debate Participant</a></li>
+											</ul>
+										</div>
+										<!-- Tab panes -->
+										<div class="col-sm-6">
+											<div class="tab-content">
+												<div role="tabpanel" class="tab-pane active" id="debatesTabViewDebate">
+													<ul class="debatesViewList">
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" id="debatesAP" class="radioStateCls debateradioCls" name="debatesRadio"  value="1" checked />AP
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox"  id="debatesTS" class="radioStateCls debateradioCls" name="debatesRadio"  value="36" checked />TS
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox"  class="radioStateCls debateradioCls" name="debatesRadio" value="2" />Others
+															</label>
+														</li>
+													</ul>
+												</div>
+												<div role="tabpanel" class="tab-pane" id="debatesTabViewParticipant">
+													<ul class="debatesViewList">
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" id="debatesParticipantAP" class="radioStateCls1 debateradioCls" name="debatesParticipantRadio" value="1" checked />AP
+															</label>
+														</li>
+														<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" id="debatesParticipantTS" class="radioStateCls1 debateradioCls" name="debatesParticipantRadio"  value="36" checked />TS
+															</label>
+														</li>
+														<!--<li>
+															<label class="checkbox-inline">
+																<input type="checkbox" name="debatesParticipantRadio" checked/>AP
+															</label>
+														</li>-->
+													</ul>
+												</div>
+											</div>
+										</div>
 									</div>
-									<div class="col-sm-6">
-										<!-- Nav tabs -->
-										<ul class="nav nav-tabs tabViewSelectionDebates" role="tablist">
-											<li class="active" role="presentation" id="debatesTabViewDebateId"><a href="#debatesTabViewDebate" aria-controls="debatesTabViewDebate" role="tab" data-toggle="tab">Debate</a></li>
-											<li role="presentation" id="debatesTabViewParticipantId"><a href="#debatesTabViewParticipant" aria-controls="debatesTabViewParticipant" role="tab" data-toggle="tab">Debate Participant</a></li>
+								</div>
+							</div>
+						</div>
+					   <div class="notesDropDown notesArrow">
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesDebatesId"></div>
+							<hr/>
+							<div id="debateUpId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaDebates"></textarea>
+							<button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>
+						</div> 	
+					
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="module_OwnerCss">Module Owner : Anil</h5>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock" expand-block-inner="debates">
+								
+								
+								<div class="row">
+									<div id="partyWiseTotalDebateDetails"></div>
+								</div>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock" expand-block-right="debates">
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+										<h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+										<ul class="activeUlCls list-inline debateSpokesCls">
+											<li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+											<li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
 										</ul>
 									</div>
-									<!-- Tab panes -->
-									<div class="col-sm-6">
-										<div class="tab-content">
-											<div role="tabpanel" class="tab-pane active" id="debatesTabViewDebate">
-												<ul class="debatesViewList">
-													<li>
-														<label class="checkbox-inline">
-															<input type="checkbox" id="debatesAP" class="radioStateCls debateradioCls" name="debatesRadio"  value="1" checked />AP
-														</label>
-													</li>
-													<li>
-														<label class="checkbox-inline">
-															<input type="checkbox"  id="debatesTS" class="radioStateCls debateradioCls" name="debatesRadio"  value="36" checked />TS
-														</label>
-													</li>
-													<li>
-														<label class="checkbox-inline">
-															<input type="checkbox"  class="radioStateCls debateradioCls" name="debatesRadio" value="2" />Others
-														</label>
-													</li>
-												</ul>
-											</div>
-											<div role="tabpanel" class="tab-pane" id="debatesTabViewParticipant">
-												<ul class="debatesViewList">
-													<li>
-														<label class="checkbox-inline">
-															<input type="checkbox" id="debatesParticipantAP" class="radioStateCls1 debateradioCls" name="debatesParticipantRadio" value="1" checked />AP
-														</label>
-													</li>
-													<li>
-														<label class="checkbox-inline">
-															<input type="checkbox" id="debatesParticipantTS" class="radioStateCls1 debateradioCls" name="debatesParticipantRadio"  value="36" checked />TS
-														</label>
-													</li>
-													<!--<li>
-														<label class="checkbox-inline">
-															<input type="checkbox" name="debatesParticipantRadio" checked/>AP
-														</label>
-													</li>-->
-												</ul>
-											</div>
-										</div>
-									</div>
+									<div id="SpokesPersonWiseDebate"></div>
+									
+									<div class="col-xs-12 col-sm-12 col-md-12">
+										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
+									</div>	
 								</div>
 							</div>
 						</div>
-					</div>
-				   <div class="notesDropDown notesArrow">
-						<h4 class="text-capital">notes
-							<span class="pull-right">
-								<i class="glyphicon glyphicon-list-alt"></i>
-							</span>
-						</h4>
-						<div id="notesDebatesId"></div>
-						<hr/>
-						<div id="debateUpId" style="color:red;"></div>
-						<label>Create Notes</label>
-						<textarea class="form-control notesAreaDebates"></textarea>
-						<button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>
-					</div> 	
-				
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<h5 class="module_OwnerCss">Module Owner : Anil</h5>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-							<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock" expand-block-inner="debates">
-							
-							
-							<div class="row">
-								<div id="partyWiseTotalDebateDetails"></div>
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock" expand-block-right="debates">
-							<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-									<h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-									<ul class="activeUlCls list-inline debateSpokesCls">
-										<li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-										<li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
-									</ul>
-								</div>
-								<div id="SpokesPersonWiseDebate"></div>
-								
-								<div class="col-xs-12 col-sm-12 col-md-12">
-									<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
-								</div>	
-							</div>
-						</div>
-					</div>
-					<div class="row debatesMoreHiddenBlock" expand-block-more="debates">
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-							<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
-										
-											<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
-										
+						<div class="row debatesMoreHiddenBlock" expand-block-more="debates">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
+											
+												<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
+											
+										</div>
+									
+											<div class="panel-body collapse in" id="collapseOneBodyId">
+												<div class="row">
+													<div id="scaleBasedPerformanceCohort"></div>
+												</div>
+											</div>
+									
 									</div>
-								
-										<div class="panel-body collapse in" id="collapseOneBodyId">
-											<div class="row">
-												<div id="scaleBasedPerformanceCohort"></div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingTwo">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">role based performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									  <div class="panel-body">
+										<div class="row">
+												<div id="roleBasedPerformanceCohort"></div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingFive">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
+										</a>
+									</div>
+									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+									  <div class="panel-body">
+										<div class="row">
+											<div id="candidateRolesBuildId"></div>
+										</div>
+										<div class="row m_top20">
+											<div class="col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingThree">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="candidateOverAllPerformanceCohort" style="overflow:auto;"></div>
 											</div>
 										</div>
-								
-								</div>
-							  <div class="panel panel-default panelNew">
-								<div class="panel-heading" role="tab" id="headingTwo">
-									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-									   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">role based performance cohort</span></h4>
-									</a>
-								</div>
-								<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-								  <div class="panel-body">
-									<div class="row">
-											<div id="roleBasedPerformanceCohort"></div>
+									  </div>
 									</div>
 								  </div>
-								</div>
-							  </div>
-							  <div class="panel panel-default panelNew">
-								<div class="panel-heading" role="tab" id="headingFive">
-									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-									   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
-									</a>
-								</div>
-								<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-								  <div class="panel-body">
-									<div class="row">
-										<div id="candidateRolesBuildId"></div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingFour">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">channel vs parties</span></h4>
+										</a>
 									</div>
-									<div class="row m_top20">
-										<div class="col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
-									</div>
-								  </div>
-								</div>
-							  </div>
-							  <div class="panel panel-default panelNew">
-								<div class="panel-heading" role="tab" id="headingThree">
-									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-									   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
-									</a>
-								</div>
-								<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-								  <div class="panel-body">
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div id="candidateOverAllPerformanceCohort" style="overflow:auto;"></div>
+									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="channelAndPartyWiseDetails" style="overflow:auto;"></div>
+											</div>
 										</div>
+									  </div>
 									</div>
 								  </div>
-								</div>
-							  </div>
-							  <div class="panel panel-default panelNew">
-								<div class="panel-heading" role="tab" id="headingFour">
-									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-									   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">channel vs parties</span></h4>
-									</a>
-								</div>
-								<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-								  <div class="panel-body">
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div id="channelAndPartyWiseDetails" style="overflow:auto;"></div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingSix">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
+										   overall performance</span></h4>
+										</a>
+									</div>
+									<div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="designationWiseTotalDebateDetails" style="overflow:auto;"></div>
+											</div>
 										</div>
+									  </div>
 									</div>
 								  </div>
-								</div>
-							  </div>
-							  <div class="panel panel-default panelNew">
-								<div class="panel-heading" role="tab" id="headingSix">
-									<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-									   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
-									   overall performance</span></h4>
-									</a>
-								</div>
-								<div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
-								  <div class="panel-body">
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div id="designationWiseTotalDebateDetails" style="overflow:auto;"></div>
-										</div>
-									</div>
-								  </div>
-								</div>
-							  </div>
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingSeveen">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseSeveen" aria-expanded="false" aria-controls="collapseSeveen">
@@ -2404,13 +2405,11 @@
 				</div>
 			</div>
 			<!-- DEBATES PROGRAM BLOCK END-->
-	</div>
-	<div class="row">
-		<!--Press Meet block Start-->
-		<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
-			<div class="panel panel-default panelNewCustom ">
-				<div class="panel-heading">
-					<div class="row">
+			<!--Press Meet block Start-->
+			<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
+			   <div class="panel panel-default panelNewCustom ">
+				  <div class="panel-heading">
+					 <div class="row">
 						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="pressmeet">
 						   <h4 class="panel-title text-capital" style="width:440px;">    
 							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
@@ -2425,9 +2424,9 @@
 						   <i class="glyphicon glyphicon-fullscreen"></i>
 						   </span>
 						</div>
-					</div>
-				</div>
-				<div class="panel-body">
+					 </div>
+				  </div>
+				  <div class="panel-body">
 					<div class="row">
 						<div class="col-sm-12">
 							<h5 class="module_OwnerCss">Module Owner : Anil</h5>
@@ -2441,7 +2440,7 @@
 							</span>
 						</span>	
 					</div>	
-					<div class="row">
+					 <div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 pressmeetBlock" expand-block-inner="pressmeet">
 						   <div class="row">
 							  <div id="partyWisePressMeetDetails"></div>
@@ -2494,29 +2493,29 @@
 										</div>
 									</div>
 								</div>
-								<div class="panel panel-default panelNew">
+							  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingsthree">
 										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapsethree" aria-expanded="false" aria-controls="collapsethree">
 										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
 										</a>
 									</div>
 									<div id="collapsethree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsthree">
-										<div class="panel-body">
-											<div class="row">
-											
-											  <div class="col-md-12 col-xs-12 col-sm-12">
-												  <ul class=" activeUlCls edtionTypescls list-inline pull-right">
-												   <li class="active" id="0"> Both Edition </li>
-												   <li id="1" > Main Edition </li>
-												  <li id="2"> District Edtion</li>
-												 
-												  </ul>
-											  </div>
-													<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="candidatePressMeetPerformanceId"></div>
-											</div>
+									  <div class="panel-body">
+										<div class="row">
+										
+										  <div class="col-md-12 col-xs-12 col-sm-12">
+										  <ul class=" activeUlCls edtionTypescls list-inline pull-right">
+										   <li class="active" id="0"> Both Edition </li>
+										   <li id="1" > Main Edition </li>
+										  <li id="2"> District Edtion</li>
+										 
+										  </ul>
+										  </div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="candidatePressMeetPerformanceId"></div>
 										</div>
+									  </div>
 									</div>
-								</div> 
+								  </div> 
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingsFour">
 										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapsesFour" aria-expanded="false" aria-controls="collapsesFour">
@@ -2539,31 +2538,49 @@
 										</div>
 									  </div>
 									</div>
-								</div>
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingfive">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseFives" aria-expanded="false" aria-controls="collapseFives">
-											<h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
-										overall performance</span></h4>
-										</a>
-									</div>
-									<div id="collapseFives" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfive">
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-md-12 col-xs-12 col-sm-12">
-													<div id="designationWiseTotalPressMeetDetails" style="overflow:auto;"></div>
+								 </div>
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading" role="tab" id="headingfive">
+												 <a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseFives" aria-expanded="false" aria-controls="collapseFives">
+												 <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
+												 overall performance</span></h4>
+												 </a>
+											</div>
+											<div id="collapseFives" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfive">
+												<div class="panel-body">
+													<div class="row">
+														<div class="col-md-12 col-xs-12 col-sm-12">
+															<div id="designationWiseTotalPressMeetDetails" style="overflow:auto;"></div>
+													 
+														</div>
+													</div>
 												</div>
 											</div>
+										</div>
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingEight">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Caste Group Cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
+										<div class="panel-body">
+										   <div class="row">
+											  <div id="pressMeetCasteAnalysisDivId" style="overflow:auto;">
+											  </div>
+										   </div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
+					 </div>
+				  </div>
+			   </div>
 			</div>
-		</div>
-		<!---PressMeet End--->
+			<!---PressMeet End--->
+	</div>
+	<div class="row">
 	<!-- TOURS START -->
 	<!-- tour New Jsp Code -->
 		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="tours">
