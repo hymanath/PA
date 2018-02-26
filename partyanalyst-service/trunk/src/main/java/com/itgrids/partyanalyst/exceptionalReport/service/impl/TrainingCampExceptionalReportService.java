@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampInviteeConstituencyDAO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITrainingCampExceptionalReportService;
@@ -40,6 +41,7 @@ public class TrainingCampExceptionalReportService implements ITrainingCampExcept
 	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
 	private SetterAndGetterUtilService setterAndGetterUtilService;
 	private ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO;
+	private ITrainingCampInviteeConstituencyDAO trainingCampInviteeConstituencyDAO;
 	
 	public void setCommonMethodsUtilService(CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
@@ -68,6 +70,15 @@ public class TrainingCampExceptionalReportService implements ITrainingCampExcept
 	}
 	public void setTrainingCampDAO(ITrainingCampDAO trainingCampDAO) {
 		this.trainingCampDAO = trainingCampDAO;
+	}
+	
+	
+	public ITrainingCampInviteeConstituencyDAO getTrainingCampInviteeConstituencyDAO() {
+		return trainingCampInviteeConstituencyDAO;
+	}
+	public void setTrainingCampInviteeConstituencyDAO(
+			ITrainingCampInviteeConstituencyDAO trainingCampInviteeConstituencyDAO) {
+		this.trainingCampInviteeConstituencyDAO = trainingCampInviteeConstituencyDAO;
 	}
 	public List<TrainingCampProgramVO> getListOfParliamentsWithPoorPerformance(String startDate,String endDate, Long stateId,int size,List<Long> tdpCommitteeLevelIds,List<Long> trainingCampProgramIds,List<Long> enrollmentYearIds,Long locationLevelId, List<Long> locationLevelValues ){
 		try{
@@ -225,6 +236,11 @@ public class TrainingCampExceptionalReportService implements ITrainingCampExcept
 			allDistList.addAll(gpnCenterList);
 			allDistList.addAll(akkcCenterList);
 			
+			
+			//get all the constituency for which training camp is considering.
+			List<Long> trainingCampConstituencyList = trainingCampInviteeConstituencyDAO.getExtraConstituencyList(trainingCampProgramIds);
+			
+			
 			//get all constituency by passing district Ids
 			
 			List<Object[]> locationList = constituencyDAO.getDistrictConstituenciesList(allDistList);
@@ -285,13 +301,15 @@ public class TrainingCampExceptionalReportService implements ITrainingCampExcept
 			Map<Long,TrainingCampProgramVO> constituencyIdAndDetailsMap = new HashMap<Long,TrainingCampProgramVO>();
 			if(inviteeList != null && inviteeList.size() > 0){
 				for(Object[] param : inviteeList){
-					campProgramVO = new TrainingCampProgramVO();
-					campProgramVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					campProgramVO.setConstituency(commonMethodsUtilService.getStringValueForObject(param[1]));
-					campProgramVO.setParliamentId(constituencyIdAndIdNameVO.get(campProgramVO.getId()).getId());
-					campProgramVO.setParliament(constituencyIdAndIdNameVO.get(campProgramVO.getId()).getName());
-					campProgramVO.setTotalEligibleCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					constituencyIdAndDetailsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), campProgramVO);
+					if(trainingCampConstituencyList.contains(commonMethodsUtilService.getLongValueForObject(param[0]))){
+						campProgramVO = new TrainingCampProgramVO();
+						campProgramVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						campProgramVO.setConstituency(commonMethodsUtilService.getStringValueForObject(param[1]));
+						campProgramVO.setParliamentId(constituencyIdAndIdNameVO.get(campProgramVO.getId()).getId());
+						campProgramVO.setParliament(constituencyIdAndIdNameVO.get(campProgramVO.getId()).getName());
+						campProgramVO.setTotalEligibleCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						constituencyIdAndDetailsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), campProgramVO);
+					}
 				}
 			}
 			
@@ -338,13 +356,15 @@ public class TrainingCampExceptionalReportService implements ITrainingCampExcept
 			Set<Long> caderList = null;
 			if(tempList != null && tempList.size() > 0){
 				for(Object[] param : tempList){
-					if(commonMethodsUtilService.getStringValueForObject(param[7]).trim().equalsIgnoreCase("INVITEE")){
-						caderList = locationIdAndListOfCaders.get(commonMethodsUtilService.getLongValueForObject(param[15]));
-						if(null == caderList){
-							caderList = new HashSet<Long>();
-							locationIdAndListOfCaders.put(commonMethodsUtilService.getLongValueForObject(param[15]), caderList);
+					if(trainingCampConstituencyList.contains(commonMethodsUtilService.getLongValueForObject(param[15]))){
+						if(commonMethodsUtilService.getStringValueForObject(param[7]).trim().equalsIgnoreCase("INVITEE")){
+							caderList = locationIdAndListOfCaders.get(commonMethodsUtilService.getLongValueForObject(param[15]));
+							if(null == caderList){
+								caderList = new HashSet<Long>();
+								locationIdAndListOfCaders.put(commonMethodsUtilService.getLongValueForObject(param[15]), caderList);
+							}
+							caderList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 						}
-						caderList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 					}
 				}
 			}
