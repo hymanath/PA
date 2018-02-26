@@ -170,7 +170,9 @@
 		<!--<pattern>/rtcUnionRegistrationAction*</pattern>-->
 		<pattern>/affiliatedCadreRegistrationAction*</pattern>	   	
 		<pattern>/tdpUserWiseReportMapAction*</pattern>
-		<pattern>/tdpMembershipPerformanceAction*</pattern>
+		<pattern>/tdpMembershipPerformanceAction*</pattern>  
+		<pattern>/dalithTejamDashBoardAction*</pattern>
+		
 		</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -781,8 +783,7 @@
 		<pattern>/officerWiseAlertReportAction*</pattern>    
 		<pattern>/createMeekosamGrievanceAction*</pattern>
 		<pattern>/grievanceRequestAction*</pattern>
-		<pattern>/updateMobileNoAction*</pattern>  
-		
+		<pattern>/updateMobileNoAction*</pattern>
 		
 	 </decorator>
 </decorators>
