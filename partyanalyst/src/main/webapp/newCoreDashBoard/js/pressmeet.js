@@ -69,7 +69,8 @@ function preemeeetOnloadCalls(){
 		getPrintMediaOverAllPartyWiseCounts();
 		getTopFiveLeaders("1,2,3");
 		getPublicationVsPartiesPerformance("1,2,3");
-		getDesignationWisePerformance();		
+		getDesignationWisePerformance();
+		getCasteWiseCandidateCounts();		
 }
 var partywiseresult='';
 $(document).on("click",".pressmeetIconExpand",function(){
@@ -1363,3 +1364,216 @@ $(document).on("click",".closeModalpress",function(){
 		$('body').addClass("modal-open");
 	}, 400);                     
 });
+function getCasteWiseCandidateCounts(){
+	$("#pressMeetCasteAnalysisDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$.ajax({
+		url: wurl+"/CommunityNewsPortal/webservice/getCasteWiseCandidateCounts/"+fromDate+"/"+toDate
+		//url: "http://192.168.11.195:8080/CommunityNewsPortal/webservice/getCasteWiseCandidateCounts/"+fromDate+"/"+toDate
+	}).then(function(result){
+			if(result !=null){
+				//partywiseresult= result;
+     		  buildCasteWiseCandidateCounts(result);
+     		}else{
+				$("#pressMeetCasteAnalysisDivId").html('<div class="col-sm-12"<h4>NO DATA AVAILABLE</h4></div>');
+			}
+		});
+
+	}
+	function buildCasteWiseCandidateCounts(result)
+  {
+	var str='';
+	if(result !=null){
+			str+='<div class="table-responsive m_top20">';
+				str+='<table class="table table-bordered dataTableSorting" >';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th class="text-capital">Party</th>';
+						str+='<th class="text-capital">pressMeets</th>';
+						str+='<th class="text-capital">spokes persons</th>';
+						for(var i in result[0].pressmeetList){
+						str+='<th  class="text-capital" >'+result[0].pressmeetList[i].casteName+'</br><p class="text-capital">spokes persons</p></th>';
+					    }
+					str+='</tr>';
+				str+='</thead>';
+				
+				  str+='<tbody>';
+					for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].name+'</td>';
+						str+='<td><span style="cursor:pointer;color:#337ab7"  class="pressmeetCasteGroupCls" attr_partyId = "'+result[i].id+'" attr_type="party" attr_casteId="0" >'+result[i].pressMeetCount+'</span></td>';
+						str+='<td><span style="cursor:pointer;color:#337ab7" class="pressmeetCasteGroupCls" attr_type="candidate" attr_partyId = "'+result[i].id+'" attr_casteId="0" >'+result[i].candidateArticleCount+'</span></td>';
+						for(var j in result[i].pressmeetList){
+						/* if(result[i].pressmeetList[j].pressMeetCount != null && result[i].pressmeetList[j].pressMeetCount>0){
+						 str+='<td><span style="cursor:pointer;color:#337ab7" class="pressmeetCasteGroupCls" attr_partyId = "'+result[i].id+'" attr_type="party" attr_casteId="'+result[i].pressmeetList[j].casteId+'" attr_casteName="'+result[i].pressmeetList[j].casteName+'" >'+result[i].pressmeetList[j].pressMeetCount+'('+result[i].pressmeetList[j].pressmeetPer+'%)</span></td>';
+						}else{
+						 str+='<td><span style="color:#337ab7">'+result[i].pressmeetList[j].pressMeetCount+'</span></td>';	
+						} */
+						if(result[i].pressmeetList[j].candidateArticleCount != null && result[i].pressmeetList[j].candidateArticleCount>0){
+						 str+='<td><span style="cursor:pointer;color:#337ab7" class="pressmeetCasteGroupCls" attr_type="candidate" attr_partyId = "'+result[i].id+'" attr_casteId="'+result[i].pressmeetList[j].casteId+'" attr_casteName="'+result[i].pressmeetList[j].casteName+'" >'+result[i].pressmeetList[j].candidateArticleCount+'('+result[i].pressmeetList[j].participantPer+'%)</span></td>';
+						}else{
+						 str+='<td><span style="color:#337ab7" >'+result[i].pressmeetList[j].candidateArticleCount+'</span></td>';	
+						}
+					   } 
+					str+='</tr>';
+					}
+				 str+='</tbody>';
+				str+='</table>';	
+			str+='</div>';
+			//alert(str);
+		//$("#pressMeetCasteAnalysisDivId").html(str);
+		//$("#pressmetCasteWiseDtlsId").dataTable();
+		/* $("#pressmetCasteWiseDtlsId").dataTable({
+				 "scrollX": true,
+				"scrollCollapse": true,
+				"fixedColumns":   {
+					"leftColumns": 1,
+				} 
+			}); */
+	}else{
+			$("#pressMeetCasteAnalysisDivId").html('<h3>NO DATA AVAILABLE</h3>')
+		}
+
+}
+$(document).on("click",".pressmeetCasteGroupCls",function(){
+	//alert(10);
+	$("#pressmeetModelDivId").modal("show");
+	$("#modalPressmeetHeadingId").html("Pressmeet Details");   
+	var partyId = $(this).attr("attr_partyId");
+	var type = $(this).attr("attr_type");
+	var casteId =$(this).attr("attr_casteId");
+	var casteName=$(this).attr("attr_casteName");
+	$(".pressmeetModelCls").html("");	
+	$(".pressmeetModelCls").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$.ajax({
+   url: wurl+"/CommunityNewsPortal/webservice/getCasteWiseCandidateCountsClick//"+fromDate+"/"+toDate+"/"+casteId+"/"+partyId+"/"+type+"/"+casteName+"/"
+     //url: "http://192.168.11.195:8080/CommunityNewsPortal/webservice/getCasteWiseCandidateCountsClick/"+fromDate+"/"+toDate+"/"+casteId+"/"+partyId+"/"+type+"/"+casteName+"/"
+	}).then(function(result){
+     
+   if(result !=null){
+		if( type == 'candidate'){
+			//alert(890);
+		 buildCasteWiseBasicDetailsOfCandidatesClick(result,casteName,type);
+		}else if(type='party'){
+			//alert(891);
+	      buildCasteWisePressmeetCountsClick(result,casteName,type);
+	   }
+	  
+	}
+	});
+});
+function buildCasteWisePressmeetCountsClick(result,casteName,type){
+	var str = '';
+		if(result.pressmeetList !=null && result.pressmeetList.length>0){
+								
+			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
+		 
+			 	str+= '<div class="table-responsive">';
+				str+= '<table class="table table-bordered" id="dataTablePressMeetCasteId">';
+				str+= '<thead style="background:#ccc">';
+				str+='<th style="max-width:300px;">Title</th>';                         
+				str+='<th>Conducted Date</th>';
+				if(casteName != "others" && type != "party"){
+				str+='<th>Caste Group</th>';
+				str+='<th>Caste</th>';
+				}
+				str+='<th>Candidate Name/Party Name </th>'
+				str+= '</thead>';
+				str+= '<tbody>';					
+				for(var i in result.pressmeetList){
+				str+='<tr>';
+				str+='<td>'+result.pressmeetList[i].title+'</td>';
+				str+='<td>'+result.pressmeetList[i].conductedDate+'</td>';
+				if(casteName != "others" && type != "party"){
+					if(result.pressmeetList[i].casteGroup != null){
+				       str+='<td>'+result.pressmeetList[i].casteGroup+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(result.pressmeetList[i].casteName != null){
+				       str+='<td>'+result.pressmeetList[i].casteName+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+				}
+				str+='<td>';
+					str+='<table class="table table-bordered m_top10" style="background-color:#D3D3D3" >';
+					str+='<tbody>';
+					for(var j in result.pressmeetList[i].participantList){
+						str+='<tr>';
+						str+='<td width="70%">'+result.pressmeetList[i].participantList[j].candidateName+'</td>';
+						str+='<td width="30%">'+result.pressmeetList[i].participantList[j].partyName+'</td>';
+						str+='</tr>';      
+					}
+					str+='</tbody>';	
+					str+='</table>';	
+				str+='</td>';
+				str+='</tr>';
+				}	
+				str+= '</tbody>';
+				str+= '</div>';
+				str+= '</div>';
+				
+			
+			$(".pressmeetModelCls").html(str);
+			$('#dataTablePressMeetCasteId').dataTable({
+				"iDisplayLength": 10,
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				
+			 });
+			
+		}		
+}
+function buildCasteWiseBasicDetailsOfCandidatesClick(result,casteName,type){
+	var str = '';
+		if(result.pressmeetList !=null && result.pressmeetList.length>0){
+								
+			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
+		 
+			 	str+= '<div class="table-responsive">';
+				str+= '<table class="table table-bordered" id="dataTableCandidateCasteId">';
+				str+= '<thead style="background:#ccc">';
+				str+='<th>Candidate Name</th>';
+				str+='<th>Party Name</th>';
+				//str+='<th>Designation</th>';
+				str+='<th>Title</th>';
+				if(casteName != "others" && type != "party"){
+				str+='<th>Caste Group</th>';
+				str+='<th>Caste</th>';
+				}
+				str+= '</thead>';
+				str+= '<tbody>';					
+				for(var i in result.pressmeetList){
+				str+='<tr>';
+				str+='<td>'+result.pressmeetList[i].candidateName+'</td>';
+				str+='<td>'+result.pressmeetList[i].partyName+'</td>';
+				//str+='<td>'+result.pressmeetList[i].designation+'</td>';
+				str+='<td>'+result.pressmeetList[i].title+'</td>';
+				if(casteName != "others" && type != "party"){
+					if(result.pressmeetList[i].casteGroup != null){
+				       str+='<td>'+result.pressmeetList[i].casteGroup+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(result.pressmeetList[i].casteName != null){
+				      str+='<td>'+result.pressmeetList[i].casteName+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+				}
+				str+='</tr>';
+				}	
+				str+= '</tbody>';
+				str+= '</div>';
+				str+= '</div>';
+				
+			
+			$(".pressmeetModelCls").html(str);
+			$('#dataTableCandidateCasteId').dataTable({
+				"iDisplayLength": 10,
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+				
+			 });
+			
+		}
+		
+} 
