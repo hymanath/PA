@@ -2379,14 +2379,14 @@
 									</div>
 									<div id="collapseSeveen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeveen">
 									  <div class="panel-body">
-									  <div class="row">
+									  <!--<div class="row">
 											<div id="candidateCasteBuildId">
 											  <ul class="activeUlCls list-inline pull-right candidateCasteCls">	
 				                               <li class="active" style="margin-right:3px;" class="casteAnalsisCls" attr_casteId="0"> Spokes persons Caste Analysis</li>
 											   <li style="margin-right:3px;" class="casteAnalsisCls" attr_casteId="1"> Caste Overview</li>
 											  </ul>
 											</div>
-										</div>
+										</div>-->
 										<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12">
 												<div id="casteAnalysisDivId" style="overflow:auto;"></div>
