@@ -70,7 +70,8 @@ $("#dateRangePickerAUM").daterangepicker({
 	getActivityOverAllSummaryforDelithatejam();
 	getRecentImagesList(); 
 	DalithaTejamnews();
-	levelWiseSBData(activityId)
+	levelWiseSBData(activityId);
+	levelWiseLeaderData("leaderWise")
 }
 
 function getAllDistricts(){
@@ -566,13 +567,13 @@ function levelWiseSBData(divId)
 			
 	
 	$("#levelWiseOverviewId").html(collapse);
-	setTimeout(function(){ 
+	 setTimeout(function(){ 
 		for(var i in levelWiseSBArr){
 			getSettingActivitiesJBMData(levelWiseSBArr[i],divId);
 			$("[overview-level-new]").trigger("click");
 		}	
 	
-	}, 1000);
+	}, 1000); 
 }
 
 function getSettingActivitiesJBMData(locationId,divId){
@@ -589,8 +590,8 @@ function getSettingActivitiesJBMData(locationId,divId){
 		locationTypeId =10
 	}
 	var jsObj={
-		fromDate :'',
-	    toDate :'',
+		fromDate :glStartDate,
+	    toDate :glEndDate,
 		activityId:divId,
 		locationScopeId:locationTypeId,
 		locationValue:locationValue
@@ -650,7 +651,7 @@ function buildActivityEventdata(result,locationId,divId){
 						}
 						
 					}
-					tableView+='<th rowspan ="2">ఈ కార్యక్రమం లో ఎమ్మెల్యే/ఇంచార్జి హాజరు అయిన  రోజులు  </th>';
+					tableView+='<th rowspan ="2">ఈ కార్యక్రమం లో ఎమ్మెల్యే/ఇంచార్జి హాజరు అయిన  రోజులు </th>';
 				tableView+='</tr>';
 				tableView+='<tr>';
 					tableView+='<th>Total Count</th>';
@@ -903,3 +904,334 @@ $(document).on("click",".refreshDalithaTejam",function(){
 $(document).on("change","#districtId",function(){
 	//onLoadCalls();
 });
+
+function buildNewsModule(result){
+	var str='';
+	
+	str+='<div class="row m_top10">';
+		str+='<div class="col-sm-6">';
+			str+='<div class="yash_color_news">';
+				str+='<h4 class="font_weight">TDP Party</h4>';
+				for(var i in result.coreDashBoardVOList){
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">MAIN EDITION</h5>';
+								str+='<h4 class="blue-text-news m_top10">'+result.coreDashBoardVOList[i].count+'</h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">POSITIVE</h5>';
+								str+='<h4 class="green-text-news m_top10">'+result.coreDashBoardVOList[i].positiveCountMain	+' </h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">NEGATIVE</h5>';
+								str+='<h4 class="red-text-news m_top10" >'+result.coreDashBoardVOList[i].negativCountMain+'</h4>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">DIST EDITION</h5>';
+								str+='<h4 class="blue-text-news m_top10">'+result.coreDashBoardVOList[i].totalCount+'</h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">POSITIVE</h5>';
+								str+='<h4 class="green-text-news m_top10" > '+result.coreDashBoardVOList[i].positiveCountDist+' <span class="small-font" >'+result.coreDashBoardVOList[i].positiveDistPerc+'%</span></h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">NEGATIVE</h5>';
+								str+='<h4 class="red-text-news m_top10" > '+result.coreDashBoardVOList[i].negativCountDist+' <span class="small-font" >'+result.coreDashBoardVOList[i].negativeDistPerc+'%</span></h4>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				}
+				
+				
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="col-sm-6">';
+			str+='<div class="yash_color_news">';
+				str+='<h4 class="font_weight">Other Party</h4>';
+				for(var i in result.coreDashBoardVOList1){
+					var totalmainOtherParty=0;
+					var totalmainOtherPartyPosCount=0;
+					var totalmainOtherPartyNegCount=0;
+					var totalDistOtherPartyCount=0;
+					var totalDistOtherPartyPosCount=0;
+					var totalDistOtherPartyNegCount=0;
+					
+					
+					
+					totalmainOtherParty = totalmainOtherParty+result.coreDashBoardVOList1[i].count;
+					totalmainOtherPartyPosCount = totalmainOtherPartyPosCount+result.coreDashBoardVOList1[i].positiveCountMain;
+					totalmainOtherPartyNegCount = totalmainOtherPartyNegCount+result.coreDashBoardVOList1[i].positiveCountMain;
+					
+					
+					totalDistOtherPartyCount = totalDistOtherPartyCount+result.coreDashBoardVOList1[i].totalCount;
+					totalDistOtherPartyPosCount = totalDistOtherPartyPosCount+result.coreDashBoardVOList1[i].positiveCountDist;
+					totalDistOtherPartyNegCount = totalDistOtherPartyNegCount+result.coreDashBoardVOList1[i].negativCountDist;
+					
+					var otherMediaMainPostivePercentage = parseFloat(totalmainOtherPartyPosCount/totalmainOtherParty).toFixed(2)+"%";
+					var otherMediaMainNegativePercentage = parseFloat(totalmainOtherPartyNegCount/totalmainOtherParty).toFixed(2)+"%";
+					
+					var otherMediaDistrictPostivePercentage = parseFloat(totalDistOtherPartyPosCount/totalDistOtherPartyCount).toFixed(2)+"%";
+					var otherMediaDistrictNegativePercentage = parseFloat(totalDistOtherPartyNegCount/totalDistOtherPartyCount).toFixed(2)+"%";
+					
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">MAIN EDITION</h5>';
+								str+='<h4 class="blue-text-news m_top10">'+totalmainOtherParty+'</h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">POSITIVE</h5>';
+								if(totalmainOtherPartyPosCount !=null && totalmainOtherPartyPosCount>0){
+									str+='<h4 class="green-text-news m_top10" > '+totalmainOtherPartyPosCount+' <span class="small-font">'+otherMediaMainPostivePercentage+'</span></h4>';
+								}else{
+									str+='<h4 class="green-text-news m_top10" > '+totalmainOtherPartyPosCount+'</h4>';
+								}
+								
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">NEGATIVE</h5>';
+								if(totalmainOtherPartyNegCount !=null && totalmainOtherPartyNegCount>0){
+									str+='<h4 class="red-text-news m_top10" >'+totalmainOtherPartyNegCount+' <span class="small-font">'+otherMediaMainNegativePercentage+'</span></h4>';
+								}else{
+									str+='<h4 class="red-text-news m_top10" > '+totalmainOtherPartyNegCount+'</h4>';
+								}
+								
+								
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">DIST EDITION</h5>';
+								str+='<h4 class="blue-text-news m_top10" >'+totalDistOtherPartyCount+'</h4>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">POSITIVE</h5>';
+								if(totalDistOtherPartyPosCount !=null && totalDistOtherPartyPosCount>0){
+									str+='<h4 class="green-text-news m_top10" >'+totalDistOtherPartyPosCount+' <span class="small-font" >'+otherMediaDistrictPostivePercentage+'</span></h4>';
+								}else{
+									str+='<h4 class="green-text-news m_top10" > '+totalDistOtherPartyPosCount+'</h4>';
+								}
+								
+							str+='</div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<div class="dark_yash_box">';
+								str+='<h5 class="font_weight">NEGATIVE</h5>';
+								if(totalDistOtherPartyPosCount !=null && totalDistOtherPartyPosCount>0){
+									str+='<h4 class="red-text-news m_top10" >'+totalDistOtherPartyPosCount+'<span class="small-font" >'+otherMediaDistrictNegativePercentage+'</span></h4>';
+								}else{
+									str+='<h4 class="red-text-news m_top10" > '+totalDistOtherPartyPosCount+'</h4>';
+								}
+								
+								
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				}
+				
+				
+			str+='</div>';
+		str+='</div>';
+		
+	str+='</div>';
+		
+			$("#dalithaTejamOnNewsDivId").html(str);
+}
+
+function levelWiseLeaderData(divId)
+{
+	var levelWiseSBLeaderArr=['district','parliament','constituency'];
+	var collapse='';
+	for(var i in levelWiseSBLeaderArr)
+	{
+		collapse+='<div class="col-sm-12">';
+		collapse+='<div class="panel-group" id="accordionleader'+divId+''+levelWiseSBLeaderArr[i]+'" role="tablist" aria-multiselectable="true">';
+			collapse+='<div class="panel panel-default panel-gray" style="box-shadow:none;">';
+			
+				collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBLeaderArr[i]+'">';
+				
+				collapse+='<a role="button" class="panelCollapseIcon1 '+divId+''+levelWiseSBLeaderArr[i]+'"   data-toggle="collapse" data-parent="#accordionleader'+divId+''+levelWiseSBLeaderArr[i]+'" href="#collapse'+divId+''+levelWiseSBLeaderArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" >';
+				
+					/* if(i == 0)
+					{
+						collapse+='<a role="button" class="panelCollapseIcon1 '+divId+''+levelWiseSBLeaderArr[i]+'"   data-toggle="collapse" data-parent="#accordionleader'+divId+''+levelWiseSBLeaderArr[i]+'" href="#collapse'+divId+''+levelWiseSBLeaderArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" >';
+					}else{
+						collapse+='<a role="button" class="panelCollapseIcon1 collapsed '+divId+''+levelWiseSBLeaderArr[i]+'"  overview-level-new='+divId+''+levelWiseSBLeaderArr[i]+' data-toggle="collapse" data-parent="#accordionleader'+divId+''+levelWiseSBLeaderArr[i]+'" href="#collapse'+divId+''+levelWiseSBLeaderArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" >';
+					} */
+					collapse+='<h5 class="text-capital" style="color:#000;">Leaders Participated- '+levelWiseSBLeaderArr[i]+' level overview</h5>';
+						
+					collapse+='</a>';
+				collapse+='</div>';
+				collapse+='<div id="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId+''+levelWiseSBLeaderArr[i]+'">';
+				/* if(i == 0)
+				{
+					collapse+='<div id="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId+''+levelWiseSBLeaderArr[i]+'">';
+				}else{
+					collapse+='<div id="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId+''+levelWiseSBLeaderArr[i]+'">';
+				} */
+				
+				
+					collapse+='<div class="panel-body">';
+						//collapse+='<div class="row">';
+							collapse+='<div id="'+levelWiseSBLeaderArr[i]+''+divId+'"></div>';
+						//collapse+='</div>';
+					collapse+='</div>';
+				collapse+='</div>';
+			collapse+='</div>';
+		collapse+='</div>';
+		collapse+='</div>';
+	}
+			
+			
+	
+	$("#leaderandlocationwiseOverviewId").html(collapse);
+	setTimeout(function(){ 
+		for(var i in levelWiseSBLeaderArr){
+			getSettingActivitiesJBMData1(levelWiseSBLeaderArr[i],divId);
+			$("[overview-level-new]").trigger("click");
+		}	
+	
+	}, 2000);
+}
+
+function getSettingActivitiesJBMData1(locationId,divId){
+	$("#"+locationId+divId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var locationTypeId =0;var locationValue =0;
+	if(locationId == 'district'){
+		locationTypeId =3
+		locationValue=0;
+	}else if(locationId == 'constituency'){
+		locationTypeId =4
+		locationValue=0;
+	}else if(locationId == 'parliament'){
+		locationValue=0;
+		locationTypeId =10
+	}
+	var jsObj={
+		fromDate :glStartDate,
+	    toDate :glEndDate,
+		activityId:38,
+		locationScopeId:locationTypeId,
+		locationValue:locationValue
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "getLocationWiseJBDataAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			buildActivityEventdata1(result,locationId,divId);
+		}else{
+			$("#"+locationId+divId).html('NO DATA AVAILABLE');
+		}
+	});
+}
+function buildActivityEventdata1(result,locationId,divId){
+	var tableView='';
+	tableView+='<div class="table-responsive">';
+		tableView+='<table class="table table-bordered dataTable1leaderandlocarionwise'+locationId+' table_custom_data" style="width:100%;border:1px solid lightgrey">';
+			tableView+='<thead class="text-capital" style="background-color:#f2f2f2;">';
+				tableView+='<tr>';
+					if(locationId == 'district'){
+						tableView+='<th rowspan =2>District</th>';
+					}else if(locationId == 'constituency'){
+						tableView+='<th rowspan =2>districtName</th>';
+						tableView+='<th rowspan =2>Assembly Constituency</th>';
+					}else if(locationId == 'parliament'){
+						tableView+='<th rowspan =2>Parliment Constituency</th>';
+					}else if(locationId == 'state'){
+						tableView+='<th rowspan =2>State</th>';
+					}
+					tableView+='<th rowspan="2">Total Villages Covered</th>';
+					for(var i in result[0].questionList){
+						if(result[0].questionList[i].questionId==33){
+							tableView+='<th colspan="'+result[0].questionList[i].optionList.length+'">'+result[0].questionList[i].questionName+'</th>';
+						}
+					}
+					tableView+='<th rowspan ="2">Images</th>';
+				tableView+='</tr>';
+				tableView+='<tr>';
+					for(var i in result[0].questionList){
+						if(result[0].questionList[i].questionId==33){
+							for(var j in result[0].questionList[i].optionList){
+								tableView+='<th>'+result[0].questionList[i].optionList[j].optionName+'</th>';
+							}											
+						}
+					}
+					tableView+='</tr>';
+				tableView+='</tr>';
+			tableView+='</thead>';	
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+					if(locationId == 'constituency'){
+						tableView+='<td>'+result[i].districtName+'</td>';
+					}
+					tableView+='<td>'+result[i].locationName+'</td>';
+					tableView+='<td align="center">'+result[i].conductedCount+'</td>';
+					for(var j in result[i].questionList){
+						if(result[i].questionList[j].questionId==33){
+							for(var k in result[i].questionList[j].optionList){
+								tableView+='<th>'+result[i].questionList[j].optionList[k].count+'</th>';
+							}											
+						}
+					}
+					if(result[i].imageCount !=null){
+						tableView+='<td>'+result[i].imageCount+'</td>';
+					}else{
+						tableView+='<td>0</td>';
+					}
+				tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
+	tableView+='</div>';
+	
+	$("#"+locationId+divId).html(tableView);
+	$(".dataTable1leaderandlocarionwise"+locationId).dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [],
+			"order": [ 0, 'asc' ],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			buttons: [
+				{
+					//extend		:'csvHtml5',
+					text		:'<i class="fa fa-file-text-o generateleaderExcelcdfdf" attr_id="exportExcel'+locationId+'"></i>',
+					titleAttr	: 'CSV',
+					//title		:  "ENC WORKS DASHBOARD",
+					//filename	:  locationId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+				}
+			] ,
+			"scrollX": true,
+			"scrollX": true,
+			"scrollCollapse": true,
+			"fixedColumns":   {
+				"leftColumns": 1,
+			}
+	});
+}
