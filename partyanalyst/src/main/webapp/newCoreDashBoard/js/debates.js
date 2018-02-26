@@ -1957,11 +1957,11 @@ function getCasteCategoryWisePartyDetails(){
 	}
  function buildCasteCategoryWisePartyDetails(result,debateLocationIdArry)
   {
-
+  
 	var str='';
 	if(result !=null){
 			str+='<div class="table-responsive m_top20">';
-				str+='<table class="table table-bordered  dataTableSorting" id="debatesCasteWiseDtlsId">';
+				str+='<table class="table table-bordered dataTableSorting ">';
 				str+='<thead>';
 					str+='<tr>';
 						str+='<th class="text-capital">Party</th>';
