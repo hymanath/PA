@@ -8,9 +8,11 @@ public class PartyMeetingExceptionalReportVO {
 	private String locationName;
 	private Long totalCount = 0l;
 	private Long conductedCount = 0l;
-	private Double conductedPercentage;
 	private Long notConductedCount = 0l;
+	private Long mayBeCount = 0l;
 	private Double notConductedPercentage;
+	private Double conductedPercentage;
+	private Double mayBePercentage;
 	private Double percentage;
 	private AddressVO addressVO;
 	
@@ -104,9 +106,21 @@ public class PartyMeetingExceptionalReportVO {
 	public void setNotConductedPercentage(Double notConductedPercentage) {
 		this.notConductedPercentage = notConductedPercentage;
 	}
-	
-    
-	
-	
+
+	public Long getMayBeCount() {
+		return mayBeCount;
+	}
+
+	public void setMayBeCount(Long mayBeCount) {
+		this.mayBeCount = mayBeCount;
+	}
+
+	public Double getMayBePercentage() {
+		return mayBePercentage;
+	}
+
+	public void setMayBePercentage(Double mayBePercentage) {
+		this.mayBePercentage = mayBePercentage;
+	}
 	
 }
