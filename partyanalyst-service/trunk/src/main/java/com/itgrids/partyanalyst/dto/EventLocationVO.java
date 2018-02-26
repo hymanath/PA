@@ -29,6 +29,7 @@ public class EventLocationVO {
 	private Long coveredPopulation=0l;
 	private Long totalRegistered=0l;
 	private Long totalLoanApplied=0l;
+	private Long imageCount;
 	
 	public Long getLocationId() {
 		return locationId;
@@ -155,6 +156,12 @@ public class EventLocationVO {
 	}
 	public void setTotalLoanApplied(Long totalLoanApplied) {
 		this.totalLoanApplied = totalLoanApplied;
+	}
+	public Long getImageCount() {
+		return imageCount;
+	}
+	public void setImageCount(Long imageCount) {
+		this.imageCount = imageCount;
 	}
 	
 	
