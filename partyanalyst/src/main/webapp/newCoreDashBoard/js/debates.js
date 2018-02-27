@@ -347,9 +347,9 @@ function buildScaleBasedPerformanceCohort(result,debateLocationIdArry)
 {
 	var str='';
 	if(result !=null){
-		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			str+='<div style="overflow:auto">';
+			str+='<div class="scrollBasedScaleBasedDivCls">';
 			for(var i in result){
+				str+='<div class="table-responsive">';
 				//str+='<h4 class="text-capital"><img  src="newCoreDashBoard/img/'+result[i].name+'.png" alt="'+result[i].name+'" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
 				str+='<table class="table tableDebates tableDebatesMain m_top10">';
 				  str+='<tbody>';
@@ -394,9 +394,10 @@ function buildScaleBasedPerformanceCohort(result,debateLocationIdArry)
 					str+='</tr>';
 				 str+='</tbody>';
 				str+='</table>';
+				str+='</div>';
 				str+='<hr class="m_0"/>';
 			}
-			str+='</div>';
+			
 		str+='</div>';
 		$("#scaleBasedPerformanceCohort").html(str);
 		$(".performanceRating").rating({
@@ -407,7 +408,7 @@ function buildScaleBasedPerformanceCohort(result,debateLocationIdArry)
 		});
 		if(result.length> 6)
 		{
-			$("#scaleBasedPerformanceCohort").mCustomScrollbar({setHeight:'300px'})
+			//$(".scrollBasedScaleBasedDivCls").mCustomScrollbar({setHeight:'300px'})
 		}
 	}else{
 		$("#scaleBasedPerformanceCohort").html('<h3>NO DATA AVAILABLE</h3>')
@@ -455,15 +456,16 @@ function BuildCandidateOverAllPerformanceCohort(result,participantLocIdArry)
 	var str='';
 	
 	if(result !=null){
-		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+		
 		for(var i in result){
-			str+='<div class="panel panel-default collapseDebates">';
-				str+='<div class="panel-heading" role="tab" id="heading'+i+'">';
+			str+='<div class="panel-group" id="accordionCohoratDebates'+i+'" role="tablist" aria-multiselectable="true">';
+			str+='<div class="panel panel-default collapseCohoratDebates'+i+'">';
+				str+='<div class="panel-heading" role="tab" id="headingCohoratDebates'+i+'">';
 					if(i == 0)
 					{
-						str+='<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+						str+='<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordionCohoratDebates'+i+'" href="#collapseCohoratDebates'+i+'" aria-expanded="true" aria-controls="collapseCohoratDebates'+i+'">';
 					}else{
-						str+='<a role="button" class="collapseDebatesIcon collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
+						str+='<a role="button" class="collapseDebatesIcon collapsed" data-toggle="collapse" data-parent="#accordionCohoratDebates'+i+'" href="#collapseCohoratDebates'+i+'" aria-expanded="true" aria-controls="collapseCohoratDebates'+i+'">';
 					}
 					
 						str+='<h4 class="panel-title"><img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].coreDebateVOList[0].name+'.png" alt="'+result[i].coreDebateVOList[0].coreDebateVOList[0].name+'" class="debatesPartyIcon"/> '+result[i].coreDebateVOList[0].coreDebateVOList[0].name+' spokespersons</h4>';
@@ -471,14 +473,15 @@ function BuildCandidateOverAllPerformanceCohort(result,participantLocIdArry)
 				str+='</div>';
 				if(i == 0)
 				{
-					str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+					str+='<div id="collapseCohoratDebates'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingCohoratDebates'+i+'">';
 				}else{
-					str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
+					str+='<div id="collapseCohoratDebates'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCohoratDebates'+i+'">';
 				}
 					str+='<div class="panel-body">';
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-								str+='<div class="table-responsive scroller'+i+'">';
+								str+='<div class="scroller'+i+'">';
+								str+='<div class="table-responsive">';
 									str+='<table class="table table-bordered tableDebatesMainText m_top10 dataTableSortingOverAll text-center">';
 										str+='<thead>';
 											str+='<th>NAME</th><th>DEBATES </th><th>OVERALL PERFORMANCE </th><th>SUBJECT</th><th>PRESENTATION</th><th>COUNTER ATTACK</th><th>BODY LANGUAGE</th>';
@@ -526,11 +529,13 @@ function BuildCandidateOverAllPerformanceCohort(result,participantLocIdArry)
 							str+='<hr class="m_0"/>';
 							str+='</div>';
 						str+='</div>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
+			str+='</div>';
 		}
-		str+='</div>';
+		
 		
 		
 		$("#candidateOverAllPerformanceCohort").html(str);
@@ -546,7 +551,7 @@ function BuildCandidateOverAllPerformanceCohort(result,participantLocIdArry)
 				for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
 					if(result[i].coreDebateVOList[j].coreDebateVOList[k].length > 6)
 					{
-						$(".scroller"+i+"").mCustomScrollbar({setHeight:'300px'})
+						//$(".scroller"+i+"").mCustomScrollbar({setHeight:'300px'})
 					}
 				}
 				
@@ -836,12 +841,10 @@ function buildRoleBasedPerformanceCohort(result,debateLocationIdArry)
 {
 	var str='';
 	if(result !=null){
-		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			str+='<div style="overflow:auto;">';
 			for(var i in result){
 			
 				//str+='<h4 class="text-capital"><img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].name+'.png" alt="'+result[i].coreDebateVOList[0].name+'" class="debatesPartyIcon"/>'+result[i].coreDebateVOList[0].name+'</h4>';
-		
+				str+='<div class="table-responsive">';
 				str+='<table class="table tableDebates tableDebatesMain m_top10">';
 				  str+='<tbody>';
 					str+='<tr>';
@@ -870,10 +873,9 @@ function buildRoleBasedPerformanceCohort(result,debateLocationIdArry)
 					str+='</tr>';
 				 str+='</tbody>';
 				str+='</table>';
-			str+='<hr class="m_0"/>';
+				str+='</div>';
+				str+='<hr class="m_0"/>';
 			}
-			str+='</div>';
-		str+='</div>';
 		$("#roleBasedPerformanceCohort").html(str)
 		$(".performanceRating").rating({
 			showClear: false,
@@ -883,7 +885,7 @@ function buildRoleBasedPerformanceCohort(result,debateLocationIdArry)
 		});
 		if(result.length> 6)
 		{
-			$("#roleBasedPerformanceCohort").mCustomScrollbar({setHeight:'300px'})
+			//$(".scrollerDivRoleBased").mCustomScrollbar({setHeight:'300px'})
 		}
 	}else{
 		$("#roleBasedPerformanceCohort").html('<h3>NO DATA AVAILABLE</h3>')

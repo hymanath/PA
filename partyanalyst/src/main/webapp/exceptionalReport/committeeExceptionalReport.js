@@ -152,7 +152,7 @@ function buildCommiteeLevel(result,id,levelName){
 			str+='<div class="col-sm-12 m_top20">';
 		}
 		
-			str+='<h4 class="text_bold text-capital font_size24" >'+levelName+' Level Committee Details</h4>';
+			str+='<h4 class="text_bold text-capital font_size24" >'+levelName+' Mandal Level Committee Details</h4>';
 		str+='</div>';
 	str+='</div>';
 	str+='<div class="row">';

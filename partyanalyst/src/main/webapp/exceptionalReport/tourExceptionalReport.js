@@ -66,7 +66,12 @@ onloadTourCalls();
 		}
 		 $("#noofMonthsId").html('');
 		for(var i=0;i<months;i++){
-			$("#noofMonthsId").append("<option value='"+i+"'>"+i+"</option>"); 
+			if(i == months){
+				$("#noofMonthsId").append("<option value='"+i+"' selected>"+i+"</option>"); 
+			}else{
+				$("#noofMonthsId").append("<option value='"+i+"'>"+i+"</option>"); 
+			}
+			
 		}
 		 $("#noofMonthsId").chosen();
 		$("#noofMonthsId").trigger("chosen:updated");

@@ -68,11 +68,11 @@ $(document).on("click",".levelWiseMeetingCls",function(e){
        if($(this).is(":checked")){
 			
 		    selectedlevelValArr.push($(this).val());
-		    
+		    console.log(selectedlevelValArr)
+			$("#"+selectedlevelValArr).show();
 	   }
     });
-	console.log(selectedlevelValArr)
-	$("#"+selectedlevelValArr).show();
+	
 	$(".debatesSettingsBody").hide();
 });
 

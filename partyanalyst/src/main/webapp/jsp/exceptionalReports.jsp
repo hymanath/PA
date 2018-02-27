@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Constituency Page</title>
+<title>Exceptional Reports</title>
 <link href="coreApi/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">  
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
@@ -69,6 +69,9 @@ header
 				<!--<button class="btn btn-md btn-success exportToPdf pull-right headerDisPlayNone" attr_id="printcontent">PDF</button>-->
 			</div>
 		<div class="row">
+			<p class="text-center waitingMsgCls">Please Wait Page is Loading...</p>
+		</div>	
+		<div class="row m_top10">
 				<div class="col-sm-12" id="">
 					<div class="panel panel-default panelNewCustom">
 						<div class="panel-heading">
@@ -84,9 +87,9 @@ header
 										<i class="glyphicon glyphicon-refresh"></i>
 									</span>
 									
-									 <span class="MeetingsExSettingsIcon pull-right">
+									 <!--<span class="MeetingsExSettingsIcon pull-right">
 									   <i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
-									 </span>
+									 </span>-->
 									 <span class="input-group pull-right dateRangePickerCls" style="width:200px;">
 										<input type="text" id="meetingExDateRangePickerId" style="width:200px" class="form-control" />
 											<span class="input-group-addon">
@@ -146,7 +149,7 @@ header
 							<div class="row">
 								<div class="col-sm-9">
 									<h4 class="panel-title text-capital font_size24">
-										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
+										<img src="newCoreDashBoard/img/committees.png" class="iconClass" style="background-color:none;"/>
 											Committees - <small class="text-muted">Over All</small>
 									</h4>
 								</div>
@@ -154,9 +157,9 @@ header
 									<span class="committeesExRefresh pull-right">
 										<i class="glyphicon glyphicon-refresh"></i>
 									</span>
-									 <span class="committeesExSettingsIcon pull-right">
+									 <!--<span class="committeesExSettingsIcon pull-right">
 									   <i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
-									 </span>
+									 </span>-->
 									 <div class="debatesSettingsBody" style="display:none;top:15px;right: 39px;">
 										<div class="row">
 											<div class="col-sm-12">
@@ -242,7 +245,7 @@ header
 							<div class="row">
 								<div class="col-sm-9">
 									<h4 class="panel-title text-capital font_size24">
-										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
+										<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass" style="background-color:none;"/>
 											Tours 
 									</h4>
 								</div>
@@ -316,7 +319,7 @@ header
 							<div class="row">
 								<div class="col-sm-9">
 									<h4 class="panel-title text-capital font_size24">
-										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
+										<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass" style="background-color:none;"/>
 											Alert - <small class="text-muted">Over All</small>			
 									</h4>
 								</div>
@@ -342,7 +345,7 @@ header
 							<div class="row">
 								<div class="col-sm-9">
 									<h4 class="panel-title text-capital font_size24">
-										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
+										<img src="newCoreDashBoard/img/logoKaizala.png" class="iconClass" style="background-color:none;"/>
 											Kaizala - <small class="text-muted">Over All</small> 		
 									</h4>
 								</div>
@@ -392,6 +395,42 @@ function printDiv() {
      document.getElementById("printcontent").innerHTML = printContents;
 	 window.print();
      document.getElementById("printcontent").innerHTML = originalContents;
+	 $("#meetingExDateRangePickerId").daterangepicker({
+		opens: 'left',
+		 startDate: customStartToursDateM,
+		 endDate:customEndToursDateM,  
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: { ////moment().endOf('Year')
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay1()), 'days'), moment().subtract(parseInt(getDay1()), 'days')],
+		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay1()), 'days'), moment().subtract(parseInt(getDay1()), 'days')],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+		}
+	});
+	$("#tourNewExDateRangePickerId").daterangepicker({
+		opens: 'left',
+	     startDate: customStartToursDate,
+         endDate:customEndToursDate,  
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: { ////moment().endOf('Year')
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
+        }
+	});
 	 
 }
  </script>
