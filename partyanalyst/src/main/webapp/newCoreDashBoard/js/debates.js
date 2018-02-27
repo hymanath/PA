@@ -359,7 +359,11 @@ function buildScaleBasedPerformanceCohort(result,debateLocationIdArry)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">overall debates</p>';
-							str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_state_id="'+debateLocationIdArry+'" attr_type="debate" style="cursor:pointer;"><a>'+result[i].debateCount+'</a></span></h4>';
+							if(result[i].debateCount != null && result[i].debateCount>0){
+								str+='<h4><span class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_state_id="'+debateLocationIdArry+'" attr_type="debate" style="cursor:pointer;"><a>'+result[i].debateCount+'</a></span></h4>';
+							}else{
+							str+='<h4>'+result[i].debateCount+'</h4>';
+							}
 						str+='</td>';
 						
 						str+='<td>';
@@ -1336,7 +1340,8 @@ function getCoreDebateBasicDetailsOfParty(designationId,partyId,type,popupLocati
 		participantLocIdArry:participantLocIdArry,
 		roleId:roleId,
 		designationId:designationId,
-		type : othersTypeId
+		type : othersTypeId,
+		casteId:0
 	}		
 	$.ajax({
 	 type: "POST",
@@ -1570,6 +1575,7 @@ $(document).on("click",".perforamnceDebateCls",function(){
 		participantLocIdArry:participantLocIdArry,
 		roleId:roleId,
 		designationId:designationId,
+		casteId:0,
 		type : " "//others
 	}		
 	$.ajax({
@@ -1618,7 +1624,8 @@ function getDesignationWiseCandidateOverAllPerformanceCohort(divId,id){
 			state:globalState,
 			participantLocIdArry:participantLocIdArry,
 			debateLocationIdArry:debateLocationIdArry,
-			type : othersTypeId
+			type : othersTypeId,
+			casteId:0
 		}
 	    $.ajax({
 			type : 'POST',
