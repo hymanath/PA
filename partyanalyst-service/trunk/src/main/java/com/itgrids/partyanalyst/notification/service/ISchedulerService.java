@@ -33,4 +33,5 @@ public interface ISchedulerService {
 	public ResultStatus pushSourceOfRegistrationIntoIntermediateTable();
 	public ResultStatus pushTrainginCampDataLocationWiseByCommitteeLevel();
 	public ResultStatus sendSmsDetailsOfAlert();
+	public ResultStatus pullEmployeesBiometricLogDetails();
 }
