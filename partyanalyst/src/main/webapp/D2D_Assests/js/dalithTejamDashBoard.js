@@ -538,23 +538,29 @@ function levelWiseSBData(divId)
 		collapse+='<div class="panel-group" id="accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" role="tablist" aria-multiselectable="true">';
 			collapse+='<div class="panel panel-default panel-gray" style="box-shadow:none;">';
 				collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBArr[i]+'">';
-					if(i == 0)
+				
+				collapse+='<a role="button" class="panelCollapseIcon1 '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"   data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" >';
+				
+					/* if(i == 0)
 					{
 						collapse+='<a role="button" class="panelCollapseIcon1 '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"   data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" >';
 					}else{
 						collapse+='<a role="button" class="panelCollapseIcon1 collapsed '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  overview-level-new='+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+' data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" >';
-					}
+					} */
 					collapse+='<h5 class="text-capital" style="color:#000;">'+levelWiseSBArr[i]+' level overview</h5>';
 						
 					collapse+='</a>';
 				collapse+='</div>';
-				if(i == 0)
+				
+				collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+				
+				/* if(i == 0)
 				{
 					collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
 				}else{
 					collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
 				}
-				
+				 */
 					collapse+='<div class="panel-body">';
 						collapse+='<div id="'+levelWiseSBArr[i]+'"></div>';
 					collapse+='</div>';
@@ -590,8 +596,8 @@ function getSettingActivitiesJBMData(locationId,divId){
 		locationTypeId =10
 	}
 	var jsObj={
-		fromDate :glStartDate,
-	    toDate :glEndDate,
+		fromDate :'',
+	    toDate :'',
 		activityId:divId,
 		locationScopeId:locationTypeId,
 		locationValue:locationValue
@@ -1130,8 +1136,8 @@ function getSettingActivitiesJBMData1(locationId,divId){
 		locationTypeId =10
 	}
 	var jsObj={
-		fromDate :glStartDate,
-	    toDate :glEndDate,
+		fromDate :'',
+	    toDate :'',
 		activityId:38,
 		locationScopeId:locationTypeId,
 		locationValue:locationValue
@@ -1210,28 +1216,10 @@ function buildActivityEventdata1(result,locationId,divId){
 	tableView+='</div>';
 	
 	$("#"+locationId+divId).html(tableView);
-	$(".dataTable1leaderandlocarionwise"+locationId).dataTable({
-			"iDisplayLength": 15,
-			"aaSorting": [],
-			"order": [ 0, 'asc' ],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
-			"<'row'<'col-sm-12'tr>>" +
-			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			buttons: [
-				{
-					//extend		:'csvHtml5',
-					text		:'<i class="fa fa-file-text-o generateleaderExcelcdfdf" attr_id="exportExcel'+locationId+'"></i>',
-					titleAttr	: 'CSV',
-					//title		:  "ENC WORKS DASHBOARD",
-					//filename	:  locationId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-				}
-			] ,
-			"scrollX": true,
-			"scrollX": true,
-			"scrollCollapse": true,
-			"fixedColumns":   {
-				"leftColumns": 1,
-			}
-	});
+	 $(".dataTable1leaderandlocarionwise"+locationId).dataTable({  
+		 "aaSorting": [[ 1, "desc" ]], 
+		"iDisplayLength" : 10,
+		"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+	 }); 
+	
 }
