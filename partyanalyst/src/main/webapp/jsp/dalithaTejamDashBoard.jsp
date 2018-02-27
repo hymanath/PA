@@ -42,10 +42,10 @@
 	<div class="container-fluid full-width-image" style="background-color:#e6b62e;">
 		<div class="row">
 			<div class="col-sm-6">
-				<img src="dalithaTejam/images/header-bg-logo.png" class="img-responsive" >
+				<img src="D2D_Assests/images/header-bg-logo.png" class="img-responsive" >
 			</div>
 			<div class="col-sm-2 pull-right">
-				<img src="dalithaTejam/images/Group 4.png" class="img-responsive pull-right" style="margin-top:20px;" >
+				<img src="D2D_Assests/images/Group 4.png" class="img-responsive pull-right" style="margin-top:20px;" >
 			</div>
 		</div>
 		<div class="row" style="background-color:#ff0000; line-height:3px;">&nbsp;</div>
@@ -55,12 +55,12 @@
 	<div class="container-fluid">
 		<div class="">
 			<div class="row">
-				<div class="col-sm-2 pull-right">
+				<!--<div class="col-sm-2 pull-right">
 					<div class="form-group">
 						<select class="form-control chosen-select" id="districtId">
 						</select>
 					</div>
-				</div>
+				</div>-->
 				<div class="col-sm-3 pull-right">
 					<div class="input-group pull-right">
 						<span class="input-group-addon">
@@ -71,7 +71,7 @@
 				</div>
 				<div class="col-sm-2 pull-right" style="margin-right: 25px;">
 					<div class="yellow-square pull-right">
-						<i class="glyphicon glyphicon-refresh refreshDalithaTejam" style="color:#fff;"></i>
+						<i class="glyphicon glyphicon-refresh refreshDalithaTejam" style="color:#fff;cursor:pointer;"></i>
 					</div>
 				</div>
 			</div>

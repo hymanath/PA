@@ -1202,6 +1202,9 @@
 										<a href="doorToDoorCampaignDashboardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Door To Door Dashboard </span></a>
 									</li>										
 								</c:if>
+								<li>
+									<a href="dalithTejamDashBoardAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp; Dalitha Tejam Dashboard </span></a>
+								</li>
 							<c:if test="${sessionScope.USER.isAdmin != 'true'}">
 							    <c:if test="${ fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_REGISTRATION_ENTITLEMENT' )  ||
 							fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_DASHBOARD_ENTITLEMENT' ) ||

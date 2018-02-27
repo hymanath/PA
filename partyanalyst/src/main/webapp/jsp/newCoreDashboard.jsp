@@ -143,6 +143,9 @@
 						<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
+						<li>
+                        	<label class="m_top10"><a target="_blank" href="exceptionalReportsAction.action"  style="font-size:14px;font-weight:bold;color:green;text-decoration:underline;">Exceptional Reports</a></label>
+                        </li>
 						<!--<li>
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>
 							<a>TS</a>
@@ -207,7 +210,6 @@
 		</div>
 	</div>
 	<!-- Error Msg For Committee End --->
-	
 <div class="container m_top20">
 	<div class="row">
 		<!-- Alerts Start -->
@@ -654,203 +656,7 @@
 			</div>
 		</div>
 	 <!--Alerts End -->	
-		<!-----------News Letters Start----------->
-		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="newsLetters">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="newsLetters">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/news.png" class="iconClass" style="background-color:none;"/>
-									Word Cloud News (Today)
-							</h4>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="newsLetters">
-							<span class="newsLettersRefresh pull-right"  onclick="refreshWordCloudfunction();">
-								<i class="glyphicon glyphicon-refresh"></i>
-							</span>
-							<span class="wordCloudIconExpand pull-right mainExpandCls" expand-icon="newsLetters">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-						</div>  
-					</div>
-				</div>
-				<div class="container-fluid">
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-sm-12 responsive" expand-block-inner="newsLetters">
-								<div id="chart" style="margin-left: -29px;">
-									<svg id="svg">
-									</svg>
-								</div>
-								<div class="row align-items-center col-sm-12" style="border:0.5px solid black;margin-left: 0px; margin-right: 0px;">
-									<div class="col-sm-3">
-										<label for="crit" style="margin-top: 4px; class="label-padding">Critical</label>
-										<div id="crit" class="box-color critical"></div>
-									</div>
-									<div class="col-sm-3">
-										<label for="neg" style="margin-top: 4px; class="label-padding">Negative</label>
-										<div id="neg"  class="box-color negative"></div>
-									</div>
-									<div class="col-sm-3">
-										<label for="pos" style="margin-top: 4px; class="label-padding">Positive</label>
-										<div id="pos" class="box-color positive"></div>
-									</div>
-									<div class="col-sm-3">
-										<label for="neu" style="margin-top: 4px; class="label-padding">Neutral</label>
-										<div id="neu" class="box-color neutral"></div>
-									</div>
-								</div>
-								<div class="empty-alert">
-									<div class="alert alert-danger" role="alert">
-										Results are empty!
-									</div>
-								</div>
-								<div class="error-alert">
-									<div class="alert alert-danger" role="alert">
-										Error in server!
-									</div>
-								</div>
-								<div class="data-sent-alert">
-									<div class="alert alert-success" role="alert">
-										<div class="row">
-											<div class="col-10">
-												Request sent!
-											</div>
-											<div class="col-2">
-												<div class="loader-2"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="data-processing-alert">
-									<div class="alert alert-primary" role="alert">
-										<div class="row">
-											<div class="col-10">
-												Data received and processing word cloud!
-											</div>
-											<div class="col-2">
-												<div class="loader"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="card headline-div">
-									<div class="card-header" style="background-color: blanchedalmond;">
-										<div class="row">
-											<div class="col-sm-6" style="padding-left: 33px;">
-												News Article Titles
-											</div>
-											<div class="col-sm-6 offset-4">
-												<i class="fa fa-times close-button" onclick="closeDiv()"style="padding-top: 3px;padding-left:136px"></i>
-											</div>
-										</div>
-									</div>
-									<ul class="list-group list-group-flush headline-div-content">
-									</ul>
-								</div>
-							</div>
-							
-							<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="newsLetters">
-								<div class="row m_top10">	
-									<div class="col-sm-6 offset-1">
-										<label for="startDate">Start Date</label>
-										<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
-											<input type="text" id="startDate" class="form-control" />
-											<span class="input-group-addon">
-												<i class="glyphicon glyphicon-calendar"></i>
-											</span>
-										</span>
-									</div>
-									<div class="col-sm-6">
-										<label for="endDate">End Date</label>
-											<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
-												<input type="text" id="endDate" class="form-control" />
-												<span class="input-group-addon">
-												<i class="glyphicon glyphicon-calendar"></i>
-											</span>
-										</span>
-									</div>
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-6">
-										<label for="wordCloudDistrict">District</label>
-										<!--<div class="multiselect">
-											<div class="selectBox" onclick="showCheckboxes()">
-												<select id="district" class="form-control">
-													<option>Select a district</option>
-												</select>
-												<div class="overSelect" id="overSelect"></div>
-											</div>
-											<div id="checkboxes"></div>
-										</div>-->
-										<select class="form-control chosen-select" multiple="multiple" id="wordCloudDistrict">
-										</select>
-									</div>
-									<div class="col-sm-6">
-										<label for="wordCloudConstituency">Constituency</label>
-										<!--<div class="multiselect">
-											<div class="selectBox" onclick="showCheckboxes1()">
-												<select id="constituency" class="form-control">
-													<option>Select a constituency</option>
-												</select>
-												<div class="overSelect"></div>
-											</div>
-											<div id="checkboxes1">
-											</div>
-										</div>-->
-										<select class="form-control chosen-select" multiple="multiple" id="wordCloudConstituency">
-										</select>
-									</div>
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-6">
-										<label for="newspapers">Newspaper</label>
-										<!--<div class="multiselect">
-											<div class="selectBox" onclick="showCheckboxes2()">
-												<select id="newspapers" class="form-control">
-													<option>Select a Newspaper</option>
-												</select>
-												<div class="overSelect"></div>
-											</div>
-											<div id="checkboxes2"></div>
-										</div>-->
-										<label>News Paper</label>
-									<select class="form-control chosen-select" multiple="multiple" id="newspapers">
-										</select>
-									</div>
-									<div class="col-sm-6">
-										<label>Edition Type</label>
-										<select class="form-control chosen-select" multiple="multiple" id="editionType">
-											<option value ="0" selected> ALL Editions </option>
-											<option> Main </option>
-											<option> District </option>
-											<option> Online </option>
-										</select>
-									</div>
-								</div>
-								<div class="row m_top10">
-									<div class="col-sm-6">	
-										<div class="submit-button">
-											<div class="text-center">
-												<button class="btn btn-primary" style="margin-top: 22px;" onclick="fetchDataForWordCloud('fromPage')">Submit</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--------News Letters End----------->
-	</div>
-	
-	<div class="row">
-		<!-- Training Start -->
+	<!-- Training Start -->
 		<div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock" expand-block="training">
 			<div class="panel panel-default panelNewCustom panel1">
 				<div class="panel-heading">
@@ -1066,8 +872,204 @@
 				</div>
 			</div>
 		</div>
-			<!-- Training End-->
-		<!--  NEWS BLOCK START-->
+		<!-- Training End-->
+			
+	</div>
+	<div class="row">
+		 <!-----------News Letters Start----------->
+		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="newsLetters">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="newsLetters">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/news.png" class="iconClass" style="background-color:none;"/>
+									Word Cloud News (Today)
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="newsLetters">
+							<span class="newsLettersRefresh pull-right"  onclick="refreshWordCloudfunction();">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</span>
+							<span class="wordCloudIconExpand pull-right mainExpandCls" expand-icon="newsLetters">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+						</div>  
+					</div>
+				</div>
+				<div class="container-fluid">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-12 responsive" expand-block-inner="newsLetters">
+								<div id="chart" style="margin-left: -29px;">
+									<svg id="svg">
+									</svg>
+								</div>
+								<div class="row align-items-center col-sm-12" style="border:0.5px solid black;margin-left: 0px; margin-right: 0px;">
+									<div class="col-sm-3">
+										<label for="crit" style="margin-top: 4px; class="label-padding">Critical</label>
+										<div id="crit" class="box-color critical"></div>
+									</div>
+									<div class="col-sm-3">
+										<label for="neg" style="margin-top: 4px; class="label-padding">Negative</label>
+										<div id="neg"  class="box-color negative"></div>
+									</div>
+									<div class="col-sm-3">
+										<label for="pos" style="margin-top: 4px; class="label-padding">Positive</label>
+										<div id="pos" class="box-color positive"></div>
+									</div>
+									<div class="col-sm-3">
+										<label for="neu" style="margin-top: 4px; class="label-padding">Neutral</label>
+										<div id="neu" class="box-color neutral"></div>
+									</div>
+								</div>
+								<div class="empty-alert">
+									<div class="alert alert-danger" role="alert">
+										Results are empty!
+									</div>
+								</div>
+								<div class="error-alert">
+									<div class="alert alert-danger" role="alert">
+										Error in server!
+									</div>
+								</div>
+								<div class="data-sent-alert">
+									<div class="alert alert-success" role="alert">
+										<div class="row">
+											<div class="col-10">
+												Request sent!
+											</div>
+											<div class="col-2">
+												<div class="loader-2"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="data-processing-alert">
+									<div class="alert alert-primary" role="alert">
+										<div class="row">
+											<div class="col-10">
+												Data received and processing word cloud!
+											</div>
+											<div class="col-2">
+												<div class="loader"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="card headline-div">
+									<div class="card-header" style="background-color: blanchedalmond;">
+										<div class="row">
+											<div class="col-sm-6" style="padding-left: 33px;">
+												News Article Titles
+											</div>
+											<div class="col-sm-6 offset-4">
+												<i class="fa fa-times close-button" onclick="closeDiv()"style="padding-top: 3px;padding-left:136px"></i>
+											</div>
+										</div>
+									</div>
+									<ul class="list-group list-group-flush headline-div-content">
+									</ul>
+								</div>
+							</div>
+							
+							<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="newsLetters">
+								<div class="row m_top10">	
+									<div class="col-sm-6 offset-1">
+										<label for="startDate">Start Date</label>
+										<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
+											<input type="text" id="startDate" class="form-control" />
+											<span class="input-group-addon">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</span>
+										</span>
+									</div>
+									<div class="col-sm-6">
+										<label for="endDate">End Date</label>
+											<span class="input-group pull-right dateRangePickerCls" style="margin-right:23px;">
+												<input type="text" id="endDate" class="form-control" />
+												<span class="input-group-addon">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</span>
+										</span>
+									</div>
+								</div>
+								<div class="row m_top10">
+									<div class="col-sm-6">
+										<label for="wordCloudDistrict">District</label>
+										<!--<div class="multiselect">
+											<div class="selectBox" onclick="showCheckboxes()">
+												<select id="district" class="form-control">
+													<option>Select a district</option>
+												</select>
+												<div class="overSelect" id="overSelect"></div>
+											</div>
+											<div id="checkboxes"></div>
+										</div>-->
+										<select class="form-control chosen-select" multiple="multiple" id="wordCloudDistrict">
+										</select>
+									</div>
+									<div class="col-sm-6">
+										<label for="wordCloudConstituency">Constituency</label>
+										<!--<div class="multiselect">
+											<div class="selectBox" onclick="showCheckboxes1()">
+												<select id="constituency" class="form-control">
+													<option>Select a constituency</option>
+												</select>
+												<div class="overSelect"></div>
+											</div>
+											<div id="checkboxes1">
+											</div>
+										</div>-->
+										<select class="form-control chosen-select" multiple="multiple" id="wordCloudConstituency">
+										</select>
+									</div>
+								</div>
+								<div class="row m_top10">
+									<div class="col-sm-6">
+										<label for="newspapers">Newspaper</label>
+										<!--<div class="multiselect">
+											<div class="selectBox" onclick="showCheckboxes2()">
+												<select id="newspapers" class="form-control">
+													<option>Select a Newspaper</option>
+												</select>
+												<div class="overSelect"></div>
+											</div>
+											<div id="checkboxes2"></div>
+										</div>-->
+										<label>News Paper</label>
+									<select class="form-control chosen-select" multiple="multiple" id="newspapers">
+										</select>
+									</div>
+									<div class="col-sm-6">
+										<label>Edition Type</label>
+										<select class="form-control chosen-select" multiple="multiple" id="editionType">
+											<option value ="0" selected> ALL Editions </option>
+											<option> Main </option>
+											<option> District </option>
+											<option> Online </option>
+										</select>
+									</div>
+								</div>
+								<div class="row m_top10">
+									<div class="col-sm-6">	
+										<div class="submit-button">
+											<div class="text-center">
+												<button class="btn btn-primary" style="margin-top: 22px;" onclick="fetchDataForWordCloud('fromPage')">Submit</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--------News Letters End----------->
+		<!-- NEWS BLOCK Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 newsBlock" expand-block="news">
 			<div class="panel panel-default panelNewCustom panel2">
 				<div class="panel-heading">
@@ -2118,7 +2120,6 @@
 			</div>
 		</div>
 		<!-- EM Coverage Time End -->
-		<div class="row">
 		<!-- DEBATES PROGRAM BLOCK -->
 			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock" expand-block="debates">
 				<div class="panel panel-default panelNewCustom panel2">
@@ -2278,134 +2279,146 @@
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
 									<div class="panel panel-default panelNew">
-										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
-											
-												<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
-											
+										<div class="panel-heading" role="tab" id="headingDebates1">
+												<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseDebates1" aria-expanded="false" aria-controls="collapseDebates1">
+													 <h4 class="panel-title"><span class="headingColor text-capitalize">Character based performance cohort</span></h4>
+												</a>
 										</div>
-									
-											<div class="panel-body collapse in" id="collapseOneBodyId">
+										<div id="collapseDebates1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDebates1">
+											<div class="panel-body">
 												<div class="row">
 													<div id="scaleBasedPerformanceCohort"></div>
 												</div>
+												
 											</div>
-									
+										</div>
 									</div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingTwo">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">role based performance cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-									  <div class="panel-body">
-										<div class="row">
+								</div>	
+								<div class="panel-group m_top10" id="debatesCollapse1" role="tablist" aria-multiselectable="true">
+									 <div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="headingDebates2">
+											<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse1" href="#collapseDebates2" aria-expanded="false" aria-controls="collapseDebates2">
+											   <h4 class="panel-title"><span class="headingColor text-capitalize">role based performance cohort</span></h4>
+											</a>
+										</div>
+										<div id="collapseDebates2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDebates2">
+										  <div class="panel-body">
+											<div class="row">
 												<div id="roleBasedPerformanceCohort"></div>
+											</div>
+										  </div>
 										</div>
 									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingFive">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
-										</a>
-									</div>
-									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-									  <div class="panel-body">
-										<div class="row">
-											<div id="candidateRolesBuildId"></div>
+								</div>	  
+								<div class="panel-group m_top10" id="debatesCollapse3" role="tablist" aria-multiselectable="true">
+									  <div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="headingDebates3">
+											<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse3" href="#collapseDebates3" aria-expanded="false" aria-controls="collapseDebates3">
+											   <h4 class="panel-title"><span class="headingColor text-capitalize">Top 5 Performers</span></h4>
+											</a>
 										</div>
-										<div class="row m_top20">
-											<div class="col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingThree">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="candidateOverAllPerformanceCohort" style="overflow:auto;"></div>
+										<div id="collapseDebates3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDebates3">
+										  <div class="panel-body">
+											<div class="row">
+												<div id="candidateRolesBuildId"></div>
 											</div>
+											<div class="row m_top20">
+												<div id="candidateRolesPerformanceNewId"></div>
+											</div>
+										  </div>
 										</div>
 									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingFour">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">channel vs parties</span></h4>
-										</a>
-									</div>
-									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="channelAndPartyWiseDetails" style="overflow:auto;"></div>
+								</div>			  
+								<div class="panel-group m_top10" id="debatesCollapse4" role="tablist" aria-multiselectable="true">
+									   <div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="headingDebates4">
+											<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse4" href="#collapseDebates4" aria-expanded="false" aria-controls="collapseDebates4">
+											   <h4><span class="headingColor text-capitalize">candidate overall performance cohort</span></h4>
+											</a>
+										</div>
+										<div id="collapseDebates4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDebates4">
+										  <div class="panel-body">
+											<div class="row">
+												<div class="col-md-12 col-xs-12 col-sm-12">
+													<div id="candidateOverAllPerformanceCohort"></div>
+												<div class="row">
 											</div>
+										  </div>
 										</div>
 									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingSix">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
-										   overall performance</span></h4>
-										</a>
-									</div>
-									<div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="designationWiseTotalDebateDetails" style="overflow:auto;"></div>
+								</div>
+								</div>
+								</div>
+								<div class="panel-group m_top10" id="debatesCollapse5" role="tablist" aria-multiselectable="true">
+									  <div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="headingDebates5">
+											<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse5" href="#collapseDebates5" aria-expanded="false" aria-controls="collapseDebates5">
+											   <h4><span class="headingColor text-capitalize">channel vs parties</span></h4>
+											</a>
+										</div>
+										<div id="collapseDebates5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDebates5">
+										  <div class="panel-body">
+											<div class="row">
+												<div id="channelAndPartyWiseDetails"></div>
 											</div>
+										  </div>
+										</div>
+									  </div> 
+								</div>
+								<div class="panel-group m_top10" id="debatesCollapse6" role="tablist" aria-multiselectable="true">
+									  <div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="headingDebates6">
+											<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse6" href="#collapseDebates6" aria-expanded="false" aria-controls="collapseDebates6">
+											   <h4><span class="headingColor text-capitalize">Designation Wise
+											   overall performance</span></h4>
+											</a>
+										</div>
+										<div id="collapseDebates6" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDebates6">
+										  <div class="panel-body">
+											<div class="row">
+												<div id="designationWiseTotalDebateDetails"></div>
+											</div>
+										  </div>
 										</div>
 									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingSeveen">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseSeveen" aria-expanded="false" aria-controls="collapseSeveen">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Caste Group Cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseSeveen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeveen">
-									  <div class="panel-body">
-									  <!--<div class="row">
-											<div id="candidateCasteBuildId">
-											  <ul class="activeUlCls list-inline pull-right candidateCasteCls">	
-				                               <li class="active" style="margin-right:3px;" class="casteAnalsisCls" attr_casteId="0"> Spokes persons Caste Analysis</li>
-											   <li style="margin-right:3px;" class="casteAnalsisCls" attr_casteId="1"> Caste Overview</li>
-											  </ul>
+								</div>
+								<div class="panel-group m_top10" id="debatesCollapse7" role="tablist" aria-multiselectable="true">
+									  <div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="headingDebates7">
+											<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse7" href="#collapseDebates7" aria-expanded="false" aria-controls="collapseDebates7">
+											   <h4><span class="headingColor text-capitalize">Caste Group Cohort</span></h4>
+											</a>
+										</div>
+										<div id="collapseDebates7" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDebates7">
+										  <div class="panel-body">
+										  <!--<div class="row">
+												<div id="candidateCasteBuildId">
+												  <ul class="activeUlCls list-inline pull-right candidateCasteCls">	
+												   <li class="active" style="margin-right:3px;" class="casteAnalsisCls" attr_casteId="0"> Spokes persons Caste Analysis</li>
+												   <li style="margin-right:3px;" class="casteAnalsisCls" attr_casteId="1"> Caste Overview</li>
+												  </ul>
+												</div>
+											</div>-->
+											<div class="row">
+												<div id="casteAnalysisDivId"></div>
 											</div>
-										</div>-->
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="casteAnalysisDivId" style="overflow:auto;"></div>
+												<div class="row">
+													<div id="casteOverViewDivId"></div>
+												</div>
 											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="casteOverViewDivId" style="overflow:auto;"></div>
-											</div>
+										  </div>
 										</div>
 									  </div>
-									</div>
-								  </div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			
 			<!-- DEBATES PROGRAM BLOCK END-->
-			<!--Press Meet block Start-->
+	</div>
+	<div class="row">
+		<!--Press Meet block Start-->
 			<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
 			   <div class="panel panel-default panelNewCustom ">
 				  <div class="panel-heading">
@@ -2464,12 +2477,12 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 							<div class="panel-group" id="pressmeetCollapse" role="tablist" aria-multiselectable="true">
 								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingone">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseone" aria-expanded="true" aria-controls="collapseone">
+									<div class="panel-heading" role="tab" id="headingonePressMeet">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseonePressMeet" aria-expanded="true" aria-controls="collapseonePressMeet">
 											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">scale based performance cohort</span></h4>
 										</a>
 									</div>
-									<div id="collapseone" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingone">
+									<div id="collapseonePressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingonePressMeet">
 										<div class="panel-body">
 										   <div class="row">
 											  <div id="scaleBasedPerformanceCohortId">
@@ -2478,28 +2491,32 @@
 										</div>
 									</div>
 								</div>
+								</div>
+								<div class="panel-group" id="pressmeetCollapse1" role="tablist" aria-multiselectable="true">
 								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingtwo">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo">
+									<div class="panel-heading" role="tab" id="headingtwoPressMeet">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse1" href="#collapsetwoPressMeet" aria-expanded="true" aria-controls="collapsetwoPressMeet">
 											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
 										</a>
 									</div>
-									<div id="collapsetwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingtwo">
+									<div id="collapsetwoPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingtwoPressMeet">
 										<div class="panel-body">
 										   <div class="row">
-											  <div id="candidateOverAllPerformanceCohortId" style="overflow:auto;">
+											  <div id="candidateOverAllPerformanceCohortId">
 											  </div>
 										   </div>
 										</div>
 									</div>
 								</div>
+								</div>
+								<div class="panel-group" id="pressmeetCollapse2" role="tablist" aria-multiselectable="true">
 							  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingsthree">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapsethree" aria-expanded="false" aria-controls="collapsethree">
+									<div class="panel-heading" role="tab" id="headingsthreePressMeet">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse2" href="#collapsethreePressMeet" aria-expanded="false" aria-controls="collapsethree">
 										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
 										</a>
 									</div>
-									<div id="collapsethree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsthree">
+									<div id="collapsethreePressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsthreePressMeet">
 									  <div class="panel-body">
 										<div class="row">
 										
@@ -2516,13 +2533,15 @@
 									  </div>
 									</div>
 								  </div> 
+								  </div>
+								<div class="panel-group" id="pressmeetCollapse3" role="tablist" aria-multiselectable="true">	
 								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingsFour">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapsesFour" aria-expanded="false" aria-controls="collapsesFour">
+									<div class="panel-heading" role="tab" id="headingsFourPressMeet">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse3" href="#collapsesFourPressMeet" aria-expanded="false" aria-controls="collapsesFourPressMeet">
 										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Publication VS Party</span></h4>
 										</a>
 									</div>
-									<div id="collapsesFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsFour">
+									<div id="collapsesFourPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsFourPressMeet">
 									  <div class="panel-body">
 										<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12">
@@ -2533,56 +2552,58 @@
 											</ul>
 											 </div>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-												<div id="publicationAndPartyWiseDetailsId" style="overflow:auto;"></div>
+												<div id="publicationAndPartyWiseDetailsId"></div>
 											</div>
 										</div>
 									  </div>
 									</div>
 								 </div>
-										<div class="panel panel-default panelNew">
-											<div class="panel-heading" role="tab" id="headingfive">
-												 <a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseFives" aria-expanded="false" aria-controls="collapseFives">
-												 <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
-												 overall performance</span></h4>
-												 </a>
-											</div>
-											<div id="collapseFives" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfive">
-												<div class="panel-body">
-													<div class="row">
-														<div class="col-md-12 col-xs-12 col-sm-12">
-															<div id="designationWiseTotalPressMeetDetails" style="overflow:auto;"></div>
-													 
-														</div>
-													</div>
+								 </div>
+								 <div class="panel-group" id="pressmeetCollapse4" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingfivePressMeet">
+										 <a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse4" href="#collapseFivesPressMeet" aria-expanded="false" aria-controls="collapseFivesPressMeet">
+										 <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
+										 overall performance</span></h4>
+										 </a>
+									</div>
+									<div id="collapseFivesPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfivePressMeet">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-md-12 col-xs-12 col-sm-12">
+													<div id="designationWiseTotalPressMeetDetails"></div>
+											 
 												</div>
 											</div>
 										</div>
+									</div>
+								</div>
+								</div>
+								<div class="panel-group" id="pressmeetCollapse5" role="tablist" aria-multiselectable="true">
 								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingEight">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+									<div class="panel-heading" role="tab" id="headingEightPressMeet">
+										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse5" href="#collapseEightPressMeet" aria-expanded="true" aria-controls="collapseEightPressMeet">
 											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Caste Group Cohort</span></h4>
 										</a>
 									</div>
-									<div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
+									<div id="collapseEightPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEightPressMeet">
 										<div class="panel-body">
 										   <div class="row">
-											  <div id="pressMeetCasteAnalysisDivId" style="overflow:auto;">
+											  <div id="pressMeetCasteAnalysisDivId">
 											  </div>
 										   </div>
 										</div>
 									</div>
+								</div>
 								</div>
 							</div>
 						</div>
 					 </div>
 				  </div>
 			   </div>
-			</div>
+			
 			<!---PressMeet End--->
-	</div>
-	<div class="row">
-	<!-- TOURS START -->
-	<!-- tour New Jsp Code -->
+			<!-- tour New Jsp Code -->
 		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="tours">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2653,7 +2674,7 @@
 			</div>
 		</div>
 		<!-- TOURS END -->  
-	</div>	
+	</div>
 	<div class="row">
 		<!--Meetings Start -->
 		<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock" expand-block="meetings">  
@@ -2874,344 +2895,6 @@
 			</div>
 		</div>
 		<!--Meetings End-->
-		<!-- Kaizala  Start --> 
-		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="kaizala">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="kaizala">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/logoKaizala.png" class="iconClass" style="background-color:none;"/>
-									Kaizala
-							</h4>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="kaizala">
-							<span class="KaizalaRefresh pull-right">
-								<i class="glyphicon glyphicon-refresh"></i>
-							</span>
-							<span class="kaizalaIconExpand pull-right" expand-icon="kaizala">
-								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
-							</span>
-							
-						</div>     
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-					</div>
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
-							<div class="row">
-								<div class="col-sm-12">
-									<div id="overAllKaizalaBlockId"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="kaizala" style="display:none;" >
-							<div class="row">
-								<div class="col-sm-12">
-									<ul class="activeUlCls list-inline pull-right kaizalaLicls" role='tabCummulativeKai'>
-										<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
-										<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
-									</ul>
-								</div>
-							 </div>
-							 <div class="row">
-								<div class="col-sm-12">
-									<div class="verticalScrollBarKaizala">
-										<div id="userTypeWiseKaizalaDiv"></div>
-									</div>
-								</div>
-							 </div>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="kaizala" style="display: none;">
-							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morekaizalaBlocksIcon" title="Click here for more"></i>
-						</div>	
-						<div class="col-md-12 col-xs-12 col-sm-12 morekaizalaBlocksDetailed m_top10"  expand-block-more="kaizala" style="display:none;">
-							<div class="row">
-								<div class="col-sm-12">
-									<div id="levelWiseDetailsDivId"></div>
-								</div>
-							 </div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Kaizala  END --> 		
-	</div>	
-	<div class="row">
-		<!--Events Start -->
-		<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="events">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
-								events and activities <small class="text-muted"><span id="dateEventsHeadingId">  - OVERALL (TILL NOW) </span></small>
-							</h4>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="events">
-							<span class="notesIconEvents pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
-							</span>
-							<span class="eventsIconExpand pull-right" expand-icon="events">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-						<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshEventsActivities();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
-							<span class="input-group pull-right dateRangePickerClsForEvents hide" expand-block-date="events" style="width:200px;">
-								<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>
-						</div>
-					</div>
-					<div class="notesDropDown notesArrow" >
-						<h4 class="text-capital">notes
-							<span class="pull-right">
-								<i class="glyphicon glyphicon-list-alt"></i>
-							</span>
-						</h4>
-						<div id="notesEventsId"></div>
-						<hr/>
-						<div id="eventsUpId" style="color:red;"></div>
-						<label>Create Notes</label>
-						<textarea class="form-control notesAreaEvents"></textarea>
-						<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20" expand-block-inner="events">
-							<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
-							<h4><span class="headingColor text-capital">events</span>
-							<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
-							<div id="mainEventsList" class="m_top20"></div>
-							<div id="janmabhoomiEventDivId" class=""></div>
-							<h4 style="margin-top:20px !important;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span>
-								<span class="pull-right activitiesCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
-							</h4>
-								<div id="activityEventsListNew" class="activitiesCollapseBody" style="display:none"></div>
-			
-							<!--<div style="border : 1px solid #333; padding : 5px">-->
-								<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
-								<!--<div id="activityEventsListNew" class="m_top20"></div>-->
-							<!--</div>-->
-						</div>
-						<!--Acivites Block
-						
-						
-						<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20">
-						<div style="border : 1px solid #333; padding : 5px">
-							<h4><span class="headingColor text-capital">activities</span></h4>
-							<div id="activityEventsListNew" class="m_top20"></div>
-						<!--</div>
-						</div>-->
-						<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock" expand-block-right="events">
-							<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
-							<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
-									<ul class="activeUlCls list-inline hideCls">
-										<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 </li>
-										<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;poor 5</li>
-									</ul>
-							</div> 
-							<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" expand-block-right="events" style="display: none;">
-							<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
-						</div>
-						<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId" expand-block-more="events">
-							
-							<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
-								<li class="text-capital activeLICls" attr_typeId="1">Detailed </li>
-								<li class="text-capital activeLICls" attr_typeId="2">Comparison</li>
-							</ul>
-						</div>
-						<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks" expand-block-more="events">
-						
-							<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
-								<li class="text-capital settingsIconAct">
-									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-								</li>
-							</ul>
-							<div class="actBlockDropDown notesArrow documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
-								<i class="glyphicon glyphicon-remove actSetClose pull-right"></i>
-								<div class="row">
-									<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
-									  <ul class="nav nav-tabs navTabsSettings" role="tablist">
-										<li role="presentation" class="active text-capital"><a href="#eventsSettings" aria-controls="eventsSettings" role="tab" data-toggle="tab">Events</a></li>
-										<li role="presentation" class="text-capital"><a href="#actSettings" aria-controls="actSettings" role="tab" data-toggle="tab">Activities</a></li>
-									  </ul>
-									</div>
-									<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
-									  <div class="tab-content navTabsSettingsContent">
-										<div role="tabpanel" class="tab-pane active" id="eventsSettings">
-											<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS  </h4>
-											<hr style ="margin-bottom:0px;margin-top:0px;" />
-											<div class="">
-												<ul class="evntsSettingsUl">
-													<!--<li>
-														<label class="checkbox-inline">
-															<input type="checkbox" value="0" checked>
-															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-														</label>
-													</li>
-													<li>
-														<label class="checkbox-inline">
-															<input type="checkbox" value="0" checked>
-															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-														</label>
-													</li>
-													<li>
-														<label class="checkbox-inline">
-															<input type="checkbox" value="0" checked>
-															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-														</label>
-													</li>-->
-												</ul>
-											</div>
-										</div>
-										<div role="tabpanel" class="tab-pane" id="actSettings">
-											<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS  </h4>
-											<hr style ="margin-bottom:0px;" />
-											<div class="">
-												<ul class="activitySettingsUl">
-													<!-- <li>
-														<label class="checkbox-inline">
-															<input type="checkbox" value="0" checked>
-															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-														</label>
-													</li>
-													<li>
-														<label class="checkbox-inline">
-															<input type="checkbox" value="0" checked>
-															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-														</label>
-													</li>
-													<li>
-														<label class="checkbox-inline">
-															<input type="checkbox" value="0" checked>
-															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
-														</label>
-													</li> -->
-												</ul>
-											</div>
-										</div>
-									  </div>
-									  
-									</div>
-									<!--<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
-										<button type="button" class="btn btn-success">Get Details</button>
-									</div>-->
-								</div>
-								
-								
-							</div>
-						</div>
-						<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
-							<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
-								<li class="text-capital detailedEvent">Detailed</li>
-								<li class="text-capital comparisonActivity">Comparison</li>
-							</ul>
-						</div> -->
-						<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10" expand-block-more="events">
-							<div class="panel panel-default panelNew">
-								<div class="panel-body">
-									<div id="eventsGraphBlock"></div>
-									<div id="eventsGraphBlock1"></div>
-								</div>
-							</div>
-							<div class="panel panel-default panelNew m_top20">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<span class="headingColor text-capitalize activitiesH4"> Cohort</span>
-									</h4>
-								</div>
-								<div class="panel-body">
-									<div id="eventsDistWiseCohort"></div>
-									 <div id="eventsDistWiseCohort1"></div>
-									<div id="eventsDistWiseCohort2"></div>
-								</div>
-							</div>								
-							<div class="panel panel-default panelNew m_top20">
-								<div class="row" id="accordion">
-									<div class="col-sm-12">
-										<div id="levelWiseOverviewId"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" expand-block-more="events" style="display:none" id="evntCmpBLockId">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<div class="row">
-										<div class="col-xs-12 col-sm-12 col-md-12">
-										  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
-										</div>
-									</div>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											 <div id="childEvnetMemberDivId"> </div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div class="bg_ED pad_15 m_top20">
-											   <div id="directChildMemberForEventDivId"></div>
-											   <div class="row">
-													 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-														<div class="row m_top20">
-														 <div id="topPoorLocationsEventDivId"></div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" expand-block-more="events" style="display:none" id="activtyBlckDivId">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<div class="row">
-										<div class="col-xs-12 col-sm-12 col-md-12">
-										  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForActivity"></div>
-										</div>
-									</div>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											 <div id="childActivityMemberDivId"> </div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div class="bg_ED pad_15 m_top20">
-											   <div id="directChildMemberForActivityDivId"></div>
-											   <div class="row">
-													 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-														<div class="row m_top20">
-														 <div id="topPoorLocationsActivityDivId"></div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>	
-		<!--Events End -->
 		<!-- Committees Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock" expand-block="committees">
         	<div class="panel panel-default panelNewCustom panel1">
@@ -3512,6 +3195,347 @@
             </div>
         </div>
 		<!-- Committees End-->
+		
+	</div>
+	<div class="row">
+		
+		<!-- Kaizala  Start --> 
+		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="kaizala">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="kaizala">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/logoKaizala.png" class="iconClass" style="background-color:none;"/>
+									Kaizala
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="kaizala">
+							<span class="KaizalaRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh"></i>
+							</span>
+							<span class="kaizalaIconExpand pull-right" expand-icon="kaizala">
+								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+							</span>
+							
+						</div>     
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="kaizala">
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="overAllKaizalaBlockId"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 m_top10"  expand-block-right="kaizala" style="display:none;" >
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="activeUlCls list-inline pull-right kaizalaLicls" role='tabCummulativeKai'>
+										<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+										<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+									</ul>
+								</div>
+							 </div>
+							 <div class="row">
+								<div class="col-sm-12">
+									<div class="verticalScrollBarKaizala">
+										<div id="userTypeWiseKaizalaDiv"></div>
+									</div>
+								</div>
+							 </div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="kaizala" style="display: none;">
+							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morekaizalaBlocksIcon" title="Click here for more"></i>
+						</div>	
+						<div class="col-md-12 col-xs-12 col-sm-12 morekaizalaBlocksDetailed m_top10"  expand-block-more="kaizala" style="display:none;">
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="levelWiseDetailsDivId"></div>
+								</div>
+							 </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Kaizala  END --> 	
+		
+		<!--Events Start -->
+		<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="events">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
+								events and activities <small class="text-muted"><span id="dateEventsHeadingId">  - OVERALL (TILL NOW) </span></small>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="events">
+							<span class="notesIconEvents pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
+							</span>
+							<span class="eventsIconExpand pull-right" expand-icon="events">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+						<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshEventsActivities();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
+							<span class="input-group pull-right dateRangePickerClsForEvents hide" expand-block-date="events" style="width:200px;">
+								<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+					<div class="notesDropDown notesArrow" >
+						<h4 class="text-capital">notes
+							<span class="pull-right">
+								<i class="glyphicon glyphicon-list-alt"></i>
+							</span>
+						</h4>
+						<div id="notesEventsId"></div>
+						<hr/>
+						<div id="eventsUpId" style="color:red;"></div>
+						<label>Create Notes</label>
+						<textarea class="form-control notesAreaEvents"></textarea>
+						<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 class="module_OwnerCss">Module Owner : G.Rajesh</h5>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20" expand-block-inner="events">
+							<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
+							<h4><span class="headingColor text-capital">events</span>
+							<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
+							<div id="mainEventsList" class="m_top20"></div>
+							<div id="janmabhoomiEventDivId" class=""></div>
+							<h4 style="margin-top:20px !important;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span>
+								<span class="pull-right activitiesCollapseBtn" style="cursor: pointer;padding: 0px 5px;font-size: 15px;border: 1px solid #333;">+</span>
+							</h4>
+								<div id="activityEventsListNew" class="activitiesCollapseBody" style="display:none"></div>
+			
+							<!--<div style="border : 1px solid #333; padding : 5px">-->
+								<!--<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span></h4>-->
+								<!--<div id="activityEventsListNew" class="m_top20"></div>-->
+							<!--</div>-->
+						</div>
+						<!--Acivites Block
+						
+						
+						<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock m_top20">
+						<div style="border : 1px solid #333; padding : 5px">
+							<h4><span class="headingColor text-capital">activities</span></h4>
+							<div id="activityEventsListNew" class="m_top20"></div>
+						<!--</div>
+						</div>-->
+						<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock" expand-block-right="events">
+							<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
+							<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
+									<ul class="activeUlCls list-inline hideCls">
+										<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 </li>
+										<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;poor 5</li>
+									</ul>
+							</div> 
+							<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" expand-block-right="events" style="display: none;">
+							<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
+						</div>
+						<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId" expand-block-more="events">
+							
+							<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
+								<li class="text-capital activeLICls" attr_typeId="1">Detailed </li>
+								<li class="text-capital activeLICls" attr_typeId="2">Comparison</li>
+							</ul>
+						</div>
+						<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks" expand-block-more="events">
+						
+							<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
+								<li class="text-capital settingsIconAct">
+									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+								</li>
+							</ul>
+							<div class="actBlockDropDown notesArrow documentCloseClass" style="z-index:999;top: 10px;width:450px;" >
+								<i class="glyphicon glyphicon-remove actSetClose pull-right"></i>
+								<div class="row">
+									<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+									  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+										<li role="presentation" class="active text-capital"><a href="#eventsSettings" aria-controls="eventsSettings" role="tab" data-toggle="tab">Events</a></li>
+										<li role="presentation" class="text-capital"><a href="#actSettings" aria-controls="actSettings" role="tab" data-toggle="tab">Activities</a></li>
+									  </ul>
+									</div>
+									<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+									  <div class="tab-content navTabsSettingsContent">
+										<div role="tabpanel" class="tab-pane active" id="eventsSettings">
+											<h4 class="text-capital pad_5" style="color:#99A0A5;"> EVENTS DETAILS  </h4>
+											<hr style ="margin-bottom:0px;margin-top:0px;" />
+											<div class="">
+												<ul class="evntsSettingsUl">
+													<!--<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li>-->
+												</ul>
+											</div>
+										</div>
+										<div role="tabpanel" class="tab-pane" id="actSettings">
+											<h4 class="text-capital pad_5" style="color:#99A0A5;"> ACTIVITIES DETAILS  </h4>
+											<hr style ="margin-bottom:0px;" />
+											<div class="">
+												<ul class="activitySettingsUl">
+													<!-- <li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li>
+													<li>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">Select All</h5></div>
+														</label>
+													</li> -->
+												</ul>
+											</div>
+										</div>
+									  </div>
+									  
+									</div>
+									<!--<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
+										<button type="button" class="btn btn-success">Get Details</button>
+									</div>-->
+								</div>
+								
+								
+							</div>
+						</div>
+						<!--<div class="col-md-12 col-xs-12 col-sm-12 moreActivitiesBlocks" style="display:none;" id="activitesCmpBlockDivId">
+							<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
+								<li class="text-capital detailedEvent">Detailed</li>
+								<li class="text-capital comparisonActivity">Comparison</li>
+							</ul>
+						</div> -->
+						<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10" expand-block-more="events">
+							<div class="panel panel-default panelNew">
+								<div class="panel-body">
+									<div id="eventsGraphBlock"></div>
+									<div id="eventsGraphBlock1"></div>
+								</div>
+							</div>
+							<div class="panel panel-default panelNew m_top20">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<span class="headingColor text-capitalize activitiesH4"> Cohort</span>
+									</h4>
+								</div>
+								<div class="panel-body">
+									<div id="eventsDistWiseCohort"></div>
+									 <div id="eventsDistWiseCohort1"></div>
+									<div id="eventsDistWiseCohort2"></div>
+								</div>
+							</div>								
+							<div class="panel panel-default panelNew m_top20">
+								<div class="row" id="accordion">
+									<div class="col-sm-12">
+										<div id="levelWiseOverviewId"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" expand-block-more="events" style="display:none" id="evntCmpBLockId">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12">
+										  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											 <div id="childEvnetMemberDivId"> </div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div class="bg_ED pad_15 m_top20">
+											   <div id="directChildMemberForEventDivId"></div>
+											   <div class="row">
+													 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+														<div class="row m_top20">
+														 <div id="topPoorLocationsEventDivId"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" expand-block-more="events" style="display:none" id="activtyBlckDivId">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12">
+										  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForActivity"></div>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											 <div id="childActivityMemberDivId"> </div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div class="bg_ED pad_15 m_top20">
+											   <div id="directChildMemberForActivityDivId"></div>
+											   <div class="row">
+													 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+														<div class="row m_top20">
+														 <div id="topPoorLocationsActivityDivId"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<!--Events End -->
 		
 	</div>
 	<div class="row">
@@ -4829,6 +4853,8 @@
 		</div>
 		<!-- Nominated Post End-->
 	</div>
+</div>
+	
 <input type="hidden" id="alertTypeHiddenId"></input> 
 <input type="hidden" id="alertEditionTypeHiddenId"></input>  
 <input type="hidden" id="hiddenActivityId"></input>  

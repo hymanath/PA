@@ -23,6 +23,7 @@ function getListOfParliamentsWithPoorPerformance(){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
+		$(".waitingMsgCls").hide();
 		if(result !=null && result.length>0){
 			buildListOfParliamentsWithPoorPerformance(result);
 		}else{

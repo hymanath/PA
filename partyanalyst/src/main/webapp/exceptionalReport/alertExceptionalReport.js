@@ -94,31 +94,62 @@ function buildOverAllAlertsDetails(result){
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th></th>';
-								str+='<th>Total Alerts</th>';
+								str+='<th>Total&nbsp;Alerts</th>';
 								for(var i in result[0].subList){
 									str+='<th>'+result[0].subList[i].name+'</th>';
 								}
 							str+='</tr>';
 						str+='</thead>';
 						str+='<tbody>';
-							for(var i in result){
+							//for(var i in result){
 								str+='<tr>';
-									if(result[i].name == "Last Month Alerts"){
-										str+='<td>Last&nbsp;Month&nbsp;Alerts</td>';
-									}else{
-										str+='<td>'+result[i].name+'</td>';
+									if(result[0].name == "Total Alerts"){
+										str+='<td>Total&nbsp;Alerts</td>';
 									}
-									str+='<td>'+result[i].totalAlert+'</td>';
-									for(var j in result[i].subList){
-										str+='<td>'+result[i].subList[j].count+'</td>';
+									str+='<td>'+result[0].name+'</td>';
+									str+='<td>'+result[0].totalAlert+'</td>';
+									for(var j in result[0].subList){
+										str+='<td>'+result[0].subList[j].count+'</td>';
 									}
 								str+='</tr>';
-							}
+							//}
 						str+='</tbody>';
 					str+='</table>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
+	
+	str+='<div class="row">';
+			str+='<div class="col-sm-12 m_top20">';
+				str+='<div class="table-responsive m_top10">';
+					str+='<table class="table details-overview-tour">';
+						str+='<thead>';
+							str+='<tr>';
+								str+='<th></th>';
+								str+='<th>Total&nbsp;Alerts</th>';
+								for(var i in result[1].subList){
+									str+='<th>'+result[1].subList[i].name+'</th>';
+								}
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+							//for(var i in result){
+								str+='<tr>';
+									if(result[1].name == "Last Month Alerts"){
+										str+='<td>Last&nbsp;Month&nbsp;Alerts</td>';
+									}
+									str+='<td>'+result[1].totalAlert+'</td>';
+									for(var j in result[1].subList){
+										str+='<td>'+result[1].subList[j].count+'</td>';
+									}
+								str+='</tr>';
+							//}
+						str+='</tbody>';
+					str+='</table>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
 	$("#overAllAlertsDivId").html(str);
 }
 
