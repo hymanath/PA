@@ -430,13 +430,20 @@ function buildNewsModule(result){
 		str+='<div class="col-sm-6">';
 			str+='<div class="yash_color_news">';
 				str+='<h4 class="font_weight">Other Party</h4>';
+				var totalmainOtherParty=0;
+				var totalmainOtherPartyPosCount=0;
+				var totalmainOtherPartyNegCount=0;
+				var totalDistOtherPartyCount=0;
+				var totalDistOtherPartyPosCount=0;
+				var totalDistOtherPartyNegCount=0;
+				
+				var otherMediaMainPostivePercentage = 0;
+				var otherMediaMainNegativePercentage = 0;
+				
+				var otherMediaDistrictPostivePercentage = 0;
+				var otherMediaDistrictNegativePercentage = 0;
+				
 				for(var i in result.coreDashBoardVOList1){
-					var totalmainOtherParty=0;
-					var totalmainOtherPartyPosCount=0;
-					var totalmainOtherPartyNegCount=0;
-					var totalDistOtherPartyCount=0;
-					var totalDistOtherPartyPosCount=0;
-					var totalDistOtherPartyNegCount=0;
 					
 					
 					
@@ -449,15 +456,15 @@ function buildNewsModule(result){
 					totalDistOtherPartyPosCount = totalDistOtherPartyPosCount+result.coreDashBoardVOList1[i].positiveCountDist;
 					totalDistOtherPartyNegCount = totalDistOtherPartyNegCount+result.coreDashBoardVOList1[i].negativCountDist;
 					
-					var otherMediaMainPostivePercentage = parseFloat(totalmainOtherPartyPosCount/totalmainOtherParty).toFixed(2)+"%";
-					var otherMediaMainNegativePercentage = parseFloat(totalmainOtherPartyNegCount/totalmainOtherParty).toFixed(2)+"%";
+					otherMediaMainPostivePercentage = parseFloat(totalmainOtherPartyPosCount/totalmainOtherParty).toFixed(2)+"%";
+					otherMediaMainNegativePercentage = parseFloat(totalmainOtherPartyNegCount/totalmainOtherParty).toFixed(2)+"%";
 					
-					var otherMediaDistrictPostivePercentage = parseFloat(totalDistOtherPartyPosCount/totalDistOtherPartyCount).toFixed(2)+"%";
-					var otherMediaDistrictNegativePercentage = parseFloat(totalDistOtherPartyNegCount/totalDistOtherPartyCount).toFixed(2)+"%";
-					
+					otherMediaDistrictPostivePercentage = parseFloat(totalDistOtherPartyPosCount/totalDistOtherPartyCount).toFixed(2)+"%";
+					otherMediaDistrictNegativePercentage = parseFloat(totalDistOtherPartyNegCount/totalDistOtherPartyCount).toFixed(2)+"%";
+				}	
 					str+='<div class="row m_top10">';
 						str+='<div class="col-sm-4">';
-							str+='<div class="dark_yash_box">';
+							str+='<div class="dark_yash_box fff">';
 								str+='<h5 class="font_weight">MAIN EDITION</h5>';
 								str+='<h4 class="blue-text-news m_top10">'+totalmainOtherParty+'</h4>';
 							str+='</div>';
@@ -517,7 +524,7 @@ function buildNewsModule(result){
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-				}
+				
 				
 				
 			str+='</div>';
@@ -601,8 +608,8 @@ function getSettingActivitiesJBMData(locationId,divId){
 		locationTypeId =10
 	}
 	var jsObj={
-		fromDate :'',
-	    toDate :'',
+		fromDate :glStartDate,
+	    toDate :glEndDate,
 		activityId:divId,
 		locationScopeId:locationTypeId,
 		locationValue:locationValue
@@ -1150,8 +1157,8 @@ function getSettingActivitiesJBMData1(locationId,divId){
 		locationTypeId =10
 	}
 	var jsObj={
-		fromDate :'',
-	    toDate :'',
+		fromDate :glStartDate,
+	    toDate :glEndDate,
 		activityId:38,
 		locationScopeId:locationTypeId,
 		locationValue:locationValue

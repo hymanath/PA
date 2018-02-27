@@ -77,8 +77,9 @@ $(document).on("click",".pressmeetIconExpand",function(){
 	if( $(this).find("i").hasClass("glyphicon glyphicon-resize-small" )){
 		getPartyWiseThenCandidateWisePerformance();
 	}else{
-		$(".collapsepressmeetIcon").addClass("collapsed")
-		$(".panel-collapse").removeClass("in")
+		$(".collapseDebatesIcon").addClass("collapsed")
+		$("#collapseEightPressMeet,#collapseFivesPressMeet,#collapsesFourPressMeet,#collapsethreePressMeet,#collapsetwoPressMeet,#collapseonePressMeet").removeClass("in")
+		$("#collapseEightPressMeet,#collapseFivesPressMeet,#collapsesFourPressMeet,#collapsethreePressMeet,#collapsetwoPressMeet,#collapseonePressMeet").removeClass("show")
 	}    
 	$(".pressmeetSpokesCls li").removeClass("active");
 	$(".pressmeetSpokesCls li:first-child").addClass("active");
