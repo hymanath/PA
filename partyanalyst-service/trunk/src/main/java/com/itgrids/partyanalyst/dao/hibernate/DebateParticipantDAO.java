@@ -713,7 +713,7 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		    }*/
 		str.append(" WHERE model.debateId = DS.debate.debateId  " +
 				" and model.debate.debateId = DOB.debate.debateId" +
-				" and model.debate.isDeleted = 'N' " );
+				" and model.debate.isDeleted = 'N' and model.candidate.isDebateCandidate = 'Y' " );
 		if(roleId != null && roleId.longValue()>0L){
 			str.append(" and model.debateParticipantId = DPR.debateParticipant.debateParticipantId  and DPR.debateRoles.debateRolesId =:roleId ");	
 		}
@@ -1020,7 +1020,7 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		
 		str.append(" WHERE model.debateId = DS.debate.debateId  " +
 				" and model.debate.debateId = DOB.debate.debateId" +
-				" and model.debate.isDeleted = 'N'  " );
+				" and model.debate.isDeleted = 'N' and model.candidate.isDebateCandidate = 'Y' " );
 		if(roleId != null && roleId.longValue()>0L){
 			str.append(" and model.debateParticipantId = DPR.debateParticipant.debateParticipantId  and DPR.debateRoles.debateRolesId =:roleId ");	
 		}
@@ -1767,7 +1767,7 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 		    }*/
 		str.append(" WHERE model.debateId = DS.debate.debateId  " +
 				" and model.debate.debateId = DOB.debate.debateId" +
-				" and model.debate.isDeleted = 'N' " );
+				" and model.debate.isDeleted = 'N'  and model.candidate.isDebateCandidate = 'Y' " );
 		if(roleId != null && roleId.longValue()>0L){
 			str.append(" and model.debateParticipantId = DPR.debateParticipant.debateParticipantId  and DPR.debateRoles.debateRolesId =:roleId ");	
 		}
@@ -1888,7 +1888,7 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
    public List<Object[]> getTotalDabteParticipantCountsForPartyWiseCasteDetails(Date fromDate , Date toDate,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList)
 	{
 		StringBuilder str = new StringBuilder();		
-		 str.append("select distinct model1.party.partyId,model1.party.shortName,'',count(distinct model1.candidateId), " +
+		 str.append("select distinct model1.party.partyId,model1.party.shortName,'',count(distinct candidate.candidateId), " +
 		 		" casteCategory.casteCategoryId," +
 		 		" casteCategory.categoryName from " +
 				"  DebateParticipant model1 left join model1.candidate candidate " +
@@ -1896,7 +1896,7 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 				" left join casteCategoryGroup.casteCategory casteCategory ");
 		 str.append(" where   model1.debate.isDeleted = 'N' " +
 				" and model1.party.isNewsPortal = 'Y'" +
-				" and  model1.candidate.isDebateCandidate ='Y' " );
+				" and  candidate.isDebateCandidate ='Y' " );
 		 
 	 	if(state !=null && state.trim().equalsIgnoreCase("ap")){
 			str.append(" and model1.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
@@ -1908,10 +1908,10 @@ public List<Object[]> getPartyAndCandidateWiseDebates(List<Long> partyIds,Date s
 			 str.append(" and date(model1.debate.startTime) >= :fromDate and date(model1.debate.endTime) <= :toDate ");
 		}
 		if(debateLocationIdList != null && debateLocationIdList.size()>0){
-			str.append(" and model1.debate.addressId in(:debateLocationIdList)  ");
+			str.append(" and model1.debate.addressId in(:debateLocationIdList) ");
 		}
 		if(debateParticipantLocationIdList != null && debateParticipantLocationIdList.size()>0l){
-			str.append(" and model1.debate.address.state.stateId in(:debateParticipantLocationIdList)  ");
+			str.append(" and candidate.state.stateId in(:debateParticipantLocationIdList)  ");
 		}
 		str.append(" group by model1.party.partyId,casteCategory.casteCategoryId " +
 				" order by model1.party.newsOrderNo ");		
