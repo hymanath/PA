@@ -1143,7 +1143,7 @@ $(document).on("click",".pdfGenerateCls",function(){
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseNewsSummary/"+glStartDate+"/"+glEndDate+"/"+pdfDeptId+"/"+benefitId
 			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseNewsSummary/"+glStartDate+"/"+glEndDate+"/"+pdfDeptId+"/"+benefitId
-		}).then(function(result){
+		}).then(function(results){
 			 if(results.exceptionMsg == "error"){
 				 alert("Error Occured.Please Try Again Later.");
 			 }else if(results.exceptionMsg == "success"){
