@@ -3489,7 +3489,7 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 		}
 		if(startDate !=null && endDate !=null){
 			query.setParameter("startDate", startDate);
-			query.setParameter("enDate", endDate);
+			query.setParameter("endDate", endDate);
 		}
 		if(locationScopeId !=null && locationScopeId > 0l && locationValue !=null && locationValue>0l){
 			query.setParameter("locationValue", locationValue);
