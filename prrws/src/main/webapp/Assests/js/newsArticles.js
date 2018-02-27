@@ -716,7 +716,13 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 			if(result[i].organizationId == globalDeptId){
 				collapse+='<div class="row m_top20">';
 					collapse+='<div class="col-sm-12">';
-						collapse+='<div class="white_block">';
+					if(type == "PrintMediadepartment"){
+						collapse+='<div class="row pull-right" style="margin:5px;">';
+							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
+							collapse+='<button type="button" class="btn btn-danger pdfGenerateCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
+						collapse+='</div>';
+					}
+					collapse+='<div class="white_block">';
 								collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
 									collapse+='<div class="row m_top10 departmentWiseTotalCls" id="departmentDivId'+result[i].organizationId+'">';
 										collapse+='<div class="col-sm-6">';
@@ -778,6 +784,12 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 		}else{
 			collapse+='<div class="row m_top20">';
 			collapse+='<div class="col-sm-12">';
+				if(type == "PrintMediadepartment"){
+						collapse+='<div class="row pull-right" style="margin:5px;">';
+							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
+							collapse+='<button type="button" class="btn btn-danger pdfGenerateCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
+						collapse+='</div>';
+					}
 				collapse+='<div class="white_block">';
 				collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
 							collapse+='<div class="row m_top10 departmentWiseTotalCls" id="departmentDivId'+result[i].organizationId+'">';
@@ -1115,3 +1127,27 @@ function getArtilcesForStateForEMN(stateId,deptId,benefitId){
 function getArtilcesForDistrictFOrEMN(districtId,deptId,benefitId){
 	window.open('electronicMediaBulletinsCD.action?organizationId='+deptId+'&benefitId='+benefitId+'&categoryId='+districtId+'&sdat='+glStartDate+'&edat='+glEndDate+'&type=districtdata&&orgType=Y&stIdx=0&edIdx=6&callFrom=districtData');
 }
+$(document).on("click",".pdfGenerateCls",function(){
+	var benefitId=0;
+	var attrType = $(this).attr("attr_pdf_type");
+	var pdfDeptId = $(this).attr("attr_pdf_dept_id");
+	if(attrType =="positive"){
+		benefitId=1;
+	}else if(attrType =="negative"){
+		benefitId=2;
+	}
+	getDepartmentWiseNewsSummaryForPrintMedia(benefitId,pdfDeptId);
+});
+ function getDepartmentWiseNewsSummaryForPrintMedia(benefitId,pdfDeptId){
+		 $("#overAllPrintMediaDivId").html(spinner);
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseNewsSummary/"+glStartDate+"/"+glEndDate+"/"+pdfDeptId+"/"+benefitId
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseNewsSummary/"+glStartDate+"/"+glEndDate+"/"+pdfDeptId+"/"+benefitId
+		}).then(function(result){
+			 if(results.exceptionMsg == "error"){
+				 alert("Error Occured.Please Try Again Later.");
+			 }else if(results.exceptionMsg == "success"){
+				 window.open(results.message);
+			 }
+		});
+	} 
