@@ -162,10 +162,17 @@ function buildOverallReport(result){
 				str+='<h3 class="text_bold m_top10 font_size24">'+result.totalNotInstalled+'</h3>';
 			str+='</div>';
 		str+='</div>';
-		str+='<div class="col-sm-3 m_top10">';
+		/* str+='<div class="col-sm-3 m_top10">';
 			str+='<div class="pad_d1ab66">';
 				str+='<h4 class="font_size24">No Smart Phone</h4>';
 				str+='<h3 class="text_bold m_top10 font_size24">'+result.totalNotHavingSmartphone+'</h3>';
+			str+='</div>';
+		str+='</div>'; */
+		var  Trained= result.totalInstalled+result.totalNotHavingSmartphone;
+		str+='<div class="col-sm-3 m_top10">';
+			str+='<div class="pad_d1ab66">';
+				str+='<h4 class="font_size24">Trained <small> -  (Installed+NoSmartPhone)</small></h4>';
+				str+='<h3 class="text_bold m_top10 font_size24">'+Trained+'</h3>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';

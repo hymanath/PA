@@ -319,13 +319,25 @@
 										</label>
 									  </li>
 									    <c:forEach items="${alertOverviewVO.subList}" var="status">
-											<li>
-											<label class="checkbox-inline">
-											<input type="checkbox" attr_status_id="${status.id}"  class="alertStausCls" checked>
-												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${status.name}</h5></div>
-											</label>
-										   </li>
-									    </c:forEach>
+											<c:choose>
+												<c:when test="${status.id == 6 || status.id == 7}">
+													 <li>
+														<label class="checkbox-inline">
+														<input type="checkbox" attr_status_id="${status.id}"  class="alertStausCls">
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${status.name}</h5></div>
+														</label>
+													   </li>
+												</c:when>    
+												<c:otherwise>
+													<li>
+														<label class="checkbox-inline">
+														<input type="checkbox" attr_status_id="${status.id}"  class="alertStausCls" checked>
+															<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${status.name}</h5></div>
+														</label>
+													   </li>
+												</c:otherwise>
+											</c:choose>	
+										</c:forEach>
 									</ul>
 								</div>
 								<button type="button" class="btn btn-success getAlertDetailsCls" onClick="getAlertDtlsBasedOnSelection('click');">Get Details</button>
@@ -2191,7 +2203,7 @@
 														</li>
 														<li>
 															<label class="checkbox-inline">
-																<input type="checkbox"  id="debatesTS" class="radioStateCls debateradioCls" name="debatesRadio"  value="36" checked />TS
+																<input type="checkbox"  id="debatesTS" class="radioStateCls debateradioCls" name="debatesRadio"  value="36" />TS
 															</label>
 														</li>
 														<li>
@@ -2478,7 +2490,7 @@
 							<div class="panel-group" id="pressmeetCollapse" role="tablist" aria-multiselectable="true">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingonePressMeet">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseonePressMeet" aria-expanded="true" aria-controls="collapseonePressMeet">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseonePressMeet" aria-expanded="true" aria-controls="collapseonePressMeet">
 											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">scale based performance cohort</span></h4>
 										</a>
 									</div>
@@ -2495,7 +2507,7 @@
 								<div class="panel-group" id="pressmeetCollapse1" role="tablist" aria-multiselectable="true">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingtwoPressMeet">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse1" href="#collapsetwoPressMeet" aria-expanded="true" aria-controls="collapsetwoPressMeet">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse1" href="#collapsetwoPressMeet" aria-expanded="true" aria-controls="collapsetwoPressMeet">
 											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
 										</a>
 									</div>
@@ -2512,7 +2524,7 @@
 								<div class="panel-group" id="pressmeetCollapse2" role="tablist" aria-multiselectable="true">
 							  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingsthreePressMeet">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse2" href="#collapsethreePressMeet" aria-expanded="false" aria-controls="collapsethree">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse2" href="#collapsethreePressMeet" aria-expanded="false" aria-controls="collapsethree">
 										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
 										</a>
 									</div>
@@ -2537,7 +2549,7 @@
 								<div class="panel-group" id="pressmeetCollapse3" role="tablist" aria-multiselectable="true">	
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingsFourPressMeet">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse3" href="#collapsesFourPressMeet" aria-expanded="false" aria-controls="collapsesFourPressMeet">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse3" href="#collapsesFourPressMeet" aria-expanded="false" aria-controls="collapsesFourPressMeet">
 										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Publication VS Party</span></h4>
 										</a>
 									</div>
@@ -2562,7 +2574,7 @@
 								 <div class="panel-group" id="pressmeetCollapse4" role="tablist" aria-multiselectable="true">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingfivePressMeet">
-										 <a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse4" href="#collapseFivesPressMeet" aria-expanded="false" aria-controls="collapseFivesPressMeet">
+										 <a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse4" href="#collapseFivesPressMeet" aria-expanded="false" aria-controls="collapseFivesPressMeet">
 										 <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
 										 overall performance</span></h4>
 										 </a>
@@ -2582,7 +2594,7 @@
 								<div class="panel-group" id="pressmeetCollapse5" role="tablist" aria-multiselectable="true">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingEightPressMeet">
-										<a class="collapsed collapsepressmeetIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse5" href="#collapseEightPressMeet" aria-expanded="true" aria-controls="collapseEightPressMeet">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse5" href="#collapseEightPressMeet" aria-expanded="true" aria-controls="collapseEightPressMeet">
 											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Caste Group Cohort</span></h4>
 										</a>
 									</div>

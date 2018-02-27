@@ -31,8 +31,8 @@ function buildAssignedCandidateWisePendingAlerts(result){
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
 				str+='<h5 class="text_bold text-capital font_size24" >District Wise Action Required Alerts</h5>';
-				str+='<div class="table-responsive m_top10">';
-					str+='<table class="table details-overview1">';
+				str+='<div class="table-responsive m_top10" >';
+					str+='<table class="table details-overview1" id="dataTableId1">';
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th>District</th>';
@@ -61,6 +61,14 @@ function buildAssignedCandidateWisePendingAlerts(result){
 		str+='</div>';
 	str+='</div>';
 	$("#assignedParliamentWiseAlertsDivId").html(str)
+	 $("#dataTableId1").dataTable({
+		"paging":   false,
+		"info":     false,
+		"searching": false,
+		"autoWidth": true,
+		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"aaSorting": [[ 4, "desc" ]]
+	});
 }
 function getOverAllAlertsDetails(){
 	$("#overAllAlertsDivId").html(spinner);	
@@ -106,7 +114,6 @@ function buildOverAllAlertsDetails(result){
 									if(result[0].name == "Total Alerts"){
 										str+='<td>Total&nbsp;Alerts</td>';
 									}
-									str+='<td>'+result[0].name+'</td>';
 									str+='<td>'+result[0].totalAlert+'</td>';
 									for(var j in result[0].subList){
 										str+='<td>'+result[0].subList[j].count+'</td>';
@@ -151,6 +158,7 @@ function buildOverAllAlertsDetails(result){
 	str+='</div>';
 	
 	$("#overAllAlertsDivId").html(str);
+	
 }
 
 
