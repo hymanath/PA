@@ -46,5 +46,5 @@ public interface IPartyMeetingStatusDAO extends GenericDao<PartyMeetingStatus,Lo
    public List<Object[]> getCommitteeMeetingStatistics(Long locationLevel,List<Long> locationIds,Date fromDate,Date toDate);
    public List<Object[]> getMeetingStatusByLocation(Long searchLevelId,List<Long> locationIds,Date fromDate,Date toDate,Long meetingTypeId,Long partyMeetinLevelId);
    public List<Object[]> getAreaWisePartyMeetingsDetails(Long locationScopeId,List<Long> locationValues,Date startDate,Date endDate,Long meetingLevelId,Long meetingTypeId,Long meetingMainTypeId,String searchType,String searchFor);
-   public List<Object[]> getPartyMeetingStatusWiseCount(InputVO inputVO);
+   public List<Object[]> getPartyMeetingStatusWiseCount(InputVO inputVO,String resultType);
 }

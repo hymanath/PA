@@ -1311,7 +1311,9 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 				return query.list();
 	}
 
-	public List<Object[]> getPartyMeetingStatusWiseCount(InputVO inputVO) {
+	public List<Object[]> getPartyMeetingStatusWiseCount(InputVO inputVO,String resultType) {
+		
+		inputVO.setResultType(resultType);
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
 		if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("constituency")) {
