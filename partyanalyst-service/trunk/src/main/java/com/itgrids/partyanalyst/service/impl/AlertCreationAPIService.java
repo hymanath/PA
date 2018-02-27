@@ -9,9 +9,6 @@ import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
-import com.sun.jersey.multipart.FormDataMultiPart;
-import com.sun.jersey.multipart.MultiPart;
-import com.sun.jersey.multipart.file.FileDataBodyPart;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -26,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
+import com.itgrids.partyanalyst.dao.IAlertIssueCategoryRelationDAO;
 import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
@@ -53,6 +51,9 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataMultiPart;
+import com.sun.jersey.multipart.MultiPart;
+import com.sun.jersey.multipart.file.FileDataBodyPart;
 
 public class AlertCreationAPIService implements IAlertCreationAPIService {
 
@@ -81,7 +82,13 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	private IAlertCategoryDAO alertCategoryDAO;
 	private IAlertUpdationAPIService alertUpdationAPIService;
 	private IAlertCandidateDAO alertCandidateDAO;
+	private IAlertIssueCategoryRelationDAO alertIssueCategoryRelationDAO;
 
+	
+	public void setAlertIssueCategoryRelationDAO(
+			IAlertIssueCategoryRelationDAO alertIssueCategoryRelationDAO) {
+		this.alertIssueCategoryRelationDAO = alertIssueCategoryRelationDAO;
+	}
 	public void setAlertUpdationAPIService(IAlertUpdationAPIService alertUpdationAPIService) {
 		this.alertUpdationAPIService = alertUpdationAPIService;
 	}
@@ -240,31 +247,46 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 					}
 			 }
 			 
-			 
-				 
 			 if(uploadArr !=null && uploadArr.length()>0){
 				 jsObj.put("uploads", uploadArr);
 			 }
 			
 			 jsObj.put("contactId", dummyContactId);
-			 
 			 if(contactId != null){
 				 customJson.put("assignees", contactId);
 				 jsObj.put("status", "Notified");
 			 }
 			
+			 // Issue Category Added for Alert
+			 String issueCategory = getAlertIssueCategory(alertId);	
+			 
+			 if(issueCategory !=null && !issueCategory.trim().isEmpty()){
+				 customJson.put("Issue Category", issueCategory.trim());
+			 }
+			 
 			 // Custom Fields Adding
 			 jsObj.put("customFields", customJson);
 			
 			 // Involved candidates
 			setZohoAlertInvolvedCandidateDetails(alert.getAlertId(),customJson);
-			 
 			sendApiOfZohoAlert(jsObj,alert.getAlertId());
 			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in sendApiDetailsOfAlertToZoho() in AlertCreationAPIService", e);
 		}
 	 }
+	
+	public String getAlertIssueCategory(Long alertId){
+		try {
+			List<String> issueCategoryList = alertIssueCategoryRelationDAO.getAlertIssueCategory(alertId);
+			if(issueCategoryList !=null && issueCategoryList.size()>0){
+				return issueCategoryList.get(0);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAlertIssueCategory() in AlertCreationAPIService", e);
+		}
+		return null;
+	}
 	
 	public String getBulletinPointTiming(Long bulletinId){
 		try {
