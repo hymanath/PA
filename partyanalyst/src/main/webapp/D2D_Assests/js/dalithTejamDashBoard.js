@@ -531,6 +531,7 @@ function buildNewsModule(result){
 function levelWiseSBData(divId)
 {
 	levelWiseSBArr=['district','parliament','constituency'];
+	
 	var collapse='';
 	for(var i in levelWiseSBArr)
 	{
@@ -539,28 +540,28 @@ function levelWiseSBData(divId)
 			collapse+='<div class="panel panel-default panel-gray" style="box-shadow:none;">';
 				collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBArr[i]+'">';
 				
-				collapse+='<a role="button" class="panelCollapseIcon1 '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"   data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" >';
+				//collapse+='<a role="button" class="panelCollapseIcon1 '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"   data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" >';
 				
-					/* if(i == 0)
+					 if(i == 0)
 					{
 						collapse+='<a role="button" class="panelCollapseIcon1 '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"   data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" >';
 					}else{
 						collapse+='<a role="button" class="panelCollapseIcon1 collapsed '+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'"  overview-level-new='+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+' data-toggle="collapse" data-parent="#accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" href="#collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" >';
-					} */
+					} 
 					collapse+='<h5 class="text-capital" style="color:#000;">'+levelWiseSBArr[i]+' level overview</h5>';
 						
 					collapse+='</a>';
 				collapse+='</div>';
 				
-				collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
+				//collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
 				
-				/* if(i == 0)
+				if(i == 0)
 				{
 					collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
 				}else{
 					collapse+='<div id="collapse'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'">';
 				}
-				 */
+				
 					collapse+='<div class="panel-body">';
 						collapse+='<div id="'+levelWiseSBArr[i]+'"></div>';
 					collapse+='</div>';
@@ -575,8 +576,12 @@ function levelWiseSBData(divId)
 	$("#levelWiseOverviewId").html(collapse);
 	 setTimeout(function(){ 
 		for(var i in levelWiseSBArr){
+			if(levelWiseSBArr[i] != "district"){
+				$("."+divId+''+levelWiseSBArr[i]).trigger("click");
+			}
+			
 			getSettingActivitiesJBMData(levelWiseSBArr[i],divId);
-			$("[overview-level-new]").trigger("click");
+			
 		}	
 	
 	}, 1000); 
@@ -898,6 +903,9 @@ function buildActivityEventdata(result,locationId,divId){
 				"leftColumns": 1,
 			}
 	});
+	if(locationId != "district"){
+		 $("."+divId+''+locationId).trigger("click");
+	 }
 
 }
 $(document).on("click",".generateExcelcdfdf",function(){
@@ -1069,6 +1077,8 @@ function buildNewsModule(result){
 function levelWiseLeaderData(divId)
 {
 	var levelWiseSBLeaderArr=['district','parliament','constituency'];
+	
+	
 	var collapse='';
 	for(var i in levelWiseSBLeaderArr)
 	{
@@ -1078,25 +1088,25 @@ function levelWiseLeaderData(divId)
 			
 				collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBLeaderArr[i]+'">';
 				
-				collapse+='<a role="button" class="panelCollapseIcon1 '+divId+''+levelWiseSBLeaderArr[i]+'"   data-toggle="collapse" data-parent="#accordionleader'+divId+''+levelWiseSBLeaderArr[i]+'" href="#collapse'+divId+''+levelWiseSBLeaderArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" >';
+				//collapse+='<a role="button" class="panelCollapseIcon1 '+divId+''+levelWiseSBLeaderArr[i]+'"   data-toggle="collapse" data-parent="#accordionleader'+divId+''+levelWiseSBLeaderArr[i]+'" href="#collapse'+divId+''+levelWiseSBLeaderArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" >';
 				
-					/* if(i == 0)
+					if(i == 0)
 					{
 						collapse+='<a role="button" class="panelCollapseIcon1 '+divId+''+levelWiseSBLeaderArr[i]+'"   data-toggle="collapse" data-parent="#accordionleader'+divId+''+levelWiseSBLeaderArr[i]+'" href="#collapse'+divId+''+levelWiseSBLeaderArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" >';
 					}else{
 						collapse+='<a role="button" class="panelCollapseIcon1 collapsed '+divId+''+levelWiseSBLeaderArr[i]+'"  overview-level-new='+divId+''+levelWiseSBLeaderArr[i]+' data-toggle="collapse" data-parent="#accordionleader'+divId+''+levelWiseSBLeaderArr[i]+'" href="#collapse'+divId+''+levelWiseSBLeaderArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" >';
-					} */
+					} 
 					collapse+='<h5 class="text-capital" style="color:#000;">Leaders Participated- '+levelWiseSBLeaderArr[i]+' level overview</h5>';
 						
 					collapse+='</a>';
 				collapse+='</div>';
-				collapse+='<div id="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId+''+levelWiseSBLeaderArr[i]+'">';
-				/* if(i == 0)
+				//collapse+='<div id="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId+''+levelWiseSBLeaderArr[i]+'">';
+				if(i == 0)
 				{
 					collapse+='<div id="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId+''+levelWiseSBLeaderArr[i]+'">';
 				}else{
 					collapse+='<div id="collapse'+divId+''+levelWiseSBLeaderArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId+''+levelWiseSBLeaderArr[i]+'">';
-				} */
+				} 
 				
 				
 					collapse+='<div class="panel-body">';
@@ -1115,8 +1125,12 @@ function levelWiseLeaderData(divId)
 	$("#leaderandlocationwiseOverviewId").html(collapse);
 	setTimeout(function(){ 
 		for(var i in levelWiseSBLeaderArr){
+			if(levelWiseSBLeaderArr[i] !="district"){
+				$("."+divId+''+levelWiseSBLeaderArr[i]).trigger("click");
+			}
+			
 			getSettingActivitiesJBMData1(levelWiseSBLeaderArr[i],divId);
-			$("[overview-level-new]").trigger("click");
+			
 		}	
 	
 	}, 2000);
@@ -1216,10 +1230,22 @@ function buildActivityEventdata1(result,locationId,divId){
 	tableView+='</div>';
 	
 	$("#"+locationId+divId).html(tableView);
+	
 	 $(".dataTable1leaderandlocarionwise"+locationId).dataTable({  
 		 "aaSorting": [[ 1, "desc" ]], 
 		"iDisplayLength" : 10,
-		"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]					
+		"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]],
+		"scrollX": true,
+			"scrollX": true,
+			"scrollCollapse": true,
+			"fixedColumns":   {
+				"leftColumns": 1,
+			}
+				
 	 }); 
+	 if(locationId != "district"){
+		 $("."+divId+''+locationId).trigger("click");
+	 }
+	 
 	
 }
