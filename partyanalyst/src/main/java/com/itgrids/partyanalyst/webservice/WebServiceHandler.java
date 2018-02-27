@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.webservice;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -111,6 +112,7 @@ import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IAttendanceService;
+import com.itgrids.partyanalyst.service.IBiometricAttendanceService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.INotificationService;
@@ -119,6 +121,7 @@ import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
@@ -163,6 +166,9 @@ public class WebServiceHandler {
 	private AmsAppLoginVO  amsAppLoginVO ;
 	private DistrictOfficeViewAlertVO districtOfficeViewAlertVO;
 	private List<AlertVO> alertVoList;
+	
+	@Autowired
+	private IBiometricAttendanceService biometricAttendanceService;  
 	
 	public List<AlertVO> getAlertVoList() {
 		return alertVoList;
@@ -304,6 +310,27 @@ public class WebServiceHandler {
 	public String getMobileAppAuthorizationURL()
     {
 		return "http://www.partyanalyst.com/WebService/appAuthorization";
+    }
+	
+	@GET
+    @Path("/getBiometricData/{logDate}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getBiometricData(@PathParam("logDate") String logDate)
+    {
+		try{
+			Date date = null;
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_FORMAT);
+			try{
+				date  = sdf.parse(logDate);
+			}catch(Exception e){
+				date = new Date();
+			}
+			biometricAttendanceService.saveBiometricLogDetails(date);
+		}catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return "Success";
     }
 	
 	@GET
