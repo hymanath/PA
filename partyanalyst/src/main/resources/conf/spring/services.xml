@@ -4645,6 +4645,8 @@
     	 	<property name="alertTrackingDAO" ref="alertTrackingDAO"/>
     	 	<property name="zohoTdpCadreContactDAO" ref="zohoTdpCadreContactDAO"/>
     	 	<property name="alertDocumentDAO" ref="alertDocumentDAO"/>
+    	 	<property name="transactionTemplate" ref="transactionTemplate"></property>
+    	 	<property name="alertCommentAssigneeDAO" ref="alertCommentAssigneeDAO"></property>
     	 </bean>
     	 
     	 <bean name="alertCreationAPIService" class="com.itgrids.partyanalyst.service.impl.AlertCreationAPIService">
