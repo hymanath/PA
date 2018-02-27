@@ -857,7 +857,15 @@
 		              <value>com.itgrids.partyanalyst.model.TdpCadreCardPrint</value>
 		              <value>com.itgrids.partyanalyst.model.AlertIssueSubType</value>
 		              <value>com.itgrids.partyanalyst.model.AlertIssueType</value>
+		              <value>com.itgrids.partyanalyst.model.BiometricDeviceLogTrack</value>
 		              
+		              <value>com.itgrids.partyanalyst.model.MomAppUserAccess</value>
+		              <value>com.itgrids.partyanalyst.model.MomAtrSourceType</value>
+		              <value>com.itgrids.partyanalyst.model.MomPriority</value>
+		              <value>com.itgrids.partyanalyst.model.TrainingCampBatchType</value>
+		              <value>com.itgrids.partyanalyst.model.UrbanBlock</value>
+		              <value>com.itgrids.partyanalyst.model.UrbanLocality</value>
+		              <value>com.itgrids.partyanalyst.model.BiometricDeviceLog</value>
 			</list>
 		</property>
 	</bean>
@@ -920,6 +928,14 @@
 
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
+	
+	<bean id="biometricDeviceLogDAO" class="com.itgrids.partyanalyst.dao.hibernate.BiometricDeviceLogDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="biometricDeviceLogTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.BiometricDeviceLogTrackDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="alertIssueSubTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertIssueSubTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
