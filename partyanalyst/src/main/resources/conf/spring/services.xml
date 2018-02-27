@@ -4760,4 +4760,12 @@
    	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
    	  	 <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
    	 </bean>
+   	  <bean name = "consolidatedExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.ConsolidatedExceptionalReportService">
+   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	  	 <property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO"></property>
+   	  	 <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO"></property>
+   	  	 <property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO"></property>
+   	  	 <property name="constituencyDAO" ref="constituencyDAO"></property>
+   	  	 <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
+   	 </bean>
 </beans>			

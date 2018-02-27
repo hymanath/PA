@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.ComplaintMasterVO;
+import com.itgrids.partyanalyst.dto.ConsolidatedExceptionalReportVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardInsuranceVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
@@ -72,8 +73,9 @@ import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.exceptionalReport.service.IActivityExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.IAlertExceptionalReportService;
-import com.itgrids.partyanalyst.exceptionalReport.service.IKaizalaExceptionReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.ICommitteeExceptionalReportService;
+import com.itgrids.partyanalyst.exceptionalReport.service.IConsolidatedExceptionalReportService;
+import com.itgrids.partyanalyst.exceptionalReport.service.IKaizalaExceptionReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.IPartyMeetingExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITourExceptionalReportService;
 import com.itgrids.partyanalyst.exceptionalReport.service.ITrainingCampExceptionalReportService;
@@ -192,6 +194,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private AlertOverviewVO alertOverviewVO = new AlertOverviewVO();
 	private List<TrainingCampSurveyVO> campSurveyVOs;
 	private ICoreDashboardNominatedPostService coreDashboardNominatedPostService;
+	private IConsolidatedExceptionalReportService consolidatedExceptionalReportService;
 	/**
 	 * starting Payment Gateway required parameters
 	 */
@@ -244,11 +247,21 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	private PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO;
 	private ActivityExceptionalReportVO activityExceptionalReportVO;
+	private ConsolidatedExceptionalReportVO consolidatedExceptionalReportVO;
 	//setters And Getters
 	
 	
 	public List<Long> getProgramIdsList() {
 		return programIdsList;
+	}
+
+	public ConsolidatedExceptionalReportVO getConsolidatedExceptionalReportVO() {
+		return consolidatedExceptionalReportVO;
+	}
+
+	public void setConsolidatedExceptionalReportVO(
+			ConsolidatedExceptionalReportVO consolidatedExceptionalReportVO) {
+		this.consolidatedExceptionalReportVO = consolidatedExceptionalReportVO;
 	}
 
 	public List<KaizalaExceptionalReportVO> getExceptionalReportVOs() {
@@ -267,6 +280,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setExceptionalReportVO(
 			KaizalaExceptionalReportVO exceptionalReportVO) {
 		this.exceptionalReportVO = exceptionalReportVO;
+	}
+
+	public IConsolidatedExceptionalReportService getConsolidatedExceptionalReportService() {
+		return consolidatedExceptionalReportService;
+	}
+
+	public void setConsolidatedExceptionalReportService(
+			IConsolidatedExceptionalReportService consolidatedExceptionalReportService) {
+		this.consolidatedExceptionalReportService = consolidatedExceptionalReportService;
 	}
 
 	public IKaizalaExceptionReportService getKaizalaExceptionReportService() {
@@ -6287,4 +6309,28 @@ public String getDistrictWiseAlertsDetails(){
 	}
 	return Action.SUCCESS;
 }
-}//public List<AlertCoreDashBoardVO> getDistrictWiseAlertsDetails(String startDate,String endDate, Long stateId,int size,List<Long> alertTypeIds)
+public String getConsolidatedPartyMeetingExceptionReportMeetingLevelWise(){
+	try {
+		LOG.info("Entered into getPartyMeetingExceptionReportMeetingLevelWiseAction()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		/*JSONArray partyMeetingTypeIdArr = jObj.getJSONArray("partyMeetingTypeIds");  
+		List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+		if(partyMeetingTypeIdArr != null && partyMeetingTypeIdArr.length() > 0){
+			for (int i = 0; i < partyMeetingTypeIdArr.length(); i++){
+				partyMeetingTypeIds.add(Long.parseLong(partyMeetingTypeIdArr.getString(i)));          
+			}  
+		}*/
+		InputVO inputVO = new InputVO();
+		//inputVO.setLocationLevel(jObj.getString("partyMeetingLevel"));
+		inputVO.setFromDateStr(jObj.getString("fromDate"));
+		inputVO.setToDateStr(jObj.getString("toDate"));
+		inputVO.setStateId(jObj.getLong("stateId"));
+		//inputVO.setPartyMeetingtypeIds(partyMeetingTypeIds);
+		consolidatedExceptionalReportVO = consolidatedExceptionalReportService.getOverAllConsolidatedViewDetails(inputVO);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getConsolidatedPartyMeetingExceptionReportMeetingLevelWise() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+
+}//public List<AlertCoreDashBoardVO> getDistrictWiseAlertsDetails(String startDate,String endDate, Long stateId,int size,List<Long> alertTypeIds)>>>>>>> .r50089
