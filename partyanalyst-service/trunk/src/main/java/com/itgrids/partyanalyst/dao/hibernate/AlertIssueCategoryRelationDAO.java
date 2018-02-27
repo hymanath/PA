@@ -635,5 +635,17 @@ public class AlertIssueCategoryRelationDAO extends GenericDaoHibernate<AlertIssu
 		    return query.list();  
 		}
 	
+	public List<String> getAlertIssueCategory(Long alertId){
+		
+		Query query = getSession().createQuery(" select model.alertIssueCategory.issueCategory " +
+				"  from AlertIssueCategoryRelation model where model.alertId =:alertId " +
+				" and model.isDeleted ='N' and model.alertIssueCategory.isDeleted='N' " +
+				"  order by model.alertIssueCategoryId desc " );
+		
+		query.setParameter("alertId", alertId);
+		
+		return query.list();
+	}
+	
 	
 }

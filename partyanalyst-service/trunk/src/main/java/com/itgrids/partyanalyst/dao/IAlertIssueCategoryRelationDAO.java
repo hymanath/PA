@@ -24,4 +24,5 @@ public interface IAlertIssueCategoryRelationDAO extends GenericDao<AlertIssueCat
 	public List<Object[]> getIssueCategoryWiseLocationAlertDetails(Long userAccessLevelId, List<Long> userAccessLevelValues,Date fromDate, Date toDate, Long stateId,List<Long> impactLevelIds,List<Long> districtIdList, List<Long> alertTypeList, List<Long> editionList,
 			Long constituencyId,List<Long> alertStatusIds,Long localElectionBodyId,String locationLevel,String type,List<Long> constituencyList,List<Long> issueCategoryIds);
 	public List<Long> getAlertIssueCategoryIdsList(Long alertId);
+	public List<String> getAlertIssueCategory(Long alertId);
 }
