@@ -27,6 +27,9 @@ public class ZohoTdpCadreContact {
 	private Long zohoTdpCadreContactId;
 	private Long tdpCadreId;
 	private String zohoContactId;
+	private String zohoUserId;
+	private Long userId;
+	
 	private String isValid;
 	
 	private TdpCadre tdpCadre;
@@ -75,14 +78,19 @@ public class ZohoTdpCadreContact {
 	public void setTdpCadre(TdpCadre tdpCadre) {
 		this.tdpCadre = tdpCadre;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Column(name = "zoho_user_id")
+	public String getZohoUserId() {
+		return zohoUserId;
+	}
+	public void setZohoUserId(String zohoUserId) {
+		this.zohoUserId = zohoUserId;
+	}
+	@Column(name = "tdp_user_id")
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	
 }

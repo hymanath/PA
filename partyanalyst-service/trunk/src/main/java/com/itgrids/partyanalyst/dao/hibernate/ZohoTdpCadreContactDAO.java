@@ -21,4 +21,22 @@ public class ZohoTdpCadreContactDAO extends GenericDaoHibernate<ZohoTdpCadreCont
 		query.setParameter("zohoContactId", zohoContactId);
 		return query.list();
 	}
+	
+	public List<Object[]> getZohoContactDetails(String zohoUserId){
+		
+		Query query = getSession().createQuery("select model.tdpCadreId,model.userId from ZohoTdpCadreContact model " +
+				" where model.zohoUserId =:zohoUserId" +
+				" and model.isValid ='Y' ");
+		
+		query.setParameter("zohoUserId", zohoUserId);
+		
+		return query.list();
+	}
+	public List<Long> getTdpCadresIdOfContacts(List<String> zohoContactIds){
+		Query query = getSession().createQuery(" select model.tdpCadreId " +
+				" from ZohoTdpCadreContact model " +
+				" where model.zohoContactId in (:zohoContactIds) and model.isValid='Y' ");
+		query.setParameterList("zohoContactIds", zohoContactIds);
+		return query.list();
+	}
 }

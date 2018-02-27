@@ -4,14 +4,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
+import com.itgrids.partyanalyst.dao.IAlertCommentAssigneeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
@@ -22,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IZohoTdpCadreContactDAO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssigned;
 import com.itgrids.partyanalyst.model.AlertComment;
+import com.itgrids.partyanalyst.model.AlertCommentAssignee;
 import com.itgrids.partyanalyst.model.AlertDocument;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
@@ -48,9 +55,18 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	private IAlertTrackingDAO alertTrackingDAO;
 	private IZohoTdpCadreContactDAO zohoTdpCadreContactDAO;
 	private IAlertDocumentDAO alertDocumentDAO;
+	private TransactionTemplate transactionTemplate = null;
+	private IAlertCommentAssigneeDAO alertCommentAssigneeDAO = null;;
 	
 	
 	
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+	public void setAlertCommentAssigneeDAO(
+			IAlertCommentAssigneeDAO alertCommentAssigneeDAO) {
+		this.alertCommentAssigneeDAO = alertCommentAssigneeDAO;
+	}
 	public IAlertDocumentDAO getAlertDocumentDAO() {
 		return alertDocumentDAO;
 	}
@@ -122,11 +138,61 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 		return null;
 	}
 	
+	public Long getZohoStatusDetailsOfAlert(Long alertId){
+		Long presentStatus = null; 
+		try {
+			
+			String alertTicketId = alertDAO.getAlertTicketId(alertId);
+      		 if(alertTicketId != null && !alertTicketId.trim().isEmpty()){
+      			 
+      			 ClientConfig clientConfig = new DefaultClientConfig();
+     		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+     		     Client client = Client.create(clientConfig);
+     		     
+     			 WebResource webResource = client.resource("https://desk.zoho.com/api/v1/tickets/"+alertTicketId);
+     			 
+     			 WebResource.Builder builder = webResource.getRequestBuilder();			         
+     		     builder.header("Authorization",IConstants.ZOHO_ADMIN_AUTHORIZATION);
+     		     builder.header("orgId",IConstants.ZOHO_ADMIN_ORGID);
+     		     builder.accept("application/json");
+     		     builder.type("application/json");
+     		     
+     		    ClientResponse response = builder.get(ClientResponse.class);
+     		    
+     		   if (response.getStatus() != 200) {
+		        	 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+		         } else {
+		        	 String output = response.getEntity(String.class);
+		        	 JSONObject jobjIn= new JSONObject(output);
+		        	 
+		        	 if(jobjIn.has("status")){
+		        		 presentStatus = alertStatusDAO.getIdOfName(jobjIn.getString("status"));
+		        	 }
+		        	 
+		         }
+      		 }
+		} catch (Exception e) {
+			LOG.error("exception Occured in getStatusDetailsOfAlert in AlertUpdationAPIService Class ", e);
+		}
+		return presentStatus;
+	}
+	
 	//contact-id of candidate
 	public String sendAssignedCandidateCantactId(List<Long> cadreIds,Long alertId){
 		String status=null;
 		try {
-				//getCandidate contactId	
+			
+			JSONObject jobj = new JSONObject();
+  		    JSONObject customObj = new JSONObject();
+			
+  		   // Checking the Present Status Of 
+  		   Long zohoPresentStatusId = getZohoStatusDetailsOfAlert(alertId);
+  		   
+  		   if(zohoPresentStatusId !=null && zohoPresentStatusId.longValue() <2l){
+  				jobj.put("status", "Notified");
+  		   }
+  		
+  		   //getCandidate contactId	
 			 	String contactId = callForZohoContact(cadreIds);
 			 	
 		       	 if(contactId != null && !contactId.trim().isEmpty()){
@@ -145,8 +211,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 			   		     builder.accept("application/json");
 			   		     builder.type("application/json");
 			   		     
-			   		     JSONObject jobj = new JSONObject();
-			   		     JSONObject customObj = new JSONObject();
+			   		     
 		       			 jobj.put("contactId", IConstants.ZOHO_ADMIN_CONTACTID);
 		       			 
 		       			 customObj.put("assignees", contactId);
@@ -169,7 +234,6 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 		       	 
 			       	status="success";
 			     
-			
 		} catch (Exception e) {
 			LOG.error("exception raised while getting the contact-id for the cadreId", e);
 			status="failure";
@@ -364,32 +428,99 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	}
 	
 
-	public JSONObject saveZohoAlertComment(JSONObject playLoadObj){
-		JSONObject obj = new JSONObject();
+	public JSONObject saveZohoAlertComment(final JSONObject playLoadObj){
+		final JSONObject obj = new JSONObject();
 		try {
-			if(playLoadObj.has("content") && playLoadObj.has("ticketId")){
-				String comment = playLoadObj.getString("content");
-				String alertTicketId = playLoadObj.getString("ticketId");
-				List<Long> alertIds = alertDAO.getAlertId(alertTicketId);
-				if(alertIds != null && alertIds.size() > 0){
-					AlertComment alertComment = new AlertComment();
-					alertComment.setAlertId(alertIds.get(0));
-					alertComment.setComments(comment);
-					alertComment.setInsertedBy(1l);
-					alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-					alertComment.setIsDeleted("N");
-					alertComment = alertCommentDAO.save(alertComment);
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status){
 					
-					AlertTracking alertTracking = new AlertTracking();
-					alertTracking.setAlertId(alertIds.get(0));
-					alertTracking.setAlertCommentId(alertComment.getAlertCommentId());
-					alertTracking.setAlertTrackingActionId(2l);
-					alertTracking.setInsertedBy(1l);
-					alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-					alertTrackingDAO.save(alertTracking);
-				}
-			}
-			obj.put("message", "success");
+					if(playLoadObj.has("content") && playLoadObj.has("ticketId")){
+						
+						Long tdpCadreId =null;
+						Long tdpUserId =null;
+						JSONObject contactJson = null; 
+						try {
+							if(playLoadObj.has("commenterId") && !playLoadObj.getString("commenterId").trim().isEmpty()){
+								contactJson = getTdpCadreIdOfZohoUser(playLoadObj.getString("commenterId").trim() !=null ? playLoadObj.getString("commenterId").trim():null);
+								if(contactJson !=null){
+									tdpCadreId = contactJson.getLong("tdpCadreId");
+									tdpUserId = contactJson.getLong("tdpUserId");
+								}
+							}
+							obj.put("message", "success");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+						String comment=null;
+						String alertTicketId=null;
+						Long statusId = null;
+						try {
+							
+							if(playLoadObj.getString("content").contains("\n\n")){
+								comment = playLoadObj.getString("content").split("\n\n")[1];
+								
+								if(playLoadObj.getString("content").split("\n\n")[0] !=null && !playLoadObj.getString("content").split("\n\n")[0].trim().isEmpty()){
+									
+									String latestStatus  = playLoadObj.getString("content").split("\n\n")[0].split(":")[1] !=null ? playLoadObj.getString("content").split("\n\n")[0].split(":")[1].trim():null;
+									
+									if(latestStatus !=null && !latestStatus.isEmpty()){
+										statusId = alertStatusDAO.getIdOfName(latestStatus.trim());
+									}
+									
+								}
+							}else{
+								comment = playLoadObj.getString("content");
+							}
+							alertTicketId = playLoadObj.getString("ticketId");
+							
+						} catch (JSONException e1) {
+							e1.printStackTrace();
+						}
+						List<Long> alertIds = alertDAO.getAlertId(alertTicketId);
+						if(alertIds != null && alertIds.size() > 0){
+							
+							AlertComment alertComment = new AlertComment();
+							AlertTracking alertTracking = new AlertTracking();
+							
+							alertComment.setAlertId(alertIds.get(0));
+							alertComment.setComments(comment);
+							
+							if(tdpUserId !=null){
+								alertComment.setInsertedBy(tdpUserId);
+								alertTracking.setInsertedBy(tdpUserId);
+							}else{
+								alertComment.setInsertedBy(1l);
+								alertTracking.setInsertedBy(1l);
+							}
+								
+							alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							alertComment.setIsDeleted("N");
+							alertComment = alertCommentDAO.save(alertComment);
+							
+							alertTracking.setAlertId(alertIds.get(0));
+							alertTracking.setAlertCommentId(alertComment.getAlertCommentId());
+														
+							if(statusId !=null){
+								alertTracking.setAlertTrackingActionId(1l);
+								alertTracking.setAlertStatusId(statusId);
+							}else{
+								alertTracking.setAlertTrackingActionId(2l);
+							}
+								
+							
+							alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							alertTrackingDAO.save(alertTracking);
+							
+							if(tdpCadreId !=null)
+								saveAlertCommentAssignee(alertComment.getAlertCommentId(),tdpCadreId);
+														
+						}
+					}
+					
+			  }				
+			});
+			
 		} catch (Exception e) {
 			try {
 				obj.put("message", "failure");
@@ -402,9 +533,45 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 		return obj;
 	}
 	
+	public String saveAlertCommentAssignee(Long alertCommentId,Long tdpCadreId){
+		try {
+			
+			AlertCommentAssignee alertCommentAssignee = new AlertCommentAssignee();
+			alertCommentAssignee.setAlertCommentId(alertCommentId);
+			alertCommentAssignee.setAssignTdpCadreId(tdpCadreId);
+			alertCommentAssigneeDAO.save(alertCommentAssignee);
+			
+			return "success";
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured at saveAlertCommentAssignee() in AlertUpdationApiService Class", e);
+		}
+		return null;
+	}
+	public JSONObject getTdpCadreIdOfZohoUser(String zohoUserId){
+		JSONObject finalJson = null;
+		try {
+			List<Object[]> cadreObj =  zohoTdpCadreContactDAO.getZohoContactDetails(zohoUserId);
+			if(cadreObj !=null && cadreObj.size()>0){
+				finalJson= new JSONObject();
+				Object[] cadre= cadreObj.get(0);
+						
+				finalJson.put("tdpCadreId", (Long)cadre[0]);
+				finalJson.put("tdpUserId", cadre[1] !=null ? (Long)cadre[1]:null);
+				
+				return finalJson;
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured at getTdpCadreIdOfZohoUser() in AlertUpdationService Class ", e);
+		}
+		return null;
+	}
+	
 	public JSONObject saveAlertAssign(JSONObject playLoadObj){
 		JSONObject obj = new JSONObject();
 		try {
+			
+			JSONObject contactJson = new JSONObject();
 			
 			if(playLoadObj.has("id")){
 				List<Long> alertIds = alertDAO.getAlertId(playLoadObj.getString("id"));
@@ -417,28 +584,54 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 						if(assignees !=null && !assignees.trim().isEmpty()){
 							assigneesArr = assignees.split(";");
 						}
-						
 					}
+					
 					//String contactId = playLoadObj.getString("contactId");
+					
+					List<String> contactsList = null;
+					List<Long> existCadreIds = new ArrayList<Long>(0);
 					if(assigneesArr !=null && assigneesArr.length>0){
 						
-						for (String contactId : assigneesArr) {
-							if(contactId != null && !contactId.trim().isEmpty()){
-								List<Long> cadreIds = zohoTdpCadreContactDAO.getTdpCadreId(contactId);
-								if(cadreIds != null && cadreIds.size() > 0){
-									AlertAssigned alertAssigned = new AlertAssigned();
-									alertAssigned.setAlertId(alertIds.get(0));
-									alertAssigned.setTdpCadreId(cadreIds.get(0));
-									alertAssigned.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-									alertAssigned.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-									alertAssigned.setCreatedBy(1l);
-									alertAssigned.setIsDeleted("N");
-									alertAssigned.setSmsStatus("N");
-									alertAssignedDAO.save(alertAssigned);
-								}
-							}
+						contactsList = Arrays.asList(assigneesArr);
+						
+						List<Long> cadreIds = zohoTdpCadreContactDAO.getTdpCadresIdOfContacts(contactsList);
+						
+						if(cadreIds !=null && cadreIds.size()>0){
+							existCadreIds = alertAssignedDAO.checkCadreExistsForAlert(cadreIds,alertIds.get(0));
+							for(Long cadreId : cadreIds)
+							 {
+								 if(!existCadreIds.contains(cadreId))
+								 {
+									 AlertAssigned alertAssigned = new AlertAssigned();
+									 Long tdpUserId=null;
+										
+									 try {
+											if(playLoadObj.has("modifiedBy") && !playLoadObj.getString("modifiedBy").trim().isEmpty()){
+												contactJson = getTdpCadreIdOfZohoUser(playLoadObj.getString("modifiedBy").trim() !=null ? playLoadObj.getString("modifiedBy").trim():null);
+												if(contactJson !=null){
+													tdpUserId = contactJson.getLong("tdpUserId");
+												}
+											}
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									 	alertAssigned.setAlertId(alertIds.get(0));
+										alertAssigned.setTdpCadreId(cadreId);
+										if(tdpUserId !=null)
+											alertAssigned.setCreatedBy(tdpUserId);
+										else
+											alertAssigned.setCreatedBy(1l);
+										
+										alertAssigned.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										alertAssigned.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										alertAssigned.setIsDeleted("N");
+										alertAssigned.setSmsStatus("N");
+										alertAssigned = alertAssignedDAO.save(alertAssigned);
+									 
+								 }
+							 }
+							alertAssignedDAO.flushAndclearSession();
 						}
-						alertAssignedDAO.flushAndclearSession();
 					}
 					
 					
@@ -448,8 +641,6 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 			
 			
 			obj.put("message", "success");
-			
-			
 		} catch (Exception e) {
 			try {
 				obj.put("message", "failure");
@@ -460,7 +651,6 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 		}
 		return obj;
 	}
-	
 	public JSONObject saveAlertStatus(JSONObject playLoadObj){
 		JSONObject obj = new JSONObject();
 		try {
@@ -470,22 +660,33 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 					List<Long> statusIds = alertStatusDAO.getStatusId(playLoadObj.getString("status").trim());
 					if(statusIds != null && statusIds.size() > 0){
 						Alert alert = alertDAO.get(alertIds.get(0));
+						
+						JSONObject contactJson = new JSONObject();
+						Long tdpUserId = null;
+						
+						try {
+							if(playLoadObj.has("modifiedBy") && !playLoadObj.getString("modifiedBy").trim().isEmpty()){
+								contactJson = getTdpCadreIdOfZohoUser(playLoadObj.getString("modifiedBy").trim() !=null ? playLoadObj.getString("modifiedBy").trim():null);
+								if(contactJson !=null){
+									tdpUserId = contactJson.getLong("tdpUserId");
+								}
+							}
+							obj.put("message", "success");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+						if(tdpUserId !=null){
+							alert.setUpdatedBy(tdpUserId);
+						}else{
+							alert.setUpdatedBy(1l);
+						}
+						
 						alert.setAlertStatusId(statusIds.get(0));
-						alert.setUpdatedBy(1l);
 						alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						alert = alertDAO.save(alert);
-						
-						AlertTracking alertTracking = new AlertTracking();
-						alertTracking.setAlertId(alert.getAlertId());
-						alertTracking.setAlertStatusId(alert.getAlertStatusId());
-						alertTracking.setAlertTrackingActionId(1l);
-						alertTracking.setAlertSourceId(alert.getAlertSourceId());
-						alertTracking.setInsertedBy(1l);
-						alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-						alertTracking = alertTrackingDAO.save(alertTracking);
 					}
 				}
-				
 			}
 			obj.put("message", "success");
 		} catch (Exception e) {
