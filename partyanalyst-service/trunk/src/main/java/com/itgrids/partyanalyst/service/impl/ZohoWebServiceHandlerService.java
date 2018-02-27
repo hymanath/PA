@@ -64,7 +64,7 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 		try {
 			return zohoAlertService.generateJwtForZoho(userToken);
 		} catch (Exception e) {
-			LOG.error("Exception raised at mobileOtpVerification method in ZohoWebServiceHandlerService Class", e);
+			LOG.error("Exception raised at generateJwtForZoho method in ZohoWebServiceHandlerService Class", e);
 		}
 		return null;
 	}
