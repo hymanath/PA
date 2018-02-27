@@ -1374,6 +1374,8 @@
 						 <value>com.itgrids.partyanalyst.model.ActivityParticipantMemberType</value>
 						 <value>com.itgrids.partyanalyst.model.ActivityLocationParticipant</value>
 						 <value>com.itgrids.partyanalyst.model.TrainingCampInviteeConstituency</value>
+						 <value>com.itgrids.partyanalyst.model.BiometricDeviceLogTrack</value>
+						 <value>com.itgrids.partyanalyst.model.BiometricDeviceLog</value>
 				  </list>
 			
 		</property>
