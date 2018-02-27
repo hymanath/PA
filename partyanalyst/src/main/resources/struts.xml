@@ -18916,6 +18916,16 @@
 		<result type="json" name="success">    
 			<param name="root">alertCoreDashBoardVOs</param>
 		</result>
-	</action>	
+	</action>
+	<action name="getOverAllConsolidatedViewDetailsAction" class="coreDashboardAction" method="getConsolidatedPartyMeetingExceptionReportMeetingLevelWise">
+		<result type="json" name="success">
+				<param name="root">consolidatedExceptionalReportVO</param>
+		</result>
+	</action>
+	<action name="consolidatedExceptionalReportsAction" class="coreDashboardAction" method="sessionCheckingForMyCoreDashBoard">
+		<result name="success">/jsp/consolidatedExceptionalReports.jsp</result>
+		<result name="input" type="redirect">loginAction.action</result>
+		<result name="error" type="redirect">loginAction.action</result>
+	</action>
  </package>
 </struts>
