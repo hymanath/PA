@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationServiceNew;
@@ -796,5 +797,22 @@ public class Scheduler {
 			log.error("Exception raised at sendSmsDetailsOfAlertVal() in Scheduler Class "); 
 		}
 		return rs;
+	}
+	
+	public ResultStatus pullEmployeesBiometricLogDetails()
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+			{  
+				return schedulerService.pullEmployeesBiometricLogDetails();
+			}
+		}catch(Exception e)
+		{
+			log.error(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+		}
+		return resultStatus;
 	}
 }

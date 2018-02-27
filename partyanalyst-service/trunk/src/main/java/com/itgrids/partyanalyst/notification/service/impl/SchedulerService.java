@@ -83,6 +83,7 @@ import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.IAlertService;
+import com.itgrids.partyanalyst.service.IBiometricAttendanceService;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
@@ -131,10 +132,15 @@ public class SchedulerService implements ISchedulerService{
 	private ITdpCadreDataSourceCountInfoTempDAO tdpCadreDataSourceCountInfoTempDAO;
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO;
-	
+	private IBiometricAttendanceService biometricAttendanceService;
 	private IAlertService alertService;
+	private DateUtilService dateUtilService = new DateUtilService();
 	
-	
+	public void setBiometricAttendanceService(
+			IBiometricAttendanceService biometricAttendanceService) {
+		this.biometricAttendanceService = biometricAttendanceService;
+	}
+
 	public void setAlertService(IAlertService alertService) {
 		this.alertService = alertService;
 	}
@@ -2014,4 +2020,18 @@ public class SchedulerService implements ISchedulerService{
 		}
 	    return rs;
    }
+   
+   public ResultStatus pullEmployeesBiometricLogDetails()
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			resultStatus = biometricAttendanceService.saveBiometricLogDetails(dateUtilService.getCurrentDateAndTime());
+		}catch(Exception e)
+		{
+			Log.error(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+		}
+		return resultStatus;
+	}
 }
