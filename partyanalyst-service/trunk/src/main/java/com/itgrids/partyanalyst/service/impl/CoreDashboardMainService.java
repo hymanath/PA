@@ -6442,10 +6442,6 @@ public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String s
 			
 		}
 		
-		
-		
-		
-		
 	}catch(Exception e){
 		Log.error("Exception raised at getCoreDebateBasicDetailsOfParty", e);
 	}
