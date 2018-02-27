@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,15 +75,19 @@ public class BiometricAttendanceService implements IBiometricAttendanceService{
     		attendanceLogTrackVO.setEndTime(dateUtilService.getCurrentDateAndTime());
     		
     		long totalRecords = 0;
+    		Timestamp timestamp = null;
+    		
     		while(rs.next())
     		{
     			try{
     				totalRecords++;
     				attendanceLogVO = new AttendanceLogVO();
-    				attendanceLogVO.setDeviceLogId(new Long(rs.getInt(1)));
-    				attendanceLogVO.setDeviceId(new Long(rs.getInt(2)));
-    				attendanceLogVO.setEmployeeCode(rs.getString(3));
-    				attendanceLogVO.setLogTime(rs.getDate(4));
+    				attendanceLogVO.setDeviceLogId(new Long(rs.getInt("DeviceLogId")));
+    				attendanceLogVO.setDeviceId(new Long(rs.getInt("DeviceId")));
+    				attendanceLogVO.setEmployeeCode(rs.getString("UserId"));
+    				timestamp = rs.getTimestamp("LogDate");
+    				if(timestamp != null)
+    					attendanceLogVO.setLogTime(new Date(timestamp.getTime()));
 	    			list.add(attendanceLogVO);
     			}catch(Exception e)
     			{
