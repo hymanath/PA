@@ -1377,6 +1377,7 @@
 		<property name="tdpCadreDataSourceCountInfoTempDAO" ref="tdpCadreDataSourceCountInfoTempDAO"/> 	
 		<property name="trainingCampDetailsInfoDAO" ref="trainingCampDetailsInfoDAO"></property>
 		<property name="alertService" ref="alertService"></property>
+		<property name="biometricAttendanceService" ref="biometricAttendanceService"></property>
 		
 	</bean>
 	
@@ -1809,6 +1810,16 @@
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="sendSmsDetailsOfAlertVal" />
     </bean>
+    
+    <bean name="pullEmployeesBiometricLogDetails" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="pullEmployeesBiometricLogDetailsRef" />
+    	<property name="cronExpression" value="0 0/15 * * * ?"/>
+	</bean>
+	
+	<bean name="pullEmployeesBiometricLogDetailsRef" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pullEmployeesBiometricLogDetails" />
+    </bean>
      
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="triggers">
@@ -1864,6 +1875,7 @@
 			<ref bean="UpdateExpirdAppicationsInNominatedPosts" />
 			<ref bean="insertTrainginCampDataLocationWiseByCommitteeLevel"/>
 			<ref bean="sendSmsDetailsOfAlert"/>
+			<ref bean="pullEmployeesBiometricLogDetails"/>
         </list>
     	</property>
 	</bean>
@@ -4756,16 +4768,24 @@
    	  	 	<property name="tdpCommitteeDAO" ref="tdpCommitteeDAO"></property>
    	  	 	<property name="boothInchargeCommitteeDAO" ref ="boothInchargeCommitteeDAO"></property>
    	 	</bean>
-   	 <bean name = "dalithaTejamDashBoardService" class = "com.itgrids.partyanalyst.service.impl.DalithaTejamDashBoardService">
+   	 	
+   	 	<bean name = "dalithaTejamDashBoardService" class = "com.itgrids.partyanalyst.service.impl.DalithaTejamDashBoardService">
    	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
    	  	 <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
-   	 </bean>
-   	  <bean name = "consolidatedExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.ConsolidatedExceptionalReportService">
+   	 	</bean>
+   	 
+   	  	<bean name = "consolidatedExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.ConsolidatedExceptionalReportService">
    	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
    	  	 <property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO"></property>
    	  	 <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO"></property>
    	  	 <property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO"></property>
    	  	 <property name="constituencyDAO" ref="constituencyDAO"></property>
    	  	 <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
-   	 </bean>
+   	 	</bean>
+   	 
+   	 	<bean name="biometricAttendanceService" class="com.itgrids.partyanalyst.service.impl.BiometricAttendanceService">
+   	 		<property name="biometricDeviceLogDAO" ref="biometricDeviceLogDAO"></property>
+   	 		<property name="biometricDeviceLogTrackDAO" ref="biometricDeviceLogTrackDAO"></property>
+    	</bean>
+   	 	
 </beans>			
