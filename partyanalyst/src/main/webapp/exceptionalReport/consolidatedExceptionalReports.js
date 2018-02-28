@@ -328,7 +328,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 	
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital font_size24" >Top 7 Parliaments with Poor Performance</h5>';
+				str+='<h5 class="text_bold text-capital font_size24" >Parliaments with Poor Performance</h5>';
 				str+='<div class="table-responsive m_top10">';
 					str+='<table class="table details-overview">';
 						str+='<thead>';
@@ -349,10 +349,12 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 										str+='<th>Pending %</th>';
 									}else if(lastval == "Meetings"){
 										str+='<th>Not Conducted %</th>';
-									}else if(lastval == 'Kaizala'){
-										str+='<th>Committee Not installed %</th>';
 									}else if(lastval == 'Tejam'){
 										str+='<th>Village Not Covered %</th>';
+									}else if(lastval == 'Kaizala'){
+										str+='<th>Committee Not Installed %</th>';
+									}else if(lastval == 'Camp'){
+										str+='<th>Not Attended %</th>';
 									}
 									
 								}
@@ -388,7 +390,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 	
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital font_size24" >Top 10 Assembly Constituency with Poor Performance</h5>';
+				str+='<h5 class="text_bold text-capital font_size24" >Assembly Constituency with Poor Performance</h5>';
 				str+='<div class="table-responsive m_top10">';
 					str+='<table class="table details-overview">';
 						str+='<thead>';
@@ -408,10 +410,12 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 										str+='<th>Pending %</th>';
 									}else if(lastval == "Meetings"){
 										str+='<th>Not Conducted %</th>';
-									}else if(lastval == 'Kaizala'){
-										str+='<th>Committee Not installed %</th>';
 									}else if(lastval == 'Tejam'){
 										str+='<th>Village Not Covered %</th>';
+									}else if(lastval == 'Kaizala'){
+										str+='<th>Committee Not Installed %</th>';
+									}else if(lastval == 'Camp'){
+										str+='<th>Not Attended %</th>';
 									}
 									//str+='<th>Total</th>';
 									//str+='<th>Not Conducted</th>';

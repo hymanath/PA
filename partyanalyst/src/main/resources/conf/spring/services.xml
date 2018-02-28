@@ -4783,6 +4783,8 @@
    	  	 <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
    	 	 <property name="kaizalaAnswerInfoDAO" ref="kaizalaAnswerInfoDAO"></property>
    	 	 <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO"></property>
+   	 	 <property name="trainingCampDetailsInfoDAO" ref="trainingCampDetailsInfoDAO"></property>
+   	 	 <property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO"></property>
    	 	</bean>
    	 
    	 	<bean name="biometricAttendanceService" class="com.itgrids.partyanalyst.service.impl.BiometricAttendanceService">
