@@ -88,13 +88,13 @@ public class LightMonitoringService  implements ILightMonitoring{
 		try {
 			String URL = "http://greenlightt.monitormymeter.com/api/RestRealtimeAPI/GetRealtimeStatusByVillages";
 			String differenceVendorURL = "http://182.18.173.26:8080/apgovt/panchayatVillageData.php";
-			String differenceVendoranotherNewURL = "http://apservice.flowcentric.co.in:8080/pan_service/panchayatVillageData.php";
+			//String differenceVendoranotherNewURL = "http://apservice.flowcentric.co.in:8080/pan_service/panchayatVillageData.php";
 			
 			resultData = getLightMonitoringDataInRequiredFormat("AP_GOVT",URL);
 			stausVO = saveLightsMonitoringData(resultData, 2l);
 			List<LightMonitoringVO> esslDataList = getLightMonitoringDataInRequiredFormat("AP_EESL",URL);
 			List<LightMonitoringVO> esslDiffVndrDataList = getLightMonitoringDataInRequiredFormat("differenceVendor",differenceVendorURL);
-			List<LightMonitoringVO> esslDiffVndrnewDataList = getLightMonitoringDataInRequiredFormat("differenceVendor",differenceVendoranotherNewURL);
+			//List<LightMonitoringVO> esslDiffVndrnewDataList = getLightMonitoringDataInRequiredFormat("differenceVendor",differenceVendoranotherNewURL);
 			resultData.clear();
 			if (esslDataList != null) {
 				resultData.addAll(esslDataList);
@@ -102,9 +102,9 @@ public class LightMonitoringService  implements ILightMonitoring{
 			if (esslDiffVndrDataList != null) {
 				resultData.addAll(esslDiffVndrDataList);
 			}
-			if (esslDiffVndrnewDataList != null) {
+			/*if (esslDiffVndrnewDataList != null) {
 				resultData.addAll(esslDiffVndrnewDataList);
-			}
+			}*/
 			stausVO = saveLightsMonitoringData(resultData, 1l);
 			
 		} catch (Exception e) {
@@ -123,7 +123,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 		List<LightMonitoringVO> resultData = new ArrayList<LightMonitoringVO>(0);
 		try {			
 			   String inputStr = "";
-			   if (!key .equalsIgnoreCase("differenceVendor") ) {
+			   if (!key .equalsIgnoreCase("differenceVendor")) {
 				   inputStr = "{";
 				   inputStr += "\"ClientId\" : \""+key+"\"";
 				   inputStr += "}";
@@ -131,7 +131,11 @@ public class LightMonitoringService  implements ILightMonitoring{
 				   inputStr = null;
 			   }
 			   
-			ClientResponse response = webServiceUtilService.callWebService(URL,inputStr);
+			ClientResponse response = null;
+			if (!key .equalsIgnoreCase("differenceVendor"))
+				response = webServiceUtilService.callWebService(URL,inputStr);
+			else
+				response = webServiceUtilService.getCallWebService(URL);
 	        if(response.getStatus() != 200)
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	        else {
