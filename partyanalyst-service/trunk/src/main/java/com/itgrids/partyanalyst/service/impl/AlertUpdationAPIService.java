@@ -184,55 +184,59 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 			
 			JSONObject jobj = new JSONObject();
   		    JSONObject customObj = new JSONObject();
+  		    String contactId="";
 			
   		   // Checking the Present Status Of 
   		   Long zohoPresentStatusId = getZohoStatusDetailsOfAlert(alertId);
   		   
-  		   if(zohoPresentStatusId !=null && zohoPresentStatusId.longValue() <2l){
+  		   if(zohoPresentStatusId !=null && zohoPresentStatusId.longValue() == 1L ){
   				jobj.put("status", "Notified");
   		   }
-  		
-  		   //getCandidate contactId	
-			 	String contactId = callForZohoContact(cadreIds);
-			 	
-		       	 if(contactId != null && !contactId.trim().isEmpty()){
-		       		 String alertTicketId = alertDAO.getAlertTicketId(alertId);
-		       		 if(alertTicketId != null && !alertTicketId.trim().isEmpty()){
-		       			 //send candidate contact Id to ZOHO
-		       			 ClientConfig clientConfig = new DefaultClientConfig();
-			   		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-			   		     Client client = Client.create(clientConfig);
-			   			 WebResource webResource = client.resource("https://desk.zoho.com/api/v1/tickets/"+alertTicketId);
-			   			 
-			   			 WebResource.Builder builder = webResource.getRequestBuilder();			         
-			   		     builder.header("Authorization",IConstants.ZOHO_ADMIN_AUTHORIZATION);
-			   		     builder.header("orgId",IConstants.ZOHO_ADMIN_ORGID);
-			   		     builder.header("sourceId",IConstants.ZOHO_SOURCEID);
-			   		     builder.accept("application/json");
-			   		     builder.type("application/json");
-			   		     
-			   		     
-		       			 jobj.put("contactId", IConstants.ZOHO_ADMIN_CONTACTID);
-		       			 
-		       			 customObj.put("assignees", contactId);
-		       			 jobj.put("customFields", customObj);
-		       			 
-			   		     ClientResponse response = builder.put(ClientResponse.class,jobj);
-			   		     
-			       			 if (response.getStatus() != 200) {
-					        	 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-					         } else {
-					        	 String output = response.getEntity(String.class);
-						    	 JSONObject jobjIn= new JSONObject(output);
-					        	 if(jobjIn.has("ticketNumber"))
-					        		 status="success";
-					        	 else
-					        		 status="failure";
-					         }
-			       		 }
-			       	 }
-		       	 
-			       	status="success";
+  		   
+	   		//get OverAll Assignee Cadre To Update at Zoho end(If already there its replace by Latest assignees list) 
+	   		List<Long> latestAllAlertTdpCadreIds = alertAssignedDAO.getAssignedTdpCadreIdsByAlertId(alertId);
+
+	   			//getCandidate contactId	
+		 		contactId = callForZohoContact(latestAllAlertTdpCadreIds);
+		 	
+	       	// if(contactId != null && !contactId.trim().isEmpty()){
+	       		 String alertTicketId = alertDAO.getAlertTicketId(alertId);
+	       		 if(alertTicketId != null && !alertTicketId.trim().isEmpty()){
+	       			 //send candidate contact Id to ZOHO
+	       			 ClientConfig clientConfig = new DefaultClientConfig();
+		   		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+		   		     Client client = Client.create(clientConfig);
+		   			 WebResource webResource = client.resource("https://desk.zoho.com/api/v1/tickets/"+alertTicketId);
+		   			 
+		   			 WebResource.Builder builder = webResource.getRequestBuilder();			         
+		   		     builder.header("Authorization",IConstants.ZOHO_ADMIN_AUTHORIZATION);
+		   		     builder.header("orgId",IConstants.ZOHO_ADMIN_ORGID);
+		   		     builder.header("sourceId",IConstants.ZOHO_SOURCEID);
+		   		     builder.accept("application/json");
+		   		     builder.type("application/json");
+		   		     
+		   		     
+	       			 jobj.put("contactId", IConstants.ZOHO_ADMIN_CONTACTID);
+	       			 
+	       			 customObj.put("assignees", contactId);
+	       			 jobj.put("customFields", customObj);
+	       			 
+		   		     ClientResponse response = builder.put(ClientResponse.class,jobj);
+		   		     
+		       			 if (response.getStatus() != 200) {
+				        	 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+				         } else {
+				        	 String output = response.getEntity(String.class);
+					    	 JSONObject jobjIn= new JSONObject(output);
+				        	 if(jobjIn.has("ticketNumber"))
+				        		 status="success";
+				        	 else
+				        		 status="failure";
+				         }
+		       		 }
+		       	 //}
+	       	 
+		       	status="success";
 			     
 		} catch (Exception e) {
 			LOG.error("exception raised while getting the contact-id for the cadreId", e);
@@ -242,12 +246,14 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 	}
 	
 	public String callForZohoContact(List<Long> cadreIds){
-		String contact=null;
+		String contact="";
 		try {
-			for (Long cadreId : cadreIds) {
-				String contactId = getContactIdForCadre(cadreId);
-				if(contactId !=null && !contactId.trim().isEmpty()){
-					contact = contact == null?contactId:contact+";"+contactId;
+			if(cadreIds !=null && cadreIds.size()>0){
+				for (Long cadreId : cadreIds) {
+					String contactId = getContactIdForCadre(cadreId);
+					if(contactId !=null && !contactId.trim().isEmpty()){
+						contact = contact == ""?contactId:contact+";"+contactId;
+					}
 				}
 			}
 		} catch (Exception e) {
