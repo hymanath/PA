@@ -1151,6 +1151,8 @@ $(document).on("click",".pdfGenerateCls",function(){
 				 alert("Error Occured.Please Try Again Later.");
 			 }else if(results.exceptionMsg == "success"){
 				 window.open(results.message);
+			 }else if(results.exceptionMsg == " Please select single day... "){
+				alert("Please select single day...");
 			 }
 		});
 	} 
