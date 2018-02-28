@@ -398,7 +398,11 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 								str+='<th rowspan="2">Constituency Name</th>';
 								str+='<th rowspan="2">Parliament Name</th>';
 								for(var i in result.subList1[0].subList1){
-									str+='<th colspan="1">'+result.subList1[0].subList1[i].locationName+'</th>';
+									var arr = result.subList1[0].subList1[i].locationName.split(' ');
+									var lastval = arr[arr.length-1];
+									if(lastval != 'Camp'){
+										str+='<th colspan="1">'+result.subList1[0].subList1[i].locationName+'</th>';
+									}
 								}
 							str+='</tr>';
 							str+='<tr>';
@@ -414,9 +418,9 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 										str+='<th>Village Not Covered %</th>';
 									}else if(lastval == 'Kaizala'){
 										str+='<th>Committee Not Installed %</th>';
-									}else if(lastval == 'Camp'){
+									}/* else if(lastval == 'Camp'){
 										str+='<th>Not Attended %</th>';
-									}
+									} */
 									//str+='<th>Total</th>';
 									//str+='<th>Not Conducted</th>';
 									//str+='<th>Not Conducted %</th>';
@@ -432,9 +436,11 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 								for(var j in result.subList1[i].subList1){
 									//str+='<td>'+result.subList1[i].subList1[j].totalCount+'</td>';
 									//str+='<td>'+result.subList1[i].subList1[j].notConductedCount+'</td>';
-									if(result.subList1[i].subList1[j].percentage != 0 && result.subList1[i].subList1[j].percentage!= null){
+									var arr = result.subList1[i].subList1[j].locationName.split(' ');
+									var lastval = arr[arr.length-1];
+									if(result.subList1[i].subList1[j].percentage != 0 && result.subList1[i].subList1[j].percentage!= null && lastval != 'Camp'){
 										str+='<td>'+result.subList1[i].subList1[j].percentage+'</td>';
-									}else{
+									}else if(lastval != 'Camp'){
 										str+='<td>-</td>';
 									}
 								}
