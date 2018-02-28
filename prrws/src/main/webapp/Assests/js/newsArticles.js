@@ -718,8 +718,9 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 					collapse+='<div class="col-sm-12">';
 					if(type == "PrintMediadepartment"){
 						collapse+='<div class="row pull-right" style="margin:5px;">';
-							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
-							collapse+='<button type="button" class="btn btn-danger pdfGenerateCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
+							collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
+							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
+							collapse+='<button type="button" class="btn btn-danger pdfGenerateCls"  title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
 						collapse+='</div>';
 					}
 					collapse+='<div class="white_block">';
@@ -786,8 +787,9 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 			collapse+='<div class="col-sm-12">';
 				if(type == "PrintMediadepartment"){
 						collapse+='<div class="row pull-right" style="margin:5px;">';
-							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
-							collapse+='<button type="button" class="btn btn-danger pdfGenerateCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
+							collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
+							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
+							collapse+='<button type="button" class="btn btn-danger pdfGenerateCls" title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
 						collapse+='</div>';
 					}
 				collapse+='<div class="white_block">';
@@ -1139,11 +1141,12 @@ $(document).on("click",".pdfGenerateCls",function(){
 	getDepartmentWiseNewsSummaryForPrintMedia(benefitId,pdfDeptId);
 });
  function getDepartmentWiseNewsSummaryForPrintMedia(benefitId,pdfDeptId){
-		 $("#overAllPrintMediaDivId").html(spinner);
+		$(".dataLoadingsPdfImgcls"+pdfDeptId).show();
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseNewsSummary/"+glStartDate+"/"+glEndDate+"/"+pdfDeptId+"/"+benefitId
 			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseNewsSummary/"+glStartDate+"/"+glEndDate+"/"+pdfDeptId+"/"+benefitId
 		}).then(function(results){
+			$(".dataLoadingsPdfImgcls"+pdfDeptId).hide();
 			 if(results.exceptionMsg == "error"){
 				 alert("Error Occured.Please Try Again Later.");
 			 }else if(results.exceptionMsg == "success"){
