@@ -22,23 +22,7 @@
 <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
-<script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/8896ACD5-F0B9-0F4A-9DE1-BAFB8390D32D/main.js" charset="UTF-8"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" integrity="sha256-dsOXGNHAo/syFnazt+KTBsCQeRmlcW1XKL0bCK4Baec="
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.4/d3.layout.cloud.min.js" integrity="sha256-+U6evHIlf3gdG4NC/P4v3g4JpbLdSdYHAu/z0w2nZ4I="
-	crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js" integrity="sha256-8E6QUcFg1KTnpEU8TFGhpTGHw5fJqB9vCms3OhAYLqw="
-	crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0="
-	crossorigin="anonymous" />
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-	crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-	crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-
 <link href="newCoreDashBoard/css/wordCloud.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 .eventsheader , #statewiseoverviewPanel,#locationsPopup
@@ -5940,7 +5924,19 @@
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
-<script src="js/imageRendering.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" integrity="sha256-dsOXGNHAo/syFnazt+KTBsCQeRmlcW1XKL0bCK4Baec="
+        crossorigin="anonymous"></script>
+		
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.4/d3.layout.cloud.min.js" integrity="sha256-+U6evHIlf3gdG4NC/P4v3g4JpbLdSdYHAu/z0w2nZ4I="
+	crossorigin="anonymous"></script>
+	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js" integrity="sha256-8E6QUcFg1KTnpEU8TFGhpTGHw5fJqB9vCms3OhAYLqw="
+	crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+
 <script src="newCoreDashBoard/js/debates.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newsCoreDashBoard.js" type="text/javascript"></script>
@@ -5969,6 +5965,7 @@
 <script src="newCoreDashBoard/js/alerts.js" type="text/javascript"></script>
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
+<script src="js/imageRendering.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 
 <script type="text/javascript">
