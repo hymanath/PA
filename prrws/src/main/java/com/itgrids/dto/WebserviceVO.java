@@ -14,6 +14,24 @@ public class WebserviceVO implements Serializable{
 	private Long webserviceTrackId;
 	private String status;
 	private String inputData;
+	private Long webserviceId;
+	private String responseData;
+
+	public String getResponseData() {
+		return responseData;
+	}
+
+	public void setResponseData(String responseData) {
+		this.responseData = responseData;
+	}
+
+	public Long getWebserviceId() {
+		return webserviceId;
+	}
+
+	public void setWebserviceId(Long webserviceId) {
+		this.webserviceId = webserviceId;
+	}
 
 	public String getUrl() {
 		return url;
