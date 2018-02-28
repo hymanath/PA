@@ -33,6 +33,7 @@ import com.itgrids.service.IPrENCService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
+import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
@@ -302,7 +303,7 @@ public class PrENCService implements IPrENCService {
 		try{
 			Map<Long,EncWorksVO> locationMap= new HashMap<Long, EncWorksVO>();
 			Map<Long,Map<Long,EncWorksVO>> assemblylocationMap= new HashMap<Long, Map<Long,EncWorksVO>>();
-			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus",null);
+			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus",null,IConstants.REQUEST_METHOD_POST);
 			
 			List<Object[]> locationData = null;
 			if(inputVO.getLocationType().equalsIgnoreCase("d")){
@@ -452,7 +453,7 @@ public class PrENCService implements IPrENCService {
 		try{
 			Map<String,EncTargetsVO> locationMap= new HashMap<String, EncTargetsVO>();
 			Map<Long,EncTargetsVO> assemblylocationMap= new HashMap<Long,EncTargetsVO>();
-			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalTarAchievements",null);
+			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalTarAchievements",null,IConstants.REQUEST_METHOD_POST);
 			List<Object[]> locationData = null;
 			if(inputVO.getLocationType().equalsIgnoreCase("d")){
 				locationData= districtDAO.getEncDistricts();
@@ -900,7 +901,7 @@ public class PrENCService implements IPrENCService {
 			EncWorksVO notGroundedVo= new EncWorksVO();
 			finalVo.setLocationId(1l);
 			finalVo.setLocationName("Andra Pradesh");
-			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus",null);
+			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus",null,IConstants.REQUEST_METHOD_POST);
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			} else {

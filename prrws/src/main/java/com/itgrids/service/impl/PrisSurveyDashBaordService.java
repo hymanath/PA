@@ -25,6 +25,7 @@ import com.itgrids.service.IPrisSurveyDashBaordService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
+import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
@@ -63,11 +64,11 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 			Date date = new Date();
 			String toDate = sdf.format(date);
 			ClientResponse response;
-			ClientResponse response1 = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());	
+			ClientResponse response1 = webServiceUtilService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate(),null,IConstants.REQUEST_METHOD_GET);	
 			if(inputVO.getType().equalsIgnoreCase("Overall")){
-				response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate());
+				response = webServiceUtilService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate(),null,IConstants.REQUEST_METHOD_GET);
 			}else{
-				 response = webServiceUtilService.getCallWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType());
+				 response = webServiceUtilService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType(),null,IConstants.REQUEST_METHOD_GET);
 			}
 			
 			if(response.getStatus() != 200){
