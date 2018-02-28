@@ -27,6 +27,7 @@ import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSConsolidatedService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.IConstants;
 import com.itgrids.utils.NREGSCumulativeThread;
 import com.sun.jersey.api.client.ClientResponse;
 
@@ -1260,7 +1261,7 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 					NregsProjectsVO finalVO =  new NregsProjectsVO();
 					inputVO.setComponentName(urlvo.getComponentName());
 					String str = convertingInputVOToString(inputVO);
-					ClientResponse response = webServiceUtilService.callWebService(urlvo.getUrl().toString(), str);
+					ClientResponse response = webServiceUtilService.callWebService(urlvo.getUrl().toString(), str,IConstants.REQUEST_METHOD_POST);
 					if(response.getStatus() != 200){
 						throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 					}else{
