@@ -21,6 +21,8 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IKaizalaAnswerInfoDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.ConsolidatedExceptionalReportVO;
@@ -42,8 +44,24 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IKaizalaAnswerInfoDAO kaizalaAnswerInfoDAO;
 	private IActivityLocationInfoDAO activityLocationInfoDAO;
+	private ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO;
+	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
 	
 	
+	public ITrainingCampAttendanceDAO getTrainingCampAttendanceDAO() {
+		return trainingCampAttendanceDAO;
+	}
+	public void setTrainingCampAttendanceDAO(
+			ITrainingCampAttendanceDAO trainingCampAttendanceDAO) {
+		this.trainingCampAttendanceDAO = trainingCampAttendanceDAO;
+	}
+	public ITrainingCampDetailsInfoDAO getTrainingCampDetailsInfoDAO() {
+		return trainingCampDetailsInfoDAO;
+	}
+	public void setTrainingCampDetailsInfoDAO(
+			ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO) {
+		this.trainingCampDetailsInfoDAO = trainingCampDetailsInfoDAO;
+	}
 	public IActivityLocationInfoDAO getActivityLocationInfoDAO() {
 		return activityLocationInfoDAO;
 	}
@@ -182,6 +200,9 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 			 //Dalitha tejam details
 			 getActivityPerformanceDetailsLocationWise(inputVO,locationMap,"parliament");
 			 getActivityPerformanceDetailsLocationWise(inputVO,constituenyDtlsMap,"constituency");
+			 
+			 //Training Camp Parliament Details 
+			 getListOfParliamentsWithPoorPerformance(inputVO,locationMap);
 			 resultVO.setSubList2(new ArrayList<ConsolidatedExceptionalReportVO>(locationMap.values()));
 				//sorting list
 				if (commonMethodsUtilService.isListOrSetValid(resultVO.getSubList2())) {
@@ -406,14 +427,19 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 			 boothComm.setLocationId(7l);
 			 boothComm.setLocationName("Booth Committees");
 			 list.add(boothComm);
-			 ConsolidatedExceptionalReportVO kaizala = new ConsolidatedExceptionalReportVO();
-			 kaizala.setLocationId(7l);
-			 kaizala.setLocationName("Kaizala");
-			 list.add(kaizala);
 			 ConsolidatedExceptionalReportVO dalithaTejam = new ConsolidatedExceptionalReportVO();
 			 dalithaTejam.setLocationId(7l);
 			 dalithaTejam.setLocationName("Dalitha Tejam");
 			 list.add(dalithaTejam);
+			 ConsolidatedExceptionalReportVO kaizala = new ConsolidatedExceptionalReportVO();
+			 kaizala.setLocationId(7l);
+			 kaizala.setLocationName("Kaizala");
+			 list.add(kaizala);
+			 ConsolidatedExceptionalReportVO trainingCamp = new ConsolidatedExceptionalReportVO();
+			 trainingCamp.setLocationId(7l);
+			 trainingCamp.setLocationName("Training Camp");
+			 list.add(trainingCamp);
+			 
 		} catch (Exception e) {
 			LOG.error("Exception occurred  at getMeetingLevelsList() in PartyMeetingExceptionalReportService class",e);
 		}
@@ -890,6 +916,138 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 				 LOG.error("Exception occured at getActivityPerformanceDetailsLocationWise() in ActivityExceptionalReportService class",e);
 			 }
 			 return locationMap;
+		}
+		
+		public Map<Long,ConsolidatedExceptionalReportVO> getListOfParliamentsWithPoorPerformance(InputVO inputVO,Map<Long,ConsolidatedExceptionalReportVO> locationMap){
+			try{
+				//List<TrainingCampProgramVO> fianlList = new ArrayList<TrainingCampProgramVO>();
+				//TrainingCampProgramVO campProgramVO = null;
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				Date stDate = null;
+				Date ndDate = null;
+				if(inputVO.getFromDateStr() != null && inputVO.getFromDateStr().trim().length() == 10 && inputVO.getToDateStr() != null && inputVO.getToDateStr().trim().length() == 10){
+					stDate = sdf.parse(inputVO.getFromDateStr().trim());
+					ndDate = sdf.parse(inputVO.getToDateStr().trim());
+				}
+				List<Long> tdpCommitteeLevelIds = Arrays.asList(5l,6l,7l,8l,9l);
+				List<Long> trainingCampProgramIds =Arrays.asList(8l);
+				List<Long> enrollmentYearIds = Arrays.asList(4l);
+				Long locationLevelId= 2l;
+				 List<Long> locationLevelValues = null;
+				//for top section collect sum of total count
+				Long overAllEligibleCount = 0L;
+				Long asOfNowTrained = 0L;
+				Long yetToTrain = 0L;
+				
+				Long levelId = 10L;//for constituency
+				
+				// first get constituency wise total invitees from (training_camp_details_info->eligible); 
+				List<Object[]> inviteeList = trainingCampDetailsInfoDAO.getInviteesList(levelId,tdpCommitteeLevelIds,trainingCampProgramIds);
+				
+				//create a map of constituencyId and TrainingCampProgramVO 
+				//Map<Long,TrainingCampProgramVO> parliamentIdAndDetailsMap = new HashMap<Long,TrainingCampProgramVO>();
+				if(inviteeList != null && inviteeList.size() > 0){
+					for(Object[] param : inviteeList){
+						ConsolidatedExceptionalReportVO campProgramVO = locationMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						//campProgramVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						//campProgramVO.setParliament(commonMethodsUtilService.getStringValueForObject(param[1]));
+						//Training Camp
+						if(campProgramVO != null){
+						ConsolidatedExceptionalReportVO sublevel = getMatchedVO("Training Camp", campProgramVO.getSubList1());
+							if(sublevel != null){
+								campProgramVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+								sublevel.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+								//parliamentIdAndDetailsMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), campProgramVO);
+								overAllEligibleCount = overAllEligibleCount + commonMethodsUtilService.getLongValueForObject(param[2]);
+							}
+						}
+					}
+				}
+				// now take location wise invitee attended;
+				List<Object[]>  tempList = null;
+				List<Object[]>  tempList2 = null;
+				List<Object[]>  tempList3 = null;
+				List<Object[]>  tempList4 = null;
+				if(locationLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID){
+					List<Long> distList1 = new ArrayList<Long>(){{add(11L);add(12L);add(13L);}};
+					tempList  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList1,enrollmentYearIds,trainingCampProgramIds,tdpCommitteeLevelIds);//Procedure Call
+					List<Long> distList2 = new ArrayList<Long>(){{add(14L);add(15L);add(16L);}};
+					tempList2  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList2,enrollmentYearIds,trainingCampProgramIds,tdpCommitteeLevelIds);//Procedure Call
+					List<Long> distList3 = new ArrayList<Long>(){{add(17L);add(18L);add(19L);add(517L);}};
+					tempList3  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList3,enrollmentYearIds,trainingCampProgramIds,tdpCommitteeLevelIds);//Procedure Call
+					List<Long> distList4 = new ArrayList<Long>(){{add(20L);add(21L);add(22L);add(23L);}};
+					tempList4  = trainingCampAttendanceDAO.getInviteAttendedCountForTrainingCamp(3L,distList4,enrollmentYearIds,trainingCampProgramIds,tdpCommitteeLevelIds);//Procedure Call
+					tempList.addAll(tempList2);
+					tempList.addAll(tempList3);
+					tempList.addAll(tempList4);
+				}
+				
+				//now collect location wise invitee attended using a map
+				Map<Long,Set<Long>> locationIdAndListOfCaders = new HashMap<Long,Set<Long>>();
+				Set<Long> caderList = null;
+				if(tempList != null && tempList.size() > 0){
+					for(Object[] param : tempList){
+						if(commonMethodsUtilService.getStringValueForObject(param[7]).trim().equalsIgnoreCase("INVITEE")){
+							caderList = locationIdAndListOfCaders.get(commonMethodsUtilService.getLongValueForObject(param[13]));
+							if(null == caderList){
+								caderList = new HashSet<Long>();
+								locationIdAndListOfCaders.put(commonMethodsUtilService.getLongValueForObject(param[13]), caderList);
+							}
+							caderList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						}
+					}
+				}
+				
+				
+				
+				if(locationMap != null && locationMap.size() > 0){
+					for(Entry<Long,ConsolidatedExceptionalReportVO> entry : locationMap.entrySet()){
+						if(entry != null && entry.getValue() != null){
+							ConsolidatedExceptionalReportVO sublevel = getMatchedVO("Training Camp", entry.getValue().getSubList1());
+							if(sublevel != null){
+								if(locationIdAndListOfCaders != null && locationIdAndListOfCaders.get(entry.getValue().getLocationId()) != null && locationIdAndListOfCaders.get(entry.getValue().getLocationId()).size() > 0){
+									entry.getValue().setConductedCount(entry.getValue().getConductedCount()+Long.parseLong(String.valueOf(locationIdAndListOfCaders.get(entry.getValue().getLocationId()).size())));
+									sublevel.setConductedCount(Long.parseLong(String.valueOf(locationIdAndListOfCaders.get(entry.getValue().getLocationId()).size())));
+									asOfNowTrained = asOfNowTrained + entry.getValue().getConductedCount();
+								}else{
+									entry.getValue().setConductedCount(0L);
+									sublevel.setConductedCount(0L);
+								}
+								entry.getValue().setNotConductedCount(entry.getValue().getTotalCount()-entry.getValue().getConductedCount());
+								entry.getValue().setPercentage(Util.calculatePercantage(entry.getValue().getNotConductedCount(),entry.getValue().getTotalCount()));
+								sublevel.setNotConductedCount(sublevel.getTotalCount()-sublevel.getConductedCount());
+								sublevel.setPercentage(Util.calculatePercantage(sublevel.getNotConductedCount(),sublevel.getTotalCount()));
+							}
+						}
+					}
+				}
+				
+				//yetToTrain = overAllEligibleCount - asOfNowTrained;
+				//Double asOfNowTrainedPer = Util.calculatePercantage(asOfNowTrained,overAllEligibleCount);
+				//Double yetToTrainPer = Util.calculatePercantage(yetToTrain,overAllEligibleCount);
+				//fianlList = new ArrayList<TrainingCampProgramVO>( parliamentIdAndDetailsMap.values());
+				
+				/*Collections.sort(fianlList, new Comparator<TrainingCampProgramVO>(){
+					@Override
+					public int compare(TrainingCampProgramVO obj1,TrainingCampProgramVO obj2) {
+						Double value1 = obj1.getTotalNotAttenedCountPer();
+						Double value2 = obj2.getTotalNotAttenedCountPer();
+						return value2.compareTo(value1);
+					}
+				});*/
+				/*if(fianlList.size() > size){
+					fianlList = fianlList.subList(0, size);
+				}
+				fianlList.get(0).setOverAllEligibleCount(overAllEligibleCount);
+				fianlList.get(0).setAsOfNowTrained(asOfNowTrained);
+				fianlList.get(0).setYetToTrain(yetToTrain);
+				fianlList.get(0).setAsOfNowTrainedPer(asOfNowTrainedPer);
+				fianlList.get(0).setYetToTrainPer(yetToTrainPer);*/
+				return locationMap;
+			}catch(Exception e){
+				LOG.error("Exception raised at getListOfParliamentsWithPoorPerformance() method of TrainingCampExceptionalReportService", e);
+			}
+			return null;
 		}
 		
 }
