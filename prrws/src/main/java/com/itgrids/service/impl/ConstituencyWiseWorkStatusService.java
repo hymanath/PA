@@ -683,7 +683,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					inputVO.setpType(pType);
 					
 					String str = convertingInputVOToString(inputVO);
-					ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
+					ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
 					if(response.getStatus() != 200){
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			 	      }else{
@@ -714,7 +714,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				inputVO.setpType("TOT");
 				
 				String str = convertingInputVOToString(inputVO);
-				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
+				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
 				if(response.getStatus() != 200){
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 		 	      }else{
@@ -769,7 +769,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					inputVO.setpType(pType);
 					
 					String str = convertingInputVOToString(inputVO);
-					ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
+					ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
 					if(response.getStatus() != 200){
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			 	      }else{
@@ -802,7 +802,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				inputVO.setpType("TOT");
 				
 				String str = convertingInputVOToString(inputVO);
-				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
+				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
 				if(response.getStatus() != 200){
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 		 	      }else{
@@ -933,7 +933,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1098,7 +1098,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
