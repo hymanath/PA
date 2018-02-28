@@ -1,5 +1,7 @@
 package com.itgrids.service.integration.external;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class WebServiceUtilService {
 	@Autowired
 	private IWebserviceCallDetailsDAO webserviceCallDetailsDAO;
 	
-	public ClientResponse callWebService(String url,Object input)
+	public ClientResponse callWebService(String url,Object input,String requestMethod)
 	{
 		ClientResponse response = null;
 		WebserviceVO webserviceVO = null;
@@ -73,7 +75,10 @@ public class WebServiceUtilService {
 			
 			webserviceVO.setWebserviceTrackId(saveWebserviceCallDetails(webserviceVO));
 			
-			response = resource.accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(ClientResponse.class,input);
+			if(requestMethod.equalsIgnoreCase(IConstants.REQUEST_METHOD_POST))
+				response = resource.accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(ClientResponse.class,input);
+			else if(requestMethod.equalsIgnoreCase(IConstants.REQUEST_METHOD_GET))
+				response = resource.accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(ClientResponse.class);
 			
 			endTime = dateUtilService.getCurrentDateAndTime();
 			
@@ -121,7 +126,7 @@ public class WebServiceUtilService {
 	public void testMethod()
 	{
 		String input = "{\"year\" : \"2018\",\"fromDate\" : \"2018-01-01\",\"toDate\" : \"2018-12-31\"}";
-		ClientResponse response = callWebService("http://dbtrd.ap.gov.in2/NregaDashBoardService/rest/CMDashBoard/Abstract", input);
+		ClientResponse response = callWebService("http://dbtrd.ap.gov.in2/NregaDashBoardService/rest/CMDashBoard/Abstract", input,IConstants.REQUEST_METHOD_POST);
 		String output = response.getEntity(String.class);
 	    System.out.println(output);
 	}
@@ -172,68 +177,29 @@ public class WebServiceUtilService {
 			LOG.error("Exception Occred in saveWebserviceCallDetails Method - ",e);
 		}
 	}
-	public ClientResponse getCallWebService(String url)
+	
+	public ClientResponse createClientResponseFromString(String responseData)
 	{
-		ClientResponse response = null;
-		WebserviceVO webserviceVO = null;
-		Date startTime = null;
-		Date endTime = null;
-		try{                                                                      
-			ClientConfig clientConfig = new DefaultClientConfig();
-			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,Boolean.TRUE);
-			Client client = Client.create(clientConfig);
-			client.setConnectTimeout(1000*60*2);
-		    client.setReadTimeout(1000*60*3);
-			WebResource resource = client.resource(url);
-			
-			webserviceVO = new WebserviceVO();
-			webserviceVO.setUrl(url);
-			startTime = dateUtilService.getCurrentDateAndTime();
-			webserviceVO.setCallTime(startTime);
-			webserviceVO.setWebserviceTrackId(saveWebserviceCallDetails(webserviceVO));
-			
-			response = resource.accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).type(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(ClientResponse.class);
-			
-			endTime = dateUtilService.getCurrentDateAndTime();
-			
-			if(response == null || response.getStatus() != 200)
-			{
-				LOG.error("Failed to get External Webservice, URL - "+url+" Input - ");
-				webserviceVO.setStatus(IConstants.STATUS_FAIL);
-			}
-			else
-			{
-				webserviceVO.setStatus(IConstants.STATUS_SUCCESS);
-			}
-			
-			
-		}catch(Exception e)
-		{
-			LOG.error("Exception Occured in calling Webservice, URL - "+url+" Input - "+" Exception - ",e);
-			
-			ErrorLogVO errorLogVO = new ErrorLogVO();
-			errorLogVO.setInputUrl(url);
-			//errorLogVO.setInputJson(input != null ? input.toString() : null);
-			errorLogVO.setStatusCode(response != null ? response.getStatus() : null);
-			errorLogVO.setResponse(response != null ? response.getEntity(String.class) : null);
-			errorLogVO.setExceptionMsg(e.getLocalizedMessage());
-			errorLogVO.setExceptionStack(org.apache.commons.lang.exception.ExceptionUtils.getStackTrace(e));
-			
-			webserviceVO.setStatus(IConstants.STATUS_FAIL);
-			endTime = dateUtilService.getCurrentDateAndTime();
-			
-			loggerService.saveErrorLog(errorLogVO);
-		}
-		
+		ClientResponse clientResponse = null;
 		try{
-			webserviceVO.setTimeTaken(endTime.getTime()-startTime.getTime());
+			clientResponse = new ClientResponse(200,null,new ByteArrayInputStream(responseData.getBytes(StandardCharsets.UTF_8)),null);
 		}catch(Exception e)
 		{
 			LOG.error(e);
 		}
-		
-		webserviceVO.setStatusCode(response != null ? new Long(response.getStatus()) : null);
-		updateWebserviceCallDetails(webserviceVO);
-		return response;
+		return clientResponse;
+	}
+	
+	public String formatJsonString(String jsonStr)
+	{
+		try{
+			jsonStr = jsonStr.replaceAll("\n","");
+			jsonStr = jsonStr.replace("\\\"","\"");
+			jsonStr = jsonStr.replace(" : ",":");
+		}catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return jsonStr;
 	}
 }
