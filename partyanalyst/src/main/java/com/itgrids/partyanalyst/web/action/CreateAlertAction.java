@@ -3587,4 +3587,17 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;    
 	}
+	public String deleteAssigneeFromZohoOfAlert(){
+		try {
+			
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			
+			status = alertUpdationAPIService.sendAssignedCandidateCantactId(null, jObj.getLong("alertId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in deleteAssigneeFromZohoOfAlert() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;    
+	}
 }
