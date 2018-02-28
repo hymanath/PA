@@ -55,6 +55,7 @@ import com.itgrids.model.NregaComponentCommentsHistory;
 import com.itgrids.model.NregaComponentStatus;
 import com.itgrids.model.NregaFAType;
 import com.itgrids.model.NregaFAVacantPanchayat;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -114,6 +115,9 @@ public class NREGSTCSService implements INREGSTCSService{
 	@Autowired
 	private IComponentWiseAchievementConfigurationTempDAO componentWiseAchievementConfigurationTempDAO;
 	
+	@Autowired
+	private IWebserviceHandlerService webserviceHandlerService;
+	
 	/*
 	 * Date : 16/06/2017
 	 * Author :Sravanth
@@ -123,7 +127,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		List<NregsProjectsVO> voList = new ArrayList<NregsProjectsVO>(0);
 		try {
 			 
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract", inputVO);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract", inputVO,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -175,7 +179,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		LabourBudgetOverViewVO returnvo = new LabourBudgetOverViewVO();
 		try {
 			 String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetOverviewNew", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetOverviewNew", str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -251,7 +255,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			Map<String,IdNameVO> rangeWiseMap = new LinkedHashMap<String,IdNameVO>();
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -535,7 +539,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -814,7 +818,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -990,13 +994,11 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew", str);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew", str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found");
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
-	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
@@ -1223,7 +1225,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			 str = convertingInputVOToString(inputVO);
 			 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	       
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -1618,7 +1620,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    			inputVO.setSublocationType("constituency");
 			 	    		
 			 	    		str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse constResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				 	    	ClientResponse constResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 				 	    	if(constResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ constResponse.getStatus());
 					 	      }else{
@@ -1640,7 +1642,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    	else*/
 				 	    		inputVO.setSublocationType("mandal");
 				 	    	str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 				 	    	if(mandalResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
 					 	      }else{
@@ -1662,7 +1664,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    	else*/
 				 	    		inputVO.setSublocationType("panchayat");
 				 	    	str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse panchayatResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				 	    	ClientResponse panchayatResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 				 	    	if(panchayatResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchayatResponse.getStatus());
 					 	      }else{
@@ -1709,7 +1711,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    	else*/
 			 	    		inputVO.setSublocationType("mandal");
 			 	    		str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 				 	    	if(mandalResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
 					 	      }else{
@@ -1730,7 +1732,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    	else*/
 				 	    		inputVO.setSublocationType("panchayat");
 				 	    	str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse panchaytResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				 	    	ClientResponse panchaytResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 				 	    	if(panchaytResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchaytResponse.getStatus());
 					 	      }else{
@@ -1794,7 +1796,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    		else*/
 			 	    			inputVO.setSublocationType("panchayat");
 			 	    		str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse panchayResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				 	    	ClientResponse panchayResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 				 	    	if(panchayResponse.getStatus() != 200){
 					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchayResponse.getStatus());
 					 	      }else{
@@ -2437,7 +2439,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2495,7 +2497,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgricultureServices/AgricultureData", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgricultureServices/AgricultureData", str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2564,7 +2566,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2635,7 +2637,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2708,7 +2710,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2838,7 +2840,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			 str = convertingInputVOToString(inputVO);
 			 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	       
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -3207,7 +3209,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			String projectType = null;
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -3389,9 +3391,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				str = convertingInputVOToString(inputVO);
 			
 			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
-				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str);
+				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str,IConstants.REQUEST_METHOD_POST);
 			else
-				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
+				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str,IConstants.REQUEST_METHOD_POST);
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -3510,7 +3512,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(),str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -3573,7 +3575,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -3876,7 +3878,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			String str = convertingInputVOToString(inputVO); 
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -3943,7 +3945,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -4042,7 +4044,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			 str = convertingInputVOToString(inputVO);
 			 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	       
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -4193,7 +4195,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -4251,7 +4253,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	  inputVO.setType("Raising of Perinnial Fodders");
 			String str1 = convertingInputVOToString(inputVO);
 			
-			ClientResponse distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1);
+			ClientResponse distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1,IConstants.REQUEST_METHOD_POST);
 	       
 	        if(distResponse.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ distResponse.getStatus());
@@ -4337,7 +4339,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -4436,9 +4438,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				str = convertingInputVOToString(inputVO);
 			
 			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
-				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str);
+				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str,IConstants.REQUEST_METHOD_POST);
 			else
-				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str);
+				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str,IConstants.REQUEST_METHOD_POST);
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -4520,9 +4522,9 @@ public class NREGSTCSService implements INREGSTCSService{
 				str1 = convertingInputVOToString(inputVO);
 			
 			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
-				distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str1);
+				distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str1,IConstants.REQUEST_METHOD_POST);
 			else
-				distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1);
+				distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1,IConstants.REQUEST_METHOD_POST);
 			
 			if(distResponse.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ distResponse.getStatus());
@@ -4626,7 +4628,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			String str = convertingInputVOToString(inputVO); 
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataPanchayatNew", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataPanchayatNew", str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -4967,7 +4969,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			String projectType = null;
 			String str = convertingInputVOToStringForIWMP(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5046,7 +5048,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/WaterBudgetData", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/WaterBudgetData", str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5103,7 +5105,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if (response.getStatus() != 200) {
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5216,7 +5218,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
 			        if (response.getStatus() != 200) {
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5262,7 +5264,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
 		        if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5325,7 +5327,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200) {
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5483,7 +5485,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str); 
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST); 
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5514,7 +5516,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
 			        if (response.getStatus() != 200) {
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5545,7 +5547,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
 		        if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5611,7 +5613,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -5686,7 +5688,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6103,7 +6105,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6155,7 +6157,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6216,7 +6218,7 @@ public class NREGSTCSService implements INREGSTCSService{
 				inputVO.setGroupName("Comprehensive Restoration of minor Irrigation Tank");
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6281,7 +6283,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6322,7 +6324,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
 			        if (response.getStatus() != 200) {
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6353,7 +6355,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
 		        if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6406,7 +6408,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6469,7 +6471,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6510,7 +6512,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(),str,IConstants.REQUEST_METHOD_POST);
 			        
 			        if (response.getStatus() != 200) {
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6541,7 +6543,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
 		        if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6661,7 +6663,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6812,7 +6814,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6867,7 +6869,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
 			        if (response.getStatus() != 200) {
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6908,7 +6910,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
 		        if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -6961,7 +6963,7 @@ public class NREGSTCSService implements INREGSTCSService{
 
 			String str = convertingInputVOToString(inputVO);
 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -7397,7 +7399,7 @@ public class NREGSTCSService implements INREGSTCSService{
 
 			String str = convertingInputVOToString(inputVO);
 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -7445,7 +7447,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
 			        if (response.getStatus() != 200) {
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -7488,7 +7490,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
 		        if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -7647,7 +7649,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			}
 			
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -7854,7 +7856,7 @@ public class NREGSTCSService implements INREGSTCSService{
 						inputVO.setToRange(Long.valueOf(rangeValues[1]));
 						
 						String str = convertingInputVOToString(inputVO); 
-						ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str);
+						ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
 				        
 				        if(response.getStatus() != 200){
 				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -8047,7 +8049,7 @@ public class NREGSTCSService implements INREGSTCSService{
 
 			String str = convertingInputVOToString(inputVO);
 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -8090,7 +8092,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
 			        if (response.getStatus() != 200) {
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -8121,7 +8123,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
 		        if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -8200,7 +8202,7 @@ public class NREGSTCSService implements INREGSTCSService{
 					}
 					String str = convertingInputVOToString(inputVO);
 					
-					ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+					ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
 			        if(response.getStatus() != 200){
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -8294,7 +8296,7 @@ public class NREGSTCSService implements INREGSTCSService{
 					}
 					String str = convertingInputVOToString(inputVO);
 					
-					ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+					ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
 			        if(response.getStatus() != 200){
 			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -8383,7 +8385,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			}
             String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
 	        if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -8451,7 +8453,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			InputVO inputVO = new InputVO();
 			List<NregaFAVacantPanchayat> dataList = new ArrayList<NregaFAVacantPanchayat>(0);
 			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/mdServiceVacanciesServices";
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(),inputVO);
+			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(),inputVO,IConstants.REQUEST_METHOD_POST);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
