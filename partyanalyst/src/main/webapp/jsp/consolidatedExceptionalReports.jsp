@@ -57,7 +57,7 @@ header
 </header>
 <div class="black-border headerDisPlayNone">
 	<div class="container">
-		<h3 class="text-center text-capital" style="color:#fff;padding:10px;">Exceptional Reports for Consolidated view</h3>
+		<h3 class="text-center text-capital" style="color:#fff;padding:10px;">Consolidated view of Exceptional Reports</h3>
 	</div>
 </div>
 <div id="printableArea">
@@ -79,7 +79,7 @@ header
 								<div class="col-sm-6">
 									<h4 class="panel-title text-capital font_size24">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
-											Exceptional Reports for Consolidated view- <small class="text-muted"><span id="exceptionReportMeetingDateId">  </span></small>	
+											Consolidated view of Exceptional Reports<small class="text-muted"><span id="exceptionReportMeetingDateId">  </span></small>	
 									</h4>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 meetingblockOpen headerDisPlayNone">
@@ -132,27 +132,13 @@ header
 								</div>  
 							</div>
 						</div>
-						
 						<div class="panel-body">
 							<div id="overAllMeetingLevelsDivId"></div>
-							
 						</div>
-					
 				</div>
 			</div>
 		</div>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	</div>	
-		
 </section>
 </div>
 <script src="coreApi/js/jquery-1.11.3.js" type="text/javascript"></script>
