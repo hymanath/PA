@@ -90,4 +90,11 @@ public interface IConstants {
     public static final Long UGDFINISHSTATUSID=12l;
     public static final List<Long> GOVTWORKFINISHSTATUSIDS = Arrays.asList(12l);
 
+    //For Webservice Framework
+    public static final String REQUEST_METHOD_POST = "POST";
+    public static final String REQUEST_METHOD_GET = "GET";
+    
+    public static final Long WS_CALL_TYPE_LIVE = 1L;
+    public static final Long WS_CALL_TYPE_DB = 2L;
+    public static final Long WS_CALL_TYPE_LIVE_OR_DB = 3L;
 }
