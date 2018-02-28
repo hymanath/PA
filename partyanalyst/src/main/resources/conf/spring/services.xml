@@ -4781,6 +4781,8 @@
    	  	 <property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO"></property>
    	  	 <property name="constituencyDAO" ref="constituencyDAO"></property>
    	  	 <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
+   	 	 <property name="kaizalaAnswerInfoDAO" ref="kaizalaAnswerInfoDAO"></property>
+   	 	 <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO"></property>
    	 	</bean>
    	 
    	 	<bean name="biometricAttendanceService" class="com.itgrids.partyanalyst.service.impl.BiometricAttendanceService">

@@ -347,9 +347,14 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 									
 									if(lastval == "Committees"){
 										str+='<th>Pending %</th>';
-									}else{
+									}else if(lastval == "Meetings"){
 										str+='<th>Not Conducted %</th>';
+									}else if(lastval == 'Kaizala'){
+										str+='<th>Committee Not installed %</th>';
+									}else if(lastval == 'Tejam'){
+										str+='<th>Village Not Covered %</th>';
 									}
+									
 								}
 							str+='</tr>';
 						str+='</thead>';
@@ -401,8 +406,12 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 									
 									if(lastval == "Committees"){
 										str+='<th>Pending %</th>';
-									}else{
+									}else if(lastval == "Meetings"){
 										str+='<th>Not Conducted %</th>';
+									}else if(lastval == 'Kaizala'){
+										str+='<th>Committee Not installed %</th>';
+									}else if(lastval == 'Tejam'){
+										str+='<th>Village Not Covered %</th>';
 									}
 									//str+='<th>Total</th>';
 									//str+='<th>Not Conducted</th>';
