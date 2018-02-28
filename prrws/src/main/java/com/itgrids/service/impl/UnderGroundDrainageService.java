@@ -751,6 +751,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							String destPath = folderName + "/" +UUID.randomUUID().toString()+ ".jpg";
 							commonMethodsUtilService.convertBase64StringToImage(imageStr, destPath);
 								
+							if(folderName.contains("/app/static_content/PRRWS/"))
+								destPath = destPath.replace("/app/static_content/PRRWS/","");
 							//save docuemntin document table
 							Long documentId = saveDocuemnt(destPath,imageStr,workStatusVO.getUserId());
 							GovtWorkProgressDocument govtWorkProgressDocument =  saveWorkStatusDocuments(govtWorkProgressId,uniqueUpdateId,documentId,workStatusVO.getUserId());
