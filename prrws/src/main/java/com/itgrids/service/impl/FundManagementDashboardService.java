@@ -3115,7 +3115,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		try {
 			prpareRquiredParameter(inputVO, "");
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew",str);
+			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew",str,IConstants.REQUEST_METHOD_POST);
 
 			Map<String, String> cnstuncyPrlmntIdNameMap = null;
 			Map<String, String> nregaPanchayatMandalCodeMap = null;
@@ -3651,7 +3651,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				{
 				   inputVO.setSublocationType("district");
 				   str = convertingInputVOToString(inputVO);
-				   districtResponse = webServiceUtilService.callWebService(URL, str);
+				   districtResponse = webServiceUtilService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
 				   List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(districtResponse,inputVO.getSublocationType());
 				    if (list.size() > 0 ){
 						 topPerformancMandalVO = list.get(0);
@@ -3666,7 +3666,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				{
 					 inputVO.setSublocationType("constituency");
 					 str = convertingInputVOToString(inputVO);
-					 constituencyResponse = webServiceUtilService.callWebService(URL, str);
+					 constituencyResponse = webServiceUtilService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
 					 List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(constituencyResponse,inputVO.getSublocationType());
 					 if (list.size() > 0 ){
 						 topPerformancMandalVO = list.get(0);
@@ -3686,7 +3686,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				{
 					 inputVO.setSublocationType("mandal");
 					 str = convertingInputVOToString(inputVO);
-					 mandalResponceResponse = webServiceUtilService.callWebService(URL, str);
+					 mandalResponceResponse = webServiceUtilService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
 				     List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(mandalResponceResponse,inputVO.getSublocationType());
 				     if(list.size() > 0){
 				    	 topPerformancMandalVO = list.get(0);
@@ -3811,7 +3811,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     		    inputVO.setViewType("cumulative");
     		    prpareRquiredParameter(inputVO,"overview");
     		    String str = convertingInputVOToString(inputVO);
-				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew", str);
+				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew", str,IConstants.REQUEST_METHOD_POST);
 		        
 		        if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -4029,7 +4029,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				}
 				returnList = getMgnregsParliamentWiseCombinedDetails(clientResponseList);
 			} else {
-				ClientResponse response = webServiceUtilService.callWebService(URL, str);
+				ClientResponse response = webServiceUtilService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
 				if (response.getStatus() != 200) {
 					throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 				} else {
@@ -4165,7 +4165,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
    	 try {
    		    
    		        String str = convertingInputVOToString(inputVO);
-				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureFinalData", str);
+				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureFinalData", str,IConstants.REQUEST_METHOD_POST);
 		        
 		        if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
