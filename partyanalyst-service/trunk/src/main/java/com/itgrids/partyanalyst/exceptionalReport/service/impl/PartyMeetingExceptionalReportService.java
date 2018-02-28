@@ -53,7 +53,7 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 			
 			//parliament wise data
 			inputVO.setResultType("parliament");
-			List<Object[]>  objList1 = partyMeetingStatusDAO.getPartyMeetingStatusWiseCount(inputVO);
+			List<Object[]>  objList1 = partyMeetingStatusDAO.getPartyMeetingStatusWiseCount(inputVO,"parliament");
 			Map<Long,PartyMeetingExceptionalReportVO> parliamentDtlsMap = getLocationWiseMeetingCounductedDtls(objList1, inputVO);
 			calculatePercentage(parliamentDtlsMap, resultVO,inputVO.getResultType());
 			resultVO.setSubList2(new ArrayList<PartyMeetingExceptionalReportVO>(parliamentDtlsMap.values()));
@@ -63,7 +63,7 @@ public class PartyMeetingExceptionalReportService implements IPartyMeetingExcept
 			}
 			//constituency wise data
 			inputVO.setResultType("constituency");
-			List<Object[]>  objList2 = partyMeetingStatusDAO.getPartyMeetingStatusWiseCount(inputVO);
+			List<Object[]>  objList2 = partyMeetingStatusDAO.getPartyMeetingStatusWiseCount(inputVO,"constituency");
 			Map<Long,PartyMeetingExceptionalReportVO> constituenyDtlsMap = getLocationWiseMeetingCounductedDtls(objList2, inputVO);
 			calculatePercentage(constituenyDtlsMap, resultVO,inputVO.getResultType());
 			resultVO.setSubList1(new ArrayList<PartyMeetingExceptionalReportVO>(constituenyDtlsMap.values()));
