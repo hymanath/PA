@@ -16,11 +16,19 @@ public class ConsolidatedExceptionalReportVO {
 	private AddressVO addressVO;
 	private Long mayBeCount = 0l;
 	private Double mayBePercentage;
+	private Long sortNo = 0l;
 	
 	private List<ConsolidatedExceptionalReportVO> subList1;
 	private List<ConsolidatedExceptionalReportVO> subList2;
 
 	
+	public Long getSortNo() {
+		return sortNo;
+	}
+	public void setSortNo(Long sortNo) {
+		this.sortNo = sortNo;
+	}
+
 	public Double getPercentage1() {
 		return percentage1;
 	}

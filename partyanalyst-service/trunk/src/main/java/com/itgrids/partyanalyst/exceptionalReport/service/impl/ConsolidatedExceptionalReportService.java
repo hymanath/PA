@@ -70,24 +70,14 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 		     	public int compare(ConsolidatedExceptionalReportVO location2, ConsolidatedExceptionalReportVO location1) {
 		     	Double per2 = location2.getPercentage();
 		     	Double per1 = location1.getPercentage();
-		     	//descending  order of percentage.
-		     	//if(per1 != null && per1 != 0.0d){
-		     		return per1.compareTo(per2);
-		     	//}else {
-		     	//	return 0;
-		     	//}
+		     	return per1.compareTo(per2);
 		     	}
 	};
 	public static Comparator<ConsolidatedExceptionalReportVO> consolidatedDecendingCountWiseSorting = new Comparator<ConsolidatedExceptionalReportVO>() {
      	public int compare(ConsolidatedExceptionalReportVO location2, ConsolidatedExceptionalReportVO location1) {
-     	Double per2 = location2.getPercentage1();
-     	Double per1 = location1.getPercentage1();
-     	//descending  order of percentage.
-     	//if(per1 != null && per1 != 0.0d){
-     		return per1.compareTo(per2);
-     	//}else {
-     	//	return 0;
-     	//}
+     	Long per2 = location2.getSortNo();
+     	Long per1 = location1.getSortNo();
+     	return per1.compareTo(per2);
      	}
 };
 	public void calculatePercentage(Map<Long, ConsolidatedExceptionalReportVO> locationMap,ConsolidatedExceptionalReportVO resultVO,String resultType) {
@@ -150,12 +140,21 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 			 constituenyDtlsMap = setObjectDataToMap(allConst,constituenyDtlsMap);
 			 locationMap = setObjectDataToMap(allParl,locationMap);
 			 
+			 //Meetings Details
 			 getConsolidatedPartyMeetingExceptionReportMeetingLevelWise(inputVO,locationMap,"parliament");
 			 getConsolidatedPartyMeetingExceptionReportMeetingLevelWise(inputVO,constituenyDtlsMap,"constituency");
+			 
+			 //Committee Details
 			 getCommiteeOverviewPerformanceDetails(inputVO,locationMap,"parliament","");
 			 getCommiteeOverviewPerformanceDetails(inputVO,constituenyDtlsMap,"constituency","");
+			 
+			 //Affiliated Committee Details
 			 getCommiteeOverviewPerformanceDetails(inputVO,locationMap,"parliament","affiliated");
 			 getCommiteeOverviewPerformanceDetails(inputVO,constituenyDtlsMap,"constituency","affiliated");
+			 
+			 //Booth Committee Details
+			 getBoothInchargeCommitteePerformanceDetails(inputVO,locationMap,"parliament");
+			 getBoothInchargeCommitteePerformanceDetails(inputVO,constituenyDtlsMap,"constituency");
 		
 			 resultVO.setSubList2(new ArrayList<ConsolidatedExceptionalReportVO>(locationMap.values()));
 				//sorting list
@@ -185,7 +184,7 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 	}
 	/**
 	   * @param InputVO inputVO
-	   * @return PartyMeetingExceptionalReportVO 
+	   * @return Map<Long,ConsolidatedExceptionalReportVO> 
 	   * @author Hymavathi 
 	   * @Description :This Service Method is used to get party meeting location level wise report. 
 	   * @Date 26-FEB-2018
@@ -195,12 +194,8 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 		//ConsolidatedExceptionalReportVO resultVO = new ConsolidatedExceptionalReportVO();
 		try {
 			
-			//preparing input parameter
-			//List<Long> partyMeetingLevelIds = getPartyMeetingLevelIds(inputVO);
 			List<Date> dateList = Util.getDates(inputVO.getFromDateStr(), inputVO.getToDateStr(), new SimpleDateFormat("dd/MM/yyyy"));
-			// Map<Long,ConsolidatedExceptionalReportVO> locationMap = new HashMap<Long, ConsolidatedExceptionalReportVO>();
-			// Map<Long,ConsolidatedExceptionalReportVO> constituenyDtlsMap =   new HashMap<Long, ConsolidatedExceptionalReportVO>();
-			 //inputVO.setPartyMeetingLevelIds(partyMeetingLevelIds);
+			
 			inputVO.setFromDate(dateList.get(0));
 			inputVO.setToDate(dateList.get(1));
 			List<Long> typeIds = new ArrayList<Long>();
@@ -331,6 +326,9 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 										meetingLvlVO.setMayBeCount(locationVO.getMayBeCount()+totalMeetingCnt); 
 									 }
 								   meetingLvlVO.setPercentage(Util.calculatePercantage(meetingLvlVO.getNotConductedCount(), meetingLvlVO.getTotalCount()));
+								   if(meetingLvlVO.getPercentage() != null && meetingLvlVO.getPercentage() >0){
+									   locationVO.setSortNo(locationVO.getSortNo() +1l);
+								   }
 								   locationVO.setPercentage1(locationVO.getPercentage1()+meetingLvlVO.getPercentage());
 							   locationVO.setTotalCount(locationVO.getTotalCount()+totalMeetingCnt);
 								   if (partyMeetingStatus.equalsIgnoreCase("Y")) {
@@ -378,10 +376,10 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 			 affiliatedComm.setLocationId(7l);
 			 affiliatedComm.setLocationName("Affiliated Committees");
 			 list.add(affiliatedComm);
-			 /*ConsolidatedExceptionalReportVO boothComm = new ConsolidatedExceptionalReportVO();
+			 ConsolidatedExceptionalReportVO boothComm = new ConsolidatedExceptionalReportVO();
 			 boothComm.setLocationId(7l);
 			 boothComm.setLocationName("Booth Committees");
-			 list.add(boothComm);*/
+			 list.add(boothComm);
 		} catch (Exception e) {
 			LOG.error("Exception occurred  at getMeetingLevelsList() in PartyMeetingExceptionalReportService class",e);
 		}
@@ -530,8 +528,6 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 							  if(committeeLvl != null){
 								  locationVO.setTotalCount(locationVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[0]));
 								  committeeLvl.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[0]));
-								  //locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[1]));
-								  //locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
 								  locationVO.setNotConductedCount(locationVO.getNotConductedCount()+locationVO.getTotalCount());//default
 								  committeeLvl.setNotConductedCount(committeeLvl.getTotalCount());//default
 								  //setting address
@@ -545,14 +541,11 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 								   }
 								   locationVO.setPercentage(Util.calculatePercantage(locationVO.getNotConductedCount(), locationVO.getTotalCount()));
 								   committeeLvl.setPercentage(Util.calculatePercantage(committeeLvl.getNotConductedCount(), committeeLvl.getTotalCount()));
+								   if(committeeLvl.getPercentage() != null && committeeLvl.getPercentage() >0){
+									   locationVO.setSortNo(locationVO.getSortNo() +1l);
+								   }
 								   locationVO.setPercentage1(locationVO.getPercentage1()+committeeLvl.getPercentage());
-								   //calculating overall committee details
-								   /*if (locationType.equalsIgnoreCase("parliament")) {
-									   resultVO.setTotalCount(resultVO.getTotalCount()+locationVO.getTotalCount());
-									   resultVO.setNotCompletedCommitteeCount(resultVO.getNotCompletedCommitteeCount()+locationVO.getNotCompletedCommitteeCount());
-									   resultVO.setCompletedCount(resultVO.getCompletedCount()+locationVO.getCompletedCount());
-								   }*/
-							  }
+							}
 						  }
 					   }
 				  }
@@ -632,35 +625,39 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 		}
 		/**
 		   * @param InputVO inputVO
-		   * @return CommitteeDataVO 
-		   * @author Santosh Kumar Verma 
+		   * @return ConsolidatedExceptionalReportVO 
+		   * @author Hymavathi
 		   * @Description :This Service Method is used to get booth incharge committee performance details. 
-		   * @Date 22-FEB-2018
+		   * @Date 28-FEB-2018
 		   */
-		public CommitteeDataVO getBoothInchargeCommitteePerformanceDetails(InputVO inputVO) {
-			CommitteeDataVO resultVO = new CommitteeDataVO();
+		public Map<Long,ConsolidatedExceptionalReportVO> getBoothInchargeCommitteePerformanceDetails(InputVO inputVO,Map<Long,ConsolidatedExceptionalReportVO> locationMap,String leveltype) {
+		
 			 try {
 				  //preparing parliament wise committee performance data
-				 /*inputVO.setBoothInchargeEnrollmentId(1l);
-				  inputVO.setLocationLevel("parliament");
-				  List<Object[]>  parliamentWisecommitteeDtlsObjLst = boothInchargeCommitteeDAO.getLocationWiseBoothInchargeCommitteeDetails(inputVO);
-				  inputVO.setResultType("completedCommittee");
-				  List<Object[]> completedCommitteeObjLst = boothInchargeCommitteeDAO.getLocationWiseBoothInchargeCommitteeDetails(inputVO);
-				  //Setting into resultVO
-				  resultVO.setSubList(prepareCommiteeDetailsData(parliamentWisecommitteeDtlsObjLst, completedCommitteeObjLst, resultVO, inputVO.getLocationLevel()));
-				  Collections.sort(resultVO.getSubList(),commiteeDecendingCountWiseSorting);
-				  //preparing constituency wise committee performance data
-				  inputVO.setLocationLevel("constituency");
-				  inputVO.setResultType(null);
-				  List<Object[]>  constituencyWisecommitteeDtlsObjLst = boothInchargeCommitteeDAO.getLocationWiseBoothInchargeCommitteeDetails(inputVO);
-				  inputVO.setResultType("completedCommittee");
-				  List<Object[]> constituencyWisecompletedCommitteeObjLst = boothInchargeCommitteeDAO.getLocationWiseBoothInchargeCommitteeDetails(inputVO);
-				  //Setting into resultVO
-				  resultVO.setSubList1(prepareCommiteeDetailsData(constituencyWisecommitteeDtlsObjLst, constituencyWisecompletedCommitteeObjLst, resultVO, inputVO.getLocationLevel()));
-				  Collections.sort(resultVO.getSubList1(),commiteeDecendingCountWiseSorting);*/
+				 inputVO.setBoothInchargeEnrollmentId(1l);
+				 if(leveltype != null && leveltype.equalsIgnoreCase("parliament")){
+					  inputVO.setLocationLevel(leveltype);
+					  inputVO.setResultType(null);
+					  List<Object[]>  parliamentWisecommitteeDtlsObjLst = boothInchargeCommitteeDAO.getLocationWiseBoothInchargeCommitteeDetails(inputVO);
+					  inputVO.setResultType("completedCommittee");
+					  List<Object[]> completedCommitteeObjLst = boothInchargeCommitteeDAO.getLocationWiseBoothInchargeCommitteeDetails(inputVO);
+					  //Setting into resultVO
+					  prepareCommiteeDetailsData(parliamentWisecommitteeDtlsObjLst, completedCommitteeObjLst, locationMap, inputVO.getLocationLevel(),"Booth Committees");
+					  //Collections.sort(resultVO.getSubList(),commiteeDecendingCountWiseSorting);
+				 }else if(leveltype != null && leveltype.equalsIgnoreCase("constituency")){
+					  //preparing constituency wise committee performance data
+					  inputVO.setLocationLevel(leveltype);
+					  inputVO.setResultType(null);
+					  List<Object[]>  constituencyWisecommitteeDtlsObjLst = boothInchargeCommitteeDAO.getLocationWiseBoothInchargeCommitteeDetails(inputVO);
+					  inputVO.setResultType("completedCommittee");
+					  List<Object[]> constituencyWisecompletedCommitteeObjLst = boothInchargeCommitteeDAO.getLocationWiseBoothInchargeCommitteeDetails(inputVO);
+					  //Setting into resultVO
+					  prepareCommiteeDetailsData(constituencyWisecommitteeDtlsObjLst, constituencyWisecompletedCommitteeObjLst, locationMap, inputVO.getLocationLevel(),"Booth Committees");
+					 // Collections.sort(resultVO.getSubList1(),commiteeDecendingCountWiseSorting);
+				 }
 			 } catch (Exception e) {
 				 LOG.error("Exception occured at getBoothInchargeCommitteePerformanceDetails() in CommitteeExceptionalReportService class ",e);
 			 }
-			 return resultVO;
+			 return locationMap;
 		}
 }
