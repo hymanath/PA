@@ -2315,7 +2315,7 @@ public class RWSNICService implements IRWSNICService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/Home/Overview_IHHLData", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/Home/Overview_IHHLData", str,IConstants.REQUEST_METHOD_POST);
 			
 		    if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2388,7 +2388,7 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/values/Location_IHHLData", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/values/Location_IHHLData", str,IConstants.REQUEST_METHOD_POST);
 			
 			if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2438,7 +2438,7 @@ public class RWSNICService implements IRWSNICService{
 			
 			String str = cvertingIpVOToStringFrSBPayments(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails", str,IConstants.REQUEST_METHOD_POST);
 			
 		    if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -2551,7 +2551,7 @@ public class RWSNICService implements IRWSNICService{
 			
 			String str = cvertingIpVOToStringFrSBPayments(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails", str);
+			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails", str,IConstants.REQUEST_METHOD_POST);
 			
 		    if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
