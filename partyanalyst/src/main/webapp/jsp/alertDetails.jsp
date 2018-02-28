@@ -809,9 +809,27 @@ function deleteAlertAssignedCandidates(tdpCadreId)
 				   getAlertAssignedCandidates(alertId);
 				   getAlertAssignedCandidate(alertId,"updateStatus");
 			      //buildAlertAssignedCandidateData(result);
+				   if(result !=null && result=="success"){
+						  deleteAssigneeFromZohoOfAlert(alertId);
+				   }
 				});
 }
-
+function deleteAssigneeFromZohoOfAlert(alertId){
+	
+	var jsObj =
+	 {
+		alertId  : alertId
+	 }
+	$.ajax({
+			  type:'GET',
+			  url: 'deleteAssigneeFromZohoOfAlertAction.action',
+			  data: {task :JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result !=null && result == "success"){
+			   console.log("assignee deleted at zoho end also");
+		   }
+	   });
+}
 var globalAssignedCadreId=[];
 function buildAlertAssignedCandidateData(result)
 {
