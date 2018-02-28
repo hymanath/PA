@@ -24,6 +24,10 @@ public class Webservice implements Serializable{
 	private String serviceName;
 	private ServiceProvider serviceProvider;
 	private ServiceModule serviceModule;
+	private WebserviceCallType webserviceCallType;
+	private String methodType;
+	private String serviceType;
+	private String isDeleted;
 
 	@Id
 	@Column(name="webservice_id")
@@ -71,6 +75,43 @@ public class Webservice implements Serializable{
 
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "webservice_call_type_id")
+	public WebserviceCallType getWebserviceCallType() {
+		return webserviceCallType;
+	}
+
+	public void setWebserviceCallType(WebserviceCallType webserviceCallType) {
+		this.webserviceCallType = webserviceCallType;
+	}
+
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	@Column(name="method_type")
+	public String getMethodType() {
+		return methodType;
+	}
+
+	public void setMethodType(String methodType) {
+		this.methodType = methodType;
+	}
+
+	@Column(name="service_type")
+	public String getServiceType() {
+		return serviceType;
+	}
+
+	public void setServiceType(String serviceType) {
+		this.serviceType = serviceType;
 	}
 	
 }
