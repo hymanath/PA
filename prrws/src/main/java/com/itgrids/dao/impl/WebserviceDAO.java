@@ -24,4 +24,14 @@ public class WebserviceDAO extends GenericDaoHibernate<Webservice,Long> implemen
 		query.setParameter("url",url);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getWebserviceDetailsByUrl(String url)
+	{
+		Query query = getSession().createQuery("SELECT model.webserviceId,model.webserviceCallType.webserviceCallTypeId,model.url," +
+				" model.methodType,model.serviceType,model.webserviceCallType.callType FROM Webservice model " +
+				" WHERE model.url = :url AND model.isDeleted = 'N' ");
+		query.setParameter("url",url);
+		return query.list();
+	}
 }
