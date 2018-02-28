@@ -314,7 +314,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 									if(typeval == "PrintMediadepartment"+departmentId+""){
 										str+='<h5 class="font_weight m_top5" style="font-size:12px;">';
 											if(result[i].positiveCountMain !=null && result[i].positiveCountMain >0){
-												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</span>'; 
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</span>'; 
 											}else{
 												str+='<span>'+result[i].positiveCountMain+'</span>'; 
 											}
@@ -377,7 +377,7 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 									if(typeval == "PrintMediadepartment"+departmentId+""){
 										str+='<h5 class="font_weight m_top5" style="font-size:12px;">';
 											if(result[i].negativCountMain !=null && result[i].negativCountMain >0){
-												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainNegativeArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].negativCountMain+'</span>'; 
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" title="Individual Articles('+result[i].mainNegativeArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].negativCountMain+'</span>'; 
 											}else{
 												str+='<span>'+result[i].negativCountMain+'</span>'; 
 											}
