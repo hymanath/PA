@@ -43,6 +43,7 @@ import com.itgrids.service.ILightMonitoring;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
+import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -131,12 +132,12 @@ public class LightMonitoringService  implements ILightMonitoring{
 				   inputStr = null;
 			   }
 			   
-			ClientResponse response = null;
-			if (!key .equalsIgnoreCase("differenceVendor"))
-				response = webServiceUtilService.callWebService(URL,inputStr);
-			else
-				response = webServiceUtilService.getCallWebService(URL);
-	        if(response.getStatus() != 200)
+			   ClientResponse response = null;
+				if (!key .equalsIgnoreCase("differenceVendor"))
+					response = webServiceUtilService.callWebService(URL,inputStr,IConstants.REQUEST_METHOD_POST);
+				else
+					response = webServiceUtilService.callWebService(URL,null,IConstants.REQUEST_METHOD_GET);
+		        if(response.getStatus() != 200)
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	        else {
 	 	    	 String output = response.getEntity(String.class);
