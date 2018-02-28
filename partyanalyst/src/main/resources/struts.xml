@@ -18927,5 +18927,12 @@
 		<result name="input" type="redirect">loginAction.action</result>
 		<result name="error" type="redirect">loginAction.action</result>
 	</action>
+	
+	<action name="deleteAssigneeFromZohoOfAlertAction" class="createAlertAction"  method="deleteAssigneeFromZohoOfAlert">
+		<result type="json" name="success">    
+			<param name="root">status</param>
+		</result>
+	</action>
+		
  </package>
 </struts>
