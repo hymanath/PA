@@ -17,11 +17,19 @@ public class ConsolidatedExceptionalReportVO {
 	private Long mayBeCount = 0l;
 	private Double mayBePercentage;
 	private Long sortNo = 0l;
+	private Long committeeHavingNoSmartPhone=0l;
 	
 	private List<ConsolidatedExceptionalReportVO> subList1;
 	private List<ConsolidatedExceptionalReportVO> subList2;
 
 	
+	
+	public Long getCommitteeHavingNoSmartPhone() {
+		return committeeHavingNoSmartPhone;
+	}
+	public void setCommitteeHavingNoSmartPhone(Long committeeHavingNoSmartPhone) {
+		this.committeeHavingNoSmartPhone = committeeHavingNoSmartPhone;
+	}
 	public Long getSortNo() {
 		return sortNo;
 	}

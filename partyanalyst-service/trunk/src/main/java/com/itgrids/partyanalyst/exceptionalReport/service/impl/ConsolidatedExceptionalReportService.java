@@ -6,15 +6,19 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IBoothInchargeCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IKaizalaAnswerInfoDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
@@ -36,8 +40,23 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IKaizalaAnswerInfoDAO kaizalaAnswerInfoDAO;
+	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	
 	
+	public IActivityLocationInfoDAO getActivityLocationInfoDAO() {
+		return activityLocationInfoDAO;
+	}
+	public void setActivityLocationInfoDAO(
+			IActivityLocationInfoDAO activityLocationInfoDAO) {
+		this.activityLocationInfoDAO = activityLocationInfoDAO;
+	}
+	public IKaizalaAnswerInfoDAO getKaizalaAnswerInfoDAO() {
+		return kaizalaAnswerInfoDAO;
+	}
+	public void setKaizalaAnswerInfoDAO(IKaizalaAnswerInfoDAO kaizalaAnswerInfoDAO) {
+		this.kaizalaAnswerInfoDAO = kaizalaAnswerInfoDAO;
+	}
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -156,6 +175,13 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 			 getBoothInchargeCommitteePerformanceDetails(inputVO,locationMap,"parliament");
 			 getBoothInchargeCommitteePerformanceDetails(inputVO,constituenyDtlsMap,"constituency");
 		
+			 //Kaizala Details
+			 getConstituencyWisePoorPerformance(1l,"parliament",locationMap);
+			 getConstituencyWisePoorPerformance(1l,"constituency",constituenyDtlsMap);
+			 
+			 //Dalitha tejam details
+			 getActivityPerformanceDetailsLocationWise(inputVO,locationMap,"parliament");
+			 getActivityPerformanceDetailsLocationWise(inputVO,constituenyDtlsMap,"constituency");
 			 resultVO.setSubList2(new ArrayList<ConsolidatedExceptionalReportVO>(locationMap.values()));
 				//sorting list
 				if (commonMethodsUtilService.isListOrSetValid(resultVO.getSubList2())) {
@@ -380,6 +406,14 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 			 boothComm.setLocationId(7l);
 			 boothComm.setLocationName("Booth Committees");
 			 list.add(boothComm);
+			 ConsolidatedExceptionalReportVO kaizala = new ConsolidatedExceptionalReportVO();
+			 kaizala.setLocationId(7l);
+			 kaizala.setLocationName("Kaizala");
+			 list.add(kaizala);
+			 ConsolidatedExceptionalReportVO dalithaTejam = new ConsolidatedExceptionalReportVO();
+			 dalithaTejam.setLocationId(7l);
+			 dalithaTejam.setLocationName("Dalitha Tejam");
+			 list.add(dalithaTejam);
 		} catch (Exception e) {
 			LOG.error("Exception occurred  at getMeetingLevelsList() in PartyMeetingExceptionalReportService class",e);
 		}
@@ -660,4 +694,202 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 			 }
 			 return locationMap;
 		}
+		public Map<Long,ConsolidatedExceptionalReportVO> getConstituencyWisePoorPerformance(Long stateId,String location,Map<Long,ConsolidatedExceptionalReportVO> locationMap){
+			try{
+				int countPosition;
+				if(location != null && location.trim().equalsIgnoreCase("constituency")){
+					countPosition = 2;
+				}else{
+					countPosition = 1;
+				}
+				List<Object[]> targetList = kaizalaAnswerInfoDAO.getConstituencyWiseTargetList(stateId,location);
+				
+				List<Object[]> installedCommitteeMembers = kaizalaAnswerInfoDAO.getConstituencyWiseInstalledCommitteeMembers(stateId,location);
+				//create Map for constituencyId and installedCommitteeMembersCount
+				Map<Long,Long> constituencyIdAndInstalledCommitteeMembersCount = new HashMap<Long,Long>();
+				if(installedCommitteeMembers != null && installedCommitteeMembers.size() > 0){
+					for(Object[] param : installedCommitteeMembers){
+						if(param[0] != null){
+							constituencyIdAndInstalledCommitteeMembersCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[countPosition]));
+						}
+					}
+				}
+				List<Object[]> notHavingSmartPhone = kaizalaAnswerInfoDAO.getConstituencyWiseNotHavingSmartPhone(stateId,location);
+				//create map for constituencyId and notHavingSmartPhoneCount
+				Map<Long,Long> constituencyIdAndNotHavingSmartPhoneCount = new HashMap<Long,Long>();
+				if(notHavingSmartPhone != null && notHavingSmartPhone.size() > 0){
+					for(Object[] param : notHavingSmartPhone){
+						if(param[0] != null){
+							constituencyIdAndNotHavingSmartPhoneCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[countPosition]));
+						}
+					}
+				}
+				List<Object[]> publicInstalled = kaizalaAnswerInfoDAO.getConstituencyWisePublicInstalled(stateId,location);
+				//create a map for constituencyId and publicInstalledCount
+				Map<Long,Long> constituencyIdAndPublicInstalledCount = new HashMap<Long,Long>();
+				if(publicInstalled != null && publicInstalled.size() > 0){
+					for(Object[] param : publicInstalled){
+						if(param[0] != null){
+							constituencyIdAndPublicInstalledCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[countPosition]));
+						}
+					}
+				}
+				List<Object[]> cadreInstalled = kaizalaAnswerInfoDAO.getConstituecnyWiseCadreInstalled(stateId,location);
+				//create a map for constituencyId and cadreInstalledCount
+				Map<Long,Long> constituencyIdAndCadreInstalledCount = new HashMap<Long,Long>();
+				if(cadreInstalled != null && cadreInstalled.size() > 0){
+					for(Object[] param : cadreInstalled){
+						if(param[0] != null){
+							constituencyIdAndCadreInstalledCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[countPosition]));
+						}
+					}
+				}
+				//collect all the constituencyId and name
+				Set<Long> conIds = new HashSet<Long>();
+				Set<Long> parIds = new HashSet<Long>();
+				if(targetList != null && targetList.size() > 0){
+					for(Object[] param : targetList){
+						if(location != null && location.trim().equalsIgnoreCase("constituency")){
+							conIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+							parIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}else{
+							parIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						}
+						
+					}
+				}
+				
+				//get the name of constituency
+				List<Object[]> constList = null;
+				if(conIds != null && conIds.size() > 0){
+					constList = constituencyDAO.getConstituenciesNamesByIds(new ArrayList<Long>(conIds));
+				}
+				//create Map for constituencyId and name
+				Map<Long,String> constituencyIdAndName = new HashMap<Long,String>();
+				if(constList != null && constList.size() > 0){
+					for(Object[] param : constList){
+						constituencyIdAndName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					}
+				}
+				//get the name of parliament
+				List<Object[]> parList = null;
+				if(parIds != null && parIds.size() > 0){
+					parList = constituencyDAO.getConstituenciesNamesByIds(new ArrayList<Long>(parIds));
+				}
+				//create map for parliamentId and name
+				Map<Long,String> parliamentIdAndName = new HashMap<Long,String>();
+				if(parList != null && parList.size() > 0){
+					for(Object[] param : parList){
+						parliamentIdAndName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					}
+				}
+				
+				//create vo object for ui
+				//List<KaizalaExceptionalReportVO> exceptionalReportVOs = new ArrayList<KaizalaExceptionalReportVO>();
+				ConsolidatedExceptionalReportVO exceptionalReportVO = null;
+				
+				if(targetList != null && targetList.size() > 0){
+					for(Object[] param : targetList){
+						if(param[0] != null){
+							exceptionalReportVO = locationMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+							if(exceptionalReportVO != null){
+							if(location != null && location.trim().equalsIgnoreCase("constituency")){
+								exceptionalReportVO.setAddressVO(new AddressVO());
+								exceptionalReportVO.getAddressVO().setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								exceptionalReportVO.getAddressVO().setConstituencyName(constituencyIdAndName.get(commonMethodsUtilService.getLongValueForObject(param[0])));
+								exceptionalReportVO.getAddressVO().setParliamentId(commonMethodsUtilService.getLongValueForObject(param[1]));
+								exceptionalReportVO.getAddressVO().setParliamentName(parliamentIdAndName.get(commonMethodsUtilService.getLongValueForObject(param[1])));
+							}/*else{
+								exceptionalReportVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								exceptionalReportVO.setParliamentName(parliamentIdAndName.get(commonMethodsUtilService.getLongValueForObject(param[0])));
+							}*/
+							ConsolidatedExceptionalReportVO kaizalaVO = getMatchedVO("Kaizala", exceptionalReportVO.getSubList1());
+							if(kaizalaVO != null){
+								kaizalaVO.setTotalCount(kaizalaVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[countPosition]));
+								//set installed committee member count
+								kaizalaVO.setConductedCount(kaizalaVO.getConductedCount()+commonMethodsUtilService.getLongValueForObject(constituencyIdAndInstalledCommitteeMembersCount.get(commonMethodsUtilService.getLongValueForObject(param[0]))));
+								//set committee having no start phone
+								kaizalaVO.setCommitteeHavingNoSmartPhone(kaizalaVO.getCommitteeHavingNoSmartPhone()+commonMethodsUtilService.getLongValueForObject(constituencyIdAndNotHavingSmartPhoneCount.get(commonMethodsUtilService.getLongValueForObject(param[0]))));
+								//set committee not installed
+								kaizalaVO.setNotConductedCount(kaizalaVO.getTotalCount() - ( kaizalaVO.getConductedCount() + kaizalaVO.getCommitteeHavingNoSmartPhone() ));
+								//set committee not installed percent
+								kaizalaVO.setPercentage(Util.calculatePercantage( kaizalaVO.getNotConductedCount() , kaizalaVO.getTotalCount() ));
+								//set target,
+								exceptionalReportVO.setTotalCount(exceptionalReportVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[countPosition]));
+								//set installed committee member count
+								exceptionalReportVO.setConductedCount(exceptionalReportVO.getConductedCount()+commonMethodsUtilService.getLongValueForObject(constituencyIdAndInstalledCommitteeMembersCount.get(commonMethodsUtilService.getLongValueForObject(param[0]))));
+								//set committee having no start phone
+								exceptionalReportVO.setCommitteeHavingNoSmartPhone(exceptionalReportVO.getCommitteeHavingNoSmartPhone()+commonMethodsUtilService.getLongValueForObject(constituencyIdAndNotHavingSmartPhoneCount.get(commonMethodsUtilService.getLongValueForObject(param[0]))));
+								//set committee not installed
+								exceptionalReportVO.setNotConductedCount(exceptionalReportVO.getTotalCount() - ( exceptionalReportVO.getConductedCount() + exceptionalReportVO.getCommitteeHavingNoSmartPhone() ));
+								//set committee not installed percent
+								exceptionalReportVO.setPercentage(Util.calculatePercantage( exceptionalReportVO.getNotConductedCount() , exceptionalReportVO.getTotalCount() ));
+								//set publicInstalled
+								//exceptionalReportVO.setPublicInstalled(commonMethodsUtilService.getLongValueForObject(constituencyIdAndPublicInstalledCount.get(commonMethodsUtilService.getLongValueForObject(param[0]))));
+								//set cadreInstalled
+								//exceptionalReportVO.setCadreInstalled(commonMethodsUtilService.getLongValueForObject(constituencyIdAndCadreInstalledCount.get(commonMethodsUtilService.getLongValueForObject(param[0]))));
+								//set totalInstalled
+								//exceptionalReportVO.setTotalInstalled(exceptionalReportVO.getCommitteeInstalled() + exceptionalReportVO.getPublicInstalled() + exceptionalReportVO.getCadreInstalled());
+								//exceptionalReportVOs.add(exceptionalReportVO);
+							}
+						}
+						}
+					}
+				}
+				/*if(exceptionalReportVOs != null && exceptionalReportVOs.size() > 0){
+					Collections.sort(exceptionalReportVOs, new Comparator<KaizalaExceptionalReportVO>() {
+						@Override
+						public int compare(KaizalaExceptionalReportVO obj1,	KaizalaExceptionalReportVO obj2) {
+							Double value1 = obj1.getCommitteeNotInstalledPer();
+							Double value2 = obj2.getCommitteeNotInstalledPer();
+							return value2.compareTo(value1);
+						}
+					});
+				}*/
+				/*if(size >= 0){
+					if(exceptionalReportVOs.size() > size){
+						exceptionalReportVOs = exceptionalReportVOs.subList(0, size);
+					}
+				}*/
+				return locationMap;
+			}catch(Exception e){
+				LOG.error("Error occured getConstituencyWisePoorPerformance() method of KaizalaExceptionReportService{}");
+			}
+			return null;
+		}
+		
+		/**
+		   * @param InputVO inputVO
+		   * @return Map<Long,ConsolidatedExceptionalReportVO>
+		   * @author Hymavathi 
+		   * @Description :This Service Method is used to get activity performance details location wise. 
+		   * @Date 28-FEB-2018
+		   */
+		public Map<Long,ConsolidatedExceptionalReportVO> getActivityPerformanceDetailsLocationWise(InputVO inputVO,Map<Long,ConsolidatedExceptionalReportVO> locationMap,String levelType) {
+			//ActivityExceptionalReportVO resultVO = new ActivityExceptionalReportVO();
+			 try {
+				 //preparing parliament wise activities details data
+				 inputVO.setActivityScopeId(60l);
+				 if(levelType != null && levelType.equalsIgnoreCase("parliament")){
+					 List<Object[]> parliamentWiseActivityDtlsObjList = activityLocationInfoDAO.getLocationWiseActiviyDetailsByType(inputVO.getActivityScopeId(), levelType, "total");
+					 List<Object[]> prlmntWsActvtyCncctdDtlsObjLst = activityLocationInfoDAO.getLocationWiseActiviyDetailsByType(inputVO.getActivityScopeId(), levelType, "conducted");
+					 prepareCommiteeDetailsData(parliamentWiseActivityDtlsObjList, prlmntWsActvtyCncctdDtlsObjLst, locationMap,levelType, "Dalitha Tejam");
+					 //Map<Long,ActivityExceptionalReportVO> parliamentDtlsMap = getLocationWiseActivityDtls(parliamentWiseActivityDtlsObjList, prlmntWsActvtyCncctdDtlsObjLst, "parliament");
+					 //resultVO.setSubList2(new ArrayList<ActivityExceptionalReportVO>(parliamentDtlsMap.values()));
+					// Collections.sort(resultVO.getSubList2(), activityDecendingCountWiseSorting);
+				 }else{
+					 //preparing constituency wise activities details data 
+					 List<Object[]> constituencyWiseActivityDtlsObjList = activityLocationInfoDAO.getLocationWiseActiviyDetailsByType(inputVO.getActivityScopeId(), levelType, "total");
+					 List<Object[]> cnsttncyWsActvtyCncctdDtlsObjLst = activityLocationInfoDAO.getLocationWiseActiviyDetailsByType(inputVO.getActivityScopeId(), levelType, "conducted");
+					 prepareCommiteeDetailsData(constituencyWiseActivityDtlsObjList, cnsttncyWsActvtyCncctdDtlsObjLst, locationMap,levelType, "Dalitha Tejam");
+					 // Map<Long,ActivityExceptionalReportVO> constituencyDtlsMap = getLocationWiseActivityDtls(constituencyWiseActivityDtlsObjList, cnsttncyWsActvtyCncctdDtlsObjLst, "constituency");
+					 //resultVO.setSubList1(new ArrayList<ActivityExceptionalReportVO>(constituencyDtlsMap.values()));
+					 //Collections.sort(resultVO.getSubList1(), activityDecendingCountWiseSorting);
+				 }
+			 } catch (Exception e) {
+				 LOG.error("Exception occured at getActivityPerformanceDetailsLocationWise() in ActivityExceptionalReportService class",e);
+			 }
+			 return locationMap;
+		}
+		
 }
