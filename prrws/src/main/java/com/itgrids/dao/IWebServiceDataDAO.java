@@ -1,11 +1,13 @@
 package com.itgrids.dao;
 
+import java.util.Date;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.model.WebServiceData;
 
 public interface IWebServiceDataDAO extends GenericDao<WebServiceData, Long>{
-	public String getRfidTrackingOverAllTargetsData(Long webserviceId) ;
+
 	public Long getLatestDataId();
-	public String getWebserviceResponseData(Long webserviceId,String input);
+	public String getRfidTrackingOverAllTargetsData(Date fromDate);
 }

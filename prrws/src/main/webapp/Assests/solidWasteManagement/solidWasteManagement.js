@@ -53,12 +53,12 @@ $(document).on("contextmenu",function(){
 	   'This Month': [moment().startOf('month'), moment().endOf('month')],
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 	}
-});
+});*/
 $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	startDate = picker.startDate.format("DD-MM-YYYY");
 	endDate = picker.endDate.format("DD-MM-YYYY");
 	onLoadCalls();
-}); */
+}); 
 
 $("#singleDateRangePicker").daterangepicker({
 		opens: 'left',
@@ -73,7 +73,9 @@ $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	
 /* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
 	glEndDate = picker.endDate.format('DD-MM-YYYY'); */
-	var selectDate = picker.endDate.format('DD-MM-YYYY');
+	startDate = picker.startDate.format('DD-MM-YYYY');
+	endDate =picker.endDate.format('DD-MM-YYYY');
+	//var selectDate = picker.endDate.format('DD-MM-YYYY');
 	onLoadCalls();
 });
 
@@ -138,20 +140,20 @@ function levelWiseOverview()
 	for(var i in levelWiseOverviewArr)
 	{
 		if(levelWiseOverviewArr[i] == "state"){
-			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"district","1-06-2017","30-07-2017",0,"",0,"");
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"district",startDate,endDate,0,"",0,"");
 		}
 		else if(levelWiseOverviewArr[i] == "district"){
-			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"district","1-06-2017","30-07-2017",0,"",0,"");
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"district",startDate,endDate,0,"",0,"");
 		}else if(levelWiseOverviewArr[i] == "constituency"){
 			getAllDistricts(levelWiseOverviewArr[i]+'SelectDist');
 			
-			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"constituency","1-06-2017","30-07-2017",0,"district",0,"");
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"constituency",startDate,endDate,0,"district",0,"");
 			
 		}else if(levelWiseOverviewArr[i] == "mandal"){
 			//SelectCons
 			getAllDistricts(levelWiseOverviewArr[i]+'SelectDist');
 			
-			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"mandal","1-06-2017","30-07-2017",0,"",0,"");
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"mandal",startDate,endDate,0,"",0,"");
 		}
 	}
 	
@@ -191,7 +193,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		
+			
 		if(result != null && result.length > 0)
 		{
 			if(distId ==0){
@@ -201,7 +203,12 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 				for(var i in result){
 					if(distId == result[i].id){
 					$("#onclickDistName").html(result[i].name+" OVERVIEW");
-					$("#swmModalContent #rfidTaggedHouses").html(result[i].totalRfidTags);
+					if(result[i].totalRfidTags!=null && result[i].totalRfidTags> 0){
+				     $("#swmModalContent #rfidTaggedHouses").html(result[i].totalRfidTags);
+			        }else{
+				    $("#swmModalContent  #rfidTaggedHouses").html("NO DATA");
+			        }			
+					//$("#swmModalContent #rfidTaggedHouses").html(result[i].totalRfidTags);
 					$("#swmModalContent  #registeredFarmers").html(result[i].farmers);
 					$("#swmModalContent  #mgnrgsId").html(result[i].mgnres);
 					$("#swmModalContent  #prId").html(result[i].pr);
@@ -213,9 +220,9 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 					$("#swmModalContent  #trycycleId").html(result[i].tricycle);
 					$("#swmModalContent  #evehicleId").html(result[i].evehicle);
 					var totRegvehicles = result[i].tractor+result[i].auto+result[i].tricycle+result[i].evehicle;
-					var achieveper=result[i].achieve;
-					var targetper=result[i].target;
-					var  achievetargetper=achieveper/targetper*100;
+					var achieve=result[i].achieve;
+					var target=result[i].target;
+					var  achievetargetper=achieve/target*100;
 					$("#swmModalContent  #totalRegVehicles").html(totRegvehicles);
 					//$("#swmModalContent  #gpId").html("<span style='font-size:12px'>NO DATA</span>");
 					$("#swmModalContent  #blocksId").html(result[i].blocks);
@@ -230,12 +237,35 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 					$("#swmModalContent  #tenkgcount").html(result[i].tenkg);
 					$("#swmModalContent  #twentyfivekgCount").html(result[i].twentyFivekg);
 					$("#swmModalContent  #fiftykgCount").html(result[i].fiftykg);
-					$("#swmModalContent  #gpId").html(result[i].gpCnt);
-					$("#swmModalContent  #blocksId").html(result[i].blockNo);
-					$("#swmModalContent  #trackingId").html(achievetargetper.toFixed(2)+' %');
-					}
-				} 
-				
+					//$("#swmModalContent  #gpId").html(result[i].gpCnt);
+					//$("#swmModalContent  #blocksId").html(result[i].blockNo);
+					if(result[i].gpCnt!=null && result[i].gpCnt > 0){
+				$("#swmModalContent #gpId").html(result[i].gpCnt);
+			}else{
+				$("#swmModalContent  #gpId").html("NO DATA");
+			}
+			if(result[i].blockNo!=null && result[i].blockNo > 0){
+				$("#swmModalContent #blocksId").html(result[i].blockNo);
+			}else{
+				$("#swmModalContent  #blocksId").html("NO DATA");
+			}	//$("#swmModalContent  #trackingId").html(achievetargetper.toFixed(2)+' %');
+				if(target !=null && target > 0){
+				$("#swmModalContent #trackingId").html(achievetargetper.toFixed(2)+' %');
+			}else{
+				$("#swmModalContent  #trackingId").html("NO DATA");
+			}
+			if(target !=null && target > 0){
+				$("#swmModalContent #intimeId").html(result[i].inTimePer+' %');
+			}else{
+				$("#swmModalContent #intimeId").html("NO DATA");
+			}
+			if(target !=null && target > 0){
+				$("#swmModalContent #outtimeId").html(result[i].outTimePer+' %');
+			}else{
+				$("#swmModalContent #outtimeId").html("NO DATA");
+			}
+			}
+			} 
 			}
 				
 			
@@ -322,6 +352,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 						var targetinTimePer=0.0;
 						for(var i in result)							
 						{
+							
 							totalRfidTags=parseFloat(totalRfidTags)+parseFloat(result[i].totalRfidTags);
 							target=parseFloat(target)+parseFloat(result[i].target);
 							achieve=parseFloat(achieve)+parseFloat(result[i].achieve);
@@ -334,21 +365,35 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							vermi = parseFloat(vermi)+parseFloat(result[i].vermi);
 						    vermiStock = parseFloat(vermiStock)+parseFloat(result[i].vermiStock);
 							inTime = parseFloat(inTime)+parseFloat(result[i].inTime);						
+							outTime = parseFloat(outTime)+parseFloat(result[i].outTime);	
 							//inTime =inTime+result[i].inTime;
 							//outTime=outTime+result[i].outTime;
 							//outOfTarget=outOfTarget+result[i].outOfTarget;
 							
 							isState=true;
 						}
+						
 						targetinTimePer=(inTime/target)*100;
 						targetAchievePer=(achieve/target)*100;	
+						targetoutTimePer=(outTime/target)*100;	
 						table+='<tr>';
 							table+='<td class="text-capital">Andhra Pardesh</td>';
 							table+='<td>'+totalRfidTags+'</td>'; 
+							if(target>0 || targetAchievePer>0 || targetinTimePer>0 || targetoutTimePer>0)
+							{
 							table+='<td style="background-color:#D90022; color:#fff;">'+target+'</td>';
-							table+='<td style="background-color:#FFC0CB;">'+targetAchievePer.toFixed(2)+'%</td>';
-							table+='<td style="background-color:#92DD5A;">'+targetinTimePer.toFixed(2)+'%</td>';
-							table+='<td style="background-color:#1076F1; color:#fff;">'+outTimePer+'%</td>';
+							table+='<td style="background-color:#FFC0CB;">'+targetAchievePer.toFixed(2)+'%('+achieve+')</td>';
+							table+='<td style="background-color:#92DD5A;">'+targetinTimePer.toFixed(2)+'%('+inTime+')</td>';
+							table+='<td style="background-color:#1076F1;">'+targetoutTimePer.toFixed(2)+'%('+outTime+')</td>';
+							}
+							else
+							{
+							table+='<td style="background-color:#D90022; color:#fff;">0</td>';
+							table+='<td style="background-color:#FFC0CB;">0.0%</td>';
+							table+='<td style="background-color:#92DD5A;">0.0%</td>';
+							table+='<td style="background-color:#1076F1; color:#fff;">0.0%</td>';
+							}
+							//table+='<td style="background-color:#1076F1; color:#fff;">'+outTimePer+'%</td>';
 							//table+='<td style="background-color:#FFA600;">'+result[i].outOfTarget+'</td>';
 							table+='<td>'+farmers+'</td>';
 							table+='<td>'+swmCollection.toFixed(2)+'</td>';
@@ -358,6 +403,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 						table+='</tr>';
 				    }else{					
 					for(var i in result)
+						
 					{			
 						if(blockid == 'districtBodyId'){
 							table+='<tr attr_onclick_distname="'+blockid+'">';
@@ -369,11 +415,21 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'" attr_onclick_distname="'+blockid+'" style="cursor: pointer" class="text-capital" data-toggle="modal" data-target="#swmModal">'+result[i].name+'<i class="fa fa-info-circle pull-right" aria-hidden="true" title="Click for '+result[i].name+' Details" attr_onclick_distname="'+blockid+'" attr_dist_id="'+result[i].id+'" style="cursor: pointer"></i></td>';
 							table+='<td attr_dist_rfid="'+result[i].totalRfidTags+'">'+result[i].totalRfidTags+'</td>'; 
 							//table+='<td>0</td>';
+							if(result[i].target>0 || result[i].trackingPer>0 || result[i].inTimePer>0 || result[i].outTimePer>0)
+							{
 							table+='<td style="background-color:#D90022; color:#fff;">'+result[i].target+'</td>';
-							table+='<td style="background-color:#FFC0CB;">'+result[i].trackingPer+'%</td>';
-							table+='<td style="background-color:#92DD5A;">'+result[i].inTimePer+'%</td>';
-							table+='<td style="background-color:#1076F1; color:#fff;">'+result[i].outTimePer+'%</td>';
-//							table+='<td style="background-color:#FFA600;">'+result[i].outOfTarget+'</td>';
+							table+='<td style="background-color:#FFC0CB;">'+result[i].trackingPer+'%('+result[i].achieve+')</td>';
+							table+='<td style="background-color:#92DD5A;">'+result[i].inTimePer+'%('+result[i].inTime+')</td>';
+							table+='<td style="background-color:#1076F1; color:#fff;">'+result[i].outTimePer+'%('+result[i].outTime+')</td>';
+							}
+							else
+							{
+							table+='<td style="background-color:#D90022; color:#fff;">0</td>';
+							table+='<td style="background-color:#FFC0CB;">0.0%</td>';
+							table+='<td style="background-color:#92DD5A;">0.0%</td>';
+							table+='<td style="background-color:#1076F1; color:#fff;">0.0%</td>';
+							}
+                           //table+='<td style="background-color:#FFA600;">'+result[i].outOfTarget+'</td>';
 							/* table+='<td>0</td>';
 							table+='<td>0</td>';
 							table+='<td>0</td>';
@@ -432,7 +488,7 @@ $(document).on('click','[attr_onclick_distname]',function(){
 	if(locIdClick == 'districtBodyId'){
 			getSolidInfoLocationWise(0,distId,locationId,"district","1-06-2017","30-07-2017",0,"",0,"");
 		}else if(locIdClick == 'constituencyBodyId'){
-			getSolidInfoLocationWise(0,distId,locationId,"assembly","1-06-2017","30-07-2017",0,"",0,"");
+			getSolidInfoLocationWise(0,distId,locationId,"constituency","1-06-2017","30-07-2017",0,"",0,"");
 		}else if(locIdClick == 'mandalBodyId'){
 			getSolidInfoLocationWise(0,distId,locationId,"mandal","1-06-2017","30-07-2017",0,"",0,"");
 		}
@@ -466,6 +522,9 @@ $(document).on('click','[attr_onclick_distname]',function(){
 	$("#swmModalContent  #twentyfivekgCount").html(spinner);
 	$("#swmModalContent  #fiftykgCount").html(spinner);
 	$("#swmModalContent  #trackingId").html(spinner);
+	$("#swmModalContent  #intimeId").html(spinner);
+	$("#swmModalContent  #outtimeId").html(spinner);
+	
 }) 
 function getSolidWasteManagementOverAllCounts(locId,locationType){
 	$("#rfidTaggedHouses").html(spinner);
@@ -494,8 +553,10 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#tenkgcount").html(spinner);
 			$("#twentyfivekgCount").html(spinner);
 			$("#fiftykgCount").html(spinner);
-			//$("#rfidTracking").html(spinner);
+			//$("#rfidTracking").html(spinner);intimeId
 			$("#trackingId").html(spinner);
+			$("#intimeId").html(spinner);
+			$("#outtimeId").html(spinner);
 	var json = {
 		fromDate : startDate,
 		toDate : endDate,
@@ -515,8 +576,12 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 		
 		if(result != null){
 			console.log(result);
-			//alert(result.rfidTags);
-			$("#rfidTaggedHouses").html(result.totalRfidTags);
+			if(result.totalRfidTags !=null && result.totalRfidTags > 0){
+				$("#rfidTaggedHouses").html(result.totalRfidTags);
+			}else{
+				$("#rfidTaggedHouses").html("NO DATA");
+			}
+			//$("#rfidTaggedHouses").html(result.totalRfidTags);
 			$("#registeredFarmers").html(result.farmers);
 			$("#mgnrgsId").html(result.mgnres);
 			$("#prId").html(result.pr);
@@ -534,9 +599,30 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			target=(result.target);
 			var achieverfid=0;
 			achieverfid= (achieve/target*100);
+			var inTime=0;
+			var outTime=0;
+			var inTimePer=0;
+			var outTimePer=0;
+			var initalDistrictId=0;
+			var blocksCountDistrictwise=0;
+			var gpCountDistrictwise=0;
+			inTime=(result.inTime);
+			outTime=(result.outTime);
+			inTimePer=(inTime/target*100);
+			outTimePer=(outTime/target*100);
 			$("#totalRegVehicles").html(totRegvehicles);
-			$("#gpId").html(result.gpCnt);
-			$("#blocksId").html(result.blockNo);
+			if(result.gpCnt !=null && result.gpCnt > 0){
+				$("#gpId").html(result.gpCnt);
+			}else{
+				$("#gpId").html("NO DATA");
+			}
+			if(result.blockNo !=null && result.blockNo > 0){
+				$("#blocksId").html(result.blockNo);
+			}else{
+				$("#blocksId").html("NO DATA");
+			}
+			//$("#gpId").html(result.gpCnt);
+			//$("#blocksId").html(result.blockNo);
 			$("#solidWasteId").html(result.houseCollecion.toFixed(2));
 			$("#farmerCattleDung").html(result.farmerCollection.toFixed(2));
 			$("#totSwmId").html(result.swmCollection.toFixed(2));
@@ -548,16 +634,30 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			$("#tenkgcount").html(result.tenkg);
 			$("#twentyfivekgCount").html(result.twentyFivekg);
 			$("#fiftykgCount").html(result.fiftykg);
+			$("#intimeId").html(inTimePer.toFixed(2)+' %');
+			$("#outtimeId").html(outTimePer.toFixed(2)+' %');
 			if(target !=null && target > 0){
 				$("#trackingId").html(achieverfid.toFixed(2)+' %');
 			}else{
-				$("#trackingId").html('-');
+				$("#trackingId").html("NO DATA");
 			}
-				
+			if(target !=null && target > 0){
+				$("#intimeId").html(inTimePer.toFixed(2)+' %');
+			}else{
+				$("#intimeId").html("NO DATA");
+			}
+			if(target !=null && target > 0){
+				$("#outtimeId").html(outTimePer.toFixed(2)+' %');
+			}else{
+				$("#outtimeId").html("NO DATA");
+			}
 			
-			
-		}
+		//alert("blocksCountDistrictwise:"+blocksCountDistrictwise);
+		//alert("gpCountDistrictwise:"+gpCountDistrictwise);
+	
+	}
 	});
+	
 }
 
 $(document).on('change','#constituencySelectDist',function(){
@@ -565,7 +665,7 @@ $(document).on('change','#constituencySelectDist',function(){
 		var selconstId = $(this).val();
 		for(var i in levelWiseOverviewArr){
 			if(levelWiseOverviewArr[i] == 'constituency'){
-				getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"assembly","1-06-2017","30-07-2017",selconstId,"district",0,"");
+				getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"constituency","1-06-2017","30-07-2017",selconstId,"district",0,"");
 			}
 		}
 			
@@ -583,7 +683,7 @@ $(document).on('change','#mandalSelectCons',function(){
 	var selmandalId = $(this).val();
 	for(var i in levelWiseOverviewArr){
 		if(levelWiseOverviewArr[i] == 'mandal'){
-			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"mandal","1-06-2017","30-07-2017",0,"district",selmandalId,"assembly");
+			getSolidInfoLocationWise(levelWiseOverviewArr[i]+'BodyId',0,0,"mandal","1-06-2017","30-07-2017",0,"district",selmandalId,"constituency");
 		}
 	}
 })
