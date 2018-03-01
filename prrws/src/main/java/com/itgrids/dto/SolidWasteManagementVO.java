@@ -2,7 +2,9 @@ package com.itgrids.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SolidWasteManagementVO {
 	
@@ -57,9 +59,11 @@ public class SolidWasteManagementVO {
 	private String     status;
 	private Double inTimePer =0.00;
 	private Double outTimePer =0.00;
-	        
+	private Long  gpID;
+	private Long  blockID;
 
 	private List<SolidWasteManagementVO> subList = new ArrayList<SolidWasteManagementVO>(0);
+	private Set<SolidWasteManagementVO> gpList=new HashSet<SolidWasteManagementVO>();
 	
 	public String getId() {
 		return id;
@@ -373,5 +377,24 @@ public class SolidWasteManagementVO {
 	public void setOutTimePer(Double outTimePer) {
 		this.outTimePer = outTimePer;
 	}
+	public Long getGpID() {
+		return gpID;
+	}
+	public void setGpID(Long gpID) {
+		this.gpID = gpID;
+	}
+	public Long getBlockID() {
+		return blockID;
+	}
+	public void setBlockID(Long blockID) {
+		this.blockID = blockID;
+	}
+	public Set<SolidWasteManagementVO> getGpList() {
+		return gpList;
+	}
+	public void setGpList(Set<SolidWasteManagementVO> gpList) {
+		this.gpList = gpList;
+	}
+	
 	
 	}
