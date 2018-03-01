@@ -14,8 +14,8 @@ public class WorkStatusVO {
 	public String govtWorkStatus;
 	public List<String> imagesList = new ArrayList<String>(0);
 	public Double totalLenght;
-	public Double workLenght;
-	public Double workCompletedPercentage;
+	public Double workLenght,currentWorkLength;
+	public Double workCompletedPercentage,currentWorkCompletedPercentage;
 	public String isCompleted;
 	public String userName;
 	public String date;
@@ -125,6 +125,18 @@ public class WorkStatusVO {
 	}
 	public void setTotalLenght(Double totalLenght) {
 		this.totalLenght = totalLenght;
+	}
+	public Double getCurrentWorkLength() {
+		return currentWorkLength;
+	}
+	public void setCurrentWorkLength(Double currentWorkLength) {
+		this.currentWorkLength = currentWorkLength;
+	}
+	public Double getCurrentWorkCompletedPercentage() {
+		return currentWorkCompletedPercentage;
+	}
+	public void setCurrentWorkCompletedPercentage(Double currentWorkCompletedPercentage) {
+		this.currentWorkCompletedPercentage = currentWorkCompletedPercentage;
 	}
 
 	
