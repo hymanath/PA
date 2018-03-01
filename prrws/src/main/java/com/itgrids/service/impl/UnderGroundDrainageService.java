@@ -573,7 +573,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						Long documentId = saveDocuemnt(destPath,imageStr,govtWorksVO.getUserId());
 						if(documentId != null && documentId > 0l){
 							GovtWorkDocument govtWorkDocument = new GovtWorkDocument();
-							govtWorkDocument.setGovtWorkId(govtWorksVO.getWorkId());
+							govtWorkDocument.setGovtWorkId(govtWork.getGovtWorkId());
 							govtWorkDocument.setDocumentId(documentId);
 							govtWorkDocument.setUpdatedBy(govtWorksVO.getUserId());
 							govtWorkDocument.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
