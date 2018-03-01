@@ -779,10 +779,12 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		govtWorkProgressTrack.setGovtWorkId(workStatusVO.getWorkId());
 		govtWorkProgressTrack.setGovtWorkProgressUpdateId(uniqueUpdateId);
 		govtWorkProgressTrack.setGovtWorkStatusId(workStatusVO.getGovtWorkStatusId());
-		govtWorkProgressTrack.setWorkLength(workStatusVO.getWorkLenght() != null ? workStatusVO.getWorkLenght():null);
+		//govtWorkProgressTrack.setWorkLength(workStatusVO.getWorkLenght() != null ? workStatusVO.getWorkLenght():null);
+		govtWorkProgressTrack.setWorkLength(workStatusVO.getCurrentWorkLength() != null ? workStatusVO.getCurrentWorkLength():null);
 		govtWorkProgressTrack.setUpdatedBy(workStatusVO.getUserId());
 		govtWorkProgressTrack.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-		govtWorkProgressTrack.setCompletedPercentage(workStatusVO.getWorkCompletedPercentage() != null ? workStatusVO.getWorkCompletedPercentage():null);
+		//govtWorkProgressTrack.setCompletedPercentage(workStatusVO.getWorkCompletedPercentage() != null ? workStatusVO.getWorkCompletedPercentage():null);
+		govtWorkProgressTrack.setCompletedPercentage(workStatusVO.getCurrentWorkCompletedPercentage() != null ? workStatusVO.getCurrentWorkCompletedPercentage():null);
 		govtWorkProgressTrack.setIsCompleted(workStatusVO.getIsCompleted() != null ? workStatusVO.getIsCompleted():"N");
 		govtWorkProgressTrack = govtWorkProgressTrackDAO.save(govtWorkProgressTrack);
 	}
@@ -1201,7 +1203,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					}
 				}
 				
-				//get workZons for workType
+				//get workZones for workType
 				//0-workTypeId,1-workZones
 				List<Object[]> objList3 = govtWorkDAO.getWorkZonesCountForDateType(fromDate,toDate);
 				if(objList3 != null && objList3.size() > 0){
