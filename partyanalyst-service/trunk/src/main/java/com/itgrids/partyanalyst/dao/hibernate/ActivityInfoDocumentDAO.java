@@ -1599,7 +1599,7 @@ public List<Object[]> getWardNamesLocationsInfocoveredLocationsByScopeId(Long ac
 			sb.append(" and ASA.activity_id	=:activityId");
 		}
 		if(fromDate !=null && toDate !=null && fromDate.toString().length()>0 && toDate.toString().length()>0){
-			sb.append(" and AID.inserted_time between :fromDate and :toDate ");
+			sb.append(" and date(AID.inserted_time) between :fromDate and :toDate ");
 		}
 		if(locationScopeId !=null && locationValue!=null){
 			if(locationScopeId.contains(2l)){
