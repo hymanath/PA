@@ -79,10 +79,10 @@ public class DalithaTejamDashBoardAction extends ActionSupport implements	Servle
 		
 			for(int i=0 ; i< jObj.getJSONArray("levelValues").length() ; i++){
 				
-				inputVo.getLocationValue().add(Long.valueOf(jObj.getJSONArray("levelValues").get(i).toString()));
+				inputVo.getLocationValues().add(Long.valueOf(jObj.getJSONArray("levelValues").get(i).toString()));
 			}
 			for(int i=0 ; i< jObj.getJSONArray("levelIds").length() ; i++){
-				inputVo.getLocationScopeId().add(Long.valueOf(jObj.getJSONArray("levelIds").get(i).toString()));
+				inputVo.getLocationScopeIds().add(Long.valueOf(jObj.getJSONArray("levelIds").get(i).toString()));
 			}
 			inputVo.setFromDate(jObj.getString("startDateStr"));
 			inputVo.setToDate(jObj.getString("endDateStr"));
@@ -96,5 +96,23 @@ public class DalithaTejamDashBoardAction extends ActionSupport implements	Servle
 		
 	}
 
-	
+	public String getDateWiseCount(){
+
+		try{
+			jObj = new JSONObject(getTask());
+			dalithaTejamList= new ArrayList<DalithaTejamVO>();
+			DalithaTejamInputVo inputVo =new DalithaTejamInputVo();
+		
+			inputVo.setLocationValue(jObj.getLong("levelValue"));
+			inputVo.setLocationScopeId(jObj.getLong("levelId"));
+			inputVo.setFromDate(jObj.getString("startDateStr"));
+			inputVo.setToDate(jObj.getString("endDateStr"));
+			inputVo.setActivityId(jObj.getLong("activityId"));
+			
+			dalithaTejamList= dalithaTejamDashBoardService.getDateWiseCount(inputVo);
+		}catch(Exception e){
+			LOG.error("Exception Occured In getImagesFordalithatejam method "+e);		
+		}
+		return Action.SUCCESS;
+	}
 }
