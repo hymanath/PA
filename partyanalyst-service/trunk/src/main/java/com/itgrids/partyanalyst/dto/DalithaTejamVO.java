@@ -13,6 +13,9 @@ public class DalithaTejamVO {
 	private Long constituencyId;
 	private String constituencyName;
 	private Long imageId;
+	private Long todayRegistred=0l;
+	private Long todayLoanApplied=0l;
+	private Long todayvisted=0l;
 	
 	public String getImagePath() {
 		return imagePath;
@@ -73,6 +76,24 @@ public class DalithaTejamVO {
 	}
 	public void setImageId(Long imageId) {
 		this.imageId = imageId;
+	}
+	public Long getTodayRegistred() {
+		return todayRegistred;
+	}
+	public void setTodayRegistred(Long todayRegistred) {
+		this.todayRegistred = todayRegistred;
+	}
+	public Long getTodayLoanApplied() {
+		return todayLoanApplied;
+	}
+	public void setTodayLoanApplied(Long todayLoanApplied) {
+		this.todayLoanApplied = todayLoanApplied;
+	}
+	public Long getTodayvisted() {
+		return todayvisted;
+	}
+	public void setTodayvisted(Long todayvisted) {
+		this.todayvisted = todayvisted;
 	}
 	
 

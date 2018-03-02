@@ -5,24 +5,26 @@ import java.util.List;
 
 public class DalithaTejamInputVo {
 
-	private List<Long> locationScopeId= new ArrayList<Long>();
-	private List<Long> locationValue= new ArrayList<Long>();
+	private List<Long> locationScopeIds= new ArrayList<Long>();
+	private List<Long> locationValues= new ArrayList<Long>();
 	private String fromDate;
 	private String toDate;
 	private Long activityId;
+	private Long locationScopeId;
+	private Long locationValue;
 	
 	
-	public List<Long> getLocationScopeId() {
-		return locationScopeId;
+	public List<Long> getLocationScopeIds() {
+		return locationScopeIds;
 	}
-	public void setLocationScopeId(List<Long> locationScopeId) {
-		this.locationScopeId = locationScopeId;
+	public void setLocationScopeIds(List<Long> locationScopeIds) {
+		this.locationScopeIds = locationScopeIds;
 	}
-	public List<Long> getLocationValue() {
-		return locationValue;
+	public List<Long> getLocationValues() {
+		return locationValues;
 	}
-	public void setLocationValue(List<Long> locationValue) {
-		this.locationValue = locationValue;
+	public void setLocationValues(List<Long> locationValues) {
+		this.locationValues = locationValues;
 	}
 	public String getFromDate() {
 		return fromDate;
@@ -41,6 +43,18 @@ public class DalithaTejamInputVo {
 	}
 	public void setActivityId(Long activityId) {
 		this.activityId = activityId;
+	}
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
+	}
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
 	}
 	
 	
