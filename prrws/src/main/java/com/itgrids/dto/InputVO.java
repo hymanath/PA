@@ -114,6 +114,7 @@ public class InputVO implements Serializable {
 	private Long lightVendorId;
 	private Long componentId;	
 	private Long   WebserviceId;
+	private Long subLocationId;
 	
 	public Long getPageId() {
 		return pageId;
@@ -731,6 +732,12 @@ public class InputVO implements Serializable {
 	}
 	public void setWebserviceId(Long webserviceId) {
 		WebserviceId = webserviceId;
+	}
+	public Long getSubLocationId() {
+		return subLocationId;
+	}
+	public void setSubLocationId(Long subLocationId) {
+		this.subLocationId = subLocationId;
 	}
 	
 }
