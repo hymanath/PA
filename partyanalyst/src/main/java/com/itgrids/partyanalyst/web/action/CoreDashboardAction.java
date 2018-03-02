@@ -6325,6 +6325,7 @@ public String getConsolidatedPartyMeetingExceptionReportMeetingLevelWise(){
 		inputVO.setFromDateStr(jObj.getString("fromDate"));
 		inputVO.setToDateStr(jObj.getString("toDate"));
 		inputVO.setStateId(jObj.getLong("stateId"));
+		inputVO.setAccessType(jObj.getString("accessType"));
 		//inputVO.setPartyMeetingtypeIds(partyMeetingTypeIds);
 		consolidatedExceptionalReportVO = consolidatedExceptionalReportService.getOverAllConsolidatedViewDetails(inputVO);
 	} catch (Exception e) {

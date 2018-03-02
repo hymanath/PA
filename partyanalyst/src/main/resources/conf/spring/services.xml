@@ -4786,6 +4786,9 @@
    	 	 <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO"></property>
    	 	 <property name="trainingCampDetailsInfoDAO" ref="trainingCampDetailsInfoDAO"></property>
    	 	 <property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO"></property>
+   	 	 <property name="trainingCampDAO" ref="trainingCampDAO"></property>
+   	 	 <property name="trainingCampInviteeConstituencyDAO" ref="trainingCampInviteeConstituencyDAO"></property>
+   	 	 <property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
    	 	</bean>
    	 
    	 	<bean name="biometricAttendanceService" class="com.itgrids.partyanalyst.service.impl.BiometricAttendanceService">
