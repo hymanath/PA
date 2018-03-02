@@ -440,6 +440,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 			sb.append(" model.panchayat.locationAddress.district.districtId,model.panchayat.locationAddress.district.districtName,model.panchayat.panchayatId,model.panchayat.panchayatName");
 		}
 		sb.append(",model.lightsVendor.lightsVendorId,"
+				//+ "sum(model.totalPanels),"
 				+ "sum(model.totalPanels),"
 				+ "model.lightsVendor.vendorName,"
 				+ "sum(model.totalLights)"
@@ -448,7 +449,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 				+ " and model.panchayat.locationAddress.state.stateId = 1"
 				+ " and model.lightsVendor.lightsVendorId is not null");
 		if (fromDate != null && toDate != null) {
-			sb.append(" and  date(model.surveyDate) between :fromDate and :toDate");
+			sb.append(" and  date(model.surveyDate) = :toDate");
 		}
 		if(levelType != null && levelType.trim().equalsIgnoreCase("district")){
 			sb.append(" group by model.panchayat.locationAddress.district.districtId");
@@ -459,7 +460,7 @@ public class LightMonitoringDAO extends GenericDaoHibernate<LightMonitoring, Lon
 		sb.append(",model.lightsVendor.lightsVendorId");
 		Query query = getSession().createQuery(sb.toString());
 		if (fromDate != null && toDate != null) {
-			query.setDate("fromDate", fromDate);
+			//query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
 		return query.list();
