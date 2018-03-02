@@ -17,6 +17,9 @@
 <link href="D2D_Assests/Plugins/slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/css/styles.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <style type="text/css">
 .panel
 {
@@ -82,7 +85,7 @@
 			<div class="row">
 				<div class="col-sm-12 m_top10">
 					<div class="col-sm-4">
-						<h4 class="green-text font_weight">Today</h4>
+						<h4 class="green-text font_weight" id="blockId"></h4>
 						<div class="greenBox-today m_top10">
 							<div class="row">
 								<div class="col-sm-8 pad_right0">
@@ -276,6 +279,82 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal" tabindex="-1" role="dialog" id="prajaSankalpaYatraModalId">
+		  <div class="modal-dialog modal-lg" style="width:40%;">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<div class="row">
+					<div class="col-md-9 col-xs-12 col-sm-9">
+						<h4 class="modal-title text-capital" id="prajaSankalpaHeadingId"></h4>
+					</div>
+					
+				</div>
+			  </div>
+			  <div class="modal-body" style="padding-bottom: 0px; padding-top: 5px;">
+						<div id="popImgDiv"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraStateTableId"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraDistrictTableId"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraPanchayatTableId"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraMandalTableId"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraConstituencyTableId"></div>
+						<div class="clearModalTables" id="prajaSankalpaYatraCorpTableId"></div>
+						
+			  </div>
+			  <div class="modal-footer" style="padding-bottom: 0px;">     
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="articleDataID">
+	  <div class="modal-dialog modal-lg" style="width:90%;">       
+		<div class="modal-content" style="border-radius:0px">
+			<div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close newsImagemodal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<div class="row">
+						<div class="col-md-9 col-xs-12 col-sm-9">
+							<h4 class="modal-title text-capital" id="articleId"></h4>
+						</div>
+						
+					</div>
+				</div>
+			<div class="modal-body" style="padding-bottom: 0px; padding-top: 5px;">
+				<div class="container m_top20">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div id="newspopImgDiv"></div>
+							<div class="row ">
+								<div class="col-md-10 col-md-offset-5 m_top20">
+									<div class="paginationId"></div>
+								</div>
+							</div>
+									
+						</div>
+					</div>
+				</div>
+			</div>
+		  
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+</div>
+<!-------start popup build------------>
+<div class="modal fade" id="myModalImageId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%;z-index:9999" >
+    <div class="modal-content customModal">
+      <div class="modal-header">
+        <button type="button" class="close imageCloseBtnCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabelId" style="text-transform: uppercase;"></h4>
+      </div>
+      <div class="modal-body" style="padding:0px 15px;">
+       <div id="buildPoupupImage"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="hiddenActivityScopeId"></input>
+<!--------End Popup build----------->
 </section>
 <script src="D2D_Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="D2D_Assests/js/bootstrap.js" type="text/javascript"></script>
@@ -284,12 +363,14 @@
 <script src="D2D_Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
+<script type="text/javascript" src="newCoreDashBoard/js/simplePagination3.js" ></script>
 <script src="D2D_Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/slick/slick.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="D2D_Assests/js/dalithTejamDashBoard.js" type="text/javascript"></script>	
+<script type="text/javascript" src="newCoreDashBoard/slimscroller/jquery.slimscroll.js"></script>
 <script>
   var tableToExcel = (function() {
   var uri = 'data:application/vnd.ms-excel;base64,'
