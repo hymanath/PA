@@ -1,0 +1,337 @@
+.memberMeetingCls li {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+}
+*, select {
+    outline: 0 none !important;
+}
+
+.panel-title {
+    position: relative;
+}
+.roundCssCls {
+    background-color: #ddd;
+    border: 1px solid #777777;
+    border-radius: 100%;
+    height: 25px;
+    padding: 5px 12px;
+    text-align: center;
+    text-decoration: underline;
+    width: 25px;
+}
+.navbarCollapseCustom
+{
+	background:transparent;
+	border:0px;
+	margin:0px;
+	min-height:40px;
+}
+.navbarCollapseCustom .navbar-collapse
+{
+	border-bottom:2px solid #663300
+}
+.navbarCollapseCustom li a
+{
+	padding:3px;
+}
+.navbarCollapseCustom li.active a,.navbarCollapseCustom li a:hover,.navbarCollapseCustom li a:focus
+{
+	border-bottom:3px solid #663300;
+	background:#fff;
+}
+.navbarCollapseCustom .navbar-nav > .active > a, .navbarCollapseCustom .navbar-nav > .active > a:hover, .navbarCollapseCustom .navbar-nav > .active > a:focus
+{
+	background:#fff;
+}
+
+.eventsheader , #statewiseoverviewPanel,#locationsPopup
+{
+	display:none;
+}
+.slickApplyPopupDays li.active{
+	background: #E29203 none repeat scroll 0 0;
+	 border-radius: 5px 5px 0px 0px;
+	 margin-left:5px;
+	 font-size:11px;
+	 border-bottom:0px;
+}
+.slickApplyPopupDays li.active a{
+	background: #E29203 none repeat scroll 0 0;
+	 border-radius: 5px 5px 0px 0px;
+	 margin-left:5px;
+	 font-size:11px;
+	 border-bottom:0px;
+}
+
+.slickApplyPopupDays li{
+	background: #e6e6e6 none repeat scroll 0 0;
+	border-radius: 5px 5px 0px 0px;
+	margin-left:5px;
+	font-size:11px;
+	border-bottom:0px;
+}
+.customModal{
+	background-color:#fff;
+}
+
+.accordionmodal-toggle , .accordionmodal-toggle:active ,.accordionmodal-toggle:hover
+{
+	color:#666 !important
+}
+.accordionmodal-toggle:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: right;
+    color: inherit;
+	font-size:10px;
+	margin-top:0px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	background:#E0D6CC;
+	border:1px solid #663300;
+	padding:1px 3px;
+}
+.pad_0 {
+    padding: 0;
+}
+.accordionmodal-toggle.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\2b";
+}
+.panelBlockCollapse .panel-default
+{
+  border-top:0px;
+  border-left:0px;
+  border-right:0px;
+}
+.panelBlockCollapse .panel-heading
+{
+  background-color:#fff !important;
+}
+.panelBlockCollapse .panel-body
+{
+  border-top:0px !important;
+}
+.panelBlockCollapseIcon , .panelBlockCollapseIcon:active ,.panelBlockCollapseIcon:hover
+{
+  color:#666 !important
+}
+.panelBlockCollapseIcon:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: right;
+  font-size:12px;
+  margin-top:0px;
+  font-weight:400 !important;
+  margin-left:-4px;
+  color:#333;
+  border:1px solid #333;
+  padding:4px 8px;
+}
+.panelBlockCollapseIcon.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\002b";
+}
+.panel-group {
+    margin-bottom: 0;
+}
+.panel-custommodal
+{
+	border-radius:0px !important;
+	margin-top:0px !important;
+}
+.panel-custommodal .panel-heading
+{
+	border-radius:0px;
+	background:#f5f5f5;
+	
+}
+.panel-custommodal .panel-body
+{
+	box-shadow:inset 0 2px 10px 0 rgba(0, 0, 0, 0.35);
+	padding:15px;
+}
+
+.slick-training {
+    background: #fff none repeat scroll 0 0;
+    height: 30px;
+    margin-left: 50px;
+}
+.slider-nav {
+    background: #fff none repeat scroll 0 0;
+    padding: 0;
+}
+.slider-nav li {
+    border: 2px solid #663300;
+    margin-left: 3px;
+}
+.slider-nav li img {
+    height: 40px;
+}
+.slider-for {
+    padding: 0;
+}
+.slider-for li img {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.65);
+    display: block;
+    height: 350px;
+    margin: auto;
+    width: 100%;
+}
+
+.light-theme a, .light-theme span {
+    float: none;
+}
+#prevNxtId li:first-child {
+    float: left;
+}
+#prevNxtId li:last-child {
+    float: right;
+}
+.light-theme a, .light-theme span {
+    font-weight: bold !important;
+    padding: 2px 18px !important;
+}
+.slick-training 
+{
+	background:#fff;
+	height:30px;
+	margin-left:50px;
+}
+.slider-nav
+{
+	background:#fff;
+	padding:0px
+}
+.slider-nav li
+{
+	margin-left:3px;
+	border:2px solid #663300;
+}
+.slider-nav li img
+{
+	height:40px;
+}
+.slider-for
+{
+	padding:0px;
+}
+.slider-for li img
+{
+	width:100%;
+	height:350px;
+	margin:auto;
+	display:block;
+	box-shadow:0px 0px 8px rgba(0,0,0,0.65)
+}
+.panelActiveSlick .panel-heading, .panelActiveSlick .panel-body {
+    background-color: rgb(255, 255, 255) !important;
+}
+.panelSlick {
+    border: 1px solid rgb(74, 87, 98);
+    border-radius: 4px;
+    margin: 5px;
+}
+.panelSlick .panel-heading {
+    background-color: rgb(219, 223, 226);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 3px 8px;
+    position: relative;
+}
+.panelSlick .panel-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+.panelSlick .panel-heading .count {
+    background-color: rgb(74, 88, 100);
+    border-radius: 50%;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    padding: 4px 6px;
+    position: absolute;
+    right: 10px;
+    text-align: center;
+    top: 8px;
+    width: 30px;
+}
+.panelNew {
+    border-color: rgb(221, 221, 221);
+    border-radius: 0;
+}
+.panelNew .panel-heading, .panelNewEvents .panel-heading {
+    background-color: rgb(255, 255, 255) !important;
+    border-radius: 0;
+}
+.panelNewEvents {
+    border: 0 none;
+    box-shadow: none !important;
+	margin-bottom:0px !important;
+}
+.panelSlick .panel-body {
+    background-color: rgb(237, 238, 240);
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.slickPanelSlider li, .slickPanelSliderTraining li, .slickPanelSliderMeeting li {
+    margin: 0 5px;
+}
+.slickPanelSlider li.active .panelSlick {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.accordionmodal-toggle , .accordionmodal-toggle:active ,.accordionmodal-toggle:hover
+{
+	color:#666 !important
+}
+.accordionmodal-toggle:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: right;
+    color: inherit;
+	font-size:10px;
+	margin-top:0px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	background:#E0D6CC;
+	border:1px solid #663300;
+	padding:1px 3px;
+}
+.accordionmodal-toggle.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\2b";
+}
+
+.cadreInsurancePanel .panel
+{
+	border:0px;
+}
+.cadreInsurancePanel .panel-collapse
+{
+	position:relative;
+}
+.cadreInsurancePanel .panel-collapse .notesArrow
+{
+	margin-top:0px;
+}
+.cadreInsurancePanel .panel-collapse .notesArrow:after , .cadreInsurancePanel .panel-collapse .notesArrow:before
+{
+	left:30px;
+}
+.cadreInsurancePanel .panel-collapse .notesArrow:after
+{
+	border-color:rgba(194, 225, 245, 0) rgba(194, 225, 245, 0) #EDEDED;
+}
+.cadreInsurancePanel .panel-collapse .notesArrow
+{
+	border: 1px solid #c2e1f5;
+}
+.cadreInsurancePanel .panel-collapse .notesArrow:before
+{
+	border-color:rgba(194, 225, 245, 0) rgba(194, 225, 245, 0) #CCC;
+}
