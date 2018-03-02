@@ -8,4 +8,6 @@ import com.itgrids.partyanalyst.dto.DalithaTejamVO;
 public interface IDalithaTejamDashBoardService {
 
 	public List<DalithaTejamVO> getLatestImages(DalithaTejamInputVo inputVo);
+
+	public List<DalithaTejamVO> getDateWiseCount(DalithaTejamInputVo inputVo);
 }
