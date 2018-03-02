@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -186,5 +187,80 @@ public class AffiliatedMemberDAO extends GenericDaoHibernate<AffiliatedMember, L
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("value",value);
 		return (Long) query.uniqueResult();
+	}
+	@Override
+	public List<Object[]> getDayWisrRegisteredCount(Date fromDate, Date toDate,Long locationScopeId, Long locationValue, String type) {
+		
+		StringBuilder sb = new StringBuilder();
+		if(type !=null && type.equalsIgnoreCase("loan")){
+			sb.append("select 0,count(affiliatedMemberId) ");
+		}else{
+			sb.append("select count(affiliatedMemberId),0 ");
+		}
+		if(locationScopeId !=null && locationScopeId>0l){
+			if(locationScopeId==2l){
+				sb.append(" ,model.userAddress.state.stateId ");
+			}else if(locationScopeId==3l){
+				sb.append(" ,model.userAddress.district.districtId ");
+			}
+		}
+		sb.append(" from AffiliatedMember model  where isDeleted='N' ");
+		if(type !=null && type.equalsIgnoreCase("loan")){
+			sb.append(" and isAppliedLoan ='Y'");
+		}
+		if( fromDate !=null && toDate!=null){
+			sb.append(" and date(insertedTime) between :fromDate and :toDate");
+		}
+		if(locationScopeId !=null && locationScopeId>0l && locationValue !=null && locationValue>0l){
+			if(locationScopeId==2l){
+				sb.append(" and model.userAddress.state.stateId =:locationValue ");
+			}else if(locationScopeId==3l){
+				sb.append(" and model.userAddress.district.districtId =:locationValue ");
+			}
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if( fromDate !=null && toDate!=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		if(locationScopeId !=null && locationScopeId>0l && locationValue !=null && locationValue>0l){
+			query.setParameter("locationValue", locationValue);
+		}
+		return query.list();
+	}
+	@Override
+	public List<Object[]> getDayWisrVisitedCount(Date fromDate, Date toDate,Long locationScopeId, Long locationValue) {
+		
+		StringBuilder sb = new StringBuilder();
+			sb.append("select count(distinct activityLocationInfoId )");
+
+		if(locationScopeId !=null && locationScopeId>0l){
+			if(locationScopeId==2l){
+				sb.append(" ,model.address.state.stateId ");
+			}else if(locationScopeId==3l){
+				sb.append(" ,model.address.district.districtId ");
+			}
+		}
+		sb.append(" from ActivityLocationInfo model  where conductedDate is not null and model.activityScopeId=60 ");
+		
+		if( fromDate !=null && toDate!=null){
+			sb.append(" and conductedDate between :fromDate and :toDate");
+		}
+		if(locationScopeId !=null && locationScopeId>0l && locationValue !=null && locationValue>0l){
+			if(locationScopeId==2l){
+				sb.append(" and model.address.state.stateId =:locationValue ");
+			}else if(locationScopeId==3l){
+				sb.append(" and model.address.district.districtId =:locationValue ");
+			}
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if( fromDate !=null && toDate!=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		if(locationScopeId !=null && locationScopeId>0l && locationValue !=null && locationValue>0l){
+			query.setParameter("locationValue", locationValue);
+		}
+		return query.list();
 	}
 }
