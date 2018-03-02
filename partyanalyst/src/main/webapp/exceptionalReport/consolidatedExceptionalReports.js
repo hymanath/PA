@@ -41,6 +41,7 @@ function onloadPartyMeeting(){
 	//for(var i in levelWiseArr){
 		//getLevelWisePartyMeetingExceptionReport(levelWiseArr[i].id,levelWiseArr[i].levelName,levelWiseArr[i].partyMeetingTypeId);
 		getConsolidatedLevelWisePartyMeetingExceptionReport();
+		getConsolidatedLevelWisePartyMeetingExceptionReport1();
 	//}
 	
 }
@@ -276,7 +277,8 @@ function getConsolidatedLevelWisePartyMeetingExceptionReport(){
 					// partyMeetingLevel :levelName,
 					 fromDate : customStartToursDateM,
 					 toDate : customEndToursDateM,
-					 stateId:1
+					 stateId:1,
+					 accessType:"parliament"
 					 //partyMeetingTypeIds:partyMeetingTypeIdsArr,
 					 
 				  }
@@ -295,7 +297,32 @@ function getConsolidatedLevelWisePartyMeetingExceptionReport(){
 			 }
 		});
 }
-
+function getConsolidatedLevelWisePartyMeetingExceptionReport1(){
+		 $("#overAllMeetingLevelsDivId1").html(spinner);
+	 	var jsObj = { 
+					// partyMeetingLevel :levelName,
+					 fromDate : customStartToursDateM,
+					 toDate : customEndToursDateM,
+					 stateId:1,
+					 accessType:"constituency"
+					 //partyMeetingTypeIds:partyMeetingTypeIdsArr,
+					 
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getOverAllConsolidatedViewDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		     if(result !=null){
+				 $(".waitingMsgCls").hide();
+				buildConsolidatedLevelWisePartyMeetingExceptionReport1(result); 
+			 }else{
+				 $("#overAllMeetingLevelsDivId1").html("");
+				 $("#overAllMeetingLevelsDivId1").html("No data available");
+			 }
+		});
+}
 function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 	
 	var str='';
@@ -388,6 +415,16 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 		str+='</div>';
 	str+='</div>';
 	
+	
+	
+	$("#overAllMeetingLevelsDivId").html(str);
+}
+
+function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
+	
+	var str='';
+	
+	
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
 				str+='<h5 class="text_bold text-capital font_size24" >Assembly Constituency with Poor Performance</h5>';
@@ -430,8 +467,10 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 						str+='<tbody>';
 						var countVar1 =0;
 							for(var i in result.subList1){
-								str+='<tr>';
-								str+='<td>'+result.subList1[i].addressVO.constituencyName+'</td>';
+								
+								if(result.subList1[i].addressVO != null){
+									str+='<tr>';
+									str+='<td>'+result.subList1[i].addressVO.constituencyName+'</td>';
 								str+='<td>'+result.subList1[i].addressVO.parliamentName+'</td>';
 								for(var j in result.subList1[i].subList1){
 									//str+='<td>'+result.subList1[i].subList1[j].totalCount+'</td>';
@@ -444,11 +483,15 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 										str+='<td>-</td>';
 									}
 								}
+								
+								
 								str+='</tr>';
+								
 								/* countVar1 =countVar1+1;
 								if (countVar1 === 10) {
 									break;
 								} */
+								}
 							}
 							
 						str+='</tbody>';
@@ -457,5 +500,5 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 		str+='</div>';
 	str+='</div>';
 	
-	$("#overAllMeetingLevelsDivId").html(str);
+	$("#overAllMeetingLevelsDivId1").html(str);
 }
