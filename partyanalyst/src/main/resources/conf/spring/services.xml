@@ -4772,6 +4772,7 @@
    	 	<bean name = "dalithaTejamDashBoardService" class = "com.itgrids.partyanalyst.service.impl.DalithaTejamDashBoardService">
    	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
    	  	 <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
+   	  	 <property name="affiliatedMemberDAO" ref="affiliatedMemberDAO"></property>
    	 	</bean>
    	 
    	  	<bean name = "consolidatedExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.ConsolidatedExceptionalReportService">
