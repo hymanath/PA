@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.PanchayatTaxVO;
 import com.itgrids.dto.TaxesVO;
+import com.itgrids.dto.panchayatTaxInputVO;
 import com.itgrids.service.ITaxesDashBoardService;
 
 @EnableAutoConfiguration
@@ -28,7 +30,7 @@ public class TaxesDashboardController {
 	private ITaxesDashBoardService taxesDashBoardService;
 	
 	
-	@RequestMapping(value ="/taxesDashboard",method = RequestMethod.GET)
+	@RequestMapping(value ="/panchayatTaxDashboard",method = RequestMethod.GET)
     public String taxesDashboard(ModelMap model) {
 		return "taxesDashboard";
     }
@@ -51,4 +53,9 @@ public class TaxesDashboardController {
 	   return reusltList;
    }
 
+   @RequestMapping(value = "/getPanchyatTaxDashboardFilterWiseDetails", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+   public @ResponseBody  List<PanchayatTaxVO>  getPanchyatTaxDashboardFilterWiseDetails(@RequestBody panchayatTaxInputVO inputVo) {
+	List<PanchayatTaxVO>  reusltList = taxesDashBoardService.getPanchyatTaxDashboardFilterWiseDetails(inputVo);
+	   return reusltList;
+   }
 }
