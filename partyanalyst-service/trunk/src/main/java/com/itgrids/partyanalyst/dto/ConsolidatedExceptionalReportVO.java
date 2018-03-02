@@ -18,12 +18,82 @@ public class ConsolidatedExceptionalReportVO {
 	private Double mayBePercentage;
 	private Long sortNo = 0l;
 	private Long committeeHavingNoSmartPhone=0l;
+	private Double constMeetingPerc=0.0;
+	private Double mandalMeetingPerc=0.0;
+	private Double villageMeetingPerc=0.0;
+	private Double mandalCommitteePerc=0.0;
+	private Double villageCommPerc=0.0;
+	private Double affiliatedCommPerc=0.0;
+	private Double boothCommPerc=0.0;
+	private Double dalithaTejPerc=0.0;
+	private Double kaizalaPerc=0.0;
+	private Double trainingCampPerc=0.0;
 	
 	private List<ConsolidatedExceptionalReportVO> subList1;
 	private List<ConsolidatedExceptionalReportVO> subList2;
 
 	
 	
+	public Double getConstMeetingPerc() {
+		return constMeetingPerc;
+	}
+	public void setConstMeetingPerc(Double constMeetingPerc) {
+		this.constMeetingPerc = constMeetingPerc;
+	}
+	public Double getMandalMeetingPerc() {
+		return mandalMeetingPerc;
+	}
+	public void setMandalMeetingPerc(Double mandalMeetingPerc) {
+		this.mandalMeetingPerc = mandalMeetingPerc;
+	}
+	public Double getVillageMeetingPerc() {
+		return villageMeetingPerc;
+	}
+	public void setVillageMeetingPerc(Double villageMeetingPerc) {
+		this.villageMeetingPerc = villageMeetingPerc;
+	}
+	public Double getMandalCommitteePerc() {
+		return mandalCommitteePerc;
+	}
+	public void setMandalCommitteePerc(Double mandalCommitteePerc) {
+		this.mandalCommitteePerc = mandalCommitteePerc;
+	}
+	public Double getVillageCommPerc() {
+		return villageCommPerc;
+	}
+	public void setVillageCommPerc(Double villageCommPerc) {
+		this.villageCommPerc = villageCommPerc;
+	}
+	public Double getAffiliatedCommPerc() {
+		return affiliatedCommPerc;
+	}
+	public void setAffiliatedCommPerc(Double affiliatedCommPerc) {
+		this.affiliatedCommPerc = affiliatedCommPerc;
+	}
+	public Double getBoothCommPerc() {
+		return boothCommPerc;
+	}
+	public void setBoothCommPerc(Double boothCommPerc) {
+		this.boothCommPerc = boothCommPerc;
+	}
+	public Double getDalithaTejPerc() {
+		return dalithaTejPerc;
+	}
+	public void setDalithaTejPerc(Double dalithaTejPerc) {
+		this.dalithaTejPerc = dalithaTejPerc;
+	}
+	public Double getKaizalaPerc() {
+		return kaizalaPerc;
+	}
+	public void setKaizalaPerc(Double kaizalaPerc) {
+		this.kaizalaPerc = kaizalaPerc;
+	}
+	public Double getTrainingCampPerc() {
+		return trainingCampPerc;
+	}
+	public void setTrainingCampPerc(Double trainingCampPerc) {
+		this.trainingCampPerc = trainingCampPerc;
+	}
 	public Long getCommitteeHavingNoSmartPhone() {
 		return committeeHavingNoSmartPhone;
 	}
