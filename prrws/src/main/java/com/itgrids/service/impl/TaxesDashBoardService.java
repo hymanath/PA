@@ -13,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.PanchayatTaxVO;
 import com.itgrids.dto.TaxesVO;
+import com.itgrids.dto.panchayatTaxInputVO;
 import com.itgrids.service.ITaxesDashBoardService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
@@ -623,4 +625,239 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 		return returnList;
 	}
 	
+	public List<PanchayatTaxVO> getPanchyatTaxDashboardFilterWiseDetails(panchayatTaxInputVO inputVO){
+		List<PanchayatTaxVO> returnList = new ArrayList<PanchayatTaxVO>();
+		try {
+			String url = getURLBasedOnFilter(inputVO);
+			ClientResponse response = webServiceUtilService.callWebService(url, null,IConstants.REQUEST_METHOD_GET);
+			if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 String output = response.getEntity(String.class);
+	 	    	if(inputVO.getDefaultersType() != null && inputVO.getDefaultersType().equalsIgnoreCase("Defaulters"))
+	 	    		returnList = setDefaultersDataToList(output);
+	 	    	else if(inputVO.getDefaultersType() != null && inputVO.getDefaultersType().equalsIgnoreCase("Indicators"))
+	 	    		returnList = setIndicatorsDataToList(output);
+	 	    	else
+	 	    		returnList = setDataToList(output);
+	 	    		
+	 	      }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPanchyatTaxDashboardFilterWiseDetails  in TaxesDashBoardService service", e);
+		}
+		return returnList;
+	}
+	
+	public String getURLBasedOnFilter(panchayatTaxInputVO inputVO){
+		String url = null;
+		try {
+			Long taxTypeId = 0L;
+			if(inputVO.getTaxTypeId() != null && inputVO.getTaxTypeId() > 0L)
+				taxTypeId = inputVO.getTaxTypeId();
+			else if(inputVO.getFeeTypeId() != null && inputVO.getFeeTypeId() > 0L)
+				taxTypeId = inputVO.getFeeTypeId();
+			
+			if(inputVO.getDefaultersType() != null && inputVO.getDefaultersType().equalsIgnoreCase("Defaulters")){
+				url = "http://pris.ap.gov.in/api/taxes/taxstats.php?defaultersData=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"";
+			}else if(inputVO.getDefaultersType() != null && inputVO.getDefaultersType().equalsIgnoreCase("Indicators")){
+				if(taxTypeId != null && taxTypeId > 0L){
+					if(inputVO.getIndicatorsId() != null && inputVO.getIndicatorsId() > 0L)
+						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&taxtype="+taxTypeId+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"&usage_type="+inputVO.getIndicatorsId()+"";
+					else
+						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&taxtype="+taxTypeId+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
+				}
+				else{
+					if(inputVO.getIndicatorsId() != null && inputVO.getIndicatorsId() > 0L)
+						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"&usage_type="+inputVO.getIndicatorsId()+"";
+					else
+						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
+				}
+			}else{
+				url = "http://pris.ap.gov.in/api/taxes/taxstats.php?taxStatistics=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&taxtype="+taxTypeId+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getURLBasedOnFilter  in TaxesDashBoardService service", e);
+		}
+		return url;
+	}
+	
+	public List<PanchayatTaxVO> setDefaultersDataToList(String output){
+		List<PanchayatTaxVO> returnList = new ArrayList<PanchayatTaxVO>();
+		try {
+			if(output != null && !output.isEmpty()){
+ 	    		JSONArray jsonArray = new JSONArray(output);
+ 	    		if(jsonArray!=null && jsonArray.length()>0){
+ 	    			for(int i=0;i<jsonArray.length();i++){
+ 	    				JSONObject jObj = (JSONObject) jsonArray.get(i);
+ 	    				PanchayatTaxVO vo = new PanchayatTaxVO();
+ 	    				vo.setDistrictId(jObj.has("id") ? jObj.getLong("id") : null);
+ 	    				vo.setDistrictName(jObj.has("district") ? jObj.getString("district") : null);
+ 	    				vo.setParliamentId(jObj.has("parliamentId") ? jObj.getLong("parliamentId") : null);
+ 	    				vo.setParliamentName(jObj.has("parliamentName") ? jObj.getString("parliamentName") : null);
+ 	    				vo.setAssemblyId(jObj.has("assemblyId") ? jObj.getLong("assemblyId") : null);
+ 	    				vo.setAssemblyName(jObj.has("assemblyName") ? jObj.getString("assemblyName") : null);
+ 	    				vo.setMandalId(jObj.has("mandalId") ? jObj.getLong("mandalId") : null);
+ 	    				vo.setMandalName(jObj.has("mandalName") ? jObj.getString("mandalName") : null);
+ 	    				vo.setPanchayatId(jObj.has("panchayat") ? jObj.getLong("panchayat") : null);
+ 	    				vo.setPanchyatName(jObj.has("panchayat_name") ? jObj.getString("panchayat_name") : null);
+ 	    				
+ 	    				vo.setTaxTypeId(jObj.has("taxtype") ? jObj.getLong("taxtype") : null);
+ 	    				vo.setTaxType(getTaxTypeNameById(vo.getTaxTypeId()));
+ 	    				vo.setName(jObj.has("name") ? jObj.getString("name") : null);
+ 	    				vo.setAmount(jObj.has("amount") ? jObj.getString("amount") : null);
+ 	    				vo.setDueYear(jObj.has("due_year") ? jObj.getString("due_year") : null);
+ 	    				
+ 	    				returnList.add(vo);
+ 	    			}
+ 	    		}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at setDefaultersDataToList  in TaxesDashBoardService service", e);
+		}
+		return returnList;
+	}
+	
+	public List<PanchayatTaxVO> setIndicatorsDataToList(String output){
+		List<PanchayatTaxVO> returnList = new ArrayList<PanchayatTaxVO>();
+		try {
+			Map<Long,PanchayatTaxVO> usageTypeMap = new LinkedHashMap<Long,PanchayatTaxVO>();
+			
+			if(output != null && !output.isEmpty()){
+ 	    		JSONArray jsonArray = new JSONArray(output);
+ 	    		if(jsonArray!=null && jsonArray.length()>0){
+ 	    			for(int i=0;i<jsonArray.length();i++){
+ 	    				JSONObject jObj = (JSONObject) jsonArray.get(i);
+ 	    				JSONArray usagesArr = jObj.has("usages") ? jObj.getJSONArray("usages") : null;
+ 	    				if(usagesArr!=null && usagesArr.length()>0){
+ 	    	    			for(int j=0;j<usagesArr.length();j++){
+ 	    	    				JSONObject usgJObj = (JSONObject) jsonArray.get(j);
+ 	    	    				Long usageId = usgJObj.has("usage_type") ? usgJObj.getLong("usage_type") : 0L;
+ 	    	    				PanchayatTaxVO vo = usageTypeMap.get(usageId);
+ 	    	    				if(vo == null){
+ 	    	    					vo = new PanchayatTaxVO();
+ 	    	    					vo.setUsageTypeId(usageId);
+ 	    	    					vo.setUsageName(usgJObj.has("usage_name") ? usgJObj.getString("usage_name") : null);
+ 	    	    					vo.setDemand(usgJObj.has("Demand") ? usgJObj.getString("Demand") : null);
+ 	    	    					vo.setBalance(usgJObj.has("Balance") ? usgJObj.getString("Balance") : null);
+ 	    	    					vo.setCollection(usgJObj.has("Collection") ? usgJObj.getString("Collection") : null);
+ 	    	    					vo.setDemandAssmts(usgJObj.has("DemandAssmts") ? usgJObj.getString("DemandAssmts") : null);
+ 	    	    					vo.setBalanceAssmts(usgJObj.has("BalanceAssmts") ? usgJObj.getString("BalanceAssmts") : null);
+ 	    	    					vo.setCollectionAssmts(usgJObj.has("CollectionAssmts") ? usgJObj.getString("CollectionAssmts") : null);
+ 	    	    					usageTypeMap.put(usageId, vo);
+ 	    	    				}else{
+ 	    	    					vo.setDemand(usgJObj.has("Demand") ? String.valueOf(Long.valueOf(vo.getDemand())+Long.valueOf(usgJObj.getString("Demand"))) : vo.getDemand());
+ 	    	    					vo.setCollection(usgJObj.has("Collection") ? String.valueOf(Long.valueOf(vo.getCollection())+Long.valueOf(usgJObj.getString("Collection"))) : vo.getCollection());
+ 	    	    					vo.setBalance(usgJObj.has("Balance") ? String.valueOf(Long.valueOf(vo.getBalance())+Long.valueOf(usgJObj.getString("Balance"))) : vo.getBalance());
+ 	    	    					vo.setDemandAssmts(usgJObj.has("DemandAssmts") ? String.valueOf(Long.valueOf(vo.getDemandAssmts())+Long.valueOf(usgJObj.getString("DemandAssmts"))) : vo.getDemandAssmts());
+ 	    	    					vo.setCollectionAssmts(usgJObj.has("CollectionAssmts") ? String.valueOf(Long.valueOf(vo.getCollectionAssmts())+Long.valueOf(usgJObj.getString("CollectionAssmts"))) : vo.getCollectionAssmts());
+ 	    	    					vo.setBalanceAssmts(usgJObj.has("BalanceAssmts") ? String.valueOf(Long.valueOf(vo.getBalanceAssmts())+Long.valueOf(usgJObj.getString("BalanceAssmts"))) : vo.getBalanceAssmts());
+ 	    	    				}
+ 	    	    			}
+ 	    				}
+ 	    			}
+ 	    		}
+			}
+			
+			if(usageTypeMap != null)
+				returnList = new ArrayList<PanchayatTaxVO>(usageTypeMap.values());
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at setIndicatorsDataToList  in TaxesDashBoardService service", e);
+		}
+		return returnList;
+	}
+	
+	public List<PanchayatTaxVO> setDataToList(String output){
+		List<PanchayatTaxVO> returnList = new ArrayList<PanchayatTaxVO>();
+		try {
+			if(output != null && !output.isEmpty()){
+ 	    		JSONArray jsonArray = new JSONArray(output);
+ 	    		if(jsonArray!=null && jsonArray.length()>0){
+ 	    			for(int i=0;i<jsonArray.length();i++){
+ 	    				JSONObject jObj = (JSONObject) jsonArray.get(i);
+ 	    				PanchayatTaxVO mainvo = new PanchayatTaxVO();
+ 	    				mainvo.setDistrictId(jObj.has("id") ? jObj.getLong("id") : null);
+ 	    				mainvo.setDistrictName(jObj.has("district") ? jObj.getString("district") : null);
+ 	    				mainvo.setParliamentId(jObj.has("parliamentId") ? jObj.getLong("parliamentId") : null);
+ 	    				mainvo.setParliamentName(jObj.has("parliamentName") ? jObj.getString("parliamentName") : null);
+ 	    				mainvo.setAssemblyId(jObj.has("assemblyId") ? jObj.getLong("assemblyId") : null);
+ 	    				mainvo.setAssemblyName(jObj.has("assemblyName") ? jObj.getString("assemblyName") : null);
+ 	    				mainvo.setMandalId(jObj.has("mandalId") ? jObj.getLong("mandalId") : null);
+ 	    				mainvo.setMandalName(jObj.has("mandalName") ? jObj.getString("mandalName") : null);
+ 	    				mainvo.setPanchayatId(jObj.has("panchayat") ? jObj.getLong("panchayat") : null);
+ 	    				mainvo.setPanchyatName(jObj.has("panchayat_name") ? jObj.getString("panchayat_name") : null);
+ 	    				
+ 	    				JSONArray taxArr = new JSONArray();
+ 	    				if(taxArr != null && taxArr.length()>0){
+ 	    					for(int j=0;j<taxArr.length();j++){
+ 	    						JSONObject taxJObj = (JSONObject) jsonArray.get(j);
+ 	    	    				PanchayatTaxVO subvo = new PanchayatTaxVO();
+ 	    	    				subvo.setTaxTypeId(taxJObj.has("id") ? taxJObj.getLong("id") : null);
+ 	    	    				subvo.setTaxType(getTaxTypeNameById(subvo.getTaxTypeId()));
+ 	    	    				subvo.setArrearDemand(taxJObj.has("arrearDemand") ? taxJObj.getString("arrearDemand") : null);
+ 	    	    				subvo.setArrearCollection(taxJObj.has("arrearCollection") ? taxJObj.getString("arrearCollection") : null);
+ 	    	    				subvo.setArrearBalance(taxJObj.has("arrearRemainingTax") ? taxJObj.getString("arrearRemainingTax") : null);
+ 	    	    				subvo.setArrearDemandAssmts(taxJObj.has("arrearDemandAssmts") ? taxJObj.getString("arrearDemandAssmts") : null);
+ 	    	    				subvo.setArrearCollectionAssmts(taxJObj.has("arrearCollectionAssmts") ? taxJObj.getString("arrearCollectionAssmts") : null);
+ 	    	    				subvo.setArrearBalanceAssmts(taxJObj.has("arrearRemainingAssmts") ? taxJObj.getString("arrearRemainingAssmts") : null);
+ 	    	    				
+ 	    	    				subvo.setCurrentDemand(taxJObj.has("currentDemand") ? taxJObj.getString("currentDemand") : null);
+ 	    	    				subvo.setCurrentCollection(taxJObj.has("currentCollection") ? taxJObj.getString("currentCollection") : null);
+ 	    	    				subvo.setCurrentBalance(taxJObj.has("currentRemainingTax") ? taxJObj.getString("currentRemainingTax") : null);
+ 	    	    				subvo.setCurrentDemandAssmts(taxJObj.has("currentDemandAssmts") ? taxJObj.getString("currentDemandAssmts") : null);
+ 	    	    				subvo.setCurrentCollectionAssmts(taxJObj.has("currentCollectionAssmts") ? taxJObj.getString("currentCollectionAssmts") : null);
+ 	    	    				subvo.setCurrentBalanceAssmts(taxJObj.has("currentRemainingAssmts") ? taxJObj.getString("currentRemainingAssmts") : null);
+ 	    	    				
+ 	    	    				subvo.setDefaultersTax(taxJObj.has("defaultersTax") ? taxJObj.getString("defaultersTax") : null);
+ 	    	    				subvo.setDefaultersAssmts(taxJObj.has("defaultersAssmts") ? taxJObj.getString("defaultersAssmts") : null);
+ 	    	    				
+ 	    	    				subvo.setTotalDemand(String.valueOf(Long.valueOf(subvo.getArrearDemand())+Long.valueOf(subvo.getCurrentDemand())));
+ 	    	    				subvo.setTotalCollection(String.valueOf(Long.valueOf(subvo.getArrearCollection())+Long.valueOf(subvo.getCurrentCollection())));
+ 	    	    				subvo.setTotalBalance(String.valueOf(Long.valueOf(subvo.getArrearBalance())+Long.valueOf(subvo.getCurrentBalance())));
+ 	    	    				subvo.setTotalDemandAssmts(String.valueOf(Long.valueOf(subvo.getArrearDemandAssmts())+Long.valueOf(subvo.getCurrentDemandAssmts())));
+ 	    	    				subvo.setTotalCollectionAssmts(String.valueOf(Long.valueOf(subvo.getArrearCollectionAssmts())+Long.valueOf(subvo.getCurrentCollectionAssmts())));
+ 	    	    				subvo.setTotalBalanceAssmts(String.valueOf(Long.valueOf(subvo.getArrearBalanceAssmts())+Long.valueOf(subvo.getCurrentBalanceAssmts())));
+ 	    	    				
+ 	    	    				mainvo.setTotalDemand(String.valueOf(Long.valueOf(mainvo.getTotalDemand())+Long.valueOf(subvo.getTotalDemand())));
+ 	    	    				mainvo.setTotalCollection(String.valueOf(Long.valueOf(mainvo.getTotalCollection())+Long.valueOf(subvo.getTotalCollection())));
+ 	    	    				mainvo.setTotalBalance(String.valueOf(Long.valueOf(mainvo.getTotalBalance())+Long.valueOf(subvo.getTotalBalance())));
+ 	    	    				mainvo.setTotalDemandAssmts(String.valueOf(Long.valueOf(mainvo.getTotalDemandAssmts())+Long.valueOf(subvo.getTotalDemandAssmts())));
+ 	    	    				mainvo.setTotalCollectionAssmts(String.valueOf(Long.valueOf(mainvo.getTotalCollectionAssmts())+Long.valueOf(subvo.getTotalCollectionAssmts())));
+ 	    	    				mainvo.setTotalBalanceAssmts(String.valueOf(Long.valueOf(mainvo.getTotalBalanceAssmts())+Long.valueOf(subvo.getTotalBalanceAssmts())));
+ 	    	    				
+ 	    	    				mainvo.getSubList().add(subvo);
+ 	    					}
+ 	    				}
+ 	    				returnList.add(mainvo);
+ 	    			}
+ 	    		}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at setDataToList  in TaxesDashBoardService service", e);
+		}
+		return returnList;
+	}
+	
+	public String getTaxTypeNameById(Long taxTypeId){
+		String name = null;
+		try {
+			if(taxTypeId != null && taxTypeId == 1L)
+				name = "House Tax";
+			else if(taxTypeId != null && taxTypeId == 2L)
+				name = "Kolagaaram Tax";
+			else if(taxTypeId != null && taxTypeId == 1L)
+				name = "Advertisement Tax";
+			else if(taxTypeId != null && taxTypeId == 1L)
+				name = "Trade License Fee";
+			else if(taxTypeId != null && taxTypeId == 1L)
+				name = "Auctions Fee";
+			else if(taxTypeId != null && taxTypeId == 1L)
+				name = "Private Tap Fee";
+			else
+				name = "Others";
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTaxTypeNameById  in TaxesDashBoardService service", e);
+		}
+		return name;
+	}
 }
