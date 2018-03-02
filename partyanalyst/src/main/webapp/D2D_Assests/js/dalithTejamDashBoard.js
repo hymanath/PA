@@ -400,8 +400,8 @@ function getRecentImagesList(){
 function DalithaTejamnews(){
 	$("#dalithaTejamOnNewsDivId").html("<div class='spinner'><div class='dot1'></div><div class='dot2'></div></div>");
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
-		url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
+		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
+		//url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
 	}).then(function(result){
 		if(result !=null){
 			buildNewsModule(result);
@@ -1206,8 +1206,8 @@ $(document).on("click",".partyMainEditionCls",function(){
 function getEditionTypeWisePartiesAnalysisForArticles(editionType,attrCategoryid,attrPartyids,attrBenifitId,attrEditionType){
 $("#popImgDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({	
-       //url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
-		url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
+       url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
+		//url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
 	}).then(function(result){
 		$("#popImgDiv").html("");
 		if(result != null && result.length >0){
@@ -1353,9 +1353,9 @@ $(document).on("click",".articleWisePrintMediaCls",function(){
 		,globalcategoryId,globalEndIndex,globalstartIndex){
 	$("#newspopImgDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalorganizationId+"/"+globalbenefitId+"/"+globalNewsPaperIdsStr+"/"+globalUserAccessLevelId+"/"+globalTemp
+		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
 		
-		url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
+		//url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
 	}).then(function(result){
 		buildArticlesByDateRangeWise(result,globalPartyId,globalBenefitId,globalChannelId,scopeId,scopeValue
 		,globalcategoryId,globalEndIndex,globalstartIndex);
