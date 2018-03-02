@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -16,4 +17,8 @@ public interface IAffiliatedMemberDAO extends GenericDao<AffiliatedMember, Long>
 	public Long getAffiliatedMemberId(Long cadreId, String type);
 	
 	public List<Object[]> searchAffiliatedMemberDetailsForMobile(String searchType,String searchValue,String locationType, Long locationValue);
+
+	public List<Object[]> getDayWisrRegisteredCount(Date fromDate, Date toDate,Long locationScopeId, Long locationValue, String type);
+
+	public List<Object[]> getDayWisrVisitedCount(Date fromDate, Date toDate,Long locationScopeId, Long locationValue);
 }
