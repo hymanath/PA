@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
+import com.itgrids.partyanalyst.dao.IAffiliatedMemberDAO;
 import com.itgrids.partyanalyst.dto.DalithaTejamInputVo;
 import com.itgrids.partyanalyst.dto.DalithaTejamVO;
 import com.itgrids.partyanalyst.service.IDalithaTejamDashBoardService;
@@ -20,6 +21,8 @@ public class DalithaTejamDashBoardService implements IDalithaTejamDashBoardServi
 	private IActivityInfoDocumentDAO activityInfoDocumentDAO;
 
 	private CommonMethodsUtilService commonMethodsUtilService;
+
+	private IAffiliatedMemberDAO affiliatedMemberDAO;
 	
 
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
@@ -40,6 +43,13 @@ public class DalithaTejamDashBoardService implements IDalithaTejamDashBoardServi
 		this.activityInfoDocumentDAO = activityInfoDocumentDAO;
 	}
 	
+	public IAffiliatedMemberDAO getAffiliatedMemberDAO() {
+		return affiliatedMemberDAO;
+	}
+
+	public void setAffiliatedMemberDAO(IAffiliatedMemberDAO affiliatedMemberDAO) {
+		this.affiliatedMemberDAO = affiliatedMemberDAO;
+	}
 
 	public List<DalithaTejamVO> getLatestImages(DalithaTejamInputVo inputVo){
 		List<DalithaTejamVO> finalList = new ArrayList<DalithaTejamVO>();
@@ -50,7 +60,7 @@ public class DalithaTejamDashBoardService implements IDalithaTejamDashBoardServi
 				fromDate = sdf.parse(inputVo.getFromDate());
 				toDate = sdf.parse(inputVo.getToDate());
 			}
-			List<Object[]> imagesList= activityInfoDocumentDAO.getlatestimages(fromDate,toDate,inputVo.getLocationScopeId(),inputVo.getLocationValue(),inputVo.getActivityId());
+			List<Object[]> imagesList= activityInfoDocumentDAO.getlatestimages(fromDate,toDate,inputVo.getLocationScopeIds(),inputVo.getLocationValues(),inputVo.getActivityId());
 			
 			for (Object[] objects : imagesList) {
 				DalithaTejamVO dalithaTejamVO=new DalithaTejamVO();
@@ -73,5 +83,47 @@ public class DalithaTejamDashBoardService implements IDalithaTejamDashBoardServi
 		}
 		return finalList;
 	}
-
+	
+	@Override
+	public List<DalithaTejamVO> getDateWiseCount(DalithaTejamInputVo inputVo){
+		List<DalithaTejamVO> finalList = new ArrayList<DalithaTejamVO>();
+		try{
+			Date fromDate=null, toDate=null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(inputVo.getFromDate()!= null && inputVo.getToDate() !=null && inputVo.getFromDate().length()>0 && inputVo.getToDate().length() >0){
+				fromDate = sdf.parse(inputVo.getFromDate());
+				toDate = sdf.parse(inputVo.getToDate());
+			}
+			List<Object[]> registeredCount =new ArrayList<Object[]>();
+			registeredCount = affiliatedMemberDAO.getDayWisrRegisteredCount(fromDate,toDate,inputVo.getLocationScopeId(),inputVo.getLocationValue(),"register");
+			List<Object[]> loanCount = affiliatedMemberDAO.getDayWisrRegisteredCount(fromDate,toDate,inputVo.getLocationScopeId(),inputVo.getLocationValue(),"loan");
+			List<Object[]> visitedViilages = affiliatedMemberDAO.getDayWisrVisitedCount(fromDate,toDate,inputVo.getLocationScopeId(),inputVo.getLocationValue());
+			
+			if(commonMethodsUtilService.isListOrSetValid(registeredCount)){
+				registeredCount.addAll(loanCount);
+			}else{
+				registeredCount.addAll(loanCount);
+			}
+			DalithaTejamVO vo = new DalithaTejamVO();
+			for (Object[] objects : registeredCount) {
+				vo.setTodayRegistred(commonMethodsUtilService.getLongValueForObject(objects[0])+vo.getTodayRegistred());
+				vo.setTodayLoanApplied(commonMethodsUtilService.getLongValueForObject(objects[1])+vo.getTodayLoanApplied());
+				vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+			}
+			finalList.add(vo);
+			for (Object[] objects : visitedViilages) {
+				for (DalithaTejamVO finalVo : finalList) {
+					if(commonMethodsUtilService.getLongValueForObject(objects[1])==finalVo.getDistrictId()){
+						finalVo.setTodayvisted(commonMethodsUtilService.getLongValueForObject(objects[0])+finalVo.getTodayvisted());
+					}
+				}
+				
+			}
+			
+		}catch(Exception e){
+			Log.error("Error Occured in getDateWiseCount of DalithaTejamDashBoardService "+e);
+		}
+		return finalList;
+		
+	}
 }
