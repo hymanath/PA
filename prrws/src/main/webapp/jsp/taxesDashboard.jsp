@@ -407,7 +407,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -421,7 +421,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -475,7 +475,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -489,7 +489,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -542,7 +542,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -556,7 +556,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -610,7 +610,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -624,7 +624,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -688,7 +688,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -702,7 +702,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -756,7 +756,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -770,7 +770,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -823,7 +823,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -837,7 +837,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -891,7 +891,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -905,7 +905,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -963,7 +963,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -977,7 +977,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -1024,7 +1024,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -1038,7 +1038,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -1084,7 +1084,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -1098,7 +1098,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -1145,7 +1145,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -1159,7 +1159,7 @@
 													</div>
 													<div class="media-body">
 														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</h5>
+														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
 														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
 														<h6 class="font_weight m_top10">Units</h6>
 														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
@@ -1198,7 +1198,81 @@
 							
 						</div>
 					</div>
-					
+					<div class="custom_border m_top10">
+						<div class="bg_yash_color_10">
+							<div class="row">
+								<div class="col-sm-2">
+									<label>Select Tax</label>
+									<select class="form-control chosen-select">
+										<option>All</option>
+										<option>NEWS</option>
+										<option>ALERTS</option>
+									</select>
+								</div>
+								<div class="col-sm-2">
+									<label>Select Fees</label>
+									<select class="form-control chosen-select">
+										<option>All</option>
+										<option>NEWS</option>
+										<option>ALERTS</option>
+									</select>
+								</div>
+								<div class="col-sm-2">
+									<label>Select&nbsp;Indicators</label>
+									<select class="form-control chosen-select">
+										<option>All</option>
+										<option>NEWS</option>
+										<option>ALERTS</option>
+									</select>
+								</div>
+								<div class="col-sm-2">
+								<div class="row">
+									<div class="col-sm-12">
+										<label>Year</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="white_bg">
+											<label class="checkbox-inline">
+											  <input type="checkbox" id="inlineCheckbox1" value="option1">Arrears
+											</label>
+											<label class="checkbox-inline">
+											  <input type="checkbox" id="inlineCheckbox2" value="option2">Current
+											</label>
+										</div>
+									</div>
+									
+								</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="row">
+										<div class="col-sm-12">
+											<label>Data Type</label>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="white_bg">
+												<label class="radio-inline">
+												  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Unit wise
+												</label>
+												<label class="radio-inline">
+												  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">Amount wise
+												</label>
+												<label class="radio-inline">
+												  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">All
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="bg_yash_color_10 m_top5">
+						
+						</div>
+					</div>
 					
 				</div>
 			</div>
@@ -1221,7 +1295,7 @@
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-
+$(".chosen-select").chosen();
 </script>
 </body>
 </html>
