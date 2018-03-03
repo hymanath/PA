@@ -3280,7 +3280,8 @@ background-color:#FFE08E !important;
 		margin-bottom:0;
 		margin-top:10px;
 		border:1px solid #d1ab66;
-		background-color:#fff;	
+		background-color:#fff;
+		border-collapse: separate !important;	
 }
 .details-overview thead tr th {
 	font-size:12px;
@@ -3288,7 +3289,8 @@ background-color:#FFE08E !important;
 	border-bottom:none;
 	font-weight:bold;
 	border-bottom:1px solid #d1ab66;
-	background-color:#fff;				
+	background-color:#fff;	
+	vertical-align:middle;	
 }
 .details-overview tbody tr td {
 	font-size:14px;
@@ -3361,4 +3363,10 @@ background-color:#FFE08E !important;
 .tour_lastmonth_border{
 	padding:8px;
 	border:1px solid #d1ab66
+}
+.details-overview_Cons{
+		margin-bottom:0;
+		margin-top:10px;
+		border:1px solid #d1ab66;
+		background-color:#fff;	
 }
