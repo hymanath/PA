@@ -811,7 +811,7 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 												Double value2 = obj2.getMandalCommitteePerc();
 												Double value1 = obj1.getMandalCommitteePerc();
 												returnVal = value1.compareTo(value2);
-											}else if(levelVal != null && levelVal.equalsIgnoreCase("Village/Ward level Committeess")){
+											}else if(levelVal != null && levelVal.equalsIgnoreCase("Village/Ward level Committees")){
 												Double value2 = obj2.getVillageCommPerc();
 												Double value1 = obj1.getVillageCommPerc();
 												returnVal = value1.compareTo(value2);
@@ -1002,7 +1002,7 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 		}
 		/**
 		   * @param InputVO inputVO
-		   * @return ConsolidatedExceptionalReportVO 
+		   * @return void 
 		   * @author Hymavathi
 		   * @Description :This Service Method is used to get booth incharge committee performance details. 
 		   * @Date 28-FEB-2018
