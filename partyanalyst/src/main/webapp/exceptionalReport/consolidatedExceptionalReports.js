@@ -453,7 +453,7 @@ function getCountOfColor(divId)
 			{
 				k = k+1;
 				str+='<li>';
-					str+='<h4 class="text-bold"><span class="colorExpCls" style="background-color:'+globalStatusObj1[k]+'"></span> Exceptions('+k+') - Parliaments('+$('.'+divId+'exception'+k).length+')</h4>';
+					str+='<h4 class="text-bold"><span class="colorExpCls" style="background-color:'+globalStatusObj1[k]+'"></span> '+k+' Excps-'+$('.'+divId+'exception'+k).length+'</h4>';
 				str+='</li>';
 			}	
 			str+='</ul>';
