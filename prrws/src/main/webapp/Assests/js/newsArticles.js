@@ -283,13 +283,13 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 									if(typeval == "PrintMedia"){
 										str+='<h5 class="font_weight m_top5" style="font-size:12px;">';
 											if(result[i].positiveCountMain !=null && result[i].positiveCountMain >0){
-												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</span>'; 
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;color:royalblue" attr_deptId="0" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</span>'; 
 											}else{
 												str+='<span>'+result[i].positiveCountMain+'</span>'; 
 											}
 											str+=' - ';
 											if(result[i].positiveCountGrpMain != null && result[i].positiveCountGrpMain !=""){
-												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles(('+result[i].mainPositiveArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].positiveCountGrpMain+'</span>';
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles(('+result[i].mainPositiveArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].positiveCountGrpMain+'</span>';
 											}else{
 												str+='<span>'+result[i].positiveCountGrpMain+'</span>';
 											}
@@ -314,13 +314,13 @@ function buildOverAllPrintMediaDetails(result,typeval,divId,departmentType,depar
 									if(typeval == "PrintMediadepartment"+departmentId+""){
 										str+='<h5 class="font_weight m_top5" style="font-size:12px;">';
 											if(result[i].positiveCountMain !=null && result[i].positiveCountMain >0){
-												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</span>'; 
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" title="Individual Articles('+result[i].mainPositiveArticlePerc+')"  attr_categoryId="0" attr_group_type="individualArticles">'+result[i].positiveCountMain+'</span>'; 
 											}else{
 												str+='<span>'+result[i].positiveCountMain+'</span>'; 
 											}
 											str+=' - ';
 											if(result[i].positiveCountGrpMain != null && result[i].positiveCountGrpMain !=""){
-												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="2" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles(('+result[i].mainPositiveArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].positiveCountGrpMain+'</span>';
+												str+='<span class="printOverAllCls" attr_editionId="'+result[i].organizationId+'" attr_benefitId="1" style="cursor:pointer;color:royalblue" attr_deptId="'+departmentId+'" attr_type="print" attr_categoryId="'+result[i].organizationId+'" title="Grouped Articles(('+result[i].mainPositiveArticleGrpPerc+')" attr_group_type="groupedArticles">'+result[i].positiveCountGrpMain+'</span>';
 											}else{
 												str+='<span>'+result[i].positiveCountGrpMain+'</span>';
 											}
@@ -722,6 +722,12 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
 							collapse+='<button type="button" class="btn btn-danger pdfGenerateCls"  title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
 						collapse+='</div>';
+					}else{
+						collapse+='<div class="row pull-right" style="margin:5px;">';
+							collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
+							collapse+='<button type="button" class="btn btn-success pdfEMNCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
+							collapse+='<button type="button" class="btn btn-danger pdfEMNCls"  title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
+						collapse+='</div>';
 					}
 					collapse+='<div class="white_block">';
 								collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
@@ -790,6 +796,12 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 							collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
 							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
 							collapse+='<button type="button" class="btn btn-danger pdfGenerateCls" title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
+						collapse+='</div>';
+					}else{
+						collapse+='<div class="row pull-right" style="margin:5px;">';
+							collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
+							collapse+='<button type="button" class="btn btn-success pdfEMNCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
+							collapse+='<button type="button" class="btn btn-danger pdfEMNCls"  title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
 						collapse+='</div>';
 					}
 				collapse+='<div class="white_block">';
@@ -1140,6 +1152,17 @@ $(document).on("click",".pdfGenerateCls",function(){
 	}
 	getDepartmentWiseNewsSummaryForPrintMedia(benefitId,pdfDeptId);
 });
+$(document).on("click",".pdfEMNCls",function(){
+	var benefitId=0;
+	var attrType = $(this).attr("attr_pdf_type");
+	var pdfDeptId = $(this).attr("attr_pdf_dept_id");
+	if(attrType =="positive"){
+		benefitId=1;
+	}else if(attrType =="negative"){
+		benefitId=2;
+	}
+	getDepartmentWiseNewsSummaryForEMN(benefitId,pdfDeptId);
+});
  function getDepartmentWiseNewsSummaryForPrintMedia(benefitId,pdfDeptId){
 		$(".dataLoadingsPdfImgcls"+pdfDeptId).show();
 		$.ajax({
@@ -1155,4 +1178,20 @@ $(document).on("click",".pdfGenerateCls",function(){
 				alert("Please select single day...");
 			 }
 		});
-	} 
+}
+function getDepartmentWiseNewsSummaryForEMN(benefitId,pdfDeptId){
+		$(".dataLoadingsPdfImgcls"+pdfDeptId).show();
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiseElectronicMediaNewsSummary/"+glStartDate+"/"+glEndDate+"/"+pdfDeptId+"/"+benefitId
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiseElectronicMediaNewsSummary/"+glStartDate+"/"+glEndDate+"/"+pdfDeptId+"/"+benefitId
+		}).then(function(results){
+			$(".dataLoadingsPdfImgcls"+pdfDeptId).hide();
+			 if(results.exceptionMsg == "error"){
+				 alert("Error Occured.Please Try Again Later.");
+			 }else if(results.exceptionMsg == "success"){
+				 window.open(results.message);
+			 }else if(results.exceptionMsg == " Please select single day... "){
+				alert("Please select single day...");
+			 }
+		});
+	}  
