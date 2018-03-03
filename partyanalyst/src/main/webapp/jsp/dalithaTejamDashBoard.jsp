@@ -13,8 +13,8 @@
 <script src="D2D_Assests/Plugins/Less/less.js"></script>
 <link href="D2D_Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="D2D_Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
-<link href="D2D_Assests/Plugins/slick/slick.css" type="text/css" rel="stylesheet"/>
-<link href="D2D_Assests/Plugins/slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/Plugins/slickNew/slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="D2D_Assests/Plugins/slickNew/slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
@@ -37,15 +37,21 @@
 .DTFC_LeftBodyLiner{
 	overflow-y:hidden;
 }
-
+nav{
+	background-color:#fff;
+	box-shadow:0px 0px 3px rgba(0,0,0,0.3);
+}
 </style>
 </head>
 <body>
 <nav>
 	<div class="container-fluid full-width-image" style="background-color:#e6b62e;">
 		<div class="row">
-			<div class="col-sm-6">
-				<img src="D2D_Assests/images/header-bg-logo.png" class="img-responsive" >
+			<div class="col-sm-2">
+				<img src="D2D_Assests/images/Mask Group 1.png" class="img-responsive" style="display:inline-block">
+			</div>
+			<div class="col-sm-4 m_top20">
+				<img src="D2D_Assests/images/Group 3138.png" class="img-responsive"  style="display:inline-block">
 			</div>
 			<div class="col-sm-2 pull-right">
 				<img src="D2D_Assests/images/Group 4.png" class="img-responsive pull-right" style="margin-top:20px;" >
@@ -53,10 +59,8 @@
 		</div>
 		<div class="row" style="background-color:#ff0000; line-height:3px;">&nbsp;</div>
 	</div>
-</nav>
-<section class="navbar-section main_bg">
 	<div class="container-fluid">
-		<div class="">
+		<div class="" style="padding:8px">
 			<div class="row">
 				<!--<div class="col-sm-2 pull-right">
 					<div class="form-group">
@@ -65,7 +69,7 @@
 					</div>
 				</div>-->
 				<div class="col-sm-3 pull-right">
-					<div class="input-group pull-right">
+					<div class="input-group pull-right daterangepickerCustom">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
@@ -73,13 +77,16 @@
 					</div>
 				</div>
 				<div class="col-sm-2 pull-right" style="margin-right: 25px;">
-					<div class="yellow-square pull-right">
+					<div class="yellow-square btn btn-sm pull-right">
 						<i class="glyphicon glyphicon-refresh refreshDalithaTejam" style="color:#fff;cursor:pointer;"></i>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</nav>
+<section class="navbar-section main_bg">
+	
 	<div class="container-fluid">
 		<div class="m_top10"  style="border-top:1px solid #ccc">
 			<div class="row">
@@ -271,16 +278,16 @@
 				</div>
 				</div>
 			</div>
-			<div class="row m_top20">
+			<div class="row">
 				<div id="leaderandlocationwiseOverviewId"></div>	
 			</div>
-			<div class="row m_top20">
+			<div class="row">
 				<div id="levelWiseOverviewId"></div>	
 			</div>
 		</div>
 	</div>
 	<div class="modal" tabindex="-1" role="dialog" id="prajaSankalpaYatraModalId">
-		  <div class="modal-dialog modal-lg" style="width:40%;">       
+		  <div class="modal-dialog modal-lg" style="width:70%;">       
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -326,7 +333,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="newspopImgDiv"></div>
 							<div class="row ">
-								<div class="col-md-10 col-md-offset-5 m_top20">
+								<div class="col-md-7 col-md-offset-5 m_top20">
 									<div class="paginationId"></div>
 								</div>
 							</div>
@@ -348,13 +355,14 @@
         <h4 class="modal-title" id="myModalLabelId" style="text-transform: uppercase;"></h4>
       </div>
       <div class="modal-body" style="padding:0px 15px;">
-       <div id="buildPoupupImage"></div>
+       	<div id="buildPoupupImage"></div>
       </div>
     </div>
   </div>
 </div>
 <input type="hidden" id="hiddenActivityScopeId"></input>
 <!--------End Popup build----------->
+
 </section>
 <script src="D2D_Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="D2D_Assests/js/bootstrap.js" type="text/javascript"></script>
@@ -367,7 +375,7 @@
 <script src="D2D_Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
-<script src="D2D_Assests/Plugins/slick/slick.js" type="text/javascript"></script>
+<script src="D2D_Assests/Plugins/slickNew/slick/slick.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="D2D_Assests/js/dalithTejamDashBoard.js" type="text/javascript"></script>	
 <script type="text/javascript" src="newCoreDashBoard/slimscroller/jquery.slimscroll.js"></script>
