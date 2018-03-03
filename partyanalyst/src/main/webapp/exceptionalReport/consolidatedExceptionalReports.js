@@ -78,136 +78,6 @@ $(document).on("click",".levelWiseMeetingCls",function(e){
 	$(".debatesSettingsBody").hide();
 });
 
-function getLevelWisePartyMeetingExceptionReport(id,levelName,partyMeetingTypeIds){
-		$("#"+id).html(spinner);
-		var partyMeetingTypeIdsArr=[];
-		partyMeetingTypeIdsArr.push(partyMeetingTypeIds);
-		
-	 	var jsObj = { 
-					 partyMeetingLevel :levelName,
-					 fromDate : customStartToursDateM,
-					 toDate : customEndToursDateM,
-					 partyMeetingTypeIds:partyMeetingTypeIdsArr,
-					 
-				  }
-		$.ajax({
-			type : 'POST',
-			url : 'getPartyMeetingExceptionReportMeetingLevelWiseAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-		     if(result !=null){
-				 buildLevelWisePartyMeetingExceptionReport(result,id,levelName,partyMeetingTypeIds);
-			 }
-		});
-}
-function buildLevelWisePartyMeetingExceptionReport(result,id,levelName,partyMeetingTypeIds){
-	var str='';
-	
-		str+='<div class="row ">';
-		str+='<div class="col-sm-12 m_top10">';
-			str+='<h4 class="text_bold text-capital font_size24" >'+levelName+' Level Meeting Details</h4>';
-		str+='</div>';
-	str+='</div>';
-	str+='<div class="row">';
-		str+='<div class="col-sm-4 m_top10">';
-			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="font_size24">Total Meeting</h4>';
-				str+='<h3 class="text_bold m_top10 font_size24">'+result.totalCount+'</h3>';
-			str+='</div>';
-		str+='</div>';
-		str+='<div class="col-sm-4 m_top10">';
-			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="font_size24">Conducted Meetings</h4>';
-				str+='<h3 class="text_bold m_top10 font_size24">'+result.conductedCount+' <small style="color:green;">'+result.conductedPercentage+' %</small></h3>';
-			str+='</div>';
-		str+='</div>';
-		str+='<div class="col-sm-4 m_top10">';
-			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="font_size24">Not Conducted Meetings</h4>';
-				str+='<h3 class="text_bold m_top10 font_size24">'+result.notConductedCount+' <small style="color:green;">'+result.notConductedPercentage+' %</small></h3>';
-			str+='</div>';
-		str+='</div>';
-	str+='</div>';
-		str+='<div class="row">';
-			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital font_size24" >Top 7 Parliaments with Poor Performance</h5>';
-				str+='<div class="table-responsive m_top10">';
-					str+='<table class="table details-overview">';
-						str+='<thead>';
-							str+='<tr>';
-								str+='<th>Parliament Name</th>';
-								str+='<th>Total</th>';
-								str+='<th>Not Conducted</th>';
-								str+='<th>Not Conducted %</th>';
-							str+='</tr>';
-						str+='</thead>';
-						str+='<tbody>';
-						var countVar =0;
-							for(var i in result.subList2){
-								str+='<tr>';
-								str+='<td>'+result.subList2[i].addressVO.parliamentName+'</td>';
-								str+='<td>'+result.subList2[i].totalCount+'</td>';
-								str+='<td>'+result.subList2[i].notConductedCount+'</td>';
-								str+='<td>'+result.subList2[i].percentage+'</td>';
-								str+='</tr>';
-								countVar =countVar+1;
-								if (countVar === 7) {
-									break;
-								}
-							}
-							
-						str+='</tbody>';
-					str+='</table>';
-			str+='</div>';
-		str+='</div>';
-	str+='</div>';
-	str+='<div class="row pagebreak">';
-			str+='<div class="col-sm-12 m_top20">';
-				if(levelName != "Constituency"){
-					str+='<h5 class="text_bold text-capital font_size24" >Top 10 Assembly Constituency with Poor Performance</h5>';
-				}else{
-					str+='<h5 class="text_bold text-capital font_size24" >Not Conducted Assembly Constituencies</h5>';
-				}
-				str+='<div class="table-responsive m_top10">';
-					str+='<table class="table details-overview">';
-						str+='<thead>';
-							str+='<tr>';
-								str+='<th>Constituency</th>';
-								str+='<th>Parliament</th>';
-								if(levelName != "Constituency"){
-									str+='<th>Total</th>';
-									str+='<th>Not Conducted</th>';
-									str+='<th>Not Conducted %</th>';
-								}
-								
-							str+='</tr>';
-						str+='</thead>';
-						str+='<tbody>';
-						var countVar1 =0;
-							for(var i in result.subList1){
-								str+='<tr>';
-								str+='<td>'+result.subList1[i].addressVO.constituencyName+'</td>';
-								str+='<td>'+result.subList1[i].addressVO.parliamentName+'</td>';
-								if(levelName != "Constituency"){
-									str+='<td>'+result.subList1[i].totalCount+'</td>';
-									str+='<td>'+result.subList1[i].notConductedCount+'</td>';
-									str+='<td>'+result.subList1[i].percentage+'</td>';
-								}
-								str+='</tr>';
-								countVar1 =countVar1+1;
-								if (countVar1 === 10) {
-									break;
-								}
-							}
-							
-						str+='</tbody>';
-					str+='</table>';
-			str+='</div>';
-		str+='</div>';
-	str+='</div>';
-	$("#"+id).html(str);
-}
 $(document).on("click",".exportToPdf",function(){
 	var id = $(this).attr("attr_id");
 	getPdf(id);
@@ -352,6 +222,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 			str+='</div>';
 		str+='</div>';
 	str+='</div>'; */
+	var globalStatusObj={"1":"#C1A384","2":"#7C664F","3":"#704722","4":"#A65C31","5":"#C70039","6":"#C90606","7":"#FF5733","8":"#B02626","9":"#CD0707","10":"#FC1313"};
 	
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
@@ -360,7 +231,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 					str+='<table class="table details-overview">';
 						str+='<thead>';
 							str+='<tr>';
-								str+='<th rowspan="2">Parliament Name</th>';
+								str+='<th rowspan="2" style="border-right: 1px solid #d1ab66 !important;">Parliament Name</th>';
 								for(var i in result.subList2[0].subList1){
 									str+='<th colspan="1">'+result.subList2[0].subList1[i].locationName+'</th>';
 								}
@@ -390,8 +261,9 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 						str+='<tbody>';
 						var countVar =0;
 							for(var i in result.subList2){
+								if(result.subList2[i].sortNo > 0){
 								str+='<tr>';
-								str+='<td>'+result.subList2[i].locationName+'</td>';
+								str+='<td style="background-color:'+globalStatusObj[result.subList2[i].sortNo]+';color:#fff;">'+result.subList2[i].locationName+'</td>';
 								for(var j in result.subList2[i].subList1){
 									//str+='<td>'+result.subList2[i].subList1[j].totalCount+'</td>';
 									//str+='<td>'+result.subList2[i].subList1[j].notConductedCount+'</td>';
@@ -407,6 +279,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 								if (countVar === 7) {
 									break;
 								} */
+								}
 							}
 							
 						str+='</tbody>';
@@ -423,8 +296,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 	
 	var str='';
-	
-	
+	var globalStatusObj={"1":"#C1A384","2":"#7C664F","3":"#704722","4":"#A65C31","5":"#C70039","6":"#C90606","7":"#FF5733","8":"#B02626","9":"#CD0707","10":"#FC1313"};
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
 				str+='<h5 class="text_bold text-capital font_size24" >Assembly Constituency with Poor Performance</h5>';
@@ -432,8 +304,8 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 					str+='<table class="table details-overview">';
 						str+='<thead>';
 							str+='<tr>';
-								str+='<th rowspan="2">Constituency Name</th>';
-								str+='<th rowspan="2">Parliament Name</th>';
+							str+='<th rowspan="2" style="border-right: 1px solid #d1ab66 !important;" >Constituency Name</th>';
+							str+='<th rowspan="2" style="border-right: 1px solid #d1ab66 !important;">Parliament Name</th>';
 								for(var i in result.subList1[0].subList1){
 									var arr = result.subList1[0].subList1[i].locationName.split(' ');
 									var lastval = arr[arr.length-1];
@@ -468,9 +340,9 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 						var countVar1 =0;
 							for(var i in result.subList1){
 								
-								if(result.subList1[i].addressVO != null){
+								if(result.subList1[i].addressVO != null && result.subList1[i].sortNo > 0){
 									str+='<tr>';
-									str+='<td>'+result.subList1[i].addressVO.constituencyName+'</td>';
+									str+='<td style="background-color:'+globalStatusObj[result.subList1[i].sortNo]+';color:#fff;border-right: 1px solid #d1ab66 !important;">'+result.subList1[i].addressVO.constituencyName+'</td>';
 								str+='<td>'+result.subList1[i].addressVO.parliamentName+'</td>';
 								for(var j in result.subList1[i].subList1){
 									//str+='<td>'+result.subList1[i].subList1[j].totalCount+'</td>';

@@ -62,8 +62,8 @@ header
 </div>
 <div id="printableArea">
 <section id="printcontent">
-	<div class="container">
-		<div class="row">
+	<div class="container-fluid">
+		<div class="">
 			<div class="col-sm-12" >
 				<button class="btn btn-md btn-success printViewCls pull-right headerDisPlayNone" attr_divId="printableArea">Print</button>
 				<!--<button class="btn btn-md btn-success exportToPdf pull-right headerDisPlayNone" attr_id="printcontent">PDF</button>-->
