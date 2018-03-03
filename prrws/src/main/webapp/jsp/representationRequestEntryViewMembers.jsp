@@ -527,7 +527,7 @@
 				  </div>
 		</div>
 		<div class="row" id="endorseFunctionDivId">
-			<div class="col-sm-6">
+			<div class="col-sm-5">
 				<div class="row m_top10" id="actionChangeDivId" style="display:none;">
 					<div class="col-sm-12">
 						<label class="checkbox-inline actionChangeCls"  style="display:none" >
@@ -658,8 +658,9 @@
 		<input type="hidden" id="coverLetterPath" name="coverLetterPath"/>
 		<input type="hidden" id="actionTypeStr" value="" name="actionType"/>
 	   </div>
-			<div class="col-sm-6" id="imageBuildingId">
+			<div class="col-sm-2" id="imageBuildingId">
 			</div>
+			<div class="col-sm-5"><div id="imageOrPdfDisId"></div></div>
 		</div>
 		
 	  <div class="modal-footer m_top20">

@@ -2773,14 +2773,35 @@ function buildImages(result){
 			for(var i in  result.allFileList){
 				var scanCopySpl = result.allFileList[i].value.split(".");
 				var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase());
+				
 				if(scanCopyExt =="pdf"){
-					str+='<li><object data="'+result.allFileList[i].value+'" style="width:100%; height:400px;"></object></li>';
+						str+='<div class="media" style="background-color: #455963; padding: 5px;">';
+							str+='<div class="media-left">';
+								str+='<i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size: 22px; color:#fff;"></i>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h5 class="media-heading">';
+									str+='<a class="showPdfOrImagIdCls" attr_status="'+scanCopyExt+'"  attr_value="'+result.allFileList[i].value+'" style="cursor:pointer; color: #fff;">Document_'+(parseInt(i)+1)+'</a> </br>';
+								str+='</h5>';
+							str+='</div>';
+						str+='</div>';
+						//str+='<li><object data="'+attr_value+'" style="width:100%; height:400px;"></object></li>';
 				}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg" || scanCopyExt =="gif" || scanCopyExt =="bmp" || scanCopyExt =="png"){
-					str+='<li><img src="'+result.allFileList[i].value+'" style="width:100%; height:400px;"></li>';
-				}	
+						str+='<div class="media" style="background-color: #455963; color: #fff; padding: 5px;">';
+							str+='<div class="media-left">';
+								str+='<i class="fa fa-file-image-o" aria-hidden="true" style="font-size: 22px; color:#fff;"></i>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h5 class="media-heading">';
+									str+='<a class="showPdfOrImagIdCls" attr_status="'+scanCopyExt+'" attr_value="'+result.allFileList[i].value+'" style="cursor:pointer; color: #fff;>Document_'+(parseInt(i)+1)+'</a> </br>';
+								str+='</h5>';
+							str+='</div>';
+						str+='</div>';	
+						//str+='<li><img src="'+attr_value+'" style="width:100%; height:400px;"></li>';						
+				}
 			}
 		}else{
-			//$('#imageBuildingId').hide();
+			//$('#imageBuildingId').hide();      
 		}
 		str+='</ul>';
 	str+='</div>';	
@@ -3413,5 +3434,23 @@ $(document).on("click",".tableTypeCls",function(){
 		$('#classicalViewDiv').show();
 	
 });
+$(document).on("click",".showPdfOrImagIdCls",function(){
+	
+  var docStatus=$(this).attr('attr_status');
+  var docUrl=$(this).attr('attr_value');
+  var str='';
+  if(docStatus=="pdf")
+  {
+    str='<object data="'+docUrl+'" style="width:100%; height:400px;"></object>';
+    $("#imageOrPdfDisId").html(str);
+  }
+  else{
+    
+    str='<img src="'+docUrl+'" style="width:100%; height:400px;"></object>';
+    $("#imageOrPdfDisId").html(str);
+  }
+  
+});
 
+	
 	
