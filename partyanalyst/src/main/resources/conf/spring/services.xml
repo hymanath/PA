@@ -4770,10 +4770,17 @@
    	 	</bean>
    	 	
    	 	<bean name = "dalithaTejamDashBoardService" class = "com.itgrids.partyanalyst.service.impl.DalithaTejamDashBoardService">
-   	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
-   	  	 <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
-   	  	 <property name="affiliatedMemberDAO" ref="affiliatedMemberDAO"></property>
-   	 	</bean>
+   	  		 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+	   	  	 <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
+	   	  	 <property name="affiliatedMemberDAO" ref="affiliatedMemberDAO"></property>
+	   	  	 <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO"></property>
+	   	  	 <property name="activityScopeDAO" ref="activityScopeDAO"></property>
+	   	  	 <property name="activityDocumentDAO" ref="activityDocumentDAO"></property>
+	   	  	 <property name="activityQuestionnaireDAO" ref="activityQuestionnaireDAO"></property>
+	   	  	 <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO"></property>
+	   	  	 <property name="coreDashboardService" ref="coreDashboardService"></property>
+	   	  	 <property name="activityQuestionAnswerInfoDAO" ref="activityQuestionAnswerInfoDAO"></property>
+   	  	</bean>
    	 
    	  	<bean name = "consolidatedExceptionalReportService" class = "com.itgrids.partyanalyst.exceptionalReport.service.impl.ConsolidatedExceptionalReportService">
    	  	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
