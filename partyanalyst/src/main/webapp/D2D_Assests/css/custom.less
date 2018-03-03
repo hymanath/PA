@@ -706,6 +706,7 @@ h3
 {
 	li
 	{
+		display:inline-block;
 		a
 		{
 			border-width:0px;
@@ -722,6 +723,10 @@ h3
 		{
 			border-radius: 16px !important;
 		}
+	}
+	li:first-child , li:last-child
+	{
+		margin:0px 2px !important;
 	}
 	.active
 	{
@@ -1819,8 +1824,6 @@ h3
 	padding:7px;
 	vertical-align:middle;
 	text-align:center;
-	width:50px;
-	height:34px;
 	font-size:16px;
 }
 .v-a-middle{
@@ -1836,7 +1839,7 @@ h3
 .main_bg{
 	background-color: #fff;
 	padding: 5px;
-	box-shadow: 0px 0px 2px 2px rgba(0,0,0,0.3);
+	margin-top:5px;
 }
 .white_bg{
 	background-color: #F9F9F9;
@@ -1863,27 +1866,41 @@ h3
 	margin-top: 25px;
 }
 .table_custom_data{
-		thead{
-			tr{
-				th{
-					font-size:12px !important;
-					padding:3px !important;
-					text-align:center !important;
-					vertical-align:middle !important;
-				}
-			}
-		}
-		tbody{
-			tr{
-				td{
-					font-size:14px !important;
-					padding:4px !important;
-					text-align:center !important;
-				}td:first-child{
-					font-size:14px !important;
-					padding:4px !important;
-					text-align:left !important;
-				}
+	thead{
+		tr{
+			th{
+				font-size:12px !important;
+				padding:3px !important;
+				text-align:center !important;
+				vertical-align:middle !important;
 			}
 		}
 	}
+	tbody{
+		tr{
+			td{
+				font-size:14px !important;
+				padding:4px !important;
+				text-align:center !important;
+			}td:first-child{
+				font-size:14px !important;
+				padding:4px !important;
+				text-align:left !important;
+			}
+		}
+	}
+}
+.daterangepickerCustom
+{
+	.input-group-addon
+	{
+		border-radius:0px;
+		background-color:#333;
+		color:#fff;
+	}
+	.form-control
+	{
+		border-radius:0px;
+		background-color:#c3c3c3;
+	}
+}

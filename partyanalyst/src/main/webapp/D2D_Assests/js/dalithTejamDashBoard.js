@@ -28,7 +28,7 @@ $("#dateRangePickerAUM").daterangepicker({
 		'Today' : [moment(), moment()],
 		'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		//'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		'Last 3 Months': [moment().subtract(3, 'month'), moment()],
 		//'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
 		'This Month': [moment().startOf('month'), moment()],
 		//'This Year': [moment().startOf('Year'), moment()]
@@ -400,8 +400,8 @@ function getRecentImagesList(){
 function DalithaTejamnews(){
 	$("#dalithaTejamOnNewsDivId").html("<div class='spinner'><div class='dot1'></div><div class='dot2'></div></div>");
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
-		//url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
+		//url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
+		url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
 	}).then(function(result){
 		if(result !=null){
 			buildNewsModule(result);
@@ -621,7 +621,7 @@ function levelWiseSBData(divId)
 	var collapse='';
 	for(var i in levelWiseSBArr)
 	{
-		collapse+='<div class="col-sm-12">';
+		collapse+='<div class="col-sm-12 m_top10">';
 		collapse+='<div class="panel-group" id="accordion'+divId.toString().replace(/\s+/g, '')+''+levelWiseSBArr[i]+'" role="tablist" aria-multiselectable="true">';
 			collapse+='<div class="panel panel-default panel-gray" style="box-shadow:none;">';
 				collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBArr[i]+'">';
@@ -695,7 +695,7 @@ function getSettingActivitiesJBMData(locationId,divId){
 	}	
 	$.ajax({
 	 type: "POST",
-	 url: "getLocationWiseJBDataAction.action",
+	 url: "getDalithTejamLocationWiseDataAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0){
@@ -748,7 +748,12 @@ function buildActivityEventdata(result,locationId,divId){
 						}
 						
 					}
-					tableView+='<th rowspan ="2">ఈ కార్యక్రమం లో ఎమ్మెల్యే/ఇంచార్జి హాజరు అయిన  రోజులు </th>';
+					if(locationId == 'constituency'){
+						tableView+='<th rowspan ="2">ఈ కార్యక్రమం లో ఎమ్మెల్యే/ఇంచార్జి హాజరు అయిన  రోజులు </th>';
+					}
+					if(locationId != 'parliament'){
+						tableView+='<th rowspan ="2">News CoverageDays </th>';
+					}
 				tableView+='</tr>';
 				tableView+='<tr>';
 					tableView+='<th>Total Count</th>';
@@ -839,7 +844,21 @@ function buildActivityEventdata(result,locationId,divId){
 						}
 						
 					}
-					tableView+='<td align="center">'+result[i].count+'</td>';
+					if(locationId == 'constituency'){
+						if( result[i].count !=null && result[i].count >0){
+							tableView+='<td align="center">'+result[i].newsCount+'</td>';
+						}else{
+							tableView+='<td align="center">-</td>';
+						}
+					}
+					if(locationId != 'parliament'){
+						if( result[i].newsCount !=null && result[i].newsCount >0){
+							tableView+='<td align="center">'+result[i].newsCount+'</td>';
+						}else{
+							tableView+='<td align="center">-</td>';
+						}
+						
+					}
 					tableView+='</tr>';
 				}
 			tableView+='</tbody>';
@@ -1014,7 +1033,7 @@ function levelWiseLeaderData(divId)
 	var collapse='';
 	for(var i in levelWiseSBLeaderArr)
 	{
-		collapse+='<div class="col-sm-12">';
+		collapse+='<div class="col-sm-12 m_top10">';
 		collapse+='<div class="panel-group" id="accordionleader'+divId+''+levelWiseSBLeaderArr[i]+'" role="tablist" aria-multiselectable="true">';
 			collapse+='<div class="panel panel-default panel-gray" style="box-shadow:none;">';
 			
@@ -1090,7 +1109,7 @@ function getSettingActivitiesJBMData1(locationId,divId){
 	}	
 	$.ajax({
 	 type: "POST",
-	 url: "getLocationWiseJBDataAction.action",
+	 url: "getDalithTejamLocationWiseDataAction.action",
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0){
@@ -1206,8 +1225,8 @@ $(document).on("click",".partyMainEditionCls",function(){
 function getEditionTypeWisePartiesAnalysisForArticles(editionType,attrCategoryid,attrPartyids,attrBenifitId,attrEditionType){
 $("#popImgDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({	
-       url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
-		//url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
+       //url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
+		url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
 	}).then(function(result){
 		$("#popImgDiv").html("");
 		if(result != null && result.length >0){
@@ -1343,7 +1362,6 @@ $(document).on("click",".articleWisePrintMediaCls",function(){
 		var scopeValue = $(this).attr("attr_scopeValue");
 		getEditionTypeWisePartiesAnalysisForClick(globalPartyId,globalBenefitId,globalChannelId,scopeId,scopeValue
 		,globalcategoryId,globalEndIndex,0);
-		$("#newspopImgDiv").html('');
 		$('#articleDataID').modal('show');
 		$("#articleId").html("All News Articles");
 	
@@ -1353,9 +1371,9 @@ $(document).on("click",".articleWisePrintMediaCls",function(){
 		,globalcategoryId,globalEndIndex,globalstartIndex){
 	$("#newspopImgDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
+		//url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
 		
-		//url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
+		url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
 	}).then(function(result){
 		buildArticlesByDateRangeWise(result,globalPartyId,globalBenefitId,globalChannelId,scopeId,scopeValue
 		,globalcategoryId,globalEndIndex,globalstartIndex);
@@ -1841,7 +1859,7 @@ function buildArticlesByDateRangeWise(results,globalPartyId,globalBenefitId,glob
 				str+='<div class="col-md-5 widgets widget-hide" style="margin-left:200px;color:red;"> <h4> NO ARTICLES AVAILABLE WITH SEARCHED FILTERS </h4> </div>';
 		}
 		
-		$("#newspopImgDiv").append(str);
+		$("#newspopImgDiv").html(str);
 		setTimeout(function () {
 		$(".scrolllengthDiv").each(function(){
 			$('.scrolllengthDiv').wrapInner('<div class="scrollable" />');
@@ -1871,6 +1889,10 @@ function setDefaultImage1(img)
 }
 
 
+var globallocationScope;
+var globalPopupresult = "";
+var globlbuildType="dayswise";
+var isBuildDate=false;
 $(document).on("click",".getImageCls",function(){
 
 	$("#myModalImageId").modal("show");
@@ -1926,7 +1948,32 @@ globalActivityScope = attr_activity_scopeid;
 getEventDocumentForPopup("district",1,0,0,'',attr_activity_scopeid,"state",1,"firstClick",activity_name);
 	 
 });
-
+$(document).on("change","#daysListId",function(){
+	
+	var weekDays = $(this).val();
+	var datesArr = [];
+	if(weekDays != null){
+		datesArr = weekDays.split(' to ');
+	}
+	$("#paginationDivId").html('');
+	//alert(666);
+	if(weekDays == 0){
+		getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,'',globalActivityScope,globallocationScope,globallocationValue,"","","");
+		getTempAvailablDates(globallocationScope,globallocationValue,0,'',globalActivityScope,"","");
+		getDistrictNames('',"","");	
+	}else{
+		if(datesArr != null && datesArr.length==2){
+			getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,'',globalActivityScope,globallocationScope,globallocationValue,"",datesArr[0].trim(),datesArr[1].trim());
+			getTempAvailablDates(globallocationScope,globallocationValue,0,'',globalActivityScope,datesArr[0].trim(),datesArr[1].trim());
+			getDistrictNames('',datesArr[0].trim(),datesArr[1].trim());	
+		}else{
+			getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,'',globalActivityScope,globallocationScope,globallocationValue,"",'','');
+			getTempAvailablDates(globallocationScope,globallocationValue,0,'',globalActivityScope,'','');
+			getDistrictNames('','','');	
+		}
+	}
+	
+});
 $(document).on('click','.dayssCls',function(){
 	 $(".dayssCls").removeClass("active" )
 	 $(this).addClass("active");
@@ -2346,7 +2393,7 @@ function getDistrictNames(activity_name,startDate,endDate){
 function buildDistrictNames(result,activityLevelId,scopeId,activity_name)
 {
 	var str='';
-	str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
+	/* str+='<div class="panel-group" id="accordionModal" role="tablist" aria-multiselectable="true">';
 	
 	var coveredCount =0;
 	var imagesCount =0;
@@ -2364,7 +2411,7 @@ function buildDistrictNames(result,activityLevelId,scopeId,activity_name)
 			str+='<div style="text-align:right;margin:10px ">';
 			//str+='<div class="panel-heading panel-headingModal" role="tab"  id="headingOneModa1l'+i+'" >';
 				str+='<a role="button" class="getImageCls"  type="overAll"   activity_name="'+activity_name+'" attr_activity_scopeid="'+scopeId+'" attr_level_id="'+activityLevelId+'" aria-controls="collapseOneModa1l'+i+'"data-toggle="collapse" data-parent="#accordionModal"  aria-expanded="true" attr_activity_level_id="'+activityLevelId+'" >';
-				/*str+='<h4 class="panel-title"> Andhra Pradesh ( <span title="Total Uploaded Images ">'+imagesCount+' </span>/<span title="Images Covered Locations ">'+coveredCount+')</h4>';*/
+				/*str+='<h4 class="panel-title"> Andhra Pradesh ( <span title="Total Uploaded Images ">'+imagesCount+' </span>/<span title="Images Covered Locations ">'+coveredCount+')</h4>';
 				str+='<i class="glyphicon glyphicon-refresh" title="click here to refresh"></i>';
 				str+='</a>';
 				
@@ -2398,10 +2445,42 @@ function buildDistrictNames(result,activityLevelId,scopeId,activity_name)
 		str+='</div>';
 	  str+='</div>';
 	}
+	str+='</div>'; */
+	
+	
+	str+='<div class="panel-group" id="accordionCons" role="tablist" aria-multiselectable="true">';
+	for(var i in result)
+	{
+	 str+=' <div class="panel panel-default panel-custommodal">';
+		str+='<div class="panel-heading" role="tab" id="headingCons'+i+'">';
+			str+='<a role="button" class="constituencyPopups collapsed accordionmodal-toggle" data-toggle="collapse" data-parent="#accordionCons" href="#collapseCons'+i+'" aria-expanded="true"  attr_distId="'+result[i].districtId+'" attr_dist_name="'+result[i].name+'" aria-controls="collapseCons'+i+'">';
+			  str+='<h4 class="panel-title">'+result[i].name+'( <span title="Total Uploaded Images ">'+result[i].count+' </span>/<span title="Images Covered Locations ">'+result[i].imagesCnt+')</h4>';
+			str+='</a>';
+		str+='</div>';
+		str+='<div id="collapseCons'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCons'+i+'">';
+		  str+='<div class="panel-body">';
+			str+='<div id="constituenciesBlock'+result[i].districtId+'"></div>';
+		  str+='</div>';
+		str+='</div>';
+	  str+='</div>';
+	}
 	str+='</div>';
 	$("#districtsUlId").html(str);
 }
 $(document).on("click",".constituencyPopups",function(){
+	/* var getOpenId = $(this).attr('href');
+	var removeClass = $(this).closest(".panel-group")
+		removeClass.find(".panel-collapse").removeClass("in");
+	$(".accordionmodal-toggle").addClass("collapsed");
+	if($(this).hasClass("collapsed"))
+	{
+		$(this).removeClass("collapsed");
+		$(getOpenId).addClass("in");
+	}else{
+		$(this).addClass("collapsed");
+		$(getOpenId).removeClass("in");
+	} */
+		
 	var distId = $(this).attr("attr_distId");
 	var activityLevelId = $(this).attr("attr_activity_level_id");
 	var attr_dist_name = $(this).attr("attr_dist_name");
@@ -2492,7 +2571,7 @@ function getConstituencyList(distId,activityLevelId){
 function buildConstituencyList(result,distId,activityLevelId)
 {
 	var str='';
-	str+='<div class="panel-group allConstCls" id="accordionModalCons'+distId+'" role="tablist" aria-multiselectable="true">';
+	/* str+='<div class="panel-group allConstCls" id="accordionModalCons'+distId+'" role="tablist" aria-multiselectable="true">';
 	for(var i in result)
 	{
 	  str+='<div class="panel panel-default panel-custommodal">';
@@ -2502,7 +2581,7 @@ function buildConstituencyList(result,distId,activityLevelId)
 			str+='<h4 class="panel-title">'+result[i].name+' ASSEMBLY ( <span title="Total Uploaded Images ">'+result[i].imagesCnt+' </span>/<span title="Images Covered Locations ">'+result[i].count+')</h4>';
 		  str+='</a>';
 		}else{
-			  str+='<a role="button" class="mandalPopups" data-parent="#accordionModalCons'+distId+'" attr_consId="'+result[i].constituencyId+'" href="#collapseOneModalCons'+i+'" aria-expanded="true" aria-controls="collapseOneModalCons'+i+'">'; 
+			  str+='<a role="button" class="mandalPopups accordionmodal-toggle collapsed" data-parent="#accordionModalCons'+distId+'" attr_consId="'+result[i].constituencyId+'" href="#collapseOneModalCons'+i+'" aria-expanded="true" aria-controls="collapseOneModalCons'+i+'">'; 
 			str+='<h4 class="panel-title">'+result[i].name+' ASSEMBLY ( <span title="Total Uploaded Images ">'+result[i].imagesCnt+' </span>/<span title="Images Covered Locations ">'+result[i].count+'</span>)</h4>';
 		  str+='</a>';
 		}
@@ -2515,11 +2594,40 @@ function buildConstituencyList(result,distId,activityLevelId)
 		str+='</div>';
 	  str+='</div>';
 	}
+	str+='</div>'; */
+	str+='<div class="panel-group" id="accordionMandal" role="tablist" aria-multiselectable="true">';
+	for(var i in result)
+	{
+	 str+=' <div class="panel panel-default">';
+		str+='<div class="panel-heading" role="tab" id="headingMandal'+i+'">';
+			str+='<a role="button" class="mandalPopups collapsed accordionmodal-toggle" data-toggle="collapse" data-parent="#accordionMandal" href="#collapseMandal'+i+'" aria-expanded="true" attr_consId="'+result[i].constituencyId+'" aria-controls="collapseMandal'+i+'">';
+			  str+='<h4 class="panel-title">'+result[i].name+' ASSEMBLY ( <span title="Total Uploaded Images ">'+result[i].imagesCnt+' </span>/<span title="Images Covered Locations ">'+result[i].count+'</span>)</h4>';
+			str+='</a>';
+		str+='</div>';
+		str+='<div id="collapseMandal'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingMandal'+i+'">';
+		  str+='<div class="panel-body">';
+			str+='<div id="mandalsBlock'+result[i].constituencyId+'"></div>';
+		  str+='</div>';
+		str+='</div>';
+	  str+='</div>';
+	}
 	str+='</div>';
 	$("#constituenciesBlock"+distId).html(str);
 	
 }
 $(document).on("click",".mandalPopups",function(){
+	/* var getOpenId = $(this).attr('href');
+	var removeClass = $(this).closest(".panel-group")
+		removeClass.find(".panel-collapse").removeClass("in");
+	$(".accordionmodal-toggle").addClass("collapsed");
+	if($(this).hasClass("collapsed"))
+	{
+		$(this).removeClass("collapsed");
+		$(getOpenId).addClass("in");
+	}else{
+		$(this).addClass("collapsed");
+		$(getOpenId).removeClass("in");
+	} */
 	var constituencyId = $(this).attr("attr_consId");
 	var activityLevelId = $(this).attr("attr_activity_level_id");
 	getMandalOrMuncList(constituencyId,activityLevelId,0,"");
