@@ -3370,3 +3370,14 @@ background-color:#FFE08E !important;
 		border:1px solid #d1ab66;
 		background-color:#fff;	
 }
+.colorExpCls{
+	display:inline-block;
+	width:15px;
+	height:15px;
+}
+.colorExpCls li{
+	line-height:20px;
+}
+.text-bold{
+	font-weight:bold;
+}
