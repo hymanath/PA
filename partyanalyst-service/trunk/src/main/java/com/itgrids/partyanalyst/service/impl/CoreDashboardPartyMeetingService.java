@@ -2107,6 +2107,12 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 									  }
 								}
 							}
+							
+							Collections.sort(mainVO.getSubList1(), new Comparator<PartyMeetingsDataVO>() {
+								public int compare(PartyMeetingsDataVO o1,PartyMeetingsDataVO o2) {
+									return o2.getId().compareTo(o1.getId());
+								}
+							});
 						}
 					}
 				}
