@@ -2,6 +2,8 @@ var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><
 var customStartToursDateM = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
 var customEndToursDateM = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 var dateHeadingStr1 = "Last Month&nbsp("+customStartToursDateM+"&nbspto&nbsp"+customEndToursDateM+")";
+var globalStatusObj=[{"1":"rgba(255, 0, 0, 0.15)"},{"2":"rgba(255, 0, 0, 0.25)"},{"3":"rgba(255, 0, 0, 0.35)"},{"4":"rgba(255, 0, 0, 0.45)"},{"5":"rgba(255, 0, 0, 0.55)"},{"6":"rgba(255, 0, 0, 0.65)"},{"7":"rgba(255, 0, 0, 0.75)"},{"8":"rgba(255, 0, 0, 0.85)"},{"9":"rgba(255, 0, 0, 0.9)"},{"10":"rgba(255, 0, 0, 1)"}];
+var globalStatusObj1={"1":"rgba(255, 0, 0, 0.15)","2":"rgba(255, 0, 0, 0.25)","3":"rgba(255, 0, 0, 0.35)","4":"rgba(255, 0, 0, 0.45)","5":"rgba(255, 0, 0, 0.55)","6":"rgba(255, 0, 0, 0.65)","7":"rgba(255, 0, 0, 0.75)","8":"rgba(255, 0, 0, 0.85)","9":"rgba(255, 0, 0, 0.9)","10":"rgba(255, 0, 0, 1)"}
 //$("#exceptionReportMeetingDateId").html(dateHeadingStr1);
  onloadPartyMeeting();
 $("#meetingExDateRangePickerId").daterangepicker({
@@ -222,13 +224,13 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 			str+='</div>';
 		str+='</div>';
 	str+='</div>'; */
-	var globalStatusObj={"1":"#C1A384","2":"#7C664F","3":"#704722","4":"#A65C31","5":"#C70039","6":"#C90606","7":"#FF5733","8":"#B02626","9":"#CD0707","10":"#FC1313"};
-	
+
+	str+='<div id="dataTableElecBlockCount"></div>';
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
 				str+='<h5 class="text_bold text-capital font_size24" >Parliaments with Poor Performance</h5>';
 				str+='<div class="table-responsive m_top10">';
-					str+='<table class="table details-overview">';
+					str+='<table class="table details-overview" id="dataTableElecBlock">';
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th rowspan="2" style="border-right: 1px solid #d1ab66 !important;">Parliament Name</th>';
@@ -263,7 +265,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 							for(var i in result.subList2){
 								if(result.subList2[i].sortNo > 0){
 								str+='<tr>';
-								str+='<td style="background-color:'+globalStatusObj[result.subList2[i].sortNo]+';color:#fff;">'+result.subList2[i].locationName+'</td>';
+								str+='<td attr_color="'+globalStatusObj1[result.subList2[i].sortNo]+'" class="dataTableElecBlockexception'+result.subList2[i].sortNo+'" style="background-color:'+globalStatusObj1[result.subList2[i].sortNo]+';color:#fff;">'+result.subList2[i].locationName+'</td>';
 								for(var j in result.subList2[i].subList1){
 									//str+='<td>'+result.subList2[i].subList1[j].totalCount+'</td>';
 									//str+='<td>'+result.subList2[i].subList1[j].notConductedCount+'</td>';
@@ -291,17 +293,64 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 	
 	
 	$("#overAllMeetingLevelsDivId").html(str);
+	var $windowWidth = $(window).width();
+	getCountOfColor("dataTableElecBlock")
+	if($windowWidth < 600)
+	{
+		$("#dataTableElecBlock").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"aoColumnDefs": [{ "bSortable": false}], 
+            "scrollX":        true,
+			"scrollCollapse": true,
+			"fixedColumns":   {
+				"leftColumns": 1,
+			}
+		});
+	}
+	
 }
 
 function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 	
 	var str='';
-	var globalStatusObj={"1":"#C1A384","2":"#7C664F","3":"#704722","4":"#A65C31","5":"#C70039","6":"#C90606","7":"#FF5733","8":"#B02626","9":"#CD0707","10":"#FC1313"};
+	/* var excLocArr = [{exceptionCount:'1',val:'0'},{exceptionCount:'2',val:'0'},{exceptionCount:'3',val:'0'},{exceptionCount:'4',val:'0'},{exceptionCount:'5',val:'0'},{exceptionCount:'6',val:'0'},{exceptionCount:'7',val:'0'},{exceptionCount:'8',val:'0'},{exceptionCount:'9',val:'0'},{exceptionCount:'10',val:'0'}]
+	var globalobj='';
+	for(var i in result.subList1){
+		var sortNo = result.subList1[i].sortNo;
+		for(var j in excLocArr){
+			if(excLocArr[j].exceptionCount == sortNo){
+				var val = excLocArr[j].val+1;
+				globalobj={""+excLocArr[j].exceptionCount+""};
+				
+			}
+		}
+	}
+	console.log(globalobj) */
+	
+	/* var blocksArr = [{exceptionCount:'1',color:'#C1A384'},{exceptionCount:'2',color:'#7C664F'},{exceptionCount:'3',color:'#704722'},{exceptionCount:'4',color:'#A65C31'},{exceptionCount:'5',color:'#C70039'},{exceptionCount:'6',color:'#640707'},{exceptionCount:'7',color:'#FF5733'},{exceptionCount:'8',color:'#B02626'},{exceptionCount:'9',color:'#CD0707'},{exceptionCount:'10',color:'#FC1313'}]
+	str+='<div class="row">';
+		str+='<div class="col-sm-12 m_top20">';
+			str+='<ul class="list-inline">';
+			for(var i in blocksArr){
+				str+='<li>';
+					str+='<h4 class="text-bold"><span class="colorExpCls" style="background-color:'+blocksArr[i].color+'"></span> Exceptions('+blocksArr[i].exceptionCount+') - Parliaments()</h4>';
+				str+='</li>';
+			}
+				
+			str+='</ul>';
+		str+='</div>';
+	str+='</div>'; */
+	
+	//str+=''+getCountOfColor("dataTableElecBlock1")+'';
+	str+='<div id="dataTableElecBlock1Count"></div>';
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
 				str+='<h5 class="text_bold text-capital font_size24" >Assembly Constituency with Poor Performance</h5>';
 				str+='<div class="table-responsive m_top10">';
-					str+='<table class="table details-overview">';
+					str+='<table class="table details-overview" id="dataTableElecBlock1">';
 						str+='<thead>';
 							str+='<tr>';
 							str+='<th rowspan="2" style="border-right: 1px solid #d1ab66 !important;" >Constituency Name</th>';
@@ -341,8 +390,8 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 							for(var i in result.subList1){
 								
 								if(result.subList1[i].addressVO != null && result.subList1[i].sortNo > 0){
-									str+='<tr>';
-									str+='<td style="background-color:'+globalStatusObj[result.subList1[i].sortNo]+';color:#fff;border-right: 1px solid #d1ab66 !important;">'+result.subList1[i].addressVO.constituencyName+'</td>';
+									str+='<tr >';
+									str+='<td  attr_color="'+globalStatusObj1[result.subList1[i].sortNo]+'" class="dataTableElecBlock1exception'+result.subList1[i].sortNo+'" style="background-color:'+globalStatusObj1[result.subList1[i].sortNo]+';color:#fff;border-right: 1px solid #d1ab66 !important;">'+result.subList1[i].addressVO.constituencyName+'</td>';
 								str+='<td>'+result.subList1[i].addressVO.parliamentName+'</td>';
 								for(var j in result.subList1[i].subList1){
 									//str+='<td>'+result.subList1[i].subList1[j].totalCount+'</td>';
@@ -350,7 +399,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 									var arr = result.subList1[i].subList1[j].locationName.split(' ');
 									var lastval = arr[arr.length-1];
 									if(result.subList1[i].subList1[j].percentage != 0 && result.subList1[i].subList1[j].percentage!= null && lastval != 'Camp'){
-										str+='<td>'+result.subList1[i].subList1[j].percentage+'</td>';
+										str+='<td >'+result.subList1[i].subList1[j].percentage+'</td>';
 									}else if(lastval != 'Camp'){
 										str+='<td>-</td>';
 									}
@@ -373,4 +422,42 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 	str+='</div>';
 	
 	$("#overAllMeetingLevelsDivId1").html(str);
+	getCountOfColor("dataTableElecBlock1")
+	var $windowWidth = $(window).width();
+	if($windowWidth < 600)
+	{
+		$("#dataTableElecBlock1").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"scrollX":        true,
+			"scrollCollapse": true,
+			"fixedColumns":   {
+				"leftColumns": 1,
+			}
+		});
+	}
+	
+}
+
+function getCountOfColor(divId)
+{
+	var str='';
+		
+		str+='<div class="row">';
+		str+='<div class="col-sm-12 m_top20">';
+			str+='<ul class="list-inline">';
+			var k = 0;
+			for(var i in globalStatusObj)
+			{
+				k = k+1;
+				str+='<li>';
+					str+='<h4 class="text-bold"><span class="colorExpCls" style="background-color:'+globalStatusObj1[k]+'"></span> Exceptions('+k+') - Parliaments('+$('.'+divId+'exception'+k).length+')</h4>';
+				str+='</li>';
+			}	
+			str+='</ul>';
+		str+='</div>';
+	str+='</div>';
+	$("#"+divId+"Count").html(str);
 }
