@@ -4303,4 +4303,8 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 
+	  <bean id="activityQuestionAnswerInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityQuestionAnswerInfoDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 </beans>		
