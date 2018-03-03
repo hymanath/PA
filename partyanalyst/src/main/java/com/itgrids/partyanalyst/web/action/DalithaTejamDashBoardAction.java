@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.DalithaTejamInputVo;
 import com.itgrids.partyanalyst.dto.DalithaTejamVO;
+import com.itgrids.partyanalyst.dto.EventLocationVO;
 import com.itgrids.partyanalyst.service.IDalithaTejamDashBoardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -22,7 +23,17 @@ public class DalithaTejamDashBoardAction extends ActionSupport implements	Servle
 	private String task;
 	private IDalithaTejamDashBoardService dalithaTejamDashBoardService;
 	private List<DalithaTejamVO> dalithaTejamList;
+	private List<EventLocationVO> jbDataList;
 	
+	
+	public List<EventLocationVO> getJbDataList() {
+		return jbDataList;
+	}
+
+	public void setJbDataList(List<EventLocationVO> jbDataList) {
+		this.jbDataList = jbDataList;
+	}
+
 	public IDalithaTejamDashBoardService getDalithaTejamDashBoardService() {
 		return dalithaTejamDashBoardService;
 	}
@@ -114,5 +125,21 @@ public class DalithaTejamDashBoardAction extends ActionSupport implements	Servle
 			LOG.error("Exception Occured In getImagesFordalithatejam method "+e);		
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String DalithTejamLocationWiseData(){
+		try {
+			LOG.info("Entered into activitiesDistrictWiseCohort()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long locationScopeId = jObj.getLong("locationScopeId");
+			Long activityId= jObj.getLong("activityId");
+			jbDataList = dalithaTejamDashBoardService.DalithTejamLocationWiseData(fromDate, toDate,locationScopeId,activityId,jObj.getLong("locationValue"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at activitiesDistrictWiseCohort() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+		
 	}
 }
