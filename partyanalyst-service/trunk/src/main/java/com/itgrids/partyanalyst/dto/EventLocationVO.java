@@ -30,6 +30,7 @@ public class EventLocationVO {
 	private Long totalRegistered=0l;
 	private Long totalLoanApplied=0l;
 	private Long imageCount;
+	private Long newsCount =0l;
 	
 	public Long getLocationId() {
 		return locationId;
@@ -162,6 +163,12 @@ public class EventLocationVO {
 	}
 	public void setImageCount(Long imageCount) {
 		this.imageCount = imageCount;
+	}
+	public Long getNewsCount() {
+		return newsCount;
+	}
+	public void setNewsCount(Long newsCount) {
+		this.newsCount = newsCount;
 	}
 	
 	
