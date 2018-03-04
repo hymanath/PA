@@ -381,7 +381,7 @@ public class DalithaTejamDashBoardService implements IDalithaTejamDashBoardServi
 			 ClientConfig clientConfig = new DefaultClientConfig();
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
-	         WebResource webResource = client.resource("http://localhost:8446/CommunityNewsPortal/webservice/getCountDaysBasedOnCategory/1156/"+fromDate+"/"+toDate+"/"+locationScopeId);
+	         WebResource webResource = client.resource("http://mytdp.com/CommunityNewsPortal/webservice/getCountDaysBasedOnCategory/1156/"+fromDate+"/"+toDate+"/"+locationScopeId);
 	   
 	         ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 	          if(response.getStatus() != 200){
