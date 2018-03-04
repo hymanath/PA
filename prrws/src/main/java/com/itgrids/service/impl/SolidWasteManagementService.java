@@ -57,18 +57,18 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			String url = null;
 			Map<String, SolidWasteManagementVO> locationMap = new HashMap<String, SolidWasteManagementVO>();
 			if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("district"))
-				url = "https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
+				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
 						+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&filterType="
 						+ inputVO.getFilterType() + "&filterId=" + inputVO.getFilterId() + "&subFilterType="
 						+ inputVO.getSubFilterType() + "&subFilterId=" + inputVO.getSubFilterId() + "&fromDate="
 						+ inputVO.getFromDate() + "&toDate=" + inputVO.getToDate();
 			else if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("constituency"))
-				url = "https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
+				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
 						+ inputVO.getLocationId() + "&locationType=" +inputVO.getLocationType()+"&filterType=" + inputVO.getFilterType()
 						+ "&filterId=" + inputVO.getFilterId() + "&fromDate=" + inputVO.getFromDate() + "&toDate="
 						+ inputVO.getToDate();
 			else if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("mandal"))
-				url = "https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
+				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
 						+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&fromDate="
 						+ inputVO.getFromDate() + "&toDate=" + inputVO.getToDate();
 
@@ -184,7 +184,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		try {
 
 			WebResource webResource = commonMethodsUtilService
-					.getWebResourceObject("https://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
+					.getWebResourceObject("http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
 							+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&fromDate="
 							+ inputVO.getFromDate() + "&toDate=" + inputVO.getToDate());
 			ClientResponse response = webResource.accept("application/json").type("application/json")
