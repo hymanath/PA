@@ -133,16 +133,7 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 						 	    				taxesvo.setTotalDemandUnits(taxesvo.getDemandArrearUnits()+taxesvo.getDemandCurrentUnits());
 						 	    				taxesvo.setTotalCollectionUnts(taxesvo.getCollectionArrearUnits()+taxesvo.getCollectionCurrentUnits());
 						 	    				taxesvo.setTotalBalanceUnits(taxesvo.getBalanceArrearUnits()+taxesvo.getBalanceCurrentUnits());
-						 	    				if(taxesvo.getTotalDemandAmount() != null && Double.valueOf(taxesvo.getTotalDemandAmount()) > 0 && taxesvo.getTotalCollectionAmount() != null && Double.valueOf(taxesvo.getTotalCollectionAmount()) > 0){
-						 	    					taxesvo.setCollectionAmuntPerc(new BigDecimal(Double.valueOf(taxesvo.getTotalCollectionAmount()) * 100.00/ Double.valueOf(taxesvo.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-												} else {
-													taxesvo.setCollectionAmuntPerc("0.00");
-												}
-						 	    				if(taxesvo.getTotalDemandAmount() != null && Double.valueOf(taxesvo.getTotalDemandAmount()) > 0 && taxesvo.getTotalBalanceAmount()  != null && Double.valueOf(taxesvo.getTotalBalanceAmount()) > 0){
-						 	    					taxesvo.setBalAmuntPerc(new BigDecimal(Double.valueOf(taxesvo.getTotalBalanceAmount()) * 100.00/ Double.valueOf(taxesvo.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-												} else {
-													taxesvo.setBalAmuntPerc("0.00");
-												}
+						 	    				
 						 	    				
 						 	    				if(taxesvo.getTotalDemandUnits() != null && Double.valueOf(taxesvo.getTotalDemandUnits()) > 0 && taxesvo.getTotalCollectionUnts() != null
 														&& Double.valueOf(taxesvo.getTotalCollectionUnts()) > 0){
@@ -177,16 +168,6 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 						 	    				taxesvo.setTotalDemandUnits(taxesvo.getDemandArrearUnits()+taxesvo.getDemandCurrentUnits());
 						 	    				taxesvo.setTotalCollectionUnts(taxesvo.getCollectionArrearUnits()+taxesvo.getCollectionCurrentUnits());
 						 	    				taxesvo.setTotalBalanceUnits(taxesvo.getBalanceArrearUnits()+taxesvo.getBalanceCurrentUnits());
-						 	    				if(taxesvo.getTotalDemandAmount() != null && Double.valueOf(taxesvo.getTotalDemandAmount()) > 0 && taxesvo.getTotalCollectionAmount()  != null && Double.valueOf(taxesvo.getTotalCollectionAmount()) > 0){
-						 	    					taxesvo.setCollectionAmuntPerc(new BigDecimal(Double.valueOf(taxesvo.getTotalCollectionAmount()) * 100.00/ Double.valueOf(taxesvo.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-												} else {
-													taxesvo.setCollectionAmuntPerc("0.00");
-												}
-						 	    				if(taxesvo.getTotalDemandAmount() != null && Double.valueOf(taxesvo.getTotalDemandAmount()) > 0 && taxesvo.getTotalBalanceAmount() != null && Double.valueOf(taxesvo.getTotalBalanceAmount()) > 0){
-						 	    					taxesvo.setBalAmuntPerc(new BigDecimal(Double.valueOf(taxesvo.getTotalBalanceAmount()) * 100.00/ Double.valueOf(taxesvo.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-												} else {
-													taxesvo.setBalAmuntPerc("0.00");
-												}
 						 	    				
 						 	    				if(taxesvo.getTotalDemandUnits() != null && Double.valueOf(taxesvo.getTotalDemandUnits()) > 0 && taxesvo.getTotalCollectionUnts() != null
 														&& Double.valueOf(taxesvo.getTotalCollectionUnts()) > 0){
@@ -237,16 +218,6 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 					 	    				feesvo.setTotalDemandUnits(feesvo.getDemandArrearUnits()+feesvo.getDemandCurrentUnits());
 					 	    				feesvo.setTotalCollectionUnts(feesvo.getCollectionArrearUnits()+feesvo.getCollectionCurrentUnits());
 					 	    				feesvo.setTotalBalanceUnits(feesvo.getBalanceArrearUnits()+feesvo.getBalanceCurrentUnits());
-					 	    				if(feesvo.getTotalDemandAmount() != null && Double.valueOf(feesvo.getTotalDemandAmount()) > 0 && feesvo.getTotalCollectionAmount()  != null && Double.valueOf(feesvo.getTotalCollectionAmount()) > 0){
-					 	    					feesvo.setCollectionAmuntPerc(new BigDecimal(Double.valueOf(feesvo.getTotalCollectionAmount()) * 100.00/ Double.valueOf(feesvo.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-											} else {
-												feesvo.setCollectionAmuntPerc("0.00");
-											}
-					 	    				if(feesvo.getTotalDemandAmount() != null && Double.valueOf(feesvo.getTotalDemandAmount()) > 0 && feesvo.getTotalBalanceAmount()  != null && Double.valueOf(feesvo.getTotalBalanceAmount()) > 0){
-					 	    					feesvo.setBalAmuntPerc(new BigDecimal(Double.valueOf(feesvo.getTotalBalanceAmount()) * 100.00/ Double.valueOf(feesvo.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-											} else {
-												feesvo.setBalAmuntPerc("0.00");
-											}
 					 	    				
 					 	    				if(feesvo.getTotalDemandUnits() != null && Double.valueOf(feesvo.getTotalDemandUnits()) > 0 && feesvo.getTotalCollectionUnts() != null
 													&& Double.valueOf(feesvo.getTotalCollectionUnts()) > 0){
@@ -282,16 +253,6 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 					 	    				feesvo.setTotalDemandUnits(feesvo.getDemandArrearUnits()+feesvo.getDemandCurrentUnits());
 					 	    				feesvo.setTotalCollectionUnts(feesvo.getCollectionArrearUnits()+feesvo.getCollectionCurrentUnits());
 					 	    				feesvo.setTotalBalanceUnits(feesvo.getBalanceArrearUnits()+feesvo.getBalanceCurrentUnits());
-					 	    				if(feesvo.getTotalDemandAmount() != null && Double.valueOf(feesvo.getTotalDemandAmount()) > 0 && feesvo.getTotalCollectionAmount()  != null && Double.valueOf(feesvo.getTotalCollectionAmount()) > 0){
-					 	    					feesvo.setCollectionAmuntPerc(new BigDecimal(Double.valueOf(feesvo.getTotalCollectionAmount()) * 100.00/ Double.valueOf(feesvo.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-											} else {
-												feesvo.setCollectionAmuntPerc("0.00");
-											}
-					 	    				if(feesvo.getTotalDemandAmount() != null && Double.valueOf(feesvo.getTotalDemandAmount()) > 0 && feesvo.getTotalBalanceAmount()  != null && Double.valueOf(feesvo.getTotalBalanceAmount()) > 0){
-					 	    					feesvo.setBalAmuntPerc(new BigDecimal(Double.valueOf(feesvo.getTotalBalanceAmount()) * 100.00/ Double.valueOf(feesvo.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-											} else {
-												feesvo.setBalAmuntPerc("0.00");
-											}
 					 	    				
 					 	    				if(feesvo.getTotalDemandUnits() != null && Double.valueOf(feesvo.getTotalDemandUnits()) > 0 && feesvo.getTotalCollectionUnts() != null
 													&& Double.valueOf(feesvo.getTotalCollectionUnts()) > 0){
@@ -352,6 +313,17 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	     			taxesVO.setTotalDemandAmount(convertRupeesIntocrores(taxesVO.getTotalDemandAmount()));
 	     			taxesVO.setTotalCollectionAmount(convertRupeesIntocrores(taxesVO.getTotalCollectionAmount()));
 	     			taxesVO.setTotalBalanceAmount(convertRupeesIntocrores(taxesVO.getTotalBalanceAmount()));
+	     			
+	     			if(taxesVO.getTotalDemandAmount() != null && Double.valueOf(taxesVO.getTotalDemandAmount()) > 0 && taxesVO.getTotalCollectionAmount() != null && Double.valueOf(taxesVO.getTotalCollectionAmount()) > 0){
+	     				taxesVO.setCollectionAmuntPerc(new BigDecimal(Double.valueOf(taxesVO.getTotalCollectionAmount()) * 100.00/ Double.valueOf(taxesVO.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} else {
+						taxesVO.setCollectionAmuntPerc("0.00");
+					}
+	    				if(taxesVO.getTotalDemandAmount() != null && Double.valueOf(taxesVO.getTotalDemandAmount()) > 0 && taxesVO.getTotalBalanceAmount()  != null && Double.valueOf(taxesVO.getTotalBalanceAmount()) > 0){
+	    					taxesVO.setBalAmuntPerc(new BigDecimal(Double.valueOf(taxesVO.getTotalBalanceAmount()) * 100.00/ Double.valueOf(taxesVO.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} else {
+						taxesVO.setBalAmuntPerc("0.00");
+					}
 				}
 	     	}
 	     	if(finalVO.getFeeList() != null && !finalVO.getFeeList().isEmpty()){
@@ -365,6 +337,17 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	     			feeVO.setTotalDemandAmount(convertRupeesIntocrores(feeVO.getTotalDemandAmount()));
 	     			feeVO.setTotalCollectionAmount(convertRupeesIntocrores(feeVO.getTotalCollectionAmount()));
 	     			feeVO.setTotalBalanceAmount(convertRupeesIntocrores(feeVO.getTotalBalanceAmount()));
+	     			
+	     			if(feeVO.getTotalDemandAmount() != null && Double.valueOf(feeVO.getTotalDemandAmount()) > 0 && feeVO.getTotalCollectionAmount()  != null && Double.valueOf(feeVO.getTotalCollectionAmount()) > 0){
+	     				feeVO.setCollectionAmuntPerc(new BigDecimal(Double.valueOf(feeVO.getTotalCollectionAmount()) * 100.00/ Double.valueOf(feeVO.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} else {
+						feeVO.setCollectionAmuntPerc("0.00");
+					}
+	    				if(feeVO.getTotalDemandAmount() != null && Double.valueOf(feeVO.getTotalDemandAmount()) > 0 && feeVO.getTotalBalanceAmount()  != null && Double.valueOf(feeVO.getTotalBalanceAmount()) > 0){
+	    					feeVO.setBalAmuntPerc(new BigDecimal(Double.valueOf(feeVO.getTotalBalanceAmount()) * 100.00/ Double.valueOf(feeVO.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} else {
+						feeVO.setBalAmuntPerc("0.00");
+					}
 				}
 	     	}
 			
@@ -441,17 +424,7 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 		 	    					indicatorVO.setTotalCollectionUnts(Long.valueOf(taxesObj.get("CollectionAssmts").toString()));
 		 	    					indicatorVO.setTotalBalanceUnits(indicatorVO.getTotalDemandUnits()-indicatorVO.getTotalCollectionUnts());
 		 	    					
-		 	    					if(indicatorVO.getTotalDemandAmount() != null && Double.valueOf(indicatorVO.getTotalDemandAmount()) > 0 && indicatorVO.getTotalCollectionAmount() != null && Double.valueOf(indicatorVO.getTotalCollectionAmount()) > 0){
-		 	    						indicatorVO.setCollectionAmuntPerc(new BigDecimal(Double.valueOf(indicatorVO.getTotalCollectionAmount()) * 100.00/ Double.valueOf(indicatorVO.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-									} else {
-										indicatorVO.setCollectionAmuntPerc("0.00");
-									}
-		 	    					if(indicatorVO.getTotalDemandAmount() != null && Double.valueOf(indicatorVO.getTotalDemandAmount()) > 0 && indicatorVO.getTotalBalanceAmount() != null && Double.valueOf(indicatorVO.getTotalBalanceAmount()) > 0){
-		 	    						indicatorVO.setBalAmuntPerc(new BigDecimal(Double.valueOf(indicatorVO.getTotalBalanceAmount()) * 100.00/ Double.valueOf(indicatorVO.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-									} else {
-										indicatorVO.setBalAmuntPerc("0.00");
-									}
-			 	    				if(indicatorVO.getTotalDemandUnits() != null && indicatorVO.getTotalDemandUnits() > 0 && indicatorVO.getTotalCollectionUnts() != null
+		 	    					if(indicatorVO.getTotalDemandUnits() != null && indicatorVO.getTotalDemandUnits() > 0 && indicatorVO.getTotalCollectionUnts() != null
 											&& indicatorVO.getTotalCollectionUnts() > 0){
 			 	    					indicatorVO.setCollectionUnitsPerc(new BigDecimal(Double.valueOf(indicatorVO.getTotalCollectionUnts()) * 100.00/ Double.valueOf(indicatorVO.getTotalDemandUnits())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 									} else {
@@ -474,17 +447,7 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 		 	    					indicatorVO.setTotalCollectionUnts(indicatorVO.getTotalCollectionUnts()+Long.valueOf(taxesObj.get("CollectionAssmts").toString()));//collectionUnits);
 		 	    					indicatorVO.setTotalBalanceUnits(indicatorVO.getTotalDemandUnits()-indicatorVO.getTotalCollectionUnts());
 		 	    					
-		 	    					if(indicatorVO.getTotalDemandAmount() != null && Double.valueOf(indicatorVO.getTotalDemandAmount()) > 0 && indicatorVO.getTotalCollectionAmount() != null && Double.valueOf(indicatorVO.getTotalCollectionAmount()) > 0){
-		 	    						indicatorVO.setCollectionAmuntPerc(new BigDecimal(Double.valueOf(indicatorVO.getTotalCollectionAmount()) * 100.00/ Double.valueOf(indicatorVO.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-									} else {
-										indicatorVO.setCollectionAmuntPerc("0.00");
-									}
-		 	    					if(indicatorVO.getTotalDemandAmount() != null && Double.valueOf(indicatorVO.getTotalDemandAmount()) > 0 && indicatorVO.getTotalBalanceAmount() != null && Double.valueOf(indicatorVO.getTotalBalanceAmount()) > 0){
-		 	    						indicatorVO.setBalAmuntPerc(new BigDecimal(Double.valueOf(indicatorVO.getTotalBalanceAmount()) * 100.00/ Double.valueOf(indicatorVO.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-									} else {
-										indicatorVO.setBalAmuntPerc("0.00");
-									}
-			 	    				if(indicatorVO.getTotalDemandUnits() != null && indicatorVO.getTotalDemandUnits() > 0 && indicatorVO.getTotalCollectionUnts() != null
+		 	    					if(indicatorVO.getTotalDemandUnits() != null && indicatorVO.getTotalDemandUnits() > 0 && indicatorVO.getTotalCollectionUnts() != null
 											&& indicatorVO.getTotalCollectionUnts() > 0){
 			 	    					indicatorVO.setCollectionUnitsPerc(new BigDecimal(Double.valueOf(indicatorVO.getTotalCollectionUnts()) * 100.00/ Double.valueOf(indicatorVO.getTotalDemandUnits())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 									} else {
@@ -513,6 +476,17 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	    		   indicatorvo.setTotalDemandAmount(convertRupeesIntocrores(indicatorvo.getTotalDemandAmount()));
 	    		   indicatorvo.setTotalCollectionAmount(convertRupeesIntocrores(indicatorvo.getTotalCollectionAmount()));
 	     		   indicatorvo.setTotalBalanceAmount(convertRupeesIntocrores(indicatorvo.getTotalBalanceAmount()));
+	     		   
+	     		    if(indicatorvo.getTotalDemandAmount() != null && Double.valueOf(indicatorvo.getTotalDemandAmount()) > 0 && indicatorvo.getTotalCollectionAmount() != null && Double.valueOf(indicatorvo.getTotalCollectionAmount()) > 0){
+	     			 indicatorvo.setCollectionAmuntPerc(new BigDecimal(Double.valueOf(indicatorvo.getTotalCollectionAmount()) * 100.00/ Double.valueOf(indicatorvo.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} else {
+						indicatorvo.setCollectionAmuntPerc("0.00");
+					}
+					if(indicatorvo.getTotalDemandAmount() != null && Double.valueOf(indicatorvo.getTotalDemandAmount()) > 0 && indicatorvo.getTotalBalanceAmount() != null && Double.valueOf(indicatorvo.getTotalBalanceAmount()) > 0){
+						indicatorvo.setBalAmuntPerc(new BigDecimal(Double.valueOf(indicatorvo.getTotalBalanceAmount()) * 100.00/ Double.valueOf(indicatorvo.getTotalDemandAmount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} else {
+						indicatorvo.setBalAmuntPerc("0.00");
+					}
 	    	   }
 	       }
 		} catch (Exception e) {
