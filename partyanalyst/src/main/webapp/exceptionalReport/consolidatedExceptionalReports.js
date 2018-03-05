@@ -198,32 +198,6 @@ function getConsolidatedLevelWisePartyMeetingExceptionReport1(){
 function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 	
 	var str='';
-	
-	/* str+='<div class="row ">';
-		str+='<div class="col-sm-12 m_top10">';
-			str+='<h4 class="text_bold text-capital font_size24" >Over All Meeting Details - <small>(<b>Constituency,Mandal,Village level</b>)</small></h4>';
-		str+='</div>';
-	str+='</div>';
-	str+='<div class="row">';
-		str+='<div class="col-sm-4 m_top10">';
-			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="font_size24">Total Meeting</h4>';
-				str+='<h3 class="text_bold m_top10 font_size24">'+result.totalCount+'</h3>';
-			str+='</div>';
-		str+='</div>';
-		str+='<div class="col-sm-4 m_top10">';
-			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="font_size24">Conducted Meetings</h4>';
-				str+='<h3 class="text_bold m_top10 font_size24">'+result.conductedCount+' <small style="color:green;">'+result.conductedPercentage+' %</small></h3>';
-			str+='</div>';
-		str+='</div>';
-		str+='<div class="col-sm-4 m_top10">';
-			str+='<div class="pad_d1ab66">';
-				str+='<h4 class="font_size24">Not Conducted Meetings</h4>';
-				str+='<h3 class="text_bold m_top10 font_size24">'+result.notConductedCount+' <small style="color:green;">'+result.notConductedPercentage+' %</small></h3>';
-			str+='</div>';
-		str+='</div>';
-	str+='</div>'; */
 
 	str+='<div id="dataTableElecBlockCount"></div>';
 	str+='<div class="row">';
