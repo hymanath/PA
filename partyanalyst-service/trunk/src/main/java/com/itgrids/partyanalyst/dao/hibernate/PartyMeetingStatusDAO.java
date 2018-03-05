@@ -1332,11 +1332,11 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		queryStr.append(" left join constituency pc on ua.parliament_constituency_id = pc.constituency_id ");
 		queryStr.append(" where pm.is_active = 'Y' ");
 		queryStr.append(" and pm.party_meeting_type_id in (:partyMeetingTypeIds) ");
-		queryStr.append(" and pm.party_meeting_level_id in (:partyMeetingLevelIds)");
+		queryStr.append(" and pm.party_meeting_level_id in (:partyMeetingLevelIds) ");
 		if (inputVO.getFromDate() != null && inputVO.getToDate() != null) {
-			queryStr.append(" and (pm.start_date between :fromDate and :toDate) ");
+			queryStr.append(" and (date(pm.start_date) between :fromDate and :toDate) ");
 		}
-		queryStr.append(" and pms.meeting_status in ('Y','N','NU','M')");
+		queryStr.append(" and pms.meeting_status in ('Y','N','NU','M') ");
 		if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("constituency")) {
 			queryStr.append(" group by c.constituency_id,pms.meeting_status ");
 		} else if (inputVO.getResultType() != null && inputVO.getResultType().equalsIgnoreCase("parliament")) {
