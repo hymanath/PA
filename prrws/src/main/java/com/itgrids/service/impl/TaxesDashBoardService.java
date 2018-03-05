@@ -380,7 +380,7 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 		try {
 			if(value != null){
 				returnVal = new BigDecimal(Double.valueOf(value)/10000000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-				returnVal = returnVal+" Cr";
+				returnVal = returnVal;
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at convertRupeesIntocrores in TaxesDashBoardService service", e);
@@ -393,7 +393,7 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 		try {
 			if(value != null){
 				returnVal = new BigDecimal(Double.valueOf(value)/100000.00).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-				returnVal = returnVal + " L";
+				returnVal = returnVal;
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at convertRupeesIntoLakhes  in TaxesDashBoardService service", e);

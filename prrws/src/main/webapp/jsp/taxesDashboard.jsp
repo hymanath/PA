@@ -282,7 +282,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-3">
+							<!--<div class="col-sm-3">
 								<div class="panel panel-default m_top10" style="background-color:#FCFAFA;">
 									<div class="panel-body" style="box-shadow:0px 0px 2px rgba(0,0,0,0.4);">
 										<div class="row">
@@ -349,7 +349,6 @@
 									</div>
 								</div>	
 							</div>
-							
 							<div class="col-sm-3">
 								<div class="panel panel-default m_top10" style="background-color:#FCFAFA;">
 									<div class="panel-body" style="box-shadow:0px 0px 2px rgba(0,0,0,0.4);">
@@ -551,8 +550,9 @@
 										</div>	
 									</div>
 								</div>	
-							</div>
-							
+							</div>-->
+							<div id="categoryTaxOverViewDivId"></div>
+
 						</div>
 					</div>
 					
@@ -563,7 +563,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-3">
+							<!--<div class="col-sm-3">
 								<div class="panel panel-default m_top10" style="background-color:#FCFAFA;">
 									<div class="panel-body" style="box-shadow:0px 0px 2px rgba(0,0,0,0.4);">
 										<div class="row">
@@ -832,7 +832,8 @@
 										</div>	
 									</div>
 								</div>	
-							</div>
+							</div>-->
+							<div id="categoryFeeOverViewDivId"></div>
 							
 						</div>
 					</div>
@@ -845,7 +846,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-3">
+							<!--<div class="col-sm-3">
 								<div class="panel panel-default m_top10" style="background-color:#FCFAFA;">
 									<div class="panel-body" style="box-shadow:0px 0px 2px rgba(0,0,0,0.4);">
 										<div class="row">
@@ -1086,8 +1087,8 @@
 										</div>	
 									</div>
 								</div>	
-							</div>
-							
+							</div>-->
+							<div id="indicatorsOverviewDivId"></div>
 						</div>
 					</div>
 					
@@ -1099,7 +1100,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-2 m_top10">
+							<!--<div class="col-sm-2 m_top10">
 								<div class="panel panel-default" style="border: 2px solid #ccc;">
 									<div class="panel-heading" style="background-color:#EAE6E7;padding-top: 5px;padding-bottom: 5px;">
 										<h4 class="panel-title font_weight text-center">Below Rs.2,000</h4>
@@ -1111,7 +1112,8 @@
 										<h5 class="text-right Collection_clr m_top5 font_weight">30.26%</h5>
 									</div>
 								</div>
-							</div>
+							</div>-->
+							<div id="defaulterOverviewDivId"></div>
 							
 						</div>
 					</div>

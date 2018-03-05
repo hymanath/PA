@@ -37,7 +37,7 @@ public class EMeetingsDahboardService implements IEMeetingsDashboardService{
 		EMeetingsVO finalVO = new EMeetingsVO();
 		try {
 			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://pris.ap.gov.in/api/meetings/apiq.php?meetingStats=1&fromdate="+inputVO.getFromDate()+"&todate="+inputVO.getToDate()+"");
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://pris.ap.gov.in/api/meetings/apiq.php?getmeetingDataFilter=1&locationType="+inputVO.getLocationType()+"&locationId="+inputVO.getLocationId()+"");
 	        ClientResponse response = webResource.get(ClientResponse.class);
 				
         	if(response.getStatus() != 200){
@@ -157,6 +157,23 @@ public class EMeetingsDahboardService implements IEMeetingsDashboardService{
 	 	    	 String output = response.getEntity(String.class);
 	 	    	 if(output != null && !output.isEmpty()){
 	 	    		JSONObject dataObj = new JSONObject(output);
+	 	    		JSONArray finalArray = new JSONArray(dataObj.get("meetingsData").toString());
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	      			for(int i=0;i<finalArray.length();i++){
+	 	      				EMeetingsVO vo = new EMeetingsVO();
+	 	      				JSONObject jObj = (JSONObject) finalArray.get(i);	
+	 	      				vo.setPanchayatId(Long.valueOf(jObj.get("panchayat_id").toString()));
+	 	      				vo.setPanchayatName(jObj.get("panchayat").toString());
+	 	      				vo.setMeetingId(Long.valueOf(jObj.get("meetingId").toString()));
+	 	      				vo.setMeetingName(jObj.get("meetingName").toString());
+	 	      				vo.setMeetingDate(jObj.get("conductedDate").toString());
+	 	      				vo.setTotalMembers(Long.valueOf(jObj.get("panchayatMembers").toString()));
+	 	      				vo.setAttendedMembers(Long.valueOf(jObj.get("attendedMembers").toString()));
+	 	      				vo.setAbsentMembers(Long.valueOf(jObj.get("absentMembers").toString()));
+	 	      				vo.setMinutesOfMeeting(jObj.get("mom").toString());
+	 	      				finalVO.getSubList().add(vo);
+	 	      			}
+	 	      		}
 	 	    		finalVO.setTotalPanchayats(Long.valueOf(dataObj.get("totalPanchayats").toString()));
 	 	    		finalVO.setConductedPanchayats(Long.valueOf(dataObj.get("ePanchayats").toString()));
 	 	    		finalVO.setNotConductedPanchayts(Long.valueOf(dataObj.get("not_ePanchayats").toString()));
