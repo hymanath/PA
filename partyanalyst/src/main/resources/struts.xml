@@ -18943,5 +18943,10 @@
 				<param name="root">jbDataList</param>
 			</result>  	
 	</action>
+	<action name="getCandidateCasteGroupAction" class="debateAction"  method="getCandidateCasteGroupId">
+		<result type="json" name="success">    
+			<param name="root">debateVOList</param>
+		</result>
+	</action>
  </package>
 </struts>

@@ -974,7 +974,8 @@ function callAjax(jsObj,url)
 					 $("#errorMsgDiv").html("<font style='font-weight:bold;color:green;text-transform: capitalize;'> Candidate Created Successfully </font>").fadeOut(3000);
 						setTimeout('$("#createCandidateDiv").dialog("close");',2000);	
 						$('#locationId').val(0);
-						
+						$("#candidateCasteGroupId").val('');
+	                    $("#candidateCasteId").val('');
 						getCandidatesOfSelectedParty(jsObj.partyId,jsObj.divId,jsObj.roleOptionsID);			
 					}else if(myResults.resultCode == 2){
 						$("#errorMsgDiv").html(" Candidate Exits With This Name");
@@ -1916,6 +1917,8 @@ function createNewCandidate(listId,party,id){
 	$('#presentParty').html('');
 	$('#errorMsgDiv').html('');
 	$('#newCandidateName').val('');
+	$("#candidateCasteGroupId").val('');
+	$("#candidateCasteId").val('');
 	$('input[name=stateSelection]').attr('checked',false);
 	var locationLevelsArr=[{id:"1",name:"AP"},{id:"36",name:"TS"}]
 	var partyName = $('#'+party+' :selected').text();
@@ -3391,6 +3394,25 @@ function onlyAlphabets(e, t) {
 				globalBodyLanguage = result[i].maxScale;
 			}
 			 
+		 } 
+	   } 
+   });
+  }
+function getCasteGroupWiseCasteDetails(){
+	var cateGroupId =$("#candidateCasteGroupId").val();
+	  var jsObj = {
+		casteGroupId:cateGroupId
+		}
+		
+    $.ajax({
+          type:'GET',
+          url: 'getCandidateCasteGroupAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	 if(result != null && result.length >0){
+		 for(var i in result){
+			$("#candidateCasteId").append('<option value="'+result[i].debateId+'">'+result[i].debateName+'</option>'); 
 		 } 
 	   } 
    });
