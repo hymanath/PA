@@ -2,8 +2,14 @@ var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><
 var customStartToursDateM = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
 var customEndToursDateM = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 var dateHeadingStr1 = "Last Month&nbsp("+customStartToursDateM+"&nbspto&nbsp"+customEndToursDateM+")";
-var globalStatusObj=[{"1":"rgba(255, 0, 0, 0.15)"},{"2":"rgba(255, 0, 0, 0.25)"},{"3":"rgba(255, 0, 0, 0.35)"},{"4":"rgba(255, 0, 0, 0.45)"},{"5":"rgba(255, 0, 0, 0.55)"},{"6":"rgba(255, 0, 0, 0.65)"},{"7":"rgba(255, 0, 0, 0.75)"},{"8":"rgba(255, 0, 0, 0.85)"},{"9":"rgba(255, 0, 0, 0.9)"},{"10":"rgba(255, 0, 0, 1)"}];
-var globalStatusObj1={"1":"rgba(255, 0, 0, 0.15)","2":"rgba(255, 0, 0, 0.25)","3":"rgba(255, 0, 0, 0.35)","4":"rgba(255, 0, 0, 0.45)","5":"rgba(255, 0, 0, 0.55)","6":"rgba(255, 0, 0, 0.65)","7":"rgba(255, 0, 0, 0.75)","8":"rgba(255, 0, 0, 0.85)","9":"rgba(255, 0, 0, 0.9)","10":"rgba(255, 0, 0, 1)"}
+var globalStatusObj=[{"1":"color_Ex1"},{"2":"color_Ex2"},{"3":"color_Ex3"},{"4":"color_Ex4"},{"5":"color_Ex5"},{"6":"color_Ex6"},{"7":"color_Ex7"},{"8":"color_Ex8"},{"9":"color_Ex9"},{"10":"color_Ex10"}];
+
+var globalStatusObj1={"1":"color_Ex1","2":"color_Ex2","3":"color_Ex3","4":"color_Ex4","5":"color_Ex5","6":"color_Ex6","7":"color_Ex7","8":"color_Ex8","9":"color_Ex9","10":"color_Ex10"}
+
+var globalStatusObjCon=[{"1":"color_Ex1"},{"2":"color_Ex2"},{"3":"color_Ex3"},{"4":"color_Ex4"},{"5":"color_Ex5"},{"6":"color_Ex6"},{"7":"color_Ex7"},{"8":"color_Ex8"},{"9":"color_Ex9"}];
+
+var globalStatusObjCon1={"1":"color_Ex1","2":"color_Ex2","3":"color_Ex3","4":"color_Ex4","5":"color_Ex5","6":"color_Ex6","7":"color_Ex7","8":"color_Ex8","9":"color_Ex9"}
+
 //$("#exceptionReportMeetingDateId").html(dateHeadingStr1);
  onloadPartyMeeting();
 $("#meetingExDateRangePickerId").daterangepicker({
@@ -46,97 +52,6 @@ function onloadPartyMeeting(){
 		getConsolidatedLevelWisePartyMeetingExceptionReport1();
 	//}
 	
-}
-
-$(document).on("click",".MeetingsExSettingsIcon",function(e){
-	e.stopPropagation();
-	$(this).closest(".meetingblockOpen").find(".debatesSettingsBody").show();
-});
-$(document).on("click",".debatesSettingsBody",function(e){
-	e.stopPropagation();
-});
-$(document).on("click",function(){
-	$(".debatesSettingsBody").hide();
-});
-$(document).on("click",".meetingExSettingsCloseBody",function(){
-	$(this).closest(".debatesSettingsBody").hide();
-});
-
-$(document).on("click",".levelWiseMeetingCls",function(e){
-	var levelName=['meetingBlocksConstituencyDivId','meetingBlocksMandalDivId','meetingBlocksVillageDivId'];
-	for(var i in levelName){
-		$("#"+levelName[i]).hide();
-	}
-	var selectedlevelValArr=[];
-	$(".getLevelValCls").each(function(){
-       if($(this).is(":checked")){
-			
-		    selectedlevelValArr.push($(this).val());
-		    
-	   }
-    });
-	console.log(selectedlevelValArr)
-	$("#"+selectedlevelValArr).show();
-	$(".debatesSettingsBody").hide();
-});
-
-$(document).on("click",".exportToPdf",function(){
-	var id = $(this).attr("attr_id");
-	getPdf(id);
-});
-function getPdf(id)
-{
-	var 
-		form = $("#"+id),
-		cache_width = form.width(),
-		a4  = [ 5600  , 6000];  // for a4 size paper width and height
-	createPDF()
-	
-	//create pdf
-	function createPDF(){
-		getCanvas().then(function(canvas){
-			var 
-			img = canvas.toDataURL("image/png"),
-			doc = new jsPDF("l", "pt", "a4");     
-			doc.addImage(img, 'PNG', 5, 15);
-			var options = {
-				 pagesplit: true,
-				 background: '#fff',
-				format: 'PNG',
-				padding: 10,
-				margin: {
-					top: 40,
-					bottom: 30,
-					left:20,
-					right:20
-				}
-			};
-			var margins = {
-				top: 40,
-				bottom: 30
-			};
-			
-			doc.addHTML($('#'+id+''), options, function()
-			{
-				doc.setFontSize(3);
-				doc.save("test.pdf");
-			});
-			
-			form.width(cache_width);
-		});
-		//$("#"+id).hide();
-	}
-
-	// create canvas object
-	function getCanvas(){
-		//form.width((a1[0]*1.33333) -80).css('max-width','none');
-		$("#"+id).show();
-		form.width(a4).css('max-width','none');
-		return html2canvas(form,{
-			imageTimeout:100,
-			removeContainer:true
-		});	
-	}	
 }	
  
  $(document).on("click",".meetingsExRRefresh",function(e){
@@ -202,15 +117,31 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 	str+='<div id="dataTableElecBlockCount"></div>';
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital font_size24" >Parliaments with Poor Performance</h5>';
+				str+='<h5 class="text_bold text-capital font_size20" >Parliaments Wise Poor Performance</h5>';
 				str+='<div class="table-responsive m_top10">';
-					str+='<table class="table details-overview" id="dataTableElecBlock">';
+					str+='<table class="table details-overview-cons" id="dataTableElecBlock">';
 						str+='<thead>';
 							str+='<tr>';
-								str+='<th rowspan="2" style="border-right: 1px solid #d1ab66 !important;">Parliament Name</th>';
-								for(var i in result.subList2[0].subList1){
-									str+='<th colspan="1">'+result.subList2[0].subList1[i].locationName+'</th>';
-								}
+								str+='<th rowspan="3" style="border-right: 1px solid #d1ab66 !important;">Parliament Name</th>';
+									str+='<th colspan="3">Meetings</th>';
+									str+='<th colspan="4">Committees</th>';
+									str+='<th rowspan="2">Dalitha Tejam</th>';
+									str+='<th rowspan="2">Kaizala</th>';
+									str+='<th rowspan="2">Training Camp</th>';
+									
+									/* for(var i in result.subList2[0].subList1){
+										str+='<th colspan="1" rowspan="3">'+result.subList2[0].subList1[i].locationName+'</th>';
+										
+									}*/
+ 							str+='</tr>';
+							str+='<tr>';
+								str+='<th>Constituency</th>';
+								str+='<th>Mandal/Town/Division</th>';
+								str+='<th>Village/Ward</th>';
+								str+='<th>Mandal/Town/Division</th>';
+								str+='<th>Village/Ward</th>';
+								str+='<th>Affiliated</th>';
+								str+='<th>Booth</th>';
 							str+='</tr>';
 							str+='<tr>';
 								for(var i in result.subList2[0].subList1){
@@ -220,15 +151,15 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 									var lastval = arr[arr.length-1];
 									
 									if(lastval == "Committees"){
-										str+='<th>Pending %</th>';
+										str+='<th>Pending&nbsp;%</th>';
 									}else if(lastval == "Meetings"){
-										str+='<th>Not Conducted %</th>';
+										str+='<th>Not&nbsp;Conducted&nbsp;%</th>';
 									}else if(lastval == 'Tejam'){
-										str+='<th>Village Not Covered %</th>';
+										str+='<th>Village&nbsp;Not&nbsp;Covered&nbsp;%</th>';
 									}else if(lastval == 'Kaizala'){
-										str+='<th>Committee Not Installed %</th>';
+										str+='<th>Committee&nbsp;Not&nbsp;Installed&nbsp;%</th>';
 									}else if(lastval == 'Camp'){
-										str+='<th>Not Attended %</th>';
+										str+='<th>Not&nbsp;Attended&nbsp;%</th>';
 									}
 									
 								}
@@ -239,7 +170,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 							for(var i in result.subList2){
 								if(result.subList2[i].sortNo > 0){
 								str+='<tr>';
-								str+='<td attr_color="'+globalStatusObj1[result.subList2[i].sortNo]+'" class="dataTableElecBlockexception'+result.subList2[i].sortNo+'" style="background-color:'+globalStatusObj1[result.subList2[i].sortNo]+';color:#fff;">'+result.subList2[i].locationName+'</td>';
+								str+='<td attr_color="'+globalStatusObj1[result.subList2[i].sortNo]+'" class="dataTableElecBlockexception'+result.subList2[i].sortNo+' '+globalStatusObj1[result.subList2[i].sortNo]+'" style="color:#fff;text-align:left;">'+result.subList2[i].locationName+'</td>';
 								for(var j in result.subList2[i].subList1){
 									//str+='<td>'+result.subList2[i].subList1[j].totalCount+'</td>';
 									//str+='<td>'+result.subList2[i].subList1[j].notConductedCount+'</td>';
@@ -268,7 +199,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 	
 	$("#overAllMeetingLevelsDivId").html(str);
 	var $windowWidth = $(window).width();
-	getCountOfColor("dataTableElecBlock")
+	getCountOfColorPar("dataTableElecBlock")
 	if($windowWidth < 600)
 	{
 		$("#dataTableElecBlock").dataTable({
@@ -283,6 +214,17 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 				"leftColumns": 1,
 			}
 		});
+		
+	}else{
+		$("#dataTableElecBlock").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"aaSorting": []
+		});
+		$("#dataTableElecBlock").removeClass('dataTable')
 	}
 	
 }
@@ -295,20 +237,27 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 	str+='<div id="dataTableElecBlock1Count"></div>';
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital font_size24" >Assembly Constituency with Poor Performance</h5>';
+				str+='<h5 class="text_bold text-capital font_size20" >Assembly Constituencies Wise Poor Performance</h5>';
 				str+='<div class="table-responsive m_top10">';
-					str+='<table class="table details-overview" id="dataTableElecBlock1">';
+					str+='<table class="table details-overview-cons" id="dataTableElecBlock1">';
 						str+='<thead>';
 							str+='<tr>';
-							str+='<th rowspan="2" style="border-right: 1px solid #d1ab66 !important;" >Constituency Name</th>';
-							str+='<th rowspan="2" style="border-right: 1px solid #d1ab66 !important;">Parliament Name</th>';
-								for(var i in result.subList1[0].subList1){
-									var arr = result.subList1[0].subList1[i].locationName.split(' ');
-									var lastval = arr[arr.length-1];
-									if(lastval != 'Camp'){
-										str+='<th colspan="1">'+result.subList1[0].subList1[i].locationName+'</th>';
-									}
-								}
+							str+='<th rowspan="3" style="border-right: 1px solid #d1ab66 !important;" >Constituency Name</th>';
+							str+='<th rowspan="3" style="border-right: 1px solid #d1ab66 !important;">Parliament Name</th>';
+								str+='<th colspan="3">Meetings</th>';
+								str+='<th colspan="4">Committees</th>';
+								str+='<th rowspan="2">Dalitha Tejam</th>';
+								str+='<th rowspan="2">Kaizala</th>';
+								//str+='<th rowspan="2">Training Camp</th>';
+							str+='</tr>';
+							str+='<tr>';
+								str+='<th>Constituency</th>';
+								str+='<th>Mandal/Town/Division</th>';
+								str+='<th>Village/Ward</th>';
+								str+='<th>Mandal/Town/Division</th>';
+								str+='<th>Village/Ward</th>';
+								str+='<th>Affiliated</th>';
+								str+='<th>Booth</th>';
 							str+='</tr>';
 							str+='<tr>';
 								for(var i in result.subList1[0].subList1){
@@ -316,13 +265,13 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 									var lastval = arr[arr.length-1];
 									
 									if(lastval == "Committees"){
-										str+='<th>Pending %</th>';
+										str+='<th>Pending&nbsp;%</th>';
 									}else if(lastval == "Meetings"){
-										str+='<th>Not Conducted %</th>';
+										str+='<th>Not&nbsp;Conducted&nbsp;%</th>';
 									}else if(lastval == 'Tejam'){
-										str+='<th>Village Not Covered %</th>';
+										str+='<th>Village&nbsp;Not&nbsp;Covered&nbsp;%</th>';
 									}else if(lastval == 'Kaizala'){
-										str+='<th>Committee Not Installed %</th>';
+										str+='<th>Committee&nbsp;Not&nbsp;Installed&nbsp;%</th>';
 									}/* else if(lastval == 'Camp'){
 										str+='<th>Not Attended %</th>';
 									} */
@@ -338,8 +287,8 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 								
 								if(result.subList1[i].addressVO != null && result.subList1[i].sortNo > 0){
 									str+='<tr >';
-									str+='<td  attr_color="'+globalStatusObj1[result.subList1[i].sortNo]+'" class="dataTableElecBlock1exception'+result.subList1[i].sortNo+'" style="background-color:'+globalStatusObj1[result.subList1[i].sortNo]+';color:#fff;border-right: 1px solid #d1ab66 !important;">'+result.subList1[i].addressVO.constituencyName+'</td>';
-								str+='<td>'+result.subList1[i].addressVO.parliamentName+'</td>';
+									str+='<td attr_color="'+globalStatusObjCon1[result.subList1[i].sortNo]+'" class="dataTableElecBlock1exception'+result.subList1[i].sortNo+' '+globalStatusObjCon1[result.subList1[i].sortNo]+'" style="color:#fff;border-right: 1px solid #d1ab66 !important;text-align:left;">'+result.subList1[i].addressVO.constituencyName+'</td>';
+								str+='<td style="text-align:left;">'+result.subList1[i].addressVO.parliamentName+'</td>';
 								for(var j in result.subList1[i].subList1){
 									//str+='<td>'+result.subList1[i].subList1[j].totalCount+'</td>';
 									//str+='<td>'+result.subList1[i].subList1[j].notConductedCount+'</td>';
@@ -369,7 +318,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 	str+='</div>';
 	
 	$("#overAllMeetingLevelsDivId1").html(str);
-	getCountOfColor("dataTableElecBlock1")
+	getCountOfColorCons("dataTableElecBlock1")
 	var $windowWidth = $(window).width();
 	if($windowWidth < 600)
 	{
@@ -378,17 +327,30 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 			"info":     false,
 			"searching": false,
 			"autoWidth": true,
+			"aoColumnDefs": [{ "bSortable": false}], 
+			//fixedHeader: true,
 			"scrollX":        true,
 			"scrollCollapse": true,
 			"fixedColumns":   {
 				"leftColumns": 1,
 			}
 		});
+	
+	}else{
+		$("#dataTableElecBlock1").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"aaSorting": []
+		});
+		$("#dataTableElecBlock1").removeClass('dataTable');
 	}
 	
 }
 
-function getCountOfColor(divId)
+function getCountOfColorPar(divId)
 {
 	var str='';
 		
@@ -400,7 +362,27 @@ function getCountOfColor(divId)
 			{
 				k = k+1;
 				str+='<li>';
-					str+='<h4 class="text-bold f_16"><span class="colorExpCls" style="background-color:'+globalStatusObj1[k]+'"></span> '+k+' Excps - '+$('.'+divId+'exception'+k).length+'</h4>';
+					str+='<h4 class="text-bold f_16"><span class="colorExpCls '+globalStatusObj1[k]+'"></span> '+k+' Excps - '+$('.'+divId+'exception'+k).length+'</h4>';
+				str+='</li>';
+			}	
+			str+='</ul>';
+		str+='</div>';
+	str+='</div>';
+	$("#"+divId+"Count").html(str);
+}
+function getCountOfColorCons(divId)
+{
+	var str='';
+		
+		str+='<div class="row">';
+		str+='<div class="col-sm-12 m_top20">';
+			str+='<ul class="list-inline li_border">';
+			var k = 0;
+			for(var i in globalStatusObjCon)
+			{
+				k = k+1;
+				str+='<li>';
+					str+='<h4 class="text-bold f_16"><span class="colorExpCls '+globalStatusObjCon1[k]+'"></span> '+k+' Excps - '+$('.'+divId+'exception'+k).length+'</h4>';
 				str+='</li>';
 			}	
 			str+='</ul>';

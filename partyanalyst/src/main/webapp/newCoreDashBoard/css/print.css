@@ -273,6 +273,108 @@
 		padding:0px !important;
 		border:none !important;
 	}
+	.colorExpCls{
+		display:inline-block !important;
+		width:15px !important;
+		height:15px !important;
+	}
+	.colorExpCls li{
+		line-height:20px !important;
+	}
+	.text-bold{
+		font-weight:bol !important;
+	}
+	.li_border li{
+		border: 1px solid #ccc !important;
+		padding: 5px !important;
+		border-radius: 5px !important;
+		margin-left: 5px !important;
+	}
+	.color_Ex1{
+		background-color:rgba(255, 0, 0, 0.15) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.color_Ex2{
+		background-color:rgba(255, 0, 0, 0.25) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.color_Ex3{
+		background-color:rgba(255, 0, 0, 0.35) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.color_Ex4{
+		background-color:rgba(255, 0, 0, 0.45) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.color_Ex5{
+		background-color:rgba(255, 0, 0, 0.55) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.color_Ex6{
+		background-color:rgba(255, 0, 0, 0.65) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.color_Ex7{
+		background-color:rgba(255, 0, 0, 0.75 !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.color_Ex8{
+		background-color:rgba(255, 0, 0, 0.85) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.color_Ex9{
+		background-color:rgba(255, 0, 0, 0.9) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.color_Ex10{
+		background-color:rgba(255, 0, 0, 1) !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	
+	.widthDec{
+		width:10% !important;
+		
+	}
+	.details-overview-cons{
+		margin-bottom:0 !important;
+		margin-top:2px !important;
+		border:1px solid #d1ab66 !important;
+		background-color:#fff !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.details-overview-cons thead tr th {
+		font-size:5px !important;
+		padding:2px 2px !important;
+		border-bottom:none !important;
+		font-weight:bold !important;
+		border:1px solid #d1ab66 !important;
+		background-color:#fff !important;
+		vertical-align:middle !important;
+		text-align:center !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.details-overview-cons tbody tr td {
+		font-size:5px !important;
+		padding:2px 2px !important;
+		border:1px solid #d1ab66 !important;
+		font-weight:bold !important;
+		text-align:center !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	
 	@page { 
 		size: auto;  
 		margin: 4mm 4mm 4mm 4mm;  
