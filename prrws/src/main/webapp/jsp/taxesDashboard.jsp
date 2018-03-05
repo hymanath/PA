@@ -272,90 +272,7 @@
 									</div>
 								</div>
 							</div>-->
-							<div class="col-sm-4 m_top10">
-								<div class="panel" style="text-align:center; background-color:#3393CD;">
-									<div class="panel-heading">
-										<h4 class="white_color">Demand</h4>
-									</div>
-									<div class="panel-body" style="background-color:#2277AA;">
-										<div class="row">
-											<div class="Pad_14_10">
-												<h2 class="white_color">47.77&nbsp;Cr</h2>
-												<h5 class="m_top5 font_weight">Units:&nbsp;8343</h5>
-												<hr class="m_top_bottom">
-												<div class="row">
-													<div class="col-sm-6 Bor_rgt_white">
-														<h5 class="font_weight m_top5">Arrears</h5>
-														<h5 class="font_weight m_top5 white_color">8.07&nbsp;<small class="white_color font_weight">Cr</small></h5>
-														<h6 class="font_weight m_top5">2624 Un</h6>
-													</div>
-													<div class="col-sm-6">
-														<h5 class="font_weight m_top5">Arrears</h5>
-														<h5 class="font_weight m_top5 white_color">12.70&nbsp;<small class="white_color font_weight">Cr</small></h5>
-														<h6 class="font_weight m_top5">1386 Un</h6>
-													</div>
-												</div>
-											</div>	
-										</div>	
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-4 m_top10">
-								<div class="panel" style="text-align:center; background-color:#74B747;">
-									<div class="panel-heading">
-										<h4 class="white_color">Collection</h4>
-									</div>
-									<div class="panel-body" style="background-color:#5D9440;">
-										<div class="row">
-											<div class="Pad_14_10">
-												<h2 class="white_color">47.77&nbsp;Cr</h2>
-												<h5 class="m_top5 font_weight">Units:&nbsp;8343</h5>
-												<hr class="m_top_bottom">
-												<div class="row">
-													<div class="col-sm-6 Bor_rgt_white">
-														<h5 class="font_weight m_top5">Arrears</h5>
-														<h5 class="font_weight m_top5 white_color">8.07&nbsp;<small class="white_color font_weight">Cr</small></h5>
-														<h6 class="font_weight m_top5">2624 Un</h6>
-													</div>
-													<div class="col-sm-6">
-														<h5 class="font_weight m_top5">Arrears</h5>
-														<h5 class="font_weight m_top5 white_color">12.70&nbsp;<small class="white_color font_weight">Cr</small></h5>
-														<h6 class="font_weight m_top5">1386 Un</h6>
-													</div>
-												</div>
-											</div>	
-										</div>	
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-4 m_top10">
-								<div class="panel" style="text-align:center; background-color:#F26A69;">
-									<div class="panel-heading">
-										<h4 class="white_color">Balance</h4>
-									</div>
-									<div class="panel-body" style="background-color:#F1595B;">
-										<div class="row">
-											<div class="Pad_14_10">
-												<h2 class="white_color">47.77&nbsp;Cr</h2>
-												<h5 class="m_top5 font_weight">Units:&nbsp;8343</h5>
-												<hr class="m_top_bottom">
-												<div class="row">
-													<div class="col-sm-6 Bor_rgt_white">
-														<h5 class="font_weight m_top5">Arrears</h5>
-														<h5 class="font_weight m_top5 white_color">8.07&nbsp;<small class="white_color font_weight">Cr</small></h5>
-														<h6 class="font_weight m_top5">2624 Un</h6>
-													</div>
-													<div class="col-sm-6">
-														<h5 class="font_weight m_top5">Arrears</h5>
-														<h5 class="font_weight m_top5 white_color">12.70&nbsp;<small class="white_color font_weight">Cr</small></h5>
-														<h6 class="font_weight m_top5">1386 Un</h6>
-													</div>
-												</div>
-											</div>	
-										</div>	
-									</div>
-								</div>
-							</div>
+							<div id="completeOverviewDivId"></div>
 						</div>
 					</div>
 					<div class="custom_border m_top10">
@@ -1294,6 +1211,7 @@
 <script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
+<script src="Assests/PanchayatTax/taxesDashboard.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".chosen-select").chosen();
 </script>
