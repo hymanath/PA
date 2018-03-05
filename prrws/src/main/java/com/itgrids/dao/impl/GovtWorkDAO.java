@@ -40,19 +40,39 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 	
 	public List<Object[]> getUsersGovtMainWorks(Long userId,Long govtWorkTypeId,Long locationScopeId,List<Long> locationValues){
 		//0-mainWorkId,1-mainWorkName,2-totalKms,3-locationScopeId,4-locationValue,5-locationAddressId,6-count,7-workLength
-		Query query = getSession().createSQLQuery(" select gmw.govt_main_work_id as mainWorkId,gmw.govt_main_work_name as mainWorkName,"
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select gmw.govt_main_work_id as mainWorkId,gmw.govt_main_work_name as mainWorkName,"
 				+ " gmw.approved_km as totalKms,gmw.location_scope_id as locationScopeId,gmw.location_value as locationValue,"
 				+ " gmw.location_address_id as locationAddressId, count(distinct govt_work_id) as count,sum(gw.work_length) as workLength "
-				+ " from govt_work gw, govt_main_work gmw "
-				+ " where gw.is_deleted='N' and gw.govt_main_work_id=gmw.govt_main_work_id "
+				+ " from govt_work gw, govt_main_work gmw,location_address la "
+				+ " where gw.is_deleted='N' and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id "
 				+ " and gmw.govt_work_type_id=:govtWorkTypeId "
-				+ "and gw.created_by=:userId and gmw.location_scope_id=:locationScopeId and gmw.location_value in (:locationValues) group by gmw.govt_main_work_id;");
+				+ "and gw.created_by=:userId ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" and la.district_id in (:locationValues) ");
+		}else if(locationScopeId == 4l){
+			sb.append(" and la.constituency_id in (:locationValues) ");
+		}else if(locationScopeId == 5l){
+			sb.append(" and la.tehsil_id in (:locationValues) ");
+		}else if(locationScopeId == 6l){
+			sb.append(" and la.panchayat_id in (:locationValues) ");
+		}else if(locationScopeId == 12l){
+			sb.append(" and la.division_id in (:locationValues) ");
+		}else if(locationScopeId == 13l){
+			sb.append(" and la.sub_division_id in (:locationValues) ");
+		}
+		
+		sb.append(" group by gmw.govt_main_work_id ");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
 		
 		query.setParameter("userId", userId);
 		query.setParameter("govtWorkTypeId", govtWorkTypeId);
-		query.setParameter("locationScopeId", locationScopeId);
-		query.setParameterList("locationValues", locationValues);
 		
+		if(locationScopeId == 3l || locationScopeId == 4l || locationScopeId == 5l || locationScopeId == 6l || locationScopeId == 12l || locationScopeId == 13l){
+			query.setParameterList("locationValues", locationValues);
+		}
 		return query.list();
 	}
 	

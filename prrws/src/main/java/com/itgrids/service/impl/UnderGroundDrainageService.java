@@ -1124,7 +1124,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			List<Object[]> objList = null;
 			//0-statusId,1-statuName,2-date,3-length
 			if(inputVO.getWorkZoneIds() != null && inputVO.getWorkZoneIds().size() > 0l){
-				objList = govtWorkProgressTrackDAO.getStatusWiseDayReportForWorkZone(inputVO.getWorkZoneIds(),inputVO.getReportType());
+				objList = govtWorkProgressTrackDAO.getStatusWiseDayReportForWorkZone(inputVO.getWorkZoneIds(),startDate,endDate,inputVO.getReportType());
 			}else{
 				objList = govtWorkProgressTrackDAO.getStatusWiseDayReport(inputVO.getWorkTypeId(),inputVO.getLocationScopeId(),inputVO.getLocationIds(),startDate,endDate,inputVO.getReportType());
 			}
