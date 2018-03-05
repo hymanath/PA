@@ -25,13 +25,16 @@ public class GovtMainWorkDAO extends GenericDaoHibernate<GovtMainWork, Long> imp
 		return query.list();
 	}
 	
-	public List<Object[]> getAllMainWorksForUser(Long userId,Long govtWorkTypeId){
+	public List<Object[]> getAllMainWorksForUser(Long govtWorkTypeId,Long locationScopeId,List<Long> locationValues){
 		//0-workId,1-name,2-kms
-		Query query = getSession().createQuery(" select model.govtMainWork.govtMainWorkId,model.govtMainWork.govtMainWorkName,model.govtMainWork.approvedKm "
-				+ " from GovtMainWorkUser model "
-				+ " where model.userId=:userId and model.govtMainWork.govtWorkTypeId=:govtWorkTypeId ");
-		query.setParameter("userId", userId);
+		Query query = getSession().createQuery(" select model.govtMainWorkId,model.govtMainWorkName,model.approvedKm "
+				+ " from GovtMainWork model "
+				+ " where model.govtWorkTypeId=:govtWorkTypeId "
+				+ " and model.locationScopeId=:locationScopeId and model.locationValue in (:locationValues) ");
+		
 		query.setParameter("govtWorkTypeId", govtWorkTypeId);
+		query.setParameter("locationScopeId", locationScopeId);
+		query.setParameterList("locationValues", locationValues);
 		return query.list();
 	}
 }

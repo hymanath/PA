@@ -1,5 +1,7 @@
 package com.itgrids.dto;
 
+import java.util.List;
+
 public class MobileAppInputVO {
 	private Long userId;
 	private String userName;
@@ -14,7 +16,13 @@ public class MobileAppInputVO {
 	private Long mainWorkId;
 	private String fromDate;
 	private String toDate;
-	private String reportType;
+	private String reportType="";
+	private Long userTypeId;
+	private List<Long> userIds;
+	private Long locationScopeId;
+	private List<Long> locationIds;
+	private List<Long> workZoneIds;
+	
 	
 	public String getUserName() {
 		return userName;
@@ -99,6 +107,36 @@ public class MobileAppInputVO {
 	}
 	public void setReportType(String reportType) {
 		this.reportType = reportType;
+	}
+	public Long getUserTypeId() {
+		return userTypeId;
+	}
+	public void setUserTypeId(Long userTypeId) {
+		this.userTypeId = userTypeId;
+	}
+	public List<Long> getUserIds() {
+		return userIds;
+	}
+	public void setUserIds(List<Long> userIds) {
+		this.userIds = userIds;
+	}
+	public List<Long> getLocationIds() {
+		return locationIds;
+	}
+	public void setLocationIds(List<Long> locationIds) {
+		this.locationIds = locationIds;
+	}
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
+	}
+	public List<Long> getWorkZoneIds() {
+		return workZoneIds;
+	}
+	public void setWorkZoneIds(List<Long> workZoneIds) {
+		this.workZoneIds = workZoneIds;
 	}
 	
 	

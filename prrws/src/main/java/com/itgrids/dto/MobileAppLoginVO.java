@@ -17,6 +17,7 @@ public class MobileAppLoginVO {
 	private String userType;
 	private List<GovtWorksVO> worksVOList = new ArrayList<GovtWorksVO>(0);
 	private List<GovtMainWorkVO> mainWorksVOList = new ArrayList<GovtMainWorkVO>(0);
+	public List<SmallVO> subUserTypes = new ArrayList<SmallVO>(0);
 	
 	public List<SmallVO> getVoList() {
 		return voList;
@@ -89,6 +90,12 @@ public class MobileAppLoginVO {
 	}
 	public void setMainWorksVOList(List<GovtMainWorkVO> mainWorksVOList) {
 		this.mainWorksVOList = mainWorksVOList;
+	}
+	public List<SmallVO> getSubUserTypes() {
+		return subUserTypes;
+	}
+	public void setSubUserTypes(List<SmallVO> subUserTypes) {
+		this.subUserTypes = subUserTypes;
 	}
 	
 }

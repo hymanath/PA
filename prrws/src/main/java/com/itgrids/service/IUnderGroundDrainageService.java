@@ -5,9 +5,11 @@ import java.util.List;
 import com.itgrids.dto.DocumentVO;
 import com.itgrids.dto.GovtMainWorkVO;
 import com.itgrids.dto.GovtWorksVO;
+import com.itgrids.dto.LocationAddressVO;
 import com.itgrids.dto.MobileAppInputVO;
 import com.itgrids.dto.MobileAppLoginVO;
 import com.itgrids.dto.ResultStatus;
+import com.itgrids.dto.SmallVO;
 import com.itgrids.dto.WorkStatusVO;
 
 public interface IUnderGroundDrainageService {
@@ -20,6 +22,9 @@ public interface IUnderGroundDrainageService {
 	public List<GovtWorksVO> getAllGovtWorksOfGovtMainWork(Long userId,Long mainWorkId);
 	public List<DocumentVO> updateWorkStatusDocuments(List<WorkStatusVO> WorkStatusVOList);
 	public List<WorkStatusVO> getStatusWiseDayReport(MobileAppInputVO inputVO);
+	public List<SmallVO> getSubUsers(Long userTypeId,List<Long> userIds,Long workTypeId);
+	public List<LocationAddressVO> getUsersAssignedLocations(List<Long> userIds);
+	public List<SmallVO> getAllWorkZonesOfLocations(Long locationScopeId,List<Long> locationIds);
 	
-	public List<GovtMainWorkVO> getWorkTypeWiseCompletedDetails(MobileAppInputVO inputVO);
+	public List<GovtMainWorkVO> getWorkTypeWiseCompletedDetails(MobileAppInputVO inputVO);	
 }

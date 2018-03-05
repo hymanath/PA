@@ -8,5 +8,6 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.model.GovtWorkProgressTrack;
 
 public interface IGovtWorkProgressTrackDAO extends GenericDao<GovtWorkProgressTrack, Long>{
-	public List<Object[]> getStatusWiseDayReport(Long workTypeId,Long workId,Date startDate,Date endDate,String reportType);
+	public List<Object[]> getStatusWiseDayReport(Long workTypeId,Long locationScopeId,List<Long> locationIds,Date startDate,Date endDate,String reportType);
+	public List<Object[]> getStatusWiseDayReportForWorkZone(List<Long> workZoneIds,String reportType);
 }

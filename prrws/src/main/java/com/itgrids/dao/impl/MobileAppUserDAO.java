@@ -32,5 +32,4 @@ public class MobileAppUserDAO extends GenericDaoHibernate<MobileAppUser, Long> i
 		query.setParameter("password", password);
 		return query.list();
 	}
-
 }

@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.DocumentVO;
 import com.itgrids.dto.GovtMainWorkVO;
 import com.itgrids.dto.GovtWorksVO;
+import com.itgrids.dto.LocationAddressVO;
 import com.itgrids.dto.MobileAppInputVO;
 import com.itgrids.dto.MobileAppLoginVO;
 import com.itgrids.dto.ResultStatus;
+import com.itgrids.dto.SmallVO;
 import com.itgrids.dto.WorkStatusVO;
 import com.itgrids.service.IUnderGroundDrainageService;
 
@@ -124,6 +126,37 @@ public class UnderGroundDrainageController {
 		}
 		return null;
 	} 
+	
+	//userTypeId,userIds
+	@RequestMapping(value="/getSubUsers", method=RequestMethod.POST)
+	public @ResponseBody Object getSubUsers(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getSubUsers(inputVO.getUserTypeId(),inputVO.getUserIds(),inputVO.getWorkTypeId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting the sub users ", e);
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/getUsersAssignedLocations", method=RequestMethod.POST)
+	public @ResponseBody Object getUsersAssignedLocations(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getUsersAssignedLocations(inputVO.getUserIds());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUsersAssignedLocations", e);
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/getAllWorkZonesOfLocations", method=RequestMethod.POST)
+	public @ResponseBody Object getAllWorkZonesOfLocations(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getAllWorkZonesOfLocations(inputVO.getLocationScopeId(),inputVO.getLocationIds());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllWorkZonesOfLocations ", e);
+		}
+		return null;
+	}
 	
 	@RequestMapping(value="/getStatusWiseDayReport", method=RequestMethod.POST)
 	public @ResponseBody List<WorkStatusVO> getStatusWiseDayReport(@RequestBody MobileAppInputVO inputVO){

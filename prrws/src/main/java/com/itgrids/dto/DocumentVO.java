@@ -8,7 +8,7 @@ public class DocumentVO {
 	private Long userId;
 	private String userName;
 	private String insertedTime;
-	private Double kms;
+	private Double kms=0.00;
 	
 	public Long getDocumentId() {
 		return documentId;
