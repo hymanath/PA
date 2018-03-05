@@ -3618,6 +3618,8 @@
    		<property name="debateParticipantLocationDAO" ref="debateParticipantLocationDAO" />
    		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
    		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+   		<property name="casteStateDAO" ref="casteStateDAO" />
+   		<property name="userService" ref="userService" />
    </bean>
 
 	<bean name="debateAnalysisService" class="com.itgrids.partyanalyst.service.impl.DebateAnalysisService">

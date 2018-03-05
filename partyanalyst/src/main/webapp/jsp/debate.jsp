@@ -204,7 +204,8 @@ $( document ).ready(function() {
 		var candidateName = $.trim($("#newCandidateName").val());
 		//var designationId = $("#designationsList").val();
 		candidteName = $.trim($("#newCandidateName").val());
-		var stateId =1;
+		//var stateId =1;
+		
 		/* if(isValid(candidateName)){
 			$('#errorMsgDiv').html('<b style="color:red;margin-left:-125px;">Candidate Name should not contain #,$,%,& Special characters</b>');
 			return false;
@@ -253,12 +254,25 @@ $( document ).ready(function() {
 							 $("#errorMsgDiv").html("Candidate location required");
 							 return;
 						 }
+	var casteGroupId= $("#candidateCasteGroupId").val();
+	if(casteGroupId == 0 || casteGroupId == null){
+		$("#errorMsgDiv").html("Candidate Caste Group required");
+		return;
+	}
+	var casteId = $("#candidateCasteId").val();
+	if(casteId == 0 || casteId == null){
+		$("#errorMsgDiv").html("Candidate Caste required");
+		return;
+	}
+	
 		var jsObj =
 			{ 
 				partyId : debateNewCandiPartyId,
 				name:candidateName,
 				divId :partyDiv,
 				stateId:stateId,
+				casteGroupId:casteGroupId,
+				casteId:casteId,
 				task:"saveCandidateForDebate"
 			};
 
@@ -417,7 +431,7 @@ window.location.href = uri + base64(format(template, ctx))
 						<h5 class="boxHeading">Debate Information </h5>
 					</div>
 					<div class="span4">
-					<span><h5>Debate Location</h5></span>
+					<h5>Debate Location:<font class="requiredFont">*</font></h5>
 					   <!--<label class="radio inline">
 							<input type="radio" name="stateSelection11"  checked value="0"   class="radioStateCls"/>All
 						</label>-->
@@ -819,6 +833,21 @@ window.location.href = uri + base64(format(template, ctx))
 				<tr><td>Candidate Name</td>
 				<td><input type="text" id="newCandidateName" onkeypress="return onlyAlphabets(event,this);"/></td>
 				</tr>
+				<tr><td>Candidate Caste Group</td>
+				<td><select id="candidateCasteGroupId">
+				<option value="0"> Select Caste Group </option>
+				<option value="1"> OC </option>
+				<option value="2"> BC </option>
+				<option value="3"> SC </option>
+				<option value="4"> ST </option>
+				<option value="5"> Minority </option>
+				</select></td>
+				</tr>
+				<tr><td>Candidate Caste </td>
+				<td><select id="candidateCasteId">
+				<option value="0"> Select Caste </option>
+				</select></td>
+				</tr>
 				<tr><td>Candidate Location</td>
 				<td>
 					   <label class="radio inline">
@@ -843,6 +872,11 @@ $("#createId,#AnalysisNewsId,#detailsNewsId,#newDebateAnalysis").on("click",func
 });
 $(".radioStateCls1,.radioStateCls2").on("click",function(){
 	$("#dateWiseReportDiv,#paginationAtEnd,#analysisDiv").html('');
+	
+});
+$("#candidateCasteGroupId").on("click",function(){
+		//$("#candidateCasteId").append(str);
+	getCasteGroupWiseCasteDetails();
 	
 });
 

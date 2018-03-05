@@ -1043,7 +1043,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			return Action.ERROR;
 			
 			jObj = new JSONObject(getTask());
-			resultStatus = debateService.createCandidate(jObj.getLong("partyId"), jObj.getString("name"),jObj.getLong("stateId"));
+			resultStatus = debateService.createCandidate(jObj.getLong("partyId"), jObj.getString("name"),jObj.getLong("stateId"),jObj.getLong("casteGroupId"),jObj.getLong("casteId"));
 		}
 		catch (Exception e)
 		{
@@ -1710,4 +1710,14 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS; 
 	}
+	public String getCandidateCasteGroupId(){
+		try{			
+			jObj = new JSONObject(getTask());			
+			debateVOList = debateService.getCandidateCasteGroupId(jObj.getLong("casteGroupId"));
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getCandidateCasteGroupId() in DebateAction class. "+e);
+		}
+		return Action.SUCCESS; 
+	}	 
 }
