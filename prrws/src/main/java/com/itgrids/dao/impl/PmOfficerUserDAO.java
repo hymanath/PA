@@ -42,8 +42,8 @@ public class PmOfficerUserDAO extends GenericDaoHibernate<PmOfficerUser, Long> i
 	}
 	public List<Object[]> getPmDeptIdByUserId(Long userId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select distinct dept.pmDepartmentId,model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId,model.pmDepartmentDesignation.pmOfficerDesignation.designation" +
-				",dept.shortName,model.pmDepartmentDesignation.pmDepartmentDesignationId from PmOfficerUser model "
+		sb.append(" select distinct dept.pmDepartmentId, model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId, model.pmDepartmentDesignation.pmOfficerDesignation.designation" +
+				",dept.shortName,model.pmDepartmentDesignation.pmDepartmentDesignationId, model.pmOfficerId from PmOfficerUser model "
 				  + " left outer join model.pmDepartmentDesignation.pmDepartment dept " 
 				  + " where model.userId =:userId " 
 				  +"  and model.pmDepartmentDesignation.isDeleted = 'N'"
