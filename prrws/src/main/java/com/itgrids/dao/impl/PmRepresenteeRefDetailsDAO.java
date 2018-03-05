@@ -83,13 +83,16 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		query.setParameter("petitionId", petitionId);	
 		return query.list();
 	}
-	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO,Date fromDate,Date toDate,Set<Long> petitionIdsList){
+	public List<Object[]> getRepresentativeSearchWiseDetails(InputVO inputVO,Date fromDate,Date toDate,Set<Long> petitionIdsList,String type){
 		StringBuilder sb = new StringBuilder();
 		String  filterValue = inputVO.getFilterValue();
 		Long searchLevelId = inputVO.getSearchLevelId();
 		List<Long> searchLevelValues = inputVO.getSearchLvlVals();
 		String filterType = inputVO.getFilterType();
-		sb.append(" select model.petition.petitionId,model.petition.endorsmentNo,date(model1.endorsmentDate)," +//0,1,2
+		if(type != null && type.equalsIgnoreCase("count"))
+			sb.append(" select model.petition.petitionId,model1.pmSubWorkDetailsId,model1.pmStatusId ");
+		else{
+			sb.append(" select model.petition.petitionId,model.petition.endorsmentNo,date(model1.endorsmentDate)," +//0,1,2
 				" model.petition.estimationCost,model.pmRepresentee.name,model.pmRefCandidate.name," +//3,4,5
 				"model.petition.noOfWorks,model.pmRefCandidateDesignation.pmDesignation.designation," +//6,7
 				" date(model.petition.representationDate),date(model1.updatedTime),model1.pmStatus.pmStatusId" +//8,9,10
@@ -97,10 +100,15 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" ,model1.pmStatus.status ,model.petition.pmStatusId ,pmSubject.subject,pmSubSubject.subject " +//16,17,18,19
 				" ,pmBriefLead.briefLead,pmDepartment.department,model.petition.representeeType,pmGrant.pmGrantName" +//20,21,22,23
 				",pmWorkType.workType,model.pmRepresenteeDesignation.pmDesignation.designation  "+//24,25
-				"from PmRepresenteeRefDetails as model " +
+				",district.districtId,district.districtName,constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName " +//26,27 ,28,29  ,30,31
+				",pmSubject.pmSubjectId,pmSubSubject.pmSubjectId " ); // 32,33
+		}
+		
+		sb.append("  from PmRepresenteeRefDetails as model "+//, PmPetitionAssignedOfficer assignedOfficer " +
 				//"left outer join model.pmRefCandidateDesignation model2" +
 				//" left outer join model.pmRefCandidate pmRefCandidate" +
 				" ,PmSubWorkDetails as model1 ");
+		
 				sb.append(" left join model1.pmSubject pmSubject" +
 						" left join model1.pmSubSubject pmSubSubject " +
 						" left join model1.pmBriefLead pmBriefLead " +
@@ -108,10 +116,10 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 						" left join model1.pmGrant pmGrant " +
 						" left join model1.pmWorkType pmWorkType ");
 		
-		if(filterType != null && (filterType.equalsIgnoreCase("work") || 
-				filterType.equalsIgnoreCase("department") || filterType.equalsIgnoreCase("subject")) && searchLevelId != null && searchLevelId.longValue()>0L){
+		//if(filterType != null && (filterType.equalsIgnoreCase("work") || 
+			//	filterType.equalsIgnoreCase("department") || filterType.equalsIgnoreCase("subject")) && searchLevelId != null && searchLevelId.longValue()>0L){
 			sb.append(" left join model1.locationAddress locationAddress " );
-		}else if(filterType != null && (filterType.equalsIgnoreCase("referrelDesignation") 
+		/*}else*/ if(filterType != null && (filterType.equalsIgnoreCase("referrelDesignation") 
 				|| filterType.equalsIgnoreCase("referralName")) && searchLevelId != null && searchLevelId.longValue()>0L){
 			sb.append(" left join model.pmRefCandidate.address locationAddress " );
 		}else if(filterType != null && filterType.equalsIgnoreCase("representeeDesignation") && searchLevelId != null && searchLevelId.longValue()>0L ){
@@ -124,15 +132,16 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" left join model.pmRepresentee.userAddress locationAddress " );
 		}
 		
-		if(searchLevelId != null && searchLevelId.longValue()>0L){
+		//if(searchLevelId != null && searchLevelId.longValue()>0L){
 		sb.append("  left join locationAddress.state state " +
 					" left join locationAddress.district district " +
 					" left join locationAddress.constituency constituency " +
 					" left join locationAddress.tehsil tehsil " +
 					" left join locationAddress.localElectionBody localElectionBody " );
 					//" left join locationAddress.panchayat panchayat  ");
-		}
+		//}
 		
+		//sb.append(" where   model.petitionId = assignedOfficer.petitionId and assignedOfficer.pmDepartmentDesignationOfficer.pmOfficerId in (:pmOfficerIdsList)  and model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
 		sb.append(" where   model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
 				" and model.petition.isDeleted='N' " );
 		sb.append("  and model.pmRefCandidateDesignation.isDeleted='N' and model.pmRepresenteeDesignation.isDeleted='N' " );
@@ -145,8 +154,14 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				"and model1.pmSubject.isDeleted='N' and model2.isDeleted='N' ");*/
 		
 		if(petitionIdsList != null && petitionIdsList.size()>0){
-			sb.append(" and model.petition.petitionId in (:petitionIdsList)  ");
+			if(inputVO.getRadioSelection() != null && inputVO.getRadioSelection().trim().equalsIgnoreCase("petition"))
+				sb.append(" and model.petition.petitionId in (:petitionIdsList)  ");
+			else
+				sb.append(" and model1.pmSubWorkDetailsId in (:petitionIdsList)  ");
+		}else if(inputVO.getIdsList().contains(92L)){//if data entry operator
+			sb.append(" and (model.petition.insertedUserId =:insertedUserId or model.petition.isOldData='Y') ");
 		}
+		
 		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValues != null && searchLevelValues.size()>0){
 			if(searchLevelId.longValue() ==2L){
 				sb.append(" and  state.stateId in (:searchLevelValues) ");
@@ -211,7 +226,14 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and model.pmRefCandidateDesignation.pmRefCandidateDesignationId in (:dashBrdRefCanId) ");
 		}
 		
-		sb.append(" order by model.petitionId, model.petition.insertedTime desc ");
+		if(inputVO.getRadioSelection() != null && inputVO.getRadioSelection().trim().equalsIgnoreCase("petition"))
+			sb.append("  group by model.petitionId ");
+		else
+			sb.append("  group by model1.pmSubWorkDetailsId  ");
+		
+		if(type != null && !type.equalsIgnoreCase("count")){
+			sb.append(" order by model.petitionId desc, model.petition.insertedTime desc ");
+		}
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(searchLevelId != null && searchLevelId.longValue()>0L && searchLevelValues != null && searchLevelValues.size()>0){
@@ -250,6 +272,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		}
 		if(petitionIdsList != null && petitionIdsList.size()>0){
 			query.setParameterList("petitionIdsList",petitionIdsList);
+		}else if(inputVO.getIdsList().contains(92L)){//if data entry operator
+			query.setParameter("insertedUserId",inputVO.getLocationId());
 		}
 		if(inputVO.getGovtSchmeIdsList() != null && inputVO.getGovtSchmeIdsList().size()>0){
 			query.setParameterList("dashBrdDeptIds", inputVO.getGovtSchmeIdsList());
@@ -263,6 +287,15 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(inputVO.getSubProgramIdsList() != null && inputVO.getSubProgramIdsList().size()>0){
 			query.setParameterList("dashBrdRefCanId", inputVO.getSubProgramIdsList());
 		}
+		if(inputVO.getIdsList() != null && inputVO.getIdsList().size()>0)
+			;//query.setParameterList("pmOfficerIdsList", inputVO.getIdsList());
+		if(type != null && !type.equalsIgnoreCase("count")){
+			if(petitionIdsList == null || petitionIdsList.size()==0){
+				query.setFirstResult(inputVO.getFirstIndex());
+				query.setMaxResults(inputVO.getMaxResult());
+			}
+		}
+		
 		return query.list();
 	}
 	public List<Long> getPmRepresenteeRefDetailsIds(Long petitionId){
