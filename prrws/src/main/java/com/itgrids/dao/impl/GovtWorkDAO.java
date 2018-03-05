@@ -38,7 +38,7 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 		return (Long)query.uniqueResult();
 	}
 	
-	public List<Object[]> getUsersGovtMainWorks(Long userId,Long govtWorkTypeId){
+	public List<Object[]> getUsersGovtMainWorks(Long userId,Long govtWorkTypeId,Long locationScopeId,List<Long> locationValues){
 		//0-mainWorkId,1-mainWorkName,2-totalKms,3-locationScopeId,4-locationValue,5-locationAddressId,6-count,7-workLength
 		Query query = getSession().createSQLQuery(" select gmw.govt_main_work_id as mainWorkId,gmw.govt_main_work_name as mainWorkName,"
 				+ " gmw.approved_km as totalKms,gmw.location_scope_id as locationScopeId,gmw.location_value as locationValue,"
@@ -46,46 +46,39 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 				+ " from govt_work gw, govt_main_work gmw "
 				+ " where gw.is_deleted='N' and gw.govt_main_work_id=gmw.govt_main_work_id "
 				+ " and gmw.govt_work_type_id=:govtWorkTypeId "
-				+ "and gw.created_by=:userId group by gmw.govt_main_work_id;");
+				+ "and gw.created_by=:userId and gmw.location_scope_id=:locationScopeId and gmw.location_value in (:locationValues) group by gmw.govt_main_work_id;");
 		
 		query.setParameter("userId", userId);
 		query.setParameter("govtWorkTypeId", govtWorkTypeId);
+		query.setParameter("locationScopeId", locationScopeId);
+		query.setParameterList("locationValues", locationValues);
 		
 		return query.list();
 	}
 	
-	public Object getOverallWork(Long workTypeId,Long workId){
+	public Object getOverallWork(Long workTypeId,Long locationScopeId,List<Long> locationIds){
 		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(" select ");
-		
-		if(workId != null && workId > 0l){
-			sb.append(" gw.work_length ");
-		}else{
-			sb.append(" sum(gmw.approved_km) ");
+		sb.append(" select sum(gmw.approved_km) "
+				+ " from govt_main_work gmw "
+				+ " where gmw.govt_work_type_id=:workTypeId ");
+		if(locationScopeId != null && locationScopeId > 0l){
+			sb.append(" and gmw.location_scope_id = :locationScopeId ");
 		}
-		
-		sb.append(" from govt_main_work gmw ");
-		
-		if(workId != null && workId > 0l){
-			sb.append(" ,govt_work gw ");
-		}
-		
-		sb.append(" where gmw.govt_work_type_id=:workTypeId ");
-		
-		if(workId != null && workId > 0l){
-			sb.append(" and gw.is_deleted='N' and gw.govt_main_work_id=gmw.govt_main_work_id and gw.govt_work_id=:workId ");
+		if(locationIds != null && locationIds.size() > 0){
+			sb.append(" and gmw.location_value in (:locationIds) ");
 		}
 		
 		Query query = getSession().createSQLQuery(sb.toString());
 		
-		query.setParameter("workTypeId",workTypeId);
-		
-		if(workId != null && workId > 0l){
-			query.setParameter("workId",workId);
+		query.setParameter("workTypeId", workTypeId);
+		if(locationScopeId != null && locationScopeId > 0l){
+			query.setParameter("locationScopeId", locationScopeId);
 		}
-		
+		if(locationIds != null && locationIds.size() > 0){
+			query.setParameterList("locationIds", locationIds);
+		}
 		return (Object)query.uniqueResult();
 	}
 	
@@ -110,5 +103,39 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
 		return query.list();
+	}
+	
+	public List<Object[]> getAllWorkZonesOfLocations(Long locationScopeId,List<Long> locationIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.govtWorkId,model.workZoneName from GovtWork model where model.isDeleted='N' ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" and model.govtMainWork.locationAddress.districtId in (:locationIds) ");
+		}else if(locationScopeId == 4l){
+			sb.append(" and model.govtMainWork.locationAddress.constituencyId in (:locationIds) ");
+		}else if(locationScopeId == 5l){
+			sb.append(" and model.govtMainWork.locationAddress.tehsilId in (:locationIds) ");
+		}else if(locationScopeId == 6l){
+			sb.append(" and model.govtMainWork.locationAddress.panchayatId in (:locationIds) ");
+		}else if(locationScopeId == 12l){
+			sb.append(" and model.govtMainWork.locationAddress.divisionId in (:locationIds) ");
+		}else if(locationScopeId == 13l){
+			sb.append(" and model.govtMainWork.locationAddress.subDivisionId in (:locationIds) ");
+		} 
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(locationScopeId == 3l || locationScopeId == 4l || locationScopeId == 5l || locationScopeId == 6l || locationScopeId == 12l || locationScopeId == 13l){
+			query.setParameterList("locationIds", locationIds);
+		}
+		return query.list();
+	}
+	
+	public Object getOverallLength(List<Long> workZoneIds){
+		Query query = getSession().createSQLQuery(" select sum(gw.work_length) "
+				+ " from govt_work gw where gw.is_deleted='N' and gw.govt_work_id in (:workZoneIds) ");
+		
+		query.setParameterList("workZoneIds", workZoneIds);
+		
+		return query.uniqueResult();
 	}
 }

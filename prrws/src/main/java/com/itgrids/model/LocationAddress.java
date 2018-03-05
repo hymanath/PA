@@ -26,6 +26,8 @@ public class LocationAddress{
 	private Long parliamentId;
 	private Long localElectionBodyId;
 	private Long predDdoId;
+	private Long divisionId;
+	private Long subDivisionId;
 	
 	private Constituency constituency;
 	private District district;
@@ -185,6 +187,22 @@ public class LocationAddress{
 	}
 	public void setPredddo(PredDdo predddo) {
 		this.predddo = predddo;
+	}
+	
+	@Column(name="division_id")
+	public Long getDivisionId() {
+		return divisionId;
+	}
+	public void setDivisionId(Long divisionId) {
+		this.divisionId = divisionId;
+	}
+	
+	@Column(name="sub_division_id")
+	public Long getSubDivisionId() {
+		return subDivisionId;
+	}
+	public void setSubDivisionId(Long subDivisionId) {
+		this.subDivisionId = subDivisionId;
 	}
 	
 	

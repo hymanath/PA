@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDistrictDAO;
+import com.itgrids.dao.IDivisionDAO;
 import com.itgrids.dao.IDocumentDAO;
 import com.itgrids.dao.IGovtMainWorkDAO;
 import com.itgrids.dao.IGovtWorkDAO;
@@ -32,19 +33,19 @@ import com.itgrids.dao.ILocationAddressDAO;
 import com.itgrids.dao.IMobileAppUserDAO;
 import com.itgrids.dao.IMobileAppUserLocationDAO;
 import com.itgrids.dao.IMobileAppUserLoginDAO;
+import com.itgrids.dao.IMobileAppUserTypeDAO;
 import com.itgrids.dao.IMobileAppUserWorkTypeDAO;
 import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
+import com.itgrids.dao.ISubDivisionDAO;
 import com.itgrids.dao.ITehsilConstituencyDAO;
 import com.itgrids.dao.ITehsilDAO;
-import com.itgrids.dao.impl.GovtMainWorkDAO;
 import com.itgrids.dto.DocumentVO;
 import com.itgrids.dto.GovtMainWorkVO;
 import com.itgrids.dto.GovtWorksVO;
 import com.itgrids.dto.LocationAddressVO;
 import com.itgrids.dto.MobileAppInputVO;
 import com.itgrids.dto.MobileAppLoginVO;
-import com.itgrids.dto.MobileAppUserLocationVO;
 import com.itgrids.dto.ResultStatus;
 import com.itgrids.dto.SmallVO;
 import com.itgrids.dto.WorkStatusVO;
@@ -56,6 +57,7 @@ import com.itgrids.model.GovtWorkProgressTrack;
 import com.itgrids.model.GovtWorkProgressUpdate;
 import com.itgrids.model.GovtWorkType;
 import com.itgrids.model.MobileAppUserLogin;
+import com.itgrids.model.MobileAppUserType;
 import com.itgrids.service.IUnderGroundDrainageService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -111,6 +113,12 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 	private IMobileAppUserWorkTypeDAO mobileAppUserWorkTypeDAO;
 	@Autowired
 	private IGovtMainWorkDAO govtMainWorkDAO;
+	@Autowired
+	private IMobileAppUserTypeDAO mobileAppUserTypeDAO;
+	@Autowired
+	private IDivisionDAO divisionDAO;
+	@Autowired
+	private ISubDivisionDAO subDivisionDAO;
 	
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
@@ -142,6 +150,20 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				finalVO.setUserTypeId(obj[5] != null ? (Long)obj[5]:0l);
 				finalVO.setUserType(obj[6] != null ? obj[6].toString():"");
 				
+				//get user sub user types
+				if(obj[5] != null && (Long)obj[5] > 0l){
+					List<MobileAppUserType> mautList = mobileAppUserTypeDAO.getUserSubUserTypes((Long)obj[5]);
+					if(mautList != null && mautList.size() > 0){
+						for (MobileAppUserType mobileAppUserType : mautList) {
+							SmallVO vo = new SmallVO();
+							vo.setKey(mobileAppUserType.getMobileAppUserTypeId());
+							vo.setValue(mobileAppUserType.getUserType());
+							finalVO.getSubUserTypes().add(vo);
+						}
+					}
+				}
+					
+				
 				mobileAppUserLogin.setMobileAppUserId((Long)obj[0]);
 				mobileAppUserLogin.setLoginStatus("Success");
 				
@@ -157,24 +179,32 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						finalVO.getVoList().add(vo);
 					}
 					
-					List<GovtMainWorkVO> voList = getUsersGovtMainWorks((Long)obj[0],workTypeId);
-					if(voList != null && voList.size() > 0){
-						
-						//get completed status percentages
-						//0-mainWorkId,1-totalKms,2-completedKms
-						/*List<Object[]> objList12 = govtWorkProgressDAO.getCompletedMianWorkPercentage((Long)obj[0],workTypeId);
-						if(objList12 != null && objList12.size() > 0){
-							for (Object[] objects : objList12) {
-								GovtMainWorkVO mainWorkVO = getMatchedMainWorkVO(Long.parseLong(objects[0].toString()),voList);
-								if(mainWorkVO != null && mainWorkVO.getTotalKms() != null && mainWorkVO.getTotalKms() > 0l){
-									mainWorkVO.setCompletedKms(Double.parseDouble(objects[2].toString()));
-									mainWorkVO.setCompletedPercentage((Double.parseDouble(objects[2].toString())*100.00)/mainWorkVO.getTotalKms());
-								}
+					Map<Long,List<Long>> userLocationsMap = new HashMap<Long, List<Long>>();
+					//0-locationScopeId,1-locationScope,2-locationValue
+					List<Object[]> locationsObjList = mobileAppUserLocationDAO.getMobileAppuserLocations((Long)obj[0]);
+					if(locationsObjList != null && locationsObjList.size() > 0){
+						for (Object[] objects : locationsObjList) {
+							if(userLocationsMap.get((Long)objects[0]) == null){
+								List<Long> locationsList = new ArrayList<Long>(0);
+								locationsList.add((Long)objects[2]);
+								userLocationsMap.put((Long)objects[0],locationsList);
+							}else{
+								userLocationsMap.get((Long)objects[0]).add((Long)objects[2]);
 							}
-						}*/
-						
-						finalVO.setMainWorksVOList(voList);
+						}
 					}
+					
+					if(userLocationsMap != null && userLocationsMap.size() > 0){
+						List<GovtMainWorkVO> allWorksObj = new ArrayList<GovtMainWorkVO>(0);
+						for (Entry<Long, List<Long>> entry : userLocationsMap.entrySet()) {
+							List<GovtMainWorkVO> voList = getUsersGovtMainWorks1((Long)obj[0],workTypeId,entry.getKey(),entry.getValue());
+							if(voList != null && voList.size() > 0){
+								allWorksObj.addAll(voList);
+							}
+						}
+						finalVO.setMainWorksVOList(allWorksObj);
+					}
+					
 				}
 				
 				
@@ -220,9 +250,34 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 	
 	public List<GovtMainWorkVO> getUsersGovtMainWorks(Long userId,Long workTypeId){
 		List<GovtMainWorkVO> mainWorksVOList = new ArrayList<GovtMainWorkVO>(0);
+		Map<Long,List<Long>> userLocationsMap = new HashMap<Long, List<Long>>();
+		//0-locationScopeId,1-locationScope,2-locationValue
+		List<Object[]> locationsObjList = mobileAppUserLocationDAO.getMobileAppuserLocations(userId);
+		if(locationsObjList != null && locationsObjList.size() > 0){
+			for (Object[] objects : locationsObjList) {
+				if(userLocationsMap.get((Long)objects[0]) == null){
+					List<Long> locationsList = new ArrayList<Long>(0);
+					locationsList.add((Long)objects[2]);
+					userLocationsMap.put((Long)objects[0],locationsList);
+				}else{
+					userLocationsMap.get((Long)objects[0]).add((Long)objects[2]);
+				}
+			}
+		}
+		
+		if(userLocationsMap != null && userLocationsMap.size() > 0){
+			for (Entry<Long, List<Long>> entry : userLocationsMap.entrySet()) {
+				mainWorksVOList.addAll(getUsersGovtMainWorks1(userId,workTypeId,entry.getKey(),entry.getValue()));
+			}
+		}
+		return mainWorksVOList;
+	}
+	
+	public List<GovtMainWorkVO> getUsersGovtMainWorks1(Long userId,Long workTypeId,Long locationScopeId,List<Long> locationValues){
+		List<GovtMainWorkVO> mainWorksVOList = new ArrayList<GovtMainWorkVO>(0);
 		
 		//0-workId,1-name,2-kms
-		List<Object[]> objList1 = govtMainWorkDAO.getAllMainWorksForUser(userId,workTypeId);
+		List<Object[]> objList1 = govtMainWorkDAO.getAllMainWorksForUser(workTypeId,locationScopeId,locationValues);
 		if(objList1 != null && objList1.size() > 0){
 			for (Object[] objects : objList1) {
 				GovtMainWorkVO vo = new GovtMainWorkVO();
@@ -234,7 +289,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		}
 		
 		//0-mainWorkId,1-mainWorkName,2-totalKms,3-locationScopeId,4-locationValue,5-locationAddressId,6-count,7-workLength
-		List<Object[]> objList = govtWorkDAO.getUsersGovtMainWorks(userId,workTypeId);
+		List<Object[]> objList = govtWorkDAO.getUsersGovtMainWorks(userId,workTypeId,locationScopeId,locationValues);
 		if(objList != null && objList.size() > 0){
 			for (Object[] objects : objList) {
 				
@@ -264,7 +319,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			if(mainWorksVOList != null && mainWorksVOList.size() > 0){
 				//get completed status percentages
 				//0-mainWorkId,1-totalKms,2-completedKms
-				List<Object[]> objList12 = govtWorkProgressDAO.getCompletedMianWorkPercentage(userId,workTypeId);
+				List<Object[]> objList12 = govtWorkProgressDAO.getCompletedMianWorkPercentage(userId,workTypeId,locationScopeId,locationValues);
 				if(objList12 != null && objList12.size() > 0){
 					for (Object[] objects : objList12) {
 						GovtMainWorkVO mainWorkVO = getMatchedMainWorkVO(Long.parseLong(objects[0].toString()),mainWorksVOList);
@@ -289,7 +344,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		return null;
 	}
 	
-	public void getTheLocationsOfMObileAppUser(MobileAppLoginVO finalVO,Long mobileAppUserId){
+	/*public void getTheLocationsOfMObileAppUser(MobileAppLoginVO finalVO,Long mobileAppUserId){
 		//get location details
 		//0-regionScopesId,1-regionScopes,2-locationValue
 		List<Object[]> locationsObjList = mobileAppUserLocationDAO.getMobileAppuserLocations(mobileAppUserId);
@@ -336,7 +391,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				}
 			}
 		}
-	}
+	}*/
 	
 	
 	/*public List<GovtWorksVO> getWorkDetailsOfMobileAppUser(Long mobileAppUserId,Long workTypeId){
@@ -1047,10 +1102,33 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				endDate = sdf.parse(inputVO.getToDate());
 			}
 			
-			Object totalWorkLength = govtWorkDAO.getOverallWork(inputVO.getWorkTypeId(),inputVO.getWorkId());
+			Object totalWorkLength = null;
+			if(inputVO.getWorkZoneIds() != null && inputVO.getWorkZoneIds().size() > 0){
+				totalWorkLength = govtWorkDAO.getOverallLength(inputVO.getWorkZoneIds());
+			}else{
+				if(inputVO.getUserIds() != null && inputVO.getUserIds().size() > 0 && inputVO.getLocationScopeId() != null && inputVO.getLocationScopeId() > 0l){
+					for (Long userId : inputVO.getUserIds()) {
+						//0-locationScopeId,1-locationScope,2-locationValue
+						List<Object[]> objList = mobileAppUserLocationDAO.getMobileAppuserLocations(userId);
+						if(objList != null && objList.size() > 0){
+							inputVO.setLocationScopeId((Long)objList.get(0)[0]);
+							for (Object[] objects : objList) {
+								inputVO.getLocationIds().add((Long)objects[2]);
+							}
+						}
+					}
+				}
+				totalWorkLength = govtWorkDAO.getOverallWork(inputVO.getWorkTypeId(),inputVO.getLocationScopeId(),inputVO.getLocationIds());
+			}
 			
+			List<Object[]> objList = null;
 			//0-statusId,1-statuName,2-date,3-length
-			List<Object[]> objList = govtWorkProgressTrackDAO.getStatusWiseDayReport(inputVO.getWorkTypeId(),inputVO.getWorkId(),startDate,endDate,inputVO.getReportType());
+			if(inputVO.getWorkZoneIds() != null && inputVO.getWorkZoneIds().size() > 0l){
+				objList = govtWorkProgressTrackDAO.getStatusWiseDayReportForWorkZone(inputVO.getWorkZoneIds(),inputVO.getReportType());
+			}else{
+				objList = govtWorkProgressTrackDAO.getStatusWiseDayReport(inputVO.getWorkTypeId(),inputVO.getLocationScopeId(),inputVO.getLocationIds(),startDate,endDate,inputVO.getReportType());
+			}
+			
 			
 			if(objList != null && objList.size() > 0){
 				Map<Long,WorkStatusVO> map = new HashMap<Long, WorkStatusVO>();
@@ -1091,9 +1169,9 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					
 					if(matchedDateVO != null){
 						if(inputVO.getReportType() != null && inputVO.getReportType().equalsIgnoreCase("dayWise"))
-							matchedDateVO.setKms(objects[3] != null ? Double.parseDouble(objects[3].toString()):null);
+							matchedDateVO.setKms(matchedDateVO.getKms()+(objects[3] != null ? Double.parseDouble(objects[3].toString()):0.00));
 						else
-							matchedDateVO.setKms(Double.parseDouble(objects[4].toString()));
+							matchedDateVO.setKms(matchedDateVO.getKms()+Double.parseDouble(objects[4].toString()));
 					}else{
 						matchedDateVO = new DocumentVO();
 						matchedDateVO.setInsertedTime(objects[2].toString());
@@ -1224,17 +1302,121 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		return finalList;
 	}
 	
+	public List<SmallVO> getSubUsers(Long userTypeId,List<Long> userIds,Long workTypeId){
+		List<SmallVO> voList = new ArrayList<SmallVO>(0);
+		try {
+			Map<Long,List<Long>> userLocationsMap = new HashMap<Long, List<Long>>();
+			if(userIds != null && userIds.size() > 0){
+				for (Long userId : userIds) {
+					//0-locationScopeId,1-locationScope,2-locationValue
+					List<Object[]> objList = mobileAppUserLocationDAO.getMobileAppuserLocations(userId);
+					if(objList != null && objList.size() > 0){
+						for (Object[] objects : objList) {
+							if(userLocationsMap.get((Long)objects[0]) == null){
+								List<Long> locationsList = new ArrayList<Long>(0);
+								locationsList.add((Long)objects[2]);
+								userLocationsMap.put((Long)objects[0],locationsList);
+							}else{
+								userLocationsMap.get((Long)objects[0]).add((Long)objects[2]);
+							}
+						}
+					}
+				}
+			}
+				
+			if(userLocationsMap != null && userLocationsMap.size() > 0){
+				for (Entry<Long, List<Long>> entry : userLocationsMap.entrySet()) {
+					List<Object[]> objList = mobileAppUserLocationDAO.getSubUserDetails(userTypeId-1,entry.getKey(),entry.getValue(),workTypeId);
+					if(objList != null && objList.size() > 0){
+						for (Object[] objects : objList) {
+							SmallVO vo = new SmallVO();
+							vo.setKey((Long)objects[0]);
+							vo.setValue(objects[1].toString());
+							voList.add(vo);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("exception occured while getting the sub user details of user", e);
+		}
+		return voList;
+	}
 	
+	public List<LocationAddressVO> getUsersAssignedLocations(List<Long> userIds){
+		List<LocationAddressVO> voList = new ArrayList<LocationAddressVO>(0);
+		try {
+			if(userIds != null && userIds.size() > 0){
+				Map<Long,List<Long>> locationsMap = new HashMap<Long, List<Long>>(0);
+				for (Long userId : userIds) {
+					//0-locationScopeId,1-locationScope,2-locationValue
+					List<Object[]>  objList = mobileAppUserLocationDAO.getMobileAppuserLocations(userId);
+					if(objList != null && objList.size() > 0){
+						for (Object[] objects : objList) {
+							if(locationsMap.get((Long)objects[0]) == null){
+								List<Long> locationsList = new ArrayList<Long>(0);
+								locationsList.add((Long)objects[2]);
+								locationsMap.put((Long)objects[0],locationsList);
+							}else{
+								locationsMap.get((Long)objects[0]).add((Long)objects[2]);
+							}
+						}
+						
+					}
+				}
+				
+				if(locationsMap != null && locationsMap.size() > 0){
+					Long locationScopeId = (Long)locationsMap.keySet().toArray()[0];
+					List<Long> locationIds = locationsMap.get(locationScopeId);
+					
+					List<Object[]> objList = null;
+					if(locationScopeId == 3l){//district
+						objList = districtDAO.getDistrictIdAndNameByDistrictIds(locationIds);
+					}else if(locationScopeId == 4l){//const
+						objList = constituencyDAO.getConstIdAndNameByConstIds(locationIds);
+					}else if(locationScopeId == 5l){//mandal
+						objList = tehsilDAO.getTehsilIdAndNameByIds(locationIds);
+					}else if(locationScopeId == 6l){//village
+						objList = panchayatDAO.getPanchayatIdAndNameByIds(locationIds);
+					}else if(locationScopeId == 12l){//division
+						objList = divisionDAO.getDivisionIdAndNameByIds(locationIds);
+					}else if(locationScopeId == 13l){//sub-division
+						objList = subDivisionDAO.getSubDivisionIdAndNameByIds(locationIds);
+					}
+					
+					
+					if(objList != null && objList.size() > 0){
+						for (Object[] objects : objList) {
+							LocationAddressVO vo = new LocationAddressVO();
+							vo.setLocationScopeId(locationScopeId);
+							vo.setLocationLevelId((Long)objects[0]);
+							vo.setLocationLevelName(objects[1].toString());
+							voList.add(vo);
+						}
+					}				
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("exception raised while getting locations of users", e);
+		}
+		return voList;
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public List<SmallVO> getAllWorkZonesOfLocations(Long locationScopeId,List<Long> locationIds){
+		List<SmallVO> voList = new ArrayList<SmallVO>(0);
+		try {
+			List<Object[]> objList = govtWorkDAO.getAllWorkZonesOfLocations(locationScopeId,locationIds);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					SmallVO vo = new SmallVO();
+					vo.setKey((Long)objects[0]);
+					vo.setValue(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("exception raised while getting the work zones related to locations", e);
+		}
+		return voList;
+	}
 }

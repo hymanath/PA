@@ -22,11 +22,42 @@ public class MobileAppUserLocationDAO extends GenericDaoHibernate<MobileAppUserL
  	}
 	
 	public List<Object[]> getMobileAppuserLocations(Long userId){
-		//0-regionScopesId,1-locationScope,2-locationValue
+		//0-locationScopeId,1-locationScope,2-locationValue
 		Query query = getSession().createQuery(" select model.locationScope.regionScopesId,model.locationScope.scope,model.locationValue "
 				+ " from MobileAppUserLocation model "
 				+ " where model.mobileAppUserId=:userId and model.isDeleted='N' ");
 		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	public List<Object[]> getSubUserDetails(Long requiredUserTypeId,Long parentLocationScopeId,List<Long> parentLocationValues,Long workTypeId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.mobileAppUser.mobileAppUserId,model.mobileAppUser.fullName "
+				+ " from MobileAppUserLocation model,MobileAppUserWorkType model2 "
+				+ " where model.mobileAppUserId=model2.mobileAppUserId and model2.govtWorkTypeId=:workTypeId "
+				+ " and model.mobileAppUser.mobileAppUserTypeId=:requiredUserTypeId ");
+		
+		if(parentLocationScopeId == 3l){//district
+			sb.append(" and model.locationAddress.districtId in (:parentLocationValues) ");
+		}else if(parentLocationScopeId == 4l){//constituency
+			sb.append(" and model.locationAddress.constituencyId in (:parentLocationValues) ");
+		}else if(parentLocationScopeId == 5l){//mandal
+			sb.append(" and model.locationAddress.tehsilId in (:parentLocationValues) ");
+		}else if(parentLocationScopeId == 12l){//divison
+			sb.append(" and model.locationAddress.divisionId in (:parentLocationValues) ");
+		}else if(parentLocationScopeId == 13l){//sub-divison
+			sb.append(" and model.locationAddress.subDivisionId in (:parentLocationValues) ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("requiredUserTypeId", requiredUserTypeId);
+		
+		if(parentLocationScopeId == 3l || parentLocationScopeId == 4l || parentLocationScopeId == 5l || parentLocationScopeId == 12l || parentLocationScopeId == 13l){
+			query.setParameterList("parentLocationValues",parentLocationValues);
+		}
+		
+		query.setParameter("workTypeId", workTypeId);
 		return query.list();
 	}
 }

@@ -5,6 +5,7 @@ public class LocationAddressVO {
 	public String locationScope;
 	public Long locationLevelId;
 	public Long locationLevel;
+	public String locationLevelName;
 	public Long stateId;
 	public String stateName;
 	public Long districtId;
@@ -128,4 +129,12 @@ public class LocationAddressVO {
 	public void setWardName(String wardName) {
 		this.wardName = wardName;
 	}
+	public String getLocationLevelName() {
+		return locationLevelName;
+	}
+	public void setLocationLevelName(String locationLevelName) {
+		this.locationLevelName = locationLevelName;
+	}
+	
+	
 }
