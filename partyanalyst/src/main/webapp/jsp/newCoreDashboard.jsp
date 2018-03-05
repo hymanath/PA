@@ -96,7 +96,7 @@
     <div class="navbar navbar-default navbarProfile">
     	<div class="container">
         	<div class="row">
-            	<div class="col-md-5 col-xs-12 col-sm-5">
+            	<div class="col-md-3 col-xs-12 col-sm-3">
                 	<ul class="nav navbar-nav navbar-left headerProfileName">
                         <li class="dropdown profileDropDown toggleViewIcon">
                           <a style="cursor:pointer;"><span id="mainHeadinId""> </span> 
@@ -110,7 +110,7 @@
                         </li>
                     </ul>
                 </div>
-				<div class="col-md-7 col-xs-12 col-sm-7 pull-right" style="margin-top: -10px;">
+				<div class="col-md-9 col-xs-12 col-sm-9 pull-right" style="margin-top: -10px;">
 					<ul class="list-inline profileSelection">
 						<li>
 							<!-- Dont Add New Classes and new functionalities for this class a click has been already initialised please use that-->
@@ -129,6 +129,9 @@
                         </li>
 						<li>
                         	<label class="m_top10"><a target="_blank" href="exceptionalReportsAction.action"  style="font-size:14px;font-weight:bold;color:green;text-decoration:underline;">Exceptional Reports</a></label>
+                        </li>
+						<li>
+                        	<label class="m_top10"><a target="_blank" href="consolidatedExceptionalReportsAction.action"  style="font-size:14px;font-weight:bold;color:green;text-decoration:underline;">Consolidated view of Exceptional Reports</a></label>
                         </li>
 						<!--<li>
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>
