@@ -3,12 +3,14 @@ package com.itgrids.partyanalyst.exceptionalReport.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,7 +20,6 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
-import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.exceptionalReport.service.IAlertExceptionalReportService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -191,8 +192,18 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 				stDate = sdf.parse(startDate.trim());
 				ndDate = sdf.parse(endDate.trim());
 			}
+			Map<Long,AlertCoreDashBoardVO> statusMap = new LinkedHashMap<Long,AlertCoreDashBoardVO>();
+			List<Long> statusIds = Arrays.asList(6l,7l,4l,3l,2l,1l,0l);
+			for (Long long1 : statusIds) {
+				AlertCoreDashBoardVO statusVO =statusMap.get(long1);
+				if(statusVO == null){
+					statusVO = new AlertCoreDashBoardVO();
+					statusVO.setId(long1);
+					statusMap.put(long1, statusVO);
+				}
+			}
+			List<Object[]> overAllAlertDtls = alertDAO.getOverAllAlertDtls(null,null,stateId,alertTypeIds,null);
 			
-			List<Object[]> overAllAlertDtls = alertDAO.getOverAllAlertDtls(null,null,stateId,alertTypeIds);
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.MONTH, -1);
 			calendar.set(Calendar.DAY_OF_MONTH, calendar.getMinimalDaysInFirstWeek());	
@@ -217,26 +228,37 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 			if(overAllAlertDtls != null && overAllAlertDtls.size() > 0){
 				tempList = new ArrayList<AlertCoreDashBoardVO>();
 				for(Object[] param : overAllAlertDtls){
-					tempVO = new AlertCoreDashBoardVO();
-					tempVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					tempVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					tempVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
-					tempVO.setCountPerc(calculatePercantage(tempVO.getCount(),totalAlert));
-					tempList.add(tempVO);
+					tempVO = statusMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(tempVO != null){
+				//	tempVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						tempVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						tempVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						tempVO.setCountPerc(calculatePercantage(tempVO.getCount(),totalAlert));
+						//tempList.add(tempVO);
+					}
 				}
-				tempVO = new AlertCoreDashBoardVO();
-				tempVO.setId(0L);
+				tempVO = statusMap.get(0l);
+				//tempVO.setId(0L);
 				tempVO.setName("Last Month Completed");
 				tempVO.setCount(overAllLastMonthCompleted);
 				tempVO.setCountPerc(calculatePercantage(overAllLastMonthCompleted,totalAlert));
 				tempList.add(tempVO);
-				alertCoreDashBoardVO1.getSubList().addAll(tempList);
+				alertCoreDashBoardVO1.getSubList().addAll(statusMap.values());
 			}
 			
-			List<Object[]> lastMonthAllAlertDtls = alertDAO.getOverAllAlertDtls(pastDate,eendDate,stateId,alertTypeIds);
+			List<Object[]> lastMonthAllAlertDtls = alertDAO.getOverAllAlertDtls(pastDate,eendDate,stateId,alertTypeIds,null);
 			Long lastMonthCompleted = alertDAO.getOverAllLastMonthComp(pastDate,eendDate,stateId,alertTypeIds,"lastMonth");
 			
 			//2
+			statusMap.clear();
+			for (Long long1 : statusIds) {
+				AlertCoreDashBoardVO statusVO =statusMap.get(long1);
+				if(statusVO == null){
+					statusVO = new AlertCoreDashBoardVO();
+					statusVO.setId(long1);
+					statusMap.put(long1, statusVO);
+				}
+			}
 			alertCoreDashBoardVO2 = new AlertCoreDashBoardVO();
 			alertCoreDashBoardVO2.setName("Last Month Alerts");
 			Long totalAlertLastMonth = 0L;
@@ -251,20 +273,22 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 			if(lastMonthAllAlertDtls != null && lastMonthAllAlertDtls.size() > 0){
 				tempList = new ArrayList<AlertCoreDashBoardVO>();
 				for(Object[] param : lastMonthAllAlertDtls){
-					tempVO = new AlertCoreDashBoardVO();
+					tempVO = statusMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(tempVO != null){
 					tempVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					tempVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					tempVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
 					tempVO.setCountPerc(calculatePercantage(tempVO.getCount(),totalAlertLastMonth));
 					tempList.add(tempVO);
+					}
 				}
-				tempVO = new AlertCoreDashBoardVO();
-				tempVO.setId(0L);
+				tempVO = statusMap.get(0l);
+				//tempVO.setId(0L);
 				tempVO.setName("Last Month Completed");
 				tempVO.setCount(lastMonthCompleted);
 				tempVO.setCountPerc(calculatePercantage(lastMonthCompleted,totalAlertLastMonth));
 				tempList.add(tempVO);
-				alertCoreDashBoardVO2.getSubList().addAll(tempList);
+				alertCoreDashBoardVO2.getSubList().addAll(statusMap.values());
 			}
 			alertCoreDashBoardVOs.add(alertCoreDashBoardVO1);
 			alertCoreDashBoardVOs.add(alertCoreDashBoardVO2);

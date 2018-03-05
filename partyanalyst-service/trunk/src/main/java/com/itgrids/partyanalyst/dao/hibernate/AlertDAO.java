@@ -11442,13 +11442,16 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		query.setParameterList("alertTypeIds", alertTypeIds);
 		return query.list();
 	}
-	public List<Object[]> getOverAllAlertDtls(Date startDate,Date endDate,Long stateId,List<Long> alertTypeIds){
+	public List<Object[]> getOverAllAlertDtls(Date startDate,Date endDate,Long stateId,List<Long> alertTypeIds,List<Long> statusIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select AS1.alert_status_id as alertStatusId,AS1.alert_status as status ,count(distinct A.alert_id) as count from alert A,alert_status AS1,user_address UA where A.is_deleted = 'N' ");
 		sb.append(" and A.alert_status_id = AS1.alert_status_id and A.alert_type_id in (:alertTypeIds) and A.address_id = UA.user_address_id ");
 		sb.append(" and UA.state_id = :stateId ");
 		if(startDate != null && endDate != null){
 			sb.append(" and date(A.created_time) between :startDate and :endDate ");
+		}
+		if(statusIds != null && statusIds.size() >0){
+			sb.append(" and  A.alert_status_id in (:statusIds) ");
 		}
 		sb.append(" group by A.alert_status_id ");
 		Query query = getSession().createSQLQuery(sb.toString()).addScalar("alertStatusId", Hibernate.LONG).addScalar("status", Hibernate.STRING).addScalar("count", Hibernate.LONG);
@@ -11457,6 +11460,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		if(startDate != null && endDate != null){
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
+		}
+		if(statusIds != null && statusIds.size() >0){
+			query.setParameterList("statusIds", statusIds);
 		}
 		return query.list();
 	}
