@@ -19,6 +19,8 @@
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="D2D_Assests/css/styles.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+<link href="newCoreDashBoard/iconmoon/style.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <style type="text/css">
 .panel
@@ -287,7 +289,7 @@ nav{
 		</div>
 	</div>
 	<div class="modal" tabindex="-1" role="dialog" id="prajaSankalpaYatraModalId">
-		  <div class="modal-dialog modal-lg" style="width:80%;">       
+		  <div class="modal-dialog " style="width:85%;">       
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -311,7 +313,7 @@ nav{
 	</div>
 
 <div class="modal" tabindex="-1" role="dialog" id="articleDataID">
-	  <div class="modal-dialog modal-lg" style="width:90%;">       
+	  <div class="modal-dialog " style="width:90%;">       
 		<div class="modal-content" style="border-radius:0px">
 			<div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close newsImagemodal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -328,7 +330,7 @@ nav{
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="newspopImgDiv"></div>
 							<div class="row ">
-								<div class="col-md-7 col-md-offset-5 m_top20">
+								<div class="col-md-12 m_top20">
 									<div class="paginationId"></div>
 								</div>
 							</div>
@@ -357,7 +359,7 @@ nav{
 </div>
 <input type="hidden" id="hiddenActivityScopeId"></input>
 <!--------End Popup build----------->
-
+<div class="modal fade" id="myModalShowNew"></div>
 </section>
 <script src="D2D_Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="D2D_Assests/js/bootstrap.js" type="text/javascript"></script>
@@ -372,8 +374,9 @@ nav{
 <script src="D2D_Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/slickNew/slick/slick.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
-<script src="D2D_Assests/js/dalithTejamDashBoard.js" type="text/javascript"></script>	
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript" src="newCoreDashBoard/slimscroller/jquery.slimscroll.js"></script>
+<script src="D2D_Assests/js/dalithTejamDashBoard.js" type="text/javascript"></script>	
 <script>
   var tableToExcel = (function() {
   var uri = 'data:application/vnd.ms-excel;base64,'

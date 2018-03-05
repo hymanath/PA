@@ -44,10 +44,7 @@ header
 {
 	top:-13px !important;
 }
-.DTFC_LeftBodyWrapper tr td
-{
-	background-color:#fff;
-}
+
 .DTFC_LeftBodyLiner{
 	overflow-y:hidden;
 }

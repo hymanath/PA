@@ -107,8 +107,8 @@
 		color-adjust:exact;
 	}
 	.details-overview thead tr th{
-		font-size:22px !important;
-		padding:15px 20px !important;
+		font-size:14px !important;
+		padding:8px 15px !important;
 		border-bottom:none !important;
 		font-weight:bold !important;
 		border-bottom:1px solid #d1ab66 !important;
@@ -117,7 +117,7 @@
 		color-adjust:exact;
 	}
 	.details-overview tbody tr td{
-		font-size:24px !important;
+		font-size:14px !important;
 		padding:8px 15px !important;
 		border-top:none !important;
 		font-weight:bold !important;
@@ -126,15 +126,15 @@
 	}
 	 .details-overview-tour{
 		margin-bottom:0 !important;
-		margin-top:5px !important;
+		margin-top:2px !important;
 		border:1px solid #d1ab66 !important;
 		background-color:#fff !important;
 		-webkit-print-color-adjust:exact;
 		color-adjust:exact;
 	}
 	.details-overview-tour thead tr th{
-		font-size:16px !important;
-		padding:10px 15px !important;
+		font-size:12px !important;
+		padding:5px 5px !important;
 		border-bottom:none !important;
 		font-weight:bold !important;
 		border-bottom:1px solid #d1ab66 !important;
@@ -143,8 +143,8 @@
 		color-adjust:exact;
 	}
 	.details-overview-tour tbody tr td{
-		font-size:18px !important;
-		padding:5px 10px !important;
+		font-size:12px !important;
+		padding:5px 5px !important;
 		border-top:none !important;
 		font-weight:bold !important;
 		-webkit-print-color-adjust:exact;
@@ -161,8 +161,8 @@
 		color-adjust:exact;
 	}
 	.details-overview1 thead tr th{
-		font-size:13px !important;
-		padding:10px 15px !important;
+		font-size:12px !important;
+		padding:5px 10px !important;
 		border-bottom:none !important;
 		font-weight:bold !important;
 		border-bottom:1px solid #d1ab66 !important;
@@ -171,7 +171,7 @@
 		color-adjust:exact;
 	}
 	.details-overview1 tbody tr td{
-		font-size:16px !important;
+		font-size:14px !important;
 		padding:5px 10px !important;
 		border-top:none !important;
 		font-weight:bold !important;
@@ -225,7 +225,7 @@
 		font-size:16px !important;
 	}
 	.font_size24{
-		font-size:28px !important;
+		font-size:20px !important;
 	}
 	.col-sm-12 {
 		width: 100% !important;
@@ -321,7 +321,7 @@
 		color-adjust:exact;
 	}
 	.color_Ex7{
-		background-color:rgba(255, 0, 0, 0.75 !important;
+		background-color:rgba(255, 0, 0, 0.75) !important;
 		-webkit-print-color-adjust:exact;
 		color-adjust:exact;
 	}
@@ -377,7 +377,7 @@
 	
 	@page { 
 		size: auto;  
-		margin: 4mm 4mm 4mm 4mm;  
+		margin: 3mm 3mm 3mm 3mm;  
 	}
 }
 

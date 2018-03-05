@@ -3388,34 +3388,34 @@ background-color:#FFE08E !important;
 	margin-left: 5px;
 }
 .color_Ex1{
-	background-color:rgba(255, 0, 0, 0.15);
+	background-color:rgba(255, 0, 0, 0.15) !important;
 }
 .color_Ex2{
-	background-color:rgba(255, 0, 0, 0.25);
+	background-color:rgba(255, 0, 0, 0.25) !important;
 }
 .color_Ex3{
-	background-color:rgba(255, 0, 0, 0.35);
+	background-color:rgba(255, 0, 0, 0.35) !important;
 }
 .color_Ex4{
-	background-color:rgba(255, 0, 0, 0.45);
+	background-color:rgba(255, 0, 0, 0.45) !important;
 }
 .color_Ex5{
-	background-color:rgba(255, 0, 0, 0.55);
+	background-color:rgba(255, 0, 0, 0.55) !important;
 }
 .color_Ex6{
-	background-color:rgba(255, 0, 0, 0.65);
+	background-color:rgba(255, 0, 0, 0.65) !important;
 }
 .color_Ex7{
-	background-color:rgba(255, 0, 0, 0.75);
+	background-color:rgba(255, 0, 0, 0.75) !important;
 }
 .color_Ex8{
-	background-color:rgba(255, 0, 0, 0.85);
+	background-color:rgba(255, 0, 0, 0.85) !important;
 }
 .color_Ex9{
-	background-color:rgba(255, 0, 0, 0.9);
+	background-color:rgba(255, 0, 0, 0.9) !important;
 }
 .color_Ex10{
-	background-color:rgba(255, 0, 0, 1);
+	background-color:rgba(255, 0, 0, 1) !important;
 }
 .details-overview-cons{
 		margin-bottom:0;
@@ -3441,3 +3441,5 @@ background-color:#FFE08E !important;
 	font-weight:bold;
 	text-align:center;
 }
+/*table.details-overview-cons thead .sorting,table.details-overview-cons thead .sorting_asc,table.details-overview-cons thead .sorting_desc,table.details-overview-cons thead .sorting_asc_disabled,table.details-overview-cons thead .sorting_desc_disabled{cursor:pointer;position:relative}table.details-overview-cons thead .sorting:after,table.details-overview-cons thead .sorting_asc:after,table.details-overview-cons thead .sorting_desc:after,table.details-overview-cons thead .sorting_asc_disabled:after,table.details-overview-cons thead .sorting_desc_disabled:after{position:absolute;bottom:8px;right:8px;display:block;font-family:'Glyphicons Halflings';opacity:0.5}
+table.details-overview-cons thead .sorting:after{opacity:0.2;content:"\e150"}table.details-overview-cons thead .sorting_asc:after{content:"\e155"}table.details-overview-cons thead .sorting_desc:after{content:"\e156"}*/
