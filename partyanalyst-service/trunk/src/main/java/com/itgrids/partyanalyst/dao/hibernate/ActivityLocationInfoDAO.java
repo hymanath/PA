@@ -3409,7 +3409,7 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 		if(type != null && type.length() >0 && type.equalsIgnoreCase("conduct")){
 			sb.append(" and model.updatedStatus ='UPDATED' and model.conductedDate is not null ");
 		}
-		if(fromDate !=null && toDate !=null){
+		if(fromDate !=null && toDate !=null && type != null && type.equalsIgnoreCase("conduct")){
 			sb.append(" and model.conductedDate between :fromDate and :toDate ");
 		}
 		if(locationScopeId !=null && locationScopeId > 0l ){
@@ -3425,7 +3425,7 @@ public List<Long> getActivityConductedInfoId(Long  activityScopeId,String locati
 		if(activityScopeId != null && activityScopeId >0){
 			query.setParameter("activityScopeId", activityScopeId);
 		}
-		if(fromDate !=null && toDate !=null){
+		if(fromDate !=null && toDate !=null && type != null && type.equalsIgnoreCase("conduct")){
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
 		}if(locationScopeId != null && locationScopeId.longValue()>0 && locationValue !=null && locationValue>0l){
