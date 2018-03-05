@@ -35,4 +35,6 @@ public interface ICasteStateDAO extends GenericDao<CasteState, Long>{
 	 public List<Object[]> getStatewisesCastNames(Long stateId);
 	 public List<Object[]> getStatewiseCastNamesByCasteCategoryGroupId(List<Long> casteCategoryGroupId,Long stateId);
 	 public List<Object[]> getSubGroupOfCasteDetails(Long casteCategoryGroupId);
+	 public List<Object[]> getCandidateCasteGroupId(Long casteGroupId,Long casteStateId);
+	 public Long getCandidateCasteId(Long casteStateId);
 }

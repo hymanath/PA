@@ -271,5 +271,20 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 			 return query.list();
 			
 		}
+		public List<Object[]> getTdpCadreCandidateEmailIds(List<Long> candidateIds){
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select TCC.tdpCadre.tdpCadreId,TCC.candidate.emailAddress " +
+					"from TdpCadreCandidate TCC ");
+			if(candidateIds != null && candidateIds.size()>0){
+				 sb.append("where TCC.candidate.candidateId in (:candidateIds)");	
+			}
+			sb.append(" and TCC.candidate.party.partyId = 872 ");	
+			 Query query = getSession().createQuery(sb.toString());
+			 if(candidateIds != null && candidateIds.size()>0){
+				 query.setParameterList("candidateIds", candidateIds);
+			 }
+			 return query.list();
+			
+		}
 	
 }

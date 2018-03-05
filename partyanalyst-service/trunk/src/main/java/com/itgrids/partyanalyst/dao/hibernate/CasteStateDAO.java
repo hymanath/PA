@@ -195,4 +195,36 @@ public List<Object[]> getAllCasteInfoDetails(){
 			
 		return query.list();
 	}
+   public List<Object[]> getCandidateCasteGroupId(Long casteGroupId,Long casteStateId){
+	   StringBuilder str = new StringBuilder();
+	   str.append("select distinct model.casteStateId,model.caste.casteId,model.caste.casteName from CasteState model " );
+	   if(casteGroupId != null && casteGroupId.longValue()>0){
+		   str.append(" where model.casteCategoryGroup.casteCategory.casteCategoryId =:casteGroupId ");
+	   }
+	   if(casteStateId != null && casteStateId.longValue()>0l){
+		   str.append(" and model.caste.casteId =:casteStateId ");
+	   }
+	   Query query = getSession().createQuery(str.toString()); 
+	   if(casteGroupId != null && casteGroupId.longValue()>0){
+			query.setParameter("casteGroupId", casteGroupId);
+		 }
+        if(casteStateId != null && casteStateId.longValue()>0l){
+        	query.setParameter("casteStateId", casteStateId); 
+	   }
+	return query.list();
+	   
+   }
+   public Long getCandidateCasteId(Long casteStateId){
+	   StringBuilder str = new StringBuilder();
+	   str.append("select distinct model.casteStateId from CasteState model " );
+	   if(casteStateId != null && casteStateId.longValue()>0l){
+		   str.append(" where model.caste.casteId =:casteStateId ");
+	   }
+	   Query query = getSession().createQuery(str.toString()); 
+        if(casteStateId != null && casteStateId.longValue()>0l){
+        	query.setParameter("casteStateId", casteStateId); 
+	   }
+	return (Long)query.uniqueResult();
+	   
+   }
 }
