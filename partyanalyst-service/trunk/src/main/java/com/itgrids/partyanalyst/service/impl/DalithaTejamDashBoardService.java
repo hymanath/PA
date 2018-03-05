@@ -231,7 +231,7 @@ public class DalithaTejamDashBoardService implements IDalithaTejamDashBoardServi
 			
 			Date startDate=null, endDate=null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			if(fromDate!= null && toDate !=null && fromDate.length()>0 && toDate.length() >0){
+			if(fromDate!= null && toDate !=null && fromDate.toString().trim().length()>0 && toDate.toString().trim().length() >0){
 				startDate = sdf.parse(fromDate);
 				endDate = sdf.parse(toDate);
 			}
