@@ -139,7 +139,9 @@ function getOverallReport(){
 		}  
 	});
 }      
-
+$(document).on("click",".kaizalaExRRefresh",function(e){
+	onloadKaizalaCalls();
+});
 function buildOverallReport(result){
 	var str='';
 	
