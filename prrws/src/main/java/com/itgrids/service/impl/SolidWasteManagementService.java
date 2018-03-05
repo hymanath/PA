@@ -20,11 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IWebServiceDataDAO;
 import com.itgrids.dto.InputVO;
-import com.itgrids.dto.LightMonitoringVO;
-import com.itgrids.dto.LightWattageVO;
 import com.itgrids.dto.SolidWasteManagementVO;
 import com.itgrids.dto.WebServiceDataVO;
-import com.itgrids.model.LightsVendor;
 import com.itgrids.model.WebServiceData;
 import com.itgrids.service.ISolidWasteManagementService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -56,18 +53,17 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			WebResource webResource = null;
 			String url = null;
 			Map<String, SolidWasteManagementVO> locationMap = new HashMap<String, SolidWasteManagementVO>();
-			if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("district"))
+			if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("mandal"))
 				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
 						+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&filterType="
-						+ inputVO.getFilterType() + "&filterId=" + inputVO.getFilterId() + "&subFilterType="
-						+ inputVO.getSubFilterType() + "&subFilterId=" + inputVO.getSubFilterId() + "&fromDate="
+						+ inputVO.getFilterType() + "&filterId=" + inputVO.getFilterId() + "&subFilterType=assembly&subFilterId=" + inputVO.getSubFilterId() + "&fromDate="
 						+ inputVO.getFromDate() + "&toDate=" + inputVO.getToDate();
 			else if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("constituency"))
 				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
-						+ inputVO.getLocationId() + "&locationType=" +inputVO.getLocationType()+"&filterType=" + inputVO.getFilterType()
+						+ inputVO.getLocationId() + "&locationType=assembly&filterType=" + inputVO.getFilterType()
 						+ "&filterId=" + inputVO.getFilterId() + "&fromDate=" + inputVO.getFromDate() + "&toDate="
 						+ inputVO.getToDate();
-			else if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("mandal"))
+			else if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("district"))
 				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
 						+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&fromDate="
 						+ inputVO.getFromDate() + "&toDate=" + inputVO.getToDate();
@@ -338,7 +334,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			String dateStr = sdf.format(fromDate);
 			WebResource webResource = commonMethodsUtilService
-					.getWebResourceObject("http://pris.ap.gov.in/api/swm/index.php?getSwmInfo=1&districtId=0&fromDate="
+					.getWebResourceObject("http://10.0.3.56/PD/download/getSolidInfoLocationWise/getSwmInfo=1&districtId=0&fromDate="
 							+ dateStr + "&toDate=" + dateStr + "");
 			ClientResponse response = webResource.accept("application/json").type("application/json")
 					.get(ClientResponse.class);
