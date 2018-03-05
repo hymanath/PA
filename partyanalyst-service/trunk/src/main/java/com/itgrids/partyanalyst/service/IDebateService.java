@@ -64,7 +64,7 @@ public interface IDebateService {
 	
 	 public List<SelectOptionVO> getDebateSMSQuestions(String fromDateStr , String toDateStr,Long stateId);
 	 
-	 public ResultStatus createCandidate(Long partyId,String name,Long stateId);
+	 public ResultStatus createCandidate(Long partyId,String name,Long stateId,Long casteGroupId,Long casteId);
 	 
 	 public String deleteSelectedDEbate(Long debateId);
 	 public List<DebateVO> getTotalAttendedDebatesOfCadre(Long tdpCadreId,Long stateId);
@@ -73,5 +73,6 @@ public interface IDebateService {
 	 public Long getTotalAttendedDebatesOfCadreNew(Long tdpCadreId);
 	 public void convertDebateContentToUnicode();
 	 public List<DebateTopicVO> getEachCharacterWiseMaxScale();
+	 public List<DebateVO> getCandidateCasteGroupId(Long casteGroupId);
 	 
 }

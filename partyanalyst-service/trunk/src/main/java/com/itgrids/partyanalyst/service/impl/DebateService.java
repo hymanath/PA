@@ -28,6 +28,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IChannelDAO;
 import com.itgrids.partyanalyst.dao.ICharacteristicsDAO;
 import com.itgrids.partyanalyst.dao.IDebateDAO;
@@ -54,7 +55,9 @@ import com.itgrids.partyanalyst.dto.DebateDetailsVO;
 import com.itgrids.partyanalyst.dto.DebatePartyWiseCountVO;
 import com.itgrids.partyanalyst.dto.DebateTopicVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
+import com.itgrids.partyanalyst.dto.KaizalaMessageVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
+import com.itgrids.partyanalyst.dto.QuickRequestVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -81,8 +84,15 @@ import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IDebateAnalysisService;
 import com.itgrids.partyanalyst.service.IDebateService;
 import com.itgrids.partyanalyst.service.ISmsService;
+import com.itgrids.partyanalyst.service.IUserService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 public class DebateService implements IDebateService{
 	
@@ -116,6 +126,8 @@ public class DebateService implements IDebateService{
 	private IDebateParticipantLocationDAO       debateParticipantLocationDAO;
 	private ITdpCadreDAO tdpCadreDAO;
 	private ISmsService  smsCountrySmsService;
+	private ICasteStateDAO casteStateDAO;
+	private IUserService userService;
 	public void setDebateReportDAO(IDebateReportDAO debateReportDAO) {
 		this.debateReportDAO = debateReportDAO;
 	}
@@ -239,6 +251,22 @@ public class DebateService implements IDebateService{
 
 	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
 		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
+	public ICasteStateDAO getCasteStateDAO() {
+		return casteStateDAO;
+	}
+
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
+
+	public IUserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
 	}
 
 	/**
@@ -475,9 +503,10 @@ public class DebateService implements IDebateService{
 				    }
 				  StringBuilder rString = new StringBuilder();
 				  String mobileNumbers = null;
+				  List<String> phoneNumbers = null;
 				  List<Long> tdpCadreIds = tdpCadreCandidateDAO.getTdpCadreIds(candidateIds);
 				  if(tdpCadreIds != null && tdpCadreIds.size()>0){
-					   List<String> phoneNumbers= tdpCadreDAO.getCadreMobileNumbers(tdpCadreIds);
+					   phoneNumbers= tdpCadreDAO.getCadreMobileNumbers(tdpCadreIds);
 					   for ( int i = 0; i< phoneNumbers.size(); i++){
 						      //append the value into the builder
 						      rString.append(phoneNumbers.get(i));
@@ -487,12 +516,49 @@ public class DebateService implements IDebateService{
 						      }
 						    }
 					   mobileNumbers = rString.toString();
-					   
 				  }
-				  String message =" Dear Member,"+"\n"+ " Thank you for Participanting in the Debate."+
+				  String message =" Dear Member,"+"\n" +
+				  		" Thank you for Participanting in the Debate."+
 				  		" Please find below url for more details on the Debate Summary " +
 				  		": http://mytdp.com/genereateReportAction.action?key=15d090b2-9d6a-4d21-a06b-7c26fa56bac8&debateId="+debateId+"&stateId=0 ";
 				  smsCountrySmsService.sendOTPSmsFromAdminForZohoUser(message, true, mobileNumbers);
+				  
+				//sending for mail
+				   List<Object[]> emilIdsList = tdpCadreCandidateDAO.getTdpCadreCandidateEmailIds(candidateIds);
+				 if(emilIdsList != null && emilIdsList.size()>0){
+					 String msg =" Dear Member,"+"<br/><br/>" +
+				                 " Thank you for Participanting in the Debate,"+
+						  		 " Please find below url for more details on the Debate Summary " +
+						  		 ": http://mytdp.com/genereateReportAction.action?key=15d090b2-9d6a-4d21-a06b-7c26fa56bac8&debateId="+debateId+"&stateId=0 ";
+					 for(Object[] param : emilIdsList){
+						 String email = param[1] != null ? param[1].toString():"";
+						 QuickRequestVO quickRequestVO = new QuickRequestVO();
+							quickRequestVO.setFromEmailId(IConstants.LOCALFROMEMAILID);
+						   	quickRequestVO.setToEmailId(email);
+						   	quickRequestVO.setSubject("Mail from Debates");
+						   	quickRequestVO.setText(msg);
+						   	ResultStatus mailStatus = userService.sendMail(quickRequestVO);
+					 }
+				 }
+				//sending msg through kaizala
+				 for ( int i = 0; i< phoneNumbers.size(); i++){
+				   	KaizalaMessageVO kaizalavo = new KaizalaMessageVO();
+				   	kaizalavo.setPhoneNumberStr("+91"+phoneNumbers.get(i));
+				   	kaizalavo.setGroupId("e88eb184-5b34-4d7b-97bf-5ce39427a149");
+				   	kaizalavo.setMessage(message);
+				   	kaizalavo.setUserId(198L);
+				   	
+				   	ClientConfig clientConfig = new DefaultClientConfig();
+					
+			         clientConfig.getFeatures().put(
+			                  JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+			         Client client = Client.create(clientConfig);
+
+					WebResource webResource = client
+								.resource("http://mytdp.com/KAIZALA/sendMessagesToPublicGroup");
+					
+					webResource.accept("application/json").type("application/json").post(ClientResponse.class, kaizalavo);
+				 }
 				  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				  return resultStatus;
 				  }
@@ -2132,7 +2198,7 @@ public class DebateService implements IDebateService{
 	 }
 		
 	 
-	 public ResultStatus createCandidate(Long partyId,String name,Long stateId)
+	 public ResultStatus createCandidate(Long partyId,String name,Long stateId,Long casteGroupId,Long casteId)
 	 {
 		 ResultStatus resultStatus = new ResultStatus();
 		 try {
@@ -2146,6 +2212,13 @@ public class DebateService implements IDebateService{
 				 candidate.setLastname(name);
 				 candidate.setIsDebateCandidate("Y");
 				 candidate.setStateId(stateId);
+				 if(casteGroupId != null && casteGroupId.longValue()>0l){
+					Long casteStateId = casteStateDAO.getCandidateCasteId(casteId);
+					if(casteStateId != null && casteStateId.longValue()>0){
+						candidate.setCasteStateId(casteStateId);
+					}
+					
+				 }
 				 candidate = candidateDAO.save(candidate);
 				 if(candidate != null)
 				 {
@@ -2162,7 +2235,25 @@ public class DebateService implements IDebateService{
 		}
 		 return resultStatus;
 	 }
-	 
+	 public List<DebateVO> getCandidateCasteGroupId(Long casteGroupId){
+		 List<DebateVO> returnList= new ArrayList<DebateVO>();
+		 try{
+			 List<Object[]> casteStateIdList = casteStateDAO.getCandidateCasteGroupId(casteGroupId,null);
+			 if(casteStateIdList != null && casteStateIdList.size()>0){
+				 for(Object[] param: casteStateIdList){
+					 DebateVO Vo= new DebateVO();
+					 Vo.setDebateId((Long)param[1]);
+					 Vo.setDebateName(param[2].toString());
+					 returnList.add(Vo);
+				 }
+			 }
+		 }catch(Exception e){
+			 LOG.error(" Exception Occured in getCandidateCasteGroupId method, Exception - ",e);
+		 }
+		return returnList;
+		 
+		 
+	 }
 	 /*public DebateVO getDebateDetailsForSelectedDebate(Long debateId)
 	 {
 		 DebateVO debateVO = null;

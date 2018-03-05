@@ -260,7 +260,7 @@ public List<Object[]> getInvitedPartyMeetingdtlsForPartyMeetingTypeIds(PartyMeet
 			sb.append(" and PM.party_meeting_id in (:partyMeetingIds) ");
 		}
 		
-		sb.append(" order by  PMT.party_meeting_type_id ");
+		sb.append(" order by  PMT.party_meeting_type_id,PM.party_meeting_id desc ");
 		
 		Query query = getSession().createSQLQuery(sb.toString())		
 		.addScalar("partyMeetingTypeId",Hibernate.LONG)

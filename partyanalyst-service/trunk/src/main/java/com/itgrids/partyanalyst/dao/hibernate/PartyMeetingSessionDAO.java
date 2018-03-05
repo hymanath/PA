@@ -80,7 +80,7 @@ public class PartyMeetingSessionDAO extends GenericDaoHibernate<PartyMeetingSess
 			{
 				queryStr.append(" and date(pm.startDate) between :startDate and :endDate ");
 			}
-			queryStr.append("  order by  model.orderNo asc ");
+			queryStr.append("  order by  model.orderNo,pm.partyMeetingId desc ");
 			Query query = getSession().createQuery(queryStr.toString());
 			query.setParameterList("partyMeetingsTypeIds", partyMeetingsTypeIds);
 			if(partyMeetingsIds != null && partyMeetingsIds.size()>0){
