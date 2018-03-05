@@ -12,7 +12,7 @@
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">  
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
-<link href="D2D_Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="coreApi/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/css/print.css" rel="stylesheet" type="text/css"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
@@ -77,10 +77,6 @@ header
 <section id="printcontent">
 	<div class="container-fluid">
 		<div class="">
-			<div class="col-sm-12" >
-				<button class="btn btn-md btn-success printViewCls pull-right headerDisPlayNone" attr_divId="printableArea">Print</button>
-				<!--<button class="btn btn-md btn-success exportToPdf pull-right headerDisPlayNone" attr_id="printcontent">PDF</button>-->
-			</div>
 		<div class="row">
 			<p class="text-center waitingMsgCls">Please Wait Page is Loading...</p>
 		</div>	
@@ -90,58 +86,25 @@ header
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-sm-6">
-									<h4 class="panel-title text-capital font_size24">
+									<h4 class="panel-title text-capital font_size20">
 										<img src="newCoreDashBoard/img/meetings.png" class="iconClass" style="background-color:none;"/>
 											Consolidated view of Exceptional Reports<small class="text-muted"><span id="exceptionReportMeetingDateId">  </span></small>	
 									</h4>
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12 meetingblockOpen headerDisPlayNone">
+									 <!--<span class="MeetingsExSettingsIcon pull-right">
+									   <i class="fa fa-print printViewCls" data-toggle="tooltip" data-placement="top" title="Print" data-original-title="Print" attr_divId="printableArea"></i>
+									 </span>-->
 									<span class="meetingsExRRefresh pull-right">
 										<i class="glyphicon glyphicon-refresh"></i>
 									</span>
-									
-									 <!--<span class="MeetingsExSettingsIcon pull-right">
-									   <i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
-									 </span>-->
 									 <span class="input-group pull-right dateRangePickerCls" style="width:200px;">
 										<input type="text" id="meetingExDateRangePickerId" style="width:200px" class="form-control" />
 											<span class="input-group-addon">
 												<i class="glyphicon glyphicon-calendar"></i>
 											</span>
 									</span>
-									 <div class="debatesSettingsBody" style="display:none;top:15px;right: 39px;">
-										<div class="row">
-											<div class="col-sm-12">
-											 <i class="glyphicon glyphicon-remove meetingExSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;"></i>
-											 </div>
-										</div>
-										<div class="row">
-											<div class="col-sm-12">
-												<ul style="padding:0px;" class="list-inline line_heightCls">
-													<li>
-														<label class="checkbox-inline">
-															<h5><input type="checkbox" id="constituencyId" value="meetingBlocksConstituencyDivId" class="getLevelValCls" attr_party_type_id="3" checked />Constituency Level Meeting</h5>
-														</label>
-													</li>
-													<li>
-														<label class="checkbox-inline">
-															<h5><input type="checkbox" id="mandalId"  value="meetingBlocksMandalDivId" class="getLevelValCls" attr_party_type_id="15" checked />Mandal Level Meeting</h5>
-														</label>
-													</li>
-													<li>
-														<label class="checkbox-inline">
-															<h5><input type="checkbox" id="villageId"  value="meetingBlocksVillageDivId" class="getLevelValCls" attr_party_type_id="14" checked />Village Level Meeting</h5>
-														</label>
-													</li>
-												</ul>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-sm-12 m_top10">
-												<button type="button" class="btn btn-primary btn-sm levelWiseMeetingCls">Submit</button>
-											</div>
-										</div>
-									 </div>
+									
 								</div>  
 							</div>
 						</div>
@@ -159,7 +122,7 @@ header
 <script src="coreApi/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
-<script src="D2D_Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="coreApi/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
@@ -196,24 +159,7 @@ function printDiv() {
 		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
 		}
 	});
-	$("#tourNewExDateRangePickerId").daterangepicker({
-		opens: 'left',
-	     startDate: customStartToursDate,
-         endDate:customEndToursDate,  
-		locale: {
-		  format: 'DD/MM/YYYY'
-		},
-		ranges: { ////moment().endOf('Year')
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
-		   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay()), 'days'), moment().subtract(parseInt(getDay()), 'days')],
-		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-           'This Month': [moment().startOf('month'), moment()],
-           'This Year': [moment().startOf('Year'), moment()],
-		   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
-        }
-	});
+	
 	 
 }
  </script>
