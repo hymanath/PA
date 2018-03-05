@@ -40,6 +40,8 @@ public class Petition {
 	
 	private PmStatus pmStatus;
 	private String isOldData;
+	private String sanctionedAmount;
+	private String noOfKm; // no of kilo meetres -- for roads
 	
 	@Id
 	@Column(name="petition_id")
@@ -193,5 +195,19 @@ public class Petition {
 		this.isOldData = isOldData;
 	}
 	
-
+	@Column(name="sanctioned_amount")
+	public String getSanctionedAmount() {
+		return sanctionedAmount;
+	}
+	public void setSanctionedAmount(String sanctionedAmount) {
+		this.sanctionedAmount = sanctionedAmount;
+	}
+	
+	@Column(name="no_of_km")
+	public String getNoOfKm() {
+		return noOfKm;
+	}
+	public void setNoOfKm(String noOfKm) {
+		this.noOfKm = noOfKm;
+	}
 }
