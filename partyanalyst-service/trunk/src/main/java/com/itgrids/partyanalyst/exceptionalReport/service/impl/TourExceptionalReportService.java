@@ -181,6 +181,10 @@ public class TourExceptionalReportService implements ITourExceptionalReportServi
 			addressVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[8]));
 			addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[9]));
 			addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[10]));
+			addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[11]));
+			addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[12]));
+			addressVO.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(param[13]));
+			addressVO.setLocalElectionBodyName(commonMethodsUtilService.getStringValueForObject(param[14]));
 
 		} catch (Exception e) {
 			LOG.error("Exception occurred  at setAddressDetails() in TourExceptionalReportService class",e);
