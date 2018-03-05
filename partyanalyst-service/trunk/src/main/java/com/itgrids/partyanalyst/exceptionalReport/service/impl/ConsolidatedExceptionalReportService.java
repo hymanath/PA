@@ -298,7 +298,7 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 			}else if(resultType != null && resultType.equalsIgnoreCase("constituency")){
 				List<Object[]>  constList = partyMeetingStatusDAO.getPartyMeetingStatusWiseCount(inputVO,resultType);
 				//locationMap1.clear();
-				getConsolidatedLocationWiseMeetingCounductedDtls(constList, inputVO,locationMap1,"constituency",locationMap);
+				getConsolidatedLocationWiseMeetingCounductedDtls(constList, inputVO,locationMap1,resultType,locationMap);
 			}
 			
 			inputVO.setLocationLevel("Mandal/Town/Division level Meetings");
@@ -766,7 +766,7 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 								locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[2]));
 								locationVO.setSubList1(getMeetingLevelsList());
 								
-								locationMap1.put(commonMethodsUtilService.getLongValueForObject(param[0]), locationVO);
+								locationMap1.put(commonMethodsUtilService.getLongValueForObject(param[1]), locationVO);
 							  }
 							}
 							  ConsolidatedExceptionalReportVO committeeLvl = getMatchedVO(levelType, locationVO.getSubList1());
@@ -1195,7 +1195,11 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 								if(commonMethodsUtilService.getLongValueForObject(param[0]) != 0l){
 								exceptionalReportVO = new ConsolidatedExceptionalReportVO();
 								exceptionalReportVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[0]));
-								exceptionalReportVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
+								if(location != null && location.trim().equalsIgnoreCase("parliament")){
+									exceptionalReportVO.setLocationName(parliamentIdAndName.get(commonMethodsUtilService.getLongValueForObject(param[0])));
+								}else if(location != null && location.trim().equalsIgnoreCase("constituency")){
+									exceptionalReportVO.setLocationName(constituencyIdAndName.get(commonMethodsUtilService.getLongValueForObject(param[0])));
+								}
 								exceptionalReportVO.setSubList1(getMeetingLevelsList());
 								
 								locationMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), exceptionalReportVO);
