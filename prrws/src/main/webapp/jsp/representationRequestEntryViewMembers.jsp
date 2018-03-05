@@ -104,7 +104,7 @@
 <%@ page import="com.itgrids.dto.UserVO" %>
 <% 
 	UserVO userVo=(UserVO)session.getAttribute("User");
-	out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;&nbsp; "+userVo.getUserName()+"-"+userVo.getDesignation()+"</h4>"); 
+out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;&nbsp; "+userVo.getUserName()+"</h4>");  
 %>
 </header>
 <main>
@@ -119,6 +119,186 @@
 							</div>
 								<div class="panel-body">								
 										<div class="row">
+											
+											<div class="col-sm-1 pull-right">
+												<div class="row m_top10">
+												<div class="col-sm-11">
+												<i class="fa fa-gears menu-cls-table pull-right" title="settings"  style="position:relative;"></i></h4>
+													<div class="menuCls-table">
+														<div class="arrow_box_top">
+															<div class="row">
+															<div class="col-sm-12">
+															
+																<ul style="padding-top:0px;padding-left: 20px;padding-bottom:0px;padding-right:0px;" class="list-inline">
+																	<li>
+																		<label class="checkbox-inline">
+																		<input value="selectAll" class="getColumnAllCls" id="" type="checkbox">
+																			<div style="margin-top: 3px;"><h5 class="text-capital font_weight" style="color:#54616C;">Select All</h5></div>
+																		</label>
+																	</li>
+																</ul>
+															
+															</div>
+															</div>
+															<div class="row">
+															<div class="col-sm-12">
+															
+																<div class="scrollTableColCls">
+																<ul style="padding-top:0px;padding-left: 20px;padding-bottom:0px;padding-right:0px;" class="line_heightCls m_top10 list-inline">
+																<li class="">
+																	<label class="checkbox-inline">
+																		<input id="checkbox1" name="name1" type="checkbox" class="getColumnCls" value="RepresentationDate" checked/>	
+																		<div style="margin-top: 3px;"><h5 class="text-capital font_weight" style="color:#54616C;"> Representation Date</h5></div>
+																	</label>
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EndorsmentNo" checked> Endorsment No</h5>	
+																</label>
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EndorsmentDate" checked> Endorsment Date</h5>	
+																</label class="checkbox-inline">
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeType" checked> Representee Type</h5>	
+																</label>
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeName" checked> Representee Name</h5>	
+																</label>
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeDesignation" checked> Representee DESIGNATION</h5>	
+																</label>
+																</li>
+															<!--	<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="ReferrerName" checked>Referrer Name</h5>	
+																</label>
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="ReferreerDesignation" checked>Referreer Designation</h5>	
+																</label>
+																</li>-->
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkDescription" checked>Work Description</h5>	
+																</label>
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EstimationCost" checked>ESTIMATION COST (in Lakhs)</h5>	
+																</label>
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks" checked>NO OF WORKS</h5>	
+																</label>
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Status" checked>STATUS</h5>	
+																</label>
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Department">DEPARTMENT</h5>	
+																</label>
+																</li>
+																
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Subject">SUBJECT</h5>	
+																</label>
+																</li>
+																<li>
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="SubSubject">SUB SUBJECT</h5>	
+																</label>
+																</li>
+
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="GrantName">GRANT NAME</h5>	
+																</label>
+																</li>
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkType">WORK TYPE</h5>	
+																</label>
+																</li>
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LeadName">LEAD NAME</h5>	
+																</label>
+																</li>
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasReprRefDocs"> Repr Ref DOCS</h5>	
+																</label>'
+																</li>
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasWorkCopy"> WORK DOCS</h5>	
+																</label>'
+																</li>
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasCoveringLtr"> COVERING LTR</h5>	
+																</label>
+																</li>
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasActionCopy"> ACTION COPY</h5>	
+																</label>
+																</li>
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasDetailedReport"> DETAILED REPORT</h5>	
+																</label>
+																</li>
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasFinalCopy"> FINAL COPY</h5>	
+																</label>
+																</li>
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasOthersCopy"> OTHERS COPY</h5>	
+																</label>
+																</li>
+																
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WithWhome">PRESENTLY WITH </h5>	
+																</label>
+																</li>
+																<li class="specialFieldCls">
+																<label class="checkbox-inline">
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LastUpdatedTime">LAST UPDATED TIME</h5>	
+																</label>
+																</li>
+																</ul>'
+															</div>
+															</div>
+															</div>
+															
+															<div class="row">
+																<div class="col-sm-12">
+																	<button type="button" class="btn btn-primary btn-sm selectedColumnsTableCls">APPLY FILTERS</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											</div>
 											<div class="col-sm-3 pull-right">	
 												<div class="input-group inline-block" >
 													<span class="input-group-addon">
@@ -129,19 +309,18 @@
 											</div>
 											
 											<div class="col-sm-3 pull-right" id="statusDiv">
-												 
-													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT STATUS "  id="statusId"  multiple >
+												 <select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT STATUS "  id="statusId"  multiple >
 														<!--<option value="0">Select Status</option>-->
-													</select>
+												</select>
 											</div>	
-											
 											<!--<div class="col-sm-2 pull-right" id="advancedSearchButtonDivId">
 											  <label class="text-capitalize">
 											  <span class="btn btn-success btn-md"><input type="checkbox"  id="advanceSearchBtnId">Advanced Search</input></span>
 											 </label>
 										   </div>-->
 										</div>
-										<div  style="border:1px solid lightgrey;padding-top:10px;padding-bottom:10px">
+										
+										<div style="border:1px solid lightgrey;padding-top:10px;padding-bottom:10px;margin-top:10px;">
 											<div class="row">
 											<div class="col-sm-12">
 											<div class="error_colorCls" id="errMsgId"></div>
@@ -246,186 +425,18 @@
 												</span>
 											</div>
 											</div>
-											<div class="row m_top10">
-												<div class="col-sm-11">
-												<i class="fa fa-gears menu-cls-table pull-right" title="settings"  style="position:relative;"></i></h4>
-			<div class="menuCls-table">
-				<div class="arrow_box_top">
-					<div class="row">
-					<div class="col-sm-12">
-					
-						<ul style="padding-top:0px;padding-left: 20px;padding-bottom:0px;padding-right:0px;" >
-							<li>
-								<label class="checkbox-inline">
-								<input value="selectAll" class="getColumnAllCls" id="" type="checkbox">
-									<div style="margin-top: 3px;"><h5 class="text-capital font_weight" style="color:#54616C;">Select All</h5></div>
-								</label>
-							</li>
-						</ul>
-					
-					</div>
-					</div>
-					<div class="row">
-					<div class="col-sm-12">
-					
-						<div class="scrollTableColCls">
-						<ul style="padding-top:0px;padding-left: 20px;padding-bottom:0px;padding-right:0px;" class="line_heightCls m_top10">
-						<li class="">
-							<label class="checkbox-inline">
-								<input id="checkbox1" name="name1" type="checkbox" class="getColumnCls" value="RepresentationDate" checked/>	
-								<div style="margin-top: 3px;"><h5 class="text-capital font_weight" style="color:#54616C;"> Representation Date</h5></div>
-							</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EndorsmentNo" checked> Endorsment No</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EndorsmentDate" checked> Endorsment Date</h5>	
-						</label class="checkbox-inline">
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeType" checked> Representee Type</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeName" checked> Representee Name</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeDesignation" checked> Representee DESIGNATION</h5>	
-						</label>
-						</li>
-					<!--	<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="ReferrerName" checked>Referrer Name</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="ReferreerDesignation" checked>Referreer Designation</h5>	
-						</label>
-						</li>-->
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkDescription" checked>Work Description</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EstimationCost" checked>ESTIMATION COST (in Lakhs)</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks" checked>NO OF WORKS</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Status" checked>STATUS</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Department">DEPARTMENT</h5>	
-						</label>
-						</li>
-						
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Subject">SUBJECT</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="SubSubject">SUB SUBJECT</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="GrantName">GRANT NAME</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkType">WORK TYPE</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LeadName">LEAD NAME</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasReprRefDocs">HAS Repr Ref DOCS</h5>	
-						</label>'
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasWorkCopy">HAS WORK DOCS</h5>	
-						</label>'
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasCoveringLtr">HAS COVERING LTR</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasActionCopy">HAS ACTION COPY</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasDetailedReport">HAS DETAILED REPORT</h5>	
-						</label>
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasFinalCopy">HAS FINAL COPY</h5>	
-						</label>'
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasOthersCopy">HAS OTHERS COPY</h5>	
-						</label>'
-						</li>
-						
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WithWhome">WITH WHOME</h5>	
-						</label>'
-						</li>
-						<li>
-						<label class="checkbox-inline">
-							<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LastUpdatedTime">LAST UPDATED TIME</h5>	
-						</label>'
-						</li>
-						</ul>'
-					</div>
-					</div>
-					</div>
-					
-					<div class="row">
-						<div class="col-sm-12">
-							<button type="button" class="btn btn-primary btn-sm selectedColumnsTableCls">APPLY FILTERS</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-1">
+											<div class="row">
+												<div class="col-sm-12 m_top10">
 													<button type ="button" class="btn btn-lg btn-success pull-right" id="advanceSearchId" style="cursor: pointer; font-weight: bold; border-radius: 0px;">SEARCH</button>
-												</div>		
-											</div>
+												</div>
+											</div>	
 										</div>
+										<div class="row ">
+										<div class="col-md-12 m_top20">
+											<button class="btn btn-min btn-xs btn-success" id="updatStatusChangeId" style="position: fixed;z-index:9999;margin-top:100px;background-color: #e6e6e6;border-color: #e6e6e6;"> UPDATE STATUS </button>
+										</div>
+									</div>
+									
 									</div>
 									
 									<!--<div class="row m_top10">
@@ -433,6 +444,7 @@
 											<button type ="button" class="btn btn-lg btn-success pull-right" id="advanceSearchId" style="cursor: pointer; font-weight: bold; border-radius: 0px;">SEARCH</button>
 										</div>
 									</div>-->
+									
 									<div class="row m_top10 " id="petitionSubWorkRadioDivId" style="display:none;">
 										<div class="col-sm-12 ">
 											<div class="col-sm-2 pull-right">
@@ -450,9 +462,22 @@
 											<div id="summaryId"></div>
 										</div>
 									</div>
+									<div class="row ">
+										<div class="col-md-12 m_top20 text-center">
+											<div class="paginationId"></div>
+										</div>
+									</div>
+									
+									
 									<div class="row m_top10">
 										<div class="col-sm-12" style="padding-left: 7px;padding-right: 7px;">
 											<div id="representationRequestEntryTable"></div>
+										</div>
+									</div>
+									
+									<div class="row ">
+										<div class="col-md-12 m_top20 text-center">
+											<div class="paginationId"></div>
 										</div>
 									</div>
 								</div>	
@@ -489,7 +514,7 @@
       <div class="modal-header">
 		<div class="row">
 			<div class="col-sm-12">
-				<button type="button" class="close modalCloseCls closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close closeSecondModal addRemoveModel" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title text-center font_weight" id="endorseMentHeadingId"></h4> 
 			</div>
 		</div>		
@@ -544,7 +569,25 @@
 					<h5 class="panel-title"> UPLOAD <span id="letterNameId"></span></h5>
 					<span id="uploadFile"></span>
 					<span id="fileUploadIdErr" style="color:red;"></span>
+					<span id="actioncopyRefIdDiv">
+					</span>
 				  </div>
+					<div class="col-sm-12 m_top20" id="detaildReportReviewFiledsDivId" style="display:none;">					
+						<div class="col-sm-6 ">
+						<label><span id="">SANCTIONED AMOUNT (in lakhs): </span> </label>
+							<input type="text" class="form-control" id="sanctinedAmountId" placeholder="Sanctioned Amount" name="sanctionedAmount" />
+						</div>
+						<div class="col-sm-6 ">
+						<label><span id="" title="Work in kilo metres">LENGTH (in km):</span> </label>
+							<input type="text" class="form-control" id="workInKmId" placeholder="Work in kilo meters" name="noOfKm" />
+						</div>
+					</div>
+					
+					<div class="col-sm-12 m_top20" id="actionmemoDivId" style="display:none;">
+					<label><span id="">ACTION MEMO REF NO:</span> <span style="color:red;">*</span><span id="actioncopyRefIdErrStr" style="color:red;"></span></label>
+						<input type="text" class="form-control" id="actioncopyRefId" placeholder="Action Memo No" name="" attr_name="refNo"/>
+					</div>
+					
 				</div>
 				<div class="row m_top10" >
 					<div class="col-sm-12" id="statusChangeDivId">
@@ -604,9 +647,9 @@
 				</select>
 			</div>
 			<div class="col-sm-6" id ="assignOfficerDivId" style="display:none;">
-				<label>OFFICER NAME<span style="color:red;">*</span><span id="officerIdErr"></span></label>
+				<label>OFFICER <span style="color:red;">*</span><span id="officerIdErr"></span></label>
 				<select class="form-control chosen-select" id="officerId" name="deptDesigOffcrId">
-					<option value="0">SELECT OFFICER NAME</option>
+					<option value="0">SELECT OFFICER </option>
 				</select>
 			</div>
 		</div>
@@ -619,7 +662,7 @@
 			</div>
 			<div class="col-sm-4" id ="referranceNoDivId" style="display:none;">
 				<label>DOCUMENT REF. NO<span id="referranceNoIdErr"></span></label>
-				<input type="text" class="form-control" id="referranceNoId" placeholder="Endorsment NO" name="refNo"/>
+				<input type="text" class="form-control" id="referranceNoId" placeholder="" name="refNo"/>
 			</div>
 		</div>
 		<div class="row m_top20" id="finalApproDocDiv" style="display:none;">
@@ -669,7 +712,7 @@
 		  <div class="col-sm-8 ">
 		   </div>
 			 <div class="col-sm-4 ">
-				 <button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
+				 <button type="button" class="btn btn-default closeSecondModal addRemoveModel" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-success pull-right  " id="endorsWorksId" onclick="endorsingSubWorksAndAssigningToOfficer()" ><span id="buttonNameId"></span></button>
 			   </div>
 		  </div>
@@ -756,6 +799,9 @@ var glDesignationId = '${sessionScope.USER.designationId}'
 var glDesignationName = '${sessionScope.USER.designation}';
 $("#hiddenDesignationName").html(glDesignationName);
 $("#hiddenDesignationId").val(glDesignationId);
+if(parseInt(userId) == 25 || parseInt(userId) == 26 || parseInt(userId) == 27 || parseInt(userId) == 28){
+	$('.specialFieldCls').remove();
+}
 </script>
 <script type="text/javascript">
 $(document).on("click",".closeSecondModal",function(){
@@ -766,7 +812,11 @@ $(document).on("click",".closeSecondModal",function(){
   if(glDesignationId != 2 && glDesignationId!=86){
 	  $("#actionChangeDivId").show();
   }
-  
+  if(glDesignationId == 23){
+	  $('#updatStatusChangeId').show();
+  }else{
+		$('#updatStatusChangeId').hide();
+  }
   
   var searchBy= '${param.searchBy}';
   var desigId= '${param.desigId}';
@@ -790,8 +840,10 @@ $(document).on("click",".closeSecondModal",function(){
 	subjId=0;
 	}
   if(searchBy != ''){
+	  $("#petitionId").prop("checked",true);
 	  onLoadClickDataDetails();
 	}else{
+		$("#petitionId").prop("checked",true);
 		$('#advanceSearchId').trigger('click');
 	}
 /* if(statusId.length >0){
