@@ -354,12 +354,18 @@ public class SelfAppraisalCandidateLocationNewDAO extends GenericDaoHibernate<Se
 				+ " constituency.constituencyId,"//7
 				+ " constituency.name, "//8
 				+ " parliamentConstituency.constituencyId,"//9
-				+ " parliamentConstituency.name "//10
+				+ " parliamentConstituency.name, "//10
+				+ " state.stateId, "//11
+				+ " state.stateName, "//12
+				+ " localElectionBody.localElectionBodyId, "//13
+				+ " localElectionBody.name "//14
 				+ " from "
 				+ " SelfAppraisalCandidateLocationNew SACL "
 				+ " left join SACL.userAddress.district district "
 				+ " left join SACL.userAddress.constituency constituency "
 				+ " left join SACL.userAddress.parliamentConstituency parliamentConstituency "
+				+ " left join SACL.userAddress.state state " 
+				+ " left join SACL.userAddress.localElectionBody localElectionBody "
 				+ " where "
 				+ " SACL.selfAppraisalCandidate.isActive = 'Y' and SACL.isDeleted='N' and "
 				+ " SACL.selfAppraisalCandidate.selfAppraisalDesignation.isActive = 'Y' and "
