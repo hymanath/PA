@@ -49,6 +49,8 @@ public class EMeetingsVO {
 	private String minutesOfMeeting;
 	private String meetingDuration;
 	private List<EMeetingsVO> subList = new ArrayList<EMeetingsVO>(0);
+	private Long meetingId;
+	private String meetingName;
 	
 	public Long getId() {
 		return id;
@@ -313,5 +315,17 @@ public class EMeetingsVO {
 	}
 	public void setSubList(List<EMeetingsVO> subList) {
 		this.subList = subList;
+	}
+	public Long getMeetingId() {
+		return meetingId;
+	}
+	public void setMeetingId(Long meetingId) {
+		this.meetingId = meetingId;
+	}
+	public String getMeetingName() {
+		return meetingName;
+	}
+	public void setMeetingName(String meetingName) {
+		this.meetingName = meetingName;
 	}
 }
