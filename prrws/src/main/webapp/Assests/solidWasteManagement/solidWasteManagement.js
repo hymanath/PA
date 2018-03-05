@@ -198,6 +198,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 		{
 			if(distId ==0){
 				
+				
 				buildTable(result,blockid);
 			}else if(distId>0){
 				for(var i in result){
@@ -206,7 +207,7 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 					if(result[i].totalRfidTags!=null && result[i].totalRfidTags> 0){
 				     $("#swmModalContent #rfidTaggedHouses").html(result[i].totalRfidTags);
 			        }else{
-				    $("#swmModalContent  #rfidTaggedHouses").html("NO DATA");
+				    $("#swmModalContent  #rfidTaggedHouses").html("-");
 			        }			
 					//$("#swmModalContent #rfidTaggedHouses").html(result[i].totalRfidTags);
 					$("#swmModalContent  #registeredFarmers").html(result[i].farmers);
@@ -242,27 +243,27 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 					if(result[i].gpCnt!=null && result[i].gpCnt > 0){
 				$("#swmModalContent #gpId").html(result[i].gpCnt);
 			}else{
-				$("#swmModalContent  #gpId").html("NO DATA");
+				$("#swmModalContent  #gpId").html("-");
 			}
 			if(result[i].blockNo!=null && result[i].blockNo > 0){
 				$("#swmModalContent #blocksId").html(result[i].blockNo);
 			}else{
-				$("#swmModalContent  #blocksId").html("NO DATA");
+				$("#swmModalContent  #blocksId").html("-");
 			}	//$("#swmModalContent  #trackingId").html(achievetargetper.toFixed(2)+' %');
 				if(target !=null && target > 0){
 				$("#swmModalContent #trackingId").html(achievetargetper.toFixed(2)+' %');
 			}else{
-				$("#swmModalContent  #trackingId").html("NO DATA");
+				$("#swmModalContent  #trackingId").html("-");
 			}
 			if(target !=null && target > 0){
 				$("#swmModalContent #intimeId").html(result[i].inTimePer+' %');
 			}else{
-				$("#swmModalContent #intimeId").html("NO DATA");
+				$("#swmModalContent #intimeId").html("-");
 			}
 			if(target !=null && target > 0){
 				$("#swmModalContent #outtimeId").html(result[i].outTimePer+' %');
 			}else{
-				$("#swmModalContent #outtimeId").html("NO DATA");
+				$("#swmModalContent #outtimeId").html("-");
 			}
 			}
 			} 
@@ -579,7 +580,7 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			if(result.totalRfidTags !=null && result.totalRfidTags > 0){
 				$("#rfidTaggedHouses").html(result.totalRfidTags);
 			}else{
-				$("#rfidTaggedHouses").html("NO DATA");
+				$("#rfidTaggedHouses").html("-");
 			}
 			//$("#rfidTaggedHouses").html(result.totalRfidTags);
 			$("#registeredFarmers").html(result.farmers);
@@ -614,12 +615,12 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			if(result.gpCnt !=null && result.gpCnt > 0){
 				$("#gpId").html(result.gpCnt);
 			}else{
-				$("#gpId").html("NO DATA");
+				$("#gpId").html("-");
 			}
 			if(result.blockNo !=null && result.blockNo > 0){
 				$("#blocksId").html(result.blockNo);
 			}else{
-				$("#blocksId").html("NO DATA");
+				$("#blocksId").html("-");
 			}
 			//$("#gpId").html(result.gpCnt);
 			//$("#blocksId").html(result.blockNo);
@@ -639,17 +640,17 @@ function getSolidWasteManagementOverAllCounts(locId,locationType){
 			if(target !=null && target > 0){
 				$("#trackingId").html(achieverfid.toFixed(2)+' %');
 			}else{
-				$("#trackingId").html("NO DATA");
+				$("#trackingId").html("-");
 			}
 			if(target !=null && target > 0){
 				$("#intimeId").html(inTimePer.toFixed(2)+' %');
 			}else{
-				$("#intimeId").html("NO DATA");
+				$("#intimeId").html("-");
 			}
 			if(target !=null && target > 0){
 				$("#outtimeId").html(outTimePer.toFixed(2)+' %');
 			}else{
-				$("#outtimeId").html("NO DATA");
+				$("#outtimeId").html("-");
 			}
 			
 		//alert("blocksCountDistrictwise:"+blocksCountDistrictwise);
