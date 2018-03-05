@@ -182,9 +182,11 @@ onloadTourCalls();
 						str+='<table class="table details-overview-tour">';
 							str+='<thead>';
 								str+='<tr>';
+								   str+='<th>State</th>';
 							    	str+='<th>District</th>';
 									str+='<th>Parliament</th>';
 									str+='<th>Constituency</th>';
+									str+='<th>MUNICIPAL-CORP-GMC</th>';
 									str+='<th>Name</th>';
 									str+='<th>Designation</th>';
 								str+='</tr>';
@@ -192,6 +194,11 @@ onloadTourCalls();
 							str+='<tbody>';
 								for(var i in result.subList1){
 									str+='<tr>';
+										if(result.subList1[i].addressVO.stateName !=null && result.subList1[i].addressVO.stateName.trim().  length>0){
+											str+='<td>'+result.subList1[i].addressVO.stateName+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
 										if(result.subList1[i].addressVO.districtName !=null && result.subList1[i].addressVO.districtName.trim().  length>0){
 											str+='<td>'+result.subList1[i].addressVO.districtName+'</td>';
 										}else{
@@ -204,6 +211,11 @@ onloadTourCalls();
 										}
 										if(result.subList1[i].addressVO.constituencyName !=null && result.subList1[i].addressVO.constituencyName.trim().length>0){
 											str+='<td>'+result.subList1[i].addressVO.constituencyName+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										if(result.subList1[i].addressVO.localElectionBodyName !=null && result.subList1[i].addressVO.localElectionBodyName.trim().  length>0){
+											str+='<td>'+result.subList1[i].addressVO.localElectionBodyName+'</td>';
 										}else{
 											str+='<td> - </td>';
 										}
