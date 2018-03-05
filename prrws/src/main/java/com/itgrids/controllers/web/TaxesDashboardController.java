@@ -58,4 +58,9 @@ public class TaxesDashboardController {
 	List<PanchayatTaxVO>  reusltList = taxesDashBoardService.getPanchyatTaxDashboardFilterWiseDetails(inputVo);
 	   return reusltList;
    }
+   
+   @RequestMapping(value ="/vehicleTrackingDashboard",method = RequestMethod.GET)
+   public String vehicleDashboard(ModelMap model) {
+		return "vehicleTrackingDashboard";
+   }
 }
