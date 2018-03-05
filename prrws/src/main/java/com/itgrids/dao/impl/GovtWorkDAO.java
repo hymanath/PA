@@ -81,24 +81,32 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select sum(gmw.approved_km) "
-				+ " from govt_main_work gmw "
-				+ " where gmw.govt_work_type_id=:workTypeId ");
-		if(locationScopeId != null && locationScopeId > 0l){
-			sb.append(" and gmw.location_scope_id = :locationScopeId ");
-		}
-		if(locationIds != null && locationIds.size() > 0){
-			sb.append(" and gmw.location_value in (:locationIds) ");
-		}
+				+ " from govt_main_work gmw,location_address la "
+				+ " where gmw.location_address_id=la.location_address_id and gmw.govt_work_type_id=:workTypeId ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" and la.district_id in (:locationIds) ");
+		}else if(locationScopeId == 4l){
+			sb.append(" and la.constituency_id in (:locationIds) ");
+		}else if(locationScopeId == 5l){
+			sb.append(" and la.tehsil_id in (:locationIds) ");
+		}else if(locationScopeId == 6l){
+			sb.append(" and la.panchayat_id in (:locationIds) ");
+		}else if(locationScopeId == 12l){
+			sb.append(" and la.division_id in (:locationIds) ");
+		}else if(locationScopeId == 13l){
+			sb.append(" and la.sub_division_id in (:locationIds) ");
+		} 
+		
 		
 		Query query = getSession().createSQLQuery(sb.toString());
 		
 		query.setParameter("workTypeId", workTypeId);
-		if(locationScopeId != null && locationScopeId > 0l){
-			query.setParameter("locationScopeId", locationScopeId);
-		}
-		if(locationIds != null && locationIds.size() > 0){
+
+		if(locationScopeId == 3l || locationScopeId == 4l || locationScopeId == 5l || locationScopeId == 6l || locationScopeId == 12l || locationScopeId == 13l){
 			query.setParameterList("locationIds", locationIds);
 		}
+			
 		return (Object)query.uniqueResult();
 	}
 	

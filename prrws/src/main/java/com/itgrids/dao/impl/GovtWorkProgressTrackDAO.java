@@ -29,18 +29,26 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		}
 		
 		sb.append(",sum(gwpt.work_length) "
-				+ " from govt_work_progress_track gwpt ,govt_work gw ,govt_work_status gws,govt_main_work gmw "
+				+ " from govt_work_progress_track gwpt ,govt_work gw ,govt_work_status gws,govt_main_work gmw,location_address la "
 				+ " where gws.govt_work_status_id=gwpt.govt_work_status_id "
-				+ " and gw.is_deleted='N' and  gwpt.govt_work_id=gw.govt_work_id and gmw.govt_main_work_id=gw.govt_main_work_id ");
+				+ " and gmw.location_address_id=la.location_address_id and gw.is_deleted='N' and  gwpt.govt_work_id=gw.govt_work_id "
+				+ " and gmw.govt_main_work_id=gw.govt_main_work_id ");
 		
-		if(locationScopeId != null && locationScopeId >0l){
-			sb.append(" and gmw.location_scope_id=:locationScopeId ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" and la.district_id in (:locationIds)");
+		}else if(locationScopeId == 4l){
+			sb.append(" and la.constituency_id in (:locationIds)");
+		}else if(locationScopeId == 5l){
+			sb.append(" and la.tehsil_id in (:locationIds)");
+		}else if(locationScopeId == 6l){
+			sb.append(" and la.panchayat_id in (:locationIds)");
+		}else if(locationScopeId == 12l){
+			sb.append(" and la.division_id in (:locationIds)");
+		}else if(locationScopeId == 13l){
+			sb.append(" and la.sub_division_id in (:locationIds)");
 		}
-		
-		if(locationIds != null && locationIds.size() > 0){
-			sb.append(" and gmw.location_value in (:locationIds)");
-		}
-		
+
 		if(startDate != null && endDate != null){
 			sb.append(" and date(gwpt.updated_time) between :startDate and :endDate ");
 		}
@@ -58,14 +66,10 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		
 		Query query = getSession().createSQLQuery(sb.toString());
 		
-		if(locationScopeId != null && locationScopeId >0l){
-			query.setParameter("locationScopeId", locationScopeId);
-		}
-		
-		if(locationIds != null && locationIds.size() > 0){
+		if(locationScopeId == 3l || locationScopeId== 4l || locationScopeId== 5l || locationScopeId== 6l || locationScopeId== 12l || locationScopeId== 13l){
 			query.setParameterList("locationIds", locationIds);
 		}
-		
+			
 		if(workTypeId != null && workTypeId > 0l){
 			query.setParameter("workTypeId", workTypeId);
 		}
