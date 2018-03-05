@@ -16,6 +16,7 @@ var globalStateId=1;
 var globalActivityMemberId=44;
 var globalUserTypeId=2;
 var globalEndIndex=6;
+var globalstartIndex=0;
 $("#dateRangePickerAUM").daterangepicker({
       opens: 'left',
       startDate: glStartDate,
@@ -396,7 +397,7 @@ function DalithaTejamnews(){
 	$("#dalithaTejamOnNewsDivId").html("<div class='spinner'><div class='dot1'></div><div class='dot2'></div></div>");
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
-		//url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
+		//url: "http://localhost:8085/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
 	}).then(function(result){
 		if(result !=null){
 			buildNewsModule(result);
@@ -745,7 +746,7 @@ function buildActivityEventdata(result,locationId,divId){
 						
 					}
 					if(locationId == 'constituency'){
-						tableView+='<th rowspan ="2">ఈ కార్యక్రమం లో ఎమ్మెల్యే/ఇంచార్జి హాజరు అయిన  రోజులు </th>';
+						tableView+='<th rowspan ="2">ఈ కార్యక్రమం లో ఎమ్మెల్యే/ఇంచార్జి హాజరు అయిన  రోజులు</th>';
 					}
 					if(locationId != 'parliament'){
 						tableView+='<th rowspan ="2">News CoverageDays </th>';
@@ -901,7 +902,7 @@ function buildActivityEventdata(result,locationId,divId){
 						
 					}
 					if(locationId == 'constituency'){
-						tableView+='<th rowspan ="2">ఈ కార్యక్రమం లో ఎమ్మెల్యే/ఇంచార్జి హాజరు అయిన  రోజులు </th>';
+						tableView+='<th rowspan ="2">ఈ కార్యక్రమం లో ఎమ్మెల్యే/ఇంచార్జి హాజరు అయిన  రోజులు</th>';
 					}
 					if(locationId != 'parliament'){
 						tableView+='<th rowspan ="2">News CoverageDays </th>';
@@ -1261,7 +1262,11 @@ function buildActivityEventdata1(result,locationId,divId){
 }
 
 $(document).on("click",".partyMainEditionCls",function(){
-	var editionType="Main";var attrPartyids =[];
+	$('#prajaSankalpaYatraModalId').modal('show');
+	$("#prajaSankalpaHeadingId").html("Location Wise Articles");
+	
+	var editionType="Main";
+	var attrPartyids =[];
 	var type =$(this).attr('attr_type');
 	var attrBenifitId=$(this).attr('attr_benefitid');
 	var attrEditionType=$(this).attr('attr_editiontype');
@@ -1275,164 +1280,275 @@ $(document).on("click",".partyMainEditionCls",function(){
 	globalPartyId = attrPartyids;
 	globalBenefitId = attrBenifitId;
 	globalChannelId=attrEditionType;
-	getEditionTypeWisePartiesAnalysisForArticles(editionType,attrCategoryid,attrPartyids,attrBenifitId,attrEditionType);
-	$('.clearModalTables').html("");
-	$('#prajaSankalpaYatraModalId').modal('show');
-	$("#prajaSankalpaHeadingId").html("Location Wise Articles");
+	levelWiseArticlesSBData("aricles",editionType,attrCategoryid,attrPartyids,attrBenifitId,attrEditionType)
+	
+	
 });
-
-function getEditionTypeWisePartiesAnalysisForArticles(editionType,attrCategoryid,attrPartyids,attrBenifitId,attrEditionType){
-$("#popImgDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+function levelWiseArticlesSBData(divId,editionType,attrCategoryid,attrPartyids,attrBenifitId,attrEditionType)
+{
+	var levelWiseSBArr = ['state','district','constituencies','mandal','panchayat'];
+	var collapse='';
+			collapse+='<div class="col-sm-12">';
+				for(var i in levelWiseSBArr)
+				{
+					collapse+='<div class="panel-group m_top10" id="accordion'+divId+'" role="tablist" aria-multiselectable="true">';
+						collapse+='<div class="panel panel-default panel-black">';
+							collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+levelWiseSBArr[i]+'">';
+								if(i == 0)
+								{
+									collapse+='<a role="button" class="panelCollapseIcon '+divId+''+levelWiseSBArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId+'" href="#collapse'+divId+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+levelWiseSBArr[i]+'">';
+								}else{
+									collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId+''+levelWiseSBArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId+'" href="#collapse'+divId+''+levelWiseSBArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId+''+levelWiseSBArr[i]+'">';
+								}
+								collapse+='<h4 class="panel-title text-capital">'+levelWiseSBArr[i]+' level overview</h4>';
+									
+								collapse+='</a>';
+							collapse+='</div>';
+							if(i == 0)
+							{
+								collapse+='<div id="collapse'+divId+''+levelWiseSBArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId+''+levelWiseSBArr[i]+'">';
+							}else{
+								collapse+='<div id="collapse'+divId+''+levelWiseSBArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId+''+levelWiseSBArr[i]+'">';
+							}
+							
+								collapse+='<div class="panel-body">';
+									if(levelWiseSBArr[i] =="district"){
+										collapse+='<div id="'+divId+'district"></div>';
+									}else if(levelWiseSBArr[i] =="constituencies"){
+										collapse+='<div id="'+divId+'constituencies"></div>';
+									}else if(levelWiseSBArr[i] =="mandal"){
+										collapse+='<div id="'+divId+'mandal"></div>';
+									}else if(levelWiseSBArr[i] =="panchayat"){
+										collapse+='<div id="'+divId+'panchayat"></div>';
+									}else if(levelWiseSBArr[i] =="state"){
+										collapse+='<div id="'+divId+'state"></div>';
+									}
+									
+								collapse+='</div>';
+							collapse+='</div>';
+						collapse+='</div>';
+					collapse+='</div>';
+				}
+			collapse+='</div>';
+		$("#locationWiseArticlesDivId").html(collapse);
+		getDalithaTejamLocationWiseNewsArticles(divId,editionType,attrCategoryid,attrPartyids,attrBenifitId,attrEditionType)
+	
+	
+	
+}
+function getDalithaTejamLocationWiseNewsArticles(divId,editionType,attrCategoryid,attrPartyids,attrBenifitId,attrEditionType){
+$("#"+divId+"district").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+$("#"+divId+"constituencies").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+$("#"+divId+"mandal").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+$("#"+divId+"panchayat").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+$("#"+divId+"state").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({	
-       url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
-		//url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
+       //url: wurl+"/CommunityNewsPortal/webservice/getDalithaTejamLocationWiseNewsArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
+		url: "http://localhost:8085/CommunityNewsPortal/webservice/getDalithaTejamLocationWiseNewsArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
 	}).then(function(result){
 		$("#popImgDiv").html("");
-		if(result != null && result.length >0){
-		buildingPmTable1(result);
+		if(result !=null){
+			buildingPmTable1(result,divId);
+		}else if(result.districtVoList !=null && result.districtVoList.length>0){
+			$("#"+divId+"district").html("No Data Available");
+			
+		}else if(result.constoList !=null && result.constoList.length>0){
+			$("#"+divId+"constituencies").html("No Data Available");
+			
+		}else if(result.mandalVoList !=null && result.mandalVoList.length>0){
+			$("#"+divId+"mandal").html("No Data Available");
+			
+		}else if(result.panchayatVoList !=null && result.panchayatVoList.length>0){
+			$("#"+divId+"panchayat").html("No Data Available");
+		}else if(result.stateVoList !=null && result.stateVoList.length>0){
+			$("#"+divId+"state").html("No Data Available");
 		}
 	});
 	
 }
 
-function buildingPmTable1(jsonObject){
-	var str=" ";
-		if(jsonObject[0].stateVoList !=null && jsonObject[0].stateVoList.length>0){
-		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
-				str+="<h3 class='panel-title'>State Level</h3>";
-			str+="</div>";
-			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
-		
-				
-				str+='<ul class="list-inline memberMeetingCls">';
-					for(var i in jsonObject[0].stateVoList)
-					{
-							str+="<li class='text-capital' style='margin-left:5px;'>";
-							str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_count="+jsonObject[0].stateVoList[i].count+" attr_region_scopeid="+jsonObject[0].stateVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].stateVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].stateVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].stateVoList[i].locationName+"</span></h5>";
-							str+="</li>";
-					}
-				str+='</ul>';
-		str+="</div>";
-	str+="</div>";
-			$('#prajaSankalpaYatraStateTableId').html(str);
+function buildingPmTable1(result,divId){
+	 if(result.stateVoList !=null && result.stateVoList.length>0){
+		 var str1="";
+			str1+='<table class="table table-bordered" id="stateTableId">';
+				str1+='<thead>';
+					str1+='<tr>';
+						str1+='<th>S.NO</th>';
+						str1+='<th>STATE NAME</th>';
+						str1+='<th>ARTICLE COUNT</th>';
+					str1+='</tr>';
+				str1+='</thead>';
+				str1+='<tbody>';
+				var k=0;
+					for(var i in result.stateVoList){
+						k=k+1;
+							str1+='<tr>';
+								str1+='<td>'+k+'</td>';
+								str1+='<td>'+result.stateVoList[i].stateName+'</td>';
+								str1+='<td class="articleWisePrintMediaCls" attr_levelId="1" attr_locationValue="'+result.stateVoList[i].stateId+'">'+result.stateVoList[i].count+'</td>';
+							str1+='</tr>';	
+					      }
+			str1+='</tbody>';
+		str1+='</table>';
+		$("#"+divId+"state").html(str1);
+		$("#stateTableId").dataTable({
+		 "aaSorting": [], 
+		"iDisplayLength": 10,
+		// "aaSorting": false, 
+		"aLengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
+		});
+	 }
+	if(result.districtVoList !=null && result.districtVoList.length>0){
+			var str1="";
+			str1+='<table class="table table-bordered" id="distTableId">';
+				str1+='<thead>';
+					str1+='<tr>';
+						str1+='<th>S.NO</th>';
+						str1+='<th>DISTRICT NAME</th>';
+						str1+='<th>ARTICLE COUNT</th>';
+					str1+='</tr>';
+				str1+='</thead>';
+				str1+='<tbody>';
+				var k=0;
+					for(var i in result.districtVoList){
+						k=k+1;
+							str1+='<tr>';
+								str1+='<td>'+k+'</td>';
+								str1+='<td>'+result.districtVoList[i].districtName+'</td>';
+								str1+='<td class="articleWisePrintMediaCls" attr_levelId="2" attr_locationValue="'+result.districtVoList[i].districtId+'">'+result.districtVoList[i].count+'</td>';
+							str1+='</tr>';	
+					      }
+			str1+='</tbody>';
+		str1+='</table>';
+		$("#"+divId+"district").html(str1);
+		$("#distTableId").dataTable({
+		 "aaSorting": [], 
+		"iDisplayLength": 10,
+		// "aaSorting": false, 
+		"aLengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
+		});
 		}
-		if(jsonObject[0].districtVoList !=null && jsonObject[0].districtVoList.length>0){
-		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
-				str+="<h3 class='panel-title'>District Level</h3>";
-			str+="</div>";
-			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
-			
-			str+='<ul class="list-inline memberMeetingCls">';
-					for(var i in jsonObject[0].districtVoList)
-					{
-							str+="<li class='text-capital' style='margin-left:5px;'>";
-							str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_count="+jsonObject[0].districtVoList[i].count+" attr_region_scopeid="+jsonObject[0].districtVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].districtVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].districtVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].districtVoList[i].locationName+"</span></h5>";
-							str+="</li>";
-					}
-			str+='</ul>';
-			str+="</div>";
-	str+="</div>";
-			$('#prajaSankalpaYatraDistrictTableId').html(str);
+		if(result.constoList !=null && result.constoList.length>0){
+		var str1="";
+		str1+='<table class="table table-bordered" id="consTableId">';
+				str1+='<thead>';
+					str1+='<tr>';
+						str1+='<th>S.NO</th>';
+						str1+='<th>DISTRICT NAME</th>';
+						str1+='<th>CONSTITUENCY NAME</th>';
+						str1+='<th>ARTICLE COUNT</th>';
+					str1+='</tr>';
+				str1+='</thead>';
+				str1+='<tbody>';
+				var k=0;
+					for(var i in result.constoList){
+						k=k+1;
+							str1+='<tr>';
+								str1+='<td>'+k+'</td>';
+								str1+='<td>'+result.constoList[i].districtName+'</td>';
+								str1+='<td>'+result.constoList[i].constituencyName+'</td>';
+								str1+='<td class="articleWisePrintMediaCls" attr_levelId="3" attr_locationValue="'+result.constoList[i].constituencyId+'">'+result.constoList[i].count+'</td>';
+							str1+='</tr>';	
+					      }
+			str1+='</tbody>';
+		str1+='</table>';
+		$("#"+divId+"constituencies").html(str1);
+		$("#consTableId").dataTable({
+		 "aaSorting": [], 
+		"iDisplayLength": 10,
+		// "aaSorting": false, 
+		"aLengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
+		});
 		}
-		if(jsonObject[0].panchayatVoList !=null && jsonObject[0].panchayatVoList.length>0){
-		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
-				str+="<h3 class='panel-title'>Panchayat Level</h3>";
-			str+="</div>";
-			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
-			
-			str+='<ul class="list-inline memberMeetingCls">';
-					for(var i in jsonObject[0].panchayatVoList)
-					{
-						str+="<li class='text-capital' style='margin-left:5px;'>";
-						str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_count="+jsonObject[0].panchayatVoList[i].count+" attr_region_scopeid="+jsonObject[0].panchayatVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].panchayatVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].panchayatVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].panchayatVoList[i].locationName+"</span></h5>";
-						str+="</li>";
-					}
-			str+='</ul>';
-			str+="</div>";
-	str+="</div>";
-			$('#prajaSankalpaYatraPanchayatTableId').html(str);
+		if(result.mandalVoList !=null && result.mandalVoList.length>0){
+		var str1="";
+		str1+='<table class="table table-bordered" id="mandalTableId">';
+				str1+='<thead>';
+					str1+='<tr>';
+						str1+='<th>S.NO</th>';
+						str1+='<th>DISTRICT NAME</th>';
+						str1+='<th>CONSTITUENCY NAME</th>';
+						str1+='<th>MANDAL NAME</th>';
+						str1+='<th>ARTICLE COUNT</th>';
+					str1+='</tr>';
+				str1+='</thead>';
+				str1+='<tbody>';
+				var k=0;
+					for(var i in result.mandalVoList){
+						k=k+1;
+							str1+='<tr>';
+								str1+='<td>'+i+'</td>';
+								str1+='<td>'+result.mandalVoList[i].districtName+'</td>';
+								str1+='<td>'+result.mandalVoList[i].constituencyName+'</td>';
+								str1+='<td>'+result.mandalVoList[i].mandalName+'</td>';
+								str1+='<td class="articleWisePrintMediaCls" attr_levelId="5" attr_locationValue="'+result.mandalVoList[i].mandalId+'">'+result.mandalVoList[i].count+'</td>';
+							str1+='</tr>';	
+					      }
+			str1+='</tbody>';
+		str1+='</table>';
+		$("#"+divId+"mandal").html(str1);
+		$("#mandalTableId").dataTable({
+		 "aaSorting": [], 
+		"iDisplayLength": 10,
+		// "aaSorting": false, 
+		"aLengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
+		}); 
 		}
-		if(jsonObject[0].mandalVoList !=null && jsonObject[0].mandalVoList.length>0){
-		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
-				str+="<h3 class='panel-title'>Mandal Level</h3>";
-			str+="</div>";
-			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
-			
-			str+='<ul class="list-inline memberMeetingCls">';
-					for(var i in jsonObject[0].mandalVoList)
-					{
-						str+="<li class='text-capital' style='margin-left:5px;'>";
-						str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_count="+jsonObject[0].mandalVoList[i].count+" attr_region_scopeid="+jsonObject[0].mandalVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].mandalVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].mandalVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].mandalVoList[i].locationName+"</span></h5>";
-						str+="</li>";
-					}
-			str+='</ul>';
-			str+="</div>";
-	str+="</div>";
-			$('#prajaSankalpaYatraMandalTableId').html(str);
+		if(result.panchayatVoList !=null && result.panchayatVoList.length>0){
+		var str1="";
+		str1+='<table class="table table-bordered" id="panchayatTableId">';
+				str1+='<thead>';
+					str1+='<tr>';
+						str1+='<th>S.NO</th>';
+						str1+='<th>DISTRICT NAME</th>';
+						str1+='<th>CONSTITUENCY NAME</th>';
+						str1+='<th>MANDAL NAME</th>';
+						str1+='<th>PANCHAYAT NAME</th>';
+						str1+='<th>ARTICLE COUNT</th>';
+					str1+='</tr>';
+				str1+='</thead>';
+				str1+='<tbody>';
+				var k=0;
+					for(var i in result.panchayatVoList){
+						k=k+1;
+							str1+='<tr>';
+								str1+='<td>'+i+'</td>';
+								str1+='<td>'+result.panchayatVoList[i].districtName+'</td>';
+								str1+='<td>'+result.panchayatVoList[i].constituencyName+'</td>';
+								str1+='<td>'+result.panchayatVoList[i].mandalName+'</td>';
+								str1+='<td>'+result.panchayatVoList[i].panchayatName+'</td>';
+								str1+='<td class="articleWisePrintMediaCls" attr_levelId="6" attr_locationValue="'+result.panchayatVoList[i].panchayatId+'">'+result.panchayatVoList[i].count+'</td>';
+							str1+='</tr>';	
+					      }
+			str1+='</tbody>';
+		str1+='</table>';
+		$("#"+divId+"panchayat").html(str1);
+		$("#panchayatTableId").dataTable({
+		 "aaSorting": [], 
+		"iDisplayLength": 10,
+		// "aaSorting": false, 
+		"aLengthMenu": [[10, 30, 50, -1], [10, 30, 50, "All"]],
+		}); 
 		}
-		if(jsonObject[0].constoList !=null && jsonObject[0].constoList.length>0){
-		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
-				str+="<h3 class='panel-title'>Constituency Level</h3>";
-			str+="</div>";
-			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
-			
-			str+='<ul class="list-inline memberMeetingCls">';
-					for(var i in jsonObject[0].constoList)
-					{
-						str+="<li class='text-capital' style='margin-left:5px;'>";
-						str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_count="+jsonObject[0].constoList[i].count+" attr_region_scopeid="+jsonObject[0].constoList[i].scopeId+" attr_scopeValue="+jsonObject[0].constoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].constoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].constoList[i].locationName+"</span></h5>";
-						str+="</li>";
-					}
-			str+='</ul>';
-			
-			str+="</div>";
-	str+="</div>";
-			$('#prajaSankalpaYatraConstituencyTableId').html(str);
-		}
-		if(jsonObject[0].corpGmcVoList !=null && jsonObject[0].corpGmcVoList.length>0){
-		str="<div class='panel panel-default'>";
-			str+="<div class='panel-heading' style='padding-top: 5px; padding-bottom: 5px;'>";
-				str+="<h3 class='panel-title'>Corporation Level</h3>";
-			str+="</div>";
-			str+="<div class='panel-body' style='background-color: rgb(255, 255, 255) ! important; padding-bottom: 8px; padding-top: 8px;'>";
-			
-			str+='<ul class="list-inline memberMeetingCls">';
-					for(var i in jsonObject[0].corpGmcVoList)
-					{
-						str+="<li class='text-capital' style='margin-left:5px;'>";
-						str+="<h5><span class='articleWisePrintMediaCls roundCssCls' attr_count="+jsonObject[0].corpGmcVoList[i].count+" attr_region_scopeid="+jsonObject[0].corpGmcVoList[i].scopeId+" attr_scopeValue="+jsonObject[0].corpGmcVoList[i].scopeValue+" style='cursor:pointer;'>"+jsonObject[0].corpGmcVoList[i].count+"</span>&nbsp;<span class='f-12'>"+jsonObject[0].corpGmcVoList[i].locationName+"</span></h5>";
-						str+="</li>";
-					}
-			str+='</ul>';
-			
-			str+="</div>";
-	str+="</div>";
-			$('#prajaSankalpaYatraCorpTableId').html(str);
-		}	
 }
 
 $(document).on("click",".articleWisePrintMediaCls",function(){
-		var scopeId = $(this).attr("attr_region_scopeid"); 
-		var scopeValue = $(this).attr("attr_scopeValue");
-		getEditionTypeWisePartiesAnalysisForClick(globalPartyId,globalBenefitId,globalChannelId,scopeId,scopeValue
-		,globalcategoryId,globalEndIndex,0);
+		var scopeId = $(this).attr("attr_levelid"); 
+		var scopeValue = $(this).attr("attr_locationvalue");
+		getDalithaTejamNewsArticleForClick(globalPartyId,globalBenefitId,globalChannelId,scopeId,scopeValue
+		,globalcategoryId,globalEndIndex,globalstartIndex);
 		$('#articleDataID').modal('show');
 		$("#articleId").html("All News Articles");
 	
 });
 
- function getEditionTypeWisePartiesAnalysisForClick(globalPartyId,globalBenefitId,globalChannelId,scopeId,scopeValue
+ function getDalithaTejamNewsArticleForClick(globalPartyId,globalBenefitId,globalChannelId,scopeId,scopeValue
 		,globalcategoryId,globalEndIndex,globalstartIndex){
 	$("#newspopImgDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({
-		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
+		url: wurl+"/CommunityNewsPortal/webservice/getDalithaTejamNewsArticleForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
 		
-		//url: "http://localhost:8446/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysisForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
+		//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDalithaTejamNewsArticleForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
 	}).then(function(result){
 		buildArticlesByDateRangeWise(result,globalPartyId,globalBenefitId,globalChannelId,scopeId,scopeValue
 		,globalcategoryId,globalEndIndex,globalstartIndex);
