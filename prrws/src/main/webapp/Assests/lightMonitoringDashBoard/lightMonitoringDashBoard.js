@@ -1056,14 +1056,13 @@ $(document).on("click",".ledResultTypeCls",function() {
 	var filterType="";
 	var filterValue=0;
 	var lightVendorArr = [1,2];
-	var viewType='individual';
-	$('.levelTypeCls li').each(function(i, obj){
+	var viewType='';
+	$('.tableMenu'+locationLevel+'ViewType li').each(function(i, obj){
 			 if($(this).hasClass('active')){
 				viewType = $(this).attr("attr_tab_type");
 			 }
 	});
 	
-	alert(viewType);
 	if (locationLevel != null && locationLevel=="district") {
 		if (resultType != null && resultType=="district" || resultType=="parliament") {
 		  getAllLevelWiseDataOverView(resultType,filterType,filterValue,locationLevel,lightVendorArr,viewType);
@@ -1185,8 +1184,8 @@ $(document).on("change",".lebSelectBoxCls",function(){
 			 lightVendorArr.push(lightVendorId);
 		 }
 	 }
-	 var viewType='individual';
-	$('.levelTypeCls li').each(function(i, obj){
+	 var viewType='';
+	$('.tableMenu'+locationLevel+'ViewType li').each(function(i, obj){
 			 if($(this).hasClass('active')){
 				viewType = $(this).attr("attr_tab_type");
 			 }
@@ -1237,8 +1236,8 @@ $(document).on("change",".lightsVendorCls",function(){
 	  } else {
 		  divId = locationLevel;
 	  }
-	  var viewType='individual';
-	$('.levelTypeCls li').each(function(i, obj){
+	  var viewType='';
+	$('.tableMenu'+locationLevel+'ViewType li').each(function(i, obj){
 			 if($(this).hasClass('active')){
 				viewType = $(this).attr("attr_tab_type");
 			 }
