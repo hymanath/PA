@@ -162,7 +162,12 @@ public class ITextCoveringLetterGeneration  {
 						 }
 						 if(pmRequestVO.getDesignation() != null && !pmRequestVO.getDesignation().equalsIgnoreCase("")){
 							 if(pmRequestVO.getDesignation().toUpperCase().contains("MINISTER")){
-								 pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace("State Minister", " Hon'ble Minister "));
+								 //pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace("State Minister", " Hon'ble Minister "));
+								 pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace("State Minister", " "));
+								 str1 = str1.replace("#rdesig",","+pmRequestVO.getDesignation()+" ");
+							 }else if(pmRequestVO.getDesignation().toUpperCase().contains("GOVT.WHIP")){
+								 //pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace("State Minister", " Hon'ble Minister "));
+								 pmRequestVO.setDesignation("Govt.Whip");
 								 str1 = str1.replace("#rdesig",","+pmRequestVO.getDesignation()+" ");
 							 }else{
 								 str1 = str1.replace("#rdesig",", "+pmRequestVO.getDesignation()+" ");
