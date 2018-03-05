@@ -222,8 +222,8 @@ function getActivityOverAllSummaryforDelithatejam(){
 	var jsObj={
 		activityId:activityId,
 		activityMemberId : 44,
-	    fromDateStr:glStartDate,
-		toDateStr:glEndDate
+	    fromDateStr:"",
+		toDateStr:""
 	}	
 	$.ajax({
 	 type: "POST",
@@ -865,7 +865,7 @@ function buildActivityEventdata(result,locationId,divId){
 		tableView+='</table>';
 	tableView+='</div>';
 	tableView+='<table class="table table-bordered" id="exportExcel'+locationId+'" style="width:100%;border:1px solid lightgrey;display:none;">';
-			tableView+='<thead class="text-capital">';
+			tableView+='<thead class="text-capital" style="background-color:#f2f2f2;">';
 				tableView+='<tr>';
 					if(locationId == 'district'){
 						tableView+='<th rowspan =2>District</th>';
@@ -874,19 +874,21 @@ function buildActivityEventdata(result,locationId,divId){
 						tableView+='<th rowspan =2>Assembly Constituency</th>';
 					}else if(locationId == 'parliament'){
 						tableView+='<th rowspan =2>Parliment Constituency</th>';
+					}else if(locationId == 'state'){
+						tableView+='<th rowspan =2>State</th>';
 					}
 					tableView+='<th rowspan ="2">Total Panchayaths/ Wards</th>';
 					tableView+='<th rowspan ="2">Total SC Population</th>';
 					tableView+='<th rowspan ="2">Covered SC Population</th>';
 					tableView+='<th rowspan ="2">%</th>';
-					tableView+='<th rowspan ="2">Total Registered count</th>';
-					tableView+='<th rowspan="2">Total Loan Applied Count</th>';
+					tableView+='<th rowspan ="2">Active Dalitha Youth Registered count</th>';
+					tableView+='<th rowspan="2">SC Loan Applied Count</th>';
 					tableView+='<th colspan="2">Info Cell Conducted</th>';
 					//tableView+='<th rowspan="2">Conducted%</th>';
 					for(var i in result[0].questionList){
-						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23){
+						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23 && divId !=38){
 							tableView+='<th colspan="2">'+result[0].questionList[i].questionName+'</th>';
-						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId == 23){
+						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].		questionId == 23){
 							tableView+='<th colspan="5">'+result[0].questionList[i].questionName+'</th>';
 						}else if (result[0].questionList[i].optionList.length==1){
 							if(result[0].questionList[i].questionId != 21){
@@ -894,17 +896,26 @@ function buildActivityEventdata(result,locationId,divId){
 							}else{
 								tableView+='<th rowspan ="2">'+result[0].questionList[i].questionName+'-(Minutes)</th>';
 							}
-						}else{
+						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].		questionId != 23 && divId ==38){
+							tableView+='<th colspan="4">'+result[0].questionList[i].questionName+'</th>';
+						}
+						else{
 							tableView+='<th colspan="'+result[0].questionList[i].optionList.length+'">'+result[0].questionList[i].questionName+'</th>';
 						}
 						
+					}
+					if(locationId == 'constituency'){
+						tableView+='<th rowspan ="2">ఈ కార్యక్రమం లో ఎమ్మెల్యే/ఇంచార్జి హాజరు అయిన  రోజులు </th>';
+					}
+					if(locationId != 'parliament'){
+						tableView+='<th rowspan ="2">News CoverageDays </th>';
 					}
 				tableView+='</tr>';
 				tableView+='<tr>';
 					tableView+='<th>Total Count</th>';
 					tableView+='<th>%</th>';
 				for(var i in result[0].questionList){
-						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23){
+						if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23 && divId !=38){
 							
 							tableView+='<th>Yes Count</th>';
 							tableView+='<th>%</th>';
@@ -914,67 +925,93 @@ function buildActivityEventdata(result,locationId,divId){
 							tableView+='<th>%</th>';
 							tableView+='<th>No Count</th>';
 							tableView+='<th>%</th>';
-						}
-						if(result[0].questionList[i].optionList.length !=2 && result[0].questionList[i].optionList.length !=1){
+						}else if(result[0].questionList[i].optionList.length !=2 && result[0].questionList[i].optionList.length !=1){
 							for(var j in result[0].questionList[i].optionList){
 								tableView+='<th>'+result[0].questionList[i].optionList[j].optionName+'</th>';
+							}
+						}else if(result[0].questionList[i].optionList.length==2 && result[0].questionList[i].questionId != 23 && divId ==38){
+							for(var j in result[0].questionList[i].optionList){
+								tableView+='<th>'+result[0].questionList[i].optionList[j].optionName+'</th>';
+								tableView+='<th>%</th>';
+							}
+							
 						}
-						
-					}
 					//tableView+='<th></th>';
 				}
 				tableView+='</tr>';
 			tableView+='</thead>';
-			tableView+='<tbody>';
+			tableView+='<tbody style=align:center">';
 				for(var i in result){
 					tableView+='<tr>';
 					if(locationId == 'constituency'){
 						tableView+='<td>'+result[i].districtName+'</td>';
 					}
 					tableView+='<td>'+result[i].locationName+'</td>';
-					tableView+='<td>'+result[i].totalCount+'</td>';
-					tableView+='<td>'+result[i].totalPopulation+'</td>';
-					tableView+='<td>'+result[i].coveredPopulation+'</td>';
+					tableView+='<td align="center">'+result[i].totalCount+'</td>';
+					tableView+='<td align="center">'+result[i].totalPopulation+'</td>';
+					tableView+='<td align="center">'+result[i].coveredPopulation+'</td>';
 					if(result[i].totalPopulation != null && result[i].totalPopulation >0){
-						tableView+='<td>'+parseFloat((result[i].coveredPopulation/result[i].totalPopulation)*100).toFixed(2)+'%</td>';
+						tableView+='<td align="center">'+parseFloat((result[i].coveredPopulation/result[i].totalPopulation)*100).toFixed(2)+'%</td>';
 					}else{
 					tableView+='<td>-</td>'
 					}
-					tableView+='<td>'+result[i].totalRegistered+'</td>';
-					tableView+='<td>'+result[i].totalLoanApplied+'</td>';
-					tableView+='<td>'+result[i].conductedCount+'</td>';
-					tableView+='<td>'+parseFloat((result[i].conductedCount/result[i].totalCount)*100).toFixed(2)+'%</td>';
+					tableView+='<td align="center">'+result[i].totalRegistered+'</td>';
+					tableView+='<td align="center">'+result[i].totalLoanApplied+'</td>';
+					tableView+='<td align="center">'+result[i].conductedCount+'</td>';
+					tableView+='<td align="center">'+parseFloat((result[i].conductedCount/result[i].totalCount)*100).toFixed(2)+'%</td>';
 					for(var j in result[i].questionList){
 						if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId == 23){
-							tableView+='<td>'+result[i].questionList[j].count+'</td>';
+							tableView+='<td align="center">'+result[i].questionList[j].count+'</td>';
 						}
 						 for(var k in result[i].questionList[j].optionList){
 							if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId != 23){
 								if(result[i].questionList[j].optionList[k].optionId ==1){
-									tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';yesCount=result[i].questionList[j].optionList[k].count;
-									if(result[i].conductedCount !==null && result[i].conductedCount !=0){
-										tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].conductedCount)*100).toFixed(2)+'%</td>';
+									tableView+='<td align="center">'+result[i].questionList[j].optionList[k].count+'</td>';
+									if(result[i].conductedCount !== null && result[i].conductedCount != 0 && result[i].conductedCount != '0'){
+										tableView+='<td align="center">'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].conductedCount)*100).toFixed(2)+'%</td>';
 									}else{
-									tableView+='<td>-</td>';
+									tableView+='<td align="center">-</td>';
+									}
+								}else{
+									tableView+='<td align="center">'+result[i].questionList[j].optionList[k].count+'</td>';
+									if(result[i].conductedCount !== null && result[i].conductedCount != 0 && result[i].conductedCount != '0'){
+										tableView+='<td align="center">'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].conductedCount)*100).toFixed(2)+'%</td>';
+									}else{
+									tableView+='<td align="center">-</td>';
 									}
 								}
 							}else if(result[i].questionList[j].optionList.length==2 && result[i].questionList[j].questionId == 23){
-								tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
-							 	if(result[i].conductedCount !==null && result[i].conductedCount !=0 ){
-									tableView+='<td>'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].questionList[j].count)*100).toFixed(2)+'%</td>';
+								tableView+='<td align="center">'+result[i].questionList[j].optionList[k].count+'</td>';
+							 	if(result[i].totalCount !==null && result[i].totalCount !=0  && result[i].totalCount != '0' ){
+									tableView+='<td align="center">'+parseFloat((result[i].questionList[j].optionList[k].count/result[i].totalCount)*100).toFixed(2)+'%</td>';
 								}else{
-								tableView+='<td>-</td>';
-								} 
+								tableView+='<td align="center">-</td>';
+								}  
 							}else if (result[i].questionList[j].optionList.length==1){
 								if(result[i].questionList[j].questionId !=21){
-									tableView+='<td>'+result[i].questionList[j].optionList[k].percentage+'</td>';
+									tableView+='<td align="center">'+result[i].questionList[j].optionList[k].percentage+'</td>';
 								}else{
-									tableView+='<td>'+parseInt(result[i].questionList[j].optionList[k].count/(result[i].conductedCount))+'</td>';
+									tableView+='<td align="center">'+parseInt(result[i].questionList[j].optionList[k].count/(result[i].conductedCount))+'</td>';
 								}
 								
 							}else{
-								tableView+='<td>'+result[i].questionList[j].optionList[k].count+'</td>';
+								tableView+='<td align="center">'+result[i].questionList[j].optionList[k].count+'</td>';
 							}
+						}
+						
+					}
+					if(locationId == 'constituency'){
+						if( result[i].count !=null && result[i].count >0){
+							tableView+='<td align="center">'+result[i].newsCount+'</td>';
+						}else{
+							tableView+='<td align="center">-</td>';
+						}
+					}
+					if(locationId != 'parliament'){
+						if( result[i].newsCount !=null && result[i].newsCount >0){
+							tableView+='<td align="center">'+result[i].newsCount+'</td>';
+						}else{
+							tableView+='<td align="center">-</td>';
 						}
 						
 					}
