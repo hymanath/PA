@@ -120,14 +120,14 @@ function buildListOfAssemblyWithPoorPerformance(result){
 		str+='</div>';
 	str+='</div>';
 	for(var i in result){
-		if(result[i].name == "SVV CENTER" || result[i].name == "EWK CENTER"){
-			str+='<div class="row ">';
+		/* if(result[i].name == "SVV CENTER" || result[i].name == "EWK CENTER"){
+			str+='<div class="row">';
 		}else if(result[i].name == "GPN CENTER"){
 			str+='<div class="row pagebreak_before">';
 		}else{
 			str+='<div class="row pagebreak ">';
-		}
-		
+		} */
+		str+='<div class="row pagebreak ">';
 			str+='<div class="col-sm-12 m_top20">';
 				str+='<h5 class="text_bold">'+result[i].name+'</h5>';
 				str+='<div class="table-responsive m_top10">';

@@ -14,7 +14,7 @@
 <link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="D2D_Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/css/print.css" rel="stylesheet" type="text/css"/>
+<link href="newCoreDashBoard/css/print.css" rel="stylesheet" type="text/css" media="print"/>
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
 .eventsheader
@@ -386,6 +386,7 @@ header
 <script src="exceptionalReport/kaizalaExceptionalReport.js" type="text/javascript"></script> 
  <script type="text/javascript">
  $(document).on("click",".printViewCls",function(){
+	
 	printDiv();
 });
 function printDiv() {
@@ -395,6 +396,7 @@ function printDiv() {
      document.getElementById("printcontent").innerHTML = printContents;
 	 window.print();
      document.getElementById("printcontent").innerHTML = originalContents;
+	 
 	 $("#meetingExDateRangePickerId").daterangepicker({
 		opens: 'left',
 		 startDate: customStartToursDateM,

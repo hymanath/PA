@@ -242,8 +242,8 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 					str+='<table class="table details-overview-cons" id="dataTableElecBlock1">';
 						str+='<thead>';
 							str+='<tr>';
-							str+='<th rowspan="3" style="border-right: 1px solid #d1ab66 !important;" >Constituency Name</th>';
-							str+='<th rowspan="3" style="border-right: 1px solid #d1ab66 !important;">Parliament Name</th>';
+							str+='<th rowspan="3">Constituency&nbsp;Name</th>';
+							str+='<th rowspan="3">Parliament&nbsp;Name</th>';
 								str+='<th colspan="3">Meetings</th>';
 								str+='<th colspan="4">Committees</th>';
 								str+='<th rowspan="2">Dalitha Tejam</th>';
@@ -332,7 +332,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 			"scrollX":        true,
 			"scrollCollapse": true,
 			"fixedColumns":   {
-				"leftColumns": 1,
+				"leftColumns": 2,
 			}
 		});
 	$("#dataTableElecBlock1").removeClass('dataTable');
