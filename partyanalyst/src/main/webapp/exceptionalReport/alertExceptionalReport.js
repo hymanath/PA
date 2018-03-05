@@ -5,6 +5,9 @@ function onloadAlertCalls(){
 	getDistrictWiseAlertsDetails();
 	getOverAllAlertsDetails();
 }
+ $(document).on("click",".alertExRRefresh",function(e){
+	onloadAlertCalls();
+});
 function getAssignedCandidateWisePendingAlerts(){  
 	var jsObj = { 
 		fromDateStr : "01/01/2010",
@@ -38,7 +41,7 @@ function buildAssignedCandidateWisePendingAlerts(result){
 								str+='<th>District</th>';
 								str+='<th>Total Alerts</th>';
 								str+='<th>Action Required</th>';
-								str+='<th>Pending Alerts</th>';
+								str+='<th>In Progress</th>';
 								str+='<th>%</th>';     
 								
 							str+='</tr>';

@@ -3431,7 +3431,8 @@ background-color:#FFE08E !important;
 	border:1px solid #d1ab66;
 	background-color:#fff;	
 	vertical-align:middle;
-	text-align:center;	
+	text-align:center;
+	cursor:pointer;	
 }
 .details-overview-cons tbody tr td {
 	font-size:12px;

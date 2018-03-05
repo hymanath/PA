@@ -22,19 +22,19 @@ $("#meetingExDateRangePickerId").daterangepicker({
 	ranges: { ////moment().endOf('Year')
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'Last 3 Months': [moment().subtract(parseInt(91)+parseInt(getDay1()), 'days'), moment().subtract(parseInt(getDay1()), 'days')],
-	   'Last 6 Months': [moment().subtract(parseInt(183)+parseInt(getDay1()), 'days'), moment().subtract(parseInt(getDay1()), 'days')],
+	    'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+	   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
 	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
 	   'This Month': [moment().startOf('month'), moment()],
 	   'This Year': [moment().startOf('Year'), moment()],
 	   'Overall' : [moment().subtract(1, 'years').startOf('year'), moment()],
 	}
 });
-function getDay1(){
+/* function getDay1(){
 	var date = new Date();
 	var dd = date.getDate(); 
 	return dd;
-}
+} */
 $('#meetingExDateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 	   customStartToursDateM = picker.startDate.format('DD/MM/YYYY');
 	   customEndToursDateM = picker.endDate.format('DD/MM/YYYY');
@@ -214,7 +214,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 				"leftColumns": 1,
 			}
 		});
-		
+		$("#dataTableElecBlock").removeClass('dataTable')
 	}else{
 		$("#dataTableElecBlock").dataTable({
 			"paging":   false,
@@ -335,7 +335,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 				"leftColumns": 1,
 			}
 		});
-	
+	$("#dataTableElecBlock1").removeClass('dataTable');
 	}else{
 		$("#dataTableElecBlock1").dataTable({
 			"paging":   false,
