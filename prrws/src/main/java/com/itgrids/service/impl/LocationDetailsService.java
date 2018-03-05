@@ -626,7 +626,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				fromDateStr = dateFormat.parse(inputVO.getFromDate());
 				toDateStr = dateFormat.parse(inputVO.getToDate());
 			}
-			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(inputVO.getLocationId(),null);
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(inputVO.getLocationId(),null,inputVO);
 			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			 
 			/*KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
@@ -667,7 +667,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				fromDateStr = dateFormat.parse(inputVO.getFromDate());
 				toDateStr = dateFormat.parse(inputVO.getToDate());
 			}
-			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(inputVO.getLocationId(),null);
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(inputVO.getLocationId(),null,inputVO);
 			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			 
 			List<Object[]> conObjs=null;
@@ -707,7 +707,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
-			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null);
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null,null);
 			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			
 			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("department"))){
@@ -790,7 +790,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
-			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null);
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null,null);
 			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("referrelDesignation")){
@@ -825,7 +825,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				endDate = format.parse(toDate);
 			}
 			
-			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null);
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null,null);
 			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			 
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("department")){
@@ -857,7 +857,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
-			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null);
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null,null);
 			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			 
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("subject")){
