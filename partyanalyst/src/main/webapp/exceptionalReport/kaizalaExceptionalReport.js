@@ -52,7 +52,7 @@ function buildConstituencyWisePoorPerformance(result,typeval,id){
 								str+='<th>%</th>';
 								str+='<th>Public Installed</th>';
 								str+='<th>Cadre Installed</th>';
-								str+='<th>Total Intalled</th>';
+								str+='<th>Total Installed</th>';
 							}else{
 								str+='<th>Constituency</th>';
 								str+='<th>Parliament</th>';
@@ -63,7 +63,7 @@ function buildConstituencyWisePoorPerformance(result,typeval,id){
 								str+='<th>%</th>';
 								str+='<th>Public Installed</th>';
 								str+='<th>Cadre Installed</th>';
-								str+='<th>Total Intalled</th>';
+								str+='<th>Total Installed</th>';
 							}
 							str+='</tr>';
 						str+='</thead>';

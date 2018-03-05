@@ -152,13 +152,13 @@ function buildCommiteeLevel(result,id,levelName){
 			str+='<div class="col-sm-12 m_top20">';
 		}
 			if(levelName == "Mandal"){
-				str+='<h4 class="text_bold text-capital font_size24" >'+levelName+'  Level Committee Details</h4>';
+				str+='<h4 class="text_bold text-capital font_size24" >Mandal / TOWN / DIVISION  Level Committee Details</h4>';
 			}else if(levelName == "Village"){
 				str+='<h4 class="text_bold text-capital font_size24" >Village / Ward  Level Committee Details</h4>';
 			}else if(levelName == "Booth"){
 				str+='<h4 class="text_bold text-capital font_size24" >Booth(Seva Mitra)  Level Committee Details</h4>';
 			}else if(levelName == "Affiliated"){
-				str+='<h4 class="text_bold text-capital font_size24" >Mandal Level Affiliated Committee Details</h4>';
+				str+='<h4 class="text_bold text-capital font_size24" >Mandal / TOWN / DIVISION Level Affiliated Committee Details</h4>';
 			}
 			
 		str+='</div>';
