@@ -287,7 +287,7 @@ nav{
 		</div>
 	</div>
 	<div class="modal" tabindex="-1" role="dialog" id="prajaSankalpaYatraModalId">
-		  <div class="modal-dialog modal-lg" style="width:70%;">       
+		  <div class="modal-dialog modal-lg" style="width:80%;">       
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -299,21 +299,16 @@ nav{
 				</div>
 			  </div>
 			  <div class="modal-body" style="padding-bottom: 0px; padding-top: 5px;">
-						<div id="popImgDiv"></div>
-						<div class="clearModalTables" id="prajaSankalpaYatraStateTableId"></div>
-						<div class="clearModalTables" id="prajaSankalpaYatraDistrictTableId"></div>
-						<div class="clearModalTables" id="prajaSankalpaYatraPanchayatTableId"></div>
-						<div class="clearModalTables" id="prajaSankalpaYatraMandalTableId"></div>
-						<div class="clearModalTables" id="prajaSankalpaYatraConstituencyTableId"></div>
-						<div class="clearModalTables" id="prajaSankalpaYatraCorpTableId"></div>
-						
+						<div class="row">
+							<div id="locationWiseArticlesDivId"></div>
+						</div>
 			  </div>
 			  <div class="modal-footer" style="padding-bottom: 0px;">     
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			  </div>
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
-</div>
+	</div>
 
 <div class="modal" tabindex="-1" role="dialog" id="articleDataID">
 	  <div class="modal-dialog modal-lg" style="width:90%;">       
