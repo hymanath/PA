@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KeyValueVO {
+	
+	private Long id;
 	private String name;
 	private Long key;
 	private String value;
@@ -18,7 +20,13 @@ public class KeyValueVO {
 	private List<Long> depDesigIds  = null; 
 	  
 	
-	  public List<Long> getDepDesigIds() {
+	  public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public List<Long> getDepDesigIds() {
 		return depDesigIds;
 	}
 	public void setDepDesigIds(List<Long> depDesigIds) {

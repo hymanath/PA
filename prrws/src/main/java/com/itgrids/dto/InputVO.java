@@ -114,8 +114,37 @@ public class InputVO implements Serializable {
 	private Long lightVendorId;
 	private Long componentId;	
 	private Long   WebserviceId;
+	private List<Long> idsList = new ArrayList<>();
+	private int firstIndex;
+	private int maxResult;
+	private String radioSelection;
+	
 	private Long subLocationId;
 	
+	public String getRadioSelection() {
+		return radioSelection;
+	}
+	public void setRadioSelection(String radioSelection) {
+		this.radioSelection = radioSelection;
+	}
+	public int getFirstIndex() {
+		return firstIndex;
+	}
+	public void setFirstIndex(int firstIndex) {
+		this.firstIndex = firstIndex;
+	}
+	public int getMaxResult() {
+		return maxResult;
+	}
+	public void setMaxResult(int maxResult) {
+		this.maxResult = maxResult;
+	}
+	public List<Long> getIdsList() {
+		return idsList;
+	}
+	public void setIdsList(List<Long> idsList) {
+		this.idsList = idsList;
+	}
 	public Long getPageId() {
 		return pageId;
 	}
