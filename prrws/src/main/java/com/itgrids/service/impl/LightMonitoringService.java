@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itgrids.dao.ILightInstallationTargetDAO;
 import com.itgrids.dao.ILightMonitoringDAO;
 import com.itgrids.dao.ILightMonitoringDetailsDAO;
+import com.itgrids.dao.ILightPoleDetailsDAO;
 import com.itgrids.dao.ILightWattageDAO;
 import com.itgrids.dao.ILightsVendorDAO;
 import com.itgrids.dao.IPanchayatDAO;
@@ -82,6 +83,8 @@ public class LightMonitoringService  implements ILightMonitoring{
 	
 	@Autowired
 	private ILightMonitoringDetailsDAO lightMonitoringDetailsDAO;
+	@Autowired
+	private ILightPoleDetailsDAO lightPoleDetailsDAO;
 		   
 	public ResultVO saveRealtimeStatusByVillages() {
 		ResultVO stausVO = new ResultVO();
@@ -340,7 +343,14 @@ public class LightMonitoringService  implements ILightMonitoring{
 				isDayTime = "true";
 			else
 				isDayTime = "false";
-			List<Object[]> targetList = lightInstallationTargetDAO.getVendorWiseLedTargetDetails(toDate);
+			/*List<Object[]> targetList = lightInstallationTargetDAO.getVendorWiseLedTargetDetails(toDate);
+			if(targetList != null && !targetList.isEmpty()){
+				for (Object[] obj : targetList) {
+					totalTarget = totalTarget+Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+				}
+			}*/
+			
+			List<Object[]> targetList = lightPoleDetailsDAO.getLocationWisePolesDetails("state");
 			if(targetList != null && !targetList.isEmpty()){
 				for (Object[] obj : targetList) {
 					totalTarget = totalTarget+Long.valueOf(obj[1] != null ? obj[1].toString():"0");
@@ -417,7 +427,7 @@ public class LightMonitoringService  implements ILightMonitoring{
  	 * Author :Swapna
  	 */
 	@Override
-	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, List<Long> filterValues,String fromDateStr,String toDateStr,List<Long> lightVendorIdList) {
+	public List<LightMonitoringVO> getAllLevelWiseDataOverView(String locationType,String filterType, List<Long> filterValues,String fromDateStr,String toDateStr,List<Long> lightVendorIdList,String viewType) {
 		List<LightMonitoringVO> returnList = new ArrayList<LightMonitoringVO>();
 		try {
 				Date fromDate = null;
@@ -439,6 +449,52 @@ public class LightMonitoringService  implements ILightMonitoring{
 			      
 			    if (locationMap != null && locationMap.size() > 0 ) {
 			    	returnList.addAll(locationMap.values());
+			    }
+			    
+			    if(viewType != null && viewType.equalsIgnoreCase("cummulative") && returnList != null && !returnList.isEmpty()){
+			    	for (LightMonitoringVO mainvo : returnList) {
+						if(mainvo.getSubList() != null && mainvo.getSubList().size() > 1){
+							Map<Long,Long> wattageMap = new LinkedHashMap<Long,Long>();
+							for (LightMonitoringVO vendorvo : mainvo.getSubList()) {
+								if(vendorvo.getWattageList() != null && !vendorvo.getWattageList().isEmpty()){
+									for (LightWattageVO watvo : vendorvo.getWattageList()) {
+										Long wattage = watvo.getWattage();
+										Long count = wattageMap.get(wattage);
+										if(count != null && count > 0L){
+											count = count + watvo.getLightCount();
+											wattageMap.put(wattage, count);
+										}else{
+											count = watvo.getLightCount();
+											wattageMap.put(wattage, count);
+										}
+									}
+								}
+							}
+							mainvo.getSubList1().addAll(mainvo.getSubList());
+							mainvo.getSubList().clear();
+							
+							LightMonitoringVO vo = new LightMonitoringVO();
+							for (LightMonitoringVO subvo : mainvo.getSubList1()) {
+								vo.setTotalLights(vo.getTotalLights()+subvo.getTotalLights());
+								vo.setTotalPanels(vo.getTotalPanels()+subvo.getTotalPanels());
+								vo.setTotalPoles(vo.getTotalPoles()+subvo.getTotalPoles());
+								vo.setWorkingLights(vo.getWorkingLights()+subvo.getWorkingLights());
+								vo.setOnLights(vo.getOnLights()+subvo.getOnLights());
+								vo.setOffLights(vo.getOffLights()+subvo.getOffLights());
+								vo.setNotWorkingLights(vo.getNotWorkingLights()+subvo.getNotWorkingLights());
+								vo.setTotalLedLIghtInstalledCount(vo.getTotalLedLIghtInstalledCount()+subvo.getTotalLedLIghtInstalledCount());
+							}
+							if(wattageMap != null){
+								for (Entry<Long, Long> entry : wattageMap.entrySet()) {
+									LightWattageVO wattagevo = new LightWattageVO();
+									wattagevo.setWattage(entry.getKey());
+									wattagevo.setLightCount(entry.getValue());
+									vo.getWattageList().add(wattagevo);
+								}
+							}
+							mainvo.getSubList().add(vo);
+						}
+					}
 			    }
 			   /* if(returnList != null && !returnList.isEmpty()){
 			    	for (LightMonitoringVO lightMonitoringVO : returnList) {
@@ -550,6 +606,14 @@ public class LightMonitoringService  implements ILightMonitoring{
 	public Map<Long,LightMonitoringVO> setStartedSurveryDataLocationWise(List<Object[]> objList,Map<Long,List<LightMonitoringVO>> vendorTypeMap,Map<Long,Map<Long,List<LightWattageVO>>> wattageMap,String locationType) {
 		Map<Long,LightMonitoringVO> locationDtlsMap = new HashMap<>(0);
 		 try {
+			 //SRAVANTH.
+			 Map<Long,Long> targetPolesMap = new LinkedHashMap<Long,Long>();
+			 List<Object[]> targetPolesList = lightPoleDetailsDAO.getLocationWisePolesDetails(locationType);
+			 if(targetPolesList != null && !targetPolesList.isEmpty()){
+				 for (Object[] obj : targetPolesList) {
+					targetPolesMap.put(Long.valueOf(obj[0] != null ? obj[0].toString():"0"), Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+				}
+			 }
 			  if (objList != null && objList.size() > 0 ){
 				   for (Object[] param : objList) {
 					   LightMonitoringVO locationVO = new LightMonitoringVO();
@@ -557,6 +621,7 @@ public class LightMonitoringService  implements ILightMonitoring{
 					   locationVO.setTotalGps(commonMethodsUtilService.getLongValueForObject(param[1]));//survey started village
 					   locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[2]));
 					   locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					   locationVO.setTargetCount(targetPolesMap.get(locationVO.getLocationId()));
 					   locationVO.setSubList(new ArrayList<LightMonitoringVO>());
 					   /*Setting light vendor type and wattage list location wise */
 						if (vendorTypeMap != null) {
