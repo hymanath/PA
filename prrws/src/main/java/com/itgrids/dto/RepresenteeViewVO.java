@@ -22,6 +22,8 @@ public class RepresenteeViewVO {
 	private Long noOfWorks = 0l;
 	private String estimationCost="0.0";
 	private String statusType="";
+	private String sanctionedAmount="";
+	private String noOfKm="";
 	private List<String> desigList = new ArrayList<String>();
 	private String raisedDate;
 	private Long totalRepresents=0l;
@@ -68,9 +70,70 @@ public class RepresenteeViewVO {
 	private String ofcrDesig;
 	private String ofcrDept;
 	private String lastUpdatedTime="";
+	private AddressVO addressVO;
+	private List<Long> subjectIdsList = new ArrayList<Long>();
+	private Long totalResultCount=0L;
+	private String selectionType;
+	private Long noCostPetitionsCount=0L;
+	private Long noCostWorksCount=0L;
 	
+	private Long withCostPetitionsCount=0L;
+	private Long withCostWorksCount=0L;
 	
-	
+	public RepresenteeViewVO(){}
+	public RepresenteeViewVO(Long id, String name){
+		this.id=id;
+		this.name=name;
+	}
+
+	public Long getNoCostPetitionsCount() {
+		return noCostPetitionsCount;
+	}
+	public void setNoCostPetitionsCount(Long noCostPetitionsCount) {
+		this.noCostPetitionsCount = noCostPetitionsCount;
+	}
+	public Long getNoCostWorksCount() {
+		return noCostWorksCount;
+	}
+	public void setNoCostWorksCount(Long noCostWorksCount) {
+		this.noCostWorksCount = noCostWorksCount;
+	}
+	public Long getWithCostPetitionsCount() {
+		return withCostPetitionsCount;
+	}
+	public void setWithCostPetitionsCount(Long withCostPetitionsCount) {
+		this.withCostPetitionsCount = withCostPetitionsCount;
+	}
+	public Long getWithCostWorksCount() {
+		return withCostWorksCount;
+	}
+	public void setWithCostWorksCount(Long withCostWorksCount) {
+		this.withCostWorksCount = withCostWorksCount;
+	}
+	public String getSelectionType() {
+		return selectionType;
+	}
+	public void setSelectionType(String selectionType) {
+		this.selectionType = selectionType;
+	}
+	public Long getTotalResultCount() {
+		return totalResultCount;
+	}
+	public void setTotalResultCount(Long totalResultCount) {
+		this.totalResultCount = totalResultCount;
+	}
+	public List<Long> getSubjectIdsList() {
+		return subjectIdsList;
+	}
+	public void setSubjectIdsList(List<Long> subjectIdsList) {
+		this.subjectIdsList = subjectIdsList;
+	}
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
+	}
 	public List<String> getHasRepRefDocs() {
 		return hasRepRefDocs;
 	}
@@ -422,4 +485,17 @@ public class RepresenteeViewVO {
 	public void setPetitionStatusId(Long petitionStatusId) {
 		this.petitionStatusId = petitionStatusId;
 	}
+	public String getSanctionedAmount() {
+		return sanctionedAmount;
+	}
+	public void setSanctionedAmount(String sanctionedAmount) {
+		this.sanctionedAmount = sanctionedAmount;
+	}
+	public String getNoOfKm() {
+		return noOfKm;
+	}
+	public void setNoOfKm(String noOfKm) {
+		this.noOfKm = noOfKm;
+	}
+	
 }
