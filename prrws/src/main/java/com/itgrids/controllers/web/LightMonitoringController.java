@@ -62,7 +62,7 @@ public class LightMonitoringController {
 	
 	@RequestMapping(value = "/getAllLevelWiseDataOverView", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody  List<LightMonitoringVO> getAllLevelWiseDataOverView(@RequestBody InputVO inputVO){
-		List<LightMonitoringVO>  voList = lightMonitoring.getAllLevelWiseDataOverView(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationIds(),inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLightVendorIdList());
+		List<LightMonitoringVO>  voList = lightMonitoring.getAllLevelWiseDataOverView(inputVO.getLocationType() ,inputVO.getFilterType(), inputVO.getLocationIds(),inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLightVendorIdList(),inputVO.getViewType());
 		return voList;
 	}
 	

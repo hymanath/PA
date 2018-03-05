@@ -344,7 +344,7 @@ function buildLedOverviewForStartedLocationsDetailsCounts(result){
    
   $("#ledOverViewDiv").html(str);
 }
-function getAllLevelWiseDataOverView(locType,filterType,locId,divId,lightVendorArr){
+function getAllLevelWiseDataOverView(locType,filterType,locId,divId,lightVendorArr,viewType){
 	$("#"+divId+"TableId").html(spinner);
 		var locationId='';
 		var locationType='';
@@ -381,7 +381,8 @@ function getAllLevelWiseDataOverView(locType,filterType,locId,divId,lightVendorA
 			"locationIds"  :locationIdArr,
 			"fromDate"	  :glStartDate,
 		    "toDate"	  :glEndDate,
-			"lightVendorIdList":lightVendorArr
+			"lightVendorIdList":lightVendorArr,
+			"viewType" : viewType
 		}
 	$.ajax({                
 		type:'POST',
@@ -396,7 +397,7 @@ function getAllLevelWiseDataOverView(locType,filterType,locId,divId,lightVendorA
 		$("#"+divId+"TableId").html('');
 		if(result != null && result.length > 0)
 		{
-			tableView(result,divId,locType);
+			tableView(result,divId,locType,viewType);
 		}else{
 			$("#"+divId+"TableId").html("NO DATA AVAILABLE.");
 		}
@@ -417,7 +418,7 @@ function buildBasicLedOverviewDetails(result)
 					str+='</div>';
 					str+='<div class="media-body">';
 						str+='<h5 style="color:#8E51Db">OVERALL TARGET</h5>';
-						str+='<h3></h3>';
+						str+='<h3 class="m_top5">'+result[0].lightTarget+'</h3>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
@@ -433,7 +434,7 @@ function buildBasicLedOverviewDetails(result)
 						str+='</div>';
 					str+='</div>';
 			str+='</div>';
-			//var perc = (parseInt(result[0].totalLights)/parseInt(result[0].lightTarget)*100.00).toFixed(2);
+			var perc = (parseInt(result[0].totalLights)/parseInt(result[0].lightTarget)*100.00).toFixed(2);
 			var onperc = (parseInt(result[0].onLights)/parseInt(result[0].totalLights)*100.00).toFixed(2);
 			var offperc = (parseInt(result[0].offLights)/parseInt(result[0].totalLights)*100.00).toFixed(2);
 			str+='<div class="col-sm-2 m_top5">';
@@ -443,7 +444,7 @@ function buildBasicLedOverviewDetails(result)
 						str+='</div>';
 						str+='<div class="media-body">';
 							str+='<h5 style="color:#339900">ACHIEVEMENT</h5>';
-							str+='<h3></h3>';
+							str+='<h3 class="m_top5">'+perc+' %</h3>';
 						str+='</div>';
 					str+='</div>';
 			str+='</div>';
@@ -608,26 +609,32 @@ function projectData(divId,levelId)
 								collapse+='<div class="panel-body">';
 									collapse+='<div class="row m_top10">';
 										collapse+='<div class="col-sm-12">';
-										collapse+='<div class="col-sm-3">';
-											collapse+='<ul class="nav navbar-nav list_inline tableMenu tableMenu'+dataArr[i]+'" role="tabDrains_menu" attr_blockId="3" style="padding:0px">';
+										collapse+='<div class="col-sm-2">';
+											collapse+='<ul class="nav navbar-nav list_inline tableMenu tableMenu'+dataArr[i]+'" role="tabDrains_menu" attr_blockId="3">';
 												collapse+='<li class="active ledResultTypeCls"  attr_location_level='+dataArr[i]+'  attr_tab_type="district">Districts</li>';
 												collapse+='<li class="ledResultTypeCls" attr_location_level='+dataArr[i]+' attr_tab_type="parliament">Parliament</li>';
 											collapse+='</ul>';
 										collapse+='</div>';
+										collapse+='<div class="col-sm-2">';
+											collapse+='<ul class="nav navbar-nav list_inline tableMenu tableMenu'+dataArr[i]+'ViewType levelTypeCls" role="tabDrains_menu" attr_blockId="3">';
+												collapse+='<li class="active viewTypeCls"  attr_location_level='+dataArr[i]+'  attr_tab_type="individual">Vendor</li>';
+												collapse+='<li class="viewTypeCls" attr_location_level='+dataArr[i]+' attr_tab_type="cummulative">Cummulative</li>';
+											collapse+='</ul>';
+										collapse+='</div>';
 										if(dataArr[i] == "district"){
-											collapse+='<div class="col-sm-3">';
+											collapse+='<div class="col-sm-2">';
 												collapse+='<select class="form-control chosen-select lightsVendorCls"  attr_location_level="district"  id="districtLevelLightsVendorSelectBoxId">';
 												collapse+='<option value="0">All</option>';
 												collapse+='</select>';
 											collapse+='</div>';
 										}
 									if(dataArr[i] == "constituency"){
-										collapse+='<div class="col-sm-3">';
+										collapse+='<div class="col-sm-2">';
 											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="consLvlLedDistrictSelectBoxId" attr_location_level="constituency" attr_filter_type="district" attr_sub_location_type="" attr_light_vendor_id="constituencyLevelLightsVendorSelectBoxId"  id="consLvlLedDistrictSelectBoxId">';
 											collapse+='<option value="0">ALL DISTRICT</option>';
 											collapse+='</select>';
 										collapse+='</div>';
-										collapse+='<div class="col-sm-3">';
+										collapse+='<div class="col-sm-2">';
 											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="constituency"  attr_district_filter_id="consLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="",attr_mandal_filter_id=""  id="constituencyLevelLightsVendorSelectBoxId">';
 											collapse+='<option value="0">All</option>';
 											collapse+='</select>';
@@ -635,18 +642,18 @@ function projectData(divId,levelId)
 										
 									}
 									if(dataArr[i] == "mandal"){
-										collapse+='<div class="col-sm-3">';
+										collapse+='<div class="col-sm-2">';
 											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="mandalLvlLedConstituencySelectBoxId" attr_child_div_id="mandalLvlLedConstituencySelectBoxId" attr_location_level="mandal" attr_light_vendor_id="mandalLvlLightsVendorSelectBoxId"  attr_filter_type="district" attr_sub_location_type="constituency" id="mandalLvlLedDistrictSelectBoxId">';
 											collapse+='<option value="0">ALL DISTRICT</option>';
 											collapse+='</select>';
 										collapse+='</div>';
-										collapse+='<div class="col-sm-3">';
+										collapse+='<div class="col-sm-2">';
 											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="mandalLvlLedDistrictSelectBoxId" attr_location_level="mandal" attr_filter_type="constituency" attr_sub_location_type="" attr_light_vendor_id="mandalLvlLightsVendorSelectBoxId"  id="mandalLvlLedConstituencySelectBoxId">';
 											collapse+='<option value="0">SELECT CONSTITUENCY</option>';
 											collapse+='</select>';
 										collapse+='</div>';
 										
-										collapse+='<div class="col-sm-3">';
+										collapse+='<div class="col-sm-2">';
 											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="mandal"  attr_district_filter_id="mandalLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="mandalLvlLedConstituencySelectBoxId",attr_mandal_filter_id="" id="mandalLvlLightsVendorSelectBoxId">';
 											collapse+='<option value="0">All</option>';
 											collapse+='</select>';
@@ -654,24 +661,24 @@ function projectData(divId,levelId)
 										
 									}
 									if(dataArr[i] == "panchayat"){
-										collapse+='<div class="col-sm-3">';
+										collapse+='<div class="col-sm-2">';
 											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="panchayatLvlLedDistrictSelectBoxId" attr_child_div_id="panchayatLvlLedConstituencySelectBoxId" attr_location_level="panchayat" attr_filter_type="district" attr_light_vendor_id="panchayatLvlLedLightsVendorSelectBoxId" attr_sub_location_type="constituency" id="panchayatLvlLedDistrictSelectBoxId">';
 											collapse+='<option value="0">ALL DISTRICT</option>';
 											collapse+='</select>';
 										collapse+='</div>';
-										collapse+='<div class="col-sm-3">';
+										collapse+='<div class="col-sm-2">';
 											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="panchayatLvlLedDistrictSelectBoxId" attr_child_div_id="panchayatLvlLedMandalSelectBoxId" attr_location_level="panchayat" attr_light_vendor_id="panchayatLvlLedLightsVendorSelectBoxId"  attr_filter_type="constituency" attr_sub_location_type="mandal" id="panchayatLvlLedConstituencySelectBoxId">';
 											collapse+='<option value="0">SELECT CONSTITUENCY</option>';
 											collapse+='</select>';
 										collapse+='</div>';
-										collapse+='<div class="col-sm-3">';
+										collapse+='<div class="col-sm-2">';
 											collapse+='<select class="form-control chosen-select lebSelectBoxCls" attr_parent_div_id="panchayatLvlLedConstituencySelectBoxId" attr_location_level="panchayat" attr_filter_type="mandal" attr_light_vendor_id="panchayatLvlLedLightsVendorSelectBoxId"  attr_sub_location_type="" id="panchayatLvlLedMandalSelectBoxId">';
 											collapse+='<option value="0">SELECT MANDAL</option>';
 											collapse+='</select>';
 										collapse+='</div>';
-										collapse+='<div class="col-sm-3">';
-								collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="panchayat" attr_filter_type="mandal" attr_district_filter_id="panchayatLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="panchayatLvlLedConstituencySelectBoxId" attr_mandal_filter_id="panchayatLvlLedMandalSelectBoxId" id="panchayatLvlLedLightsVendorSelectBoxId">';
-											collapse+='<option value="0">All</option>';
+										collapse+='<div class="col-sm-2">';
+											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="panchayat" attr_filter_type="mandal" attr_district_filter_id="panchayatLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="panchayatLvlLedConstituencySelectBoxId" attr_mandal_filter_id="panchayatLvlLedMandalSelectBoxId" id="panchayatLvlLedLightsVendorSelectBoxId">';
+												collapse+='<option value="0">All</option>';
 											collapse+='</select>';
 										collapse+='</div>';
 										
@@ -692,14 +699,14 @@ function projectData(divId,levelId)
 	for(var i in dataArr)
 	{
 		$("#"+dataArr[i]+"TableId").html(spinner);
-		getAllLevelWiseDataOverView(dataArr[i],dataArr[i],"",dataArr[i],lightVendorArr);
+		getAllLevelWiseDataOverView(dataArr[i],dataArr[i],"",dataArr[i],lightVendorArr,"individual");
 	}	
    getLocationBasedOnSelection("district","",0,"","otherLocationLevel");
    getLocationBasedOnSelection("district","",0,"","panchayat");
    var venderSelBoxIds="#districtLevelLightsVendorSelectBoxId,#constituencyLevelLightsVendorSelectBoxId,#mandalLvlLightsVendorSelectBoxId,#panchayatLvlLedLightsVendorSelectBoxId"
    	getLightsVendors(venderSelBoxIds);
 }
-function tableView(result,divId,locType)
+function tableView(result,divId,locType,viewType)
 {
 	var tableView = '';
 	var viewTypeDist='';
@@ -730,7 +737,8 @@ function tableView(result,divId,locType)
 	tableView+='<table class="table tableStyleLed" id="'+divId+'Table" style="width:100%">';
 		tableView+='<thead>';
 			tableView+='<tr>';
-			tableView+='<th rowspan="2" style="background-color:#C0C0C0"></th>';
+			if(viewType != null && viewType != 'cummulative')
+				tableView+='<th rowspan="2" style="background-color:#C0C0C0"></th>';
 			tableView+='<th rowspan="2" style="display:none;background-color:#C0C0C0;">Lights Vendor</th>';
 				if(divId == 'district')
 				{
@@ -777,17 +785,19 @@ function tableView(result,divId,locType)
 					}						
 					
 				}
-				if(divId != 'mandal' && divId!='panchayat'){
+				/*if(divId != 'mandal' && divId!='panchayat'){
 				  tableView+='<th colspan="1" class="text-center"><img src="Assests/icons/mandals_icon.png" class="imageWidthLed"></th>';	
-				}
+				}*/
 				if (divId!='panchayat') {
-					tableView+='<th colspan="1" class="text-center"><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"></th>';
+					//tableView+='<th colspan="1" class="text-center"><img src="Assests/icons/Mandal_Survy_icon.png" class="imageWidthLed"></th>';
 				    tableView+='<th colspan="1" class="text-center"><img src="Assests/icons/GPs_icon.png" class="imageWidthLed"></th>';
 				}
 				tableView+='<th colspan="1" class="text-center"><img src="Assests/icons/GPs_survey_icon.png" class="imageWidthLed"></th>';
 				//tableView+='<th><img src="Assests/icons/Poles_icon.png" class="imageWidthLed"><br/>TOTAL POLES SURVEYED</th>';
 				tableView+='<th colspan="1" class="text-center"><img src="Assests/icons/CCMS_Box_icon.png" class="imageWidthLed"></th>';
+				tableView+='<th colspan="1" class="text-center"><img src="Assests/icons/Target_icon.png" class="imageWidthLed" style="height: 35px;"></th>';
 				tableView+='<th colspan="1" class="text-center"><img src="Assests/icons/Total_Led_lights_iocn.png" class="imageWidthLed" style="height: 35px;"></th>';
+				tableView+='<th colspan="1" class="text-center"><img src="Assests/icons/Achived_Perc_Icon.png" class="imageWidthLed" style="height: 35px;"></th>';
 				/*tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/Non_Operational_LED_Light_Ico.png" class="" style="width: 28px; height: 35px;"><br/>NON <br/>OPERATIONAL&nbsp;</th>';
 				tableView+='<th class="text-center" style="vertical-align: middle;"><img src="Assests/icons/Operational_LED_Light_Icon.png" class="" style="width: 28px; height: 35px;"><br/>OPERATIONAL&nbsp;</th>';*/
 				tableView+='<th colspan="1" class="text-center" style="vertical-align: middle;"><img src="Assests/icons/On_light_icon.png" class="imageWidthLed" style="width: 40px; height: 40px;"></th>';
@@ -795,16 +805,18 @@ function tableView(result,divId,locType)
 				tableView+='<th rowspan="2" style="background-color:#C0C0C0" class="text-center">WATTAGE<br/>&nbsp;</th>';
 			tableView+='</tr>';
 			tableView+='<tr>';
-				if(divId != 'mandal' && divId!='panchayat'){
+				/*if(divId != 'mandal' && divId!='panchayat'){
 				  tableView+='<th colspan="1" class="text-center">TOTAL <br/> MANDALS</th>';	
-				}
+				}*/
 				if (divId!='panchayat') {
-					tableView+='<th colspan="1" class="text-center">MANDALS<br/> STARTED</th>';
+					//tableView+='<th colspan="1" class="text-center">MANDALS<br/> STARTED</th>';
 				    tableView+='<th colspan="1" class="text-center">TOTAL<br/> GPs</th>';
 				}
 				tableView+='<th colspan="1" class="text-center">GPs STARTED</th>';
 				tableView+='<th colspan="1" class="text-center">TOTAL CCMS-BOX <br/> INSTALLED</th>';
+				tableView+='<th colspan="1" class="text-center">TARGET</th>';
 				tableView+='<th colspan="1" class="text-center">TOTAL LED <br/>LIGHTS</th>';
+				tableView+='<th colspan="1" class="text-center">ACHIEVEMENT&nbsp;(%)</th>';
 				tableView+='<th colspan="1" class="text-center" style="vertical-align: middle;">ON&nbsp;</th>';
 				tableView+='<th colspan="1" class="text-center" style="vertical-align: middle;">OFF&nbsp;</th>';
 			tableView+='</tr>';
@@ -815,13 +827,16 @@ function tableView(result,divId,locType)
 			 if (result[i].subList != null && result[i].subList.length > 0) {
 				  for(var j in result[i].subList) {
 						 tableView+='<tr style="text-align:center;">';
-						  tableView+='<td>';
+						 if(viewType != null && viewType != 'cummulative'){
+							 tableView+='<td>';
 							if (result[i].subList[j].lightVendorId != null && result[i].subList[j].lightVendorId == 1) {//essl
 								tableView+='<img src="Assests/icons/Essl.jpg" style="width:25px;height:25px;">';
 							} else { //nredp
 								tableView+='<img src="Assests/icons/Nredp.jpg" style="width:25px;height:25px;">';
 							}
 							tableView+='</td>';
+						 }
+						  
 						  if (result[i].subList[j].lightVendorName != null ) {
 								tableView+='<td style="display:none;">'+result[i].subList[j].lightVendorName+'</td>';	 
 						  } else {
@@ -876,11 +891,11 @@ function tableView(result,divId,locType)
 							
 							
 						}
-						if(divId == 'district' || divId=="constituency"){
+						/*if(divId == 'district' || divId=="constituency"){
 						 tableView+='<td>'+result[i].totalMandals+'</td>';	
-						}
+						}*/
 						if (divId!='panchayat') {
-							if(divId=="mandal"){
+							/*if(divId=="mandal"){
 								if (result[i].subList[j].surveyStartedtotalMandals > 0) {
 									tableView+='<td>Yes</td>';
 								} else {
@@ -888,7 +903,7 @@ function tableView(result,divId,locType)
 								}
 							}else{
 								tableView+='<td>'+result[i].subList[j].surveyStartedtotalMandals+'</td>';
-							}
+							}*/
 							
 							tableView+='<td>'+result[i].totalGps+'</td>';
 						}
@@ -901,9 +916,12 @@ function tableView(result,divId,locType)
 						}else{
 							tableView+='<td>'+result[i].subList[j].surveyStartedtotalGps+'</td>';
 						}
-						//tableView+='<td>'+result[i].subList[j].totalPoles+'</td>';
+						var perc = (parseInt(result[i].subList[j].totalLedLIghtInstalledCount)/parseInt(result[i].targetCount)*100.00).toFixed(2);
+						//tableView+='<td>'+result[i].subList[j].targetCount+'</td>';
 						tableView+='<td>'+result[i].subList[j].totalPanels+'</td>';
+						tableView+='<td>'+result[i].targetCount+'</td>';
 						tableView+='<td>'+result[i].subList[j].totalLedLIghtInstalledCount+'</td>';
+						tableView+='<td>'+perc+'</td>';
 						//tableView+='<td>'+result[i].subList[j].notWorkingLights+'</td>';
 						//tableView+='<td>'+result[i].subList[j].workingLights+'</td>';
 						tableView+='<td>'+result[i].subList[j].onLights+'</td>';
@@ -1038,6 +1056,68 @@ $(document).on("click",".ledResultTypeCls",function() {
 	var filterType="";
 	var filterValue=0;
 	var lightVendorArr = [1,2];
+	var viewType='individual';
+	$('.levelTypeCls li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+				viewType = $(this).attr("attr_tab_type");
+			 }
+	});
+	
+	alert(viewType);
+	if (locationLevel != null && locationLevel=="district") {
+		if (resultType != null && resultType=="district" || resultType=="parliament") {
+		  getAllLevelWiseDataOverView(resultType,filterType,filterValue,locationLevel,lightVendorArr,viewType);
+		  $(".districtLevelHeadingDivCls").html(resultType+" level overview");
+		  $("#districtLevelLightsVendorSelectBoxId").val(0);
+		  $("#districtLevelLightsVendorSelectBoxId").trigger("chosen:updated");
+		  $("#districtLelvdlDistrictHeadingId").html(resultType.toUpperCase());
+		  $("#districtLevelLightsVendorSelectBoxId").attr("attr_filter_type",resultType);
+		  $("#districtLevelLightsVendorSelectBoxId").attr("attr_location_level",resultType);
+		} 
+	}else if(locationLevel=="constituency" || locationLevel=="mandal" || locationLevel=='panchayat') {
+		var divId = '';
+		var lightVendorSelectBoxIdDivId = '';
+		 if(locationLevel=="constituency") {
+			 divId = "consLvlLedDistrictSelectBoxId";
+			 $("#constituencyLevelLightsVendorSelectBoxId").val(0);
+			 $("#constituencyLevelLightsVendorSelectBoxId").trigger("chosen:updated");
+			 lightVendorSelectBoxIdDivId = "constituencyLevelLightsVendorSelectBoxId";
+		 }else if (locationLevel=="mandal") {
+			 $("#mandalLvlLedConstituencySelectBoxId").html('');
+			 $("#mandalLvlLedConstituencySelectBoxId").append('<option value="0">SELECT CONSTITUENCY</option>');
+			 $("#mandalLvlLedConstituencySelectBoxId").trigger("chosen:updated");
+			 $("#mandalLvlLightsVendorSelectBoxId").val(0);
+			 $("#mandalLvlLightsVendorSelectBoxId").trigger("chosen:updated");
+			 divId = "mandalLvlLedDistrictSelectBoxId";
+			 lightVendorSelectBoxIdDivId = "mandalLvlLightsVendorSelectBoxId";
+		 }else if (locationLevel=="panchayat") {
+			 $("#panchayatLvlLedConstituencySelectBoxId").html('');
+			 $("#panchayatLvlLedMandalSelectBoxId").html('');
+			 $("#panchayatLvlLedConstituencySelectBoxId").append('<option value="0">SELECT CONSTITUENCY</option>');
+			 $("#panchayatLvlLedMandalSelectBoxId").append('<option value="0">SELECT MANDAL</option>');
+			 $("#panchayatLvlLedConstituencySelectBoxId,#panchayatLvlLedMandalSelectBoxId").trigger("chosen:updated");
+			 $("#panchayatLvlLedLightsVendorSelectBoxId").val(0);
+			 $("#panchayatLvlLedLightsVendorSelectBoxId").trigger("chosen:updated");
+			 divId = "panchayatLvlLedDistrictSelectBoxId";
+			 lightVendorSelectBoxIdDivId = "panchayatLvlLedLightsVendorSelectBoxId";
+		 }
+		$("#"+divId).attr("attr_filter_type",resultType);
+		$("#"+lightVendorSelectBoxIdDivId).attr("attr_filter_type",resultType);
+		getLocationBasedOnSelection(resultType,filterType,filterValue,divId,locationLevel);
+		getAllLevelWiseDataOverView(locationLevel,filterType,filterValue,locationLevel,lightVendorArr,viewType);
+	}
+});
+
+$(document).on("click",".viewTypeCls",function() {
+	$(this).parent().find(".viewTypeCls").removeClass("active");
+	$(this).addClass("active");
+	var locationLevel = $(this).attr("attr_location_level");
+	var viewType = $(this).attr("attr_tab_type");
+	var filterType="";
+	var filterValue=0;
+	var lightVendorArr = [1,2];
+	/* alert(locationLevel);
+	alert(locationLevel);
 	if (locationLevel != null && locationLevel=="district") {
 		if (resultType != null && resultType=="district" || resultType=="parliament") {
 		  getAllLevelWiseDataOverView(resultType,filterType,filterValue,locationLevel,lightVendorArr);
@@ -1077,9 +1157,10 @@ $(document).on("click",".ledResultTypeCls",function() {
 		 }
 		$("#"+divId).attr("attr_filter_type",resultType);
 		$("#"+lightVendorSelectBoxIdDivId).attr("attr_filter_type",resultType);
-		getLocationBasedOnSelection(resultType,filterType,filterValue,divId,locationLevel);
-		getAllLevelWiseDataOverView(locationLevel,filterType,filterValue,locationLevel,lightVendorArr);
-	}
+		getLocationBasedOnSelection(resultType,filterType,filterValue,divId,locationLevel); 
+		getAllLevelWiseDataOverView(locationLevel,filterType,filterValue,locationLevel,lightVendorArr,viewType);
+	}*/
+	getAllLevelWiseDataOverView(locationLevel,filterType,filterValue,locationLevel,lightVendorArr,viewType);
 });
 
 $(document).on("change",".lebSelectBoxCls",function(){
@@ -1104,11 +1185,17 @@ $(document).on("change",".lebSelectBoxCls",function(){
 			 lightVendorArr.push(lightVendorId);
 		 }
 	 }
+	 var viewType='individual';
+	$('.levelTypeCls li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+				viewType = $(this).attr("attr_tab_type");
+			 }
+	});
 	
 	if(subLevel!='') {
 		getLocationBasedOnSelection(subLevel,filterType,locationValue,childDivId,locationLevel);	
 	}
-	getAllLevelWiseDataOverView(locationLevel,filterType,locationValue,locationLevel,lightVendorArr);
+	getAllLevelWiseDataOverView(locationLevel,filterType,locationValue,locationLevel,lightVendorArr,viewType);
 });
 $(document).on("change",".lightsVendorCls",function(){
 	
@@ -1150,7 +1237,13 @@ $(document).on("change",".lightsVendorCls",function(){
 	  } else {
 		  divId = locationLevel;
 	  }
-	getAllLevelWiseDataOverView(locationLevel,filterType,locationValue,divId,lightVendorArr);
+	  var viewType='individual';
+	$('.levelTypeCls li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+				viewType = $(this).attr("attr_tab_type");
+			 }
+	});
+	getAllLevelWiseDataOverView(locationLevel,filterType,locationValue,divId,lightVendorArr,viewType);
 });
 /* End */
 

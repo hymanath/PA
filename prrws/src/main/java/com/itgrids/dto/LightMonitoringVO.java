@@ -64,6 +64,7 @@ public class LightMonitoringVO implements Serializable{
     private Long nredcapFittedCount = 0L;
     private Long eeslnewCount = 0L;
     private Long nredcapNewCount = 0L;
+    private List<LightMonitoringVO> subList1 = new ArrayList<LightMonitoringVO>();
     
     
     public LightMonitoringVO() {
@@ -421,5 +422,11 @@ public class LightMonitoringVO implements Serializable{
 	}
 	public void setNredcapNewCount(Long nredcapNewCount) {
 		this.nredcapNewCount = nredcapNewCount;
+	}
+	public List<LightMonitoringVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<LightMonitoringVO> subList1) {
+		this.subList1 = subList1;
 	}
 }
