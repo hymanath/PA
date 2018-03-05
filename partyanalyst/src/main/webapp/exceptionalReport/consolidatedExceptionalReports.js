@@ -316,33 +316,6 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 	
 	var str='';
-	/* var excLocArr = [{exceptionCount:'1',val:'0'},{exceptionCount:'2',val:'0'},{exceptionCount:'3',val:'0'},{exceptionCount:'4',val:'0'},{exceptionCount:'5',val:'0'},{exceptionCount:'6',val:'0'},{exceptionCount:'7',val:'0'},{exceptionCount:'8',val:'0'},{exceptionCount:'9',val:'0'},{exceptionCount:'10',val:'0'}]
-	var globalobj='';
-	for(var i in result.subList1){
-		var sortNo = result.subList1[i].sortNo;
-		for(var j in excLocArr){
-			if(excLocArr[j].exceptionCount == sortNo){
-				var val = excLocArr[j].val+1;
-				globalobj={""+excLocArr[j].exceptionCount+""};
-				
-			}
-		}
-	}
-	console.log(globalobj) */
-	
-	/* var blocksArr = [{exceptionCount:'1',color:'#C1A384'},{exceptionCount:'2',color:'#7C664F'},{exceptionCount:'3',color:'#704722'},{exceptionCount:'4',color:'#A65C31'},{exceptionCount:'5',color:'#C70039'},{exceptionCount:'6',color:'#640707'},{exceptionCount:'7',color:'#FF5733'},{exceptionCount:'8',color:'#B02626'},{exceptionCount:'9',color:'#CD0707'},{exceptionCount:'10',color:'#FC1313'}]
-	str+='<div class="row">';
-		str+='<div class="col-sm-12 m_top20">';
-			str+='<ul class="list-inline">';
-			for(var i in blocksArr){
-				str+='<li>';
-					str+='<h4 class="text-bold"><span class="colorExpCls" style="background-color:'+blocksArr[i].color+'"></span> Exceptions('+blocksArr[i].exceptionCount+') - Parliaments()</h4>';
-				str+='</li>';
-			}
-				
-			str+='</ul>';
-		str+='</div>';
-	str+='</div>'; */
 	
 	//str+=''+getCountOfColor("dataTableElecBlock1")+'';
 	str+='<div id="dataTableElecBlock1Count"></div>';
