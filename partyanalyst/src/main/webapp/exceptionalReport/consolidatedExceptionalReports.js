@@ -447,13 +447,13 @@ function getCountOfColor(divId)
 		
 		str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top20">';
-			str+='<ul class="list-inline">';
+			str+='<ul class="list-inline li_border">';
 			var k = 0;
 			for(var i in globalStatusObj)
 			{
 				k = k+1;
 				str+='<li>';
-					str+='<h4 class="text-bold"><span class="colorExpCls" style="background-color:'+globalStatusObj1[k]+'"></span> '+k+' Excps-'+$('.'+divId+'exception'+k).length+'</h4>';
+					str+='<h4 class="text-bold f_16"><span class="colorExpCls" style="background-color:'+globalStatusObj1[k]+'"></span> '+k+' Excps - '+$('.'+divId+'exception'+k).length+'</h4>';
 				str+='</li>';
 			}	
 			str+='</ul>';

@@ -3381,3 +3381,9 @@ background-color:#FFE08E !important;
 .text-bold{
 	font-weight:bold;
 }
+.li_border li{
+	border: 1px solid #ccc;
+	padding: 5px;
+	border-radius: 5px;
+	margin-left: 5px;
+}
