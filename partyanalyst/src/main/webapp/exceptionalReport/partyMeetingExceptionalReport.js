@@ -104,7 +104,15 @@ function buildLevelWisePartyMeetingExceptionReport(result,id,levelName,partyMeet
 	
 		str+='<div class="row ">';
 		str+='<div class="col-sm-12 m_top10">';
+		if(levelName == "villageWard"){
+			str+='<h4 class="text_bold text-capital font_size24" >Village / Ward Level Meeting Details</h4>';
+		}else if(levelName =="mandalTownDivision"){
+			str+='<h4 class="text_bold text-capital font_size24" >Mandal / Town / Division Level Meeting Details</h4>';
+		}else{
 			str+='<h4 class="text_bold text-capital font_size24" >'+levelName+' Level Meeting Details</h4>';
+		}
+		
+			
 		str+='</div>';
 	str+='</div>';
 	str+='<div class="row">';
@@ -163,7 +171,7 @@ function buildLevelWisePartyMeetingExceptionReport(result,id,levelName,partyMeet
 	str+='<div class="row pagebreak">';
 			str+='<div class="col-sm-12 m_top20">';
 				if(levelName != "Constituency"){
-					str+='<h5 class="text_bold text-capital font_size24" >Top 10 Assembly Constituency with Poor Performance</h5>';
+					str+='<h5 class="text_bold text-capital font_size24" >Top 10 Assembly Constituencies with Poor Performance</h5>';
 				}else{
 					str+='<h5 class="text_bold text-capital font_size24" >Not Conducted Assembly Constituencies</h5>';
 				}
@@ -193,9 +201,11 @@ function buildLevelWisePartyMeetingExceptionReport(result,id,levelName,partyMeet
 									str+='<td>'+result.subList1[i].percentage+'</td>';
 								}
 								str+='</tr>';
-								countVar1 =countVar1+1;
-								if (countVar1 === 10) {
-									break;
+								if(levelName != "Constituency"){
+									countVar1 =countVar1+1;
+									if (countVar1 === 10) {
+										break;
+									}
 								}
 							}
 							

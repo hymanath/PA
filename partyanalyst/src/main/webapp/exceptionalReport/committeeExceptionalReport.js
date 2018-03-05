@@ -151,8 +151,16 @@ function buildCommiteeLevel(result,id,levelName){
 		}else{
 			str+='<div class="col-sm-12 m_top20">';
 		}
-		
-			str+='<h4 class="text_bold text-capital font_size24" >'+levelName+' Mandal Level Committee Details</h4>';
+			if(levelName == "Mandal"){
+				str+='<h4 class="text_bold text-capital font_size24" >'+levelName+'  Level Committee Details</h4>';
+			}else if(levelName == "Village"){
+				str+='<h4 class="text_bold text-capital font_size24" >Village / Ward  Level Committee Details</h4>';
+			}else if(levelName == "Booth"){
+				str+='<h4 class="text_bold text-capital font_size24" >Booth(Seva Mitra)  Level Committee Details</h4>';
+			}else if(levelName == "Affiliated"){
+				str+='<h4 class="text_bold text-capital font_size24" >Mandal Level Affiliated Committee Details</h4>';
+			}
+			
 		str+='</div>';
 	str+='</div>';
 	str+='<div class="row">';
@@ -210,7 +218,7 @@ function buildCommiteeLevel(result,id,levelName){
 	str+='</div>';
 	str+='<div class="row pagebreak">';
 			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital font_size24" >Top 10 Assembly Constituency with Poor Performance</h5>';
+				str+='<h5 class="text_bold text-capital font_size24" >Top 10 Assembly Constituencies with Poor Performance</h5>';
 				str+='<div class="table-responsive m_top10">';
 					str+='<table class="table details-overview">';
 						str+='<thead>';
