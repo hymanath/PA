@@ -17,6 +17,8 @@ var globalActionName='';
 var assignedBy='';
 var assignedTo='';
 var globalActionId='';
+var subjectIdsArr=[];
+var selectionType="";
 /*
 $(document).on("click",".actionCls",function(){
 	var isSelected=false;
@@ -159,6 +161,7 @@ function buildPetitionDetailsView(result){
 	 coveringLetterDoc=[];
 	 detailedReportDoc=[];
 	 mainWorkCoveringDocuments=[];
+	 subjectIdsArr=[];
 	 //globalReviewStatus='ASSIGNED';
 	 //globalReviewStatus='ASSIGNED';
 	 globalReviewStatus=result.actionType;
@@ -187,18 +190,39 @@ function buildPetitionDetailsView(result){
 	
 	 $('#forwardText').html('FORWARD FOR');
 	 $('#actionTypeStr').val(globalReviewStatus.toUpperCase());
-	 $("#letterNameId").html(""+globalActionName.toUpperCase()+"")
-	  $('#uploadFileDivCls').hide();
+	 $("#letterNameId").html(""+globalActionName.toUpperCase()+"");
+	 if( globalReviewStatus.toUpperCase() =='')
+		 $('#actioncopyRefId').show();
+	 
+		$('#uploadFileDivCls').hide();
+		$('#actionmemoDivId').hide();
+		$('#detaildReportReviewFiledsDivId').hide();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 	 $("#finalApproDocDiv").hide();
 	 if(globalReviewStatus=='COMPLETED'){
 		//alert(glDesignationId);
 		 if(glDesignationId == 23){
-			 if(globalActionId==3)
-				 $('#uploadFileDivCls').hide();
+			 if(globalActionId==3){
+				 $('#uploadFileDivCls').hide();				 
+				 $('#actionmemoDivId').hide();
+				 //alert(3);
+		//$('#detaildReportReviewFiledsDivId').show();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
+			 }
 			$("#letterNameId").html(""+globalActionName.toUpperCase()+"")
 			 
 		 }else if(glDesignationId == 2 || glDesignationId == 86){
 			 $("#uploadFileDivCls").hide();
+			 $('#actionmemoDivId').hide();
+			// alert(4);
+		//$('#detaildReportReviewFiledsDivId').show();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 			 $('#endorsWorksId').html('FORWARD PETITION');
 			 $('#forwardText').html('SELECT ACTION');
 		 }else{
@@ -206,6 +230,12 @@ function buildPetitionDetailsView(result){
 		 }
 	 }else{
 		 $("#uploadFileDivCls").hide();
+		 $('#actionmemoDivId').hide();
+		 
+		//$('#detaildReportReviewFiledsDivId').show();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 	 }
 	 
 	 if(glDesignationId != 23 && glDesignationId != 2 && glDesignationId != 86){
@@ -320,7 +350,7 @@ function buildPetitionDetailsView(result){
 													str+='<div class="col-sm-12 m_top15 ">';
 															if(typeof(result.historyList[h].subList1[j].subList1[k].assignedToDesignation) !='undefined' && result.historyList[h].subList1[j].subList1[k].assignedToDesignation != null && result.historyList[h].subList1[j].subList1[k].assignedToDesignation.length>0){
 																	str+='<div class="col-sm-6">';
-																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > ASSIGNED TO</u> : '+result.historyList[h].subList1[j].subList1[k].assignedToOfficerName+' ('+result.historyList[h].subList1[j].subList1[k].assignedToDesignation+')</h5>';
+																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > FORWARDED TO</u> : '+result.historyList[h].subList1[j].subList1[k].assignedToOfficerName+' '+result.historyList[h].subList1[j].subList1[k].assignedToDesignation+'</h5>';
 																	str+='</div>';
 															}
 										var officerDesig = "";
@@ -561,7 +591,11 @@ function buildPetitionDetailsView(result){
 										str+='<h5 class="font_weight">Name:</h5>';
 										str+='<h5 class="m_top5">'+result.representeeDetailsList[i].name+'</h5>';
 										str+='<h5 class="m_top10 font_weight">Designation</h5>';
-										str+='<h5 class="text_bold m_top10">'+result.representeeDetailsList[i].designation+'</h5>';
+										if(typeof(result.representeeDetailsList[i].designation != 'undefined') && result.representeeDetailsList[i].designation != null ){
+											
+										}
+										var designtion = result.representeeDetailsList[i].designation.replace("State Minister","");
+										str+='<h5 class="text_bold m_top10">'+designtion+'</h5>';
 										if(typeof(result.representeeDetailsList[i].candidateAddressVO) !='undefined' && result.representeeDetailsList[i].candidateAddressVO != null){
 											if(result.representeeDetailsList[i].candidateAddressVO.assemblyName != null && result.representeeDetailsList[i].candidateAddressVO.assemblyName.length>0)
 											str+='<h5 class="m_top5">'+result.representeeDetailsList[i].candidateAddressVO.assemblyName+' Constituency,</h5>';
@@ -775,8 +809,9 @@ function buildPetitionDetailsView(result){
 										}
 										
 										statusList = statusList+1;
-										str+='<div class="col-sm-3 m_top5">';
+										
 											if(result.statusList[i].count !=null && result.statusList[i].count>0){
+												str+='<div class="col-sm-3 m_top5">';
 												str+='<div style="padding:5px;background-color:#ccc;border:1px solid #d1ab66;">';
 													if(result.statusList[i].value !=null && result.statusList[i].value.length>20){
 														str+='<h5 class="tooltipCls" data-toggle="tooltip" title="'+result.statusList[i].value+'"><span class="rankingColor"><span style="top: -1px;position: relative;font-size: 12px;">'+statusList+'</span></span >'+result.statusList[i].value.substring(0,20)+'...</h5>';
@@ -786,8 +821,10 @@ function buildPetitionDetailsView(result){
 													
 													str+='<h4 class="font_weight m_top10">'+result.statusList[i].count+'</h4>';
 											str+='</div>';
+											str+='</div>';
 											}else{
-											/*	str+='<div style="padding:5px;background-color:#F5F5F5;border:1px solid #d1ab66;">';
+											/*	str+='<div class="col-sm-3 m_top5">';
+											str+='<div style="padding:5px;background-color:#F5F5F5;border:1px solid #d1ab66;">';
 													if(result.statusList[i].value !=null && result.statusList[i].value.length>20){
 														str+='<h5 class="tooltipCls" data-toggle="tooltip" title="'+result.statusList[i].value+'"><span class="rankingColor"><span style="top: -1px;position: relative;font-size: 12px;">'+statusList+'</span></span>'+result.statusList[i].value.substring(0,20)+'...</h5>';
 													}else{
@@ -796,10 +833,11 @@ function buildPetitionDetailsView(result){
 													
 													
 													str+='<h4 class="font_weight m_top10">'+result.statusList[i].count+'</h4>';
+											str+='</div>';
 											str+='</div>';*/
 											}
 											
-										str+='</div>';
+										
 									}
 									
 									
@@ -828,7 +866,28 @@ function buildPetitionDetailsView(result){
 					
 				str+='</div>';
 		str+='</div>';	
-		
+		str+='<div id="tableViewDiv"></div>';
+			
+	$("#representeeViewId").html(str);
+	$(".tooltipCls").tooltip();
+	
+	buildWorksDetils(result);/*
+	$("#workDetails1Tab").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": -1,
+		"aaSorting": [[ 8, "desc" ]],
+		"aLengthMenu": [[500, 100, 200, -1], [500, 100, 200, "All"]]
+	});
+	$('.dataTables_wrapper').addClass(" m_top25");*/
+}
+function buildWorksDetils(result){
+	
+	str='';
+	
 		str+='<div class="row m_top20">';
 			str+='<div class="col-sm-12">';
 		for(var i in result.subWorksList){
@@ -880,20 +939,47 @@ function buildPetitionDetailsView(result){
 												str+='</div>';
 											str+='</div>';
 										str+='</div>';
-										str+='<div class="col-sm-3">';
+							str+='</div>';
+							 str+='<div class="panel-body" style="background-color: #F7F7F7;">';
 										mainWorkCoveringDocuments=[];
 										for(var k in result.reportTypeFilesList){
 											if(result.reportTypeFilesList[k].key == "COVERING LETTER"){
 												if(result.reportTypeFilesList[k].filesList !=null && result.reportTypeFilesList[k].filesList.length>0){
-													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
-													
+													str+='<div class="col-sm-3">';
+													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS  </h5></div>';
+														str+='</div>';
 													mainWorkCoveringDocuments.push(result.reportTypeFilesList[k].filesList[0]);
 												}else{
-													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
+													str+='<div class="col-sm-3">';
+													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS </h5></div>';
+														str+='</div>';
+												}
+											}else if(result.reportTypeFilesList[k].key == "ACTION COPY"){
+												if(result.reportTypeFilesList[k].filesList !=null && result.reportTypeFilesList[k].filesList.length>0){
+													str+='<div class="col-sm-3">';
+													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="covering" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW &nbsp;ACTION&nbsp;COPY</h5></div>';
+														str+='</div>';
+													coveringLetterDoc.push(result.reportTypeFilesList[k].filesList[0]);
+												}else{
+													str+='<div class="col-sm-3">';
+													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="covering" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW &nbsp;ACTION&nbsp;COPY</h5></div>'; 
+														str+='</div>';
+												}
+											}
+											else if(result.reportTypeFilesList[k].key == "DETAILED REPORT"){
+												if(result.reportTypeFilesList[k].filesList !=null && result.reportTypeFilesList[k].filesList.length>0){
+													str+='<div class="col-sm-3">';
+													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="detailed" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW DETAILED REPORT</h5></div>';
+														str+='</div>';
+													detailedReportDoc.push(result.reportTypeFilesList[k].filesList[0]);
+												}else{
+													str+='<div class="col-sm-3">';
+													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="detailed" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW DETAILED REPORT</h5></div>'; 
+														str+='</div>';
 												}
 											}
 										}
-										str+='</div>';
+									
 									str+='</div>';
 								}
 							 str+='</div>';	
@@ -942,11 +1028,11 @@ function buildPetitionDetailsView(result){
 							str+='<table class="table table_customRep table-bordered  m_top25" id="workDetails1Tab" >';
 								str+='<thead>';
 									str+='<tr>';
-											str+='<th style="text-align:center" > <input type="checkbox" name="" id="" class="workStatusClassicalViewSelectedAllCls" value="0" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"/>&nbspSELECT&nbsp;ALL&nbsp</th>';
+											str+='<th style="text-align:center" title="Select All"> <input type="checkbox" name="" id="" class="workStatusClassicalViewSelectedAllCls" value="0" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'" />&nbsp;ALL&nbsp</th>';
 											str+='<th style="text-align:center" >DISTRICT</th>';
 											str+='<th style="text-align:center" >CONSTITUENCY</th>';
 											str+='<th style="text-align:center" >MANDAL/ MUNCIPALITY</th>';
-											str+='<th style="text-align:center" >PANCHAYAT</th>';
+											//str+='<th style="text-align:center" >PANCHAYAT</th>';
 											str+='<th style="text-align:center" >DEPARTMENT</th>';
 											str+='<th style="text-align:center" >SUBJECT</th>';
 											//str+='<th style="text-align:center" >SUB-SUBJECT</th>';
@@ -959,6 +1045,9 @@ function buildPetitionDetailsView(result){
 							str+='<tbody>';
 							
 							for(var j in result.subWorksList[i].subWorksList){
+								if(typeof(result.subWorksList[i].subWorksList[j].subjectId) !='undefined' && parseInt(result.subWorksList[i].subWorksList[j].subjectId)>0)
+									subjectIdsArr.push(result.subWorksList[i].subWorksList[j].subjectId);
+								
 								str+='<tr>';
 									str+='<td  style="text-align:center" > <input type="checkbox" name="" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls ClassicalViewCheckbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"/></td>';
 									if(typeof result.subWorksList[i].subWorksList[j].addressVO.districtName != 'undefined' && result.subWorksList[i].subWorksList[j].addressVO.districtName != null && result.subWorksList[i].subWorksList[j].addressVO.districtName.length>0)
@@ -973,10 +1062,10 @@ function buildPetitionDetailsView(result){
 										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].addressVO.tehsilName+'</td>';
 									else
 										str+='<td  style="text-align:center" > - </td>';
-									if(typeof result.subWorksList[i].subWorksList[j].addressVO.panchayatName != 'undefined' && result.subWorksList[i].subWorksList[j].addressVO.panchayatName != null && result.subWorksList[i].subWorksList[j].addressVO.panchayatName.length>0)
-										str+='<td>'+result.subWorksList[i].subWorksList[j].addressVO.panchayatName+'</td>';
-									else
-										str+='<td> - </td>';
+									//if(typeof result.subWorksList[i].subWorksList[j].addressVO.panchayatName != 'undefined' && result.subWorksList[i].subWorksList[j].addressVO.panchayatName != null && result.subWorksList[i].subWorksList[j].addressVO.panchayatName.length>0)
+									//	str+='<td>'+result.subWorksList[i].subWorksList[j].addressVO.panchayatName+'</td>';
+									//else
+									//	str+='<td> - </td>';
 									if(typeof result.subWorksList[i].subWorksList[j].deptName != 'undefined' && result.subWorksList[i].subWorksList[j].deptName != null && result.subWorksList[i].subWorksList[j].deptName.length>0)
 										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].deptName+'</td>';
 									else
@@ -985,15 +1074,15 @@ function buildPetitionDetailsView(result){
 										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].subject+'</td>';
 									else
 										str+='<td  style="text-align:center" > - </td>';
-								/*	if(typeof result.subWorksList[i].subWorksList[j].subSubject != 'undefined' && result.subWorksList[i].subWorksList[j].subSubject != null && result.subWorksList[i].subWorksList[j].subSubject.length>0)
-										str+='<td>'+result.subWorksList[i].subWorksList[j].subSubject+'</td>';
-									else
-										str+='<td> - </td>';*/
-									/*if(typeof result.subWorksList[i].subWorksList[j].grantName != 'undefined' && result.subWorksList[i].subWorksList[j].grantName != null && result.subWorksList[i].subWorksList[j].grantName.length>0)
-										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].grantName+'</td>';
-									else
-										str+='<td  style="text-align:center" > - </td>';
-									*/
+								//	if(typeof result.subWorksList[i].subWorksList[j].subSubject != 'undefined' && result.subWorksList[i].subWorksList[j].subSubject != null && result.subWorksList[i].subWorksList[j].subSubject.length>0)
+									//	str+='<td>'+result.subWorksList[i].subWorksList[j].subSubject+'</td>';
+									//else
+									//	str+='<td> - </td>';
+									//if(typeof result.subWorksList[i].subWorksList[j].grantName != 'undefined' && result.subWorksList[i].subWorksList[j].grantName != null && result.subWorksList[i].subWorksList[j].grantName.length>0)
+									//	str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].grantName+'</td>';
+									//else
+									//	str+='<td  style="text-align:center" > - </td>';
+									
 									if(typeof result.subWorksList[i].subWorksList[j].estimateCost != 'undefined' && result.subWorksList[i].subWorksList[j].estimateCost != null && result.subWorksList[i].subWorksList[j].estimateCost.length>0)
 										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].estimateCost+'</td>';
 									else
@@ -1114,18 +1203,66 @@ function buildPetitionDetailsView(result){
 										str+='<div class="col-sm-3">';
 										mainWorkCoveringDocuments=[];
 										for(var k in result.reportTypeFilesList){
+											console.log(result.reportTypeFilesList[k].key);
 											if(result.reportTypeFilesList[k].key == "COVERING LETTER"){
+												
 												if(result.reportTypeFilesList[k].filesList !=null && result.reportTypeFilesList[k].filesList.length>0){
-													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
+													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS  </h5></div>';
 													
 													mainWorkCoveringDocuments.push(result.reportTypeFilesList[k].filesList[0]);
 												}else{
-													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS</h5></div>';
+													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW COVERING DOCUMENTS </h5></div>'; 
 												}
 											}
-											
+											else if(result.reportTypeFilesList[k].key == "ACTION COPY"){
+												if(result.reportTypeFilesList[k].filesList !=null && result.reportTypeFilesList[k].filesList.length>0){
+													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW &nbsp;ACTION&nbsp;COPY</h5></div>';
+													
+													coveringLetterDoc.push(result.reportTypeFilesList[k].filesList[0]);
+												}else{
+													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW &nbsp;ACTION&nbsp;COPY</h5></div>'; 
+												}
+											}
+											else if(result.reportTypeFilesList[k].key == "DETAILED REPORT"){
+												if(result.reportTypeFilesList[k].filesList !=null && result.reportTypeFilesList[k].filesList.length>0){
+													str+='<div class="view_referral_Doc docsViewCls text-center" attr_docs="mainWorkCovering" style="cursor:pointer;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW DETAILED REPORT</h5></div>';
+													
+													detailedReportDoc.push(result.reportTypeFilesList[k].filesList[0]);
+												}else{
+													str+='<div class="view_referral_Doc_empty  text-center" attr_docs="mainWorkCovering" style="cursor:no-drop;padding:8px;"><i class="fa fa-file-text" aria-hidden="true" style="font-size: 22px;"></i> <h5 class="m_top10">VIEW DETAILED REPORT</h5></div>'; 
+												}
+											}
 										}
-											
+										
+										if(result.subWorksList[i].subWorksList != null && result.subWorksList[i].subWorksList.length>0){
+											if(result.subWorksList[i].subWorksList[0].reportTypeFilesList != null && result.subWorksList[i].subWorksList[0].reportTypeFilesList.length>0){
+												for(var k in result.subWorksList[i].subWorksList[0].reportTypeFilesList){
+													if(result.subWorksList[i].subWorksList[0].reportTypeFilesList[k].key == "DETAILED REPORT"){
+														str+='<div class="col-sm-4">';
+															if(result.subWorksList[i].subWorksList[0].reportTypeFilesList[k].filesList !=null && result.subWorksList[i].subWorksList[0].reportTypeFilesList[k].filesList.length>0){
+																str+='<h5 class="view_referral_Doc docsViewCls f_11" attr_docs="detailed" style="cursor:pointer;">VIEW&nbsp;DETAILED&nbsp;REPORT</h5>';
+																detailedReportDoc=result.subWorksList[i].subWorksList[0].reportTypeFilesList[k].filesList;
+															}else{
+																str+='<h5 class="view_referral_Doc_empty f_11" attr_docs="detailed" style="cursor:no-drop;">VIEW&nbsp;DETAILED&nbsp;REPORT</h5>';
+															}
+															
+														str+='</div>';
+														
+													}else if(result.subWorksList[i].subWorksList[0].reportTypeFilesList[k].key == "ACTION COPY"){
+														str+='<div class="col-sm-4">';
+															if(result.subWorksList[i].subWorksList[0].reportTypeFilesList[k].filesList !=null && result.subWorksList[i].subWorksList[0].reportTypeFilesList[k].filesList.length>0){
+																str+='<h5 class="view_referral_Doc docsViewCls f_11" attr_docs="covering" style="cursor:pointer;">VIEW&nbsp;ACTION&nbsp;COPY</h5>';
+																coveringLetterDoc=result.subWorksList[i].subWorksList[0].reportTypeFilesList[k].filesList;
+															}else{
+																str+='<h5 class="view_referral_Doc_empty f_11" attr_docs="covering" style="cursor:no-drop;">VIEW&nbsp;ACTION&nbsp;COPY</h5>';
+															}
+															
+														str+='</div>';
+													}
+												}
+											}
+										}
+												
 										str+='</div>';
 									str+='</div>';
 								}
@@ -1545,9 +1682,10 @@ function buildPetitionDetailsView(result){
 		
 			str+='</div>';
 		str+='</div>';
-			
-	$("#representeeViewId").html(str);
+		
+	$("#tableViewDiv").html(str);
 	$(".tooltipCls").tooltip();
+	
 	$("#workDetails1Tab").dataTable({
 		"paging":   true,
 		"info":     false,
@@ -1559,9 +1697,11 @@ function buildPetitionDetailsView(result){
 		"aLengthMenu": [[500, 100, 200, -1], [500, 100, 200, "All"]]
 	});
 	$('.dataTables_wrapper').addClass(" m_top25");
+		
 }
+
 $(document).on("click",".updateStatusChangeCls",function(){
-	
+	selectionType="onlyOne";
 	var enrorsNo = $(this).attr("attr_enrorsNo");
 	if(globalActionId == 1 )
 		$("#endorseMentHeadingId").html(" <span class='text-warning'>Present Status </span>: "+globalActionName) ;
@@ -1574,6 +1714,13 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	  $("#hiddenEndorseNo").val(enrorsNo);
 	}
 	
+	 $('#uploadFileDivCls').hide();
+		$('#actionmemoDivId').hide();
+		$('#detaildReportReviewFiledsDivId').hide();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+	 $("#actioncopyRefId").val(""); 
+	 $("#uploadFile").html(""); 
 	 $("#coveringLetterGenerator").html(""); 
 	 $("#remarkIdErr").html("");
 	 $("#ajaxcallImageId").html("");
@@ -1598,7 +1745,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	$("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
 	$("#grantId").trigger("chosen:updated");
     $("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
-	$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+	$("#officerId").html('<option value ="0">SELECT OFFICER </option>');
 	$("#finalapproveFile").html('');
 	if(globalReviewStatus == "COMPLETED"){
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
@@ -1606,7 +1753,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	}
 		
 	$("#statusChangeDivId").show();
-	
+	$('.addRemoveModel').addClass('closeSecondModal');
 	selectdWorksArr=[];
 	$(".workStatusUpdateCls").each(function(){
 		if($(this).is(":checked")){
@@ -1726,7 +1873,7 @@ $(document).on("click","#assignToUserId",function(){
 	$("#assignToId").html('');
 	$("#assignToId").html('<option value="0"> Select designation </option>');
 	$("#officerId").html('');
-	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+	$("#officerId").html('<option value ="0">SELECT OFFICER  </option>');
 	$('#assignningTypeId').html('FORWARD TO');
 	$("#assignToId").trigger("chosen:updated");
 	$("#officerId").trigger("chosen:updated");
@@ -1757,7 +1904,7 @@ $(document).on("change","#assignTypeId",function(){
 	$("#assignToId").html('');
 	$("#assignToId").html('<option value="0"> Select designation </option>');
 	$("#officerId").html('');
-	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+	$("#officerId").html('<option value ="0">SELECT OFFICER  </option>');
 	
 	$("#assignToId").trigger("chosen:updated");
 	$("#officerId").trigger("chosen:updated");
@@ -1791,7 +1938,7 @@ $(document).on("change","#statusChangeId",function(){
 	    $('#officerIdErr').html('');
 		$("#remarkIdErr").html('');
 		$('#statusIdErrStr').html('');
-		$("#officerId").html('<option value="0">SELECT OFFICER NAME</option>');
+		$("#officerId").html('<option value="0">SELECT OFFICER </option>');
         $("#officerId").trigger("chosen:updated");
 		$("#remarksId").val('');
 		$("#endorsmentNo").val('');
@@ -1834,7 +1981,7 @@ $(document).on("change","#statusChangeId",function(){
 		 $("#assignToId").html('<option value="0"> Select designation </option>');
 		 
 		$("#officerId").html('');
-		$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+		$("#officerId").html('<option value ="0">SELECT OFFICER  </option>');
 		//$("#uploadCoveringLetterFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadCoveringLetterFileDocId" class="m_top10"/>');
 		//initializeSingleUploadDocument("uploadCoveringLetterFileDocId");
 		
@@ -1894,7 +2041,7 @@ $(document).on("change","#statusChangeId",function(){
 		 $("#assignToId").html('<option value="0"> Select designation </option>');
 		 
 		$("#officerId").html('');
-		$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+		$("#officerId").html('<option value ="0">SELECT OFFICER  </option>');
 		
 		//getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr)
 	}*/else if(statusId == 3){
@@ -1921,7 +2068,11 @@ $(document).on("change","#statusChangeId",function(){
 		$("#fileUploadDiv").hide();
 		$("#fileUploadIdDiv").hide();
 		$("#uploadFileDivCls").hide();
-		
+		$('#actionmemoDivId').hide();
+		$('#detaildReportReviewFiledsDivId').hide();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 		 $("#assignToId").html('');
 		 $("#assignToId").html('<option value="0"> Select designation </option>');
 		 
@@ -1930,7 +2081,7 @@ $(document).on("change","#statusChangeId",function(){
 		 $("#referranceNoId").html('');
 		 
 		$("#officerId").html('');
-		$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+		$("#officerId").html('<option value ="0">SELECT OFFICER  </option>');
 		
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr)
 	}else if(statusId == 7){
@@ -1946,6 +2097,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#documentTypeDivId").hide();
 		$("#referranceNoDivId").hide();
 		$("#endorsementDivId").hide();
+		$("#detaildReportReviewFiledsDivId").hide();
 		$("#actionTypeDivId").show();
 		$("#buttonNameId").html("Save Details")
 		if(glDesignationId == 84|| glDesignationId == 93 || glDesignationId == 94 || glDesignationId == 95 || glDesignationId == 96 || glDesignationId == 97 || glDesignationId == 98){
@@ -1958,7 +2110,12 @@ $(document).on("change","#statusChangeId",function(){
 		//$(".saveEnable").prop("disabled", false);
 		//$('.saveEnable').removeAttr('title');
 		$("#coveringLetterGenerator").html("");
-		$("#uploadFileDivCls").hide();
+		$('#uploadFileDivCls').hide();
+		$('#actionmemoDivId').hide();
+		$('#detaildReportReviewFiledsDivId').hide();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 		$("#uploadFile").html('');
 		getLoginUserAccessSubDeptDesignationDetail(departmentSelectArr);
 	}else if(statusId == 4 || statusId == 5){
@@ -2005,25 +2162,49 @@ $(document).on("change","#statusChangeId",function(){
 		$("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
 		$("#grantId").trigger("chosen:updated");
 		$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
-		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+		$("#officerId").html('<option value ="0">SELECT OFFICER </option>');
 		//$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');	
 		$("#coveringLetterGenerator").html("");
 		$("#fileUploadIdDiv").hide();
-		$("#uploadFileDivCls").hide();
+		$('#uploadFileDivCls').hide();
+		$('#actionmemoDivId').hide();
+		$('#detaildReportReviewFiledsDivId').hide();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 		$("#uploadFile").html('');
 		return;
 	}
 	if(statusId == 6 || statusId == 3 || statusId == 4 || statusId == 5 ){
-		$("#uploadFileDivCls").hide();
+		$('#uploadFileDivCls').hide();
+		$('#actionmemoDivId').hide();
+		$('#detaildReportReviewFiledsDivId').hide();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 		$("#uploadFile").html('');
 	}else if(statusId == 14 || statusId == 15 ){
 		$("#uploadFileDivCls").show();
+		$('#actionmemoDivId').hide();
+		
+		$('#detaildReportReviewFiledsDivId').show();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
+		
+		
 	} 
 	if(glDesignationId == 23){
 		$('#actionTypeStr').val("ASSIGNED");
 		$("#uploadFileDivCls").hide();
+		$('#actionmemoDivId').hide();
+	
+		$('#detaildReportReviewFiledsDivId').show();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 		$("#uploadFile").html('');
 		
 		/*if(statusId == 6){
@@ -2041,10 +2222,26 @@ $(document).on("change","#statusChangeId",function(){
 		if(statusId == 6){
 			$('#actionTypeStr').val("ASSIGNED");
 			$("#uploadFileDivCls").hide();
+			$('#actionmemoDivId').hide();
+			
+		$('#detaildReportReviewFiledsDivId').show();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 			$("#uploadFile").html('');
 		}
 		else if(statusId != 6){
 			$("#uploadFileDivCls").show();
+			$('#actionmemoDivId').hide();
+			
+			if(statusId != 7)
+				$('#detaildReportReviewFiledsDivId').show();
+			else
+				$('#detaildReportReviewFiledsDivId').hide();
+			
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 			$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 			initializeSingleUploadDocument("uploadEndorsementDocId");
 			$('#actionTypeStr').val("COMPLETED");
@@ -2053,10 +2250,16 @@ $(document).on("change","#statusChangeId",function(){
 	
 	if(statusId == 14 || statusId == 15 ){
 		$("#uploadFileDivCls").show();
+		$('#actionmemoDivId').hide();
+		
+		$('#detaildReportReviewFiledsDivId').show();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 		$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		initializeSingleUploadDocument("uploadEndorsementDocId");
 		$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
-		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+		$("#officerId").html('<option value ="0">SELECT OFFICER </option>');
 		$("#assignOfficerDivId").show();
 		$("#assignDesignationDivId").show();
 		$('#actionTypeStr').val("COMPLETED");
@@ -2064,6 +2267,13 @@ $(document).on("change","#statusChangeId",function(){
 	}else if(statusId == 3){
 		$('#actionTypeStr').val("COMPLETED");
 			$("#uploadFileDivCls").hide();
+			$('#actionmemoDivId').hide();
+			
+		
+		$('#detaildReportReviewFiledsDivId').show();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
 			$("#uploadFile").html('');
 	}		
 });	
@@ -2224,7 +2434,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 			 }
 			 
 			 if(officerIdValue == null || officerIdValue==0){
-				 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer name</h5>");
+				 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer </h5>");
 				 flag = true ; 
 			 }else{
 				  $('#officerIdErr').html(""); 
@@ -2245,7 +2455,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 			 $('#assignToIdErr').html("");
 		  }
 		 if(officerIdValue == null || officerIdValue==0){
-			 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer name</h5>");
+			 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer </h5>");
 			    flag = true ; 
 		 }else{
 			  $('#officerIdErr').html(""); 
@@ -2272,7 +2482,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 			 $('#assignToIdErr').html("");
 		  }
 		 if(officerIdValue == null || officerIdValue==0){
-			 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer name</h5>");
+			 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer </h5>");
 				flag = true ; 
 		 }else{
 			  $('#officerIdErr').html(""); 
@@ -2317,6 +2527,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	   var endorsementNO="";
 	   var formData = new FormData();
 	   formData.append("petitionId",glPetitionId);
+	   formData.append("selectionType",selectionType);
 	   
 	   $('#endorsingSubWorksId input').each(
 		  function(){			  
@@ -2327,7 +2538,13 @@ function endorsingSubWorksAndAssigningToOfficer(){
 			if (typeof id !== typeof undefined && id !== false) {
 				if(text=='text' || text=='hidden'){
 					var name = $('#'+id+'').attr('name');
-					formData.append(name, $('#'+id+'').val());
+					if(id == 'actioncopyRefId'){
+						formData.append($('#'+id+'').attr('attr_name'), $('#'+id+'').val());						
+					}else if(name =='refNo' && (formData.get('refNo') == null || formData.get('refNo') == undefined || formData.get('refNo') == 'undefined')){
+						formData.append(name, $('#'+id+'').val());
+					}else{
+						formData.append(name, $('#'+id+'').val());
+					}
 					
 					if(name=="petitionId")
 						petitionId = $('#'+id+'').val();
@@ -2419,8 +2636,8 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	}
 	
 	//formData.append("petitionId", petitionId);
-	//alert(formData.get("statusType"));
-	
+	//alert(formData.get("refNo"));
+	//return;
 $.ajax({
 			url: $("#endorsingSubWorksId").attr("action"),
 			data: formData,
@@ -2577,7 +2794,7 @@ function generateCoveringLetterForPetition(){
 		 }
 		 
 		 if(officerIdValue == null || officerIdValue==0){
-			 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer name</h5>");
+			 $('#officerIdErr').html("<h5 style='color:red;'>Please select officer </h5>");
 			 flag = true ; 
 		 }else{
 			  $('#officerIdErr').html(""); 
@@ -2725,6 +2942,12 @@ $(document).on('click','.petitionWiseViewCommentsCls',function(){
  
  $("#remarksId").val('');
  $("#uploadFileDivCls").hide();
+ $('#actionmemoDivId').hide();
+
+		$('#detaildReportReviewFiledsDivId').show();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		$('#actioncopyRefId').val('');
  //$("#endorseMentHeadingId").html(" Update Latest Information ");
  $("#remarkIdErr").html('');
  $("#endorsementDivId").hide();
@@ -3133,7 +3356,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 							str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"> </h5> <p style="margin-left: 20px;" class="m_top5">'+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[0].remarks+' </p>';
 							
 							if(typeof(result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation) !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation != null && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation.length>0)
-								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ASSIGNED TO </span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName+' ('+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation+')</h5>';
+								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">FORWARDED TO </span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName+' '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation+'</h5>';
 							
 								str+='<div class="row">';
 									str+='<div class="col-sm-12">';
@@ -3288,7 +3511,7 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																	str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style=""> Remarks </span>: </h5> <p style="margin-left: 20px;" class="m_top5">'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].remarks+' </p>';
 																	
 																		if(typeof(result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation) !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation != null && result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation.length>0)
-																			str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ASSIGNED TO </span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToOfficerName+' ('+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation+')</h5>';
+																			str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">FORWARDED TO </span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToOfficerName+' '+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation+'</h5>';
 																			str+='<div class="row">';
 																				str+='<div class="col-sm-12">';
 																			if(typeof(result.subList1[j].subList1[k].subList1[l].subList1[m].subList1) !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1 != null && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1.length>0){

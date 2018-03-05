@@ -12,6 +12,7 @@ var wurl = windowUrl.substr(0,(windowUrl.indexOf("/cadreDetailsAction")));
 wurl = wurl.replace("/PartyAnalyst","");
 var allCheckedColumnsArr=[];
 
+$(".scrollTableColCls").mCustomScrollbar({setHeight:'400px'});
 function locationLevelRefresh(){
 	
 	$("#districtCandId").html('<option value="0">Select District</option>');
@@ -45,6 +46,9 @@ function locationLevelRefresh(){
 	$("#emailId").val(' ');
 	$("#endorsmentNoId").val(' ');
 	$("#summaryId").html("");
+	$('#updatStatusChangeId').css('background-color','#449d44');
+	$('#updatStatusChangeId').css('border-color','#449d44');
+	$('.paginationId').html('');
 	$("#representationRequestEntryTable").html('');
 	hideAndShowSelectBox();
 }
@@ -97,7 +101,7 @@ $("#dateRangePicker").daterangepicker({
 		}
 		locationLevelRefresh();
 		$("#petitionSubWorkRadioDivId").hide();
-		$("#workId").prop("checked",true);
+		//$("#workId").prop("checked",true);
 	});
 
 $(".chosen-select").chosen();
@@ -185,13 +189,19 @@ $(document).on("click",".selectedCls",function(){
 });
 
 $(document).on("change",".clearDataCls",function(){
+	$('#updatStatusChangeId').css('background-color','#449d44');
+	$('#updatStatusChangeId').css('border-color','#449d44');
+	$('.paginationId').html('');
 	$("#representationRequestEntryTable").html('');
 	$("#summaryId").html("");
 	$("#petitionSubWorkRadioDivId").hide();
-	$("#workId").prop('checked',false);
-	$("#petitionId").prop('checked',true);
+	//$("#workId").prop('checked',false);
+	//$("#petitionId").prop('checked',true);
 });
 function clearData(){
+	$('#updatStatusChangeId').css('background-color','#449d44');
+	$('#updatStatusChangeId').css('border-color','#449d44');
+	$('.paginationId').html('');
 	$("#summaryId").html("");
 	$("#representationRequestEntryTable").html('');
 	$("#petitionSubWorkRadioDivId").hide();
@@ -903,7 +913,7 @@ function getDesignationsBySearchType(searchType,selBoxId,onLoaddesigId,statusId)
 		getPetitionReferredMemberDetails([desigId],0,statusId);
 		}
 		if(searchBy == 'referral' && desigId >0){
-			getRepresentativeSearchDetails1("petition");
+			getRepresentativeSearchDetails1("petition",0);
 		}
 	});	
 }
@@ -954,7 +964,7 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
 		if(searchBy == 'department' && deptId >0){
-			getRepresentativeSearchDetails1("petition");
+			getRepresentativeSearchDetails1("petition",0);
 		}
 	});	
 }
@@ -1069,9 +1079,31 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
 	var isErr= searchValidations();
 	if(isErr == true)
 		return; 
-	$("#workId").prop("checked",false);
-	$("#petitionId").prop("checked",true);
-	getRepresentativeSearchDetails1('petition');
+	//$("#workId").prop("checked",false);
+	//$("#petitionId").prop("checked",true);
+	
+	$('#updatStatusChangeId').css('background-color','#449d44');
+	$('#updatStatusChangeId').css('border-color','#449d44');
+		$('.paginationId').html('');
+		
+	$(".petitionSubWorkRadoCls").each(function(){
+	if($(this).is(":checked")){
+		var typeVal =  $(this).attr("attr_type");
+		//alert(typeVal);
+		if(typeVal == "subWork"){
+			$("#representationRequestEntryTable").html('');
+			$("#petitionId").prop("checked",false);
+			getRepresentativeSearchDetails1(typeVal,0);
+			$("#petitionSubWorkRadioDivId").show();
+		}else if(typeVal == "petition"){
+			$("#workId").prop("checked",false);
+			$("#representationRequestEntryTable").html('');
+			getRepresentativeSearchDetails1(typeVal,0);
+			$("#petitionSubWorkRadioDivId").show();
+		}
+		}
+	});
+	
  });
 
 /* $(document).on("click",".viewBtnCls",function(){
@@ -1081,10 +1113,14 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
 	$("#representeeDetailsModelDivId").modal("show");
    getPetitionDetails(petionId,endorsNo);
  }); */
-function getRepresentativeSearchDetails1(value){
+function getRepresentativeSearchDetails1(value,globalStIndex){
 	$("#representationRequestEntryTable").html(spinner);
 	$("#petitionSubWorkRadioDivId").hide();
 	$("#errMsgId").html("");
+	$("#summaryId").html("");
+	if(globalStIndex == 0)
+		$(".paginationId").html("");
+	
 		var workStatus ="";
 		var viewType ="";
 		var divType="";
@@ -1114,7 +1150,7 @@ function getRepresentativeSearchDetails1(value){
 		for(var i in allCheckedColumnsArr){
 			$("."+allCheckedColumnsArr[i]).show();
 		}
-		console.log(allCheckedColumnsArr);
+	//	console.log(allCheckedColumnsArr);
 		
    var startDate = currentFromDate;
    var endDate = currentToDate;
@@ -1234,8 +1270,10 @@ var json = {
 	divType:divType,//cover,action,detailed,final and other docs
 	assetType:assetType,//with whome and latest updated time
 	workStatus:workStatus,//work docs
-	viewType:viewType//repRefDocs
-	
+	viewType:viewType,//repRefDocs
+	radioSelection:radioTypeVal,
+	firstIndex:globalStIndex,
+	maxResult:100	
     }
   
   $.ajax({                
@@ -1252,14 +1290,18 @@ var json = {
 	  $("#representationRequestEntryTable").html("");
     if(result != null && result.length>0){
 		$("#petitionSubWorkRadioDivId").show();
-		if(radioTypeVal == "petition"){
+		var countByDate = 0;
+		petitionWiseRepresenteeDetails(result,radioTypeVal,globalStIndex,countByDate);
+		buildSummeryDetails(result);
+		
+		/*if(radioTypeVal == "petition"){
 			buildSummeryDetails(result);
 			petitionWiseRepresenteeDetails(result)
 		}else{
-		buildSummeryDetails(result);
-        representationRequestEntryTable(result);
+			buildSummeryDetails(result);
+			representationRequestEntryTable(result);
 		}
-		
+		*/
     }else{
       $("#representationRequestEntryTable").html("NO DATA AVAILABLE");
     }
@@ -1340,7 +1382,7 @@ function getStatusList(onLoadstatusId){
 		}
 		$("#statusId").trigger('chosen:updated');
 		if(searchBy == 'total' && statusId >0){
-			getRepresentativeSearchDetails1("petition");
+			getRepresentativeSearchDetails1("petition",0);
 		}
   }); 
 }
@@ -1362,7 +1404,7 @@ function getPetitionDetailsDummy(petitionId,endorsNo){
       xhr.setRequestHeader("Content-Type", "application/json");
     }
   }).done(function(result){
-    console.log(result);
+    //console.log(result);
 	if(result != null){
 		setPmRepresenteeDataToResultView(result,endorsNo);
 	}else{
@@ -1865,7 +1907,7 @@ function getPetitionReferredMemberDetails(desigIds,selrefCanId,statusId){
 		}
 		$("#referralNameId").trigger('chosen:updated');
 		if(searchBy == 'referralCan' && refCanId >0){
-			getRepresentativeSearchDetails1("petition");
+			getRepresentativeSearchDetails1("petition",0);
 		}
 	});	
 }
@@ -1889,7 +1931,7 @@ function updatePetitionStatusDetails(){
 	      xhr.setRequestHeader("Content-Type", "application/json");
 	    }
 	  }).done(function(result){
-	    console.log(result);
+	   // console.log(result);
 		if(result != null){
 			
 		}else{
@@ -1965,7 +2007,7 @@ function getLoginUserAccessSubDeptDesignationDetail(selectedDeptIdsArr){
 	 $("#assignToId").html('<option value="0"> SELECT DESIGNATION </option>');
 	 
 	$("#officerId").html('');
-	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+	$("#officerId").html('<option value ="0">SELECT OFFICER  </option>');
 	
  var json = {
 	 deptIdsList : selectedDeptIdsArr,
@@ -2014,7 +2056,8 @@ $(document).on('change','.popUpChangesCls',function(){
 function getDeptDesignationOfficerDetail(onChangeValue){
 	
 	$("#officerId").html('');
-	$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+	$("#officerId").html('<option value ="0">SELECT OFFICER  </option>');
+	$("#officerId").trigger('chosen:updated');
 	var deptDesignationId = onChangeValue;
  var json = {
 		//deptDesignationId : deptDesignationId,
@@ -2033,7 +2076,7 @@ $.ajax({
 	}
 }).done(function(result){
 	if(result != null && result.length >0){
-		$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+		$("#officerId").html('<option value ="0">SELECT OFFICER </option>');
 		for(var i in result){
 			if(result[i].key == 381)// jawahar reddy
 				$("#officerId").append('<option value ="'+result[i].key+'" selected>'+result[i].value.toUpperCase()+'</option>');
@@ -2071,7 +2114,7 @@ $(document).on('click','.modelEndoreCls',function(){
 	var nextStatusId = $(this).attr("attr_next_status_id");
 	$("#endorseErrMsgId").html("");
 	$("#officerId").html('');
-	$("#officerId").html('<option value ="0">Select Officer Name</option>');
+	$("#officerId").html('<option value ="0">Select Officer </option>');
 	$("#remarksId").html("");
 	$("#endorsmentNo").val('');
 	$("#uploadFile").html('');
@@ -2090,14 +2133,14 @@ $(document).on('click','.modelEndoreCls',function(){
 			$("#leadId").html('<option value ="0">SELECT LEAD </option>');
 			$("#grantId").html('<option value ="0">SELECT UNDER GRANT</option>');
 			$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
-			$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+			$("#officerId").html('<option value ="0">SELECT OFFICER </option>');
 			$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 			
 			$("#assignToId").html('');
 			 $("#assignToId").html('<option value="0"> Select designation </option>');
 			 
 			$("#officerId").html('');
-			$("#officerId").html('<option value ="0">SELECT OFFICER NAME </option>');
+			$("#officerId").html('<option value ="0">SELECT OFFICER  </option>');
 			
 			initializeSingleUploadDocument("uploadEndorsementDocId");
 			getPmBriefLeadList();
@@ -2243,7 +2286,7 @@ function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
 		if(searchBy == 'subject' && subjId >0){
-			getRepresentativeSearchDetails1("petition");
+			getRepresentativeSearchDetails1("petition",0);
 		} 
 	});	
 }
@@ -2317,16 +2360,18 @@ $.ajax({
 $(document).on("click",".petitionSubWorkRadoCls",function(){
 	if($(this).is(":checked")){
 		var typeVal =  $(this).attr("attr_type");
-		
+		$('#updatStatusChangeId').css('background-color','#449d44');
+	$('#updatStatusChangeId').css('border-color','#449d44');
+		$('.paginationId').html('');
 		if(typeVal == "subWork"){
 			$("#representationRequestEntryTable").html('');
 			$("#petitionId").prop("checked",false);
-			getRepresentativeSearchDetails1(typeVal);
+			getRepresentativeSearchDetails1(typeVal,0);
 			$("#petitionSubWorkRadioDivId").show();
 		}else if(typeVal == "petition"){
 			$("#workId").prop("checked",false);
 			$("#representationRequestEntryTable").html('');
-			getRepresentativeSearchDetails1(typeVal);
+			getRepresentativeSearchDetails1(typeVal,0);
 			$("#petitionSubWorkRadioDivId").show();
 		}
 	}
@@ -2336,8 +2381,8 @@ $(document).on("click",".menu-cls-table",function(e){
 	$(".menuCls-table").toggle();
 });
 
-function petitionWiseRepresenteeDetails(result){
-	
+function petitionWiseRepresenteeDetails(myResult,radioTypeVal,globalStIndex,countByDate){
+	 
 	 var  RepresentationDate=false;
 	 var  EndorsmentNo=false; 
 	 var  EndorsmentDate=false; 
@@ -2370,180 +2415,16 @@ function petitionWiseRepresenteeDetails(result){
 		str+='<div class="panel-heading" style="background-color:#344650; color:#fff;">';
 			str+='<h4 class="panel-title">';
 			str+='<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"> REPRESENTATIONS DETAILS </a></h4>';
-			/*str+='<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"> REPRESENTATIONS DETAILS </a> <i class="fa fa-gears menu-cls-table pull-right" style="position:relative;color:#fff"></i></h4>';
-			str+='<div class="menuCls-table">';
-				str+='<div class="arrow_box_top">';
-					str+='<div class="row">';
-					str+='<div class="col-sm-12">';
-					
-						str+='<ul style="padding-top:0px;padding-left: 20px;padding-bottom:0px;padding-right:0px;" >';
-							str+='<li>';
-								str+='<label class="checkbox-inline">';
-								str+='<input value="selectAll" class="getColumnAllCls" id="" type="checkbox">';
-									str+='<div style="margin-top: 3px;"><h5 class="text-capital font_weight" style="color:#54616C;">Select All</h5></div>';
-								str+='</label>';
-							str+='</li>';
-						str+='</ul>';
-					
-					str+='</div>';
-					str+='</div>';
-					str+='<div class="row">';
-					str+='<div class="col-sm-12">';
-					
-						str+='<div class="scrollTableColCls">';
-						str+='<ul style="padding-top:0px;padding-left: 20px;padding-bottom:0px;padding-right:0px;" class="line_heightCls m_top10">';
-						str+='<li class="">';
-							str+='<label class="checkbox-inline">';
-								str+='<input id="checkbox1" name="name1" type="checkbox" class="getColumnCls" value="RepresentationDate" checked/>';	
-								str+='<div style="margin-top: 3px;"><h5 class="text-capital font_weight" style="color:#54616C;"> Representation Date</h5></div>';
-							str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EndorsmentNo" checked> Endorsment No</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EndorsmentDate" checked> Endorsment Date</h5>';	
-						str+='</label class="checkbox-inline">';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeType" checked> Representee Type</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeName" checked> Representee Name</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="RepresenteeDesignation" checked> Representee DESIGNATION</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="ReferrerName" checked>Referrer Name</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="ReferreerDesignation" checked>Referreer Designation</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkDescription" checked>Work Description</h5>';	
-						str+='</label>';
-						str+='</li>';
-						 str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks">No&nbsp;of&nbsp;Works</h5>';	
-						str+='</label>'; 
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="EstimationCost" checked>ESTIMATION COST (in Lakhs)</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Status" checked>STATUS</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="noofWorks" checked>NO OF WORKS</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Department">DEPARTMENT</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LeadName">LEAD NAME</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="Subject">SUBJECT</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="SubSubject">SUB SUBJECT</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="GrantName">GRANT NAME</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WorkType">WORK TYPE</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasCoveringLtr">HAS COVERING LTR</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasActionCopy">HAS ACTION COPY</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasDetailedReport">HAS DETAILED REPORT</h5>';	
-						str+='</label>';
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasFinalCopy">HAS FINAL COPY</h5>';	
-						str+='</label>'
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasOthersCopy">HAS OTHERS COPY</h5>';	
-						str+='</label>'
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="HasWorkCopy">HAS WORK DOCS</h5>';	
-						str+='</label>'
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WithWhome">WITH WHOME</h5>';	
-						str+='</label>'
-						str+='</li>';
-						str+='<li>';
-						str+='<label class="checkbox-inline">';
-							str+='<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="LastUpdatedTime">LAST UPDATED TIME</h5>';	
-						str+='</label>'
-						str+='</li>';
-						str+='</ul>'
-					str+='</div>';
-					str+='</div>';
-					str+='</div>';
-					
-					str+='<div class="row">';
-						str+='<div class="col-sm-12">';
-							str+='<button type="button" class="btn btn-primary btn-sm selectedColumnsTableCls">Submit</button>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';*/
+			
 			str+='</div>';
 		str+='</div>';
 		
 		str+='<div id="collapseTwo" class="panel-collapse collapse in">';
 		str+='<div class="panel-body">';
+		if(myResult !=null && myResult.length>0){
+			if(globalStIndex == 0){
+					countByDate=myResult[0].totalResultCount;
+			}
 		//if($(window).width>800){
 			str+='<div class="table-responsive">';
 		//}
@@ -2551,6 +2432,14 @@ function petitionWiseRepresenteeDetails(result){
 			str+='<table class="table table_customRep table-bordered" id="workDetailsTab">';
 				str+='<thead>';
 					str+='<tr>';
+					
+					var alreadyBuild=false;
+					if(glDesignationId == 23){
+						$('#updatStatusChangeId').css('background-color','#e6e6e6;');
+						$('#updatStatusChangeId').css('border-color','#e6e6e6;');
+						
+						str+='<th style="text-align:center" title="Select All"> <input type="checkbox" name="" id="" class="petitionsSelectedAllCls" value="0" />&nbsp;ALL&nbsp </th>';
+					}
 					for(var n in allCheckedColumnsArr){
 						if(allCheckedColumnsArr[n].trim() =='RepresentationDate'){
 							RepresentationDate =true;
@@ -2563,7 +2452,7 @@ function petitionWiseRepresenteeDetails(result){
 							str+='<th class="EndorsmentDate" ><span title="Endorsment Date" class="tooltipCls" data-toggle="tooltip">ENDORS DATE</span></th>';
 						}else if(allCheckedColumnsArr[n].trim() =='RepresenteeType'){
 							RepresenteeType =true;
-							str+='<th  class="RepresenteeType" ><span title="Representee Type" class="tooltipCls" data-toggle="tooltip">REP Type</span></th>';
+							str+='<th  class="RepresenteeType" ><span title="Representee Type" class="tooltipCls" data-toggle="tooltip">REP TYPE</span></th>';
 						}else if(allCheckedColumnsArr[n].trim() =='RepresenteeName'){
 							RepresenteeName =true;
 							str+='<th class="RepresenteeName" ><span title="Representee Name" class="tooltipCls" data-toggle="tooltip">REPRESENTEE NAME</span></th>';
@@ -2576,78 +2465,271 @@ function petitionWiseRepresenteeDetails(result){
 						}else if(allCheckedColumnsArr[n].trim() =='ReferreerDesignation'){
 							ReferreerDesignation =true;
 							str+='<th class="ReferreerDesignation" ><span title="Referrar Designation" class="tooltipCls" data-toggle="tooltip">REF DESIGNATION</span></th>';*/
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
 						}else if(allCheckedColumnsArr[n].trim() =='WorkDescription'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
 							WorkDescription =true;
 							str+='<th  class="WorkDescription" ><span style="min-width:200px !important;"  title="Work Description" class="tooltipCls" data-toggle="tooltip">WORK DESC</span></th>';
 						}else if(allCheckedColumnsArr[n].trim() =='EstimationCost'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							EstimationCost =true;
 							str+='<th  class="EstimationCost" >ESTIMATION COST (in Lakhs)</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='noofWorks'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							noofWorks =true;
-							str+='<th  class="noofWorks" >NO OF WORKS</th>';
+							if(radioTypeVal=="petition")
+								str+='<th  class="noofWorks" >NO OF WORKS</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='Status'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							Status =true;
 							str+='<th class="Status" >STATUS</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='Department'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							Department =true;
 							str+='<th  class="Department">DEPARTMENT</th>';	//columnShowHide	
 						}else if(allCheckedColumnsArr[n].trim() =='Subject'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							Subject =true;
 							str+='<th  class="Subject ">SUBJECT</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='SubSubject'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							SubSubject =true;
 							str+='<th  class="SubSubject ">SUB_SUBJECT</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='GrantName'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							GrantName =true;
 							str+='<th  class="GrantName ">GRANT NAME</th>';	
 						}else if(allCheckedColumnsArr[n].trim() =='LeadName'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							LeadName =true;
 							str+='<th  class="LeadName ">LEAD NAME</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='WorkType'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							WorkType =true;
 							str+='<th  class="WorkType ">WORK TYPE</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='HasReprRefDocs'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							HasReprRefDocs =true;
-							str+='<th  class="HasReprRefDocs ">HAS Repr Ref DOCS</th>';
+							str+='<th  class="HasReprRefDocs "> REPR REF DOCS</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='HasWorkCopy'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							HasWorkCopy =true;
-							str+='<th  class="HasWorkCopy ">HAS WORK DOCS</th>';
+							str+='<th  class="HasWorkCopy "> WORK DOCS</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='HasCoveringLtr'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							HasCoveringLtr =true;
-							str+='<th  class="HasCoveringLtr ">HAS COVERING LTR</th>';
+							str+='<th  class="HasCoveringLtr "> COVERING LTR</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='HasActionCopy'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							HasActionCopy =true;
-							str+='<th  class="HasActionCopy ">HAS ACTION COPY</th>';
+							str+='<th  class="HasActionCopy "> ACTION COPY</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='HasDetailedReport'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							HasDetailedReport =true;
-							str+='<th  class="HasDetailedReport ">HAS DETAILED REPORT</th>';
+							str+='<th  class="HasDetailedReport "> DETAILED REPORT</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='HasFinalCopy'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							HasFinalCopy =true;
-							str+='<th  class="HasFinalCopy ">HAS FINAL COPY</th>';
+							str+='<th  class="HasFinalCopy "> FINAL COPY</th>';
 						}else if(allCheckedColumnsArr[n].trim() =='HasOthersCopy'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							HasOthersCopy =true;
-							str+='<th  class="HasOthersCopy ">HAS OTHERS COPY</th>';						
+							str+='<th  class="HasOthersCopy "> OTHERS COPY</th>';						
 						}else if(allCheckedColumnsArr[n].trim() =='WithWhome'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							
 							WithWhome =true;
-							str+='<th  class="WithWhome ">WITH WHOME</th>';
+							str+='<th  class="WithWhome "> CURRENTLY WITH </th>';
 						}else if(allCheckedColumnsArr[n].trim() =='LastUpdatedTime'){
+							
+							if(!alreadyBuild){
+								alreadyBuild = true;
+								str+='<th>DISTRICT</th>';
+								str+='<th>ASSEMBLY</th>';
+								str+='<th>MANDAL/MUNCI.</th>';
+							}
+							
+							 
 							LastUpdatedTime =true;
 							str+='<th  class="LastUpdatedTime ">LAST UPDATED TIME</th>';
 						}
 					}
-						str+='<th>ACTION</th>';
+					
+					str+='<th>ACTION</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
 				
-					for(var i in result){
+					for(var s in myResult){
 					  /* for(var j in result[i].subList){
 						  var noofWorks = result[i].subList;
 					} */
-												
+					var result=[];
+					if(radioTypeVal=="petition")
+						result.push(myResult[s]);
+					else
+						result=myResult[s].subList;
+					
+					for(var i in result){
+					
 					var endorsmentNo='';
 					str+='<tr>';
-					  if(RepresentationDate){
+					if(glDesignationId == 23){
+						str+='<td  style="text-align:center" > <input type="checkbox" name="" id="" value="'+result[i].petitionId+'" class="petitionStatusUpdateCls"/> &nbsp; ';
+						//str+='<i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
+						str+='</td>';	
+					}
+					
+					  if(RepresentationDate){	
 						if(result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined"){
 							str+='<td style="text-align:center;" class="RepresentationDate ">'+result[i].raisedDate+'</td>';
 						}else{
@@ -2677,8 +2759,8 @@ function petitionWiseRepresenteeDetails(result){
 						}
 					  }
 					  if(RepresenteeName){
-						if (result[i].name != null && typeof(result[i].name) != "undefined"){
-							str+='<td style="text-align:center;" class="RepresenteeName">'+result[i].name+'</td>';
+						if (myResult[s].name != null && typeof(myResult[s].name) != "undefined"){
+							str+='<td style="text-align:center;" class="RepresenteeName">'+myResult[s].name+'</td>';
 						}else{
 							str+='<td style="text-align:center;" class="RepresenteeName"> - </td>';
 						}
@@ -2701,6 +2783,26 @@ function petitionWiseRepresenteeDetails(result){
 						}*/
 						
 					  }
+					  
+					  if(typeof(result[i].addressVO) !='undefined'){
+							if(result[i].addressVO.districtName != '')
+								str+='<td  style="text-align:center;">'+result[i].addressVO.districtName+'</td>';
+							else
+								str+='<td  style="text-align:center;"> - </td>';
+							if(result[i].addressVO.assemblyName != '')						
+								str+='<td  style="text-align:center;">'+result[i].addressVO.assemblyName+'</td>';
+							else 
+								str+='<td  style="text-align:center;"> - </td>';
+							if(result[i].addressVO.tehsilName != '')
+								str+='<td  style="text-align:center;">'+result[i].addressVO.tehsilName+'</td>';
+							else
+								str+='<td  style="text-align:center;"> - </td>';
+						}else{
+							str+='<td  style="text-align:center;"> - </td>';
+							str+='<td  style="text-align:center;"> - </td>';
+							str+='<td  style="text-align:center;"> - </td>';
+						}
+						
 					  if(WorkDescription){
 						if (result[i].workName != null && result[i].workName != ""){
 							//if(result[i].workName !=null && result[i].workName.length>50){
@@ -2746,9 +2848,11 @@ function petitionWiseRepresenteeDetails(result){
 							var filledWorksCount = 0;
 							if(result[i].subList != 'undefined' && result[i].subList != null && result[i].subList.length>0) 
 								filledWorksCount = result[i].subList.length;
-							str+='<td class="noofWorks" >';
-								str+='<h4 class="viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"><span title="Entered works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer" class="tooltipCls">'+filledWorksCount+'</span> (<span class="tooltipCls" title="Total works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer">'+result[i].noOfWorks+'</span>)</h4>';
-							str+='</td>';
+							if(radioTypeVal=="petition"){
+								str+='<td class="noofWorks" >';
+									str+='<h4 class="viewBtnCls" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"><span title="Entered works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer" class="tooltipCls">'+result[i].noOfWorks+'</span> <!--(<span class="tooltipCls" title="Total works count" data-toggle="tooltip" data-placement="top" style="font-size: 16px;cursor:pointer">'+filledWorksCount+'</span>)--></h4>';
+								str+='</td>';
+							}
 							//str+='<td class="text-center"><i class="viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top"  </i> <span title="Entered works count " >'+filledWorksCount+' </span>/ <span title="Total works count " >'+result[i].noOfWorks+' </span> </td>';
 						}else{
 							str+='<td class="noofWorks" > - </td>';
@@ -2756,7 +2860,7 @@ function petitionWiseRepresenteeDetails(result){
 					  }
 					  if(Status){
 						if (result[i].petitionStatusId != null && result[i].petitionStatusId == 1){
-							str+='<td style="text-align:center;" class="Status"> PENDING ENODRSEMENT </td>';
+							str+='<td style="text-align:center;" class="Status"> PENDING ENDORSEMENT </td>';
 						}else if (result[i].petitionStatusId != null && result[i].petitionStatusId == 2){
 							str+='<td style="text-align:center;" class="Status"> IN-PROGRESS </td>';
 						}else if (result[i].petitionStatusId != null && result[i].petitionStatusId == 8){
@@ -2905,30 +3009,72 @@ function petitionWiseRepresenteeDetails(result){
 								str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
 						}
 						*/
-						str+='</td>';
+						str+='</td>';						
 					str+='</tr>';
-					
 					}
+				}
 				str+='</tbody>';
 			str+='</table>';
 			//if($(window).width>800){
 				str+='</div>';
 			//}
 			
+			if(globalStIndex == 0 && countByDate > 10){
+				//setTimeout(5000);
+				$(".paginationId").pagination({
+					items: countByDate,
+					itemsOnPage: 100,
+					cssStyle: 'light-theme',
+					hrefTextPrefix: '#pages-',
+					onPageClick: function(pageNumber) { 
+						var num=(pageNumber-1)*100;
+						$(".petitionSubWorkRadoCls").each(function(){
+							if($(this).is(":checked")){
+								var typeVal =  $(this).attr("attr_type");
+									//alert(typeVal);
+									if(typeVal == "subWork"){
+										$("#representationRequestEntryTable").html('');
+										$("#petitionId").prop("checked",false);
+										getRepresentativeSearchDetails1(typeVal,num);
+										$("#petitionSubWorkRadioDivId").show();
+									}else if(typeVal == "petition"){
+										$("#workId").prop("checked",false);
+										$("#representationRequestEntryTable").html('');
+										getRepresentativeSearchDetails1(typeVal,num);
+										$("#petitionSubWorkRadioDivId").show();
+									}
+								}
+							});
+					}
+					
+				});
+			}
+				str+='</div>';
+			
+		}else{
+			$(".paginationId").html("");
+						
+			str+='<div class="col-sm-12" style="text-align:center;"> <h4> No Data Available </h4> </div>';
+		}
 			str+='</div>';
 		str+='</div>';	
 	str+='</div>';
 	$("#representationRequestEntryTable").html(str);
 	$(".tooltipCls").tooltip();
-	$("#workDetailsTab").dataTable({
+	 $("#workDetailsTab").dataTable({
 		"paging":   true,
 		"info":     false,
 		"searching": true,
 		"autoWidth": true,
 		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-		"iDisplayLength": 500,
+		/*"iDisplayLength": 500,
 		"aaSorting": [[ 0, "desc" ]],
 		"aLengthMenu": [[500,200,100 -1], [ 500,200,100, "All"]],
+		*/
+		"iDisplayLength": 100,
+		"aaSorting": [],
+		"aLengthMenu": [[10,50, 100, 500, -1], [10,50, 100, 500, "All"]],
+		
 		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 		"<'row'<'col-sm-12'tr>>" +
 		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -2942,11 +3088,12 @@ function petitionWiseRepresenteeDetails(result){
 					}
 				}
 			]
-	});
-	var Collength = $(".line_heightCls li").length;
+	}); 
+	 var Collength = $(".line_heightCls li").length;
 	if(Collength>8){
 		$(".scrollTableColCls").mCustomScrollbar({setHeight:'400px'});
 	}
+	$('#workDetailsTab_paginate').hide();
   }
   $(document).on("click",".petitionModelClose",function(){
 	setTimeout(function(){
@@ -2980,7 +3127,7 @@ $(document).on("click",".uploadFuncCls",function(){
 				$("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
 				$("#grantId").trigger("chosen:updated");
 				$("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
-				$("#officerId").html('<option value ="0">SELECT OFFICER NAME</option>');
+				$("#officerId").html('<option value ="0">SELECT OFFICER </option>');
 				$("#finalapproveFile").html('');
 				$("#statusChangeDivId").show();
 	if($(this).is(":checked")){
@@ -3038,4 +3185,118 @@ $(document).on("click",".uploadFuncCls",function(){
 		$('#advanceSearchId').trigger('click');
 		
 	});	
+$(document).click(function() {
+    $(".menuCls-table").hide();
+});
+
+$(document).on("click",".petitionsSelectedAllCls",function(){
+	if($(this).is(":checked")){
+		$(".petitionStatusUpdateCls").prop("checked",true);
+	}else{
+		$(".petitionStatusUpdateCls").prop("checked",false);
+	}
+});
+
+
+$(document).on("click",".petitionStatusUpdateCls",function(){
+	var notSelectedCount=0;
+	$(".petitionsSelectedAllCls").prop("checked",false);
+	$('.petitionStatusUpdateCls').each(function(){
+		if($(this).is(":checked")){
+			;
+		}else{
+			notSelectedCount=parseInt(notSelectedCount)+1;
+		}
+	});
+	if(parseInt(notSelectedCount)==0)
+		$(".petitionsSelectedAllCls").prop("checked",true);
+});
+
+$(document).on("click",".addRemoveModel",function(){
+	if(glDesignationId == 23)
+		$('#updatStatusChangeId').show();
+	else
+		$('#updatStatusChangeId').hide();
+});
+$(document).on("click","#updatStatusChangeId",function(){
+	//$('#updatStatusChangeId').hide();
 	
+	selectdWorksArr=[];
+	departmentSelectArr=[];
+	$(".petitionStatusUpdateCls").each(function(){
+		if($(this).is(":checked")){
+			var value=$(this).val();
+			if(parseInt(value)>0)
+				selectdWorksArr.push(value);
+		}
+	});
+	
+	if(selectdWorksArr.length == 0){
+		alert("Please select atleast one work to update.");
+		return ;
+	}
+	
+	selectionType ="all";
+	    $("#endorseDivId").hide();
+	    $('#uploadFileDivCls').hide();
+		$('#actionmemoDivId').hide();
+		$('#detaildReportReviewFiledsDivId').hide();
+		$('#sanctinedAmountId').val('');
+		$('#workInKmId').val('');
+		 $("#actioncopyRefId").val(""); 
+		 $("#uploadFile").html(""); 
+		 $("#coveringLetterGenerator").html(""); 
+		 $("#remarkIdErr").html("");
+		 $("#ajaxcallImageId").html("");
+		 $("#fileUploadIdDiv").hide();//uploadFileDivCls
+	var totalWorks = $(this).attr("attr_total_works");
+	
+	
+	$("#fileUploadDiv").hide();
+	$("#commentsDivId").show();
+	$("#leadDivId").hide();
+	$("#grantDivId").hide();
+	$("#assignOfficerDivId").hide();
+	$("#assignDesignationDivId").hide();
+	$("#endorsementDivId").hide();
+	$(".uploadFuncCls").prop("checked",false);
+	$("#endorsmentNo").val('');
+	$("#remarksId").val('');
+	$("#leadId").html('');
+	$("#leadId").html('<option value="0"> SELECT LEAD </option>');
+	$("#leadId").trigger("chosen:updated");
+	$("#grantId").html('');
+	$("#grantId").html('<option value="0">SELECT GRANT UNDER</option>');
+	$("#grantId").trigger("chosen:updated");
+    $("#assignToId").html('<option value ="0">SELECT DEPARTMENT</option>');
+	$("#officerId").html('<option value ="0">SELECT OFFICER </option>');
+	$("#finalapproveFile").html('');
+	$("#statusChangeDivId").show();
+
+	$('.addRemoveModel').removeClass('closeSecondModal');
+	$('#endorsWorksId').html("Save Details");
+	var notSeleWorks = totalWorks - selectdWorksArr.length;
+	//alert(globalActionName);
+	$("#statusChangeId").html('');
+	$("#statusChangeId").append('<option attr_next_status_id="0" value="0"> SELECT ACTION </option>');
+	
+	$("#statusChangeId").append('<option attr_next_status_id="7" value="7"> DETAILED REPORT </option>');
+	$("#statusChangeId").append('<option attr_next_status_id="10" value="10"> DETAILED REPORT WITH ESTIMATION </option>');
+	$("#statusChangeId").append('<option attr_next_status_id="11" value="11"> PUT-UP FILE </option>');
+	$("#statusChangeId").append('<option attr_next_status_id="13" value="13"> EXAMINE & TAKE NECESSARY ACTION </option>');
+	$("#statusChangeId").append('<option attr_next_status_id="12" value="12"> OTHERS </option>');
+	
+	
+	$("#statusChangeId").chosen();
+	$("#statusChangeId").trigger('chosen:updated');
+	
+	$("#endorseMentModalDivId").modal("show");
+	
+//	$("#totalWorksId").html(totalWorks)
+//	$("#selectdWorksId").html(selectdWorksArr.length)
+//	$("#notSeleWorksId").html(notSeleWorks)
+	//ara
+	//getPetitionDetailsBuildImages();
+	
+	
+});	
