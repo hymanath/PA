@@ -188,11 +188,6 @@ function buildActivityCounts(result){
 		$("#totalyesCountId").html(' - ');
 	}
 	
-	/* if(result[0].totalImages !=null && result[0].totalImages>0){
-		$("#imagesCovered").html("<b>"+result[0].imagesCovered+"/"+result[0].totalImages+"</b>");
-	}else{
-		$("#imagesCovered").html(' - ');
-	} */
 	if(result[0].totalImages != null && result[0].totalImages>0)
 		$("#imagesCovered").html('<u><b style="cursor:pointer;" class="getImageCls"  type="overAll"  activity_name="Dhalita Tejam Telugu Dhesam" attr_activity_scopeid="'+result[0].tdpcadreId+'" attr_level_id="'+result[0].id+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images." >'+result[0].imagesCovered+'/'+result[0].totalImages+'</b></u>');
 	else
@@ -617,6 +612,7 @@ function buildNewsModule(result){
 function levelWiseSBData(divId)
 {
 	levelWiseSBArr=['district','parliament','constituency'];
+	//levelWiseSBArr=['district'];
 	
 	var collapse='';
 	for(var i in levelWiseSBArr)
@@ -1021,30 +1017,56 @@ function buildActivityEventdata(result,locationId,divId){
 		tableView+='</table>';
 		
 	$("#"+locationId).html(tableView);
-	$(".dataTable1"+locationId).dataTable({
-			"iDisplayLength": 15,
-			"aaSorting": [],
-			"order": [ 0, 'asc' ],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
-			"<'row'<'col-sm-12'tr>>" +
-			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
-			buttons: [
-				{
-					//extend		:'csvHtml5',
-					text		:'<i class="fa fa-file-text-o generateExcelcdfdf" attr_id="exportExcel'+locationId+'"></i>',
-					titleAttr	: 'CSV',
-					//title		:  "ENC WORKS DASHBOARD",
-					//filename	:  locationId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+	if(locationId =="constituency"){
+				$(".dataTable1"+locationId).dataTable({
+				"iDisplayLength": 15,
+				"aaSorting": [],
+				"order": [ 0, 'asc' ],
+				"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+				buttons: [
+					{
+						//extend		:'csvHtml5',
+						text		:'<i class="fa fa-file-text-o generateExcelcdfdf" attr_id="exportExcel'+locationId+'"></i>',
+						titleAttr	: 'CSV',
+						//title		:  "ENC WORKS DASHBOARD",
+						//filename	:  locationId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+					}
+				] ,
+				"scrollX": true,
+				"scrollX": true,
+				"scrollCollapse": true,
+				"fixedColumns":   {
+					"leftColumns": 2,
 				}
-			] ,
-			"scrollX": true,
-			"scrollX": true,
-			"scrollCollapse": true,
-			"fixedColumns":   {
-				"leftColumns": 1,
-			}
-	});
+		});
+
+	}else{
+		$(".dataTable1"+locationId).dataTable({
+				"iDisplayLength": 15,
+				"aaSorting": [],
+				"order": [ 0, 'asc' ],
+				"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+				buttons: [
+					{
+						text		:'<i class="fa fa-file-text-o generateExcelcdfdf" attr_id="exportExcel'+locationId+'"></i>',
+						titleAttr	: 'CSV',
+						
+					}
+				] ,
+				"scrollX": true,
+				"scrollX": true,
+				"scrollCollapse": true,
+				"fixedColumns":   {
+					"leftColumns": 1,
+				}
+		});
+	}
 	if(locationId != "district"){
 		 $("."+divId+''+locationId).trigger("click");
 	 }
@@ -1065,7 +1087,6 @@ $(document).on("change","#districtId",function(){
 function levelWiseLeaderData(divId)
 {
 	var levelWiseSBLeaderArr=['district','parliament','constituency'];
-	
 	
 	var collapse='';
 	for(var i in levelWiseSBLeaderArr)
@@ -1207,7 +1228,8 @@ function buildActivityEventdata1(result,locationId,divId){
 						}
 					}
 					if(result[i].imageCount !=null){
-						tableView+='<td>'+result[i].imageCount+'</td>';
+						tableView+='<td><u><b style="cursor:pointer;" class="getImageCls"  type="overAll"  activity_name="Dhalita Tejam Telugu Dhesam" attr_activity_scopeid="60" attr_level_id="'+result[i].locationId+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images." >'+result[i].imageCount+'</b></u></td>';
+						//tableView+='<td>'+result[i].imageCount+'</td>';
 					}else{
 						tableView+='<td>0</td>';
 					}
@@ -1949,7 +1971,7 @@ $(document).on("click",".getImageCls",function(){
 			$("#buildPoupupImage").html('');
 		if(activity_name != null && activity_name.length>0){
 		   $('#myModalLabelId').html(activity_name.replace("\'","").replace("\'",""));		
-			//getDistrictNames($(this).attr('activity_name').replace("\'","").replace("\'",""),'','');
+			
 		}else{
 			//getDistrictNames($(this).attr('activity_name').replace("\'","").replace("\'",""),'','');
 		}
@@ -1960,7 +1982,7 @@ $(document).on("click",".getImageCls",function(){
 								str+='<div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">';
 								
 								 str+='<div class="row"  style="margin-top:5px;margin-bottom:5px;margin-left: 600px;">';
-									 str+='<select id="daysListId">';
+									 str+='<select class="form-control" id="daysListId">';
 									 str+='</select>';
 								 str+='</div>';
 								 
@@ -2057,15 +2079,12 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 		locationScope:locationScope,
 		locationValue:locationScopeValue,		
 		day:day,
-		//fromDateStr:"01-01-2015",
-		//toDateStr:"22-01-2017",
 		fromDateStr :fromDateStr,
 	    toDateStr : toDateStr,
 		type:"popup",
 		startIndex:num,
 		maxIndex:10,
 		callFrom:calFrom,
-		//locationName:obj.locationName,
 		activityMemberId : globalActivityMemberId,
 	    stateId : globalStateId,
 	    userTypeId : globalUserTypeId,
@@ -2099,8 +2118,6 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 					if(result[i].subList[j].address != null)
 					str+='<div class="" style="margin-bottom: 5px;margin-left: -7px;margin-top: -8px;">';
 						str+='<ul class="breadcrumb">';
-						//if(result[i].subList[j].address.stateName != null && result[i].subList[j].address.stateName.trim().length>0)
-						//	str+='<li>'+result[i].subList[j].address.stateName+'</li>';
 						if(result[i].subList[j].address.districtName != null && result[i].subList[j].address.districtName.trim().length>0 ){
 							if(locationScope=='district')
 								str+='<li  class="text-primary"  title="'+result[i].subList[j].address.districtName+' District ">'+result[i].subList[j].address.districtName+' </li>';
@@ -2228,7 +2245,7 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 				
 				onPageClick: function(pageNumber, event) {
 					var num=(pageNumber-1)*10;
-					// getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,jObj.day,num,path,attr_activity_scopeid,locationScope,locationScopeValue,""); .
+					
 					var weekDays = $("#daysListId").val();
 					if(weekDays != null){
 						datesArr = weekDays.split('to');
@@ -2299,7 +2316,6 @@ function getTempEventDocumentForPopup(searchType,locationId,day,num,path,attr_ac
 
 function getTempAvailablDates(locationScope,locationValue,day,path,attr_activity_scopeid,fromDateStr,toDateStr)
 {
-		
 	  $("#popupDaysDiv1").html('');
 	  var activityScopeId = $("#ActivityList").val();
 
@@ -2323,32 +2339,16 @@ function getTempAvailablDates(locationScope,locationValue,day,path,attr_activity
 			str+='<ul class="slickApplyPopupDays" style="width:810px;">';
 			for(var i in result)
 			{ 
-				/*if(i==0 && (globlbuildType =='dayswise')){
-					str+='<li class="" ><a href="javascript:{};" class="getImageCls" activity_name=""  type="overAll" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'"  > OVER ALL <span class="sr-only">(current)</span></a></li>';
-				}
-				else if(i==0 && globlbuildType =='overAll'){
-					str+='<li class=" " ><a href="javascript:{};" class="getImageCls"   activity_name=""   type="dayswise" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" > DAY WISE <span class="sr-only">(current)</span></a></li>';
-				}
-				*/
-				
 				if(i==0 && globlbuildType =='overAll'){
-					//str+='<li class="" ><a href="javascript:{};" class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].date+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0" > OVER ALL <span class="sr-only">(current)</span></a></li>';
-					
-					//str+='<li class="" ><a href="javascript:{};" class="dayssCls active " locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0" ><a href="javascript:{};">OVER ALL 222</a><span class="sr-only">(current)</span></a></li>';
-					
 					str+='<li class=" dayssCls active"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0"><a href="javascript:{};">OVER ALL  </a></li>';
-					
-					
 				}
 					
 				if(globlbuildType =='dayswise'){						
 					if(result[i].id==day)
 					{//attr_activity_scopeid,locationScope,locationScopeValue
 						str+='<li class=" dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
-						/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */
 					}else if (i==0){
 						str+='<li class=" dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
-						/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */ 
 					}else{
 						str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 					 }
@@ -2359,10 +2359,8 @@ function getTempAvailablDates(locationScope,locationValue,day,path,attr_activity
 						if(result[i].documentsVOList[j].strDate==day)
 						{//attr_activity_scopeid,locationScope,locationScopeValue
 							str+='<li class=" dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};"> Day '+result[i].documentsVOList[j].day+' <br>  '+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
-							/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */
 						}else if (j==0){
 							str+='<li class=" dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};"> Day '+result[i].documentsVOList[j].day+' <br>'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
-							/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */ 
 						}else{
 							str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  dateValue="'+result[i].documentsVOList[j].strDate+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};">Day '+result[i].documentsVOList[j].day+' <br>'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 						 }
@@ -2538,22 +2536,9 @@ function getConstituencyList(distId,activityLevelId){
 			datevalue = $(this).attr("datevalue");
 			
 			var path = $(this).attr("path");
-			//getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
-			//getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
+			
 			getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",datevalue,datevalue);
-			/*var weekDays = $("#daysListId").val();
-			var datesArr = [];
-			if(weekDays != null){
-				datesArr = weekDays.split('to');
-			}
-			if(datesArr != null && datesArr.length==2){ 
-				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",datevalue,datevalue);
-				//getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,datevalue,datevalue);
-			}else{
-				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,'',attr_activity_scopeid,locationScope,locationScopeValue,"",'','');
-				//getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,'','');
-			}
-			*/
+			
 		}
 	});
 	
@@ -2635,7 +2620,7 @@ function buildConstituencyList(result,distId,activityLevelId)
 	str+='<div class="panel-group" id="accordionMandal" role="tablist" aria-multiselectable="true">';
 	for(var i in result)
 	{
-	 str+=' <div class="panel panel-default">';
+	 str+=' <div class="panel panel-default panel-custommodal">';
 		str+='<div class="panel-heading" role="tab" id="headingMandal'+i+'">';
 			str+='<a role="button" class="mandalPopups collapsed accordionmodal-toggle" data-toggle="collapse" data-parent="#accordionMandal" href="#collapseMandal'+i+'" aria-expanded="true" attr_consId="'+result[i].constituencyId+'" aria-controls="collapseMandal'+i+'">';
 			  str+='<h4 class="panel-title">'+result[i].name+' ASSEMBLY ( <span title="Total Uploaded Images ">'+result[i].imagesCnt+' </span>/<span title="Images Covered Locations ">'+result[i].count+'</span>)</h4>';
@@ -2684,24 +2669,7 @@ function getMandalOrMuncList(constituencyId,activityLevelId,value,scopeId){
 			var day = $(this).attr("attr");
 			datevalue = $(this).attr("datevalue");
 			
-			//getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
-			//getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
 			getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datevalue,datevalue);
-			/*
-						var weekDays = $("#daysListId").val();
-						
-						if(weekDays != null){
-							datesArr = weekDays.split(' to ');
-						}
-						if(datesArr != null && datesArr.length==2){
-							getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datesArr[0].trim(),datesArr[1].trim());
-							getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,datesArr[0].trim(),datesArr[1].trim());
-						}
-						else{
-							getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"",datevalue,datevalue);
-							getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,"","");
-						}
-		*/
 		}
 	});
 	
@@ -2760,11 +2728,11 @@ function getMandalOrMuncList(constituencyId,activityLevelId,value,scopeId){
 function buildMandalOrMuncList(result,constituencyId,activityLevelId,value,scopeId)
 {
 	var str='';
-	str+='<div class="panel-group" id="accordionModalMandal'+constituencyId+'" role="tablist" aria-multiselectable="true">';
-	for(var i in result)
-	{
+	str+='<div class="panel-group" id="accordionPanchayt'+constituencyId+'" role="tablist" aria-multiselectable="true">';
+	//for(var i in result)
+//{
 	//srinu
-	  str+='<div class="panel panel-default panel-custommodal">';
+	  /* str+='<div class="panel panel-default panel-custommodal">';
 		str+='<div class="panel-heading panel-headingModal" role="tab" id="headingOneModalMandal'+i+'">';
 		if(activityLevelId == 1){
 			str+='<a role="button" class="panchayatPopups accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModalMandal'+constituencyId+'" attr_mandalId="'+result[i].mandalId+'" attr_scopeId="'+scopeId+'"  href="#collapseOneModalMandal'+i+'" aria-expanded="true" aria-controls="collapseOneModalMandal'+i+'">';
@@ -2779,8 +2747,26 @@ function buildMandalOrMuncList(result,constituencyId,activityLevelId,value,scope
 		str+='<div id="collapseOneModalMandal'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneModalMandal'+i+'">';
 		  str+='<div class="panel-body pad_0"><div id="panchayatBlock'+result[i].mandalId+'"></div></div>';
 		str+='</div>';
+	  str+='</div>'; */
+	
+	//}
+	str+='<div class="panel-group" id="accordionPanchayt" role="tablist" aria-multiselectable="true">';
+	for(var i in result)
+	{
+	 str+='<div class="panel panel-default panel-custommodal">';
+		str+='<div class="panel-heading" role="tab" id="headingPanchayt'+i+'">';
+			str+='<a role="button" class="panchayatPopups collapsed accordionmodal-toggle" data-toggle="collapse" data-parent="#accordionPanchayt" href="#collapsePanchayt'+i+'" aria-expanded="true" attr_mandalId="'+result[i].mandalId+'" aria-controls="collapsePanchayt'+i+'">';
+			  str+='<h4 class="panel-title">'+result[i].name+'(<span title="Total Uploaded Images ">'+result[i].count+' </span>/<span title="Images Covered Locations ">'+result[i].imagesCount+')</h4>';
+			str+='</a>';
+		str+='</div>';
+		str+='<div id="collapsePanchayt'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPanchayt'+i+'">';
+		  str+='<div class="panel-body">';
+			str+='<div id="panchayatBlock'+result[i].mandalId+'"></div>';
+		  str+='</div>';
+		str+='</div>';
 	  str+='</div>';
 	}
+	str+='</div>';
 	str+='</div>';
 	if(value == 0){
 		$("#mandalsBlock"+constituencyId).html(str);
@@ -2906,9 +2892,6 @@ $(document).on("click",".villagePopup",function(){
 				getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"","","");
 				getTempAvailablDates(locationScope,locationScopeValue,day,'',attr_activity_scopeid,"","");
 			}
-			/* getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
-			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid); */
-
 		}
 	});
 });
