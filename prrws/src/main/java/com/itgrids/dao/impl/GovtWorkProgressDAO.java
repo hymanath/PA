@@ -92,4 +92,12 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 		query.setDate("toDate", toDate);
 		return null;
 	}
+	
+	public Object getWorkOverallWorkCompletedPercentage(Long govtWorkId){
+		Query query = getSession().createSQLQuery(" select sum(completed_percentage)/count(govt_work_status_id) "
+				+ " from govt_work_progress "
+				+ " where govt_work_id=:govtWorkId ");
+		query.setParameter("govtWorkId", govtWorkId);
+		return query.uniqueResult();
+	}
 }
