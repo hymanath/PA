@@ -85,6 +85,8 @@ public class LightMonitoringService  implements ILightMonitoring{
 	private ILightMonitoringDetailsDAO lightMonitoringDetailsDAO;
 	@Autowired
 	private ILightPoleDetailsDAO lightPoleDetailsDAO;
+	@Autowired
+	private WebserviceHandlerService webserviceHandlerService;
 		   
 	public ResultVO saveRealtimeStatusByVillages() {
 		ResultVO stausVO = new ResultVO();
@@ -135,15 +137,15 @@ public class LightMonitoringService  implements ILightMonitoring{
 				   inputStr = null;
 			   }
 			   
-			   ClientResponse response = null;
+			   String output = null;
 				if (!key .equalsIgnoreCase("differenceVendor"))
-					response = webServiceUtilService.callWebService(URL,inputStr,IConstants.REQUEST_METHOD_POST);
+					output = webserviceHandlerService.callWebService(URL,inputStr,IConstants.REQUEST_METHOD_POST);
 				else
-					response = webServiceUtilService.callWebService(URL,null,IConstants.REQUEST_METHOD_GET);
-		        if(response.getStatus() != 200)
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+					output = webserviceHandlerService.callWebService(URL,null,IConstants.REQUEST_METHOD_GET);
+		        if(output == null)
+	 	    	  throw new RuntimeException("WebService Data Not Found."+URL+inputStr);
 	        else {
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 JSONObject responseJsonObj = new JSONObject(output);
 	 	    	 JSONObject dataObj = responseJsonObj.getJSONObject("responseData");
 	 	    	 JSONObject statusObj = (dataObj != null && dataObj.has("requestStatus")) ? dataObj.getJSONObject("requestStatus"):null;

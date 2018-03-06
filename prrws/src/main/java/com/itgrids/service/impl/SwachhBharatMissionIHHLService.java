@@ -43,6 +43,8 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	
 	@Autowired
 	private LightMonitoringDAO lightMonitoringDAO;
+	@Autowired
+	private WebserviceHandlerService webserviceHandlerService;
 	
 	/**
 	 * @author Santosh Kumar Verma
@@ -55,13 +57,13 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		SwachhBharatMissionIHHLDtlsVO resultVO = new SwachhBharatMissionIHHLDtlsVO();
 		try {
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails?", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails?", str,IConstants.REQUEST_METHOD_POST);
 
 																			//http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails? 
-			if(response.getStatus() != 200){								//http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());///kkb
+			if(output == null){								//http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails?"+ str);///kkb
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jsonObject = new JSONObject(output);
 	 	    		JSONArray locationDtlsArr = jsonObject.getJSONArray("MinisterDBStateFundMngmntData");
@@ -161,12 +163,12 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 		List<SwachhBharatMissionIHHLDtlsVO> categoryList = new ArrayList<SwachhBharatMissionIHHLDtlsVO>(0);
 		try {
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails", str,IConstants.REQUEST_METHOD_POST);
+	    	 String output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails", str,IConstants.REQUEST_METHOD_POST);
 			
-			if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jsonObject = new JSONObject(output);
 	 	    		
@@ -349,13 +351,13 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 			}
 			Long startTime = System.currentTimeMillis();
             String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str,IConstants.REQUEST_METHOD_POST);
+            String output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str,IConstants.REQUEST_METHOD_POST);
 			Long endTime = System.currentTimeMillis();
 			 System.out.println("GetIHHLAchivementProgressDtls  service time take "+(endTime-startTime));
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if (output == null) {
+				throw new RuntimeException("Webservice Data Not Found. : http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails"+ str);
 			} else {
-				String output = response.getEntity(String.class);
+				//String output = response.getEntity(String.class);
 				if (output != null && !output.isEmpty()) {
 					JSONObject jsonObject = new JSONObject(output);
 					JSONArray dateWiseStateDtlsArr = jsonObject.getJSONArray("MinisterDBStateFundMngmntData");
@@ -546,17 +548,17 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 			}
 
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = null;
+			String output = null;
 			if (inputVO.getReportType() != null && inputVO.getReportType().equalsIgnoreCase("status")) {
-				response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails?",str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails?",str,IConstants.REQUEST_METHOD_POST);
 															//http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails
 			} else  {
-				response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str,IConstants.REQUEST_METHOD_POST);
 			}
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if (output == null) {
+				throw new RuntimeException("Webservice Data Not Found. : "+ str);
 			} else {
-				String output = response.getEntity(String.class);
+				//String output = response.getEntity(String.class);
 				if (output != null && output.length() > 0) {
 					JSONObject jsonObject = new JSONObject(output);
 
@@ -839,19 +841,19 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 				}
 
 				String str = convertingInputVOToString(inputVO);
-				ClientResponse response = null;
+				String output = null;
 				if (inputVO.getReportType() != null && inputVO.getReportType().equalsIgnoreCase("status")) {
 					Long startTime = System.currentTimeMillis();
-					response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails?",str,IConstants.REQUEST_METHOD_POST);
+					output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/IhhlNew/GetIHHLDashBoardUIDetails?",str,IConstants.REQUEST_METHOD_POST);
 					Long endTime = System.currentTimeMillis();//kkb  http://125.17.121.167/rwsapwebapi/api/IHHLDashBoardUI/GetIHHLDashBoardUIDetails
 					System.out.println(inputVO.getSubLocation()+" status service Time Take "+(endTime-startTime));
 				} else  {
 					Long startTime = System.currentTimeMillis();
-					response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str,IConstants.REQUEST_METHOD_POST);
+					output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails",str,IConstants.REQUEST_METHOD_POST);
 					Long endTime = System.currentTimeMillis();
 					System.out.println(inputVO.getSubLocation()+" daily service Time Take "+(endTime-startTime));
 				}
-				 String output = response.getEntity(String.class);
+				 //String output = response.getEntity(String.class);
 				if (output != null && output.length() > 0) {
 					JSONObject jsonObject = new JSONObject(output);
 

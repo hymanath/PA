@@ -76,6 +76,8 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	private IComponentWiseAchievementConfigurationDAO componentWiseAchievementConfigurationDAO;
 	@Autowired
 	private IComponentWiseAchievementConfigurationTempDAO componentWiseAchievementConfigurationTempDAO;
+	@Autowired
+	private WebserviceHandlerService webserviceHandlerService;
 	
 	/*
 	 * Swadhin K Lenka
@@ -683,12 +685,12 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					inputVO.setpType(pType);
 					
 					String str = convertingInputVOToString(inputVO);
-					ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
-					if(response.getStatus() != 200){
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+					String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
+					if(output == null){
+			 	    	  throw new RuntimeException("Webservice Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats"+str);
 			 	      }else{
 			 	    	  System.out.println("Completed for "+pType+" - "+rangeArr[j]);
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 				 	    	if(output != null && !output.isEmpty()){
 				 	    		JSONArray finalArray = new JSONArray(output);
 				 	    		if(finalArray!=null && finalArray.length()>0){
@@ -714,11 +716,11 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				inputVO.setpType("TOT");
 				
 				String str = convertingInputVOToString(inputVO);
-				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
-				if(response.getStatus() != 200){
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+				String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
+				if(output == null){
+		 	    	  throw new RuntimeException("Webservice Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats"+str);
 		 	      }else{
-		 	    	 String output = response.getEntity(String.class);
+		 	    	 //String output = response.getEntity(String.class);
 			 	    	if(output != null && !output.isEmpty()){
 			 	    		JSONArray finalArray = new JSONArray(output);
 			 	    		if(finalArray!=null && finalArray.length()>0){
@@ -769,12 +771,12 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 					inputVO.setpType(pType);
 					
 					String str = convertingInputVOToString(inputVO);
-					ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
-					if(response.getStatus() != 200){
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+					String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
+					if(output == null){
+			 	    	  throw new RuntimeException("Webservice Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats"+str);
 			 	      }else{
 			 	    	  System.out.println("Completed for "+pType+" - "+rangeArr[j]);
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 				 	    	if(output != null && !output.isEmpty()){
 				 	    		JSONArray finalArray = new JSONArray(output);
 				 	    		if(finalArray!=null && finalArray.length()>0){
@@ -802,11 +804,11 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 				inputVO.setpType("TOT");
 				
 				String str = convertingInputVOToString(inputVO);
-				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
-				if(response.getStatus() != 200){
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+				String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
+				if(output == null){
+		 	    	  throw new RuntimeException("Webservice Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats"+str);
 		 	      }else{
-		 	    	 String output = response.getEntity(String.class);
+		 	    	 //String output = response.getEntity(String.class);
 			 	    	if(output != null && !output.isEmpty()){
 			 	    		JSONArray finalArray = new JSONArray(output);
 			 	    		if(finalArray!=null && finalArray.length()>0){
@@ -933,12 +935,12 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	 Map<String,String> mandPercMap = new LinkedHashMap<String,String>();
 	 	    	 List<Object[]> previousList = componentWiseAchievementConfigurationDAO.getComponentWiseMandalAchievementPercentage(inputVO.getDivType(), inputVO.getLocationType(), inputVO.getLocationIdStr());
@@ -1098,12 +1100,12 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);

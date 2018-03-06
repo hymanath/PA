@@ -89,6 +89,7 @@ import com.itgrids.model.Habitation;
 import com.itgrids.model.RwsWork;
 import com.itgrids.model.TressedHabitation;
 import com.itgrids.model.WebserviceCallDetails;
+import com.itgrids.service.impl.WebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -134,6 +135,8 @@ public class RWSNICService implements IRWSNICService{
 
 	@Autowired
 	private IRwsWorkDAO rwsWorkDAO;
+	@Autowired
+	private WebserviceHandlerService webserviceHandlerService;
 	/*
 	 * Date : 15/06/2017
 	 * Author :Sandeep
@@ -2315,12 +2318,12 @@ public class RWSNICService implements IRWSNICService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/Home/Overview_IHHLData", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/Home/Overview_IHHLData", str,IConstants.REQUEST_METHOD_POST);
 			
-		    if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://125.17.121.167/rwsapwebapi/api/Home/Overview_IHHLData"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jsonObject = new JSONObject(output);
 	 	    		JSONArray abstArr = jsonObject.getJSONArray("MinisterDashBoardStateOverView");
@@ -2388,12 +2391,12 @@ public class RWSNICService implements IRWSNICService{
 		try {
 			
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/values/Location_IHHLData", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/values/Location_IHHLData", str,IConstants.REQUEST_METHOD_POST);
 			
-			if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://125.17.121.167/rwsapwebapi/api/values/Location_IHHLData"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jsonObject = new JSONObject(output);
 	 	    		JSONArray locationDtlsArr = jsonObject.getJSONArray("MinisterDashBoardLocationData");
@@ -2438,12 +2441,12 @@ public class RWSNICService implements IRWSNICService{
 			
 			String str = cvertingIpVOToStringFrSBPayments(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails", str,IConstants.REQUEST_METHOD_POST);
 			
-		    if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails"+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jsonObject = new JSONObject(output);
 	 	    		JSONArray abstArr = jsonObject.getJSONArray("PayOverviewDetailsData");
@@ -2551,12 +2554,12 @@ public class RWSNICService implements IRWSNICService{
 			
 			String str = cvertingIpVOToStringFrSBPayments(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails", str,IConstants.REQUEST_METHOD_POST);
 			
-		    if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		    if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://125.17.121.167/rwsapwebapi/api/PayOverview/GetPayOverviewDetails"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject jsonObject = new JSONObject(output);
 	 	    		JSONArray dataArr = jsonObject.getJSONArray("PayOverviewDetailsData");

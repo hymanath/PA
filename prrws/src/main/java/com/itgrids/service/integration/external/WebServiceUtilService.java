@@ -43,7 +43,7 @@ public class WebServiceUtilService {
 	@Autowired
 	private IWebserviceCallDetailsDAO webserviceCallDetailsDAO;
 	
-	public ClientResponse callWebService(String url,Object input,String requestMethod)
+	/*public ClientResponse callWebService(String url,Object input,String requestMethod)
 	{
 		ClientResponse response = null;
 		WebserviceVO webserviceVO = null;
@@ -129,7 +129,7 @@ public class WebServiceUtilService {
 		ClientResponse response = callWebService("http://dbtrd.ap.gov.in2/NregaDashBoardService/rest/CMDashBoard/Abstract", input,IConstants.REQUEST_METHOD_POST);
 		String output = response.getEntity(String.class);
 	    System.out.println(output);
-	}
+	}*/
 	
 	@Transactional
 	private Long saveWebserviceCallDetails(WebserviceVO webserviceVO)
