@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -7,9 +8,17 @@ import java.util.Date;
 import java.util.List;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.itgrids.partyanalyst.dao.IOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -303,6 +312,177 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 			LOG.error("Exception Occured in sendSms() in ZohoAlertService class.",e);
 		}
 		return status;
+	}
+
+
+
+	@Override
+	public File SAMLFile(String memberShipId,String successMsg,String firstName,String lastName) {
+		File file = null;
+		try{
+	        DocumentBuilderFactory dbFactory =
+	        DocumentBuilderFactory.newInstance();
+	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+	        Document doc = dBuilder.newDocument();
+	        Date currentDate = DateUtilService.getCurrentDateAndTime();
+	        SimpleDateFormat dateFormatter = new SimpleDateFormat(
+	                "yyyy-MM-dd'T'HH:mm:ss'Z'");
+	        Date aDate = new Date(System.currentTimeMillis()+5*60*1000);
+	        Date bDate = new Date(System.currentTimeMillis()-5*60*1000);
+	        String strUTCDate = dateFormatter.format(currentDate);
+	        String after = dateFormatter.format(aDate);
+	        String before = dateFormatter.format(bDate);
+	        System.out.println(strUTCDate);
+	        System.out.println(after);
+	        System.out.println(before);
+	        // root element
+	        Element rootElement = doc.createElement("samlp:Response");
+	        //Element rootElement = doc.createElementNS("samlp:Response","xmlns:xsi");
+	        rootElement.setAttribute("InResponseTo","_47e32a7f3431474d8c8ce81e6c751a5d1518774");
+	        rootElement.setAttribute("Destination","https://accounts.zoho.com/samlresponse/mytdp.com");
+	        rootElement.setAttribute("IssueInstant",strUTCDate);
+	        rootElement.setAttribute("Version","2.0");
+	        rootElement.setAttribute("ID","R992fdbeb2a4873b04c105a8a5f74c1a267ed0f22");
+	        rootElement.setAttribute("xmlns:samlp","urn:oasis:names:tc:SAML:2.0:protocol");
+	        doc.appendChild(rootElement);
+	        
+	        Element issuer = doc.createElement("saml:Issuer");
+	        issuer.appendChild(doc.createTextNode(memberShipId));
+	        rootElement.appendChild(issuer);
+	        
+	        Element status = doc.createElement("samlp:Status");
+	        Element statusCode = doc.createElement("samlp:StatusCode");
+	        statusCode.setAttribute("Value","urn:oasis:names:tc:SAML:2.0:status:"+successMsg);
+	        status.appendChild(statusCode);
+	        rootElement.appendChild(status);
+	        Element assertion = doc.createElement("saml:Assertion");
+	        assertion.setAttribute("IssueInstant",strUTCDate);
+	        assertion.setAttribute("Version","2.0");
+	        assertion.setAttribute("ID","pfxd7c4f2cc-0365-42d5-b72a-a09070be3b36");
+	        assertion.setAttribute("xmlns:saml","urn:oasis:names:tc:SAML:2.0:assertion");
+	        assertion.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        assertion.setAttribute("xmlns:xs","http://www.w3.org/2001/XMLSchema");
+	        rootElement.appendChild(assertion);
+	        assertion.appendChild(issuer);
+	        
+	        Element subject = doc.createElement("saml:Subject");
+	        Element nameId  =doc.createElement("saml:NameID");
+	        nameId.setAttribute("Format","urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress");
+	        nameId.appendChild(doc.createTextNode(memberShipId+"@mytdp.com"));
+	        subject.appendChild(nameId);
+	        
+	        Element subjectConfirmation = doc.createElement("saml:SubjectConfirmation");
+	        subjectConfirmation.setAttribute("Method","urn:oasis:names:tc:SAML:2.0:cm:bearer");
+	        
+	        Element subjectConfirmationData = doc.createElement("saml:SubjectConfirmationData");
+	        subjectConfirmationData.setAttribute("InResponseTo","_47e32a7f3431474d8c8ce81e6c751a5d1518774");
+	        subjectConfirmationData.setAttribute("Recipient","https://accounts.zoho.com/samlresponse/mytdp.com");
+	        subjectConfirmationData.setAttribute("NotOnOrAfter",after);
+	        
+	        subjectConfirmation.appendChild(subjectConfirmationData);
+	        subject.appendChild(subjectConfirmation);
+	        assertion.appendChild(subject);
+	        
+	       
+	        Element conditions = doc.createElement("saml:Conditions");
+	        conditions.setAttribute("NotOnOrAfter",after);
+	        conditions.setAttribute("NotBefore",before);
+	        assertion.appendChild(conditions);
+	        
+	        Element audienceRestriction = doc.createElement("saml:AudienceRestriction");
+	        Element audience = doc.createElement("saml:Audience");
+	        audience.appendChild(doc.createTextNode("https://accounts.zoho.com/samlresponse/mytdp.com"));
+	        audienceRestriction.appendChild(audience);
+	        conditions.appendChild(audienceRestriction);
+	        
+	        Element authnStatement = doc.createElement("saml:AuthnStatement");
+	        authnStatement.setAttribute("SessionIndex","_"+RandomNumberGeneraion.randomGenerator(32));
+	        authnStatement.setAttribute("SessionNotOnOrAfter",after);
+	        authnStatement.setAttribute("AuthnInstant",strUTCDate);
+	         
+	        assertion.appendChild(authnStatement);
+	        
+	        
+	        Element authnContext = doc.createElement("saml:AuthnContext");
+	        Element authnContextClassRef = doc.createElement("AuthnContextClassRef"); 
+	        authnContextClassRef.appendChild(doc.createTextNode("urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"));
+	        authnContext.appendChild(authnContextClassRef);
+	        authnStatement.appendChild(authnContext);
+	        
+	        
+	        Element attributeStatement = doc.createElement("AttributeStatement");
+	        Element attribute = doc.createElement("saml:Attribute");
+	        attribute.setAttribute("NameFormat","urn:oasis:names:tc:SAML:2.0:attrname-format:basic");
+	        attribute.setAttribute("Name","PersonImmutableID");
+	        
+	        Element attributeValue = doc.createElement("saml:AttributeValue");
+	        attributeValue.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        attributeValue.setAttribute("xsi:type","xs:string");
+	        attribute.appendChild(attributeValue);
+	        attributeStatement.appendChild(attribute);
+	       
+	        
+	        Element attribute1 = doc.createElement("saml:Attribute");
+	        attribute1.setAttribute("NameFormat","urn:oasis:names:tc:SAML:2.0:attrname-format:basic");
+	        attribute1.setAttribute("Name","User.email");
+	        
+	        Element attributeValue1 = doc.createElement("saml:AttributeValue");
+	        attributeValue1.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        attributeValue1.setAttribute("xsi:type","xs:string");
+	        attributeValue1.appendChild(doc.createTextNode(memberShipId+"@mytdp.com"));
+	        attribute1.appendChild(attributeValue1);
+	        attributeStatement.appendChild(attribute1);
+	        
+	        
+	        Element attribute2 = doc.createElement("saml:Attribute");
+	        attribute2.setAttribute("NameFormat","urn:oasis:names:tc:SAML:2.0:attrname-format:basic");
+	        attribute2.setAttribute("Name","User.FirstName");
+	        
+	        Element attributeValue2 = doc.createElement("saml:AttributeValue");
+	        attributeValue2.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        attributeValue2.setAttribute("xsi:type","xs:string");
+	        attributeValue2.appendChild(doc.createTextNode(firstName));
+	        attribute2.appendChild(attributeValue2);
+	        attributeStatement.appendChild(attribute2);
+	        
+	        
+	        Element attribute3 = doc.createElement("saml:Attribute");
+	        attribute3.setAttribute("NameFormat","urn:oasis:names:tc:SAML:2.0:attrname-format:basic");
+	        attribute3.setAttribute("Name","memberOf");
+	        
+	        Element attributeValue3 = doc.createElement("saml:AttributeValue");
+	        attributeValue3.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        attributeValue3.setAttribute("xsi:type","xs:string");
+	        attribute3.appendChild(attributeValue3);
+	        attributeStatement.appendChild(attribute3);
+
+	        Element attribute4 = doc.createElement("saml:Attribute");
+	        attribute4.setAttribute("NameFormat","urn:oasis:names:tc:SAML:2.0:attrname-format:basic");
+	        attribute4.setAttribute("Name","User.LastName");
+	        
+	        Element attributeValue4 = doc.createElement("saml:AttributeValue");
+	        attributeValue4.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        attributeValue4.setAttribute("xsi:type","xs:string");
+	        attributeValue4.appendChild(doc.createTextNode(lastName));
+	        attribute4.appendChild(attributeValue4);
+	        attributeStatement.appendChild(attribute4); 
+	        assertion.appendChild(attributeStatement);
+
+	        // write the content into xml file
+	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	        Transformer transformer = transformerFactory.newTransformer();
+	        DOMSource source = new DOMSource(doc);
+	        StreamResult result = new StreamResult(new File("E:/workspaceJuno/partyanalyst-service/src/main/resources/saml.xml"));
+	        transformer.transform(source, result);
+	        
+	        // Output to console for testing
+	        StreamResult consoleResult = new StreamResult(System.out);
+	        transformer.transform(source, consoleResult);
+	      file = new File("E:/workspaceJuno/partyanalyst-service/src/main/resources/saml.xml");
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return file;
 	}
 	
 	

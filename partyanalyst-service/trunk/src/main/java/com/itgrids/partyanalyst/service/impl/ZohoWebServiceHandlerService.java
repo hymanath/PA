@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
@@ -83,6 +85,15 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 			return alertRenderService.getJsonStructureOfAlertFromZoho(jArry);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getZohoWebHookDetails method in ZohoWebServiceHandlerService Class", e);
+		}
+		return null;
+	}
+	
+	public File getSAMLFile(String memberShipId,String successMsg,String firstName,String lastName) {
+		try {
+			return zohoAlertService.SAMLFile(memberShipId,successMsg,firstName,lastName);
+		} catch (Exception e) {
+			LOG.error("Exception raised at SAMLFile method in ZohoWebServiceHandlerService Class", e);
 		}
 		return null;
 	}
