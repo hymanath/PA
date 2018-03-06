@@ -122,7 +122,10 @@ function buildOverAllAlertsDetails(result){
 									str+='<td>'+result[0].totalAlert+'</td>';
 									for(var j in result[0].subList){
 										if(result[0].subList[j].count >0){
-										str+='<td><h5 class="text_bold">'+result[0].subList[j].count+'<span class="text_bold f_12">('+result[0].subList[j].countPerc+'%)</span></h5></td>';
+										str+='<td>'+result[0].subList[j].count+'';
+										if(result[0].subList[j].id >0)
+										str+='<h6>('+result[0].subList[j].countPerc+'%)</h6>';
+										str+='</td>';
 										}
 									}
 								str+='</tr>';
@@ -157,7 +160,10 @@ function buildOverAllAlertsDetails(result){
 									str+='<td>'+result[1].totalAlert+'</td>';
 									for(var j in result[1].subList){
 										if(result[1].subList[j].count >0){
-										str+='<td>'+result[1].subList[j].count+'<h6>('+result[1].subList[j].countPerc+'%)</h6></td>';
+										str+='<td>'+result[1].subList[j].count+'';
+										if(result[1].subList[j].id>0)
+										str+='<h6>('+result[1].subList[j].countPerc+'%)</h6>';
+										str+='</td>';
 										}
 									}
 								str+='</tr>';
