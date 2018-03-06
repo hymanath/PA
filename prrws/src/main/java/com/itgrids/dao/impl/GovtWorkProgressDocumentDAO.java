@@ -1,5 +1,6 @@
 package com.itgrids.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -24,6 +25,58 @@ public class GovtWorkProgressDocumentDAO extends GenericDaoHibernate<GovtWorkPro
 				+ " from GovtWorkProgressDocument model"
 				+ " where model.govtWorkProgress.govtWorkId=:workId ");
 		query.setParameter("workId", workId);
+		return query.list();
+	}
+	
+	public List<Object[]> getStatusWiseDocs(List<Long> workZoneIds,Long locationScopeId,List<Long> locationValues,Long statusId,Date startDate,Date endDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.document.documentId,model.document.path "
+				+ " from GovtWorkProgressDocument model "
+				+ " where model.isDeleted='N'");
+		
+		if(statusId != null && statusId > 0l){
+			sb.append(" and model.govtWorkProgress.govtWorkStatusId=:statusId ");
+		}
+		if(workZoneIds != null && workZoneIds.size() > 0){
+			sb.append(" and model.govtWorkProgress.govtWorkId in (:workZoneIds) ");
+		}else{
+			if(locationScopeId == 3l){
+				sb.append(" and model.govtWorkProgress.govtWork.govtMainWork.locationAddress.districtId in (:locationValues) ");
+			}else if(locationScopeId == 4l){
+				sb.append(" and model.govtWorkProgress.govtWork.govtMainWork.locationAddress.constituencyId in (:locationValues) ");
+			}else if(locationScopeId == 5l){
+				sb.append(" and model.govtWorkProgress.govtWork.govtMainWork.locationAddress.tehsilId in (:locationValues) ");
+			}else if(locationScopeId == 6l){
+				sb.append(" and model.govtWorkProgress.govtWork.govtMainWork.locationAddress.panchayatId in (:locationValues) ");
+			}else if(locationScopeId == 12l){
+				sb.append(" and model.govtWorkProgress.govtWork.govtMainWork.locationAddress.divisionId in (:locationValues) ");
+			}else if(locationScopeId == 13l){
+				sb.append(" and model.govtWorkProgress.govtWork.govtMainWork.locationAddress.subDivisionId in (:locationValues) ");
+			}	
+		}
+		
+		if(startDate != null && endDate != null){
+			sb.append(" and date(model.updatedTime) between :startDate and :endDate ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(statusId != null && statusId > 0l){
+			query.setParameter("statusId", statusId);
+		}
+		if(workZoneIds != null && workZoneIds.size() > 0){
+			query.setParameterList("workZoneIds", workZoneIds);
+		}else{
+			if(locationScopeId == 3l || locationScopeId == 4l || locationScopeId == 5l || locationScopeId == 6l || locationScopeId == 12l || locationScopeId == 13l){
+				query.setParameterList("locationValues", locationValues);
+			}
+		}
+		
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		
 		return query.list();
 	}
 }

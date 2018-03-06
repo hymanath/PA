@@ -19,7 +19,7 @@ public class GovtMainWorkDAO extends GenericDaoHibernate<GovtMainWork, Long> imp
 
 	public List<Object[]> getPraposalWorksCount(){
 		//0-workTypeId,1-count
-		Query query = getSession().createQuery("select model.govtWorkTypeId,count(distinct model.locationValue) "
+		Query query = getSession().createQuery("select model.govtWorkTypeId,count(model.govtMainWorkId) "
 				+ " from GovtMainWork model "
 				+ " group by model.govtWorkTypeId ");
 		return query.list();

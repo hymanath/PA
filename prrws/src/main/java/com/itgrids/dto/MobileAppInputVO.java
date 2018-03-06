@@ -1,5 +1,6 @@
 package com.itgrids.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MobileAppInputVO {
@@ -20,8 +21,11 @@ public class MobileAppInputVO {
 	private Long userTypeId;
 	private List<Long> userIds;
 	private Long locationScopeId;
-	private List<Long> locationIds;
+	private List<Long> locationIds = new ArrayList<Long>(0);
 	private List<Long> workZoneIds;
+	private Long statusId;
+	private Long districtId,divisonId,subDivisonId,mandalId;
+	private Long locationLevelId;
 	
 	
 	public String getUserName() {
@@ -138,6 +142,41 @@ public class MobileAppInputVO {
 	public void setWorkZoneIds(List<Long> workZoneIds) {
 		this.workZoneIds = workZoneIds;
 	}
-	
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getDivisonId() {
+		return divisonId;
+	}
+	public void setDivisonId(Long divisonId) {
+		this.divisonId = divisonId;
+	}
+	public Long getSubDivisonId() {
+		return subDivisonId;
+	}
+	public void setSubDivisonId(Long subDivisonId) {
+		this.subDivisonId = subDivisonId;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public Long getLocationLevelId() {
+		return locationLevelId;
+	}
+	public void setLocationLevelId(Long locationLevelId) {
+		this.locationLevelId = locationLevelId;
+	}
 	
 }

@@ -113,4 +113,61 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getLocationStatusDayWiseKms(Date startDate,Date endDate,Long statusId,Long workTypeId,Long districtId,Long divisonId,Long subDivisonId,Long mandalId){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select date(gwpt.updated_time),sum(gwpt.work_length) "
+				+ " from govt_work_progress_track gwpt,govt_work_progress gwp,govt_work gw,govt_main_work gmw,location_address la "
+				+ " where gwpt.govt_work_progress_id=gwp.govt_work_progress_id and gwp.govt_work_id = gw.govt_work_id "
+				+ " and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id and gw.is_deleted='N' "
+				+ " and gmw.govt_work_type_id=:workTypeId ");
+		
+		if(startDate != null && endDate != null){
+			sb.append(" and date(gwpt.updated_time) between :startDate and :endDate ");
+		}
+		if(statusId != null && statusId > 0l){
+			sb.append(" and gwp.govt_work_status_id=:statusId ");
+		}
+		if(districtId != null && districtId > 0l){
+			sb.append(" and la.district_id=:districtId ");
+		}
+		if(divisonId != null && divisonId > 0l){
+			sb.append(" and la.divison_id=:divisonId ");
+		}
+		if(subDivisonId != null && subDivisonId > 0l){
+			sb.append(" and la.sub_division_id=:subDivisonId ");
+		}
+		if(mandalId != null && mandalId > 0l){
+			sb.append(" and la.tehsil_id=:mandalId ");
+		}
+		
+		sb.append(" group by date(gwpt.updated_time) ");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		query.setParameter("workTypeId", workTypeId);
+		
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(statusId != null && statusId > 0l){
+			query.setParameter("statusId", statusId);
+		}
+		if(districtId != null && districtId > 0l){
+			query.setParameter("districtId", districtId);
+		}
+		if(divisonId != null && divisonId > 0l){
+			query.setParameter("divisonId", divisonId);
+		}
+		if(subDivisonId != null && subDivisonId > 0l){
+			query.setParameter("subDivisonId", subDivisonId);
+		}
+		if(mandalId != null && mandalId > 0l){
+			query.setParameter("mandalId", mandalId);
+		}
+		
+		return query.list();
+	}
 }

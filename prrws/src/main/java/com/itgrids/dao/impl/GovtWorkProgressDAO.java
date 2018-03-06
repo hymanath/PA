@@ -79,20 +79,6 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 		return query.list();
 	}
 	
-	public List<Object[]> getCompletedWorksCount(Date fromDate,Date toDate){
-		//0-workTypeId,1-workscount,2-worklength
-		Query query = getSession().createSQLQuery(" select gmw.govt_work_type_id,count(distinct gw.govt_work_id),sum(gw.work_length) "
-				+ " from govt_work_progress gwp,govt_work gw,govt_main_work gmw "
-				+ " where gwp.govt_work_id=gw.govt_work_id and gw.is_deleted='N' and gw.govt_main_work_id=gmw.govt_main_work_id "
-				+ "  and gwp.govt_work_status_id in (:govtWorkFinishStatusIds) and date(gw.created_time) between :fromDate and :toDate "
-				+ " group by gmw.govt_work_type_id ");
-		
-		query.setParameterList("govtWorkFinishStatusIds", IConstants.GOVTWORKFINISHSTATUSIDS);
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
-		return null;
-	}
-	
 	public Object getWorkOverallWorkCompletedPercentage(Long govtWorkId){
 		Query query = getSession().createSQLQuery(" select sum(completed_percentage)/count(govt_work_status_id) "
 				+ " from govt_work_progress "

@@ -25,6 +25,10 @@ public interface IUnderGroundDrainageService {
 	public List<SmallVO> getSubUsers(Long userTypeId,List<Long> userIds,Long workTypeId);
 	public List<LocationAddressVO> getUsersAssignedLocations(List<Long> userIds);
 	public List<SmallVO> getAllWorkZonesOfLocations(Long locationScopeId,List<Long> locationIds);
+	public List<SmallVO> getImgesForMobAppDashboard(MobileAppInputVO inptVO);
 	
-	public List<GovtMainWorkVO> getWorkTypeWiseCompletedDetails(MobileAppInputVO inputVO);	
+	
+	public List<GovtMainWorkVO> getWorkTypeWiseCompletedDetails();	
+	public List<DocumentVO> getLocationStatusDayWiseKms(MobileAppInputVO inptuVO);
+	public List<DocumentVO> getLocationLevelStatusDayWiseKms(MobileAppInputVO inputVO);
 }
