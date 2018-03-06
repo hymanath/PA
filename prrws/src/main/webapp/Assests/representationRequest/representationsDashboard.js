@@ -140,14 +140,17 @@ function buildStatusOverviewDetails(result){
 												str+='<div class="row">';
 												str+='<div class="col-sm-8" style="padding-left:5px">';
 													str+='<p>Representations</p>';
-														str+='<h4><b>'+result.list[i].petitionIds.length+'</b></h4>';
 														var convertToAmt = result.list[i].estimationCost*100000;
-																var crores = (convertToAmt/10000000).toFixed(2);
-																str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
+														var crores = (convertToAmt/10000000).toFixed(2);
+														str+='<h5 class="font_weight">'+result.list[i].petitionIds.length+' <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight" style="color:#000">('+crores+')</small></h5>';
+														str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.list[i].withCostPetitionsCount+'</h5>';
+														str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.list[i].withCostWorksCount+'</h5>';
 												str+='</div>';
 												str+='<div class="col-sm-4" style="padding-left:5px">';
 													str+='<p>Works</p>';
-														str+='<h4><b>'+result.list[i].subWorkIds.length+'</b></h4>';
+														str+='<h5><b>'+result.list[i].subWorkIds.length+'</b></h5>';
+														str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.list[i].noCostPetitionsCount+'</h5>';
+														str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.list[i].noCostWorksCount+'</h5>';
 												str+='</div>';
 												str+='</div>';
 												
@@ -161,6 +164,7 @@ function buildStatusOverviewDetails(result){
 		}
 		
 		$("#statusOverviewId").html(str);
+		$(".tooltipCls").tooltip();
 	}else{
 		$("#statusOverviewId").html("No data available");
 	}
@@ -215,10 +219,14 @@ function buildMyActionsDetails(result){
 															str+='</div>';
 															str+='<div class="media-body">';
 																str+='<p>Representations</p>';
-																str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].petitionIds.length+'</a></h4>';
 																var convertToAmt = result.statusList[i].estimationCost*100000;
 																var crores = (convertToAmt/10000000).toFixed(2);
-																str+='<h5><b data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
+																
+																str+='<h4 class="font_weight"><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].petitionIds.length+'</a> <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight">('+crores+')</small></h4>';
+							
+																str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.statusList[i].withCostPetitionsCount+'</h5>';
+																str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.statusList[i].withCostWorksCount+'</h5>';
+																
 															str+='</div>';
 														str+='</div>';
 													str+='</div>';
@@ -232,6 +240,8 @@ function buildMyActionsDetails(result){
 															str+='<div class="media-body">';
 																str+='<p>Works</p>';
 																str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].subWorkIds.length+'</a></h4>';
+																str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.statusList[i].noCostPetitionsCount+'</h5>';
+																str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.statusList[i].noCostWorksCount+'</h5>';
 															str+='</div>';
 														str+='</div>';
 													str+='</div>';
@@ -243,16 +253,22 @@ function buildMyActionsDetails(result){
 									str+='<div class="white-block">';
 										str+='<h5 style="background-color:#E2F2F9;" class="grad_bg_orange">Referral wise</h5>';
 											str+='<div class="row">';
-												str+='<div class="col-sm-12">';
+												str+='<div class="col-sm-12" style="padding-left: 30px;padding-right: 30px;">';
+												str+='<ul class="list-inline referralPendindSlickCls m_top10">';
 													for(var j in result.statusList[i].referrerList){
-														str+='<div class="col-sm-2 petition_border">';
-															str+='<p>'+result.statusList[i].referrerList[j].name.toUpperCase()+'</p>';
-															str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].subWorkIds.length+'</a></h5>';
+														str+='<li class="petition_border">';
+															str+='<p class="text-center">'+result.statusList[i].referrerList[j].name.toUpperCase()+'</p>';
+															str+='<h5  class="text-center m_top5"><a title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].petitionIds.length+'</a> - <a title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].subWorkIds.length+'</a></h5>';
 															var convertToAmt = result.statusList[i].referrerList[j].estimationCost*100000;
 														    var crores = (convertToAmt/10000000).toFixed(2);
-															str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
-														str+='</div>';
+															str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
+															
+															str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.statusList[i].referrerList[j].withCostPetitionsCount+'</span> - <span>'+result.statusList[i].referrerList[j].noCostPetitionsCount+'</span></h5>';
+															str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.statusList[i].referrerList[j].withCostWorksCount+'</span> - <span>'+result.statusList[i].referrerList[j].noCostWorksCount+'</span></h5>';
+									
+														str+='</li>';
 													}
+												str+='</ul>';	
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
@@ -260,18 +276,21 @@ function buildMyActionsDetails(result){
 									str+='<div class="row pad_10">';
 										str+='<div class="border-styling" style="border-top:1px solid #FFBB00"></div>';
 										str+='<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_orange">Subject wise</h5>';
-											str+='<div class="col-sm-12">';
+											str+='<div class="col-sm-12" style="padding-left: 30px;padding-right: 30px;">';
+											str+='<ul class="list-inline subjectPendindSlickCls m_top10">';
 											for(var j in result.statusList[i].subList){
-												str+='<div class="col-sm-2 petition_border">';
-												str+='	<div class="">';
-													str+='<p>'+result.statusList[i].subList[j].name.toUpperCase()+'</p>';
-													str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].subWorkIds.length+'</a></h5>';
+												str+='<li class="petition_border">';
+													str+='<p class="text-center">'+result.statusList[i].subList[j].name.toUpperCase()+'</p>';
+													str+='<h5 class="text-center m_top5"><a title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].petitionIds.length+'</a> - <a title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].subWorkIds.length+'</a></h5>';
 													var convertToAmt = result.statusList[i].subList[j].estimationCost*100000;
 													var crores = (convertToAmt/10000000).toFixed(2);
-													str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
-												str+='</div>';
-												str+='</div>';
+													str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
+													
+													str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.statusList[i].subList[j].withCostPetitionsCount+'</span> - <span>'+result.statusList[i].subList[j].noCostPetitionsCount+'</span></h5>';
+													str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.statusList[i].subList[j].withCostWorksCount+'</span> - <span>'+result.statusList[i].subList[j].noCostWorksCount+'</span></h5>';
+												str+='</li>';
 											}
+											str+='</ul>';
 											str+='</div>';
 											
 										str+='</div>';
@@ -279,18 +298,24 @@ function buildMyActionsDetails(result){
 									str+='<div class="row pad_10">';
 										str+='<div class="border-styling" style="border-top:1px solid #FFBB00"></div>';
 										str+='<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_orange">Department wise</h5>';
-											str+='<div class="col-sm-12">';
+											str+='<div class="col-sm-12" style="padding-left: 30px;padding-right: 30px;">';
+											str+='<ul class="list-inline departmentPendindSlickCls m_top10">';
 											for(var j in result.statusList[i].deptList){
-												str+='<div class="col-sm-2 petition_border">';
-												str+='	<div class="">';
-													str+='<p style="font-size:11px"><b>'+result.statusList[i].deptList[j].name.toUpperCase()+'</b></p>';
-													str+='<h5><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].petitionIds.length+'</a> - <a title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].subWorkIds.length+'</a></h5>';
+												str+='<li class="petition_border">';
+												
+													str+='<p class="text-center" style="font-size:11px"><b>'+result.statusList[i].deptList[j].name.toUpperCase()+'</b></p>';
+													str+='<h5 class="text-center m_top5"><a title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].petitionIds.length+'</a> - <a data-toggle="tooltip" class="tooltipCls" data-placement="right" title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].subWorkIds.length+'</a></h5>';
 													var convertToAmt = result.statusList[i].deptList[j].estimationCost*100000;
 													var crores = (convertToAmt/10000000).toFixed(2);
-													str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
-												str+='</div>';
-												str+='</div>';
+													str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
+													
+													str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.statusList[i].deptList[j].withCostPetitionsCount+'</span> - <span>'+result.statusList[i].deptList[j].noCostPetitionsCount+'</span></h5>';
+													str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.statusList[i].deptList[j].withCostWorksCount+'</span> - <span>'+result.statusList[i].deptList[j].noCostWorksCount+'</span></h5>';
+													
+												str+='</li>';
+												
 											}
+											str+='</ul>';
 											str+='</div>';
 											
 										str+='</div>';
@@ -308,6 +333,29 @@ function buildMyActionsDetails(result){
 	str+='</div>';
 	
 	$("#myActionsId").html(str);
+	$(".tooltipCls").tooltip();
+	$(".referralPendindSlickCls").slick({
+		slides:'li',
+		infinite: false,
+		slidesToShow: 3,
+		slidesToScroll: 1,
+		variableWidth: false
+	 });
+	 $(".subjectPendindSlickCls").slick({
+		slides:'li',
+		infinite: false,
+		slidesToShow: 3,
+		slidesToScroll: 1,
+		variableWidth: false
+	 });
+	 $(".departmentPendindSlickCls").slick({
+		slides:'li',
+		infinite: false,
+		slidesToShow: 3,
+		slidesToScroll: 1,
+		variableWidth: false
+	 });
+	 
 	var statusLength=[];
 	for(var i in result.statusList){
 		if(result.statusList[i].statusType == "UserStatus"){
@@ -326,116 +374,149 @@ function buildCompleteOrStatusOverviewDetails(result){
 	var str ='';
 	if(result != null){
 	 str+='<div class="row">';
-										str+='<div class="col-sm-12">';
-											str+='<div class="col-sm-4">';
-												str+='<div class="media">';
-													str+='<div class="media-left">';
-														str+='<img src="Assests/icons/Group 4370.png">';
-													str+='</div>';
-													str+='<div class="media-body">';
-														str+='<h5><b>Total Representations</b></h5>';
-													str+='</div>';
-												str+='</div>';
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<div class="white-block pad_5">';
-													str+='<div class="media">';
-														str+='<div class="media-left">';
-															str+='<img src="Assests/icons/Group 4377.png">';
-														str+='</div>';
-														str+='<div class="media-body">';
-															str+='<p>Representations</p>';
-															str+='<h4><b>'+result.petitionIds.length+'</b></h4>';
-															var convertToAmt = result.estimationCost*100000;
-															var crores = (convertToAmt/10000000).toFixed(2);
-															str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
-														str+='</div>';
-													str+='</div>';
-												str+='</div>';
-											str+='</div>';
-											str+='<div class="col-sm-4">';
-												str+='<div class="white-block pad_5">';
-												str+='	<div class="media">';
-													str+='	<div class="media-left">';
-															str+='<img src="Assests/icons/Group 4378.png">';
-														str+='</div>';
-														str+='<div class="media-body">';
-														str+='	<p>Works</p>';
-														str+='	<h4><b>'+result.subWorkIds.length+'</b></h4>';
-														str+='</div>';
-													str+='</div>';
-												str+='</div>';
-											str+='</div>';
-										str+='</div>';
-									str+='</div>';
-									str+='<div class="row m_top10 ">';
-										str+='<div class="">';
-											str+='<div class="white-block">';
+		str+='<div class="col-sm-12">';
+			str+='<div class="col-sm-4">';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+						str+='<img src="Assests/icons/Group 4370.png">';
+					str+='</div>';
+					str+='<div class="media-body">';
+						str+='<h5><b>Total Representations</b></h5>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-4">';
+				str+='<div class="white-block pad_5">';
+					str+='<div class="media">';
+						str+='<div class="media-left">';
+							str+='<img src="Assests/icons/Group 4377.png">';
+						str+='</div>';
+						str+='<div class="media-body">';
+							var convertToAmt = result.estimationCost*100000;
+							var crores = (convertToAmt/10000000).toFixed(2);
+							str+='<p>Representations</p>';
+							str+='<h4 class="font_weight">'+result.petitionIds.length+' <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight">('+crores+')</small></h4>';
+							
+							str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.withCostPetitionsCount+'</h5>';
+							str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.withCostWorksCount+'</h5>';
+							
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-4">';
+				str+='<div class="white-block pad_5">';
+				str+='	<div class="media">';
+					str+='	<div class="media-left">';
+							str+='<img src="Assests/icons/Group 4378.png">';
+						str+='</div>';
+						str+='<div class="media-body">';
+						str+='	<p>Works</p>';
+						str+='	<h4><b>'+result.subWorkIds.length+'</b></h4>';
+						str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.noCostPetitionsCount+'</h5>';
+						str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.noCostWorksCount+'</h5>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	str+='<div class="row m_top10">';
+			str+='<div class="white-block">';
+			
+				str+='<div class="row" style="padding:0px 10px 10px 10px">';
+					str+='<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_lightblue">Referral wise</h5>';
+					str+='<div class="col-sm-12 m_top5" style="padding-left: 30px;padding-right: 30px;">';
+						str+='<ul class="list-inline referralSlickCls m_top10">';
+							for(var i in result.referrerList){
+								str+='<li class="petition_border">';
+									str+='<p  class="text-center" attr_id='+result.referrerList[i].id+'>'+result.referrerList[i].name.toUpperCase()+'</p>';
+									str+='<h5 class="text-center m_top5"><b title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.referrerList[i].petitionIds.length+'</b> - <b title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.referrerList[i].subWorkIds.length+'</b></h5>';
+									var convertToAmt = result.referrerList[i].estimationCost*100000;
+									var crores = (convertToAmt/10000000).toFixed(2);
+									str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
+									str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.referrerList[i].withCostPetitionsCount+'</span> - <span>'+result.referrerList[i].noCostPetitionsCount+'</span></h5>';
+									str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.referrerList[i].withCostWorksCount+'</span> - <span>'+result.referrerList[i].noCostWorksCount+'</span></h5>';
+								str+='</li>';
+								
+								}
+						str+='</ul>';	
+					str+='</div>';
+				str+='</div>';
+				
+				
+				str+='<div class="row pad_10">';
+					str+='<div class="border-styling" style="border-top:1px solid #1283C9;"></div>';
+						str+='<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Subject wise</h5>';
+						str+='<div class="col-sm-12 m_top5" style="padding-left: 30px;padding-right: 30px;">';
+							str+='<ul class="list-inline subjectSlickCls m_top10">';
+								for(var i in result.subList){
+									str+='<li class="col-sm-2 petition_border">';
+										str+='<p class="text-center" attr_id="'+result.subList[i].id+'">'+result.subList[i].name.toUpperCase()+'</p>';
+										str+='<h5 class="text-center m_top5"><b title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.subList[i].petitionIds.length+'</b> - <b title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.subList[i].subWorkIds.length+'</b></h5>';
+										var convertToAmt = result.subList[i].estimationCost*100000;
+										var crores = (convertToAmt/10000000).toFixed(2);
+										str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
+										
+										str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.subList[i].withCostPetitionsCount+'</span> - <span>'+result.subList[i].noCostPetitionsCount+'</span></h5>';
+										str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.subList[i].withCostWorksCount+'</span> - <span>'+result.subList[i].noCostWorksCount+'</span></h5>';
+									str+='</li>';
+										
+								}
+								str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					
+					
+				str+='<div class="row pad_10">';
+					str+='<div class="border-styling" style="border-top:1px solid #1283C9;"></div>';
+						str+='<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Department wise</h5>';
+						str+='<div class="col-sm-12 m_top5" style="padding-left: 30px;padding-right: 30px;">';
+							str+='<ul class="list-inline departmentSlickCls m_top10">';
+								for(var i in result.deptList){
+										str+='<li class="col-sm-2 petition_border">';
+											str+='<p class="text-center" attr_id="'+result.deptList[i].id+'" style="font-size:11px"><b>'+result.deptList[i].name.toUpperCase()+'</b></p>';
+											str+='<h5 class="text-center m_top5"><b title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.deptList[i].petitionIds.length+'</b> - <b title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.deptList[i].subWorkIds.length+'</b></h5>';
+											var convertToAmt = result.deptList[i].estimationCost*100000;
+											var crores = (convertToAmt/10000000).toFixed(2);
+											str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
 											
-											str+='	<div class="row" style="padding:0px 10px 10px 10px">';
-													str+='	<h5 style="background-color:#E2F2F9;margin-left:5px" class="grad_bg_lightblue">Referral wise</h5>';
-													str+='<div class="col-sm-12 m_top5">';
-													//str+='	<h5 style="background-color:#E2F2F9" class="grad_bg_lightblue">Referral wise</h5>';
-													str+='<div class="clearfix"></div>'
-													for(var i in result.referrerList){
-													str+='	<div class="col-sm-2 petition_border">';
-													str+='	<div class="">';
-														str+='	<p attr_id='+result.referrerList[i].id+'>'+result.referrerList[i].name.toUpperCase()+'</p>';
-														str+='	<h5><b title="Represents">'+result.referrerList[i].petitionIds.length+'</b> - <b title="Works">'+result.referrerList[i].subWorkIds.length+'</b></h5>';
-														var convertToAmt = result.referrerList[i].estimationCost*100000;
-														var crores = (convertToAmt/10000000).toFixed(2);
-														str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
-														str+='</div>';
-														str+='</div>';
-														}
-													str+='</div>';
-												str+='</div>';
-												
-												
-												str+='<div class="row pad_10">';
-												str+='<div class="border-styling" style="border-top:1px solid #1283C9;"></div>';
-												str+='	<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Subject wise</h5>';
-												str+='	<div class="col-sm-12 m_top5">';
-												//str+='	<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9">Subject wise</h5>';
-												str+='<div class="clearfix"></div>';
-												for(var i in result.subList){
-													str+='	<div class="col-sm-2 petition_border">';
-													str+='	<div class="">';
-														str+='	<p attr_id="'+result.subList[i].id+'">'+result.subList[i].name.toUpperCase()+'</p>';
-														str+='	<h5><b title="Represents">'+result.subList[i].petitionIds.length+'</b> - <b title="Works">'+result.subList[i].subWorkIds.length+'</b></h5>';
-														var convertToAmt = result.subList[i].estimationCost*100000;
-														var crores = (convertToAmt/10000000).toFixed(2);
-														str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
-														str+='</div>';
-														str+='</div>';
-												}
-													str+='</div>';
-													
-												str+='</div>';
-												str+='<div class="row pad_10">';
-												str+='<div class="border-styling" style="border-top:1px solid #1283C9;"></div>';
-												str+='<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Department wise</h5>';
-												str+='	<div class="col-sm-12 m_top5">';
-												//str+='<h5 class="grad_bg_lightblue" style="background-color:#E2F2F9;margin-left:5px">Department wise</h5>';
-												str+='<div class="clearfix"></div>';
-												for(var i in result.deptList){
-													str+='	<div class="col-sm-2 petition_border">';
-													str+='	<div class="">';
-														str+='	<p attr_id="'+result.deptList[i].id+'" style="font-size:11px"><b>'+result.deptList[i].name.toUpperCase()+'</b></p>';
-														str+='	<h5><b title="Represents">'+result.deptList[i].petitionIds.length+'</b> - <b title="Works">'+result.deptList[i].subWorkIds.length+'</b></h5>';
-														var convertToAmt = result.deptList[i].estimationCost*100000;
-														var crores = (convertToAmt/10000000).toFixed(2);
-														str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
-														str+='</div>';
-														str+='</div>';
-												}
-													str+='</div>';
-													
-												str+='</div>';
-											str+='</div>';
-										str+='</div>';
-									str+='</div>';
-									$("#completeOverviewId").html(str);
+											str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.deptList[i].withCostPetitionsCount+'</span> - <span>'+result.deptList[i].noCostPetitionsCount+'</span></h5>';
+											str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.deptList[i].withCostWorksCount+'</span> - <span>'+result.deptList[i].noCostWorksCount+'</span></h5>';
+										str+='</li>';
+										
+								}
+							str+='</ul>';
+					str+='</div>';
+				str+='</div>';
+				
+		str+='</div>';	
+	str+='</div>';
+	
+	$("#completeOverviewId").html(str);
+	$(".tooltipCls").tooltip();
+	$(".referralSlickCls").slick({
+		slides:'li',
+		infinite: false,
+		slidesToShow: 4,
+		slidesToScroll: 1,
+		variableWidth: false
+	 });
+	 $(".subjectSlickCls").slick({
+		slides:'li',
+		infinite: false,
+		slidesToShow: 4,
+		slidesToScroll: 1,
+		variableWidth: false
+	 });
+	 $(".departmentSlickCls").slick({
+		slides:'li',
+		infinite: false,
+		slidesToShow: 4,
+		slidesToScroll: 1,
+		variableWidth: false
+	 });
 	}else{
 		$("#completeOverviewId").html("No data available");
 	}
@@ -508,23 +589,41 @@ function buildLeadWiseOverviewDetails(result){
 								str+='<div class="well pad_5 m_bottom_0">';
 									str+='<div class="row">';
 										if(result[i].statusList[j].id == 1){
-											str+='<div class="col-sm-6"><span>Pending</span><br><b>'+result[i].statusList[j].petitionIds.length+'</b>';
 											var convertToAmt = result[i].statusList[j].estimationCost*100000;
-                                        var crores = (convertToAmt/10000000).toFixed(2);
-                                        str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
+											var crores = (convertToAmt/10000000).toFixed(2);
+											/* str+='<div class="col-sm-6"><span>Pending</span><br><b>'+result[i].statusList[j].petitionIds.length+'</b>';
+											
+											str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
+											str+='</div>'; */
+											
+											str+='<div class="col-sm-6">';
+												str+='<h5 class="font_weight">Pending</h5>';
+												str+='<h5 class="font_weight">'+result[i].statusList[j].petitionIds.length+'</h5>';
+												str+='<h5 class="font_weight" data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight" style="color:#000">('+crores+')</h5>';
 											str+='</div>';
+											
 										}else if(result[i].statusList[j].id == 2){
-											str+='<div class="col-sm-6"><span>Completed</span><br><b>'+result[i].statusList[j].petitionIds.length+'</b></div>';
+											str+='<div class="col-sm-6"><span>Completed</span><br><span class="m_top10"><b >'+result[i].statusList[j].petitionIds.length+'</b></span></div>';
 										}
 										//str+='<div class="col-sm-6"><span>Pending</span><br><b>'+result[i].statusList[j].totalRepresents+'</b></div>';
-										str+='<div class="col-sm-6"><span>Works</span><br><b>'+result[i].statusList[j].subWorkIds.length+'</b></div>';
+										str+='<div class="col-sm-6"><span>Works</span><br><span class="m_top10"><b >'+result[i].statusList[j].subWorkIds.length+'</b></span></div>';
 										
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
 						}
 					str+='</div>';
-					
+					str+='<div class="row m_top5">';
+						str+='<div class="col-sm-6">';
+							str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result[i].withCostPetitionsCount+'</span></h5>';
+						str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result[i].withCostWorksCount+'</span></h5>';
+						str+='</div>';
+						str+='<div class="col-sm-6">';
+							str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result[i].noCostPetitionsCount+'</span></h5>';
+						    str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result[i].noCostWorksCount+'</span></h5>';
+						str+='</div>';
+						
+					str+='</div>';
                 str+='</div>';
 				
 			str+='</div>';
