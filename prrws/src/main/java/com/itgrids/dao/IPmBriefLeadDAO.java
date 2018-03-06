@@ -8,5 +8,6 @@ import com.itgrids.model.PmBriefLead;
 
 public interface IPmBriefLeadDAO extends GenericDao<PmBriefLead, Long> {
 	public List<Object[]> gePmBriefLeadDetailsList(Long deptDesignationId);
+	public List<Object[]> getAllPmBriefLeadDetailsList();
 
 }
