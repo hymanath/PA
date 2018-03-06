@@ -74,7 +74,8 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 				if(callTypeId.equals(IConstants.WS_CALL_TYPE_LIVE))
 					clientResponse = webServiceUtilService.callWebService(url,input,requestMethod);
 				
-				else if(callTypeId.equals(IConstants.WS_CALL_TYPE_DB) || callTypeId.equals(IConstants.WS_CALL_TYPE_LIVE_OR_DB))
+				else if(callTypeId.equals(IConstants.WS_CALL_TYPE_DB) || callTypeId.equals(IConstants.WS_CALL_TYPE_LIVE_OR_DB) || 
+						callTypeId.equals(IConstants.WS_CALL_TYPE_DB_THEN_LIVE))
 				{
 					if(requestMethod.equalsIgnoreCase(IConstants.REQUEST_METHOD_POST))
 						inputData = webServiceUtilService.formatJsonString(inputStr);
@@ -99,7 +100,21 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 						}
 					}
 					else if(callTypeId.equals(IConstants.WS_CALL_TYPE_DB))
+					{
 						return getResponseFromDB(webserviceId,inputData);
+					}
+					else if(callTypeId.equals(IConstants.WS_CALL_TYPE_DB_THEN_LIVE))
+					{
+						String dataStr = getResponseFromDB(webserviceId,inputData);
+						
+						if(dataStr != null && dataStr.trim().length() > 0)
+							return dataStr;
+						else if(dataStr == null || dataStr.trim().length() == 0)
+						{
+							clientResponse = webServiceUtilService.callWebService(urlOrg,input,requestMethod);
+						}
+						
+					}
 				}
 				else
 					clientResponse = webServiceUtilService.callWebService(urlOrg,input,requestMethod);

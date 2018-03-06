@@ -40,11 +40,11 @@ import com.itgrids.model.ComponentTarget;
 import com.itgrids.model.ComponentTargetConfiguration;
 import com.itgrids.model.ComponentTargetConfigurationTemp;
 import com.itgrids.service.IConstituencyWiseWorkStatusService;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
-import com.sun.jersey.api.client.ClientResponse;
 
 @Service
 @Transactional
@@ -77,7 +77,7 @@ public class ConstituencyWiseWorkStatusService implements IConstituencyWiseWorkS
 	@Autowired
 	private IComponentWiseAchievementConfigurationTempDAO componentWiseAchievementConfigurationTempDAO;
 	@Autowired
-	private WebserviceHandlerService webserviceHandlerService;
+	private IWebserviceHandlerService webserviceHandlerService;
 	
 	/*
 	 * Swadhin K Lenka

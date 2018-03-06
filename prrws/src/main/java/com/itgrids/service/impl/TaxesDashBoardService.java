@@ -18,6 +18,7 @@ import com.itgrids.dto.PanchayatTaxVO;
 import com.itgrids.dto.TaxesVO;
 import com.itgrids.dto.panchayatTaxInputVO;
 import com.itgrids.service.ITaxesDashBoardService;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.IConstants;
@@ -36,7 +37,7 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	@Autowired
 	private CommonMethodsUtilService commonMethodsUtilService;
 	@Autowired
-	private WebserviceHandlerService webserviceHandlerService;
+	private IWebserviceHandlerService webserviceHandlerService;
 	
 	/*
 	 * Author : Nandhini.k,

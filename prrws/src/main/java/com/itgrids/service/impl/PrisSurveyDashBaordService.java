@@ -22,6 +22,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PrisDataVo;
 import com.itgrids.dto.PrisOverviewVo;
 import com.itgrids.service.IPrisSurveyDashBaordService;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -46,7 +47,7 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	@Autowired
 	private IConstituencyDAO constituencyDAO;
 	@Autowired
-	private WebserviceHandlerService webserviceHandlerService;
+	private IWebserviceHandlerService webserviceHandlerService;
 	
 	/*
 	 * Date : 07/07/2017

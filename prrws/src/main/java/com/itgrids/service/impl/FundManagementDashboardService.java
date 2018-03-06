@@ -14,12 +14,12 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -45,7 +45,6 @@ import com.itgrids.dao.IPrTehsilDAO;
 import com.itgrids.dao.ISubProgramDAO;
 import com.itgrids.dao.ITehsilConstituencyDAO;
 import com.itgrids.dao.ITehsilDAO;
-import com.itgrids.dao.impl.PageComponentDAO;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.FundMatrixVO;
 import com.itgrids.dto.FundSchemeVO;
@@ -58,11 +57,11 @@ import com.itgrids.dto.NregsFmsWorksVO;
 import com.itgrids.dto.PageComponentVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.ResultVO;
-import com.itgrids.model.FavouriteComponent;
 import com.itgrids.model.GovtScheme;
 import com.itgrids.model.GrantType;
 import com.itgrids.model.PageComponent;
 import com.itgrids.service.IFundManagementDashboardService;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.IConstants;
@@ -119,7 +118,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	@Autowired
 	private IPageComponentDAO pageComponentDAO;
 	@Autowired
-	private WebserviceHandlerService webserviceHandlerService;
+	private IWebserviceHandlerService webserviceHandlerService;
 	
 	@Override
 	/*
