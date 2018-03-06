@@ -541,7 +541,7 @@ public class DebateService implements IDebateService{
 					 }
 				 }
 				//sending msg through kaizala
-				 for ( int i = 0; i< phoneNumbers.size(); i++){
+				 /*for ( int i = 0; i< phoneNumbers.size(); i++){
 				   	KaizalaMessageVO kaizalavo = new KaizalaMessageVO();
 				   	kaizalavo.setPhoneNumberStr("+91"+phoneNumbers.get(i));
 				   	kaizalavo.setGroupId("e88eb184-5b34-4d7b-97bf-5ce39427a149");
@@ -558,7 +558,7 @@ public class DebateService implements IDebateService{
 								.resource("http://mytdp.com/KAIZALA/sendMessagesToPublicGroup");
 					
 					webResource.accept("application/json").type("application/json").post(ClientResponse.class, kaizalavo);
-				 }
+				 }*/
 				  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				  return resultStatus;
 				  }
