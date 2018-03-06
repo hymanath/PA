@@ -24,7 +24,7 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.NregaConsolidatedDataVO;
 import com.itgrids.dto.NregaConsolidatedInputVO;
 import com.itgrids.dto.NregsProjectsVO;
-import com.itgrids.service.impl.WebserviceHandlerService;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSConsolidatedService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -52,7 +52,7 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 	@Autowired
 	private INregaComponentDAO nregaComponentDAO;
 	@Autowired
-	private WebserviceHandlerService webserviceHandlerService;
+	private IWebserviceHandlerService webserviceHandlerService;
 	
 	/*
 	 * Date : 26/07/2017
