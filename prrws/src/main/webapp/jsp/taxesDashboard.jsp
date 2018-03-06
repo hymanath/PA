@@ -9,6 +9,8 @@
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/SlickSliderNew/slick.css" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/SlickSliderNew/slick-theme.css" type="text/less" rel="stylesheet"/>
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
@@ -846,249 +848,9 @@
 							</div>
 						</div>
 						<div class="row">
-							<!--<div class="col-sm-3">
-								<div class="panel panel-default m_top10" style="background-color:#FCFAFA;">
-									<div class="panel-body" style="box-shadow:0px 0px 2px rgba(0,0,0,0.4);">
-										<div class="row">
-											<div class="col-sm-6">
-												<h5 class="media-heading m_top10 margin_left_5 font_weight">House Holds</h5>
-											</div>
-											<div class="col-sm-6">
-												<div class="pull-right ">
-													<div class="boxCss">
-														<h5 class="font_weight">Total Units</h5>
-														<h5 class="font_weight m_top5 Demand_Clr text-center">10000</h5>
-													</div>	
-												</div>
-											</div>	
-										</div>
-										<div class="row">
-											<div class="col-sm-4 m_top15">
-												<div class="media">
-													<div class="media-left">
-														<img src="Assests/images/blue-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Demand</h6>
-														<h5 class="font_weight m_top20 Demand_Clr">30.05<small style="color:#141F27;"><b>&nbsp;Cr</b></small></h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 m_top15">
-												<div class="media" style="overflow:unset;">
-													<div class="media-left">
-														<img src="Assests/images/green-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
-														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
-														<h6 class="font_weight m_top10">Units</h6>
-														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 m_top15">
-												<div class="media" style="overflow:unset;">
-													<div class="media-left">
-														<img src="Assests/images/red-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
-														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
-														<h6 class="font_weight m_top10">Units</h6>
-														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
-													</div>
-												</div>
-											</div>
-										</div>	
-									</div>
-								</div>	
+							<div class="col-sm-12" style="padding-left: 30px;padding-right: 30px;">
+								<div id="indicatorsOverviewDivId"></div>
 							</div>
-							
-							<div class="col-sm-3">
-								<div class="panel panel-default m_top10" style="background-color:#FCFAFA;">
-									<div class="panel-body" style="box-shadow:0px 0px 2px rgba(0,0,0,0.4);">
-										<div class="row">
-											<div class="col-sm-6">
-												<h5 class="media-heading m_top10 margin_left_5 font_weight">Institutions</h5>
-											</div>
-											<div class="col-sm-6">
-												<div class="pull-right ">
-													<div class="boxCss">
-														<h5 class="font_weight">Total Units</h5>
-														<h5 class="font_weight m_top5 Demand_Clr text-center">10000</h5>
-													</div>	
-												</div>
-											</div>	
-										</div>
-										<div class="row">
-											<div class="col-sm-4 m_top15">
-												<div class="media">
-													<div class="media-left">
-														<img src="Assests/images/blue-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Demand</h6>
-														<h5 class="font_weight m_top20 Demand_Clr">30.05<small style="color:#141F27;"><b>&nbsp;Cr</b></small></h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 m_top15">
-												<div class="media" style="overflow:unset;">
-													<div class="media-left">
-														<img src="Assests/images/green-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
-														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
-														<h6 class="font_weight m_top10">Units</h6>
-														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 m_top15">
-												<div class="media" style="overflow:unset;">
-													<div class="media-left">
-														<img src="Assests/images/red-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
-														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
-														<h6 class="font_weight m_top10">Units</h6>
-														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
-													</div>
-												</div>
-											</div>
-										</div>	
-									</div>
-								</div>	
-							</div>
-							<div class="col-sm-3">
-								<div class="panel panel-default m_top10" style="background-color:#FCFAFA;">
-									<div class="panel-body" style="box-shadow:0px 0px 2px rgba(0,0,0,0.4);">
-										<div class="row">
-											<div class="col-sm-6">
-												<h5 class="media-heading m_top10 margin_left_5 font_weight">Hospitals</h5>
-											</div>
-											<div class="col-sm-6">
-												<div class="pull-right ">
-													<div class="boxCss">
-														<h5 class="font_weight">Total Units</h5>
-														<h5 class="font_weight m_top5 Demand_Clr text-center">10000</h5>
-													</div>	
-												</div>
-											</div>	
-										</div>
-										<div class="row">
-											<div class="col-sm-4 m_top15">
-												<div class="media">
-													<div class="media-left">
-														<img src="Assests/images/blue-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Demand</h6>
-														<h5 class="font_weight m_top20 Demand_Clr">30.05<small style="color:#141F27;"><b>&nbsp;Cr</b></small></h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 m_top15">
-												<div class="media" style="overflow:unset;">
-													<div class="media-left">
-														<img src="Assests/images/green-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
-														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
-														<h6 class="font_weight m_top10">Units</h6>
-														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 m_top15">
-												<div class="media" style="overflow:unset;">
-													<div class="media-left">
-														<img src="Assests/images/red-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
-														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
-														<h6 class="font_weight m_top10">Units</h6>
-														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
-													</div>
-												</div>
-											</div>
-										</div>	
-									</div>
-								</div>	
-							</div>
-							
-							<div class="col-sm-3">
-								<div class="panel panel-default m_top10" style="background-color:#FCFAFA;">
-									<div class="panel-body" style="box-shadow:0px 0px 2px rgba(0,0,0,0.4);">
-										<div class="row">
-											<div class="col-sm-6">
-												<h5 class="media-heading m_top10 margin_left_5 font_weight">Hotels</h5>
-											</div>
-											<div class="col-sm-6">
-												<div class="pull-right ">
-													<div class="boxCss">
-														<h5 class="font_weight">Total Units</h5>
-														<h5 class="font_weight m_top5 Demand_Clr text-center">10000</h5>
-													</div>	
-												</div>
-											</div>	
-										</div>
-										<div class="row">
-											<div class="col-sm-4 m_top15">
-												<div class="media">
-													<div class="media-left">
-														<img src="Assests/images/blue-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Demand</h6>
-														<h5 class="font_weight m_top20 Demand_Clr">30.05<small style="color:#141F27;"><b>&nbsp;Cr</b></small></h5>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 m_top15">
-												<div class="media" style="overflow:unset;">
-													<div class="media-left">
-														<img src="Assests/images/green-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Collection_clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
-														<h6 class="font_weight m_top5 Collection_clr">(55%)</h6>
-														<h6 class="font_weight m_top10">Units</h6>
-														<h6 class="font_weight m_top5 Collection_clr">5500 <small>&nbsp;(55%)</small></h6>
-													</div>
-												</div>
-											</div>
-											<div class="col-sm-4 m_top15">
-												<div class="media" style="overflow:unset;">
-													<div class="media-left">
-														<img src="Assests/images/red-strip.png" class="media-object" style="height:97px;width: 8px;">
-													</div>
-													<div class="media-body">
-														<h6 class="font_weight">Collection</h6>
-														<h5 class="font_weight m_top10 Balance_Clr">7.98<small style="color:#141F27;">&nbsp;Cr</small></h5>
-														<h6 class="font_weight m_top5 Balance_Clr">(55%)</h6>
-														<h6 class="font_weight m_top10">Units</h6>
-														<h6 class="font_weight m_top5 Balance_Clr">5500 <small>&nbsp;(55%)</small></h6>
-													</div>
-												</div>
-											</div>
-										</div>	
-									</div>
-								</div>	
-							</div>-->
-							<div id="indicatorsOverviewDivId"></div>
 						</div>
 					</div>
 					
@@ -1100,19 +862,6 @@
 							</div>
 						</div>
 						<div class="row">
-							<!--<div class="col-sm-2 m_top10">
-								<div class="panel panel-default" style="border: 2px solid #ccc;">
-									<div class="panel-heading" style="background-color:#EAE6E7;padding-top: 5px;padding-bottom: 5px;">
-										<h4 class="panel-title font_weight text-center">Below Rs.2,000</h4>
-									</div>
-									<div class="panel-body">
-										<h4 class="font_weight Demand_Clr text-center">500&nbsp;Units</h4>
-										<hr style="margin-top: 10px;margin-bottom: 10px;" class="">
-										<h3 class="font_weight text-center">286.62&nbsp;Cr</h3>
-										<h5 class="text-right Collection_clr m_top5 font_weight">30.26%</h5>
-									</div>
-								</div>
-							</div>-->
 							<div id="defaulterOverviewDivId"></div>
 							
 						</div>
@@ -1120,28 +869,23 @@
 					<div class="custom_border m_top10">
 						<div class="bg_yash_color_10">
 							<div class="row">
-								<div class="col-sm-2">
+								<div class="col-sm-2 taxCls">
 									<label>Select Tax</label>
-									<select class="form-control chosen-select">
-										<option>All</option>
-										<option>NEWS</option>
-										<option>ALERTS</option>
+									<select class="form-control chosen-select active" id="taxId">
+										<option value="0">All</option>
+										<option value="1">House</option>
+										<option value="2">Kolagaaram</option>
+										<option value="3">Advertisement</option>
 									</select>
 								</div>
-								<div class="col-sm-2">
-									<label>Select Fees</label>
-									<select class="form-control chosen-select">
-										<option>All</option>
-										<option>NEWS</option>
-										<option>ALERTS</option>
-									</select>
-								</div>
-								<div class="col-sm-2">
-									<label>Select&nbsp;Indicators</label>
-									<select class="form-control chosen-select">
-										<option>All</option>
-										<option>NEWS</option>
-										<option>ALERTS</option>
+								<div class="col-sm-2 feecls">
+									<label>Select Fee</label>
+									<select class="form-control chosen-select active" id="feeId">
+										<option value="0">All</option>
+										<option value="1">Trade License</option>
+										<option value="2">Auctions</option>
+										<option value="3">Private Tap</option>
+										<option value="111">Others</option>
 									</select>
 								</div>
 								<div class="col-sm-2">
@@ -1154,10 +898,10 @@
 									<div class="col-sm-12">
 										<div class="white_bg">
 											<label class="checkbox-inline">
-											  <input type="checkbox" id="inlineCheckbox1" value="option1">Arrears
+											  <input type="checkbox" class="yearTypeCls" id="inlineCheckbox1" value="arrears" checked>Arrears
 											</label>
 											<label class="checkbox-inline">
-											  <input type="checkbox" id="inlineCheckbox2" value="option2">Current
+											  <input type="checkbox" class="yearTypeCls" id="inlineCheckbox2" value="current" checked>Current
 											</label>
 										</div>
 									</div>
@@ -1174,22 +918,74 @@
 										<div class="col-sm-12">
 											<div class="white_bg">
 												<label class="radio-inline">
-												  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Unit wise
+												  <input type="radio" name="inlineRadioOptionsUnits" id="inlineRadio1" value="unit">Unit wise
 												</label>
 												<label class="radio-inline">
-												  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">Amount wise
+												  <input type="radio" name="inlineRadioOptionsUnits" id="inlineRadio2" value="amount">Amount wise
 												</label>
 												<label class="radio-inline">
-												  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">All
+												  <input type="radio" name="inlineRadioOptionsUnits" id="inlineRadio3" value="all" checked>All
 												</label>
 											</div>
 										</div>
 									</div>
 								</div>
+								<div class="col-sm-3">
+									<div class="row">
+										<div class="col-sm-12">
+											<label>Defaulters</label>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="white_bg">
+												<label class="checkbox-inline">
+												  <input type="checkbox" class="defaulterCls" name="inlineRadioOptions1" id="inlineCheckbox1" value="defaulters">Defaulters
+												</label>
+												<label class="checkbox-inline">
+												  <input type="checkbox" class="defaulterCls" name="inlineRadioOptions1"  id="inlineCheckbox2" value="indicators">Indicators
+												</label>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-2">
+									<label>Location Level</label>
+									<select class="form-control chosen-select locationLevelCls">
+										<option value="0">Select Level</option>
+										<!--<option value="State">State</option>-->
+										<option value="district" selected>District</option>
+										<option value="assembly">Constituency</option>
+										<option value="mandal">Mandal</option>
+									</select>
+								</div>
+								<div class="col-sm-2 districtCls">
+									<label>District</label>
+									<select class="form-control chosen-select" id="districtId">
+									</select>
+								</div>
+								<div class="col-sm-2 constituencyCls" style="display:none;">
+									<label>Constituency</label>
+									<select class="form-control chosen-select" id="constituencyId">
+									</select>
+								</div>
+								<div class="col-sm-2 mandalCls" style="display:none;">
+									<label>Mandal</label>
+									<select class="form-control chosen-select" id="mandalId">
+									</select>
+								</div>
+								<div class="col-sm-2">
+									<button class="btn btn-primary btn-sm font_weight getDetailsCls" style="margin-top: 26px;">SUBMIT</button>
+								</div>
 							</div>
 						</div>
-						<div class="bg_yash_color_10 m_top5">
-						
+						<div class="row">
+							<div class="col-sm-12">
+								<div id="tableBuildDivId"></div>
+							</div>
 						</div>
 					</div>
 					
@@ -1201,6 +997,7 @@
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="Assests/Plugins/SlickSliderNew/slick.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>

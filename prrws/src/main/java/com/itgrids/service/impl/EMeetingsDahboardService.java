@@ -36,8 +36,13 @@ public class EMeetingsDahboardService implements IEMeetingsDashboardService{
 	public EMeetingsVO getEMeetingsOverViewDetails(InputVO inputVO){
 		EMeetingsVO finalVO = new EMeetingsVO();
 		try {
-			
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://pris.ap.gov.in/api/meetings/apiq.php?getmeetingDataFilter=1&locationType="+inputVO.getLocationType()+"&locationId="+inputVO.getLocationId()+"");
+			String url = null;
+			if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("state")){
+				url = "http://pris.ap.gov.in/api/meetings/apiq.php?meetingStats=1&fromdate="+inputVO.getFromDate()+"&todate="+inputVO.getToDate()+"";
+			}else{
+				url = "http://pris.ap.gov.in/api/meetings/apiq.php?getmeetingDataFilter=1&locationType="+inputVO.getLocationType()+"&locationId="+inputVO.getLocationId()+"";
+			}
+			WebResource webResource = commonMethodsUtilService.getWebResourceObject(url);
 	        ClientResponse response = webResource.get(ClientResponse.class);
 				
         	if(response.getStatus() != 200){
