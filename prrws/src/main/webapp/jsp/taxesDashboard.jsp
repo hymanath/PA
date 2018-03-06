@@ -228,10 +228,10 @@
 <section class="" style="padding: 10px;background-color: #DFDFE0;">
 		<div class="container-fluid">
 			<div class="row">
-				<!--<div class="col-sm-2 m_top5">
+				<div class="col-sm-2 m_top5">
 					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" id="selectedName1" style="font-size:13px;cursor:pointer;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_distId="" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
 					<div class="multi-level-selection-menu arrow_box_top"></div>
-				</div>-->
+				</div>
 				<div class="col-sm-3  pull-right">
 					<div class="input-group">
 						<span class="input-group-addon">
