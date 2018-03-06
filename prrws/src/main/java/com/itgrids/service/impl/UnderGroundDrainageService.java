@@ -771,6 +771,15 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				govtWorkProgressObj.setIsCompleted(workStatusVO.getIsCompleted() != null ? workStatusVO.getIsCompleted():"N");
 				govtWorkProgressDAO.save(govtWorkProgressObj).getGovtWorkProgressId();
 				
+				Object completedPercentage = govtWorkProgressDAO.getWorkOverallWorkCompletedPercentage(workStatusVOList.get(0).getWorkId());
+				if(completedPercentage != null){
+					GovtWork govtWork = govtWorkDAO.get(workStatusVOList.get(0).getWorkId());
+					govtWork.setCompletedPercentage(Double.parseDouble(completedPercentage.toString()));
+					govtWork.setUpdatedBy(workStatusVOList.get(0).getUserId());
+					govtWork.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					govtWorkDAO.save(govtWork);
+				}
+				
 				//save in track
 				saveWorkStatusDetailsInTracking(workStatusVO,uniqueUpdateId);
 			}
