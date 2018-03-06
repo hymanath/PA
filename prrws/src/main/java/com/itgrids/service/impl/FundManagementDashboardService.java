@@ -118,6 +118,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	private IPrTehsilDAO prTehsilDAO;
 	@Autowired
 	private IPageComponentDAO pageComponentDAO;
+	@Autowired
+	private WebserviceHandlerService webserviceHandlerService;
 	
 	@Override
 	/*
@@ -3115,7 +3117,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		try {
 			prpareRquiredParameter(inputVO, "");
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew",str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew",str,IConstants.REQUEST_METHOD_POST);
 
 			Map<String, String> cnstuncyPrlmntIdNameMap = null;
 			Map<String, String> nregaPanchayatMandalCodeMap = null;
@@ -3137,10 +3139,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				}
 			 }
 
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			if (output == null) {
+				throw new RuntimeException("Webservice Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew" + str);
 			} else {
-				String output = response.getEntity(String.class);
+				//String output = response.getEntity(String.class);
 				DecimalFormat f = new DecimalFormat("##");
 				if (output != null && !output.isEmpty()) {
 					JSONArray finalArray = new JSONArray(output);
@@ -3639,9 +3641,9 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     		    prpareRquiredParameter(inputVO,"overview");
     		    inputVO.setViewType("cumulative");
     		    String str = "";
-    		    ClientResponse districtResponse = null;
-    		    ClientResponse constituencyResponse = null;
-    		    ClientResponse mandalResponceResponse = null;
+    		    String districtOutput = null;
+    		    String constituencyOutput = null;
+    		    String mandalOutput = null;
     		    LocationFundDetailsVO topPerformancMandalVO = null;
 			    LocationFundDetailsVO poorPerformancMandalVO = null;
 			    List<FundVO> locationList = new ArrayList<FundVO>(0);
@@ -3651,8 +3653,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				{
 				   inputVO.setSublocationType("district");
 				   str = convertingInputVOToString(inputVO);
-				   districtResponse = webServiceUtilService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
-				   List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(districtResponse,inputVO.getSublocationType());
+				   districtOutput = webserviceHandlerService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
+				   List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(districtOutput,inputVO.getSublocationType());
 				    if (list.size() > 0 ){
 						 topPerformancMandalVO = list.get(0);
 				    	 poorPerformancMandalVO = list.get(list.size()-1);
@@ -3666,8 +3668,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				{
 					 inputVO.setSublocationType("constituency");
 					 str = convertingInputVOToString(inputVO);
-					 constituencyResponse = webServiceUtilService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
-					 List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(constituencyResponse,inputVO.getSublocationType());
+					 constituencyOutput = webserviceHandlerService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
+					 List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(constituencyOutput,inputVO.getSublocationType());
 					 if (list.size() > 0 ){
 						 topPerformancMandalVO = list.get(0);
 				    	 poorPerformancMandalVO = list.get(list.size()-1);
@@ -3686,8 +3688,8 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				{
 					 inputVO.setSublocationType("mandal");
 					 str = convertingInputVOToString(inputVO);
-					 mandalResponceResponse = webServiceUtilService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
-				     List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(mandalResponceResponse,inputVO.getSublocationType());
+					 mandalOutput = webserviceHandlerService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
+				     List<LocationFundDetailsVO> list = getPerformanceWiseMgneregesLocationDtls(mandalOutput,inputVO.getSublocationType());
 				     if(list.size() > 0){
 				    	 topPerformancMandalVO = list.get(0);
 				    	 poorPerformancMandalVO = list.get(list.size()-1);
@@ -3739,17 +3741,17 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     		LOG.error(" Exception raised at setResultToFinalList () in FundManagementDashboardService class; ",e);
     	}
     } 
-    public List<LocationFundDetailsVO> getPerformanceWiseMgneregesLocationDtls( ClientResponse responce,String locationType) {
+    public List<LocationFundDetailsVO> getPerformanceWiseMgneregesLocationDtls( String output,String locationType) {
     	List<LocationFundDetailsVO> resultList = new ArrayList<>();
     	try {
     		   Double totalAmountExpenditur=0.0d;
     		   Double totalWageExpenditure=0.0d;
     		   Double totalMaterialExpenditure=0.0d;
     		   DecimalFormat f = new DecimalFormat("##.000");
-    		   if (responce.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ responce.getStatus());
+    		   if (output == null) {
+		 	    	  throw new RuntimeException("Webservice Data Not Found. ");
 		 	     } else {
-		 	    	String output = responce.getEntity(String.class);
+		 	    	//String output = responce.getEntity(String.class);
 		 	    	if (output != null && !output.isEmpty()){
 		 	    		JSONArray finalArray = new JSONArray(output);
 		 	    		if (finalArray!=null && finalArray.length()>0){
@@ -3811,12 +3813,12 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
     		    inputVO.setViewType("cumulative");
     		    prpareRquiredParameter(inputVO,"overview");
     		    String str = convertingInputVOToString(inputVO);
-				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew", str,IConstants.REQUEST_METHOD_POST);
+    		    String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew", str,IConstants.REQUEST_METHOD_POST);
 		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		        if (output == null) {
+		 	    	  throw new RuntimeException("Webservice Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureABSNewService/FMSExpenditureOverviewNew"+ str);
 		 	     } else {
-		 	    	String output = response.getEntity(String.class);
+		 	    	//String output = response.getEntity(String.class);
 		 	    	mgnresDtlsVO.setId(0l);
 		 	    	mgnresDtlsVO.setName("MGNREGS");
 		 	    	mgnresDtlsVO.setCount(0l);
@@ -4165,12 +4167,12 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
    	 try {
    		    
    		        String str = convertingInputVOToString(inputVO);
-				ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureFinalData", str,IConstants.REQUEST_METHOD_POST);
+				String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureFinalData", str,IConstants.REQUEST_METHOD_POST);
 		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		        if (output == null) {
+		 	    	  throw new RuntimeException("Webservice Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureFinalData"+ str);
 		 	     } else {
-		 	    	String output = response.getEntity(String.class);
+		 	    	//String output = response.getEntity(String.class);
 		 	    	if(output != null && !output.isEmpty()){
 		 	    		JSONArray finalArray = new JSONArray(output);
 		 	    		if(finalArray!=null && finalArray.length()>0){

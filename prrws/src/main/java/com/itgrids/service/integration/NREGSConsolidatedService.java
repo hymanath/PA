@@ -24,6 +24,7 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.NregaConsolidatedDataVO;
 import com.itgrids.dto.NregaConsolidatedInputVO;
 import com.itgrids.dto.NregsProjectsVO;
+import com.itgrids.service.impl.WebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSConsolidatedService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -50,6 +51,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 	private IConvergenceTypeDAO convergenceTypeDAO;
 	@Autowired
 	private INregaComponentDAO nregaComponentDAO;
+	@Autowired
+	private WebserviceHandlerService webserviceHandlerService;
 	
 	/*
 	 * Date : 26/07/2017
@@ -1261,9 +1264,9 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 					NregsProjectsVO finalVO =  new NregsProjectsVO();
 					inputVO.setComponentName(urlvo.getComponentName());
 					String str = convertingInputVOToString(inputVO);
-					ClientResponse response = webServiceUtilService.callWebService(urlvo.getUrl().toString(), str,IConstants.REQUEST_METHOD_POST);
-					if(response.getStatus() != 200){
-						throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+					String output = webserviceHandlerService.callWebService(urlvo.getUrl().toString(), str,IConstants.REQUEST_METHOD_POST);
+					if(output == null){
+						throw new RuntimeException("Webservice Data Not Found. "+ urlvo.getUrl()+str);
 					}else{
 						if(inputVO.getComponentName() != null && inputVO.getComponentName().trim().equalsIgnoreCase("Burial Grounds"))
 			 	    		  inputVO.setComponentName("Burial Ground");
@@ -1278,7 +1281,7 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 			 	    	 else if(inputVO.getComponentName() != null && inputVO.getComponentName().trim().equalsIgnoreCase("Raising of Perinnial Fodders"))
 				 	    	  inputVO.setComponentName("Raising of Perinnial Fodder");
 						
-						String output = response.getEntity(String.class);
+						//String output = response.getEntity(String.class);
 						if(output != null && !output.isEmpty()){
 							JSONArray finalArray = new JSONArray(output);
 							if(finalArray != null && finalArray.length() > 0){

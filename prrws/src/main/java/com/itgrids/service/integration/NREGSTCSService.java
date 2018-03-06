@@ -127,12 +127,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		List<NregsProjectsVO> voList = new ArrayList<NregsProjectsVO>(0);
 		try {
 			 
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract", inputVO,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract", inputVO,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("WebService Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/Abstract");
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 /*output = "[{\"PARAMETER\":\"Labour Budget\",\"TARGET\":\"135033896\",\"COMPLETED\":\"110050490\",\"PERCENTAGE\":\"81.5\"},"
 	 	    	 		+ "{\"PARAMETER\":\"Farm Pond\",\"TARGET\":\"38291\",\"COMPLETED\":\"28710\",\"PERCENTAGE\":\"74.98\"},"
 	 	    	 		+ "{\"PARAMETER\":\"IHHL\",\"TARGET\":\"26709\",\"COMPLETED\":\"23310\",\"PERCENTAGE\":\"87.27\"},"
@@ -179,12 +179,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		LabourBudgetOverViewVO returnvo = new LabourBudgetOverViewVO();
 		try {
 			 String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetOverviewNew", str,IConstants.REQUEST_METHOD_POST);
+			 String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetOverviewNew", str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetOverviewNew"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 /*output = "{\"TOTALBUDGET\": \"443361.29\",\"TOTALLABOUR\": \"4980421\",\"MALELABOUR\": \"2225710\",\"FEMALELABOUR\": \"2754711\","
 	 	    	 		+ "\"TARGETTEDPERSONDAYS\": \"135033896\",\"GENERATEDPERSONDAYS\": \"109104373\",\"TOTALEXPENDITURE\": \"185762.22\","
 	 	    	 		+ "\"AVGWAGEPERPERSON\": \"138.14\",\"TOTALRESPONSE\": \"43822300\",\"ONREQUESTWORKALLOCATED\": \"43822300\","
@@ -255,12 +255,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			Map<String,IdNameVO> rangeWiseMap = new LinkedHashMap<String,IdNameVO>();
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 /*output = "[{\"RANGE\": \"0\",\"GPSCOUNT\": \"236\"},{\"RANGE\": \"Below 1\",\"GPSCOUNT\": \"690\"},{\"RANGE\": \"1-5\",\"GPSCOUNT\": \"2975\"},"
 	 	    	 		+ "{\"RANGE\": \"5-10\",\"GPSCOUNT\": \"2978\"},{\"RANGE\": \"10-20\",\"GPSCOUNT\": \"3986\"},{\"RANGE\": \"20-30\",\"GPSCOUNT\": \"1694\"},"
 	 	    	 		+ "{\"RANGE\": \"30-50\",\"GPSCOUNT\": \"901\"},{\"RANGE\": \"50-100\",\"GPSCOUNT\": \"286\"},{\"RANGE\": \"100-200\",\"GPSCOUNT\": \"21\"},"
@@ -819,12 +819,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -1226,12 +1226,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			 str = convertingInputVOToString(inputVO);
 			 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			 String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	       
-			if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 		 	    	if(output != null && !output.isEmpty()){
 		 	    		JSONArray finalArray = new JSONArray(output);
 		 	    		if(finalArray!=null && finalArray.length()>0){
@@ -1621,11 +1621,11 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    			inputVO.setSublocationType("constituency");
 			 	    		
 			 	    		str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse constResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
-				 	    	if(constResponse.getStatus() != 200){
-					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ constResponse.getStatus());
+			 	    		String constOutput = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				 	    	if(constOutput == null){
+					 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 					 	      }else{
-					 	    	 String constOutput = constResponse.getEntity(String.class);
+					 	    	 //String constOutput = constResponse.getEntity(String.class);
 					 	    	 
 					 	    	 disConslist = getNregsConstCuntDetails(constOutput,distConstMap,inputVO.getDivType(),inputVO.getLocationType(),inputVO.getSublocationType());
 					 	      }
@@ -1643,11 +1643,11 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    	else*/
 				 	    		inputVO.setSublocationType("mandal");
 				 	    	str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
-				 	    	if(mandalResponse.getStatus() != 200){
-					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
+				 	    	String mandalOutput = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				 	    	if(mandalOutput == null){
+					 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 					 	      }else{
-					 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
+					 	    	 //String mandalOutput = mandalResponse.getEntity(String.class);
 					 	    	 
 					 	    	  disMandallist = getNregsMandalsCuntFrDistrict(mandalOutput,distConstMap,inputVO.getDivType(),inputVO.getSublocationType());
 					 	      }
@@ -1665,11 +1665,11 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    	else*/
 				 	    		inputVO.setSublocationType("panchayat");
 				 	    	str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse panchayatResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
-				 	    	if(panchayatResponse.getStatus() != 200){
-					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchayatResponse.getStatus());
+				 	    	String panchayatOutput = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				 	    	if(panchayatOutput == null){
+					 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 					 	      }else{
-					 	    	 String panchayatOutput = panchayatResponse.getEntity(String.class);
+					 	    	 //String panchayatOutput = panchayatResponse.getEntity(String.class);
 					 	    	 
 					 	    	disVillageslist = getNregsVillageCuntFrDistrict(panchayatOutput,distConstMap,inputVO.getDivType(),inputVO.getSublocationType());
 					 	      }
@@ -1712,11 +1712,11 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    	else*/
 			 	    		inputVO.setSublocationType("mandal");
 			 	    		str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse mandalResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
-				 	    	if(mandalResponse.getStatus() != 200){
-					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ mandalResponse.getStatus());
+			 	    		String mandalOutput = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				 	    	if(mandalOutput == null){
+					 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 					 	      }else{
-					 	    	 String mandalOutput = mandalResponse.getEntity(String.class);
+					 	    	 //String mandalOutput = mandalResponse.getEntity(String.class);
 					 	    	 
 					 	    	consMandallist = getNregsMandalsCuntFrConstituncies(mandalOutput,constMandMap,inputVO.getDivType());
 					 	      }
@@ -1733,11 +1733,11 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    	else*/
 				 	    		inputVO.setSublocationType("panchayat");
 				 	    	str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse panchaytResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
-				 	    	if(panchaytResponse.getStatus() != 200){
-					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchaytResponse.getStatus());
+				 	    	String panchaytOutput = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				 	    	if(panchaytOutput == null){
+					 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 					 	      }else{
-					 	    	 String panchaytOutput = panchaytResponse.getEntity(String.class);
+					 	    	 //String panchaytOutput = panchaytResponse.getEntity(String.class);
 					 	    	 
 					 	    	consVillagelist = getNregsVillagesCuntFrConstituncies(panchaytOutput,constMandMap,inputVO.getDivType());
 					 	      }
@@ -1797,11 +1797,11 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    		else*/
 			 	    			inputVO.setSublocationType("panchayat");
 			 	    		str = convertingInputVOToString(inputVO);
-				 	    	ClientResponse panchayResponse = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
-				 	    	if(panchayResponse.getStatus() != 200){
-					 	    	  throw new RuntimeException("Failed : HTTP error code : "+ panchayResponse.getStatus());
+			 	    		String panchayOutput = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				 	    	if(panchayOutput == null){
+					 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl+str);
 					 	      }else{
-					 	    	 String panchayOutput = panchayResponse.getEntity(String.class);
+					 	    	 //String panchayOutput = panchayResponse.getEntity(String.class);
 					 	    	 
 					 	    	mandalVillagelist = getNregsVillagesCuntFrMandals(panchayOutput,mandalVillaMap,inputVO.getDivType());
 					 	      }
@@ -2440,12 +2440,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -2498,12 +2498,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgricultureServices/AgricultureData", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgricultureServices/AgricultureData", str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. http://dbtrd.ap.gov.in/NregaDashBoardService/rest/AgricultureServices/AgricultureData"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -2567,12 +2567,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -2638,12 +2638,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -2711,12 +2711,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -2841,12 +2841,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			 str = convertingInputVOToString(inputVO);
 			 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			 String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	       
-			if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 		 	    	if(output != null && !output.isEmpty()){
 		 	    		JSONArray finalArray = new JSONArray(output);
 		 	    		if(finalArray!=null && finalArray.length()>0){
@@ -3518,12 +3518,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(),str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(),str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -3581,12 +3581,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. "+ webServiceUrl + str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -3884,12 +3884,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			String str = convertingInputVOToString(inputVO); 
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	List<String> uniqueCodeStr=new ArrayList<String>();
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -3951,12 +3951,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -4050,12 +4050,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			 str = convertingInputVOToString(inputVO);
 			 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			 String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	       
-			if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl + str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 		 	    	if(output != null && !output.isEmpty()){
 		 	    		JSONArray finalArray = new JSONArray(output);
 		 	    		if(finalArray!=null && finalArray.length()>0){
@@ -4201,10 +4201,10 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. :http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew "+ str);
 	 	      }else{
 	 	    	  if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Ground"))
 	 	    		  inputVO.setType("Burial Ground");
@@ -4219,7 +4219,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Raising of Perinnial Fodders"))
 		 	    	  inputVO.setType("Raising of Perinnial Fodder");
 	 	    	  
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
@@ -4259,10 +4259,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	  inputVO.setType("Raising of Perinnial Fodders");
 			String str1 = convertingInputVOToString(inputVO);
 			
-			ClientResponse distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1,IConstants.REQUEST_METHOD_POST);
+			String distOutput = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1,IConstants.REQUEST_METHOD_POST);
 	       
-	        if(distResponse.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ distResponse.getStatus());
+	        if(distOutput == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew"+ str);
 	 	      }else{
 	 	    	  if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Burial Ground"))
 	 	    		  inputVO.setType("Burial Ground");
@@ -4277,10 +4277,10 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    	 else if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("Raising of Perinnial Fodders"))
 		 	    	  inputVO.setType("Raising of Perinnial Fodder");
 	 	    	  
-	 	    	 String output = distResponse.getEntity(String.class);
+	 	    	 //String output = distResponse.getEntity(String.class);
 
-	 	    	 if(output != null && !output.isEmpty()){
-	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    	 if(distOutput != null && !distOutput.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(distOutput);
 	 	    		if(finalArray!=null && finalArray.length()>0){
 	 	    			for(int i=0;i<finalArray.length();i++){
 	 	    				NregsProjectsVO vo = new NregsProjectsVO();
@@ -4345,12 +4345,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
     				JSONObject jObj = new JSONObject(output);
@@ -4437,21 +4437,21 @@ public class NREGSTCSService implements INREGSTCSService{
 			Long districtId = inputVO.getDistrictId();
 			
 			String str = null;
-			ClientResponse response = null;
+			String output = null;
 			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
 				str = convertingInputVOToStringForIWMP(inputVO);
 			else
 				str = convertingInputVOToString(inputVO);
 			
 			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
-				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str,IConstants.REQUEST_METHOD_POST);
 			else
-				response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str,IConstants.REQUEST_METHOD_POST);
 			
-			if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -4520,7 +4520,7 @@ public class NREGSTCSService implements INREGSTCSService{
 			inputVO.setLocationType("district");
 			inputVO.setLocationId(districtId);
 			String str1 = null;
-			ClientResponse distResponse = null;
+			//String output = null;
 			
 			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
 				str1 = convertingInputVOToStringForIWMP(inputVO);
@@ -4528,14 +4528,14 @@ public class NREGSTCSService implements INREGSTCSService{
 				str1 = convertingInputVOToString(inputVO);
 			
 			if(inputVO.getType() != null && inputVO.getType().trim().equalsIgnoreCase("GH"))
-				distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str1,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str1,IConstants.REQUEST_METHOD_POST);
 			else
-				distResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/AbstractNew", str1,IConstants.REQUEST_METHOD_POST);
 			
-			if(distResponse.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ distResponse.getStatus());
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ str);
 	 	      }else{
-	 	    	 String output = distResponse.getEntity(String.class);
+	 	    	 //String output = distResponse.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -4634,13 +4634,13 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			String str = convertingInputVOToString(inputVO); 
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataPanchayatNew", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataPanchayatNew", str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataPanchayatNew"+ str);
 	 	      }else{
 	 	    	Map<String,NregsDataVO> districtMap = new LinkedHashMap<String,NregsDataVO>();
-	 	    	String output = response.getEntity(String.class);
+	 	    	//String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -4975,12 +4975,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		try {
 			String projectType = null;
 			String str = convertingInputVOToStringForIWMP(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp", str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/AbstractDataIwmp"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
@@ -5054,12 +5054,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/WaterBudgetData", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/WaterBudgetData", str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WaterBudgetService/WaterBudgetData"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -5111,12 +5111,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if (response.getStatus() != 200) {
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if (output == null) {
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl + str);
 	 	      } else {
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 if (output != null && output.length() > 0) {
 	 	    		 JSONArray paymentOverviewDataArr = new JSONArray(output);	 
 	 	    		 if (paymentOverviewDataArr != null && paymentOverviewDataArr.length() > 0) {
@@ -5224,12 +5224,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+					output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
-			        if (response.getStatus() != 200) {
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			        if (output == null) {
+			 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 			 	      } else {
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 			 	    	 if (output != null && output.length() > 0) {
 			 	    		 JSONArray paymentOverviewDataArr = new JSONArray(output);	 
 			 	    		 if (paymentOverviewDataArr != null && paymentOverviewDataArr.length() > 0) {
@@ -5270,12 +5270,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		        if (output == null) {
+		 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl +str);
 		 	      } else {
-		 	    	 String output = response.getEntity(String.class);
+		 	    	 //String output = response.getEntity(String.class);
 		 	    	 if (output != null && output.length() > 0) {
 		 	    		 JSONArray paymentOverviewDataArr = new JSONArray(output);	 
 		 	    		 if (paymentOverviewDataArr != null && paymentOverviewDataArr.length() > 0) {
@@ -5333,12 +5333,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200) {
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null) {
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	    }else {
-	 	    	 String output = response.getEntity(String.class);
+	 	    	//String output = response.getEntity(String.class);
 	 	    	 if (output != null && !output.isEmpty()) {
 	 	    		 JSONArray paymentDataArr = new JSONArray(output);	 
 	 	    		 if (paymentDataArr != null && paymentDataArr.length() > 0) {
@@ -5491,12 +5491,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST); 
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST); 
 			
-			if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
 	 	    		if(finalArray!=null && finalArray.length()>0){
@@ -5522,12 +5522,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+					output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
-			        if (response.getStatus() != 200) {
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			        if (output == null) {
+			 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 			 	      } else {
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 			 	    	 if (output != null && output.length() > 0) {
 			 	    		 JSONArray finalArray = new JSONArray(output);	 
 			 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -5553,12 +5553,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		        if (output == null) {
+		 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 		 	      } else {
-		 	    	 String output = response.getEntity(String.class);
+		 	    	 //String output = response.getEntity(String.class);
 		 	    	 if (output != null && output.length() > 0) {
 		 	    		 JSONArray finalArray = new JSONArray(output);	 
 		 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -5619,12 +5619,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONObject Obj = new JSONObject(output);
@@ -5694,12 +5694,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -6111,12 +6111,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -6163,12 +6163,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -6224,12 +6224,12 @@ public class NREGSTCSService implements INREGSTCSService{
 				inputVO.setGroupName("Comprehensive Restoration of minor Irrigation Tank");
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -6289,12 +6289,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -6330,12 +6330,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+					output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
-			        if (response.getStatus() != 200) {
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			        if (output == null) {
+			 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 			 	      } else {
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 			 	    	 if (output != null && output.length() > 0) {
 			 	    		 JSONArray finalArray = new JSONArray(output);	 
 			 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -6361,12 +6361,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		        if (output == null) {
+		 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 		 	      } else {
-		 	    	 String output = response.getEntity(String.class);
+		 	    	 //String output = response.getEntity(String.class);
 		 	    	 if (output != null && output.length() > 0) {
 		 	    		 JSONArray finalArray = new JSONArray(output);	 
 		 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -6414,12 +6414,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+	    	 String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -6477,12 +6477,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+	    	 String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -6518,12 +6518,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(),str,IConstants.REQUEST_METHOD_POST);
+					output = webserviceHandlerService.callWebService(webServiceUrl.toString(),str,IConstants.REQUEST_METHOD_POST);
 			        
-			        if (response.getStatus() != 200) {
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			        if (output == null) {
+			 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 			 	      } else {
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 			 	    	 if (output != null && output.length() > 0) {
 			 	    		 JSONArray finalArray = new JSONArray(output);	 
 			 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -6549,12 +6549,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		        if (output == null) {
+		 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 		 	      } else {
-		 	    	 String output = response.getEntity(String.class);
+		 	    	 //String output = response.getEntity(String.class);
 		 	    	 if (output != null && output.length() > 0) {
 		 	    		 JSONArray finalArray = new JSONArray(output);	 
 		 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -6669,12 +6669,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -6820,12 +6820,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 			String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -6875,12 +6875,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+					output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
-			        if (response.getStatus() != 200) {
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			        if (output == null) {
+			 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 			 	      } else {
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 			 	    	 if (output != null && output.length() > 0) {
 			 	    		 JSONArray finalArray = new JSONArray(output);	 
 			 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -6916,12 +6916,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		        if (output == null) {
+		 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl +str);
 		 	      } else {
-		 	    	 String output = response.getEntity(String.class);
+		 	    	 //String output = response.getEntity(String.class);
 		 	    	 if (output != null && output.length() > 0) {
 		 	    		 JSONArray finalArray = new JSONArray(output);	 
 		 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -6969,12 +6969,12 @@ public class NREGSTCSService implements INREGSTCSService{
 
 			String str = convertingInputVOToString(inputVO);
 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			if (output == null) {
+				throw new RuntimeException("Webservice Data Not Found. : " + webServiceUrl+str);
 			} else {
-				String output = response.getEntity(String.class);
+				//String output = response.getEntity(String.class);
 
 				if (output != null && !output.isEmpty()) {
 					JSONArray finalArray = new JSONArray(output);
@@ -7405,12 +7405,12 @@ public class NREGSTCSService implements INREGSTCSService{
 
 			String str = convertingInputVOToString(inputVO);
 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			if (output == null) {
+				throw new RuntimeException("String output : " + webServiceUrl+str);
 			} else {
-				String output = response.getEntity(String.class);
+				//String output = response.getEntity(String.class);
 
 				if (output != null && !output.isEmpty()) {
 					JSONArray finalArray = new JSONArray(output);
@@ -7453,12 +7453,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+					output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
-			        if (response.getStatus() != 200) {
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			        if (output == null) {
+			 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 			 	      } else {
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 			 	    	 if (output != null && output.length() > 0) {
 			 	    		 JSONArray finalArray = new JSONArray(output);	 
 			 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -7496,12 +7496,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		        if (output == null) {
+		 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 		 	      } else {
-		 	    	 String output = response.getEntity(String.class);
+		 	    	 //String output = response.getEntity(String.class);
 		 	    	 if (output != null && output.length() > 0) {
 		 	    		 JSONArray finalArray = new JSONArray(output);	 
 		 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -7655,12 +7655,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			}
 			
 			String str = convertingInputVOToString(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew", str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBugetServiceNew/APLabourBdgtExpenditureNew"+ str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	List<Object[]> list = componentTargetConfigurationDAO.getRangeWiseVillageDetails(inputVO.getpType(),inputVO.getLocationType(),inputVO.getLocationIdStr());
 	 	    	if(list != null && !list.isEmpty()){
@@ -7862,12 +7862,12 @@ public class NREGSTCSService implements INREGSTCSService{
 						inputVO.setToRange(Long.valueOf(rangeValues[1]));
 						
 						String str = convertingInputVOToString(inputVO); 
-						ClientResponse response = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
+						String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats", str,IConstants.REQUEST_METHOD_POST);
 				        
-				        if(response.getStatus() != 200){
-				 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+				        if(output == null){
+				 	    	  throw new RuntimeException("Webservice Data Not Found. : http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APLabourBudgetPanchayats/APLabourBdgtPanchayats"+ str);
 				 	      }else{
-				 	    	 String output = response.getEntity(String.class);
+				 	    	 //String output = response.getEntity(String.class);
 				 	    	if(output != null && !output.isEmpty()){
 				 	    		JSONArray finalArray = new JSONArray(output);
 				 	    		if(finalArray!=null && finalArray.length()>0){
@@ -8055,12 +8055,12 @@ public class NREGSTCSService implements INREGSTCSService{
 
 			String str = convertingInputVOToString(inputVO);
 
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			if (output == null) {
+				throw new RuntimeException("Webservice Data Not Found. : " +webServiceUrl +str);
 			} else {
-				String output = response.getEntity(String.class);
+				//String output = response.getEntity(String.class);
 
 				if (output != null && !output.isEmpty()) {
 					JSONArray finalArray = new JSONArray(output);
@@ -8098,12 +8098,12 @@ public class NREGSTCSService implements INREGSTCSService{
 		        	
 		        	str = convertingInputVOToString(inputVO);
 					
-					response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+					output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
-			        if (response.getStatus() != 200) {
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			        if (output == null) {
+			 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 			 	      } else {
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 			 	    	 if (output != null && output.length() > 0) {
 			 	    		 JSONArray finalArray = new JSONArray(output);	 
 			 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -8129,12 +8129,12 @@ public class NREGSTCSService implements INREGSTCSService{
 	        	
 	        	str = convertingInputVOToString(inputVO);
 				
-				response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+				output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 		        
-		        if (response.getStatus() != 200) {
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		        if (output == null) {
+		 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 		 	      } else {
-		 	    	 String output = response.getEntity(String.class);
+		 	    	 //String output = response.getEntity(String.class);
 		 	    	 if (output != null && output.length() > 0) {
 		 	    		 JSONArray finalArray = new JSONArray(output);	 
 		 	    		 if (finalArray != null && finalArray.length() > 0) {
@@ -8208,12 +8208,12 @@ public class NREGSTCSService implements INREGSTCSService{
 					}
 					String str = convertingInputVOToString(inputVO);
 					
-					ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+		 	    	 String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
-			        if(response.getStatus() != 200){
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			        if(output == null){
+			 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 			 	      }else{
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 			 	    	 
 			 	    	if(output != null && !output.isEmpty()){
 			 	    		JSONArray finalArray = new JSONArray(output);
@@ -8302,12 +8302,12 @@ public class NREGSTCSService implements INREGSTCSService{
 					}
 					String str = convertingInputVOToString(inputVO);
 					
-					ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+		 	    	 String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 			        
-			        if(response.getStatus() != 200){
-			 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			        if(output == null){
+			 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 			 	      }else{
-			 	    	 String output = response.getEntity(String.class);
+			 	    	 //String output = response.getEntity(String.class);
 			 	    	 
 			 	    	if(output != null && !output.isEmpty()){
 			 	    		JSONArray finalArray = new JSONArray(output);
@@ -8391,12 +8391,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			}
             String str = convertingInputVOToString(inputVO);
 			
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+            String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
 	        
-	        if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -8459,12 +8459,12 @@ public class NREGSTCSService implements INREGSTCSService{
 			InputVO inputVO = new InputVO();
 			List<NregaFAVacantPanchayat> dataList = new ArrayList<NregaFAVacantPanchayat>(0);
 			String webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/CMDashBoard/mdServiceVacanciesServices";
-			ClientResponse response = webServiceUtilService.callWebService(webServiceUrl.toString(),inputVO,IConstants.REQUEST_METHOD_POST);
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(),inputVO,IConstants.REQUEST_METHOD_POST);
 
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			if (output == null) {
+				throw new RuntimeException("WebService Data Not Found. "+webServiceUrl);
 			} else {
-				String output = response.getEntity(String.class);
+				//String output = response.getEntity(String.class);
 
 				if (output != null && !output.isEmpty()) {
 					JSONArray finalArray = new JSONArray(output);

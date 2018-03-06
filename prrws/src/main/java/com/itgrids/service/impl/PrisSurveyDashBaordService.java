@@ -45,7 +45,8 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	@Autowired
 	private IConstituencyDAO constituencyDAO;
-	
+	@Autowired
+	private WebserviceHandlerService webserviceHandlerService;
 	
 	/*
 	 * Date : 07/07/2017
@@ -63,18 +64,18 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			Date date = new Date();
 			String toDate = sdf.format(date);
-			ClientResponse response;
-			ClientResponse response1 = webServiceUtilService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate(),null,IConstants.REQUEST_METHOD_GET);	
+			String output;
+			String output1 = webserviceHandlerService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate(),null,IConstants.REQUEST_METHOD_GET);	
 			if(inputVO.getType().equalsIgnoreCase("Overall")){
-				response = webServiceUtilService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate(),null,IConstants.REQUEST_METHOD_GET);
+				output = webserviceHandlerService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate(),null,IConstants.REQUEST_METHOD_GET);
 			}else{
-				 response = webServiceUtilService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType(),null,IConstants.REQUEST_METHOD_GET);
+				output = webserviceHandlerService.callWebService("http://45.114.245.209/survey/api/?getPIRSSurveyInfo=true&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType(),null,IConstants.REQUEST_METHOD_GET);
 			}
 			
-			if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found.");
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	// String output = response.getEntity(String.class);
 	 	    	 
 	 	    	if(output != null && !output.isEmpty()){
 	 	    		JSONArray finalArray = new JSONArray(output);
@@ -92,10 +93,10 @@ public class PrisSurveyDashBaordService implements IPrisSurveyDashBaordService{
 	 	    	}
 	 	     }
 	        
-	        if(response1.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response1.getStatus());
+	        if(output1 == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found.");
 	 	      }else{
-	 	    	 String output1 = response1.getEntity(String.class);
+	 	    	 //String output1 = response1.getEntity(String.class);
 	 	    	if(output1 != null && !output1.isEmpty()){
 	 	    		JSONArray jsonArray = new JSONArray(output1);
 	 	    		if(jsonArray!=null && jsonArray.length()>0){

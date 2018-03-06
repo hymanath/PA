@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -61,6 +60,8 @@ public class PrENCService implements IPrENCService {
 
 	@Autowired
 	private IEncWorksDAO encWorksDAO;
+	@Autowired
+	private WebserviceHandlerService webServiceHandlerService;
 	
 	
 	@Override
@@ -303,7 +304,7 @@ public class PrENCService implements IPrENCService {
 		try{
 			Map<Long,EncWorksVO> locationMap= new HashMap<Long, EncWorksVO>();
 			Map<Long,Map<Long,EncWorksVO>> assemblylocationMap= new HashMap<Long, Map<Long,EncWorksVO>>();
-			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus",null,IConstants.REQUEST_METHOD_POST);
+			String output = webServiceHandlerService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus",null,IConstants.REQUEST_METHOD_POST);
 			
 			List<Object[]> locationData = null;
 			if(inputVO.getLocationType().equalsIgnoreCase("d")){
@@ -344,10 +345,10 @@ public class PrENCService implements IPrENCService {
 			}
 			
 			
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if (output == null) {
+				throw new RuntimeException("WebService Data Not Found. http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus");
 				} else {
-					String output = response.getEntity(String.class);
+					//String output = response.getEntity(String.class);
 					if (output != null && !output.isEmpty()) {
 						JSONArray resultArray= new JSONArray(output);
 						JSONObject Obj = resultArray.getJSONObject(0);
@@ -453,7 +454,7 @@ public class PrENCService implements IPrENCService {
 		try{
 			Map<String,EncTargetsVO> locationMap= new HashMap<String, EncTargetsVO>();
 			Map<Long,EncTargetsVO> assemblylocationMap= new HashMap<Long,EncTargetsVO>();
-			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalTarAchievements",null,IConstants.REQUEST_METHOD_POST);
+			String output = webServiceHandlerService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalTarAchievements",null,IConstants.REQUEST_METHOD_POST);
 			List<Object[]> locationData = null;
 			if(inputVO.getLocationType().equalsIgnoreCase("d")){
 				locationData= districtDAO.getEncDistricts();
@@ -474,10 +475,10 @@ public class PrENCService implements IPrENCService {
 				}
 			}
 			
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			if (output == null) {
+				throw new RuntimeException("Webservice Data Not Found. http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalTarAchievements");
 			 } else {
-				String output = response.getEntity(String.class);
+				//String output = response.getEntity(String.class);
 				if (output != null && !output.isEmpty()) {
 					JSONArray resultArray= new JSONArray(output);
 					JSONObject Obj = resultArray.getJSONObject(0);
@@ -901,11 +902,11 @@ public class PrENCService implements IPrENCService {
 			EncWorksVO notGroundedVo= new EncWorksVO();
 			finalVo.setLocationId(1l);
 			finalVo.setLocationName("Andra Pradesh");
-			ClientResponse response = webServiceUtilService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus",null,IConstants.REQUEST_METHOD_POST);
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			String output = webServiceHandlerService.callWebService("http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus",null,IConstants.REQUEST_METHOD_POST);
+			if (output == null) {
+				throw new RuntimeException("Webservice Data Not Found. http://predmis.ap.nic.in/RestWS/PredmisRoadService/MandalWorksOverViewStatus");
 			} else {
-				String output = response.getEntity(String.class);
+				//String output = response.getEntity(String.class);
 				if (output != null && !output.isEmpty()) {
 					JSONArray resultArray= new JSONArray(output);
 					JSONObject Obj = resultArray.getJSONObject(0);

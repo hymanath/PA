@@ -35,6 +35,8 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	
 	@Autowired
 	private CommonMethodsUtilService commonMethodsUtilService;
+	@Autowired
+	private WebserviceHandlerService webserviceHandlerService;
 	
 	/*
 	 * Author : Nandhini.k,
@@ -603,11 +605,11 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 		List<PanchayatTaxVO> returnList = new ArrayList<PanchayatTaxVO>();
 		try {
 			String url = getURLBasedOnFilter(inputVO);
-			ClientResponse response = webServiceUtilService.callWebService(url, null,IConstants.REQUEST_METHOD_GET);
-			if(response.getStatus() != 200){
-	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			String output = webserviceHandlerService.callWebService(url, null,IConstants.REQUEST_METHOD_GET);
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found."+url);
 	 	      }else{
-	 	    	 String output = response.getEntity(String.class);
+	 	    	 //String output = response.getEntity(String.class);
 	 	    	if(inputVO.getDefaultersType() != null && inputVO.getDefaultersType().equalsIgnoreCase("Defaulters"))
 	 	    		returnList = setDefaultersDataToList(output);
 	 	    	else if(inputVO.getDefaultersType() != null && inputVO.getDefaultersType().equalsIgnoreCase("Indicators"))
