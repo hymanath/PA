@@ -26,6 +26,7 @@ import com.itgrids.dao.impl.LightMonitoringDAO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.SwachhBharatMissionIHHLDtlsVO;
 import com.itgrids.service.ISwachhBharatMissionIHHLService;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
@@ -44,7 +45,7 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	@Autowired
 	private LightMonitoringDAO lightMonitoringDAO;
 	@Autowired
-	private WebserviceHandlerService webserviceHandlerService;
+	private IWebserviceHandlerService webserviceHandlerService;
 	
 	/**
 	 * @author Santosh Kumar Verma

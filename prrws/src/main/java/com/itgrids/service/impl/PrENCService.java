@@ -29,6 +29,7 @@ import com.itgrids.dto.EncWorksVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.service.IPrENCService;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -61,7 +62,7 @@ public class PrENCService implements IPrENCService {
 	@Autowired
 	private IEncWorksDAO encWorksDAO;
 	@Autowired
-	private WebserviceHandlerService webServiceHandlerService;
+	private IWebserviceHandlerService webServiceHandlerService;
 	
 	
 	@Override

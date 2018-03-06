@@ -41,11 +41,11 @@ import com.itgrids.model.LightMonitoringDetails;
 import com.itgrids.model.LightWattage;
 import com.itgrids.model.LightsVendor;
 import com.itgrids.service.ILightMonitoring;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
-import com.sun.jersey.api.client.ClientResponse;
 
 @Service
 @Transactional
@@ -85,8 +85,9 @@ public class LightMonitoringService  implements ILightMonitoring{
 	private ILightMonitoringDetailsDAO lightMonitoringDetailsDAO;
 	@Autowired
 	private ILightPoleDetailsDAO lightPoleDetailsDAO;
+	
 	@Autowired
-	private WebserviceHandlerService webserviceHandlerService;
+	private IWebserviceHandlerService webserviceHandlerService;
 		   
 	public ResultVO saveRealtimeStatusByVillages() {
 		ResultVO stausVO = new ResultVO();
