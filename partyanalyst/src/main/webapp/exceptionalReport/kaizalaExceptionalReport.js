@@ -79,6 +79,10 @@ function buildConstituencyWisePoorPerformance(result,typeval,id){
 									if(typeval == "parliament"){
 										str+='<td>'+result[i].parliamentName+'</td>';
 										str+='<td>'+result[i].target+'</td>';
+										/* if(result[i].committeeHavingNoSmartPhone > 0)
+											str+='<td>'+result[i].committeeHavingNoSmartPhone+'</td>';
+										else
+											str+='<td>-</td>'; */
 										str+='<td>'+result[i].committeeInstalled+'</td>';
 										str+='<td>'+result[i].committeeNotInstalled+'</td>';
 										str+='<td>'+result[i].committeeNotInstalledPer+'</td>';
@@ -89,6 +93,10 @@ function buildConstituencyWisePoorPerformance(result,typeval,id){
 										str+='<td>'+result[i].constituencyName+'</td>';
 										str+='<td>'+result[i].parliamentName+'</td>';
 										str+='<td>'+result[i].target+'</td>';
+										/* if(result[i].committeeHavingNoSmartPhone > 0)
+											str+='<td>'+result[i].committeeHavingNoSmartPhone+'</td>';
+										else
+											str+='<td>-</td>'; */
 										str+='<td>'+result[i].committeeInstalled+'</td>';
 										str+='<td>'+result[i].committeeNotInstalled+'</td>';
 										str+='<td>'+result[i].committeeNotInstalledPer+'</td>';
