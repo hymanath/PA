@@ -797,6 +797,8 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 									   locationVO.setAffiliatedCommPerc(Util.calculatePercantage(committeeLvl.getNotConductedCount(), committeeLvl.getTotalCount()));
 								   }else if(levelType != null && levelType.equalsIgnoreCase("Booth Committees")){
 									   locationVO.setBoothCommPerc(Util.calculatePercantage(committeeLvl.getNotConductedCount(), committeeLvl.getTotalCount()));
+								   }else if(levelType != null && levelType.equalsIgnoreCase("Dalitha Tejam")){
+									   locationVO.setDalithaTejPerc(Util.calculatePercantage(committeeLvl.getNotConductedCount(), committeeLvl.getTotalCount()));
 								   }
 							}
 						}
@@ -822,6 +824,10 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 											}else if(levelVal != null && levelVal.equalsIgnoreCase("Booth Committees")){
 												Double value2 = obj2.getBoothCommPerc();
 												Double value1 = obj1.getBoothCommPerc();
+												returnVal = value1.compareTo(value2);
+											}else if(levelVal != null && levelVal.equalsIgnoreCase("Dalitha Tejam")){
+												Double value2 = obj2.getDalithaTejPerc();
+												Double value1 = obj1.getDalithaTejPerc();
 												returnVal = value1.compareTo(value2);
 											}
 											return returnVal;

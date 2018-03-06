@@ -166,11 +166,11 @@ public class KaizalaAnswerInfoDAO extends GenericDaoHibernate<KaizalaAnswerInfo,
 		sb.append(" A.kaizala_location_address_id  = L.kaizala_location_address_id and ");
 		sb.append(" A.state_id=:stateId ");
 		
-		if(location != null && location.trim().equalsIgnoreCase("constituency")){
+		//if(location != null && location.trim().equalsIgnoreCase("constituency")){
 			sb.append(" group by A.constituency_id,A.parliament_id ");
-		}else{
-			sb.append(" group by A.parliament_id ");
-		}
+		//}else{
+		//	sb.append(" group by A.parliament_id ");
+		//}
 		SQLQuery query = getSession().createSQLQuery(sb.toString());
 		if(location != null && location.trim().equalsIgnoreCase("constituency")){
 			query.addScalar("constituencyId", Hibernate.LONG).addScalar("palriamentId", Hibernate.LONG).addScalar("count", Hibernate.LONG);

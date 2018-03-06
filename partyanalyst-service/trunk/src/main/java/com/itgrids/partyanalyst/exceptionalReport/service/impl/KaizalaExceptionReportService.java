@@ -92,7 +92,14 @@ public class KaizalaExceptionReportService implements IKaizalaExceptionReportSer
 			if(cadreInstalled != null && cadreInstalled.size() > 0){
 				for(Object[] param : cadreInstalled){
 					if(param[0] != null){
-						constituencyIdAndCadreInstalledCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[countPosition]));
+						Long count = constituencyIdAndCadreInstalledCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(count == null){
+							count= commonMethodsUtilService.getLongValueForObject(param[countPosition]);
+							constituencyIdAndCadreInstalledCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), count);
+						}else{
+							count = count+ commonMethodsUtilService.getLongValueForObject(param[countPosition]);
+							constituencyIdAndCadreInstalledCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), count);
+						}
 					}
 				}
 			}

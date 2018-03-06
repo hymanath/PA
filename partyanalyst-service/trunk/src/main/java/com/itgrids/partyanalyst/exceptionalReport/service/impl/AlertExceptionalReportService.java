@@ -193,7 +193,9 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 				ndDate = sdf.parse(endDate.trim());
 			}
 			Map<Long,AlertCoreDashBoardVO> statusMap = new LinkedHashMap<Long,AlertCoreDashBoardVO>();
-			List<Long> statusIds = Arrays.asList(6l,7l,4l,3l,2l,1l,0l);
+			//List<Long> statusIds = Arrays.asList(6l,7l,4l,3l,2l,1l,0l);//
+			//duplicates,actionNotRequired,ActionRequired(TotalAlerts-Duplicates-ActionNotReq),Completed,ActionInProgress(ActionInProgress+Pending+notified),Last month completed
+			List<Long> statusIds = Arrays.asList(7l,6l,5l,4l,3l,0l);
 			for (Long long1 : statusIds) {
 				AlertCoreDashBoardVO statusVO =statusMap.get(long1);
 				if(statusVO == null){
@@ -228,11 +230,17 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 			if(overAllAlertDtls != null && overAllAlertDtls.size() > 0){
 				tempList = new ArrayList<AlertCoreDashBoardVO>();
 				for(Object[] param : overAllAlertDtls){
-					tempVO = statusMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					String status = commonMethodsUtilService.getStringValueForObject(param[1]);
+					if(statusId.longValue() == 1l || statusId.longValue() == 2l || statusId.longValue() == 3l){
+						statusId = 3l;
+						status = "Action In Progress";
+					}
+					tempVO = statusMap.get(statusId);
 					if(tempVO != null){
 				//	tempVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-						tempVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-						tempVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						tempVO.setName(status);
+						tempVO.setCount(tempVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 						tempVO.setCountPerc(calculatePercantage(tempVO.getCount(),totalAlert));
 						//tempList.add(tempVO);
 					}
@@ -243,6 +251,13 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 				tempVO.setCount(overAllLastMonthCompleted);
 				tempVO.setCountPerc(calculatePercantage(overAllLastMonthCompleted,totalAlert));
 				tempList.add(tempVO);
+				Long duplicateCount = statusMap.get(7l).getCount();//duplicateCount
+				Long actionNotRequired = statusMap.get(6l).getCount();//actionNotRequired
+				Long ActionRequired = duplicateCount+actionNotRequired;
+				tempVO = statusMap.get(5l);
+				tempVO.setName("Action required");
+				tempVO.setCount(totalAlert-ActionRequired);
+				tempVO.setCountPerc(calculatePercantage(tempVO.getCount(),totalAlert));
 				alertCoreDashBoardVO1.getSubList().addAll(statusMap.values());
 			}
 			
@@ -273,11 +288,17 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 			if(lastMonthAllAlertDtls != null && lastMonthAllAlertDtls.size() > 0){
 				tempList = new ArrayList<AlertCoreDashBoardVO>();
 				for(Object[] param : lastMonthAllAlertDtls){
-					tempVO = statusMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					String status = commonMethodsUtilService.getStringValueForObject(param[1]);
+					if(statusId.longValue() == 1l || statusId.longValue() == 2l || statusId.longValue() == 3l){
+						statusId = 3l;
+						status = "Action In Progress";
+					}
+					tempVO = statusMap.get(statusId);
 					if(tempVO != null){
-					tempVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					tempVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					tempVO.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					//tempVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					tempVO.setName(status);
+					tempVO.setCount(tempVO.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
 					tempVO.setCountPerc(calculatePercantage(tempVO.getCount(),totalAlertLastMonth));
 					tempList.add(tempVO);
 					}
@@ -288,6 +309,13 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 				tempVO.setCount(lastMonthCompleted);
 				tempVO.setCountPerc(calculatePercantage(lastMonthCompleted,totalAlertLastMonth));
 				tempList.add(tempVO);
+				Long duplicateCount = statusMap.get(7l).getCount();//duplicateCount
+				Long actionNotRequired = statusMap.get(6l).getCount();//actionNotRequired
+				Long ActionRequired = duplicateCount+actionNotRequired;
+				tempVO = statusMap.get(5l);
+				tempVO.setName("Action required");
+				tempVO.setCount(totalAlertLastMonth-ActionRequired);
+				tempVO.setCountPerc(calculatePercantage(tempVO.getCount(),totalAlertLastMonth));
 				alertCoreDashBoardVO2.getSubList().addAll(statusMap.values());
 			}
 			alertCoreDashBoardVOs.add(alertCoreDashBoardVO1);
