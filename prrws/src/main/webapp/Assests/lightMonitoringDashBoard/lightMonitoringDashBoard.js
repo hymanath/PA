@@ -417,7 +417,7 @@ function buildBasicLedOverviewDetails(result)
 						str+='<img src="Assests/icons/Target_icon.png" alt="poles_icon">';
 					str+='</div>';
 					str+='<div class="media-body">';
-						str+='<h5 style="color:#8E51Db">OVERALL TARGET</h5>';
+						str+='<h5 style="color:#8E51Db"><b>OVERALL&nbsp;TARGET</b></h5>';
 						str+='<h3 class="m_top5">'+result[0].lightTarget+'</h3>';
 					str+='</div>';
 				str+='</div>';
@@ -429,7 +429,7 @@ function buildBasicLedOverviewDetails(result)
 							str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon">';
 						str+='</div>';
 						str+='<div class="media-body">';
-							str+='<h4 style="color:#827C13"><b>LIGHTS FITTED</b></h4>';
+							str+='<h5 style="color:#827C13"><b>LIGHTS FITTED</b></h5>';
 							str+='<h3 class="m_top5">'+result[0].totalLights+'</h3>';
 						str+='</div>';
 					str+='</div>';
@@ -443,7 +443,7 @@ function buildBasicLedOverviewDetails(result)
 							str+='<img src="Assests/icons/Achived_Perc_Icon.png" alt="poles_icon">';
 						str+='</div>';
 						str+='<div class="media-body">';
-							str+='<h5 style="color:#339900">ACHIEVEMENT</h5>';
+							str+='<h5 style="color:#339900"><b>ACHIEVEMENT</b></h5>';
 							str+='<h3 class="m_top5">'+perc+' %</h3>';
 						str+='</div>';
 					str+='</div>';
@@ -456,9 +456,9 @@ function buildBasicLedOverviewDetails(result)
 						str+='</div>';
 						str+='<div class="media-body">';
 							if(result[0].isDayTime != null && result[0].isDayTime == 'true')
-								str+='<h4 style="color:#FF3333"><b>ON LIGHTS</b></h4>';
+								str+='<h5 style="color:#FF3333"><b>ON LIGHTS</b></h5>';
 							else
-								str+='<h4 style="color:#339900"><b>ON LIGHTS</b></h4>';
+								str+='<h5 style="color:#339900"><b>ON LIGHTS</b></h5>';
 							str+='<h3 class="m_top5">'+result[0].onLights+'<small class="small-12" style="color:#FF3333"> ( '+onperc+' %) </small></h3>';
 						str+='</div>';
 					str+='</div>';
@@ -471,9 +471,9 @@ function buildBasicLedOverviewDetails(result)
 						str+='</div>';
 						str+='<div class="media-body">';
 							if(result[0].isDayTime != null && result[0].isDayTime == 'true')
-								str+='<h4 style="color:#339900"><b>OFF LIGHTS</b></h4>';
+								str+='<h5 style="color:#339900"><b>OFF LIGHTS</b></h5>';
 							else
-								str+='<h4 style="color:#FF3333"><b>OFF LIGHTS</b></h4>';
+								str+='<h5 style="color:#FF3333"><b>OFF LIGHTS</b></h5>';
 							str+='<h3 class="m_top5">'+result[0].offLights+'<small class="small-12" style="color:#FF3333"> ( '+offperc+' %) </small></h3>';
 						str+='</div>';
 					str+='</div>';
@@ -622,7 +622,7 @@ function projectData(divId,levelId)
 											collapse+='</ul>';
 										collapse+='</div>';
 										if(dataArr[i] == "district"){
-											collapse+='<div class="col-sm-2">';
+											collapse+='<div class="col-sm-2 '+dataArr[i]+'vendorSelectBoxCls">';
 												collapse+='<select class="form-control chosen-select lightsVendorCls"  attr_location_level="district"  id="districtLevelLightsVendorSelectBoxId">';
 												collapse+='<option value="0">All</option>';
 												collapse+='</select>';
@@ -634,7 +634,7 @@ function projectData(divId,levelId)
 											collapse+='<option value="0">ALL DISTRICT</option>';
 											collapse+='</select>';
 										collapse+='</div>';
-										collapse+='<div class="col-sm-2">';
+										collapse+='<div class="col-sm-2 '+dataArr[i]+'vendorSelectBoxCls"">';
 											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="constituency"  attr_district_filter_id="consLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="",attr_mandal_filter_id=""  id="constituencyLevelLightsVendorSelectBoxId">';
 											collapse+='<option value="0">All</option>';
 											collapse+='</select>';
@@ -653,7 +653,7 @@ function projectData(divId,levelId)
 											collapse+='</select>';
 										collapse+='</div>';
 										
-										collapse+='<div class="col-sm-2">';
+										collapse+='<div class="col-sm-2 '+dataArr[i]+'vendorSelectBoxCls"">';
 											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="mandal"  attr_district_filter_id="mandalLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="mandalLvlLedConstituencySelectBoxId",attr_mandal_filter_id="" id="mandalLvlLightsVendorSelectBoxId">';
 											collapse+='<option value="0">All</option>';
 											collapse+='</select>';
@@ -676,7 +676,7 @@ function projectData(divId,levelId)
 											collapse+='<option value="0">SELECT MANDAL</option>';
 											collapse+='</select>';
 										collapse+='</div>';
-										collapse+='<div class="col-sm-2">';
+										collapse+='<div class="col-sm-2 '+dataArr[i]+'vendorSelectBoxCls"">';
 											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="panchayat" attr_filter_type="mandal" attr_district_filter_id="panchayatLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="panchayatLvlLedConstituencySelectBoxId" attr_mandal_filter_id="panchayatLvlLedMandalSelectBoxId" id="panchayatLvlLedLightsVendorSelectBoxId">';
 												collapse+='<option value="0">All</option>';
 											collapse+='</select>';
@@ -1110,16 +1110,25 @@ $(document).on("click",".ledResultTypeCls",function() {
 $(document).on("click",".viewTypeCls",function() {
 	$(this).parent().find(".viewTypeCls").removeClass("active");
 	$(this).addClass("active");
-	var locationLevel = $(this).attr("attr_location_level");
 	var viewType = $(this).attr("attr_tab_type");
+	var locationLevel = $(this).attr("attr_location_level");
 	var filterType="";
 	var filterValue=0;
 	var lightVendorArr = [1,2];
-	/* alert(locationLevel);
-	alert(locationLevel);
+	var resultType = '';
+	$('.tableMenu'+locationLevel+' li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+				resultType = $(this).attr("attr_tab_type");
+			 }
+	});
+	if(viewType != null && viewType == "cummulative"){
+		$('.'+locationLevel+'vendorSelectBoxCls').hide();
+	}else{
+		$('.'+locationLevel+'vendorSelectBoxCls').show();
+	}
 	if (locationLevel != null && locationLevel=="district") {
 		if (resultType != null && resultType=="district" || resultType=="parliament") {
-		  getAllLevelWiseDataOverView(resultType,filterType,filterValue,locationLevel,lightVendorArr);
+		  getAllLevelWiseDataOverView(resultType,filterType,filterValue,locationLevel,lightVendorArr,viewType);
 		  $(".districtLevelHeadingDivCls").html(resultType+" level overview");
 		  $("#districtLevelLightsVendorSelectBoxId").val(0);
 		  $("#districtLevelLightsVendorSelectBoxId").trigger("chosen:updated");
@@ -1158,8 +1167,8 @@ $(document).on("click",".viewTypeCls",function() {
 		$("#"+lightVendorSelectBoxIdDivId).attr("attr_filter_type",resultType);
 		getLocationBasedOnSelection(resultType,filterType,filterValue,divId,locationLevel); 
 		getAllLevelWiseDataOverView(locationLevel,filterType,filterValue,locationLevel,lightVendorArr,viewType);
-	}*/
-	getAllLevelWiseDataOverView(locationLevel,filterType,filterValue,locationLevel,lightVendorArr,viewType);
+	}
+	//getAllLevelWiseDataOverView(locationLevel,filterType,filterValue,locationLevel,lightVendorArr,viewType);
 });
 
 $(document).on("change",".lebSelectBoxCls",function(){
