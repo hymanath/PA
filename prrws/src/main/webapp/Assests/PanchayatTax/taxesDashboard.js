@@ -1,9 +1,51 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY");
+var currentToDate=moment().endOf('year').add(10, 'years').format("DD-MM-YYYY");
 
-getTaxesAndCategoryWiseOverViewDetails();
-getTaxesIndicatorDetails();
-getTaxesDefaultOverviewDetails();
-getAllSubLocations(2,1,"","district");
+$("#dateRangePicker").daterangepicker({
+		opens: 'left',
+		startDate: currentFromDate,
+		endDate: currentToDate,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		},
+		ranges: {
+		   'All':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"), moment().add(10, 'years').endOf('year').format("DD-MM-YYYY")],
+		   'Today' : [moment(), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()]
+		}
+	});
+	var dates= $("#dateRangePicker").val();
+	var pickerDates = currentFromDate+' - '+currentToDate
+	if(dates == pickerDates)
+	{
+		$("#dateRangePicker").val('All');
+	}
+	
+	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+		currentFromDate = picker.startDate.format('DD-MM-YYYY');
+		currentToDate = picker.endDate.format('DD-MM-YYYY');
+		if(picker.chosenLabel == 'All')
+		{
+			$("#dateRangePicker").val('All');
+		}
+	
+		onloadTaxCalls();
+	});
+onloadTaxCalls();
+function onloadTaxCalls(){
+	getTaxesAndCategoryWiseOverViewDetails();
+	getTaxesIndicatorDetails();
+	getTaxesDefaultOverviewDetails();
+	getAllSubLocationsTax(2,1,"","district");
+	getPanchyatTaxDashboardFilterWiseDetails(0,0,'','all','all','district',0,'','');
+	
+}	
+
 function getTaxesAndCategoryWiseOverViewDetails(){
 	$("#completeOverviewDivId").html(spinner);
 	$("#categoryTaxOverViewDivId").html(spinner);
@@ -11,8 +53,8 @@ function getTaxesAndCategoryWiseOverViewDetails(){
 	var json = {
 		locationId : "0",
 		locationType : "district",
-		fromDate : "01-06-2017",
-		toDate : "03-03-2018"
+		fromDate : currentFromDate,
+		toDate : currentToDate
 	};
 	$.ajax({                
 		type:'POST',    
@@ -294,8 +336,8 @@ function getTaxesIndicatorDetails(){
 	var json = {
 		locationId : "0",
 		locationType : "district",
-		fromDate : "01-06-2017",
-		toDate : "03-03-2018"
+		fromDate : currentFromDate,
+		toDate : currentToDate
 	};
 	$.ajax({                
 		type:'POST',    
@@ -387,7 +429,35 @@ function buildIndicatorDetails(result){
 		infinite: false,
 		slidesToShow: 4,
 		slidesToScroll: 1,
-		variableWidth: false
+		variableWidth: false,
+		responsive: [
+		{
+		  breakpoint: 1024,
+		  settings: {
+			slidesToShow: 4,
+			slidesToScroll: 1,
+			infinite: true,
+			dots: true
+		  }
+		},
+		{
+		  breakpoint: 600,
+		  settings: {
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  }
+		},
+		{
+		  breakpoint: 480,
+		  settings: {
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  }
+		}
+		// You can unslick at a given breakpoint now by adding:
+		// settings: "unslick"
+		// instead of a settings object
+	  ]
 	 });
 }
 
@@ -440,17 +510,17 @@ $(document).on("change",".locationLevelCls",function(){
 		$(".districtCls").show();
 		$(".constituencyCls").hide();
 		$(".mandalCls").hide();
-		getAllSubLocations(2,1,"","district");//All Districts
+		getAllSubLocationsTax(2,1,"","district");//All Districts
 	}else if(levelId == 'assembly'){
 		$(".districtCls").show();
 		$(".constituencyCls").show();
 		$(".mandalCls").hide();
-		getAllSubLocations(2,1,"","district");//All Districts
+		getAllSubLocationsTax(2,1,"","district");//All Districts
 	}else if(levelId == 'mandal'){
 		$(".districtCls").show();
 		$(".constituencyCls").show();
 		$(".mandalCls").show();
-		getAllSubLocations(2,1,"","district");//All Districts
+		getAllSubLocationsTax(2,1,"","district");//All Districts
 	}/* else if(levelId == 'State'){
 		$(".districtCls").hide();
 		$(".constituencyCls").hide();
@@ -459,11 +529,11 @@ $(document).on("change",".locationLevelCls",function(){
 });
 $(document).on("change","#districtId",function(){
 	var levelValId = $(this).val();
-	getAllSubLocations(3,levelValId,"constituency","constituency");
+	getAllSubLocationsTax(3,levelValId,"constituency","constituency");
 });
 $(document).on("change","#constituencyId",function(){
 	var levelValId = $(this).val();
-	getAllSubLocations(4,levelValId,"","mandal");
+	getAllSubLocationsTax(4,levelValId,"","mandal");
 });
 $(document).on("change","#taxId",function(){
 	var taxVal = $(this).val();
@@ -510,13 +580,27 @@ $(document).on("change",".defaulterCls",function(){
 	if(defaluerVal == "defaulters"){
 		$('#taxId').prop('disabled', true).trigger("chosen:updated");
 		$('#feeId').prop('disabled', true).trigger("chosen:updated");
+		$('.locationLevelCls').prop('disabled', true).trigger("chosen:updated");
+		$('.locationLevelCls').val('0').trigger("chosen:updated");
+		$(".districtCls").hide();
+		$(".constituencyCls").hide();
+		$(".mandalCls").hide();
 	}else{
 		$('#taxId').prop('disabled', false).trigger("chosen:updated");
 		$('#feeId').prop('disabled', false).trigger("chosen:updated");
+		$('#locationLevelCls').prop('disabled', true).trigger("chosen:updated");
+		$('.locationLevelCls').val('0').trigger("chosen:updated");
+		$(".districtCls").hide();
+		$(".constituencyCls").hide();
+		$(".mandalCls").hide();
 	}
-	
+	if(!$(this).is(":checked") && !$(this).is(":checked")){
+		$('.locationLevelCls').prop('disabled', false).trigger("chosen:updated");
+		$('.locationLevelCls').val('0').trigger("chosen:updated");
+		
+	}
 });
-function getAllSubLocations(levelId,levelValue,typeVal,appendDivId){
+function getAllSubLocationsTax(levelId,levelValue,typeVal,appendDivId){
 	if(appendDivId == "district"){
 		$("#districtId").html('');
 	}else if(appendDivId == "assembly"){
@@ -617,7 +701,7 @@ $(document).on("click",".getDetailsCls",function(){
 });
 
 function getPanchyatTaxDashboardFilterWiseDetails(taxTypeId,feeTypeId,yearTypeVal,dataType,defaultersType,locationType,locationValue,taxTypeName,feeTypeName){
-	
+	$("#tableBuildDivId").html(spinner);
 	var json = {
 		taxTypeId :taxTypeId,
 		feeTypeId :feeTypeId,
@@ -626,8 +710,8 @@ function getPanchyatTaxDashboardFilterWiseDetails(taxTypeId,feeTypeId,yearTypeVa
 		defaultersType:defaultersType,
 		locationType:locationType,
 		locationValue:locationValue,
-		fromDateStr:"01-06-2017",
-		toDateStr:"03-03-2018"
+		fromDate : currentFromDate,
+		toDate : currentToDate
 	};
 	$.ajax({                
 		type:'POST',    
@@ -640,31 +724,43 @@ function getPanchyatTaxDashboardFilterWiseDetails(taxTypeId,feeTypeId,yearTypeVa
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,taxTypeName,feeTypeName,dataType,defaultersType);
+			buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,taxTypeName,feeTypeName,dataType,defaultersType,locationType);
+		}else{
+			$("#tableBuildDivId").html("No Data Available");
 		}
 	});
 }
-function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,taxTypeName,feeTypeName,dataType,defaultersType){
+function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,taxTypeName,feeTypeName,dataType,defaultersType,locationType){
 	var str='';
 	str+='<div class="table-responsive">';
 	if(defaultersType =="all"){
-		str+='<table class="table table-bordered">';
+		str+='<table class="table table-bordered table_custom_tax">';
 			str+='<thead>';
 				str+='<tr>';
-					str+='<th rowspan="3">LOCATION WISE</th>';
-					str+='<th colspan="3" rowspan="2" class="text-center">TOTAL</th>';
+					if(locationType == "district"){
+						str+='<th rowspan="3">District</th>';
+					}else if(locationType == "assembly"){
+						str+='<th rowspan="3">District</th>';
+						str+='<th rowspan="3">Constituency</th>';
+					}else if(locationType == "mandal"){
+						str+='<th rowspan="3">District</th>';
+						str+='<th rowspan="3">Mandal</th>';
+						
+					}
+					
+					str+='<th colspan="3" rowspan="2" class="text-center">TOTAL TAX</th>';
 					if($('#taxId').hasClass('active')){
 						if(taxTypeId == 0){
-							str+='<th colspan="9" class="text-center">TAXES</th>';
+							str+='<th colspan="9" class="text-center tax_color">TAXES</th>';
 						}else{
-							str+='<th colspan="3" class="text-center">TAXES</th>';
+							str+='<th colspan="3" class="text-center tax_color">TAXES</th>';
 						}
 					}
 					if($('#feeId').hasClass('active')){
 						if(feeTypeId == 0){
-							str+='<th colspan="12" class="text-center">FEES</th>';
+							str+='<th colspan="12" class="text-center fee_color">FEES</th>';
 						}else{
-							str+='<th colspan="3" class="text-center">FEES</th>';
+							str+='<th colspan="3" class="text-center fee_color">FEES</th>';
 						}
 					}
 					
@@ -693,44 +789,44 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 					
 				str+='</tr>';
 				str+='<tr>';
-					str+='<th>DEM</th>';
-					str+='<th>COL</th>';
-					str+='<th>BAL</th>';
+					str+='<th>DEM<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+					str+='<th>COL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+					str+='<th>BAL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
 					if($('#taxId').hasClass('active')){
 						if(taxTypeId == 0){
-							str+='<th>DEM</th>';
-							str+='<th>COL</th>';
-							str+='<th>BAL</th>';
-							str+='<th>DEM</th>';
-							str+='<th>COL</th>';
-							str+='<th>BAL</th>';
-							str+='<th>DEM</th>';
-							str+='<th>COL</th>';
-							str+='<th>BAL</th>';
+							str+='<th>DEM<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>COL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>BAL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>DEM<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>COL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>BAL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>DEM<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>COL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>BAL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
 						}else{
-							str+='<th>DEM</th>';
-							str+='<th>COL</th>';
-							str+='<th>BAL</th>';
+							str+='<th>DEM<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>COL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>BAL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
 						}
 					}
 					if($('#feeId').hasClass('active')){
 						if(feeTypeId == 0){
-							str+='<th>DEM</th>';
-							str+='<th>COL</th>';
-							str+='<th>BAL</th>';
-							str+='<th>DEM</th>';
-							str+='<th>COL</th>';
-							str+='<th>BAL</th>';
-							str+='<th>DEM</th>';
-							str+='<th>COL</th>';
-							str+='<th>BAL</th>';
-							str+='<th>DEM</th>';
-							str+='<th>COL</th>';
-							str+='<th>BAL</th>';
+							str+='<th>DEM<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>COL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>BAL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>DEM<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>COL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>BAL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>DEM<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>COL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>BAL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>DEM<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>COL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>BAL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
 						}else{
-							str+='<th>DEM</th>';
-							str+='<th>COL</th>';
-							str+='<th>BAL</th>';
+							str+='<th>DEM<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>COL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
+							str+='<th>BAL<br><span style="text-transform:lowercase !important">(In&nbsp;cr)</span></th>';
 						}
 					}
 				str+='</tr>';
@@ -738,16 +834,40 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 			str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
-						str+='<td>'+result[i].districtName+'</td>';
+						if(locationType == "district"){
+							str+='<td>'+result[i].districtName+'</td>';
+						}else if(locationType == "assembly"){
+							str+='<td>'+result[i].districtName+'</td>';
+							str+='<td>'+result[i].assemblyName+'</td>';
+						}else if(locationType == "mandal"){
+							str+='<td>'+result[i].districtName+'</td>';
+							str+='<td>'+result[i].mandalName+'</td>';
+							
+						}
 						str+='<td>';
 							str+='<h5 class="font_weight">';
 							if(dataType == "all"){
-								str+='<span>'+result[i].totalDemand+'</span><br/>';//amount
-								str+='<span>'+result[i].totalDemandAssmts+'</span>';//units
+								if(result[i].totalDemand !=null && result[i].totalDemand>0){
+									str+='<span>'+result[i].totalDemand+'</span><br/>';//amount
+									str+='<span class="dem_color f_11">'+result[i].totalDemandAssmts+'</span>';//units
+								}else{
+									str+='<span> - </span>';//amount
+								}
+								
 							}else if(dataType == "amount"){
-								str+='<span>'+result[i].totalDemand+'</span>';//amount
+								if(result[i].totalDemand !=null && result[i].totalDemand>0){
+									str+='<span>'+result[i].totalDemand+'</span>';//amount
+								}else{
+									str+='<span> - </span>';//amount
+								}
+								
 							}else if(dataType == "unit"){
-								str+='<span>'+result[i].totalDemandAssmts+'</span>';//units
+								if(result[i].totalDemandAssmts !=null && result[i].totalDemandAssmts>0){
+									str+='<span class="dem_color f_11">'+result[i].totalDemandAssmts+'</span>';//units
+								}else{
+									str+='<span> - </span>';//amount
+								}
+								
 							}
 							str+='</h5>';
 						str+='</td>';
@@ -756,12 +876,27 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 						str+='<td>';
 							str+='<h5 class="font_weight">';
 							if(dataType == "all"){
-								str+='<span>'+result[i].totalCollection+'</span><br/>';//amount
-								str+='<span>'+result[i].totalCollectionAssmts+'</span>';//units
+								if(result[i].totalCollection !=null && result[i].totalCollection>0){
+									str+='<span>'+result[i].totalCollection+'</span><br/>';//amount
+									str+='<span class="col_color f_11">'+result[i].totalCollectionAssmts+'</span>';//units
+								}else{
+									str+='<span> - </span>';//amount
+								}
+								
 							}else if(dataType == "amount"){
-								str+='<span>'+result[i].totalCollection+'</span>';//amount
+								if(result[i].totalCollection !=null && result[i].totalCollection>0){
+									str+='<span>'+result[i].totalCollection+'</span>';//amount
+								}else{
+									str+='<span> - </span>';//amountt
+								}
+								
 							}else if(dataType == "unit"){
-								str+='<span>'+result[i].totalCollectionAssmts+'</span>';//units
+								if(result[i].totalCollectionAssmts !=null && result[i].totalCollectionAssmts>0){
+									str+='<span class="col_color f_11">'+result[i].totalCollectionAssmts+'</span>';//units
+								}else{
+									str+='<span> - </span>';//amount
+								}
+								
 							}
 							str+='</h5>';
 						str+='</td>';
@@ -769,12 +904,27 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 						str+='<td>';
 							str+='<h5 class="font_weight">';
 							if(dataType == "all"){
-								str+='<span>'+result[i].totalBalance+'</span><br/>';//amount
-								str+='<span>'+result[i].totalBalanceAssmts+'</span>';//units
+								if(result[i].totalBalance !=null && result[i].totalBalance>0){
+									str+='<span>'+result[i].totalBalance+'</span><br/>';//amount
+									str+='<span class="bal_color f_11">'+result[i].totalBalanceAssmts+'</span>';//units
+								}else{
+									str+='<span> - </span>';//amount
+								}
+								
 							}else if(dataType == "amount"){
-								str+='<span>'+result[i].totalBalance+'</span>';//amount
+								if(result[i].totalBalance !=null && result[i].totalBalance>0){
+									str+='<span>'+result[i].totalBalance+'</span>';//amount
+								}else{
+									str+='<span> - </span>';//amount
+								}
+								
 							}else if(dataType == "unit"){
-								str+='<span>'+result[i].totalBalanceAssmts+'</span>';//units
+								if(result[i].totalBalanceAssmts !=null && result[i].totalBalanceAssmts>0){
+									str+='<span class="bal_color f_11">'+result[i].totalBalanceAssmts+'</span>';//units
+								}else{
+									str+='<span> - </span>';//amount
+								}
+								
 							}
 							str+='</h5>';
 						str+='</td>';
@@ -783,12 +933,27 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 							str+='<td>';
 								str+='<h5 class="font_weight">';
 								if(dataType == "all"){
-									str+='<span>'+result[i].subList[j].totalDemand+'</span><br/>';//amount
-									str+='<span>'+result[i].subList[j].totalDemandAssmts+'</span>';//units
+									if(result[i].subList[j].totalDemand !=null && result[i].subList[j].totalDemand>0){
+										str+='<span>'+result[i].subList[j].totalDemand+'</span><br/>';//amount
+										str+='<span class="dem_color f_11">'+result[i].subList[j].totalDemandAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+									
 								}else if(dataType == "amount"){
-									str+='<span>'+result[i].subList[j].totalDemand+'</span>';//amount
+									if(result[i].subList[j].totalDemand !=null && result[i].subList[j].totalDemand>0){
+										str+='<span>'+result[i].subList[j].totalDemand+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
+									
 								}else if(dataType == "unit"){
-									str+='<span>'+result[i].subList[j].totalDemandAssmts+'</span>';//units
+									if(result[i].subList[j].totalDemandAssmts !=null && result[i].subList[j].totalDemandAssmts>0){
+										str+='<span class="dem_color f_11">'+result[i].subList[j].totalDemandAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+									
 								}
 								str+='</h5>';
 							str+='</td>';
@@ -796,12 +961,27 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 							str+='<td>';
 								str+='<h5 class="font_weight">';
 								if(dataType == "all"){
-									str+='<span>'+result[i].subList[j].totalCollection+'</span><br/>';//amount
-									str+='<span>'+result[i].subList[j].totalCollectionAssmts+'</span>';//units
+									if(result[i].subList[j].totalCollection !=null && result[i].subList[j].totalCollection>0){
+										str+='<span>'+result[i].subList[j].totalCollection+'</span><br/>';//amount
+										str+='<span class="col_color f_11">'+result[i].subList[j].totalCollectionAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+									
 								}else if(dataType == "amount"){
-									str+='<span>'+result[i].subList[j].totalCollection+'</span>';//amount
+									if(result[i].subList[j].totalCollection !=null && result[i].subList[j].totalCollection>0){
+										str+='<span>'+result[i].subList[j].totalCollection+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
+									
 								}else if(dataType == "unit"){
-									str+='<span>'+result[i].subList[j].totalCollectionAssmts+'</span>';//units
+									if(result[i].subList[j].totalCollectionAssmts !=null && result[i].subList[j].totalCollectionAssmts>0){
+										str+='<span class="col_color f_11">'+result[i].subList[j].totalCollectionAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+									
 								}
 								str+='</h5>';
 							str+='</td>';
@@ -809,12 +989,27 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 							str+='<td>';
 								str+='<h5 class="font_weight">';
 								if(dataType == "all"){
-									str+='<span>'+result[i].subList[j].totalBalance+'</span><br/>';//amount
-									str+='<span>'+result[i].subList[j].totalBalanceAssmts+'</span>';//units
+									if(result[i].subList[j].totalBalance !=null && result[i].subList[j].totalBalance>0){
+										str+='<span>'+result[i].subList[j].totalBalance+'</span><br/>';//amount
+										str+='<span class="bal_color f_11">'+result[i].subList[j].totalBalanceAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+									
 								}else if(dataType == "amount"){
-									str+='<span>'+result[i].subList[j].totalBalance+'</span>';//amount
+									if(result[i].subList[j].totalBalance !=null && result[i].subList[j].totalBalance>0){
+										str+='<span>'+result[i].subList[j].totalBalance+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
+									
 								}else if(dataType == "unit"){
-									str+='<span>'+result[i].subList[j].totalBalanceAssmts+'</span>';//units
+									if(result[i].subList[j].totalBalanceAssmts !=null && result[i].subList[j].totalBalanceAssmts>0){
+										str+='<span class="bal_color f_11">'+result[i].subList[j].totalBalanceAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+									
 								}
 								str+='</h5>';
 							str+='</td>';
