@@ -2,9 +2,7 @@ package com.itgrids.service.integration;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -14,16 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dto.InputVO;
-import com.itgrids.dto.NregaConsolidatedDataVO;
-import com.itgrids.dto.NregaConsolidatedInputVO;
 import com.itgrids.dto.NregsDataVO;
 import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
-import com.itgrids.service.impl.WebserviceHandlerService;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.IRuralDevelopmentService;
 import com.itgrids.utils.IConstants;
-import com.sun.jersey.api.client.ClientResponse;
 
 @Service
 @Transactional
@@ -34,7 +29,7 @@ public class RuralDevelopmentService implements IRuralDevelopmentService{
 	@Autowired
 	private WebServiceUtilService webServiceUtilService;
 	@Autowired
-	private WebserviceHandlerService webserviceHandlerService;
+	private IWebserviceHandlerService webserviceHandlerService;
 	
 	/**
 	 * Date : 25/07/2017

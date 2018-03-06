@@ -44,6 +44,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import sun.misc.BASE64Encoder;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -89,7 +90,7 @@ import com.itgrids.model.Habitation;
 import com.itgrids.model.RwsWork;
 import com.itgrids.model.TressedHabitation;
 import com.itgrids.model.WebserviceCallDetails;
-import com.itgrids.service.impl.WebserviceHandlerService;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -136,7 +137,7 @@ public class RWSNICService implements IRWSNICService{
 	@Autowired
 	private IRwsWorkDAO rwsWorkDAO;
 	@Autowired
-	private WebserviceHandlerService webserviceHandlerService;
+	private IWebserviceHandlerService webserviceHandlerService;
 	/*
 	 * Date : 15/06/2017
 	 * Author :Sandeep
