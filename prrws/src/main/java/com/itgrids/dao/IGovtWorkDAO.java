@@ -12,8 +12,9 @@ public interface IGovtWorkDAO extends GenericDao<GovtWork, Long>{
 	public Long getWorkTypeId(Long govtWorkId);
 	public List<Object[]> getUsersGovtMainWorks(Long userId,Long govtWorkTypeId,Long locationScopeId,List<Long> locationValues);
 	public Object getOverallWork(Long workTypeId,Long locationScopeId,List<Long> locationIds);
-	public List<Object[]> getWorksCountByMainType(Date fromDate,Date toDate);
-	public List<Object[]> getWorkZonesCountForDateType(Date fromDate,Date toDate);
+	public List<Object[]> getWorksCountByMainType();
+	public List<Object[]> getWorkZonesCountForDateType();
 	public List<Object[]> getAllWorkZonesOfLocations(Long locationScopeId,List<Long> locationIds);
 	public Object getOverallLength(List<Long> workZoneIds);
+	public List<Object[]> getCompletedWorksCount();
 }

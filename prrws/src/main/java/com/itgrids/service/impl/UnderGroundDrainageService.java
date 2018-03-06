@@ -1115,7 +1115,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			if(inputVO.getWorkZoneIds() != null && inputVO.getWorkZoneIds().size() > 0){
 				totalWorkLength = govtWorkDAO.getOverallLength(inputVO.getWorkZoneIds());
 			}else{
-				if(inputVO.getUserIds() != null && inputVO.getUserIds().size() > 0 && inputVO.getLocationScopeId() != null && inputVO.getLocationScopeId() > 0l){
+				if(inputVO.getUserIds() != null && inputVO.getUserIds().size() > 0 && (inputVO.getLocationScopeId() == null || inputVO.getLocationScopeId() == 0l)){
 					for (Long userId : inputVO.getUserIds()) {
 						//0-locationScopeId,1-locationScope,2-locationValue
 						List<Object[]> objList = mobileAppUserLocationDAO.getMobileAppuserLocations(userId);
@@ -1234,17 +1234,10 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		return null;
 	}
 	
-	public List<GovtMainWorkVO> getWorkTypeWiseCompletedDetails(MobileAppInputVO inputVO){
+	public List<GovtMainWorkVO> getWorkTypeWiseCompletedDetails(){
 		List<GovtMainWorkVO> finalList = new ArrayList<GovtMainWorkVO>(0);
 		try {
 			Map<Long,GovtMainWorkVO> map = new HashMap<Long, GovtMainWorkVO>();
-			
-			Date fromDate = null, toDate = null;
-			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
-				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-				fromDate = sdf.parse(inputVO.getFromDate());
-				toDate = sdf.parse(inputVO.getToDate());
-			}
 			
 			//get all work Types
 			List<GovtWorkType> workTypeList =  govtWorkTypeDAO.getAll();
@@ -1258,7 +1251,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				
 				//get works count group by workType
 				//0-workTypeId,1-workscount
-				List<Object[]> objLsit = govtWorkDAO.getWorksCountByMainType(fromDate,toDate);
+				List<Object[]> objLsit = govtWorkDAO.getWorksCountByMainType();
 				if(objLsit != null && objLsit.size() > 0){
 					for (Object[] objects : objLsit) {
 						if(map.get((Long)objects[0]) != null){
@@ -1269,7 +1262,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				
 				//get completed works and sum of kms group by workType
 				//0-workTypeId,1-workscount,2-worklength
-				List<Object[]> objList1 = govtWorkProgressDAO.getCompletedWorksCount(fromDate,toDate);
+				List<Object[]> objList1 = govtWorkDAO.getCompletedWorksCount();
 				if(objList1 != null && objList1.size() > 0){
 					for (Object[] objects : objList1) {
 						if(map.get(Long.parseLong(objects[0].toString())) != null){
@@ -1292,7 +1285,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				
 				//get workZones for workType
 				//0-workTypeId,1-workZones
-				List<Object[]> objList3 = govtWorkDAO.getWorkZonesCountForDateType(fromDate,toDate);
+				List<Object[]> objList3 = govtWorkDAO.getWorkZonesCountForDateType();
 				if(objList3 != null && objList3.size() > 0){
 					for (Object[] objects : objList3) {
 						if(map.get((Long)objects[0]) != null){
@@ -1428,4 +1421,114 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		}
 		return voList;
 	}
+	
+	public List<SmallVO> getImgesForMobAppDashboard(MobileAppInputVO inputVO){
+		List<SmallVO> voList = new ArrayList<SmallVO>(0);
+		try {
+			
+			Date startDate=null,endDate=null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				startDate = sdf.parse(inputVO.getFromDate());
+				endDate = sdf.parse(inputVO.getToDate());
+			}
+			
+			List<Object[]> objList1 = null;
+			
+			if((inputVO.getWorkZoneIds() == null || inputVO.getWorkZoneIds().size() == 0) && inputVO.getUserIds() != null && inputVO.getUserIds().size() > 0 && (inputVO.getLocationScopeId() == null || inputVO.getLocationScopeId() == 0l)){
+				for (Long userId : inputVO.getUserIds()) {
+					//0-locationScopeId,1-locationScope,2-locationValue
+					List<Object[]> objList = mobileAppUserLocationDAO.getMobileAppuserLocations(userId);
+					if(objList != null && objList.size() > 0){
+						inputVO.setLocationScopeId((Long)objList.get(0)[0]);
+						for (Object[] objects : objList) {
+							inputVO.getLocationIds().add((Long)objects[2]);
+						}
+					}
+				}
+			}
+			
+			objList1 = govtWorkProgressDocumentDAO.getStatusWiseDocs(inputVO.getWorkZoneIds(),inputVO.getLocationScopeId(),inputVO.getLocationIds(),inputVO.getStatusId(),startDate,endDate);
+			if(objList1 != null && objList1.size() > 0){
+				for (Object[] objects : objList1) {
+					SmallVO vo = new SmallVO();
+					vo.setKey((Long)objects[0]);
+					vo.setValue(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured while fetching the images for mobile app dash board", e);
+		}
+		return voList;
+	}
+	
+	public List<DocumentVO> getLocationStatusDayWiseKms(MobileAppInputVO inputVO){
+		List<DocumentVO> voList = new ArrayList<DocumentVO>(0);
+		try {
+			Date startDate=null,endDate=null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				startDate = sdf.parse(inputVO.getFromDate());
+				endDate = sdf.parse(inputVO.getToDate());
+			}
+			
+			Map<String,DocumentVO> map = new HashMap<String, DocumentVO>();
+			if(startDate != null && endDate != null){
+				List<String> dateList = commonMethodsUtilService.getBetweenDatesInString(startDate, endDate);
+				if(dateList != null && dateList.size() > 0){
+					for (String string : dateList) {
+						DocumentVO vo = new DocumentVO();
+						vo.setInsertedTime(string);
+						map.put(string, vo);
+					}
+				}
+			}
+			
+			
+			List<Object[]> objList = govtWorkProgressTrackDAO.getLocationStatusDayWiseKms(startDate,endDate,inputVO.getStatusId(),inputVO.getWorkTypeId(),inputVO.getDistrictId(),
+					inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId());
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					if(map.get(Long.parseLong(objects[0].toString())) != null){
+						map.get(Long.parseLong(objects[0].toString())).setKms(Double.parseDouble(objects[2].toString()));
+					}
+				}
+				voList.addAll(map.values());
+			}
+		} catch (Exception e) {
+			LOG.error("exception occured while getting location status day wise kms", e);
+		}
+		return voList;
+	}
+	
+	public List<DocumentVO> getLocationLevelStatusDayWiseKms(MobileAppInputVO inputVO){
+		try {
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured while fetching getLocationLevelStatusDayWiseKms ", e);
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

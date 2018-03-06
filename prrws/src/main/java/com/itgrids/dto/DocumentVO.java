@@ -1,5 +1,8 @@
 package com.itgrids.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DocumentVO {
 	private Long documentId;
 	private String documentName;
@@ -9,6 +12,7 @@ public class DocumentVO {
 	private String userName;
 	private String insertedTime;
 	private Double kms=0.00;
+	private List<DocumentVO> list = new ArrayList<DocumentVO>(0);
 	
 	public Long getDocumentId() {
 		return documentId;
@@ -57,6 +61,12 @@ public class DocumentVO {
 	}
 	public void setKms(Double kms) {
 		this.kms = kms;
+	}
+	public List<DocumentVO> getList() {
+		return list;
+	}
+	public void setList(List<DocumentVO> list) {
+		this.list = list;
 	}
 	
 	

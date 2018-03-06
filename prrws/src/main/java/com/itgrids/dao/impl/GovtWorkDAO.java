@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IGovtWorkDAO;
 import com.itgrids.model.GovtWork;
+import com.itgrids.utils.IConstants;
 
 @Repository
 public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements IGovtWorkDAO{
@@ -110,26 +111,24 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 		return (Object)query.uniqueResult();
 	}
 	
-	public List<Object[]> getWorksCountByMainType(Date fromDate,Date toDate){
+	public List<Object[]> getWorksCountByMainType(){
 		//0-workTypeId,1-workscount
 		Query query = getSession().createQuery(" select model.govtMainWork.govtWorkTypeId,count(distinct model.govtWorkId) "
 				+ " from GovtWork model "
-				+ " where model.isDeleted='N' and date(model.createdTime) between :fromDate and :toDate "
+				+ " where model.isDeleted='N' "
 				+ " group by model.govtMainWork.govtWorkTypeId ");
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
+		
 		return query.list();
 		
 	}
 	
-	public List<Object[]> getWorkZonesCountForDateType(Date fromDate,Date toDate){
+	public List<Object[]> getWorkZonesCountForDateType(){
 		//0-workTypeId,1-worksCount
 		Query query = getSession().createQuery(" select model.govtMainWork.govtWorkTypeId,count(model.govtWorkId) "
 				+ " from GovtWork model "
-				+ " where model.isDeleted='N' and date(model.createdTime) between :fromDate and :toDate "
+				+ " where model.isDeleted='N' "
 				+ " group by model.govtMainWork.govtWorkTypeId ");
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
+		
 		return query.list();
 	}
 	
@@ -165,5 +164,16 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 		query.setParameterList("workZoneIds", workZoneIds);
 		
 		return query.uniqueResult();
+	}
+	
+	public List<Object[]> getCompletedWorksCount(){
+		//0-workTypeId,1-workscount,2-worklength
+		Query query = getSession().createSQLQuery(" select gmw.govt_work_type_id,count(distinct gw.govt_work_id),sum(gw.work_length) "
+				+ " from govt_work gw,govt_main_work gmw "
+				+ " where gw.is_deleted='N' and gw.govt_main_work_id=gmw.govt_main_work_id "
+				+ " and gw.completed_percentage >= 99.9 "
+				+ " group by gmw.govt_work_type_id ");
+		
+		return null;
 	}
 }

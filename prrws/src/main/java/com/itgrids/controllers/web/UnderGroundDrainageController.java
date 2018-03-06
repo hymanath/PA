@@ -168,16 +168,48 @@ public class UnderGroundDrainageController {
 		return null;
 	}
 	
+	@RequestMapping(value="/getImgesForMobAppDashboard", method=RequestMethod.POST)
+	public @ResponseBody List<SmallVO> getImgesForMobAppDashboard(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getImgesForMobAppDashboard(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting the status wise images for mobile app dashboard ", e);
+		}
+		return null;
+	}
+	
 	//web dashboard services -- start
 	@RequestMapping(value="/getWorkTypeWiseCompletedDetails", method=RequestMethod.POST)
 	public @ResponseBody List<GovtMainWorkVO> getWorkTypeWiseCompletedDetails(@RequestBody MobileAppInputVO inputVO){
 		try {
-			return underGroundDrainageService.getWorkTypeWiseCompletedDetails(inputVO);
+			return underGroundDrainageService.getWorkTypeWiseCompletedDetails();
 		} catch (Exception e) {
 			LOG.error("Exception raised while getting the status wise daily kilometers ", e);
 		}
 		return null;
 	}
-
+	
+	@RequestMapping(value="/getLocationStatusDayWiseKms", method=RequestMethod.POST)
+	public @ResponseBody List<DocumentVO> getLocationStatusDayWiseKms(@RequestBody MobileAppInputVO inputVO){
+		try {
+			//startDate,endDate,StatusId,WorkTypeId,DistrictId,DivisonId,SubDivisonId,MandalId
+			return underGroundDrainageService.getLocationStatusDayWiseKms(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting the getLocationStatusDayWise kilometers ", e);
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/getLocationLevelStatusDayWiseKms", method=RequestMethod.POST)
+	public @ResponseBody List<DocumentVO> getLocationLevelStatusDayWiseKms(@RequestBody MobileAppInputVO inputVO){
+		try {
+			//startDate,endDate,StatusId,WorkTypeId,DistrictId,DivisonId,SubDivisonId,MandalId,locationLevelId
+			return underGroundDrainageService.getLocationLevelStatusDayWiseKms(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting the getLocationStatusDayWise kilometers ", e);
+		}
+		return null;
+	}
+	
 	//web dashboard services -- end	
 }
