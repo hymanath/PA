@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.webservice;
 
+import java.io.File;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -97,5 +99,19 @@ public class ZohoWebServiceHandler {
 		return null;
 	}
 	
+	
+	
+	@POST
+	@Path("/getSAMLFile")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public File getSAMLFile(String memberShipId,String successMsg,String firstName,String lastName){
+		try {
+			 return ((ZohoWebServiceHandler) zohoWebServiceHandlerService).getSAMLFile(memberShipId,successMsg,firstName,lastName);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getSAMLFile() Method in ZohoWebServiceHandler ",e);
+		}
+		return null;
+	}
 	
 }
