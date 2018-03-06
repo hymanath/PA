@@ -112,7 +112,7 @@ function buildLevelWisePostsOverView(result){
 						str+='<div class="pad_yash_8">';
 							str+='<h5>Finalized <br>Posts</h5>';
 							if(result[i].finalizedPer !=null && result[i].finalizedPer>0){
-								str+='<h5 class="m_top10 font_weight statusClickCls"   attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="finalIssed" attr_department_name="'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="2">'+result[i].finalizedPost+' <small style="color:green">'+result[i].finalizedPer.toFixed(1)+'%</small></h5>';
+								str+='<h5 class="m_top10 font_weight statusClickCls"   attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="finalIssued" attr_department_name="'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="2">'+result[i].finalizedPost+' <small style="color:green">'+result[i].finalizedPer.toFixed(1)+'%</small></h5>';
 							}else{
 								str+='<h5 class="m_top10 font_weight"> - </h5>';
 							}
@@ -977,7 +977,7 @@ function getBoardWisePositions()
 			$(".paginationCls").html("");
 			$("#departmentDetailsModalDivId").html(spinner)
 			$(".paginationId").html("");
-			getDepartmentWiseOpenPostAndApplicationDetails(deptId,0,type);
+			getDepartmentWiseOpenPostAndApplicationDetails(deptId,boardLevelId,type);
 		}
 	
 }); 
@@ -999,7 +999,7 @@ function getBoardWisePositions()
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
-			 buildDepartmentWiseOpenPostAndApplicationDetails(result,type);
+			 buildDepartmentWiseOpenPostAndApplicationDetails(result,type,boardLevelId);
 		}else{
 			if(type == "open"){
 			$("#openPostDetailsModalDivId").html("No Data Available");
@@ -1010,7 +1010,7 @@ function getBoardWisePositions()
 		}
     }); 
   }
-	 function buildDepartmentWiseOpenPostAndApplicationDetails(result,type){
+	 function buildDepartmentWiseOpenPostAndApplicationDetails(result,type,boardLevelId){
 		var str='';
 		
 		str+='<div class="table-responsive">';
@@ -1045,7 +1045,7 @@ function getBoardWisePositions()
 					for(var i in result){
 						str+='<tr>';
 							if(type =="open"){
-								str+='<td attr_department_name="'+result[i].name+'" attr_department_id="'+result[i].id+'"  class="statusClickCls"  attr_type="department" style="color: #337ab7;font-weight:normaltext-decoration:none;cursor:pointer;">'+result[i].name+'</td>';
+								str+='<td attr_department_name="'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="'+boardLevelId+'"  class="statusClickCls"  attr_type="department" style="color: #337ab7;font-weight:normaltext-decoration:none;cursor:pointer;">'+result[i].name+'</td>';
 							}else{
 								str+='<td>'+result[i].name+'</td>';
 							}
@@ -1137,7 +1137,7 @@ function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex)
 		if(result !=null && result.length>0){
 			return LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId);
 		}else{
-			$(".paginationId").html("");
+			//$(".paginationId").html("");
 			$("#openPostDetailsModalDivId").html("No Data Available");
 		}
 		
@@ -1170,7 +1170,11 @@ function LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,
 							str+='<td>'+result[i].position+'</td>';
 							str+='<td><img src="https://mytdp.com/images/cadre_images/'+result[i].image+'" class="img-border" alt="profile" onerror="setDefaultImage(this);" style="width:50px;height:50px;"/></td>';
 							str+='<td>'+result[i].candidateName+'</td>';
+							if(result[i].gender != null){
 							str+='<td>'+result[i].gender+'</td>';
+							}else{
+								str+='<td>-</td>';
+							}
 							str+='<td>'+result[i].casteCategory+'</td>';
 							if(result[i].date !=null && result[i].date.length>0){
 								str+='<td>'+result[i].date+'</td>';
