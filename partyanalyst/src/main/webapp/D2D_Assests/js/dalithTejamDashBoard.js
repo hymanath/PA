@@ -781,7 +781,7 @@ function buildActivityEventdata(result,locationId,divId){
 				}
 				tableView+='</tr>';
 			tableView+='</thead>';
-			tableView+='<tbody style=align:center">';
+			tableView+='<tbody">';
 				for(var i in result){
 					tableView+='<tr>';
 					if(locationId == 'constituency'){
@@ -843,7 +843,7 @@ function buildActivityEventdata(result,locationId,divId){
 					}
 					if(locationId == 'constituency'){
 						if( result[i].count !=null && result[i].count >0){
-							tableView+='<td align="center">'+result[i].newsCount+'</td>';
+							tableView+='<td align="center">'+result[i].count+'</td>';
 						}else{
 							tableView+='<td align="center">-</td>';
 						}
