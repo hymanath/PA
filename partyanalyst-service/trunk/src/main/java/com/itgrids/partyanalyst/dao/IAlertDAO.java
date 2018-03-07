@@ -211,4 +211,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getDesignationOfCadre(List<Long> tdpCadreIds);
 	public List<Object[]> getPositionOfCadre(List<Long> tdpCadreIds);
 	public List<Object[]> getDistrictWiseTotalAlerts(Date stDate, Date ndDate, Long stateId,List<Long>alertTypeIds);
+	public List<Long> getAlertId(Long categoryId,Long categoryTypeId);
 }

@@ -16905,6 +16905,29 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				}
 			return null;
 		}
+
+	@Override
+	public ResultStatus updateAlertIssueCategory(Long categoryId, Long categoryTypeId, Long issueCategoryId) {
+		ResultStatus status = new ResultStatus();
+		try{
+			List<Long> alertIds= alertDAO.getAlertId(categoryId,categoryTypeId);
+			if(alertIds!=null && alertIds.size()>0){
+				Long alertId = alertIds.get(0);
+				if(alertId!=null && alertId>0){
+					deleteIssueCategoryDetailsOfAlert(alertId);  
+					  saveIssueCategoryDetails(alertId,issueCategoryId);
+					  status.setMessage("success");
+				}else{
+					status.setMessage("failed");
+				}
+			}else{
+				status.setMessage("failed");
+			}
+		}catch (Exception e) {
+			LOG.error("Error occured updateAlertIssueCategory() method of AlertService{}");
+		}
+		return status;
+	}
 	
 	
 }

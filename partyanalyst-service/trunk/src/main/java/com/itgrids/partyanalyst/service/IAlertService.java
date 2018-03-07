@@ -188,5 +188,7 @@ public interface IAlertService {
     public List<AlertCoreDashBoardVO> getIssueCategoryWiseLocationAlertDetails(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,
 			List<Long> districtIdList,Long alertTypeId, Long editionId,Long constituencyId,List<Long> alertStatusIds,String locationLevel,
 			Long localElectionBodyId,String type,Long parliamentId,List<Long> issueCategoryIds);
+    
+    public ResultStatus updateAlertIssueCategory(Long categoryId,Long categoryTypeId,Long issueCategoryId);
 			
 }
