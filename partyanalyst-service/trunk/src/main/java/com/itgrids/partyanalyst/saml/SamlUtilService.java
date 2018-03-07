@@ -23,11 +23,12 @@ public class SamlUtilService {
 		ImageAndStringConverter converter = new ImageAndStringConverter();
 		
 		File fXmlFile = new File("C:/Users/Administrator/Desktop/SAML.xml");
+		
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(fXmlFile);
 		
-		Document doc2 = samlSignatureUtil.signFul(doc,"12345678");
+		Document doc2 = samlSignatureUtil.signFul(doc,"R992fdbeb2a4873b04c105a8a5f74c1a267ed0f22");
 		
 		DOMSource source = new DOMSource(doc2);
 	    FileWriter writer = new FileWriter(new File("C:/Users/Administrator/Desktop/SAML3.xml"));

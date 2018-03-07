@@ -91,7 +91,7 @@ public class ZohoWebServiceHandlerService implements IZohoWebServiceHandlerServi
 	
 	public File getSAMLFile(String memberShipId,String successMsg,String firstName,String lastName) {
 		try {
-			return zohoAlertService.SAMLFile(memberShipId,successMsg,firstName,lastName);
+			return zohoAlertService.getSamlXmlFile(memberShipId,successMsg,firstName,lastName);
 		} catch (Exception e) {
 			LOG.error("Exception raised at SAMLFile method in ZohoWebServiceHandlerService Class", e);
 		}

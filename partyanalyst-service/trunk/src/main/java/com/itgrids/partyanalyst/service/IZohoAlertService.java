@@ -12,6 +12,6 @@ public interface IZohoAlertService {
 	public JSONObject checkOTPDetails(JSONObject jObj);
 	public String generateJwtForZoho(String userToken)throws UnsupportedEncodingException;
 	public JSONObject sendSms(String phoneNumber,String message);
-	public File SAMLFile(String memberShipId,String successMsg,String firstName,String lastName);
-
+	public File getSamlXmlFile(String memberShipId,String successMsg,String firstName,String lastName);
+	public String sendSamlResponseToZoho(String membershipId);
 }
