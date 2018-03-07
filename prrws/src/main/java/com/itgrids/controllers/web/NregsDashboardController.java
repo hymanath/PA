@@ -886,4 +886,15 @@ public class NregsDashboardController {
 		}
 		return statusVO;
 	}
+	@PostMapping("/savingFieldManDaysService")
+	public @ResponseBody String savingFieldManDaysService(){
+		String status = null;
+		try {
+			nregsTcsService.savingFieldManDaysService();
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at savingFieldManDaysService - NREGSController controller", e);
+		}
+		return "Success";
+	}
 }

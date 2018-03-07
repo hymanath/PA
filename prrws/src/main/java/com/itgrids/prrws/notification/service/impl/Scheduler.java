@@ -213,4 +213,17 @@ public class Scheduler {
 		else 
 			return;
 	}
+	
+	@Scheduled(cron ="0 0/15 * ? * *")
+	public void runTheFieldManDaysSchedulerEveryDay()
+	{
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			LOG.error("Cron Job For Field Man Days Started");
+			nregstcsService.savingFieldManDaysService();
+			LOG.error("Cron Job For Field Man Days Completed");
+		}
+		else 
+			return;
+	}
 }
