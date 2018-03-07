@@ -537,6 +537,19 @@ function buildLeadWiseOverviewDetails(result){
 }
 $(document).on("click",".desigClsDivId",function(){
 	var designationId = $(this).attr("attr_desigId");
+	var desgName = $(this).attr("attr_desg_name");
+	var desCapText;
+	if(designationId == 0){
+		desCapText ="OTHERS";
+		$("#headingDetailsId").html(desCapText+" Refferal Wise OverView Details".toUpperCase());
+	}else if(designationId == 7){
+		desCapText ="STATE MINISTER";
+		$("#headingDetailsId").html(desCapText+" Refferal Wise OverView Details".toUpperCase());
+	}else{
+		$("#headingDetailsId").html(desgName+" Refferal Wise OverView Details".toUpperCase());
+	}
+	 $('#LeadersId').val(designationId);
+	 $('#LeadersId').trigger('chosen:Updated');
 	getReferralWiseOverviewDetails(designationId);
 	$('.desigClsDivId').removeClass("activeCls");
 	$(this).addClass("activeCls");
@@ -552,7 +565,37 @@ $(document).on("change","#briefLeadId",function(){
 			}); 
 	getReferralWiseOverviewDetails(designationId);
 });
-
+$(document).on("change","#LeadersId",function(){
+	$("#desigWiseCandidatesView").html("");
+	//$("#desigWiseCountId").html("");
+	var designationId = '';
+	designationId = $(this).val();
+	var desgName=$(this).find('option:selected').text();
+	var desCapText;
+	if(designationId == 0){
+		desCapText ="OTHERS";
+		alert(desCapText);
+		$("#headingDetailsId").html(desCapText+" Refferal Wise OverView Details".toUpperCase());
+	}else if(designationId == 7){
+		desCapText ="STATE MINISTER";
+		$("#headingDetailsId").html(desCapText+" Refferal Wise OverView Details".toUpperCase());
+	}else{
+		$("#headingDetailsId").html(desgName+" Refferal Wise OverView Details".toUpperCase());
+	}
+	
+	$('.desigClsDivId').removeClass("activeCls");
+	$('.desigClsDivId').each(function()
+	{
+		var textName=$(this).attr('attr_desg_name');
+		if(textName==desgName)
+		{
+			$(this).addClass('activeCls');
+		}
+		
+	});
+	//$("#headingDetailsId").html(desgName+" Refferal Wise OverView Details".toUpperCase());	
+	getReferralWiseOverviewDetails(designationId);
+});
 //getReferralWiseOverviewDetails("");
 function getReferralWiseOverviewDetails(desigId){
 	if(desigId == ""){
@@ -601,17 +644,17 @@ function getReferralWiseOverviewDetails(desigId){
 
  function buildDesignationsWiseCount(result){
 	var str ='';
-	
+	var str2='';
 	  for(var i in result.subList){
 		
 	   str+='<div class="col-sm-3" id="column2">';
 	   if(i==0)
 	   {
-	   str+='<div class="panel panel-default desigClsDivId activeCls"  style="cursor:pointer;" attr_desigId="'+result.subList[i].deptDesigId+'">';
+	   str+='<div class="panel panel-default desigClsDivId activeCls"  style="cursor:pointer;" attr_desigId="'+result.subList[i].deptDesigId+'" attr_desg_name="'+result.subList[i].desigName+'">';
 	   }
 		else
 		{
-	   str+='<div class="panel panel-default desigClsDivId"  style="cursor:pointer;" attr_desigId="'+result.subList[i].deptDesigId+'">';
+	   str+='<div class="panel panel-default desigClsDivId"  style="cursor:pointer;" attr_desigId="'+result.subList[i].deptDesigId+'" attr_desg_name="'+result.subList[i].desigName+'">';
 		}
 		str+='<div class="panel-heading" style="background-color:#D2DEF1;"><h4><b>'+result.subList[i].desigName+'-'+result.subList[i].subWorkIds.length+'</b></h4></div>';
 			str+='<div class="panel-body" style="background-color:#E7EDF8;">';
@@ -635,16 +678,17 @@ function getReferralWiseOverviewDetails(desigId){
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
+	str2+='<option value ="'+result.subList[i].deptDesigId+'">'+result.subList[i].desigName+'</option>'
 	  }
 	   if(result.subList != null && result.subList.length>0){
 		  getReferralWiseOverviewDetails(result.subList[0].deptDesigId);
 	  } 
 	  
 	$("#desigWiseCountId").html(str);
+	$("#LeadersId").html(str2);
 	} 
 	
  function buildDesignationsWiseInformation(result){
-	
 	var str='';
 			str+='<div class="col-md-12">';
 			str+='<div class="table-responsive">';

@@ -152,11 +152,23 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 				<div class="white-block petition_block bor_c2">
 					<div class="row" id="desigWiseCountId">
 					</div>
+					<div class="row" id="">
+				        <div class="col-sm-2 col-sm-offset-10" id="" >			
+					       <label>Designations:</label>
+					         <select class="form-control" style="background-color:#E4E6E7;" id="LeadersId">
+					         </select>
+				    </div> 
+				</div>
 				</div>
 			</div>
 			<div class="col-sm-12" id="refWiseOverViewDivId" style="display:none;">
 				<div class="white-block petition_block bor_c2">
-					<div class="row" style="padding:5px 5px;" id="desigWiseCandidatesView">
+					<h4 id ="headingDetailsId" style="font-weight:bold; margin:10px;">MLA REFFERAL WISE OVERVIEW DETAILS</h4>
+					<div class="row" style="margin:-10px;">
+						<p style="border-top:2px solid #b9b6b6;" class="m_top10"></p>
+					</div>	
+					<div class="row m_top10" style="padding:5px 5px;" id="desigWiseCandidatesView">
+					    
 					</div>
 				</div>
 			</div>
