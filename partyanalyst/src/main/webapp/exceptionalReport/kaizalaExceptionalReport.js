@@ -75,6 +75,7 @@ function buildConstituencyWisePoorPerformance(result,typeval,id){
 							var countVar2 =0;
 						}
 							for(var i in result){
+								var committeeInstalled = parseInt(result[i].committeeInstalled)+parseInt(result[i].committeeHavingNoSmartPhone);
 								str+='<tr>';
 									if(typeval == "parliament"){
 										str+='<td>'+result[i].parliamentName+'</td>';
@@ -83,7 +84,7 @@ function buildConstituencyWisePoorPerformance(result,typeval,id){
 											str+='<td>'+result[i].committeeHavingNoSmartPhone+'</td>';
 										else
 											str+='<td>-</td>'; */
-										str+='<td>'+result[i].committeeInstalled+'</td>';
+										str+='<td>'+committeeInstalled+'</td>';
 										str+='<td>'+result[i].committeeNotInstalled+'</td>';
 										str+='<td>'+result[i].committeeNotInstalledPer+'</td>';
 										str+='<td>'+result[i].publicInstalled+'</td>';
@@ -97,7 +98,7 @@ function buildConstituencyWisePoorPerformance(result,typeval,id){
 											str+='<td>'+result[i].committeeHavingNoSmartPhone+'</td>';
 										else
 											str+='<td>-</td>'; */
-										str+='<td>'+result[i].committeeInstalled+'</td>';
+										str+='<td>'+committeeInstalled+'</td>';
 										str+='<td>'+result[i].committeeNotInstalled+'</td>';
 										str+='<td>'+result[i].committeeNotInstalledPer+'</td>';
 										str+='<td>'+result[i].publicInstalled+'</td>';

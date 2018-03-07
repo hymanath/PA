@@ -43,8 +43,8 @@ onloadTourCalls();
 	
 	 $("#noofMonthsId").html('');
 	 $("#noofMonthsId").append("<option value='1'>1</option>"); 
-	 $("#noofMonthsId").append("<option value='2' selected>2</option>");
-	 $("#noofMonthsId").append("<option value='3'>3</option>");
+	 $("#noofMonthsId").append("<option value='2'>2</option>");
+	 $("#noofMonthsId").append("<option value='3' selected>3</option>");
 	 $("#noofMonthsId").chosen();
 	 $("#noofMonthsId").trigger("chosen:updated");
 	
@@ -57,15 +57,19 @@ onloadTourCalls();
 		
 		var fromDate =new Date(spiltStartDate); 
 		var toDate = new Date(spiltEndDate);
-		var months=1;
+		var months=0;
 			months = (toDate.getFullYear() - fromDate.getFullYear()) * 12;
 			months -= fromDate.getMonth();
 			months += toDate.getMonth();
 		if (toDate.getDate() < fromDate.getDate()){
 			months--;
 		}
+		if(months != 12){
+			months=months+1;
+		}
+		
 		 $("#noofMonthsId").html('');
-		for(var i=0;i<months;i++){
+		for(var i=1;i<=months;i++){
 			if(i == months){
 				$("#noofMonthsId").append("<option value='"+i+"' selected>"+i+"</option>"); 
 			}else{
