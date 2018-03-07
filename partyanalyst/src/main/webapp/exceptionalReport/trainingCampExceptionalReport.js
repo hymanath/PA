@@ -12,7 +12,7 @@ function getListOfParliamentsWithPoorPerformance(){
 		stateId : 1,
 		size : 7,
 		tdpCommitteeLevelIds : [5,6,7,8,9],
-		enrollmentYearIds : [4],
+		enrollmentYearIds : [2],
 		trainingCampProgramIds : [8],   
 		locationLevelId : 2,
 		locationLevelValues : []
@@ -93,7 +93,7 @@ $("#top5ConstituencyWithPoorPerDivId").html(spinner);
 		stateId : 1,
 		size : 10,
 		tdpCommitteeLevelIds : [5,6,7,8,9],
-		enrollmentYearIds : [4],
+		enrollmentYearIds : [2],
 		trainingCampProgramIds : [8],        
 		locationLevelId : 2,
 		locationLevelValues : []
