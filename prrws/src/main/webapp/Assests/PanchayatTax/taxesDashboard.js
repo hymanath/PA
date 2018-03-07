@@ -836,13 +836,13 @@ function getPanchyatTaxDashboardFilterWiseDetails(taxTypeId,feeTypeId,yearTypeVa
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,taxTypeName,feeTypeName,dataType,defaultersType,locationType);
+			buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,taxTypeName,feeTypeName,dataType,defaultersType,locationType,yearTypeVal);
 		}else{
 			$("#tableBuildDivId").html("No Data Available");
 		}
 	});
 }
-function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,taxTypeName,feeTypeName,dataType,defaultersType,locationType){
+function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,taxTypeName,feeTypeName,dataType,defaultersType,locationType,yearTypeVal){
 	var str='';
 	str+='<div class="table-responsive">';
 	if(defaultersType =="all"){
@@ -959,27 +959,70 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 						str+='<td>';
 							str+='<h5 class="font_weight">';
 							if(dataType == "all"){
-								if(result[i].totalDemand !=null && result[i].totalDemand>0){
-									str+='<span>'+result[i].totalDemand+'</span><br/>';//amount
-									str+='<span class="dem_color f_11">'+result[i].totalDemandAssmts+'</span>';//units
+								if(yearTypeVal != null && yearTypeVal == 'current'){
+									if(result[i].currentDemand !=null && result[i].currentDemand>0){
+										str+='<span>'+result[i].currentDemand+'</span><br/>';//amount
+										str+='<span class="dem_color f_11">'+result[i].currentDemandAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}else if(yearTypeVal != null && yearTypeVal == 'arrears'){
+									if(result[i].arrearDemand !=null && result[i].arrearDemand>0){
+										str+='<span>'+result[i].arrearDemand+'</span><br/>';//amount
+										str+='<span class="dem_color f_11">'+result[i].arrearDemandAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}else{
-									str+='<span> - </span>';//amount
+									if(result[i].totalDemand !=null && result[i].totalDemand>0){
+										str+='<span>'+result[i].totalDemand+'</span><br/>';//amount
+										str+='<span class="dem_color f_11">'+result[i].totalDemandAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}
+							}else if(dataType == "amount"){
+								if(yearTypeVal != null && yearTypeVal == 'current'){
+									if(result[i].currentDemand !=null && result[i].currentDemand>0){
+										str+='<span>'+result[i].currentDemand+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}else if(yearTypeVal != null && yearTypeVal == 'arrears'){
+									if(result[i].arrearDemand !=null && result[i].arrearDemand>0){
+										str+='<span>'+result[i].arrearDemand+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}else{
+									if(result[i].totalDemand !=null && result[i].totalDemand>0){
+										str+='<span>'+result[i].totalDemand+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}
 								
-							}else if(dataType == "amount"){
-								if(result[i].totalDemand !=null && result[i].totalDemand>0){
-									str+='<span>'+result[i].totalDemand+'</span>';//amount
-								}else{
-									str+='<span> - </span>';//amount
-								}
 								
 							}else if(dataType == "unit"){
-								if(result[i].totalDemandAssmts !=null && result[i].totalDemandAssmts>0){
-									str+='<span class="dem_color f_11">'+result[i].totalDemandAssmts+'</span>';//units
+								if(yearTypeVal != null && yearTypeVal == 'current'){
+									if(result[i].currentDemand !=null && result[i].currentDemand>0){
+										str+='<span class="dem_color f_11">'+result[i].currentDemandAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}else if(yearTypeVal != null && yearTypeVal == 'arrears'){
+									if(result[i].arrearDemand !=null && result[i].arrearDemand>0){
+										str+='<span class="dem_color f_11">'+result[i].arrearDemandAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}else{
-									str+='<span> - </span>';//amount
+									if(result[i].totalDemandAssmts !=null && result[i].totalDemandAssmts>0){
+										str+='<span class="dem_color f_11">'+result[i].totalDemandAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}
-								
 							}
 							str+='</h5>';
 						str+='</td>';
@@ -988,27 +1031,68 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 						str+='<td>';
 							str+='<h5 class="font_weight">';
 							if(dataType == "all"){
-								if(result[i].totalCollection !=null && result[i].totalCollection>0){
-									str+='<span>'+result[i].totalCollection+'</span><br/>';//amount
-									str+='<span class="col_color f_11">'+result[i].totalCollectionAssmts+'</span>';//units
+								if(yearTypeVal != null && yearTypeVal == 'current'){
+									if(result[i].currentCollection !=null && result[i].currentCollection>0){
+										str+='<span>'+result[i].currentCollection+'</span><br/>';//amount
+										str+='<span class="dem_color f_11">'+result[i].currentCollectionAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}else if(yearTypeVal != null && yearTypeVal == 'arrears'){
+									if(result[i].arrearCollection !=null && result[i].arrearCollection>0){
+										str+='<span>'+result[i].arrearCollection+'</span><br/>';//amount
+										str+='<span class="dem_color f_11">'+result[i].arrearCollectionAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}else{
-									str+='<span> - </span>';//amount
+									if(result[i].totalCollection !=null && result[i].totalCollection>0){
+										str+='<span>'+result[i].totalCollection+'</span><br/>';//amount
+										str+='<span class="col_color f_11">'+result[i].totalCollectionAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}
-								
 							}else if(dataType == "amount"){
-								if(result[i].totalCollection !=null && result[i].totalCollection>0){
-									str+='<span>'+result[i].totalCollection+'</span>';//amount
+								if(yearTypeVal != null && yearTypeVal == 'current'){
+									if(result[i].currentCollection !=null && result[i].currentCollection>0){
+										str+='<span>'+result[i].currentCollection+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}else if(yearTypeVal != null && yearTypeVal == 'arrears'){
+									if(result[i].arrearCollection !=null && result[i].arrearCollection>0){
+										str+='<span>'+result[i].arrearCollection+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}else{
-									str+='<span> - </span>';//amountt
+									if(result[i].totalCollection !=null && result[i].totalCollection>0){
+										str+='<span>'+result[i].totalCollection+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amountt
+									}
 								}
-								
 							}else if(dataType == "unit"){
-								if(result[i].totalCollectionAssmts !=null && result[i].totalCollectionAssmts>0){
-									str+='<span class="col_color f_11">'+result[i].totalCollectionAssmts+'</span>';//units
+								if(yearTypeVal != null && yearTypeVal == 'current'){
+									if(result[i].currentCollection !=null && result[i].currentCollection>0){
+										str+='<span class="dem_color f_11">'+result[i].currentCollectionAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}else if(yearTypeVal != null && yearTypeVal == 'arrears'){
+									if(result[i].arrearCollection !=null && result[i].arrearCollection>0){
+										str+='<span class="dem_color f_11">'+result[i].arrearCollectionAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}else{
-									str+='<span> - </span>';//amount
+									if(result[i].totalCollectionAssmts !=null && result[i].totalCollectionAssmts>0){
+										str+='<span class="col_color f_11">'+result[i].totalCollectionAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}
-								
 							}
 							str+='</h5>';
 						str+='</td>';
@@ -1016,27 +1100,68 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 						str+='<td>';
 							str+='<h5 class="font_weight">';
 							if(dataType == "all"){
-								if(result[i].totalBalance !=null && result[i].totalBalance>0){
-									str+='<span>'+result[i].totalBalance+'</span><br/>';//amount
-									str+='<span class="bal_color f_11">'+result[i].totalBalanceAssmts+'</span>';//units
+								if(yearTypeVal != null && yearTypeVal == 'current'){
+									if(result[i].currentBalance !=null && result[i].currentBalance>0){
+										str+='<span>'+result[i].currentBalance+'</span><br/>';//amount
+										str+='<span class="dem_color f_11">'+result[i].currentBalanceAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}else if(yearTypeVal != null && yearTypeVal == 'arrears'){
+									if(result[i].arrearBalance !=null && result[i].arrearBalance>0){
+										str+='<span>'+result[i].arrearBalance+'</span><br/>';//amount
+										str+='<span class="dem_color f_11">'+result[i].arrearBalanceAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}else{
-									str+='<span> - </span>';//amount
+									if(result[i].totalBalance !=null && result[i].totalBalance>0){
+										str+='<span>'+result[i].totalBalance+'</span><br/>';//amount
+										str+='<span class="bal_color f_11">'+result[i].totalBalanceAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}
-								
 							}else if(dataType == "amount"){
-								if(result[i].totalBalance !=null && result[i].totalBalance>0){
-									str+='<span>'+result[i].totalBalance+'</span>';//amount
+								if(yearTypeVal != null && yearTypeVal == 'current'){
+									if(result[i].currentBalance !=null && result[i].currentBalance>0){
+										str+='<span>'+result[i].currentBalance+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}else if(yearTypeVal != null && yearTypeVal == 'arrears'){
+									if(result[i].arrearBalance !=null && result[i].arrearBalance>0){
+										str+='<span>'+result[i].arrearBalance+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}else{
-									str+='<span> - </span>';//amount
+									if(result[i].totalBalance !=null && result[i].totalBalance>0){
+										str+='<span>'+result[i].totalBalance+'</span>';//amount
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}
-								
 							}else if(dataType == "unit"){
-								if(result[i].totalBalanceAssmts !=null && result[i].totalBalanceAssmts>0){
-									str+='<span class="bal_color f_11">'+result[i].totalBalanceAssmts+'</span>';//units
+								if(yearTypeVal != null && yearTypeVal == 'current'){
+									if(result[i].currentBalance !=null && result[i].currentBalance>0){
+										str+='<span class="dem_color f_11">'+result[i].currentBalanceAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
+								}else if(yearTypeVal != null && yearTypeVal == 'arrears'){
+									if(result[i].arrearBalance !=null && result[i].arrearBalance>0){
+										str+='<span class="dem_color f_11">'+result[i].arrearBalanceAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}else{
-									str+='<span> - </span>';//amount
+									if(result[i].totalBalanceAssmts !=null && result[i].totalBalanceAssmts>0){
+										str+='<span class="bal_color f_11">'+result[i].totalBalanceAssmts+'</span>';//units
+									}else{
+										str+='<span> - </span>';//amount
+									}
 								}
-								
 							}
 							str+='</h5>';
 						str+='</td>';
@@ -1146,7 +1271,7 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 				for(var i in result){
 					str+='<tr>';
 						str+='<td>'+result[i].name+'</td>';
-						str+='<td>'+result[i].amount+'</td>';
+						str+='<td>'+result[i].amount+' Cr</td>';
 						str+='<td>'+result[i].dueYear+'</td>';
 						str+='<td>'+result[i].taxType+'</td>';
 						str+='<td>'+result[i].panchyatName+'</td>';
@@ -1169,9 +1294,9 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 				for(var i in result){
 					str+='<tr>';
 						str+='<td>'+result[i].usageName+'</td>';
-						str+='<td>'+result[i].demand+'</td>';
-						str+='<td>'+result[i].collection+'</td>';
-						str+='<td>'+result[i].balance+'</td>';
+						str+='<td>'+result[i].demand+' Cr</td>';
+						str+='<td>'+result[i].collection+' Cr</td>';
+						str+='<td>'+result[i].balance+' Cr</td>';
 					str+='</tr>';
 				}
 			str+='</tbody>';
