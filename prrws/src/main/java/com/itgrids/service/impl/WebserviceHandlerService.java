@@ -1,10 +1,13 @@
 package com.itgrids.service.impl;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -16,6 +19,8 @@ import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
+import com.itgrids.utils.NREGSCumulativeThread;
+import com.itgrids.utils.WebserviceDataSaveThread;
 import com.sun.jersey.api.client.ClientResponse;
 
 @Service
@@ -39,6 +44,9 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 	@Autowired
 	private DateUtilService dateUtilService;
 	
+	@Autowired
+	private ApplicationContext applicationContext;
+	
 	public String callWebService(String url,Object input,String requestMethod)
 	{
 		ClientResponse clientResponse = null;
@@ -48,12 +56,12 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 			
 			if(requestMethod.equalsIgnoreCase(IConstants.REQUEST_METHOD_GET) && url != null && url.contains("?"))
 			{
-				String[] arr = url.split("?");
-				
-				if(arr.length > 0)
-					url = arr[0];
-				if(arr.length > 1)
-					inputGet = arr[1].trim();
+				int index = url.indexOf("?");
+				if(index != -1)
+				{
+					inputGet = url.substring(index+1);
+					url = url.substring(0,index);
+				}
 			}
 				
 			List<Object[]> list = webserviceDAO.getWebserviceDetailsByUrl(url.trim());
@@ -107,13 +115,14 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 					{
 						String dataStr = getResponseFromDB(webserviceId,inputData);
 						
-						if(dataStr != null && dataStr.trim().length() > 0)
-							return dataStr;
-						else if(dataStr == null || dataStr.trim().length() == 0)
+						if(dataStr == null || dataStr.trim().length() == 0)
 						{
 							clientResponse = webServiceUtilService.callWebService(urlOrg,input,requestMethod);
 						}
+						saveWebserviceDataUsingThread(urlOrg,input,requestMethod,webserviceId,inputData);
 						
+						if(dataStr != null && dataStr.trim().length() > 0)
+							return dataStr;
 					}
 				}
 				else
@@ -129,6 +138,21 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 			return clientResponse.getEntity(String.class);
 		else
 			return null;
+	}
+	
+	public void saveWebserviceDataUsingThread(String url,Object input,String requestMethod,Long webserviceId,String inputData)
+	{
+		try{
+			ExecutorService executor = Executors.newSingleThreadExecutor();
+			
+			executor.execute(new WebserviceDataSaveThread(url,input,requestMethod,webserviceId,inputData,
+					applicationContext.getBean("webserviceHandlerService",IWebserviceHandlerService.class),
+					applicationContext.getBean("webServiceUtilService",WebServiceUtilService.class)));
+			
+		}catch(Exception e)
+		{
+			LOG.error(e);
+		}
 	}
 	
 	public String getResponseFromDB(Long webserviceId,String input)

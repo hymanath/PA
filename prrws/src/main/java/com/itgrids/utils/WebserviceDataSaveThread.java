@@ -1,8 +1,6 @@
 package com.itgrids.utils;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.itgrids.dto.WebserviceVO;
 import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
@@ -12,25 +10,24 @@ public class WebserviceDataSaveThread implements Runnable{
 	
 	private static final Logger LOG = Logger.getLogger(WebserviceDataSaveThread.class);
 	
-	@Autowired
 	private IWebserviceHandlerService webserviceHandlerService;
-	
-	@Autowired
 	private WebServiceUtilService webServiceUtilService;
-	
 	private String url;
 	private Object input;
 	private String requestMethod;
 	private Long webserviceId;
 	private String inputData;
 	
-	public WebserviceDataSaveThread(String url,Object input,String requestMethod,Long webserviceId,String inputData)
+	public WebserviceDataSaveThread(String url,Object input,String requestMethod,Long webserviceId,String inputData,
+			IWebserviceHandlerService webserviceHandlerService,WebServiceUtilService webServiceUtilService)
 	{
 		this.url = url;
 		this.input = input;
 		this.requestMethod = requestMethod;
 		this.webserviceId = webserviceId;
 		this.inputData = inputData;
+		this.webserviceHandlerService = webserviceHandlerService;
+		this.webServiceUtilService = webServiceUtilService;
 	}
 	
 	public void run() 
