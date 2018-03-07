@@ -1933,10 +1933,9 @@
 									<label>Category Name</label>
 									<select class="form-control chosen-select" id="categoryId">
 										<option value="0">Select Category</option>
-										<option value="1196" selected="selected">CII PARTNERTSHIP SUMMIT 2018</option>
+										<option value="1156" selected="selected">TELUGU DESAM -  DALITA TEJAM</option>
 										<option value="1175">REACTION ON CENTRAL BUDGET - 2018</option>
 										<option value="757">SPECIAL STATUS</option>
-										<option value="1156">TELUGU DESAM -  DALITA TEJAM</option>
 										<option value="1051">PRAJA SANKALPA YATRA</option>
 										<option value="1109">JANMABOOMI - MAA URU 2018</option>
 										<option value="695">JANMABOOMI - MAA URU</option>
