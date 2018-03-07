@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Vehicle Tracking</title>
 </head>
 <body>
-
+ <iframe src="http://rwstracking.com/dashboard/index.php" frameBorder="0" width="100%" height="1000px"></iframe> 
 </body>
 </html>
