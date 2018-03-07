@@ -47,6 +47,8 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 	@Autowired
 	private IWebserviceHandlerService webserviceHandlerService;
 	
+	ExecutorService executor = Executors.newFixedThreadPool(5);
+	
 	/**
 	 * @author Santosh Kumar Verma
 	 * @param InputVO inputVO 
@@ -241,7 +243,6 @@ public class SwachhBharatMissionIHHLService implements ISwachhBharatMissionIHHLS
 			String URL = "http://125.17.121.167/rwsapwebapi/api/GetDateWiseTarAchOverview/GetDateWiseTarAchOverviewDetails";
 			Long startTime = System.currentTimeMillis();
 			if (locationArr != null && locationArr.length > 0) {
-				ExecutorService executor = Executors.newFixedThreadPool(4);
 				for (String location : locationArr) {
 					     inputVO.setSubLocation(location);
 					     String str = convertingInputVOToString(inputVO);
