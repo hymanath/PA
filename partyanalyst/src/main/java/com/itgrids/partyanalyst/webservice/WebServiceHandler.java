@@ -3346,7 +3346,7 @@ public class WebServiceHandler {
 		return null;
 	}
 	
-	@POST
+	@POST	
 	@Path("/KAIZALA/getKaizalaAlertInfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -3779,4 +3779,13 @@ public class WebServiceHandler {
     public Object getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputVo){
 		return  webServiceHandlerService.getAlertsMonthlyOverviewInfoBySearchType(inputVo);
     }
+	
+	@GET
+    @Path("/updateAlertIssueCategory/{categoryId}/{categoryTypeId}/{issueCategoryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ResultStatus updateAlertIssueCategory(@PathParam("categoryId") Long categoryId,@PathParam("categoryTypeId") Long categoryTypeId,@PathParam("issueCategoryId") Long issueCategoryId){
+		return  webServiceHandlerService.updateAlertIssueCategory(categoryId,categoryTypeId,issueCategoryId);
+    }
+	
 }
