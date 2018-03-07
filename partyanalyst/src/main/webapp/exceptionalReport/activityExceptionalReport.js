@@ -5,7 +5,9 @@ function onloadDalithaTejam(){
 	getActivityAttendedAndImageCoveredDetails();//Last two block
 }
 
-
+$(document).on("click",".dalithaExRRefresh",function(e){
+	onloadDalithaTejam();
+});
 function getActivityPerformanceDetailsLocationWise() {
 	$("#overAllAndTop5PoorParliamentDivId").html(spinner);
 	var jsObj = {
