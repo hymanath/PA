@@ -35,18 +35,18 @@ public class PanchayatTaxVO {
 	private String collectionAssmts;
 	private String balanceAssmts;
 	
-	private String arrearDemand;
-	private String arrearCollection;
-	private String arrearBalance;
-	private String arrearDemandAssmts;
-	private String arrearCollectionAssmts;
-	private String arrearBalanceAssmts;
-	private String currentDemand;
-	private String currentCollection;
-	private String currentBalance;
-	private String currentDemandAssmts;
-	private String currentCollectionAssmts;
-	private String currentBalanceAssmts;
+	private String arrearDemand = "0";
+	private String arrearCollection = "0";
+	private String arrearBalance = "0";
+	private String arrearDemandAssmts = "0";
+	private String arrearCollectionAssmts = "0";
+	private String arrearBalanceAssmts = "0";
+	private String currentDemand = "0";
+	private String currentCollection = "0";
+	private String currentBalance = "0";
+	private String currentDemandAssmts = "0";
+	private String currentCollectionAssmts = "0";
+	private String currentBalanceAssmts = "0";
 	private String totalDemand = "0";
 	private String totalCollection = "0";
 	private String totalBalance = "0";
@@ -56,6 +56,9 @@ public class PanchayatTaxVO {
 	
 	private String defaultersTax;
 	private String defaultersAssmts;
+	
+	private String collectinAmntPerc;
+	private String balanceAmntPerc;
 	
 	
 	public Long getId() {
@@ -327,5 +330,17 @@ public class PanchayatTaxVO {
 	}
 	public void setDefaultersAssmts(String defaultersAssmts) {
 		this.defaultersAssmts = defaultersAssmts;
+	}
+	public String getCollectinAmntPerc() {
+		return collectinAmntPerc;
+	}
+	public void setCollectinAmntPerc(String collectinAmntPerc) {
+		this.collectinAmntPerc = collectinAmntPerc;
+	}
+	public String getBalanceAmntPerc() {
+		return balanceAmntPerc;
+	}
+	public void setBalanceAmntPerc(String balanceAmntPerc) {
+		this.balanceAmntPerc = balanceAmntPerc;
 	}
 }

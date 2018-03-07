@@ -687,6 +687,9 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
  	    				vo.setAmount(jObj.has("amount") ? jObj.getString("amount") : null);
  	    				vo.setDueYear(jObj.has("due_year") ? jObj.getString("due_year") : null);
  	    				
+ 	    				//Converting Rupees Into Crores
+ 	    				vo.setAmount(convertRupeesIntocrores(vo.getAmount()));
+ 	    				
  	    				returnList.add(vo);
  	    			}
  	    		}
@@ -740,6 +743,27 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 			
 			if(usageTypeMap != null)
 				returnList = new ArrayList<PanchayatTaxVO>(usageTypeMap.values());
+			
+			
+			
+			if(returnList != null && !returnList.isEmpty()){
+	    	   for (PanchayatTaxVO indicatorvo : returnList) {
+	    		   indicatorvo.setDemand(convertRupeesIntocrores(indicatorvo.getDemand()));
+	    		   indicatorvo.setCollection(convertRupeesIntocrores(indicatorvo.getCollection()));
+	     		   indicatorvo.setBalance(convertRupeesIntocrores(indicatorvo.getBalance()));
+	     		   
+	     		    if(indicatorvo.getDemand() != null && Double.valueOf(indicatorvo.getDemand()) > 0 && indicatorvo.getCollection() != null && Double.valueOf(indicatorvo.getCollection()) > 0){
+	     			 indicatorvo.setCollectinAmntPerc(new BigDecimal(Double.valueOf(indicatorvo.getCollection()) * 100.00/ Double.valueOf(indicatorvo.getDemand())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} else {
+						indicatorvo.setCollectinAmntPerc("0.00");
+					}
+					if(indicatorvo.getDemand() != null && Double.valueOf(indicatorvo.getDemand()) > 0 && indicatorvo.getBalance() != null && Double.valueOf(indicatorvo.getBalance()) > 0){
+						indicatorvo.setBalanceAmntPerc(new BigDecimal(Double.valueOf(indicatorvo.getBalance()) * 100.00/ Double.valueOf(indicatorvo.getDemand())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} else {
+						indicatorvo.setBalanceAmntPerc("0.00");
+					}
+	    	   }
+		    }
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at setIndicatorsDataToList  in TaxesDashBoardService service", e);
@@ -805,6 +829,21 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
  	    	    				mainvo.setTotalCollectionAssmts(String.valueOf(Long.valueOf(mainvo.getTotalCollectionAssmts())+Long.valueOf(subvo.getTotalCollectionAssmts())));
  	    	    				mainvo.setTotalBalanceAssmts(String.valueOf(Long.valueOf(mainvo.getTotalBalanceAssmts())+Long.valueOf(subvo.getTotalBalanceAssmts())));
  	    	    				
+ 	    	    				mainvo.setArrearDemand(String.valueOf(Long.valueOf(mainvo.getArrearDemand())+Long.valueOf(subvo.getArrearDemand())));
+ 	    	    				mainvo.setArrearCollection(String.valueOf(Long.valueOf(mainvo.getArrearCollection())+Long.valueOf(subvo.getArrearCollection())));
+ 	    	    				mainvo.setArrearBalance(String.valueOf(Long.valueOf(mainvo.getArrearBalance())+Long.valueOf(subvo.getArrearBalance())));
+ 	    	    				mainvo.setCurrentDemand(String.valueOf(Long.valueOf(mainvo.getCurrentDemand())+Long.valueOf(subvo.getCurrentDemand())));
+ 	    	    				mainvo.setCurrentCollection(String.valueOf(Long.valueOf(mainvo.getCurrentCollection())+Long.valueOf(subvo.getCurrentCollection())));
+ 	    	    				mainvo.setCurrentBalance(String.valueOf(Long.valueOf(mainvo.getCurrentBalance())+Long.valueOf(subvo.getCurrentBalance())));
+ 	    	    				
+ 	    	    				mainvo.setArrearDemandAssmts(String.valueOf(Long.valueOf(mainvo.getArrearDemandAssmts())+Long.valueOf(subvo.getArrearDemandAssmts())));
+ 	    	    				mainvo.setArrearCollectionAssmts(String.valueOf(Long.valueOf(mainvo.getArrearCollectionAssmts())+Long.valueOf(subvo.getArrearCollectionAssmts())));
+ 	    	    				mainvo.setArrearBalanceAssmts(String.valueOf(Long.valueOf(mainvo.getArrearBalanceAssmts())+Long.valueOf(subvo.getArrearBalanceAssmts())));
+ 	    	    				mainvo.setCurrentDemandAssmts(String.valueOf(Long.valueOf(mainvo.getCurrentDemandAssmts())+Long.valueOf(subvo.getCurrentDemandAssmts())));
+ 	    	    				mainvo.setCurrentCollectionAssmts(String.valueOf(Long.valueOf(mainvo.getCurrentCollectionAssmts())+Long.valueOf(subvo.getCurrentCollectionAssmts())));
+ 	    	    				mainvo.setCurrentBalanceAssmts(String.valueOf(Long.valueOf(mainvo.getCurrentBalanceAssmts())+Long.valueOf(subvo.getCurrentBalanceAssmts())));
+ 	    	    				
+ 	    	    				
  	    	    				mainvo.getSubList().add(subvo);
  	    					}
  	    				}
@@ -812,6 +851,31 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
  	    			}
  	    		}
 			}
+			if(returnList != null && !returnList.isEmpty()){
+	    	   for (PanchayatTaxVO mainvo : returnList) {
+	    		   for (PanchayatTaxVO subvo: mainvo.getSubList()) {
+	    				subvo.setArrearDemand(convertRupeesIntocrores(subvo.getArrearDemand()));
+	    				subvo.setCurrentDemand(convertRupeesIntocrores(subvo.getCurrentDemand()));
+	    				subvo.setArrearCollection(convertRupeesIntocrores(subvo.getArrearCollection()));
+	    				subvo.setCurrentCollection(convertRupeesIntocrores(subvo.getCurrentCollection()));
+	    				subvo.setArrearBalance(convertRupeesIntocrores(subvo.getArrearBalance()));
+	    				subvo.setCurrentBalance(convertRupeesIntocrores(subvo.getCurrentBalance()));
+	    				subvo.setTotalDemand(convertRupeesIntocrores(subvo.getTotalDemand()));
+	    				subvo.setTotalCollection(convertRupeesIntocrores(subvo.getTotalCollection()));
+	    				subvo.setTotalBalance(convertRupeesIntocrores(subvo.getTotalBalance()));
+	    		   }
+	    		    mainvo.setArrearDemand(convertRupeesIntocrores(mainvo.getArrearDemand()));
+	    		    mainvo.setCurrentDemand(convertRupeesIntocrores(mainvo.getCurrentDemand()));
+	   				mainvo.setArrearCollection(convertRupeesIntocrores(mainvo.getArrearCollection()));
+	   				mainvo.setCurrentCollection(convertRupeesIntocrores(mainvo.getCurrentCollection()));
+	   				mainvo.setArrearBalance(convertRupeesIntocrores(mainvo.getArrearBalance()));
+	   				mainvo.setCurrentBalance(convertRupeesIntocrores(mainvo.getCurrentBalance()));
+	    		   	mainvo.setTotalDemand(convertRupeesIntocrores(mainvo.getTotalDemand()));
+	   				mainvo.setTotalCollection(convertRupeesIntocrores(mainvo.getTotalCollection()));
+	   				mainvo.setTotalBalance(convertRupeesIntocrores(mainvo.getTotalBalance()));
+	    	   }
+		    }
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at setDataToList  in TaxesDashBoardService service", e);
 		}
