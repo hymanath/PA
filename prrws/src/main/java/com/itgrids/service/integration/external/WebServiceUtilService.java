@@ -132,7 +132,7 @@ public class WebServiceUtilService {
 	}
 	
 	@Transactional
-	private Long saveWebserviceCallDetails(WebserviceVO webserviceVO)
+	public Long saveWebserviceCallDetails(WebserviceVO webserviceVO)
 	{
 		try{
 			
@@ -154,13 +154,13 @@ public class WebServiceUtilService {
 			return webserviceCallDetails.getWebserviceCallDetailsId();
 		}catch(Exception e)
 		{
-			LOG.error("Exception Occred in saveWebserviceCallDetails Method - ",e);
+			//LOG.error("Exception Occured in saveWebserviceCallDetails Method - ",e);
 		}
 		return null;
 	}
 	
 	@Transactional
-	private void updateWebserviceCallDetails(WebserviceVO webserviceVO)
+	public void updateWebserviceCallDetails(WebserviceVO webserviceVO)
 	{
 		try{
 			if(webserviceVO.getWebserviceTrackId() == null)
@@ -174,7 +174,7 @@ public class WebServiceUtilService {
 			
 		}catch(Exception e)
 		{
-			LOG.error("Exception Occred in saveWebserviceCallDetails Method - ",e);
+			//LOG.error("Exception Occured in saveWebserviceCallDetails Method - ",e);
 		}
 	}
 	
