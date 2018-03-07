@@ -13,6 +13,7 @@ public class RandomNumberGeneraion {
 	 * @param length
 	 * @return randomNum
 	 */
+	
 	public static int randomGenerator(int length)
 	{
 		Random random = new Random();
@@ -58,4 +59,15 @@ public class RandomNumberGeneraion {
 		System.out.println(RandomNumberGeneraion.randomStringOfLength(8)); 
 		 
 	  }
+	 public static String getUUIDString(){
+			try {
+				
+				UUID uuid = UUID.randomUUID();
+				return uuid.toString();
+			    
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getRandomKeyValue(String) in ZohoAlertService class.",e);
+			}
+			return null;
+		}
 }
