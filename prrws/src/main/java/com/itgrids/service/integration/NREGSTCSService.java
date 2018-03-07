@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IComponentTargetConfigurationDAO;
 import com.itgrids.dao.IComponentTargetConfigurationTempDAO;
-import com.itgrids.dao.IComponentTargetDAO;
 import com.itgrids.dao.IComponentWiseAchievementConfigurationDAO;
 import com.itgrids.dao.IComponentWiseAchievementConfigurationTempDAO;
 import com.itgrids.dao.IConstituencyDAO;
@@ -47,9 +46,9 @@ import com.itgrids.dto.NregsOverviewVO;
 import com.itgrids.dto.NregsProjectsVO;
 import com.itgrids.dto.WaterTanksClorinationVO;
 import com.itgrids.dto.WebserviceDetailsVO;
+import com.itgrids.dto.WebserviceVO;
 import com.itgrids.model.ComponentWiseAchievementConfiguration;
 import com.itgrids.model.ComponentWiseAchievementConfigurationTemp;
-import com.itgrids.model.MeesevaKpiCenters;
 import com.itgrids.model.NregaComponentComments;
 import com.itgrids.model.NregaComponentCommentsHistory;
 import com.itgrids.model.NregaComponentStatus;
@@ -8515,4 +8514,28 @@ public class NREGSTCSService implements INREGSTCSService{
 		return statusVO;
 	}
 	
+	public void savingFieldManDaysService(){
+		try {
+			String[] subLocArr = {"state","district","constituency","mandal","panchayat"};
+			InputVO inputVO = new InputVO();
+			inputVO.setLocationType("state");
+			inputVO.setLocationIdStr("-1");
+			for (int i = 0; i < subLocArr.length; i++) {
+				inputVO.setSublocationType(subLocArr[i]);
+				String inputData = convertingInputVOToString(inputVO);
+				
+				ClientResponse clientResponse = webServiceUtilService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APMandaysAnalysisService/APMandaysAnalysis",inputData,IConstants.REQUEST_METHOD_POST);
+				
+				WebserviceVO webserviceVO = new WebserviceVO();
+				webserviceVO.setWebserviceId(132L);
+				webserviceVO.setInputData(inputData);
+				String resStr = clientResponse.getEntity(String.class);
+				webserviceVO.setResponseData(resStr != null ? resStr.trim() : null);
+				
+				webserviceHandlerService.saveWebserviceResponseData(webserviceVO);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at savingFieldManDaysService - NREGSTCSService service", e);
+		}
+	}
 }

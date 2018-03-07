@@ -92,4 +92,6 @@ public interface INREGSTCSService {
 	public IdNameVO saveNregaComponentsWiseAchvPercTillToday();
 	public List<NregsDataVO> getNregaComponentsData(InputVO inputVO);
 	public IdNameVO  saveFAVacanciesPanchayatData();
+	
+	public void savingFieldManDaysService();
 }
