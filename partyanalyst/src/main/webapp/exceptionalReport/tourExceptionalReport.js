@@ -182,7 +182,7 @@ onloadTourCalls();
 						str+='<table class="table details-overview-tour">';
 							str+='<thead>';
 								str+='<tr>';
-								  // str+='<th>State</th>';
+								   str+='<th>State</th>';
 							    	str+='<th>District</th>';
 									str+='<th>Parliament</th>';
 									str+='<th>Constituency</th>';
@@ -194,18 +194,11 @@ onloadTourCalls();
 							str+='<tbody>';
 								for(var i in result.subList1){
 									str+='<tr>';
-										/* if(result.subList1[i].addressVO.stateName !=null && result.subList1[i].addressVO.stateName.trim().  length>0){
-											if(result.subList1[i].addressVO.stateName == "Andhra Pradesh"){
-												str+='<td>AP</td>';	
-											}else if(result.subList1[i].addressVO.stateName == "Telangana"){
-												str+='<td>TS</td>';	
-											}else{
-												str+='<td>'+result.subList1[i].addressVO.stateName+'</td>';	
-											}
-											
+										if(result.subList1[i].addressVO.stateName !=null && result.subList1[i].addressVO.stateName.trim().  length>0){
+											str+='<td>'+result.subList1[i].addressVO.stateName+'</td>';
 										}else{
 											str+='<td> - </td>';
-										} */
+										}
 										if(result.subList1[i].addressVO.districtName !=null && result.subList1[i].addressVO.districtName.trim().  length>0){
 											str+='<td>'+result.subList1[i].addressVO.districtName+'</td>';
 										}else{
@@ -255,7 +248,7 @@ onloadTourCalls();
 		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 		"aaSorting": [[ 6, "desc" ]]
 	});
-  $("#dataTableId").removeClass('datatable')
+  $("#dataTableId").removeClass('datatable');
  }
  function getNotSubmittedCandidateDetailsByFilter(months)
 	{    
