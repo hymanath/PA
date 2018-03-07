@@ -1,4 +1,5 @@
 package com.itgrids.service.impl;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,15 +12,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.itgrids.dao.IWebServiceDataDAO;
 import com.itgrids.dao.IWebserviceDAO;
-import com.itgrids.dao.impl.WebServiceDataDAO;
 import com.itgrids.dto.WebserviceVO;
 import com.itgrids.model.WebServiceData;
 import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
-import com.itgrids.utils.NREGSCumulativeThread;
 import com.itgrids.utils.WebserviceDataSaveThread;
 import com.sun.jersey.api.client.ClientResponse;
 
@@ -36,7 +36,7 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 	private WebServiceUtilService webServiceUtilService;
 	
 	@Autowired
-	private WebServiceDataDAO webServiceDataDAO;
+	private IWebServiceDataDAO webServiceDataDAO;
 	
 	@Autowired
 	private Gson gson;
@@ -46,6 +46,8 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 	
 	@Autowired
 	private ApplicationContext applicationContext;
+	
+	ExecutorService executor = Executors.newFixedThreadPool(50);
 	
 	public String callWebService(String url,Object input,String requestMethod)
 	{
@@ -94,7 +96,11 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 					{
 						clientResponse = webServiceUtilService.callWebService(urlOrg,input,requestMethod);
 						if(clientResponse == null || clientResponse.getStatus() != 200)
-							return getResponseFromDB(webserviceId,inputData);
+						{
+							WebserviceVO webserviceVO = getResponseFromDB(webserviceId,inputData);
+							if(webserviceVO != null && webserviceVO.getResponseData() != null)
+								return webserviceVO.getResponseData().trim();
+						}
 						else
 						{
 							WebserviceVO webserviceVO = new WebserviceVO();
@@ -109,17 +115,40 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 					}
 					else if(callTypeId.equals(IConstants.WS_CALL_TYPE_DB))
 					{
-						return getResponseFromDB(webserviceId,inputData);
+						WebserviceVO webserviceVO = getResponseFromDB(webserviceId,inputData);
+						if(webserviceVO != null && webserviceVO.getResponseData() != null)
+							return webserviceVO.getResponseData().trim();
 					}
 					else if(callTypeId.equals(IConstants.WS_CALL_TYPE_DB_THEN_LIVE))
 					{
-						String dataStr = getResponseFromDB(webserviceId,inputData);
+						WebserviceVO webserviceVO = getResponseFromDB(webserviceId,inputData);
+						
+						String dataStr = null;
+						Date insertionTime = null;
+						boolean flag = false;
+						
+						if(webserviceVO != null && webserviceVO.getResponseData() != null)
+						{
+							dataStr = webserviceVO.getResponseData().trim();
+							insertionTime = webserviceVO.getCallTime();
+						}
 						
 						if(dataStr == null || dataStr.trim().length() == 0)
 						{
 							clientResponse = webServiceUtilService.callWebService(urlOrg,input,requestMethod);
 						}
-						saveWebserviceDataUsingThread(urlOrg,input,requestMethod,webserviceId,inputData);
+						
+						if(insertionTime != null)
+						{
+							Date presentTime = dateUtilService.getCurrentDateAndTime();
+							long timeDiff = (presentTime.getTime() - insertionTime.getTime());
+							
+							if(timeDiff > IConstants.WS_DATA_SAVE_INTERVAL)
+								flag = true;
+						}
+						
+						if(dataStr == null || flag)
+							saveWebserviceDataUsingThread(urlOrg,input,requestMethod,webserviceId,inputData);
 						
 						if(dataStr != null && dataStr.trim().length() > 0)
 							return dataStr;
@@ -143,41 +172,49 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 	public void saveWebserviceDataUsingThread(String url,Object input,String requestMethod,Long webserviceId,String inputData)
 	{
 		try{
-			ExecutorService executor = Executors.newSingleThreadExecutor();
-			
 			executor.execute(new WebserviceDataSaveThread(url,input,requestMethod,webserviceId,inputData,
 					applicationContext.getBean("webserviceHandlerService",IWebserviceHandlerService.class),
 					applicationContext.getBean("webServiceUtilService",WebServiceUtilService.class)));
-			
 		}catch(Exception e)
 		{
 			LOG.error(e);
 		}
 	}
 	
-	public String getResponseFromDB(Long webserviceId,String input)
+	public WebserviceVO getResponseFromDB(Long webserviceId,String input)
 	{
+		WebserviceVO webserviceVO = null;
 		try{
-			return webServiceDataDAO.getWebserviceResponseData(webserviceId,input);
+			 List<Object[]> list = webServiceDataDAO.getWebserviceResponseData(webserviceId,input);
+			 
+			 if(list != null && list.size() > 0)
+			 {
+				 webserviceVO = new WebserviceVO();
+				 webserviceVO.setResponseData(list.get(0)[0] != null ? list.get(0)[0].toString().trim() : null);
+				 webserviceVO.setCallTime(list.get(0)[1] != null ? (Date)list.get(0)[1] : null);
+			 }
 		}catch(Exception e)
 		{
 			LOG.error(e);
 		}
-		return null;
+		return webserviceVO;
 	}
 	
 	public void saveWebserviceResponseData(WebserviceVO webserviceVO)
 	{
 		try{
-			WebServiceData webServiceData = new WebServiceData();
-			webServiceData.setWebserviceId(webserviceVO.getWebserviceId());
-			webServiceData.setInputData(webserviceVO.getInputData());
-			webServiceData.setResponceData(webserviceVO.getResponseData());
-			webServiceData.setDataDate(dateUtilService.getCurrentDateAndTime());
-			webServiceData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-			webServiceData.setIsDeleted("N");
-			
-			webServiceDataDAO.save(webServiceData);
+			if(webserviceVO.getResponseData() != null && webserviceVO.getResponseData().trim().length() > 5)
+			{
+				WebServiceData webServiceData = new WebServiceData();
+				webServiceData.setWebserviceId(webserviceVO.getWebserviceId());
+				webServiceData.setInputData(webserviceVO.getInputData());
+				webServiceData.setResponceData(webserviceVO.getResponseData());
+				webServiceData.setDataDate(dateUtilService.getCurrentDateAndTime());
+				webServiceData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				webServiceData.setIsDeleted("N");
+				
+				webServiceDataDAO.save(webServiceData);
+			}
 		}catch(Exception e)
 		{
 			LOG.error(e);
