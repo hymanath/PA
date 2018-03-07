@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
@@ -40,7 +40,7 @@ public class HibernateConfiguration implements EnvironmentAware{
         return sessionFactory;
      }
 	
-    @Bean
+    /*@Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
@@ -48,9 +48,21 @@ public class HibernateConfiguration implements EnvironmentAware{
         dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
         dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
         return dataSource;
+    }*/
+    
+    @Bean
+    public DataSource dataSource() {
+    	try{
+    	JndiObjectFactoryBean dataSource = new JndiObjectFactoryBean();
+        return (DataSource) dataSource.getJndiTemplate().lookup("java:comp/env/jdbc/prrws", DataSource.class);
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	return null;
     }
     
-    private Properties hibernateProperties() {
+    /*private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
@@ -73,6 +85,23 @@ public class HibernateConfiguration implements EnvironmentAware{
         properties.put("hibernate.c3p0.preferredTestQuery", "SELECT 1");
         properties.put("hibernate.c3p0.testConnectionOnCheckout", "true");
         
+        properties.put("hibernate.connection.useUnicode",true);
+        properties.put("hibernate.connection.characterEncoding", "utf8");
+        properties.put("hibernate.connection.charSet", "utf8");
+        
+        return properties;        
+    }*/
+    
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
+        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
+        properties.put("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
+        properties.put("hibernate.connection.driver_class", environment.getRequiredProperty("jdbc.driverClassName"));
+        properties.put("hibernate.connection.useUnicode",true);
+        properties.put("hibernate.connection.characterEncoding", "utf8");
+        properties.put("hibernate.connection.charSet", "utf8");
+       
         return properties;        
     }
     
