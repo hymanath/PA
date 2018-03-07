@@ -11571,4 +11571,14 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		query.setParameterList("tdpCadreIds", tdpCadreIds);
 		return query.list();
 	}
+
+
+	@Override
+	public List<Long> getAlertId(Long categoryId, Long categoryTypeId) {
+		Query query = getSession().createQuery(("select model.alertId from Alert model "
+				+ " where model.alertCategoryId=:categoryId and model.alertCategoryTypeId=:categoryTypeId order by model.alertId desc"));
+		query.setParameter("categoryId", categoryId);
+		query.setParameter("categoryTypeId", categoryTypeId);
+		return query.list();
+	}
 }

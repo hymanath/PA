@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.PathParam;
+
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
@@ -5825,4 +5827,12 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	return alertVoList;
 	}
 	
+	public ResultStatus updateAlertIssueCategory(Long categoryId,Long categoryTypeId,Long issueCategoryId){
+		try{
+			return alertService.updateAlertIssueCategory(categoryId,categoryTypeId,issueCategoryId);
+    	}catch(Exception e){
+    		log.error("Exception raised in updateAlertIssueCategory  method in WebServiceHandlerService1",e);
+    	}
+    	return null;
+	}
 }
