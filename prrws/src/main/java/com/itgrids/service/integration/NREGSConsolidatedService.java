@@ -54,6 +54,8 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 	@Autowired
 	private IWebserviceHandlerService webserviceHandlerService;
 	
+	ExecutorService executor = Executors.newFixedThreadPool(100);
+	
 	/*
 	 * Date : 26/07/2017
 	 * Author :Sravanth
@@ -112,7 +114,6 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 				
 				List<ClientResponse> responseList = new ArrayList<ClientResponse>();
 				if(urlsList != null && !urlsList.isEmpty()){
-					ExecutorService executor = Executors.newFixedThreadPool(100);
 					//Future<String> future = executor.submit(new Task());
 					for (NregaConsolidatedInputVO urlvo : urlsList) {
 						if(urlvo.getId() != null && (urlvo.getId().longValue() == 43l || urlvo.getId().longValue() == 44l 
