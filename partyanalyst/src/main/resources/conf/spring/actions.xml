@@ -1690,6 +1690,7 @@
 		<property name="alertManagementSystemService" ref="alertManagementSystemService"/>
 		<property name="loginService" ref="loginService"/>
 		<property name="alertUpdationAPIService" ref="alertUpdationAPIService"/>
+		<property name="zohoAlertService" ref="zohoAlertService"/>
 	</bean>
 	
 	<!-- Deabete End -->
@@ -1839,5 +1840,6 @@
 	<bean id="dalithTejamDashBoardAction" class="com.itgrids.partyanalyst.web.action.DalithaTejamDashBoardAction" singleton="false">
 		 <property name="dalithaTejamDashBoardService" ref="dalithaTejamDashBoardService" /> 
 	</bean>
+	
 </beans>	
 	

@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAlertUpdationAPIService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.service.IZohoAlertService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -101,8 +102,13 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private Long tdpCadreId;
 	private Long alertVerificationAssignedUserId;
 	private IAlertUpdationAPIService alertUpdationAPIService;
+	private IZohoAlertService zohoAlertService;
 	
 	
+	public void setZohoAlertService(IZohoAlertService zohoAlertService) {
+		this.zohoAlertService = zohoAlertService;
+	}
+
 	public IAlertUpdationAPIService getAlertUpdationAPIService() {
 		return alertUpdationAPIService;
 	}
@@ -3599,5 +3605,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Exception occured in deleteAssigneeFromZohoOfAlert() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;    
+	}
+	public String sendSamlResponseToZoho(){
+		try {
+			
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			
+			status = zohoAlertService.sendSamlResponseToZoho(jObj.getString("membershipId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in sendSamlResponseToZoho() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
 	}
 }
