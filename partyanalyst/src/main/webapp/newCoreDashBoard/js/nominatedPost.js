@@ -974,7 +974,6 @@ function getBoardWisePositions()
 			$("#boardWiseModal").modal("show");
 			$("#boardWiseModal .modal-dialog").css("width","95%");
 			$("#boardTitleId").html(departmentName+" Details");
-			$(".paginationCls").html("");
 			$("#departmentDetailsModalDivId").html(spinner)
 			$(".paginationId").html("");
 			getDepartmentWiseOpenPostAndApplicationDetails(deptId,boardLevelId,type);
