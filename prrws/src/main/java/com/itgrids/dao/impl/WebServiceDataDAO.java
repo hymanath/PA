@@ -37,11 +37,11 @@ public class WebServiceDataDAO extends GenericDaoHibernate<WebServiceData,Long> 
 	}
 
 	@SuppressWarnings("unchecked")
-	public String getWebserviceResponseData(Long webserviceId,String input) {
+	public List<Object[]> getWebserviceResponseData(Long webserviceId,String input) {
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(" SELECT model.responceData FROM WebServiceData model where model.isDeleted ='N' AND model.webserviceId = :webserviceId ");
-		sb.append(" AND model.responceData IS NOT NULL ");
+		sb.append(" SELECT model.responceData,model.insertedTime FROM WebServiceData model where model.isDeleted ='N' AND ");
+		sb.append(" model.webserviceId = :webserviceId AND model.responceData IS NOT NULL ");
 		
 		if(input != null && input.trim().length() > 0)
 			sb.append(" AND model.inputData = :input ");
@@ -56,13 +56,7 @@ public class WebServiceDataDAO extends GenericDaoHibernate<WebServiceData,Long> 
 			query.setParameter("input",input);
 		
 		query.setMaxResults(1);
-		
-		List<Object> list = query.list();
-		
-		if(list != null && list.size() > 0)
-			return list.get(0).toString();
-		else
-			return null;
+		return query.list();
 	}
 
 	
