@@ -120,6 +120,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	@Autowired
 	private IWebserviceHandlerService webserviceHandlerService;
 	
+	ExecutorService executor = Executors.newFixedThreadPool(10);
+	
 	@Override
 	/*
 	 * Date : 05/06/2017
@@ -4015,7 +4017,6 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("parliament")) {
 				Map<String, String> cnstuncyCodeMap = getConstituencyParliamentNameMapping(Long.valueOf(inputVO.getLocationIdStr()));
 				if (cnstuncyCodeMap != null && cnstuncyCodeMap.size() > 0) {
-					ExecutorService executor = Executors.newFixedThreadPool(10);
 					for (Entry<String, String> entry : cnstuncyCodeMap.entrySet()) {
 					        String strNew = "";
 							 strNew = str.replace(inputVO.getLocationIdStr(), entry.getKey());
