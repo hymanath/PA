@@ -59,6 +59,8 @@ public class PanchayatTaxVO {
 	
 	private String collectinAmntPerc;
 	private String balanceAmntPerc;
+	private String collectinAsstsPerc;
+	private String balanceAsstsPerc;
 	
 	
 	public Long getId() {
@@ -342,5 +344,17 @@ public class PanchayatTaxVO {
 	}
 	public void setBalanceAmntPerc(String balanceAmntPerc) {
 		this.balanceAmntPerc = balanceAmntPerc;
+	}
+	public String getCollectinAsstsPerc() {
+		return collectinAsstsPerc;
+	}
+	public void setCollectinAsstsPerc(String collectinAsstsPerc) {
+		this.collectinAsstsPerc = collectinAsstsPerc;
+	}
+	public String getBalanceAsstsPerc() {
+		return balanceAsstsPerc;
+	}
+	public void setBalanceAsstsPerc(String balanceAsstsPerc) {
+		this.balanceAsstsPerc = balanceAsstsPerc;
 	}
 }

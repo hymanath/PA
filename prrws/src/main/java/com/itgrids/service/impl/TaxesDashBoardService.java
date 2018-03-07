@@ -762,6 +762,17 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 					} else {
 						indicatorvo.setBalanceAmntPerc("0.00");
 					}
+					
+					if(indicatorvo.getDemandAssmts() != null && Double.valueOf(indicatorvo.getDemandAssmts()) > 0 && indicatorvo.getCollectionAssmts() != null && Double.valueOf(indicatorvo.getCollectionAssmts()) > 0){
+		     			 indicatorvo.setCollectinAsstsPerc(new BigDecimal(Double.valueOf(indicatorvo.getCollectionAssmts()) * 100.00/ Double.valueOf(indicatorvo.getDemandAssmts())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} else {
+						indicatorvo.setCollectinAsstsPerc("0.00");
+					}
+					if(indicatorvo.getDemandAssmts() != null && Double.valueOf(indicatorvo.getDemandAssmts()) > 0 && indicatorvo.getBalanceAssmts() != null && Double.valueOf(indicatorvo.getBalanceAssmts()) > 0){
+						indicatorvo.setBalanceAsstsPerc(new BigDecimal(Double.valueOf(indicatorvo.getBalanceAssmts()) * 100.00/ Double.valueOf(indicatorvo.getDemandAssmts())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} else {
+						indicatorvo.setBalanceAsstsPerc("0.00");
+					}
 	    	   }
 		    }
 			

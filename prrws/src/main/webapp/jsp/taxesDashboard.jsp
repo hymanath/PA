@@ -395,7 +395,7 @@
 								<div class="col-sm-2">
 									<label>Location Level</label>
 									<select class="form-control chosen-select locationLevelCls">
-										<option value="0">Select Level</option>
+										<!--<option value="0">Select Level</option>-->
 										<!--<option value="State">State</option>-->
 										<option value="district" selected>District</option>
 										<option value="assembly">Constituency</option>
@@ -419,6 +419,9 @@
 								</div>
 								<div class="col-sm-2">
 									<button class="btn btn-primary btn-sm font_weight getDetailsCls" style="margin-top: 26px;">SUBMIT</button>
+								</div>
+								<div class="col-sm-2">
+									<h5 style="color:red;margin-top: 35px;">Note : All Amounts In Crores.</h5> 
 								</div>
 							</div>
 						</div>
