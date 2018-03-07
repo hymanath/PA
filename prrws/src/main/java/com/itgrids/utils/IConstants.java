@@ -97,4 +97,5 @@ public interface IConstants {
     public static final Long WS_CALL_TYPE_LIVE = 1L;
     public static final Long WS_CALL_TYPE_DB = 2L;
     public static final Long WS_CALL_TYPE_LIVE_OR_DB = 3L;
+    public static final Long WS_CALL_TYPE_DB_THEN_LIVE = 4L;
 }
