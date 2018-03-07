@@ -324,7 +324,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        DocumentBuilderFactory.newInstance();
 	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	        Document doc = dBuilder.newDocument();
-	        Date currentDate = DateUtilService.getCurrentDateAndTime();
+	        Date currentDate = dateUtilService.getCurrentDateAndTime();
 	        SimpleDateFormat dateFormatter = new SimpleDateFormat(
 	                "yyyy-MM-dd'T'HH:mm:ss'Z'");
 	        Date aDate = new Date(System.currentTimeMillis()+5*60*1000);
