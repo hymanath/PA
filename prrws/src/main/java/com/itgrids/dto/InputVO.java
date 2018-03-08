@@ -123,6 +123,7 @@ public class InputVO implements Serializable {
 	private String radioSelection;
 	
 	private Long subLocationId;
+	private List<String> districtNames = new ArrayList<String>();
 	
 	public String getRadioSelection() {
 		return radioSelection;
@@ -789,4 +790,12 @@ public class InputVO implements Serializable {
 	public void setOtherLead(String otherLead) {
 		this.otherLead = otherLead;
 	}
+	public List<String> getDistrictNames() {
+		return districtNames;
+	}
+	public void setDistrictNames(List<String> districtNames) {
+		this.districtNames = districtNames;
+	}
+	
+	
 }
