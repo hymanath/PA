@@ -88,6 +88,14 @@
 													</a>
 												</div>
 											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#483D8B">
+													<a href="vehicleTrackingDashboard">
+														<h3>VT</h3>
+                           								 <p>Vehicle Tracking</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -154,6 +162,22 @@
 													<a href="solidWasteManagementDashboard">
 														<h3>SWM</h3>
                            								 <p>Solid Waste Management</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#FF1493">
+													<a href="panchayatTaxDashboard">
+														<h3>Taxes</h3>
+                           								 <p>Panchayat Raj Taxes</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#7B68EE">
+													<a href="eMeetingsDashboard">
+														<h3>E Meetings</h3>
+                           								 <p>Panchayat Raj eMeetings</p>
 													</a>
 												</div>
 											</div>
