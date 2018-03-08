@@ -7,6 +7,13 @@ var globallocationlevelIdType=1;
 var globallocationDistrictName='';
 var globallocationConsName='';
 var globallocationMandalName='';
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
 $("#dateRangePicker").daterangepicker({
 		opens: 'left',
 		startDate: currentFromDate,
