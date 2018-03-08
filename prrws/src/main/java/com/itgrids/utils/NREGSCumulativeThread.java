@@ -1,42 +1,36 @@
 package com.itgrids.utils;
 
-import java.util.Date;
 import java.util.List;
 
-import com.itgrids.service.integration.external.NregaWebServiceUtilService;
-import com.sun.jersey.api.client.ClientResponse;
+import com.itgrids.dto.WebserviceVO;
+import com.itgrids.service.IWebserviceHandlerService;
 
 public class NREGSCumulativeThread implements Runnable {
 
-	private String url =null;
-	private ClientResponse response =null;
-	private String inputVO =null;
-	
-	private List responseVo=null;
-	private DateUtilService dateUtilService = new DateUtilService();
-	 
+	private String url;
+	private String input;
+	private List<WebserviceVO> responseList;
+	private IWebserviceHandlerService webserviceHandlerService;
 
-	public NREGSCumulativeThread(String url,List responseVo,String input) {
-		this.url=url;
-		this.responseVo = responseVo;
-		this.inputVO=input;
+	public NREGSCumulativeThread(IWebserviceHandlerService webserviceHandlerService,String url,List<WebserviceVO> responseList,String input) 
+	{
+		this.webserviceHandlerService = webserviceHandlerService;
+		this.url = url;
+		this.responseList = responseList;
+		this.input = input;
 	}
 
 	@Override
 	public void run() {
-
+		
 		callWebService();
 
 	}
 
 	private void callWebService() {
 		try {
-			 
-			NregaWebServiceUtilService webServiceUtilService = new NregaWebServiceUtilService();
-			Date startTime = dateUtilService.getCurrentDateAndTime();
-		    ClientResponse response = webServiceUtilService.callWebService(url, inputVO);
-		    Date endTime = dateUtilService.getCurrentDateAndTime();
-		    responseVo.add(response) ;
+			WebserviceVO webserviceVO = webserviceHandlerService.callWebServiceForThread(url, input,IConstants.REQUEST_METHOD_POST);
+			responseList.add(webserviceVO);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
