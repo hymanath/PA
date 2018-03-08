@@ -3953,6 +3953,7 @@
 	 <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO"/>
 	 <property name="activityQuestionnaireDAO" ref="activityQuestionnaireDAO"/>
 	 <property name="coreDashboardService" ref="coreDashboardService"></property>
+	 <property name="activityQuestionAnswerInfoDAO" ref="activityQuestionAnswerInfoDAO"></property>
 	</bean>
 	<bean name="attendanceCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.AttendanceCoreDashBoardService">
 		<property name="departmentDAO" ref="departmentDAO" />
