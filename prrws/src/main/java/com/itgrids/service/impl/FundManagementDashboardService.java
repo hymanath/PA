@@ -57,6 +57,7 @@ import com.itgrids.dto.NregsFmsWorksVO;
 import com.itgrids.dto.PageComponentVO;
 import com.itgrids.dto.RangeVO;
 import com.itgrids.dto.ResultVO;
+import com.itgrids.dto.WebserviceVO;
 import com.itgrids.model.GovtScheme;
 import com.itgrids.model.GrantType;
 import com.itgrids.model.PageComponent;
@@ -67,7 +68,6 @@ import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.IConstants;
 import com.itgrids.utils.NREGSCumulativeThread;
 import com.itgrids.utils.SetterAndGetterUtilService;
-import com.sun.jersey.api.client.ClientResponse;
 /*
  * Author : Swadhin K Lenka
  * Date : 03/06/2017
@@ -4032,7 +4032,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	public List<NregsFmsWorksVO> getMgnregsFMSWorksDetails(InputVO inputVO) {
 		List<NregsFmsWorksVO> returnList = null;
 		try {
-			List<ClientResponse> clientResponseList = new ArrayList<>(0);
+			List<WebserviceVO> clientResponseList = new ArrayList<WebserviceVO>(0);
 			String str = convertingInputVOToString(inputVO);
 			String URL = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/FMSExpenditureService/FMSExpenditureData";
 			if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("parliament")) {
@@ -4042,7 +4042,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 					        String strNew = "";
 							 strNew = str.replace(inputVO.getLocationIdStr(), entry.getKey());
 							 strNew = strNew.replace("parliament", "constituency");
-						     Runnable worker = new NREGSCumulativeThread(URL,clientResponseList,strNew);
+						     Runnable worker = new NREGSCumulativeThread(webserviceHandlerService,URL,clientResponseList,strNew);
 							 executor.execute(worker);
 					}
 					executor.shutdown();
@@ -4052,9 +4052,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				}
 				returnList = getMgnregsParliamentWiseCombinedDetails(clientResponseList);
 			} else {
-				ClientResponse response = webServiceUtilService.callWebService(URL, str,IConstants.REQUEST_METHOD_POST);
-				if (response.getStatus() != 200) {
-					throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+				WebserviceVO response = webserviceHandlerService.callWebServiceForThread(URL, str,IConstants.REQUEST_METHOD_POST);
+				if(response == null || response.getResponseData() == null || response.getResponseData().trim().length() == 0)
+				{
+					throw new RuntimeException("Failed ");
 				} else {
 					clientResponseList.add(response);
 				}
@@ -4079,17 +4080,17 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		return returnVal;
 	}
 	
-	private List<NregsFmsWorksVO> getMgnregsParliamentWiseCombinedDetails(List<ClientResponse> responseList){
+	private List<NregsFmsWorksVO> getMgnregsParliamentWiseCombinedDetails(List<WebserviceVO> responseList){
 		List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>();
 		try {
 			Map<String,NregsFmsWorksVO> workMap = new LinkedHashMap<String,NregsFmsWorksVO>(0);
 			
 			if (responseList != null && responseList.size() > 0) {
-				for (ClientResponse response : responseList) {
-					if(response == null || response.getStatus() != 200){
-						throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+				for (WebserviceVO response : responseList) {
+					if(response == null || response.getResponseData() == null || response.getResponseData().length() == 0){
+						throw new RuntimeException("Failed getMgnregsParliamentWiseCombinedDetails Method ");
 					} else {
-						String output = response.getEntity(String.class);
+						String output = response.getResponseData().trim();
 						if (output != null && !output.isEmpty()) {
 							JSONArray finalArray = new JSONArray(output);
 							if (finalArray != null && finalArray.length() > 0) {
@@ -4139,12 +4140,12 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 		return returnList;
 	}
 
-	private List<NregsFmsWorksVO> getMgnregsWorkDetailsLocationWise(List<ClientResponse> responseList, InputVO inputVO) {
+	private List<NregsFmsWorksVO> getMgnregsWorkDetailsLocationWise(List<WebserviceVO> responseList, InputVO inputVO) {
 		List<NregsFmsWorksVO> returnList = new ArrayList<NregsFmsWorksVO>();
 		try {
 			if (responseList != null && responseList.size() > 0) {
-				for (ClientResponse response : responseList) {
-					String output = response.getEntity(String.class);
+				for (WebserviceVO response : responseList) {
+					String output = response.getResponseData();
 					if (output != null && !output.isEmpty()) {
 						JSONArray finalArray = new JSONArray(output);
 						if (finalArray != null && finalArray.length() > 0) {
