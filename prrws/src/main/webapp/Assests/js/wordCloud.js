@@ -6,20 +6,29 @@ if(wurl.length == 3)
 var glStartDate = moment().format("YYYY-MM-DD");
 var glEndDate = moment().format("YYYY-MM-DD");
 var isDepartment="Y";
-
-onLoadCalls();
-function onLoadCalls(){
-	getAllLocations(2,'1','onload');
-	populateNewspapers('onload');
-	getAllDepartments(isDepartment,'onload',globalDeptId);
-}
 var newsPaper=[];
 var editionType=[];
 var districts = [];
 var constituencies=[];
 var departments=[];
 var departmentNames=[];
+var newspaperNames=[];
+var editionTypes=[];
+var constituencyNames=[];
+var districtNames=[];
 $(".chosen-select").chosen();
+
+var width = screen.width / 2
+var height = screen.height / 2.2
+var expanded = false;
+var districts_selected = [];
+var globalNewsPapres=[];
+var globalDistricts=[];
+var globalEditionType=["District","Main","Online"];
+var globalDepartMentNames=[];
+document.getElementById("svg").setAttribute("width", width)
+document.getElementById("svg").setAttribute("height", height)
+
 $("#startDate").daterangepicker({
 		startDate: glStartDate,
         singleDatePicker: true,
@@ -46,16 +55,48 @@ $('#endDate').on('apply.daterangepicker', function(ev, picker) {
 	glEndDate = picker.endDate.format('YYYY-MM-DD');
 });
 
-var width = screen.width / 2
-var height = screen.height / 2.2
-var expanded = false;
-var districts_selected = [];
-var globalNewsPapres=[];var globalDistricts=[];var globalEditionType=["District","Main","Online"];
-var globalDepartMentNames=[];
-document.getElementById("svg").setAttribute("width", width)
-document.getElementById("svg").setAttribute("height", height)
+setTimeout(function(){
+	onLoadCalls();
+ }, 2000);
 
-
+function onLoadCalls(){
+	populateNewspapers('onload');
+	getAllDepartments(isDepartment,'onload',globalDeptId);
+	getAllLocations(2,'1','onload');
+	$('#editionType').multiselect("destroy");
+	$('#editionType').multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All Editions',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All Editions selected'
+	});
+	$('#wordCloudConstituency').multiselect("destroy");
+	$('#wordCloudConstituency').multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		//selectAllText: 'All',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All selected'
+	});
+	$('#newspapers').multiselect("destroy");
+	$('#newspapers').multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All selected'
+	});
+}
 function drawWordCloud(data) {
 	// let word_count = {"కారుతో": 4};
 	let w_c = {}
@@ -156,6 +197,7 @@ function fetchDataForWordCloud(type) {
 	var districtIdEmpty1 = $("#newspapers").val();
 	var districtIdEmpty2 = $("#editionType").val();
 	var districtIdEmpty3 = $("#wordCloudDepartmentNames").val();
+	console.log(districtIdEmpty1)
 	if(districtIdEmpty == 0){
 		districtNames=globalDistricts;
 	}
@@ -217,267 +259,11 @@ function fetchDataForWordCloud(type) {
 				}, 2000);
 			});
 }
-  
-function getAllLocations(levelId,levelValue,type){
-	if(levelId==2){
-			$('#wordCloudDistrict').html("ALL districts");
-			$('#wordCloudConstituency').html("ALL constituencies");
-		var jsObj={
-				"stateId":levelValue
-			}
-		$.ajax({                
-			type:'POST',    
-			url: 'getAllDistrictByStateId',
-			dataType: 'json',
-			data : JSON.stringify(jsObj),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-		 	return buildResultforWordCloud('wordCloudDistrict',result,type);
-		});
-	
-		
-	}else if(levelId==3){
-		$('#wordCloudConstituency').html("ALL constituencies");
-		var jsObj={
-				"districtName":levelValue
-			}
-		$.ajax({
-			type : "POST",
-			url : "getConstituenciesByDistrictForWordCloudAction.action",
-			dataType : 'json',
-			data : {task :JSON.stringify(jsObj)}
-		}).done(function(result){
-			return buildResultforWordCloud('wordCloudConstituency',result);
-		});
-	}
-	
-}
-
-function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
-	var optionStr='';
-	if(levelTypeId=="wordCloudDistrict"){
-		optionStr+='<option value="0" selected>ALL Districts</option>';
-	}else if(levelTypeId =="wordCloudConstituency"){
-		optionStr+='<option value="0" selected>ALL constituencies</option>';
-	}if(levelTypeId =="newspapers"){
-		optionStr+='<option value="0" selected>ALL NewsPapers(Excepted Sakshi)</option>';
-	}
-	
-	if(levelTypeId =="newspapers"){
-		globalNewsPapres=[];
-		for(var i in result){
-			optionStr+='<option>'+result[i].paperName+'</option>';
-			if(result[i].paperId !=8){
-				globalNewsPapres.push(result[i].paperName);
-			}
-		}
-	}else if(levelTypeId =="wordCloudDepartmentNames"){
-		globalDepartMentNames=[];
-		departments=[];
-		for(var i in result){
-			if(globalDeptId !=null && globalDeptId==1698){
-				$("#wordCloudDepartmentName").html("IT & C");
-			}else if(globalDeptId !=null && globalDeptId==0){
-				$("#wordCloudDepartmentName").html("ALL");
-			}else{
-				$("#wordCloudDepartmentName").html(result[i].shortName);
-			}
-			
-			optionStr+='<option selected>'+result[i].shortName+'</option>';
-			globalDepartMentNames.push(result[i].shortName);
-			departments.push(result[i].shortName);
-		}
-	}else {
-		globalDistricts=[];
-		for(var i in result){
-			optionStr+='<option>'+result[i].name+'</option>';
-			if(levelTypeId=="wordCloudDistrict"){
-				globalDistricts.push(result[i].name);
-			}
-		}
-	}
-	if(levelTypeId=="wordCloudDistrict"){
-		$('#'+levelTypeId).html(optionStr);
-		$("#wordCloudDistrict").chosen();
-		$("#wordCloudDistrict").trigger('chosen:updated');
-	}else{
-		$('#'+levelTypeId).html(optionStr);
-		$('#'+levelTypeId).chosen();
-		$('#'+levelTypeId).trigger('chosen:updated');
-	}
-	$('#'+levelTypeId).trigger("chosen:updated");
-	callfetchFunction(type);
-}
-function callfetchFunction(type){
-	if(type !='onchange' && type !==undefined && type !== 'undefined'){
-		$("#svg").html("");
-		if(globalDistricts != null && globalDistricts.length>0 && globalNewsPapres !=null && globalNewsPapres.length>0 && globalDepartMentNames !=null && globalDepartMentNames.length>0){
-			fetchDataForWordCloud("") ;
-		}
-	}
-}
-function populateNewspapers(type){
-	$.ajax({
-		type : 'GET', 
-		crossOrigin: true,
-		//url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
-      url: "http://localhost:8446/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
-	  
-    }).then(function(result){
-	return buildResultforWordCloud('newspapers',result,type);
-      
-    });    
-}
-
-$('#wordCloudConstituency').change(function() {
-	constituencies = $(this).val();
- });
- var districtNames=[];
- districts.push("0");
- newsPaper.push("0");editionType.push("0");
-$(document).on("change","#wordCloudDistrict",function(){
-	var values = $(this).val();//debugger;
-	if(values != null && values.length > 0){
-		for(var i=0; i<values.length; i++) {
-		//console.log(values[i]+" -- "+districts+" -- "+$.inArray(values[i], districts));
-			if($.inArray(values[i], districts) == -1){
-				if(values[i] == 0 ||values[i]==='0'){values=[];values.push("0");
-					$('#wordCloudDistrict').find($('option')).attr('selected',false)
-					$("#wordCloudDistrict").val(0);
-					$("#wordCloudDistrict").trigger('chosen:updated');
-					districts = [];
-					districts.push(0);
-				}else{
-					$('#wordCloudDistrict option:selected').each(function (index, option) { 
-						if($(this).val()==0 || $(this).val()==='0'){
-							$(option).attr('selected',false); 
-							$("#wordCloudDistrict").trigger('chosen:updated');
-						}
-						districts = [];
-						//console.log("sanju:"+districts);
-						districts.push($(this).val());
-					});
-				}
-			}
-			
-		}districtNames=[];
-		 
-		 if(values !=0){
-			districtNames =values;
-		}else{
-			districtNames=globalDistricts;
-		}
-		 getAllLocations(3,districtNames,"onChange");
-	}
-});
-var newspaperNames=[];
-$(document).on("change","#newspapers",function(){
-	var values = $(this).val();//debugger;
-	if(values != null && values.length > 0){
-		for(var i=0; i<values.length; i++) {
-		//console.log(values[i]+" -- "+financialArrGlob+" -- "+$.inArray(values[i], financialArrGlob));
-			if($.inArray(values[i], newsPaper) == -1){
-				if(values[i] == 0){values=[];values.push("0");
-					$('#newspapers').find($('option')).attr('selected',false)
-					$("#newspapers").val(0);
-					$("#newspapers").trigger('chosen:updated');
-					newsPaper = [];
-					newsPaper.push(0);
-				}else{
-					$('#newspapers option:selected').each(function (index, option) { 
-						if($(this).val()==0){
-							$(option).attr('selected',false); 
-							$("#newspapers").trigger('chosen:updated');
-						}
-						newsPaper=[];
-						newsPaper.push($(this).val());
-					});
-				}
-			}
-			
-		}
-		newspaperNames=[];
-		if(values !=0){
-			newspaperNames =values;
-		}else{
-			newspaperNames=globalNewsPapres;
-		}
-		
-	}
-	
-});
-var editionTypes=[];
-$(document).on("change","#editionType",function(){
-	var values = $(this).val();//debugger;
-	if(values != null && values.length > 0){
-		for(var i=0; i<values.length; i++) {
-		//console.log(values[i]+" -- "+financialArrGlob+" -- "+$.inArray(values[i], financialArrGlob));
-			if($.inArray(values[i], editionType) == -1){
-				if(values[i] == 0){values=[];values.push("0");
-					$('#editionType').find($('option')).attr('selected',false)
-					$("#editionType").val(0);
-					$("#editionType").trigger('chosen:updated');
-					editionType = [];
-					editionType.push(0);
-				}else{
-					$('#editionType option:selected').each(function (index, option) { 
-						if($(this).val()==0){
-							$(option).attr('selected',false); 
-							$("#editionType").trigger('chosen:updated');
-						}
-						editionType=[];
-						editionType.push($(this).val());
-					});
-				}
-			}
-			
-		}editionTypes=[];
-		if(values !=0){
-			editionTypes=values;
-		}else{
-			editionTypes=globalEditionType;
-		}
-		
-	}
-});
-var constituencyNames=[];
-$(document).on("change","#wordCloudConstituency",function(){
-	var values = $(this).val();//debugger;
-	if(values != null && values.length > 0){
-		for(var i=0; i<values.length; i++) {
-		//console.log(values[i]+" -- "+financialArrGlob+" -- "+$.inArray(values[i], financialArrGlob));
-			if($.inArray(values[i], constituencies) == -1){
-				if(values[i] == 0){values=[];values.push("0");
-					$('#wordCloudConstituency').find($('option')).attr('selected',false)
-					$("#wordCloudConstituency").val(0);
-					$("#wordCloudConstituency").trigger('chosen:updated');
-					constituencies = [];
-					constituencies.push("0");
-				}else{
-					$('#wordCloudConstituency option:selected').each(function (index, option) { 
-						if($(this).val()==0){
-							$(option).attr('selected',false); 
-							$("#wordCloudConstituency").trigger('chosen:updated');
-						}
-						constituencies=[];
-						constituencies.push($(this).val());
-					});
-				}
-			}
-			
-		}constituencyNames=[];
-		constituencyNames=values;
-	}
-});
-
 function getOverAllDetailsOfAnArticle(articleId){
 	$("#myModalShowNews").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$.ajax({
-		//url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
-		url: "http://localhost:8446/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		//url: "http://localhost:8085/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
 		
 	}).then(function(results){
 		var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","CORP-GMC","Ward","NATIONAL","INTERNATIONAL","MUNICIPALITY"];
@@ -885,10 +671,174 @@ function getOverAllDetailsOfAnArticle(articleId){
 			
 	});
 }
-function refreshWordCloudfunction(){
-	document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
-	getAllLocations(2,'1','onchange');
-	populateNewspapers('onload');
+  
+function getAllLocations(levelId,levelValue,type){
+	if(levelId==2){
+			/* $('#wordCloudDistrict').html("ALL districts");
+			$('#wordCloudConstituency').html("ALL constituencies"); */
+		var jsObj={
+				"stateId":levelValue
+			}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllDistrictByStateId',
+			dataType: 'json',
+			data : JSON.stringify(jsObj),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+		 	return buildResultforWordCloud('wordCloudDistrict',result,type);
+		});
+	
+		
+	}else if(levelId==3){
+		$('#wordCloudConstituency').html("ALL constituencies");
+		var jsObj={
+				"districtNames":levelValue
+			}
+		$.ajax({
+			type:'POST',    
+			url: 'getAllConstituenciesByDistrictName',
+			dataType: 'json',
+			data : JSON.stringify(jsObj),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			return buildResultforWordCloud('wordCloudConstituency',result);
+		});
+	}
+	
+}
+
+function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
+	var optionStr='';
+	/* if(levelTypeId=="wordCloudDistrict"){
+		optionStr+='<option value="0" selected>ALL Districts</option>';
+	}else if(levelTypeId =="wordCloudConstituency"){
+		optionStr+='<option value="0" selected>ALL constituencies</option>';
+	}if(levelTypeId =="newspapers"){
+		optionStr+='<option value="0" selected>ALL NewsPapers(Excepted Sakshi)</option>';
+	} */
+	
+	if(levelTypeId =="newspapers"){
+		globalNewsPapres=[];
+		for(var i in result){
+			optionStr+='<option selected>'+result[i].paperName+'</option>';
+			if(result[i].paperId !=8){
+				globalNewsPapres.push(result[i].paperName);
+			}
+		}
+	}else if(levelTypeId =="wordCloudDepartmentNames"){
+		globalDepartMentNames=[];
+		departments=[];
+		for(var i in result){
+			if(globalDeptId !=null && globalDeptId==1698){
+				$("#wordCloudDepartmentName").html("IT & C");
+			}else if(globalDeptId !=null && globalDeptId==0){
+				$("#wordCloudDepartmentName").html("ALL");
+			}else{
+				$("#wordCloudDepartmentName").html(result[i].shortName);
+			}
+			
+			optionStr+='<option selected>'+result[i].shortName+'</option>';
+			globalDepartMentNames.push(result[i].shortName);
+			departments.push(result[i].shortName);
+		}
+	}else {
+		globalDistricts=[];
+		for(var i in result){
+			optionStr+='<option selected>'+result[i].name+'</option>';
+			if(levelTypeId=="wordCloudDistrict"){
+				globalDistricts.push(result[i].name);
+			}
+		}
+	}
+	if(levelTypeId=="wordCloudDistrict"){
+		$('#'+levelTypeId).html(optionStr);
+		/* $("#wordCloudDistrict").chosen();
+		$("#wordCloudDistrict").trigger('chosen:updated'); */
+	}else{
+		$('#'+levelTypeId).html(optionStr);
+		/* $('#'+levelTypeId).chosen();
+		$('#'+levelTypeId).trigger('chosen:updated'); */
+	}
+	//$('#'+levelTypeId).trigger("chosen:updated");
+	$('#'+levelTypeId).multiselect("destroy");
+	if(levelTypeId == "wordCloudDistrict"){
+		$('#'+levelTypeId).multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All Districts',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All Districts selected',
+		 onChange: function() {
+			console.log($('#wordCloudDistrict').val());
+			getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
+		}
+	});
+	}else if(levelTypeId == "newspapers"){
+		$('#'+levelTypeId).multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All News Paper',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All News Paper selected'
+	});
+	}else if(levelTypeId == "wordCloudConstituency"){
+		$('#'+levelTypeId).multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All Constituency',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All Constituency selected'
+	});
+	}else if(levelTypeId == "wordCloudDepartmentNames"){
+		$('#'+levelTypeId).multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All Department Constituency',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All Department selected'
+	});
+	}
+	
+	callfetchFunction(type);
+}
+function callfetchFunction(type){
+	if(type !='onchange' && type !==undefined && type !== 'undefined'){
+		$("#svg").html("");
+		if(globalDistricts != null && globalDistricts.length>0 && globalNewsPapres !=null && globalNewsPapres.length>0 && globalDepartMentNames !=null && globalDepartMentNames.length>0){
+			fetchDataForWordCloud("") ;
+		}
+	}
+}
+function populateNewspapers(type){
+	$.ajax({
+		type : 'GET', 
+		crossOrigin: true,
+		url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+       //url: "http://localhost:8085/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+	  
+    }).then(function(result){
+	return buildResultforWordCloud('newspapers',result,type);
+      
+    });    
 }
 
 
@@ -897,17 +847,18 @@ function getAllDepartments(isDepartment,type){
 	if(globalDeptId !=null && globalDeptId ==0){
 		departmentId="1699,2170,2171,1698";
 	}else{
-		departmentId=departmentId;
+		departmentId=globalDeptId;
 	}
 	$.ajax({
 		type : 'GET', 
 		crossOrigin: true,
-		//url: wurl+"/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/AP"
-      url: "http://localhost:8446/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/"+departmentId
+	   url: wurl+"/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/AP"
+      //url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/"+departmentId
 	
     }).then(function(result){
 	return buildResultforWordCloud('wordCloudDepartmentNames',result,type,isDepartment);
       
     });    
 }
+ 
  
