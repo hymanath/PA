@@ -221,4 +221,22 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 		}
 	}
 	
+	public WebserviceVO callWebServiceForThread(String url,Object input,String requestMethod)
+	{
+		WebserviceVO webserviceVO = null;
+		try{
+			String data = callWebService(url,input,requestMethod);
+			if(data != null && data.trim().length() > 0)
+			{
+				webserviceVO = new WebserviceVO();
+				webserviceVO.setResponseData(data);
+				webserviceVO.setUrl(url);
+			}
+		}catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return webserviceVO;
+	}
+	
 }
