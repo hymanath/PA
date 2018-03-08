@@ -101,7 +101,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" ,pmBriefLead.briefLead,pmDepartment.department,model.petition.representeeType,pmGrant.pmGrantName" +//20,21,22,23
 				",pmWorkType.workType,model.pmRepresenteeDesignation.pmDesignation.designation  "+//24,25
 				",district.districtId,district.districtName,constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName " +//26,27 ,28,29  ,30,31
-				",pmSubject.pmSubjectId,pmSubSubject.pmSubjectId " ); // 32,33
+				",pmSubject.pmSubjectId,pmSubSubject.pmSubjectId,pmLead.leadName,pmBriefLead.pmBriefLeadId " ); // 32,33,34,35
 		}
 		
 		sb.append("  from PmRepresenteeRefDetails as model "+//, PmPetitionAssignedOfficer assignedOfficer " +
@@ -114,7 +114,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 						" left join model1.pmBriefLead pmBriefLead " +
 						" left join model1.pmDepartment pmDepartment " +
 						" left join model1.pmGrant pmGrant " +
-						" left join model1.pmWorkType pmWorkType ");
+						" left join model1.pmWorkType pmWorkType " +
+						" left join model1.pmLead pmLead ");
 		
 		//if(filterType != null && (filterType.equalsIgnoreCase("work") || 
 			//	filterType.equalsIgnoreCase("department") || filterType.equalsIgnoreCase("subject")) && searchLevelId != null && searchLevelId.longValue()>0L){
