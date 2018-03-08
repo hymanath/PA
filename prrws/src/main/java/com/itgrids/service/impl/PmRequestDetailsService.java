@@ -1505,21 +1505,22 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 					 });
 					// tempIdsList.addAll(petitionIdList.subList(inputVO.getFirstIndex(), inputVO.getMaxResult()));
-					 
-					 List<Long> tempIdsList = new ArrayList<Long>(petitionIdList);
-					 petitionIdList.clear();
-					 if(tempIdsList.size()>=inputVO.getMaxResult()){
-						 if(tempIdsList.size()>=(inputVO.getFirstIndex()+inputVO.getMaxResult()))
-							 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex()+inputVO.getMaxResult()));
-						 else
-							 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex() + (tempIdsList.size()-inputVO.getFirstIndex())));
-					 }else
-						 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), tempIdsList.size()));
-					 petitionIdsList = new HashSet<Long>(petitionIdList);
+					 if(inputVO.getFilterValue() == null || inputVO.getFilterValue().isEmpty()){
+						 List<Long> tempIdsList = new ArrayList<Long>(petitionIdList);
+						 petitionIdList.clear();
+						 if(tempIdsList.size()>=inputVO.getMaxResult()){
+							 if(tempIdsList.size()>=(inputVO.getFirstIndex()+inputVO.getMaxResult()))
+								 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex()+inputVO.getMaxResult()));
+							 else
+								 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex() + (tempIdsList.size()-inputVO.getFirstIndex())));
+						 }else
+							 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), tempIdsList.size()));
+						 petitionIdsList = new HashSet<Long>(petitionIdList);
+					 }
 				 }
 			 }
 			 
-			
+				
 			KeyValueVO deptVO = getDeptIdsListBYUserIds(inputVO.getLocationId());
 			if(deptVO != null){
 				inputVO.getIdsList().add(deptVO.getId());
@@ -1582,17 +1583,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									}
 							 });
 							// tempIdsList.addAll(petitionIdList.subList(inputVO.getFirstIndex(), inputVO.getMaxResult()));
-							 
-							 List<Long> tempIdsList = new ArrayList<Long>(petitionIdList);
-							 petitionIdList.clear();
-							 if(tempIdsList.size()>=inputVO.getMaxResult()){
-								 if(tempIdsList.size()>=(inputVO.getFirstIndex()+inputVO.getMaxResult()))
-									 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex()+inputVO.getMaxResult()));
-								 else
-									 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex() + (tempIdsList.size()-inputVO.getFirstIndex()))); 
-							 }else
-								 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), tempIdsList.size()));
-							 petitionIdsList = new HashSet<Long>(petitionIdList);
+							 if(inputVO.getFilterValue() == null || inputVO.getFilterValue().isEmpty()){
+								 List<Long> tempIdsList = new ArrayList<Long>(petitionIdList);
+								 petitionIdList.clear();
+								 if(tempIdsList.size()>=inputVO.getMaxResult()){
+									 if(tempIdsList.size()>=(inputVO.getFirstIndex()+inputVO.getMaxResult()))
+										 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex()+inputVO.getMaxResult()));
+									 else
+										 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex() + (tempIdsList.size()-inputVO.getFirstIndex()))); 
+								 }else
+									 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), tempIdsList.size()));
+								 petitionIdsList = new HashSet<Long>(petitionIdList);
+							 }
 						}
 					 }
 					
@@ -1604,11 +1606,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					inputVO.getSearchLvlVals().clear();
 					inputVO.getSearchLvlVals().addAll(inputVO.getLocationValues());
 					inputVO.setSearchLevelId(5l);
-					if(commonMethodsUtilService.isListOrSetValid(allPetitionsIdsList))
-						totalDataList = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,allPetitionsIdsList,"count");
-					else						
-						totalDataList = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,petitionIdsList,"count");
-					
+					if(inputVO.getFilterValue() == null || inputVO.getFilterValue().isEmpty()){
+						if(commonMethodsUtilService.isListOrSetValid(allPetitionsIdsList))
+							totalDataList = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,allPetitionsIdsList,"count");
+						else						
+							totalDataList = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,petitionIdsList,"count");
+					}
 					if(!commonMethodsUtilService.isListOrSetValid(petitionIdsList)){
 						if(commonMethodsUtilService.isListOrSetValid(totalDataList)){
 							for (Object[] param : totalDataList) {
@@ -1629,17 +1632,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									}
 							 });
 							// tempIdsList.addAll(petitionIdList.subList(inputVO.getFirstIndex(), inputVO.getMaxResult()));
-							 
-							 List<Long> tempIdsList = new ArrayList<Long>(petitionIdList);
-							 petitionIdList.clear();
-							 if(tempIdsList.size()>=inputVO.getMaxResult()){
-								 if(tempIdsList.size()>=(inputVO.getFirstIndex()+inputVO.getMaxResult()))
-									 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex()+inputVO.getMaxResult()));
-								 else
-									 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex() + (tempIdsList.size()-inputVO.getFirstIndex()))); 
-							 }else
-								 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), tempIdsList.size()));
-							 petitionIdsList = new HashSet<Long>(petitionIdList);
+							 if(inputVO.getFilterValue() == null || inputVO.getFilterValue().isEmpty()){
+								 List<Long> tempIdsList = new ArrayList<Long>(petitionIdList);
+								 petitionIdList.clear();
+								 if(tempIdsList.size()>=inputVO.getMaxResult()){
+									 if(tempIdsList.size()>=(inputVO.getFirstIndex()+inputVO.getMaxResult()))
+										 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex()+inputVO.getMaxResult()));
+									 else
+										 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex() + (tempIdsList.size()-inputVO.getFirstIndex()))); 
+								 }else
+									 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), tempIdsList.size()));
+								 petitionIdsList = new HashSet<Long>(petitionIdList);
+							 }
 						}
 					 }
 					
@@ -1647,10 +1651,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					setSearchDetailsData(searchData,mapData);
 				}
 			    }else{
-			    	if(commonMethodsUtilService.isListOrSetValid(allPetitionsIdsList))
-						totalDataList = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,allPetitionsIdsList,"count");
-					else						
-						totalDataList = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,petitionIdsList,"count");
+			    	if(inputVO.getFilterValue() == null || inputVO.getFilterValue().isEmpty()){
+				    	if(commonMethodsUtilService.isListOrSetValid(allPetitionsIdsList))
+							totalDataList = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,allPetitionsIdsList,"count");
+						else						
+							totalDataList = pmRepresenteeRefDetailsDAO.getRepresentativeSearchWiseDetails(inputVO,startDate,endDate,petitionIdsList,"count");
+			    	}
 			    	
 			    	if(!commonMethodsUtilService.isListOrSetValid(petitionIdsList)){
 						if(commonMethodsUtilService.isListOrSetValid(totalDataList)){
@@ -1672,17 +1678,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									}
 							 });
 							// tempIdsList.addAll(petitionIdList.subList(inputVO.getFirstIndex(), inputVO.getMaxResult()));
-							 
-							 List<Long> tempIdsList = new ArrayList<Long>(petitionIdList);
-							 petitionIdList.clear();
-							 if(tempIdsList.size()>=inputVO.getMaxResult()){
-								 if(tempIdsList.size()>=(inputVO.getFirstIndex()+inputVO.getMaxResult()))
-									 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex()+inputVO.getMaxResult()));
-								 else
-									 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex() + (tempIdsList.size()-inputVO.getFirstIndex()))); 
-							 }else
-								 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), tempIdsList.size()));
-							 petitionIdsList = new HashSet<Long>(petitionIdList);
+							 if(inputVO.getFilterValue() == null || inputVO.getFilterValue().isEmpty()){
+								 List<Long> tempIdsList = new ArrayList<Long>(petitionIdList);
+								 petitionIdList.clear();
+								 if(tempIdsList.size()>=inputVO.getMaxResult()){
+									 if(tempIdsList.size()>=(inputVO.getFirstIndex()+inputVO.getMaxResult()))
+										 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex()+inputVO.getMaxResult()));
+									 else
+										 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), inputVO.getFirstIndex() + (tempIdsList.size()-inputVO.getFirstIndex()))); 
+								 }else
+									 petitionIdList.addAll(tempIdsList.subList(inputVO.getFirstIndex(), tempIdsList.size()));
+								 petitionIdsList = new HashSet<Long>(petitionIdList);
+							 }
 						}
 					 }
 			    	
@@ -1868,7 +1875,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						totalResultCount = Long.valueOf(String.valueOf(allWorkssIdsList.size()));
 					}
 				}
-				finalList.get(0).setTotalResultCount(totalResultCount);
+				if(inputVO.getFilterValue() != null && !inputVO.getFilterValue().isEmpty()){
+					totalResultCount = 50L;
+				}
+					finalList.get(0).setTotalResultCount(totalResultCount);
 			}
 	}catch (Exception e) {
 			e.printStackTrace();
